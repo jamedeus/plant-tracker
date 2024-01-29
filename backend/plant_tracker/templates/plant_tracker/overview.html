@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Plant Tracker Overview</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://printjs-4de6.kxcdn.com/print.min.css">
+    <script src="https://printjs-4de6.kxcdn.com/print.min.js"></script>
+
+    <style>
+        /* Limit width for readability on large screen sizes */
+        @media (min-width: 1200px) {
+            .container {
+                width: 960px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container d-flex flex-column vh-100">
+        <h1 class="text-center">Plant Overview</h1>
+
+        <div class="mx-auto my-4">
+            <button class="btn btn-primary" onClick="printQrCodes();">Print QR codes</button>
+        </div>
+
+        <div id="existing-plants" class="mx-auto">
+            {% for plant in plants %}
+                <div class="card text-center mb-3" style="width: 18rem;" onClick="window.location.href = '/manage/{{plant.id}}';">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ plant.name }}</h5>
+                        <p class="card-text">{{ plant.species }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <script>
+        async function printQrCodes() {
+            // Get Base64-encoded image string from backend
+            const response = await fetch('/get_qr_codes');
+            const data = await response.json();
+
+            // Decode base64 image data to binary
+            const imageData = atob(data.qr_codes);
+
+            // Create Uint8Array with same length
+            const imageBuffer = new ArrayBuffer(imageData.length);
+            const imageBytes = new Uint8Array(imageBuffer);
+
+            // Read bytes into array
+            for (let i = 0; i < imageData.length; i++) {
+                imageBytes[i] = imageData.charCodeAt(i);
+            }
+
+            // Create blob object from buffer, set MIME type
+            const qr = new Blob([imageBytes], { type: 'image/png' });
+            const uri = URL.createObjectURL(qr);
+
+            // Open blob in print dialog, hide header and footer
+            printJS({
+                printable: uri,
+                type: 'image',
+                documentTitle: '',
+                header: null,
+                footer: null
+            });
+        }
+    </script>
+</body>
+</html>

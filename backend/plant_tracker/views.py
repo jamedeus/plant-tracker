@@ -1,10 +1,26 @@
 import json
+import base64
+from io import BytesIO
 from datetime import datetime
 
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponseRedirect
 
 from .models import Plant, WaterEvent, FertilizeEvent
+from generate_qr_code_grid import generate_layout
+
+
+def overview(request):
+    plants = Plant.objects.all()
+    return render(request, 'plant_tracker/overview.html', {'plants': plants})
+
+
+def get_qr_codes(request):
+    qr_codes = generate_layout()
+    image = BytesIO()
+    qr_codes.save(image, format="PNG")
+    image_base64 = base64.b64encode(image.getvalue()).decode()
+    return JsonResponse({'qr_codes': image_base64})
 
 
 def register_plant(request):

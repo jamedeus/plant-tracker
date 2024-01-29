@@ -7,7 +7,7 @@ import pyqrcode
 from PIL import Image
 
 
-url_prefix = "https://plants.lan/"
+url_prefix = "http://desktop.lan:8999/manage/"
 
 page_width, page_height = 2400, 3300
 
@@ -17,7 +17,7 @@ def generate_random_qr():
     return pyqrcode.create(
         f"{url_prefix}{uuid4().hex}",
         error="H",
-        version=6
+        version=7
     )
 
 
