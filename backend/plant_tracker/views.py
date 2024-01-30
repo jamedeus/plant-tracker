@@ -86,6 +86,23 @@ def manage_plant(request, uuid):
     return render(request, 'plant_tracker/manage.html', {'plant': plant})
 
 
+def delete_plant(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode("utf-8"))
+    else:
+        return JsonResponse({'Error': 'Must post data'}, safe=False, status=405)
+
+    try:
+        plant = Plant.objects.get(id=data["uuid"])
+    except Plant.DoesNotExist:
+        return JsonResponse({"error": "plant not found"}, status=404)
+
+    plant.delete()
+
+    # Reload overview page
+    return HttpResponseRedirect('/')
+
+
 def water_plant(request, uuid, timestamp=None):
     try:
         plant = Plant.objects.get(id=uuid)
