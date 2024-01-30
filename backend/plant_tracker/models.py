@@ -18,6 +18,20 @@ class Plant(models.Model):
         null=True
     )
 
+    def last_watered(self):
+        last_event = self.waterevent_set.all().order_by('timestamp').last()
+        if last_event:
+            return last_event.timestamp.isoformat()
+        else:
+            return None
+
+    def last_fertilized(self):
+        last_event = self.fertilizeevent_set.all().order_by('timestamp').last()
+        if last_event:
+            return last_event.timestamp.isoformat()
+        else:
+            return None
+
 
 class WaterEvent(models.Model):
     plant = models.ForeignKey(Plant, on_delete=models.CASCADE)

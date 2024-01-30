@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Register New Plant</title>
+    <title>Manage Plant</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
     <style>
         /* Limit width for readability on large screen sizes */
         @media (min-width: 1200px) {
@@ -18,8 +19,42 @@
 <body>
     <div class="container d-flex flex-column vh-100">
         <div class="d-flex flex-column text-center mb-5">
-            <h2>{{ plant.name }}</h2>
-            <h4>{{ plant.species }}</h4>
+            {% if plant.name %}
+                <h1>{{ plant.name }}</h1>
+            {% else %}
+                <h1>Unnamed Plant</h1>
+            {% endif %}
+            {% if plant.species %}
+                <h5>Species: {{ plant.species }}</h5>
+            {% endif %}
+            {% if plant.description %}
+                <p>Description: {{ plant.description }}</p>
+            {% endif %}
+        </div>
+
+        <div class="text-center mb-5">
+            <p id="lastWatered"></p>
+            <p id="lastFertilized"></p>
+            {% if plant.last_watered %}
+                <script>
+                    const timestamp = luxon.DateTime.fromISO("{{plant.last_watered}}").setZone('system');
+                    document.getElementById('lastWatered').innerHTML = `Last watered: ${timestamp.toRelative()}`;
+                </script>
+            {% else %}
+                <script>
+                    document.getElementById('lastWatered').innerHTML = 'Never watered';
+                </script>
+            {% endif %}
+            {% if plant.last_fertilized %}
+                <script>
+                    const timestamp = luxon.DateTime.fromISO("{{plant.last_fertilized}}").setZone('system');
+                    document.getElementById('lastFertilized').innerHTML = `Last fertilized: ${timestamp.toRelative()}`;
+                </script>
+            {% else %}
+                <script>
+                    document.getElementById('lastFertilized').innerHTML = 'Never fertilized';
+                </script>
+            {% endif %}
         </div>
 
         <div class="d-flex flex-column mx-auto">
