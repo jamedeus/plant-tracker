@@ -9,7 +9,9 @@ from PIL import Image
 
 url_prefix = "http://desktop.lan:8999/manage/"
 
-page_width, page_height = 2400, 3300
+# Dimensions of 8.5 x 11 sheet of paper at 300 dpi
+# Height reduced 100px to accomodate timestamp added by browser
+page_width, page_height = 2400, 3200
 
 
 def generate_random_qr():
