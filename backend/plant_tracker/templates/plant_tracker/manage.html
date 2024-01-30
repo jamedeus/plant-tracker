@@ -30,6 +30,7 @@
             {% if plant.description %}
                 <p>Description: {{ plant.description }}</p>
             {% endif %}
+            <button class="btn btn-primary btn-sm mx-auto" onClick="editModal.show();">Edit</button>
         </div>
 
         <div class="text-center mb-5">
@@ -63,11 +64,28 @@
         </div>
     </div>
 
+    {# Modal shown when user clicks edit button #}
+    <div id="editDetails" class="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Plant Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {% include "plant_tracker/plant_details_form.html" %}
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{ plant.id|json_script:"uuid" }}
 
     <script>
         // Parse plant UUID from django context
         const plantUUID = JSON.parse(document.getElementById('uuid').textContent);
+
+        const editModal = new bootstrap.Modal(document.getElementById('editDetails'));
 
         // Takes name of cookie, returns cookie
         function getCookie(name) {
@@ -114,6 +132,39 @@
                 console.error('Fetch error:', error);
             }
         }
+
+        // Edit details form submit listener
+        document.getElementById('detailsForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const data = new FormData(document.getElementById('detailsForm'));
+            const payload = Object.fromEntries(data.entries());
+            payload.uuid = plantUUID;
+            console.log(payload);
+
+            try {
+                const response = await fetch('/edit_plant', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response error');
+                } else if (response.redirected) {
+                    window.location.href = response.url;
+                } else {
+                    const responseData = await response.json();
+                    console.log(responseData);
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+            }
+        });
     </script>
 </body>
 </html>

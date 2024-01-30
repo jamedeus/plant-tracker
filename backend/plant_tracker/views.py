@@ -48,6 +48,33 @@ def register_plant(request):
     return HttpResponseRedirect(f'/manage/{data["uuid"]}')
 
 
+def edit_plant_details(request):
+    if request.method == "POST":
+        data = json.loads(request.body.decode("utf-8"))
+    else:
+        return JsonResponse({'Error': 'Must post data'}, safe=False, status=405)
+
+    try:
+        plant = Plant.objects.get(id=data["uuid"])
+    except Plant.DoesNotExist:
+        return JsonResponse({"error": "plant not found"}, status=404)
+
+    print(json.dumps(data, indent=4))
+
+    # Replace empty strings with None (prevent empty strings in db)
+    data = {key: (value if value != '' else None) for key, value in data.items()}
+
+    # Overwrite database params with user values
+    plant.name = data["name"]
+    plant.species = data["species"]
+    plant.description = data["description"]
+    plant.pot_size = data["pot_size"]
+    plant.save()
+
+    # Reload manage page
+    return HttpResponseRedirect(f'/manage/{data["uuid"]}')
+
+
 def manage_plant(request, uuid):
     # Confirm exists in database, redirect to register if not
     try:
@@ -60,7 +87,6 @@ def manage_plant(request, uuid):
 
 
 def water_plant(request, uuid, timestamp=None):
-    print(uuid)
     try:
         plant = Plant.objects.get(id=uuid)
     except Plant.DoesNotExist:
