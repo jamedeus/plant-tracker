@@ -1,6 +1,7 @@
 import json
 import base64
 from io import BytesIO
+from functools import wraps
 from datetime import datetime
 
 from django.shortcuts import render
@@ -8,6 +9,38 @@ from django.http import JsonResponse, HttpResponseRedirect
 
 from .models import Plant, WaterEvent, FertilizeEvent
 from generate_qr_code_grid import generate_layout
+
+
+def requires_json_post(func):
+    '''Decorator throws error if request is not POST with JSON body
+    Parses JSON from request body and passes to wrapped function as first arg
+    '''
+    @wraps(func)
+    def wrapper(request, **kwargs):
+        try:
+            if request.method == "POST":
+                data = json.loads(request.body.decode("utf-8"))
+            else:
+                return JsonResponse({'Error': 'Must post data'}, status=405)
+        except json.decoder.JSONDecodeError:
+            return JsonResponse({'Error': 'Request body must be JSON'}, status=405)
+        return func(data, **kwargs)
+    return wrapper
+
+
+def get_plant_by_uuid(func):
+    '''Decorator looks up plant by UUID, throws error if not found
+    Must call after requires_json_post (expects dict with uuid key as first arg)
+    Passes Plant instance to wrapped function as first arg, data dict as second
+    '''
+    @wraps(func)
+    def wrapper(data, **kwargs):
+        try:
+            plant = Plant.objects.get(id=data["uuid"])
+        except Plant.DoesNotExist:
+            return JsonResponse({"error": "plant not found"}, status=404)
+        return func(plant, data, **kwargs)
+    return wrapper
 
 
 def overview(request):
@@ -23,16 +56,11 @@ def get_qr_codes(request):
     return JsonResponse({'qr_codes': image_base64})
 
 
-def register_plant(request):
-    if request.method == "POST":
-        data = json.loads(request.body.decode("utf-8"))
-    else:
-        return JsonResponse({'Error': 'Must post data'}, safe=False, status=405)
-
-    print(json.dumps(data, indent=4))
-
+@requires_json_post
+def register_plant(data):
     # Replace empty strings with None (prevent empty strings in db)
     data = {key: (value if value != '' else None) for key, value in data.items()}
+    print(json.dumps(data, indent=4))
 
     # Add plant to database
     plant = Plant(
@@ -48,17 +76,9 @@ def register_plant(request):
     return HttpResponseRedirect(f'/manage/{data["uuid"]}')
 
 
-def edit_plant_details(request):
-    if request.method == "POST":
-        data = json.loads(request.body.decode("utf-8"))
-    else:
-        return JsonResponse({'Error': 'Must post data'}, safe=False, status=405)
-
-    try:
-        plant = Plant.objects.get(id=data["uuid"])
-    except Plant.DoesNotExist:
-        return JsonResponse({"error": "plant not found"}, status=404)
-
+@requires_json_post
+@get_plant_by_uuid
+def edit_plant_details(plant, data):
     print(json.dumps(data, indent=4))
 
     # Replace empty strings with None (prevent empty strings in db)
@@ -86,20 +106,11 @@ def manage_plant(request, uuid):
     return render(request, 'plant_tracker/manage.html', {'plant': plant})
 
 
-def delete_plant(request):
-    if request.method == "POST":
-        data = json.loads(request.body.decode("utf-8"))
-    else:
-        return JsonResponse({'Error': 'Must post data'}, safe=False, status=405)
-
-    try:
-        plant = Plant.objects.get(id=data["uuid"])
-    except Plant.DoesNotExist:
-        return JsonResponse({"error": "plant not found"}, status=404)
-
+@requires_json_post
+@get_plant_by_uuid
+def delete_plant(plant, data):
+    # Delete plant, reload overview page
     plant.delete()
-
-    # Reload overview page
     return HttpResponseRedirect('/')
 
 

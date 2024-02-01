@@ -159,3 +159,21 @@ class ManagePageTests(TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(), {"error": "plant not found"})
         self.assertEqual(len(FertilizeEvent.objects.all()), 1)
+
+
+class InvalidRequestTests(TestCase):
+    def test_invalid_get_request(self):
+        # Send GET request to endpoint that requires POST, confirm error
+        response = self.client.get('/register')
+        self.assertEqual(response.status_code, 405)
+        self.assertEqual(response.json(), {'Error': 'Must post data'})
+
+    def test_invalid_post_body(self):
+        # Send POST with non-JSON body, confirm error
+        response = self.client.post(
+            '/register',
+            f'uuid={uuid4()}&name=test&species=test&description=None&pot_size=4',
+            content_type='text/plain',
+        )
+        self.assertEqual(response.status_code, 405)
+        self.assertEqual(response.json(), {'Error': 'Request body must be JSON'})
