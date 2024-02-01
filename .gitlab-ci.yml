@@ -1,0 +1,22 @@
+before_script:
+  - docker info
+  - printenv
+
+stages:
+  - test
+
+# Run django unit tests
+test:
+  stage: test
+  tags:
+    - arm64
+  script:
+    - pip3 install pipenv
+    - export PATH=$PATH:/home/gitlab-runner/.local/bin
+    - pipenv install
+    - cd backend/
+    - pipenv run coverage run --source='.' --omit='*manage.py,*wsgi.py,*asgi.py,*/tests.py,*unit_test_helpers.py,*/migrations/*.py' manage.py test
+    - pipenv run coverage report -m --precision=1
+  coverage: '/TOTAL.*\s+(\d+\.\d+\%)$/'
+  only:
+    - master
