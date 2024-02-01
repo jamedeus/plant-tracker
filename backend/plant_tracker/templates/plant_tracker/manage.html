@@ -38,7 +38,7 @@
             <p id="lastFertilized"></p>
             {% if plant.last_watered %}
                 <script>
-                    const timestamp = luxon.DateTime.fromISO("{{plant.last_watered}}").setZone('system');
+                    var timestamp = luxon.DateTime.fromISO("{{plant.last_watered}}").setZone('system');
                     document.getElementById('lastWatered').innerHTML = `Last watered: ${timestamp.toRelative()}`;
                 </script>
             {% else %}
@@ -48,7 +48,7 @@
             {% endif %}
             {% if plant.last_fertilized %}
                 <script>
-                    const timestamp = luxon.DateTime.fromISO("{{plant.last_fertilized}}").setZone('system');
+                    var timestamp = luxon.DateTime.fromISO("{{plant.last_fertilized}}").setZone('system');
                     document.getElementById('lastFertilized').innerHTML = `Last fertilized: ${timestamp.toRelative()}`;
                 </script>
             {% else %}
@@ -103,34 +103,46 @@
             return cookieValue;
         }
 
-        async function waterPlant() {
+        async function sendPostRequest(endpoint, data) {
             try {
-                const response = await fetch(`/water/${plantUUID}`);
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: JSON.stringify(data)
+                });
 
                 if (!response.ok) {
                     throw new Error('Network response error');
+                } else if (response.redirected) {
+                    window.location.href = response.url;
+                } else {
+                    const responseData = await response.json();
+                    console.log(responseData);
+                    return responseData;
                 }
-
-                const responseData = await response.json();
-                console.log(responseData);
             } catch (error) {
                 console.error('Fetch error:', error);
             }
         }
 
-        async function fertilizePlant() {
-            try {
-                const response = await fetch(`/fertilize/${plantUUID}`);
-
-                if (!response.ok) {
-                    throw new Error('Network response error');
-                }
-
-                const responseData = await response.json();
-                console.log(responseData);
-            } catch (error) {
-                console.error('Fetch error:', error);
+        async function waterPlant() {
+            const payload = {
+                uuid: plantUUID,
+                timestamp: ''
             }
+            sendPostRequest('/water_plant', payload);
+        }
+
+        async function fertilizePlant() {
+            const payload = {
+                uuid: plantUUID,
+                timestamp: ''
+            }
+            sendPostRequest('/fertilize_plant', payload);
         }
 
         // Edit details form submit listener
@@ -142,28 +154,7 @@
             payload.uuid = plantUUID;
             console.log(payload);
 
-            try {
-                const response = await fetch('/edit_plant', {
-                    method: 'POST',
-                    headers: {
-                        'Accept': 'application/json, text/plain, */*',
-                        'Content-Type': 'application/json',
-                        'X-CSRFToken': getCookie('csrftoken')
-                    },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                    throw new Error('Network response error');
-                } else if (response.redirected) {
-                    window.location.href = response.url;
-                } else {
-                    const responseData = await response.json();
-                    console.log(responseData);
-                }
-            } catch (error) {
-                console.error('Fetch error:', error);
-            }
+            sendPostRequest('/edit_plant', payload);
         });
     </script>
 </body>

@@ -114,31 +114,25 @@ def delete_plant(plant, data):
     return HttpResponseRedirect('/')
 
 
-def water_plant(request, uuid, timestamp=None):
-    try:
-        plant = Plant.objects.get(id=uuid)
-    except Plant.DoesNotExist:
-        return JsonResponse({"error": "plant not found"}, status=404)
-
+@requires_json_post
+@get_plant_by_uuid
+def water_plant(plant, data):
     # Create new water event, add override timestamp if arg passed
     event = WaterEvent(plant=plant)
-    if timestamp:
-        event.timestamp = datetime.fromisoformat(timestamp.rstrip('Z'))
+    if data["timestamp"]:
+        event.timestamp = datetime.fromisoformat(data["timestamp"].rstrip('Z'))
     event.save()
 
-    return JsonResponse({"action": "water", "plant": uuid}, status=200)
+    return JsonResponse({"action": "water", "plant": plant.id}, status=200)
 
 
-def fertilize_plant(request, uuid, timestamp=None):
-    try:
-        plant = Plant.objects.get(id=uuid)
-    except Plant.DoesNotExist:
-        return JsonResponse({"error": "plant not found"}, status=404)
-
+@requires_json_post
+@get_plant_by_uuid
+def fertilize_plant(plant, data):
     # Create new water event, add override timestamp if arg passed
     event = FertilizeEvent(plant=plant)
-    if timestamp:
-        event.timestamp = datetime.fromisoformat(timestamp.rstrip('Z'))
+    if data["timestamp"]:
+        event.timestamp = datetime.fromisoformat(data["timestamp"].rstrip('Z'))
     event.save()
 
-    return JsonResponse({"action": "fertilize", "plant": uuid}, status=200)
+    return JsonResponse({"action": "fertilize", "plant": plant.id}, status=200)

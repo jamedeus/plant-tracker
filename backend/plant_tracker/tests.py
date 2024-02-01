@@ -128,16 +128,15 @@ class ManagePageTests(TestCase):
         # Confirm no water events
         self.assertEqual(len(WaterEvent.objects.all()), 0)
 
+        payload = {
+            'uuid': test_id,
+            'timestamp': ''
+        }
+
         # Send water request, confirm event created
-        response = self.client.get(f'/water/{test_id}')
+        response = self.client.post('/water_plant', payload)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {"action": "water", "plant": str(test_id)})
-        self.assertEqual(len(WaterEvent.objects.all()), 1)
-
-        # Water plant that does not exist, confirm error + no event created
-        response = self.client.get(f'/water/{uuid4()}')
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.json(), {"error": "plant not found"})
         self.assertEqual(len(WaterEvent.objects.all()), 1)
 
     def test_fertilize_plant(self):
@@ -145,19 +144,18 @@ class ManagePageTests(TestCase):
         test_id = uuid4()
         Plant.objects.create(id=test_id)
 
-        # Confirm no water events
+        # Confirm no fertilize events
         self.assertEqual(len(FertilizeEvent.objects.all()), 0)
 
+        payload = {
+            'uuid': test_id,
+            'timestamp': ''
+        }
+
         # Send water request, confirm event created
-        response = self.client.get(f'/fertilize/{test_id}')
+        response = self.client.post('/fertilize_plant', payload)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {"action": "fertilize", "plant": str(test_id)})
-        self.assertEqual(len(FertilizeEvent.objects.all()), 1)
-
-        # Fertilize plant that does not exist, confirm error + no event created
-        response = self.client.get(f'/fertilize/{uuid4()}')
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.json(), {"error": "plant not found"})
         self.assertEqual(len(FertilizeEvent.objects.all()), 1)
 
 
@@ -177,3 +175,13 @@ class InvalidRequestTests(TestCase):
         )
         self.assertEqual(response.status_code, 405)
         self.assertEqual(response.json(), {'Error': 'Request body must be JSON'})
+
+    def test_invalid_uuid(self):
+        # Send POST with UUID that does not exist in database, confirm error
+        response = self.client.post(
+            '/water_plant',
+            {'uuid': uuid4(), 'timestamp': ''},
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json(), {"error": "plant not found"})
