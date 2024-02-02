@@ -2,6 +2,23 @@ from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
+class Tray(models.Model):
+    # UUID of QR code attached to tray
+    id = models.UUIDField(primary_key=True, editable=True)
+
+    # Description fields are optional, if blank user will just see "Unnamed tray"
+    name = models.CharField(max_length=50, blank=True, null=True)
+    location = models.CharField(max_length=50, blank=True, null=True)
+
+    def water_all(self):
+        for plant in self.plant_set.all():
+            WaterEvent.objects.create(plant=plant)
+
+    def fertilize_all(self):
+        for plant in self.plant_set.all():
+            FertilizeEvent.objects.create(plant=plant)
+
+
 class Plant(models.Model):
     # UUID of QR code attached to plant
     id = models.UUIDField(primary_key=True, editable=True)
@@ -17,6 +34,9 @@ class Plant(models.Model):
         blank=True,
         null=True
     )
+
+    # Optional relation to manage multiple plants in the same tray
+    tray = models.ForeignKey(Tray, on_delete=models.CASCADE, blank=True, null=True)
 
     def last_watered(self):
         last_event = self.waterevent_set.all().order_by('timestamp').last()

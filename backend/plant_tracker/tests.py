@@ -1,6 +1,6 @@
 import base64
 from uuid import uuid4
-from .models import Plant, WaterEvent, FertilizeEvent
+from .models import Tray, Plant, WaterEvent, FertilizeEvent
 
 from django.test import Client, TestCase
 
@@ -185,3 +185,38 @@ class InvalidRequestTests(TestCase):
         )
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(), {"error": "plant not found"})
+
+
+class TrayModelTests(TestCase):
+    def setUp(self):
+        # Create test tray
+        self.test_tray = Tray.objects.create(id=uuid4(), name="Test tray")
+
+        # Create 2 plants with relations to Tray and 1 without
+        self.plant1 = Plant.objects.create(id=uuid4(), name="plant1", tray=self.test_tray)
+        self.plant2 = Plant.objects.create(id=uuid4(), name="plant2", tray=self.test_tray)
+        self.plant3 = Plant.objects.create(id=uuid4(), name="plant3")
+
+    def test_water_all(self):
+        # Confirm plants have no water events
+        self.assertEqual(len(self.plant1.waterevent_set.all()), 0)
+        self.assertEqual(len(self.plant2.waterevent_set.all()), 0)
+        self.assertEqual(len(self.plant3.waterevent_set.all()), 0)
+
+        # Call water_all, plants in tray should have water event, other plant should not
+        self.test_tray.water_all()
+        self.assertEqual(len(self.plant1.waterevent_set.all()), 1)
+        self.assertEqual(len(self.plant2.waterevent_set.all()), 1)
+        self.assertEqual(len(self.plant3.waterevent_set.all()), 0)
+
+    def test_fertilize_all(self):
+        # Confirm plants have no water events
+        self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 0)
+        self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 0)
+        self.assertEqual(len(self.plant3.fertilizeevent_set.all()), 0)
+
+        # Call water_all, plants in tray should have fertilize event, other plant should not
+        self.test_tray.fertilize_all()
+        self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 1)
+        self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 1)
+        self.assertEqual(len(self.plant3.fertilizeevent_set.all()), 0)
