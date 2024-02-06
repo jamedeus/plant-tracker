@@ -7,8 +7,24 @@ from datetime import datetime
 from django.shortcuts import render
 from django.http import JsonResponse, HttpResponseRedirect
 
-from .models import Plant, WaterEvent, FertilizeEvent
+from .models import Tray, Plant, WaterEvent, FertilizeEvent
 from generate_qr_code_grid import generate_layout
+
+
+def get_plant_by_uuid(uuid):
+    '''Returns Plant model instance matching UUID, or None if not found'''
+    try:
+        return Plant.objects.get(id=uuid)
+    except Plant.DoesNotExist:
+        return None
+
+
+def get_tray_by_uuid(uuid):
+    '''Returns Tray model instance matching UUID, or None if not found'''
+    try:
+        return Tray.objects.get(id=uuid)
+    except Tray.DoesNotExist:
+        return None
 
 
 def requires_json_post(func):
@@ -28,18 +44,31 @@ def requires_json_post(func):
     return wrapper
 
 
-def get_plant_by_uuid(func):
+def get_plant_from_post_body(func):
     '''Decorator looks up plant by UUID, throws error if not found
     Must call after requires_json_post (expects dict with uuid key as first arg)
     Passes Plant instance to wrapped function as first arg, data dict as second
     '''
     @wraps(func)
     def wrapper(data, **kwargs):
-        try:
-            plant = Plant.objects.get(id=data["uuid"])
-        except Plant.DoesNotExist:
+        plant = get_plant_by_uuid(data["uuid"])
+        if plant is None:
             return JsonResponse({"error": "plant not found"}, status=404)
         return func(plant, data, **kwargs)
+    return wrapper
+
+
+def get_tray_from_post_body(func):
+    '''Decorator looks up tray by UUID, throws error if not found
+    Must call after requires_json_post (expects dict with uuid key as first arg)
+    Passes Tray instance to wrapped function as first arg, data dict as second
+    '''
+    @wraps(func)
+    def wrapper(data, **kwargs):
+        tray = get_tray_by_uuid(data["uuid"])
+        if tray is None:
+            return JsonResponse({"error": "tray not found"}, status=404)
+        return func(tray, data, **kwargs)
     return wrapper
 
 
@@ -57,27 +86,32 @@ def get_qr_codes(request):
 
 
 @requires_json_post
-def register_plant(data):
+def register(data):
     # Replace empty strings with None (prevent empty strings in db)
     data = {key: (value if value != '' else None) for key, value in data.items()}
     print(json.dumps(data, indent=4))
 
-    # Add plant to database
-    plant = Plant(
-        id=data["uuid"],
-        name=data["name"],
-        species=data["species"],
-        description=data["description"],
-        pot_size=data["pot_size"]
-    )
-    plant.save()
+    if data["type"] == "plant":
+        Plant.objects.create(
+            id=data["uuid"],
+            name=data["name"],
+            species=data["species"],
+            description=data["description"],
+            pot_size=data["pot_size"]
+        )
+    elif data["type"] == "tray":
+        Tray.objects.create(
+            id=data["uuid"],
+            name=data["name"],
+            location=data["location"]
+        )
 
     # Redirect to manage page
     return HttpResponseRedirect(f'/manage/{data["uuid"]}')
 
 
 @requires_json_post
-@get_plant_by_uuid
+@get_plant_from_post_body
 def edit_plant_details(plant, data):
     print(json.dumps(data, indent=4))
 
@@ -95,19 +129,23 @@ def edit_plant_details(plant, data):
     return HttpResponseRedirect(f'/manage/{data["uuid"]}')
 
 
-def manage_plant(request, uuid):
-    # Confirm exists in database, redirect to register if not
-    try:
-        plant = Plant.objects.get(id=uuid)
-    except Plant.DoesNotExist:
-        return render(request, 'plant_tracker/register.html', {'new_plant': uuid})
+def manage(request, uuid):
+    # Look up UUID in plant database, render template if found
+    plant = get_plant_by_uuid(uuid)
+    if plant:
+        return render(request, 'plant_tracker/manage.html', {'plant': plant})
 
-    # Render management template
-    return render(request, 'plant_tracker/manage.html', {'plant': plant})
+    # Loop up UUID in tray database, render template if found
+    tray = get_tray_by_uuid(uuid)
+    if tray:
+        return render(request, 'plant_tracker/manage.html', {'plant': tray})
+
+    # Redirect to registration form if UUID does not exist in either database
+    return render(request, 'plant_tracker/register.html', {'new_plant': uuid})
 
 
 @requires_json_post
-@get_plant_by_uuid
+@get_plant_from_post_body
 def delete_plant(plant, data):
     # Delete plant, reload overview page
     plant.delete()
@@ -115,7 +153,7 @@ def delete_plant(plant, data):
 
 
 @requires_json_post
-@get_plant_by_uuid
+@get_plant_from_post_body
 def water_plant(plant, data):
     # Create new water event, add override timestamp if arg passed
     WaterEvent.objects.create(
@@ -126,7 +164,7 @@ def water_plant(plant, data):
 
 
 @requires_json_post
-@get_plant_by_uuid
+@get_plant_from_post_body
 def fertilize_plant(plant, data):
     # Create new water event, add override timestamp if arg passed
     FertilizeEvent.objects.create(

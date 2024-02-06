@@ -16,8 +16,16 @@
     </style>
 </head>
 <body>
-    <div class="container d-flex vh-100">
+    <div class="container d-flex flex-column justify-content-center vh-100">
+        <div class="btn-group mb-5" role="group" aria-label="Plant or tray">
+            <input type="radio" class="btn-check" name="addPlant" id="addPlant" autocomplete="off" checked>
+            <label class="btn btn-outline-primary" for="addPlant">Plant</label>
+
+            <input type="radio" class="btn-check" name="addTray" id="addTray" autocomplete="off">
+            <label class="btn btn-outline-primary" for="addTray">Tray</label>
+        </div>
         {% include "plant_tracker/plant_details_form.html" %}
+        {% include "plant_tracker/tray_details_form.html" %}
     </div>
 
     {{ new_plant|json_script:"uuid" }}
@@ -25,6 +33,28 @@
     <script>
         // Parse plant UUID from django context
         const plantUUID = JSON.parse(document.getElementById('uuid').textContent);
+
+        // Buttons toggle form type (plant or tray)
+        const addPlant = document.getElementById('addPlant');
+        const addTray = document.getElementById('addTray');
+
+        // Forms used to add plant or tray
+        const plantDetailsForm = document.getElementById('plantDetailsForm');
+        const trayDetailsForm = document.getElementById('trayDetailsForm');
+
+        trayDetailsForm.style.display = 'none';
+
+        addPlant.addEventListener('click', () => {
+            addTray.checked = false;
+            plantDetailsForm.style.display = 'block';
+            trayDetailsForm.style.display = 'none';
+        });
+
+        addTray.addEventListener('click', () => {
+            addPlant.checked = false;
+            trayDetailsForm.style.display = 'block';
+            plantDetailsForm.style.display = 'none';
+        });
 
         // Takes name of cookie, returns cookie
         function getCookie(name) {
@@ -42,12 +72,46 @@
             return cookieValue;
         }
 
-        document.getElementById('detailsForm').addEventListener('submit', async function(e) {
+        plantDetailsForm.addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            const data = new FormData(document.getElementById('detailsForm'));
+            const data = new FormData(plantDetailsForm);
             const payload = Object.fromEntries(data.entries());
             payload.uuid = plantUUID;
+            payload.type = 'plant';
+            console.log(payload);
+
+            try {
+                const response = await fetch('/register', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response error');
+                } else if (response.redirected) {
+                    window.location.href = response.url;
+                } else {
+                    const responseData = await response.json();
+                    console.log(responseData);
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+            }
+        });
+
+        trayDetailsForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const data = new FormData(trayDetailsForm);
+            const payload = Object.fromEntries(data.entries());
+            payload.uuid = plantUUID;
+            payload.type = 'tray';
             console.log(payload);
 
             try {

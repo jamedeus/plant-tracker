@@ -164,10 +164,10 @@
         }
 
         // Edit details form submit listener
-        document.getElementById('detailsForm').addEventListener('submit', async function(e) {
+        document.getElementById('plantDetailsForm').addEventListener('submit', async function(e) {
             e.preventDefault();
 
-            const data = new FormData(document.getElementById('detailsForm'));
+            const data = new FormData(document.getElementById('plantDetailsForm'));
             const payload = Object.fromEntries(data.entries());
             payload.uuid = plantUUID;
             console.log(payload);

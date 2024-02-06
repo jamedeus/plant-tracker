@@ -55,18 +55,20 @@ class ManagePageTests(TestCase):
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
 
-    def test_registration(self):
-        # Confirm no plants in database
+    def test_registration_plant(self):
+        # Confirm no plants or trays in database
         self.assertEqual(len(Plant.objects.all()), 0)
+        self.assertEqual(len(Tray.objects.all()), 0)
 
-        # Send registration request
+        # Send plant registration request
         test_id = uuid4()
         payload = {
             'uuid': test_id,
             'name': 'test plant',
             'species': 'Giant Sequoia',
             'description': '300 feet and a few thousand years old',
-            'pot_size': '4'
+            'pot_size': '4',
+            'type': 'plant'
         }
         response = self.client.post('/register', payload)
 
@@ -81,6 +83,35 @@ class ManagePageTests(TestCase):
         self.assertEqual(plant.species, 'Giant Sequoia')
         self.assertEqual(plant.description, '300 feet and a few thousand years old')
         self.assertEqual(plant.pot_size, 4)
+        # Confirm tray not created
+        self.assertEqual(len(Tray.objects.all()), 0)
+
+    def test_registration_tray(self):
+        # Confirm no plants or trays in database
+        self.assertEqual(len(Plant.objects.all()), 0)
+        self.assertEqual(len(Tray.objects.all()), 0)
+
+        # Send registration request
+        test_id = uuid4()
+        payload = {
+            'uuid': test_id,
+            'name': 'test tray',
+            'location': 'top shelf',
+            'type': 'tray'
+        }
+        response = self.client.post('/register', payload)
+
+        # Confirm response redirects to management page for new tray
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, f'/manage/{test_id}')
+
+        # Confirm exists in database, has correct parameters
+        self.assertEqual(len(Tray.objects.all()), 1)
+        tray = Tray.objects.get(id=test_id)
+        self.assertEqual(tray.name, 'test tray')
+        self.assertEqual(tray.location, 'top shelf')
+        # Confirm plant not created
+        self.assertEqual(len(Plant.objects.all()), 0)
 
     def test_manage_new_plant(self):
         # Request management page for new plant, confirm register template renders
@@ -170,7 +201,7 @@ class InvalidRequestTests(TestCase):
         # Send POST with non-JSON body, confirm error
         response = self.client.post(
             '/register',
-            f'uuid={uuid4()}&name=test&species=test&description=None&pot_size=4',
+            f'uuid={uuid4()}&name=test&species=test&description=None&pot_size=4&type=plant',
             content_type='text/plain',
         )
         self.assertEqual(response.status_code, 405)
