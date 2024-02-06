@@ -14,4 +14,6 @@ urlpatterns = [
     path('delete_plant', views.delete_plant, name='delete_plant'),
     path('water_plant', views.water_plant, name='water_plant'),
     path('fertilize_plant', views.fertilize_plant, name='fertilize_plant'),
+    path('water_tray', views.water_tray, name='water_tray'),
+    path('fertilize_tray', views.fertilize_tray, name='fertilize_tray'),
 ]

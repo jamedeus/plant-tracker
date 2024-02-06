@@ -155,7 +155,11 @@ def manage(request, uuid):
     # Loop up UUID in tray database, render template if found
     tray = get_tray_by_uuid(uuid)
     if tray:
-        return render(request, 'plant_tracker/manage_tray.html', {'tray': tray})
+        return render(
+            request,
+            'plant_tracker/manage_tray.html',
+            {'tray': tray, 'details': tray.get_plant_details()}
+        )
 
     # Redirect to registration form if UUID does not exist in either database
     return render(request, 'plant_tracker/register.html', {'new_id': uuid})
@@ -189,3 +193,17 @@ def fertilize_plant(plant, data):
         timestamp=datetime.fromisoformat(data["timestamp"].rstrip("Z"))
     )
     return JsonResponse({"action": "fertilize", "plant": plant.id}, status=200)
+
+
+@requires_json_post
+@get_tray_from_post_body
+def water_tray(tray, data):
+    tray.water_all(timestamp=datetime.fromisoformat(data["timestamp"].rstrip("Z")))
+    return JsonResponse({"action": "water tray", "tray": tray.id}, status=200)
+
+
+@requires_json_post
+@get_tray_from_post_body
+def fertilize_tray(tray, data):
+    tray.fertilize_all(timestamp=datetime.fromisoformat(data["timestamp"].rstrip("Z")))
+    return JsonResponse({"action": "fertilize tray", "tray": tray.id}, status=200)

@@ -30,41 +30,30 @@
             <button class="btn btn-primary btn-sm mx-auto" onClick="editModal.show();">Edit</button>
         </div>
 
-        <div class="text-center mb-5">
-            <p id="lastWatered"></p>
-            <p id="lastFertilized"></p>
-            {# TODO #}
-<!--            {% if plant.last_watered %}
-                <script>
-                    var timestamp = luxon.DateTime.fromISO("{{plant.last_watered}}").setZone('system');
-                    document.getElementById('lastWatered').innerHTML = `Last watered: ${timestamp.toRelative()}`;
-                </script>
-            {% else %}
-                <script>
-                    document.getElementById('lastWatered').innerHTML = 'Never watered';
-                </script>
-            {% endif %}
-            {% if plant.last_fertilized %}
-                <script>
-                    var timestamp = luxon.DateTime.fromISO("{{plant.last_fertilized}}").setZone('system');
-                    document.getElementById('lastFertilized').innerHTML = `Last fertilized: ${timestamp.toRelative()}`;
-                </script>
-            {% else %}
-                <script>
-                    document.getElementById('lastFertilized').innerHTML = 'Never fertilized';
-                </script>
-            {% endif %}-->
+        <div id="plants" class="text-center mb-5 mx-auto">
+            <h2>Plants in tray:</h2>
+            {% for plant_id, params in details.items %}
+                <div class="card text-center mb-3" style="width: 18rem;">
+                    <div class="card-header d-flex mx-auto">
+                        <h4 class="card-title">{{ params.name }}</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Last watered: {{ params.last_watered }}</p>
+                        <p class="card-text">Last fertilized: {{ params.last_fertilized }}</p>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
 
         <div class="d-flex flex-column mx-auto">
-            <form id="waterForm" class="d-flex flex-column mb-3" onSubmit="waterPlant(event);">
+            <form id="waterForm" class="d-flex flex-column mb-3" onSubmit="waterTray(event);">
                 <input type="datetime-local" id="waterTime" name="waterTime" step="1" />
-                <button class="btn btn-primary mt-1" type="submit">Water</button>
+                <button class="btn btn-primary mt-1" type="submit">Water All</button>
             </form>
 
-            <form id="fertilizeForm" class="d-flex flex-column mb-3" onSubmit="fertilizePlant(event);">
+            <form id="fertilizeForm" class="d-flex flex-column mb-3" onSubmit="fertilizeTray(event);">
                 <input type="datetime-local" id="fertilizeTime" name="fertilizeTime" step="1" />
-                <button class="btn btn-success mt-1" type="submit">Fertilize</button>
+                <button class="btn btn-success mt-1" type="submit">Fertilize All</button>
             </form>
         </div>
     </div>
@@ -143,23 +132,23 @@
             return String(luxon.DateTime.fromISO(timestamp).toUTC());
         }
 
-//         async function waterPlant(event) {
-//             event.preventDefault();
-//             const payload = {
-//                 uuid: plantUUID,
-//                 timestamp: localToUTC(document.getElementById("waterTime").value)
-//             }
-//             sendPostRequest('/water_plant', payload);
-//         }
-//
-//         async function fertilizePlant(event) {
-//             event.preventDefault();
-//             const payload = {
-//                 uuid: plantUUID,
-//                 timestamp: localToUTC(document.getElementById("fertilizeTime").value)
-//             }
-//             sendPostRequest('/fertilize_plant', payload);
-//         }
+        async function waterTray(event) {
+            event.preventDefault();
+            const payload = {
+                uuid: plantUUID,
+                timestamp: localToUTC(document.getElementById("waterTime").value)
+            }
+            sendPostRequest('/water_tray', payload);
+        }
+
+        async function fertilizeTray(event) {
+            event.preventDefault();
+            const payload = {
+                uuid: plantUUID,
+                timestamp: localToUTC(document.getElementById("fertilizeTime").value)
+            }
+            sendPostRequest('/fertilize_tray', payload);
+        }
 
         // Edit details form submit listener
         document.getElementById('trayDetailsForm').addEventListener('submit', async function(e) {

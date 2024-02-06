@@ -12,13 +12,25 @@ class Tray(models.Model):
     name = models.CharField(max_length=50, blank=True, null=True)
     location = models.CharField(max_length=50, blank=True, null=True)
 
-    def water_all(self):
+    def water_all(self, timestamp):
+        '''Takes datetime instance, creates WaterEvent for each Plant in Tray'''
         for plant in self.plant_set.all():
-            WaterEvent.objects.create(plant=plant, timestamp=datetime.now().isoformat())
+            WaterEvent.objects.create(plant=plant, timestamp=timestamp)
 
-    def fertilize_all(self):
+    def fertilize_all(self, timestamp):
+        '''Takes datetime instance, creates FertilizeEvent for each Plant in Tray'''
         for plant in self.plant_set.all():
-            FertilizeEvent.objects.create(plant=plant, timestamp=datetime.now().isoformat())
+            FertilizeEvent.objects.create(plant=plant, timestamp=timestamp)
+
+    def get_plant_details(self):
+        details = {}
+        for plant in self.plant_set.all():
+            details[plant.id] = {
+                'name': plant.name,
+                'last_watered': plant.last_watered(),
+                'last_fertilized': plant.last_fertilized()
+            }
+        return details
 
 
 class Plant(models.Model):

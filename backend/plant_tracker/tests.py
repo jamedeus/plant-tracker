@@ -124,10 +124,31 @@ class ManagePageTests(TestCase):
         test_id = uuid4()
         Plant.objects.create(id=test_id)
 
-        # Request management page, confirm management template renders
+        # Request management page, confirm plant management template renders
         response = self.client.get(f'/manage/{test_id}')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/manage_plant.html')
+        self.assertTemplateNotUsed(response, 'plant_tracker/manage_tray.html')
+
+    def test_manage_existing_tray(self):
+        # Create test tray with 1 plant
+        tray_id = uuid4()
+        plant_id = uuid4()
+        tray = Tray.objects.create(id=tray_id)
+        Plant.objects.create(id=plant_id, tray=tray)
+
+        # Request management page, confirm tray management template renders
+        response = self.client.get(f'/manage/{tray_id}')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'plant_tracker/manage_tray.html')
+        self.assertTemplateNotUsed(response, 'plant_tracker/manage_plant.html')
+
+        # Confirm context includes tray, correct plant details
+        self.assertEqual(response.context['tray'], tray)
+        self.assertEqual(len(response.context['details']), 1)
+        self.assertEqual(response.context['details'][plant_id]['name'], None)
+        self.assertEqual(response.context['details'][plant_id]['last_watered'], None)
+        self.assertEqual(response.context['details'][plant_id]['last_fertilized'], None)
 
     def test_edit_plant_details(self):
         # Create test plant with no name, confirm exists in database
@@ -250,6 +271,9 @@ class TrayModelTests(TestCase):
         self.plant2 = Plant.objects.create(id=uuid4(), name="plant2", tray=self.test_tray)
         self.plant3 = Plant.objects.create(id=uuid4(), name="plant3")
 
+        # Set default content_type for post requests (avoid long lines)
+        self.client = JSONClient()
+
     def test_water_all(self):
         # Confirm plants have no water events
         self.assertEqual(len(self.plant1.waterevent_set.all()), 0)
@@ -257,19 +281,59 @@ class TrayModelTests(TestCase):
         self.assertEqual(len(self.plant3.waterevent_set.all()), 0)
 
         # Call water_all, plants in tray should have water event, other plant should not
-        self.test_tray.water_all()
+        self.test_tray.water_all(datetime.fromisoformat('2024-02-06T03:06:26+00:00'))
         self.assertEqual(len(self.plant1.waterevent_set.all()), 1)
         self.assertEqual(len(self.plant2.waterevent_set.all()), 1)
         self.assertEqual(len(self.plant3.waterevent_set.all()), 0)
 
     def test_fertilize_all(self):
-        # Confirm plants have no water events
+        # Confirm plants have no fertilize events
         self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 0)
         self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 0)
         self.assertEqual(len(self.plant3.fertilizeevent_set.all()), 0)
 
         # Call water_all, plants in tray should have fertilize event, other plant should not
-        self.test_tray.fertilize_all()
+        self.test_tray.fertilize_all(datetime.fromisoformat('2024-02-06T03:06:26+00:00'))
+        self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 1)
+        self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 1)
+        self.assertEqual(len(self.plant3.fertilizeevent_set.all()), 0)
+
+    def test_water_tray_endpoint(self):
+        # Confirm plants have no water events
+        self.assertEqual(len(self.plant1.waterevent_set.all()), 0)
+        self.assertEqual(len(self.plant2.waterevent_set.all()), 0)
+        self.assertEqual(len(self.plant3.waterevent_set.all()), 0)
+
+        # Send water_tray request
+        payload = {
+            'uuid': self.test_tray.id,
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        }
+        response = self.client.post('/water_tray', payload)
+
+        # Confirm response, confirm both plants in tray have water events, other plant does not
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"action": "water tray", "tray": str(self.test_tray.id)})
+        self.assertEqual(len(self.plant1.waterevent_set.all()), 1)
+        self.assertEqual(len(self.plant2.waterevent_set.all()), 1)
+        self.assertEqual(len(self.plant3.waterevent_set.all()), 0)
+
+    def test_fertilize_tray_endpoint(self):
+        # Confirm plants have no fertilize events
+        self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 0)
+        self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 0)
+        self.assertEqual(len(self.plant3.fertilizeevent_set.all()), 0)
+
+        # Send fertilize_tray request
+        payload = {
+            'uuid': self.test_tray.id,
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        }
+        response = self.client.post('/fertilize_tray', payload)
+
+        # Confirm response, confirm both plants in tray have fertilize events, other plant does not
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"action": "fertilize tray", "tray": str(self.test_tray.id)})
         self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 1)
         self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 1)
         self.assertEqual(len(self.plant3.fertilizeevent_set.all()), 0)
