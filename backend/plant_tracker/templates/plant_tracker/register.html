@@ -28,7 +28,7 @@
         {% include "plant_tracker/tray_details_form.html" %}
     </div>
 
-    {{ new_plant|json_script:"uuid" }}
+    {{ new_id|json_script:"uuid" }}
 
     <script>
         // Parse plant UUID from django context

@@ -127,7 +127,7 @@ class ManagePageTests(TestCase):
         # Request management page, confirm management template renders
         response = self.client.get(f'/manage/{test_id}')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'plant_tracker/manage.html')
+        self.assertTemplateUsed(response, 'plant_tracker/manage_plant.html')
 
     def test_edit_plant_details(self):
         # Create test plant with no name, confirm exists in database
@@ -152,6 +152,28 @@ class ManagePageTests(TestCase):
         self.assertEqual(len(Plant.objects.all()), 1)
         self.assertEqual(Plant.objects.all()[0].name, 'test plant')
         self.assertEqual(Plant.objects.all()[0].species, 'Giant Sequoia')
+
+    def test_edit_tray_details(self):
+        # Create test tray with no name, confirm exists in database
+        test_id = uuid4()
+        Tray.objects.create(id=test_id)
+        self.assertEqual(len(Tray.objects.all()), 1)
+        self.assertIsNone(Tray.objects.all()[0].name)
+
+        # Send edit details request, confirm redirects to manage page
+        payload = {
+            'uuid': test_id,
+            'name': 'test tray',
+            'location': 'middle shelf'
+        }
+        response = self.client.post('/edit_tray', payload)
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, f'/manage/{test_id}')
+
+        # Confirm no additional plant created, confirm details now match
+        self.assertEqual(len(Tray.objects.all()), 1)
+        self.assertEqual(Tray.objects.all()[0].name, 'test tray')
+        self.assertEqual(Tray.objects.all()[0].location, 'middle shelf')
 
     def test_water_plant(self):
         # Create test plant, confirm no water events

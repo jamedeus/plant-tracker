@@ -129,19 +129,36 @@ def edit_plant_details(plant, data):
     return HttpResponseRedirect(f'/manage/{data["uuid"]}')
 
 
+@requires_json_post
+@get_tray_from_post_body
+def edit_tray_details(tray, data):
+    print(json.dumps(data, indent=4))
+
+    # Replace empty strings with None (prevent empty strings in db)
+    data = {key: (value if value != '' else None) for key, value in data.items()}
+
+    # Overwrite database params with user values
+    tray.name = data["name"]
+    tray.location = data["location"]
+    tray.save()
+
+    # Reload manage page
+    return HttpResponseRedirect(f'/manage/{data["uuid"]}')
+
+
 def manage(request, uuid):
     # Look up UUID in plant database, render template if found
     plant = get_plant_by_uuid(uuid)
     if plant:
-        return render(request, 'plant_tracker/manage.html', {'plant': plant})
+        return render(request, 'plant_tracker/manage_plant.html', {'plant': plant})
 
     # Loop up UUID in tray database, render template if found
     tray = get_tray_by_uuid(uuid)
     if tray:
-        return render(request, 'plant_tracker/manage.html', {'plant': tray})
+        return render(request, 'plant_tracker/manage_tray.html', {'tray': tray})
 
     # Redirect to registration form if UUID does not exist in either database
-    return render(request, 'plant_tracker/register.html', {'new_plant': uuid})
+    return render(request, 'plant_tracker/register.html', {'new_id': uuid})
 
 
 @requires_json_post
