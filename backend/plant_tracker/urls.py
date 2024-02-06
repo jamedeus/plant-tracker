@@ -16,4 +16,6 @@ urlpatterns = [
     path('fertilize_plant', views.fertilize_plant, name='fertilize_plant'),
     path('water_tray', views.water_tray, name='water_tray'),
     path('fertilize_tray', views.fertilize_tray, name='fertilize_tray'),
+    path('add_plant_to_tray', views.add_plant_to_tray, name='add_plant_to_tray'),
+    path('remove_plant_from_tray', views.remove_plant_from_tray, name='remove_plant_from_tray'),
 ]

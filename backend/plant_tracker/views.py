@@ -73,8 +73,11 @@ def get_tray_from_post_body(func):
 
 
 def overview(request):
-    plants = Plant.objects.all()
-    return render(request, 'plant_tracker/overview.html', {'plants': plants})
+    context = {
+        'plants': Plant.objects.all(),
+        'trays': Tray.objects.all()
+    }
+    return render(request, 'plant_tracker/overview.html', context)
 
 
 def get_qr_codes(request):
@@ -150,16 +153,14 @@ def manage(request, uuid):
     # Look up UUID in plant database, render template if found
     plant = get_plant_by_uuid(uuid)
     if plant:
-        return render(request, 'plant_tracker/manage_plant.html', {'plant': plant})
+        context = {'plant': plant, 'trays': Tray.objects.all()}
+        return render(request, 'plant_tracker/manage_plant.html', context)
 
     # Loop up UUID in tray database, render template if found
     tray = get_tray_by_uuid(uuid)
     if tray:
-        return render(
-            request,
-            'plant_tracker/manage_tray.html',
-            {'tray': tray, 'details': tray.get_plant_details()}
-        )
+        context = {'tray': tray, 'details': tray.get_plant_details()}
+        return render(request, 'plant_tracker/manage_tray.html', context)
 
     # Redirect to registration form if UUID does not exist in either database
     return render(request, 'plant_tracker/register.html', {'new_id': uuid})
@@ -207,3 +208,34 @@ def water_tray(tray, data):
 def fertilize_tray(tray, data):
     tray.fertilize_all(timestamp=datetime.fromisoformat(data["timestamp"].rstrip("Z")))
     return JsonResponse({"action": "fertilize tray", "tray": tray.id}, status=200)
+
+
+# TODO convert decorators to use kwargs instead of positional
+@requires_json_post
+def add_plant_to_tray(data):
+    # Get Plant and Tray instances
+    tray = get_tray_by_uuid(data["tray_id"])
+    plant = get_plant_by_uuid(data["plant_id"])
+
+    if tray is None:
+        return JsonResponse({"error": "tray not found"}, status=404)
+    if plant is None:
+        return JsonResponse({"error": "plant not found"}, status=404)
+
+    plant.tray = tray
+    plant.save()
+    return JsonResponse(
+        {"action": "add_plant_to_tray", "plant": plant.id, "tray": tray.id},
+        status=200
+    )
+
+
+@requires_json_post
+@get_plant_from_post_body
+def remove_plant_from_tray(plant, data):
+    plant.tray = None
+    plant.save()
+    return JsonResponse(
+        {"action": "remove_plant_from_tray", "plant": plant.id},
+        status=200
+    )

@@ -232,6 +232,35 @@ class ManagePageTests(TestCase):
         self.assertEqual(len(FertilizeEvent.objects.all()), 1)
         self.assertEqual(plant.last_fertilized(), '2024-02-06T03:06:26+00:00')
 
+    def test_add_plant_to_tray(self):
+        # Create test tray and plant, confirm no relation
+        tray = Tray.objects.create(id=uuid4())
+        plant = Plant.objects.create(id=uuid4())
+        self.assertIsNone(plant.tray)
+        self.assertEqual(len(tray.plant_set.all()), 0)
+
+        # Send add_plant_to_tray request, confirm relation created
+        payload = {'plant_id': plant.id, 'tray_id': tray.id}
+        response = self.client.post('/add_plant_to_tray', payload)
+        self.assertEqual(response.status_code, 200)
+        plant.refresh_from_db()
+        self.assertEqual(plant.tray, tray)
+        self.assertEqual(len(tray.plant_set.all()), 1)
+
+    def test_remove_plant_from_tray(self):
+        # Create test tray and plant with relation, confirm relation
+        tray = Tray.objects.create(id=uuid4())
+        plant = Plant.objects.create(id=uuid4(), tray=tray)
+        self.assertEqual(plant.tray, tray)
+        self.assertEqual(len(tray.plant_set.all()), 1)
+
+        # Send add_plant_to_tray request, confirm relation created
+        response = self.client.post('/remove_plant_from_tray', {'uuid': plant.id})
+        self.assertEqual(response.status_code, 200)
+        plant.refresh_from_db()
+        self.assertIsNone(plant.tray)
+        self.assertEqual(len(tray.plant_set.all()), 0)
+
 
 class InvalidRequestTests(TestCase):
     def test_invalid_get_request(self):

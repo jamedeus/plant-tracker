@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
     <style>
         /* Limit width for readability on large screen sizes */
@@ -34,8 +35,10 @@
             <h2>Plants in tray:</h2>
             {% for plant_id, params in details.items %}
                 <div class="card text-center mb-3" style="width: 18rem;">
-                    <div class="card-header d-flex mx-auto">
-                        <h4 class="card-title">{{ params.name }}</h4>
+                    <div class="card-header d-flex">
+                        <button class="btn btn-sm me-auto invisible"><i class="bi bi-trash"></i></button>
+                        <h4 class="card-title" onClick="window.location.href = '/manage/{{plant_id}}';">{{ params.name }}</h4>
+                        <button class="btn btn-sm btn-danger my-auto ms-auto" onClick="removeFromTray('{{plant_id}}');"><i class="bi bi-trash"></i></button>
                     </div>
                     <div class="card-body">
                         <p class="card-text">Last watered: {{ params.last_watered }}</p>
@@ -161,6 +164,17 @@
 
             sendPostRequest('/edit_tray', payload);
         });
+
+        async function removeFromTray(plantID) {
+            try {
+                const response = await sendPostRequest('/remove_plant_from_tray', {uuid: plantID});
+                if (response) {
+                    window.location.reload();
+                }
+            } catch(error) {
+                alert("Failed to remove plant from tray");
+            }
+        }
     </script>
 </body>
 </html>

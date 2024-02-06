@@ -27,6 +27,7 @@
             <button class="btn btn-primary" onClick="printQrCodes();">Print QR codes</button>
         </div>
 
+        <h3 class="mt-3 text-center">Plants:</h3>
         <div id="existing-plants" class="mx-auto">
             {% for plant in plants %}
                 <div class="card text-center mb-3" style="width: 18rem;" onClick="window.location.href = '/manage/{{plant.id}}';">
@@ -38,6 +39,22 @@
                     <div class="card-body">
                         <p class="card-text">Species: {{ plant.species }}</p>
                         <p class="card-text">Description: {{ plant.description }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <h3 class="mt-5 text-center">Trays:</h3>
+        <div id="existing-trays" class="mx-auto">
+            {% for tray in trays %}
+                <div class="card text-center mb-3" style="width: 18rem;" onClick="window.location.href = '/manage/{{tray.id}}';">
+                    <div class="card-header d-flex">
+                        <button class="btn btn-sm me-auto invisible"><i class="bi bi-trash"></i></button>
+                        <h3 class="card-title">{{ tray.name }}</h3>
+                        <button class="btn btn-sm me-auto invisible"><i class="bi bi-trash"></i></button>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Location: {{ tray.location }}</p>
                     </div>
                 </div>
             {% endfor %}

@@ -69,6 +69,23 @@
                 <button class="btn btn-success mt-1" type="submit">Fertilize</button>
             </form>
         </div>
+
+        {% if plant.tray %}
+        <div class="d-flex flex-column mt-5 mx-auto">
+            <p>Plant is in tray <b><a href="/manage/{{plant.tray.id}}">{{ plant.tray.name }}</a></b></p>
+            <button class="btn btn-danger" onClick="removeFromTray();">Remove</button>
+        </div>
+        {% else %}
+        <div class="d-flex flex-column mt-5 mx-auto">
+            <h4>Add plant to tray:</h4>
+            <select id="traySelect" class="form-select" aria-label="Select tray" onChange="addToTray();" autocomplete="off">
+                <option selected>Select a tray</option>
+                {% for tray in trays %}
+                    <option value="{{tray.id}}">{{tray.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        {% endif %}
     </div>
 
     {# Modal shown when user clicks edit button #}
@@ -151,7 +168,7 @@
                 uuid: plantUUID,
                 timestamp: localToUTC(document.getElementById("waterTime").value)
             }
-            sendPostRequest('/water_plant', payload);
+            await sendPostRequest('/water_plant', payload);
         }
 
         async function fertilizePlant(event) {
@@ -160,7 +177,7 @@
                 uuid: plantUUID,
                 timestamp: localToUTC(document.getElementById("fertilizeTime").value)
             }
-            sendPostRequest('/fertilize_plant', payload);
+            await sendPostRequest('/fertilize_plant', payload);
         }
 
         // Edit details form submit listener
@@ -172,8 +189,31 @@
             payload.uuid = plantUUID;
             console.log(payload);
 
-            sendPostRequest('/edit_plant', payload);
+            await sendPostRequest('/edit_plant', payload);
         });
+
+        async function addToTray() {
+            const trayUUID = document.getElementById('traySelect').value;
+            try {
+                const response = await sendPostRequest('/add_plant_to_tray', {plant_id: plantUUID, tray_id: trayUUID});
+                if (response) {
+                    window.location.reload();
+                }
+            } catch(error) {
+                alert("Failed to add plant to tray")
+            }
+        }
+
+        async function removeFromTray() {
+            try {
+                const response = await sendPostRequest('/remove_plant_from_tray', {uuid: plantUUID});
+                if (response) {
+                    window.location.reload();
+                }
+            } catch(error) {
+                alert("Failed to remove plant from tray")
+            }
+        }
     </script>
 </body>
 </html>
