@@ -118,11 +118,10 @@ def delete_plant(plant, data):
 @get_plant_by_uuid
 def water_plant(plant, data):
     # Create new water event, add override timestamp if arg passed
-    event = WaterEvent(plant=plant)
-    if data["timestamp"]:
-        event.timestamp = datetime.fromisoformat(data["timestamp"].rstrip('Z'))
-    event.save()
-
+    WaterEvent.objects.create(
+        plant=plant,
+        timestamp=datetime.fromisoformat(data["timestamp"].rstrip("Z"))
+    )
     return JsonResponse({"action": "water", "plant": plant.id}, status=200)
 
 
@@ -130,9 +129,8 @@ def water_plant(plant, data):
 @get_plant_by_uuid
 def fertilize_plant(plant, data):
     # Create new water event, add override timestamp if arg passed
-    event = FertilizeEvent(plant=plant)
-    if data["timestamp"]:
-        event.timestamp = datetime.fromisoformat(data["timestamp"].rstrip('Z'))
-    event.save()
-
+    FertilizeEvent.objects.create(
+        plant=plant,
+        timestamp=datetime.fromisoformat(data["timestamp"].rstrip("Z"))
+    )
     return JsonResponse({"action": "fertilize", "plant": plant.id}, status=200)

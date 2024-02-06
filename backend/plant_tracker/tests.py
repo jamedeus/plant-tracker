@@ -1,8 +1,10 @@
 import base64
 from uuid import uuid4
-from .models import Tray, Plant, WaterEvent, FertilizeEvent
+from datetime import datetime
 
 from django.test import Client, TestCase
+
+from .models import Tray, Plant, WaterEvent, FertilizeEvent
 
 
 # Subclass Client, add default for content_type arg
@@ -121,42 +123,40 @@ class ManagePageTests(TestCase):
         self.assertEqual(Plant.objects.all()[0].species, 'Giant Sequoia')
 
     def test_water_plant(self):
-        # Create test plant
-        test_id = uuid4()
-        Plant.objects.create(id=test_id)
-
-        # Confirm no water events
+        # Create test plant, confirm no water events
+        plant = Plant.objects.create(id=uuid4())
+        self.assertIsNone(plant.last_watered())
         self.assertEqual(len(WaterEvent.objects.all()), 0)
 
         payload = {
-            'uuid': test_id,
-            'timestamp': ''
+            'uuid': plant.id,
+            'timestamp': '2024-02-06T03:06:26.000Z'
         }
 
         # Send water request, confirm event created
         response = self.client.post('/water_plant', payload)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {"action": "water", "plant": str(test_id)})
+        self.assertEqual(response.json(), {"action": "water", "plant": str(plant.id)})
         self.assertEqual(len(WaterEvent.objects.all()), 1)
+        self.assertEqual(plant.last_watered(), '2024-02-06T03:06:26+00:00')
 
     def test_fertilize_plant(self):
-        # Create test plant
-        test_id = uuid4()
-        Plant.objects.create(id=test_id)
-
-        # Confirm no fertilize events
+        # Create test plant, confirm no fertilize events
+        plant = Plant.objects.create(id=uuid4())
+        self.assertIsNone(plant.last_fertilized())
         self.assertEqual(len(FertilizeEvent.objects.all()), 0)
 
         payload = {
-            'uuid': test_id,
-            'timestamp': ''
+            'uuid': plant.id,
+            'timestamp': '2024-02-06T03:06:26.000Z'
         }
 
         # Send water request, confirm event created
         response = self.client.post('/fertilize_plant', payload)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {"action": "fertilize", "plant": str(test_id)})
+        self.assertEqual(response.json(), {"action": "fertilize", "plant": str(plant.id)})
         self.assertEqual(len(FertilizeEvent.objects.all()), 1)
+        self.assertEqual(plant.last_fertilized(), '2024-02-06T03:06:26+00:00')
 
 
 class InvalidRequestTests(TestCase):

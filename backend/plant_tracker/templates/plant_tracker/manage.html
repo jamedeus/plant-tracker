@@ -59,8 +59,15 @@
         </div>
 
         <div class="d-flex flex-column mx-auto">
-            <button class="btn btn-primary mb-3" onClick="waterPlant();">Water</button>
-            <button class="btn btn-success mb-3" onClick="fertilizePlant();">Fertilize</button>
+            <form id="waterForm" class="d-flex flex-column mb-3" onSubmit="waterPlant(event);">
+                <input type="datetime-local" id="waterTime" name="waterTime" step="1" />
+                <button class="btn btn-primary mt-1" type="submit">Water</button>
+            </form>
+
+            <form id="fertilizeForm" class="d-flex flex-column mb-3" onSubmit="fertilizePlant(event);">
+                <input type="datetime-local" id="fertilizeTime" name="fertilizeTime" step="1" />
+                <button class="btn btn-success mt-1" type="submit">Fertilize</button>
+            </form>
         </div>
     </div>
 
@@ -86,6 +93,10 @@
         const plantUUID = JSON.parse(document.getElementById('uuid').textContent);
 
         const editModal = new bootstrap.Modal(document.getElementById('editDetails'));
+
+        // Auto-fill water and fertilize inputs with current timestamp
+        document.getElementById("waterTime").value = luxon.DateTime.now().toFormat("yyyy-MM-dd'T'HH:mm:ss");
+        document.getElementById("fertilizeTime").value = luxon.DateTime.now().toFormat("yyyy-MM-dd'T'HH:mm:ss");
 
         // Takes name of cookie, returns cookie
         function getCookie(name) {
@@ -129,18 +140,25 @@
             }
         }
 
-        async function waterPlant() {
+        // Takes value of datetime-local input, returns as UTC string
+        function localToUTC(timestamp) {
+            return String(luxon.DateTime.fromISO(timestamp).toUTC());
+        }
+
+        async function waterPlant(event) {
+            event.preventDefault();
             const payload = {
                 uuid: plantUUID,
-                timestamp: ''
+                timestamp: localToUTC(document.getElementById("waterTime").value)
             }
             sendPostRequest('/water_plant', payload);
         }
 
-        async function fertilizePlant() {
+        async function fertilizePlant(event) {
+            event.preventDefault();
             const payload = {
                 uuid: plantUUID,
-                timestamp: ''
+                timestamp: localToUTC(document.getElementById("fertilizeTime").value)
             }
             sendPostRequest('/fertilize_plant', payload);
         }

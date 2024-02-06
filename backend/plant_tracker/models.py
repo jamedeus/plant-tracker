@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 from django.core.validators import MaxValueValidator, MinValueValidator
 
@@ -12,11 +14,11 @@ class Tray(models.Model):
 
     def water_all(self):
         for plant in self.plant_set.all():
-            WaterEvent.objects.create(plant=plant)
+            WaterEvent.objects.create(plant=plant, timestamp=datetime.now().isoformat())
 
     def fertilize_all(self):
         for plant in self.plant_set.all():
-            FertilizeEvent.objects.create(plant=plant)
+            FertilizeEvent.objects.create(plant=plant, timestamp=datetime.now().isoformat())
 
 
 class Plant(models.Model):
@@ -55,9 +57,9 @@ class Plant(models.Model):
 
 class WaterEvent(models.Model):
     plant = models.ForeignKey(Plant, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField()
 
 
 class FertilizeEvent(models.Model):
     plant = models.ForeignKey(Plant, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField(auto_now_add=True)
+    timestamp = models.DateTimeField()
