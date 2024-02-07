@@ -113,7 +113,7 @@
         async function deletePlant(e) {
             e.stopPropagation();
             const button = e.target.closest('.btn-danger');
-            const payload = {uuid: button.dataset.uuid};
+            const payload = {plant_id: button.dataset.uuid};
             console.log(payload)
             try {
                 const response = await fetch('/delete_plant', {
@@ -142,7 +142,7 @@
         async function deleteTray(e) {
             e.stopPropagation();
             const button = e.target.closest('.btn-danger');
-            const payload = {uuid: button.dataset.uuid};
+            const payload = {tray_id: button.dataset.uuid};
             console.log(payload)
             try {
                 const response = await fetch('/delete_tray', {

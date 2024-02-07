@@ -39,13 +39,13 @@ class OverviewTests(TestCase):
         self.assertEqual(len(Plant.objects.all()), 1)
 
         # Call delete endpoint, confirm redirects to overview, confirm removed from database
-        response = self.client.post('/delete_plant', {'uuid': str(test_id)})
+        response = self.client.post('/delete_plant', {'plant_id': str(test_id)})
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, '/')
         self.assertEqual(len(Plant.objects.all()), 0)
 
         # Attempt to delete non-existing plant, confirm error
-        response = self.client.post('/delete_plant', {'uuid': str(test_id)})
+        response = self.client.post('/delete_plant', {'plant_id': str(test_id)})
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(), {'error': 'plant not found'})
 
@@ -56,13 +56,13 @@ class OverviewTests(TestCase):
         self.assertEqual(len(Tray.objects.all()), 1)
 
         # Call delete endpoint, confirm redirects to overview, confirm removed from database
-        response = self.client.post('/delete_tray', {'uuid': str(test_id)})
+        response = self.client.post('/delete_tray', {'tray_id': str(test_id)})
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, '/')
         self.assertEqual(len(Tray.objects.all()), 0)
 
         # Attempt to delete non-existing tray, confirm error
-        response = self.client.post('/delete_tray', {'uuid': str(test_id)})
+        response = self.client.post('/delete_tray', {'tray_id': str(test_id)})
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(), {'error': 'tray not found'})
 
@@ -176,7 +176,7 @@ class ManagePageTests(TestCase):
 
         # Send edit details request, confirm redirects to manage page
         payload = {
-            'uuid': test_id,
+            'plant_id': test_id,
             'name': 'test plant',
             'species': 'Giant Sequoia',
             'description': '300 feet and a few thousand years old',
@@ -200,7 +200,7 @@ class ManagePageTests(TestCase):
 
         # Send edit details request, confirm redirects to manage page
         payload = {
-            'uuid': test_id,
+            'tray_id': test_id,
             'name': 'test tray',
             'location': 'middle shelf'
         }
@@ -220,7 +220,7 @@ class ManagePageTests(TestCase):
         self.assertEqual(len(WaterEvent.objects.all()), 0)
 
         payload = {
-            'uuid': plant.id,
+            'plant_id': plant.id,
             'timestamp': '2024-02-06T03:06:26.000Z'
         }
 
@@ -238,7 +238,7 @@ class ManagePageTests(TestCase):
         self.assertEqual(len(FertilizeEvent.objects.all()), 0)
 
         payload = {
-            'uuid': plant.id,
+            'plant_id': plant.id,
             'timestamp': '2024-02-06T03:06:26.000Z'
         }
 
@@ -272,7 +272,7 @@ class ManagePageTests(TestCase):
         self.assertEqual(len(tray.plant_set.all()), 1)
 
         # Send add_plant_to_tray request, confirm relation created
-        response = self.client.post('/remove_plant_from_tray', {'uuid': plant.id})
+        response = self.client.post('/remove_plant_from_tray', {'plant_id': plant.id})
         self.assertEqual(response.status_code, 200)
         plant.refresh_from_db()
         self.assertIsNone(plant.tray)
@@ -300,7 +300,7 @@ class InvalidRequestTests(TestCase):
         # Send POST with UUID that does not exist in database, confirm error
         response = self.client.post(
             '/water_plant',
-            {'uuid': uuid4(), 'timestamp': ''},
+            {'plant_id': uuid4(), 'timestamp': ''},
             content_type='application/json'
         )
         self.assertEqual(response.status_code, 404)
@@ -352,7 +352,7 @@ class TrayModelTests(TestCase):
 
         # Send water_tray request
         payload = {
-            'uuid': self.test_tray.id,
+            'tray_id': self.test_tray.id,
             'timestamp': '2024-02-06T03:06:26.000Z'
         }
         response = self.client.post('/water_tray', payload)
@@ -372,7 +372,7 @@ class TrayModelTests(TestCase):
 
         # Send fertilize_tray request
         payload = {
-            'uuid': self.test_tray.id,
+            'tray_id': self.test_tray.id,
             'timestamp': '2024-02-06T03:06:26.000Z'
         }
         response = self.client.post('/fertilize_tray', payload)

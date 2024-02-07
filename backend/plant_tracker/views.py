@@ -46,29 +46,29 @@ def requires_json_post(func):
 
 def get_plant_from_post_body(func):
     '''Decorator looks up plant by UUID, throws error if not found
-    Must call after requires_json_post (expects dict with uuid key as first arg)
-    Passes Plant instance to wrapped function as first arg, data dict as second
+    Must call after requires_json_post (expects dict with plant_id key as first arg)
+    Passes Plant instance and data dict to wrapped function as plant and data kwargs
     '''
     @wraps(func)
     def wrapper(data, **kwargs):
-        plant = get_plant_by_uuid(data["uuid"])
+        plant = get_plant_by_uuid(data["plant_id"])
         if plant is None:
             return JsonResponse({"error": "plant not found"}, status=404)
-        return func(plant, data, **kwargs)
+        return func(plant=plant, data=data, **kwargs)
     return wrapper
 
 
 def get_tray_from_post_body(func):
     '''Decorator looks up tray by UUID, throws error if not found
-    Must call after requires_json_post (expects dict with uuid key as first arg)
-    Passes Tray instance to wrapped function as first arg, data dict as second
+    Must call after requires_json_post (expects dict with tray_id key as first arg)
+    Passes Tray instance and data dict to wrapped function as tray and data kwargs
     '''
     @wraps(func)
     def wrapper(data, **kwargs):
-        tray = get_tray_by_uuid(data["uuid"])
+        tray = get_tray_by_uuid(data["tray_id"])
         if tray is None:
             return JsonResponse({"error": "tray not found"}, status=404)
-        return func(tray, data, **kwargs)
+        return func(tray=tray, data=data, **kwargs)
     return wrapper
 
 
@@ -129,7 +129,7 @@ def edit_plant_details(plant, data):
     plant.save()
 
     # Reload manage page
-    return HttpResponseRedirect(f'/manage/{data["uuid"]}')
+    return HttpResponseRedirect(f'/manage/{data["plant_id"]}')
 
 
 @requires_json_post
@@ -146,7 +146,7 @@ def edit_tray_details(tray, data):
     tray.save()
 
     # Reload manage page
-    return HttpResponseRedirect(f'/manage/{data["uuid"]}')
+    return HttpResponseRedirect(f'/manage/{data["tray_id"]}')
 
 
 def manage(request, uuid):
@@ -218,18 +218,10 @@ def fertilize_tray(tray, data):
     return JsonResponse({"action": "fertilize tray", "tray": tray.id}, status=200)
 
 
-# TODO convert decorators to use kwargs instead of positional
 @requires_json_post
-def add_plant_to_tray(data):
-    # Get Plant and Tray instances
-    tray = get_tray_by_uuid(data["tray_id"])
-    plant = get_plant_by_uuid(data["plant_id"])
-
-    if tray is None:
-        return JsonResponse({"error": "tray not found"}, status=404)
-    if plant is None:
-        return JsonResponse({"error": "plant not found"}, status=404)
-
+@get_plant_from_post_body
+@get_tray_from_post_body
+def add_plant_to_tray(plant, tray, data):
     plant.tray = tray
     plant.save()
     return JsonResponse(

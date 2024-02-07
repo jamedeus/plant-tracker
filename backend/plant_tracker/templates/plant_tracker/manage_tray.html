@@ -79,8 +79,8 @@
     {{ tray.id|json_script:"uuid" }}
 
     <script>
-        // Parse plant UUID from django context
-        const plantUUID = JSON.parse(document.getElementById('uuid').textContent);
+        // Parse tray UUID from django context
+        const trayUUID = JSON.parse(document.getElementById('uuid').textContent);
 
         const editModal = new bootstrap.Modal(document.getElementById('editDetails'));
 
@@ -138,7 +138,7 @@
         async function waterTray(event) {
             event.preventDefault();
             const payload = {
-                uuid: plantUUID,
+                tray_id: trayUUID,
                 timestamp: localToUTC(document.getElementById("waterTime").value)
             }
             sendPostRequest('/water_tray', payload);
@@ -147,7 +147,7 @@
         async function fertilizeTray(event) {
             event.preventDefault();
             const payload = {
-                uuid: plantUUID,
+                tray_id: trayUUID,
                 timestamp: localToUTC(document.getElementById("fertilizeTime").value)
             }
             sendPostRequest('/fertilize_tray', payload);
@@ -159,7 +159,7 @@
 
             const data = new FormData(document.getElementById('trayDetailsForm'));
             const payload = Object.fromEntries(data.entries());
-            payload.uuid = plantUUID;
+            payload.tray_id = trayUUID;
             console.log(payload);
 
             sendPostRequest('/edit_tray', payload);
@@ -167,7 +167,7 @@
 
         async function removeFromTray(plantID) {
             try {
-                const response = await sendPostRequest('/remove_plant_from_tray', {uuid: plantID});
+                const response = await sendPostRequest('/remove_plant_from_tray', {plant_id: plantID});
                 if (response) {
                     window.location.reload();
                 }

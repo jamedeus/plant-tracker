@@ -165,7 +165,7 @@
         async function waterPlant(event) {
             event.preventDefault();
             const payload = {
-                uuid: plantUUID,
+                plant_id: plantUUID,
                 timestamp: localToUTC(document.getElementById("waterTime").value)
             }
             await sendPostRequest('/water_plant', payload);
@@ -174,7 +174,7 @@
         async function fertilizePlant(event) {
             event.preventDefault();
             const payload = {
-                uuid: plantUUID,
+                plant_id: plantUUID,
                 timestamp: localToUTC(document.getElementById("fertilizeTime").value)
             }
             await sendPostRequest('/fertilize_plant', payload);
@@ -186,7 +186,7 @@
 
             const data = new FormData(document.getElementById('plantDetailsForm'));
             const payload = Object.fromEntries(data.entries());
-            payload.uuid = plantUUID;
+            payload.plant_id = plantUUID;
             console.log(payload);
 
             await sendPostRequest('/edit_plant', payload);
@@ -206,7 +206,7 @@
 
         async function removeFromTray() {
             try {
-                const response = await sendPostRequest('/remove_plant_from_tray', {uuid: plantUUID});
+                const response = await sendPostRequest('/remove_plant_from_tray', {plant_id: plantUUID});
                 if (response) {
                     window.location.reload();
                 }
