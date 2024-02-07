@@ -78,6 +78,22 @@ def get_tray_from_post_body(func):
     return wrapper
 
 
+def get_timestamp_from_post_body(func):
+    '''Decorator converts timestamp string Datetime object, throws error if invalid
+    Must call after requires_json_post (expects dict with timestamp key as first arg)
+    Passes Datetime object and data dict to wrapped function as timestamp and data kwargs
+    '''
+    def wrapper(data, **kwargs):
+        try:
+            timestamp = datetime.fromisoformat(data["timestamp"].rstrip("Z"))
+            return func(timestamp=timestamp, data=data, **kwargs)
+        except KeyError:
+            return JsonResponse({"error": "POST body missing required 'timestamp' key"}, status=400)
+        except ValueError:
+            return JsonResponse({"error": "timestamp format invalid"}, status=400)
+    return wrapper
+
+
 def overview(request):
     context = {
         'plants': Plant.objects.all(),
@@ -194,37 +210,41 @@ def delete_tray(tray, data):
 
 @requires_json_post
 @get_plant_from_post_body
-def water_plant(plant, data):
+@get_timestamp_from_post_body
+def water_plant(plant, timestamp, data):
     # Create new water event, add override timestamp if arg passed
     WaterEvent.objects.create(
         plant=plant,
-        timestamp=datetime.fromisoformat(data["timestamp"].rstrip("Z"))
+        timestamp=timestamp
     )
     return JsonResponse({"action": "water", "plant": plant.id}, status=200)
 
 
 @requires_json_post
 @get_plant_from_post_body
-def fertilize_plant(plant, data):
+@get_timestamp_from_post_body
+def fertilize_plant(plant, timestamp, data):
     # Create new water event, add override timestamp if arg passed
     FertilizeEvent.objects.create(
         plant=plant,
-        timestamp=datetime.fromisoformat(data["timestamp"].rstrip("Z"))
+        timestamp=timestamp
     )
     return JsonResponse({"action": "fertilize", "plant": plant.id}, status=200)
 
 
 @requires_json_post
 @get_tray_from_post_body
-def water_tray(tray, data):
-    tray.water_all(timestamp=datetime.fromisoformat(data["timestamp"].rstrip("Z")))
+@get_timestamp_from_post_body
+def water_tray(tray, timestamp, data):
+    tray.water_all(timestamp=timestamp)
     return JsonResponse({"action": "water tray", "tray": tray.id}, status=200)
 
 
 @requires_json_post
 @get_tray_from_post_body
-def fertilize_tray(tray, data):
-    tray.fertilize_all(timestamp=datetime.fromisoformat(data["timestamp"].rstrip("Z")))
+@get_timestamp_from_post_body
+def fertilize_tray(tray, timestamp, data):
+    tray.fertilize_all(timestamp=timestamp)
     return JsonResponse({"action": "fertilize tray", "tray": tray.id}, status=200)
 
 
