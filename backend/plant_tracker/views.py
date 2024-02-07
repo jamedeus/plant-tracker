@@ -27,6 +27,12 @@ def get_tray_by_uuid(uuid):
         return None
 
 
+def get_plant_options():
+    '''Returns a list of dicts with name and id attributes of all existing plants
+    Used to populate checkbox options in frontend'''
+    return Plant.objects.values('id', 'name')
+
+
 def requires_json_post(func):
     '''Decorator throws error if request is not POST with JSON body
     Parses JSON from request body and passes to wrapped function as first arg
@@ -159,7 +165,11 @@ def manage(request, uuid):
     # Loop up UUID in tray database, render template if found
     tray = get_tray_by_uuid(uuid)
     if tray:
-        context = {'tray': tray, 'details': tray.get_plant_details()}
+        context = {
+            'tray': tray,
+            'details': tray.get_plant_details(),
+            'options': get_plant_options()
+        }
         return render(request, 'plant_tracker/manage_tray.html', context)
 
     # Redirect to registration form if UUID does not exist in either database
@@ -239,3 +249,16 @@ def remove_plant_from_tray(plant, data):
         {"action": "remove_plant_from_tray", "plant": plant.id},
         status=200
     )
+
+
+@requires_json_post
+@get_tray_from_post_body
+def bulk_add_plants_to_tray(tray, data):
+    added = []
+    for plant_id in data["plants"]:
+        plant = get_plant_by_uuid(plant_id)
+        if plant:
+            added.append(plant_id)
+            plant.tray = tray
+            plant.save()
+    return HttpResponseRedirect(f'/manage/{tray.id}')
