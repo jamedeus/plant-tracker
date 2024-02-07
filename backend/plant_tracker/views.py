@@ -175,6 +175,14 @@ def delete_plant(plant, data):
 
 
 @requires_json_post
+@get_tray_from_post_body
+def delete_tray(tray, data):
+    # Delete tray, reload overview page
+    tray.delete()
+    return HttpResponseRedirect('/')
+
+
+@requires_json_post
 @get_plant_from_post_body
 def water_plant(plant, data):
     # Create new water event, add override timestamp if arg passed

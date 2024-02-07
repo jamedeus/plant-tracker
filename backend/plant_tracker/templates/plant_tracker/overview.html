@@ -51,10 +51,11 @@
                     <div class="card-header d-flex">
                         <button class="btn btn-sm me-auto invisible"><i class="bi bi-trash"></i></button>
                         <h3 class="card-title">{{ tray.name }}</h3>
-                        <button class="btn btn-sm me-auto invisible"><i class="bi bi-trash"></i></button>
+                        <button class="btn btn-sm btn-danger my-auto ms-auto" data-uuid="{{tray.id}}" onClick="deleteTray(event);"><i class="bi bi-trash"></i></button>
                     </div>
                     <div class="card-body">
                         <p class="card-text">Location: {{ tray.location }}</p>
+                        <p class="card-text">Plants: {{ tray.plant_set.count }}</p>
                     </div>
                 </div>
             {% endfor %}
@@ -116,6 +117,35 @@
             console.log(payload)
             try {
                 const response = await fetch('/delete_plant', {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response error');
+                } else if (response.redirected) {
+                    window.location.href = response.url;
+                } else {
+                    const responseData = await response.json();
+                    console.log(responseData);
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+            }
+        }
+
+        async function deleteTray(e) {
+            e.stopPropagation();
+            const button = e.target.closest('.btn-danger');
+            const payload = {uuid: button.dataset.uuid};
+            console.log(payload)
+            try {
+                const response = await fetch('/delete_tray', {
                     method: 'POST',
                     headers: {
                         'Accept': 'application/json, text/plain, */*',

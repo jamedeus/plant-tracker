@@ -49,6 +49,23 @@ class OverviewTests(TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(), {'error': 'plant not found'})
 
+    def test_delete_tray(self):
+        # Create test tray, confirm exists in database
+        test_id = uuid4()
+        Tray.objects.create(id=test_id, name='test tray')
+        self.assertEqual(len(Tray.objects.all()), 1)
+
+        # Call delete endpoint, confirm redirects to overview, confirm removed from database
+        response = self.client.post('/delete_tray', {'uuid': str(test_id)})
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/')
+        self.assertEqual(len(Tray.objects.all()), 0)
+
+        # Attempt to delete non-existing tray, confirm error
+        response = self.client.post('/delete_tray', {'uuid': str(test_id)})
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json(), {'error': 'tray not found'})
+
 
 class ManagePageTests(TestCase):
     def setUp(self):
