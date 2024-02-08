@@ -132,8 +132,7 @@ def get_qr_codes(request):
 
 
 def overview(request):
-    '''Renders the overview page (shows existing plants/trays, or setup if none)
-    '''
+    '''Renders the overview page (shows existing plants/trays, or setup if none)'''
     context = {
         'plants': Plant.objects.all(),
         'trays': Tray.objects.all()
@@ -239,8 +238,7 @@ def edit_tray_details(tray, data):
 @requires_json_post
 @get_plant_from_post_body
 def delete_plant(plant, data):
-    '''Deletes an existing Plant from database, returns redirect to overview
-    '''
+    '''Deletes an existing Plant from database, returns redirect to overview'''
     plant.delete()
     return HttpResponseRedirect('/')
 
@@ -248,8 +246,7 @@ def delete_plant(plant, data):
 @requires_json_post
 @get_tray_from_post_body
 def delete_tray(tray, data):
-    '''Deletes an existing Tray from database, returns redirect to overview
-    '''
+    '''Deletes an existing Tray from database, returns redirect to overview'''
     tray.delete()
     return HttpResponseRedirect('/')
 
