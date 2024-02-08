@@ -221,11 +221,12 @@ class ManagePageTests(TestCase):
 
         payload = {
             'plant_id': self.plant1.id,
+            'event_type': 'water',
             'timestamp': '2024-02-06T03:06:26.000Z'
         }
 
         # Send water request, confirm event created
-        response = self.client.post('/water_plant', payload)
+        response = self.client.post('/add_plant_event', payload)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {"action": "water", "plant": str(self.plant1.id)})
         self.assertEqual(len(WaterEvent.objects.all()), 1)
@@ -238,11 +239,12 @@ class ManagePageTests(TestCase):
 
         payload = {
             'plant_id': self.plant1.id,
+            'event_type': 'fertilize',
             'timestamp': '2024-02-06T03:06:26.000Z'
         }
 
         # Send water request, confirm event created
-        response = self.client.post('/fertilize_plant', payload)
+        response = self.client.post('/add_plant_event', payload)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {"action": "fertilize", "plant": str(self.plant1.id)})
         self.assertEqual(len(FertilizeEvent.objects.all()), 1)
@@ -342,16 +344,17 @@ class ManagePageTests(TestCase):
                 str(self.plant2.id),
                 str(fake_id)
             ],
+            'event_type': 'water',
             'timestamp': '2024-02-06T03:06:26.000Z'
         }
-        response = self.client.post('/bulk_water_plants', payload)
+        response = self.client.post('/bulk_add_plant_events', payload)
 
         # Confirm response, confirm WaterEvent created for both plants
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
             {
-                "action": "bulk_water",
+                "action": "water",
                 "plants": [str(self.plant1.id), str(self.plant2.id)],
                 "failed": [str(fake_id)]
             }
@@ -374,16 +377,17 @@ class ManagePageTests(TestCase):
                 str(self.plant2.id),
                 str(fake_id)
             ],
+            'event_type': 'fertilize',
             'timestamp': '2024-02-06T03:06:26.000Z'
         }
-        response = self.client.post('/bulk_fertilize_plants', payload)
+        response = self.client.post('/bulk_add_plant_events', payload)
 
         # Confirm response, confirm WaterEvent created for both plants
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
             {
-                "action": "bulk_fertilize",
+                "action": "fertilize",
                 "plants": [str(self.plant1.id), str(self.plant2.id)],
                 "failed": [str(fake_id)]
             }
@@ -394,8 +398,12 @@ class ManagePageTests(TestCase):
 
 class InvalidRequestTests(TestCase):
     def setUp(self):
+        # Create test models to use in tests
         self.test_plant = Plant.objects.create(id=uuid4())
         self.test_tray = Tray.objects.create(id=uuid4())
+
+        # Set default content_type for post requests (avoid long lines)
+        self.client = JSONClient()
 
     def test_invalid_get_request(self):
         # Send GET request to endpoint that requires POST, confirm error
@@ -415,41 +423,25 @@ class InvalidRequestTests(TestCase):
 
     def test_uuid_does_not_exist(self):
         # Send POST with UUID that does not exist in database, confirm error
-        response = self.client.post(
-            '/water_plant',
-            {'plant_id': uuid4(), 'timestamp': '2024-02-06T03:06:26.000Z'},
-            content_type='application/json'
-        )
+        response = self.client.post('/delete_plant', {'plant_id': uuid4()})
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(), {"error": "plant not found"})
 
     def test_missing_plant_id(self):
         # Send POST with no plant_id key in body, confirm error
-        response = self.client.post(
-            '/water_plant',
-            {'timestamp': '2024-02-06T03:06:26.000Z'},
-            content_type='application/json'
-        )
+        response = self.client.post('/delete_plant', {'timestamp': '2024-02-06T03:06:26.000Z'})
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(), {"error": "POST body missing required 'plant_id' key"})
 
     def test_missing_tray_id(self):
         # Send POST with no tray_id key in body, confirm error
-        response = self.client.post(
-            '/water_tray',
-            {'timestamp': '2024-02-06T03:06:26.000Z'},
-            content_type='application/json'
-        )
+        response = self.client.post('/water_tray', {'timestamp': '2024-02-06T03:06:26.000Z'})
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(), {"error": "POST body missing required 'tray_id' key"})
 
     def test_invalid_plant_uuid(self):
         # Send POST with plant_id that is not a valid UUID, confirm error
-        response = self.client.post(
-            '/water_plant',
-            {'plant_id': '31670857', 'timestamp': '2024-02-06T03:06:26.000Z'},
-            content_type='application/json'
-        )
+        response = self.client.post('/delete_plant', {'plant_id': '31670857'})
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(), {"error": "plant_id key is not a valid UUID"})
 
@@ -457,8 +449,7 @@ class InvalidRequestTests(TestCase):
         # Send POST with tray_id that is not a valid UUID, confirm error
         response = self.client.post(
             '/water_tray',
-            {'tray_id': '31670857', 'timestamp': '2024-02-06T03:06:26.000Z'},
-            content_type='application/json'
+            {'tray_id': '31670857', 'timestamp': '2024-02-06T03:06:26.000Z'}
         )
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(), {"error": "tray_id key is not a valid UUID"})
@@ -466,9 +457,8 @@ class InvalidRequestTests(TestCase):
     def test_missing_timestamp_key(self):
         # Send POST with no timestamp key in body, confirm error
         response = self.client.post(
-            '/water_plant',
-            {'plant_id': self.test_plant.id},
-            content_type='application/json'
+            '/add_plant_event',
+            {'plant_id': self.test_plant.id, 'event_type': 'water'}
         )
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(), {"error": "POST body missing required 'timestamp' key"})
@@ -476,12 +466,29 @@ class InvalidRequestTests(TestCase):
     def test_invalid_timestamp_format(self):
         # Send POST with invalid timestamp in body, confirm error
         response = self.client.post(
-            '/water_plant',
-            {'plant_id': self.test_plant.id, 'timestamp': '04:20'},
-            content_type='application/json'
+            '/add_plant_event',
+            {'plant_id': self.test_plant.id, 'timestamp': '04:20', 'event_type': 'water'}
         )
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(), {"error": "timestamp format invalid"})
+
+    def test_missing_event_type_key(self):
+        # Send POST with with no event_type in body, confirm error
+        response = self.client.post(
+            '/add_plant_event',
+            {'plant_id': self.test_plant.id, 'timestamp': '2024-02-06T03:06:26.000Z'}
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {"error": "POST body missing required 'event_type' key"})
+
+    def test_invalid_event_type(self):
+        # Send POST with invalid event_type in body, confirm error
+        response = self.client.post(
+            '/add_plant_event',
+            {'plant_id': self.test_plant.id, 'timestamp': '2024-02-06T03:06:26.000Z', 'event_type': 'juice'}
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {"error": "invalid event_type, must be 'water' or 'fertilize'"})
 
 
 class TrayModelTests(TestCase):

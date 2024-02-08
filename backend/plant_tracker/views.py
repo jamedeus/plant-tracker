@@ -12,6 +12,13 @@ from generate_qr_code_grid import generate_layout
 from .models import Tray, Plant, WaterEvent, FertilizeEvent
 
 
+# Map event types to model that should be instantiated
+events_map = {
+    'water': WaterEvent,
+    'fertilize': FertilizeEvent
+}
+
+
 def get_plant_by_uuid(uuid):
     '''Returns Plant model instance matching UUID, or None if not found'''
     try:
@@ -102,7 +109,7 @@ def get_tray_from_post_body(func):
 
 
 def get_timestamp_from_post_body(func):
-    '''Decorator converts timestamp string Datetime object, throws error if invalid
+    '''Decorator converts timestamp string to Datetime object, throws error if invalid
     Must call after requires_json_post (expects dict with timestamp key as first arg)
     Passes Datetime object and data dict to wrapped function as timestamp and data kwargs
     '''
@@ -117,6 +124,27 @@ def get_timestamp_from_post_body(func):
             )
         except ValueError:
             return JsonResponse({"error": "timestamp format invalid"}, status=400)
+    return wrapper
+
+
+def get_event_type_from_post_body(func):
+    '''Decorator verifies event_type from POST body, throws error if missing or invalid
+    Must call after requires_json_post (expects dict with event_type key as first arg)
+    Passes event_type and data dict to wrapped function as event_type and data kwargs
+    '''
+    def wrapper(data, **kwargs):
+        try:
+            if data["event_type"] in events_map.keys():
+                return func(event_type=data["event_type"], data=data, **kwargs)
+            return JsonResponse(
+                {"error": "invalid event_type, must be 'water' or 'fertilize'"},
+                status=400
+            )
+        except KeyError:
+            return JsonResponse(
+                {"error": "POST body missing required 'event_type' key"},
+                status=400
+            )
     return wrapper
 
 
@@ -254,23 +282,35 @@ def delete_tray(tray, data):
 @requires_json_post
 @get_plant_from_post_body
 @get_timestamp_from_post_body
-def water_plant(plant, timestamp, data):
-    '''Creates new WaterEvent for specified Plant entry
-    Requires POST with JSON body containing plant_id and timestamp keys
+@get_event_type_from_post_body
+def add_plant_event(plant, timestamp, event_type, data):
+    '''Creates new Event entry with requested type for specified Plant entry
+    Requires POST with plant_id, event_type, and timestamp keys in JSON body
     '''
-    WaterEvent.objects.create(plant=plant, timestamp=timestamp)
-    return JsonResponse({"action": "water", "plant": plant.id}, status=200)
+    events_map[event_type].objects.create(plant=plant, timestamp=timestamp)
+    return JsonResponse({"action": event_type, "plant": plant.id}, status=200)
 
 
 @requires_json_post
-@get_plant_from_post_body
 @get_timestamp_from_post_body
-def fertilize_plant(plant, timestamp, data):
-    '''Creates new FertilizeEvent for specified Plant entry
-    Requires POST with JSON body containing plant_id and timestamp keys
+@get_event_type_from_post_body
+def bulk_add_plant_events(timestamp, event_type, data):
+    '''Creates new Event entry with requested type for each Plant specified in body
+    Requires POST with plants (list of UUIDs), event_type, and timestamp keys in JSON body
     '''
-    FertilizeEvent.objects.create(plant=plant, timestamp=timestamp)
-    return JsonResponse({"action": "fertilize", "plant": plant.id}, status=200)
+    added = []
+    failed = []
+    for plant_id in data["plants"]:
+        plant = get_plant_by_uuid(plant_id)
+        if plant:
+            events_map[event_type].objects.create(plant=plant, timestamp=timestamp)
+            added.append(plant_id)
+        else:
+            failed.append(plant_id)
+    return JsonResponse(
+        {"action": event_type, "plants": added, "failed": failed},
+        status=200
+    )
 
 
 @requires_json_post
@@ -293,48 +333,6 @@ def fertilize_tray(tray, timestamp, data):
     '''
     tray.fertilize_all(timestamp=timestamp)
     return JsonResponse({"action": "fertilize tray", "tray": tray.id}, status=200)
-
-
-@requires_json_post
-@get_timestamp_from_post_body
-def bulk_water_plants(timestamp, data):
-    '''Creates new WaterEvents for each Plant specified in POST body
-    Requires POST with JSON body containing timestamp and plants (list of UUIDs) keys
-    '''
-    watered = []
-    failed = []
-    for plant_id in data["plants"]:
-        plant = get_plant_by_uuid(plant_id)
-        if plant:
-            WaterEvent.objects.create(plant=plant, timestamp=timestamp)
-            watered.append(plant_id)
-        else:
-            failed.append(plant_id)
-    return JsonResponse(
-        {"action": "bulk_water", "plants": watered, "failed": failed},
-        status=200
-    )
-
-
-@requires_json_post
-@get_timestamp_from_post_body
-def bulk_fertilize_plants(timestamp, data):
-    '''Creates new FertilizeEvent for each Plant specified in POST body
-    Requires POST with JSON body containing timestamp and plants (list of UUIDs) keys
-    '''
-    fertilized = []
-    failed = []
-    for plant_id in data["plants"]:
-        plant = get_plant_by_uuid(plant_id)
-        if plant:
-            FertilizeEvent.objects.create(plant=plant, timestamp=timestamp)
-            fertilized.append(plant_id)
-        else:
-            failed.append(plant_id)
-    return JsonResponse(
-        {"action": "bulk_fertilize", "plants": fertilized, "failed": failed},
-        status=200
-    )
 
 
 @requires_json_post

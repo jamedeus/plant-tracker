@@ -166,18 +166,20 @@
             event.preventDefault();
             const payload = {
                 plant_id: plantUUID,
+                event_type: 'water',
                 timestamp: localToUTC(document.getElementById("waterTime").value)
             }
-            await sendPostRequest('/water_plant', payload);
+            await sendPostRequest('/add_plant_event', payload);
         }
 
         async function fertilizePlant(event) {
             event.preventDefault();
             const payload = {
                 plant_id: plantUUID,
+                event_type: 'fertilize',
                 timestamp: localToUTC(document.getElementById("fertilizeTime").value)
             }
-            await sendPostRequest('/fertilize_plant', payload);
+            await sendPostRequest('/add_plant_event', payload);
         }
 
         // Edit details form submit listener

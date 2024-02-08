@@ -13,14 +13,12 @@ urlpatterns = [
     path('edit_tray', views.edit_tray_details, name='edit_tray_details'),
     path('delete_plant', views.delete_plant, name='delete_plant'),
     path('delete_tray', views.delete_tray, name='delete_tray'),
-    path('water_plant', views.water_plant, name='water_plant'),
-    path('fertilize_plant', views.fertilize_plant, name='fertilize_plant'),
+    path('add_plant_event', views.add_plant_event, name='add_plant_event'),
+    path('bulk_add_plant_events', views.bulk_add_plant_events, name='bulk_add_plant_events'),
     path('water_tray', views.water_tray, name='water_tray'),
     path('fertilize_tray', views.fertilize_tray, name='fertilize_tray'),
     path('add_plant_to_tray', views.add_plant_to_tray, name='add_plant_to_tray'),
     path('remove_plant_from_tray', views.remove_plant_from_tray, name='remove_plant_from_tray'),
     path('bulk_add_plants_to_tray', views.bulk_add_plants_to_tray, name='bulk_add_plants_to_tray'),
-    path('bulk_remove_plants_from_tray', views.bulk_remove_plants_from_tray, name='bulk_remove_plants_from_tray'),
-    path('bulk_water_plants', views.bulk_water_plants, name='bulk_water_plants'),
-    path('bulk_fertilize_plants', views.bulk_fertilize_plants, name='bulk_fertilize_plants')
+    path('bulk_remove_plants_from_tray', views.bulk_remove_plants_from_tray, name='bulk_remove_plants_from_tray')
 ]

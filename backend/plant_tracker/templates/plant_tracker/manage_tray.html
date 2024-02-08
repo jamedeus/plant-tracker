@@ -262,6 +262,7 @@
             event.preventDefault();
             payload = {
                 plants: [],
+                event_type: 'water',
                 timestamp: localToUTC(document.getElementById("bulkManageTime").value)
             }
             event.target.parentElement.parentElement.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
@@ -269,7 +270,7 @@
                     payload.plants.push(checkbox.value);
                 }
             });
-            const response = await sendPostRequest('/bulk_water_plants', payload);
+            const response = await sendPostRequest('/bulk_add_plant_events', payload);
             if (response) {
                 window.location.reload();
             }
@@ -279,6 +280,7 @@
             event.preventDefault();
             payload = {
                 plants: [],
+                event_type: 'fertilize',
                 timestamp: localToUTC(document.getElementById("bulkManageTime").value)
             }
             event.target.parentElement.parentElement.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
@@ -286,7 +288,7 @@
                     payload.plants.push(checkbox.value);
                 }
             });
-            const response = await sendPostRequest('/bulk_fertilize_plants', payload);
+            const response = await sendPostRequest('/bulk_add_plant_events', payload);
             if (response) {
                 window.location.reload();
             }
