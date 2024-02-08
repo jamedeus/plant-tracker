@@ -336,11 +336,23 @@ def bulk_add_plants_to_tray(tray, data):
     '''Adds a list of Plants to specified Tray (creates database relation for each)
     Requires POST with JSON body containing tray_id and plants (list of UUIDs) keys
     '''
-    added = []
     for plant_id in data["plants"]:
         plant = get_plant_by_uuid(plant_id)
         if plant:
-            added.append(plant_id)
             plant.tray = tray
+            plant.save()
+    return HttpResponseRedirect(f'/manage/{tray.id}')
+
+
+@requires_json_post
+@get_tray_from_post_body
+def bulk_remove_plants_from_tray(tray, data):
+    '''Removes a list of Plants from specified Tray (deletes database relations)
+    Requires POST with JSON body containing plants key (list of UUIDs to remove)
+    '''
+    for plant_id in data["plants"]:
+        plant = get_plant_by_uuid(plant_id)
+        if plant:
+            plant.tray = None
             plant.save()
     return HttpResponseRedirect(f'/manage/{tray.id}')

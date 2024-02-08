@@ -33,6 +33,7 @@
 
         <div id="plants" class="text-center mb-5 mx-auto">
             <h2>Plants in tray:</h2>
+            <button class="btn btn-primary mb-3" onClick="manageModal.show();">Manage</button>
             {% for plant_id, params in details.items %}
                 <div class="card text-center mb-3" style="width: 18rem;">
                     <div class="card-header d-flex">
@@ -79,7 +80,7 @@
         </div>
     </div>
 
-    {# Modal shown when user clicks edit button #}
+    {# Modal shown when user clicks edit button (tray details) #}
     <div id="editDetails" class="modal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -94,6 +95,36 @@
         </div>
     </div>
 
+    {# Modal shown when  #}
+    <div id="managePlants" class="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Select Plants</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="d-flex flex-column">
+                        <div class="mx-auto mb-3">
+                        {% for plant_id, params in details.items %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="{{ plant_id }}" id="{{ plant_id }}">
+                                <label class="form-check-label" for="{{ plant_id }}">{{ params.name }}</label>
+                            </div>
+                        {% endfor %}
+                        </div>
+
+                        <div class="mx-auto">
+                            <button class="btn btn-primary">Water</button>
+                            <button class="btn btn-success">Fertilize</button>
+                            <button class="btn btn-danger" onClick="bulkRemovePlants(event);">Remove</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
     {{ tray.id|json_script:"uuid" }}
 
     <script>
@@ -101,6 +132,7 @@
         const trayUUID = JSON.parse(document.getElementById('uuid').textContent);
 
         const editModal = new bootstrap.Modal(document.getElementById('editDetails'));
+        const manageModal = new bootstrap.Modal(document.getElementById('managePlants'));
 
         // Auto-fill water and fertilize inputs with current timestamp
         document.getElementById("waterTime").value = luxon.DateTime.now().toFormat("yyyy-MM-dd'T'HH:mm:ss");
@@ -206,6 +238,20 @@
                 }
             });
             sendPostRequest('/bulk_add_plants_to_tray', payload);
+        }
+
+        async function bulkRemovePlants(event) {
+            event.preventDefault();
+            payload = {
+                tray_id: trayUUID,
+                plants: []
+            }
+            event.target.parentElement.parentElement.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                if (checkbox.checked) {
+                    payload.plants.push(checkbox.value);
+                }
+            });
+            sendPostRequest('/bulk_remove_plants_from_tray', payload);
         }
     </script>
 </body>

@@ -306,6 +306,34 @@ class ManagePageTests(TestCase):
         self.assertEqual(plant2.tray, tray)
         self.assertEqual(len(tray.plant_set.all()), 2)
 
+    def test_bulk_remove_plants_from_tray(self):
+        # Create test tray with 2 plants, confirm relation exists
+        tray = Tray.objects.create(id=uuid4())
+        plant1 = Plant.objects.create(id=uuid4(), tray=tray)
+        plant2 = Plant.objects.create(id=uuid4(), tray=tray)
+        self.assertEqual(plant1.tray, tray)
+        self.assertEqual(plant2.tray, tray)
+        self.assertEqual(len(tray.plant_set.all()), 2)
+
+        # Send bulk_add_plants_to_tray request with both IDs
+        payload = {
+            'tray_id': tray.id,
+            'plants': [
+                plant1.id,
+                plant2.id
+            ]
+        }
+        response = self.client.post('/bulk_remove_plants_from_tray', payload)
+
+        # Confirm page refreshed, confirm plants both have relation
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, f'/manage/{tray.id}')
+        plant1.refresh_from_db()
+        plant2.refresh_from_db()
+        self.assertIsNone(plant1.tray)
+        self.assertIsNone(plant2.tray)
+        self.assertEqual(len(tray.plant_set.all()), 0)
+
 
 class InvalidRequestTests(TestCase):
     def setUp(self):
