@@ -72,10 +72,20 @@ class ManagePageTests(TestCase):
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
 
+        # Create test plants and trays
+        self.plant1 = Plant.objects.create(id=uuid4())
+        self.plant2 = Plant.objects.create(id=uuid4())
+        self.tray1 = Tray.objects.create(id=uuid4())
+
+    def _refresh_test_models(self):
+        self.plant1.refresh_from_db()
+        self.plant2.refresh_from_db()
+        self.tray1.refresh_from_db()
+
     def test_registration_plant(self):
-        # Confirm no plants or trays in database
-        self.assertEqual(len(Plant.objects.all()), 0)
-        self.assertEqual(len(Tray.objects.all()), 0)
+        # Confirm no plants or trays in database (except test entries)
+        self.assertEqual(len(Plant.objects.all()), 2)
+        self.assertEqual(len(Tray.objects.all()), 1)
 
         # Send plant registration request
         test_id = uuid4()
@@ -94,19 +104,19 @@ class ManagePageTests(TestCase):
         self.assertEqual(response.url, f'/manage/{test_id}')
 
         # Confirm exists in database, has correct parameters
-        self.assertEqual(len(Plant.objects.all()), 1)
+        self.assertEqual(len(Plant.objects.all()), 3)
         plant = Plant.objects.get(id=test_id)
         self.assertEqual(plant.name, 'test plant')
         self.assertEqual(plant.species, 'Giant Sequoia')
         self.assertEqual(plant.description, '300 feet and a few thousand years old')
         self.assertEqual(plant.pot_size, 4)
-        # Confirm tray not created
-        self.assertEqual(len(Tray.objects.all()), 0)
+        # Confirm no extra tray created
+        self.assertEqual(len(Tray.objects.all()), 1)
 
     def test_registration_tray(self):
-        # Confirm no plants or trays in database
-        self.assertEqual(len(Plant.objects.all()), 0)
-        self.assertEqual(len(Tray.objects.all()), 0)
+        # Confirm no plants or trays in database (except test entries)
+        self.assertEqual(len(Plant.objects.all()), 2)
+        self.assertEqual(len(Tray.objects.all()), 1)
 
         # Send registration request
         test_id = uuid4()
@@ -123,12 +133,12 @@ class ManagePageTests(TestCase):
         self.assertEqual(response.url, f'/manage/{test_id}')
 
         # Confirm exists in database, has correct parameters
-        self.assertEqual(len(Tray.objects.all()), 1)
+        self.assertEqual(len(Tray.objects.all()), 2)
         tray = Tray.objects.get(id=test_id)
         self.assertEqual(tray.name, 'test tray')
         self.assertEqual(tray.location, 'top shelf')
-        # Confirm plant not created
-        self.assertEqual(len(Plant.objects.all()), 0)
+        # Confirm no extra plant created
+        self.assertEqual(len(Plant.objects.all()), 2)
 
     def test_manage_new_plant(self):
         # Request management page for new plant, confirm register template renders
@@ -137,46 +147,38 @@ class ManagePageTests(TestCase):
         self.assertTemplateUsed(response, 'plant_tracker/register.html')
 
     def test_manage_existing_plant(self):
-        # Create test plant
-        test_id = uuid4()
-        Plant.objects.create(id=test_id)
-
-        # Request management page, confirm plant management template renders
-        response = self.client.get(f'/manage/{test_id}')
+        # Request management page for test plant, confirm correct template renders
+        response = self.client.get(f'/manage/{self.plant1.id}')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/manage_plant.html')
         self.assertTemplateNotUsed(response, 'plant_tracker/manage_tray.html')
 
     def test_manage_existing_tray(self):
-        # Create test tray with 1 plant
-        tray_id = uuid4()
-        plant_id = uuid4()
-        tray = Tray.objects.create(id=tray_id)
-        Plant.objects.create(id=plant_id, tray=tray)
+        # Add test plant to tray
+        self.plant1.tray = self.tray1
+        self.plant1.save()
 
-        # Request management page, confirm tray management template renders
-        response = self.client.get(f'/manage/{tray_id}')
+        # Request management page for test tray, confirm correct template renders
+        response = self.client.get(f'/manage/{self.tray1.id}')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/manage_tray.html')
         self.assertTemplateNotUsed(response, 'plant_tracker/manage_plant.html')
 
         # Confirm context includes tray, correct plant details
-        self.assertEqual(response.context['tray'], tray)
+        self.assertEqual(response.context['tray'], self.tray1)
         self.assertEqual(len(response.context['details']), 1)
-        self.assertEqual(response.context['details'][plant_id]['name'], None)
-        self.assertEqual(response.context['details'][plant_id]['last_watered'], None)
-        self.assertEqual(response.context['details'][plant_id]['last_fertilized'], None)
+        self.assertEqual(response.context['details'][self.plant1.id]['name'], None)
+        self.assertEqual(response.context['details'][self.plant1.id]['last_watered'], None)
+        self.assertEqual(response.context['details'][self.plant1.id]['last_fertilized'], None)
 
     def test_edit_plant_details(self):
-        # Create test plant with no name, confirm exists in database
-        test_id = uuid4()
-        Plant.objects.create(id=test_id)
-        self.assertEqual(len(Plant.objects.all()), 1)
-        self.assertIsNone(Plant.objects.all()[0].name)
+        # Confirm test plant has no name or species
+        self.assertIsNone(self.plant1.name)
+        self.assertIsNone(self.plant1.species)
 
         # Send edit details request, confirm redirects to manage page
         payload = {
-            'plant_id': test_id,
+            'plant_id': self.plant1.id,
             'name': 'test plant',
             'species': 'Giant Sequoia',
             'description': '300 feet and a few thousand years old',
@@ -184,162 +186,151 @@ class ManagePageTests(TestCase):
         }
         response = self.client.post('/edit_plant', payload)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/manage/{test_id}')
+        self.assertEqual(response.url, f'/manage/{self.plant1.id}')
 
         # Confirm no additional plant created, confirm details now match
-        self.assertEqual(len(Plant.objects.all()), 1)
-        self.assertEqual(Plant.objects.all()[0].name, 'test plant')
-        self.assertEqual(Plant.objects.all()[0].species, 'Giant Sequoia')
+        self.assertEqual(len(Plant.objects.all()), 2)
+        self._refresh_test_models()
+        self.assertEqual(self.plant1.name, 'test plant')
+        self.assertEqual(self.plant1.species, 'Giant Sequoia')
 
     def test_edit_tray_details(self):
-        # Create test tray with no name, confirm exists in database
-        test_id = uuid4()
-        Tray.objects.create(id=test_id)
-        self.assertEqual(len(Tray.objects.all()), 1)
-        self.assertIsNone(Tray.objects.all()[0].name)
+        # Confirm test tray has no name
+        self.assertIsNone(self.tray1.name)
 
         # Send edit details request, confirm redirects to manage page
         payload = {
-            'tray_id': test_id,
+            'tray_id': self.tray1.id,
             'name': 'test tray',
             'location': 'middle shelf'
         }
         response = self.client.post('/edit_tray', payload)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/manage/{test_id}')
+        self.assertEqual(response.url, f'/manage/{self.tray1.id}')
 
-        # Confirm no additional plant created, confirm details now match
+        # Confirm no additional tray created, confirm details now match
         self.assertEqual(len(Tray.objects.all()), 1)
-        self.assertEqual(Tray.objects.all()[0].name, 'test tray')
-        self.assertEqual(Tray.objects.all()[0].location, 'middle shelf')
+        self._refresh_test_models()
+        self.assertEqual(self.tray1.name, 'test tray')
+        self.assertEqual(self.tray1.location, 'middle shelf')
 
     def test_water_plant(self):
-        # Create test plant, confirm no water events
-        plant = Plant.objects.create(id=uuid4())
-        self.assertIsNone(plant.last_watered())
+        # Confirm test plant has no water events
+        self.assertIsNone(self.plant1.last_watered())
         self.assertEqual(len(WaterEvent.objects.all()), 0)
 
         payload = {
-            'plant_id': plant.id,
+            'plant_id': self.plant1.id,
             'timestamp': '2024-02-06T03:06:26.000Z'
         }
 
         # Send water request, confirm event created
         response = self.client.post('/water_plant', payload)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {"action": "water", "plant": str(plant.id)})
+        self.assertEqual(response.json(), {"action": "water", "plant": str(self.plant1.id)})
         self.assertEqual(len(WaterEvent.objects.all()), 1)
-        self.assertEqual(plant.last_watered(), '2024-02-06T03:06:26+00:00')
+        self.assertEqual(self.plant1.last_watered(), '2024-02-06T03:06:26+00:00')
 
     def test_fertilize_plant(self):
-        # Create test plant, confirm no fertilize events
-        plant = Plant.objects.create(id=uuid4())
-        self.assertIsNone(plant.last_fertilized())
+        # Confirm test plant has no fertilize events
+        self.assertIsNone(self.plant1.last_fertilized())
         self.assertEqual(len(FertilizeEvent.objects.all()), 0)
 
         payload = {
-            'plant_id': plant.id,
+            'plant_id': self.plant1.id,
             'timestamp': '2024-02-06T03:06:26.000Z'
         }
 
         # Send water request, confirm event created
         response = self.client.post('/fertilize_plant', payload)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {"action": "fertilize", "plant": str(plant.id)})
+        self.assertEqual(response.json(), {"action": "fertilize", "plant": str(self.plant1.id)})
         self.assertEqual(len(FertilizeEvent.objects.all()), 1)
-        self.assertEqual(plant.last_fertilized(), '2024-02-06T03:06:26+00:00')
+        self.assertEqual(self.plant1.last_fertilized(), '2024-02-06T03:06:26+00:00')
 
     def test_add_plant_to_tray(self):
-        # Create test tray and plant, confirm no relation
-        tray = Tray.objects.create(id=uuid4())
-        plant = Plant.objects.create(id=uuid4())
-        self.assertIsNone(plant.tray)
-        self.assertEqual(len(tray.plant_set.all()), 0)
+        # Confirm test plant and tray have no database relation
+        self.assertIsNone(self.plant1.tray)
+        self.assertEqual(len(self.tray1.plant_set.all()), 0)
 
-        # Send add_plant_to_tray request, confirm relation created
-        payload = {'plant_id': plant.id, 'tray_id': tray.id}
+        # Send add_plant_to_tray request, confirm response + relation created
+        payload = {'plant_id': self.plant1.id, 'tray_id': self.tray1.id}
         response = self.client.post('/add_plant_to_tray', payload)
         self.assertEqual(response.status_code, 200)
-        plant.refresh_from_db()
-        self.assertEqual(plant.tray, tray)
-        self.assertEqual(len(tray.plant_set.all()), 1)
+        self._refresh_test_models()
+        self.assertEqual(self.plant1.tray, self.tray1)
+        self.assertEqual(len(self.tray1.plant_set.all()), 1)
 
     def test_remove_plant_from_tray(self):
-        # Create test tray and plant with relation, confirm relation
-        tray = Tray.objects.create(id=uuid4())
-        plant = Plant.objects.create(id=uuid4(), tray=tray)
-        self.assertEqual(plant.tray, tray)
-        self.assertEqual(len(tray.plant_set.all()), 1)
+        # Add test plant to tray, confirm relation
+        self.plant1.tray = self.tray1
+        self.plant1.save()
+        self.assertEqual(self.plant1.tray, self.tray1)
+        self.assertEqual(len(self.tray1.plant_set.all()), 1)
 
-        # Send add_plant_to_tray request, confirm relation created
-        response = self.client.post('/remove_plant_from_tray', {'plant_id': plant.id})
+        # Send add_plant_to_tray request, confirm response + relation removed
+        response = self.client.post('/remove_plant_from_tray', {'plant_id': self.plant1.id})
         self.assertEqual(response.status_code, 200)
-        plant.refresh_from_db()
-        self.assertIsNone(plant.tray)
-        self.assertEqual(len(tray.plant_set.all()), 0)
+        self._refresh_test_models()
+        self.assertIsNone(self.plant1.tray)
+        self.assertEqual(len(self.tray1.plant_set.all()), 0)
 
     def test_bulk_add_plants_to_tray(self):
-        # Create test tray and 2 plants, confirm no relation
-        tray = Tray.objects.create(id=uuid4())
-        plant1 = Plant.objects.create(id=uuid4())
-        plant2 = Plant.objects.create(id=uuid4())
-        self.assertIsNone(plant1.tray)
-        self.assertIsNone(plant2.tray)
-        self.assertEqual(len(tray.plant_set.all()), 0)
+        # Confirm test plants are not in test tray
+        self.assertIsNone(self.plant1.tray)
+        self.assertIsNone(self.plant2.tray)
+        self.assertEqual(len(self.tray1.plant_set.all()), 0)
 
         # Send bulk_add_plants_to_tray request with both IDs
         payload = {
-            'tray_id': tray.id,
+            'tray_id': self.tray1.id,
             'plants': [
-                plant1.id,
-                plant2.id
+                self.plant1.id,
+                self.plant2.id
             ]
         }
         response = self.client.post('/bulk_add_plants_to_tray', payload)
 
         # Confirm page refreshed, confirm plants both have relation
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/manage/{tray.id}')
-        plant1.refresh_from_db()
-        plant2.refresh_from_db()
-        self.assertEqual(plant1.tray, tray)
-        self.assertEqual(plant2.tray, tray)
-        self.assertEqual(len(tray.plant_set.all()), 2)
+        self.assertEqual(response.url, f'/manage/{self.tray1.id}')
+        self._refresh_test_models()
+        self.assertEqual(self.plant1.tray, self.tray1)
+        self.assertEqual(self.plant2.tray, self.tray1)
+        self.assertEqual(len(self.tray1.plant_set.all()), 2)
 
     def test_bulk_remove_plants_from_tray(self):
-        # Create test tray with 2 plants, confirm relation exists
-        tray = Tray.objects.create(id=uuid4())
-        plant1 = Plant.objects.create(id=uuid4(), tray=tray)
-        plant2 = Plant.objects.create(id=uuid4(), tray=tray)
-        self.assertEqual(plant1.tray, tray)
-        self.assertEqual(plant2.tray, tray)
-        self.assertEqual(len(tray.plant_set.all()), 2)
+        # Add 2 test plants to test tray, confirm relation exists
+        self.plant1.tray = self.tray1
+        self.plant2.tray = self.tray1
+        self.plant1.save()
+        self.plant2.save()
+        self.assertEqual(self.plant1.tray, self.tray1)
+        self.assertEqual(self.plant2.tray, self.tray1)
+        self.assertEqual(len(self.tray1.plant_set.all()), 2)
 
         # Send bulk_add_plants_to_tray request with both IDs
         payload = {
-            'tray_id': tray.id,
+            'tray_id': self.tray1.id,
             'plants': [
-                plant1.id,
-                plant2.id
+                self.plant1.id,
+                self.plant2.id
             ]
         }
         response = self.client.post('/bulk_remove_plants_from_tray', payload)
 
         # Confirm page refreshed, confirm plants both have relation
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/manage/{tray.id}')
-        plant1.refresh_from_db()
-        plant2.refresh_from_db()
-        self.assertIsNone(plant1.tray)
-        self.assertIsNone(plant2.tray)
-        self.assertEqual(len(tray.plant_set.all()), 0)
+        self.assertEqual(response.url, f'/manage/{self.tray1.id}')
+        self._refresh_test_models()
+        self.assertIsNone(self.plant1.tray)
+        self.assertIsNone(self.plant2.tray)
+        self.assertEqual(len(self.tray1.plant_set.all()), 0)
 
     def test_bulk_water_plants(self):
-        # Create 2 test plants, confirm no WaterEvents
-        plant1 = Plant.objects.create(id=uuid4())
-        plant2 = Plant.objects.create(id=uuid4())
-        self.assertEqual(len(plant1.waterevent_set.all()), 0)
-        self.assertEqual(len(plant2.waterevent_set.all()), 0)
+        # Confirm test plants have no WaterEvents
+        self.assertEqual(len(self.plant1.waterevent_set.all()), 0)
+        self.assertEqual(len(self.plant2.waterevent_set.all()), 0)
 
         # Create fake UUID that doesn't exist in database
         fake_id = uuid4()
@@ -347,8 +338,8 @@ class ManagePageTests(TestCase):
         # Send bulk_add_plants_to_tray request with both IDs
         payload = {
             'plants': [
-                str(plant1.id),
-                str(plant2.id),
+                str(self.plant1.id),
+                str(self.plant2.id),
                 str(fake_id)
             ],
             'timestamp': '2024-02-06T03:06:26.000Z'
@@ -361,19 +352,17 @@ class ManagePageTests(TestCase):
             response.json(),
             {
                 "action": "bulk_water",
-                "plants": [str(plant1.id), str(plant2.id)],
+                "plants": [str(self.plant1.id), str(self.plant2.id)],
                 "failed": [str(fake_id)]
             }
         )
-        self.assertEqual(len(plant1.waterevent_set.all()), 1)
-        self.assertEqual(len(plant2.waterevent_set.all()), 1)
+        self.assertEqual(len(self.plant1.waterevent_set.all()), 1)
+        self.assertEqual(len(self.plant2.waterevent_set.all()), 1)
 
     def test_bulk_fertilize_plants(self):
-        # Create 2 test plants, confirm no FertilizeEvents
-        plant1 = Plant.objects.create(id=uuid4())
-        plant2 = Plant.objects.create(id=uuid4())
-        self.assertEqual(len(plant1.fertilizeevent_set.all()), 0)
-        self.assertEqual(len(plant2.fertilizeevent_set.all()), 0)
+        # Confirm test plants have no FertilizeEvents
+        self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 0)
+        self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 0)
 
         # Create fake UUID that doesn't exist in database
         fake_id = uuid4()
@@ -381,8 +370,8 @@ class ManagePageTests(TestCase):
         # Send bulk_add_plants_to_tray request with both IDs
         payload = {
             'plants': [
-                str(plant1.id),
-                str(plant2.id),
+                str(self.plant1.id),
+                str(self.plant2.id),
                 str(fake_id)
             ],
             'timestamp': '2024-02-06T03:06:26.000Z'
@@ -395,12 +384,12 @@ class ManagePageTests(TestCase):
             response.json(),
             {
                 "action": "bulk_fertilize",
-                "plants": [str(plant1.id), str(plant2.id)],
+                "plants": [str(self.plant1.id), str(self.plant2.id)],
                 "failed": [str(fake_id)]
             }
         )
-        self.assertEqual(len(plant1.fertilizeevent_set.all()), 1)
-        self.assertEqual(len(plant2.fertilizeevent_set.all()), 1)
+        self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 1)
+        self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 1)
 
 
 class InvalidRequestTests(TestCase):
