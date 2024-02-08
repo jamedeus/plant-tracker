@@ -5,6 +5,7 @@ from functools import wraps
 from datetime import datetime
 
 from django.shortcuts import render
+from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponseRedirect
 
 from .models import Tray, Plant, WaterEvent, FertilizeEvent
@@ -57,10 +58,21 @@ def get_plant_from_post_body(func):
     '''
     @wraps(func)
     def wrapper(data, **kwargs):
-        plant = get_plant_by_uuid(data["plant_id"])
-        if plant is None:
-            return JsonResponse({"error": "plant not found"}, status=404)
-        return func(plant=plant, data=data, **kwargs)
+        try:
+            plant = get_plant_by_uuid(data["plant_id"])
+            if plant is None:
+                return JsonResponse({"error": "plant not found"}, status=404)
+            return func(plant=plant, data=data, **kwargs)
+        except KeyError:
+            return JsonResponse(
+                {"error": "POST body missing required 'plant_id' key"},
+                status=400
+            )
+        except ValidationError:
+            return JsonResponse(
+                {"error": "plant_id key is not a valid UUID"},
+                status=400
+            )
     return wrapper
 
 
@@ -71,10 +83,21 @@ def get_tray_from_post_body(func):
     '''
     @wraps(func)
     def wrapper(data, **kwargs):
-        tray = get_tray_by_uuid(data["tray_id"])
-        if tray is None:
-            return JsonResponse({"error": "tray not found"}, status=404)
-        return func(tray=tray, data=data, **kwargs)
+        try:
+            tray = get_tray_by_uuid(data["tray_id"])
+            if tray is None:
+                return JsonResponse({"error": "tray not found"}, status=404)
+            return func(tray=tray, data=data, **kwargs)
+        except KeyError:
+            return JsonResponse(
+                {"error": "POST body missing required 'tray_id' key"},
+                status=400
+            )
+        except ValidationError:
+            return JsonResponse(
+                {"error": "tray_id key is not a valid UUID"},
+                status=400
+            )
     return wrapper
 
 
@@ -88,7 +111,10 @@ def get_timestamp_from_post_body(func):
             timestamp = datetime.fromisoformat(data["timestamp"].rstrip("Z"))
             return func(timestamp=timestamp, data=data, **kwargs)
         except KeyError:
-            return JsonResponse({"error": "POST body missing required 'timestamp' key"}, status=400)
+            return JsonResponse(
+                {"error": "POST body missing required 'timestamp' key"},
+                status=400
+            )
         except ValueError:
             return JsonResponse({"error": "timestamp format invalid"}, status=400)
     return wrapper

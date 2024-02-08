@@ -308,6 +308,10 @@ class ManagePageTests(TestCase):
 
 
 class InvalidRequestTests(TestCase):
+    def setUp(self):
+        self.test_plant = Plant.objects.create(id=uuid4())
+        self.test_tray = Tray.objects.create(id=uuid4())
+
     def test_invalid_get_request(self):
         # Send GET request to endpoint that requires POST, confirm error
         response = self.client.get('/register')
@@ -324,15 +328,75 @@ class InvalidRequestTests(TestCase):
         self.assertEqual(response.status_code, 405)
         self.assertEqual(response.json(), {'Error': 'Request body must be JSON'})
 
-    def test_invalid_uuid(self):
+    def test_uuid_does_not_exist(self):
         # Send POST with UUID that does not exist in database, confirm error
         response = self.client.post(
             '/water_plant',
-            {'plant_id': uuid4(), 'timestamp': ''},
+            {'plant_id': uuid4(), 'timestamp': '2024-02-06T03:06:26.000Z'},
             content_type='application/json'
         )
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(), {"error": "plant not found"})
+
+    def test_missing_plant_id(self):
+        # Send POST with no plant_id key in body, confirm error
+        response = self.client.post(
+            '/water_plant',
+            {'timestamp': '2024-02-06T03:06:26.000Z'},
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {"error": "POST body missing required 'plant_id' key"})
+
+    def test_missing_tray_id(self):
+        # Send POST with no tray_id key in body, confirm error
+        response = self.client.post(
+            '/water_tray',
+            {'timestamp': '2024-02-06T03:06:26.000Z'},
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {"error": "POST body missing required 'tray_id' key"})
+
+    def test_invalid_plant_uuid(self):
+        # Send POST with plant_id that is not a valid UUID, confirm error
+        response = self.client.post(
+            '/water_plant',
+            {'plant_id': '31670857', 'timestamp': '2024-02-06T03:06:26.000Z'},
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {"error": "plant_id key is not a valid UUID"})
+
+    def test_invalid_tray_uuid(self):
+        # Send POST with tray_id that is not a valid UUID, confirm error
+        response = self.client.post(
+            '/water_tray',
+            {'tray_id': '31670857', 'timestamp': '2024-02-06T03:06:26.000Z'},
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {"error": "tray_id key is not a valid UUID"})
+
+    def test_missing_timestamp_key(self):
+        # Send POST with no timestamp key in body, confirm error
+        response = self.client.post(
+            '/water_plant',
+            {'plant_id': self.test_plant.id},
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {"error": "POST body missing required 'timestamp' key"})
+
+    def test_invalid_timestamp_format(self):
+        # Send POST with invalid timestamp in body, confirm error
+        response = self.client.post(
+            '/water_plant',
+            {'plant_id': self.test_plant.id, 'timestamp': '04:20'},
+            content_type='application/json'
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {"error": "timestamp format invalid"})
 
 
 class TrayModelTests(TestCase):
