@@ -114,9 +114,12 @@
                         {% endfor %}
                         </div>
 
+                        <div class="mx-auto mb-3">
+                            <input type="datetime-local" id="bulkManageTime" name="bulkManageTime" step="1" />
+                        </div>
                         <div class="mx-auto">
-                            <button class="btn btn-primary">Water</button>
-                            <button class="btn btn-success">Fertilize</button>
+                            <button class="btn btn-primary" onClick="bulkWaterPlants(event);">Water</button>
+                            <button class="btn btn-success" onClick="bulkFertilizePlants(event);">Fertilize</button>
                             <button class="btn btn-danger" onClick="bulkRemovePlants(event);">Remove</button>
                         </div>
                     </form>
@@ -137,6 +140,7 @@
         // Auto-fill water and fertilize inputs with current timestamp
         document.getElementById("waterTime").value = luxon.DateTime.now().toFormat("yyyy-MM-dd'T'HH:mm:ss");
         document.getElementById("fertilizeTime").value = luxon.DateTime.now().toFormat("yyyy-MM-dd'T'HH:mm:ss");
+        document.getElementById("bulkManageTime").value = luxon.DateTime.now().toFormat("yyyy-MM-dd'T'HH:mm:ss");
 
         // Takes name of cookie, returns cookie
         function getCookie(name) {
@@ -252,6 +256,40 @@
                 }
             });
             sendPostRequest('/bulk_remove_plants_from_tray', payload);
+        }
+
+        async function bulkWaterPlants(event) {
+            event.preventDefault();
+            payload = {
+                plants: [],
+                timestamp: localToUTC(document.getElementById("bulkManageTime").value)
+            }
+            event.target.parentElement.parentElement.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                if (checkbox.checked) {
+                    payload.plants.push(checkbox.value);
+                }
+            });
+            const response = await sendPostRequest('/bulk_water_plants', payload);
+            if (response) {
+                window.location.reload();
+            }
+        }
+
+        async function bulkFertilizePlants(event) {
+            event.preventDefault();
+            payload = {
+                plants: [],
+                timestamp: localToUTC(document.getElementById("bulkManageTime").value)
+            }
+            event.target.parentElement.parentElement.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                if (checkbox.checked) {
+                    payload.plants.push(checkbox.value);
+                }
+            });
+            const response = await sendPostRequest('/bulk_fertilize_plants', payload);
+            if (response) {
+                window.location.reload();
+            }
         }
     </script>
 </body>

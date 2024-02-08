@@ -334,6 +334,74 @@ class ManagePageTests(TestCase):
         self.assertIsNone(plant2.tray)
         self.assertEqual(len(tray.plant_set.all()), 0)
 
+    def test_bulk_water_plants(self):
+        # Create 2 test plants, confirm no WaterEvents
+        plant1 = Plant.objects.create(id=uuid4())
+        plant2 = Plant.objects.create(id=uuid4())
+        self.assertEqual(len(plant1.waterevent_set.all()), 0)
+        self.assertEqual(len(plant2.waterevent_set.all()), 0)
+
+        # Create fake UUID that doesn't exist in database
+        fake_id = uuid4()
+
+        # Send bulk_add_plants_to_tray request with both IDs
+        payload = {
+            'plants': [
+                str(plant1.id),
+                str(plant2.id),
+                str(fake_id)
+            ],
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        }
+        response = self.client.post('/bulk_water_plants', payload)
+
+        # Confirm response, confirm WaterEvent created for both plants
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {
+                "action": "bulk_water",
+                "plants": [str(plant1.id), str(plant2.id)],
+                "failed": [str(fake_id)]
+            }
+        )
+        self.assertEqual(len(plant1.waterevent_set.all()), 1)
+        self.assertEqual(len(plant2.waterevent_set.all()), 1)
+
+    def test_bulk_fertilize_plants(self):
+        # Create 2 test plants, confirm no FertilizeEvents
+        plant1 = Plant.objects.create(id=uuid4())
+        plant2 = Plant.objects.create(id=uuid4())
+        self.assertEqual(len(plant1.fertilizeevent_set.all()), 0)
+        self.assertEqual(len(plant2.fertilizeevent_set.all()), 0)
+
+        # Create fake UUID that doesn't exist in database
+        fake_id = uuid4()
+
+        # Send bulk_add_plants_to_tray request with both IDs
+        payload = {
+            'plants': [
+                str(plant1.id),
+                str(plant2.id),
+                str(fake_id)
+            ],
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        }
+        response = self.client.post('/bulk_fertilize_plants', payload)
+
+        # Confirm response, confirm WaterEvent created for both plants
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {
+                "action": "bulk_fertilize",
+                "plants": [str(plant1.id), str(plant2.id)],
+                "failed": [str(fake_id)]
+            }
+        )
+        self.assertEqual(len(plant1.fertilizeevent_set.all()), 1)
+        self.assertEqual(len(plant2.fertilizeevent_set.all()), 1)
+
 
 class InvalidRequestTests(TestCase):
     def setUp(self):

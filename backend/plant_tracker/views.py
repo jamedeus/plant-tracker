@@ -258,10 +258,7 @@ def water_plant(plant, timestamp, data):
     '''Creates new WaterEvent for specified Plant entry
     Requires POST with JSON body containing plant_id and timestamp keys
     '''
-    WaterEvent.objects.create(
-        plant=plant,
-        timestamp=timestamp
-    )
+    WaterEvent.objects.create(plant=plant, timestamp=timestamp)
     return JsonResponse({"action": "water", "plant": plant.id}, status=200)
 
 
@@ -272,10 +269,7 @@ def fertilize_plant(plant, timestamp, data):
     '''Creates new FertilizeEvent for specified Plant entry
     Requires POST with JSON body containing plant_id and timestamp keys
     '''
-    FertilizeEvent.objects.create(
-        plant=plant,
-        timestamp=timestamp
-    )
+    FertilizeEvent.objects.create(plant=plant, timestamp=timestamp)
     return JsonResponse({"action": "fertilize", "plant": plant.id}, status=200)
 
 
@@ -299,6 +293,48 @@ def fertilize_tray(tray, timestamp, data):
     '''
     tray.fertilize_all(timestamp=timestamp)
     return JsonResponse({"action": "fertilize tray", "tray": tray.id}, status=200)
+
+
+@requires_json_post
+@get_timestamp_from_post_body
+def bulk_water_plants(timestamp, data):
+    '''Creates new WaterEvents for each Plant specified in POST body
+    Requires POST with JSON body containing timestamp and plants (list of UUIDs) keys
+    '''
+    watered = []
+    failed = []
+    for plant_id in data["plants"]:
+        plant = get_plant_by_uuid(plant_id)
+        if plant:
+            WaterEvent.objects.create(plant=plant, timestamp=timestamp)
+            watered.append(plant_id)
+        else:
+            failed.append(plant_id)
+    return JsonResponse(
+        {"action": "bulk_water", "plants": watered, "failed": failed},
+        status=200
+    )
+
+
+@requires_json_post
+@get_timestamp_from_post_body
+def bulk_fertilize_plants(timestamp, data):
+    '''Creates new FertilizeEvent for each Plant specified in POST body
+    Requires POST with JSON body containing timestamp and plants (list of UUIDs) keys
+    '''
+    fertilized = []
+    failed = []
+    for plant_id in data["plants"]:
+        plant = get_plant_by_uuid(plant_id)
+        if plant:
+            FertilizeEvent.objects.create(plant=plant, timestamp=timestamp)
+            fertilized.append(plant_id)
+        else:
+            failed.append(plant_id)
+    return JsonResponse(
+        {"action": "bulk_fertilize", "plants": fertilized, "failed": failed},
+        status=200
+    )
 
 
 @requires_json_post

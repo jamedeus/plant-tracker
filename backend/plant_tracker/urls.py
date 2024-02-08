@@ -20,5 +20,7 @@ urlpatterns = [
     path('add_plant_to_tray', views.add_plant_to_tray, name='add_plant_to_tray'),
     path('remove_plant_from_tray', views.remove_plant_from_tray, name='remove_plant_from_tray'),
     path('bulk_add_plants_to_tray', views.bulk_add_plants_to_tray, name='bulk_add_plants_to_tray'),
-    path('bulk_remove_plants_from_tray', views.bulk_remove_plants_from_tray, name='bulk_remove_plants_from_tray')
+    path('bulk_remove_plants_from_tray', views.bulk_remove_plants_from_tray, name='bulk_remove_plants_from_tray'),
+    path('bulk_water_plants', views.bulk_water_plants, name='bulk_water_plants'),
+    path('bulk_fertilize_plants', views.bulk_fertilize_plants, name='bulk_fertilize_plants')
 ]
