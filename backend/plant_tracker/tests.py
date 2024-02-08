@@ -4,7 +4,7 @@ from datetime import datetime
 
 from django.test import Client, TestCase
 
-from .models import Tray, Plant, WaterEvent, FertilizeEvent
+from .models import Tray, Plant, WaterEvent, FertilizeEvent, PruneEvent, RepotEvent
 
 
 # Subclass Client, add default for content_type arg
@@ -214,42 +214,6 @@ class ManagePageTests(TestCase):
         self.assertEqual(self.tray1.name, 'test tray')
         self.assertEqual(self.tray1.location, 'middle shelf')
 
-    def test_water_plant(self):
-        # Confirm test plant has no water events
-        self.assertIsNone(self.plant1.last_watered())
-        self.assertEqual(len(WaterEvent.objects.all()), 0)
-
-        payload = {
-            'plant_id': self.plant1.id,
-            'event_type': 'water',
-            'timestamp': '2024-02-06T03:06:26.000Z'
-        }
-
-        # Send water request, confirm event created
-        response = self.client.post('/add_plant_event', payload)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {"action": "water", "plant": str(self.plant1.id)})
-        self.assertEqual(len(WaterEvent.objects.all()), 1)
-        self.assertEqual(self.plant1.last_watered(), '2024-02-06T03:06:26+00:00')
-
-    def test_fertilize_plant(self):
-        # Confirm test plant has no fertilize events
-        self.assertIsNone(self.plant1.last_fertilized())
-        self.assertEqual(len(FertilizeEvent.objects.all()), 0)
-
-        payload = {
-            'plant_id': self.plant1.id,
-            'event_type': 'fertilize',
-            'timestamp': '2024-02-06T03:06:26.000Z'
-        }
-
-        # Send water request, confirm event created
-        response = self.client.post('/add_plant_event', payload)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {"action": "fertilize", "plant": str(self.plant1.id)})
-        self.assertEqual(len(FertilizeEvent.objects.all()), 1)
-        self.assertEqual(self.plant1.last_fertilized(), '2024-02-06T03:06:26+00:00')
-
     def test_add_plant_to_tray(self):
         # Confirm test plant and tray have no database relation
         self.assertIsNone(self.plant1.tray)
@@ -328,6 +292,92 @@ class ManagePageTests(TestCase):
         self.assertIsNone(self.plant1.tray)
         self.assertIsNone(self.plant2.tray)
         self.assertEqual(len(self.tray1.plant_set.all()), 0)
+
+
+class TestPlantEvents(TestCase):
+    def setUp(self):
+        # Set default content_type for post requests (avoid long lines)
+        self.client = JSONClient()
+
+        # Create test plants and trays
+        self.plant1 = Plant.objects.create(id=uuid4())
+        self.plant2 = Plant.objects.create(id=uuid4())
+
+    def _refresh_test_models(self):
+        self.plant1.refresh_from_db()
+        self.plant2.refresh_from_db()
+
+    def test_water_plant(self):
+        # Confirm test plant has no water events
+        self.assertIsNone(self.plant1.last_watered())
+        self.assertEqual(len(WaterEvent.objects.all()), 0)
+
+        payload = {
+            'plant_id': self.plant1.id,
+            'event_type': 'water',
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        }
+
+        # Send water request, confirm event created
+        response = self.client.post('/add_plant_event', payload)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"action": "water", "plant": str(self.plant1.id)})
+        self.assertEqual(len(WaterEvent.objects.all()), 1)
+        self.assertEqual(self.plant1.last_watered(), '2024-02-06T03:06:26+00:00')
+
+    def test_fertilize_plant(self):
+        # Confirm test plant has no fertilize events
+        self.assertIsNone(self.plant1.last_fertilized())
+        self.assertEqual(len(FertilizeEvent.objects.all()), 0)
+
+        payload = {
+            'plant_id': self.plant1.id,
+            'event_type': 'fertilize',
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        }
+
+        # Send water request, confirm event created
+        response = self.client.post('/add_plant_event', payload)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"action": "fertilize", "plant": str(self.plant1.id)})
+        self.assertEqual(len(FertilizeEvent.objects.all()), 1)
+        self.assertEqual(self.plant1.last_fertilized(), '2024-02-06T03:06:26+00:00')
+
+    def test_prune_plant(self):
+        # Confirm test plant has no prune events
+        self.assertIsNone(self.plant1.last_pruned())
+        self.assertEqual(len(PruneEvent.objects.all()), 0)
+
+        payload = {
+            'plant_id': self.plant1.id,
+            'event_type': 'prune',
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        }
+
+        # Send water request, confirm event created
+        response = self.client.post('/add_plant_event', payload)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"action": "prune", "plant": str(self.plant1.id)})
+        self.assertEqual(len(PruneEvent.objects.all()), 1)
+        self.assertEqual(self.plant1.last_pruned(), '2024-02-06T03:06:26+00:00')
+
+    def test_repot_plant(self):
+        # Confirm test plant has no repot events
+        self.assertIsNone(self.plant1.last_repotted())
+        self.assertEqual(len(RepotEvent.objects.all()), 0)
+
+        payload = {
+            'plant_id': self.plant1.id,
+            'event_type': 'repot',
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        }
+
+        # Send water request, confirm event created
+        response = self.client.post('/add_plant_event', payload)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"action": "repot", "plant": str(self.plant1.id)})
+        self.assertEqual(len(RepotEvent.objects.all()), 1)
+        self.assertEqual(self.plant1.last_repotted(), '2024-02-06T03:06:26+00:00')
 
     def test_bulk_water_plants(self):
         # Confirm test plants have no WaterEvents
@@ -488,7 +538,10 @@ class InvalidRequestTests(TestCase):
             {'plant_id': self.test_plant.id, 'timestamp': '2024-02-06T03:06:26.000Z', 'event_type': 'juice'}
         )
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json(), {"error": "invalid event_type, must be 'water' or 'fertilize'"})
+        self.assertEqual(
+            response.json(),
+            {"error": "invalid event_type, must be 'water', 'fertilize', 'prune', or 'repot"}
+        )
 
 
 class TrayModelTests(TestCase):

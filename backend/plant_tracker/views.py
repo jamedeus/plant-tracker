@@ -9,13 +9,15 @@ from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponseRedirect
 
 from generate_qr_code_grid import generate_layout
-from .models import Tray, Plant, WaterEvent, FertilizeEvent
+from .models import Tray, Plant, WaterEvent, FertilizeEvent, PruneEvent, RepotEvent
 
 
 # Map event types to model that should be instantiated
 events_map = {
     'water': WaterEvent,
-    'fertilize': FertilizeEvent
+    'fertilize': FertilizeEvent,
+    'prune': PruneEvent,
+    'repot': RepotEvent
 }
 
 
@@ -137,7 +139,7 @@ def get_event_type_from_post_body(func):
             if data["event_type"] in events_map.keys():
                 return func(event_type=data["event_type"], data=data, **kwargs)
             return JsonResponse(
-                {"error": "invalid event_type, must be 'water' or 'fertilize'"},
+                {"error": "invalid event_type, must be 'water', 'fertilize', 'prune', or 'repot"},
                 status=400
             )
         except KeyError:

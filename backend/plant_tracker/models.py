@@ -76,6 +76,20 @@ class Plant(models.Model):
             return last_event.timestamp.isoformat()
         return None
 
+    def last_pruned(self):
+        '''Returns timestamp string of last PruneEvent, or None if no events'''
+        last_event = self.pruneevent_set.all().order_by('timestamp').last()
+        if last_event:
+            return last_event.timestamp.isoformat()
+        return None
+
+    def last_repotted(self):
+        '''Returns timestamp string of last RepotEvent, or None if no events'''
+        last_event = self.repotevent_set.all().order_by('timestamp').last()
+        if last_event:
+            return last_event.timestamp.isoformat()
+        return None
+
 
 class WaterEvent(models.Model):
     '''Records timestamp when a Plant entry was watered'''
@@ -85,5 +99,17 @@ class WaterEvent(models.Model):
 
 class FertilizeEvent(models.Model):
     '''Records timestamp when a Plant entry was fertilized'''
+    plant = models.ForeignKey(Plant, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField()
+
+
+class PruneEvent(models.Model):
+    '''Records timestamp when a Plant entry was pruned'''
+    plant = models.ForeignKey(Plant, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField()
+
+
+class RepotEvent(models.Model):
+    '''Records timestamp when a Plant entry was repotted'''
     plant = models.ForeignKey(Plant, on_delete=models.CASCADE)
     timestamp = models.DateTimeField()
