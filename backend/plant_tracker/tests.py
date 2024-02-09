@@ -446,6 +446,195 @@ class TestPlantEvents(TestCase):
         self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 1)
         self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 1)
 
+    def test_delete_plant_event(self):
+        # Create WaterEvent, confirm exists
+        timestamp = timezone.now()
+        WaterEvent.objects.create(plant=self.plant1, timestamp=timestamp)
+        self.assertEqual(len(self.plant1.waterevent_set.all()), 1)
+
+        # Call delete_plant_event endpoint, confirm response + event deleted
+        payload = {
+            'plant_id': self.plant1.id,
+            'event_type': 'water',
+            'timestamp': timestamp.isoformat()
+        }
+        response = self.client.post('/delete_plant_event', payload)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {"deleted": "water", "plant": str(self.plant1.id)}
+        )
+        self.assertEqual(len(self.plant1.waterevent_set.all()), 0)
+
+
+class PlantModelTests(TestCase):
+    def setUp(self):
+        # Create blank test model to use in tests
+        self.plant = Plant.objects.create(id=uuid4())
+        # Create test datetime object for creating events
+        self.timestamp = timezone.now()
+
+    def test_last_event_methods(self):
+        # Confirm all methods return None when no events exist
+        self.assertIsNone(self.plant.last_watered())
+        self.assertIsNone(self.plant.last_fertilized())
+        self.assertIsNone(self.plant.last_pruned())
+        self.assertIsNone(self.plant.last_repotted())
+
+        # Create one event of each type
+        WaterEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
+        FertilizeEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
+        PruneEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
+        RepotEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
+
+        # Confirm all methods return expected timestamp
+        self.assertEqual(self.plant.last_watered(), self.timestamp.isoformat())
+        self.assertEqual(self.plant.last_fertilized(), self.timestamp.isoformat())
+        self.assertEqual(self.plant.last_pruned(), self.timestamp.isoformat())
+        self.assertEqual(self.plant.last_repotted(), self.timestamp.isoformat())
+
+    def test_get_water_timestamps(self):
+        # Create 3 WaterEvents for the plant, 1 day apart
+        WaterEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
+        WaterEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=1))
+        WaterEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=2))
+
+        # Confirm method returns correct list
+        self.assertEqual(
+            self.plant.get_water_timestamps(),
+            [
+                self.timestamp.isoformat(),
+                (self.timestamp - timedelta(days=1)).isoformat(),
+                (self.timestamp - timedelta(days=2)).isoformat()
+            ]
+        )
+
+    def test_get_fertilize_timestamps(self):
+        # Create 3 FertilizeEvent for the plant, 1 day apart
+        FertilizeEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
+        FertilizeEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=1))
+        FertilizeEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=2))
+
+        # Confirm method returns correct list
+        self.assertEqual(
+            self.plant.get_fertilize_timestamps(),
+            [
+                self.timestamp.isoformat(),
+                (self.timestamp - timedelta(days=1)).isoformat(),
+                (self.timestamp - timedelta(days=2)).isoformat()
+            ]
+        )
+
+    def test_get_prune_timestamps(self):
+        # Create 3 PruneEvent for the plant, 1 day apart
+        PruneEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
+        PruneEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=1))
+        PruneEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=2))
+
+        # Confirm method returns correct list
+        self.assertEqual(
+            self.plant.get_prune_timestamps(),
+            [
+                self.timestamp.isoformat(),
+                (self.timestamp - timedelta(days=1)).isoformat(),
+                (self.timestamp - timedelta(days=2)).isoformat()
+            ]
+        )
+
+    def test_get_repot_timestamps(self):
+        # Create 3 RepotEvent for the plant, 1 day apart
+        RepotEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
+        RepotEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=1))
+        RepotEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=2))
+
+        # Confirm method returns correct list
+        self.assertEqual(
+            self.plant.get_repot_timestamps(),
+            [
+                self.timestamp.isoformat(),
+                (self.timestamp - timedelta(days=1)).isoformat(),
+                (self.timestamp - timedelta(days=2)).isoformat()
+            ]
+        )
+
+
+class TrayModelTests(TestCase):
+    def setUp(self):
+        # Create test tray
+        self.test_tray = Tray.objects.create(id=uuid4(), name="Test tray")
+
+        # Create 2 plants with relations to Tray and 1 without
+        self.plant1 = Plant.objects.create(id=uuid4(), name="plant1", tray=self.test_tray)
+        self.plant2 = Plant.objects.create(id=uuid4(), name="plant2", tray=self.test_tray)
+        self.plant3 = Plant.objects.create(id=uuid4(), name="plant3")
+
+        # Set default content_type for post requests (avoid long lines)
+        self.client = JSONClient()
+
+    def test_water_all(self):
+        # Confirm plants have no water events
+        self.assertEqual(len(self.plant1.waterevent_set.all()), 0)
+        self.assertEqual(len(self.plant2.waterevent_set.all()), 0)
+        self.assertEqual(len(self.plant3.waterevent_set.all()), 0)
+
+        # Call water_all, plants in tray should have water event, other plant should not
+        self.test_tray.water_all(datetime.fromisoformat('2024-02-06T03:06:26+00:00'))
+        self.assertEqual(len(self.plant1.waterevent_set.all()), 1)
+        self.assertEqual(len(self.plant2.waterevent_set.all()), 1)
+        self.assertEqual(len(self.plant3.waterevent_set.all()), 0)
+
+    def test_fertilize_all(self):
+        # Confirm plants have no fertilize events
+        self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 0)
+        self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 0)
+        self.assertEqual(len(self.plant3.fertilizeevent_set.all()), 0)
+
+        # Call water_all, plants in tray should have fertilize event, other plant should not
+        self.test_tray.fertilize_all(datetime.fromisoformat('2024-02-06T03:06:26+00:00'))
+        self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 1)
+        self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 1)
+        self.assertEqual(len(self.plant3.fertilizeevent_set.all()), 0)
+
+    def test_water_tray_endpoint(self):
+        # Confirm plants have no water events
+        self.assertEqual(len(self.plant1.waterevent_set.all()), 0)
+        self.assertEqual(len(self.plant2.waterevent_set.all()), 0)
+        self.assertEqual(len(self.plant3.waterevent_set.all()), 0)
+
+        # Send water_tray request
+        payload = {
+            'tray_id': self.test_tray.id,
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        }
+        response = self.client.post('/water_tray', payload)
+
+        # Confirm response, confirm both plants in tray have water events, other plant does not
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"action": "water tray", "tray": str(self.test_tray.id)})
+        self.assertEqual(len(self.plant1.waterevent_set.all()), 1)
+        self.assertEqual(len(self.plant2.waterevent_set.all()), 1)
+        self.assertEqual(len(self.plant3.waterevent_set.all()), 0)
+
+    def test_fertilize_tray_endpoint(self):
+        # Confirm plants have no fertilize events
+        self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 0)
+        self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 0)
+        self.assertEqual(len(self.plant3.fertilizeevent_set.all()), 0)
+
+        # Send fertilize_tray request
+        payload = {
+            'tray_id': self.test_tray.id,
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        }
+        response = self.client.post('/fertilize_tray', payload)
+
+        # Confirm response, confirm both plants in tray have fertilize events, other plant does not
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"action": "fertilize tray", "tray": str(self.test_tray.id)})
+        self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 1)
+        self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 1)
+        self.assertEqual(len(self.plant3.fertilizeevent_set.all()), 0)
+
 
 class InvalidRequestTests(TestCase):
     def setUp(self):
@@ -544,171 +733,15 @@ class InvalidRequestTests(TestCase):
             {"error": "invalid event_type, must be 'water', 'fertilize', 'prune', or 'repot"}
         )
 
-
-class TrayModelTests(TestCase):
-    def setUp(self):
-        # Create test tray
-        self.test_tray = Tray.objects.create(id=uuid4(), name="Test tray")
-
-        # Create 2 plants with relations to Tray and 1 without
-        self.plant1 = Plant.objects.create(id=uuid4(), name="plant1", tray=self.test_tray)
-        self.plant2 = Plant.objects.create(id=uuid4(), name="plant2", tray=self.test_tray)
-        self.plant3 = Plant.objects.create(id=uuid4(), name="plant3")
-
-        # Set default content_type for post requests (avoid long lines)
-        self.client = JSONClient()
-
-    def test_water_all(self):
-        # Confirm plants have no water events
-        self.assertEqual(len(self.plant1.waterevent_set.all()), 0)
-        self.assertEqual(len(self.plant2.waterevent_set.all()), 0)
-        self.assertEqual(len(self.plant3.waterevent_set.all()), 0)
-
-        # Call water_all, plants in tray should have water event, other plant should not
-        self.test_tray.water_all(datetime.fromisoformat('2024-02-06T03:06:26+00:00'))
-        self.assertEqual(len(self.plant1.waterevent_set.all()), 1)
-        self.assertEqual(len(self.plant2.waterevent_set.all()), 1)
-        self.assertEqual(len(self.plant3.waterevent_set.all()), 0)
-
-    def test_fertilize_all(self):
-        # Confirm plants have no fertilize events
-        self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 0)
-        self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 0)
-        self.assertEqual(len(self.plant3.fertilizeevent_set.all()), 0)
-
-        # Call water_all, plants in tray should have fertilize event, other plant should not
-        self.test_tray.fertilize_all(datetime.fromisoformat('2024-02-06T03:06:26+00:00'))
-        self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 1)
-        self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 1)
-        self.assertEqual(len(self.plant3.fertilizeevent_set.all()), 0)
-
-    def test_water_tray_endpoint(self):
-        # Confirm plants have no water events
-        self.assertEqual(len(self.plant1.waterevent_set.all()), 0)
-        self.assertEqual(len(self.plant2.waterevent_set.all()), 0)
-        self.assertEqual(len(self.plant3.waterevent_set.all()), 0)
-
-        # Send water_tray request
+    def test_target_event_does_not_exist(self):
+        # Call delete_plant_event endpoint with a timestamp that doesn't exist
         payload = {
-            'tray_id': self.test_tray.id,
-            'timestamp': '2024-02-06T03:06:26.000Z'
+            'plant_id': self.test_plant.id,
+            'event_type': 'water',
+            'timestamp': timezone.now().isoformat()
         }
-        response = self.client.post('/water_tray', payload)
+        response = self.client.post('/delete_plant_event', payload)
 
-        # Confirm response, confirm both plants in tray have water events, other plant does not
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {"action": "water tray", "tray": str(self.test_tray.id)})
-        self.assertEqual(len(self.plant1.waterevent_set.all()), 1)
-        self.assertEqual(len(self.plant2.waterevent_set.all()), 1)
-        self.assertEqual(len(self.plant3.waterevent_set.all()), 0)
-
-    def test_fertilize_tray_endpoint(self):
-        # Confirm plants have no fertilize events
-        self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 0)
-        self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 0)
-        self.assertEqual(len(self.plant3.fertilizeevent_set.all()), 0)
-
-        # Send fertilize_tray request
-        payload = {
-            'tray_id': self.test_tray.id,
-            'timestamp': '2024-02-06T03:06:26.000Z'
-        }
-        response = self.client.post('/fertilize_tray', payload)
-
-        # Confirm response, confirm both plants in tray have fertilize events, other plant does not
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {"action": "fertilize tray", "tray": str(self.test_tray.id)})
-        self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 1)
-        self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 1)
-        self.assertEqual(len(self.plant3.fertilizeevent_set.all()), 0)
-
-
-class PlantModelTests(TestCase):
-    def setUp(self):
-        # Create blank test model to use in tests
-        self.plant = Plant.objects.create(id=uuid4())
-        # Create test datetime object for creating events
-        self.timestamp = timezone.now()
-
-    def test_last_event_methods(self):
-        # Confirm all methods return None when no events exist
-        self.assertIsNone(self.plant.last_watered())
-        self.assertIsNone(self.plant.last_fertilized())
-        self.assertIsNone(self.plant.last_pruned())
-        self.assertIsNone(self.plant.last_repotted())
-
-        # Create one event of each type
-        WaterEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
-        FertilizeEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
-        PruneEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
-        RepotEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
-
-        # Confirm all methods return expected timestamp
-        self.assertEqual(self.plant.last_watered(), self.timestamp.isoformat())
-        self.assertEqual(self.plant.last_fertilized(), self.timestamp.isoformat())
-        self.assertEqual(self.plant.last_pruned(), self.timestamp.isoformat())
-        self.assertEqual(self.plant.last_repotted(), self.timestamp.isoformat())
-
-    def test_get_water_timestamps(self):
-        # Create 3 WaterEvents for the plant, 1 day apart
-        WaterEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
-        WaterEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=1))
-        WaterEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=2))
-
-        # Confirm method returns correct list
-        self.assertEqual(
-            self.plant.get_water_timestamps(),
-            [
-                self.timestamp.isoformat(),
-                (self.timestamp - timedelta(days=1)).isoformat(),
-                (self.timestamp - timedelta(days=2)).isoformat()
-            ]
-        )
-
-    def test_get_fertilize_timestamps(self):
-        # Create 3 FertilizeEvent for the plant, 1 day apart
-        FertilizeEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
-        FertilizeEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=1))
-        FertilizeEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=2))
-
-        # Confirm method returns correct list
-        self.assertEqual(
-            self.plant.get_fertilize_timestamps(),
-            [
-                self.timestamp.isoformat(),
-                (self.timestamp - timedelta(days=1)).isoformat(),
-                (self.timestamp - timedelta(days=2)).isoformat()
-            ]
-        )
-
-    def test_get_prune_timestamps(self):
-        # Create 3 PruneEvent for the plant, 1 day apart
-        PruneEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
-        PruneEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=1))
-        PruneEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=2))
-
-        # Confirm method returns correct list
-        self.assertEqual(
-            self.plant.get_prune_timestamps(),
-            [
-                self.timestamp.isoformat(),
-                (self.timestamp - timedelta(days=1)).isoformat(),
-                (self.timestamp - timedelta(days=2)).isoformat()
-            ]
-        )
-
-    def test_get_repot_timestamps(self):
-        # Create 3 RepotEvent for the plant, 1 day apart
-        RepotEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
-        RepotEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=1))
-        RepotEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=2))
-
-        # Confirm method returns correct list
-        self.assertEqual(
-            self.plant.get_repot_timestamps(),
-            [
-                self.timestamp.isoformat(),
-                (self.timestamp - timedelta(days=1)).isoformat(),
-                (self.timestamp - timedelta(days=2)).isoformat()
-            ]
-        )
+        # Confirm correct error
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json(), {"error": "event not found"})

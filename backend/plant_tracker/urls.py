@@ -15,6 +15,7 @@ urlpatterns = [
     path('delete_tray', views.delete_tray, name='delete_tray'),
     path('add_plant_event', views.add_plant_event, name='add_plant_event'),
     path('bulk_add_plant_events', views.bulk_add_plant_events, name='bulk_add_plant_events'),
+    path('delete_plant_event', views.delete_plant_event, name='delete_plant_event'),
     path('water_tray', views.water_tray, name='water_tray'),
     path('fertilize_tray', views.fertilize_tray, name='fertilize_tray'),
     path('add_plant_to_tray', views.add_plant_to_tray, name='add_plant_to_tray'),

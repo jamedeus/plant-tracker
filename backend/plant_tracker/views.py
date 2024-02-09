@@ -196,6 +196,22 @@ def bulk_add_plant_events(timestamp, event_type, data):
 
 
 @requires_json_post
+@get_plant_from_post_body
+@get_timestamp_from_post_body
+@get_event_type_from_post_body
+def delete_plant_event(plant, timestamp, event_type, data):
+    '''Deletes the Event matching the plant, type, and timestamp specified in body
+    Requires POST with plant_id, event_type, and timestamp keys in JSON body
+    '''
+    try:
+        event = events_map[event_type].objects.get(plant=plant, timestamp=timestamp)
+        event.delete()
+        return JsonResponse({"deleted": event_type, "plant": plant.id}, status=200)
+    except events_map[event_type].DoesNotExist:
+        return JsonResponse({"error": "event not found"}, status=404)
+
+
+@requires_json_post
 @get_tray_from_post_body
 @get_timestamp_from_post_body
 def water_tray(tray, timestamp, data):
