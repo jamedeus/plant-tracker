@@ -142,10 +142,19 @@ class ManagePageTests(TestCase):
         self.assertEqual(len(Plant.objects.all()), 2)
 
     def test_manage_new_plant(self):
+        # Add species to test plants
+        self.plant1.species = "Fittonia"
+        self.plant2.species = "Calathea"
+        self.plant1.save()
+        self.plant2.save()
+
         # Request management page for new plant, confirm register template renders
         response = self.client.get(f'/manage/{uuid4()}')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/register.html')
+
+        # Confirm context contains list of existing plant species
+        self.assertEqual(response.context['species_options'], ['Calathea', 'Fittonia'])
 
     def test_manage_existing_plant(self):
         # Request management page for test plant, confirm correct template renders
@@ -153,6 +162,8 @@ class ManagePageTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/manage_plant.html')
         self.assertTemplateNotUsed(response, 'plant_tracker/manage_tray.html')
+        # Confirm species_options list is empty (test plants have no species)
+        self.assertEqual(response.context['species_options'], [])
 
     def test_manage_existing_tray(self):
         # Add test plant to tray

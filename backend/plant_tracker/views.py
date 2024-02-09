@@ -21,8 +21,17 @@ from .view_decorators import (
 
 def get_plant_options():
     '''Returns a list of dicts with name and id attributes of all existing plants
-    Used to populate checkbox options in frontend'''
+    Used to populate checkbox options in frontend
+    '''
     return Plant.objects.values('id', 'name')
+
+
+def get_plant_species_options():
+    '''Returns a list of species for every Plant in database with no duplicates
+    Used to populate species suggestions on registration form
+    '''
+    species = Plant.objects.all().values_list('species', flat=True)
+    return list(set([i for i in species if i is not None]))
 
 
 def get_qr_codes(request):
@@ -56,7 +65,8 @@ def manage(request, uuid):
             'plant': plant,
             'water_events': plant.get_water_timestamps(),
             'fertilize_events': plant.get_fertilize_timestamps(),
-            'trays': Tray.objects.all()
+            'trays': Tray.objects.all(),
+            'species_options': get_plant_species_options()
         }
         return render(request, 'plant_tracker/manage_plant.html', context)
 
@@ -71,7 +81,11 @@ def manage(request, uuid):
         return render(request, 'plant_tracker/manage_tray.html', context)
 
     # Redirect to registration form if UUID does not exist in either database
-    return render(request, 'plant_tracker/register.html', {'new_id': uuid})
+    context = {
+        'new_id': uuid,
+        'species_options': get_plant_species_options()
+    }
+    return render(request, 'plant_tracker/register.html', context)
 
 
 @requires_json_post
