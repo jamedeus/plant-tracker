@@ -1,7 +1,8 @@
 import base64
 from uuid import uuid4
-from datetime import datetime
+from datetime import datetime, timedelta
 
+from django.utils import timezone
 from django.test import Client, TestCase
 
 from .models import Tray, Plant, WaterEvent, FertilizeEvent, PruneEvent, RepotEvent
@@ -620,3 +621,94 @@ class TrayModelTests(TestCase):
         self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 1)
         self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 1)
         self.assertEqual(len(self.plant3.fertilizeevent_set.all()), 0)
+
+
+class PlantModelTests(TestCase):
+    def setUp(self):
+        # Create blank test model to use in tests
+        self.plant = Plant.objects.create(id=uuid4())
+        # Create test datetime object for creating events
+        self.timestamp = timezone.now()
+
+    def test_last_event_methods(self):
+        # Confirm all methods return None when no events exist
+        self.assertIsNone(self.plant.last_watered())
+        self.assertIsNone(self.plant.last_fertilized())
+        self.assertIsNone(self.plant.last_pruned())
+        self.assertIsNone(self.plant.last_repotted())
+
+        # Create one event of each type
+        WaterEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
+        FertilizeEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
+        PruneEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
+        RepotEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
+
+        # Confirm all methods return expected timestamp
+        self.assertEqual(self.plant.last_watered(), self.timestamp.isoformat())
+        self.assertEqual(self.plant.last_fertilized(), self.timestamp.isoformat())
+        self.assertEqual(self.plant.last_pruned(), self.timestamp.isoformat())
+        self.assertEqual(self.plant.last_repotted(), self.timestamp.isoformat())
+
+    def test_get_water_timestamps(self):
+        # Create 3 WaterEvents for the plant, 1 day apart
+        WaterEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
+        WaterEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=1))
+        WaterEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=2))
+
+        # Confirm method returns correct list
+        self.assertEqual(
+            self.plant.get_water_timestamps(),
+            [
+                self.timestamp.isoformat(),
+                (self.timestamp - timedelta(days=1)).isoformat(),
+                (self.timestamp - timedelta(days=2)).isoformat()
+            ]
+        )
+
+    def test_get_fertilize_timestamps(self):
+        # Create 3 FertilizeEvent for the plant, 1 day apart
+        FertilizeEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
+        FertilizeEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=1))
+        FertilizeEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=2))
+
+        # Confirm method returns correct list
+        self.assertEqual(
+            self.plant.get_fertilize_timestamps(),
+            [
+                self.timestamp.isoformat(),
+                (self.timestamp - timedelta(days=1)).isoformat(),
+                (self.timestamp - timedelta(days=2)).isoformat()
+            ]
+        )
+
+    def test_get_prune_timestamps(self):
+        # Create 3 PruneEvent for the plant, 1 day apart
+        PruneEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
+        PruneEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=1))
+        PruneEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=2))
+
+        # Confirm method returns correct list
+        self.assertEqual(
+            self.plant.get_prune_timestamps(),
+            [
+                self.timestamp.isoformat(),
+                (self.timestamp - timedelta(days=1)).isoformat(),
+                (self.timestamp - timedelta(days=2)).isoformat()
+            ]
+        )
+
+    def test_get_repot_timestamps(self):
+        # Create 3 RepotEvent for the plant, 1 day apart
+        RepotEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
+        RepotEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=1))
+        RepotEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=2))
+
+        # Confirm method returns correct list
+        self.assertEqual(
+            self.plant.get_repot_timestamps(),
+            [
+                self.timestamp.isoformat(),
+                (self.timestamp - timedelta(days=1)).isoformat(),
+                (self.timestamp - timedelta(days=2)).isoformat()
+            ]
+        )

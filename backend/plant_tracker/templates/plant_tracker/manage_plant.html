@@ -34,8 +34,18 @@
         </div>
 
         <div class="text-center mb-5">
-            <p id="lastWatered"></p>
-            <p id="lastFertilized"></p>
+            <p id="lastWatered" data-bs-toggle="collapse" data-bs-target="#waterList" aria-expanded="false" aria-controls="waterList"></p>
+            <div class="collapse" id="waterList">
+                {% for timestamp in water_events %}
+                    <p>{{ timestamp }}</p>
+                {% endfor %}
+            </div>
+            <p id="lastFertilized" data-bs-toggle="collapse" data-bs-target="#fertilizeList" aria-expanded="false" aria-controls="fertilizeList"></p>
+            <div class="collapse" id="fertilizeList">
+                {% for timestamp in fertilize_events %}
+                    <p>{{ timestamp }}</p>
+                {% endfor %}
+            </div>
             {% if plant.last_watered %}
                 <script>
                     var timestamp = luxon.DateTime.fromISO("{{plant.last_watered}}").setZone('system');

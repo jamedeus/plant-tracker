@@ -52,7 +52,12 @@ def manage(request, uuid):
     # Look up UUID in plant database, render template if found
     plant = get_plant_by_uuid(uuid)
     if plant:
-        context = {'plant': plant, 'trays': Tray.objects.all()}
+        context = {
+            'plant': plant,
+            'water_events': plant.get_water_timestamps(),
+            'fertilize_events': plant.get_fertilize_timestamps(),
+            'trays': Tray.objects.all()
+        }
         return render(request, 'plant_tracker/manage_plant.html', context)
 
     # Loop up UUID in tray database, render template if found

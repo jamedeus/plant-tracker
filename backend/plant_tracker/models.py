@@ -90,6 +90,34 @@ class Plant(models.Model):
             return last_event.timestamp.isoformat()
         return None
 
+    def get_water_timestamps(self):
+        '''Returns list of timestamp strings for every WaterEvent'''
+        return [
+            timestamp[0].isoformat()
+            for timestamp in self.waterevent_set.all().values_list('timestamp')
+        ]
+
+    def get_fertilize_timestamps(self):
+        '''Returns list of timestamp strings for every FertilizeEvent'''
+        return [
+            timestamp[0].isoformat()
+            for timestamp in self.fertilizeevent_set.all().values_list('timestamp')
+        ]
+
+    def get_prune_timestamps(self):
+        '''Returns list of timestamp strings for every PruneEvent'''
+        return [
+            timestamp[0].isoformat()
+            for timestamp in self.pruneevent_set.all().values_list('timestamp')
+        ]
+
+    def get_repot_timestamps(self):
+        '''Returns list of timestamp strings for every RepotEvent'''
+        return [
+            timestamp[0].isoformat()
+            for timestamp in self.repotevent_set.all().values_list('timestamp')
+        ]
+
 
 class WaterEvent(models.Model):
     '''Records timestamp when a Plant entry was watered'''
