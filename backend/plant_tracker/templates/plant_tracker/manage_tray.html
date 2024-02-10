@@ -129,10 +129,12 @@
     </div>
 
     {{ tray.id|json_script:"uuid" }}
+    {{ plant_ids|json_script:"plant_ids" }}
 
     <script>
-        // Parse tray UUID from django context
+        // Parse tray UUID and list of plant UUIDs from django context
         const trayUUID = JSON.parse(document.getElementById('uuid').textContent);
+        const plantUUIDs = JSON.parse(document.getElementById('plant_ids').textContent);
 
         const editModal = new bootstrap.Modal(document.getElementById('editDetails'));
         const manageModal = new bootstrap.Modal(document.getElementById('managePlants'));
@@ -189,22 +191,27 @@
             return String(luxon.DateTime.fromISO(timestamp).toUTC());
         }
 
-        async function waterTray(event) {
+        async function bulkAddPlantEvents(eventType, plantIDs, timestamp) {
             event.preventDefault();
-            const payload = {
-                tray_id: trayUUID,
-                timestamp: localToUTC(document.getElementById("waterTime").value)
+            payload = {
+                plants: plantIDs,
+                event_type: eventType,
+                timestamp: localToUTC(timestamp)
             }
-            sendPostRequest('/water_tray', payload);
+            const response = await sendPostRequest('/bulk_add_plant_events', payload);
+            if (response) {
+                window.location.reload();
+            }
+        }
+
+        async function waterTray(event) {
+            const timestamp = localToUTC(document.getElementById("waterTime").value);
+            bulkAddPlantEvents('water', plantUUIDs, timestamp);
         }
 
         async function fertilizeTray(event) {
-            event.preventDefault();
-            const payload = {
-                tray_id: trayUUID,
-                timestamp: localToUTC(document.getElementById("fertilizeTime").value)
-            }
-            sendPostRequest('/fertilize_tray', payload);
+            const timestamp = localToUTC(document.getElementById("waterTime").value);
+            bulkAddPlantEvents('fertilize', plantUUIDs, timestamp);
         }
 
         // Edit details form submit listener
@@ -260,38 +267,26 @@
 
         async function bulkWaterPlants(event) {
             event.preventDefault();
-            payload = {
-                plants: [],
-                event_type: 'water',
-                timestamp: localToUTC(document.getElementById("bulkManageTime").value)
-            }
+            const timestamp = localToUTC(document.getElementById("bulkManageTime").value);
+            let plants = []
             event.target.parentElement.parentElement.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
                 if (checkbox.checked) {
-                    payload.plants.push(checkbox.value);
+                    plants.push(checkbox.value);
                 }
             });
-            const response = await sendPostRequest('/bulk_add_plant_events', payload);
-            if (response) {
-                window.location.reload();
-            }
+            bulkAddPlantEvents('water', plants, timestamp);
         }
 
         async function bulkFertilizePlants(event) {
             event.preventDefault();
-            payload = {
-                plants: [],
-                event_type: 'fertilize',
-                timestamp: localToUTC(document.getElementById("bulkManageTime").value)
-            }
+            const timestamp = localToUTC(document.getElementById("bulkManageTime").value);
+            let plants = []
             event.target.parentElement.parentElement.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
                 if (checkbox.checked) {
-                    payload.plants.push(checkbox.value);
+                    plants.push(checkbox.value);
                 }
             });
-            const response = await sendPostRequest('/bulk_add_plant_events', payload);
-            if (response) {
-                window.location.reload();
-            }
+            bulkAddPlantEvents('fertilize', plants, timestamp);
         }
     </script>
 </body>

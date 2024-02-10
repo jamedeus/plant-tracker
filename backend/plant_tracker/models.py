@@ -24,6 +24,10 @@ class Tray(models.Model):
         for plant in self.plant_set.all():
             FertilizeEvent.objects.create(plant=plant, timestamp=timestamp)
 
+    def get_plant_uuids(self):
+        '''Returns a list of UUID strings for all Plants in Tray'''
+        return [str(uuid) for uuid in self.plant_set.all().values_list('id', flat=True)]
+
     def get_plant_details(self):
         '''Returns nested dict with sub-dict for each Plant in Tray (Plant ID as key)
         Each sub-dict contains name, last_watered timestamp, last_fertilized timestamp

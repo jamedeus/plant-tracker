@@ -75,6 +75,7 @@ def manage(request, uuid):
     if tray:
         context = {
             'tray': tray,
+            'plant_ids': tray.get_plant_uuids(),
             'details': tray.get_plant_details(),
             'options': get_plant_options()
         }
@@ -223,28 +224,6 @@ def delete_plant_event(plant, timestamp, event_type, data):
         return JsonResponse({"deleted": event_type, "plant": plant.id}, status=200)
     except events_map[event_type].DoesNotExist:
         return JsonResponse({"error": "event not found"}, status=404)
-
-
-@requires_json_post
-@get_tray_from_post_body
-@get_timestamp_from_post_body
-def water_tray(tray, timestamp, data):
-    '''Creates new WaterEvent for each Plant in specified Tray
-    Requires POST with JSON body containing tray_id and timestamp keys
-    '''
-    tray.water_all(timestamp=timestamp)
-    return JsonResponse({"action": "water tray", "tray": tray.id}, status=200)
-
-
-@requires_json_post
-@get_tray_from_post_body
-@get_timestamp_from_post_body
-def fertilize_tray(tray, timestamp, data):
-    '''Creates new FertilizeEvent for each Plant in specified Tray
-    Requires POST with JSON body containing tray_id and timestamp keys
-    '''
-    tray.fertilize_all(timestamp=timestamp)
-    return JsonResponse({"action": "fertilize tray", "tray": tray.id}, status=200)
 
 
 @requires_json_post

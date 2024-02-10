@@ -606,46 +606,6 @@ class TrayModelTests(TestCase):
         self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 1)
         self.assertEqual(len(self.plant3.fertilizeevent_set.all()), 0)
 
-    def test_water_tray_endpoint(self):
-        # Confirm plants have no water events
-        self.assertEqual(len(self.plant1.waterevent_set.all()), 0)
-        self.assertEqual(len(self.plant2.waterevent_set.all()), 0)
-        self.assertEqual(len(self.plant3.waterevent_set.all()), 0)
-
-        # Send water_tray request
-        payload = {
-            'tray_id': self.test_tray.id,
-            'timestamp': '2024-02-06T03:06:26.000Z'
-        }
-        response = self.client.post('/water_tray', payload)
-
-        # Confirm response, confirm both plants in tray have water events, other plant does not
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {"action": "water tray", "tray": str(self.test_tray.id)})
-        self.assertEqual(len(self.plant1.waterevent_set.all()), 1)
-        self.assertEqual(len(self.plant2.waterevent_set.all()), 1)
-        self.assertEqual(len(self.plant3.waterevent_set.all()), 0)
-
-    def test_fertilize_tray_endpoint(self):
-        # Confirm plants have no fertilize events
-        self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 0)
-        self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 0)
-        self.assertEqual(len(self.plant3.fertilizeevent_set.all()), 0)
-
-        # Send fertilize_tray request
-        payload = {
-            'tray_id': self.test_tray.id,
-            'timestamp': '2024-02-06T03:06:26.000Z'
-        }
-        response = self.client.post('/fertilize_tray', payload)
-
-        # Confirm response, confirm both plants in tray have fertilize events, other plant does not
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {"action": "fertilize tray", "tray": str(self.test_tray.id)})
-        self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 1)
-        self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 1)
-        self.assertEqual(len(self.plant3.fertilizeevent_set.all()), 0)
-
 
 class InvalidRequestTests(TestCase):
     def setUp(self):
@@ -686,7 +646,7 @@ class InvalidRequestTests(TestCase):
 
     def test_missing_tray_id(self):
         # Send POST with no tray_id key in body, confirm error
-        response = self.client.post('/water_tray', {'timestamp': '2024-02-06T03:06:26.000Z'})
+        response = self.client.post('/delete_tray')
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(), {"error": "POST body missing required 'tray_id' key"})
 
@@ -698,10 +658,7 @@ class InvalidRequestTests(TestCase):
 
     def test_invalid_tray_uuid(self):
         # Send POST with tray_id that is not a valid UUID, confirm error
-        response = self.client.post(
-            '/water_tray',
-            {'tray_id': '31670857', 'timestamp': '2024-02-06T03:06:26.000Z'}
-        )
+        response = self.client.post('/delete_tray', {'tray_id': '31670857'})
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(), {"error": "tray_id key is not a valid UUID"})
 
