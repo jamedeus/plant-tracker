@@ -54,10 +54,10 @@
                 <div class="card card-body mt-3">
                     <form onSubmit="bulkAddPlants(event)">
                         {% for plant in options %}
-                            {% if plant.id not in details.keys %}
+                            {% if plant.uuid not in details.keys %}
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="{{ plant.id }}" id="{{ plant.id }}">
-                                    <label class="form-check-label" for="{{ plant.id }}">{{ plant.name }}</label>
+                                    <input class="form-check-input" type="checkbox" value="{{ plant.uuid }}" id="{{ plant.uuid }}">
+                                    <label class="form-check-label" for="{{ plant.uuid }}">{{ plant.name }}</label>
                                 </div>
                             {% endif %}
                         {% endfor %}
@@ -128,7 +128,7 @@
         </div>
     </div>
 
-    {{ tray.id|json_script:"uuid" }}
+    {{ tray.uuid|json_script:"uuid" }}
     {{ plant_ids|json_script:"plant_ids" }}
 
     <script>

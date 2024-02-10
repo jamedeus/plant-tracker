@@ -83,7 +83,7 @@
 
         {% if plant.tray %}
         <div class="d-flex flex-column mt-5 mx-auto">
-            <p>Plant is in tray <b><a href="/manage/{{plant.tray.id}}">{{ plant.tray.name }}</a></b></p>
+            <p>Plant is in tray <b><a href="/manage/{{plant.tray.uuid}}">{{ plant.tray.name }}</a></b></p>
             <button class="btn btn-danger" onClick="removeFromTray();">Remove</button>
         </div>
         {% else %}
@@ -92,7 +92,7 @@
             <select id="traySelect" class="form-select" aria-label="Select tray" onChange="addToTray();" autocomplete="off">
                 <option selected>Select a tray</option>
                 {% for tray in trays %}
-                    <option value="{{tray.id}}">{{tray.name}}</option>
+                    <option value="{{tray.uuid}}">{{tray.name}}</option>
                 {% endfor %}
             </select>
         </div>
@@ -114,7 +114,7 @@
         </div>
     </div>
 
-    {{ plant.id|json_script:"uuid" }}
+    {{ plant.uuid|json_script:"uuid" }}
 
     <script>
         // Parse plant UUID from django context

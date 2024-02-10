@@ -23,7 +23,7 @@ def get_plant_options():
     '''Returns a list of dicts with name and id attributes of all existing plants
     Used to populate checkbox options in frontend
     '''
-    return Plant.objects.values('id', 'name')
+    return Plant.objects.values('uuid', 'name')
 
 
 def get_plant_species_options():
@@ -101,7 +101,7 @@ def register(data):
 
     if data["type"] == "plant":
         Plant.objects.create(
-            id=data["uuid"],
+            uuid=data["uuid"],
             name=data["name"],
             species=data["species"],
             description=data["description"],
@@ -109,7 +109,7 @@ def register(data):
         )
     elif data["type"] == "tray":
         Tray.objects.create(
-            id=data["uuid"],
+            uuid=data["uuid"],
             name=data["name"],
             location=data["location"]
         )
@@ -185,7 +185,7 @@ def add_plant_event(plant, timestamp, event_type, data):
     Requires POST with plant_id, event_type, and timestamp keys in JSON body
     '''
     events_map[event_type].objects.create(plant=plant, timestamp=timestamp)
-    return JsonResponse({"action": event_type, "plant": plant.id}, status=200)
+    return JsonResponse({"action": event_type, "plant": plant.uuid}, status=200)
 
 
 @requires_json_post
@@ -221,7 +221,7 @@ def delete_plant_event(plant, timestamp, event_type, data):
     try:
         event = events_map[event_type].objects.get(plant=plant, timestamp=timestamp)
         event.delete()
-        return JsonResponse({"deleted": event_type, "plant": plant.id}, status=200)
+        return JsonResponse({"deleted": event_type, "plant": plant.uuid}, status=200)
     except events_map[event_type].DoesNotExist:
         return JsonResponse({"error": "event not found"}, status=404)
 
@@ -236,7 +236,7 @@ def add_plant_to_tray(plant, tray, data):
     plant.tray = tray
     plant.save()
     return JsonResponse(
-        {"action": "add_plant_to_tray", "plant": plant.id, "tray": tray.id},
+        {"action": "add_plant_to_tray", "plant": plant.uuid, "tray": tray.uuid},
         status=200
     )
 
@@ -250,7 +250,7 @@ def remove_plant_from_tray(plant, data):
     plant.tray = None
     plant.save()
     return JsonResponse(
-        {"action": "remove_plant_from_tray", "plant": plant.id},
+        {"action": "remove_plant_from_tray", "plant": plant.uuid},
         status=200
     )
 
@@ -266,7 +266,7 @@ def bulk_add_plants_to_tray(tray, data):
         if plant:
             plant.tray = tray
             plant.save()
-    return HttpResponseRedirect(f'/manage/{tray.id}')
+    return HttpResponseRedirect(f'/manage/{tray.uuid}')
 
 
 @requires_json_post
@@ -280,4 +280,4 @@ def bulk_remove_plants_from_tray(tray, data):
         if plant:
             plant.tray = None
             plant.save()
-    return HttpResponseRedirect(f'/manage/{tray.id}')
+    return HttpResponseRedirect(f'/manage/{tray.uuid}')

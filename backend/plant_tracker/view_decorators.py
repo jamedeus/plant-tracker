@@ -20,7 +20,7 @@ events_map = {
 def get_plant_by_uuid(uuid):
     '''Returns Plant model instance matching UUID, or None if not found'''
     try:
-        return Plant.objects.get(id=uuid)
+        return Plant.objects.get(uuid=uuid)
     except Plant.DoesNotExist:
         return None
 
@@ -28,7 +28,7 @@ def get_plant_by_uuid(uuid):
 def get_tray_by_uuid(uuid):
     '''Returns Tray model instance matching UUID, or None if not found'''
     try:
-        return Tray.objects.get(id=uuid)
+        return Tray.objects.get(uuid=uuid)
     except Tray.DoesNotExist:
         return None
 

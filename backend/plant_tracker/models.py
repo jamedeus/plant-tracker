@@ -8,7 +8,7 @@ class Tray(models.Model):
     '''
 
     # UUID of QR code attached to tray
-    id = models.UUIDField(primary_key=True, editable=True)
+    uuid = models.UUIDField(unique=True)
 
     # Description fields are optional, if blank user will just see "Unnamed tray"
     name = models.CharField(max_length=50, blank=True, null=True)
@@ -26,7 +26,7 @@ class Tray(models.Model):
 
     def get_plant_uuids(self):
         '''Returns a list of UUID strings for all Plants in Tray'''
-        return [str(uuid) for uuid in self.plant_set.all().values_list('id', flat=True)]
+        return [str(uuid) for uuid in self.plant_set.all().values_list('uuid', flat=True)]
 
     def get_plant_details(self):
         '''Returns nested dict with sub-dict for each Plant in Tray (Plant ID as key)
@@ -34,7 +34,7 @@ class Tray(models.Model):
         '''
         details = {}
         for plant in self.plant_set.all():
-            details[plant.id] = {
+            details[plant.uuid] = {
                 'name': plant.name,
                 'last_watered': plant.last_watered(),
                 'last_fertilized': plant.last_fertilized()
@@ -49,7 +49,7 @@ class Plant(models.Model):
     '''
 
     # UUID of QR code attached to plant
-    id = models.UUIDField(primary_key=True, editable=True)
+    uuid = models.UUIDField(unique=True)
 
     # Description fields are optional, if blank user will just see "Unnamed plant"
     name = models.CharField(max_length=50, blank=True, null=True)

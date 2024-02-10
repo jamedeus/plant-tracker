@@ -36,7 +36,7 @@ class OverviewTests(TestCase):
     def test_delete_plant(self):
         # Create test plant, confirm exists in database
         test_id = uuid4()
-        Plant.objects.create(id=test_id, name='test plant')
+        Plant.objects.create(uuid=test_id, name='test plant')
         self.assertEqual(len(Plant.objects.all()), 1)
 
         # Call delete endpoint, confirm redirects to overview, confirm removed from database
@@ -53,7 +53,7 @@ class OverviewTests(TestCase):
     def test_delete_tray(self):
         # Create test tray, confirm exists in database
         test_id = uuid4()
-        Tray.objects.create(id=test_id, name='test tray')
+        Tray.objects.create(uuid=test_id, name='test tray')
         self.assertEqual(len(Tray.objects.all()), 1)
 
         # Call delete endpoint, confirm redirects to overview, confirm removed from database
@@ -74,9 +74,9 @@ class ManagePageTests(TestCase):
         self.client = JSONClient()
 
         # Create test plants and trays
-        self.plant1 = Plant.objects.create(id=uuid4())
-        self.plant2 = Plant.objects.create(id=uuid4())
-        self.tray1 = Tray.objects.create(id=uuid4())
+        self.plant1 = Plant.objects.create(uuid=uuid4())
+        self.plant2 = Plant.objects.create(uuid=uuid4())
+        self.tray1 = Tray.objects.create(uuid=uuid4())
 
     def _refresh_test_models(self):
         self.plant1.refresh_from_db()
@@ -106,7 +106,7 @@ class ManagePageTests(TestCase):
 
         # Confirm exists in database, has correct parameters
         self.assertEqual(len(Plant.objects.all()), 3)
-        plant = Plant.objects.get(id=test_id)
+        plant = Plant.objects.get(uuid=test_id)
         self.assertEqual(plant.name, 'test plant')
         self.assertEqual(plant.species, 'Giant Sequoia')
         self.assertEqual(plant.description, '300 feet and a few thousand years old')
@@ -135,7 +135,7 @@ class ManagePageTests(TestCase):
 
         # Confirm exists in database, has correct parameters
         self.assertEqual(len(Tray.objects.all()), 2)
-        tray = Tray.objects.get(id=test_id)
+        tray = Tray.objects.get(uuid=test_id)
         self.assertEqual(tray.name, 'test tray')
         self.assertEqual(tray.location, 'top shelf')
         # Confirm no extra plant created
@@ -160,7 +160,7 @@ class ManagePageTests(TestCase):
 
     def test_manage_existing_plant(self):
         # Request management page for test plant, confirm correct template renders
-        response = self.client.get(f'/manage/{self.plant1.id}')
+        response = self.client.get(f'/manage/{self.plant1.uuid}')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/manage_plant.html')
         self.assertTemplateNotUsed(response, 'plant_tracker/manage_tray.html')
@@ -173,7 +173,7 @@ class ManagePageTests(TestCase):
         self.plant1.save()
 
         # Request management page for test tray, confirm correct template renders
-        response = self.client.get(f'/manage/{self.tray1.id}')
+        response = self.client.get(f'/manage/{self.tray1.uuid}')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/manage_tray.html')
         self.assertTemplateNotUsed(response, 'plant_tracker/manage_plant.html')
@@ -181,9 +181,9 @@ class ManagePageTests(TestCase):
         # Confirm context includes tray, correct plant details
         self.assertEqual(response.context['tray'], self.tray1)
         self.assertEqual(len(response.context['details']), 1)
-        self.assertEqual(response.context['details'][self.plant1.id]['name'], None)
-        self.assertEqual(response.context['details'][self.plant1.id]['last_watered'], None)
-        self.assertEqual(response.context['details'][self.plant1.id]['last_fertilized'], None)
+        self.assertEqual(response.context['details'][self.plant1.uuid]['name'], None)
+        self.assertEqual(response.context['details'][self.plant1.uuid]['last_watered'], None)
+        self.assertEqual(response.context['details'][self.plant1.uuid]['last_fertilized'], None)
 
     def test_edit_plant_details(self):
         # Confirm test plant has no name or species
@@ -192,7 +192,7 @@ class ManagePageTests(TestCase):
 
         # Send edit details request, confirm redirects to manage page
         payload = {
-            'plant_id': self.plant1.id,
+            'plant_id': self.plant1.uuid,
             'name': 'test plant',
             'species': 'Giant Sequoia',
             'description': '300 feet and a few thousand years old',
@@ -200,7 +200,7 @@ class ManagePageTests(TestCase):
         }
         response = self.client.post('/edit_plant', payload)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/manage/{self.plant1.id}')
+        self.assertEqual(response.url, f'/manage/{self.plant1.uuid}')
 
         # Confirm no additional plant created, confirm details now match
         self.assertEqual(len(Plant.objects.all()), 2)
@@ -214,13 +214,13 @@ class ManagePageTests(TestCase):
 
         # Send edit details request, confirm redirects to manage page
         payload = {
-            'tray_id': self.tray1.id,
+            'tray_id': self.tray1.uuid,
             'name': 'test tray',
             'location': 'middle shelf'
         }
         response = self.client.post('/edit_tray', payload)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/manage/{self.tray1.id}')
+        self.assertEqual(response.url, f'/manage/{self.tray1.uuid}')
 
         # Confirm no additional tray created, confirm details now match
         self.assertEqual(len(Tray.objects.all()), 1)
@@ -234,7 +234,7 @@ class ManagePageTests(TestCase):
         self.assertEqual(len(self.tray1.plant_set.all()), 0)
 
         # Send add_plant_to_tray request, confirm response + relation created
-        payload = {'plant_id': self.plant1.id, 'tray_id': self.tray1.id}
+        payload = {'plant_id': self.plant1.uuid, 'tray_id': self.tray1.uuid}
         response = self.client.post('/add_plant_to_tray', payload)
         self.assertEqual(response.status_code, 200)
         self._refresh_test_models()
@@ -249,7 +249,7 @@ class ManagePageTests(TestCase):
         self.assertEqual(len(self.tray1.plant_set.all()), 1)
 
         # Send add_plant_to_tray request, confirm response + relation removed
-        response = self.client.post('/remove_plant_from_tray', {'plant_id': self.plant1.id})
+        response = self.client.post('/remove_plant_from_tray', {'plant_id': self.plant1.uuid})
         self.assertEqual(response.status_code, 200)
         self._refresh_test_models()
         self.assertIsNone(self.plant1.tray)
@@ -263,17 +263,17 @@ class ManagePageTests(TestCase):
 
         # Send bulk_add_plants_to_tray request with both IDs
         payload = {
-            'tray_id': self.tray1.id,
+            'tray_id': self.tray1.uuid,
             'plants': [
-                self.plant1.id,
-                self.plant2.id
+                self.plant1.uuid,
+                self.plant2.uuid
             ]
         }
         response = self.client.post('/bulk_add_plants_to_tray', payload)
 
         # Confirm page refreshed, confirm plants both have relation
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/manage/{self.tray1.id}')
+        self.assertEqual(response.url, f'/manage/{self.tray1.uuid}')
         self._refresh_test_models()
         self.assertEqual(self.plant1.tray, self.tray1)
         self.assertEqual(self.plant2.tray, self.tray1)
@@ -291,17 +291,17 @@ class ManagePageTests(TestCase):
 
         # Send bulk_add_plants_to_tray request with both IDs
         payload = {
-            'tray_id': self.tray1.id,
+            'tray_id': self.tray1.uuid,
             'plants': [
-                self.plant1.id,
-                self.plant2.id
+                self.plant1.uuid,
+                self.plant2.uuid
             ]
         }
         response = self.client.post('/bulk_remove_plants_from_tray', payload)
 
         # Confirm page refreshed, confirm plants both have relation
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/manage/{self.tray1.id}')
+        self.assertEqual(response.url, f'/manage/{self.tray1.uuid}')
         self._refresh_test_models()
         self.assertIsNone(self.plant1.tray)
         self.assertIsNone(self.plant2.tray)
@@ -314,8 +314,8 @@ class TestPlantEvents(TestCase):
         self.client = JSONClient()
 
         # Create test plants and trays
-        self.plant1 = Plant.objects.create(id=uuid4())
-        self.plant2 = Plant.objects.create(id=uuid4())
+        self.plant1 = Plant.objects.create(uuid=uuid4())
+        self.plant2 = Plant.objects.create(uuid=uuid4())
 
     def _refresh_test_models(self):
         self.plant1.refresh_from_db()
@@ -327,7 +327,7 @@ class TestPlantEvents(TestCase):
         self.assertEqual(len(WaterEvent.objects.all()), 0)
 
         payload = {
-            'plant_id': self.plant1.id,
+            'plant_id': self.plant1.uuid,
             'event_type': 'water',
             'timestamp': '2024-02-06T03:06:26.000Z'
         }
@@ -335,7 +335,7 @@ class TestPlantEvents(TestCase):
         # Send water request, confirm event created
         response = self.client.post('/add_plant_event', payload)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {"action": "water", "plant": str(self.plant1.id)})
+        self.assertEqual(response.json(), {"action": "water", "plant": str(self.plant1.uuid)})
         self.assertEqual(len(WaterEvent.objects.all()), 1)
         self.assertEqual(self.plant1.last_watered(), '2024-02-06T03:06:26+00:00')
 
@@ -345,7 +345,7 @@ class TestPlantEvents(TestCase):
         self.assertEqual(len(FertilizeEvent.objects.all()), 0)
 
         payload = {
-            'plant_id': self.plant1.id,
+            'plant_id': self.plant1.uuid,
             'event_type': 'fertilize',
             'timestamp': '2024-02-06T03:06:26.000Z'
         }
@@ -353,7 +353,7 @@ class TestPlantEvents(TestCase):
         # Send water request, confirm event created
         response = self.client.post('/add_plant_event', payload)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {"action": "fertilize", "plant": str(self.plant1.id)})
+        self.assertEqual(response.json(), {"action": "fertilize", "plant": str(self.plant1.uuid)})
         self.assertEqual(len(FertilizeEvent.objects.all()), 1)
         self.assertEqual(self.plant1.last_fertilized(), '2024-02-06T03:06:26+00:00')
 
@@ -363,7 +363,7 @@ class TestPlantEvents(TestCase):
         self.assertEqual(len(PruneEvent.objects.all()), 0)
 
         payload = {
-            'plant_id': self.plant1.id,
+            'plant_id': self.plant1.uuid,
             'event_type': 'prune',
             'timestamp': '2024-02-06T03:06:26.000Z'
         }
@@ -371,7 +371,7 @@ class TestPlantEvents(TestCase):
         # Send water request, confirm event created
         response = self.client.post('/add_plant_event', payload)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {"action": "prune", "plant": str(self.plant1.id)})
+        self.assertEqual(response.json(), {"action": "prune", "plant": str(self.plant1.uuid)})
         self.assertEqual(len(PruneEvent.objects.all()), 1)
         self.assertEqual(self.plant1.last_pruned(), '2024-02-06T03:06:26+00:00')
 
@@ -381,7 +381,7 @@ class TestPlantEvents(TestCase):
         self.assertEqual(len(RepotEvent.objects.all()), 0)
 
         payload = {
-            'plant_id': self.plant1.id,
+            'plant_id': self.plant1.uuid,
             'event_type': 'repot',
             'timestamp': '2024-02-06T03:06:26.000Z'
         }
@@ -389,7 +389,7 @@ class TestPlantEvents(TestCase):
         # Send water request, confirm event created
         response = self.client.post('/add_plant_event', payload)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {"action": "repot", "plant": str(self.plant1.id)})
+        self.assertEqual(response.json(), {"action": "repot", "plant": str(self.plant1.uuid)})
         self.assertEqual(len(RepotEvent.objects.all()), 1)
         self.assertEqual(self.plant1.last_repotted(), '2024-02-06T03:06:26+00:00')
 
@@ -404,8 +404,8 @@ class TestPlantEvents(TestCase):
         # Send bulk_add_plants_to_tray request with both IDs
         payload = {
             'plants': [
-                str(self.plant1.id),
-                str(self.plant2.id),
+                str(self.plant1.uuid),
+                str(self.plant2.uuid),
                 str(fake_id)
             ],
             'event_type': 'water',
@@ -419,7 +419,7 @@ class TestPlantEvents(TestCase):
             response.json(),
             {
                 "action": "water",
-                "plants": [str(self.plant1.id), str(self.plant2.id)],
+                "plants": [str(self.plant1.uuid), str(self.plant2.uuid)],
                 "failed": [str(fake_id)]
             }
         )
@@ -437,8 +437,8 @@ class TestPlantEvents(TestCase):
         # Send bulk_add_plants_to_tray request with both IDs
         payload = {
             'plants': [
-                str(self.plant1.id),
-                str(self.plant2.id),
+                str(self.plant1.uuid),
+                str(self.plant2.uuid),
                 str(fake_id)
             ],
             'event_type': 'fertilize',
@@ -452,7 +452,7 @@ class TestPlantEvents(TestCase):
             response.json(),
             {
                 "action": "fertilize",
-                "plants": [str(self.plant1.id), str(self.plant2.id)],
+                "plants": [str(self.plant1.uuid), str(self.plant2.uuid)],
                 "failed": [str(fake_id)]
             }
         )
@@ -467,7 +467,7 @@ class TestPlantEvents(TestCase):
 
         # Call delete_plant_event endpoint, confirm response + event deleted
         payload = {
-            'plant_id': self.plant1.id,
+            'plant_id': self.plant1.uuid,
             'event_type': 'water',
             'timestamp': timestamp.isoformat()
         }
@@ -475,7 +475,7 @@ class TestPlantEvents(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
-            {"deleted": "water", "plant": str(self.plant1.id)}
+            {"deleted": "water", "plant": str(self.plant1.uuid)}
         )
         self.assertEqual(len(self.plant1.waterevent_set.all()), 0)
 
@@ -483,7 +483,7 @@ class TestPlantEvents(TestCase):
 class PlantModelTests(TestCase):
     def setUp(self):
         # Create blank test model to use in tests
-        self.plant = Plant.objects.create(id=uuid4())
+        self.plant = Plant.objects.create(uuid=uuid4())
         # Create test datetime object for creating events
         self.timestamp = timezone.now()
 
@@ -574,12 +574,12 @@ class PlantModelTests(TestCase):
 class TrayModelTests(TestCase):
     def setUp(self):
         # Create test tray
-        self.test_tray = Tray.objects.create(id=uuid4(), name="Test tray")
+        self.test_tray = Tray.objects.create(uuid=uuid4(), name="Test tray")
 
         # Create 2 plants with relations to Tray and 1 without
-        self.plant1 = Plant.objects.create(id=uuid4(), name="plant1", tray=self.test_tray)
-        self.plant2 = Plant.objects.create(id=uuid4(), name="plant2", tray=self.test_tray)
-        self.plant3 = Plant.objects.create(id=uuid4(), name="plant3")
+        self.plant1 = Plant.objects.create(uuid=uuid4(), name="plant1", tray=self.test_tray)
+        self.plant2 = Plant.objects.create(uuid=uuid4(), name="plant2", tray=self.test_tray)
+        self.plant3 = Plant.objects.create(uuid=uuid4(), name="plant3")
 
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
@@ -612,8 +612,8 @@ class TrayModelTests(TestCase):
 class InvalidRequestTests(TestCase):
     def setUp(self):
         # Create test models to use in tests
-        self.test_plant = Plant.objects.create(id=uuid4())
-        self.test_tray = Tray.objects.create(id=uuid4())
+        self.test_plant = Plant.objects.create(uuid=uuid4())
+        self.test_tray = Tray.objects.create(uuid=uuid4())
 
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
@@ -668,7 +668,7 @@ class InvalidRequestTests(TestCase):
         # Send POST with no timestamp key in body, confirm error
         response = self.client.post(
             '/add_plant_event',
-            {'plant_id': self.test_plant.id, 'event_type': 'water'}
+            {'plant_id': self.test_plant.uuid, 'event_type': 'water'}
         )
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(), {"error": "POST body missing required 'timestamp' key"})
@@ -677,7 +677,7 @@ class InvalidRequestTests(TestCase):
         # Send POST with invalid timestamp in body, confirm error
         response = self.client.post(
             '/add_plant_event',
-            {'plant_id': self.test_plant.id, 'timestamp': '04:20', 'event_type': 'water'}
+            {'plant_id': self.test_plant.uuid, 'timestamp': '04:20', 'event_type': 'water'}
         )
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(), {"error": "timestamp format invalid"})
@@ -686,7 +686,7 @@ class InvalidRequestTests(TestCase):
         # Send POST with with no event_type in body, confirm error
         response = self.client.post(
             '/add_plant_event',
-            {'plant_id': self.test_plant.id, 'timestamp': '2024-02-06T03:06:26.000Z'}
+            {'plant_id': self.test_plant.uuid, 'timestamp': '2024-02-06T03:06:26.000Z'}
         )
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(), {"error": "POST body missing required 'event_type' key"})
@@ -695,7 +695,7 @@ class InvalidRequestTests(TestCase):
         # Send POST with invalid event_type in body, confirm error
         response = self.client.post(
             '/add_plant_event',
-            {'plant_id': self.test_plant.id, 'timestamp': '2024-02-06T03:06:26.000Z', 'event_type': 'juice'}
+            {'plant_id': self.test_plant.uuid, 'timestamp': '2024-02-06T03:06:26.000Z', 'event_type': 'juice'}
         )
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
@@ -706,7 +706,7 @@ class InvalidRequestTests(TestCase):
     def test_target_event_does_not_exist(self):
         # Call delete_plant_event endpoint with a timestamp that doesn't exist
         payload = {
-            'plant_id': self.test_plant.id,
+            'plant_id': self.test_plant.uuid,
             'event_type': 'water',
             'timestamp': timezone.now().isoformat()
         }
@@ -715,3 +715,27 @@ class InvalidRequestTests(TestCase):
         # Confirm correct error
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(), {"error": "event not found"})
+
+
+class RegressionTests(TestCase):
+    def test_changing_uuid_should_not_create_duplicate(self):
+        '''Issue: UUID was originally used as primary_key with editable=True.
+        When UUID was changed (assign new QR code) the primary_key no longer
+        matched any row in the database, so a new row was created without
+        deleting the original. This was fixed by changing the attribute name
+        from id to uuid and removing primary_key=True (use default BigAuto).
+        '''
+
+        # Create test plant and tray, confirm 1 entry each
+        plant = Plant.objects.create(uuid=uuid4())
+        tray = Tray.objects.create(uuid=uuid4())
+        self.assertEqual(len(Plant.objects.all()), 1)
+        self.assertEqual(len(Tray.objects.all()), 1)
+
+        # Change both UUIDs, confirm no duplicates were created
+        plant.uuid = uuid4()
+        tray.uuid = uuid4()
+        plant.save()
+        tray.save()
+        self.assertEqual(len(Plant.objects.all()), 1)
+        self.assertEqual(len(Tray.objects.all()), 1)
