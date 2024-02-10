@@ -107,7 +107,7 @@ def get_timestamp_from_post_body(func):
     '''
     def wrapper(data, **kwargs):
         try:
-            timestamp = datetime.fromisoformat(data["timestamp"].rstrip("Z"))
+            timestamp = datetime.fromisoformat(data["timestamp"].replace('Z', '+00:00'))
             return func(timestamp=timestamp, data=data, **kwargs)
         except KeyError:
             return JsonResponse(
