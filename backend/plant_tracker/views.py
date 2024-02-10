@@ -3,6 +3,7 @@ import base64
 from io import BytesIO
 
 from django.shortcuts import render
+from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponseRedirect
 
 from generate_qr_code_grid import generate_layout
@@ -116,6 +117,30 @@ def register(data):
 
     # Redirect to manage page
     return HttpResponseRedirect(f'/manage/{data["uuid"]}')
+
+
+@requires_json_post
+@get_plant_from_post_body
+def change_plant_uuid(plant, data):
+    '''Changes UUID of an existing Plant, called when QR code sticker changed'''
+    try:
+        plant.uuid = data["new_id"]
+        plant.save()
+        return JsonResponse({"new_uuid": str(plant.uuid)}, status=200)
+    except ValidationError:
+        return JsonResponse({"error": "new_id key is not a valid UUID"}, status=400)
+
+
+@requires_json_post
+@get_tray_from_post_body
+def change_tray_uuid(tray, data):
+    '''Changes UUID of an existing Tray, called when QR code sticker changed'''
+    try:
+        tray.uuid = data["new_id"]
+        tray.save()
+        return JsonResponse({"new_uuid": str(tray.uuid)}, status=200)
+    except ValidationError:
+        return JsonResponse({"error": "new_id key is not a valid UUID"}, status=400)
 
 
 @requires_json_post

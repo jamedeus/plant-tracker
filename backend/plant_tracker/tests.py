@@ -487,6 +487,9 @@ class PlantModelTests(TestCase):
         # Create test datetime object for creating events
         self.timestamp = timezone.now()
 
+        # Set default content_type for post requests (avoid long lines)
+        self.client = JSONClient()
+
     def test_last_event_methods(self):
         # Confirm all methods return None when no events exist
         self.assertIsNone(self.plant.last_watered())
@@ -570,6 +573,18 @@ class PlantModelTests(TestCase):
             ]
         )
 
+    def test_change_plant_uuid(self):
+        # Call change_plant_uuid endpoint, confirm response + uuid changed
+        payload = {
+            'plant_id': self.plant.uuid,
+            'new_id': str(uuid4())
+        }
+        response = self.client.post('/change_plant_uuid', payload)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'new_uuid': payload['new_id']})
+        self.plant.refresh_from_db()
+        self.assertEqual(str(self.plant.uuid), payload['new_id'])
+
 
 class TrayModelTests(TestCase):
     def setUp(self):
@@ -607,6 +622,18 @@ class TrayModelTests(TestCase):
         self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 1)
         self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 1)
         self.assertEqual(len(self.plant3.fertilizeevent_set.all()), 0)
+
+    def test_change_tray_uuid(self):
+        # Call change_tray_uuid endpoint, confirm response + uuid changed
+        payload = {
+            'tray_id': self.test_tray.uuid,
+            'new_id': str(uuid4())
+        }
+        response = self.client.post('/change_tray_uuid', payload)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'new_uuid': payload['new_id']})
+        self.test_tray.refresh_from_db()
+        self.assertEqual(str(self.test_tray.uuid), payload['new_id'])
 
 
 class InvalidRequestTests(TestCase):
@@ -715,6 +742,26 @@ class InvalidRequestTests(TestCase):
         # Confirm correct error
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(), {"error": "event not found"})
+
+    def test_change_plant_uuid_invalid(self):
+        # Call change_plant_uuid endpoint, confirm error
+        payload = {
+            'plant_id': self.test_plant.uuid,
+            'new_id': '31670857'
+        }
+        response = self.client.post('/change_plant_uuid', payload)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {"error": "new_id key is not a valid UUID"})
+
+    def test_change_tray_uuid_invalid(self):
+        # Call change_tray_uuid endpoint, confirm error
+        payload = {
+            'tray_id': self.test_tray.uuid,
+            'new_id': '31670857'
+        }
+        response = self.client.post('/change_tray_uuid', payload)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {"error": "new_id key is not a valid UUID"})
 
 
 class RegressionTests(TestCase):
