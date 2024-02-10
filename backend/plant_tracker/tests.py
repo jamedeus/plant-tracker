@@ -154,7 +154,9 @@ class ManagePageTests(TestCase):
         self.assertTemplateUsed(response, 'plant_tracker/register.html')
 
         # Confirm context contains list of existing plant species
-        self.assertEqual(response.context['species_options'], ['Calathea', 'Fittonia'])
+        self.assertIn('Calathea', response.context['species_options'])
+        self.assertIn('Fittonia', response.context['species_options'])
+        self.assertEqual(len(response.context['species_options']), 2)
 
     def test_manage_existing_plant(self):
         # Request management page for test plant, confirm correct template renders
