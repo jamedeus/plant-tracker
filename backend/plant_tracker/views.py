@@ -2,6 +2,7 @@ import json
 import base64
 from io import BytesIO
 
+from django.conf import settings
 from django.shortcuts import render
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponseRedirect
@@ -18,9 +19,6 @@ from .view_decorators import (
     get_timestamp_from_post_body,
     get_event_type_from_post_body
 )
-
-
-url_prefix = "http://desktop.lan:8999/manage/"
 
 
 def get_plant_options():
@@ -42,11 +40,16 @@ def get_qr_codes(request):
     '''Returns printer-sized grid of QR code links as base64-encoded PNG
     QR codes point to manage endpoint, can be used for plants or trays
     '''
-    qr_codes = generate_layout(url_prefix)
+
+    # Return error if URL_PREFIX env var is unset or invalid
+    if not settings.URL_PREFIX:
+        return JsonResponse({'error': 'URL_PREFIX not configured'}, status=501)
+
+    qr_codes = generate_layout(settings.URL_PREFIX)
     image = BytesIO()
     qr_codes.save(image, format="PNG")
     image_base64 = base64.b64encode(image.getvalue()).decode()
-    return JsonResponse({'qr_codes': image_base64})
+    return JsonResponse({'qr_codes': image_base64}, status=200)
 
 
 def overview(request):

@@ -10,7 +10,7 @@ page_width, page_height = 2400, 3200
 
 
 def generate_random_qr(url_prefix):
-    """Returns pyqrcode instance with url_prefix + random UUID"""
+    '''Returns pyqrcode instance with url_prefix + random UUID'''
     return pyqrcode.create(
         f"{url_prefix}{uuid4().hex}",
         error="H",
@@ -19,7 +19,7 @@ def generate_random_qr(url_prefix):
 
 
 def get_qr_png(url_prefix, scale=5):
-    """Returns PIL.Image containing QR code with url_prefix + random UUID"""
+    '''Returns PIL.Image containing QR code with url_prefix + random UUID'''
     image = io.BytesIO()
     qr = generate_random_qr(url_prefix)
     qr.png(image, scale=scale)
@@ -27,10 +27,10 @@ def get_qr_png(url_prefix, scale=5):
 
 
 def generate_layout(url_prefix, scale=5):
-    """Returns PIL.Image containing an evenly spaced grid of QR codes
+    '''Returns PIL.Image containing an evenly spaced grid of QR codes
     Takes url_prefix (manage endpoint without UUID) and optional scale (int)
     Scale defaults to 5 (16mm QR codes), use 7 for 1inch QR codes
-    """
+    '''
 
     # Get QR code width at current scale
     test_qr = get_qr_png(url_prefix, scale)

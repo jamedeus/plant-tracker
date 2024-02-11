@@ -3,6 +3,7 @@ import base64
 from uuid import uuid4
 from datetime import datetime, timedelta
 
+from django.conf import settings
 from django.utils import timezone
 from django.test import Client, TestCase
 
@@ -33,8 +34,11 @@ class OverviewTests(TestCase):
         self.assertTemplateUsed(response, 'plant_tracker/overview.html')
 
     def test_get_qr_codes(self):
-        # Confirm response contains base64 string
+        # Mock URL_PREFIX env var
+        settings.URL_PREFIX = 'mysite.com'
+        # Send request, confirm response contains base64 string
         response = self.client.get('/get_qr_codes')
+        self.assertEqual(response.status_code, 200)
         try:
             base64.b64decode(response.json()['qr_codes'], validate=True)
         except:
@@ -733,6 +737,14 @@ class InvalidRequestTests(TestCase):
 
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
+
+    def test_get_qr_codes_url_prefix_not_set(self):
+        # Mock missing URL_PREFIX env var
+        settings.URL_PREFIX = None
+        # Send request, confirm correct error
+        response = self.client.get('/get_qr_codes')
+        self.assertEqual(response.status_code, 501)
+        self.assertEqual(response.json(), {'error': 'URL_PREFIX not configured'})
 
     def test_invalid_get_request(self):
         # Send GET request to endpoint that requires POST, confirm error
