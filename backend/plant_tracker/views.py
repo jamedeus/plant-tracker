@@ -7,7 +7,7 @@ from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponseRedirect
 
 from generate_qr_code_grid import generate_layout
-from .models import Tray, Plant
+from .models import Tray, Plant, RepotEvent
 from .view_decorators import (
     events_map,
     get_plant_by_uuid,
@@ -308,3 +308,27 @@ def bulk_remove_plants_from_tray(tray, data):
             plant.tray = None
             plant.save()
     return HttpResponseRedirect(f'/manage/{tray.uuid}')
+
+
+@requires_json_post
+@get_plant_from_post_body
+@get_timestamp_from_post_body
+def repot_plant(plant, timestamp, data):
+    '''Creates a RepotEvent for specified Plant with optional new_pot_size
+    Requires POST with plant_id, new_pot_size, and timestamp keys in JSON body
+    '''
+
+    # Create with current pot_size as both old and new
+    event = RepotEvent.objects.create(
+        plant=plant,
+        timestamp=timestamp,
+        old_pot_size=plant.pot_size,
+        new_pot_size=plant.pot_size
+    )
+    # If new_pot_size specified update plant.pot_size and event.new_pot_size
+    if data["new_pot_size"]:
+        event.new_pot_size = data["new_pot_size"]
+        event.save()
+        plant.pot_size = data["new_pot_size"]
+        plant.save()
+    return JsonResponse({"action": "repot", "plant": plant.uuid}, status=200)

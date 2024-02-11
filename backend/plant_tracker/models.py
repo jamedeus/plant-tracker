@@ -214,3 +214,15 @@ class RepotEvent(models.Model):
     '''Records timestamp when a Plant entry was repotted'''
     plant = models.ForeignKey(Plant, on_delete=models.CASCADE)
     timestamp = models.DateTimeField()
+
+    # Optional old and new pot sizes
+    old_pot_size = models.PositiveIntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(36)],
+        blank=True,
+        null=True
+    )
+    new_pot_size = models.PositiveIntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(36)],
+        blank=True,
+        null=True
+    )

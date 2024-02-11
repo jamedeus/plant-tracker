@@ -307,6 +307,36 @@ class ManagePageTests(TestCase):
         self.assertIsNone(self.plant2.tray)
         self.assertEqual(len(self.tray1.plant_set.all()), 0)
 
+    def test_repot_plant(self):
+        # Set starting pot_size
+        self.plant1.pot_size = 4
+        self.plant1.save()
+
+        # Confirm plant has no RepotEvents
+        self.assertEqual(len(self.plant1.repotevent_set.all()), 0)
+
+        # Send repot_plant request
+        payload = {
+            'plant_id': self.plant1.uuid,
+            'timestamp': '2024-02-06T03:06:26.000Z',
+            'new_pot_size': 6
+        }
+        response = self.client.post('/repot_plant', payload)
+
+        # Confirm response, confirm RepotEvent created
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {"action": "repot", "plant": str(self.plant1.uuid)}
+        )
+        self._refresh_test_models()
+        self.assertEqual(len(self.plant1.repotevent_set.all()), 1)
+
+        # Confirm correct pot_size attributes on plant and event entries
+        self.assertEqual(self.plant1.pot_size, 6)
+        self.assertEqual(self.plant1.repotevent_set.all()[0].old_pot_size, 4)
+        self.assertEqual(self.plant1.repotevent_set.all()[0].new_pot_size, 6)
+
 
 class TestPlantEvents(TestCase):
     def setUp(self):
