@@ -21,15 +21,15 @@ from .view_decorators import (
 
 
 def get_plant_options():
-    '''Returns a list of dicts with name and id attributes of all existing plants
-    Used to populate checkbox options in frontend
+    '''Returns a list of dicts with name and uuid attributes of all existing plants
+    Used to populate bulk management checkbox options in frontend
     '''
     return Plant.objects.values('uuid', 'name')
 
 
 def get_plant_species_options():
     '''Returns a list of species for every Plant in database with no duplicates
-    Used to populate species suggestions on registration form
+    Used to populate species suggestions on plant registration form
     '''
     species = Plant.objects.all().values_list('species', flat=True)
     return list(set([i for i in species if i is not None]))
@@ -57,8 +57,9 @@ def overview(request):
 
 def manage(request, uuid):
     '''Renders plant/tray management pages, or registration page if UUID is new
-    Accessed by scanning QR code sticker
+    Accessed by scanning QR code sticker containing UUID
     '''
+
     # Look up UUID in plant database, render template if found
     plant = get_plant_by_uuid(uuid)
     if plant:
@@ -84,7 +85,7 @@ def manage(request, uuid):
         }
         return render(request, 'plant_tracker/manage_tray.html', context)
 
-    # Redirect to registration form if UUID does not exist in either database
+    # Render registration form if UUID does not exist in either table
     context = {
         'new_id': uuid,
         'species_options': get_plant_species_options()
@@ -95,7 +96,7 @@ def manage(request, uuid):
 @requires_json_post
 def register(data):
     '''Creates a Plant or Tray database entry with params from POST body
-    Called from form on manage page shown after scanning a new QR code
+    Requires JSON POST with parameters from plant or tray registration forms
     '''
 
     # Replace empty strings with None (prevent empty strings in db)
@@ -124,7 +125,9 @@ def register(data):
 @requires_json_post
 @get_plant_from_post_body
 def change_plant_uuid(plant, data):
-    '''Changes UUID of an existing Plant, called when QR code sticker changed'''
+    '''Changes UUID of an existing Plant, called when QR code sticker changed
+    Requires JSON POST with plant_id (uuid) and new_id (uuid) keys
+    '''
     try:
         plant.uuid = data["new_id"]
         plant.save()
@@ -136,7 +139,9 @@ def change_plant_uuid(plant, data):
 @requires_json_post
 @get_tray_from_post_body
 def change_tray_uuid(tray, data):
-    '''Changes UUID of an existing Tray, called when QR code sticker changed'''
+    '''Changes UUID of an existing Tray, called when QR code sticker changed
+    Requires JSON POST with tray_id (uuid) and new_id (uuid) keys
+    '''
     try:
         tray.uuid = data["new_id"]
         tray.save()
@@ -148,8 +153,8 @@ def change_tray_uuid(tray, data):
 @requires_json_post
 @get_plant_from_post_body
 def edit_plant_details(plant, data):
-    '''Updates existing Plant database entry with params from POST body
-    Called from form in edit plant modal on manage page
+    '''Updates description attributes of existing Plant entry
+    Requires JSON POST with plant_id (uuid), name, species, description, and pot_size keys
     '''
     print(json.dumps(data, indent=4))
 
@@ -170,8 +175,8 @@ def edit_plant_details(plant, data):
 @requires_json_post
 @get_tray_from_post_body
 def edit_tray_details(tray, data):
-    '''Updates existing Tray database entry with params from POST body
-    Called from form in edit tray modal on manage page
+    '''Updates description attributes of existing Tray entry
+    Requires JSON POST with tray_id (uuid), name, and location keys
     '''
     print(json.dumps(data, indent=4))
 
@@ -190,7 +195,9 @@ def edit_tray_details(tray, data):
 @requires_json_post
 @get_plant_from_post_body
 def delete_plant(plant, data):
-    '''Deletes an existing Plant from database, returns redirect to overview'''
+    '''Deletes an existing Plant from database, returns redirect to overview
+    Requires JSON POST with plant_id (uuid) key
+    '''
     plant.delete()
     return HttpResponseRedirect('/')
 
@@ -198,7 +205,9 @@ def delete_plant(plant, data):
 @requires_json_post
 @get_tray_from_post_body
 def delete_tray(tray, data):
-    '''Deletes an existing Tray from database, returns redirect to overview'''
+    '''Deletes an existing Tray from database, returns redirect to overview
+    Requires JSON POST with tray_id (uuid) key
+    '''
     tray.delete()
     return HttpResponseRedirect('/')
 
@@ -209,7 +218,7 @@ def delete_tray(tray, data):
 @get_event_type_from_post_body
 def add_plant_event(plant, timestamp, event_type, data):
     '''Creates new Event entry with requested type for specified Plant entry
-    Requires POST with plant_id, event_type, and timestamp keys in JSON body
+    Requires JSON POST with plant_id (uuid), event_type, and timestamp keys
     '''
     events_map[event_type].objects.create(plant=plant, timestamp=timestamp)
     return JsonResponse({"action": event_type, "plant": plant.uuid}, status=200)
@@ -220,7 +229,7 @@ def add_plant_event(plant, timestamp, event_type, data):
 @get_event_type_from_post_body
 def bulk_add_plant_events(timestamp, event_type, data):
     '''Creates new Event entry with requested type for each Plant specified in body
-    Requires POST with plants (list of UUIDs), event_type, and timestamp keys in JSON body
+    Requires JSON POST with plants (list of UUIDs), event_type, and timestamp keys
     '''
     added = []
     failed = []
@@ -243,7 +252,7 @@ def bulk_add_plant_events(timestamp, event_type, data):
 @get_event_type_from_post_body
 def delete_plant_event(plant, timestamp, event_type, data):
     '''Deletes the Event matching the plant, type, and timestamp specified in body
-    Requires POST with plant_id, event_type, and timestamp keys in JSON body
+    Requires JSON POST with plant_id (uuid), event_type, and timestamp keys
     '''
     try:
         event = events_map[event_type].objects.get(plant=plant, timestamp=timestamp)
@@ -258,7 +267,7 @@ def delete_plant_event(plant, timestamp, event_type, data):
 @get_tray_from_post_body
 def add_plant_to_tray(plant, tray, data):
     '''Adds specified Plant to specified Tray (creates database relation)
-    Requires POST with JSON body containing plant_id and tray_id keys
+    Requires JSON POST with plant_id (uuid) and tray_id (uuid) keys
     '''
     plant.tray = tray
     plant.save()
@@ -272,7 +281,7 @@ def add_plant_to_tray(plant, tray, data):
 @get_plant_from_post_body
 def remove_plant_from_tray(plant, data):
     '''Removes specified Plant from Tray (deletes database relation)
-    Requires POST with JSON body containing plant_id key
+    Requires JSON POST with plant_id (uuid) key
     '''
     plant.tray = None
     plant.save()
@@ -286,7 +295,7 @@ def remove_plant_from_tray(plant, data):
 @get_tray_from_post_body
 def bulk_add_plants_to_tray(tray, data):
     '''Adds a list of Plants to specified Tray (creates database relation for each)
-    Requires POST with JSON body containing tray_id and plants (list of UUIDs) keys
+    Requires JSON POST with tray_id (uuid) and plants (list of UUIDs) keys
     '''
     for plant_id in data["plants"]:
         plant = get_plant_by_uuid(plant_id)
@@ -300,7 +309,7 @@ def bulk_add_plants_to_tray(tray, data):
 @get_tray_from_post_body
 def bulk_remove_plants_from_tray(tray, data):
     '''Removes a list of Plants from specified Tray (deletes database relations)
-    Requires POST with JSON body containing plants key (list of UUIDs to remove)
+    Requires JSON POST with plants (list of UUIDS) key
     '''
     for plant_id in data["plants"]:
         plant = get_plant_by_uuid(plant_id)
@@ -315,7 +324,7 @@ def bulk_remove_plants_from_tray(tray, data):
 @get_timestamp_from_post_body
 def repot_plant(plant, timestamp, data):
     '''Creates a RepotEvent for specified Plant with optional new_pot_size
-    Requires POST with plant_id, new_pot_size, and timestamp keys in JSON body
+    Requires JSON POST with plant_id, new_pot_size, and timestamp keys
     '''
 
     # Create with current pot_size as both old and new

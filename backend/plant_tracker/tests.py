@@ -338,7 +338,7 @@ class ManagePageTests(TestCase):
         self.assertEqual(self.plant1.repotevent_set.all()[0].new_pot_size, 6)
 
 
-class TestPlantEvents(TestCase):
+class PlantEventTests(TestCase):
     def setUp(self):
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
