@@ -93,7 +93,7 @@ def manage(request, uuid):
     return render(request, 'plant_tracker/register.html', context)
 
 
-@requires_json_post
+@requires_json_post()
 def register(data):
     '''Creates a Plant or Tray database entry with params from POST body
     Requires JSON POST with parameters from plant or tray registration forms
@@ -122,7 +122,7 @@ def register(data):
     return HttpResponseRedirect(f'/manage/{data["uuid"]}')
 
 
-@requires_json_post
+@requires_json_post(["plant_id", "new_id"])
 @get_plant_from_post_body
 def change_plant_uuid(plant, data):
     '''Changes UUID of an existing Plant, called when QR code sticker changed
@@ -136,7 +136,7 @@ def change_plant_uuid(plant, data):
         return JsonResponse({"error": "new_id key is not a valid UUID"}, status=400)
 
 
-@requires_json_post
+@requires_json_post(["tray_id", "new_id"])
 @get_tray_from_post_body
 def change_tray_uuid(tray, data):
     '''Changes UUID of an existing Tray, called when QR code sticker changed
@@ -150,7 +150,7 @@ def change_tray_uuid(tray, data):
         return JsonResponse({"error": "new_id key is not a valid UUID"}, status=400)
 
 
-@requires_json_post
+@requires_json_post(["plant_id", "name", "species", "description", "pot_size"])
 @get_plant_from_post_body
 def edit_plant_details(plant, data):
     '''Updates description attributes of existing Plant entry
@@ -172,7 +172,7 @@ def edit_plant_details(plant, data):
     return HttpResponseRedirect(f'/manage/{data["plant_id"]}')
 
 
-@requires_json_post
+@requires_json_post(["tray_id", "name", "location"])
 @get_tray_from_post_body
 def edit_tray_details(tray, data):
     '''Updates description attributes of existing Tray entry
@@ -192,7 +192,7 @@ def edit_tray_details(tray, data):
     return HttpResponseRedirect(f'/manage/{data["tray_id"]}')
 
 
-@requires_json_post
+@requires_json_post(["plant_id"])
 @get_plant_from_post_body
 def delete_plant(plant, data):
     '''Deletes an existing Plant from database, returns redirect to overview
@@ -202,7 +202,7 @@ def delete_plant(plant, data):
     return HttpResponseRedirect('/')
 
 
-@requires_json_post
+@requires_json_post(["tray_id"])
 @get_tray_from_post_body
 def delete_tray(tray, data):
     '''Deletes an existing Tray from database, returns redirect to overview
@@ -212,7 +212,7 @@ def delete_tray(tray, data):
     return HttpResponseRedirect('/')
 
 
-@requires_json_post
+@requires_json_post(["plant_id", "event_type", "timestamp"])
 @get_plant_from_post_body
 @get_timestamp_from_post_body
 @get_event_type_from_post_body
@@ -224,7 +224,7 @@ def add_plant_event(plant, timestamp, event_type, data):
     return JsonResponse({"action": event_type, "plant": plant.uuid}, status=200)
 
 
-@requires_json_post
+@requires_json_post(["plants", "event_type", "timestamp"])
 @get_timestamp_from_post_body
 @get_event_type_from_post_body
 def bulk_add_plant_events(timestamp, event_type, data):
@@ -246,7 +246,7 @@ def bulk_add_plant_events(timestamp, event_type, data):
     )
 
 
-@requires_json_post
+@requires_json_post(["plant_id", "event_type", "timestamp"])
 @get_plant_from_post_body
 @get_timestamp_from_post_body
 @get_event_type_from_post_body
@@ -262,7 +262,7 @@ def delete_plant_event(plant, timestamp, event_type, data):
         return JsonResponse({"error": "event not found"}, status=404)
 
 
-@requires_json_post
+@requires_json_post(["plant_id", "tray_id"])
 @get_plant_from_post_body
 @get_tray_from_post_body
 def add_plant_to_tray(plant, tray, data):
@@ -277,7 +277,7 @@ def add_plant_to_tray(plant, tray, data):
     )
 
 
-@requires_json_post
+@requires_json_post(["plant_id"])
 @get_plant_from_post_body
 def remove_plant_from_tray(plant, data):
     '''Removes specified Plant from Tray (deletes database relation)
@@ -291,7 +291,7 @@ def remove_plant_from_tray(plant, data):
     )
 
 
-@requires_json_post
+@requires_json_post(["tray_id", "plants"])
 @get_tray_from_post_body
 def bulk_add_plants_to_tray(tray, data):
     '''Adds a list of Plants to specified Tray (creates database relation for each)
@@ -305,11 +305,11 @@ def bulk_add_plants_to_tray(tray, data):
     return HttpResponseRedirect(f'/manage/{tray.uuid}')
 
 
-@requires_json_post
+@requires_json_post(["tray_id", "plants"])
 @get_tray_from_post_body
 def bulk_remove_plants_from_tray(tray, data):
     '''Removes a list of Plants from specified Tray (deletes database relations)
-    Requires JSON POST with plants (list of UUIDS) key
+    Requires JSON POST with tray_id (uuid) and plants (list of UUIDs) keys
     '''
     for plant_id in data["plants"]:
         plant = get_plant_by_uuid(plant_id)
@@ -319,7 +319,7 @@ def bulk_remove_plants_from_tray(tray, data):
     return HttpResponseRedirect(f'/manage/{tray.uuid}')
 
 
-@requires_json_post
+@requires_json_post(["plant_id", "new_pot_size", "timestamp"])
 @get_plant_from_post_body
 @get_timestamp_from_post_body
 def repot_plant(plant, timestamp, data):

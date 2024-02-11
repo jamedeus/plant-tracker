@@ -1,3 +1,4 @@
+import json
 import base64
 from uuid import uuid4
 from datetime import datetime, timedelta
@@ -6,6 +7,12 @@ from django.utils import timezone
 from django.test import Client, TestCase
 
 from .models import Tray, Plant, WaterEvent, FertilizeEvent, PruneEvent, RepotEvent
+from .view_decorators import (
+    get_plant_from_post_body,
+    get_tray_from_post_body,
+    get_timestamp_from_post_body,
+    get_event_type_from_post_body
+)
 
 
 # Subclass Client, add default for content_type arg
@@ -731,7 +738,7 @@ class InvalidRequestTests(TestCase):
         # Send GET request to endpoint that requires POST, confirm error
         response = self.client.get('/register')
         self.assertEqual(response.status_code, 405)
-        self.assertEqual(response.json(), {'Error': 'Must post data'})
+        self.assertEqual(response.json(), {'error': 'must post data'})
 
     def test_invalid_post_body(self):
         # Send POST with non-JSON body, confirm error
@@ -741,7 +748,7 @@ class InvalidRequestTests(TestCase):
             content_type='text/plain',
         )
         self.assertEqual(response.status_code, 405)
-        self.assertEqual(response.json(), {'Error': 'Request body must be JSON'})
+        self.assertEqual(response.json(), {'error': 'request body must be JSON'})
 
     def test_uuid_does_not_exist(self):
         # Send POST with UUID that does not exist in database, confirm error
@@ -753,13 +760,19 @@ class InvalidRequestTests(TestCase):
         # Send POST with no plant_id key in body, confirm error
         response = self.client.post('/delete_plant', {'timestamp': '2024-02-06T03:06:26.000Z'})
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json(), {"error": "POST body missing required 'plant_id' key"})
+        self.assertEqual(
+            response.json(),
+            {"error": "POST body missing required keys", "keys": ['plant_id']}
+        )
 
     def test_missing_tray_id(self):
         # Send POST with no tray_id key in body, confirm error
         response = self.client.post('/delete_tray')
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json(), {"error": "POST body missing required 'tray_id' key"})
+        self.assertEqual(
+            response.json(),
+            {"error": "POST body missing required keys", "keys": ['tray_id']}
+        )
 
     def test_invalid_plant_uuid(self):
         # Send POST with plant_id that is not a valid UUID, confirm error
@@ -780,7 +793,10 @@ class InvalidRequestTests(TestCase):
             {'plant_id': self.test_plant.uuid, 'event_type': 'water'}
         )
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json(), {"error": "POST body missing required 'timestamp' key"})
+        self.assertEqual(
+            response.json(),
+            {"error": "POST body missing required keys", "keys": ['timestamp']}
+        )
 
     def test_invalid_timestamp_format(self):
         # Send POST with invalid timestamp in body, confirm error
@@ -798,7 +814,10 @@ class InvalidRequestTests(TestCase):
             {'plant_id': self.test_plant.uuid, 'timestamp': '2024-02-06T03:06:26.000Z'}
         )
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json(), {"error": "POST body missing required 'event_type' key"})
+        self.assertEqual(
+            response.json(),
+            {"error": "POST body missing required keys", "keys": ['event_type']}
+        )
 
     def test_invalid_event_type(self):
         # Send POST with invalid event_type in body, confirm error
@@ -844,6 +863,64 @@ class InvalidRequestTests(TestCase):
         response = self.client.post('/change_tray_uuid', payload)
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(), {"error": "new_id key is not a valid UUID"})
+
+
+class ViewDecoratorTests(TestCase):
+    '''These error handling lines are redundant if required_keys arg is passed
+    to requires_json_post, as it currently is for all views. However, they are
+    kept for an extra layer of safety in case args are omitted from the list.
+    '''
+    def test_get_plant_from_post_body_missing_plant_id(self):
+        @get_plant_from_post_body
+        def mock_view_function(data, **kwargs):
+            pass
+
+        # Call function with empty data dict, confirm correct error
+        response = mock_view_function(data={})
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            json.loads(response.content),
+            {"error": "POST body missing required 'plant_id' key"}
+        )
+
+    def test_get_tray_from_post_body_missing_tray_id(self):
+        @get_tray_from_post_body
+        def mock_view_function(data, **kwargs):
+            pass
+
+        # Call function with empty data dict, confirm correct error
+        response = mock_view_function(data={})
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            json.loads(response.content),
+            {"error": "POST body missing required 'tray_id' key"}
+        )
+
+    def test_get_timestamp_from_post_body_missing_timestamp(self):
+        @get_timestamp_from_post_body
+        def mock_view_function(data, **kwargs):
+            pass
+
+        # Call function with empty data dict, confirm correct error
+        response = mock_view_function(data={})
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            json.loads(response.content),
+            {"error": "POST body missing required 'timestamp' key"}
+        )
+
+    def test_get_event_type_from_post_body_missing_event_type(self):
+        @get_event_type_from_post_body
+        def mock_view_function(data, **kwargs):
+            pass
+
+        # Call function with empty data dict, confirm correct error
+        response = mock_view_function(data={})
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            json.loads(response.content),
+            {"error": "POST body missing required 'event_type' key"}
+        )
 
 
 class RegressionTests(TestCase):

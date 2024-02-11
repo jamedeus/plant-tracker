@@ -33,21 +33,33 @@ def get_tray_by_uuid(uuid):
         return None
 
 
-def requires_json_post(func):
+def requires_json_post(required_keys=None):
     '''Decorator throws error if request is not POST with JSON body
-    Parses JSON from request body and passes to wrapped function as first arg
+    Accepts optional list of required keys, throws error if any are missing
+    Parses JSON from request body and passes to wrapped function as data kwarg
     '''
-    @wraps(func)
-    def wrapper(request, **kwargs):
-        try:
-            if request.method == "POST":
+    def decorator(func):
+        @wraps(func)
+        def wrapper(request, **kwargs):
+            try:
+                if request.method != "POST":
+                    return JsonResponse({'error': 'must post data'}, status=405)
                 data = json.loads(request.body.decode("utf-8"))
-            else:
-                return JsonResponse({'Error': 'Must post data'}, status=405)
-        except json.decoder.JSONDecodeError:
-            return JsonResponse({'Error': 'Request body must be JSON'}, status=405)
-        return func(data, **kwargs)
-    return wrapper
+                if required_keys:
+                    missing_keys = [key for key in required_keys if key not in data]
+                    if missing_keys:
+                        return JsonResponse(
+                            {
+                                'error': 'POST body missing required keys',
+                                'keys': missing_keys
+                            },
+                            status=400
+                        )
+            except json.decoder.JSONDecodeError:
+                return JsonResponse({'error': 'request body must be JSON'}, status=405)
+            return func(data=data, **kwargs)
+        return wrapper
+    return decorator
 
 
 def get_plant_from_post_body(func):
