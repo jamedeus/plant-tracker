@@ -20,11 +20,7 @@
 <body>
     <div class="container d-flex flex-column vh-100">
         <div class="d-flex flex-column text-center mb-5">
-            {% if tray.name %}
-                <h1>{{ tray.name }}</h1>
-            {% else %}
-                <h1>Unnamed Tray</h1>
-            {% endif %}
+            <h1>{{ tray.display_name }}</h1>
             {% if tray.location %}
                 <h5>Location: {{ tray.location }}</h5>
             {% endif %}

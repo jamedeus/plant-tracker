@@ -64,6 +64,7 @@ def manage(request, uuid):
     if plant:
         context = {
             'plant': plant,
+            'display_name': plant.get_display_name(),
             'water_events': plant.get_water_timestamps(),
             'fertilize_events': plant.get_fertilize_timestamps(),
             'trays': Tray.objects.all(),
@@ -76,6 +77,7 @@ def manage(request, uuid):
     if tray:
         context = {
             'tray': tray,
+            'display_name': tray.get_display_name(),
             'plant_ids': tray.get_plant_uuids(),
             'details': tray.get_plant_details(),
             'options': get_plant_options()

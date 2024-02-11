@@ -20,11 +20,7 @@
 <body>
     <div class="container d-flex flex-column vh-100">
         <div class="d-flex flex-column text-center mb-5">
-            {% if plant.name %}
-                <h1>{{ plant.name }}</h1>
-            {% else %}
-                <h1>Unnamed Plant</h1>
-            {% endif %}
+            <h1>{{ display_name }}</h1>
             {% if plant.species %}
                 <h5>Species: {{ plant.species }}</h5>
             {% endif %}

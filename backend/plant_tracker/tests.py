@@ -181,7 +181,7 @@ class ManagePageTests(TestCase):
         # Confirm context includes tray, correct plant details
         self.assertEqual(response.context['tray'], self.tray1)
         self.assertEqual(len(response.context['details']), 1)
-        self.assertEqual(response.context['details'][self.plant1.uuid]['name'], None)
+        self.assertEqual(response.context['details'][self.plant1.uuid]['name'], 'Unnamed plant 1')
         self.assertEqual(response.context['details'][self.plant1.uuid]['last_watered'], None)
         self.assertEqual(response.context['details'][self.plant1.uuid]['last_fertilized'], None)
 
@@ -585,11 +585,37 @@ class PlantModelTests(TestCase):
         self.plant.refresh_from_db()
         self.assertEqual(str(self.plant.uuid), payload['new_id'])
 
+    def test_get_display_name(self):
+        # Confirm name and species are null, display_name should be unnamed index
+        self.assertIsNone(self.plant.name)
+        self.assertIsNone(self.plant.species)
+        self.assertEqual(self.plant.get_display_name(), 'Unnamed plant 1')
+
+        # Add species, display_name should be "Unnamed <species>"
+        self.plant.species = 'Calathea'
+        self.plant.save()
+        self.assertEqual(self.plant.get_display_name(), 'Unnamed Calathea')
+
+        # Add name, display_name should be name attribute
+        self.plant.name = 'Real name'
+        self.plant.save()
+        self.assertEqual(self.plant.get_display_name(), 'Real name')
+
+        # Create 3 unnamed plants
+        unnamed = []
+        for i in range(0, 3):
+            unnamed.append(Plant.objects.create(uuid=uuid4()))
+
+        # Confirm Unnamed plants have correct sequential display_names
+        self.assertEqual(unnamed[0].get_display_name(), 'Unnamed plant 1')
+        self.assertEqual(unnamed[1].get_display_name(), 'Unnamed plant 2')
+        self.assertEqual(unnamed[2].get_display_name(), 'Unnamed plant 3')
+
 
 class TrayModelTests(TestCase):
     def setUp(self):
         # Create test tray
-        self.test_tray = Tray.objects.create(uuid=uuid4(), name="Test tray")
+        self.test_tray = Tray.objects.create(uuid=uuid4())
 
         # Create 2 plants with relations to Tray and 1 without
         self.plant1 = Plant.objects.create(uuid=uuid4(), name="plant1", tray=self.test_tray)
@@ -634,6 +660,32 @@ class TrayModelTests(TestCase):
         self.assertEqual(response.json(), {'new_uuid': payload['new_id']})
         self.test_tray.refresh_from_db()
         self.assertEqual(str(self.test_tray.uuid), payload['new_id'])
+
+    def test_get_display_name(self):
+        # Confirm name and location are null, display_name should be unnamed index
+        self.assertIsNone(self.test_tray.name)
+        self.assertIsNone(self.test_tray.location)
+        self.assertEqual(self.test_tray.get_display_name(), 'Unnamed tray 1')
+
+        # Add location, display_name should be "<location> tray"
+        self.test_tray.location = 'Middle shelf'
+        self.test_tray.save()
+        self.assertEqual(self.test_tray.get_display_name(), 'Middle shelf tray')
+
+        # Add name, display_name should be name attribute
+        self.test_tray.name = 'Real name'
+        self.test_tray.save()
+        self.assertEqual(self.test_tray.get_display_name(), 'Real name')
+
+        # Create 3 unnamed trays
+        unnamed = []
+        for i in range(0, 3):
+            unnamed.append(Tray.objects.create(uuid=uuid4()))
+
+        # Confirm Unnamed trays have correct sequential display_names
+        self.assertEqual(unnamed[0].get_display_name(), 'Unnamed tray 1')
+        self.assertEqual(unnamed[1].get_display_name(), 'Unnamed tray 2')
+        self.assertEqual(unnamed[2].get_display_name(), 'Unnamed tray 3')
 
 
 class InvalidRequestTests(TestCase):
