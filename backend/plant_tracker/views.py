@@ -20,6 +20,9 @@ from .view_decorators import (
 )
 
 
+url_prefix = "http://desktop.lan:8999/manage/"
+
+
 def get_plant_options():
     '''Returns a list of dicts with name and uuid attributes of all existing plants
     Used to populate bulk management checkbox options in frontend
@@ -39,7 +42,7 @@ def get_qr_codes(request):
     '''Returns printer-sized grid of QR code links as base64-encoded PNG
     QR codes point to manage endpoint, can be used for plants or trays
     '''
-    qr_codes = generate_layout()
+    qr_codes = generate_layout(url_prefix)
     image = BytesIO()
     qr_codes.save(image, format="PNG")
     image_base64 = base64.b64encode(image.getvalue()).decode()

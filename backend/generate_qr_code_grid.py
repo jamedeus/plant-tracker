@@ -1,20 +1,15 @@
-#!/usr/bin/env python3
-
 import io
 from uuid import uuid4
 
 import pyqrcode
 from PIL import Image
 
-
-url_prefix = "http://desktop.lan:8999/manage/"
-
 # Dimensions of 8.5 x 11 sheet of paper at 300 dpi
 # Height reduced 100px to accomodate timestamp added by browser
 page_width, page_height = 2400, 3200
 
 
-def generate_random_qr():
+def generate_random_qr(url_prefix):
     """Returns pyqrcode instance with url_prefix + random UUID"""
     return pyqrcode.create(
         f"{url_prefix}{uuid4().hex}",
@@ -23,18 +18,22 @@ def generate_random_qr():
     )
 
 
-def get_qr_png(scale=5):
+def get_qr_png(url_prefix, scale=5):
     """Returns PIL.Image containing QR code with url_prefix + random UUID"""
     image = io.BytesIO()
-    qr = generate_random_qr()
+    qr = generate_random_qr(url_prefix)
     qr.png(image, scale=scale)
     return Image.open(image)
 
 
-def generate_layout(scale=5):
-    """Returns PIL.Image containing an evenly spaced grid of QR codes"""
+def generate_layout(url_prefix, scale=5):
+    """Returns PIL.Image containing an evenly spaced grid of QR codes
+    Takes url_prefix (manage endpoint without UUID) and optional scale (int)
+    Scale defaults to 5 (16mm QR codes), use 7 for 1inch QR codes
+    """
+
     # Get QR code width at current scale
-    test_qr = get_qr_png(scale)
+    test_qr = get_qr_png(url_prefix, scale)
     qr_width = test_qr.width
 
     # Calculate number of rows and columns, number of margins between
@@ -55,7 +54,7 @@ def generate_layout(scale=5):
     # Generate evenly-spaced grid of random QR codes
     for row in range(qr_per_col):
         for col in range(qr_per_row):
-            qr_img = get_qr_png(scale)
+            qr_img = get_qr_png(url_prefix, scale)
 
             # Calculate coordinates of QR code top-left corner
             x = col * (qr_width + row_margin_each)
@@ -65,8 +64,3 @@ def generate_layout(scale=5):
             page.paste(qr_img, (x, y))
 
     return page
-
-
-if __name__ == "__main__":
-    page = generate_layout()
-    page.show()
