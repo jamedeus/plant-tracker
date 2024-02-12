@@ -11,10 +11,11 @@ test:
   stage: test
   tags:
     - arm64
-  script:
+  before_script:
     - pip3 install pipenv
     - export PATH=$PATH:/home/gitlab-runner/.local/bin
     - pipenv install
+  script:
     - cd backend/
     - pipenv run coverage run --source='.' --omit='*manage.py,*wsgi.py,*asgi.py,*/tests.py,*unit_test_helpers.py,*/migrations/*.py' manage.py test
     - pipenv run coverage report -m --precision=1
@@ -24,7 +25,7 @@ test:
 
 # Update pylint badge
 pylint:
-  stage: pylint
+  stage: test
   tags:
     - arm64
   before_script:
