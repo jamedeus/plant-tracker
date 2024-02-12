@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "9ea4a84ab5af98373bbeb5310d04ddfd388ee0256e872ecff058fd9c3e43463f"
+            "sha256": "b0fa2e6407748dfbbe8263c9e39cbe1d14254175c7e46f35511b354131079701"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -145,6 +145,14 @@
             ],
             "markers": "python_version >= '3.9'",
             "version": "==0.7.16"
+        },
+        "anybadge": {
+            "hashes": [
+                "sha256:47f06e0a6320d3e5eac55c712dc0bab71b9ed85353c591d448653c5a0740783f",
+                "sha256:8711a7f7f45317c62a460f14084f005ba665cbebdf2a94e7df53bc3ab35df4c9"
+            ],
+            "index": "pypi",
+            "version": "==1.14.0"
         },
         "astroid": {
             "hashes": [
@@ -520,6 +528,14 @@
             ],
             "index": "pypi",
             "version": "==2.5.5"
+        },
+        "pylint-exit": {
+            "hashes": [
+                "sha256:65c9e7856e9058705a92d7c45628d604b2a4b8ee2b3c18a7303be77f9ed87cbe",
+                "sha256:b6ad02884c01c5560a5275079fe5a6c792afff90ecccf0c02513e1547ee280b0"
+            ],
+            "index": "pypi",
+            "version": "==1.2.0"
         },
         "pylint-plugin-utils": {
             "hashes": [

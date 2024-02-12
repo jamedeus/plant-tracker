@@ -14,6 +14,8 @@ ipython = "*"
 pylint = "*"
 pylint-django = "*"
 sphinx = "*"
+pylint-exit = "*"
+anybadge = "*"
 
 [requires]
 python_version = "3.10"

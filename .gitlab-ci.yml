@@ -4,6 +4,7 @@ before_script:
 
 stages:
   - test
+  - pylint
 
 # Run django unit tests
 test:
@@ -18,5 +19,26 @@ test:
     - pipenv run coverage run --source='.' --omit='*manage.py,*wsgi.py,*asgi.py,*/tests.py,*unit_test_helpers.py,*/migrations/*.py' manage.py test
     - pipenv run coverage report -m --precision=1
   coverage: '/TOTAL.*\s+(\d+\.\d+\%)$/'
+  only:
+    - master
+
+# Update pylint badge
+pylint:
+  stage: pylint
+  tags:
+    - arm64
+  before_script:
+    - pip3 install pipenv
+    - export PATH=$PATH:/home/gitlab-runner/.local/bin
+    - pipenv install --dev
+  script:
+    - mkdir ./pylint
+    - pipenv run pylint --output-format=text backend/plant_tracker/ | tee ./pylint/pylint.log || pipenv run pylint-exit $?
+    - PYLINT_SCORE=$(sed -n 's/^Your code has been rated at \([-0-9.]*\)\/.*/\1/p' ./pylint/pylint.log)
+    - pipenv run anybadge --label=pylint --file=pylint/pylint.svg --value=$PYLINT_SCORE 3=red 5=orange 7=yellow 9=green
+    - echo "Pylint score is $PYLINT_SCORE"
+  artifacts:
+    paths:
+      - ./pylint/
   only:
     - master
