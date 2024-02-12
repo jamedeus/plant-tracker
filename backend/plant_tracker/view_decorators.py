@@ -138,7 +138,7 @@ def get_event_type_from_post_body(func):
     '''
     def wrapper(data, **kwargs):
         try:
-            if data["event_type"] in events_map.keys():
+            if data["event_type"] in events_map:
                 return func(event_type=data["event_type"], data=data, **kwargs)
             return JsonResponse(
                 {"error": "invalid event_type, must be 'water', 'fertilize', 'prune', or 'repot"},

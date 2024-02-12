@@ -33,7 +33,7 @@ def get_plant_species_options():
     Used to populate species suggestions on plant registration form
     '''
     species = Plant.objects.all().values_list('species', flat=True)
-    return list(set([i for i in species if i is not None]))
+    return list(set(i for i in species if i is not None))
 
 
 def get_qr_codes(request):
@@ -200,7 +200,7 @@ def edit_tray_details(tray, data):
 
 @requires_json_post(["plant_id"])
 @get_plant_from_post_body
-def delete_plant(plant, data):
+def delete_plant(plant, **kwargs):
     '''Deletes an existing Plant from database, returns redirect to overview
     Requires JSON POST with plant_id (uuid) key
     '''
@@ -210,7 +210,7 @@ def delete_plant(plant, data):
 
 @requires_json_post(["tray_id"])
 @get_tray_from_post_body
-def delete_tray(tray, data):
+def delete_tray(tray, **kwargs):
     '''Deletes an existing Tray from database, returns redirect to overview
     Requires JSON POST with tray_id (uuid) key
     '''
@@ -222,7 +222,7 @@ def delete_tray(tray, data):
 @get_plant_from_post_body
 @get_timestamp_from_post_body
 @get_event_type_from_post_body
-def add_plant_event(plant, timestamp, event_type, data):
+def add_plant_event(plant, timestamp, event_type, **kwargs):
     '''Creates new Event entry with requested type for specified Plant entry
     Requires JSON POST with plant_id (uuid), event_type, and timestamp keys
     '''
@@ -256,7 +256,7 @@ def bulk_add_plant_events(timestamp, event_type, data):
 @get_plant_from_post_body
 @get_timestamp_from_post_body
 @get_event_type_from_post_body
-def delete_plant_event(plant, timestamp, event_type, data):
+def delete_plant_event(plant, timestamp, event_type, **kwargs):
     '''Deletes the Event matching the plant, type, and timestamp specified in body
     Requires JSON POST with plant_id (uuid), event_type, and timestamp keys
     '''
@@ -271,7 +271,7 @@ def delete_plant_event(plant, timestamp, event_type, data):
 @requires_json_post(["plant_id", "tray_id"])
 @get_plant_from_post_body
 @get_tray_from_post_body
-def add_plant_to_tray(plant, tray, data):
+def add_plant_to_tray(plant, tray, **kwargs):
     '''Adds specified Plant to specified Tray (creates database relation)
     Requires JSON POST with plant_id (uuid) and tray_id (uuid) keys
     '''
@@ -285,7 +285,7 @@ def add_plant_to_tray(plant, tray, data):
 
 @requires_json_post(["plant_id"])
 @get_plant_from_post_body
-def remove_plant_from_tray(plant, data):
+def remove_plant_from_tray(plant, **kwargs):
     '''Removes specified Plant from Tray (deletes database relation)
     Requires JSON POST with plant_id (uuid) key
     '''

@@ -88,8 +88,8 @@ class Tray(models.Model):
 
 @receiver(post_save, sender=Tray)
 @receiver(post_delete, sender=Tray)
-def clear_unnamed_trays_cache(sender, instance, **kwargs):
-    """Clear cached unnamed_trays list when a Tray is saved or deleted"""
+def clear_unnamed_trays_cache(**kwargs):
+    '''Clear cached unnamed_trays list when a Tray is saved or deleted'''
     cache.delete('unnamed_trays')
 
 
@@ -187,8 +187,8 @@ class Plant(models.Model):
 
 @receiver(post_save, sender=Plant)
 @receiver(post_delete, sender=Plant)
-def clear_unnamed_plants_cache(sender, instance, **kwargs):
-    """Clear cached unnamed_plant list when a Plant is saved or deleted"""
+def clear_unnamed_plants_cache(**kwargs):
+    '''Clear cached unnamed_plant list when a Plant is saved or deleted'''
     cache.delete('unnamed_plants')
 
 
