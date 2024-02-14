@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import print from 'print-js'
 
 function App() {
     // Load context set by django template
@@ -45,6 +46,59 @@ function App() {
         }
         console.log(oldSelected);
         selectedRef.current = oldSelected;
+    };
+
+    // Show loading modal with cancel button, request QR codes from backend,
+    // open QR codes in print dialog if user did not click cancel
+    const fetchQrCodes = async () => {
+        // Show loading modal
+        document.getElementById('printModal').showModal();
+
+        // Get Base64-encoded image string from backend
+        const response = await fetch('/get_qr_codes');
+
+        // Check response if user did not close modal
+        if (document.getElementById('printModal').open) {
+            // Open QR codes in print dialog if response OK
+            if (response.ok) {
+                const data = await response.json();
+                printQrCodes(data.qr_codes);
+            // Replace loading modal with error modal if response not OK
+            } else {
+                document.getElementById('printModal').close();
+                document.getElementById('printErrorModal').showModal();
+            }
+        }
+    };
+
+    // Takes base64 image string, decodes and opens in print dialog
+    const printQrCodes = (data) => {
+        console.log(data)
+        // Decode base64 image data to binary
+        const imageData = atob(data);
+
+        // Create Uint8Array with same length
+        const imageBuffer = new ArrayBuffer(imageData.length);
+        const imageBytes = new Uint8Array(imageBuffer);
+
+        // Read bytes into array
+        for (let i = 0; i < imageData.length; i++) {
+            imageBytes[i] = imageData.charCodeAt(i);
+        }
+
+        // Create blob object from buffer, set MIME type
+        const qr = new Blob([imageBytes], { type: 'image/png' });
+        const uri = URL.createObjectURL(qr);
+
+        // Open print dialog, close loading modal
+        print({
+            printable: uri,
+            type: 'image',
+            documentTitle: '',
+            header: null,
+            footer: null
+        });
+        document.getElementById('printModal').close();
     };
 
     const CardWrapper = ({ card, editing }) => {
@@ -146,7 +200,7 @@ function App() {
                         </div>
                         <ul tabIndex={0} className="menu menu-md dropdown-content mt-3 z-[99] p-2 shadow bg-base-300 rounded-box w-52">
                             <li><a onClick={toggleEditing}>Edit</a></li>
-                            <li><a>Print QR Codes</a></li>
+                            <li><a onClick={fetchQrCodes}>Print QR Codes</a></li>
                         </ul>
                     </div>
 
@@ -186,6 +240,32 @@ function App() {
                     />
                 </div>
             </div>
+
+            <dialog id="printModal" className="modal">
+                <div className="modal-box text-center flex flex-col">
+                    <h3 className="font-bold text-lg mb-6">Fetching QR Codes</h3>
+                    <span className="loading loading-spinner loading-lg mx-auto"></span>
+                    <div className="modal-action mx-auto">
+                        <form method="dialog">
+                            {/* if there is a button in form, it will close the modal */}
+                            <button className="btn">Cancel</button>
+                        </form>
+                    </div>
+                </div>
+            </dialog>
+
+            <dialog id="printErrorModal" className="modal">
+                <div className="modal-box text-center flex flex-col">
+                    <h3 className="font-bold text-lg mb-6">Error</h3>
+                    <p>The URL_PREFIX environment variable is not set, check docker config</p>
+                    <div className="modal-action mx-auto">
+                        <form method="dialog">
+                            {/* if there is a button in form, it will close the modal */}
+                            <button className="btn">OK</button>
+                        </form>
+                    </div>
+                </div>
+            </dialog>
         </div>
     );
 }
