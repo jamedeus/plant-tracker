@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.card-body {
+    @apply p-4;
+}
+
+.collapse-title {
+    @apply pe-0;
+    @apply p-4;
+}
+
+.max-w-90 {
+    max-width: 90%;
+}

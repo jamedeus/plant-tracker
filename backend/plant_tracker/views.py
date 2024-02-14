@@ -55,9 +55,25 @@ def get_qr_codes(request):
 def overview(request):
     '''Renders the overview page (shows existing plants/trays, or setup if none)'''
     context = {
-        'plants': Plant.objects.all(),
-        'trays': Tray.objects.all()
+        'plants': [],
+        'trays': []
     }
+
+    for plant in Plant.objects.all():
+        context['plants'].append({
+            'uuid': str(plant.uuid),
+            'name': plant.get_display_name()
+        })
+
+    for tray in Tray.objects.all():
+        context['trays'].append({
+            'uuid': str(tray.uuid),
+            'name': tray.get_display_name(),
+            'plants': len(tray.plant_set.all())
+        })
+
+    print(json.dumps(context, indent=4))
+
     return render(request, 'plant_tracker/overview.html', context)
 
 
