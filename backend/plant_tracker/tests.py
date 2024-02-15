@@ -201,7 +201,7 @@ class ManagePageTests(TestCase):
         self.assertIsNone(self.plant1.name)
         self.assertIsNone(self.plant1.species)
 
-        # Send edit details request, confirm redirects to manage page
+        # Send edit details request, confirm response contains new display_name
         payload = {
             'plant_id': self.plant1.uuid,
             'name': 'test plant',
@@ -210,8 +210,8 @@ class ManagePageTests(TestCase):
             'pot_size': '4'
         }
         response = self.client.post('/edit_plant', payload)
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/manage/{self.plant1.uuid}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'display_name': 'test plant'})
 
         # Confirm no additional plant created, confirm details now match
         self.assertEqual(len(Plant.objects.all()), 2)
@@ -223,15 +223,15 @@ class ManagePageTests(TestCase):
         # Confirm test tray has no name
         self.assertIsNone(self.tray1.name)
 
-        # Send edit details request, confirm redirects to manage page
+        # Send edit details request, confirm response contains new display_name
         payload = {
             'tray_id': self.tray1.uuid,
             'name': 'test tray',
             'location': 'middle shelf'
         }
         response = self.client.post('/edit_tray', payload)
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/manage/{self.tray1.uuid}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'display_name': 'test tray'})
 
         # Confirm no additional tray created, confirm details now match
         self.assertEqual(len(Tray.objects.all()), 1)

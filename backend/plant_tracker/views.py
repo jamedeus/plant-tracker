@@ -221,8 +221,8 @@ def edit_tray_details(tray, data):
     tray.location = data["location"]
     tray.save()
 
-    # Reload manage page
-    return HttpResponseRedirect(f'/manage/{data["tray_id"]}')
+    # Return new display_name (other params updated client-side)
+    return JsonResponse({"display_name": tray.get_display_name()}, status=200)
 
 
 @requires_json_post(["plant_id"])
