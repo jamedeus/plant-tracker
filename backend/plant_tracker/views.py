@@ -86,13 +86,24 @@ def manage(request, uuid):
     plant = get_plant_by_uuid(uuid)
     if plant:
         context = {
-            'plant': plant,
-            'display_name': plant.get_display_name(),
-            'water_events': plant.get_water_timestamps(),
-            'fertilize_events': plant.get_fertilize_timestamps(),
-            'trays': Tray.objects.all(),
+            'plant': {
+                'uuid': str(plant.uuid),
+                'display_name': plant.get_display_name(),
+                'name': plant.name,
+                'species': plant.species,
+                'pot_size': plant.pot_size,
+                'description': plant.description,
+                'water_events': plant.get_water_timestamps(),
+                'fertilize_events': plant.get_fertilize_timestamps(),
+                'last_watered': plant.last_watered(),
+                'last_fertilized': plant.last_fertilized(),
+                'tray': None,
+            },
+            'trays': [{'name': tray.name, 'uuid': str(tray.uuid)} for tray in Tray.objects.all()],
             'species_options': get_plant_species_options()
         }
+        if plant.tray:
+            context['plant']['tray'] = str(plant.tray.uuid)
         return render(request, 'plant_tracker/manage_plant.html', context)
 
     # Loop up UUID in tray database, render template if found
@@ -190,8 +201,8 @@ def edit_plant_details(plant, data):
     plant.pot_size = data["pot_size"]
     plant.save()
 
-    # Reload manage page
-    return HttpResponseRedirect(f'/manage/{data["plant_id"]}')
+    # Return new display_name (other params updated client-side)
+    return JsonResponse({"display_name": plant.get_display_name()}, status=200)
 
 
 @requires_json_post(["tray_id", "name", "location"])

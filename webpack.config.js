@@ -7,10 +7,14 @@ const isProduction = process.env.NODE_ENV == 'production';
 
 
 const config = {
-    entry: './src/index.js',
+    entry: {
+        overview: './src/pages/overview/index.js',
+        manage_plant: './src/pages/manage_plant/index.js',
+//         manage_tray: './src/pages/manage_tray/index.js',
+    },
     output: {
         path: path.resolve(__dirname, 'backend/plant_tracker/static/plant_tracker/'),
-        filename: 'bundle.js'
+        filename: '[name].js'
     },
     devServer: {
         open: true,
@@ -38,6 +42,11 @@ const config = {
             // Add your rules for custom modules here
             // Learn more about loaders from https://webpack.js.org/loaders/
         ],
+    },
+    resolve: {
+        alias: {
+            src: path.resolve(__dirname, 'src'),
+        }
     },
 };
 
