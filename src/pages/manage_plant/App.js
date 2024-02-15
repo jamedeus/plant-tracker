@@ -5,6 +5,7 @@ import CollapseCol from 'src/components/CollapseCol';
 import EditableNodeList from 'src/components/EditableNodeList';
 import EditModal from 'src/components/EditModal';
 import PlantDetails from 'src/forms/PlantDetails';
+import Navbar from 'src/components/Navbar';
 
 function App() {
     // Load context set by django template
@@ -133,6 +134,35 @@ function App() {
         setPlant(oldPlant);
     }
 
+    // Called when user selects tray from dropdown
+    const addToTray = async () => {
+        const payload = {
+            plant_id: plant.uuid,
+            tray_id: document.getElementById('traySelect').value
+        }
+        const response = await sendPostRequest('/add_plant_to_tray', payload);
+        if (response.ok) {
+            {/* TODO improve context, this is ridiculous */}
+            trays.forEach(tray => {
+                if (tray.uuid === payload.tray_id) {
+                    let oldPlant = {...plant};
+                    oldPlant.tray = {name: tray.name, uuid: tray.uuid}
+                    setPlant(oldPlant);
+                }
+            })
+        }
+    }
+
+    // Handler for remove from tray button
+    const removeFromTray = async () => {
+        const response = await sendPostRequest('/remove_plant_from_tray', {plant_id: plant.uuid});
+        if (response.ok) {
+            let oldPlant = {...plant};
+            oldPlant.tray = null;
+            setPlant(oldPlant);
+        }
+    }
+
     // Shown in dropdown when name in nav bar clicked
     const DetailsCard = ({ species, pot_size, description }) => {
         return (
@@ -174,7 +204,6 @@ function App() {
                             Delete
                         </button>
                     </div>
-
                 )
             case(false):
                 return (
@@ -230,64 +259,13 @@ function App() {
         }
     }
 
-    // Called when user selects tray from dropdown
-    const addToTray = async () => {
-        const payload = {
-            plant_id: plant.uuid,
-            tray_id: document.getElementById('traySelect').value
-        }
-        const response = await sendPostRequest('/add_plant_to_tray', payload);
-        if (response.ok) {
-            {/* TODO improve context, this is ridiculous */}
-            trays.forEach(tray => {
-                if (tray.uuid === payload.tray_id) {
-                    let oldPlant = {...plant};
-                    oldPlant.tray = {name: tray.name, uuid: tray.uuid}
-                    setPlant(oldPlant);
-                }
-            })
-        }
-    }
-
-    // Handler for remove from tray button
-    const removeFromTray = async () => {
-        const response = await sendPostRequest('/remove_plant_from_tray', {plant_id: plant.uuid});
-        if (response.ok) {
-            let oldPlant = {...plant};
-            oldPlant.tray = null;
-            setPlant(oldPlant);
-        }
-    }
-
     return (
         <div className="container flex flex-col mx-auto">
-            <div className="navbar bg-base-100 mb-4">
-                <div className="navbar-start">
-
-                    <div className="dropdown">
-                        <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-5 w-5"
-                                fill="none"
-                                viewBox="0 0 24 24"
-                                stroke="currentColor"
-                            >
-                                <path
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                    strokeWidth="2"
-                                    d="M4 6h16M4 12h16M4 18h7"
-                                />
-                            </svg>
-                        </div>
-                        <ul tabIndex={0} className="menu menu-md dropdown-content mt-3 z-[99] p-2 shadow bg-base-300 rounded-box w-52">
-                            <li><a onClick={overview}>Overview</a></li>
-                        </ul>
-                    </div>
-
-                </div>
-                <div className="navbar-center">
+            <Navbar
+                dropdownOptions={
+                    <li><a onClick={overview}>Overview</a></li>
+                }
+                title={
                     <div className="dropdown">
                         <a tabIndex={0} role="button" className="btn btn-ghost text-3xl">{plant.display_name}</a>
                         <div tabIndex={0} className="dropdown-content z-[1] flex w-full">
@@ -298,10 +276,8 @@ function App() {
                             />
                         </div>
                     </div>
-                </div>
-                <div className="navbar-end">
-                </div>
-            </div>
+                }
+            />
 
             <div className="flex flex-col text-center">
                 <span className="text-lg">Last Watered: {timestampToRelative(plant.last_watered)}</span>

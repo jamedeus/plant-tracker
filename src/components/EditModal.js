@@ -1,9 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 
 // Takes modal title, submit handler, and details form
 // Modal has centered title, can be closed with button, esc, or outside click
 const EditModal = ({ title, onSubmit, children }) => {
-
     return (
         <dialog id="editModal" className="modal">
             <div className="modal-box text-center flex flex-col">
