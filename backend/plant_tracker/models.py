@@ -78,7 +78,7 @@ class Tray(models.Model):
         '''
         details = {}
         for plant in self.plant_set.all():
-            details[plant.uuid] = {
+            details[str(plant.uuid)] = {
                 'name': plant.get_display_name(),
                 'last_watered': plant.last_watered(),
                 'last_fertilized': plant.last_fertilized()

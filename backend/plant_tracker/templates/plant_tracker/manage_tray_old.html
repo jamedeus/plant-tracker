@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Manage Plant</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.4.4/build/global/luxon.min.js"></script>
+    <style>
+        /* Limit width for readability on large screen sizes */
+        @media (min-width: 1200px) {
+            .container {
+                width: 960px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container d-flex flex-column vh-100">
+        <div class="d-flex flex-column text-center mb-5">
+            <h1>{{ tray.display_name }}</h1>
+            {% if tray.location %}
+                <h5>Location: {{ tray.location }}</h5>
+            {% endif %}
+            <button class="btn btn-primary btn-sm mx-auto" onClick="editModal.show();">Edit</button>
+        </div>
+
+        <div id="plants" class="text-center mb-5 mx-auto">
+            <h2>Plants in tray:</h2>
+            <button class="btn btn-primary mb-3" onClick="manageModal.show();">Manage</button>
+            {% for plant_id, params in details.items %}
+                <div class="card text-center mb-3" style="width: 18rem;">
+                    <div class="card-header d-flex">
+                        <button class="btn btn-sm me-auto invisible"><i class="bi bi-trash"></i></button>
+                        <h4 class="card-title" onClick="window.location.href = '/manage/{{plant_id}}';">{{ params.name }}</h4>
+                        <button class="btn btn-sm btn-danger my-auto ms-auto" onClick="removeFromTray('{{plant_id}}');"><i class="bi bi-trash"></i></button>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">Last watered: {{ params.last_watered }}</p>
+                        <p class="card-text">Last fertilized: {{ params.last_fertilized }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+            <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                Add Plants
+            </button>
+            <div class="collapse" id="collapseExample">
+                <div class="card card-body mt-3">
+                    <form onSubmit="bulkAddPlants(event)">
+                        {% for plant in options %}
+                            {% if plant.uuid not in details.keys %}
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" value="{{ plant.uuid }}" id="{{ plant.uuid }}">
+                                    <label class="form-check-label" for="{{ plant.uuid }}">{{ plant.name }}</label>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                        <button class="btn btn-success mt-3">Add to Tray</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex flex-column mx-auto">
+            <form id="waterForm" class="d-flex flex-column mb-3" onSubmit="waterTray(event);">
+                <input type="datetime-local" id="waterTime" name="waterTime" step="1" />
+                <button class="btn btn-primary mt-1" type="submit">Water All</button>
+            </form>
+
+            <form id="fertilizeForm" class="d-flex flex-column mb-3" onSubmit="fertilizeTray(event);">
+                <input type="datetime-local" id="fertilizeTime" name="fertilizeTime" step="1" />
+                <button class="btn btn-success mt-1" type="submit">Fertilize All</button>
+            </form>
+        </div>
+    </div>
+
+    {# Modal shown when user clicks edit button (tray details) #}
+    <div id="editDetails" class="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Edit Plant Details</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    {% include "plant_tracker/tray_details_form.html" %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {# Modal shown when  #}
+    <div id="managePlants" class="modal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Select Plants</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form class="d-flex flex-column">
+                        <div class="mx-auto mb-3">
+                        {% for plant_id, params in details.items %}
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="{{ plant_id }}" id="{{ plant_id }}">
+                                <label class="form-check-label" for="{{ plant_id }}">{{ params.name }}</label>
+                            </div>
+                        {% endfor %}
+                        </div>
+
+                        <div class="mx-auto mb-3">
+                            <input type="datetime-local" id="bulkManageTime" name="bulkManageTime" step="1" />
+                        </div>
+                        <div class="mx-auto">
+                            <button class="btn btn-primary" onClick="bulkWaterPlants(event);">Water</button>
+                            <button class="btn btn-success" onClick="bulkFertilizePlants(event);">Fertilize</button>
+                            <button class="btn btn-danger" onClick="bulkRemovePlants(event);">Remove</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ tray.uuid|json_script:"uuid" }}
+    {{ plant_ids|json_script:"plant_ids" }}
+
+    <script>
+        // Parse tray UUID and list of plant UUIDs from django context
+        const trayUUID = JSON.parse(document.getElementById('uuid').textContent);
+        const plantUUIDs = JSON.parse(document.getElementById('plant_ids').textContent);
+
+        const editModal = new bootstrap.Modal(document.getElementById('editDetails'));
+        const manageModal = new bootstrap.Modal(document.getElementById('managePlants'));
+
+        // Auto-fill water and fertilize inputs with current timestamp
+        document.getElementById("waterTime").value = luxon.DateTime.now().toFormat("yyyy-MM-dd'T'HH:mm:ss");
+        document.getElementById("fertilizeTime").value = luxon.DateTime.now().toFormat("yyyy-MM-dd'T'HH:mm:ss");
+        document.getElementById("bulkManageTime").value = luxon.DateTime.now().toFormat("yyyy-MM-dd'T'HH:mm:ss");
+
+        // Takes name of cookie, returns cookie
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    let cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        async function sendPostRequest(endpoint, data) {
+            try {
+                const response = await fetch(endpoint, {
+                    method: 'POST',
+                    headers: {
+                        'Accept': 'application/json, text/plain, */*',
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': getCookie('csrftoken')
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response error');
+                } else if (response.redirected) {
+                    window.location.href = response.url;
+                } else {
+                    const responseData = await response.json();
+                    console.log(responseData);
+                    return responseData;
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+            }
+        }
+
+        // Takes value of datetime-local input, returns as UTC string
+        function localToUTC(timestamp) {
+            return String(luxon.DateTime.fromISO(timestamp).toUTC());
+        }
+
+        async function bulkAddPlantEvents(eventType, plantIDs, timestamp) {
+            event.preventDefault();
+            payload = {
+                plants: plantIDs,
+                event_type: eventType,
+                timestamp: localToUTC(timestamp)
+            }
+            const response = await sendPostRequest('/bulk_add_plant_events', payload);
+            if (response) {
+                window.location.reload();
+            }
+        }
+
+        async function waterTray(event) {
+            const timestamp = localToUTC(document.getElementById("waterTime").value);
+            bulkAddPlantEvents('water', plantUUIDs, timestamp);
+        }
+
+        async function fertilizeTray(event) {
+            const timestamp = localToUTC(document.getElementById("waterTime").value);
+            bulkAddPlantEvents('fertilize', plantUUIDs, timestamp);
+        }
+
+        // Edit details form submit listener
+        document.getElementById('trayDetailsForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const data = new FormData(document.getElementById('trayDetailsForm'));
+            const payload = Object.fromEntries(data.entries());
+            payload.tray_id = trayUUID;
+            console.log(payload);
+
+            sendPostRequest('/edit_tray', payload);
+        });
+
+        async function removeFromTray(plantID) {
+            try {
+                const response = await sendPostRequest('/remove_plant_from_tray', {plant_id: plantID});
+                if (response) {
+                    window.location.reload();
+                }
+            } catch(error) {
+                alert("Failed to remove plant from tray");
+            }
+        }
+
+        async function bulkAddPlants(event) {
+            event.preventDefault();
+            payload = {
+                tray_id: trayUUID,
+                plants: []
+            }
+            event.target.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                if (checkbox.checked) {
+                    payload.plants.push(checkbox.value);
+                }
+            });
+            sendPostRequest('/bulk_add_plants_to_tray', payload);
+        }
+
+        async function bulkRemovePlants(event) {
+            event.preventDefault();
+            payload = {
+                tray_id: trayUUID,
+                plants: []
+            }
+            event.target.parentElement.parentElement.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                if (checkbox.checked) {
+                    payload.plants.push(checkbox.value);
+                }
+            });
+            sendPostRequest('/bulk_remove_plants_from_tray', payload);
+        }
+
+        async function bulkWaterPlants(event) {
+            event.preventDefault();
+            const timestamp = localToUTC(document.getElementById("bulkManageTime").value);
+            let plants = []
+            event.target.parentElement.parentElement.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                if (checkbox.checked) {
+                    plants.push(checkbox.value);
+                }
+            });
+            bulkAddPlantEvents('water', plants, timestamp);
+        }
+
+        async function bulkFertilizePlants(event) {
+            event.preventDefault();
+            const timestamp = localToUTC(document.getElementById("bulkManageTime").value);
+            let plants = []
+            event.target.parentElement.parentElement.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                if (checkbox.checked) {
+                    plants.push(checkbox.value);
+                }
+            });
+            bulkAddPlantEvents('fertilize', plants, timestamp);
+        }
+    </script>
+</body>
+</html>

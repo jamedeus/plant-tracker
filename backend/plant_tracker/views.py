@@ -25,7 +25,8 @@ def get_plant_options():
     '''Returns a list of dicts with name and uuid attributes of all existing plants
     Used to populate bulk management checkbox options in frontend
     '''
-    return Plant.objects.values('uuid', 'name')
+    return [{'uuid': str(plant.uuid), 'name': plant.get_display_name()}
+            for plant in Plant.objects.all()]
 
 
 def get_plant_species_options():
@@ -88,8 +89,8 @@ def manage(request, uuid):
         context = {
             'plant': {
                 'uuid': str(plant.uuid),
-                'display_name': plant.get_display_name(),
                 'name': plant.name,
+                'display_name': plant.get_display_name(),
                 'species': plant.species,
                 'pot_size': plant.pot_size,
                 'description': plant.description,
@@ -114,8 +115,12 @@ def manage(request, uuid):
     tray = get_tray_by_uuid(uuid)
     if tray:
         context = {
-            'tray': tray,
-            'display_name': tray.get_display_name(),
+            'tray': {
+                'uuid': str(tray.uuid),
+                'name': tray.name,
+                'display_name': tray.get_display_name(),
+                'location': tray.location
+            },
             'plant_ids': tray.get_plant_uuids(),
             'details': tray.get_plant_details(),
             'options': get_plant_options()

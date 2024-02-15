@@ -10,7 +10,7 @@ const config = {
     entry: {
         overview: './src/pages/overview/index.js',
         manage_plant: './src/pages/manage_plant/index.js',
-//         manage_tray: './src/pages/manage_tray/index.js',
+        manage_tray: './src/pages/manage_tray/index.js',
     },
     output: {
         path: path.resolve(__dirname, 'backend/plant_tracker/static/plant_tracker/'),

@@ -189,12 +189,29 @@ class ManagePageTests(TestCase):
         self.assertTemplateUsed(response, 'plant_tracker/manage_tray.html')
         self.assertTemplateNotUsed(response, 'plant_tracker/manage_plant.html')
 
-        # Confirm context includes tray, correct plant details
-        self.assertEqual(response.context['tray'], self.tray1)
+        # Confirm context includes correct tray and plant details
+        self.assertEqual(
+            response.context['tray'],
+            {
+                'uuid': str(self.tray1.uuid),
+                'name': self.tray1.name,
+                'location': None,
+                'display_name': self.tray1.get_display_name()
+            }
+        )
         self.assertEqual(len(response.context['details']), 1)
-        self.assertEqual(response.context['details'][self.plant1.uuid]['name'], 'Unnamed plant 1')
-        self.assertEqual(response.context['details'][self.plant1.uuid]['last_watered'], None)
-        self.assertEqual(response.context['details'][self.plant1.uuid]['last_fertilized'], None)
+        self.assertEqual(
+            response.context['details'][str(self.plant1.uuid)]['name'],
+            'Unnamed plant 1'
+        )
+        self.assertEqual(
+            response.context['details'][str(self.plant1.uuid)]['last_watered'],
+            None
+        )
+        self.assertEqual(
+            response.context['details'][str(self.plant1.uuid)]['last_fertilized'],
+            None
+        )
 
     def test_edit_plant_details(self):
         # Confirm test plant has no name or species
