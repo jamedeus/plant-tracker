@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { sendPostRequest, parseDomContext, localToUTC, timestampToRelative } from 'src/util';
 import { DateTime } from 'luxon';
+import { sendPostRequest, parseDomContext, localToUTC, timestampToRelative } from 'src/util';
+import CollapseCol from 'src/components/CollapseCol';
+import EditableNodeList from 'src/components/EditableNodeList';
 
 function App() {
     // Load context set by django template
@@ -13,6 +15,14 @@ function App() {
     const [speciesOptions, setSpeciesOptions] = useState(() => {
         return parseDomContext("species_options");
     });
+
+    // Create states to track whether editing water and fertilize event lists
+    const [editingWaterEvents, setEditingWaterEvents] = useState(false);
+    const [editingFertilizeEvents, setEditingFertilizeEvents] = useState(false);
+
+    // Track which water and fertilize events are selected when editing
+    const selectedWaterEvents = useRef([]);
+    const selectedFertilizeEvents = useRef([]);
 
     const overview = () => {
         window.location.href = "/";
@@ -70,6 +80,57 @@ function App() {
         }
     }
 
+    // Water history delete button handler
+    // Removes selected events from database, re-renders history
+    const deleteWaterEvents = () => {
+        console.log(selectedWaterEvents);
+        selectedWaterEvents.current.forEach(async timestamp => {
+            await deleteEvent(timestamp, 'water')
+        })
+        setEditingWaterEvents(false);
+    }
+
+    // Fertilize history delete button handler
+    // Removes selected events from database, re-renders history
+    const deleteFertilizeEvents = () => {
+        selectedFertilizeEvents.current.forEach(async timestamp => {
+            await deleteEvent(timestamp, 'fertilize')
+        })
+        setEditingFertilizeEvents(false);
+    }
+
+    // Takes event timestamp and types, sends delete request to backend
+    // If successful removes timestamp from react state to re-render history
+    async function deleteEvent(timestamp, type) {
+        const payload = {
+            plant_id: plant.uuid,
+            event_type: type,
+            timestamp: timestamp
+        }
+        const response = await sendPostRequest('/delete_plant_event', payload);
+        if (response.ok) {
+            if (type === 'water') {
+                removeWaterEvent(timestamp);
+            } else if (type === 'fertilize') {
+                removeFertilizeEvent(timestamp);
+            }
+        }
+    }
+
+    // Takes WaterEvent timestamp, removes from react state
+    function removeWaterEvent(timestamp) {
+        let oldPlant = {...plant};
+        oldPlant.water_events.splice(oldPlant.water_events.indexOf(timestamp), 1);
+        setPlant(oldPlant);
+    }
+
+    // Takes FertilizeEvent timestamp, removes from react state
+    function removeFertilizeEvent(timestamp) {
+        let oldPlant = {...plant};
+        oldPlant.fertilize_events.splice(oldPlant.fertilize_events.indexOf(timestamp), 1);
+        setPlant(oldPlant);
+    }
+
     // Shown in dropdown when name in nav bar clicked
     const DetailsCard = ({ species, pot_size, description }) => {
         return (
@@ -82,6 +143,46 @@ function App() {
                 </div>
             </div>
         )
+    }
+
+    // Displays timestamp and relative time in event history sections
+    const EventCard = ({ timestamp }) => {
+        return (
+            <div className="card card-compact bg-neutral text-neutral-content text-center">
+                <div className="card-body">
+                    <p className="text-lg font-bold">{timestampToRelative(timestamp)}</p>
+                    <p>{DateTime.fromISO(timestamp).toFormat('t MMMM dd, yyyy')}</p>
+                </div>
+            </div>
+        )
+    }
+
+    // Takes state bool, function to set state bool, delete button handler
+    // Shows edit button when bool is false, cancel and delete buttons when true
+    // Rendered at the bottom of water/fertilize event history columns
+    const EventHistoryButtons = ({editing, setEditing, handleDelete}) => {
+        switch(editing) {
+            case(true):
+                return (
+                    <div className="flex">
+                        <button className="btn btn-outline mx-auto" onClick={() => setEditing(false)}>
+                            Cancel
+                        </button>
+                        <button className="btn btn-outline btn-error mx-auto" onClick={() => handleDelete()}>
+                            Delete
+                        </button>
+                    </div>
+
+                )
+            case(false):
+                return (
+                    <div className="flex">
+                        <button className="btn btn-outline mx-auto" onClick={() => setEditing(true)}>
+                            Edit
+                        </button>
+                    </div>
+                )
+        }
     }
 
     return (
@@ -141,6 +242,38 @@ function App() {
                 <div className="flex mx-auto">
                     <button className="btn btn-info m-2" onClick={waterPlant}>Water</button>
                     <button className="btn btn-success m-2" onClick={fertilizePlant}>Fertilize</button>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 mx-auto mt-16">
+                <div className="md:mr-8 mb-8 md:mb-0">
+                    <CollapseCol title="Water History" defaultOpen={false}>
+                        <EditableNodeList editing={editingWaterEvents} selected={selectedWaterEvents}>
+                            {plant.water_events.map((timestamp) => {
+                                return <EventCard key={timestamp} timestamp={timestamp} />
+                            })}
+                        </EditableNodeList>
+                        <EventHistoryButtons
+                            editing={editingWaterEvents}
+                            setEditing={setEditingWaterEvents}
+                            handleDelete={deleteWaterEvents}
+                        />
+                    </CollapseCol>
+                </div>
+
+                <div className="md:ml-8">
+                    <CollapseCol title="Fertilize History" defaultOpen={false}>
+                        <EditableNodeList editing={editingFertilizeEvents} selected={selectedFertilizeEvents}>
+                            {plant.fertilize_events.map((timestamp) => {
+                                return <EventCard key={timestamp} timestamp={timestamp} />
+                            })}
+                        </EditableNodeList>
+                        <EventHistoryButtons
+                            editing={editingFertilizeEvents}
+                            setEditing={setEditingFertilizeEvents}
+                            handleDelete={deleteFertilizeEvents}
+                        />
+                    </CollapseCol>
                 </div>
             </div>
 
