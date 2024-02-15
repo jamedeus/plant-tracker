@@ -1,3 +1,5 @@
+import { DateTime } from 'luxon';
+
 // Takes name of context element created with json_script django tag
 // Parses JSON contents if it exists and returns, otherwise returns null
 function parseDomContext(name) {
@@ -42,8 +44,20 @@ async function sendPostRequest(url, body) {
     return response;
 }
 
+// Takes isoformat timestamp in local timezone, returns as UTC
+function localToUTC(timestamp) {
+    return String(DateTime.fromISO(timestamp).toUTC());
+}
+
+// Takes isoformat timestamp, returns relative time string ("5 minutes ago")
+function timestampToRelative(timestamp) {
+    return DateTime.fromISO(timestamp).setZone('system').toRelative();
+}
+
 export {
     parseDomContext,
     getCookie,
-    sendPostRequest
+    sendPostRequest,
+    localToUTC,
+    timestampToRelative
 };

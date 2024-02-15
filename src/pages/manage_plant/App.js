@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { sendPostRequest, parseDomContext } from 'src/util';
+import { sendPostRequest, parseDomContext, localToUTC, timestampToRelative } from 'src/util';
+import { DateTime } from 'luxon';
 
 function App() {
     // Load context set by django template
@@ -37,6 +38,34 @@ function App() {
             oldPlant.pot_size = payload.pot_size;
             oldPlant.description = payload.description;
             oldPlant.display_name = data.display_name;
+            setPlant(oldPlant);
+        }
+    }
+
+    const waterPlant = async () => {
+        const payload = {
+            plant_id: plant.uuid,
+            event_type: 'water',
+            timestamp: localToUTC(document.getElementById("eventTime").value)
+        }
+        const response = await sendPostRequest('/add_plant_event', payload);
+        if (response.ok) {
+            let oldPlant = {...plant};
+            oldPlant.last_watered = payload.timestamp;
+            setPlant(oldPlant);
+        }
+    }
+
+    const fertilizePlant = async () => {
+        const payload = {
+            plant_id: plant.uuid,
+            event_type: 'fertilize',
+            timestamp: localToUTC(document.getElementById("eventTime").value)
+        }
+        const response = await sendPostRequest('/add_plant_event', payload);
+        if (response.ok) {
+            let oldPlant = {...plant};
+            oldPlant.last_fertilized = payload.timestamp;
             setPlant(oldPlant);
         }
     }
@@ -96,6 +125,22 @@ function App() {
                     </div>
                 </div>
                 <div className="navbar-end">
+                </div>
+            </div>
+
+            <div className="flex flex-col text-center">
+                <span className="text-lg">Last Watered: {timestampToRelative(plant.last_watered)}</span>
+                <span className="text-lg">Last Fertilized: {timestampToRelative(plant.last_fertilized)}</span>
+                <input
+                    id="eventTime"
+                    className="input input-bordered mx-auto my-2"
+                    type="datetime-local"
+                    step="1"
+                    defaultValue={DateTime.now().toFormat("yyyy-MM-dd'T'HH:mm:ss")}
+                />
+                <div className="flex mx-auto">
+                    <button className="btn btn-info m-2" onClick={waterPlant}>Water</button>
+                    <button className="btn btn-success m-2" onClick={fertilizePlant}>Fertilize</button>
                 </div>
             </div>
 
