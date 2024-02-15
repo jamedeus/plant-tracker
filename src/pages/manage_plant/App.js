@@ -3,6 +3,8 @@ import { DateTime } from 'luxon';
 import { sendPostRequest, parseDomContext, localToUTC, timestampToRelative } from 'src/util';
 import CollapseCol from 'src/components/CollapseCol';
 import EditableNodeList from 'src/components/EditableNodeList';
+import EditModal from 'src/components/EditModal';
+import PlantDetails from 'src/forms/PlantDetails';
 
 function App() {
     // Load context set by django template
@@ -351,74 +353,14 @@ function App() {
                 </div>
             </div>
 
-            <dialog id="editModal" className="modal">
-                <div className="modal-box text-center flex flex-col">
-                    <form method="dialog">
-                        {/* if there is a button in form, it will close the modal */}
-                        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-                    </form>
-                    <h3 className="font-bold text-lg">Edit Details</h3>
-
-                    <form id="plantDetails">
-                        <label className="form-control w-full">
-                            <div className="label">
-                                <span className="label-text-alt">Plant name</span>
-                            </div>
-                            <input
-                                name="name"
-                                type="text"
-                                className="input w-full input-bordered"
-                                defaultValue={plant.name}
-                            />
-                        </label>
-                        <label className="form-control w-full">
-                            <div className="label">
-                                <span className="label-text-alt">Plant species</span>
-                            </div>
-                            <input
-                                name="species"
-                                type="text"
-                                className="input w-full input-bordered"
-                                defaultValue={plant.species}
-                            />
-                        </label>
-                        <label className="form-control w-full">
-                            <div className="label">
-                                <span className="label-text-alt">Pot size</span>
-                            </div>
-                            <input
-                                name="pot_size"
-                                type="number"
-                                className="input w-full input-bordered"
-                                min="1"
-                                max="36"
-                                defaultValue={plant.pot_size}
-                            />
-                        </label>
-                        <label className="form-control w-full">
-                            <div className="label">
-                                <span className="label-text-alt">Description</span>
-                            </div>
-                            <textarea
-                                name="description"
-                                className="textarea textarea-bordered"
-                                defaultValue={plant.description}
-                            />
-                        </label>
-                    </form>
-
-                    <div className="modal-action mx-auto">
-                        <form method="dialog">
-                            {/* if there is a button in form, it will close the modal */}
-                            <button className="btn mr-2">Cancel</button>
-                            <button className="btn ml-2" onClick={submitEditModal}>Edit</button>
-                        </form>
-                    </div>
-                </div>
-                <form method="dialog" className="modal-backdrop">
-                    <button>close</button>
-                </form>
-            </dialog>
+            <EditModal title="Edit Details" onSubmit={submitEditModal}>
+                <PlantDetails
+                    name={plant.name}
+                    species={plant.species}
+                    pot_size={plant.pot_size}
+                    description={plant.description}
+                />
+            </EditModal>
 
         </div>
     );
