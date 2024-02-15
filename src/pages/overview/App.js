@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import print from 'print-js'
+import CollapseCol from 'src/components/CollapseCol';
+import EditableNodeList from 'src/components/EditableNodeList';
 
 function App() {
     // Load context set by django template
@@ -33,20 +35,6 @@ function App() {
 
     // Track which card checkboxes the user has selected
     const selectedRef = useRef([]);
-
-    // Add card UUID to selectedRef if not already present, remove if present
-    const selectCard = (uuid) => {
-        const oldSelected = [...selectedRef.current];
-        if (oldSelected.includes(uuid)) {
-            oldSelected.splice(oldSelected.indexOf(uuid), 1);
-            console.log('Deleted from list');
-        } else {
-            oldSelected.push(uuid);
-            console.log('Added to list');
-        }
-        console.log(oldSelected);
-        selectedRef.current = oldSelected;
-    };
 
     // Show loading modal with cancel button, request QR codes from backend,
     // open QR codes in print dialog if user did not click cancel
@@ -99,54 +87,6 @@ function App() {
             footer: null
         });
         document.getElementById('printModal').close();
-    };
-
-    const CardWrapper = ({ card, editing }) => {
-        switch(editing) {
-            case(true):
-                return (
-                    <div className="flex mb-4">
-                        <label className="label cursor-pointer">
-                            <input
-                                type="checkbox"
-                                className="radio checked:bg-blue-500"
-                                onClick={() => selectCard(card.key)}
-                            />
-                        </label>
-                        <div className="ml-2 w-full">
-                            {card}
-                        </div>
-                    </div>
-                )
-            case(false):
-                return (
-                    <div className="mb-4">
-                        {card}
-                    </div>
-                )
-        }
-    };
-
-    const CollapseCol = ({ title, children }) => {
-        const [open, setOpen] = useState(true);
-
-        const toggle = () => {
-            setOpen(!open);
-        };
-
-        return (
-            <div className="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full">
-                <input type="checkbox" onChange={toggle} defaultChecked={true} />
-                <div className="collapse-title text-xl font-medium text-center">
-                    {title}
-                </div>
-                <div className="collapse-content">
-                    {children.map((card) => {
-                        return <CardWrapper key={card.key} card={card} editing={editing} />
-                    })}
-                </div>
-            </div>
-        );
     };
 
     const PlantCard = ({ name, uuid }) => {
@@ -214,30 +154,32 @@ function App() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 mx-auto">
                 <div className="md:mr-12 mb-8 md:mb-0">
-                    <CollapseCol
-                        title="Plants"
-                        children={context.plants.map((plant) => {
-                            return <PlantCard
-                                key={plant.uuid}
-                                name={plant.name}
-                                uuid={plant.uuid}
-                            />
-                        })}
-                    />
+                    <CollapseCol title="Plants">
+                        <EditableNodeList editing={editing} selected={selectedRef}>
+                            {context.plants.map((plant) => {
+                                return <PlantCard
+                                    key={plant.uuid}
+                                    name={plant.name}
+                                    uuid={plant.uuid}
+                                />
+                            })}
+                        </EditableNodeList>
+                    </CollapseCol>
                 </div>
 
                 <div className="md:ml-12">
-                    <CollapseCol
-                        title="Trays"
-                        children={context.trays.map((tray) => {
-                            return <TrayCard
-                                key={tray.uuid}
-                                name={tray.name}
-                                plants={tray.plants}
-                                uuid={tray.uuid}
-                            />
-                        })}
-                    />
+                    <CollapseCol title="Trays">
+                        <EditableNodeList editing={editing} selected={selectedRef}>
+                            {context.trays.map((tray) => {
+                                return <TrayCard
+                                    key={tray.uuid}
+                                    name={tray.name}
+                                    plants={tray.plants}
+                                    uuid={tray.uuid}
+                                />
+                            })}
+                        </EditableNodeList>
+                    </CollapseCol>
                 </div>
             </div>
 
