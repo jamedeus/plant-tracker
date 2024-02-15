@@ -99,11 +99,15 @@ def manage(request, uuid):
                 'last_fertilized': plant.last_fertilized(),
                 'tray': None,
             },
-            'trays': [{'name': tray.name, 'uuid': str(tray.uuid)} for tray in Tray.objects.all()],
+            'trays': [{'name': tray.get_display_name(), 'uuid': str(tray.uuid)}
+                      for tray in Tray.objects.all()],
             'species_options': get_plant_species_options()
         }
         if plant.tray:
-            context['plant']['tray'] = str(plant.tray.uuid)
+            context['plant']['tray'] = {
+                'name': plant.tray.get_display_name(),
+                'uuid': str(plant.tray.uuid)
+            }
         return render(request, 'plant_tracker/manage_plant.html', context)
 
     # Loop up UUID in tray database, render template if found

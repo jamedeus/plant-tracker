@@ -185,6 +185,78 @@ function App() {
         }
     }
 
+    // Takes plant.tray (state object key) and trays state object
+    // Renders dropdown if plant not in tray, link to tray if is in tray
+    const PlantTraySection = ({ tray, trayOptions }) => {
+        switch(tray) {
+            case(null):
+                return (
+                    <div className="card card-compact mt-8 mx-auto bg-base-200 text-center">
+                        <div className="card-body">
+                            <p className="text-lg">Add plant to tray</p>
+                            <select
+                                id="traySelect"
+                                defaultValue=""
+                                onChange={addToTray}
+                                className="select select-bordered w-full"
+                            >
+                                <option value="" disabled>Select tray</option>
+                                {trayOptions.map(tray => {
+                                    return <option key={tray.uuid} value={tray.uuid}>{tray.name}</option>
+                                })}
+                            </select>
+                        </div>
+                    </div>
+                )
+            default:
+                return (
+                    <div className="card card-compact mt-8 mx-auto bg-base-200 text-center px-8 py-2">
+                        <div className="card-body">
+                            <p>Plant is in tray:</p>
+                            <p className="text-xl font-bold"><a href={"/manage/" + tray.uuid}>
+                                { tray.name }
+                            </a></p>
+                            <button
+                                className="btn btn-sm btn-outline btn-error mt-4"
+                                onClick={removeFromTray}
+                            >
+                                Remove
+                            </button>
+                        </div>
+                    </div>
+                )
+        }
+    }
+
+    // Called when user selects tray from dropdown
+    const addToTray = async () => {
+        const payload = {
+            plant_id: plant.uuid,
+            tray_id: document.getElementById('traySelect').value
+        }
+        const response = await sendPostRequest('/add_plant_to_tray', payload);
+        if (response.ok) {
+            {/* TODO improve context, this is ridiculous */}
+            trays.forEach(tray => {
+                if (tray.uuid === payload.tray_id) {
+                    let oldPlant = {...plant};
+                    oldPlant.tray = {name: tray.name, uuid: tray.uuid}
+                    setPlant(oldPlant);
+                }
+            })
+        }
+    }
+
+    // Handler for remove from tray button
+    const removeFromTray = async () => {
+        const response = await sendPostRequest('/remove_plant_from_tray', {plant_id: plant.uuid});
+        if (response.ok) {
+            let oldPlant = {...plant};
+            oldPlant.tray = null;
+            setPlant(oldPlant);
+        }
+    }
+
     return (
         <div className="container flex flex-col mx-auto">
             <div className="navbar bg-base-100 mb-4">
@@ -244,6 +316,8 @@ function App() {
                     <button className="btn btn-success m-2" onClick={fertilizePlant}>Fertilize</button>
                 </div>
             </div>
+
+            <PlantTraySection tray={plant.tray} trayOptions={trays} />
 
             <div className="grid grid-cols-1 md:grid-cols-2 mx-auto mt-16">
                 <div className="md:mr-8 mb-8 md:mb-0">
