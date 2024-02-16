@@ -6,6 +6,7 @@ import EditableNodeList from 'src/components/EditableNodeList';
 import EditModal from 'src/components/EditModal';
 import TrayDetails from 'src/forms/TrayDetails';
 import Navbar from 'src/components/Navbar';
+import PlantCard from 'src/components/PlantCard';
 
 function App() {
     // Load context set by django template
@@ -14,6 +15,9 @@ function App() {
     });
     const [plantIds, setPlantIds] = useState(() => {
         return parseDomContext("plant_ids");
+    });
+    const [plantDetails, setPlantDetails] = useState(() => {
+        return parseDomContext("details");
     });
     const [options, setOptions] = useState(() => {
         return parseDomContext("options");
@@ -63,6 +67,36 @@ function App() {
         )
     }
 
+    const ManagePlantsButtons = ({editing, setEditing, handleDelete}) => {
+        switch(editing) {
+            case(true):
+                return (
+                    <div className="flex">
+                        <button className="btn btn-sm btn-outline mx-auto" onClick={() => setEditing(false)}>
+                            Cancel
+                        </button>
+                        <button className="btn btn-sm btn-outline btn-info mx-auto" onClick={() => handleDelete()}>
+                            Water
+                        </button>
+                        <button className="btn btn-sm btn-outline btn-success mx-auto" onClick={() => handleDelete()}>
+                            Fertilize
+                        </button>
+                        <button className="btn btn-sm btn-outline btn-error mx-auto" onClick={() => handleDelete()}>
+                            Delete
+                        </button>
+                    </div>
+                )
+            case(false):
+                return (
+                    <div className="flex">
+                        <button className="btn btn-outline mx-auto" onClick={() => setEditing(true)}>
+                            Edit
+                        </button>
+                    </div>
+                )
+        }
+    }
+
     return (
         <div className="container flex flex-col mx-auto">
             <Navbar
@@ -78,6 +112,19 @@ function App() {
                     </div>
                 }
             />
+
+            <CollapseCol title="Plants" defaultOpen={true}>
+                <EditableNodeList editing={selectingPlants} selected={selectedPlants}>
+                    {plantDetails.map((plant) => {
+                        return <PlantCard key={plant.uuid} name={plant.name} uuid={plant.uuid} />
+                    })}
+                </EditableNodeList>
+                <ManagePlantsButtons
+                    editing={selectingPlants}
+                    setEditing={setSelectingPlants}
+                    handleDelete={() => console.log('delete')}
+                />
+            </CollapseCol>
 
             <EditModal title="Edit Details" onSubmit={submitEditModal}>
                 <TrayDetails

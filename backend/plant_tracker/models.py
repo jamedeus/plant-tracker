@@ -73,16 +73,18 @@ class Tray(models.Model):
         return [str(uuid) for uuid in self.plant_set.all().values_list('uuid', flat=True)]
 
     def get_plant_details(self):
-        '''Returns nested dict with sub-dict for each Plant in Tray (Plant ID as key)
-        Each sub-dict contains name, last_watered timestamp, last_fertilized timestamp
+        '''Returns list of dicts with parameters for each Plant in Tray
+        Each dict contains name, uuid, last_watered timestamp, last_fertilized timestamp
         '''
-        details = {}
-        for plant in self.plant_set.all():
-            details[str(plant.uuid)] = {
+        details = [
+            {
                 'name': plant.get_display_name(),
+                'uuid': str(plant.uuid),
                 'last_watered': plant.last_watered(),
                 'last_fertilized': plant.last_fertilized()
             }
+            for plant in self.plant_set.all()
+        ]
         return details
 
 

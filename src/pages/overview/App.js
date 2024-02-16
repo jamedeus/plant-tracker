@@ -3,6 +3,8 @@ import print from 'print-js'
 import CollapseCol from 'src/components/CollapseCol';
 import EditableNodeList from 'src/components/EditableNodeList';
 import Navbar from 'src/components/Navbar';
+import TrayCard from 'src/components/TrayCard';
+import PlantCard from 'src/components/PlantCard';
 
 function App() {
     // Load context set by django template
@@ -88,33 +90,6 @@ function App() {
             footer: null
         });
         document.getElementById('printModal').close();
-    };
-
-    const PlantCard = ({ name, uuid }) => {
-        return (
-            <div
-                className="card bg-neutral text-neutral-content mx-auto w-full"
-                onClick={() => window.location.href = `/manage/${uuid}`}
-            >
-                <div className="card-body text-center">
-                    <h2 className="card-title mx-auto">{name}</h2>
-                </div>
-            </div>
-        );
-    };
-
-    const TrayCard = ({ name, plants, uuid }) => {
-        return (
-            <div
-                className="card bg-neutral text-neutral-content mx-auto w-full"
-                onClick={() => window.location.href = `/manage/${uuid}`}
-            >
-                <div className="card-body text-center">
-                    <h2 className="card-title mx-auto">{name}</h2>
-                    <p>Contains {plants} plants</p>
-                </div>
-            </div>
-        );
     };
 
     return (

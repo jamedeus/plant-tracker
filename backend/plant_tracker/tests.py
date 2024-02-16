@@ -200,18 +200,10 @@ class ManagePageTests(TestCase):
             }
         )
         self.assertEqual(len(response.context['details']), 1)
-        self.assertEqual(
-            response.context['details'][str(self.plant1.uuid)]['name'],
-            'Unnamed plant 1'
-        )
-        self.assertEqual(
-            response.context['details'][str(self.plant1.uuid)]['last_watered'],
-            None
-        )
-        self.assertEqual(
-            response.context['details'][str(self.plant1.uuid)]['last_fertilized'],
-            None
-        )
+        self.assertEqual(response.context['details'][0]['name'], 'Unnamed plant 1')
+        self.assertEqual(response.context['details'][0]['uuid'], str(self.plant1.uuid))
+        self.assertEqual(response.context['details'][0]['last_watered'], None)
+        self.assertEqual(response.context['details'][0]['last_fertilized'], None)
 
     def test_edit_plant_details(self):
         # Confirm test plant has no name or species

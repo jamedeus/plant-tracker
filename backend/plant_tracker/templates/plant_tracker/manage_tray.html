@@ -12,6 +12,7 @@
     <div id="root"></div>
     {{ tray|json_script:"tray" }}
     {{ plant_ids|json_script:"plant_ids" }}
+    {{ details|json_script:"details" }}
     {{ options|json_script:"options" }}
     <script src="{% static 'plant_tracker/manage_tray.js' %}"></script>
 </body>
