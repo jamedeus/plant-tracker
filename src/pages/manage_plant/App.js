@@ -27,6 +27,15 @@ function App() {
     const selectedWaterEvents = useRef([]);
     const selectedFertilizeEvents = useRef([]);
 
+    // Clear selectedEvent refs when editing state changes
+    // Prevents old selections carrying forward after clicking cancel
+    useEffect(() => {
+        selectedWaterEvents.current = [];
+    }, [editingWaterEvents]);
+    useEffect(() => {
+        selectedFertilizeEvents.current = [];
+    }, [editingFertilizeEvents]);
+
     const overview = () => {
         window.location.href = "/";
     }
