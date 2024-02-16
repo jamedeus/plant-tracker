@@ -7,6 +7,7 @@ import EditModal from 'src/components/EditModal';
 import TrayDetails from 'src/forms/TrayDetails';
 import Navbar from 'src/components/Navbar';
 import PlantCard from 'src/components/PlantCard';
+import DatetimeInput from 'src/components/DatetimeInput'
 
 function App() {
     // Load context set by django template
@@ -35,6 +36,22 @@ function App() {
     // Track which plants are selected
     const selectedPlants = useRef([]);
 
+    // State for text displayed in toast, toast appears for 5 seconds when set
+    // to a non-empty string then fades back out
+    const [toastMessage, setToastMessage] = useState('');
+    const toastRef = useRef();
+    useEffect(() => {
+        if (toastMessage) {
+            toastRef.current.classList.remove('opacity-0');
+            setTimeout(() => {
+                toastRef.current.classList.add('opacity-0');
+            }, "5000");
+            setTimeout(() => {
+                setToastMessage('');
+            }, "5500");
+        }
+    }, [toastMessage]);
+
     const overview = () => {
         window.location.href = "/";
     }
@@ -58,6 +75,24 @@ function App() {
             oldTray.location = payload.location;
             oldTray.display_name = data.display_name;
             setTray(oldTray);
+        }
+    }
+
+    // Creates event of specified type for every plant in tray with timestamp
+    // from input above water_all and fertilize_all buttons
+    const bulkAddPlantEvents = async (eventType) => {
+        const payload = {
+            plants: plantIds,
+            event_type: eventType,
+            timestamp: localToUTC(document.getElementById("addEventAllTime").value)
+        }
+        const response = await sendPostRequest('/bulk_add_plant_events', payload);
+        if (response.ok) {
+            if (eventType.endsWith('e')) {
+                setToastMessage(`All plants ${eventType}d!`);
+            } else {
+                setToastMessage(`All plants ${eventType}ed!`);
+            }
         }
     }
 
@@ -222,6 +257,22 @@ function App() {
                 }
             />
 
+            <DatetimeInput id="addEventAllTime" />
+            <div className="flex mx-auto mb-8">
+                <button
+                    className="btn btn-info m-2"
+                    onClick={() => bulkAddPlantEvents('water')}
+                >
+                    Water All
+                </button>
+                <button
+                    className="btn btn-success m-2"
+                    onClick={() => bulkAddPlantEvents('fertilize')}
+                >
+                    Fertilize All
+                </button>
+            </div>
+
             <CollapseCol title="Plants" defaultOpen={true}>
                 <EditableNodeList editing={selectingPlants} selected={selectedPlants}>
                     {plantDetails.map((plant) => {
@@ -263,6 +314,12 @@ function App() {
                     <button>close</button>
                 </form>
             </dialog>
+
+            <div ref={toastRef} className="toast toast-center opacity-0 transition-all duration-500">
+                <div className="alert alert-info gap-0">
+                    <span>{toastMessage}</span>
+                </div>
+            </div>
 
         </div>
     )

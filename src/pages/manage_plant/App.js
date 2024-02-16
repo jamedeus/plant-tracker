@@ -6,6 +6,7 @@ import EditableNodeList from 'src/components/EditableNodeList';
 import EditModal from 'src/components/EditModal';
 import PlantDetails from 'src/forms/PlantDetails';
 import Navbar from 'src/components/Navbar';
+import DatetimeInput from 'src/components/DatetimeInput'
 
 function App() {
     // Load context set by django template
@@ -74,6 +75,7 @@ function App() {
         if (response.ok) {
             let oldPlant = {...plant};
             oldPlant.last_watered = payload.timestamp;
+            oldPlant.water_events.push(payload.timestamp);
             setPlant(oldPlant);
         }
     }
@@ -88,6 +90,7 @@ function App() {
         if (response.ok) {
             let oldPlant = {...plant};
             oldPlant.last_fertilized = payload.timestamp;
+            oldPlant.fertilize_events.push(payload.timestamp);
             setPlant(oldPlant);
         }
     }
@@ -291,13 +294,7 @@ function App() {
             <div className="flex flex-col text-center">
                 <span className="text-lg">Last Watered: {timestampToRelative(plant.last_watered)}</span>
                 <span className="text-lg">Last Fertilized: {timestampToRelative(plant.last_fertilized)}</span>
-                <input
-                    id="eventTime"
-                    className="input input-bordered mx-auto my-2"
-                    type="datetime-local"
-                    step="1"
-                    defaultValue={DateTime.now().toFormat("yyyy-MM-dd'T'HH:mm:ss")}
-                />
+                <DatetimeInput id="eventTime" />
                 <div className="flex mx-auto">
                     <button className="btn btn-info m-2" onClick={waterPlant}>Water</button>
                     <button className="btn btn-success m-2" onClick={fertilizePlant}>Fertilize</button>
