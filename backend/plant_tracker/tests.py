@@ -291,9 +291,14 @@ class ManagePageTests(TestCase):
         }
         response = self.client.post('/bulk_add_plants_to_tray', payload)
 
-        # Confirm page refreshed, confirm plants both have relation
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/manage/{self.tray1.uuid}')
+        # Confirm response contains UUIDs of added plants
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {"added": [str(self.plant1.uuid), str(self.plant2.uuid)], "failed": []}
+        )
+
+        # Confirm plants both have relation to tray
         self._refresh_test_models()
         self.assertEqual(self.plant1.tray, self.tray1)
         self.assertEqual(self.plant2.tray, self.tray1)
@@ -319,9 +324,14 @@ class ManagePageTests(TestCase):
         }
         response = self.client.post('/bulk_remove_plants_from_tray', payload)
 
-        # Confirm page refreshed, confirm plants both have relation
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/manage/{self.tray1.uuid}')
+        # Confirm response contains UUIDs of removed plants
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {"removed": [str(self.plant1.uuid), str(self.plant2.uuid)], "failed": []}
+        )
+
+        # Confirm plants no longer have relation to tray
         self._refresh_test_models()
         self.assertIsNone(self.plant1.tray)
         self.assertIsNone(self.plant2.tray)

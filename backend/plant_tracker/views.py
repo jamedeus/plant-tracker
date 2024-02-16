@@ -339,12 +339,17 @@ def bulk_add_plants_to_tray(tray, data):
     '''Adds a list of Plants to specified Tray (creates database relation for each)
     Requires JSON POST with tray_id (uuid) and plants (list of UUIDs) keys
     '''
+    added = []
+    failed = []
     for plant_id in data["plants"]:
         plant = get_plant_by_uuid(plant_id)
         if plant:
             plant.tray = tray
             plant.save()
-    return HttpResponseRedirect(f'/manage/{tray.uuid}')
+            added.append(plant_id)
+        else:
+            failed.append(plant_id)
+    return JsonResponse({"added": added, "failed": failed}, status=200)
 
 
 @requires_json_post(["tray_id", "plants"])
@@ -353,12 +358,17 @@ def bulk_remove_plants_from_tray(tray, data):
     '''Removes a list of Plants from specified Tray (deletes database relations)
     Requires JSON POST with tray_id (uuid) and plants (list of UUIDs) keys
     '''
+    added = []
+    failed = []
     for plant_id in data["plants"]:
         plant = get_plant_by_uuid(plant_id)
         if plant:
             plant.tray = None
             plant.save()
-    return HttpResponseRedirect(f'/manage/{tray.uuid}')
+            added.append(plant_id)
+        else:
+            failed.append(plant_id)
+    return JsonResponse({"removed": added, "failed": failed}, status=200)
 
 
 @requires_json_post(["plant_id", "new_pot_size", "timestamp"])
