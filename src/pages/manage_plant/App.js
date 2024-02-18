@@ -20,14 +20,6 @@ function App() {
         return parseDomContext("species_options");
     });
 
-    // Create states to track whether editing water and fertilize event lists
-    const [editingWaterEvents, setEditingWaterEvents] = useState(false);
-    const [editingFertilizeEvents, setEditingFertilizeEvents] = useState(false);
-
-    // Track which water and fertilize events are selected when editing
-    const [selectedWaterEvents, setSelectedWaterEvents] = useState([]);
-    const [selectedFertilizeEvents, setSelectedFertilizeEvents] = useState([]);
-
     const overview = () => {
         window.location.href = "/";
     }
@@ -84,25 +76,6 @@ function App() {
             oldPlant.fertilize_events.push(payload.timestamp);
             setPlant(oldPlant);
         }
-    }
-
-    // Water history delete button handler
-    // Removes selected events from database, re-renders history
-    const deleteWaterEvents = () => {
-        console.log(selectedWaterEvents);
-        selectedWaterEvents.forEach(async timestamp => {
-            await deleteEvent(timestamp, 'water')
-        })
-        setEditingWaterEvents(false);
-    }
-
-    // Fertilize history delete button handler
-    // Removes selected events from database, re-renders history
-    const deleteFertilizeEvents = () => {
-        selectedFertilizeEvents.forEach(async timestamp => {
-            await deleteEvent(timestamp, 'fertilize')
-        })
-        setEditingFertilizeEvents(false);
     }
 
     // Takes event timestamp and types, sends delete request to backend
@@ -219,6 +192,37 @@ function App() {
         }
     }
 
+    // Takes events array (eg plant.water_events) and type (water or fertilize)
+    // Renders EditableNodeList with edit + delete button and handlers
+    const EventsCol = ({ events, type }) => {
+        // Create states for editing state, selected events
+        const [editing, setEditing] = useState(false);
+        const [selected, setSelected] = useState([]);
+
+        // Delete button handler
+        const onDelete = () => {
+            selected.forEach(async timestamp => {
+                await deleteEvent(timestamp, type)
+            })
+            setEditing(false);
+        }
+
+        return (
+            <>
+                <EditableNodeList editing={editing} selected={selected} setSelected={setSelected}>
+                    {events.map((timestamp) => {
+                        return <EventCard key={timestamp} timestamp={timestamp} />
+                    })}
+                </EditableNodeList>
+                <EventHistoryButtons
+                    editing={editing}
+                    setEditing={setEditing}
+                    handleDelete={onDelete}
+                />
+            </>
+        );
+    }
+
     // Takes plant.tray (state object key) and trays state object
     // Renders dropdown if plant not in tray, link to tray if is in tray
     const PlantTraySection = ({ tray, trayOptions }) => {
@@ -297,39 +301,13 @@ function App() {
             <div className="grid grid-cols-1 md:grid-cols-2 mx-auto mt-16">
                 <div className="md:mr-8 mb-8 md:mb-0">
                     <CollapseCol title="Water History" defaultOpen={false}>
-                        <EditableNodeList
-                            editing={editingWaterEvents}
-                            selected={selectedWaterEvents}
-                            setSelected={setSelectedWaterEvents}
-                        >
-                            {plant.water_events.map((timestamp) => {
-                                return <EventCard key={timestamp} timestamp={timestamp} />
-                            })}
-                        </EditableNodeList>
-                        <EventHistoryButtons
-                            editing={editingWaterEvents}
-                            setEditing={setEditingWaterEvents}
-                            handleDelete={deleteWaterEvents}
-                        />
+                        <EventsCol events={plant.water_events} type="water" />
                     </CollapseCol>
                 </div>
 
                 <div className="md:ml-8">
                     <CollapseCol title="Fertilize History" defaultOpen={false}>
-                        <EditableNodeList
-                            editing={editingFertilizeEvents}
-                            selected={selectedFertilizeEvents}
-                            setSelected={setSelectedFertilizeEvents}
-                        >
-                            {plant.fertilize_events.map((timestamp) => {
-                                return <EventCard key={timestamp} timestamp={timestamp} />
-                            })}
-                        </EditableNodeList>
-                        <EventHistoryButtons
-                            editing={editingFertilizeEvents}
-                            setEditing={setEditingFertilizeEvents}
-                            handleDelete={deleteFertilizeEvents}
-                        />
+                        <EventsCol events={plant.fertilize_events} type="fertilize" />
                     </CollapseCol>
                 </div>
             </div>
