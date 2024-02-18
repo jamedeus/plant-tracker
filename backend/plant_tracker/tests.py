@@ -50,10 +50,10 @@ class OverviewTests(TestCase):
         Plant.objects.create(uuid=test_id, name='test plant')
         self.assertEqual(len(Plant.objects.all()), 1)
 
-        # Call delete endpoint, confirm redirects to overview, confirm removed from database
+        # Call delete endpoint, confirm response, confirm removed from database
         response = self.client.post('/delete_plant', {'plant_id': str(test_id)})
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, '/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'deleted': str(test_id)})
         self.assertEqual(len(Plant.objects.all()), 0)
 
         # Attempt to delete non-existing plant, confirm error
@@ -67,10 +67,10 @@ class OverviewTests(TestCase):
         Tray.objects.create(uuid=test_id, name='test tray')
         self.assertEqual(len(Tray.objects.all()), 1)
 
-        # Call delete endpoint, confirm redirects to overview, confirm removed from database
+        # Call delete endpoint, confirm response, confirm removed from database
         response = self.client.post('/delete_tray', {'tray_id': str(test_id)})
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, '/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'deleted': str(test_id)})
         self.assertEqual(len(Tray.objects.all()), 0)
 
         # Attempt to delete non-existing tray, confirm error

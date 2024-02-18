@@ -237,21 +237,21 @@ def edit_tray_details(tray, data):
 @requires_json_post(["plant_id"])
 @get_plant_from_post_body
 def delete_plant(plant, **kwargs):
-    '''Deletes an existing Plant from database, returns redirect to overview
+    '''Deletes an existing Plant from database
     Requires JSON POST with plant_id (uuid) key
     '''
     plant.delete()
-    return HttpResponseRedirect('/')
+    return JsonResponse({"deleted": plant.uuid}, status=200)
 
 
 @requires_json_post(["tray_id"])
 @get_tray_from_post_body
 def delete_tray(tray, **kwargs):
-    '''Deletes an existing Tray from database, returns redirect to overview
+    '''Deletes an existing Tray from database
     Requires JSON POST with tray_id (uuid) key
     '''
     tray.delete()
-    return HttpResponseRedirect('/')
+    return JsonResponse({"deleted": tray.uuid}, status=200)
 
 
 @requires_json_post(["plant_id", "event_type", "timestamp"])

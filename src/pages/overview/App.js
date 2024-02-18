@@ -5,26 +5,16 @@ import EditableNodeList from 'src/components/EditableNodeList';
 import Navbar from 'src/components/Navbar';
 import TrayCard from 'src/components/TrayCard';
 import PlantCard from 'src/components/PlantCard';
+import { sendPostRequest, parseDomContext } from 'src/util';
 
 function App() {
     // Load context set by django template
-    const [context, setContext] = useState(() => {
-        function parse_dom_context(name) {
-            const element = document.getElementById(name);
-            if (element) {
-                return JSON.parse(element.textContent);
-            } else {
-                return "";
-            }
-        }
-
-        // Parse context elements created by django template
-        return {
-            plants: parse_dom_context("plants"),
-            trays: parse_dom_context("trays")
-        };
+    const [plants, setPlants] = useState(() => {
+        return parseDomContext("plants");
     });
-    console.log(context)
+    const [trays, setTrays] = useState(() => {
+        return parseDomContext("trays");
+    });
 
     // State object to track edit mode (shows checkbox for each card)
     const [editing, setEditing] = useState(false);
@@ -32,12 +22,14 @@ function App() {
     // Toggle editing state, clear selected, remove focus (closes dropdown)
     const toggleEditing = () => {
         setEditing(!editing);
-        setSelected([]);
+        setSelectedTrays([]);
+        setSelectedPlants([]);
         document.activeElement.blur();
     };
 
     // Track which card checkboxes the user has selected
-    const [selected, setSelected] = useState([]);
+    const [selectedPlants, setSelectedPlants] = useState([]);
+    const [selectedTrays, setSelectedTrays] = useState([]);
 
     // Show loading modal with cancel button, request QR codes from backend,
     // open QR codes in print dialog if user did not click cancel
@@ -92,6 +84,41 @@ function App() {
         document.getElementById('printModal').close();
     };
 
+    // Appears when edit dropdown option selected
+    const EditingButtons = () => {
+        const cancel = () => setEditing(false);
+
+        const handleDelete = () => {
+            // Send delete request for each selected plant, remove uuid from state
+            selectedPlants.forEach(async plant_id => {
+                await sendPostRequest('/delete_plant', {plant_id: plant_id});
+            })
+            setPlants(plants.filter(plant => !selectedPlants.includes(plant.uuid)));
+
+            // Send delete request for each selected tray, remove uuid from state
+            selectedTrays.forEach(async tray_id => {
+                await sendPostRequest('/delete_tray', {tray_id: tray_id});
+            })
+            setTrays(trays.filter(tray => !selectedTrays.includes(tray.uuid)));
+
+            // Reset editing state
+            setEditing(false);
+        }
+
+        if (editing) {
+            return (
+                <div className="sticky bottom-4 mx-auto my-4 p-4 bg-neutral rounded-box">
+                    <button className="btn mr-4" onClick={cancel}>
+                        Cancel
+                    </button>
+                    <button className="btn btn-error ml-4" onClick={handleDelete}>
+                        Delete
+                    </button>
+                </div>
+            )
+        }
+    }
+
     return (
         <div className="container flex flex-col mx-auto">
             <Navbar
@@ -109,8 +136,12 @@ function App() {
             <div className="grid grid-cols-1 md:grid-cols-2 mx-auto">
                 <div className="md:mr-12 mb-8 md:mb-0">
                     <CollapseCol title="Plants">
-                        <EditableNodeList editing={editing} selected={selected} setSelected={setSelected}>
-                            {context.plants.map((plant) => {
+                        <EditableNodeList
+                            editing={editing}
+                            selected={selectedPlants}
+                            setSelected={setSelectedPlants}
+                        >
+                            {plants.map((plant) => {
                                 return <PlantCard
                                     key={plant.uuid}
                                     name={plant.name}
@@ -123,8 +154,12 @@ function App() {
 
                 <div className="md:ml-12">
                     <CollapseCol title="Trays">
-                        <EditableNodeList editing={editing} selected={selected} setSelected={setSelected}>
-                            {context.trays.map((tray) => {
+                        <EditableNodeList
+                            editing={editing}
+                            selected={selectedTrays}
+                            setSelected={setSelectedTrays}
+                        >
+                            {trays.map((tray) => {
                                 return <TrayCard
                                     key={tray.uuid}
                                     name={tray.name}
@@ -136,6 +171,8 @@ function App() {
                     </CollapseCol>
                 </div>
             </div>
+
+            <EditingButtons />
 
             <dialog id="printModal" className="modal">
                 <div className="modal-box text-center flex flex-col">
