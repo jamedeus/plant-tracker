@@ -30,11 +30,11 @@ function App() {
     // Create state to track whether selecting plants from list
     const [selectingPlants, setSelectingPlants] = useState(false);
 
-    // Create state to track whether manage modal opened to add or remove
-    const [managePlants, setManagePlants] = useState('');
-
     // Track which plants are selected
     const [selectedPlants, setSelectedPlants] = useState([]);
+
+    // Create state to track whether manage modal opened to add or remove
+    const [managePlants, setManagePlants] = useState('');
 
     // State for text displayed in toast, toast appears for 5 seconds when set
     // to a non-empty string then fades back out
@@ -99,51 +99,8 @@ function App() {
     // Opens modal with list of new plant options if arg is 'add'
     // Opens modal with list of existing plants if arg is 'remove'
     const openManagePlantsModal = (action) => {
-        if (managePlants !== action) {
-            setManagePlants(action);
-            setSelectedPlants([]);
-        }
+        setManagePlants(action);
         document.getElementById('managePlantsModal').showModal();
-    }
-
-    // Handler for add button in manage plants modal
-    const addPlants = async () => {
-        const payload = {
-            tray_id: tray.uuid,
-            plants: selectedPlants
-        }
-        console.log(payload)
-        const response = await sendPostRequest('/bulk_add_plants_to_tray', payload);
-        if (response.ok) {
-            // TODO improve django context to simplify this
-            const data = await response.json();
-            // Add UUIDS in response to plantIds (used for waterAll, etc)
-            setPlantIds([...plantIds, ...data.added]);
-
-            // Parse details for each added plant from options list, add to plantDetails state
-            const addedPlants = options.filter(plant => data.added.includes(plant.uuid));
-            setPlantDetails([...plantDetails, ...addedPlants]);
-        }
-        setSelectedPlants([]);
-    }
-
-    // Handler for remove button in manage plants modal
-    const removePlants = async () => {
-        const payload = {
-            tray_id: tray.uuid,
-            plants: selectedPlants
-        }
-        console.log(payload)
-        const response = await sendPostRequest('/bulk_remove_plants_from_tray', payload);
-        if (response.ok) {
-            const data = await response.json();
-            // Remove UUIDs in response from plantIds (will appear in addPlants options)
-            setPlantIds(plantIds.filter(plant => !data.removed.includes(plant)));
-
-            // Remove UUIDs in response from plantDetails
-            setPlantDetails(plantDetails.filter(plant => !data.removed.includes(plant.uuid)))
-        }
-        setSelectedPlants([]);
     }
 
     // Displays plant options in managePlantsModal
@@ -159,13 +116,31 @@ function App() {
 
     // Contents of managePlantsModal when managePlants === 'add'
     const AddPlantsModalContents = () => {
+        // State to track selected items
+        const [selected, setSelected] = useState([]);
+
+        // Handler for add button in manage plants modal
+        const addPlants = async () => {
+            const payload = {
+                tray_id: tray.uuid,
+                plants: selected
+            }
+            const response = await sendPostRequest('/bulk_add_plants_to_tray', payload);
+            if (response.ok) {
+                // TODO improve django context to simplify this
+                const data = await response.json();
+                // Add UUIDS in response to plantIds (used for waterAll, etc)
+                setPlantIds([...plantIds, ...data.added]);
+
+                // Parse details for each added plant from options list, add to plantDetails state
+                const addedPlants = options.filter(plant => data.added.includes(plant.uuid));
+                setPlantDetails([...plantDetails, ...addedPlants]);
+            }
+        }
+
         return (
             <>
-                <EditableNodeList
-                    editing={true}
-                    selected={selectedPlants}
-                    setSelected={setSelectedPlants}
-                >
+                <EditableNodeList editing={true} selected={selected} setSelected={setSelected}>
                     {options.filter(plant => !plantIds.includes(plant.uuid)).map((plant) => {
                         return <ManagePlantsCard key={plant.uuid} name={plant.name} />
                     })}
@@ -183,13 +158,29 @@ function App() {
 
     // Contents of managePlantsModal when managePlants === 'remove'
     const RemovePlantsModalContents = () => {
+        // State to track selected items
+        const [selected, setSelected] = useState([]);
+
+        // Handler for remove button in manage plants modal
+        const removePlants = async () => {
+            const payload = {
+                tray_id: tray.uuid,
+                plants: selected
+            }
+            const response = await sendPostRequest('/bulk_remove_plants_from_tray', payload);
+            if (response.ok) {
+                const data = await response.json();
+                // Remove UUIDs in response from plantIds (will appear in addPlants options)
+                setPlantIds(plantIds.filter(plant => !data.removed.includes(plant)));
+
+                // Remove UUIDs in response from plantDetails
+                setPlantDetails(plantDetails.filter(plant => !data.removed.includes(plant.uuid)))
+            }
+        }
+
         return (
             <>
-                <EditableNodeList
-                    editing={true}
-                    selected={selectedPlants}
-                    setSelected={setSelectedPlants}
-                >
+                <EditableNodeList editing={true} selected={selected} setSelected={setSelected}>
                     {plantDetails.map((plant) => {
                         return <ManagePlantsCard key={plant.uuid} name={plant.name} />
                     })}
