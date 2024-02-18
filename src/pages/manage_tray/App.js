@@ -78,13 +78,25 @@ function App() {
         }
     }
 
-    // Creates event of specified type for every plant in tray with timestamp
-    // from input above water_all and fertilize_all buttons
-    const bulkAddPlantEvents = async (eventType) => {
+    // Handler for "Water All" button
+    const waterTray = async () => {
+        const timestamp = localToUTC(document.getElementById("addEventAllTime").value);
+        await bulkAddPlantEvents('water', plantIds, timestamp);
+    }
+
+    // Handler for "Fertilize All" button
+    const fertilizeTray = async () => {
+        const timestamp = localToUTC(document.getElementById("addEventAllTime").value);
+        await bulkAddPlantEvents('fertilize', plantIds, timestamp);
+    }
+
+    // Creates event with specified type and timestamp for every plant in
+    // selectedIds (array of UUIDs)
+    const bulkAddPlantEvents = async (eventType, selectedIds, timestamp) => {
         const payload = {
-            plants: plantIds,
+            plants: selectedIds,
             event_type: eventType,
-            timestamp: localToUTC(document.getElementById("addEventAllTime").value)
+            timestamp: timestamp
         }
         const response = await sendPostRequest('/bulk_add_plant_events', payload);
         if (response.ok) {
@@ -209,27 +221,46 @@ function App() {
     }
 
     // Buttons used to add bulk events to plants in tray
-    const PlantEventButtons = ({editing, setEditing, handleDelete}) => {
+    const PlantEventButtons = ({editing, setEditing}) => {
         switch(editing) {
             case(true):
+                // Handler for water button
+                const water = async () => {
+                    const timestamp = localToUTC(document.getElementById("addEventTime").value);
+                    await bulkAddPlantEvents('water', selectedPlants, timestamp);
+                    setEditing(false);
+                }
+
+                // Handler for fertilize button
+                const fertilize = async () => {
+                    const timestamp = localToUTC(document.getElementById("addEventTime").value);
+                    await bulkAddPlantEvents('fertilize', selectedPlants, timestamp);
+                    setEditing(false);
+                }
+
                 return (
-                    <div className="flex">
-                        <button className="btn btn-outline mx-auto" onClick={() => setEditing(false)}>
-                            Cancel
-                        </button>
-                        <button className="btn btn-outline btn-info mx-auto" onClick={() => handleDelete()}>
-                            Water
-                        </button>
-                        <button className="btn btn-outline btn-success mx-auto" onClick={() => handleDelete()}>
-                            Fertilize
-                        </button>
-                    </div>
+                    <>
+                        <div className="flex mx-auto mb-4">
+                            <DatetimeInput id="addEventTime" />
+                        </div>
+                        <div className="flex">
+                            <button className="btn btn-outline mx-auto" onClick={() => setEditing(false)}>
+                                Cancel
+                            </button>
+                            <button className="btn btn-outline btn-info mx-auto" onClick={water}>
+                                Water
+                            </button>
+                            <button className="btn btn-outline btn-success mx-auto" onClick={fertilize}>
+                                Fertilize
+                            </button>
+                        </div>
+                    </>
                 )
             case(false):
                 return (
                     <div className="flex">
                         <button className="btn btn-outline mx-auto" onClick={() => setEditing(true)}>
-                            Edit
+                            Manage
                         </button>
                     </div>
                 )
@@ -258,16 +289,10 @@ function App() {
 
             <DatetimeInput id="addEventAllTime" />
             <div className="flex mx-auto mb-8">
-                <button
-                    className="btn btn-info m-2"
-                    onClick={() => bulkAddPlantEvents('water')}
-                >
+                <button className="btn btn-info m-2" onClick={waterTray}>
                     Water All
                 </button>
-                <button
-                    className="btn btn-success m-2"
-                    onClick={() => bulkAddPlantEvents('fertilize')}
-                >
+                <button className="btn btn-success m-2" onClick={fertilizeTray}>
                     Fertilize All
                 </button>
             </div>
@@ -282,11 +307,7 @@ function App() {
                         return <PlantCard key={plant.uuid} name={plant.name} uuid={plant.uuid} />
                     })}
                 </EditableNodeList>
-                <PlantEventButtons
-                    editing={selectingPlants}
-                    setEditing={setSelectingPlants}
-                    handleDelete={() => console.log('delete')}
-                />
+                <PlantEventButtons editing={selectingPlants} setEditing={setSelectingPlants} />
             </CollapseCol>
 
             <EditModal title="Edit Details" onSubmit={submitEditModal}>
