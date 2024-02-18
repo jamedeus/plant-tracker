@@ -29,15 +29,15 @@ function App() {
     // State object to track edit mode (shows checkbox for each card)
     const [editing, setEditing] = useState(false);
 
-    // Toggle editing state, clear selectedRef, remove focus (closes dropdown)
+    // Toggle editing state, clear selected, remove focus (closes dropdown)
     const toggleEditing = () => {
         setEditing(!editing);
-        selectedRef.current = [];
+        setSelected([]);
         document.activeElement.blur();
     };
 
     // Track which card checkboxes the user has selected
-    const selectedRef = useRef([]);
+    const [selected, setSelected] = useState([]);
 
     // Show loading modal with cancel button, request QR codes from backend,
     // open QR codes in print dialog if user did not click cancel
@@ -109,7 +109,7 @@ function App() {
             <div className="grid grid-cols-1 md:grid-cols-2 mx-auto">
                 <div className="md:mr-12 mb-8 md:mb-0">
                     <CollapseCol title="Plants">
-                        <EditableNodeList editing={editing} selected={selectedRef}>
+                        <EditableNodeList editing={editing} selected={selected} setSelected={setSelected}>
                             {context.plants.map((plant) => {
                                 return <PlantCard
                                     key={plant.uuid}
@@ -123,7 +123,7 @@ function App() {
 
                 <div className="md:ml-12">
                     <CollapseCol title="Trays">
-                        <EditableNodeList editing={editing} selected={selectedRef}>
+                        <EditableNodeList editing={editing} selected={selected} setSelected={setSelected}>
                             {context.trays.map((tray) => {
                                 return <TrayCard
                                     key={tray.uuid}

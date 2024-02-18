@@ -34,7 +34,7 @@ function App() {
     const [managePlants, setManagePlants] = useState('');
 
     // Track which plants are selected
-    const selectedPlants = useRef([]);
+    const [selectedPlants, setSelectedPlants] = useState([]);
 
     // State for text displayed in toast, toast appears for 5 seconds when set
     // to a non-empty string then fades back out
@@ -101,7 +101,7 @@ function App() {
     const openManagePlantsModal = (action) => {
         if (managePlants !== action) {
             setManagePlants(action);
-            selectedPlants.current = [];
+            setSelectedPlants([]);
         }
         document.getElementById('managePlantsModal').showModal();
     }
@@ -110,7 +110,7 @@ function App() {
     const addPlants = async () => {
         const payload = {
             tray_id: tray.uuid,
-            plants: selectedPlants.current
+            plants: selectedPlants
         }
         console.log(payload)
         const response = await sendPostRequest('/bulk_add_plants_to_tray', payload);
@@ -124,14 +124,14 @@ function App() {
             const addedPlants = options.filter(plant => data.added.includes(plant.uuid));
             setPlantDetails([...plantDetails, ...addedPlants]);
         }
-        selectedPlants.current = [];
+        setSelectedPlants([]);
     }
 
     // Handler for remove button in manage plants modal
     const removePlants = async () => {
         const payload = {
             tray_id: tray.uuid,
-            plants: selectedPlants.current
+            plants: selectedPlants
         }
         console.log(payload)
         const response = await sendPostRequest('/bulk_remove_plants_from_tray', payload);
@@ -143,7 +143,7 @@ function App() {
             // Remove UUIDs in response from plantDetails
             setPlantDetails(plantDetails.filter(plant => !data.removed.includes(plant.uuid)))
         }
-        selectedPlants.current = [];
+        setSelectedPlants([]);
     }
 
     // Displays plant options in managePlantsModal
@@ -161,7 +161,11 @@ function App() {
     const AddPlantsModalContents = () => {
         return (
             <>
-                <EditableNodeList editing={true} selected={selectedPlants}>
+                <EditableNodeList
+                    editing={true}
+                    selected={selectedPlants}
+                    setSelected={setSelectedPlants}
+                >
                     {options.filter(plant => !plantIds.includes(plant.uuid)).map((plant) => {
                         return <ManagePlantsCard key={plant.uuid} name={plant.name} />
                     })}
@@ -181,7 +185,11 @@ function App() {
     const RemovePlantsModalContents = () => {
         return (
             <>
-                <EditableNodeList editing={true} selected={selectedPlants}>
+                <EditableNodeList
+                    editing={true}
+                    selected={selectedPlants}
+                    setSelected={setSelectedPlants}
+                >
                     {plantDetails.map((plant) => {
                         return <ManagePlantsCard key={plant.uuid} name={plant.name} />
                     })}
@@ -274,7 +282,11 @@ function App() {
             </div>
 
             <CollapseCol title="Plants" defaultOpen={true}>
-                <EditableNodeList editing={selectingPlants} selected={selectedPlants}>
+                <EditableNodeList
+                    editing={selectingPlants}
+                    selected={selectedPlants}
+                    setSelected={setSelectedPlants}
+                >
                     {plantDetails.map((plant) => {
                         return <PlantCard key={plant.uuid} name={plant.name} uuid={plant.uuid} />
                     })}

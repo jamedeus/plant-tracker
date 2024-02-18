@@ -25,17 +25,8 @@ function App() {
     const [editingFertilizeEvents, setEditingFertilizeEvents] = useState(false);
 
     // Track which water and fertilize events are selected when editing
-    const selectedWaterEvents = useRef([]);
-    const selectedFertilizeEvents = useRef([]);
-
-    // Clear selectedEvent refs when editing state changes
-    // Prevents old selections carrying forward after clicking cancel
-    useEffect(() => {
-        selectedWaterEvents.current = [];
-    }, [editingWaterEvents]);
-    useEffect(() => {
-        selectedFertilizeEvents.current = [];
-    }, [editingFertilizeEvents]);
+    const [selectedWaterEvents, setSelectedWaterEvents] = useState([]);
+    const [selectedFertilizeEvents, setSelectedFertilizeEvents] = useState([]);
 
     const overview = () => {
         window.location.href = "/";
@@ -99,7 +90,7 @@ function App() {
     // Removes selected events from database, re-renders history
     const deleteWaterEvents = () => {
         console.log(selectedWaterEvents);
-        selectedWaterEvents.current.forEach(async timestamp => {
+        selectedWaterEvents.forEach(async timestamp => {
             await deleteEvent(timestamp, 'water')
         })
         setEditingWaterEvents(false);
@@ -108,7 +99,7 @@ function App() {
     // Fertilize history delete button handler
     // Removes selected events from database, re-renders history
     const deleteFertilizeEvents = () => {
-        selectedFertilizeEvents.current.forEach(async timestamp => {
+        selectedFertilizeEvents.forEach(async timestamp => {
             await deleteEvent(timestamp, 'fertilize')
         })
         setEditingFertilizeEvents(false);
@@ -306,7 +297,11 @@ function App() {
             <div className="grid grid-cols-1 md:grid-cols-2 mx-auto mt-16">
                 <div className="md:mr-8 mb-8 md:mb-0">
                     <CollapseCol title="Water History" defaultOpen={false}>
-                        <EditableNodeList editing={editingWaterEvents} selected={selectedWaterEvents}>
+                        <EditableNodeList
+                            editing={editingWaterEvents}
+                            selected={selectedWaterEvents}
+                            setSelected={setSelectedWaterEvents}
+                        >
                             {plant.water_events.map((timestamp) => {
                                 return <EventCard key={timestamp} timestamp={timestamp} />
                             })}
@@ -321,7 +316,11 @@ function App() {
 
                 <div className="md:ml-8">
                     <CollapseCol title="Fertilize History" defaultOpen={false}>
-                        <EditableNodeList editing={editingFertilizeEvents} selected={selectedFertilizeEvents}>
+                        <EditableNodeList
+                            editing={editingFertilizeEvents}
+                            selected={selectedFertilizeEvents}
+                            setSelected={setSelectedFertilizeEvents}
+                        >
                             {plant.fertilize_events.map((timestamp) => {
                                 return <EventCard key={timestamp} timestamp={timestamp} />
                             })}

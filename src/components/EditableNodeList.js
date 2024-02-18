@@ -1,19 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 
-// Takes editing (state bool), selected (ref containing array), and node list
+// Takes editing (bool), selected (array), setSelected (hook), and node list
 // Returns node list with wrapper div around each node
 // When editing is true wrapper renders checkbox next to each node
 // Checkboxes add/remove node's key to/from selected array when clicked
-const EditableNodeList = ({ editing, selected, children }) => {
-    // Add node's key to selected if not already present, remove if present
+const EditableNodeList = ({ editing, selected, setSelected, children }) => {
+    // Checkbox handler adds key to selected if not present, removes if present
     const selectNode = (key) => {
-        const oldSelected = [...selected.current];
-        if (oldSelected.includes(key)) {
-            oldSelected.splice(oldSelected.indexOf(key), 1);
+        if (selected.includes(key)) {
+            setSelected(selected.filter(item => item !== key));
         } else {
-            oldSelected.push(key);
+            setSelected([...selected, key]);
         }
-        selected.current = oldSelected;
     };
 
     // Takes node and editing state bool, returns node in bottom-padded div
@@ -27,7 +25,8 @@ const EditableNodeList = ({ editing, selected, children }) => {
                             <input
                                 type="checkbox"
                                 className="radio checked:bg-blue-500"
-                                onClick={() => selectNode(node.key)}
+                                checked={selected.includes(node.key)}
+                                onChange={() => selectNode(node.key)}
                             />
                         </label>
                         <div className="ml-2 w-full">
