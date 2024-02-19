@@ -268,7 +268,7 @@ function App() {
     }
 
     return (
-        <div className="container flex flex-col mx-auto">
+        <div className="container flex flex-col mx-auto mb-8">
             <Navbar
                 dropdownOptions={
                     <>

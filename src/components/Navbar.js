@@ -4,7 +4,7 @@ import React from 'react';
 // dropdownOptions must be list of <li> elements, other args can be anything
 const Navbar = ({ dropdownOptions, title, rightSection }) => {
     return (
-        <div className="navbar bg-base-100 mb-4">
+        <div className="navbar bg-base-100 mb-4 sticky top-0 z-[99]">
             <div className="navbar-start">
                 <div className="dropdown">
                     <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">

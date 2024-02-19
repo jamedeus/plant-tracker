@@ -95,7 +95,7 @@ function App() {
     }
 
     return (
-        <div className="container flex flex-col mx-auto">
+        <div className="container flex flex-col mx-auto mb-8">
             <Navbar
                 dropdownOptions={
                     <li><a onClick={overview}>Overview</a></li>
@@ -109,11 +109,11 @@ function App() {
                 <Buttons />
             </div>
 
-            <div className="w-1/2 mx-auto">
+            <div className="m-8 md:w-1/2 md:mx-auto">
                 <Forms />
             </div>
 
-            <div className="mx-auto mt-8">
+            <div className="mx-auto">
                 <button className="btn btn-accent" onClick={submit}>
                     Save
                 </button>
