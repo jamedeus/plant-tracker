@@ -55,27 +55,35 @@ def get_qr_codes(request):
 
 def overview(request):
     '''Renders the overview page (shows existing plants/trays, or setup if none)'''
-    context = {
+
+    # Create state object parsed by react app
+    state = {
         'plants': [],
         'trays': []
     }
 
     for plant in Plant.objects.all():
-        context['plants'].append({
+        state['plants'].append({
             'uuid': str(plant.uuid),
             'name': plant.get_display_name()
         })
 
     for tray in Tray.objects.all():
-        context['trays'].append({
+        state['trays'].append({
             'uuid': str(tray.uuid),
             'name': tray.get_display_name(),
             'plants': len(tray.plant_set.all())
         })
 
-    print(json.dumps(context, indent=4))
+    print(json.dumps(state, indent=4))
 
-    return render(request, 'plant_tracker/overview.html', context)
+    # Render with correct JS bundle and title
+    context = {
+        'title': 'Overview',
+        'js_bundle': 'plant_tracker/overview.js',
+        'state': state
+    }
+    return render(request, 'plant_tracker/index.html', context)
 
 
 def manage(request, uuid):
@@ -86,7 +94,8 @@ def manage(request, uuid):
     # Look up UUID in plant database, render template if found
     plant = get_plant_by_uuid(uuid)
     if plant:
-        context = {
+        # Create state object parsed by react app
+        state = {
             'plant': {
                 'uuid': str(plant.uuid),
                 'name': plant.name,
@@ -104,17 +113,25 @@ def manage(request, uuid):
                       for tray in Tray.objects.all()],
             'species_options': get_plant_species_options()
         }
+
         if plant.tray:
-            context['plant']['tray'] = {
+            state['plant']['tray'] = {
                 'name': plant.tray.get_display_name(),
                 'uuid': str(plant.tray.uuid)
             }
-        return render(request, 'plant_tracker/manage_plant.html', context)
+
+        context = {
+            'title': 'Manage Plant',
+            'js_bundle': 'plant_tracker/manage_plant.js',
+            'state': state
+        }
+        return render(request, 'plant_tracker/index.html', context)
 
     # Loop up UUID in tray database, render template if found
     tray = get_tray_by_uuid(uuid)
     if tray:
-        context = {
+        # Create state object parsed by react app
+        state = {
             'tray': {
                 'uuid': str(tray.uuid),
                 'name': tray.name,
@@ -125,14 +142,26 @@ def manage(request, uuid):
             'details': tray.get_plant_details(),
             'options': get_plant_options()
         }
-        return render(request, 'plant_tracker/manage_tray.html', context)
 
-    # Render registration form if UUID does not exist in either table
-    context = {
+        context = {
+            'title': 'Manage Tray',
+            'js_bundle': 'plant_tracker/manage_tray.js',
+            'state': state
+        }
+        return render(request, 'plant_tracker/index.html', context)
+
+    # Render state for registration form if UUID does not exist in either table
+    state = {
         'new_id': uuid,
         'species_options': get_plant_species_options()
     }
-    return render(request, 'plant_tracker/register.html', context)
+
+    context = {
+        'title': 'Register New Plant',
+        'js_bundle': 'plant_tracker/register.js',
+        'state': state
+    }
+    return render(request, 'plant_tracker/index.html', context)
 
 
 @requires_json_post()

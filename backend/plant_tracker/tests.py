@@ -28,10 +28,18 @@ class OverviewTests(TestCase):
         self.client = JSONClient()
 
     def test_overview_page(self):
-        # Confirm correct template used
+        # Request overview, confirm uses correct JS bundle and title
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'plant_tracker/overview.html')
+        self.assertTemplateUsed(response, 'plant_tracker/index.html')
+        self.assertEqual(response.context['js_bundle'], 'plant_tracker/overview.js')
+        self.assertEqual(response.context['title'], 'Overview')
+
+        # Confirm correct state object (no plants or trays in database)
+        self.assertEqual(
+            response.context['state'],
+            {'plants': [], 'trays': []}
+        )
 
     def test_get_qr_codes(self):
         # Mock URL_PREFIX env var
@@ -159,51 +167,78 @@ class ManagePageTests(TestCase):
         self.plant1.save()
         self.plant2.save()
 
-        # Request management page for new plant, confirm register template renders
+        # Request management page for new plant, confirm status
         response = self.client.get(f'/manage/{uuid4()}')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'plant_tracker/register.html')
 
-        # Confirm context contains list of existing plant species
-        self.assertIn('Calathea', response.context['species_options'])
-        self.assertIn('Fittonia', response.context['species_options'])
-        self.assertEqual(len(response.context['species_options']), 2)
+        # Confirm used register bundle and correct title
+        self.assertTemplateUsed(response, 'plant_tracker/index.html')
+        self.assertEqual(response.context['js_bundle'], 'plant_tracker/register.js')
+        self.assertEqual(response.context['title'], 'Register New Plant')
+
+        # Confirm react state contains list of existing plant species options
+        self.assertIn('Calathea', response.context['state']['species_options'])
+        self.assertIn('Fittonia', response.context['state']['species_options'])
+        self.assertEqual(len(response.context['state']['species_options']), 2)
 
     def test_manage_existing_plant(self):
-        # Request management page for test plant, confirm correct template renders
+        # Request management page for test plant, confirm status
         response = self.client.get(f'/manage/{self.plant1.uuid}')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'plant_tracker/manage_plant.html')
-        self.assertTemplateNotUsed(response, 'plant_tracker/manage_tray.html')
+
+        # Confirm used manage_plant bundle and correct title
+        self.assertTemplateUsed(response, 'plant_tracker/index.html')
+        self.assertEqual(response.context['js_bundle'], 'plant_tracker/manage_plant.js')
+        self.assertEqual(response.context['title'], 'Manage Plant')
+
+        # Confirm expected state object
+        state = response.context['state']
+        self.assertEqual(state['plant'], {
+            'uuid': str(self.plant1.uuid),
+            'name': None,
+            'display_name': 'Unnamed plant 1',
+            'species': None,
+            'pot_size': None,
+            'description': None,
+            'water_events': [],
+            'fertilize_events': [],
+            'last_watered': None,
+            'last_fertilized': None,
+            'tray': None,
+        })
+
         # Confirm species_options list is empty (test plants have no species)
-        self.assertEqual(response.context['species_options'], [])
+        self.assertEqual(response.context['state']['species_options'], [])
 
     def test_manage_existing_tray(self):
         # Add test plant to tray
         self.plant1.tray = self.tray1
         self.plant1.save()
 
-        # Request management page for test tray, confirm correct template renders
+        # Request management page for test tray, confirm status
         response = self.client.get(f'/manage/{self.tray1.uuid}')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'plant_tracker/manage_tray.html')
-        self.assertTemplateNotUsed(response, 'plant_tracker/manage_plant.html')
 
-        # Confirm context includes correct tray and plant details
-        self.assertEqual(
-            response.context['tray'],
-            {
-                'uuid': str(self.tray1.uuid),
-                'name': self.tray1.name,
-                'location': None,
-                'display_name': self.tray1.get_display_name()
-            }
-        )
-        self.assertEqual(len(response.context['details']), 1)
-        self.assertEqual(response.context['details'][0]['name'], 'Unnamed plant 1')
-        self.assertEqual(response.context['details'][0]['uuid'], str(self.plant1.uuid))
-        self.assertEqual(response.context['details'][0]['last_watered'], None)
-        self.assertEqual(response.context['details'][0]['last_fertilized'], None)
+        # Confirm used manage_tray bundle and correct title
+        self.assertTemplateUsed(response, 'plant_tracker/index.html')
+        self.assertEqual(response.context['js_bundle'], 'plant_tracker/manage_tray.js')
+        self.assertEqual(response.context['title'], 'Manage Tray')
+
+        # Confirm expected state object
+        state = response.context['state']
+        self.assertEqual(state['tray'], {
+            'uuid': str(self.tray1.uuid),
+            'name': self.tray1.name,
+            'location': None,
+            'display_name': self.tray1.get_display_name()
+        })
+
+        # Confirm state includes correct plant details
+        self.assertEqual(len(state['details']), 1)
+        self.assertEqual(state['details'][0]['name'], 'Unnamed plant 1')
+        self.assertEqual(state['details'][0]['uuid'], str(self.plant1.uuid))
+        self.assertEqual(state['details'][0]['last_watered'], None)
+        self.assertEqual(state['details'][0]['last_fertilized'], None)
 
     def test_edit_plant_details(self):
         # Confirm test plant has no name or species

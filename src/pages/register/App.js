@@ -7,7 +7,7 @@ import PlantDetails from 'src/forms/PlantDetails';
 function App() {
     // Load context set by django template
     const [newID, setNewID] = useState(() => {
-        return parseDomContext("uuid");
+        return parseDomContext("new_id");
     });
 
     const overview = () => {

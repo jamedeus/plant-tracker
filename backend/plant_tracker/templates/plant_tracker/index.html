@@ -1,0 +1,30 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>{{ title }}</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    {# Prevent visual flash on page load in dark mode #}
+    <style>
+        @media (prefers-color-scheme: dark) {
+          body {
+            background: #1D232A;
+          }
+        }
+    </style>
+</head>
+
+<body>
+    <div id="root"></div>
+    {# Iterate state object from context, save each key to JSON object #}
+    {# Each object is parsed by react bundle to set initial state #}
+    {% for key, value in state.items %}
+        {{ value|json_script:key }}
+    {% endfor %}
+
+    {# Import bundle specified in context, renders app into root div #}
+    <script src="{% static js_bundle %}"></script>
+</body>
+</html>
