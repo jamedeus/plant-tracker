@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
-import { Combobox } from '@headlessui/react'
-
+import React, { Fragment, useState } from 'react';
+import { Combobox, Transition } from '@headlessui/react'
 
 const SpeciesSelect = ({ value, species_options }) => {
     // State for current input value
-    const [query, setQuery] = useState('')
+    const [query, setQuery] = useState('');
 
     // State for selected option (start with default value)
     const [selected, setSelected] = useState(value);
@@ -36,19 +35,34 @@ const SpeciesSelect = ({ value, species_options }) => {
             <Combobox.Input
                 name="species"
                 className="input w-full input-bordered"
-                onChange={(event) => setQuery(event.target.value)}
+                onChange={(event) => {
+                    // Set both so value doesn't reset when focus lost
+                    // Allows adding new value without clicking "Create" option
+                    setQuery(event.target.value);
+                    setSelected(event.target.value);
+                }}
                 autoComplete="off"
             />
-            <Combobox.Options className="combobox-options-div">
-                {/* Add option with current input if not in species_options */}
-                {query.length > 0 && !species_options.includes(query) && (
-                    <Option value={query} text={`Create "${query}"`} />
-                )}
-                {/* Add option for each string in filteredOptions */}
-                {filteredOptions.map((option) => (
-                    <Option key={option} value={option} text={option} />
-                ))}
-            </Combobox.Options>
+            <Transition
+                as={Fragment}
+                enter="transition ease-in duration-100"
+                enterFrom="opacity-0"
+                enterTo="opacity-100"
+                leave="transition ease-in duration-100"
+                leaveFrom="opacity-100"
+                leaveTo="opacity-0"
+            >
+                <Combobox.Options className="combobox-options-div">
+                    {/* Add option if current input not in species_options */}
+                    {query.length > 0 && !species_options.includes(query) && (
+                        <Option value={query} text={`Create "${query}"`} />
+                    )}
+                    {/* Add option for each string in filteredOptions */}
+                    {filteredOptions.map((option) => (
+                        <Option key={option} value={option} text={option} />
+                    ))}
+                </Combobox.Options>
+            </Transition>
         </Combobox>
     )
 }
