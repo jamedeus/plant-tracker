@@ -7,7 +7,7 @@ import EditModal from 'src/components/EditModal';
 import TrayDetails from 'src/forms/TrayDetails';
 import Navbar from 'src/components/Navbar';
 import PlantCard from 'src/components/PlantCard';
-import DatetimeInput from 'src/components/DatetimeInput'
+import DatetimeInput from 'src/components/DatetimeInput';
 
 function App() {
     // Load context set by django template
@@ -54,11 +54,11 @@ function App() {
 
     const overview = () => {
         window.location.href = "/";
-    }
+    };
 
     const openEditModal = () => {
         document.getElementById('editModal').showModal();
-    }
+    };
 
     const submitEditModal = async () => {
         const payload = Object.fromEntries(new FormData(document.getElementById('trayDetails')));
@@ -76,19 +76,19 @@ function App() {
             oldTray.display_name = data.display_name;
             setTray(oldTray);
         }
-    }
+    };
 
     // Handler for "Water All" button
     const waterTray = async () => {
         const timestamp = localToUTC(document.getElementById("addEventAllTime").value);
         await bulkAddPlantEvents('water', plantIds, timestamp);
-    }
+    };
 
     // Handler for "Fertilize All" button
     const fertilizeTray = async () => {
         const timestamp = localToUTC(document.getElementById("addEventAllTime").value);
         await bulkAddPlantEvents('fertilize', plantIds, timestamp);
-    }
+    };
 
     // Creates event with specified type and timestamp for every plant in
     // selectedIds (array of UUIDs)
@@ -97,7 +97,7 @@ function App() {
             plants: selectedIds,
             event_type: eventType,
             timestamp: timestamp
-        }
+        };
         const response = await sendPostRequest('/bulk_add_plant_events', payload);
         if (response.ok) {
             if (eventType.endsWith('e')) {
@@ -106,14 +106,14 @@ function App() {
                 setToastMessage(`All plants ${eventType}ed!`);
             }
         }
-    }
+    };
 
     // Opens modal with list of new plant options if arg is 'add'
     // Opens modal with list of existing plants if arg is 'remove'
     const openManagePlantsModal = (action) => {
         setManagePlants(action);
         document.getElementById('managePlantsModal').showModal();
-    }
+    };
 
     // Displays plant options in managePlantsModal
     const ManagePlantsCard = ({ name }) => {
@@ -123,8 +123,8 @@ function App() {
                     <h2 className="card-title mx-auto">{name}</h2>
                 </div>
             </div>
-        )
-    }
+        );
+    };
 
     // Contents of managePlantsModal when managePlants === 'add'
     const AddPlantsModalContents = () => {
@@ -136,7 +136,7 @@ function App() {
             const payload = {
                 tray_id: tray.uuid,
                 plants: selected
-            }
+            };
             const response = await sendPostRequest('/bulk_add_plants_to_tray', payload);
             if (response.ok) {
                 // TODO improve django context to simplify this
@@ -148,13 +148,13 @@ function App() {
                 const addedPlants = options.filter(plant => data.added.includes(plant.uuid));
                 setPlantDetails([...plantDetails, ...addedPlants]);
             }
-        }
+        };
 
         return (
             <>
                 <EditableNodeList editing={true} selected={selected} setSelected={setSelected}>
                     {options.filter(plant => !plantIds.includes(plant.uuid)).map((plant) => {
-                        return <ManagePlantsCard key={plant.uuid} name={plant.name} />
+                        return <ManagePlantsCard key={plant.uuid} name={plant.name} />;
                     })}
                 </EditableNodeList>
 
@@ -165,8 +165,8 @@ function App() {
                     </form>
                 </div>
             </>
-        )
-    }
+        );
+    };
 
     // Contents of managePlantsModal when managePlants === 'remove'
     const RemovePlantsModalContents = () => {
@@ -178,7 +178,7 @@ function App() {
             const payload = {
                 tray_id: tray.uuid,
                 plants: selected
-            }
+            };
             const response = await sendPostRequest('/bulk_remove_plants_from_tray', payload);
             if (response.ok) {
                 const data = await response.json();
@@ -186,15 +186,15 @@ function App() {
                 setPlantIds(plantIds.filter(plant => !data.removed.includes(plant)));
 
                 // Remove UUIDs in response from plantDetails
-                setPlantDetails(plantDetails.filter(plant => !data.removed.includes(plant.uuid)))
+                setPlantDetails(plantDetails.filter(plant => !data.removed.includes(plant.uuid)));
             }
-        }
+        };
 
         return (
             <>
                 <EditableNodeList editing={true} selected={selected} setSelected={setSelected}>
                     {plantDetails.map((plant) => {
-                        return <ManagePlantsCard key={plant.uuid} name={plant.name} />
+                        return <ManagePlantsCard key={plant.uuid} name={plant.name} />;
                     })}
                 </EditableNodeList>
 
@@ -205,8 +205,8 @@ function App() {
                     </form>
                 </div>
             </>
-        )
-    }
+        );
+    };
 
     // Shown in dropdown when name in nav bar clicked
     const DetailsCard = ({ location }) => {
@@ -217,8 +217,8 @@ function App() {
                     <button className="btn btn-sm mt-4" onClick={openEditModal}>Edit</button>
                 </div>
             </div>
-        )
-    }
+        );
+    };
 
     // Buttons used to add bulk events to plants in tray
     const PlantEventButtons = ({editing, setEditing}) => {
@@ -229,14 +229,14 @@ function App() {
                     const timestamp = localToUTC(document.getElementById("addEventTime").value);
                     await bulkAddPlantEvents('water', selectedPlants, timestamp);
                     setEditing(false);
-                }
+                };
 
                 // Handler for fertilize button
                 const fertilize = async () => {
                     const timestamp = localToUTC(document.getElementById("addEventTime").value);
                     await bulkAddPlantEvents('fertilize', selectedPlants, timestamp);
                     setEditing(false);
-                }
+                };
 
                 return (
                     <>
@@ -255,7 +255,7 @@ function App() {
                             </button>
                         </div>
                     </>
-                )
+                );
             case(false):
                 return (
                     <div className="flex">
@@ -263,9 +263,9 @@ function App() {
                             Manage
                         </button>
                     </div>
-                )
+                );
         }
-    }
+    };
 
     return (
         <div className="container flex flex-col mx-auto mb-8">
@@ -304,7 +304,7 @@ function App() {
                     setSelected={setSelectedPlants}
                 >
                     {plantDetails.map((plant) => {
-                        return <PlantCard key={plant.uuid} name={plant.name} uuid={plant.uuid} />
+                        return <PlantCard key={plant.uuid} name={plant.name} uuid={plant.uuid} />;
                     })}
                 </EditableNodeList>
                 <PlantEventButtons editing={selectingPlants} setEditing={setSelectingPlants} />
@@ -328,9 +328,9 @@ function App() {
                     {(() => {
                         switch(managePlants) {
                             case('add'):
-                                return <AddPlantsModalContents />
+                                return <AddPlantsModalContents />;
                             case('remove'):
-                                return <RemovePlantsModalContents />
+                                return <RemovePlantsModalContents />;
                         }
                     })()}
                 </div>
@@ -346,7 +346,7 @@ function App() {
             </div>
 
         </div>
-    )
-};
+    );
+}
 
 export default App;

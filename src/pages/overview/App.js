@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import print from 'print-js'
+import print from 'print-js';
 import CollapseCol from 'src/components/CollapseCol';
 import EditableNodeList from 'src/components/EditableNodeList';
 import Navbar from 'src/components/Navbar';
@@ -56,7 +56,7 @@ function App() {
 
     // Takes base64 image string, decodes and opens in print dialog
     const printQrCodes = (data) => {
-        console.log(data)
+        console.log(data);
         // Decode base64 image data to binary
         const imageData = atob(data);
 
@@ -92,18 +92,18 @@ function App() {
             // Send delete request for each selected plant, remove uuid from state
             selectedPlants.forEach(async plant_id => {
                 await sendPostRequest('/delete_plant', {plant_id: plant_id});
-            })
+            });
             setPlants(plants.filter(plant => !selectedPlants.includes(plant.uuid)));
 
             // Send delete request for each selected tray, remove uuid from state
             selectedTrays.forEach(async tray_id => {
                 await sendPostRequest('/delete_tray', {tray_id: tray_id});
-            })
+            });
             setTrays(trays.filter(tray => !selectedTrays.includes(tray.uuid)));
 
             // Reset editing state
             setEditing(false);
-        }
+        };
 
         if (editing) {
             return (
@@ -115,9 +115,9 @@ function App() {
                         Delete
                     </button>
                 </div>
-            )
+            );
         }
-    }
+    };
 
     return (
         <div className="container flex flex-col mx-auto mb-8">
@@ -146,7 +146,7 @@ function App() {
                                     key={plant.uuid}
                                     name={plant.name}
                                     uuid={plant.uuid}
-                                />
+                                />;
                             })}
                         </EditableNodeList>
                     </CollapseCol>
@@ -165,7 +165,7 @@ function App() {
                                     name={tray.name}
                                     plants={tray.plants}
                                     uuid={tray.uuid}
-                                />
+                                />;
                             })}
                         </EditableNodeList>
                     </CollapseCol>

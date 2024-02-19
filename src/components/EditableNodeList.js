@@ -33,23 +33,23 @@ const EditableNodeList = ({ editing, selected, setSelected, children }) => {
                             {node}
                         </div>
                     </div>
-                )
+                );
             case(false):
                 return (
                     <div className="mb-4">
                         {node}
                     </div>
-                )
+                );
         }
     };
 
     return (
         <>
             {children.map((node) => {
-                return <NodeWrapper key={node.key} node={node} editing={editing} />
+                return <NodeWrapper key={node.key} node={node} editing={editing} />;
             })}
         </>
     );
-}
+};
 
 export default EditableNodeList;

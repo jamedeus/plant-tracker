@@ -10,7 +10,7 @@ const DatetimeInput = ({ id }) => {
             step="1"
             defaultValue={DateTime.now().toFormat("yyyy-MM-dd'T'HH:mm:ss")}
         />
-    )
-}
+    );
+};
 
 export default DatetimeInput;

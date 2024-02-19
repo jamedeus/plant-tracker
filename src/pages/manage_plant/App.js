@@ -6,7 +6,7 @@ import EditableNodeList from 'src/components/EditableNodeList';
 import EditModal from 'src/components/EditModal';
 import PlantDetails from 'src/forms/PlantDetails';
 import Navbar from 'src/components/Navbar';
-import DatetimeInput from 'src/components/DatetimeInput'
+import DatetimeInput from 'src/components/DatetimeInput';
 
 function App() {
     // Load context set by django template
@@ -22,11 +22,11 @@ function App() {
 
     const overview = () => {
         window.location.href = "/";
-    }
+    };
 
     const openEditModal = () => {
         document.getElementById('editModal').showModal();
-    }
+    };
 
     const submitEditModal = async () => {
         const payload = Object.fromEntries(new FormData(document.getElementById('plantDetails')));
@@ -46,14 +46,14 @@ function App() {
             oldPlant.display_name = data.display_name;
             setPlant(oldPlant);
         }
-    }
+    };
 
     const waterPlant = async () => {
         const payload = {
             plant_id: plant.uuid,
             event_type: 'water',
             timestamp: localToUTC(document.getElementById("eventTime").value)
-        }
+        };
         const response = await sendPostRequest('/add_plant_event', payload);
         if (response.ok) {
             let oldPlant = {...plant};
@@ -61,14 +61,14 @@ function App() {
             oldPlant.water_events.push(payload.timestamp);
             setPlant(oldPlant);
         }
-    }
+    };
 
     const fertilizePlant = async () => {
         const payload = {
             plant_id: plant.uuid,
             event_type: 'fertilize',
             timestamp: localToUTC(document.getElementById("eventTime").value)
-        }
+        };
         const response = await sendPostRequest('/add_plant_event', payload);
         if (response.ok) {
             let oldPlant = {...plant};
@@ -76,7 +76,7 @@ function App() {
             oldPlant.fertilize_events.push(payload.timestamp);
             setPlant(oldPlant);
         }
-    }
+    };
 
     // Takes event timestamp and types, sends delete request to backend
     // If successful removes timestamp from react state to re-render history
@@ -85,7 +85,7 @@ function App() {
             plant_id: plant.uuid,
             event_type: type,
             timestamp: timestamp
-        }
+        };
         const response = await sendPostRequest('/delete_plant_event', payload);
         if (response.ok) {
             if (type === 'water') {
@@ -115,19 +115,19 @@ function App() {
         const payload = {
             plant_id: plant.uuid,
             tray_id: document.getElementById('traySelect').value
-        }
+        };
         const response = await sendPostRequest('/add_plant_to_tray', payload);
         if (response.ok) {
             {/* TODO improve context, this is ridiculous */}
             trays.forEach(tray => {
                 if (tray.uuid === payload.tray_id) {
                     let oldPlant = {...plant};
-                    oldPlant.tray = {name: tray.name, uuid: tray.uuid}
+                    oldPlant.tray = {name: tray.name, uuid: tray.uuid};
                     setPlant(oldPlant);
                 }
-            })
+            });
         }
-    }
+    };
 
     // Handler for remove from tray button
     const removeFromTray = async () => {
@@ -137,7 +137,7 @@ function App() {
             oldPlant.tray = null;
             setPlant(oldPlant);
         }
-    }
+    };
 
     // Shown in dropdown when name in nav bar clicked
     const DetailsCard = ({ species, pot_size, description }) => {
@@ -150,8 +150,8 @@ function App() {
                     <button className="btn btn-sm mt-4" onClick={openEditModal}>Edit</button>
                 </div>
             </div>
-        )
-    }
+        );
+    };
 
     // Displays timestamp and relative time in event history sections
     const EventCard = ({ timestamp }) => {
@@ -162,8 +162,8 @@ function App() {
                     <p>{DateTime.fromISO(timestamp).toFormat('t MMMM dd, yyyy')}</p>
                 </div>
             </div>
-        )
-    }
+        );
+    };
 
     // Takes state bool, function to set state bool, delete button handler
     // Shows edit button when bool is false, cancel and delete buttons when true
@@ -180,7 +180,7 @@ function App() {
                             Delete
                         </button>
                     </div>
-                )
+                );
             case(false):
                 return (
                     <div className="flex">
@@ -188,9 +188,9 @@ function App() {
                             Edit
                         </button>
                     </div>
-                )
+                );
         }
-    }
+    };
 
     // Takes events array (eg plant.water_events) and type (water or fertilize)
     // Renders EditableNodeList with edit + delete button and handlers
@@ -202,16 +202,16 @@ function App() {
         // Delete button handler
         const onDelete = () => {
             selected.forEach(async timestamp => {
-                await deleteEvent(timestamp, type)
-            })
+                await deleteEvent(timestamp, type);
+            });
             setEditing(false);
-        }
+        };
 
         return (
             <>
                 <EditableNodeList editing={editing} selected={selected} setSelected={setSelected}>
                     {events.map((timestamp) => {
-                        return <EventCard key={timestamp} timestamp={timestamp} />
+                        return <EventCard key={timestamp} timestamp={timestamp} />;
                     })}
                 </EditableNodeList>
                 <EventHistoryButtons
@@ -221,7 +221,7 @@ function App() {
                 />
             </>
         );
-    }
+    };
 
     // Takes plant.tray (state object key) and trays state object
     // Renders dropdown if plant not in tray, link to tray if is in tray
@@ -240,12 +240,12 @@ function App() {
                             >
                                 <option value="" disabled>Select tray</option>
                                 {trayOptions.map(tray => {
-                                    return <option key={tray.uuid} value={tray.uuid}>{tray.name}</option>
+                                    return <option key={tray.uuid} value={tray.uuid}>{tray.name}</option>;
                                 })}
                             </select>
                         </div>
                     </div>
-                )
+                );
             default:
                 return (
                     <div className="card card-compact mt-8 mx-auto bg-base-200 text-center px-8 py-2">
@@ -262,9 +262,9 @@ function App() {
                             </button>
                         </div>
                     </div>
-                )
+                );
         }
-    }
+    };
 
     return (
         <div className="container flex flex-col mx-auto mb-8">

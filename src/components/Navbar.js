@@ -37,7 +37,7 @@ const Navbar = ({ dropdownOptions, title, rightSection }) => {
                 {rightSection}
             </div>
         </div>
-    )
-}
+    );
+};
 
 export default Navbar;

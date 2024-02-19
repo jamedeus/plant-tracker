@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Tab } from '@headlessui/react'
+import { Tab } from '@headlessui/react';
 import Navbar from 'src/components/Navbar';
 import { sendPostRequest, parseDomContext } from 'src/util';
 import TrayDetails from 'src/forms/TrayDetails';
@@ -16,7 +16,7 @@ function App() {
 
     const overview = () => {
         window.location.href = "/";
-    }
+    };
 
     // Track visible form (changed by tabs, used to get correct endpoint)
     // Set to 0 for plant form, 1 for tray form
@@ -39,7 +39,7 @@ function App() {
 
         // Add UUID, post to backend
         payload.uuid = newID;
-        const response = await sendPostRequest('/register', payload)
+        const response = await sendPostRequest('/register', payload);
         if (!response.ok) {
             throw new Error('Network response error');
         } else if (response.redirected) {
@@ -48,7 +48,7 @@ function App() {
             const responseData = await response.json();
             console.log(responseData);
         }
-    }
+    };
 
     return (
         <div className="container flex flex-col mx-auto mb-8">

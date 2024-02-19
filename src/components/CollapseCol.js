@@ -20,6 +20,6 @@ const CollapseCol = ({ title, children, defaultOpen=true }) => {
             </div>
         </div>
     );
-}
+};
 
 export default CollapseCol;

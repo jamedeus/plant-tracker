@@ -1,5 +1,5 @@
 import React, { Fragment, useState } from 'react';
-import { Combobox, Transition } from '@headlessui/react'
+import { Combobox, Transition } from '@headlessui/react';
 
 const SpeciesSelect = ({ value, species_options }) => {
     // State for current input value
@@ -12,8 +12,8 @@ const SpeciesSelect = ({ value, species_options }) => {
         query === ''
             ? species_options
             : species_options.filter((option) => {
-                    return option.toLowerCase().includes(query.toLowerCase())
-                })
+                return option.toLowerCase().includes(query.toLowerCase());
+            });
 
     const Option = ({ value, text }) => {
         return (
@@ -27,8 +27,8 @@ const SpeciesSelect = ({ value, species_options }) => {
             >
                 {text}
             </Combobox.Option>
-        )
-    }
+        );
+    };
 
     return (
         <Combobox value={selected} onChange={setSelected} nullable>
@@ -64,8 +64,8 @@ const SpeciesSelect = ({ value, species_options }) => {
                 </Combobox.Options>
             </Transition>
         </Combobox>
-    )
-}
+    );
+};
 
 
 const PlantDetails = ({ name, species, pot_size, description, species_options }) => {
@@ -115,7 +115,7 @@ const PlantDetails = ({ name, species, pot_size, description, species_options })
                 />
             </label>
         </form>
-    )
-}
+    );
+};
 
 export default PlantDetails;

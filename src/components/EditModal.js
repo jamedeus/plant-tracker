@@ -24,7 +24,7 @@ const EditModal = ({ title, onSubmit, children }) => {
                 <button>close</button>
             </form>
         </dialog>
-    )
-}
+    );
+};
 
 export default EditModal;

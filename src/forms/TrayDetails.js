@@ -26,7 +26,7 @@ const TrayDetails = ({ name, location }) => {
                 />
             </label>
         </form>
-    )
-}
+    );
+};
 
 export default TrayDetails;
