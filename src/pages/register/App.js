@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Tab } from '@headlessui/react'
 import Navbar from 'src/components/Navbar';
 import { sendPostRequest, parseDomContext } from 'src/util';
 import TrayDetails from 'src/forms/TrayDetails';
@@ -17,13 +18,14 @@ function App() {
         window.location.href = "/";
     }
 
-    // State object to track which form is visible
-    const [plantForm, setPlantForm] = useState(true);
+    // Track visible form (changed by tabs, used to get correct endpoint)
+    // Set to 0 for plant form, 1 for tray form
+    const [plantForm, setPlantForm] = useState(0);
 
     const submit = async () => {
         // Parse all fields from visible form, add type param
         let payload;
-        if (plantForm) {
+        if (plantForm === 0) {
             payload = Object.fromEntries(
                 new FormData(document.getElementById('plantDetails'))
             );
@@ -48,63 +50,6 @@ function App() {
         }
     }
 
-    const Buttons = () => {
-        switch(plantForm) {
-            case(true):
-                return (
-                    <div className="mx-auto">
-                        <button
-                            className="btn btn-accent mr-2"
-                            onClick={() => setPlantForm(true)}
-                        >
-                            Plant
-                        </button>
-                        <button
-                            className="btn btn-accent btn-outline ml-2"
-                            onClick={() => setPlantForm(false)}
-                        >
-                            Tray
-                        </button>
-                    </div>
-                )
-            case(false):
-                return (
-                    <div className="mx-auto">
-                        <button
-                            className="btn btn-accent btn-outline mr-2"
-                            onClick={() => setPlantForm(true)}
-                        >
-                            Plant
-                        </button>
-                        <button
-                            className="btn btn-accent ml-2"
-                            onClick={() => setPlantForm(false)}
-                        >
-                            Tray
-                        </button>
-                    </div>
-                )
-        }
-    }
-
-    const Forms = () => {
-        switch(plantForm) {
-            case(true):
-                return (
-                    <PlantDetails
-                        name=""
-                        species=""
-                        pot_size=""
-                        description=""
-                        species_options={speciesOptions}
-                    />
-                )
-            case(false):
-                return <TrayDetails />
-        }
-
-    }
-
     return (
         <div className="container flex flex-col mx-auto mb-8">
             <Navbar
@@ -116,16 +61,42 @@ function App() {
                 }
             />
 
-            <div className="flex">
-                <Buttons />
-            </div>
+            <div className="flex flex-col mx-8 md:w-1/2 md:mx-auto">
+                <Tab.Group onChange={(index) => setPlantForm(index)}>
+                    <Tab.List className="tab-group">
+                        <Tab className={({ selected }) =>
+                            `tab-option ${
+                                selected ? 'bg-teal-600' : ''
+                            }`
+                        }>
+                            Plant
+                        </Tab>
+                        <Tab className={({ selected }) =>
+                            `tab-option ${
+                                selected ? 'bg-teal-600' : ''
+                            }`
+                        }>
+                            Tray
+                        </Tab>
+                    </Tab.List>
 
-            <div className="m-8 md:w-1/2 md:mx-auto">
-                <Forms />
-            </div>
+                    <Tab.Panels className="my-8">
+                        <Tab.Panel>
+                            <PlantDetails
+                                name=""
+                                species=""
+                                pot_size=""
+                                description=""
+                                species_options={speciesOptions}
+                            />
+                        </Tab.Panel>
+                        <Tab.Panel>
+                            <TrayDetails />
+                        </Tab.Panel>
+                    </Tab.Panels>
+                </Tab.Group>
 
-            <div className="mx-auto">
-                <button className="btn btn-accent" onClick={submit}>
+                <button className="btn btn-accent mx-auto" onClick={submit}>
                     Save
                 </button>
             </div>

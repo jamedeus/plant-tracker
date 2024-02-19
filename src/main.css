@@ -25,3 +25,11 @@
 .combobox-option {
     @apply relative text-white text-center select-none py-2;
 }
+
+.tab-group {
+    @apply flex space-x-1 rounded-xl bg-neutral p-1;
+}
+
+.tab-option {
+    @apply w-full text-white rounded-lg py-2.5 focus:outline-none;
+}
