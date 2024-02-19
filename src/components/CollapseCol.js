@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 
 // Renders DaisyUI collapse with centered title and vertical column of nodes
 const CollapseCol = ({ title, children, defaultOpen=true }) => {
@@ -20,6 +21,12 @@ const CollapseCol = ({ title, children, defaultOpen=true }) => {
             </div>
         </div>
     );
+};
+
+CollapseCol.propTypes = {
+    title: PropTypes.string,
+    children: PropTypes.node,
+    defaultOpen: PropTypes.bool
 };
 
 export default CollapseCol;

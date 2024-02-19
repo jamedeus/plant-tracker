@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 // Takes modal title, submit handler, and details form
 // Modal has centered title, can be closed with button, esc, or outside click
@@ -25,6 +26,12 @@ const EditModal = ({ title, onSubmit, children }) => {
             </form>
         </dialog>
     );
+};
+
+EditModal.propTypes = {
+    title: PropTypes.string,
+    onSubmit: PropTypes.func,
+    children: PropTypes.node
 };
 
 export default EditModal;

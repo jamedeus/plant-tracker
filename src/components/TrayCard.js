@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const TrayCard = ({ name, plants, uuid }) => {
     return (
@@ -12,6 +13,12 @@ const TrayCard = ({ name, plants, uuid }) => {
             </div>
         </div>
     );
+};
+
+TrayCard.propTypes = {
+    name: PropTypes.string,
+    plants: PropTypes.number,
+    uuid: PropTypes.string
 };
 
 export default TrayCard;

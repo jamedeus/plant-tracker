@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 
 // Takes editing (bool), selected (array), setSelected (hook), and node list
 // Returns node list with wrapper div around each node
@@ -43,6 +44,11 @@ const EditableNodeList = ({ editing, selected, setSelected, children }) => {
         }
     };
 
+    NodeWrapper.propTypes = {
+        node: PropTypes.node,
+        editing: PropTypes.bool
+    };
+
     return (
         <>
             {children.map((node) => {
@@ -50,6 +56,13 @@ const EditableNodeList = ({ editing, selected, setSelected, children }) => {
             })}
         </>
     );
+};
+
+EditableNodeList.propTypes = {
+    editing: PropTypes.bool,
+    selected: PropTypes.array,
+    setSelected: PropTypes.func,
+    children: PropTypes.node
 };
 
 export default EditableNodeList;

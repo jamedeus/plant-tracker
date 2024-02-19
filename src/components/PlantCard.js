@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 const PlantCard = ({ name, uuid }) => {
     return (
@@ -11,6 +12,11 @@ const PlantCard = ({ name, uuid }) => {
             </div>
         </div>
     );
+};
+
+PlantCard.propTypes = {
+    name: PropTypes.string,
+    uuid: PropTypes.string
 };
 
 export default PlantCard;

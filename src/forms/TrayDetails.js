@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 
 const TrayDetails = ({ name, location }) => {
     return (
@@ -27,6 +28,11 @@ const TrayDetails = ({ name, location }) => {
             </label>
         </form>
     );
+};
+
+TrayDetails.propTypes = {
+    name: PropTypes.string,
+    location: PropTypes.string
 };
 
 export default TrayDetails;

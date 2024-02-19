@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { DateTime } from 'luxon';
 import { sendPostRequest, parseDomContext, localToUTC, timestampToRelative } from 'src/util';
 import CollapseCol from 'src/components/CollapseCol';
@@ -153,6 +154,12 @@ function App() {
         );
     };
 
+    DetailsCard.propTypes = {
+        species: PropTypes.string,
+        pot_size: PropTypes.number,
+        description: PropTypes.string
+    };
+
     // Displays timestamp and relative time in event history sections
     const EventCard = ({ timestamp }) => {
         return (
@@ -163,6 +170,10 @@ function App() {
                 </div>
             </div>
         );
+    };
+
+    EventCard.propTypes = {
+        timestamp: PropTypes.string
     };
 
     // Takes state bool, function to set state bool, delete button handler
@@ -190,6 +201,12 @@ function App() {
                     </div>
                 );
         }
+    };
+
+    EventHistoryButtons.propTypes = {
+        editing: PropTypes.bool,
+        setEditing: PropTypes.func,
+        handleDelete: PropTypes.func,
     };
 
     // Takes events array (eg plant.water_events) and type (water or fertilize)
@@ -221,6 +238,11 @@ function App() {
                 />
             </>
         );
+    };
+
+    EventsCol.propTypes = {
+        events: PropTypes.array,
+        type: PropTypes.string
     };
 
     // Takes plant.tray (state object key) and trays state object
@@ -264,6 +286,11 @@ function App() {
                     </div>
                 );
         }
+    };
+
+    PlantTraySection.propTypes = {
+        tray: PropTypes.object,
+        trayOptions: PropTypes.array
     };
 
     return (

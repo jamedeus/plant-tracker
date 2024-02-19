@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { DateTime } from 'luxon';
 import { sendPostRequest, parseDomContext, localToUTC, timestampToRelative } from 'src/util';
 import CollapseCol from 'src/components/CollapseCol';
@@ -126,6 +127,10 @@ function App() {
         );
     };
 
+    ManagePlantsCard.propTypes = {
+        name: PropTypes.string
+    };
+
     // Contents of managePlantsModal when managePlants === 'add'
     const AddPlantsModalContents = () => {
         // State to track selected items
@@ -220,6 +225,10 @@ function App() {
         );
     };
 
+    DetailsCard.propTypes = {
+        location: PropTypes.string
+    };
+
     // Buttons used to add bulk events to plants in tray
     const PlantEventButtons = ({editing, setEditing}) => {
         switch(editing) {
@@ -265,6 +274,11 @@ function App() {
                     </div>
                 );
         }
+    };
+
+    PlantEventButtons.propTypes = {
+        editing: PropTypes.bool,
+        setEditing: PropTypes.func
     };
 
     return (

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 // Renders navbar with dropdown on left, centered title, optional right section
 // dropdownOptions must be list of <li> elements, other args can be anything
@@ -38,6 +39,12 @@ const Navbar = ({ dropdownOptions, title, rightSection }) => {
             </div>
         </div>
     );
+};
+
+Navbar.propTypes = {
+    dropdownOptions: PropTypes.node,
+    title: PropTypes.node,
+    rightSection: PropTypes.node
 };
 
 export default Navbar;

@@ -1,4 +1,5 @@
 import React, { Fragment, useState } from 'react';
+import PropTypes from 'prop-types';
 import { Combobox, Transition } from '@headlessui/react';
 
 const SpeciesSelect = ({ value, species_options }) => {
@@ -28,6 +29,11 @@ const SpeciesSelect = ({ value, species_options }) => {
                 {text}
             </Combobox.Option>
         );
+    };
+
+    Option.propTypes = {
+        value: PropTypes.string,
+        text: PropTypes.string
     };
 
     return (
@@ -65,6 +71,11 @@ const SpeciesSelect = ({ value, species_options }) => {
             </Transition>
         </Combobox>
     );
+};
+
+SpeciesSelect.propTypes = {
+    value: PropTypes.string,
+    species_options: PropTypes.array
 };
 
 
@@ -116,6 +127,14 @@ const PlantDetails = ({ name, species, pot_size, description, species_options })
             </label>
         </form>
     );
+};
+
+PlantDetails.propTypes = {
+    name: PropTypes.string,
+    species: PropTypes.string,
+    pot_size: PropTypes.number,
+    description: PropTypes.string,
+    species_options: PropTypes.array
 };
 
 export default PlantDetails;
