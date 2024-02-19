@@ -90,7 +90,15 @@ function App() {
     const Forms = () => {
         switch(plantForm) {
             case(true):
-                return <PlantDetails species_options={speciesOptions} />
+                return (
+                    <PlantDetails
+                        name=""
+                        species=""
+                        pot_size=""
+                        description=""
+                        species_options={speciesOptions}
+                    />
+                )
             case(false):
                 return <TrayDetails />
         }

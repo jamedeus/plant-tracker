@@ -25,7 +25,3 @@
 .combobox-option {
     @apply relative text-white text-center select-none py-2;
 }
-
-.combobox-option:hover, .combobox-option:active {
-    @apply bg-teal-600;
-}

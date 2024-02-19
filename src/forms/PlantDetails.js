@@ -16,6 +16,21 @@ const SpeciesSelect = ({ value, species_options }) => {
                     return option.toLowerCase().includes(query.toLowerCase())
                 })
 
+    const Option = ({ value, text }) => {
+        return (
+            <Combobox.Option
+                value={value}
+                className={({ active }) =>
+                    `combobox-option ${
+                        active ? 'bg-teal-600' : ''
+                    }`
+                }
+            >
+                {text}
+            </Combobox.Option>
+        )
+    }
+
     return (
         <Combobox value={selected} onChange={setSelected} nullable>
             <Combobox.Input
@@ -27,19 +42,11 @@ const SpeciesSelect = ({ value, species_options }) => {
             <Combobox.Options className="combobox-options-div">
                 {/* Add option with current input if not in species_options */}
                 {query.length > 0 && !species_options.includes(query) && (
-                    <Combobox.Option value={query} className="combobox-option">
-                        Create "{query}"
-                    </Combobox.Option>
+                    <Option value={query} text={`Create "${query}"`} />
                 )}
                 {/* Add option for each string in filteredOptions */}
                 {filteredOptions.map((option) => (
-                    <Combobox.Option
-                        key={option}
-                        value={option}
-                        className="combobox-option"
-                    >
-                        {option}
-                    </Combobox.Option>
+                    <Option key={option} value={option} text={option} />
                 ))}
             </Combobox.Options>
         </Combobox>
