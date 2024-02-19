@@ -1,6 +1,53 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
+import { Combobox } from '@headlessui/react'
 
-const PlantDetails = ({ name, species, pot_size, description }) => {
+
+const SpeciesSelect = ({ value, species_options }) => {
+    // State for current input value
+    const [query, setQuery] = useState('')
+
+    // State for selected option (start with default value)
+    const [selected, setSelected] = useState(value);
+
+    const filteredOptions =
+        query === ''
+            ? species_options
+            : species_options.filter((option) => {
+                    return option.toLowerCase().includes(query.toLowerCase())
+                })
+
+    return (
+        <Combobox value={selected} onChange={setSelected} nullable>
+            <Combobox.Input
+                name="species"
+                className="input w-full input-bordered"
+                onChange={(event) => setQuery(event.target.value)}
+                autoComplete="off"
+            />
+            <Combobox.Options className="combobox-options-div">
+                {/* Add option with current input if not in species_options */}
+                {query.length > 0 && !species_options.includes(query) && (
+                    <Combobox.Option value={query} className="combobox-option">
+                        Create "{query}"
+                    </Combobox.Option>
+                )}
+                {/* Add option for each string in filteredOptions */}
+                {filteredOptions.map((option) => (
+                    <Combobox.Option
+                        key={option}
+                        value={option}
+                        className="combobox-option"
+                    >
+                        {option}
+                    </Combobox.Option>
+                ))}
+            </Combobox.Options>
+        </Combobox>
+    )
+}
+
+
+const PlantDetails = ({ name, species, pot_size, description, species_options }) => {
     return (
         <form id="plantDetails">
             <label className="form-control w-full">
@@ -14,15 +61,13 @@ const PlantDetails = ({ name, species, pot_size, description }) => {
                     defaultValue={name}
                 />
             </label>
-            <label className="form-control w-full">
+            <label className="form-control w-full relative">
                 <div className="label">
                     <span className="label-text-alt">Plant species</span>
                 </div>
-                <input
-                    name="species"
-                    type="text"
-                    className="input w-full input-bordered"
-                    defaultValue={species}
+                <SpeciesSelect
+                    value={species}
+                    species_options={species_options}
                 />
             </label>
             <label className="form-control w-full">

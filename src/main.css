@@ -7,8 +7,7 @@
 }
 
 .collapse-title {
-    @apply pe-0;
-    @apply p-4;
+    @apply pe-0 p-4;
 }
 
 .max-w-90 {
@@ -17,4 +16,16 @@
 
 .loading-lg {
     width: 4rem;
+}
+
+.combobox-options-div {
+    @apply absolute top-20 mt-2 max-h-60 w-full overflow-auto rounded-md bg-neutral;
+}
+
+.combobox-option {
+    @apply relative text-white text-center select-none py-2;
+}
+
+.combobox-option:hover, .combobox-option:active {
+    @apply bg-teal-600;
 }

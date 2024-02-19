@@ -318,6 +318,7 @@ function App() {
                     species={plant.species}
                     pot_size={plant.pot_size}
                     description={plant.description}
+                    species_options={speciesOptions}
                 />
             </EditModal>
 

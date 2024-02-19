@@ -9,6 +9,9 @@ function App() {
     const [newID, setNewID] = useState(() => {
         return parseDomContext("new_id");
     });
+    const [speciesOptions, setSpeciesOptions] = useState(() => {
+        return parseDomContext("species_options");
+    });
 
     const overview = () => {
         window.location.href = "/";
@@ -87,7 +90,7 @@ function App() {
     const Forms = () => {
         switch(plantForm) {
             case(true):
-                return <PlantDetails />
+                return <PlantDetails species_options={speciesOptions} />
             case(false):
                 return <TrayDetails />
         }
