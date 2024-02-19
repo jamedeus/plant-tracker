@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { DateTime } from 'luxon';
 import { sendPostRequest, parseDomContext, localToUTC, timestampToRelative } from 'src/util';
@@ -14,12 +14,8 @@ function App() {
     const [plant, setPlant] = useState(() => {
         return parseDomContext("plant");
     });
-    const [trays, setTrays] = useState(() => {
-        return parseDomContext("trays");
-    });
-    const [speciesOptions, setSpeciesOptions] = useState(() => {
-        return parseDomContext("species_options");
-    });
+    const trays = parseDomContext("trays");
+    const speciesOptions = parseDomContext("species_options");
 
     const overview = () => {
         window.location.href = "/";
@@ -156,7 +152,10 @@ function App() {
 
     DetailsCard.propTypes = {
         species: PropTypes.string,
-        pot_size: PropTypes.number,
+        pot_size: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number
+        ]),
         description: PropTypes.string
     };
 

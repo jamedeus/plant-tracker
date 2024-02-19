@@ -29,5 +29,10 @@
         ],
         "no-multiple-empty-lines": ["warn", { "max": 2 }],
         "semi": ["warn", "always"]
+    },
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
     }
 }

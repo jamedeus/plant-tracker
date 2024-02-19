@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import { Tab } from '@headlessui/react';
 import Navbar from 'src/components/Navbar';
 import { sendPostRequest, parseDomContext } from 'src/util';
@@ -7,12 +7,8 @@ import PlantDetails from 'src/forms/PlantDetails';
 
 function App() {
     // Load context set by django template
-    const [newID, setNewID] = useState(() => {
-        return parseDomContext("new_id");
-    });
-    const [speciesOptions, setSpeciesOptions] = useState(() => {
-        return parseDomContext("species_options");
-    });
+    const newID = parseDomContext("new_id");
+    const speciesOptions = parseDomContext("species_options");
 
     const overview = () => {
         window.location.href = "/";

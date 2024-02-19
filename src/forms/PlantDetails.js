@@ -132,7 +132,10 @@ const PlantDetails = ({ name, species, pot_size, description, species_options })
 PlantDetails.propTypes = {
     name: PropTypes.string,
     species: PropTypes.string,
-    pot_size: PropTypes.number,
+    pot_size: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number
+    ]),
     description: PropTypes.string,
     species_options: PropTypes.array
 };

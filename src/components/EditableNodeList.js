@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 // Takes editing (bool), selected (array), setSelected (hook), and node list
@@ -52,6 +52,7 @@ const EditableNodeList = ({ editing, selected, setSelected, children }) => {
     return (
         <>
             {children.map((node) => {
+                // eslint-disable-next-line react/prop-types
                 return <NodeWrapper key={node.key} node={node} editing={editing} />;
             })}
         </>

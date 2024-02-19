@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { DateTime } from 'luxon';
-import { sendPostRequest, parseDomContext, localToUTC, timestampToRelative } from 'src/util';
+import { sendPostRequest, parseDomContext, localToUTC } from 'src/util';
 import CollapseCol from 'src/components/CollapseCol';
 import EditableNodeList from 'src/components/EditableNodeList';
 import EditModal from 'src/components/EditModal';
@@ -24,9 +23,7 @@ function App() {
     // Contains list of objects with name and uuid of every plant in database
     // DO NOT mutate (menu options are produced by filtering out plantIds state)
     // As long as plantIds matches the plants in tray options will be correct
-    const [options, setOptions] = useState(() => {
-        return parseDomContext("options");
-    });
+    const options = parseDomContext("options");
 
     // Create state to track whether selecting plants from list
     const [selectingPlants, setSelectingPlants] = useState(false);
@@ -233,14 +230,16 @@ function App() {
     const PlantEventButtons = ({editing, setEditing}) => {
         switch(editing) {
             case(true):
-                // Handler for water button
+                // Handler for water button (only used in this case scope)
+                // eslint-disable-next-line no-case-declarations
                 const water = async () => {
                     const timestamp = localToUTC(document.getElementById("addEventTime").value);
                     await bulkAddPlantEvents('water', selectedPlants, timestamp);
                     setEditing(false);
                 };
 
-                // Handler for fertilize button
+                // Handler for fertilize button (only used in this case scope)
+                // eslint-disable-next-line no-case-declarations
                 const fertilize = async () => {
                     const timestamp = localToUTC(document.getElementById("addEventTime").value);
                     await bulkAddPlantEvents('fertilize', selectedPlants, timestamp);
