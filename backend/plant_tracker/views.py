@@ -37,6 +37,18 @@ def get_plant_species_options():
     return list(set(i for i in species if i is not None))
 
 
+def render_react_app(request, title, bundle, state):
+    '''Helper function to render react app in boilerplate HTML template
+    Takes request object, page title, react bundle name, and react state object
+    '''
+    context = {
+        'title': title,
+        'js_bundle': f'plant_tracker/{bundle}.js',
+        'state': state
+    }
+    return render(request, 'plant_tracker/index.html', context)
+
+
 def get_qr_codes(request):
     '''Returns printer-sized grid of QR code links as base64-encoded PNG
     QR codes point to manage endpoint, can be used for plants or trays
@@ -76,14 +88,12 @@ def overview(request):
         })
 
     print(json.dumps(state, indent=4))
-
-    # Render with correct JS bundle and title
-    context = {
-        'title': 'Overview',
-        'js_bundle': 'plant_tracker/overview.js',
-        'state': state
-    }
-    return render(request, 'plant_tracker/index.html', context)
+    return render_react_app(
+        request,
+        title='Overview',
+        bundle='overview',
+        state=state
+    )
 
 
 def manage(request, uuid):
@@ -120,12 +130,12 @@ def manage(request, uuid):
                 'uuid': str(plant.tray.uuid)
             }
 
-        context = {
-            'title': 'Manage Plant',
-            'js_bundle': 'plant_tracker/manage_plant.js',
-            'state': state
-        }
-        return render(request, 'plant_tracker/index.html', context)
+        return render_react_app(
+            request,
+            title='Manage Plant',
+            bundle='manage_plant',
+            state=state
+        )
 
     # Loop up UUID in tray database, render template if found
     tray = get_tray_by_uuid(uuid)
@@ -143,12 +153,12 @@ def manage(request, uuid):
             'options': get_plant_options()
         }
 
-        context = {
-            'title': 'Manage Tray',
-            'js_bundle': 'plant_tracker/manage_tray.js',
-            'state': state
-        }
-        return render(request, 'plant_tracker/index.html', context)
+        return render_react_app(
+            request,
+            title='Manage Tray',
+            bundle='manage_tray',
+            state=state
+        )
 
     # Render state for registration form if UUID does not exist in either table
     state = {
@@ -156,12 +166,12 @@ def manage(request, uuid):
         'species_options': get_plant_species_options()
     }
 
-    context = {
-        'title': 'Register New Plant',
-        'js_bundle': 'plant_tracker/register.js',
-        'state': state
-    }
-    return render(request, 'plant_tracker/index.html', context)
+    return render_react_app(
+        request,
+        title='Register New Plant',
+        bundle='register',
+        state=state
+    )
 
 
 @requires_json_post()
