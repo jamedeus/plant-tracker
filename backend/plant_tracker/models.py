@@ -159,31 +159,47 @@ class Plant(models.Model):
         return None
 
     def get_water_timestamps(self):
-        '''Returns list of timestamp strings for every WaterEvent'''
+        '''Returns list of timestamp strings for every WaterEvent sorted from
+        most recent to least recent
+        '''
         return [
             timestamp[0].isoformat()
-            for timestamp in self.waterevent_set.all().values_list('timestamp')
+            for timestamp in self.waterevent_set.all()
+            .order_by('-timestamp')
+            .values_list('timestamp')
         ]
 
     def get_fertilize_timestamps(self):
-        '''Returns list of timestamp strings for every FertilizeEvent'''
+        '''Returns list of timestamp strings for every FertilizeEvent sorted from
+        most recent to least recent
+        '''
         return [
             timestamp[0].isoformat()
-            for timestamp in self.fertilizeevent_set.all().values_list('timestamp')
+            for timestamp in self.fertilizeevent_set.all()
+            .order_by('-timestamp')
+            .values_list('timestamp')
         ]
 
     def get_prune_timestamps(self):
-        '''Returns list of timestamp strings for every PruneEvent'''
+        '''Returns list of timestamp strings for every PruneEvent sorted from
+        most recent to least recent
+        '''
         return [
             timestamp[0].isoformat()
-            for timestamp in self.pruneevent_set.all().values_list('timestamp')
+            for timestamp in self.pruneevent_set.all()
+            .order_by('-timestamp')
+            .values_list('timestamp')
         ]
 
     def get_repot_timestamps(self):
-        '''Returns list of timestamp strings for every RepotEvent'''
+        '''Returns list of timestamp strings for every RepotEvent sorted from
+        most recent to least recent
+        '''
         return [
             timestamp[0].isoformat()
-            for timestamp in self.repotevent_set.all().values_list('timestamp')
+            for timestamp in self.repotevent_set.all()
+            .order_by('-timestamp')
+            .values_list('timestamp')
         ]
 
 

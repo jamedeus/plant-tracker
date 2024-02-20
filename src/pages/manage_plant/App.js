@@ -56,6 +56,7 @@ function App() {
             let oldPlant = {...plant};
             oldPlant.last_watered = payload.timestamp;
             oldPlant.water_events.push(payload.timestamp);
+            oldPlant.water_events.sort().reverse();
             setPlant(oldPlant);
         }
     };
@@ -71,6 +72,7 @@ function App() {
             let oldPlant = {...plant};
             oldPlant.last_fertilized = payload.timestamp;
             oldPlant.fertilize_events.push(payload.timestamp);
+            oldPlant.fertilize_events.sort().reverse();
             setPlant(oldPlant);
         }
     };

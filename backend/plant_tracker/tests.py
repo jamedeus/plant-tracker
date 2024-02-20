@@ -656,12 +656,12 @@ class PlantModelTests(TestCase):
         self.assertEqual(self.plant.last_repotted(), self.timestamp.isoformat())
 
     def test_get_water_timestamps(self):
-        # Create 3 WaterEvents for the plant, 1 day apart
+        # Create 3 WaterEvents for the plant, 1 day apart, non-chronological order in database
+        WaterEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=2))
         WaterEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
         WaterEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=1))
-        WaterEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=2))
 
-        # Confirm method returns correct list
+        # Confirm method returns correct list sorted most to least recent
         self.assertEqual(
             self.plant.get_water_timestamps(),
             [
@@ -672,12 +672,12 @@ class PlantModelTests(TestCase):
         )
 
     def test_get_fertilize_timestamps(self):
-        # Create 3 FertilizeEvent for the plant, 1 day apart
+        # Create 3 FertilizeEvent for the plant, 1 day apart, non-chronological order in database
+        FertilizeEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=2))
         FertilizeEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
         FertilizeEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=1))
-        FertilizeEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=2))
 
-        # Confirm method returns correct list
+        # Confirm method returns correct list sorted most to least recent
         self.assertEqual(
             self.plant.get_fertilize_timestamps(),
             [
@@ -688,12 +688,12 @@ class PlantModelTests(TestCase):
         )
 
     def test_get_prune_timestamps(self):
-        # Create 3 PruneEvent for the plant, 1 day apart
+        # Create 3 PruneEvent for the plant, 1 day apart, non-chronological order in database
+        PruneEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=2))
         PruneEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
         PruneEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=1))
-        PruneEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=2))
 
-        # Confirm method returns correct list
+        # Confirm method returns correct list sorted most to least recent
         self.assertEqual(
             self.plant.get_prune_timestamps(),
             [
@@ -704,12 +704,12 @@ class PlantModelTests(TestCase):
         )
 
     def test_get_repot_timestamps(self):
-        # Create 3 RepotEvent for the plant, 1 day apart
+        # Create 3 RepotEvent for the plant, 1 day apart, non-chronological order in database
+        RepotEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=2))
         RepotEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
         RepotEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=1))
-        RepotEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=2))
 
-        # Confirm method returns correct list
+        # Confirm method returns correct list sorted most to least recent
         self.assertEqual(
             self.plant.get_repot_timestamps(),
             [
