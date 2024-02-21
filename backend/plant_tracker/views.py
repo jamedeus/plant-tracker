@@ -301,8 +301,17 @@ def add_plant_event(plant, timestamp, event_type, **kwargs):
     '''Creates new Event entry with requested type for specified Plant entry
     Requires JSON POST with plant_id (uuid), event_type, and timestamp keys
     '''
-    events_map[event_type].objects.create(plant=plant, timestamp=timestamp)
-    return JsonResponse({"action": event_type, "plant": plant.uuid}, status=200)
+    try:
+        events_map[event_type].objects.create(plant=plant, timestamp=timestamp)
+        return JsonResponse(
+            {"action": event_type, "plant": plant.uuid},
+            status=200
+        )
+    except ValidationError:
+        return JsonResponse(
+            {"error": "event with same timestamp already exists"},
+            status=409
+        )
 
 
 @requires_json_post(["plants", "event_type", "timestamp"])
@@ -317,8 +326,11 @@ def bulk_add_plant_events(timestamp, event_type, data):
     for plant_id in data["plants"]:
         plant = get_plant_by_uuid(plant_id)
         if plant:
-            events_map[event_type].objects.create(plant=plant, timestamp=timestamp)
-            added.append(plant_id)
+            try:
+                events_map[event_type].objects.create(plant=plant, timestamp=timestamp)
+                added.append(plant_id)
+            except ValidationError:
+                failed.append(plant_id)
         else:
             failed.append(plant_id)
     return JsonResponse(
@@ -418,17 +430,24 @@ def repot_plant(plant, timestamp, data):
     Requires JSON POST with plant_id, new_pot_size, and timestamp keys
     '''
 
-    # Create with current pot_size as both old and new
-    event = RepotEvent.objects.create(
-        plant=plant,
-        timestamp=timestamp,
-        old_pot_size=plant.pot_size,
-        new_pot_size=plant.pot_size
-    )
-    # If new_pot_size specified update plant.pot_size and event.new_pot_size
-    if data["new_pot_size"]:
-        event.new_pot_size = data["new_pot_size"]
-        event.save()
-        plant.pot_size = data["new_pot_size"]
-        plant.save()
-    return JsonResponse({"action": "repot", "plant": plant.uuid}, status=200)
+    try:
+        # Create with current pot_size as both old and new
+        event = RepotEvent.objects.create(
+            plant=plant,
+            timestamp=timestamp,
+            old_pot_size=plant.pot_size,
+            new_pot_size=plant.pot_size
+        )
+        # If new_pot_size specified update plant.pot_size and event.new_pot_size
+        if data["new_pot_size"]:
+            event.new_pot_size = data["new_pot_size"]
+            event.save()
+            plant.pot_size = data["new_pot_size"]
+            plant.save()
+        return JsonResponse({"action": "repot", "plant": plant.uuid}, status=200)
+
+    except ValidationError:
+        return JsonResponse(
+            {"error": "Event with same timestamp already exists"},
+            status=409
+        )

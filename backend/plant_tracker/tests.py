@@ -474,7 +474,7 @@ class PlantEventTests(TestCase):
         self.plant1.refresh_from_db()
         self.plant2.refresh_from_db()
 
-    def test_water_plant(self):
+    def test_add_water_event(self):
         # Confirm test plant has no water events
         self.assertIsNone(self.plant1.last_watered())
         self.assertEqual(len(WaterEvent.objects.all()), 0)
@@ -492,7 +492,7 @@ class PlantEventTests(TestCase):
         self.assertEqual(len(WaterEvent.objects.all()), 1)
         self.assertEqual(self.plant1.last_watered(), '2024-02-06T03:06:26+00:00')
 
-    def test_fertilize_plant(self):
+    def test_add_fertilize_event(self):
         # Confirm test plant has no fertilize events
         self.assertIsNone(self.plant1.last_fertilized())
         self.assertEqual(len(FertilizeEvent.objects.all()), 0)
@@ -510,7 +510,7 @@ class PlantEventTests(TestCase):
         self.assertEqual(len(FertilizeEvent.objects.all()), 1)
         self.assertEqual(self.plant1.last_fertilized(), '2024-02-06T03:06:26+00:00')
 
-    def test_prune_plant(self):
+    def test_add_prune_event(self):
         # Confirm test plant has no prune events
         self.assertIsNone(self.plant1.last_pruned())
         self.assertEqual(len(PruneEvent.objects.all()), 0)
@@ -528,7 +528,7 @@ class PlantEventTests(TestCase):
         self.assertEqual(len(PruneEvent.objects.all()), 1)
         self.assertEqual(self.plant1.last_pruned(), '2024-02-06T03:06:26+00:00')
 
-    def test_repot_plant(self):
+    def test_add_repot_event(self):
         # Confirm test plant has no repot events
         self.assertIsNone(self.plant1.last_repotted())
         self.assertEqual(len(RepotEvent.objects.all()), 0)
@@ -979,6 +979,27 @@ class InvalidRequestTests(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(), {"error": "timestamp format invalid"})
 
+    def test_duplicate_event_timestamp(self):
+        # Create WaterEvent manually, then attempt to create with API call
+        timestamp = datetime.now()
+        WaterEvent.objects.create(plant=self.test_plant, timestamp=timestamp)
+        self.assertEqual(len(WaterEvent.objects.all()), 1)
+        response = self.client.post(
+            '/add_plant_event',
+            {
+                'plant_id': self.test_plant.uuid,
+                'timestamp': timestamp.isoformat(),
+                'event_type': 'water'
+            }
+        )
+        # Confirm correct error, confirm no WaterEvent created
+        self.assertEqual(response.status_code, 409)
+        self.assertEqual(
+            response.json(),
+            {'error': 'event with same timestamp already exists'}
+        )
+        self.assertEqual(len(WaterEvent.objects.all()), 1)
+
     def test_missing_event_type_key(self):
         # Send POST with with no event_type in body, confirm error
         response = self.client.post(
@@ -1117,3 +1138,81 @@ class RegressionTests(TestCase):
         tray.save()
         self.assertEqual(len(Plant.objects.all()), 1)
         self.assertEqual(len(Tray.objects.all()), 1)
+
+    def test_water_tray_fails_due_to_duplicate_timestamp(self):
+        '''Issue: The bulk_add_plant_events endpoint did not trap errors when
+        creating events. If a plant in UUID list already had an event with the
+        same timestamp an uncaught exception would occur, preventing remaining
+        events from being created and returning an unexpected response.
+        '''
+
+        # Create 3 test plants, create WaterEvent for second plant
+        plant1 = Plant.objects.create(uuid=uuid4())
+        plant2 = Plant.objects.create(uuid=uuid4())
+        plant3 = Plant.objects.create(uuid=uuid4())
+        timestamp = datetime.now()
+        WaterEvent.objects.create(plant=plant2, timestamp=timestamp)
+
+        # Confirm 1 WaterEvent exists, plant2 has event, plants 1 and 3 do not
+        self.assertEqual(len(WaterEvent.objects.all()), 1)
+        self.assertEqual(len(plant1.waterevent_set.all()), 0)
+        self.assertEqual(len(plant2.waterevent_set.all()), 1)
+        self.assertEqual(len(plant3.waterevent_set.all()), 0)
+
+        # Send bulk_add_plants_to_tray request for all plants with same
+        # timestamp as the existing WaterEvent
+        payload = {
+            'plants': [
+                str(plant1.uuid),
+                str(plant2.uuid),
+                str(plant3.uuid)
+            ],
+            'event_type': 'water',
+            'timestamp': timestamp.isoformat()
+        }
+        response = JSONClient().post('/bulk_add_plant_events', payload)
+
+        # Request should succeed despite conflicting event, plant2 should be
+        # listed as failed in response
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {
+                "action": "water",
+                "plants": [str(plant1.uuid), str(plant3.uuid)],
+                "failed": [str(plant2.uuid)]
+            }
+        )
+
+        # Confirm events were created for plants 1 and 3, but not 2
+        self.assertEqual(len(plant1.waterevent_set.all()), 1)
+        self.assertEqual(len(plant2.waterevent_set.all()), 1)
+        self.assertEqual(len(plant3.waterevent_set.all()), 1)
+
+    def test_repot_plant_does_not_handle_duplicate_timestamp(self):
+        '''Issue: The repot_plant endpoint did not handle errors while creating
+        RepotEvent, leading to an uncaught exception and unexpected response if
+        an event with the same timestamp already existed for the target plant.
+        '''
+
+        # Create test plant with 1 RepotEvent
+        plant = Plant.objects.create(uuid=uuid4())
+        timestamp = datetime.now()
+        RepotEvent.objects.create(plant=plant, timestamp=timestamp)
+        self.assertEqual(len(plant.repotevent_set.all()), 1)
+
+        # Send request to repot plant with same timestamp
+        payload = {
+            'plant_id': str(plant.uuid),
+            'timestamp': timestamp.isoformat(),
+            'new_pot_size': ''
+        }
+        response = JSONClient().post('/repot_plant', payload)
+
+        # Confirm correct error, confirm no RepotEvent was created
+        self.assertEqual(response.status_code, 409)
+        self.assertEqual(
+            response.json(),
+            {"error": "Event with same timestamp already exists"}
+        )
+        self.assertEqual(len(plant.repotevent_set.all()), 1)
