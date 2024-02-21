@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from django.conf import settings
 from django.utils import timezone
 from django.test import Client, TestCase
+from django.core.exceptions import ValidationError
 
 from .models import Tray, Plant, WaterEvent, FertilizeEvent, PruneEvent, RepotEvent
 from .view_decorators import (
@@ -832,6 +833,60 @@ class TrayModelTests(TestCase):
         self.assertEqual(unnamed[0].get_display_name(), 'Unnamed tray 1')
         self.assertEqual(unnamed[1].get_display_name(), 'Unnamed tray 2')
         self.assertEqual(unnamed[2].get_display_name(), 'Unnamed tray 3')
+
+
+class EventModelTests(TestCase):
+    def setUp(self):
+        self.plant = Plant.objects.create(uuid=uuid4())
+        self.timestamp = datetime.now()
+
+    def test_duplicate_water_event(self):
+        # Create WaterEvent, confirm 1 entry exists
+        WaterEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
+        self.assertEqual(len(WaterEvent.objects.all()), 1)
+
+        # Attempt to create duplicate with same timestamp, should raise error
+        with self.assertRaises(ValidationError):
+            WaterEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
+
+        # Confirm second event was not created
+        self.assertEqual(len(WaterEvent.objects.all()), 1)
+
+    def test_duplicate_fertilize_event(self):
+        # Create FertilizeEvent, confirm 1 entry exists
+        FertilizeEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
+        self.assertEqual(len(FertilizeEvent.objects.all()), 1)
+
+        # Attempt to create duplicate with same timestamp, should raise error
+        with self.assertRaises(ValidationError):
+            FertilizeEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
+
+        # Confirm second event was not created
+        self.assertEqual(len(FertilizeEvent.objects.all()), 1)
+
+    def test_duplicate_prune_event(self):
+        # Create PruneEvent, confirm 1 entry exists
+        PruneEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
+        self.assertEqual(len(PruneEvent.objects.all()), 1)
+
+        # Attempt to create duplicate with same timestamp, should raise error
+        with self.assertRaises(ValidationError):
+            PruneEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
+
+        # Confirm second event was not created
+        self.assertEqual(len(PruneEvent.objects.all()), 1)
+
+    def test_duplicate_repot_event(self):
+        # Create RepotEvent, confirm 1 entry exists
+        RepotEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
+        self.assertEqual(len(RepotEvent.objects.all()), 1)
+
+        # Attempt to create duplicate with same timestamp, should raise error
+        with self.assertRaises(ValidationError):
+            RepotEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
+
+        # Confirm second event was not created
+        self.assertEqual(len(RepotEvent.objects.all()), 1)
 
 
 class InvalidRequestTests(TestCase):

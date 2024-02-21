@@ -1,6 +1,7 @@
 from django.db import models
 from django.core.cache import cache
 from django.dispatch import receiver
+from django.core.exceptions import ValidationError
 from django.db.models.signals import post_save, post_delete
 from django.core.validators import MaxValueValidator, MinValueValidator
 
@@ -210,28 +211,40 @@ def clear_unnamed_plants_cache(**kwargs):
     cache.delete('unnamed_plants')
 
 
-class WaterEvent(models.Model):
+class Event(models.Model):
+    '''Abstract base class for all plant events'''
+    plant = models.ForeignKey(Plant, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField()
+
+    class Meta:
+        abstract = True
+
+    def save(self, *args, **kwargs):
+        # Prevent creating duplicate events with the same plant and timestamp
+        if self.__class__.objects.filter(
+            plant=self.plant,
+            timestamp=self.timestamp
+        ).exclude(pk=self.pk).exists():
+            raise ValidationError(
+                "Plant already has an event with the same type and timestamp"
+            )
+        super().save(*args, **kwargs)
+
+
+class WaterEvent(Event):
     '''Records timestamp when a Plant entry was watered'''
-    plant = models.ForeignKey(Plant, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField()
 
 
-class FertilizeEvent(models.Model):
+class FertilizeEvent(Event):
     '''Records timestamp when a Plant entry was fertilized'''
-    plant = models.ForeignKey(Plant, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField()
 
 
-class PruneEvent(models.Model):
+class PruneEvent(Event):
     '''Records timestamp when a Plant entry was pruned'''
-    plant = models.ForeignKey(Plant, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField()
 
 
-class RepotEvent(models.Model):
+class RepotEvent(Event):
     '''Records timestamp when a Plant entry was repotted'''
-    plant = models.ForeignKey(Plant, on_delete=models.CASCADE)
-    timestamp = models.DateTimeField()
 
     # Optional old and new pot sizes
     old_pot_size = models.PositiveIntegerField(
