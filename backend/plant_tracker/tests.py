@@ -1216,3 +1216,105 @@ class RegressionTests(TestCase):
             {"error": "Event with same timestamp already exists"}
         )
         self.assertEqual(len(plant.repotevent_set.all()), 1)
+
+
+class ViewDecoratorRegressionTests(TestCase):
+    def setUp(self):
+        self.plant = Plant.objects.create(uuid=uuid4())
+        self.tray = Tray.objects.create(uuid=uuid4())
+
+    def test_get_plant_from_post_body_traps_wrapped_function_exceptions(self):
+        '''Issue: get_plant_from_post_body called the wrapped function inside a
+        try/except block used to handle request payload errors. If an uncaught
+        exception occurred in the wrapped function it would be caught by the
+        wrapper, resulting in a JsonResponse with misleading error.
+        '''
+
+        # Create test functions that raise errors caught by decorator
+        @get_plant_from_post_body
+        def test_key_error(plant, data):
+            raise KeyError("wrapped function error")
+
+        @get_plant_from_post_body
+        def test_validation_error(plant, data):
+            raise ValidationError("wrapped function error")
+
+        # Exceptions should not be caught by the decorator
+        # Confirm exceptions were raised by wrapped function and not decorator
+        with self.assertRaises(KeyError) as e:
+            test_key_error({'plant_id': str(self.plant.uuid)})
+        self.assertEqual(e.exception.args[0], "wrapped function error")
+
+        with self.assertRaises(ValidationError) as e:
+            test_validation_error({'plant_id': str(self.plant.uuid)})
+        self.assertEqual(e.exception.args[0], "wrapped function error")
+
+    def test_get_tray_from_post_body_traps_wrapped_function_exceptions(self):
+        '''Issue: get_tray_from_post_body called the wrapped function inside a
+        try/except block used to handle request payload errors. If an uncaught
+        exception occurred in the wrapped function it would be caught by the
+        wrapper, resulting in a JsonResponse with misleading error.
+        '''
+
+        # Create test functions that raise errors caught by decorator
+        @get_tray_from_post_body
+        def test_key_error(tray, data):
+            raise KeyError("wrapped function error")
+
+        @get_tray_from_post_body
+        def test_validation_error(tray, data):
+            raise ValidationError("wrapped function error")
+
+        # Exceptions should not be caught by the decorator
+        # Confirm exceptions were raised by wrapped function and not decorator
+        with self.assertRaises(KeyError) as e:
+            test_key_error({'tray_id': str(self.tray.uuid)})
+        self.assertEqual(e.exception.args[0], "wrapped function error")
+
+        with self.assertRaises(ValidationError) as e:
+            test_validation_error({'tray_id': str(self.tray.uuid)})
+        self.assertEqual(e.exception.args[0], "wrapped function error")
+
+    def test_get_timestamp_from_post_body_traps_wrapped_function_exceptions(self):
+        '''Issue: get_timestamp_from_post_body called the wrapped function
+        inside a try/except block used to handle request payload errors. If an
+        uncaught exception occurred in the wrapped function it would be caught
+        by the wrapper, resulting in a JsonResponse with misleading error.
+        '''
+
+        # Create test functions that raise errors caught by decorator
+        @get_timestamp_from_post_body
+        def test_key_error(timestamp, data):
+            raise KeyError("wrapped function error")
+
+        @get_timestamp_from_post_body
+        def test_value_error(timestamp, data):
+            raise ValueError("wrapped function error")
+
+        # Exceptions should not be caught by the decorator
+        # Confirm exceptions were raised by wrapped function and not decorator
+        with self.assertRaises(KeyError) as e:
+            test_key_error({'timestamp': '2024-02-06T03:06:26.000Z'})
+        self.assertEqual(e.exception.args[0], "wrapped function error")
+
+        with self.assertRaises(ValueError) as e:
+            test_value_error({'timestamp': '2024-02-06T03:06:26.000Z'})
+        self.assertEqual(e.exception.args[0], "wrapped function error")
+
+    def test_get_event_type_from_post_body_traps_wrapped_function_exceptions(self):
+        '''Issue: get_event_type_from_post_body called the wrapped function
+        inside a try/except block used to handle request payload errors. If an
+        uncaught exception occurred in the wrapped function it would be caught
+        by the wrapper, resulting in a JsonResponse with misleading error.
+        '''
+
+        # Create test function that raise error caught by decorator
+        @get_event_type_from_post_body
+        def test_key_error(event_type, data):
+            raise KeyError("wrapped function error")
+
+        # Exceptions should not be caught by the decorator
+        # Confirm exceptions were raised by wrapped function and not decorator
+        with self.assertRaises(KeyError) as e:
+            test_key_error({'event_type': 'water'})
+        self.assertEqual(e.exception.args[0], "wrapped function error")

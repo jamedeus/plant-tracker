@@ -73,7 +73,6 @@ def get_plant_from_post_body(func):
             plant = get_plant_by_uuid(data["plant_id"])
             if plant is None:
                 return JsonResponse({"error": "plant not found"}, status=404)
-            return func(plant=plant, data=data, **kwargs)
         except KeyError:
             return JsonResponse(
                 {"error": "POST body missing required 'plant_id' key"},
@@ -84,6 +83,7 @@ def get_plant_from_post_body(func):
                 {"error": "plant_id key is not a valid UUID"},
                 status=400
             )
+        return func(plant=plant, data=data, **kwargs)
     return wrapper
 
 
@@ -98,7 +98,6 @@ def get_tray_from_post_body(func):
             tray = get_tray_by_uuid(data["tray_id"])
             if tray is None:
                 return JsonResponse({"error": "tray not found"}, status=404)
-            return func(tray=tray, data=data, **kwargs)
         except KeyError:
             return JsonResponse(
                 {"error": "POST body missing required 'tray_id' key"},
@@ -109,6 +108,7 @@ def get_tray_from_post_body(func):
                 {"error": "tray_id key is not a valid UUID"},
                 status=400
             )
+        return func(tray=tray, data=data, **kwargs)
     return wrapper
 
 
@@ -120,7 +120,6 @@ def get_timestamp_from_post_body(func):
     def wrapper(data, **kwargs):
         try:
             timestamp = datetime.fromisoformat(data["timestamp"].replace('Z', '+00:00'))
-            return func(timestamp=timestamp, data=data, **kwargs)
         except KeyError:
             return JsonResponse(
                 {"error": "POST body missing required 'timestamp' key"},
@@ -128,6 +127,7 @@ def get_timestamp_from_post_body(func):
             )
         except ValueError:
             return JsonResponse({"error": "timestamp format invalid"}, status=400)
+        return func(timestamp=timestamp, data=data, **kwargs)
     return wrapper
 
 
@@ -138,15 +138,15 @@ def get_event_type_from_post_body(func):
     '''
     def wrapper(data, **kwargs):
         try:
-            if data["event_type"] in events_map:
-                return func(event_type=data["event_type"], data=data, **kwargs)
-            return JsonResponse(
-                {"error": "invalid event_type, must be 'water', 'fertilize', 'prune', or 'repot"},
-                status=400
-            )
+            if data["event_type"] not in events_map:
+                return JsonResponse(
+                    {"error": "invalid event_type, must be 'water', 'fertilize', 'prune', or 'repot"},
+                    status=400
+                )
         except KeyError:
             return JsonResponse(
                 {"error": "POST body missing required 'event_type' key"},
                 status=400
             )
+        return func(event_type=data["event_type"], data=data, **kwargs)
     return wrapper
