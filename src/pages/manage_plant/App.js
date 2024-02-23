@@ -8,6 +8,7 @@ import EditModal from 'src/components/EditModal';
 import PlantDetails from 'src/forms/PlantDetails';
 import Navbar from 'src/components/Navbar';
 import DatetimeInput from 'src/components/DatetimeInput';
+import { useToast } from 'src/ToastContext';
 
 function App() {
     // Load context set by django template
@@ -16,6 +17,9 @@ function App() {
     });
     const trays = parseDomContext("trays");
     const speciesOptions = parseDomContext("species_options");
+
+    // Get hook to show toast message
+    const { showToast } = useToast();
 
     const overview = () => {
         window.location.href = "/";
@@ -58,6 +62,19 @@ function App() {
             oldPlant.water_events.push(payload.timestamp);
             oldPlant.water_events.sort().reverse();
             setPlant(oldPlant);
+        } else {
+            // Duplicate event timestamp: show error toast for 5 seconds
+            if (response.status === 409) {
+                showToast(
+                    "Error: Water event with same timestamp already exists",
+                    'red',
+                    5000
+                );
+            // Other error (unexpected): show in alert
+            } else {
+                const data = await response.json();
+                alert(data);
+            }
         }
     };
 
@@ -74,6 +91,19 @@ function App() {
             oldPlant.fertilize_events.push(payload.timestamp);
             oldPlant.fertilize_events.sort().reverse();
             setPlant(oldPlant);
+        } else {
+            // Duplicate event timestamp: show error toast for 5 seconds
+            if (response.status === 409) {
+                showToast(
+                    "Error: Fertilize event with same timestamp already exists",
+                    'red',
+                    5000
+                );
+            // Other error (unexpected): show in alert
+            } else {
+                const data = await response.json();
+                alert(data);
+            }
         }
     };
 

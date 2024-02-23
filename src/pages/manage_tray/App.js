@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { sendPostRequest, parseDomContext, localToUTC } from 'src/util';
 import CollapseCol from 'src/components/CollapseCol';
@@ -8,6 +8,7 @@ import TrayDetails from 'src/forms/TrayDetails';
 import Navbar from 'src/components/Navbar';
 import PlantCard from 'src/components/PlantCard';
 import DatetimeInput from 'src/components/DatetimeInput';
+import { useToast } from 'src/ToastContext';
 
 function App() {
     // Load context set by django template
@@ -34,21 +35,8 @@ function App() {
     // Create state to track whether manage modal opened to add or remove
     const [managePlants, setManagePlants] = useState('');
 
-    // State for text displayed in toast, toast appears for 5 seconds when set
-    // to a non-empty string then fades back out
-    const [toastMessage, setToastMessage] = useState('');
-    const toastRef = useRef();
-    useEffect(() => {
-        if (toastMessage) {
-            toastRef.current.classList.remove('opacity-0');
-            setTimeout(() => {
-                toastRef.current.classList.add('opacity-0');
-            }, "5000");
-            setTimeout(() => {
-                setToastMessage('');
-            }, "5500");
-        }
-    }, [toastMessage]);
+    // Get hook to show toast message
+    const { showToast } = useToast();
 
     const overview = () => {
         window.location.href = "/";
@@ -99,9 +87,9 @@ function App() {
         const response = await sendPostRequest('/bulk_add_plant_events', payload);
         if (response.ok) {
             if (eventType.endsWith('e')) {
-                setToastMessage(`All plants ${eventType}d!`);
+                showToast(`All plants ${eventType}d!`, 'blue', 5000);
             } else {
-                setToastMessage(`All plants ${eventType}ed!`);
+                showToast(`All plants ${eventType}ed!`, 'blue', 5000);
             }
         }
     };
@@ -351,13 +339,6 @@ function App() {
                     <button>close</button>
                 </form>
             </dialog>
-
-            <div ref={toastRef} className="toast toast-center opacity-0 transition-all duration-500">
-                <div className="alert alert-info gap-0">
-                    <span>{toastMessage}</span>
-                </div>
-            </div>
-
         </div>
     );
 }
