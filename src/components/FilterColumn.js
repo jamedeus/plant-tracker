@@ -11,7 +11,7 @@ import EditableNodeList from 'src/components/EditableNodeList';
 //
 // Contents objects must have uuid (react key) and name (used to filter) keys
 // EditableNodeList must have state params set in parent scope
-const FilterColumn = ({title, contents, cardComponent, editableList}) => {
+const FilterColumn = ({title, contents, cardComponent, editableList, children}) => {
     const [query, setQuery] = useState('');
     const [current, setCurrent] = useState(contents);
 
@@ -51,6 +51,7 @@ const FilterColumn = ({title, contents, cardComponent, editableList}) => {
                     );
                 })
             )}
+            {children}
         </CollapseCol>
     )
 };

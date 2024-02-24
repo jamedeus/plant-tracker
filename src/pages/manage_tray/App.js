@@ -8,6 +8,7 @@ import TrayDetails from 'src/forms/TrayDetails';
 import Navbar from 'src/components/Navbar';
 import PlantCard from 'src/components/PlantCard';
 import DatetimeInput from 'src/components/DatetimeInput';
+import FilterColumn from 'src/components/FilterColumn';
 import { useToast } from 'src/ToastContext';
 
 function App() {
@@ -298,18 +299,20 @@ function App() {
                 </button>
             </div>
 
-            <CollapseCol title="Plants" defaultOpen={true}>
-                <EditableNodeList
-                    editing={selectingPlants}
-                    selected={selectedPlants}
-                    setSelected={setSelectedPlants}
-                >
-                    {plantDetails.map((plant) => {
-                        return <PlantCard key={plant.uuid} name={plant.name} uuid={plant.uuid} />;
-                    })}
-                </EditableNodeList>
+            <FilterColumn
+                title="Plants"
+                contents={plantDetails}
+                cardComponent={PlantCard}
+                editableList={
+                    <EditableNodeList
+                        editing={selectingPlants}
+                        selected={selectedPlants}
+                        setSelected={setSelectedPlants}
+                    />
+                }
+            >
                 <PlantEventButtons editing={selectingPlants} setEditing={setSelectingPlants} />
-            </CollapseCol>
+            </FilterColumn>
 
             <EditModal title="Edit Details" onSubmit={submitEditModal}>
                 <TrayDetails
