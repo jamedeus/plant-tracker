@@ -35,14 +35,24 @@ const FilterColumn = ({title, contents, cardComponent, editableList, children}) 
 
     return (
         <CollapseCol title={`${title} (${Object.keys(current).length})`}>
-            <div className="px-4 mb-4">
+            <div className="px-4 mb-4 relative">
                 <input
                     type="text"
-                    className="input input-bordered w-full text-center"
+                    className="input input-bordered w-full text-center pr-10"
                     value={query}
                     onChange={e => setQuery(e.target.value)}
                     placeholder="filter"
+                    style={{textIndent: '1.625rem'}}
                 />
+                <button
+                    className={
+                        `btn btn-sm btn-circle btn-ghost absolute right-6 top-2
+                        ${query ? 'opacity-100' : 'opacity-0 -z-10'}`
+                    }
+                    onClick={() => setQuery('')}
+                >
+                    ✕
+                </button>
             </div>
             {React.cloneElement(
                 editableList,
