@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import print from 'print-js';
 import CollapseCol from 'src/components/CollapseCol';
 import EditableNodeList from 'src/components/EditableNodeList';
@@ -119,6 +120,64 @@ function App() {
         }
     };
 
+    // Renders CollapseCol with EditableNodeList and input to filter contents
+    // Takes contents (array of objects with uuid param), cardComponent (react
+    // component with params matching keys in contents objects), column title,
+    // and editing, selected, and setSelected values for EditableNodeList
+    const FilterColumn = ({contents, cardComponent, title, editing, selected, setSelected}) => {
+        const [query, setQuery] = useState('');
+        const [current, setCurrent] = useState(contents);
+
+        useEffect(() => {
+            // Filter contents to items that contain query (case insensitive)
+            if (query) {
+                setCurrent(contents.filter(
+                    item => item.name.toLowerCase().includes(query.toLowerCase()))
+                );
+            // Reset contents when query cleared
+            } else {
+                setCurrent(contents);
+            }
+        }, [query])
+
+        return (
+            <CollapseCol title={`${title} (${Object.keys(current).length})`}>
+                <div className="px-4 mb-4">
+                    <input
+                        type="text"
+                        className="input input-bordered w-full text-center"
+                        value={query}
+                        onChange={e => setQuery(e.target.value)}
+                        placeholder="filter"
+                    />
+                </div>
+                <EditableNodeList
+                    editing={editing}
+                    selected={selected}
+                    setSelected={setSelected}
+                >
+                    {current.map((item) => {
+                        // Render cardComponent by expanding params of each item
+                        // Must have UUID param to use as react key
+                        return React.createElement(
+                            cardComponent,
+                            {...item, key: item.uuid}
+                        );
+                    })}
+                </EditableNodeList>
+            </CollapseCol>
+        )
+    };
+
+    FilterColumn.propTypes = {
+        contents: PropTypes.array,
+        cardComponent: PropTypes.func,
+        title: PropTypes.string,
+        editing: PropTypes.bool,
+        selected: PropTypes.array,
+        setSelected: PropTypes.func
+    };
+
     return (
         <div className="container flex flex-col mx-auto mb-8">
             <Navbar
@@ -135,40 +194,25 @@ function App() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 mx-auto">
                 <div className="md:mr-12 mb-8 md:mb-0">
-                    <CollapseCol title="Plants">
-                        <EditableNodeList
-                            editing={editing}
-                            selected={selectedPlants}
-                            setSelected={setSelectedPlants}
-                        >
-                            {plants.map((plant) => {
-                                return <PlantCard
-                                    key={plant.uuid}
-                                    name={plant.name}
-                                    uuid={plant.uuid}
-                                />;
-                            })}
-                        </EditableNodeList>
-                    </CollapseCol>
+                    <FilterColumn
+                        contents={plants}
+                        cardComponent={PlantCard}
+                        title="Plants"
+                        editing={editing}
+                        selected={selectedPlants}
+                        setSelected={setSelectedPlants}
+                    />
                 </div>
 
                 <div className="md:ml-12">
-                    <CollapseCol title="Trays">
-                        <EditableNodeList
-                            editing={editing}
-                            selected={selectedTrays}
-                            setSelected={setSelectedTrays}
-                        >
-                            {trays.map((tray) => {
-                                return <TrayCard
-                                    key={tray.uuid}
-                                    name={tray.name}
-                                    plants={tray.plants}
-                                    uuid={tray.uuid}
-                                />;
-                            })}
-                        </EditableNodeList>
-                    </CollapseCol>
+                    <FilterColumn
+                        contents={trays}
+                        cardComponent={TrayCard}
+                        title="Trays"
+                        editing={editing}
+                        selected={selectedTrays}
+                        setSelected={setSelectedTrays}
+                    />
                 </div>
             </div>
 

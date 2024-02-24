@@ -33,3 +33,7 @@
 .tab-option {
     @apply w-full text-white rounded-lg py-2.5 focus:outline-none;
 }
+
+.input::placeholder {
+    opacity: 0.5;
+}
