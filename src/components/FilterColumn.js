@@ -15,18 +15,23 @@ const FilterColumn = ({title, contents, cardComponent, editableList, children}) 
     const [query, setQuery] = useState('');
     const [current, setCurrent] = useState(contents);
 
-    // Filter contents to items
+    // Filter contents to items with name attribute containing filter query
     useEffect(() => {
-        // Filter contents to items that contain query (case insensitive)
         if (query) {
             setCurrent(contents.filter(
                 item => item.name.toLowerCase().includes(query.toLowerCase()))
             );
-        // Reset contents when query cleared
         } else {
             setCurrent(contents);
         }
-    }, [query])
+    }, [query]);
+
+    // Reset filter string and current contents when upstream contents changes
+    // Prevents removed items staying in list, new items failing to appear, etc
+    useEffect(() => {
+        setQuery('');
+        setCurrent(contents);
+    }, [contents]);
 
     return (
         <CollapseCol title={`${title} (${Object.keys(current).length})`}>
@@ -53,7 +58,7 @@ const FilterColumn = ({title, contents, cardComponent, editableList, children}) 
             )}
             {children}
         </CollapseCol>
-    )
+    );
 };
 
 FilterColumn.propTypes = {
