@@ -80,7 +80,8 @@ def overview(request):
             'name': plant.get_display_name(),
             'species': plant.species,
             'description': plant.description,
-            'pot_size': plant.pot_size
+            'pot_size': plant.pot_size,
+            'last_watered': plant.last_watered()
         })
 
     for tray in Tray.objects.all():

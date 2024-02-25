@@ -65,14 +65,16 @@ class OverviewTests(TestCase):
                     'name': 'Test plant',
                     'species': None,
                     'description': None,
-                    'pot_size': None
+                    'pot_size': None,
+                    'last_watered': None
                 },
                 {
                     'uuid': str(plant2.uuid),
                     'name': 'Unnamed fittonia',
                     'species': 'fittonia',
                     'description': None,
-                    'pot_size': None
+                    'pot_size': None,
+                    'last_watered': None
                 }
             ]
         )

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/16/solid'
+import { timestampToRelative } from 'src/util';
 
-const PlantCard = ({ name, uuid, species, description, pot_size }) => {
+const PlantCard = ({ name, uuid, species, description, pot_size, last_watered }) => {
     // Track details collapse open state
     const [open, setOpen] = useState(false);
 
@@ -48,11 +49,18 @@ const PlantCard = ({ name, uuid, species, description, pot_size }) => {
         >
             <div className="card-body text-center">
                 <h2 className="card-title mx-auto">{name}</h2>
+                {(() => {
+                    if (last_watered) {
+                        return <p>Watered {timestampToRelative(last_watered)}</p>;
+                    } else {
+                        return <p>Never watered</p>;
+                    }
+                })()}
             </div>
             <button
                 tabIndex={0}
                 role="button"
-                className="btn btn-sm btn-circle btn-ghost absolute right-4 top-4 z-40"
+                className="btn btn-sm btn-circle btn-ghost absolute right-2 top-8 z-40"
                 onClick={(e) => toggle(e)}
             >
                 {(() => {
@@ -74,7 +82,8 @@ PlantCard.propTypes = {
     uuid: PropTypes.string,
     species: PropTypes.string,
     description: PropTypes.string,
-    pot_size: PropTypes.string
+    pot_size: PropTypes.string,
+    last_watered: PropTypes.string
 };
 
 export default PlantCard;
