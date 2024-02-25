@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { sendPostRequest, parseDomContext, localToUTC } from 'src/util';
-import CollapseCol from 'src/components/CollapseCol';
 import EditableNodeList from 'src/components/EditableNodeList';
 import EditModal from 'src/components/EditModal';
 import TrayDetails from 'src/forms/TrayDetails';

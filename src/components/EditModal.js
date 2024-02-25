@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { XMarkIcon } from '@heroicons/react/16/solid'
+import { XMarkIcon } from '@heroicons/react/16/solid';
 
 // Takes modal title, submit handler, and details form
 // Modal has centered title, can be closed with button, esc, or outside click

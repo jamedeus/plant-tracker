@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import CollapseCol from 'src/components/CollapseCol';
-import EditableNodeList from 'src/components/EditableNodeList';
-import { XMarkIcon } from '@heroicons/react/16/solid'
+import { XMarkIcon } from '@heroicons/react/16/solid';
 
 // Renders CollapseCol with EditableNodeList and input to filter contents
 //
@@ -25,7 +24,7 @@ const FilterColumn = ({title, contents, cardComponent, editableList, children}) 
                 return Object.values(otherProps)
                              .toString()
                              .toLowerCase()
-                             .includes(query.toLowerCase())
+                             .includes(query.toLowerCase());
             }));
         } else {
             setCurrent(contents);
@@ -81,7 +80,8 @@ FilterColumn.propTypes = {
     title: PropTypes.string,
     contents: PropTypes.array,
     cardComponent: PropTypes.func,
-    editableList: PropTypes.node
+    editableList: PropTypes.node,
+    children: PropTypes.node
 };
 
 export default FilterColumn;

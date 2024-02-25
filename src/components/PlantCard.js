@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/16/solid'
+import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/16/solid';
 import { timestampToRelative } from 'src/util';
 
 const PlantCard = ({ name, uuid, species, description, pot_size, last_watered }) => {
@@ -30,16 +30,16 @@ const PlantCard = ({ name, uuid, species, description, pot_size, last_watered })
                     <p className="text-sm line-clamp-6">{description}</p>
                 </div>
             </div>
-        )
-    }
+        );
+    };
 
     const NoDetails = () => {
         return (
             <div className="collapse-content px-16">
                 <p className="text-center">No details</p>
             </div>
-        )
-    }
+        );
+    };
 
     // Renders collapse with Plant details, opened with arrow button
     const DetailsSection = () => {
@@ -53,14 +53,14 @@ const PlantCard = ({ name, uuid, species, description, pot_size, last_watered })
                 />
                 {(() => {
                     if (!species && !pot_size && !description) {
-                        return <NoDetails />
+                        return <NoDetails />;
                     } else {
-                        return <Details />
+                        return <Details />;
                     }
                 })()}
             </div>
-        )
-    }
+        );
+    };
 
     return (
         <div
@@ -88,9 +88,9 @@ const PlantCard = ({ name, uuid, species, description, pot_size, last_watered })
                 {(() => {
                     switch(open) {
                         case(true):
-                            return <ChevronUpIcon />
+                            return <ChevronUpIcon />;
                         case(false):
-                            return <ChevronDownIcon />
+                            return <ChevronDownIcon />;
                     }
                 })()}
             </button>

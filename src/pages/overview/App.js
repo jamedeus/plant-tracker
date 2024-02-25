@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState } from 'react';
 import print from 'print-js';
-import CollapseCol from 'src/components/CollapseCol';
 import EditableNodeList from 'src/components/EditableNodeList';
 import Navbar from 'src/components/Navbar';
 import TrayCard from 'src/components/TrayCard';
