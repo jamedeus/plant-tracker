@@ -81,6 +81,9 @@ class Tray(models.Model):
             {
                 'name': plant.get_display_name(),
                 'uuid': str(plant.uuid),
+                'species': plant.species,
+                'description': plant.description,
+                'pot_size': plant.pot_size,
                 'last_watered': plant.last_watered(),
                 'last_fertilized': plant.last_fertilized()
             }

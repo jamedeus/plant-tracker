@@ -301,10 +301,18 @@ class ManagePageTests(TestCase):
 
         # Confirm state includes correct plant details
         self.assertEqual(len(state['details']), 1)
-        self.assertEqual(state['details'][0]['name'], 'Unnamed plant 1')
-        self.assertEqual(state['details'][0]['uuid'], str(self.plant1.uuid))
-        self.assertEqual(state['details'][0]['last_watered'], None)
-        self.assertEqual(state['details'][0]['last_fertilized'], None)
+        self.assertEqual(
+            state['details'][0],
+            {
+                'name': 'Unnamed plant 1',
+                'uuid': str(self.plant1.uuid),
+                'species': None,
+                'description': None,
+                'pot_size': None,
+                'last_watered': None,
+                'last_fertilized': None
+            }
+        )
 
     def test_edit_plant_details(self):
         # Confirm test plant has no name or species
