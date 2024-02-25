@@ -91,7 +91,29 @@ function App() {
             } else {
                 showToast(`All plants ${eventType}ed!`, 'blue', 5000);
             }
+            const data = await response.json();
+            updatePlantTimestamps(data.plants, timestamp, eventType);
         }
+    };
+
+    // Map eventType taken by bulk_add_plant_events to the plantDetails state
+    // key that should be updated when an event is successfully created
+    const eventTypeMap = {
+        water: "last_watered",
+        fertilize: "last_fertilized"
+    }
+
+    // Called by bulkAddPlantEvents to update plant water/fertilize timestamps
+    const updatePlantTimestamps = (updatedPlants, timestamp, eventType) => {
+        let newPlantDetails = [];
+        plantDetails.forEach(plant => {
+            // Overwrite last_watered if UUID in JSON response
+            if (updatedPlants.includes(plant.uuid)) {
+                plant[eventTypeMap[eventType]] = timestamp;
+            }
+            newPlantDetails.push(plant);
+        });
+        setPlantDetails(newPlantDetails);
     };
 
     // Opens modal with list of new plant options if arg is 'add'
