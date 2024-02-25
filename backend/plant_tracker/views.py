@@ -77,7 +77,10 @@ def overview(request):
     for plant in Plant.objects.all():
         state['plants'].append({
             'uuid': str(plant.uuid),
-            'name': plant.get_display_name()
+            'name': plant.get_display_name(),
+            'species': plant.species,
+            'description': plant.description,
+            'pot_size': plant.pot_size
         })
 
     for tray in Tray.objects.all():

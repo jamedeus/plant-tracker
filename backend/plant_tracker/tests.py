@@ -55,13 +55,25 @@ class OverviewTests(TestCase):
         self.assertEqual(response.context['js_bundle'], 'plant_tracker/overview.js')
         self.assertEqual(response.context['title'], 'Overview')
 
-        # Confirm state object has details of all plants and tray
+        # Confirm state object has details of all plants and trays
         state = response.context['state']
         self.assertEqual(
             state['plants'],
             [
-                {'uuid': str(plant1.uuid), 'name': 'Test plant'},
-                {'uuid': str(plant2.uuid), 'name': 'Unnamed fittonia'}
+                {
+                    'uuid': str(plant1.uuid),
+                    'name': 'Test plant',
+                    'species': None,
+                    'description': None,
+                    'pot_size': None
+                },
+                {
+                    'uuid': str(plant2.uuid),
+                    'name': 'Unnamed fittonia',
+                    'species': 'fittonia',
+                    'description': None,
+                    'pot_size': None
+                }
             ]
         )
         self.assertEqual(
