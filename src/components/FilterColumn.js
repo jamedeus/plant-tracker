@@ -16,12 +16,17 @@ const FilterColumn = ({title, contents, cardComponent, editableList, children}) 
     const [query, setQuery] = useState('');
     const [current, setCurrent] = useState(contents);
 
-    // Filter contents to items with name attribute containing filter query
+    // Filter contents to items with any attribute that contains filter query
     useEffect(() => {
         if (query) {
-            setCurrent(contents.filter(
-                item => item.name.toLowerCase().includes(query.toLowerCase()))
-            );
+            setCurrent(contents.filter(item => {
+                // Ignore UUID to prevent single characters matching everything
+                const { uuid, ...otherProps } = item;
+                return Object.values(otherProps)
+                             .toString()
+                             .toLowerCase()
+                             .includes(query.toLowerCase())
+            }));
         } else {
             setCurrent(contents);
         }

@@ -87,6 +87,7 @@ def overview(request):
         state['trays'].append({
             'uuid': str(tray.uuid),
             'name': tray.get_display_name(),
+            'location': tray.location,
             'plants': len(tray.plant_set.all())
         })
 

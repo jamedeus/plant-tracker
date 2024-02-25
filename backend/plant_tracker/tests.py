@@ -79,7 +79,12 @@ class OverviewTests(TestCase):
         self.assertEqual(
             state['trays'],
             [
-                {'uuid': str(tray.uuid), 'name': 'Unnamed tray 1', 'plants': 1}
+                {
+                    'uuid': str(tray.uuid),
+                    'name': 'Unnamed tray 1',
+                    'location': None,
+                    'plants': 1
+                }
             ]
         )
 
