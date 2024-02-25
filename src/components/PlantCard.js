@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/16/solid'
 
 const PlantCard = ({ name, uuid, species, description, pot_size }) => {
     // Track details collapse open state
@@ -54,7 +55,14 @@ const PlantCard = ({ name, uuid, species, description, pot_size }) => {
                 className="btn btn-sm btn-circle btn-ghost absolute right-4 top-4 z-40"
                 onClick={(e) => toggle(e)}
             >
-                ?
+                {(() => {
+                    switch(open) {
+                        case(true):
+                            return <ChevronUpIcon />
+                        case(false):
+                            return <ChevronDownIcon />
+                    }
+                })()}
             </button>
             <DetailsSection />
         </div>

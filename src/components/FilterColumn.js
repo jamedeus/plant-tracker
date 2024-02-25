@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import CollapseCol from 'src/components/CollapseCol';
 import EditableNodeList from 'src/components/EditableNodeList';
+import { XMarkIcon } from '@heroicons/react/16/solid'
 
 // Renders CollapseCol with EditableNodeList and input to filter contents
 //
@@ -51,7 +52,7 @@ const FilterColumn = ({title, contents, cardComponent, editableList, children}) 
                     }
                     onClick={() => setQuery('')}
                 >
-                    ✕
+                    <XMarkIcon />
                 </button>
             </div>
             {React.cloneElement(
