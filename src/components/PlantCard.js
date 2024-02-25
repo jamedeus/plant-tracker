@@ -14,7 +14,34 @@ const PlantCard = ({ name, uuid, species, description, pot_size, last_watered })
         e.stopPropagation();
     };
 
-    // Renders collapse with Plant details, opened with info button
+    const Details = () => {
+        return (
+            <div className="collapse-content px-16">
+                <p className={species ? 'flex' : 'hidden'}>
+                    <span className="font-semibold">Species:</span>
+                    <span className="ml-auto">{species}</span>
+                </p>
+                <p className={pot_size ? 'flex' : 'hidden'}>
+                    <span className="font-semibold">Pot size:</span>
+                    <span className="ml-auto">{pot_size}</span>
+                </p>
+                <div className={description ? 'text-center' : 'hidden'}>
+                    <p className="font-semibold mt-3">Description:</p>
+                    <p className="text-sm line-clamp-6">{description}</p>
+                </div>
+            </div>
+        )
+    }
+
+    const NoDetails = () => {
+        return (
+            <div className="collapse-content px-16">
+                <p className="text-center">No details</p>
+            </div>
+        )
+    }
+
+    // Renders collapse with Plant details, opened with arrow button
     const DetailsSection = () => {
         return (
             <div className="collapse bg-neutral">
@@ -24,20 +51,13 @@ const PlantCard = ({ name, uuid, species, description, pot_size, last_watered })
                     onChange={toggle}
                     defaultChecked={open}
                 />
-                <div className="collapse-content px-16">
-                    <p className={species ? 'flex' : 'hidden'}>
-                        <span className="font-semibold">Species:</span>
-                        <span className="ml-auto">{species}</span>
-                    </p>
-                    <p className={pot_size ? 'flex' : 'hidden'}>
-                        <span className="font-semibold">Pot size:</span>
-                        <span className="ml-auto">{pot_size}</span>
-                    </p>
-                    <div className={description ? 'text-center' : 'hidden'}>
-                        <p className="font-semibold mt-3">Description:</p>
-                        <p>{description}</p>
-                    </div>
-                </div>
+                {(() => {
+                    if (!species && !pot_size && !description) {
+                        return <NoDetails />
+                    } else {
+                        return <Details />
+                    }
+                })()}
             </div>
         )
     }
@@ -48,7 +68,9 @@ const PlantCard = ({ name, uuid, species, description, pot_size, last_watered })
             onClick={() => window.location.href = `/manage/${uuid}`}
         >
             <div className="card-body text-center">
-                <h2 className="card-title mx-auto">{name}</h2>
+                <h2 className="card-title mx-auto pr-8 indent-8 line-clamp-1">
+                    {name}
+                </h2>
                 {(() => {
                     if (last_watered) {
                         return <p>Watered {timestampToRelative(last_watered)}</p>;
