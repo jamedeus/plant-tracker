@@ -7,7 +7,7 @@
 }
 
 .collapse-title {
-    @apply pe-0 p-4;
+    @apply p-4;
 }
 
 .max-w-90 {
