@@ -4,11 +4,12 @@ import { DateTime } from 'luxon';
 import { sendPostRequest, parseDomContext, localToUTC, timestampToRelative } from 'src/util';
 import CollapseCol from 'src/components/CollapseCol';
 import EditableNodeList from 'src/components/EditableNodeList';
-import EditModal, { openEditModal } from 'src/components/EditModal';
+import EditModal from 'src/components/EditModal';
 import PlantDetails from 'src/forms/PlantDetails';
 import Navbar from 'src/components/Navbar';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { useToast } from 'src/ToastContext';
+import DetailsCard from 'src/components/DetailsCard';
 
 function App() {
     // Load context set by django template
@@ -72,7 +73,7 @@ function App() {
 
     // Takes event timestamp and types, sends delete request to backend
     // If successful removes timestamp from react state to re-render history
-    async function deleteEvent(timestamp, type) {
+    const deleteEvent = async (timestamp, type) => {
         const payload = {
             plant_id: plant.uuid,
             event_type: type,
@@ -83,15 +84,15 @@ function App() {
         if (response.ok) {
             removeEvent(timestamp, type);
         }
-    }
+    };
 
     // Takes timestamp and eventType, removes timestamp from plant.events state
-    function removeEvent(timestamp, eventType) {
+    const removeEvent = (timestamp, eventType) => {
         let oldPlant = {...plant};
         oldPlant.events[eventType].splice(
             oldPlant.events[eventType].indexOf(timestamp),
             1
-        )
+        );
         setPlant(oldPlant);
     };
 
@@ -124,29 +125,6 @@ function App() {
             // Remove tray details from plant state
             setPlant({...plant, tray: null});
         }
-    };
-
-    // Shown in dropdown when name in nav bar clicked
-    const DetailsCard = ({ species, pot_size, description }) => {
-        return (
-            <div className="card card-compact p-2 shadow bg-neutral text-neutral-content mx-auto mt-2">
-                <div className="card-body">
-                    <p>Species: {species}</p>
-                    <p>Pot size: {pot_size} inches</p>
-                    <p>Description: {description}</p>
-                    <button className="btn btn-sm mt-4" onClick={openEditModal}>Edit</button>
-                </div>
-            </div>
-        );
-    };
-
-    DetailsCard.propTypes = {
-        species: PropTypes.string,
-        pot_size: PropTypes.oneOfType([
-            PropTypes.string,
-            PropTypes.number
-        ]),
-        description: PropTypes.string
     };
 
     // Displays timestamp and relative time in event history sections
@@ -292,11 +270,11 @@ function App() {
                     <div className="dropdown">
                         <a tabIndex={0} role="button" className="btn btn-ghost text-3xl">{plant.display_name}</a>
                         <div tabIndex={0} className="dropdown-content z-[1] flex w-full">
-                            <DetailsCard
-                                species={plant.species}
-                                pot_size={plant.pot_size}
-                                description={plant.description}
-                            />
+                            <DetailsCard>
+                                <p>Species: {plant.species}</p>
+                                <p>Pot size: {plant.pot_size} inches</p>
+                                <p>Description: {plant.description}</p>
+                            </DetailsCard>
                         </div>
                     </div>
                 }

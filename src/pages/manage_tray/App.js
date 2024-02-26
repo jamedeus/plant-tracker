@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { sendPostRequest, parseDomContext, localToUTC } from 'src/util';
 import EditableNodeList from 'src/components/EditableNodeList';
-import EditModal, { openEditModal } from 'src/components/EditModal';
+import EditModal from 'src/components/EditModal';
 import TrayDetails from 'src/forms/TrayDetails';
 import Navbar from 'src/components/Navbar';
 import PlantCard from 'src/components/PlantCard';
 import DatetimeInput from 'src/components/DatetimeInput';
 import FilterColumn from 'src/components/FilterColumn';
 import { useToast } from 'src/ToastContext';
+import DetailsCard from 'src/components/DetailsCard';
 
 function App() {
     // Load context set by django template
@@ -90,7 +91,7 @@ function App() {
     const eventTypeMap = {
         water: "last_watered",
         fertilize: "last_fertilized"
-    }
+    };
 
     // Called by bulkAddPlantEvents to update plant water/fertilize timestamps
     const updatePlantTimestamps = (updatedPlants, timestamp, eventType) => {
@@ -209,22 +210,6 @@ function App() {
         );
     };
 
-    // Shown in dropdown when name in nav bar clicked
-    const DetailsCard = ({ location }) => {
-        return (
-            <div className="card card-compact p-2 shadow bg-neutral text-neutral-content mx-auto mt-2">
-                <div className="card-body">
-                    <p>Location: {location}</p>
-                    <button className="btn btn-sm mt-4" onClick={openEditModal}>Edit</button>
-                </div>
-            </div>
-        );
-    };
-
-    DetailsCard.propTypes = {
-        location: PropTypes.string
-    };
-
     // Buttons used to add bulk events to plants in tray
     const PlantEventButtons = ({editing, setEditing}) => {
         switch(editing) {
@@ -293,7 +278,9 @@ function App() {
                     <div className="dropdown">
                         <a tabIndex={0} role="button" className="btn btn-ghost text-3xl">{tray.display_name}</a>
                         <div tabIndex={0} className="dropdown-content z-[1] flex w-full">
-                            <DetailsCard location={tray.location} />
+                            <DetailsCard>
+                                <p>Location: {tray.location}</p>
+                            </DetailsCard>
                         </div>
                     </div>
                 }
