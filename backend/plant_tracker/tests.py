@@ -161,12 +161,12 @@ class ManagePageTests(TestCase):
         self.assertEqual(len(Plant.objects.all()), 2)
         self.assertEqual(len(Tray.objects.all()), 1)
 
-        # Send plant registration request
+        # Send plant registration request with extra spaces on some params
         test_id = uuid4()
         payload = {
             'uuid': test_id,
-            'name': 'test plant',
-            'species': 'Giant Sequoia',
+            'name': '     test plant',
+            'species': 'Giant Sequoia    ',
             'description': '300 feet and a few thousand years old',
             'pot_size': '4',
             'type': 'plant'
@@ -177,8 +177,9 @@ class ManagePageTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, f'/manage/{test_id}')
 
-        # Confirm exists in database, has correct parameters
+        # Confirm exists in database
         self.assertEqual(len(Plant.objects.all()), 3)
+        # Confirm plant has corrrect params, confirm extra spaces were removed
         plant = Plant.objects.get(uuid=test_id)
         self.assertEqual(plant.name, 'test plant')
         self.assertEqual(plant.species, 'Giant Sequoia')
@@ -192,12 +193,12 @@ class ManagePageTests(TestCase):
         self.assertEqual(len(Plant.objects.all()), 2)
         self.assertEqual(len(Tray.objects.all()), 1)
 
-        # Send registration request
+        # Send plant registration request with extra spaces on some params
         test_id = uuid4()
         payload = {
             'uuid': test_id,
-            'name': 'test tray',
-            'location': 'top shelf',
+            'name': '    test tray',
+            'location': 'top shelf    ',
             'type': 'tray'
         }
         response = self.client.post('/register', payload)
@@ -206,8 +207,9 @@ class ManagePageTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, f'/manage/{test_id}')
 
-        # Confirm exists in database, has correct parameters
+        # Confirm exists in database
         self.assertEqual(len(Tray.objects.all()), 2)
+        # Confirm tray has corrrect params, confirm extra spaces were removed
         tray = Tray.objects.get(uuid=test_id)
         self.assertEqual(tray.name, 'test tray')
         self.assertEqual(tray.location, 'top shelf')

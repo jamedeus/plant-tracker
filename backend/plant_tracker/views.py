@@ -179,8 +179,9 @@ def register(data):
     '''
 
     # Replace empty strings with None (prevent empty strings in db)
-    data = {key: (value if value != '' else None) for key, value in data.items()}
-    print(json.dumps(data, indent=4))
+    # Remove leading/trailing whitespace (prevent weird display)
+    data = {key: (value.strip() if value != '' else None)
+            for key, value in data.items()}
 
     if data["type"] == "plant":
         Plant.objects.create(
