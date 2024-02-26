@@ -296,20 +296,22 @@ class ManagePageTests(TestCase):
         self.assertEqual(response.context['js_bundle'], 'plant_tracker/manage_tray.js')
         self.assertEqual(response.context['title'], 'Manage Tray')
 
-        # Confirm expected state object
+        # Confirm expected state objects
         state = response.context['state']
-        self.assertEqual(state['tray'], {
-            'uuid': str(self.tray1.uuid),
-            'name': self.tray1.name,
-            'location': None,
-            'display_name': self.tray1.get_display_name()
-        })
-
-        # Confirm state includes correct plant details
-        self.assertEqual(len(state['details']), 1)
         self.assertEqual(
-            state['details'][0],
+            state['tray'],
             {
+                'uuid': str(self.tray1.uuid),
+                'name': self.tray1.name,
+                'location': None,
+                'display_name': self.tray1.get_display_name()
+            }
+        )
+
+        # Confirm details state contains params for plant in tray
+        self.assertEqual(
+            state['details'],
+            [{
                 'name': 'Unnamed plant 1',
                 'uuid': str(self.plant1.uuid),
                 'species': None,
@@ -317,7 +319,22 @@ class ManagePageTests(TestCase):
                 'pot_size': None,
                 'last_watered': None,
                 'last_fertilized': None
-            }
+            }]
+        )
+
+        # Confirm options state contains params for all plants
+        self.assertEqual(
+            state['options'],
+            [
+                {
+                    'name': self.plant1.get_display_name(),
+                    'uuid': str(self.plant1.uuid)
+                },
+                {
+                    'name': self.plant2.get_display_name(),
+                    'uuid': str(self.plant2.uuid)
+                }
+            ]
         )
 
     def test_edit_plant_details(self):
