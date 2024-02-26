@@ -20,7 +20,10 @@ const FilterColumn = ({title, contents, cardComponent, editableList, children}) 
         if (query) {
             setCurrent(contents.filter(item => {
                 // Ignore UUID to prevent single characters matching everything
-                const { uuid, ...otherProps } = item;
+                // Ignore timestamps to prevent numbers matching everything
+                const {
+                    uuid, last_watered, last_fertilized, ...otherProps
+                } = item;
                 return Object.values(otherProps)
                              .toString()
                              .toLowerCase()
