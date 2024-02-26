@@ -66,7 +66,8 @@ class OverviewTests(TestCase):
                     'species': None,
                     'description': None,
                     'pot_size': None,
-                    'last_watered': None
+                    'last_watered': None,
+                    'last_fertilized': None
                 },
                 {
                     'uuid': str(plant2.uuid),
@@ -74,7 +75,8 @@ class OverviewTests(TestCase):
                     'species': 'fittonia',
                     'description': None,
                     'pot_size': None,
-                    'last_watered': None
+                    'last_watered': None,
+                    'last_fertilized': None
                 }
             ]
         )
@@ -319,20 +321,33 @@ class ManagePageTests(TestCase):
         self.assertIsNone(self.plant1.name)
         self.assertIsNone(self.plant1.species)
 
-        # Send edit details request, confirm response contains new display_name
+        # Send edit details request
+        # Note trailing spaces on name, leading spaces on species
         payload = {
             'plant_id': self.plant1.uuid,
-            'name': 'test plant',
-            'species': 'Giant Sequoia',
+            'name': 'test plant    ',
+            'species': '   Giant Sequoia',
             'description': '300 feet and a few thousand years old',
             'pot_size': '4'
         }
         response = self.client.post('/edit_plant', payload)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'display_name': 'test plant'})
 
-        # Confirm no additional plant created, confirm details now match
+        # Confirm response contains correct details with extra spaces removed
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {
+                'name': 'test plant',
+                'display_name': 'test plant',
+                'species': 'Giant Sequoia',
+                'description': '300 feet and a few thousand years old',
+                'pot_size': '4'
+            }
+        )
+
+        # Confirm no additional plant created
         self.assertEqual(len(Plant.objects.all()), 2)
+        # Confirm details now match, leading/trailing spaces were removed
         self._refresh_test_models()
         self.assertEqual(self.plant1.name, 'test plant')
         self.assertEqual(self.plant1.species, 'Giant Sequoia')
@@ -341,18 +356,29 @@ class ManagePageTests(TestCase):
         # Confirm test tray has no name
         self.assertIsNone(self.tray1.name)
 
-        # Send edit details request, confirm response contains new display_name
+        # Send edit details request
+        # Note trailing spaces on name, leading spaces on location
         payload = {
             'tray_id': self.tray1.uuid,
-            'name': 'test tray',
-            'location': 'middle shelf'
+            'name': 'test tray    ',
+            'location': '    middle shelf'
         }
         response = self.client.post('/edit_tray', payload)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'display_name': 'test tray'})
 
-        # Confirm no additional tray created, confirm details now match
+        # Confirm response contains correct details with extra spaces removed
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {
+                'name': 'test tray',
+                'display_name': 'test tray',
+                'location': 'middle shelf'
+            }
+        )
+
+        # Confirm no additional tray created
         self.assertEqual(len(Tray.objects.all()), 1)
+        # Confirm details now match, leading/trailing spaces were removed
         self._refresh_test_models()
         self.assertEqual(self.tray1.name, 'test tray')
         self.assertEqual(self.tray1.location, 'middle shelf')

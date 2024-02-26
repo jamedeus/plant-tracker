@@ -51,14 +51,9 @@ function App() {
 
         const response = await sendPostRequest('/edit_tray', payload);
         if (response.ok) {
-            // Read new display name from response
+            // Update plant state with new values from response
             const data = await response.json();
-
-            let oldTray = {...tray};
-            oldTray.name = payload.name;
-            oldTray.location = payload.location;
-            oldTray.display_name = data.display_name;
-            setTray(oldTray);
+            setTray({...tray, ...data});
         }
     };
 

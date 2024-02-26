@@ -75,21 +75,9 @@ class Tray(models.Model):
 
     def get_plant_details(self):
         '''Returns list of dicts with parameters for each Plant in Tray
-        Each dict contains name, uuid, last_watered timestamp, last_fertilized timestamp
+        See Plant.get_details for dict parameters
         '''
-        details = [
-            {
-                'name': plant.get_display_name(),
-                'uuid': str(plant.uuid),
-                'species': plant.species,
-                'description': plant.description,
-                'pot_size': plant.pot_size,
-                'last_watered': plant.last_watered(),
-                'last_fertilized': plant.last_fertilized()
-            }
-            for plant in self.plant_set.all()
-        ]
-        return details
+        return [plant.get_details() for plant in self.plant_set.all()]
 
 
 @receiver(post_save, sender=Tray)
@@ -133,6 +121,20 @@ class Plant(models.Model):
         # If no name or species return string with unnamed plant index
         unnamed_plants = get_unnamed_plants()
         return f'Unnamed plant {unnamed_plants.index(self.id) + 1}'
+
+    def get_details(self):
+        '''Returns dict containing all plant attributes and last_watered,
+        last_fertilized timestamps. Used as state for frontend components.
+        '''
+        return {
+            'name': self.get_display_name(),
+            'uuid': str(self.uuid),
+            'species': self.species,
+            'description': self.description,
+            'pot_size': self.pot_size,
+            'last_watered': self.last_watered(),
+            'last_fertilized': self.last_fertilized()
+        }
 
     def last_watered(self):
         '''Returns timestamp string of last WaterEvent, or None if no events'''

@@ -30,20 +30,12 @@ function App() {
             new FormData(document.getElementById('plantDetails'))
         );
         payload["plant_id"] = plant.uuid;
-        console.log(payload);
 
         const response = await sendPostRequest('/edit_plant', payload);
         if (response.ok) {
-            // Read new display name from response
+            // Update plant state with new values from response
             const data = await response.json();
-
-            let oldPlant = {...plant};
-            oldPlant.name = payload.name;
-            oldPlant.species = payload.species;
-            oldPlant.pot_size = payload.pot_size;
-            oldPlant.description = payload.description;
-            oldPlant.display_name = data.display_name;
-            setPlant(oldPlant);
+            setPlant({...plant, ...data});
         }
     };
 

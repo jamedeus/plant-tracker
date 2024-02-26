@@ -75,14 +75,7 @@ def overview(request):
     }
 
     for plant in Plant.objects.all():
-        state['plants'].append({
-            'uuid': str(plant.uuid),
-            'name': plant.get_display_name(),
-            'species': plant.species,
-            'description': plant.description,
-            'pot_size': plant.pot_size,
-            'last_watered': plant.last_watered()
-        })
+        state['plants'].append(plant.get_details())
 
     for tray in Tray.objects.all():
         state['trays'].append({
@@ -245,17 +238,21 @@ def edit_plant_details(plant, data):
     print(json.dumps(data, indent=4))
 
     # Replace empty strings with None (prevent empty strings in db)
-    data = {key: (value if value != '' else None) for key, value in data.items()}
+    # Remove leading/trailing whitespace (prevent weird display)
+    data = {key: (value.strip() if value != '' else None)
+            for key, value in data.items()}
 
-    # Overwrite database params with user values
+    # Overwrite database params with user values (remove extra whitespace)
     plant.name = data["name"]
     plant.species = data["species"]
     plant.description = data["description"]
     plant.pot_size = data["pot_size"]
     plant.save()
 
-    # Return new display_name (other params updated client-side)
-    return JsonResponse({"display_name": plant.get_display_name()}, status=200)
+    # Return modified payload with new display_name
+    del data["plant_id"]
+    data["display_name"] = plant.get_display_name()
+    return JsonResponse(data, status=200)
 
 
 @requires_json_post(["tray_id", "name", "location"])
@@ -267,15 +264,19 @@ def edit_tray_details(tray, data):
     print(json.dumps(data, indent=4))
 
     # Replace empty strings with None (prevent empty strings in db)
-    data = {key: (value if value != '' else None) for key, value in data.items()}
+    # Remove leading/trailing whitespace (prevent weird display)
+    data = {key: (value.strip() if value != '' else None)
+            for key, value in data.items()}
 
     # Overwrite database params with user values
     tray.name = data["name"]
     tray.location = data["location"]
     tray.save()
 
-    # Return new display_name (other params updated client-side)
-    return JsonResponse({"display_name": tray.get_display_name()}, status=200)
+    # Return modified payload with new display_name
+    del data["tray_id"]
+    data["display_name"] = tray.get_display_name()
+    return JsonResponse(data, status=200)
 
 
 @requires_json_post(["plant_id"])
