@@ -39,53 +39,35 @@ function App() {
         }
     };
 
-    const waterPlant = async () => {
-        const payload = {
-            plant_id: plant.uuid,
-            event_type: 'water',
-            timestamp: localToUTC(document.getElementById("eventTime").value)
-        };
-        const response = await sendPostRequest('/add_plant_event', payload);
-        if (response.ok) {
-            let oldPlant = {...plant};
-            oldPlant.last_watered = payload.timestamp;
-            oldPlant.water_events.push(payload.timestamp);
-            oldPlant.water_events.sort().reverse();
-            setPlant(oldPlant);
-        } else {
-            // Duplicate event timestamp: show error toast for 5 seconds
-            if (response.status === 409) {
-                showToast(
-                    "Error: Water event with same timestamp already exists",
-                    'red',
-                    5000
-                );
-            // Other error (unexpected): show in alert
-            } else {
-                const data = await response.json();
-                alert(data);
-            }
-        }
-    };
+    // Map eventType taken by addEvent to the plant state key that should be
+    // updated when an event is successfully created
+    const eventTypeMap = {
+        water: "last_watered",
+        fertilize: "last_fertilized"
+    }
 
-    const fertilizePlant = async () => {
+    // Handler for water and fertilize buttons
+    // Takes event type, creates event in database, adds timestamp to state
+    const addEvent = async (eventType) => {
         const payload = {
             plant_id: plant.uuid,
-            event_type: 'fertilize',
+            event_type: eventType,
             timestamp: localToUTC(document.getElementById("eventTime").value)
         };
         const response = await sendPostRequest('/add_plant_event', payload);
         if (response.ok) {
             let oldPlant = {...plant};
-            oldPlant.last_fertilized = payload.timestamp;
-            oldPlant.fertilize_events.push(payload.timestamp);
-            oldPlant.fertilize_events.sort().reverse();
+            // Update last_watered/last_fertilized timestamp
+            oldPlant.events[eventTypeMap[eventType]] = payload.timestamp;
+            // Add new event to correct history column, sort chronologically
+            oldPlant.events[eventType].push(payload.timestamp);
+            oldPlant.events[eventType].sort().reverse();
             setPlant(oldPlant);
         } else {
             // Duplicate event timestamp: show error toast for 5 seconds
             if (response.status === 409) {
                 showToast(
-                    "Error: Fertilize event with same timestamp already exists",
+                    `Error: ${eventType} event with same timestamp already exists`,
                     'red',
                     5000
                 );
@@ -107,27 +89,19 @@ function App() {
         };
         const response = await sendPostRequest('/delete_plant_event', payload);
         if (response.ok) {
-            if (type === 'water') {
-                removeWaterEvent(timestamp);
-            } else if (type === 'fertilize') {
-                removeFertilizeEvent(timestamp);
-            }
+            removeEvent(timestamp, type);
         }
     }
 
-    // Takes WaterEvent timestamp, removes from react state
-    function removeWaterEvent(timestamp) {
+    // Takes timestamp and eventType, removes timestamp from plant.events state
+    function removeEvent(timestamp, eventType) {
         let oldPlant = {...plant};
-        oldPlant.water_events.splice(oldPlant.water_events.indexOf(timestamp), 1);
+        oldPlant.events[eventType].splice(
+            oldPlant.events[eventType].indexOf(timestamp),
+            1
+        )
         setPlant(oldPlant);
-    }
-
-    // Takes FertilizeEvent timestamp, removes from react state
-    function removeFertilizeEvent(timestamp) {
-        let oldPlant = {...plant};
-        oldPlant.fertilize_events.splice(oldPlant.fertilize_events.indexOf(timestamp), 1);
-        setPlant(oldPlant);
-    }
+    };
 
     // Called when user selects tray from dropdown
     const addToTray = async () => {
@@ -342,8 +316,18 @@ function App() {
                 <span className="text-lg">Last Fertilized: {timestampToRelative(plant.last_fertilized)}</span>
                 <DatetimeInput id="eventTime" />
                 <div className="flex mx-auto">
-                    <button className="btn btn-info m-2" onClick={waterPlant}>Water</button>
-                    <button className="btn btn-success m-2" onClick={fertilizePlant}>Fertilize</button>
+                    <button
+                        className="btn btn-info m-2"
+                        onClick={() => addEvent('water')}
+                    >
+                        Water
+                    </button>
+                    <button
+                        className="btn btn-success m-2"
+                        onClick={() => addEvent('fertilize')}
+                    >
+                        Fertilize
+                    </button>
                 </div>
             </div>
 
@@ -352,13 +336,13 @@ function App() {
             <div className="grid grid-cols-1 md:grid-cols-2 mx-auto mt-16">
                 <div className="md:mr-8 mb-8 md:mb-0">
                     <CollapseCol title="Water History" defaultOpen={false}>
-                        <EventsCol events={plant.water_events} type="water" />
+                        <EventsCol events={plant.events.water} type="water" />
                     </CollapseCol>
                 </div>
 
                 <div className="md:ml-8">
                     <CollapseCol title="Fertilize History" defaultOpen={false}>
-                        <EventsCol events={plant.fertilize_events} type="fertilize" />
+                        <EventsCol events={plant.events.fertilize} type="fertilize" />
                     </CollapseCol>
                 </div>
             </div>

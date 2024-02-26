@@ -104,29 +104,30 @@ def manage(request, uuid):
     if plant:
         # Create state object parsed by react app
         state = {
-            'plant': {
-                'uuid': str(plant.uuid),
-                'name': plant.name,
-                'display_name': plant.get_display_name(),
-                'species': plant.species,
-                'pot_size': plant.pot_size,
-                'description': plant.description,
-                'water_events': plant.get_water_timestamps(),
-                'fertilize_events': plant.get_fertilize_timestamps(),
-                'last_watered': plant.last_watered(),
-                'last_fertilized': plant.last_fertilized(),
-                'tray': None,
-            },
+            'plant': plant.get_details(),
             'trays': [{'name': tray.get_display_name(), 'uuid': str(tray.uuid)}
                       for tray in Tray.objects.all()],
             'species_options': get_plant_species_options()
         }
 
+        # Replace name key (get_details returns display_name) with actual name
+        state['plant']['name'] = plant.name
+        state['plant']['display_name'] = plant.get_display_name()
+
+        # Add all water and fertilize timestamps
+        state['plant']['events'] = {
+            'water': plant.get_water_timestamps(),
+            'fertilize': plant.get_fertilize_timestamps()
+        }
+
+        # Add tray details if plant is in a tray
         if plant.tray:
             state['plant']['tray'] = {
                 'name': plant.tray.get_display_name(),
                 'uuid': str(plant.tray.uuid)
             }
+        else:
+            state['plant']['tray'] = None
 
         return render_react_app(
             request,

@@ -256,10 +256,12 @@ class ManagePageTests(TestCase):
             'species': None,
             'pot_size': None,
             'description': None,
-            'water_events': [],
-            'fertilize_events': [],
             'last_watered': None,
             'last_fertilized': None,
+            'events': {
+                'water': [],
+                'fertilize': []
+            },
             'tray': None,
         })
 
