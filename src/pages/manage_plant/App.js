@@ -39,13 +39,6 @@ function App() {
         }
     };
 
-    // Map eventType taken by addEvent to the plant state key that should be
-    // updated when an event is successfully created
-    const eventTypeMap = {
-        water: "last_watered",
-        fertilize: "last_fertilized"
-    }
-
     // Handler for water and fertilize buttons
     // Takes event type, creates event in database, adds timestamp to state
     const addEvent = async (eventType) => {
@@ -56,10 +49,8 @@ function App() {
         };
         const response = await sendPostRequest('/add_plant_event', payload);
         if (response.ok) {
-            let oldPlant = {...plant};
-            // Update last_watered/last_fertilized timestamp
-            oldPlant.events[eventTypeMap[eventType]] = payload.timestamp;
             // Add new event to correct history column, sort chronologically
+            let oldPlant = {...plant};
             oldPlant.events[eventType].push(payload.timestamp);
             oldPlant.events[eventType].sort().reverse();
             setPlant(oldPlant);
@@ -88,6 +79,7 @@ function App() {
             timestamp: timestamp
         };
         const response = await sendPostRequest('/delete_plant_event', payload);
+        // If successful remove event from history column
         if (response.ok) {
             removeEvent(timestamp, type);
         }
@@ -312,8 +304,12 @@ function App() {
             />
 
             <div className="flex flex-col text-center">
-                <span className="text-lg">Last Watered: {timestampToRelative(plant.last_watered)}</span>
-                <span className="text-lg">Last Fertilized: {timestampToRelative(plant.last_fertilized)}</span>
+                <span className="text-lg">
+                    Last Watered: {timestampToRelative(plant.events.water[0])}
+                </span>
+                <span className="text-lg">
+                    Last Fertilized: {timestampToRelative(plant.events.fertilize[0])}
+                </span>
                 <DatetimeInput id="eventTime" />
                 <div className="flex mx-auto">
                     <button
