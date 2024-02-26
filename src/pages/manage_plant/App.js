@@ -4,7 +4,7 @@ import { DateTime } from 'luxon';
 import { sendPostRequest, parseDomContext, localToUTC, timestampToRelative } from 'src/util';
 import CollapseCol from 'src/components/CollapseCol';
 import EditableNodeList from 'src/components/EditableNodeList';
-import EditModal from 'src/components/EditModal';
+import EditModal, { openEditModal } from 'src/components/EditModal';
 import PlantDetails from 'src/forms/PlantDetails';
 import Navbar from 'src/components/Navbar';
 import DatetimeInput from 'src/components/DatetimeInput';
@@ -25,12 +25,10 @@ function App() {
         window.location.href = "/";
     };
 
-    const openEditModal = () => {
-        document.getElementById('editModal').showModal();
-    };
-
     const submitEditModal = async () => {
-        const payload = Object.fromEntries(new FormData(document.getElementById('plantDetails')));
+        const payload = Object.fromEntries(
+            new FormData(document.getElementById('plantDetails'))
+        );
         payload["plant_id"] = plant.uuid;
         console.log(payload);
 
@@ -160,7 +158,10 @@ function App() {
 
     // Handler for remove from tray button
     const removeFromTray = async () => {
-        const response = await sendPostRequest('/remove_plant_from_tray', {plant_id: plant.uuid});
+        const response = await sendPostRequest(
+            '/remove_plant_from_tray',
+            {plant_id: plant.uuid}
+        );
         if (response.ok) {
             let oldPlant = {...plant};
             oldPlant.tray = null;

@@ -16,7 +16,7 @@ function App() {
         return parseDomContext("trays");
     });
 
-    // State object to track edit mode (shows checkbox for each card)
+    // State object to track edit mode (shows checkbox for each card when true)
     const [editing, setEditing] = useState(false);
 
     // Toggle editing state, clear selected, remove focus (closes dropdown)

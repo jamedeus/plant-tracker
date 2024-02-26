@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { sendPostRequest, parseDomContext, localToUTC } from 'src/util';
 import EditableNodeList from 'src/components/EditableNodeList';
-import EditModal from 'src/components/EditModal';
+import EditModal, { openEditModal } from 'src/components/EditModal';
 import TrayDetails from 'src/forms/TrayDetails';
 import Navbar from 'src/components/Navbar';
 import PlantCard from 'src/components/PlantCard';
@@ -42,12 +42,10 @@ function App() {
         window.location.href = "/";
     };
 
-    const openEditModal = () => {
-        document.getElementById('editModal').showModal();
-    };
-
     const submitEditModal = async () => {
-        const payload = Object.fromEntries(new FormData(document.getElementById('trayDetails')));
+        const payload = Object.fromEntries(
+            new FormData(document.getElementById('trayDetails'))
+        );
         payload["tray_id"] = tray.uuid;
         console.log(payload);
 
@@ -64,16 +62,12 @@ function App() {
         }
     };
 
-    // Handler for "Water All" button
-    const waterTray = async () => {
-        const timestamp = localToUTC(document.getElementById("addEventAllTime").value);
-        await bulkAddPlantEvents('water', plantIds, timestamp);
-    };
-
-    // Handler for "Fertilize All" button
-    const fertilizeTray = async () => {
-        const timestamp = localToUTC(document.getElementById("addEventAllTime").value);
-        await bulkAddPlantEvents('fertilize', plantIds, timestamp);
+    // Handler for "Water All" and "Fertilize All" buttons
+    const addEventAll = async (eventType) => {
+        const timestamp = localToUTC(
+            document.getElementById("addEventAllTime").value
+        );
+        await bulkAddPlantEvents(eventType, plantIds, timestamp);
     };
 
     // Creates event with specified type and timestamp for every plant in
@@ -312,10 +306,10 @@ function App() {
 
             <DatetimeInput id="addEventAllTime" />
             <div className="flex mx-auto mb-8">
-                <button className="btn btn-info m-2" onClick={waterTray}>
+                <button className="btn btn-info m-2" onClick={() => addEventAll('water')}>
                     Water All
                 </button>
-                <button className="btn btn-success m-2" onClick={fertilizeTray}>
+                <button className="btn btn-success m-2" onClick={() => addEventAll('fertilize')}>
                     Fertilize All
                 </button>
             </div>
