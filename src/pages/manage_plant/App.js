@@ -103,12 +103,12 @@ function App() {
         };
         const response = await sendPostRequest('/add_plant_to_tray', payload);
         if (response.ok) {
-            {/* TODO improve context, this is ridiculous */}
-            trays.forEach(tray => {
-                if (tray.uuid === payload.tray_id) {
-                    let oldPlant = {...plant};
-                    oldPlant.tray = {name: tray.name, uuid: tray.uuid};
-                    setPlant(oldPlant);
+            // Update plant state with tray name and UUID from response
+            const data = await response.json();
+            setPlant({...plant,
+                tray: {
+                    name: data.tray_name,
+                    uuid: data.tray_uuid
                 }
             });
         }
@@ -121,9 +121,8 @@ function App() {
             {plant_id: plant.uuid}
         );
         if (response.ok) {
-            let oldPlant = {...plant};
-            oldPlant.tray = null;
-            setPlant(oldPlant);
+            // Remove tray details from plant state
+            setPlant({...plant, tray: null});
         }
     };
 

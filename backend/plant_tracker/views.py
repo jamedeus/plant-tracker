@@ -373,7 +373,12 @@ def add_plant_to_tray(plant, tray, **kwargs):
     plant.tray = tray
     plant.save()
     return JsonResponse(
-        {"action": "add_plant_to_tray", "plant": plant.uuid, "tray": tray.uuid},
+        {
+            "action": "add_plant_to_tray",
+            "plant": plant.uuid,
+            "tray_name": tray.get_display_name(),
+            "tray_uuid": tray.uuid
+        },
         status=200
     )
 

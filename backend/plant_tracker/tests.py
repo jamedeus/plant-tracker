@@ -392,10 +392,21 @@ class ManagePageTests(TestCase):
         self.assertIsNone(self.plant1.tray)
         self.assertEqual(len(self.tray1.plant_set.all()), 0)
 
-        # Send add_plant_to_tray request, confirm response + relation created
+        # Send add_plant_to_tray request, confirm response
         payload = {'plant_id': self.plant1.uuid, 'tray_id': self.tray1.uuid}
         response = self.client.post('/add_plant_to_tray', payload)
         self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {
+                "action": "add_plant_to_tray",
+                "plant": str(self.plant1.uuid),
+                "tray_name": self.tray1.get_display_name(),
+                "tray_uuid": str(self.tray1.uuid)
+            }
+        )
+
+        # Confirm database relation created
         self._refresh_test_models()
         self.assertEqual(self.plant1.tray, self.tray1)
         self.assertEqual(len(self.tray1.plant_set.all()), 1)
