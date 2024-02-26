@@ -147,7 +147,6 @@ def manage(request, uuid):
                 'display_name': tray.get_display_name(),
                 'location': tray.location
             },
-            'plant_ids': tray.get_plant_uuids(),
             'details': tray.get_plant_details(),
             'options': get_plant_options()
         }
@@ -410,7 +409,7 @@ def bulk_add_plants_to_tray(tray, data):
         if plant:
             plant.tray = tray
             plant.save()
-            added.append(plant_id)
+            added.append(plant.get_details())
         else:
             failed.append(plant_id)
     return JsonResponse({"added": added, "failed": failed}, status=200)

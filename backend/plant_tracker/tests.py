@@ -447,7 +447,7 @@ class ManagePageTests(TestCase):
         self.assertEqual(
             response.json(),
             {
-                "added": [str(self.plant1.uuid), str(self.plant2.uuid)],
+                "added": [self.plant1.get_details(), self.plant2.get_details()],
                 "failed": [str(self.fake_id)]
             }
         )

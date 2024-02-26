@@ -16,15 +16,11 @@ function App() {
     const [tray, setTray] = useState(() => {
         return parseDomContext("tray");
     });
-    const [plantIds, setPlantIds] = useState(() => {
-        return parseDomContext("plant_ids");
-    });
     const [plantDetails, setPlantDetails] = useState(() => {
         return parseDomContext("details");
     });
     // Contains list of objects with name and uuid of every plant in database
-    // DO NOT mutate (menu options are produced by filtering out plantIds state)
-    // As long as plantIds matches the plants in tray options will be correct
+    // DO NOT mutate (used to generate add/remove plant menu options)
     const options = parseDomContext("options");
 
     // Create state to track whether selecting plants from list
@@ -63,7 +59,12 @@ function App() {
         const timestamp = localToUTC(
             document.getElementById("addEventAllTime").value
         );
-        await bulkAddPlantEvents(eventType, plantIds, timestamp);
+        // Post eventType, all plant UUIDs, and timestamp to backend endpoint
+        await bulkAddPlantEvents(
+            eventType,
+            plantDetails.map(plant => plant.uuid),
+            timestamp
+        );
     };
 
     // Creates event with specified type and timestamp for every plant in
@@ -141,21 +142,20 @@ function App() {
             };
             const response = await sendPostRequest('/bulk_add_plants_to_tray', payload);
             if (response.ok) {
-                // TODO improve django context to simplify this
+                // Add objects in response to plantDetails state
                 const data = await response.json();
-                // Add UUIDS in response to plantIds (used for waterAll, etc)
-                setPlantIds([...plantIds, ...data.added]);
-
-                // Parse details for each added plant from options list, add to plantDetails state
-                const addedPlants = options.filter(plant => data.added.includes(plant.uuid));
-                setPlantDetails([...plantDetails, ...addedPlants]);
+                setPlantDetails([...plantDetails, ...data.added])
             }
         };
+
+        // Get object with name and UUID of all plants not already in tray
+        const existing = plantDetails.map(plant => plant.uuid);
+        const plantOptions = options.filter(plant => !existing.includes(plant.uuid));
 
         return (
             <>
                 <EditableNodeList editing={true} selected={selected} setSelected={setSelected}>
-                    {options.filter(plant => !plantIds.includes(plant.uuid)).map((plant) => {
+                    {plantOptions.map((plant) => {
                         return <ManagePlantsCard key={plant.uuid} name={plant.name} />;
                     })}
                 </EditableNodeList>
@@ -183,11 +183,8 @@ function App() {
             };
             const response = await sendPostRequest('/bulk_remove_plants_from_tray', payload);
             if (response.ok) {
-                const data = await response.json();
-                // Remove UUIDs in response from plantIds (will appear in addPlants options)
-                setPlantIds(plantIds.filter(plant => !data.removed.includes(plant)));
-
                 // Remove UUIDs in response from plantDetails
+                const data = await response.json();
                 setPlantDetails(plantDetails.filter(plant => !data.removed.includes(plant.uuid)));
             }
         };
