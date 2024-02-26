@@ -10,6 +10,7 @@ import DatetimeInput from 'src/components/DatetimeInput';
 import FilterColumn from 'src/components/FilterColumn';
 import { useToast } from 'src/ToastContext';
 import DetailsCard from 'src/components/DetailsCard';
+import Modal from 'src/components/Modal';
 
 function App() {
     // Load context set by django template
@@ -144,7 +145,7 @@ function App() {
             if (response.ok) {
                 // Add objects in response to plantDetails state
                 const data = await response.json();
-                setPlantDetails([...plantDetails, ...data.added])
+                setPlantDetails([...plantDetails, ...data.added]);
             }
         };
 
@@ -315,27 +316,32 @@ function App() {
                 />
             </EditModal>
 
-            {/* Shown when user selects 'Add plants' or 'Remove plants' from dropdown */}
-            <dialog id="managePlantsModal" className="modal">
-                <div className="modal-box text-center flex flex-col">
-                    <form method="dialog">
-                        <button className="btn btn-sm btn-circle btn-ghost absolute right-2 top-2">✕</button>
-                    </form>
-                    <h3 className="font-bold text-lg mb-8">Add Plants to Tray</h3>
+            {/* Shown when 'Add plants' or 'Remove plants' clicked in dropdown */}
+            <Modal id="managePlantsModal">
+                {(() => {
+                    switch(managePlants) {
+                        case('add'):
+                            return (
+                                <>
+                                    <p className="font-bold text-2xl mb-8">
+                                        Add Plants
+                                    </p>
+                                    <AddPlantsModalContents />
+                                </>
+                            );
+                        case('remove'):
+                            return (
+                                <>
+                                    <p className="font-bold text-2xl mb-8">
+                                        Remove Plants
+                                    </p>
+                                    <RemovePlantsModalContents />
+                                </>
+                            );
 
-                    {(() => {
-                        switch(managePlants) {
-                            case('add'):
-                                return <AddPlantsModalContents />;
-                            case('remove'):
-                                return <RemovePlantsModalContents />;
-                        }
-                    })()}
-                </div>
-                <form method="dialog" className="modal-backdrop">
-                    <button>close</button>
-                </form>
-            </dialog>
+                    }
+                })()}
+            </Modal>
         </div>
     );
 }
