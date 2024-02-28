@@ -119,8 +119,86 @@ function App() {
         }
     };
 
+    // Rendered when both state objects are empty, shows setup instructions
+    const Setup = () => {
+        return (
+            <div className="flex flex-col mx-auto text-center my-auto px-8">
+                <p className="text-2xl">No plants found!</p>
+                <ul className="steps steps-vertical my-8">
+                    <li className="step">Print QR codes on sticker paper</li>
+                    <li className="step">Add a sticker to each plant pot</li>
+                    <li className="step">Scan codes to register plants!</li>
+                </ul>
+                <button className="btn btn-accent text-lg" onClick={fetchQrCodes}>
+                    Print QR Codes
+                </button>
+            </div>
+        );
+    };
+
+    const PlantsCol = () => {
+        return (
+            <FilterColumn
+                title="Plants"
+                contents={plants}
+                cardComponent={PlantCard}
+                editableList={
+                    <EditableNodeList
+                        editing={editing}
+                        selected={selectedPlants}
+                        setSelected={setSelectedPlants}
+                    />
+                }
+            />
+        );
+    };
+
+    const TraysCol = () => {
+        return (
+            <FilterColumn
+                title="Trays"
+                contents={trays}
+                cardComponent={TrayCard}
+                editableList={
+                    <EditableNodeList
+                        editing={editing}
+                        selected={selectedPlants}
+                        setSelected={setSelectedPlants}
+                    />
+                }
+            />
+        );
+    };
+
+    const Layout = () => {
+        switch(true) {
+            // Render 2-column layout if both plants and trays exist
+            case(plants.length > 0 && trays.length > 0):
+                return (
+                    <div className="grid grid-cols-1 md:grid-cols-2 mx-auto">
+                        <div className="md:mr-12 mb-8 md:mb-0">
+                            <PlantsCol />
+                        </div>
+
+                        <div className="md:ml-12">
+                            <TraysCol />
+                        </div>
+                    </div>
+                );
+            // Render centered plants column if only plants exist
+            case(plants.length > 0):
+                return <PlantsCol />;
+            // Render centered trays column if only trays exist
+            case(trays.length > 0):
+                return <TraysCol />;
+            // Render setup instructions if database is empty
+            default:
+                return <Setup />;
+        }
+    };
+
     return (
-        <div className="container flex flex-col mx-auto mb-8">
+        <div className="container flex flex-col min-h-screen mx-auto pb-16">
             <Navbar
                 dropdownOptions={
                     <>
@@ -133,37 +211,7 @@ function App() {
                 }
             />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 mx-auto">
-                <div className="md:mr-12 mb-8 md:mb-0">
-                    <FilterColumn
-                        title="Plants"
-                        contents={plants}
-                        cardComponent={PlantCard}
-                        editableList={
-                            <EditableNodeList
-                                editing={editing}
-                                selected={selectedPlants}
-                                setSelected={setSelectedPlants}
-                            />
-                        }
-                    />
-                </div>
-
-                <div className="md:ml-12">
-                    <FilterColumn
-                        title="Trays"
-                        contents={trays}
-                        cardComponent={TrayCard}
-                        editableList={
-                            <EditableNodeList
-                                editing={editing}
-                                selected={selectedPlants}
-                                setSelected={setSelectedPlants}
-                            />
-                        }
-                    />
-                </div>
-            </div>
+            <Layout />
 
             <EditingButtons />
 
