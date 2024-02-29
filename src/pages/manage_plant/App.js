@@ -167,7 +167,7 @@ function App() {
         };
 
         return (
-            <CollapseCol title={title} defaultOpen={false}>
+            <CollapseCol title={title} defaultOpen={false} scroll={true}>
                 <div className="max-h-half-screen overflow-scroll no-scrollbar">
                     <EditableNodeList
                         editing={editing}
@@ -189,6 +189,7 @@ function App() {
     };
 
     EventsCol.propTypes = {
+        title: PropTypes.string,
         events: PropTypes.array,
         type: PropTypes.string
     };
