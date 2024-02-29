@@ -150,7 +150,7 @@ function App() {
         switch(editing) {
             case(true):
                 return (
-                    <div className="flex">
+                    <div className="flex mt-4">
                         <button className="btn btn-outline mx-auto" onClick={() => setEditing(false)}>
                             Cancel
                         </button>
@@ -161,7 +161,7 @@ function App() {
                 );
             case(false):
                 return (
-                    <div className="flex">
+                    <div className="flex mt-4">
                         <button className="btn btn-outline mx-auto" onClick={() => setEditing(true)}>
                             Edit
                         </button>
@@ -193,11 +193,13 @@ function App() {
 
         return (
             <>
-                <EditableNodeList editing={editing} selected={selected} setSelected={setSelected}>
-                    {events.map((timestamp) => {
-                        return <EventCard key={timestamp} timestamp={timestamp} />;
-                    })}
-                </EditableNodeList>
+                <div className="max-h-half-screen overflow-scroll no-scrollbar">
+                    <EditableNodeList editing={editing} selected={selected} setSelected={setSelected}>
+                        {events.map((timestamp) => {
+                            return <EventCard key={timestamp} timestamp={timestamp} />;
+                        })}
+                    </EditableNodeList>
+                </div>
                 <EventHistoryButtons
                     editing={editing}
                     setEditing={setEditing}

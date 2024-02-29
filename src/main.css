@@ -37,3 +37,16 @@
 .input::placeholder {
     opacity: 0.5;
 }
+
+.max-h-half-screen {
+    max-height: 50vh;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
