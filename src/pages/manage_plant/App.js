@@ -117,10 +117,16 @@ function App() {
             case(true):
                 return (
                     <div className="flex mt-4">
-                        <button className="btn btn-outline mx-auto" onClick={() => setEditing(false)}>
+                        <button
+                            className="btn btn-outline mx-auto"
+                            onClick={() => setEditing(false)}
+                        >
                             Cancel
                         </button>
-                        <button className="btn btn-outline btn-error mx-auto" onClick={() => handleDelete()}>
+                        <button
+                            className="btn btn-outline btn-error mx-auto"
+                            onClick={() => handleDelete()}
+                        >
                             Delete
                         </button>
                     </div>
@@ -128,7 +134,10 @@ function App() {
             case(false):
                 return (
                     <div className="flex mt-4">
-                        <button className="btn btn-outline mx-auto" onClick={() => setEditing(true)}>
+                        <button
+                            className="btn btn-outline mx-auto"
+                            onClick={() => setEditing(true)}
+                        >
                             Edit
                         </button>
                     </div>
@@ -144,7 +153,7 @@ function App() {
 
     // Takes events array (eg plant.water_events) and type (water or fertilize)
     // Renders EditableNodeList with edit + delete button and handlers
-    const EventsCol = ({ events, type }) => {
+    const EventsCol = ({ title, events, type }) => {
         // Create states for editing state, selected events
         const [editing, setEditing] = useState(false);
         const [selected, setSelected] = useState([]);
@@ -158,9 +167,13 @@ function App() {
         };
 
         return (
-            <>
+            <CollapseCol title={title} defaultOpen={false}>
                 <div className="max-h-half-screen overflow-scroll no-scrollbar">
-                    <EditableNodeList editing={editing} selected={selected} setSelected={setSelected}>
+                    <EditableNodeList
+                        editing={editing}
+                        selected={selected}
+                        setSelected={setSelected}
+                    >
                         {events.map((timestamp) => {
                             return <EventCard key={timestamp} timestamp={timestamp} />;
                         })}
@@ -171,7 +184,7 @@ function App() {
                     setEditing={setEditing}
                     handleDelete={onDelete}
                 />
-            </>
+            </CollapseCol>
         );
     };
 
@@ -229,9 +242,11 @@ function App() {
                     <div className="card card-compact mb-8 mx-auto bg-base-200 text-center px-8">
                         <div className="card-body">
                             <p className="text-sm">Plant is in tray:</p>
-                            <p className="text-xl font-bold"><a href={"/manage/" + plant.tray.uuid}>
-                                { plant.tray.name }
-                            </a></p>
+                            <p className="text-xl font-bold">
+                                <a href={"/manage/" + plant.tray.uuid}>
+                                    { plant.tray.name }
+                                </a>
+                            </p>
                         </div>
                     </div>
                 );
@@ -331,15 +346,19 @@ function App() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 mx-auto mt-16">
                 <div className="md:mr-8 mb-8 md:mb-0">
-                    <CollapseCol title="Water History" defaultOpen={false}>
-                        <EventsCol events={plant.events.water} type="water" />
-                    </CollapseCol>
+                    <EventsCol
+                        title="Water History"
+                        events={plant.events.water}
+                        type="water"
+                    />
                 </div>
 
                 <div className="md:ml-8">
-                    <CollapseCol title="Fertilize History" defaultOpen={false}>
-                        <EventsCol events={plant.events.fertilize} type="fertilize" />
-                    </CollapseCol>
+                    <EventsCol
+                        title="Fertilize History"
+                        events={plant.events.fertilize}
+                        type="fertilize"
+                    />
                 </div>
             </div>
 
