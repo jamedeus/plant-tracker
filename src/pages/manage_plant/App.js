@@ -10,6 +10,7 @@ import Navbar from 'src/components/Navbar';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { useToast } from 'src/ToastContext';
 import DetailsCard from 'src/components/DetailsCard';
+import Modal from 'src/components/Modal';
 
 function App() {
     // Load context set by django template
@@ -21,10 +22,6 @@ function App() {
 
     // Get hook to show toast message
     const { showToast } = useToast();
-
-    const overview = () => {
-        window.location.href = "/";
-    };
 
     const submitEditModal = async () => {
         const payload = Object.fromEntries(
@@ -94,37 +91,6 @@ function App() {
             1
         );
         setPlant(oldPlant);
-    };
-
-    // Called when user selects tray from dropdown
-    const addToTray = async () => {
-        const payload = {
-            plant_id: plant.uuid,
-            tray_id: document.getElementById('traySelect').value
-        };
-        const response = await sendPostRequest('/add_plant_to_tray', payload);
-        if (response.ok) {
-            // Update plant state with tray name and UUID from response
-            const data = await response.json();
-            setPlant({...plant,
-                tray: {
-                    name: data.tray_name,
-                    uuid: data.tray_uuid
-                }
-            });
-        }
-    };
-
-    // Handler for remove from tray button
-    const removeFromTray = async () => {
-        const response = await sendPostRequest(
-            '/remove_plant_from_tray',
-            {plant_id: plant.uuid}
-        );
-        if (response.ok) {
-            // Remove tray details from plant state
-            setPlant({...plant, tray: null});
-        }
     };
 
     // Displays timestamp and relative time in event history sections
@@ -214,59 +180,114 @@ function App() {
         type: PropTypes.string
     };
 
-    // Takes plant.tray (state object key) and trays state object
-    // Renders dropdown if plant not in tray, link to tray if is in tray
-    const PlantTraySection = ({ tray, trayOptions }) => {
-        switch(tray) {
+    const DropdownOptions = () => {
+        const overview = () => {
+            window.location.href = "/";
+        };
+
+        const openTrayModal = () => {
+            document.getElementById('addToTrayModal').showModal();
+        };
+
+        const removeFromTray = async () => {
+            const response = await sendPostRequest(
+                '/remove_plant_from_tray',
+                {plant_id: plant.uuid}
+            );
+            if (response.ok) {
+                // Remove tray details from plant state
+                setPlant({...plant, tray: null});
+            }
+        };
+
+        switch(plant.tray) {
             case(null):
                 return (
-                    <div className="card card-compact mt-8 mx-auto bg-base-200 text-center">
-                        <div className="card-body">
-                            <p className="text-lg">Add plant to tray</p>
-                            <select
-                                id="traySelect"
-                                defaultValue=""
-                                onChange={addToTray}
-                                className="select select-bordered w-full"
-                            >
-                                <option value="" disabled>Select tray</option>
-                                {trayOptions.map(tray => {
-                                    return <option key={tray.uuid} value={tray.uuid}>{tray.name}</option>;
-                                })}
-                            </select>
-                        </div>
-                    </div>
-                );
+                    <>
+                        <li><a onClick={overview}>Overview</a></li>
+                        <li><a onClick={openTrayModal}>Add to tray</a></li>
+                    </>
+                )
             default:
                 return (
-                    <div className="card card-compact mt-8 mx-auto bg-base-200 text-center px-8 py-2">
+                    <>
+                        <li><a onClick={overview}>Overview</a></li>
+                        <li><a href={"/manage/" + plant.tray.uuid}>Go to tray</a></li>
+                        <li><a onClick={removeFromTray}>Remove from tray</a></li>
+                    </>
+                )
+        }
+    };
+
+    // Renders div with link to tray if plant is in tray
+    const PlantTraySection = () => {
+        switch(plant.tray) {
+            case(null):
+                return null;
+            default:
+                return (
+                    <div className="card card-compact mb-8 mx-auto bg-base-200 text-center px-8">
                         <div className="card-body">
-                            <p>Plant is in tray:</p>
-                            <p className="text-xl font-bold"><a href={"/manage/" + tray.uuid}>
-                                { tray.name }
+                            <p className="text-sm">Plant is in tray:</p>
+                            <p className="text-xl font-bold"><a href={"/manage/" + plant.tray.uuid}>
+                                { plant.tray.name }
                             </a></p>
-                            <button
-                                className="btn btn-sm btn-outline btn-error mt-4"
-                                onClick={removeFromTray}
-                            >
-                                Remove
-                            </button>
                         </div>
                     </div>
                 );
         }
     };
 
-    PlantTraySection.propTypes = {
-        tray: PropTypes.object,
-        trayOptions: PropTypes.array
+    const AddToTrayModal = () => {
+        // Handler for confirm button
+        const addToTray = async () => {
+            const payload = {
+                plant_id: plant.uuid,
+                tray_id: document.getElementById('traySelect').value
+            };
+            const response = await sendPostRequest('/add_plant_to_tray', payload);
+            if (response.ok) {
+                // Update plant state with tray name and UUID from response
+                const data = await response.json();
+                setPlant({...plant,
+                    tray: {
+                        name: data.tray_name,
+                        uuid: data.tray_uuid
+                    }
+                });
+            }
+            // Close modal
+            document.getElementById('addToTrayModal').close();
+        };
+
+        return (
+            <Modal id="addToTrayModal">
+                <p className="text-lg">Add plant to tray</p>
+                <select
+                    id="traySelect"
+                    defaultValue=""
+                    className="select select-bordered m-8"
+                >
+                    <option value="" disabled>Select tray</option>
+                    {trays.map(tray => {
+                        return <option key={tray.uuid} value={tray.uuid}>{tray.name}</option>;
+                    })}
+                </select>
+                <button
+                    className="btn btn-success mx-auto"
+                    onClick={addToTray}
+                >
+                    Confirm
+                </button>
+            </Modal>
+        );
     };
 
     return (
         <div className="container flex flex-col mx-auto mb-8">
             <Navbar
                 dropdownOptions={
-                    <li><a onClick={overview}>Overview</a></li>
+                    <DropdownOptions />
                 }
                 title={
                     <div className="dropdown">
@@ -281,6 +302,8 @@ function App() {
                     </div>
                 }
             />
+
+            <PlantTraySection />
 
             <div className="flex flex-col text-center">
                 <span className="text-lg">
@@ -306,8 +329,6 @@ function App() {
                 </div>
             </div>
 
-            <PlantTraySection tray={plant.tray} trayOptions={trays} />
-
             <div className="grid grid-cols-1 md:grid-cols-2 mx-auto mt-16">
                 <div className="md:mr-8 mb-8 md:mb-0">
                     <CollapseCol title="Water History" defaultOpen={false}>
@@ -332,6 +353,7 @@ function App() {
                 />
             </EditModal>
 
+            <AddToTrayModal />
         </div>
     );
 }
