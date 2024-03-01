@@ -59,7 +59,7 @@ const FilterColumn = ({title, contents, cardComponent, editableList, children}) 
                     }
                     onClick={() => setQuery('')}
                 >
-                    <XMarkIcon />
+                    <XMarkIcon className="w-8 h-8" />
                 </button>
             </div>
             {React.cloneElement(

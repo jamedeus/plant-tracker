@@ -88,9 +88,9 @@ const PlantCard = ({ name, uuid, species, description, pot_size, last_watered })
                 {(() => {
                     switch(open) {
                         case(true):
-                            return <ChevronUpIcon />;
+                            return <ChevronUpIcon className="w-8 h-8" />;
                         case(false):
-                            return <ChevronDownIcon />;
+                            return <ChevronDownIcon className="w-8 h-8" />;
                     }
                 })()}
             </button>
@@ -104,7 +104,7 @@ PlantCard.propTypes = {
     uuid: PropTypes.string,
     species: PropTypes.string,
     description: PropTypes.string,
-    pot_size: PropTypes.string,
+    pot_size: PropTypes.number,
     last_watered: PropTypes.string
 };
 
