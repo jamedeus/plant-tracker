@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/16/solid';
-import { timestampToRelative } from 'src/util';
+import LastEventTime from 'src/components/LastEventTime';
 
 const PlantCard = ({ name, uuid, species, description, pot_size, last_watered }) => {
     // Track details collapse open state
@@ -71,13 +71,7 @@ const PlantCard = ({ name, uuid, species, description, pot_size, last_watered })
                 <h2 className="card-title mx-auto pr-8 indent-8 line-clamp-1">
                     {name}
                 </h2>
-                {(() => {
-                    if (last_watered) {
-                        return <p>Watered {timestampToRelative(last_watered)}</p>;
-                    } else {
-                        return <p>Never watered</p>;
-                    }
-                })()}
+                <LastEventTime text="watered" timestamp={last_watered} />
             </div>
             <button
                 tabIndex={0}

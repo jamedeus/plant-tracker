@@ -12,6 +12,7 @@ import { useToast } from 'src/ToastContext';
 import DetailsCard from 'src/components/DetailsCard';
 import Modal from 'src/components/Modal';
 import { RadioGroup } from '@headlessui/react';
+import LastEventTime from 'src/components/LastEventTime';
 
 function App() {
     // Load context set by django template
@@ -456,10 +457,16 @@ function App() {
 
             <div className="flex flex-col text-center">
                 <span className="text-lg">
-                    Last Watered: {timestampToRelative(plant.events.water[0])}
+                    <LastEventTime
+                        text="watered"
+                        timestamp={plant.events.water[0]}
+                    />
                 </span>
                 <span className="text-lg">
-                    Last Fertilized: {timestampToRelative(plant.events.fertilize[0])}
+                    <LastEventTime
+                        text="fertilized"
+                        timestamp={plant.events.water[0]}
+                    />
                 </span>
                 <DatetimeInput id="eventTime" />
                 <div className="flex mx-auto">

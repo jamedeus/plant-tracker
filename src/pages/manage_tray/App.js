@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { sendPostRequest, parseDomContext, localToUTC } from 'src/util';
+import { sendPostRequest, parseDomContext, localToUTC, pastTense } from 'src/util';
 import EditableNodeList from 'src/components/EditableNodeList';
 import EditModal from 'src/components/EditModal';
 import TrayDetails from 'src/forms/TrayDetails';
@@ -78,11 +78,7 @@ function App() {
         };
         const response = await sendPostRequest('/bulk_add_plant_events', payload);
         if (response.ok) {
-            if (eventType.endsWith('e')) {
-                showToast(`All plants ${eventType}d!`, 'blue', 5000);
-            } else {
-                showToast(`All plants ${eventType}ed!`, 'blue', 5000);
-            }
+            showToast(`All plants ${pastTense(eventType)}!`, 'blue', 5000);
             const data = await response.json();
             updatePlantTimestamps(data.plants, timestamp, eventType);
         }
@@ -338,7 +334,6 @@ function App() {
                                     <RemovePlantsModalContents />
                                 </>
                             );
-
                     }
                 })()}
             </Modal>
