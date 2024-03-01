@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { DateTime } from 'luxon';
 import { sendPostRequest, parseDomContext, localToUTC, timestampToRelative } from 'src/util';
@@ -11,6 +11,7 @@ import DatetimeInput from 'src/components/DatetimeInput';
 import { useToast } from 'src/ToastContext';
 import DetailsCard from 'src/components/DetailsCard';
 import Modal from 'src/components/Modal';
+import { RadioGroup } from '@headlessui/react';
 
 function App() {
     // Load context set by django template
@@ -203,6 +204,10 @@ function App() {
             document.getElementById('addToTrayModal').showModal();
         };
 
+        const openRepotModal = () => {
+            document.getElementById('repotModal').showModal();
+        };
+
         const removeFromTray = async () => {
             const response = await sendPostRequest(
                 '/remove_plant_from_tray',
@@ -214,23 +219,35 @@ function App() {
             }
         };
 
-        switch(plant.tray) {
-            case(null):
-                return (
-                    <>
-                        <li><a onClick={overview}>Overview</a></li>
-                        <li><a onClick={openTrayModal}>Add to tray</a></li>
-                    </>
-                )
-            default:
-                return (
-                    <>
-                        <li><a onClick={overview}>Overview</a></li>
-                        <li><a href={"/manage/" + plant.tray.uuid}>Go to tray</a></li>
-                        <li><a onClick={removeFromTray}>Remove from tray</a></li>
-                    </>
-                )
-        }
+        // Options shown when plant is not in tray
+        const AddTray = () => {
+            return <li><a onClick={openTrayModal}>Add to tray</a></li>;
+        };
+
+        // Options shown when plant is in tray
+        const RemoveTray = () => {
+            return (
+                <>
+                    <li><a href={"/manage/" + plant.tray.uuid}>Go to tray</a></li>
+                    <li><a onClick={removeFromTray}>Remove from tray</a></li>
+                </>
+            );
+        };
+
+        return (
+            <>
+                <li><a onClick={overview}>Overview</a></li>
+                {(() => {
+                    switch(plant.tray) {
+                        case(null):
+                            return <AddTray />;
+                        default:
+                            return <RemoveTray />;
+                    }
+                })()}
+                <li><a onClick={openRepotModal}>Repot plant</a></li>
+            </>
+        );
     };
 
     // Renders div with link to tray if plant is in tray
@@ -294,6 +311,122 @@ function App() {
                     onClick={addToTray}
                 >
                     Confirm
+                </button>
+            </Modal>
+        );
+    };
+
+    const RepotModal = () => {
+        const potSizes = [2, 3, 4, 6, 8, 10, 12, 14, 18, 21];
+
+        // Default to next size if plant.pot_size set, otherwise default to 2in
+        const [selected, setSelected] = useState((() => {
+            if (plant.pot_size && potSizes.includes(plant.pot_size)) {
+                return potSizes[potSizes.indexOf(plant.pot_size) + 1];
+            } else {
+                return 2;
+            }
+        })());
+
+        // Access custom pot size input value
+        const customPotRef = useRef(null);
+
+        // Takes integer pot size, renders round div with number centered
+        const PotSizeOption = ({ option }) => {
+            return (
+                <RadioGroup.Option value={option} as={Fragment}>
+                    {({ checked }) => (
+                        <div
+                            className={`pot-size w-10 h-10 md:w-12 md:h-12 ${
+                                checked ? 'pot-size-selected' : 'bg-base-300'
+                            }`}
+                        >
+                            <span className="m-auto">{option}</span>
+                        </div>
+                    )}
+                </RadioGroup.Option>
+            );
+        };
+
+        PotSizeOption.propTypes = {
+            option: PropTypes.number
+        };
+
+        const isInt = (value) => {
+            return !isNaN(value) &&
+            parseInt(Number(value)) == value &&
+            !isNaN(parseInt(value, 10));
+        };
+
+        // Post user selection to backend, create RepotEvent in database
+        const submit = async () => {
+            const payload = {
+                plant_id: plant.uuid,
+                new_pot_size: null,
+                timestamp: document.getElementById("repotTime").value
+            };
+
+            // Selected will be integer value of chosen option, or "custom" if
+            // the custom pot size input is selected
+            if (isInt(selected)) {
+                payload.new_pot_size = selected;
+            } else {
+                payload.new_pot_size = customPotRef.current.value;
+            }
+
+            const response = await sendPostRequest('/repot_plant', payload);
+            if (response.ok) {
+                setPlant({...plant, pot_size: payload.new_pot_size});
+            } else {
+                const data = await response.json();
+                alert(data);
+            }
+        };
+
+        return (
+            <Modal id="repotModal">
+                <p className="text-lg mb-8">Repot plant</p>
+
+                <div>
+                    <p>Repot time</p>
+                    <DatetimeInput id="repotTime" />
+                </div>
+
+                <div className="my-8">
+                    <p className="text-md">New pot size</p>
+                    <RadioGroup
+                        value={selected}
+                        onChange={setSelected}
+                        className="flex flex-col"
+                    >
+                        <div className="flex justify-center mx-auto">
+                            {potSizes.slice(0, 5).map((option) => (
+                                <PotSizeOption key={option} option={option} />
+                            ))}
+                        </div>
+                        <div className="flex justify-center mx-auto">
+                            {potSizes.slice(5).map((option) => (
+                                <PotSizeOption key={option} option={option} />
+                            ))}
+                        </div>
+                        <div className="flex justify-center mx-auto">
+                            <RadioGroup.Option value="custom" as={Fragment}>
+                                {({ checked }) => (
+                                    <input
+                                        ref={customPotRef}
+                                        className={`pot-size w-32 ${checked ?
+                                            'pot-size-selected' : 'bg-base-300'
+                                        }`}
+                                        placeholder="custom"
+                                    />
+                                )}
+                            </RadioGroup.Option>
+                        </div>
+                    </RadioGroup>
+                </div>
+
+                <button className="btn btn-success mx-auto" onClick={submit}>
+                    Repot
                 </button>
             </Modal>
         );
@@ -374,6 +507,8 @@ function App() {
             </EditModal>
 
             <AddToTrayModal />
+
+            <RepotModal />
         </div>
     );
 }

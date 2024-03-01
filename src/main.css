@@ -50,3 +50,15 @@
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
+
+.pot-size {
+    @apply m-2 p-2 text-xl md:text-2xl font-bold text-center rounded-full focus:outline-none;
+}
+
+.pot-size-selected {
+    @apply bg-primary text-white;
+}
+
+.pot-size-selected::placeholder {
+    @apply text-white/50;
+}
