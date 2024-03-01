@@ -87,6 +87,7 @@ class OverviewTests(TestCase):
                     'uuid': str(tray.uuid),
                     'name': 'Unnamed tray 1',
                     'location': None,
+                    'description': None,
                     'plants': 1
                 }
             ]
@@ -199,6 +200,7 @@ class ManagePageTests(TestCase):
             'uuid': test_id,
             'name': '    test tray',
             'location': 'top shelf    ',
+            'description': 'This tray is used for propagation',
             'type': 'tray'
         }
         response = self.client.post('/register', payload)
@@ -213,6 +215,7 @@ class ManagePageTests(TestCase):
         tray = Tray.objects.get(uuid=test_id)
         self.assertEqual(tray.name, 'test tray')
         self.assertEqual(tray.location, 'top shelf')
+        self.assertEqual(tray.description, 'This tray is used for propagation')
         # Confirm no extra plant created
         self.assertEqual(len(Plant.objects.all()), 2)
 
@@ -304,6 +307,7 @@ class ManagePageTests(TestCase):
                 'uuid': str(self.tray1.uuid),
                 'name': self.tray1.name,
                 'location': None,
+                'description': None,
                 'display_name': self.tray1.get_display_name()
             }
         )
@@ -382,7 +386,8 @@ class ManagePageTests(TestCase):
         payload = {
             'tray_id': self.tray1.uuid,
             'name': 'test tray    ',
-            'location': '    middle shelf'
+            'location': '    middle shelf',
+            'description': 'This tray is used for propagation'
         }
         response = self.client.post('/edit_tray', payload)
 
@@ -393,7 +398,8 @@ class ManagePageTests(TestCase):
             {
                 'name': 'test tray',
                 'display_name': 'test tray',
-                'location': 'middle shelf'
+                'location': 'middle shelf',
+                'description': 'This tray is used for propagation'
             }
         )
 
@@ -403,6 +409,7 @@ class ManagePageTests(TestCase):
         self._refresh_test_models()
         self.assertEqual(self.tray1.name, 'test tray')
         self.assertEqual(self.tray1.location, 'middle shelf')
+        self.assertEqual(self.tray1.description, 'This tray is used for propagation')
 
     def test_add_plant_to_tray(self):
         # Confirm test plant and tray have no database relation

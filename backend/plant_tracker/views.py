@@ -82,6 +82,7 @@ def overview(request):
             'uuid': str(tray.uuid),
             'name': tray.get_display_name(),
             'location': tray.location,
+            'description': tray.description,
             'plants': len(tray.plant_set.all())
         })
 
@@ -145,7 +146,8 @@ def manage(request, uuid):
                 'uuid': str(tray.uuid),
                 'name': tray.name,
                 'display_name': tray.get_display_name(),
-                'location': tray.location
+                'location': tray.location,
+                'description': tray.description
             },
             'details': tray.get_plant_details(),
             'options': get_plant_options()
@@ -195,7 +197,8 @@ def register(data):
         Tray.objects.create(
             uuid=data["uuid"],
             name=data["name"],
-            location=data["location"]
+            location=data["location"],
+            description=data["description"]
         )
 
     # Redirect to manage page
@@ -256,7 +259,7 @@ def edit_plant_details(plant, data):
     return JsonResponse(data, status=200)
 
 
-@requires_json_post(["tray_id", "name", "location"])
+@requires_json_post(["tray_id", "name", "location", "description"])
 @get_tray_from_post_body
 def edit_tray_details(tray, data):
     '''Updates description attributes of existing Tray entry
@@ -272,6 +275,7 @@ def edit_tray_details(tray, data):
     # Overwrite database params with user values
     tray.name = data["name"]
     tray.location = data["location"]
+    tray.description = data["description"]
     tray.save()
 
     # Return modified payload with new display_name

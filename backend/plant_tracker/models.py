@@ -47,6 +47,7 @@ class Tray(models.Model):
     # Description fields are optional, if blank user will just see "Unnamed tray"
     name = models.CharField(max_length=50, blank=True, null=True)
     location = models.CharField(max_length=50, blank=True, null=True)
+    description = models.CharField(max_length=500, blank=True, null=True)
 
     def get_display_name(self):
         '''Returns frontend display string determined from description attributes'''
