@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const TrayDetails = ({ name, location }) => {
+const TrayDetailsForm = ({ name, location }) => {
     return (
         <form id="trayDetails">
             <label className="form-control w-full">
@@ -30,9 +30,9 @@ const TrayDetails = ({ name, location }) => {
     );
 };
 
-TrayDetails.propTypes = {
+TrayDetailsForm.propTypes = {
     name: PropTypes.string,
     location: PropTypes.string
 };
 
-export default TrayDetails;
+export default TrayDetailsForm;

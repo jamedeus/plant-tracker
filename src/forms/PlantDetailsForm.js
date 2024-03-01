@@ -79,7 +79,7 @@ SpeciesSelect.propTypes = {
 };
 
 
-const PlantDetails = ({ name, species, pot_size, description, species_options }) => {
+const PlantDetailsForm = ({ name, species, pot_size, description, species_options }) => {
     return (
         <form id="plantDetails">
             <label className="form-control w-full">
@@ -129,7 +129,7 @@ const PlantDetails = ({ name, species, pot_size, description, species_options })
     );
 };
 
-PlantDetails.propTypes = {
+PlantDetailsForm.propTypes = {
     name: PropTypes.string,
     species: PropTypes.string,
     pot_size: PropTypes.oneOfType([
@@ -140,4 +140,4 @@ PlantDetails.propTypes = {
     species_options: PropTypes.array
 };
 
-export default PlantDetails;
+export default PlantDetailsForm;

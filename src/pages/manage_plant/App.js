@@ -5,7 +5,7 @@ import { sendPostRequest, parseDomContext, localToUTC, timestampToRelative } fro
 import CollapseCol from 'src/components/CollapseCol';
 import EditableNodeList from 'src/components/EditableNodeList';
 import EditModal from 'src/components/EditModal';
-import PlantDetails from 'src/forms/PlantDetails';
+import PlantDetailsForm from 'src/forms/PlantDetailsForm';
 import Navbar from 'src/components/Navbar';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { useToast } from 'src/ToastContext';
@@ -13,6 +13,7 @@ import DetailsCard from 'src/components/DetailsCard';
 import Modal from 'src/components/Modal';
 import { RadioGroup } from '@headlessui/react';
 import LastEventTime from 'src/components/LastEventTime';
+import PlantDetails from 'src/components/PlantDetails';
 
 function App() {
     // Load context set by django template
@@ -440,13 +441,15 @@ function App() {
                     <DropdownOptions />
                 }
                 title={
-                    <div className="dropdown">
+                    <div className="dropdown dropdown-center">
                         <a tabIndex={0} role="button" className="btn btn-ghost text-3xl">{plant.display_name}</a>
-                        <div tabIndex={0} className="dropdown-content z-[1] flex w-full">
+                        <div tabIndex={0} className="dropdown-content z-[1] flex">
                             <DetailsCard>
-                                <p>Species: {plant.species}</p>
-                                <p>Pot size: {plant.pot_size} inches</p>
-                                <p>Description: {plant.description}</p>
+                                <PlantDetails
+                                    species={plant.species}
+                                    pot_size={plant.pot_size}
+                                    description={plant.description}
+                                />
                             </DetailsCard>
                         </div>
                     </div>
@@ -504,7 +507,7 @@ function App() {
             </div>
 
             <EditModal title="Edit Details" onSubmit={submitEditModal}>
-                <PlantDetails
+                <PlantDetailsForm
                     name={plant.name}
                     species={plant.species}
                     pot_size={plant.pot_size}

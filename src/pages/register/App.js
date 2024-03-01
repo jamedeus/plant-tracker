@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Tab } from '@headlessui/react';
 import Navbar from 'src/components/Navbar';
 import { sendPostRequest, parseDomContext } from 'src/util';
-import TrayDetails from 'src/forms/TrayDetails';
-import PlantDetails from 'src/forms/PlantDetails';
+import TrayDetailsForm from 'src/forms/TrayDetailsForm';
+import PlantDetailsForm from 'src/forms/PlantDetailsForm';
 
 function App() {
     // Load context set by django template
@@ -78,7 +78,7 @@ function App() {
 
                     <Tab.Panels className="my-8">
                         <Tab.Panel>
-                            <PlantDetails
+                            <PlantDetailsForm
                                 name=""
                                 species=""
                                 pot_size=""
@@ -87,7 +87,7 @@ function App() {
                             />
                         </Tab.Panel>
                         <Tab.Panel>
-                            <TrayDetails />
+                            <TrayDetailsForm />
                         </Tab.Panel>
                     </Tab.Panels>
                 </Tab.Group>

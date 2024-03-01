@@ -68,3 +68,7 @@
     border-radius: 9999px;
     padding: 0;
 }
+
+.dropdown-center .dropdown-content {
+    @apply left-1/2 transform -translate-x-1/2;
+}

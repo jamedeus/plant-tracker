@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { sendPostRequest, parseDomContext, localToUTC, pastTense } from 'src/util';
 import EditableNodeList from 'src/components/EditableNodeList';
 import EditModal from 'src/components/EditModal';
-import TrayDetails from 'src/forms/TrayDetails';
+import TrayDetailsForm from 'src/forms/TrayDetailsForm';
 import Navbar from 'src/components/Navbar';
 import PlantCard from 'src/components/PlantCard';
 import DatetimeInput from 'src/components/DatetimeInput';
@@ -269,9 +269,9 @@ function App() {
                     </>
                 }
                 title={
-                    <div className="dropdown">
+                    <div className="dropdown dropdown-center">
                         <a tabIndex={0} role="button" className="btn btn-ghost text-3xl">{tray.display_name}</a>
-                        <div tabIndex={0} className="dropdown-content z-[1] flex w-full">
+                        <div tabIndex={0} className="dropdown-content z-[1] flex">
                             <DetailsCard>
                                 <p>Location: {tray.location}</p>
                             </DetailsCard>
@@ -306,7 +306,7 @@ function App() {
             </FilterColumn>
 
             <EditModal title="Edit Details" onSubmit={submitEditModal}>
-                <TrayDetails
+                <TrayDetailsForm
                     name={tray.name}
                     location={tray.location}
                 />

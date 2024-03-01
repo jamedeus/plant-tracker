@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/16/solid';
 import LastEventTime from 'src/components/LastEventTime';
+import PlantDetails from 'src/components/PlantDetails';
 
 const PlantCard = ({ name, uuid, species, description, pot_size, last_watered }) => {
     // Track details collapse open state
@@ -14,33 +15,6 @@ const PlantCard = ({ name, uuid, species, description, pot_size, last_watered })
         e.stopPropagation();
     };
 
-    const Details = () => {
-        return (
-            <div className="collapse-content px-16">
-                <p className={species ? 'flex' : 'hidden'}>
-                    <span className="font-semibold">Species:</span>
-                    <span className="ml-auto">{species}</span>
-                </p>
-                <p className={pot_size ? 'flex' : 'hidden'}>
-                    <span className="font-semibold">Pot size:</span>
-                    <span className="ml-auto">{pot_size}</span>
-                </p>
-                <div className={description ? 'text-center' : 'hidden'}>
-                    <p className="font-semibold mt-3">Description:</p>
-                    <p className="text-sm line-clamp-6">{description}</p>
-                </div>
-            </div>
-        );
-    };
-
-    const NoDetails = () => {
-        return (
-            <div className="collapse-content px-16">
-                <p className="text-center">No details</p>
-            </div>
-        );
-    };
-
     // Renders collapse with Plant details, opened with arrow button
     const DetailsSection = () => {
         return (
@@ -51,20 +25,20 @@ const PlantCard = ({ name, uuid, species, description, pot_size, last_watered })
                     onChange={toggle}
                     defaultChecked={open}
                 />
-                {(() => {
-                    if (!species && !pot_size && !description) {
-                        return <NoDetails />;
-                    } else {
-                        return <Details />;
-                    }
-                })()}
+                <div className="collapse-content px-16">
+                    <PlantDetails
+                        species={species}
+                        pot_size={pot_size}
+                        description={description}
+                    />
+                </div>
             </div>
         );
     };
 
     return (
         <div
-            className="card bg-neutral text-neutral-content mx-auto w-full dropdown relative"
+            className="card bg-neutral text-neutral-content mx-auto relative"
             onClick={() => window.location.href = `/manage/${uuid}`}
         >
             <div className="card-body text-center">

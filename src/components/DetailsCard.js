@@ -5,7 +5,7 @@ import { openEditModal } from 'src/components/EditModal';
 // Shown in dropdown when name in nav bar clicked
 const DetailsCard = ({ children }) => {
     return (
-        <div className={`card card-compact p-2 mt-2 mx-auto
+        <div className={`card card-compact w-72 p-2 mt-2 mx-auto
                         shadow bg-neutral text-neutral-content`}>
             <div className="card-body">
                 {children}
