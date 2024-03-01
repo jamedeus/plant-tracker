@@ -62,3 +62,9 @@
 .pot-size-selected::placeholder {
     @apply text-white/50;
 }
+
+.btn-close {
+    @apply btn btn-sm btn-ghost;
+    border-radius: 9999px;
+    padding: 0;
+}

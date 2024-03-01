@@ -8,7 +8,11 @@ const Navbar = ({ dropdownOptions, title, rightSection }) => {
         <div className="navbar bg-base-100 mb-4 sticky top-0 z-[99]">
             <div className="navbar-start">
                 <div className="dropdown">
-                    <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
+                    <div
+                        tabIndex={0}
+                        role="button"
+                        className="btn btn-ghost btn-circle"
+                    >
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             className="h-5 w-5"
@@ -24,7 +28,11 @@ const Navbar = ({ dropdownOptions, title, rightSection }) => {
                             />
                         </svg>
                     </div>
-                    <ul tabIndex={0} className="menu menu-md dropdown-content mt-3 z-[99] p-2 shadow bg-base-300 rounded-box w-52">
+                    <ul
+                        tabIndex={0}
+                        className={`menu menu-md dropdown-content mt-3 z-[99]
+                                    p-2 shadow bg-base-300 rounded-box w-52`}
+                    >
                         {dropdownOptions}
                     </ul>
                 </div>

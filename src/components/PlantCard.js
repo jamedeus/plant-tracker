@@ -82,7 +82,7 @@ const PlantCard = ({ name, uuid, species, description, pot_size, last_watered })
             <button
                 tabIndex={0}
                 role="button"
-                className="btn btn-sm btn-circle btn-ghost absolute right-2 top-8 z-40"
+                className="btn-close absolute right-2 top-8 z-40"
                 onClick={(e) => toggle(e)}
             >
                 {(() => {

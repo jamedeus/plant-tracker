@@ -54,7 +54,7 @@ const FilterColumn = ({title, contents, cardComponent, editableList, children}) 
                 />
                 <button
                     className={
-                        `btn btn-sm btn-circle btn-ghost absolute right-6 top-2
+                        `btn-close absolute right-6 top-2
                         ${query ? 'opacity-100' : 'opacity-0 -z-10'}`
                     }
                     onClick={() => setQuery('')}

@@ -8,7 +8,7 @@ const Modal = ({ id, children }) => {
         <dialog id={id} className="modal">
             <div className="modal-box text-center flex flex-col pt-4">
                 <form method="dialog">
-                    <button className="btn btn-sm btn-circle btn-ghost absolute right-4 top-4">
+                    <button className="btn-close absolute right-4 top-4">
                         <XMarkIcon className="w-8 h-8" />
                     </button>
                 </form>
