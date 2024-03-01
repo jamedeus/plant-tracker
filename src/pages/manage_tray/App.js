@@ -11,6 +11,7 @@ import FilterColumn from 'src/components/FilterColumn';
 import { useToast } from 'src/ToastContext';
 import DetailsCard from 'src/components/DetailsCard';
 import Modal from 'src/components/Modal';
+import TrayDetails from 'src/components/TrayDetails';
 
 function App() {
     // Load context set by django template
@@ -273,7 +274,10 @@ function App() {
                         <a tabIndex={0} role="button" className="btn btn-ghost text-3xl">{tray.display_name}</a>
                         <div tabIndex={0} className="dropdown-content z-[1] flex">
                             <DetailsCard>
-                                <p>Location: {tray.location}</p>
+                                <TrayDetails
+                                    location={tray.location}
+                                    description={tray.description}
+                                />
                             </DetailsCard>
                         </div>
                     </div>
@@ -309,6 +313,7 @@ function App() {
                 <TrayDetailsForm
                     name={tray.name}
                     location={tray.location}
+                    description={tray.description}
                 />
             </EditModal>
 
