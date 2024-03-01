@@ -1,0 +1,575 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App matches snapshot 1`] = `
+[
+  <div
+    className="container flex flex-col mx-auto mb-8"
+  >
+    <div
+      className="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
+    >
+      <div
+        className="navbar-start"
+      >
+        <div
+          className="dropdown"
+        >
+          <div
+            className="btn btn-ghost btn-circle"
+            role="button"
+            tabIndex={0}
+          >
+            <svg
+              className="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M4 6h16M4 12h16M4 18h7"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+              />
+            </svg>
+          </div>
+          <ul
+            className="menu menu-md dropdown-content mt-3 z-[99]
+                                    p-2 shadow bg-base-300 rounded-box w-52"
+            tabIndex={0}
+          >
+            <li>
+              <a
+                onClick={[Function]}
+              >
+                Overview
+              </a>
+            </li>
+            <li>
+              <a
+                onClick={[Function]}
+              >
+                Add plants
+              </a>
+            </li>
+            <li>
+              <a
+                onClick={[Function]}
+              >
+                Remove plants
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div
+        className="navbar-center"
+      >
+        <div
+          className="dropdown dropdown-center"
+        >
+          <a
+            className="btn btn-ghost text-3xl"
+            role="button"
+            tabIndex={0}
+          >
+            Test tray
+          </a>
+          <div
+            className="dropdown-content z-[1] flex"
+            tabIndex={0}
+          >
+            <div
+              className="card card-compact w-72 p-2 mt-2 mx-auto
+                        shadow bg-neutral text-neutral-content"
+            >
+              <div
+                className="card-body"
+              >
+                <p
+                  className="flex"
+                >
+                  <span
+                    className="font-semibold"
+                  >
+                    Location:
+                  </span>
+                  <span
+                    className="ml-auto"
+                  >
+                    Middle shelf
+                  </span>
+                </p>
+                <div
+                  className="hidden"
+                >
+                  <p
+                    className="font-semibold mt-3"
+                  >
+                    Description:
+                  </p>
+                  <p
+                    className="text-sm line-clamp-6"
+                  />
+                </div>
+                <button
+                  className="btn btn-sm mt-4"
+                  onClick={[Function]}
+                >
+                  Edit
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="navbar-end"
+      />
+    </div>
+    <input
+      className="input input-bordered mx-auto my-2"
+      defaultValue="2024-03-01T00:53:43"
+      id="addEventAllTime"
+      step="1"
+      type="datetime-local"
+    />
+    <div
+      className="flex mx-auto mb-8"
+    >
+      <button
+        className="btn btn-info m-2"
+        onClick={[Function]}
+      >
+        Water All
+      </button>
+      <button
+        className="btn btn-success m-2"
+        onClick={[Function]}
+      >
+        Fertilize All
+      </button>
+    </div>
+    <div
+      className="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+    >
+      <input
+        defaultChecked={true}
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <div
+        className="collapse-title text-xl font-medium text-center"
+      >
+        Plants (2)
+      </div>
+      <div
+        className="collapse-content"
+      >
+        <div
+          className="px-4 mb-4 relative"
+        >
+          <input
+            className="input input-bordered w-full text-center pr-10"
+            onChange={[Function]}
+            placeholder="filter"
+            style={
+              {
+                "textIndent": "1.625rem",
+              }
+            }
+            type="text"
+            value=""
+          />
+          <button
+            className="btn-close absolute right-6 top-2
+                        opacity-0 -z-10"
+            onClick={[Function]}
+          >
+            <svg
+              aria-hidden="true"
+              className="w-8 h-8"
+              data-slot="icon"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+              />
+            </svg>
+          </button>
+        </div>
+        <div
+          className="mb-4"
+        >
+          <div
+            className="card bg-neutral text-neutral-content mx-auto relative"
+            onClick={[Function]}
+          >
+            <div
+              className="card-body text-center"
+            >
+              <h2
+                className="card-title mx-auto pr-8 indent-8 line-clamp-1"
+              >
+                Test Plant
+              </h2>
+              Watered 3 hours ago
+            </div>
+            <button
+              className="btn-close absolute right-2 top-8 z-40"
+              onClick={[Function]}
+              role="button"
+              tabIndex={0}
+            >
+              <svg
+                aria-hidden="true"
+                className="w-8 h-8"
+                data-slot="icon"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  clipRule="evenodd"
+                  d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                  fillRule="evenodd"
+                />
+              </svg>
+            </button>
+            <div
+              className="collapse bg-neutral"
+            >
+              <input
+                className="hidden"
+                defaultChecked={false}
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <div
+                className="collapse-content px-16"
+              >
+                <p
+                  className="flex"
+                >
+                  <span
+                    className="font-semibold"
+                  >
+                    Species:
+                  </span>
+                  <span
+                    className="ml-auto"
+                  >
+                    Calathea
+                  </span>
+                </p>
+                <p
+                  className="flex"
+                >
+                  <span
+                    className="font-semibold"
+                  >
+                    Pot size:
+                  </span>
+                  <span
+                    className="ml-auto"
+                  >
+                    4
+                  </span>
+                </p>
+                <div
+                  className="text-center"
+                >
+                  <p
+                    className="font-semibold mt-3"
+                  >
+                    Description:
+                  </p>
+                  <p
+                    className="text-sm line-clamp-6"
+                  >
+                    This is a plant with a long description with
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="mb-4"
+        >
+          <div
+            className="card bg-neutral text-neutral-content mx-auto relative"
+            onClick={[Function]}
+          >
+            <div
+              className="card-body text-center"
+            >
+              <h2
+                className="card-title mx-auto pr-8 indent-8 line-clamp-1"
+              >
+                Unnamed Spider Plant
+              </h2>
+              Watered 3 hours ago
+            </div>
+            <button
+              className="btn-close absolute right-2 top-8 z-40"
+              onClick={[Function]}
+              role="button"
+              tabIndex={0}
+            >
+              <svg
+                aria-hidden="true"
+                className="w-8 h-8"
+                data-slot="icon"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  clipRule="evenodd"
+                  d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                  fillRule="evenodd"
+                />
+              </svg>
+            </button>
+            <div
+              className="collapse bg-neutral"
+            >
+              <input
+                className="hidden"
+                defaultChecked={false}
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <div
+                className="collapse-content px-16"
+              >
+                <p
+                  className="flex"
+                >
+                  <span
+                    className="font-semibold"
+                  >
+                    Species:
+                  </span>
+                  <span
+                    className="ml-auto"
+                  >
+                    Spider Plant
+                  </span>
+                </p>
+                <p
+                  className="flex"
+                >
+                  <span
+                    className="font-semibold"
+                  >
+                    Pot size:
+                  </span>
+                  <span
+                    className="ml-auto"
+                  >
+                    2
+                  </span>
+                </p>
+                <div
+                  className="hidden"
+                >
+                  <p
+                    className="font-semibold mt-3"
+                  >
+                    Description:
+                  </p>
+                  <p
+                    className="text-sm line-clamp-6"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="flex"
+        >
+          <button
+            className="btn btn-outline mx-auto"
+            onClick={[Function]}
+          >
+            Manage
+          </button>
+        </div>
+      </div>
+    </div>
+    <dialog
+      className="modal"
+      id="editModal"
+    >
+      <div
+        className="modal-box text-center flex flex-col pt-4"
+      >
+        <form
+          method="dialog"
+        >
+          <button
+            className="btn-close absolute right-4 top-4"
+          >
+            <svg
+              aria-hidden="true"
+              className="w-8 h-8"
+              data-slot="icon"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+              />
+            </svg>
+          </button>
+        </form>
+        <h3
+          className="font-bold text-lg"
+        >
+          Edit Details
+        </h3>
+        <form
+          id="trayDetails"
+        >
+          <label
+            className="form-control w-full"
+          >
+            <div
+              className="label"
+            >
+              <span
+                className="label-text-alt"
+              >
+                Tray name
+              </span>
+            </div>
+            <input
+              className="input w-full input-bordered"
+              defaultValue="Test tray"
+              name="name"
+              type="text"
+            />
+          </label>
+          <label
+            className="form-control w-full"
+          >
+            <div
+              className="label"
+            >
+              <span
+                className="label-text-alt"
+              >
+                Tray location
+              </span>
+            </div>
+            <input
+              className="input w-full input-bordered"
+              defaultValue="Middle shelf"
+              name="location"
+              type="text"
+            />
+          </label>
+          <label
+            className="form-control w-full"
+          >
+            <div
+              className="label"
+            >
+              <span
+                className="label-text-alt"
+              >
+                Description
+              </span>
+            </div>
+            <textarea
+              className="textarea textarea-bordered"
+              defaultValue={null}
+              name="description"
+            />
+          </label>
+        </form>
+        <div
+          className="modal-action mx-auto"
+        >
+          <form
+            method="dialog"
+          >
+            <button
+              className="btn mr-2"
+            >
+              Cancel
+            </button>
+            <button
+              className="btn ml-2"
+              onClick={[Function]}
+            >
+              Edit
+            </button>
+          </form>
+        </div>
+      </div>
+      <form
+        className="modal-backdrop"
+        method="dialog"
+      >
+        <button>
+          close
+        </button>
+      </form>
+    </dialog>
+    <dialog
+      className="modal"
+      id="managePlantsModal"
+    >
+      <div
+        className="modal-box text-center flex flex-col pt-4"
+      >
+        <form
+          method="dialog"
+        >
+          <button
+            className="btn-close absolute right-4 top-4"
+          >
+            <svg
+              aria-hidden="true"
+              className="w-8 h-8"
+              data-slot="icon"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+              />
+            </svg>
+          </button>
+        </form>
+      </div>
+      <form
+        className="modal-backdrop"
+        method="dialog"
+      >
+        <button>
+          close
+        </button>
+      </form>
+    </dialog>
+  </div>,
+  <div
+    className="toast toast-center opacity-0 transition-all duration-500"
+  >
+    <div
+      className="alert alert-info gap-0"
+    >
+      <span />
+    </div>
+  </div>,
+]
+`;

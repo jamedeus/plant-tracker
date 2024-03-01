@@ -1,4 +1,5 @@
 .coverage
+coverage/
 docs/_build/
 .env
 backend/plant_tracker/static/

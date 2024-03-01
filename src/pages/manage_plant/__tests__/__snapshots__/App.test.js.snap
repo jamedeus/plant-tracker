@@ -1,0 +1,874 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App matches snapshot 1`] = `
+[
+  <div
+    className="container flex flex-col mx-auto mb-8"
+  >
+    <div
+      className="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
+    >
+      <div
+        className="navbar-start"
+      >
+        <div
+          className="dropdown"
+        >
+          <div
+            className="btn btn-ghost btn-circle"
+            role="button"
+            tabIndex={0}
+          >
+            <svg
+              className="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M4 6h16M4 12h16M4 18h7"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+              />
+            </svg>
+          </div>
+          <ul
+            className="menu menu-md dropdown-content mt-3 z-[99]
+                                    p-2 shadow bg-base-300 rounded-box w-52"
+            tabIndex={0}
+          >
+            <li>
+              <a
+                onClick={[Function]}
+              >
+                Overview
+              </a>
+            </li>
+            <li>
+              <a
+                href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+              >
+                Go to tray
+              </a>
+            </li>
+            <li>
+              <a
+                onClick={[Function]}
+              >
+                Remove from tray
+              </a>
+            </li>
+            <li>
+              <a
+                onClick={[Function]}
+              >
+                Repot plant
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div
+        className="navbar-center"
+      >
+        <div
+          className="dropdown dropdown-center"
+        >
+          <a
+            className="btn btn-ghost text-3xl"
+            role="button"
+            tabIndex={0}
+          >
+            Test Plant
+          </a>
+          <div
+            className="dropdown-content z-[1] flex"
+            tabIndex={0}
+          >
+            <div
+              className="card card-compact w-72 p-2 mt-2 mx-auto
+                        shadow bg-neutral text-neutral-content"
+            >
+              <div
+                className="card-body"
+              >
+                <p
+                  className="flex"
+                >
+                  <span
+                    className="font-semibold"
+                  >
+                    Species:
+                  </span>
+                  <span
+                    className="ml-auto"
+                  >
+                    Calathea
+                  </span>
+                </p>
+                <p
+                  className="flex"
+                >
+                  <span
+                    className="font-semibold"
+                  >
+                    Pot size:
+                  </span>
+                  <span
+                    className="ml-auto"
+                  >
+                    4
+                  </span>
+                </p>
+                <div
+                  className="text-center"
+                >
+                  <p
+                    className="font-semibold mt-3"
+                  >
+                    Description:
+                  </p>
+                  <p
+                    className="text-sm line-clamp-6"
+                  >
+                    This is a plant with a long description
+                  </p>
+                </div>
+                <button
+                  className="btn btn-sm mt-4"
+                  onClick={[Function]}
+                >
+                  Edit
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="navbar-end"
+      />
+    </div>
+    <div
+      className="card card-compact mb-8 mx-auto bg-base-200 text-center px-8"
+    >
+      <div
+        className="card-body"
+      >
+        <p
+          className="text-sm"
+        >
+          Plant is in tray:
+        </p>
+        <p
+          className="text-xl font-bold"
+        >
+          <a
+            href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+          >
+            Test tray
+          </a>
+        </p>
+      </div>
+    </div>
+    <div
+      className="flex flex-col text-center"
+    >
+      <span
+        className="text-lg"
+      >
+        Watered 3 hours ago
+      </span>
+      <span
+        className="text-lg"
+      >
+        Fertilized 3 hours ago
+      </span>
+      <input
+        className="input input-bordered mx-auto my-2"
+        defaultValue="2024-03-01T00:53:43"
+        id="eventTime"
+        step="1"
+        type="datetime-local"
+      />
+      <div
+        className="flex mx-auto"
+      >
+        <button
+          className="btn btn-info m-2"
+          onClick={[Function]}
+        >
+          Water
+        </button>
+        <button
+          className="btn btn-success m-2"
+          onClick={[Function]}
+        >
+          Fertilize
+        </button>
+      </div>
+    </div>
+    <div
+      className="grid grid-cols-1 md:grid-cols-2 mx-auto mt-16"
+    >
+      <div
+        className="md:mr-8 mb-8 md:mb-0"
+      >
+        <div
+          className="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+        >
+          <input
+            defaultChecked={false}
+            onChange={[Function]}
+            type="checkbox"
+          />
+          <div
+            className="collapse-title text-xl font-medium text-center"
+          >
+            Water History
+          </div>
+          <div
+            className="collapse-content"
+          >
+            <div
+              className="max-h-half-screen overflow-scroll no-scrollbar"
+            >
+              <div
+                className="mb-4"
+              >
+                <div
+                  className="card card-compact bg-neutral text-neutral-content text-center"
+                >
+                  <div
+                    className="card-body"
+                  >
+                    <p
+                      className="text-lg font-bold"
+                    >
+                      3 hours ago
+                    </p>
+                    <p>
+                      9:45 PM February 29, 2024
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="mb-4"
+              >
+                <div
+                  className="card card-compact bg-neutral text-neutral-content text-center"
+                >
+                  <div
+                    className="card-body"
+                  >
+                    <p
+                      className="text-lg font-bold"
+                    >
+                      22 hours ago
+                    </p>
+                    <p>
+                      2:20 AM February 29, 2024
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              className="flex mt-4"
+            >
+              <button
+                className="btn btn-outline mx-auto"
+                onClick={[Function]}
+              >
+                Edit
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="md:ml-8"
+      >
+        <div
+          className="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+        >
+          <input
+            defaultChecked={false}
+            onChange={[Function]}
+            type="checkbox"
+          />
+          <div
+            className="collapse-title text-xl font-medium text-center"
+          >
+            Fertilize History
+          </div>
+          <div
+            className="collapse-content"
+          >
+            <div
+              className="max-h-half-screen overflow-scroll no-scrollbar"
+            >
+              <div
+                className="mb-4"
+              >
+                <div
+                  className="card card-compact bg-neutral text-neutral-content text-center"
+                >
+                  <div
+                    className="card-body"
+                  >
+                    <p
+                      className="text-lg font-bold"
+                    >
+                      3 hours ago
+                    </p>
+                    <p>
+                      9:45 PM February 29, 2024
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div
+                className="mb-4"
+              >
+                <div
+                  className="card card-compact bg-neutral text-neutral-content text-center"
+                >
+                  <div
+                    className="card-body"
+                  >
+                    <p
+                      className="text-lg font-bold"
+                    >
+                      4 days ago
+                    </p>
+                    <p>
+                      6:44 PM February 25, 2024
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              className="flex mt-4"
+            >
+              <button
+                className="btn btn-outline mx-auto"
+                onClick={[Function]}
+              >
+                Edit
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <dialog
+      className="modal"
+      id="editModal"
+    >
+      <div
+        className="modal-box text-center flex flex-col pt-4"
+      >
+        <form
+          method="dialog"
+        >
+          <button
+            className="btn-close absolute right-4 top-4"
+          >
+            <svg
+              aria-hidden="true"
+              className="w-8 h-8"
+              data-slot="icon"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+              />
+            </svg>
+          </button>
+        </form>
+        <h3
+          className="font-bold text-lg"
+        >
+          Edit Details
+        </h3>
+        <form
+          id="plantDetails"
+        >
+          <label
+            className="form-control w-full"
+          >
+            <div
+              className="label"
+            >
+              <span
+                className="label-text-alt"
+              >
+                Plant name
+              </span>
+            </div>
+            <input
+              className="input w-full input-bordered"
+              defaultValue="Test Plant"
+              name="name"
+              type="text"
+            />
+          </label>
+          <label
+            className="form-control w-full relative"
+          >
+            <div
+              className="label"
+            >
+              <span
+                className="label-text-alt"
+              >
+                Plant species
+              </span>
+            </div>
+            <input
+              aria-autocomplete="list"
+              aria-expanded={false}
+              autoComplete="off"
+              className="input w-full input-bordered"
+              data-headlessui-state=""
+              disabled={false}
+              id="headlessui-combobox-input-:r0:"
+              name="species"
+              onBlur={[Function]}
+              onChange={[Function]}
+              onCompositionEnd={[Function]}
+              onCompositionStart={[Function]}
+              onFocus={[Function]}
+              onKeyDown={[Function]}
+              role="combobox"
+              type="text"
+            />
+          </label>
+          <label
+            className="form-control w-full"
+          >
+            <div
+              className="label"
+            >
+              <span
+                className="label-text-alt"
+              >
+                Pot size
+              </span>
+            </div>
+            <input
+              className="input w-full input-bordered"
+              defaultValue={4}
+              max="36"
+              min="1"
+              name="pot_size"
+              type="number"
+            />
+          </label>
+          <label
+            className="form-control w-full"
+          >
+            <div
+              className="label"
+            >
+              <span
+                className="label-text-alt"
+              >
+                Description
+              </span>
+            </div>
+            <textarea
+              className="textarea textarea-bordered"
+              defaultValue="This is a plant with a long description"
+              name="description"
+            />
+          </label>
+        </form>
+        <div
+          className="modal-action mx-auto"
+        >
+          <form
+            method="dialog"
+          >
+            <button
+              className="btn mr-2"
+            >
+              Cancel
+            </button>
+            <button
+              className="btn ml-2"
+              onClick={[Function]}
+            >
+              Edit
+            </button>
+          </form>
+        </div>
+      </div>
+      <form
+        className="modal-backdrop"
+        method="dialog"
+      >
+        <button>
+          close
+        </button>
+      </form>
+    </dialog>
+    <dialog
+      className="modal"
+      id="addToTrayModal"
+    >
+      <div
+        className="modal-box text-center flex flex-col pt-4"
+      >
+        <form
+          method="dialog"
+        >
+          <button
+            className="btn-close absolute right-4 top-4"
+          >
+            <svg
+              aria-hidden="true"
+              className="w-8 h-8"
+              data-slot="icon"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+              />
+            </svg>
+          </button>
+        </form>
+        <p
+          className="text-lg"
+        >
+          Add plant to tray
+        </p>
+        <select
+          className="select select-bordered m-8"
+          defaultValue=""
+          id="traySelect"
+        >
+          <option
+            disabled={true}
+            value=""
+          >
+            Select tray
+          </option>
+          <option
+            value="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+          >
+            Test tray
+          </option>
+          <option
+            value="0640ec3b-1bed-4b15-a078-d6e7ec66be61"
+          >
+            Testing
+          </option>
+        </select>
+        <button
+          className="btn btn-success mx-auto"
+          onClick={[Function]}
+        >
+          Confirm
+        </button>
+      </div>
+      <form
+        className="modal-backdrop"
+        method="dialog"
+      >
+        <button>
+          close
+        </button>
+      </form>
+    </dialog>
+    <dialog
+      className="modal"
+      id="repotModal"
+    >
+      <div
+        className="modal-box text-center flex flex-col pt-4"
+      >
+        <form
+          method="dialog"
+        >
+          <button
+            className="btn-close absolute right-4 top-4"
+          >
+            <svg
+              aria-hidden="true"
+              className="w-8 h-8"
+              data-slot="icon"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+              />
+            </svg>
+          </button>
+        </form>
+        <p
+          className="text-lg mb-8"
+        >
+          Repot plant
+        </p>
+        <div>
+          <p>
+            Repot time
+          </p>
+          <input
+            className="input input-bordered mx-auto my-2"
+            defaultValue="2024-03-01T00:53:43"
+            id="repotTime"
+            step="1"
+            type="datetime-local"
+          />
+        </div>
+        <div
+          className="my-8"
+        >
+          <p
+            className="text-md"
+          >
+            New pot size
+          </p>
+          <div
+            className="flex flex-col"
+            id="headlessui-radiogroup-:r1:"
+            onKeyDown={[Function]}
+            role="radiogroup"
+          >
+            <div
+              className="flex justify-center mx-auto"
+            >
+              <div
+                aria-checked="false"
+                className="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
+                data-headlessui-state=""
+                id="headlessui-radiogroup-option-:r2:"
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                role="radio"
+                tabIndex={-1}
+              >
+                <span
+                  className="m-auto"
+                >
+                  2
+                </span>
+              </div>
+              <div
+                aria-checked="false"
+                className="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
+                data-headlessui-state=""
+                id="headlessui-radiogroup-option-:r3:"
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                role="radio"
+                tabIndex={-1}
+              >
+                <span
+                  className="m-auto"
+                >
+                  3
+                </span>
+              </div>
+              <div
+                aria-checked="false"
+                className="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
+                data-headlessui-state=""
+                id="headlessui-radiogroup-option-:r4:"
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                role="radio"
+                tabIndex={-1}
+              >
+                <span
+                  className="m-auto"
+                >
+                  4
+                </span>
+              </div>
+              <div
+                aria-checked="true"
+                className="pot-size w-10 h-10 md:w-12 md:h-12 pot-size-selected"
+                data-headlessui-state="checked"
+                id="headlessui-radiogroup-option-:r5:"
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                role="radio"
+                tabIndex={0}
+              >
+                <span
+                  className="m-auto"
+                >
+                  6
+                </span>
+              </div>
+              <div
+                aria-checked="false"
+                className="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
+                data-headlessui-state=""
+                id="headlessui-radiogroup-option-:r6:"
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                role="radio"
+                tabIndex={-1}
+              >
+                <span
+                  className="m-auto"
+                >
+                  8
+                </span>
+              </div>
+            </div>
+            <div
+              className="flex justify-center mx-auto"
+            >
+              <div
+                aria-checked="false"
+                className="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
+                data-headlessui-state=""
+                id="headlessui-radiogroup-option-:r7:"
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                role="radio"
+                tabIndex={-1}
+              >
+                <span
+                  className="m-auto"
+                >
+                  10
+                </span>
+              </div>
+              <div
+                aria-checked="false"
+                className="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
+                data-headlessui-state=""
+                id="headlessui-radiogroup-option-:r8:"
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                role="radio"
+                tabIndex={-1}
+              >
+                <span
+                  className="m-auto"
+                >
+                  12
+                </span>
+              </div>
+              <div
+                aria-checked="false"
+                className="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
+                data-headlessui-state=""
+                id="headlessui-radiogroup-option-:r9:"
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                role="radio"
+                tabIndex={-1}
+              >
+                <span
+                  className="m-auto"
+                >
+                  14
+                </span>
+              </div>
+              <div
+                aria-checked="false"
+                className="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
+                data-headlessui-state=""
+                id="headlessui-radiogroup-option-:ra:"
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                role="radio"
+                tabIndex={-1}
+              >
+                <span
+                  className="m-auto"
+                >
+                  18
+                </span>
+              </div>
+              <div
+                aria-checked="false"
+                className="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
+                data-headlessui-state=""
+                id="headlessui-radiogroup-option-:rb:"
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                role="radio"
+                tabIndex={-1}
+              >
+                <span
+                  className="m-auto"
+                >
+                  21
+                </span>
+              </div>
+            </div>
+            <div
+              className="flex justify-center mx-auto"
+            >
+              <input
+                aria-checked="false"
+                className="pot-size w-32 bg-base-300"
+                data-headlessui-state=""
+                id="headlessui-radiogroup-option-:rc:"
+                onBlur={[Function]}
+                onClick={[Function]}
+                onFocus={[Function]}
+                placeholder="custom"
+                role="radio"
+                tabIndex={-1}
+              />
+            </div>
+          </div>
+        </div>
+        <button
+          className="btn btn-success mx-auto"
+          onClick={[Function]}
+        >
+          Repot
+        </button>
+      </div>
+      <form
+        className="modal-backdrop"
+        method="dialog"
+      >
+        <button>
+          close
+        </button>
+      </form>
+    </dialog>
+  </div>,
+  <div
+    className="toast toast-center opacity-0 transition-all duration-500"
+  >
+    <div
+      className="alert alert-info gap-0"
+    >
+      <span />
+    </div>
+  </div>,
+]
+`;
