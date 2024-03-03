@@ -368,7 +368,6 @@ exports[`App matches snapshot 1`] = `
     </div>
     <dialog
       className="modal"
-      id="editModal"
     >
       <div
         className="modal-box text-center flex flex-col pt-4"
@@ -522,7 +521,6 @@ exports[`App matches snapshot 1`] = `
     </dialog>
     <dialog
       className="modal"
-      id="addToTrayModal"
     >
       <div
         className="modal-box text-center flex flex-col pt-4"
@@ -592,7 +590,6 @@ exports[`App matches snapshot 1`] = `
     </dialog>
     <dialog
       className="modal"
-      id="repotModal"
     >
       <div
         className="modal-box text-center flex flex-col pt-4"

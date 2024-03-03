@@ -1,16 +1,20 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 
+let editModalRef;
+
 export const openEditModal = () => {
-    document.getElementById('editModal').showModal();
+    editModalRef.current.showModal();
 };
 
 // Takes modal title, submit handler, and details form
 // Modal has centered title, can be closed with button, esc, or outside click
 const EditModal = ({ title, onSubmit, children }) => {
+    editModalRef = useRef(null);
+
     return (
-        <Modal id="editModal">
+        <Modal dialogRef={editModalRef}>
             <h3 className="font-bold text-lg">{title}</h3>
 
             {children}

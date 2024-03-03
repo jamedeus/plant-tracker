@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import print from 'print-js';
 import EditableNodeList from 'src/components/EditableNodeList';
 import Navbar from 'src/components/Navbar';
@@ -16,6 +16,10 @@ function App() {
     const [trays, setTrays] = useState(() => {
         return parseDomContext("trays");
     });
+
+    // Create refs for modals that show status while generating QR codes
+    const printModalRef = useRef(null);
+    const printModalErrorRef = useRef(null);
 
     // State object to track edit mode (shows checkbox for each card when true)
     const [editing, setEditing] = useState(false);
@@ -55,21 +59,21 @@ function App() {
     // open QR codes in print dialog if user did not click cancel
     const fetchQrCodes = async () => {
         // Show loading modal
-        document.getElementById('printModal').showModal();
+        printModalRef.current.showModal();
 
         // Get Base64-encoded image string from backend
         const response = await fetch('/get_qr_codes');
 
         // Check response if user did not close modal
-        if (document.getElementById('printModal').open) {
+        if (printModalRef.current.open) {
             // Open QR codes in print dialog if response OK
             if (response.ok) {
                 const data = await response.json();
                 printQrCodes(data.qr_codes);
             // Replace loading modal with error modal if response not OK
             } else {
-                document.getElementById('printModal').close();
-                document.getElementById('printErrorModal').showModal();
+                printModalRef.current.close();
+                printModalErrorRef.current.showModal();
             }
         }
     };
@@ -101,7 +105,7 @@ function App() {
             header: null,
             footer: null
         });
-        document.getElementById('printModal').close();
+        printModalRef.current.close();
     };
 
     // Rendered when both state objects are empty, shows setup instructions
@@ -208,7 +212,7 @@ function App() {
                 </button>
             </FloatingFooter>
 
-            <dialog id="printModal" className="modal">
+            <dialog ref={printModalRef} className="modal">
                 <div className="modal-box text-center flex flex-col">
                     <h3 className="font-bold text-lg mb-6">Fetching QR Codes</h3>
                     <span className="loading loading-spinner loading-lg mx-auto"></span>
@@ -221,7 +225,7 @@ function App() {
                 </div>
             </dialog>
 
-            <dialog id="printErrorModal" className="modal">
+            <dialog ref={printModalErrorRef} className="modal">
                 <div className="modal-box text-center flex flex-col">
                     <h3 className="font-bold text-lg mb-6">Error</h3>
                     <p>The URL_PREFIX environment variable is not set, check docker config</p>

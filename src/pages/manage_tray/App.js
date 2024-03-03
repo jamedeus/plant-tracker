@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { sendPostRequest, parseDomContext, localToUTC, pastTense } from 'src/util';
 import EditableNodeList from 'src/components/EditableNodeList';
@@ -36,6 +36,9 @@ function App() {
 
     // Get hook to show toast message
     const { showToast } = useToast();
+
+    // Create ref for modal used to add/remove plants to/from tray
+    const managePlantsModalRef = useRef(null);
 
     const overview = () => {
         window.location.href = "/";
@@ -109,7 +112,7 @@ function App() {
     // Opens modal with list of existing plants if arg is 'remove'
     const openManagePlantsModal = (action) => {
         setManagePlants(action);
-        document.getElementById('managePlantsModal').showModal();
+        managePlantsModalRef.current.showModal();
     };
 
     // Displays plant options in managePlantsModal
@@ -318,7 +321,7 @@ function App() {
             </EditModal>
 
             {/* Shown when 'Add plants' or 'Remove plants' clicked in dropdown */}
-            <Modal id="managePlantsModal">
+            <Modal dialogRef={managePlantsModalRef}>
                 {(() => {
                     switch(managePlants) {
                         case('add'):

@@ -26,6 +26,11 @@ function App() {
     // Get hook to show toast message
     const { showToast } = useToast();
 
+    // Create ref for modal used to add plant to tray
+    const trayModalRef = useRef(null);
+    // Create ref for modal used to create RepotEvent
+    const repotModalRef = useRef(null);
+
     const submitEditModal = async () => {
         const payload = Object.fromEntries(
             new FormData(document.getElementById('plantDetails'))
@@ -203,11 +208,11 @@ function App() {
         };
 
         const openTrayModal = () => {
-            document.getElementById('addToTrayModal').showModal();
+            trayModalRef.current.showModal();
         };
 
         const openRepotModal = () => {
-            document.getElementById('repotModal').showModal();
+            repotModalRef.current.showModal();
         };
 
         const removeFromTray = async () => {
@@ -292,11 +297,11 @@ function App() {
                 });
             }
             // Close modal
-            document.getElementById('addToTrayModal').close();
+            trayModalRef.current.close();
         };
 
         return (
-            <Modal id="addToTrayModal">
+            <Modal dialogRef={trayModalRef}>
                 <p className="text-lg">Add plant to tray</p>
                 <select
                     id="traySelect"
@@ -386,7 +391,7 @@ function App() {
         };
 
         return (
-            <Modal id="repotModal">
+            <Modal dialogRef={repotModalRef}>
                 <p className="text-lg mb-8">Repot plant</p>
 
                 <div>

@@ -303,7 +303,6 @@ exports[`App matches snapshot 1`] = `
   </div>
   <dialog
     className="modal"
-    id="printModal"
   >
     <div
       className="modal-box text-center flex flex-col"
@@ -333,7 +332,6 @@ exports[`App matches snapshot 1`] = `
   </dialog>
   <dialog
     className="modal"
-    id="printErrorModal"
   >
     <div
       className="modal-box text-center flex flex-col"

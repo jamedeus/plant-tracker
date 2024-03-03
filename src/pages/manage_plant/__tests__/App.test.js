@@ -47,6 +47,13 @@ const mockContext = {
 }
 
 describe('App', () => {
+    // Mock long-supported features that jsdom somehow hasn't implemented yet
+    beforeAll(() => {
+        HTMLDialogElement.prototype.show = jest.fn();
+        HTMLDialogElement.prototype.showModal = jest.fn();
+        HTMLDialogElement.prototype.close = jest.fn();
+    });
+
     // Setup: Create mock state objects
     beforeEach(() => {
         const mockPlant = document.createElement('div');
