@@ -216,7 +216,7 @@ exports[`App matches snapshot 1`] = `
               >
                 Test Plant
               </h2>
-              Watered 3 hours ago
+              Watered 6 hours ago
             </div>
             <button
               className="btn-close absolute right-2 top-8 z-40"
@@ -312,7 +312,7 @@ exports[`App matches snapshot 1`] = `
               >
                 Unnamed Spider Plant
               </h2>
-              Watered 3 hours ago
+              Watered 6 hours ago
             </div>
             <button
               className="btn-close absolute right-2 top-8 z-40"

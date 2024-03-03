@@ -1,4 +1,5 @@
 import renderer from 'react-test-renderer';
+import { DateTime } from 'src/luxonMock';
 import App from '../App';
 
 // Simulated django context, parsed into state object
@@ -39,10 +40,17 @@ describe('App', () => {
     });
 
     it('matches snapshot', () => {
+        // Mock system time so relative times ("1 hour ago") don't change
+        jest.useFakeTimers();
+        jest.setSystemTime(new Date('2024-03-01T12:00:00Z'));
+
         const component = renderer.create(
             <App />
         );
         let tree = component.toJSON();
         expect(tree).toMatchSnapshot();
+
+        // Reset mock
+        jest.useRealTimers();
     });
 });
