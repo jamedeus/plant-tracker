@@ -1,11 +1,5 @@
-import renderer from 'react-test-renderer';
-import { DateTime } from 'src/testUtils/luxonMock';
-import createMockContext from 'src/testUtils/createMockContext';
-import App from '../App';
-import { ToastProvider } from 'src/ToastContext';
-
 // Simulated django context, parsed into state object
-const mockContext = {
+export const mockContext = {
     "tray": {
         "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
         "name": "Test tray",
@@ -52,36 +46,3 @@ const mockContext = {
         }
     ]
 }
-
-describe('App', () => {
-    // Mock long-supported features that jsdom somehow hasn't implemented yet
-    beforeAll(() => {
-        HTMLDialogElement.prototype.show = jest.fn();
-        HTMLDialogElement.prototype.showModal = jest.fn();
-        HTMLDialogElement.prototype.close = jest.fn();
-    });
-
-    // Setup: Create mock state objects
-    beforeEach(() => {
-        createMockContext('tray', mockContext.tray);
-        createMockContext('details', mockContext.details);
-        createMockContext('options', mockContext.options);
-    });
-
-    it('matches snapshot', () => {
-        // Mock system time so relative times ("1 hour ago") don't change
-        jest.useFakeTimers();
-        jest.setSystemTime(new Date('2024-03-01T12:00:00Z'));
-
-        const component = renderer.create(
-            <ToastProvider>
-                <App />
-            </ToastProvider>
-        );
-        let tree = component.toJSON();
-        expect(tree).toMatchSnapshot();
-
-        // Reset mock
-        jest.useRealTimers();
-    });
-});

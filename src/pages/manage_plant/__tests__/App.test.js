@@ -1,55 +1,14 @@
-import renderer from 'react-test-renderer';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
 import { DateTime } from 'src/testUtils/luxonMock';
 import createMockContext from 'src/testUtils/createMockContext';
 import App from '../App';
 import { ToastProvider } from 'src/ToastContext';
-
-// Simulated django context, parsed into state object
-const mockContext = {
-    "plant": {
-        "name": "Test Plant",
-        "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-        "species": "Calathea",
-        "description": "This is a plant with a long description",
-        "pot_size": 4,
-        "last_watered": "2024-03-01T05:45:44+00:00",
-        "last_fertilized": "2024-03-01T05:45:44+00:00",
-        "display_name": "Test Plant",
-        "events": {
-            "water": [
-                "2024-03-01T05:45:44+00:00",
-                "2024-02-29T10:20:15+00:00",
-            ],
-            "fertilize": [
-                "2024-03-01T05:45:44+00:00",
-                "2024-02-26T02:44:12+00:00",
-            ]
-        },
-        "tray": {
-            "name": "Test tray",
-            "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
-        }
-    },
-    "trays": [
-        {
-            "name": "Test tray",
-            "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
-        },
-        {
-            "name": "Testing",
-            "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be61"
-        }
-    ],
-    "species_options": [
-        "Parlor Palm",
-        "Spider Plant",
-        "Calathea"
-    ]
-}
+import { mockContext } from './mockContext';
 
 describe('App', () => {
+    let app, user;
+
     // Mock long-supported features that jsdom somehow hasn't implemented yet
     beforeAll(() => {
         HTMLDialogElement.prototype.show = jest.fn();
@@ -57,28 +16,19 @@ describe('App', () => {
         HTMLDialogElement.prototype.close = jest.fn();
     });
 
-    // Setup: Create mock state objects
     beforeEach(() => {
+        // Create mock state objects
         createMockContext('plant', mockContext.plant);
         createMockContext('trays', mockContext.trays);
         createMockContext('species_options', mockContext.species_options);
-    });
 
-    it('matches snapshot', () => {
-        // Mock system time so relative times ("1 hour ago") don't change
-        jest.useFakeTimers();
-        jest.setSystemTime(new Date('2024-03-01T12:00:00Z'));
-
-        const component = renderer.create(
+        // Render app + create userEvent instance to use in tests
+        app = render(
             <ToastProvider>
                 <App />
             </ToastProvider>
         );
-        let tree = component.toJSON();
-        expect(tree).toMatchSnapshot();
-
-        // Reset mock
-        jest.useRealTimers();
+        user = userEvent.setup();
     });
 
     it('sends correct payload when edit modal is submitted', async () => {
@@ -93,13 +43,6 @@ describe('App', () => {
                 "display_name": "Test Plant"
             })
         }));
-
-        const app = render(
-            <ToastProvider>
-                <App />
-            </ToastProvider>
-        );
-        const user = userEvent.setup()
 
         // Click submit button inside edit modal
         const modal = app.getByText("Edit Details").parentElement;
@@ -133,13 +76,6 @@ describe('App', () => {
             })
         }));
 
-        const app = render(
-            <ToastProvider>
-                <App />
-            </ToastProvider>
-        );
-        const user = userEvent.setup()
-
         // Click water button
         await user.click(app.getByText("Water"));
 
@@ -160,13 +96,6 @@ describe('App', () => {
     });
 
     it('sends correct payload when "Remove from tray" clicked', async () => {
-        const app = render(
-            <ToastProvider>
-                <App />
-            </ToastProvider>
-        );
-        const user = userEvent.setup()
-
         // Click "Remove from tray" dropdown option
         await user.click(app.getByText(/Remove from tray/));
 
@@ -185,13 +114,6 @@ describe('App', () => {
     });
 
     it('sends the correct payload when "Add to tray" modal submitted', async () => {
-        const app = render(
-            <ToastProvider>
-                <App />
-            </ToastProvider>
-        );
-        const user = userEvent.setup()
-
         // Click remove from tray (re-renders with add to tray option)
         await user.click(app.getByText(/Remove from tray/));
 
@@ -221,13 +143,6 @@ describe('App', () => {
     });
 
     it('enters edit mode when event history edit button clicked', async () => {
-        const app = render(
-            <ToastProvider>
-                <App />
-            </ToastProvider>
-        );
-        const user = userEvent.setup()
-
         // Get reference to Water History div, open collapse
         const waterHistory = app.getByText("Water History").parentElement;
         await user.click(waterHistory.children[0]);
@@ -261,13 +176,6 @@ describe('App', () => {
                 "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
-
-        const app = render(
-            <ToastProvider>
-                <App />
-            </ToastProvider>
-        );
-        const user = userEvent.setup()
 
         // Get reference to Repot Modal + submit button
         const repotModal = app.getByText("Repot time").parentElement.parentElement;

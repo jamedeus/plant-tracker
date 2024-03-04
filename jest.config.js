@@ -7,5 +7,6 @@ module.exports = {
     },
     moduleNameMapper: {
         '^src/(.*)$': path.resolve(__dirname, 'src/$1')
-    }
+    },
+    testPathIgnorePatterns: ['mockContext.js']
 };
