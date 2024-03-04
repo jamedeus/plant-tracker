@@ -2,6 +2,7 @@ import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
 import { DateTime } from 'src/testUtils/luxonMock';
 import createMockContext from 'src/testUtils/createMockContext';
+import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
 import { ToastProvider } from 'src/ToastContext';
 import { mockContext } from './mockContext';
@@ -56,11 +57,7 @@ describe('App', () => {
                 "description": "",
                 "tray_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
             }),
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json',
-                'X-CSRFToken': null,
-            }
+            headers: postHeaders
         });
     });
 
@@ -93,11 +90,7 @@ describe('App', () => {
                 "event_type": "water",
                 "timestamp": "2024-03-01T20:00:00.000Z"
             }),
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json',
-                'X-CSRFToken': null,
-            }
+            headers: postHeaders
         });
     });
 
@@ -130,11 +123,7 @@ describe('App', () => {
                 "event_type": "fertilize",
                 "timestamp": "2024-03-01T20:00:00.000Z"
             }),
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json',
-                'X-CSRFToken': null,
-            }
+            headers: postHeaders
         });
     });
 
@@ -170,11 +159,7 @@ describe('App', () => {
                 "event_type": "water",
                 "timestamp": "2024-03-01T20:00:00.000Z"
             }),
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json',
-                'X-CSRFToken': null,
-            }
+            headers: postHeaders
         });
     });
 
@@ -210,11 +195,7 @@ describe('App', () => {
                 "event_type": "fertilize",
                 "timestamp": "2024-03-01T20:00:00.000Z"
             }),
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json',
-                'X-CSRFToken': null,
-            }
+            headers: postHeaders
         });
     });
 
@@ -252,11 +233,7 @@ describe('App', () => {
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be16"
                 ]
             }),
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json',
-                'X-CSRFToken': null,
-            }
+            headers: postHeaders
         });
     });
 
@@ -294,11 +271,7 @@ describe('App', () => {
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                 ]
             }),
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'Content-Type': 'application/json',
-                'X-CSRFToken': null,
-            }
+            headers: postHeaders
         });
     });
 });
