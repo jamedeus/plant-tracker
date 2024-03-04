@@ -95,6 +95,35 @@ describe('App', () => {
         });
     });
 
+    it('sends correct payload when plant is fertilized', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "action": "fertilize",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
+
+        // Click fertilize button
+        await user.click(app.getByText("Fertilize"));
+
+        // Confirm correct data posted to /add_plant_event endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/add_plant_event', {
+            method: 'POST',
+            body: JSON.stringify({
+                "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                "event_type": "fertilize",
+                "timestamp": "2024-03-01T20:00:00.000Z"
+            }),
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json',
+                'X-CSRFToken': null,
+            }
+        });
+    });
+
     it('sends correct payload when "Remove from tray" clicked', async () => {
         // Click "Remove from tray" dropdown option
         await user.click(app.getByText(/Remove from tray/));
@@ -165,6 +194,48 @@ describe('App', () => {
         expect(within(waterHistory).getByText('Edit').nodeName).toBe('BUTTON');
         expect(within(waterHistory).queryByText('Delete')).toBeNull();
         expect(within(waterHistory).queryByText('Cancel')).toBeNull();
+    });
+
+    it('sends correct payload when water event is deleted', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "deleted": "water",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
+
+        // Get reference to Water History div, open collapse
+        const waterHistory = app.getByText("Water History").parentElement;
+        await user.click(waterHistory.children[0]);
+
+        // Click edit button
+        await user.click(within(waterHistory).getByText('Edit'));
+
+        // Click first checkbox to select event
+        await user.click(waterHistory.children[2].children[0].children[0].children[0]);
+
+        // Click delete buttonm confirm buttons reset
+        await user.click(within(waterHistory).getByText('Delete'));
+        expect(within(waterHistory).getByText('Edit').nodeName).toBe('BUTTON');
+        expect(within(waterHistory).queryByText('Delete')).toBeNull();
+        expect(within(waterHistory).queryByText('Cancel')).toBeNull();
+
+        // Confirm correct data posted to /delete_plant_event endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/delete_plant_event', {
+            method: 'POST',
+            body: JSON.stringify({
+                "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                "event_type": "water",
+                "timestamp": "2024-03-01T05:45:44+00:00"
+            }),
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'Content-Type': 'application/json',
+                'X-CSRFToken': null,
+            }
+        });
     });
 
     it('sends correct payload when RepotModal is submitted', async () => {

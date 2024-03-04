@@ -17,10 +17,12 @@ const CollapseCol = ({ title, children, defaultOpen=true, scroll=false }) => {
         if (scroll && open) {
             // Wait for open animation to complete (for iOS)
             setTimeout(() => {
-                scrollRef.current.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center"
-                });
+                if (scrollRef.current) {
+                    scrollRef.current.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+                }
             }, 150);
         }
     }, [open]);
