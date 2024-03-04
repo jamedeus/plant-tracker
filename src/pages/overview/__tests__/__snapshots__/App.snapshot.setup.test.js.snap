@@ -1,0 +1,164 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App matches snapshot when no models exist (setup) 1`] = `
+<div
+  className="container flex flex-col min-h-screen mx-auto pb-16"
+>
+  <div
+    className="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
+  >
+    <div
+      className="navbar-start"
+    >
+      <div
+        className="dropdown"
+      >
+        <div
+          className="btn btn-ghost btn-circle"
+          role="button"
+          tabIndex={0}
+        >
+          <svg
+            className="h-5 w-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4 6h16M4 12h16M4 18h7"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+            />
+          </svg>
+        </div>
+        <ul
+          className="menu menu-md dropdown-content mt-3 z-[99]
+                                    p-2 shadow bg-base-300 rounded-box w-52"
+          tabIndex={0}
+        >
+          <li>
+            <a
+              onClick={[Function]}
+            >
+              Edit
+            </a>
+          </li>
+          <li>
+            <a
+              onClick={[Function]}
+            >
+              Print QR Codes
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div
+      className="navbar-center"
+    >
+      <a
+        className="btn btn-ghost text-3xl"
+      >
+        Plant Overview
+      </a>
+    </div>
+    <div
+      className="navbar-end"
+    />
+  </div>
+  <div
+    className="flex flex-col mx-auto text-center my-auto px-8"
+  >
+    <p
+      className="text-2xl"
+    >
+      No plants found!
+    </p>
+    <ul
+      className="steps steps-vertical my-8"
+    >
+      <li
+        className="step"
+      >
+        Print QR codes on sticker paper
+      </li>
+      <li
+        className="step"
+      >
+        Add a sticker to each plant pot
+      </li>
+      <li
+        className="step"
+      >
+        Scan codes to register plants!
+      </li>
+    </ul>
+    <button
+      className="btn btn-accent text-lg"
+      onClick={[Function]}
+    >
+      Print QR Codes
+    </button>
+  </div>
+  <dialog
+    className="modal"
+  >
+    <div
+      className="modal-box text-center flex flex-col"
+    >
+      <h3
+        className="font-bold text-lg mb-6"
+      >
+        Fetching QR Codes
+      </h3>
+      <span
+        className="loading loading-spinner loading-lg mx-auto"
+      />
+      <div
+        className="modal-action mx-auto"
+      >
+        <form
+          method="dialog"
+        >
+          <button
+            className="btn"
+          >
+            Cancel
+          </button>
+        </form>
+      </div>
+    </div>
+  </dialog>
+  <dialog
+    className="modal"
+  >
+    <div
+      className="modal-box text-center flex flex-col"
+    >
+      <h3
+        className="font-bold text-lg mb-6"
+      >
+        Error
+      </h3>
+      <p>
+        The URL_PREFIX environment variable is not set, check docker config
+      </p>
+      <div
+        className="modal-action mx-auto"
+      >
+        <form
+          method="dialog"
+        >
+          <button
+            className="btn"
+          >
+            OK
+          </button>
+        </form>
+      </div>
+    </div>
+  </dialog>
+</div>
+`;
