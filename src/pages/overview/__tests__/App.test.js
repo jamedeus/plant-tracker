@@ -1,5 +1,6 @@
 import renderer from 'react-test-renderer';
-import { DateTime } from 'src/luxonMock';
+import { DateTime } from 'src/testUtils/luxonMock';
+import createMockContext from 'src/testUtils/createMockContext';
 import App from '../App';
 
 // Simulated django context, parsed into state object
@@ -28,15 +29,8 @@ const mockContext = {
 describe('App', () => {
     // Setup: Create mock state objects
     beforeEach(() => {
-        const mockPlants = document.createElement('div');
-        mockPlants.id = 'plants';
-        mockPlants.textContent = JSON.stringify(mockContext.plants);
-        document.body.appendChild(mockPlants);
-
-        const mockTrays = document.createElement('div');
-        mockTrays.id = 'trays';
-        mockTrays.textContent = JSON.stringify(mockContext.trays);
-        document.body.appendChild(mockTrays);
+        createMockContext('plants', mockContext.plants);
+        createMockContext('trays', mockContext.trays);
     });
 
     it('matches snapshot', () => {

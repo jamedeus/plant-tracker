@@ -1,5 +1,6 @@
 import renderer from 'react-test-renderer';
-import { DateTime } from 'src/luxonMock';
+import { DateTime } from 'src/testUtils/luxonMock';
+import createMockContext from 'src/testUtils/createMockContext';
 import App from '../App';
 import { ToastProvider } from 'src/ToastContext';
 
@@ -62,20 +63,9 @@ describe('App', () => {
 
     // Setup: Create mock state objects
     beforeEach(() => {
-        const mockTray = document.createElement('div');
-        mockTray.id = 'tray';
-        mockTray.textContent = JSON.stringify(mockContext.tray);
-        document.body.appendChild(mockTray);
-
-        const mockDetails = document.createElement('div');
-        mockDetails.id = 'details';
-        mockDetails.textContent = JSON.stringify(mockContext.details);
-        document.body.appendChild(mockDetails);
-
-        const mockOptions = document.createElement('div');
-        mockOptions.id = 'options';
-        mockOptions.textContent = JSON.stringify(mockContext.options);
-        document.body.appendChild(mockOptions);
+        createMockContext('tray', mockContext.tray);
+        createMockContext('details', mockContext.details);
+        createMockContext('options', mockContext.options);
     });
 
     it('matches snapshot', () => {

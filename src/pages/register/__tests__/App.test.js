@@ -1,4 +1,5 @@
 import renderer from 'react-test-renderer';
+import createMockContext from 'src/testUtils/createMockContext';
 import App from '../App';
 
 // Simulated django context, parsed into state object
@@ -14,15 +15,8 @@ const mockContext = {
 describe('App', () => {
     // Setup: Create mock state objects
     beforeEach(() => {
-        const mockNewID = document.createElement('div');
-        mockNewID.id = 'new_id';
-        mockNewID.textContent = JSON.stringify(mockContext.new_id);
-        document.body.appendChild(mockNewID);
-
-        const mockSpeciesOptions = document.createElement('div');
-        mockSpeciesOptions.id = 'species_options';
-        mockSpeciesOptions.textContent = JSON.stringify(mockContext.species_options);
-        document.body.appendChild(mockSpeciesOptions);
+        createMockContext('new_id', mockContext.new_id);
+        createMockContext('species_options', mockContext.species_options);
     });
 
     it('matches snapshot', () => {
