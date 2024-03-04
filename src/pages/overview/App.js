@@ -151,8 +151,8 @@ function App() {
                 editableList={
                     <EditableNodeList
                         editing={editing}
-                        selected={selectedPlants}
-                        setSelected={setSelectedPlants}
+                        selected={selectedTrays}
+                        setSelected={setSelectedTrays}
                     />
                 }
             />
