@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Tab } from '@headlessui/react';
 import Navbar from 'src/components/Navbar';
 import { sendPostRequest, parseDomContext } from 'src/util';
 import TrayDetailsForm from 'src/forms/TrayDetailsForm';
 import PlantDetailsForm from 'src/forms/PlantDetailsForm';
+import Modal from 'src/components/Modal';
 
 function App() {
     // Load context set by django template
@@ -17,6 +18,9 @@ function App() {
     // Track visible form (changed by tabs, used to get correct endpoint)
     // Set to 0 for plant form, 1 for tray form
     const [plantForm, setPlantForm] = useState(0);
+
+    const errorModalRef = useRef(null);
+    const [errorModalMessage, setErrorModalMessage] = useState('');
 
     const submit = async () => {
         // Parse all fields from visible form, add type param
@@ -36,8 +40,12 @@ function App() {
         // Add UUID, post to backend
         payload.uuid = newID;
         const response = await sendPostRequest('/register', payload);
+        // Show error modal if registration failed
         if (!response.ok) {
-            throw new Error('Network response error');
+            const data = await response.json();
+            setErrorModalMessage(data.error);
+            errorModalRef.current.showModal();
+        // Redirect to manage page if successfully registered
         } else if (response.redirected) {
             window.location.href = response.url;
         } else {
@@ -96,6 +104,16 @@ function App() {
                     Save
                 </button>
             </div>
+
+            <Modal dialogRef={errorModalRef}>
+                <h3 className="font-bold text-lg">Error</h3>
+                <p className="text-center mt-8 mb-4">{errorModalMessage}</p>
+                <div className="modal-action mx-auto">
+                    <form method="dialog">
+                        <button className="btn">OK</button>
+                    </form>
+                </div>
+            </Modal>
         </div>
     );
 }

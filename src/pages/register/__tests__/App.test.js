@@ -5,6 +5,7 @@ import createMockContext from 'src/testUtils/createMockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
 import { mockContext } from './mockContext';
+import '@testing-library/jest-dom'
 
 describe('App', () => {
     let app, user;
@@ -120,5 +121,27 @@ describe('App', () => {
             }),
             headers: postHeaders
         });
+    });
+
+    it('shows error modal if registration fails', async () => {
+        // Mock fetch function to return error response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            redirected: false,
+            json: () => Promise.resolve({
+                "error": "Failed to register plant"
+            })
+        }));
+        // Mock HTMLDialogElement (not implemented in jsdom)
+        HTMLDialogElement.prototype.show = jest.fn();
+        HTMLDialogElement.prototype.showModal = jest.fn();
+        HTMLDialogElement.prototype.close = jest.fn();
+
+        // Confirm error text is not in document
+        expect(app.queryByText('Failed to register plant')).toBeNull();
+
+        // Click Save button, confirm error modal appears
+        await userEvent.click(app.getByText('Save'));
+        expect(app.getByText('Failed to register plant')).toBeInTheDocument();
     });
 });
