@@ -6,4 +6,4 @@ export const mockContext = {
         "Spider Plant",
         "Calathea"
     ]
-}
+};

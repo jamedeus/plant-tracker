@@ -1,5 +1,4 @@
 import renderer from 'react-test-renderer';
-import { DateTime } from 'src/testUtils/luxonMock';
 import createMockContext from 'src/testUtils/createMockContext';
 import App from '../App';
 import { ToastProvider } from 'src/ToastContext';

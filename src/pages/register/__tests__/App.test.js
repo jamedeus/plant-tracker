@@ -1,11 +1,10 @@
-import { render, screen, waitFor, within } from '@testing-library/react';
+import { render, within } from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
-import { DateTime } from 'src/testUtils/luxonMock';
 import createMockContext from 'src/testUtils/createMockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
 import { mockContext } from './mockContext';
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom';
 
 describe('App', () => {
     let app, user;

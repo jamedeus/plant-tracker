@@ -45,4 +45,4 @@ export const mockContext = {
             "name": "Unnamed Spider Plant"
         }
     ]
-}
+};

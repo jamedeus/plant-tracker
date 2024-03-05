@@ -1,8 +1,6 @@
 import renderer from 'react-test-renderer';
-import { DateTime } from 'src/testUtils/luxonMock';
 import createMockContext from 'src/testUtils/createMockContext';
 import App from '../App';
-import { mockContext } from './mockContext';
 
 describe('App', () => {
     it('matches snapshot when no models exist (setup)', () => {

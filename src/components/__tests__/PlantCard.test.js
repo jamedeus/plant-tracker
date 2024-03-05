@@ -1,8 +1,7 @@
-import { render, within, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
-import { DateTime } from 'src/testUtils/luxonMock';
 import PlantCard from '../PlantCard';
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom';
 
 describe('App', () => {
     let component, user;
@@ -22,7 +21,7 @@ describe('App', () => {
                 pot_size={12}
                 last_watered={"2024-02-27T05:45:44+00:00"}
             />
-        )
+        );
         user = userEvent.setup();
 
         // Reset all mocks to isolate tests

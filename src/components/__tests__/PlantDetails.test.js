@@ -1,7 +1,6 @@
-import { render, within, waitFor } from '@testing-library/react';
-import { DateTime } from 'src/testUtils/luxonMock';
+import { render } from '@testing-library/react';
 import PlantDetails from '../PlantDetails';
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom';
 
 describe('App', () => {
     it('displays correct details', () => {
@@ -19,7 +18,7 @@ describe('App', () => {
     });
 
     it('hides species row if argument is null', () => {
-        const { getByText, queryByText } = render(
+        const { getByText } = render(
             <PlantDetails
                 species={null}
                 pot_size={4}
@@ -31,7 +30,7 @@ describe('App', () => {
     });
 
     it('hides pot_size row if argument is null', () => {
-        const { getByText, queryByText } = render(
+        const { getByText } = render(
             <PlantDetails
                 species={"Fittonia"}
                 pot_size={null}
@@ -43,7 +42,7 @@ describe('App', () => {
     });
 
     it('hides description row if argument is null', () => {
-        const { getByText, queryByText } = render(
+        const { getByText } = render(
             <PlantDetails
                 species={"Fittonia"}
                 pot_size={4}

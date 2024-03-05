@@ -1,7 +1,6 @@
 import { render } from '@testing-library/react';
-import { DateTime } from 'src/testUtils/luxonMock';
 import LastEventTime from '../LastEventTime';
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom';
 
 describe('App', () => {
     it('displays "Never watered" when timestamp is null', () => {

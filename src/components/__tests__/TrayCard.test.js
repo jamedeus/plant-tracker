@@ -1,8 +1,7 @@
-import { render, within, waitFor } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
-import { DateTime } from 'src/testUtils/luxonMock';
 import TrayCard from '../TrayCard';
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom';
 
 describe('App', () => {
     let component, user;
@@ -15,7 +14,7 @@ describe('App', () => {
                 plants={2}
                 uuid={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"}
             />
-        )
+        );
         user = userEvent.setup();
 
         // Reset all mocks to isolate tests

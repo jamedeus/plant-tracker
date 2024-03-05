@@ -19,4 +19,4 @@ export const mockContext = {
             "plants": 4
         }
     ]
-}
+};

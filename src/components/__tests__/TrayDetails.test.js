@@ -1,7 +1,6 @@
-import { render, within, waitFor } from '@testing-library/react';
-import { DateTime } from 'src/testUtils/luxonMock';
+import { render } from '@testing-library/react';
 import TrayDetails from '../TrayDetails';
-import '@testing-library/jest-dom'
+import '@testing-library/jest-dom';
 
 describe('App', () => {
     it('displays correct details', () => {
@@ -17,7 +16,7 @@ describe('App', () => {
     });
 
     it('hides location row if argument is null', () => {
-        const { getByText, queryByText } = render(
+        const { getByText } = render(
             <TrayDetails
                 location={null}
                 description={"Used for propagation"}
@@ -28,7 +27,7 @@ describe('App', () => {
     });
 
     it('hides description row if argument is null', () => {
-        const { getByText, queryByText } = render(
+        const { getByText } = render(
             <TrayDetails
                 location={"Middle shelf"}
                 description={null}
