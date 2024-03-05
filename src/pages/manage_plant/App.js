@@ -376,9 +376,9 @@ function App() {
             // Selected will be integer value of chosen option, or "custom" if
             // the custom pot size input is selected
             if (isInt(selected)) {
-                payload.new_pot_size = selected;
+                payload.new_pot_size = parseInt(selected);
             } else {
-                payload.new_pot_size = customPotRef.current.value;
+                payload.new_pot_size = parseInt(customPotRef.current.value);
             }
 
             const response = await sendPostRequest('/repot_plant', payload);

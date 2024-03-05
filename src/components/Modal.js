@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { XMarkIcon } from '@heroicons/react/16/solid';
 
@@ -24,7 +24,7 @@ const Modal = ({ dialogRef, children }) => {
 Modal.propTypes = {
     dialogRef: PropTypes.oneOfType([
         PropTypes.func,
-        PropTypes.shape({ current: PropTypes.instanceOf(Component) }),
+        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
     ]),
     children: PropTypes.node
 };

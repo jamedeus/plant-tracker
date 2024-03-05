@@ -39,7 +39,7 @@ describe('App', () => {
             json: () => Promise.resolve({
                 "name": "Test Plant",
                 "species": "Calathea",
-                "pot_size": "4",
+                "pot_size": 4,
                 "description": "This is a plant with a long description",
                 "display_name": "Test Plant"
             })
@@ -301,7 +301,7 @@ describe('App', () => {
             method: 'POST',
             body: JSON.stringify({
                 "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                "new_pot_size": "5",
+                "new_pot_size": 5,
                 "timestamp": "2024-03-01T12:00"
             }),
             headers: postHeaders

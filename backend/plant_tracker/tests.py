@@ -366,7 +366,7 @@ class ManagePageTests(TestCase):
                 'display_name': 'test plant',
                 'species': 'Giant Sequoia',
                 'description': '300 feet and a few thousand years old',
-                'pot_size': '4'
+                'pot_size': 4
             }
         )
 
