@@ -113,7 +113,31 @@ describe('App', () => {
         });
     });
 
+    it('shows error toast after failing to create event', async() => {
+        // Mock fetch function to return error response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            status: 409,
+            json: () => Promise.resolve({
+                "error": "event with same timestamp already exists"
+            })
+        }));
+
+        // Click water button
+        await user.click(app.getByText("Water"));
+    });
+
     it('sends correct payload when "Remove from tray" clicked', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                "action": "remove_plant_from_tray",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
+
         // Click "Remove from tray" dropdown option
         await user.click(app.getByText(/Remove from tray/));
 
@@ -195,7 +219,7 @@ describe('App', () => {
         await user.click(within(waterHistory).getByText('Edit'));
 
         // Click first checkbox to select event
-        await user.click(waterHistory.children[2].children[0].children[0].children[0]);
+        user.click(app.container.querySelectorAll('.radio')[0]);
 
         // Click delete buttonm confirm buttons reset
         await user.click(within(waterHistory).getByText('Delete'));
@@ -225,9 +249,12 @@ describe('App', () => {
             })
         }));
 
+        // Click "Repot plant" dropdown option (open modal)
+        await user.click(app.getAllByText(/Repot plant/)[0]);
+
         // Get reference to Repot Modal + submit button
-        const repotModal = app.getByText("Repot time").parentElement.parentElement;
-        const submit = repotModal.children[4];
+        const repotModal = app.getAllByText(/Repot plant/)[1].parentElement;
+        const submit = repotModal.querySelector('.btn-success');
 
         // Click submit button
         await user.click(submit);
@@ -238,6 +265,43 @@ describe('App', () => {
             body: JSON.stringify({
                 "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
                 "new_pot_size": 6,
+                "timestamp": "2024-03-01T12:00"
+            }),
+            headers: postHeaders
+        });
+    });
+
+    it('detects when custom pot size is selected in RepotModal', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "action": "repot",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
+
+        // Click "Repot plant" dropdown option (open modal)
+        await user.click(app.getAllByText(/Repot plant/)[0]);
+
+        // Get reference to Repot Modal + submit button
+        const repotModal = app.getAllByText(/Repot plant/)[1].parentElement;
+        const submit = repotModal.querySelector('.btn-success');
+
+        // Click custom pot size option, enter "5"
+        const customPotSize = repotModal.querySelector('.pot-size.w-32');
+        await user.click(customPotSize);
+        await userEvent.type(customPotSize, '5');
+
+        // Click submit button
+        await user.click(submit);
+
+        // Confirm payload includes custom pot size
+        expect(global.fetch).toHaveBeenCalledWith('/repot_plant', {
+            method: 'POST',
+            body: JSON.stringify({
+                "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                "new_pot_size": "5",
                 "timestamp": "2024-03-01T12:00"
             }),
             headers: postHeaders

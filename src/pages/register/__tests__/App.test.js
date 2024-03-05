@@ -144,4 +144,17 @@ describe('App', () => {
         await userEvent.click(app.getByText('Save'));
         expect(app.getByText('Failed to register plant')).toBeInTheDocument();
     });
+
+    it('redirects to overview when dropdown option is clicked', async () => {
+        Object.defineProperty(window, 'location', {
+            value: {
+                assign: jest.fn(),
+            },
+        });
+
+        // Click overview dropdown option, confirm redirected
+        await user.click(app.getByText('Overview'));
+        expect(window.location.href).toBe('/');
+        jest.resetAllMocks();
+    });
 });

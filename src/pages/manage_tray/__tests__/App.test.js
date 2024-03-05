@@ -127,6 +127,34 @@ describe('App', () => {
         });
     });
 
+    it('shows checkboxes and event buttons when Manage button is clicked', async () => {
+        // Get reference to plants column
+        const plantsCol = app.getByText("Plants (2)").parentElement;
+        // Confirm Water, Fertilize, and Cancel buttons are not visible
+        expect(within(plantsCol).queryByText('Water')).toBeNull();
+        expect(within(plantsCol).queryByText('Fertilize')).toBeNull();
+        expect(within(plantsCol).queryByText('Cancel')).toBeNull();
+        // Confirm timestamp input and checkboxes are not visible
+        expect(app.container.querySelectorAll('.radio').length).toBe(0);
+        expect(app.container.querySelector('#addEventTime')).toBeNull();
+
+        // Click Manage button, confirm buttons, checkboxes, and input appear
+        await user.click(app.getByText("Manage"));
+        expect(within(plantsCol).getByText('Water').nodeName).toBe('BUTTON');
+        expect(within(plantsCol).getByText('Fertilize').nodeName).toBe('BUTTON');
+        expect(within(plantsCol).getByText('Cancel').nodeName).toBe('BUTTON');
+        expect(app.container.querySelectorAll('.radio').length).not.toBe(0);
+        expect(app.container.querySelector('#addEventTime')).not.toBeNull();
+
+        // Click cancel button, confirm elements disappear
+        await user.click(within(plantsCol).getByText("Cancel"));
+        expect(within(plantsCol).queryByText('Water')).toBeNull();
+        expect(within(plantsCol).queryByText('Fertilize')).toBeNull();
+        expect(within(plantsCol).queryByText('Cancel')).toBeNull();
+        expect(app.container.querySelectorAll('.radio').length).toBe(0);
+        expect(app.container.querySelector('#addEventTime')).toBeNull();
+    });
+
     it('sends correct payload when only 1 plant is watered', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
@@ -145,7 +173,7 @@ describe('App', () => {
 
         // Click Manage button under plants, select first plant, click water
         await user.click(within(plantsCol).getByText("Manage"));
-        await user.click(plantsCol.children[2].children[1].children[0]);
+        await user.click(app.container.querySelectorAll('.radio')[0]);
         await user.click(within(plantsCol).getByText("Water"));
 
         // Confirm correct data posted to /bulk_add_plant_events endpoint
@@ -181,7 +209,7 @@ describe('App', () => {
 
         // Click Manage button under plants, select second plant, click fertilize
         await user.click(within(plantsCol).getByText("Manage"));
-        await user.click(plantsCol.children[2].children[2].children[0]);
+        await user.click(app.container.querySelectorAll('.radio')[1]);
         await user.click(within(plantsCol).getByText("Fertilize"));
 
         // Confirm correct data posted to /bulk_add_plant_events endpoint
@@ -219,9 +247,9 @@ describe('App', () => {
         const addPlantsModal = app.getByText("Add Plants").parentElement;
         expect(addPlantsModal.children.length).toBe(5);
 
-        // Select the first plant option, click submit
-        await user.click(addPlantsModal.children[2].children[0]);
-        await user.click(addPlantsModal.children[4].children[0].children[1]);
+        // Select the first plant option, click Add button
+        await user.click(addPlantsModal.querySelectorAll('.radio')[0]);
+        await user.click(addPlantsModal.querySelector('.btn-success'));
 
         // Confirm correct data posted to /bulk_add_plants_to_tray endpoint
         // Should only contain UUID of first plant
@@ -257,9 +285,9 @@ describe('App', () => {
         const addPlantsModal = app.getByText("Remove Plants").parentElement;
         expect(addPlantsModal.children.length).toBe(5);
 
-        // Select the first plant option, click submit
-        await user.click(addPlantsModal.children[2].children[0]);
-        await user.click(addPlantsModal.children[4].children[0].children[1]);
+        // Select the first plant option, click Remove button
+        await user.click(addPlantsModal.querySelectorAll('.radio')[0]);
+        await user.click(addPlantsModal.querySelector('.btn-error'));
 
         // Confirm correct data posted to /bulk_remove_plants_from_tray endpoint
         // Should only contain UUID of first plant

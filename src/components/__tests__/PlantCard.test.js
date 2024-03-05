@@ -8,6 +8,10 @@ describe('App', () => {
     let component, user;
 
     beforeEach(() => {
+        // Mock system time so last watered time doesn't change
+        jest.useFakeTimers();
+        jest.setSystemTime(new Date('2024-03-01T12:00:00Z'));
+
         // Render component + create userEvent instance to use in tests
         component = render(
             <PlantCard
@@ -16,13 +20,14 @@ describe('App', () => {
                 species={"Calathea"}
                 description={"Mother plant"}
                 pot_size={12}
-                last_watered={"2024-03-01T05:45:44+00:00"}
+                last_watered={"2024-02-27T05:45:44+00:00"}
             />
         )
         user = userEvent.setup();
 
         // Reset all mocks to isolate tests
         jest.resetAllMocks();
+        jest.useRealTimers();
     });
 
     it('shows the correct information', () => {
