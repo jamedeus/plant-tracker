@@ -13,6 +13,7 @@
   "dependencies": {
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.1.1",
+    "@testing-library/jest-dom": "^6.4.2",
     "jest-environment-jsdom": "^29.7.0",
     "luxon": "^3.4.4",
     "print-js": "^1.6.0",
