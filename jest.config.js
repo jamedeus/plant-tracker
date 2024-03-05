@@ -8,5 +8,6 @@ module.exports = {
     moduleNameMapper: {
         '^src/(.*)$': path.resolve(__dirname, 'src/$1')
     },
-    testPathIgnorePatterns: ['mockContext.js']
+    testPathIgnorePatterns: ['mockContext.js'],
+    setupFilesAfterEnv: ['<rootDir>/src/testUtils/jest.setup.js']
 };

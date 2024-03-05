@@ -10,13 +10,6 @@ import { mockContext } from './mockContext';
 describe('App', () => {
     let app, user;
 
-    // Mock long-supported features that jsdom somehow hasn't implemented yet
-    beforeAll(() => {
-        HTMLDialogElement.prototype.show = jest.fn();
-        HTMLDialogElement.prototype.showModal = jest.fn();
-        HTMLDialogElement.prototype.close = jest.fn();
-    });
-
     beforeEach(() => {
         // Create mock state objects
         createMockContext('tray', mockContext.tray);

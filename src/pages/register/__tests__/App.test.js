@@ -132,10 +132,6 @@ describe('App', () => {
                 "error": "Failed to register plant"
             })
         }));
-        // Mock HTMLDialogElement (not implemented in jsdom)
-        HTMLDialogElement.prototype.show = jest.fn();
-        HTMLDialogElement.prototype.showModal = jest.fn();
-        HTMLDialogElement.prototype.close = jest.fn();
 
         // Confirm error text is not in document
         expect(app.queryByText('Failed to register plant')).toBeNull();

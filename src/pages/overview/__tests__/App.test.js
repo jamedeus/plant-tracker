@@ -11,13 +11,8 @@ jest.mock('print-js');
 describe('App', () => {
     let app, user;
 
-    // Mock long-supported features that jsdom somehow hasn't implemented yet
+    // Mock Blob and URL.createObjectURL (used to print QR codes)
     beforeAll(() => {
-        HTMLDialogElement.prototype.show = jest.fn();
-        HTMLDialogElement.prototype.showModal = jest.fn();
-        HTMLDialogElement.prototype.close = jest.fn();
-
-        // Mock Blob and URL.createObjectURL (used to print QR codes)
         global.Blob = jest.fn();
         URL.createObjectURL = jest.fn(() => 'url');
     });
