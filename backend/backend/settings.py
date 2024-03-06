@@ -12,29 +12,39 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 
 import os
 from pathlib import Path
+from django.core.management.utils import get_random_secret_key
 
 from .validate_url_prefix import validate_url_prefix
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Get URL prefix used to generate QR code stickers from env var
-URL_PREFIX = validate_url_prefix(os.environ.get('URL_PREFIX'))
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-o&#c$^8cib8001)@x*-fp+n9vgvo$u^)$2y+^f(qkf9ux@p7g+"
+# Read SECRET_KEY from env var, or generate new key if not present
+SECRET_KEY = os.environ.get('SECRET_KEY')
+if SECRET_KEY is None:
+    SECRET_KEY = get_random_secret_key()
+
+# Read ALLOWED_HOSTS from env var, or use wildcard if not present
+try:
+    ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(',')
+except AttributeError:
+    ALLOWED_HOSTS = ['*']
+
+# Add all allowed hosts to CSRF_TRUSTED_ORIGINS
+CSRF_TRUSTED_ORIGINS = []
+for i in ALLOWED_HOSTS:
+    CSRF_TRUSTED_ORIGINS.append(f'http://{i}')
+    CSRF_TRUSTED_ORIGINS.append(f'https://{i}')
+
+# Get URL prefix used to generate QR code stickers from env var
+URL_PREFIX = validate_url_prefix(os.environ.get('URL_PREFIX'))
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = [
-    "localhost",
-    "desktop.lan"
-]
-
 
 # Application definition
 
