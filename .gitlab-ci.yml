@@ -31,7 +31,7 @@ test_frontend:
   tags:
     - arm64
   before_script:
-    - npm install
+    - npm install -D
   script:
     - npm test -- --coverage
   coverage: '/All files.*\|.*\|.*\|.*\|.*\s+(\d+\.\d+)/'
