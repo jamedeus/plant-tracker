@@ -107,7 +107,7 @@ function App() {
             <div className="card card-compact bg-neutral text-neutral-content text-center">
                 <div className="card-body">
                     <p className="text-lg font-bold">{timestampToRelative(timestamp)}</p>
-                    <p>{DateTime.fromISO(timestamp).toFormat('h:mm a MMMM dd, yyyy')}</p>
+                    <p>{DateTime.fromISO(timestamp).toFormat("h:mm\u202Fa MMMM dd, yyyy")}</p>
                 </div>
             </div>
         );
