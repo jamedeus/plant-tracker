@@ -34,7 +34,6 @@ COPY backend/manage.py /mnt/backend/manage.py
 COPY backend/backend /mnt/backend/backend
 COPY backend/generate_qr_code_grid.py /mnt/backend/generate_qr_code_grid.py
 COPY backend/plant_tracker /mnt/backend/plant_tracker
-RUN rm -r /mnt/backend/plant_tracker/static/plant_tracker/*
 
 COPY --from=node_build backend/plant_tracker/static/plant_tracker/* /mnt/backend/plant_tracker/static/plant_tracker/
 
