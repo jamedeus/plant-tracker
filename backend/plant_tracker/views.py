@@ -6,6 +6,7 @@ from django.conf import settings
 from django.shortcuts import render
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponseRedirect
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 from generate_qr_code_grid import generate_layout
 from .models import Tray, Plant, RepotEvent
@@ -37,6 +38,7 @@ def get_plant_species_options():
     return list(set(i for i in species if i is not None))
 
 
+@ensure_csrf_cookie
 def render_react_app(request, title, bundle, state):
     '''Helper function to render react app in boilerplate HTML template
     Takes request object, page title, react bundle name, and react state object
