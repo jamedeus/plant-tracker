@@ -32,6 +32,9 @@ test_frontend:
     - arm64
   before_script:
     - npm install -D
+    - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+    - ". ~/.nvm/nvm.sh"
+    - nvm use 19.6
   script:
     - npm test -- --coverage
   coverage: '/All files.*\|.*\|.*\|.*\|.*\s+(\d+\.\d+)/'
