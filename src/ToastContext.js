@@ -35,7 +35,9 @@ export const ToastProvider = ({ children }) => {
 
         // Start timer to fade toast out after timeout milliseconds
         timer = setTimeout(() => {
-            toastRef.current.classList.add('opacity-0');
+            if (toastRef.current) {
+                toastRef.current.classList.add('opacity-0');
+            }
             setTimeout(500);
         }, timeout);
     };
