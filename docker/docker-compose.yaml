@@ -30,7 +30,7 @@ services:
       - SECRET_KEY="xxxxxxxxxxxxxxxxxxxxxx"
     volumes:
       # Persistent storage between sessions
-      - plant-tracker-data:/mnt
+      - plant-tracker-data:/mnt/backend/data/
     ports:
       - 8456:8456
     networks:
