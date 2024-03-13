@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Tab } from '@headlessui/react';
 import Navbar from 'src/components/Navbar';
-import { useTheme } from 'src/ThemeContext';
+import { useTheme } from 'src/context/ThemeContext';
 import { sendPostRequest, parseDomContext } from 'src/util';
 import TrayDetailsForm from 'src/forms/TrayDetailsForm';
 import PlantDetailsForm from 'src/forms/PlantDetailsForm';

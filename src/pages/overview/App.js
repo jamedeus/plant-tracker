@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import print from 'print-js';
 import EditableNodeList from 'src/components/EditableNodeList';
 import Navbar from 'src/components/Navbar';
-import { useTheme } from 'src/ThemeContext';
+import { useTheme } from 'src/context/ThemeContext';
 import TrayCard from 'src/components/TrayCard';
 import PlantCard from 'src/components/PlantCard';
 import { sendPostRequest, parseDomContext } from 'src/util';

@@ -2,8 +2,8 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import 'src/main.css';
-import { ToastProvider } from 'src/ToastContext';
-import { ThemeProvider } from 'src/ThemeContext';
+import { ToastProvider } from 'src/context/ToastContext';
+import { ThemeProvider } from 'src/context/ThemeContext';
 
 
 const container = document.getElementById('root');

@@ -1,6 +1,6 @@
 import renderer from 'react-test-renderer';
 import createMockContext from 'src/testUtils/createMockContext';
-import { ThemeProvider } from 'src/ThemeContext';
+import { ThemeProvider } from 'src/context/ThemeContext';
 import App from '../App';
 import { mockContext } from './mockContext';
 

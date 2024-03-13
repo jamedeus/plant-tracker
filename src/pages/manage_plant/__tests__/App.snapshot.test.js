@@ -1,8 +1,8 @@
 import renderer from 'react-test-renderer';
 import createMockContext from 'src/testUtils/createMockContext';
 import App from '../App';
-import { ToastProvider } from 'src/ToastContext';
-import { ThemeProvider } from 'src/ThemeContext';
+import { ToastProvider } from 'src/context/ToastContext';
+import { ThemeProvider } from 'src/context/ThemeContext';
 import { mockContext } from './mockContext';
 
 describe('App', () => {

@@ -2,7 +2,7 @@ import { render, within } from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
 import createMockContext from 'src/testUtils/createMockContext';
 import { postHeaders } from 'src/testUtils/headers';
-import { ThemeProvider } from 'src/ThemeContext';
+import { ThemeProvider } from 'src/context/ThemeContext';
 import App from '../App';
 import { mockContext } from './mockContext';
 import print from 'print-js';
