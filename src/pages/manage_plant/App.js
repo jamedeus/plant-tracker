@@ -9,6 +9,7 @@ import PlantDetailsForm from 'src/forms/PlantDetailsForm';
 import Navbar from 'src/components/Navbar';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { useToast } from 'src/ToastContext';
+import { useTheme } from 'src/ThemeContext';
 import DetailsCard from 'src/components/DetailsCard';
 import Modal from 'src/components/Modal';
 import { RadioGroup } from '@headlessui/react';
@@ -203,6 +204,9 @@ function App() {
     };
 
     const DropdownOptions = () => {
+        // Get toggle theme option from context
+        const { ToggleThemeOption } = useTheme();
+
         const overview = () => {
             window.location.href = "/";
         };
@@ -253,6 +257,7 @@ function App() {
                     }
                 })()}
                 <li><a onClick={openRepotModal}>Repot plant</a></li>
+                <ToggleThemeOption />
             </>
         );
     };

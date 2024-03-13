@@ -9,6 +9,7 @@ import PlantCard from 'src/components/PlantCard';
 import DatetimeInput from 'src/components/DatetimeInput';
 import FilterColumn from 'src/components/FilterColumn';
 import { useToast } from 'src/ToastContext';
+import { useTheme } from 'src/ThemeContext';
 import DetailsCard from 'src/components/DetailsCard';
 import Modal from 'src/components/Modal';
 import TrayDetails from 'src/components/TrayDetails';
@@ -39,6 +40,9 @@ function App() {
 
     // Create ref for modal used to add/remove plants to/from tray
     const managePlantsModalRef = useRef(null);
+
+    // Get toggle theme option from context
+    const { ToggleThemeOption } = useTheme();
 
     const overview = () => {
         window.location.href = "/";
@@ -270,6 +274,7 @@ function App() {
                         <li><a onClick={overview}>Overview</a></li>
                         <li><a onClick={() => openManagePlantsModal('add')}>Add plants</a></li>
                         <li><a onClick={() => openManagePlantsModal('remove')}>Remove plants</a></li>
+                        <ToggleThemeOption />
                     </>
                 }
                 title={

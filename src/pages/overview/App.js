@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import print from 'print-js';
 import EditableNodeList from 'src/components/EditableNodeList';
 import Navbar from 'src/components/Navbar';
+import { useTheme } from 'src/ThemeContext';
 import TrayCard from 'src/components/TrayCard';
 import PlantCard from 'src/components/PlantCard';
 import { sendPostRequest, parseDomContext } from 'src/util';
@@ -20,6 +21,9 @@ function App() {
     // Create refs for modals that show status while generating QR codes
     const printModalRef = useRef(null);
     const printModalErrorRef = useRef(null);
+
+    // Get toggle theme option from context
+    const { ToggleThemeOption } = useTheme();
 
     // State object to track edit mode (shows checkbox for each card when true)
     const [editing, setEditing] = useState(false);
@@ -194,6 +198,7 @@ function App() {
                     <>
                         <li><a onClick={toggleEditing}>Edit</a></li>
                         <li><a onClick={fetchQrCodes}>Print QR Codes</a></li>
+                        <ToggleThemeOption />
                     </>
                 }
                 title={

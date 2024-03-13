@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { Tab } from '@headlessui/react';
 import Navbar from 'src/components/Navbar';
+import { useTheme } from 'src/ThemeContext';
 import { sendPostRequest, parseDomContext } from 'src/util';
 import TrayDetailsForm from 'src/forms/TrayDetailsForm';
 import PlantDetailsForm from 'src/forms/PlantDetailsForm';
@@ -18,6 +19,9 @@ function App() {
     // Track visible form (changed by tabs, used to get correct endpoint)
     // Set to 0 for plant form, 1 for tray form
     const [plantForm, setPlantForm] = useState(0);
+
+    // Get toggle theme option from context
+    const { ToggleThemeOption } = useTheme();
 
     const errorModalRef = useRef(null);
     const [errorModalMessage, setErrorModalMessage] = useState('');
@@ -58,7 +62,10 @@ function App() {
         <div className="container flex flex-col mx-auto mb-8">
             <Navbar
                 dropdownOptions={
-                    <li><a onClick={overview}>Overview</a></li>
+                    <>
+                        <li><a onClick={overview}>Overview</a></li>
+                        <ToggleThemeOption />
+                    </>
                 }
                 title={
                     <a className="btn btn-ghost text-3xl">Registration</a>
