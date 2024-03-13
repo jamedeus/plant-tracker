@@ -1,17 +1,4 @@
-import React from 'react';
-import { createRoot } from 'react-dom/client';
 import App from './App';
-import 'src/main.css';
-import { ToastProvider } from 'src/context/ToastContext';
-import { ThemeProvider } from 'src/context/ThemeContext';
+import PageWrapper from 'src/index';
 
-
-const container = document.getElementById('root');
-const root = createRoot(container);
-root.render(
-    <ThemeProvider>
-        <ToastProvider>
-            <App />
-        </ToastProvider>
-    </ThemeProvider>
-);
+PageWrapper({ App });
