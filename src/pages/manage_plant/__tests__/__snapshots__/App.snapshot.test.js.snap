@@ -67,6 +67,13 @@ exports[`App matches snapshot 1`] = `
                 Repot plant
               </a>
             </li>
+            <li>
+              <a
+                onClick={[Function]}
+              >
+                Light mode
+              </a>
+            </li>
           </ul>
         </div>
       </div>

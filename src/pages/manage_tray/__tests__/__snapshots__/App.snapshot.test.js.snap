@@ -60,6 +60,13 @@ exports[`App matches snapshot 1`] = `
                 Remove plants
               </a>
             </li>
+            <li>
+              <a
+                onClick={[Function]}
+              >
+                Light mode
+              </a>
+            </li>
           </ul>
         </div>
       </div>

@@ -1,5 +1,6 @@
 import renderer from 'react-test-renderer';
 import createMockContext from 'src/testUtils/createMockContext';
+import { ThemeProvider } from 'src/ThemeContext';
 import App from '../App';
 import { mockContext } from './mockContext';
 
@@ -15,7 +16,9 @@ describe('App', () => {
 
         // Render App, confirm matches snapshot
         const component = renderer.create(
-            <App />
+            <ThemeProvider>
+                <App />
+            </ThemeProvider>
         );
         let tree = component.toJSON();
         expect(tree).toMatchSnapshot();

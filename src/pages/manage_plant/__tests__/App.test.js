@@ -4,6 +4,7 @@ import createMockContext from 'src/testUtils/createMockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
 import { ToastProvider } from 'src/ToastContext';
+import { ThemeProvider } from 'src/ThemeContext';
 import { mockContext } from './mockContext';
 
 describe('App', () => {
@@ -17,9 +18,11 @@ describe('App', () => {
 
         // Render app + create userEvent instance to use in tests
         app = render(
-            <ToastProvider>
-                <App />
-            </ToastProvider>
+            <ThemeProvider>
+                <ToastProvider>
+                    <App />
+                </ToastProvider>
+            </ThemeProvider>
         );
         user = userEvent.setup();
     });

@@ -2,6 +2,7 @@ import renderer from 'react-test-renderer';
 import createMockContext from 'src/testUtils/createMockContext';
 import App from '../App';
 import { ToastProvider } from 'src/ToastContext';
+import { ThemeProvider } from 'src/ThemeContext';
 import { mockContext } from './mockContext';
 
 describe('App', () => {
@@ -17,9 +18,11 @@ describe('App', () => {
 
         // Render App, confirm matches snapshot
         const component = renderer.create(
-            <ToastProvider>
-                <App />
-            </ToastProvider>
+            <ThemeProvider>
+                <ToastProvider>
+                    <App />
+                </ToastProvider>
+            </ThemeProvider>
         );
         let tree = component.toJSON();
         expect(tree).toMatchSnapshot();

@@ -52,6 +52,13 @@ exports[`App matches snapshot when only trays exist 1`] = `
               Print QR Codes
             </a>
           </li>
+          <li>
+            <a
+              onClick={[Function]}
+            >
+              Light mode
+            </a>
+          </li>
         </ul>
       </div>
     </div>
