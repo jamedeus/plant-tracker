@@ -49,6 +49,9 @@ class Tray(models.Model):
     location = models.CharField(max_length=50, blank=True, null=True)
     description = models.CharField(max_length=500, blank=True, null=True)
 
+    # Store timestamp when created (not editable)
+    created = models.DateTimeField(auto_now_add=True)
+
     def get_display_name(self):
         '''Returns frontend display string determined from description attributes'''
         if self.name:
@@ -101,6 +104,9 @@ class Plant(models.Model):
     name = models.CharField(max_length=50, blank=True, null=True)
     species = models.CharField(max_length=50, blank=True, null=True)
     description = models.CharField(max_length=500, blank=True, null=True)
+
+    # Store timestamp when created (not editable)
+    created = models.DateTimeField(auto_now_add=True)
 
     # Accept pot sizes between 1 inch and 3 feet (optional)
     pot_size = models.PositiveIntegerField(
