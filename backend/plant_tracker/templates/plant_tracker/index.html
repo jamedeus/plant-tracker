@@ -12,6 +12,11 @@
             background: #1D232A;
         }
     </style>
+    <script>
+        // Set theme dataset attribute from localStorage (or default to dark)
+        const initialTheme = localStorage.getItem('theme') || 'dark';
+        document.documentElement.setAttribute('data-theme', initialTheme);
+    </script>
 </head>
 
 <body>
