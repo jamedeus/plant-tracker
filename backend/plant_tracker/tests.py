@@ -104,6 +104,17 @@ class OverviewTests(TestCase):
         except:
             self.assertTrue(False)
 
+    def test_get_qr_codes_with_long_URL(self):
+        # Mock URL_PREFIX env var with a very long URL
+        settings.URL_PREFIX = 'planttracker.several.more.subdomains.mysite.com'
+        # Send request, confirm response contains base64 string
+        response = self.client.get('/get_qr_codes')
+        self.assertEqual(response.status_code, 200)
+        try:
+            base64.b64decode(response.json()['qr_codes'], validate=True)
+        except:
+            self.assertTrue(False)
+
     def test_delete_plant(self):
         # Create test plant, confirm exists in database
         test_id = uuid4()
