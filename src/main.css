@@ -31,7 +31,11 @@
 }
 
 .tab-option {
-    @apply w-full text-white rounded-lg py-2.5 focus:outline-none;
+    @apply w-full rounded-lg py-2.5 font-semibold focus:outline-none;
+}
+
+.tab-option-selected {
+    @apply bg-accent text-accent-content;
 }
 
 .input::placeholder {

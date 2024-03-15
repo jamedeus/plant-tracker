@@ -78,7 +78,7 @@ exports[`App matches snapshot 1`] = `
     >
       <button
         aria-selected={true}
-        className="tab-option bg-teal-600"
+        className="tab-option tab-option-selected"
         data-headlessui-state="selected"
         id="headlessui-tabs-tab-:r0:"
         onClick={[Function]}

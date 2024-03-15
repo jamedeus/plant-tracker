@@ -77,14 +77,14 @@ function App() {
                     <Tab.List className="tab-group">
                         <Tab className={({ selected }) =>
                             `tab-option ${
-                                selected ? 'bg-teal-600' : ''
+                                selected ? 'tab-option-selected' : ''
                             }`
                         }>
                             Plant
                         </Tab>
                         <Tab className={({ selected }) =>
                             `tab-option ${
-                                selected ? 'bg-teal-600' : ''
+                                selected ? 'tab-option-selected' : ''
                             }`
                         }>
                             Tray
