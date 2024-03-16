@@ -12,12 +12,6 @@ jest.mock('print-js');
 describe('App', () => {
     let app, user;
 
-    // Mock Blob and URL.createObjectURL (used to print QR codes)
-    beforeAll(() => {
-        global.Blob = jest.fn();
-        URL.createObjectURL = jest.fn(() => 'url');
-    });
-
     beforeEach(() => {
         // Create mock state objects
         createMockContext('plants', mockContext.plants);
@@ -35,74 +29,13 @@ describe('App', () => {
         jest.resetAllMocks();
     });
 
-    it('makes request and opens print dialog when Print QR Codes clicked', async () => {
-        // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                "qr_codes": "base64data"
-            })
-        }));
+    it('opens modal when Print QR Codes dropdown option clicked', async () => {
+        // Confirm modal has not been opened
+        expect(HTMLDialogElement.prototype.showModal).not.toHaveBeenCalled();
 
-        // Mock modal open property to true so request doesn't abort
-        Object.defineProperty(HTMLDialogElement.prototype, 'open', {
-            get: jest.fn(() => true)
-        });
-
-        // Click Print QR Codes dropdown option
+        // Click Print QR Codes dropdown option, confirm modal opened
         await user.click(app.getByText("Print QR Codes"));
-
-        // Confirm GET request made to get_qr_codes endpoint
-        expect(global.fetch).toHaveBeenCalledWith('/get_qr_codes');
-
-        // Confirm Blob was created and print dialog was opened
-        expect(global.Blob).toHaveBeenCalled();
-        expect(print).toHaveBeenCalled();
-    });
-
-    it('aborts printing QR codes if loading modal is closed during request', async () => {
-        // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                "qr_codes": "base64data"
-            })
-        }));
-
-        // Mock modal open property to false to abort request
-        Object.defineProperty(HTMLDialogElement.prototype, 'open', {
-            get: jest.fn(() => false)
-        });
-
-        // Click Print QR Codes dropdown option
-        await user.click(app.getByText("Print QR Codes"));
-
-        // Confirm no Blob was created, print dialog was not opened
-        expect(global.Blob).not.toHaveBeenCalled();
-        expect(print).not.toHaveBeenCalled();
-    });
-
-    it('opens error modal if get_qr_codes endpoint returns error', async () => {
-        // Mock fetch function to return bad response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false
-        }));
-
-        // Mock modal open property to true so request doesn't abort
-        Object.defineProperty(HTMLDialogElement.prototype, 'open', {
-            get: jest.fn(() => true)
-        });
-
-        // Click Print QR Codes dropdown option
-        await user.click(app.getByText("Print QR Codes"));
-
-        // Confirm loading modal was closed, error modal was opened
-        expect(HTMLDialogElement.prototype.close).toHaveBeenCalled();
         expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
-
-        // Confirm no Blob was created, print dialog was not opened
-        expect(global.Blob).not.toHaveBeenCalled();
-        expect(print).not.toHaveBeenCalled();
     });
 
     it('shows checkboxes and delete button when edit option clicked', async () => {

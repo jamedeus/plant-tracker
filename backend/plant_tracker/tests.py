@@ -97,7 +97,7 @@ class OverviewTests(TestCase):
         # Mock URL_PREFIX env var
         settings.URL_PREFIX = 'mysite.com'
         # Send request, confirm response contains base64 string
-        response = self.client.get('/get_qr_codes')
+        response = self.client.post('/get_qr_codes', {'qr_per_row': 8})
         self.assertEqual(response.status_code, 200)
         try:
             base64.b64decode(response.json()['qr_codes'], validate=True)
@@ -108,7 +108,7 @@ class OverviewTests(TestCase):
         # Mock URL_PREFIX env var with a very long URL
         settings.URL_PREFIX = 'planttracker.several.more.subdomains.mysite.com'
         # Send request, confirm response contains base64 string
-        response = self.client.get('/get_qr_codes')
+        response = self.client.post('/get_qr_codes', {'qr_per_row': 8})
         self.assertEqual(response.status_code, 200)
         try:
             base64.b64decode(response.json()['qr_codes'], validate=True)
@@ -1005,7 +1005,7 @@ class InvalidRequestTests(TestCase):
         # Mock missing URL_PREFIX env var
         settings.URL_PREFIX = None
         # Send request, confirm correct error
-        response = self.client.get('/get_qr_codes')
+        response = self.client.post('/get_qr_codes', {'qr_per_row': 8})
         self.assertEqual(response.status_code, 501)
         self.assertEqual(response.json(), {'error': 'URL_PREFIX not configured'})
 

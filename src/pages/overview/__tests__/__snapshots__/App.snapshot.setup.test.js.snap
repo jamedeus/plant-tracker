@@ -113,30 +113,165 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
     className="modal"
   >
     <div
-      className="modal-box text-center flex flex-col"
+      className="modal-box text-center flex flex-col pt-4"
     >
+      <form
+        method="dialog"
+      >
+        <button
+          className="btn-close absolute right-4 top-4"
+        >
+          <svg
+            aria-hidden="true"
+            className="w-8 h-8"
+            data-slot="icon"
+            fill="currentColor"
+            viewBox="0 0 16 16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+            />
+          </svg>
+        </button>
+      </form>
       <h3
         className="font-bold text-lg mb-6"
       >
-        Fetching QR Codes
+        Select QR Code Size
       </h3>
-      <span
-        className="loading loading-spinner loading-lg mx-auto"
-      />
+      <div
+        className="h-36 flex flex-col justify-center"
+      >
+        <div
+          aria-orientation="horizontal"
+          className="tab-group"
+          role="tablist"
+        >
+          <button
+            aria-selected={true}
+            className="tab-option tab-option-selected"
+            data-headlessui-state="selected"
+            id="headlessui-tabs-tab-:r0:"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            onMouseDown={[Function]}
+            role="tab"
+            tabIndex={0}
+            type="button"
+          >
+            small
+          </button>
+          <button
+            aria-selected={false}
+            className="tab-option "
+            data-headlessui-state=""
+            id="headlessui-tabs-tab-:r1:"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            onMouseDown={[Function]}
+            role="tab"
+            tabIndex={-1}
+            type="button"
+          >
+            medium
+          </button>
+          <button
+            aria-selected={false}
+            className="tab-option "
+            data-headlessui-state=""
+            id="headlessui-tabs-tab-:r2:"
+            onClick={[Function]}
+            onKeyDown={[Function]}
+            onMouseDown={[Function]}
+            role="tab"
+            tabIndex={-1}
+            type="button"
+          >
+            large
+          </button>
+        </div>
+        <div
+          className="mt-4"
+        >
+          <div
+            data-headlessui-state="selected"
+            id="headlessui-tabs-panel-:r3:"
+            role="tabpanel"
+            tabIndex={0}
+          >
+            <span
+              className="text-center"
+            >
+              About ¾ inch wide
+              <br />
+              96
+               QR codes per sheet
+            </span>
+          </div>
+          <span
+            aria-hidden="true"
+            id="headlessui-tabs-panel-:r4:"
+            role="tabpanel"
+            style={
+              {
+                "borderWidth": "0",
+                "clip": "rect(0, 0, 0, 0)",
+                "height": 0,
+                "left": 1,
+                "margin": -1,
+                "overflow": "hidden",
+                "padding": 0,
+                "position": "fixed",
+                "top": 1,
+                "whiteSpace": "nowrap",
+                "width": 1,
+              }
+            }
+            tabIndex={-1}
+          />
+          <span
+            aria-hidden="true"
+            id="headlessui-tabs-panel-:r5:"
+            role="tabpanel"
+            style={
+              {
+                "borderWidth": "0",
+                "clip": "rect(0, 0, 0, 0)",
+                "height": 0,
+                "left": 1,
+                "margin": -1,
+                "overflow": "hidden",
+                "padding": 0,
+                "position": "fixed",
+                "top": 1,
+                "whiteSpace": "nowrap",
+                "width": 1,
+              }
+            }
+            tabIndex={-1}
+          />
+        </div>
+      </div>
       <div
         className="modal-action mx-auto"
       >
-        <form
-          method="dialog"
+        <button
+          className="btn btn-accent"
+          onClick={[Function]}
         >
-          <button
-            className="btn"
-          >
-            Cancel
-          </button>
-        </form>
+          Generate
+        </button>
       </div>
     </div>
+    <form
+      className="modal-backdrop"
+      method="dialog"
+    >
+      <button>
+        close
+      </button>
+    </form>
   </dialog>
   <dialog
     className="modal"

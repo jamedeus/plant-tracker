@@ -51,7 +51,8 @@ def render_react_app(request, title, bundle, state):
     return render(request, 'plant_tracker/index.html', context)
 
 
-def get_qr_codes(request):
+@requires_json_post(["qr_per_row"])
+def get_qr_codes(data):
     '''Returns printer-sized grid of QR code links as base64-encoded PNG
     QR codes point to manage endpoint, can be used for plants or trays
     '''
@@ -60,7 +61,7 @@ def get_qr_codes(request):
     if not settings.URL_PREFIX:
         return JsonResponse({'error': 'URL_PREFIX not configured'}, status=501)
 
-    qr_codes = generate_layout(settings.URL_PREFIX)
+    qr_codes = generate_layout(settings.URL_PREFIX, int(data["qr_per_row"]))
     image = BytesIO()
     qr_codes.save(image, format="PNG")
     image_base64 = base64.b64encode(image.getvalue()).decode()

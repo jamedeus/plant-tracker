@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import print from 'print-js';
 import EditableNodeList from 'src/components/EditableNodeList';
 import Navbar from 'src/components/Navbar';
 import { useTheme } from 'src/context/ThemeContext';
@@ -8,6 +7,7 @@ import PlantCard from 'src/components/PlantCard';
 import { sendPostRequest, parseDomContext } from 'src/util';
 import FilterColumn from 'src/components/FilterColumn';
 import FloatingFooter from 'src/components/FloatingFooter';
+import PrintModal from './PrintModal';
 
 function App() {
     // Load context set by django template
@@ -21,6 +21,12 @@ function App() {
     // Create refs for modals that show status while generating QR codes
     const printModalRef = useRef(null);
     const printModalErrorRef = useRef(null);
+
+    const showPrintModal = () => {
+        if (printModalRef.current) {
+            printModalRef.current.showModal();
+        };
+    };
 
     // Get toggle theme option from context
     const { ToggleThemeOption } = useTheme();
@@ -59,59 +65,6 @@ function App() {
         setEditing(false);
     };
 
-    // Show loading modal with cancel button, request QR codes from backend,
-    // open QR codes in print dialog if user did not click cancel
-    const fetchQrCodes = async () => {
-        // Show loading modal
-        printModalRef.current.showModal();
-
-        // Get Base64-encoded image string from backend
-        const response = await fetch('/get_qr_codes');
-
-        // Check response if user did not close modal
-        if (printModalRef.current.open) {
-            // Open QR codes in print dialog if response OK
-            if (response.ok) {
-                const data = await response.json();
-                printQrCodes(data.qr_codes);
-            // Replace loading modal with error modal if response not OK
-            } else {
-                printModalRef.current.close();
-                printModalErrorRef.current.showModal();
-            }
-        }
-    };
-
-    // Takes base64 image string, decodes and opens in print dialog
-    const printQrCodes = (data) => {
-        console.log(data);
-        // Decode base64 image data to binary
-        const imageData = atob(data);
-
-        // Create Uint8Array with same length
-        const imageBuffer = new ArrayBuffer(imageData.length);
-        const imageBytes = new Uint8Array(imageBuffer);
-
-        // Read bytes into array
-        for (let i = 0; i < imageData.length; i++) {
-            imageBytes[i] = imageData.charCodeAt(i);
-        }
-
-        // Create blob object from buffer, set MIME type
-        const qr = new Blob([imageBytes], { type: 'image/png' });
-        const uri = URL.createObjectURL(qr);
-
-        // Open print dialog, close loading modal
-        print({
-            printable: uri,
-            type: 'image',
-            documentTitle: '',
-            header: null,
-            footer: null
-        });
-        printModalRef.current.close();
-    };
-
     // Rendered when both state objects are empty, shows setup instructions
     const Setup = () => {
         return (
@@ -122,7 +75,10 @@ function App() {
                     <li className="step">Add a sticker to each plant pot</li>
                     <li className="step">Scan codes to register plants!</li>
                 </ul>
-                <button className="btn btn-accent text-lg" onClick={fetchQrCodes}>
+                <button
+                    className="btn btn-accent text-lg"
+                    onClick={showPrintModal}
+                >
                     Print QR Codes
                 </button>
             </div>
@@ -191,13 +147,16 @@ function App() {
         }
     };
 
+    // State to track whether waiting on QR codes from backend
+    const [generatingQrCodes, setGeneratingQrCodes] = useState(false);
+
     return (
         <div className="container flex flex-col min-h-screen mx-auto pb-16">
             <Navbar
                 dropdownOptions={
                     <>
                         <li><a onClick={toggleEditing}>Edit</a></li>
-                        <li><a onClick={fetchQrCodes}>Print QR Codes</a></li>
+                        <li><a onClick={showPrintModal}>Print QR Codes</a></li>
                         <ToggleThemeOption />
                     </>
                 }
@@ -217,18 +176,7 @@ function App() {
                 </button>
             </FloatingFooter>
 
-            <dialog ref={printModalRef} className="modal">
-                <div className="modal-box text-center flex flex-col">
-                    <h3 className="font-bold text-lg mb-6">Fetching QR Codes</h3>
-                    <span className="loading loading-spinner loading-lg mx-auto"></span>
-                    <div className="modal-action mx-auto">
-                        <form method="dialog">
-                            {/* if there is a button in form, it will close the modal */}
-                            <button className="btn">Cancel</button>
-                        </form>
-                    </div>
-                </div>
-            </dialog>
+            <PrintModal printModalRef={printModalRef} />
 
             <dialog ref={printModalErrorRef} className="modal">
                 <div className="modal-box text-center flex flex-col">
