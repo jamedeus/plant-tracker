@@ -18,14 +18,13 @@ function App() {
         return parseDomContext("trays");
     });
 
-    // Create refs for modals that show status while generating QR codes
+    // Create ref for modal used to generate QR codes
     const printModalRef = useRef(null);
-    const printModalErrorRef = useRef(null);
 
     const showPrintModal = () => {
         if (printModalRef.current) {
             printModalRef.current.showModal();
-        };
+        }
     };
 
     // Get toggle theme option from context
@@ -147,9 +146,6 @@ function App() {
         }
     };
 
-    // State to track whether waiting on QR codes from backend
-    const [generatingQrCodes, setGeneratingQrCodes] = useState(false);
-
     return (
         <div className="container flex flex-col min-h-screen mx-auto pb-16">
             <Navbar
@@ -177,19 +173,6 @@ function App() {
             </FloatingFooter>
 
             <PrintModal printModalRef={printModalRef} />
-
-            <dialog ref={printModalErrorRef} className="modal">
-                <div className="modal-box text-center flex flex-col">
-                    <h3 className="font-bold text-lg mb-6">Error</h3>
-                    <p>The URL_PREFIX environment variable is not set, check docker config</p>
-                    <div className="modal-action mx-auto">
-                        <form method="dialog">
-                            {/* if there is a button in form, it will close the modal */}
-                            <button className="btn">OK</button>
-                        </form>
-                    </div>
-                </div>
-            </dialog>
         </div>
     );
 }

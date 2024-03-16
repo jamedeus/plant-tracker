@@ -1,9 +1,7 @@
 import React, { useRef } from 'react';
-import { render, within } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
-import createMockContext from 'src/testUtils/createMockContext';
 import { postHeaders } from 'src/testUtils/headers';
-import { ThemeProvider } from 'src/context/ThemeContext';
 import PrintModal from '../PrintModal';
 import print from 'print-js';
 
@@ -153,5 +151,23 @@ describe('App', () => {
         // Confirm no Blob was created, print dialog was not opened
         expect(global.Blob).not.toHaveBeenCalled();
         expect(print).not.toHaveBeenCalled();
+    });
+
+    it('shows error message when request fails', async () => {
+        // Mock fetch function to return expected error
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            status: 501,
+            json: () => Promise.resolve({
+                'error': 'URL_PREFIX not configured'
+            })
+        }));
+
+        // Confirm error text is not in document
+        expect(component.queryByText('Check docker config')).toBeNull();
+
+        // Click generate button, confirm error text appears
+        await user.click(component.getByText('Generate'));
+        expect(component.getByText('Check docker config')).not.toBeNull();
     });
 });

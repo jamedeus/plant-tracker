@@ -472,34 +472,5 @@ exports[`App matches snapshot when plants and trays exist 1`] = `
       </button>
     </form>
   </dialog>
-  <dialog
-    className="modal"
-  >
-    <div
-      className="modal-box text-center flex flex-col"
-    >
-      <h3
-        className="font-bold text-lg mb-6"
-      >
-        Error
-      </h3>
-      <p>
-        The URL_PREFIX environment variable is not set, check docker config
-      </p>
-      <div
-        className="modal-action mx-auto"
-      >
-        <form
-          method="dialog"
-        >
-          <button
-            className="btn"
-          >
-            OK
-          </button>
-        </form>
-      </div>
-    </div>
-  </dialog>
 </div>
 `;

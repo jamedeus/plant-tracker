@@ -5,25 +5,28 @@ import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
 
 const PrintModal = ({ printModalRef }) => {
-    // State replaces options with loading animation when true
-    const [generatingQrCodes, setGeneratingQrCodes] = useState(false);
+    // State controls modal contents, must be "options", "loading", or "error"
+    const [modalContents, setModalContents] = useState("options");
 
-    // Ref tracks if user clicks cancel before API response
-    const generatingQrCodesRef = useRef(generatingQrCodes);
+    // Ref used to abort printing if user clicks cancel before API response
+    // Set to true when request starts, response only processed if still true
+    const cancelPrinting = useRef(false);
 
-    // Called when user clicks cancel or closes modal
-    // Resets loading animation, prevents print dialog from opening
+    // Cancel button handler
+    const cancel = () => {
+        cancelPrinting.current = true;
+        setModalContents("options");
+    };
+
+    // Resets modal contents after close animation completes
     const resetModal = () => {
-        // Prevent dialog from opening
-        generatingQrCodesRef.current = false;
-        // Change loading animation back to options after close animation
         setTimeout(() => {
-            setGeneratingQrCodes(false);
+            setModalContents("options");
         }, 150);
     };
 
+    // Listen for modal close event, reset contents to default after animation
     useEffect(() => {
-        // Set ref to false when modal closes (prevent opening print dialog)
         if (printModalRef.current) {
             printModalRef.current.addEventListener('close', resetModal);
             return () => {
@@ -37,7 +40,7 @@ const PrintModal = ({ printModalRef }) => {
     // Request QR codes from backend, open print dialog if user did not cancel
     const fetchQrCodes = async (size) => {
         // State starts loading animation (will change back if user cancels)
-        setGeneratingQrCodes(true);
+        setModalContents("loading");
 
         // Request Base64-encoded image string from backend
         const response = await sendPostRequest(
@@ -45,15 +48,15 @@ const PrintModal = ({ printModalRef }) => {
             {qr_per_row: size}
         );
 
-        // Check response if state still true (user did not cancel/close modal)
-        if (generatingQrCodesRef.current) {
+        // Check response if user did not click cancel or close modal
+        if (cancelPrinting.current === false) {
             // Open QR codes in print dialog if response OK
             if (response.ok) {
                 const data = await response.json();
                 printQrCodes(data.qr_codes);
+            // Replace loading animation with error if response not OK
             } else {
-                printModalRef.current.close();
-                alert("Error while fetching QR codes");
+                setModalContents("error");
             }
         } else {
             console.log("Print QR codes canceled by user");
@@ -112,8 +115,7 @@ const PrintModal = ({ printModalRef }) => {
         let [qrSize, setQrSize] = useState(options.small);
 
         const generate = () => {
-            setGeneratingQrCodes(true);
-            generatingQrCodesRef.current = true;
+            cancelPrinting.current = false;
             fetchQrCodes(qrSize.qr_per_row);
         };
 
@@ -164,7 +166,22 @@ const PrintModal = ({ printModalRef }) => {
                     <span className="loading loading-spinner loading-lg"></span>
                 </div>
                 <div className="modal-action mx-auto">
-                    <button className="btn" onClick={resetModal}>Cancel</button>
+                    <button className="btn" onClick={cancel}>Cancel</button>
+                </div>
+            </>
+        );
+    };
+
+    const ErrorMessage = () => {
+        return (
+            <>
+                <h3 className="font-bold text-lg mb-6">Error</h3>
+                <div className="h-36 flex flex-col justify-center mx-auto">
+                    <p>The URL_PREFIX environment variable is not set</p>
+                    <p>Check docker config</p>
+                </div>
+                <div className="modal-action mx-auto">
+                    <button className="btn" onClick={cancel}>OK</button>
                 </div>
             </>
         );
@@ -173,10 +190,10 @@ const PrintModal = ({ printModalRef }) => {
     return (
         <Modal dialogRef={printModalRef}>
             {(() => {
-                switch(generatingQrCodes) {
-                    case(true):
+                switch(modalContents) {
+                    case("loading"):
                         return <LoadingAnimation />;
-                    case(false):
+                    case("options"):
                         return (
                             <>
                                 <h3 className="font-bold text-lg mb-6">
@@ -185,6 +202,8 @@ const PrintModal = ({ printModalRef }) => {
                                 <QrCodeSizeSelect />
                             </>
                         );
+                    case("error"):
+                        return <ErrorMessage />;
                 }
             })()}
         </Modal>
