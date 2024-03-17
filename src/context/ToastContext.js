@@ -31,12 +31,17 @@ export const ToastProvider = ({ children }) => {
         // Set color and message, fade toast in
         setColor(color);
         setMessage(message);
-        toastRef.current.classList.remove('opacity-0');
+        toastRef.current.classList.remove('opacity-0', 'z-[-1]');
 
         // Start timer to fade toast out after timeout milliseconds
         timer = setTimeout(() => {
             if (toastRef.current) {
                 toastRef.current.classList.add('opacity-0');
+                // Set negative Z index after fade animation
+                // (prevent hidden div blocking clicks)
+                setTimeout(() => {
+                    toastRef.current.classList.add('z-[-1]');
+                }, 500);
             }
             setTimeout(500);
         }, timeout);
@@ -47,7 +52,7 @@ export const ToastProvider = ({ children }) => {
             {children}
             <div
                 ref={toastRef}
-                className={"toast toast-center opacity-0 transition-all duration-500"}
+                className={"toast toast-center opacity-0 z-[-1] transition-all duration-500"}
             >
                 <div className={`alert ${colorMap[color]} gap-0`}>
                     <span>{message}</span>
