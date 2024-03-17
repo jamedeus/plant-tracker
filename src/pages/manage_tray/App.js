@@ -32,6 +32,9 @@ function App() {
     // Track which plants are selected (after clicking manage button)
     const selectedPlants = useRef([]);
 
+    // Track plants column open/close state between re-renders
+    const plantsOpenRef = useRef(true);
+
     // Create state to track whether manage modal opened to add or remove
     const [managePlants, setManagePlants] = useState('');
 
@@ -308,6 +311,7 @@ function App() {
                 cardComponent={PlantCard}
                 editing={selectingPlants}
                 selected={selectedPlants}
+                openRef={plantsOpenRef}
             >
                 <PlantEventButtons editing={selectingPlants} setEditing={setSelectingPlants} />
             </FilterColumn>

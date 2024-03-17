@@ -32,6 +32,10 @@ function App() {
     // Create ref for modal used to create RepotEvent
     const repotModalRef = useRef(null);
 
+    // Create refs to track event history collapse open state between re-renders
+    const waterHistoryOpen = useRef(false);
+    const fertilizeHistoryOpen = useRef(false);
+
     const submitEditModal = async () => {
         const payload = Object.fromEntries(
             new FormData(document.getElementById('plantDetails'))
@@ -162,7 +166,7 @@ function App() {
 
     // Takes events array (eg plant.water_events) and type (water or fertilize)
     // Renders EditableNodeList with edit + delete button and handlers
-    const EventsCol = ({ title, events, type }) => {
+    const EventsCol = ({ title, events, type, openRef }) => {
         // Create edit mode state + ref to track selected events while editing
         const [editing, setEditing] = useState(false);
         const selected = useRef([]);
@@ -176,7 +180,7 @@ function App() {
         };
 
         return (
-            <CollapseCol title={title} defaultOpen={false} scroll={true}>
+            <CollapseCol title={title} openRef={openRef} scroll={true}>
                 <div className="max-h-half-screen overflow-scroll no-scrollbar">
                     <EditableNodeList
                         editing={editing}
@@ -503,6 +507,7 @@ function App() {
                         title="Water History"
                         events={plant.events.water}
                         type="water"
+                        openRef={waterHistoryOpen}
                     />
                 </div>
 
@@ -511,6 +516,7 @@ function App() {
                         title="Fertilize History"
                         events={plant.events.fertilize}
                         type="fertilize"
+                        openRef={fertilizeHistoryOpen}
                     />
                 </div>
             </div>

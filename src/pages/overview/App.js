@@ -36,6 +36,10 @@ function App() {
     const selectedPlants = useRef([]);
     const selectedTrays = useRef([]);
 
+    // Track plant and tray column open state between re-renders
+    const plantsOpenRef = useRef(true);
+    const traysOpenRef = useRef(true);
+
     // Handler for edit option in top-left dropdown
     // Toggle editing state, clear selected, remove focus (closes dropdown)
     const toggleEditing = () => {
@@ -91,6 +95,7 @@ function App() {
                 cardComponent={PlantCard}
                 editing={editing}
                 selected={selectedPlants}
+                openRef={plantsOpenRef}
             />
         );
     };
@@ -103,6 +108,7 @@ function App() {
                 cardComponent={TrayCard}
                 editing={editing}
                 selected={selectedTrays}
+                openRef={traysOpenRef}
             />
         );
     };

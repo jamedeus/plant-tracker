@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import CollapseCol from 'src/components/CollapseCol';
 import EditableNodeList from 'src/components/EditableNodeList';
@@ -8,10 +8,11 @@ import { XMarkIcon } from '@heroicons/react/16/solid';
 //
 // Takes title string, contents (array of objects), cardComponent (functional
 // component rendered for each item in contents, must take args matching object
-// keys), and EditableNodeList args (editing bool state + selected ref)
+// keys), EditableNodeList args (editing bool state + selected ref), and
+// CollapseCol openRef (ref containing bool)
 //
 // Contents objects must have uuid (react key) and name (used to filter) keys
-const FilterColumn = ({title, contents, cardComponent, editing, selected, children}) => {
+const FilterColumn = ({title, contents, cardComponent, editing, selected, openRef, children}) => {
     const [query, setQuery] = useState('');
     const [current, setCurrent] = useState(contents);
 
@@ -42,7 +43,7 @@ const FilterColumn = ({title, contents, cardComponent, editing, selected, childr
     }, [contents]);
 
     return (
-        <CollapseCol title={`${title} (${Object.keys(current).length})`}>
+        <CollapseCol title={`${title} (${Object.keys(current).length})`} openRef={openRef}>
             <div className="px-4 mb-4 relative">
                 <input
                     type="text"
@@ -83,6 +84,7 @@ FilterColumn.propTypes = {
     cardComponent: PropTypes.func,
     editing: PropTypes.bool,
     selected: PropTypes.object,
+    openRef: PropTypes.object,
     children: PropTypes.node
 };
 

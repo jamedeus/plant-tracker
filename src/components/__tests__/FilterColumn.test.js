@@ -51,6 +51,7 @@ describe('App', () => {
                 cardComponent={PlantCard}
                 editing={false}
                 selected={[]}
+                openRef={{current: true}}
             />
         );
         user = userEvent.setup();
