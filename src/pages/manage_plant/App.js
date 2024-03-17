@@ -481,7 +481,7 @@ function App() {
                 <span className="text-lg">
                     <LastEventTime
                         text="fertilized"
-                        timestamp={plant.events.water[0]}
+                        timestamp={plant.events.fertilize[0]}
                     />
                 </span>
                 <DatetimeInput id="eventTime" />
