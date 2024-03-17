@@ -306,12 +306,8 @@ function App() {
                 title="Plants"
                 contents={plantDetails}
                 cardComponent={PlantCard}
-                editableList={
-                    <EditableNodeList
-                        editing={selectingPlants}
-                        selected={selectedPlants}
-                    />
-                }
+                editing={selectingPlants}
+                selected={selectedPlants}
             >
                 <PlantEventButtons editing={selectingPlants} setEditing={setSelectingPlants} />
             </FilterColumn>

@@ -1,5 +1,4 @@
 import React, { useState, useRef } from 'react';
-import EditableNodeList from 'src/components/EditableNodeList';
 import Navbar from 'src/components/Navbar';
 import { useTheme } from 'src/context/ThemeContext';
 import TrayCard from 'src/components/TrayCard';
@@ -90,12 +89,8 @@ function App() {
                 title="Plants"
                 contents={plants}
                 cardComponent={PlantCard}
-                editableList={
-                    <EditableNodeList
-                        editing={editing}
-                        selected={selectedPlants}
-                    />
-                }
+                editing={editing}
+                selected={selectedPlants}
             />
         );
     };
@@ -106,12 +101,8 @@ function App() {
                 title="Trays"
                 contents={trays}
                 cardComponent={TrayCard}
-                editableList={
-                    <EditableNodeList
-                        editing={editing}
-                        selected={selectedTrays}
-                    />
-                }
+                editing={editing}
+                selected={selectedTrays}
             />
         );
     };

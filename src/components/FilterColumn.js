@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import CollapseCol from 'src/components/CollapseCol';
+import EditableNodeList from 'src/components/EditableNodeList';
 import { XMarkIcon } from '@heroicons/react/16/solid';
 
-// Renders CollapseCol with EditableNodeList and input to filter contents
+// Renders CollapseCol with EditableNodeList and text input to filter contents
 //
 // Takes title string, contents (array of objects), cardComponent (functional
-// component with args matching keys in contents objects), and pre-rendered
-// EditableNodeList element with no children (will be replaced).
+// component rendered for each item in contents, must take args matching object
+// keys), and EditableNodeList args (editing bool state + selected ref)
 //
 // Contents objects must have uuid (react key) and name (used to filter) keys
-// EditableNodeList must have state params set in parent scope
-const FilterColumn = ({title, contents, cardComponent, editableList, children}) => {
+const FilterColumn = ({title, contents, cardComponent, editing, selected, children}) => {
     const [query, setQuery] = useState('');
     const [current, setCurrent] = useState(contents);
 
@@ -62,18 +62,16 @@ const FilterColumn = ({title, contents, cardComponent, editableList, children}) 
                     <XMarkIcon className="w-8 h-8" />
                 </button>
             </div>
-            {React.cloneElement(
-                editableList,
-                {},
-                current.map((item) => {
+            <EditableNodeList editing={editing} selected={selected}>
+                {current.map((item) => {
                     // Render cardComponent by expanding params of each item
                     // Must have UUID param to use as react key
                     return React.createElement(
                         cardComponent,
                         {...item, key: item.uuid}
                     );
-                })
-            )}
+                })}
+            </EditableNodeList>
             {children}
         </CollapseCol>
     );
@@ -83,7 +81,8 @@ FilterColumn.propTypes = {
     title: PropTypes.string,
     contents: PropTypes.array,
     cardComponent: PropTypes.func,
-    editableList: PropTypes.node,
+    editing: PropTypes.bool,
+    selected: PropTypes.object,
     children: PropTypes.node
 };
 

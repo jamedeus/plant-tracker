@@ -2,7 +2,6 @@ import { render } from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
 import PlantCard from '../PlantCard';
 import FilterColumn from '../FilterColumn';
-import EditableNodeList from '../EditableNodeList';
 import '@testing-library/jest-dom';
 
 const plants = [
@@ -50,12 +49,8 @@ describe('App', () => {
                 title="Plants"
                 contents={plants}
                 cardComponent={PlantCard}
-                editableList={
-                    <EditableNodeList
-                        editing={false}
-                        selected={[]}
-                    />
-                }
+                editing={false}
+                selected={[]}
             />
         );
         user = userEvent.setup();
