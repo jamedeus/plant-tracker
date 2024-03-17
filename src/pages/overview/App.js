@@ -33,32 +33,32 @@ function App() {
     // State object to track edit mode (shows checkbox for each card when true)
     const [editing, setEditing] = useState(false);
 
-    // Track which card checkboxes the user has selected
-    const [selectedPlants, setSelectedPlants] = useState([]);
-    const [selectedTrays, setSelectedTrays] = useState([]);
+    // Track which plant and tray checkboxes the user has selected
+    const selectedPlants = useRef([]);
+    const selectedTrays = useRef([]);
 
     // Handler for edit option in top-left dropdown
     // Toggle editing state, clear selected, remove focus (closes dropdown)
     const toggleEditing = () => {
         setEditing(!editing);
-        setSelectedTrays([]);
-        setSelectedPlants([]);
+        selectedPlants.current = [];
+        selectedTrays.current = [];
         document.activeElement.blur();
     };
 
     // Handler for delete button that appears while editing
     const handleDelete = () => {
         // Send delete request for each selected plant, remove uuid from state
-        selectedPlants.forEach(async plant_id => {
+        selectedPlants.current.forEach(async plant_id => {
             await sendPostRequest('/delete_plant', {plant_id: plant_id});
         });
-        setPlants(plants.filter(plant => !selectedPlants.includes(plant.uuid)));
+        setPlants(plants.filter(plant => !selectedPlants.current.includes(plant.uuid)));
 
         // Send delete request for each selected tray, remove uuid from state
-        selectedTrays.forEach(async tray_id => {
+        selectedTrays.current.forEach(async tray_id => {
             await sendPostRequest('/delete_tray', {tray_id: tray_id});
         });
-        setTrays(trays.filter(tray => !selectedTrays.includes(tray.uuid)));
+        setTrays(trays.filter(tray => !selectedTrays.current.includes(tray.uuid)));
 
         // Reset editing state
         setEditing(false);
@@ -94,7 +94,6 @@ function App() {
                     <EditableNodeList
                         editing={editing}
                         selected={selectedPlants}
-                        setSelected={setSelectedPlants}
                     />
                 }
             />
@@ -111,7 +110,6 @@ function App() {
                     <EditableNodeList
                         editing={editing}
                         selected={selectedTrays}
-                        setSelected={setSelectedTrays}
                     />
                 }
             />

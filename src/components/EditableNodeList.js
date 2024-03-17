@@ -1,17 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-// Takes editing (bool), selected (array), setSelected (hook), and node list
+// Takes editing (bool), selected (ref containing array), and node list
 // Returns node list with wrapper div around each node
 // When editing is true wrapper renders checkbox next to each node
 // Checkboxes add/remove node's key to/from selected array when clicked
-const EditableNodeList = ({ editing, selected, setSelected, children }) => {
+const EditableNodeList = ({ editing, selected, children }) => {
     // Checkbox handler adds key to selected if not present, removes if present
     const selectNode = (key) => {
-        if (selected.includes(key)) {
-            setSelected(selected.filter(item => item !== key));
+        if (selected.current.includes(key)) {
+            selected.current = selected.current.filter(item => item !== key);
         } else {
-            setSelected([...selected, key]);
+            selected.current.push(key);
         }
     };
 
@@ -26,7 +26,7 @@ const EditableNodeList = ({ editing, selected, setSelected, children }) => {
                             <input
                                 type="checkbox"
                                 className="radio checked:bg-blue-500"
-                                checked={selected.includes(node.key)}
+                                defaultChecked={selected.current.includes(node.key)}
                                 onChange={() => selectNode(node.key)}
                             />
                         </label>
@@ -61,8 +61,7 @@ const EditableNodeList = ({ editing, selected, setSelected, children }) => {
 
 EditableNodeList.propTypes = {
     editing: PropTypes.bool,
-    selected: PropTypes.array,
-    setSelected: PropTypes.func,
+    selected: PropTypes.object,
     children: PropTypes.node
 };
 

@@ -44,8 +44,6 @@ describe('App', () => {
     let component, user;
 
     beforeEach(() => {
-        const setSelectedPlants = jest.fn();
-
         // Render component + create userEvent instance to use in tests
         component = render(
             <FilterColumn
@@ -56,7 +54,6 @@ describe('App', () => {
                     <EditableNodeList
                         editing={false}
                         selected={[]}
-                        setSelected={setSelectedPlants}
                     />
                 }
             />

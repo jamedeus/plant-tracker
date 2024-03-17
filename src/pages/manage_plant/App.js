@@ -163,13 +163,13 @@ function App() {
     // Takes events array (eg plant.water_events) and type (water or fertilize)
     // Renders EditableNodeList with edit + delete button and handlers
     const EventsCol = ({ title, events, type }) => {
-        // Create states for editing state, selected events
+        // Create edit mode state + ref to track selected events while editing
         const [editing, setEditing] = useState(false);
-        const [selected, setSelected] = useState([]);
+        const selected = useRef([]);
 
         // Delete button handler
         const onDelete = () => {
-            selected.forEach(async timestamp => {
+            selected.current.forEach(async timestamp => {
                 await deleteEvent(timestamp, type);
             });
             setEditing(false);
@@ -181,7 +181,6 @@ function App() {
                     <EditableNodeList
                         editing={editing}
                         selected={selected}
-                        setSelected={setSelected}
                     >
                         {events.map((timestamp) => {
                             return <EventCard key={timestamp} timestamp={timestamp} />;

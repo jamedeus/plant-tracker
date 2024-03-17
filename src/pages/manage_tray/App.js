@@ -29,8 +29,8 @@ function App() {
     // Create state to track whether selecting plants from list
     const [selectingPlants, setSelectingPlants] = useState(false);
 
-    // Track which plants are selected
-    const [selectedPlants, setSelectedPlants] = useState([]);
+    // Track which plants are selected (after clicking manage button)
+    const selectedPlants = useRef([]);
 
     // Create state to track whether manage modal opened to add or remove
     const [managePlants, setManagePlants] = useState('');
@@ -136,14 +136,14 @@ function App() {
 
     // Contents of managePlantsModal when managePlants === 'add'
     const AddPlantsModalContents = () => {
-        // State to track selected items
-        const [selected, setSelected] = useState([]);
+        // Ref to track selected items
+        const selected = useRef([]);
 
         // Handler for add button in manage plants modal
         const addPlants = async () => {
             const payload = {
                 tray_id: tray.uuid,
-                plants: selected
+                plants: selected.current
             };
             const response = await sendPostRequest('/bulk_add_plants_to_tray', payload);
             if (response.ok) {
@@ -159,7 +159,7 @@ function App() {
 
         return (
             <>
-                <EditableNodeList editing={true} selected={selected} setSelected={setSelected}>
+                <EditableNodeList editing={true} selected={selected}>
                     {plantOptions.map((plant) => {
                         return <ManagePlantsCard key={plant.uuid} name={plant.name} />;
                     })}
@@ -177,14 +177,14 @@ function App() {
 
     // Contents of managePlantsModal when managePlants === 'remove'
     const RemovePlantsModalContents = () => {
-        // State to track selected items
-        const [selected, setSelected] = useState([]);
+        // Ref to track selected items
+        const selected = useRef([]);
 
         // Handler for remove button in manage plants modal
         const removePlants = async () => {
             const payload = {
                 tray_id: tray.uuid,
-                plants: selected
+                plants: selected.current
             };
             const response = await sendPostRequest('/bulk_remove_plants_from_tray', payload);
             if (response.ok) {
@@ -196,7 +196,7 @@ function App() {
 
         return (
             <>
-                <EditableNodeList editing={true} selected={selected} setSelected={setSelected}>
+                <EditableNodeList editing={true} selected={selected}>
                     {plantDetails.map((plant) => {
                         return <ManagePlantsCard key={plant.uuid} name={plant.name} />;
                     })}
@@ -220,7 +220,7 @@ function App() {
                 // eslint-disable-next-line no-case-declarations
                 const water = async () => {
                     const timestamp = localToUTC(document.getElementById("addEventTime").value);
-                    await bulkAddPlantEvents('water', selectedPlants, timestamp);
+                    await bulkAddPlantEvents('water', selectedPlants.current, timestamp);
                     setEditing(false);
                 };
 
@@ -228,7 +228,7 @@ function App() {
                 // eslint-disable-next-line no-case-declarations
                 const fertilize = async () => {
                     const timestamp = localToUTC(document.getElementById("addEventTime").value);
-                    await bulkAddPlantEvents('fertilize', selectedPlants, timestamp);
+                    await bulkAddPlantEvents('fertilize', selectedPlants.current, timestamp);
                     setEditing(false);
                 };
 
@@ -310,7 +310,6 @@ function App() {
                     <EditableNodeList
                         editing={selectingPlants}
                         selected={selectedPlants}
-                        setSelected={setSelectedPlants}
                     />
                 }
             >
