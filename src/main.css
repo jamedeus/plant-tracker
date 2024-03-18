@@ -86,3 +86,12 @@ html[data-theme="light"] .pot-size-selected::placeholder {
 .dropdown-center .dropdown-content {
     @apply left-1/2 transform -translate-x-1/2;
 }
+
+.btn-prune {
+    @apply bg-orange-300 text-warning-content border border-transparent;
+}
+
+.btn-prune:hover {
+    background-color: color-mix(in oklab, theme('colors.orange.300'), black 10%);
+    border-color: color-mix(in oklab, theme('colors.orange.300'), black 10%);
+}

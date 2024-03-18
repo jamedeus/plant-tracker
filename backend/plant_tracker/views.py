@@ -132,7 +132,9 @@ def manage(request, uuid):
         # Add all water and fertilize timestamps
         state['plant']['events'] = {
             'water': plant.get_water_timestamps(),
-            'fertilize': plant.get_fertilize_timestamps()
+            'fertilize': plant.get_fertilize_timestamps(),
+            'prune': plant.get_prune_timestamps(),
+            'repot': plant.get_repot_timestamps()
         }
 
         # Add tray details if plant is in a tray

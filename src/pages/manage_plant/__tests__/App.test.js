@@ -108,6 +108,31 @@ describe('App', () => {
         });
     });
 
+    it('sends correct payload when plant is pruned', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "action": "prune",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
+
+        // Click prune button
+        await user.click(app.getByText("Prune"));
+
+        // Confirm correct data posted to /add_plant_event endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/add_plant_event', {
+            method: 'POST',
+            body: JSON.stringify({
+                "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                "event_type": "prune",
+                "timestamp": "2024-03-01T20:00:00.000Z"
+            }),
+            headers: postHeaders
+        });
+    });
+
     it('shows error toast after failing to create event', async() => {
         // Mock fetch function to return error response
         global.fetch = jest.fn(() => Promise.resolve({

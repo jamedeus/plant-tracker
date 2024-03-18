@@ -274,7 +274,9 @@ class ManagePageTests(TestCase):
             'last_fertilized': None,
             'events': {
                 'water': [],
-                'fertilize': []
+                'fertilize': [],
+                'prune': [],
+                'repot': []
             },
             'tray': None,
         })

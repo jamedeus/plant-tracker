@@ -17,7 +17,9 @@ export const mockContext = {
             "fertilize": [
                 "2024-03-01T05:45:44+00:00",
                 "2024-02-26T02:44:12+00:00",
-            ]
+            ],
+            "prune": [],
+            "repot": [],
         },
         "tray": {
             "name": "Test tray",
@@ -53,7 +55,9 @@ export const mockContextNoEvents = {
         "display_name": "Test Plant",
         "events": {
             "water": [],
-            "fertilize": []
+            "fertilize": [],
+            "prune": [],
+            "repot": [],
         },
         "tray": {
             "name": "Test tray",

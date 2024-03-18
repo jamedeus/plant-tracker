@@ -499,6 +499,12 @@ function App() {
                     >
                         Fertilize
                     </button>
+                    <button
+                        className="btn btn-prune m-2"
+                        onClick={() => addEvent('prune')}
+                    >
+                        Prune
+                    </button>
                 </div>
             </div>
 
