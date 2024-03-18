@@ -8,6 +8,9 @@ const PrintModal = ({ printModalRef }) => {
     // State controls modal contents, must be "options", "loading", or "error"
     const [modalContents, setModalContents] = useState("options");
 
+    // State controls ErrorMessage text, must be "unset", "long", or "unknown"
+    const [error, setError] = useState("");
+
     // Ref used to abort printing if user clicks cancel before API response
     // Set to true when request starts, response only processed if still true
     const cancelPrinting = useRef(false);
@@ -56,7 +59,7 @@ const PrintModal = ({ printModalRef }) => {
                 printQrCodes(data.qr_codes);
             // Replace loading animation with error if response not OK
             } else {
-                setModalContents("error");
+                handleError(response.status);
             }
         } else {
             console.log("Print QR codes canceled by user");
@@ -93,6 +96,21 @@ const PrintModal = ({ printModalRef }) => {
         printModalRef.current.close();
     };
 
+    // Takes status code from failed API call, shows correct error in modal
+    const handleError = (statusCode) => {
+        // Set state that controls error text based on status code
+        if (statusCode === 501) {
+            setError("unset");
+        } else if (statusCode === 500) {
+            setError("long");
+        } else {
+            setError("unknown");
+        }
+
+        // Change modal contents to error
+        setModalContents("error");
+    };
+
     const QrCodeSizeSelect = () => {
         const options = {
             small: {
@@ -121,6 +139,9 @@ const PrintModal = ({ printModalRef }) => {
 
         return (
             <>
+                <h3 className="font-bold text-lg mb-6">
+                    Select QR Code Size
+                </h3>
                 <div className="h-36 flex flex-col justify-center">
                     <Tab.Group onChange={(index) => {
                         setQrSize(Object.values(options)[index]);
@@ -173,12 +194,36 @@ const PrintModal = ({ printModalRef }) => {
     };
 
     const ErrorMessage = () => {
+        const UnsetUrlPrefix = (
+            <>
+                <p>The URL_PREFIX environment variable is not set</p>
+                <p>Check docker config</p>
+            </>
+        )
+
+        const LongUrlPrefix = (
+            <>
+                <p>Unable to generate QR codes</p>
+                <p>Try setting a shorter URL_PREFIX in docker config</p>
+            </>
+        )
+
         return (
             <>
                 <h3 className="font-bold text-lg mb-6">Error</h3>
                 <div className="h-36 flex flex-col justify-center mx-auto">
-                    <p>The URL_PREFIX environment variable is not set</p>
-                    <p>Check docker config</p>
+                    {(() => {
+                        switch(error) {
+                            case("unset"):
+                                return UnsetUrlPrefix;
+                            case("long"):
+                                return LongUrlPrefix;
+                            default:
+                                return (
+                                    <p>An unknown error occurred</p>
+                                )
+                        }
+                    })()}
                 </div>
                 <div className="modal-action mx-auto">
                     <button className="btn" onClick={cancel}>OK</button>
@@ -194,14 +239,7 @@ const PrintModal = ({ printModalRef }) => {
                     case("loading"):
                         return <LoadingAnimation />;
                     case("options"):
-                        return (
-                            <>
-                                <h3 className="font-bold text-lg mb-6">
-                                    Select QR Code Size
-                                </h3>
-                                <QrCodeSizeSelect />
-                            </>
-                        );
+                        return <QrCodeSizeSelect />;
                     case("error"):
                         return <ErrorMessage />;
                 }

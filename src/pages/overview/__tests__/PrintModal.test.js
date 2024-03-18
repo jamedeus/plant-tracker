@@ -153,7 +153,7 @@ describe('App', () => {
         expect(print).not.toHaveBeenCalled();
     });
 
-    it('shows error message when request fails', async () => {
+    it('shows correct error when URL_PREFIX env var is not set', async () => {
         // Mock fetch function to return expected error
         global.fetch = jest.fn(() => Promise.resolve({
             ok: false,
@@ -169,5 +169,43 @@ describe('App', () => {
         // Click generate button, confirm error text appears
         await user.click(component.getByText('Generate'));
         expect(component.getByText('Check docker config')).not.toBeNull();
+    });
+
+
+    it('shows correct error when URL_PREFIX env var is too long', async () => {
+        // Mock fetch function to return expected error
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            status: 500,
+            json: () => Promise.resolve({
+                'error': 'failed to generate, try a shorter URL_PREFIX'
+            })
+        }));
+
+        // Confirm error text is not in document
+        expect(component.queryByText(/shorter URL_PREFIX/)).toBeNull();
+
+        // Click generate button, confirm error text appears
+        await user.click(component.getByText('Generate'));
+        expect(component.getByText(/shorter URL_PREFIX/)).not.toBeNull();
+    });
+
+
+    it('shows placeholder error when an unexpected error is received', async () => {
+        // Mock fetch function to return unexpected error code
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            status: 418,
+            json: () => Promise.resolve({
+                'error': 'an unhandled exception was raised'
+            })
+        }));
+
+        // Confirm error text is not in document
+        expect(component.queryByText('An unknown error occurred')).toBeNull();
+
+        // Click generate button, confirm error text appears
+        await user.click(component.getByText('Generate'));
+        expect(component.getByText('An unknown error occurred')).not.toBeNull();
     });
 });
