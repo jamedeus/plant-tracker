@@ -203,7 +203,8 @@ function App() {
     EventsCol.propTypes = {
         title: PropTypes.string,
         events: PropTypes.array,
-        type: PropTypes.string
+        type: PropTypes.string,
+        openRef: PropTypes.object
     };
 
     const DropdownOptions = () => {

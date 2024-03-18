@@ -5,7 +5,6 @@ import { postHeaders } from 'src/testUtils/headers';
 import { ThemeProvider } from 'src/context/ThemeContext';
 import App from '../App';
 import { mockContext } from './mockContext';
-import print from 'print-js';
 
 jest.mock('print-js');
 

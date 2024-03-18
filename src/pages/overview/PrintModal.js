@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { Tab } from '@headlessui/react';
 import print from 'print-js';
 import Modal from 'src/components/Modal';
@@ -199,14 +200,14 @@ const PrintModal = ({ printModalRef }) => {
                 <p>The URL_PREFIX environment variable is not set</p>
                 <p>Check docker config</p>
             </>
-        )
+        );
 
         const LongUrlPrefix = (
             <>
                 <p>Unable to generate QR codes</p>
                 <p>Try setting a shorter URL_PREFIX in docker config</p>
             </>
-        )
+        );
 
         return (
             <>
@@ -221,7 +222,7 @@ const PrintModal = ({ printModalRef }) => {
                             default:
                                 return (
                                     <p>An unknown error occurred</p>
-                                )
+                                );
                         }
                     })()}
                 </div>
@@ -246,6 +247,10 @@ const PrintModal = ({ printModalRef }) => {
             })()}
         </Modal>
     );
+};
+
+PrintModal.propTypes = {
+    printModalRef: PropTypes.object
 };
 
 export default PrintModal;

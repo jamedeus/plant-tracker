@@ -27,7 +27,7 @@ const CollapseCol = ({ title, children, openRef, scroll=false }) => {
         }
 
         // Keep upstream ref in sync (persist state between re-renders)
-        openRef.current = open
+        openRef.current = open;
     }, [open]);
 
     return (
@@ -46,7 +46,7 @@ const CollapseCol = ({ title, children, openRef, scroll=false }) => {
 CollapseCol.propTypes = {
     title: PropTypes.string,
     children: PropTypes.node,
-    defaultOpen: PropTypes.bool,
+    openRef: PropTypes.object,
     scroll: PropTypes.bool
 };
 

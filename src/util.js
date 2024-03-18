@@ -1,4 +1,4 @@
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie';
 import { DateTime } from 'luxon';
 
 // Takes name of context element created with json_script django tag
