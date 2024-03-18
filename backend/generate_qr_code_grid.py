@@ -28,11 +28,23 @@ def generate_layout(url_prefix, qr_per_row=8):
     QR code dimensions vary based on URL length and number per row
     '''
 
+    # Limit qr_per_row to reasonable values
+    # Below 2 results in ZeroDivisionError, above 25 is unprintable
+    if not 2 <= qr_per_row <= 25:
+        raise ValueError("qr_per_row must be an integer between 2 and 25")
+
     # Calculate largest QR code size that will fit requested grid
     max_width = int(page_width / qr_per_row)
     test_qr = generate_random_qr(url_prefix)
     qr_scale = int(max_width / test_qr.get_png_size())
     qr_width = test_qr.get_png_size(qr_scale)
+
+    # Prevent ZeroDivisionError when URL_PREFIX is extremely long
+    # Happens when test_qr exceeds max_width, resulting in qr_scale of 0
+    if qr_width == 0:
+        raise RuntimeError(
+            "Unable to generate, decrease qr_per_row or use shorter URL_PREFIX"
+        )
 
     # Calculate number of columns, number of margins between
     qr_per_col = int(page_height / qr_width)

@@ -1009,6 +1009,44 @@ class InvalidRequestTests(TestCase):
         self.assertEqual(response.status_code, 501)
         self.assertEqual(response.json(), {'error': 'URL_PREFIX not configured'})
 
+    def test_get_qr_codes_invalid_qr_per_row(self):
+        # Send request with string qr_per_row, confirm correct error
+        response = self.client.post('/get_qr_codes', {'qr_per_row': 'five'})
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.json(),
+            {'error': 'qr_per_row must be an integer between 2 and 25'}
+        )
+
+        # Send request with qr_per_row less than 2, confirm correct error
+        response = self.client.post('/get_qr_codes', {'qr_per_row': 1})
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.json(),
+            {'error': 'qr_per_row must be an integer between 2 and 25'}
+        )
+
+        # Send request with qr_per_row greater than 25, confirm correct error
+        response = self.client.post('/get_qr_codes', {'qr_per_row': 26})
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.json(),
+            {'error': 'qr_per_row must be an integer between 2 and 25'}
+        )
+
+    def test_get_qr_codes_excessively_long_url_prefix(self):
+        # Mock excessively long URL_PREFIX, will not be possible to generate QR
+        # codes with width less than max_width
+        settings.URL_PREFIX = 'https://excessive.number.of.extremely.long.repeating.subdomains.excessive.number.of.extremely.long.repeating.subdomains.excessive.number.of.extremely.long.repeating.subdomains.excessive.number.of.extremely.long.repeating.subdomains.longdomainname.com/'
+
+        # Send request with qr_per_row = 25 (worst case), confirm correct error
+        response = self.client.post('/get_qr_codes', {'qr_per_row': 25})
+        self.assertEqual(response.status_code, 500)
+        self.assertEqual(
+            response.json(),
+            {'error': 'failed to generate, try a shorter URL_PREFIX'}
+        )
+
     def test_invalid_get_request(self):
         # Send GET request to endpoint that requires POST, confirm error
         response = self.client.get('/register')

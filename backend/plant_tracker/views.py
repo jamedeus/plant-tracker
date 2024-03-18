@@ -61,11 +61,22 @@ def get_qr_codes(data):
     if not settings.URL_PREFIX:
         return JsonResponse({'error': 'URL_PREFIX not configured'}, status=501)
 
-    qr_codes = generate_layout(settings.URL_PREFIX, int(data["qr_per_row"]))
-    image = BytesIO()
-    qr_codes.save(image, format="PNG")
-    image_base64 = base64.b64encode(image.getvalue()).decode()
-    return JsonResponse({'qr_codes': image_base64}, status=200)
+    try:
+        qr_codes = generate_layout(settings.URL_PREFIX, int(data["qr_per_row"]))
+        image = BytesIO()
+        qr_codes.save(image, format="PNG")
+        image_base64 = base64.b64encode(image.getvalue()).decode()
+        return JsonResponse({'qr_codes': image_base64}, status=200)
+    except (ValueError, TypeError):
+        return JsonResponse(
+            {'error': 'qr_per_row must be an integer between 2 and 25'},
+            status=400
+        )
+    except RuntimeError:
+        return JsonResponse(
+            {'error': 'failed to generate, try a shorter URL_PREFIX'},
+            status=500
+        )
 
 
 def overview(request):
