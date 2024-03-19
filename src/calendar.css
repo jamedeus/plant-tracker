@@ -1,0 +1,99 @@
+@import '~react-calendar/dist/Calendar.css';
+
+/* Rounded corners + responsive background color */
+.react-calendar {
+    border-radius: 20px;
+    @apply bg-base-200 border-none;
+}
+
+/* Prevent navigation button corners overflowing rounded div */
+.react-calendar__navigation__prev-button {
+    border-top-left-radius: 20px;
+}
+
+.react-calendar__navigation__next-button {
+    border-top-right-radius: 20px;
+}
+
+/* Responsive hover/focus color */
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+    @apply bg-base-300;
+}
+
+/* Hide prev/next year buttons */
+.react-calendar__navigation__prev2-button {
+    display: none;
+}
+
+.react-calendar__navigation__next2-button {
+    display: none;
+}
+
+/* Larger month text, reduce margin between navigation and calendar */
+.react-calendar__navigation {
+    @apply text-lg mb-2;
+}
+
+/* Hide dotted line under weekday abbreviations */
+.react-calendar__month-view__weekdays__weekday abbr {
+    text-decoration: none;
+}
+
+/* Constant tile size (prevent rows with no events from being shorter) */
+/* Tile font tweaks (larger, weekends same color, responsive colors) */
+.react-calendar__tile {
+    @apply h-12 w-12 text-sm font-medium;
+}
+
+.react-calendar__month-view__days__day--weekend {
+    @apply text-base-content;
+}
+
+.react-calendar__tile:enabled:hover,
+.react-calendar__tile:enabled:focus,
+.react-calendar__tile--active {
+    @apply bg-base-300 text-base-content rounded-2xl;
+}
+
+[data-theme="dark"] .react-calendar__month-view__days__day--neighboringMonth,
+.react-calendar__decade-view__years__year--neighboringDecade,
+.react-calendar__century-view__decades__decade--neighboringCentury {
+    color: color-mix(in oklab, theme('colors.base-content'), black 30%);
+}
+
+[data-theme="light"] .react-calendar__month-view__days__day--neighboringMonth,
+.react-calendar__decade-view__years__year--neighboringDecade,
+.react-calendar__century-view__decades__decade--neighboringCentury {
+    color: color-mix(in oklab, theme('colors.base-content'), white 70%);
+}
+
+/* Event indicator dots shown on tiles */
+.dots {
+    display: flex;
+    justify-content: center;
+    height: 8px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    margin: 1px;
+}
+
+.dot-water {
+    @apply bg-info;
+}
+
+.dot-fertilize {
+    @apply bg-success;
+}
+
+.dot-prune {
+    @apply bg-orange-300;
+}
+
+.dot-repot {
+    @apply bg-amber-900;
+}

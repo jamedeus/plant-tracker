@@ -15,6 +15,7 @@ import Modal from 'src/components/Modal';
 import { RadioGroup } from '@headlessui/react';
 import LastEventTime from 'src/components/LastEventTime';
 import PlantDetails from 'src/components/PlantDetails';
+import EventCalendar from './EventCalendar';
 
 function App() {
     // Load context set by django template
@@ -508,7 +509,11 @@ function App() {
                 </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 mx-auto mt-16">
+            <div className="mx-auto my-16">
+                <EventCalendar events={plant.events} />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 mx-auto">
                 <div className="md:mr-8 mb-8 md:mb-0">
                     <EventsCol
                         title="Water History"
