@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Calendar from 'react-calendar';
 import 'src/calendar.css';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/16/solid';
 
 const EventCalendar = ({ events }) => {
     // Convert events into object with date string keys, array of event types as value
@@ -42,6 +43,8 @@ const EventCalendar = ({ events }) => {
             calendarType={"gregory"}
             minDate={new Date('2001-01-01T00:00:00')}
             maxDate={new Date('2100-01-01T00:00:00')}
+            prevLabel=<ChevronLeftIcon className="w-6 h-6 m-auto" />
+            nextLabel=<ChevronRightIcon className="w-6 h-6 m-auto" />
             tileContent={({ date, view }) => view === 'month' ? renderDots(date) : null}
         />
     );

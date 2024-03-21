@@ -1,9 +1,9 @@
 @import '~react-calendar/dist/Calendar.css';
 
-/* Rounded corners + responsive background color */
+/* Rounded corners, responsive background color, slight padding */
 .react-calendar {
     border-radius: 20px;
-    @apply bg-base-200 border-none;
+    @apply bg-base-200 border-none p-2;
 }
 
 /* Prevent navigation button corners overflowing rounded div */
@@ -42,8 +42,9 @@
 
 /* Constant tile size (prevent rows with no events from being shorter) */
 /* Tile font tweaks (larger, weekends same color, responsive colors) */
+/* Remove horizontal padding so dots aren't squished when all 4 present */
 .react-calendar__tile {
-    @apply h-12 w-12 text-sm font-medium;
+    @apply h-12 w-12 text-sm font-medium px-0;
 }
 
 .react-calendar__month-view__days__day--weekend {
@@ -67,6 +68,12 @@
 .react-calendar__century-view__decades__decade--neighboringCentury {
     color: color-mix(in oklab, theme('colors.base-content'), white 70%);
 }
+
+/* Underline + bold current day */
+.react-calendar__tile--now {
+    @apply underline font-bold;
+}
+
 
 /* Event indicator dots shown on tiles */
 .dots {
@@ -94,6 +101,10 @@
     @apply bg-orange-300;
 }
 
-.dot-repot {
-    @apply bg-amber-900;
+[data-theme="dark"] .dot-repot {
+    background: #60381b;
+}
+
+[data-theme="light"] .dot-repot {
+    background: #703f21;
 }
