@@ -110,7 +110,7 @@ exports[`App matches snapshot 1`] = `
                     Species:
                   </span>
                   <span
-                    className="ml-auto"
+                    className="ml-auto text-right"
                   >
                     Calathea
                   </span>
@@ -124,7 +124,7 @@ exports[`App matches snapshot 1`] = `
                     Pot size:
                   </span>
                   <span
-                    className="ml-auto"
+                    className="ml-auto text-right"
                   >
                     4
                   </span>

@@ -142,7 +142,7 @@ exports[`App matches snapshot when plants and trays exist 1`] = `
                 className="card-body text-center"
               >
                 <h2
-                  className="card-title mx-auto pr-8 indent-8 line-clamp-1"
+                  className="card-title mx-auto px-8 line-clamp-1"
                 >
                   Test Plant
                 </h2>
@@ -179,7 +179,7 @@ exports[`App matches snapshot when plants and trays exist 1`] = `
                   type="checkbox"
                 />
                 <div
-                  className="collapse-content px-16"
+                  className="collapse-content"
                 >
                   <p
                     className="flex"
@@ -190,7 +190,7 @@ exports[`App matches snapshot when plants and trays exist 1`] = `
                       Species:
                     </span>
                     <span
-                      className="ml-auto"
+                      className="ml-auto text-right"
                     >
                       Calathea
                     </span>
@@ -204,7 +204,7 @@ exports[`App matches snapshot when plants and trays exist 1`] = `
                       Pot size:
                     </span>
                     <span
-                      className="ml-auto"
+                      className="ml-auto text-right"
                     >
                       4
                     </span>

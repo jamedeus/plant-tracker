@@ -10,7 +10,7 @@ const TrayDetails = ({ location, description }) => {
             <>
                 <p className={location ? 'flex' : 'hidden'}>
                     <span className="font-semibold">Location:</span>
-                    <span className="ml-auto">{location}</span>
+                    <span className="ml-auto text-right">{location}</span>
                 </p>
                 <div className={description ? 'text-center' : 'hidden'}>
                     <p className="font-semibold mt-3">Description:</p>

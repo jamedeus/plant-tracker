@@ -10,11 +10,11 @@ const PlantDetails = ({ species, pot_size, description }) => {
             <>
                 <p className={species ? 'flex' : 'hidden'}>
                     <span className="font-semibold">Species:</span>
-                    <span className="ml-auto">{species}</span>
+                    <span className="ml-auto text-right">{species}</span>
                 </p>
                 <p className={pot_size ? 'flex' : 'hidden'}>
                     <span className="font-semibold">Pot size:</span>
-                    <span className="ml-auto">{pot_size}</span>
+                    <span className="ml-auto text-right">{pot_size}</span>
                 </p>
                 <div className={description ? 'text-center' : 'hidden'}>
                     <p className="font-semibold mt-3">Description:</p>

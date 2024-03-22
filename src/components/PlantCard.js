@@ -25,7 +25,7 @@ const PlantCard = ({ name, uuid, species, description, pot_size, last_watered })
                     onChange={toggle}
                     defaultChecked={open}
                 />
-                <div className="collapse-content px-16">
+                <div className="collapse-content">
                     <PlantDetails
                         species={species}
                         pot_size={pot_size}
@@ -42,7 +42,7 @@ const PlantCard = ({ name, uuid, species, description, pot_size, last_watered })
             onClick={() => window.location.href = `/manage/${uuid}`}
         >
             <div className="card-body text-center">
-                <h2 className="card-title mx-auto pr-8 indent-8 line-clamp-1">
+                <h2 className="card-title mx-auto px-8 line-clamp-1">
                     {name}
                 </h2>
                 <LastEventTime text="watered" timestamp={last_watered} />

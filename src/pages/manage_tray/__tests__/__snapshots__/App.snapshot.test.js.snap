@@ -103,7 +103,7 @@ exports[`App matches snapshot 1`] = `
                     Location:
                   </span>
                   <span
-                    className="ml-auto"
+                    className="ml-auto text-right"
                   >
                     Middle shelf
                   </span>
@@ -219,7 +219,7 @@ exports[`App matches snapshot 1`] = `
               className="card-body text-center"
             >
               <h2
-                className="card-title mx-auto pr-8 indent-8 line-clamp-1"
+                className="card-title mx-auto px-8 line-clamp-1"
               >
                 Test Plant
               </h2>
@@ -256,7 +256,7 @@ exports[`App matches snapshot 1`] = `
                 type="checkbox"
               />
               <div
-                className="collapse-content px-16"
+                className="collapse-content"
               >
                 <p
                   className="flex"
@@ -267,7 +267,7 @@ exports[`App matches snapshot 1`] = `
                     Species:
                   </span>
                   <span
-                    className="ml-auto"
+                    className="ml-auto text-right"
                   >
                     Calathea
                   </span>
@@ -281,7 +281,7 @@ exports[`App matches snapshot 1`] = `
                     Pot size:
                   </span>
                   <span
-                    className="ml-auto"
+                    className="ml-auto text-right"
                   >
                     4
                   </span>
@@ -315,7 +315,7 @@ exports[`App matches snapshot 1`] = `
               className="card-body text-center"
             >
               <h2
-                className="card-title mx-auto pr-8 indent-8 line-clamp-1"
+                className="card-title mx-auto px-8 line-clamp-1"
               >
                 Unnamed Spider Plant
               </h2>
@@ -352,7 +352,7 @@ exports[`App matches snapshot 1`] = `
                 type="checkbox"
               />
               <div
-                className="collapse-content px-16"
+                className="collapse-content"
               >
                 <p
                   className="flex"
@@ -363,7 +363,7 @@ exports[`App matches snapshot 1`] = `
                     Species:
                   </span>
                   <span
-                    className="ml-auto"
+                    className="ml-auto text-right"
                   >
                     Spider Plant
                   </span>
@@ -377,7 +377,7 @@ exports[`App matches snapshot 1`] = `
                     Pot size:
                   </span>
                   <span
-                    className="ml-auto"
+                    className="ml-auto text-right"
                   >
                     2
                   </span>
