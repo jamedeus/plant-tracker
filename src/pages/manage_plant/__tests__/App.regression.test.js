@@ -73,4 +73,29 @@ describe('App', () => {
         expect(app.getByText("Never watered")).not.toBeNull();
         expect(app.queryByText("Never fertilized")).toBeNull();
     });
+
+    // Original bug: Repot events did not appear on calendar until page was
+    // refreshed because the submit listener did not add them to history state
+    it('updates calendar when repot modal is submitted', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "action": "repot",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
+
+        // Confirm no repot events are shown on calendar
+        const calendar = app.getByText('March 2024').parentNode.parentNode.parentNode;
+        expect(calendar.querySelector('.dot-repot')).toBeNull();
+
+        // Click Repot Modal submit button
+        const repotModal = app.getAllByText(/Repot plant/)[1].parentNode;
+        const submit = repotModal.querySelector('.btn-success');
+        await user.click(submit);
+
+        // Repot event should appear on calendar
+        expect(calendar.querySelector('.dot-repot')).not.toBeNull();
+    });
 });

@@ -393,7 +393,14 @@ function App() {
 
             const response = await sendPostRequest('/repot_plant', payload);
             if (response.ok) {
+                // Update plant state pot_size
                 setPlant({...plant, pot_size: payload.new_pot_size});
+
+                // Add repot event to history state, sort chronologically
+                let oldPlant = {...plant};
+                oldPlant.events['repot'].push(payload.timestamp);
+                oldPlant.events['repot'].sort().reverse();
+                setPlant(oldPlant);
             } else {
                 const data = await response.json();
                 alert(data);
