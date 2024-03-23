@@ -144,16 +144,14 @@ function App() {
     return (
         <div className="container flex flex-col min-h-screen mx-auto pb-16">
             <Navbar
-                dropdownOptions={
+                menuOptions={
                     <>
                         <li><a onClick={toggleEditing}>Edit</a></li>
                         <li><a onClick={showPrintModal}>Print QR Codes</a></li>
                         <ToggleThemeOption />
                     </>
                 }
-                title={
-                    <a className="btn btn-ghost text-3xl">Plant Overview</a>
-                }
+                title={"Plant Overview"}
             />
 
             <Layout />

@@ -1,58 +1,122 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
-// Renders navbar with dropdown on left, centered title, optional right section
-// dropdownOptions must be list of <li> elements, other args can be anything
-const Navbar = ({ dropdownOptions, title, rightSection }) => {
+// Button with icon, used for dropdown and hidden placeholder on right side
+const DropdownButton = () => {
     return (
-        <div className="navbar bg-base-100 mb-4 sticky top-0 z-[99]">
-            <div className="navbar-start">
+        <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
+            <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-5 w-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+            >
+                <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M4 6h16M4 12h16M4 18h7"
+                />
+            </svg>
+        </div>
+    );
+};
+
+// Renders navbar with dropdown on left and dynamically-sized title in center
+// Optional titleOptions param will be shown in dropdown when title is clicked
+// Both option params must be list of <li> elements
+const Navbar = ({ menuOptions, title, titleOptions }) => {
+    // Create refs for navbar and title text (used to read widths)
+    const navbarRef = useRef(null);
+    const titleRef = useRef(null);
+    // Create state for title font size (calculated from navbar width)
+    const [titleFontSize, setTitleFontSize] = useState(32);
+
+    useEffect(() => {
+        // Takes navbar and dropdown button elements, returns max title width
+        const getMaxWidth = (navbar, button) => {
+            // Full width minus button, hidden button, and 2rem horizontal padding
+            return navbar.offsetWidth - button.offsetWidth * 2 - 32;
+        };
+
+        const adjustTitleFont = () => {
+            if (navbarRef.current && titleRef.current) {
+                // Get maximum title width that won't overlap menu button
+                const maxWidth = getMaxWidth(
+                    navbarRef.current,
+                    navbarRef.current.children[0]
+                );
+
+                // Increase font size until maxWidth reached
+                let newSize = titleFontSize;
+                while (titleRef.current.offsetWidth < maxWidth && newSize < 32) {
+                    newSize++;
+                    titleRef.current.style.fontSize = `${newSize}px`;
+                }
+                // Reduce font size until title fits available space
+                while (titleRef.current.offsetWidth > maxWidth && newSize > 8) {
+                    newSize--;
+                    titleRef.current.style.fontSize = `${newSize}px`;
+                }
+
+                // Render with new font size
+                setTitleFontSize(newSize);
+            }
+        };
+
+        // Calculate font size on load, update when window resizes
+        adjustTitleFont();
+        window.addEventListener('resize', adjustTitleFont);
+
+        return () => {
+            window.removeEventListener('resize', adjustTitleFont);
+        };
+    }, [title, titleFontSize]);
+
+    return (
+        <div ref={navbarRef} className="navbar bg-base-100 mb-4 sticky top-0 z-[99]">
+            <div className="navbar-start w-auto">
                 <div className="dropdown">
-                    <div
-                        tabIndex={0}
-                        role="button"
-                        className="btn btn-ghost btn-circle"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth="2"
-                                d="M4 6h16M4 12h16M4 18h7"
-                            />
-                        </svg>
-                    </div>
+                    <DropdownButton />
                     <ul
                         tabIndex={0}
                         className={`menu menu-md dropdown-content mt-3 z-[99]
                                     p-2 shadow bg-base-300 rounded-box w-52`}
                     >
-                        {dropdownOptions}
+                        {menuOptions}
                     </ul>
                 </div>
             </div>
 
-            <div className="navbar-center">
-                {title}
+            <div className="navbar-center mx-auto">
+                <div className="dropdown dropdown-center">
+                    <a
+                        ref={titleRef}
+                        tabIndex={0}
+                        role="button"
+                        className="btn btn-ghost"
+                        style={{ fontSize: `${titleFontSize}px` }}
+                    >
+                        {title}
+                    </a>
+                    <div tabIndex={0} className="dropdown-content z-[1] flex">
+                        {titleOptions}
+                    </div>
+                </div>
             </div>
 
-            <div className="navbar-end">
-                {rightSection}
+            <div className="navbar-end w-auto invisible">
+                <DropdownButton />
             </div>
         </div>
     );
 };
 
 Navbar.propTypes = {
-    dropdownOptions: PropTypes.node,
-    title: PropTypes.node,
-    rightSection: PropTypes.node
+    menuOptions: PropTypes.node,
+    title: PropTypes.string,
+    titleOptions: PropTypes.node
 };
 
 export default Navbar;

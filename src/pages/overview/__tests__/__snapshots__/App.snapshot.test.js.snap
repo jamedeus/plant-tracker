@@ -8,7 +8,7 @@ exports[`App matches snapshot when plants and trays exist 1`] = `
     className="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
   >
     <div
-      className="navbar-start"
+      className="navbar-start w-auto"
     >
       <div
         className="dropdown"
@@ -63,17 +63,53 @@ exports[`App matches snapshot when plants and trays exist 1`] = `
       </div>
     </div>
     <div
-      className="navbar-center"
+      className="navbar-center mx-auto"
     >
-      <a
-        className="btn btn-ghost text-3xl"
+      <div
+        className="dropdown dropdown-center"
       >
-        Plant Overview
-      </a>
+        <a
+          className="btn btn-ghost"
+          role="button"
+          style={
+            {
+              "fontSize": "32px",
+            }
+          }
+          tabIndex={0}
+        >
+          Plant Overview
+        </a>
+        <div
+          className="dropdown-content z-[1] flex"
+          tabIndex={0}
+        />
+      </div>
     </div>
     <div
-      className="navbar-end"
-    />
+      className="navbar-end w-auto invisible"
+    >
+      <div
+        className="btn btn-ghost btn-circle"
+        role="button"
+        tabIndex={0}
+      >
+        <svg
+          className="h-5 w-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M4 6h16M4 12h16M4 18h7"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+          />
+        </svg>
+      </div>
+    </div>
   </div>
   <div
     className="grid grid-cols-1 md:grid-cols-2 mx-auto"

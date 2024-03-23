@@ -452,22 +452,18 @@ function App() {
     return (
         <div className="container flex flex-col mx-auto mb-8">
             <Navbar
-                dropdownOptions={
+                menuOptions={
                     <DropdownOptions />
                 }
-                title={
-                    <div className="dropdown dropdown-center">
-                        <a tabIndex={0} role="button" className="btn btn-ghost text-3xl">{plant.display_name}</a>
-                        <div tabIndex={0} className="dropdown-content z-[1] flex">
-                            <DetailsCard>
-                                <PlantDetails
-                                    species={plant.species}
-                                    pot_size={plant.pot_size}
-                                    description={plant.description}
-                                />
-                            </DetailsCard>
-                        </div>
-                    </div>
+                title={plant.display_name}
+                titleOptions={
+                    <DetailsCard>
+                        <PlantDetails
+                            species={plant.species}
+                            pot_size={plant.pot_size}
+                            description={plant.description}
+                        />
+                    </DetailsCard>
                 }
             />
 

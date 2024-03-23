@@ -272,7 +272,7 @@ function App() {
     return (
         <div className="container flex flex-col mx-auto mb-8">
             <Navbar
-                dropdownOptions={
+                menuOptions={
                     <>
                         <li><a onClick={overview}>Overview</a></li>
                         <li><a onClick={() => openManagePlantsModal('add')}>Add plants</a></li>
@@ -280,18 +280,14 @@ function App() {
                         <ToggleThemeOption />
                     </>
                 }
-                title={
-                    <div className="dropdown dropdown-center">
-                        <a tabIndex={0} role="button" className="btn btn-ghost text-3xl">{tray.display_name}</a>
-                        <div tabIndex={0} className="dropdown-content z-[1] flex">
-                            <DetailsCard>
-                                <TrayDetails
-                                    location={tray.location}
-                                    description={tray.description}
-                                />
-                            </DetailsCard>
-                        </div>
-                    </div>
+                title={tray.display_name}
+                titleOptions={
+                    <DetailsCard>
+                        <TrayDetails
+                            location={tray.location}
+                            description={tray.description}
+                        />
+                    </DetailsCard>
                 }
             />
 

@@ -61,15 +61,13 @@ function App() {
     return (
         <div className="container flex flex-col mx-auto mb-8">
             <Navbar
-                dropdownOptions={
+                menuOptions={
                     <>
                         <li><a onClick={overview}>Overview</a></li>
                         <ToggleThemeOption />
                     </>
                 }
-                title={
-                    <a className="btn btn-ghost text-3xl">Registration</a>
-                }
+                title={"Registration"}
             />
 
             <div className="flex flex-col mx-8 md:w-1/2 md:mx-auto">
