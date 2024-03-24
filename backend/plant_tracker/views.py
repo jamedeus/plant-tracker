@@ -1,6 +1,7 @@
 import json
 import base64
 from io import BytesIO
+from datetime import datetime
 
 from django.conf import settings
 from django.shortcuts import render
@@ -508,3 +509,25 @@ def add_plant_photos(request):
         )
 
     return JsonResponse({"uploaded": f"{len(request.FILES)} photo(s)"}, status=200)
+
+
+@requires_json_post(["plant_id", "delete_photos"])
+@get_plant_from_post_body
+def delete_plant_photos(plant, data):
+    '''Deletes a list of Photos associated with a specific Plant
+    Requires JSON POST with plant_id (uuid) and delete_photos (list of photo
+    creation timestamps) keys
+    '''
+    deleted = []
+    failed = []
+    for created_timestamp in data["delete_photos"]:
+        try:
+            photo = Photo.objects.get(
+                plant=plant,
+                created=datetime.strptime(created_timestamp, '%Y:%m:%d %H:%M:%S')
+            )
+            photo.delete()
+            deleted.append(created_timestamp)
+        except Photo.DoesNotExist:
+            failed.append(created_timestamp)
+    return JsonResponse({"deleted": deleted, "failed": failed}, status=200)

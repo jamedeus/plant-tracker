@@ -765,6 +765,37 @@ class PlantEventTests(TestCase):
             '2024:03:22 10:52:03'
         )
 
+    def test_delete_plant_photos(self):
+        # Create 2 mock photos, add to database
+        mock_photo1 = create_mock_photo('2024:03:21 10:52:03')
+        mock_photo2 = create_mock_photo('2024:03:22 10:52:03')
+        Photo.objects.create(photo=mock_photo1, plant=self.plant1)
+        Photo.objects.create(photo=mock_photo2, plant=self.plant1)
+        self.assertEqual(len(Photo.objects.all()), 2)
+
+        # Post creation timestamps to delete_plant_photos endpoint
+        # Add a non-existing timestamp, should add to response failed section
+        payload = {
+            'plant_id': str(self.plant1.uuid),
+            'delete_photos': [
+                '2024:03:21 10:52:03',
+                '2024:03:22 10:52:03',
+                '2044:03:22 10:52:03'
+            ]
+        }
+        response = self.client.post('/delete_plant_photos', payload)
+
+        # Confirm response, confirm both removed from database
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {
+                "deleted": ['2024:03:21 10:52:03', '2024:03:22 10:52:03'],
+                "failed": ['2044:03:22 10:52:03']
+            }
+        )
+        self.assertEqual(len(Photo.objects.all()), 0)
+
 
 class PlantModelTests(TestCase):
     def setUp(self):

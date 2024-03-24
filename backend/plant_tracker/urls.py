@@ -23,5 +23,6 @@ urlpatterns = [
     path('bulk_add_plants_to_tray', views.bulk_add_plants_to_tray, name='bulk_add_plants_to_tray'),
     path('bulk_remove_plants_from_tray', views.bulk_remove_plants_from_tray, name='bulk_remove_plants_from_tray'),
     path('repot_plant', views.repot_plant, name='repot_plant'),
-    path('add_plant_photos', views.add_plant_photos, name='add_plant_photos')
+    path('add_plant_photos', views.add_plant_photos, name='add_plant_photos'),
+    path('delete_plant_photos', views.delete_plant_photos, name='delete_plant_photos')
 ]
