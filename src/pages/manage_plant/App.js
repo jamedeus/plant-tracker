@@ -226,13 +226,18 @@ function App() {
                         <img className="rounded-2xl" src={url} alt={created} />
                     </a>
                 </div>
-            )
-        }
+            );
+        };
+
+        PhotoCard.propTypes = {
+            url: PropTypes.string,
+            created: PropTypes.string
+        };
 
         return (
             <CollapseCol title={"Photos"} openRef={photoHistoryOpen}>
                 {photoUrls.map((photo, index) => {
-                    return <PhotoCard key={index} url={photo.url} created={photo.created} />
+                    return <PhotoCard key={index} url={photo.url} created={photo.created} />;
                 })}
             </CollapseCol>
         );
@@ -496,7 +501,6 @@ function App() {
 
         const handleSelect = (event) => {
             setSelectedFiles(Array.from(event.target.files));
-            console.log(selectedFiles)
         };
 
         const handleSubmit = async () => {
@@ -505,7 +509,7 @@ function App() {
             selectedFiles.forEach((file, index) => {
                 formData.append(`photo_${index}`, file);
             });
-            formData.append('plant_id', plant.uuid)
+            formData.append('plant_id', plant.uuid);
 
             // Post FormData to backend
             const response = await fetch('/add_plant_photos', {
@@ -519,7 +523,7 @@ function App() {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log(data)
+                console.log(data);
                 photoModalRef.current.close();
             } else {
                 alert("Upload failed!");

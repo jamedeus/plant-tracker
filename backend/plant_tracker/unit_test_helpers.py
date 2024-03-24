@@ -7,13 +7,16 @@ from django.test import Client
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
 
-# Subclass Client, add default for content_type arg
 class JSONClient(Client):
+    '''Subclass of django.test.Client that defaults to json content_type'''
     def post(self, path, data=None, content_type='application/json', **extra):
         return super().post(path, data, content_type, **extra)
 
 
 def create_mock_photo(creation_time, name='mock_photo.jpg'):
+    '''Creates a mock JPG in memory with exif DateTimeOriginal parameter
+    Takes DateTimeOriginal string (required) and filename string (optional)
+    '''
     mock_photo = BytesIO()
     image = Image.new('RGB', (1, 1), color='white')
     exif_bytes = piexif.dump({

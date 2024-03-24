@@ -26,7 +26,7 @@ const EventCalendar = ({ events }) => {
             return (
                 <div className="dots">
                 </div>
-            )
+            );
         }
         // Return div containing 1 span for each event on day
         return (

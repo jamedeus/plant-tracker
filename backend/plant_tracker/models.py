@@ -1,5 +1,5 @@
-from PIL import Image
 from datetime import datetime
+from PIL import Image
 from django.db import models
 from django.conf import settings
 from django.core.cache import cache
