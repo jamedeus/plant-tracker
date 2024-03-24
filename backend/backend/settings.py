@@ -103,6 +103,14 @@ DATABASES = {
     }
 }
 
+# Create image storage directory if it doesn't exist
+if not os.path.isdir(os.path.join(BASE_DIR, 'data', 'images')):
+    os.mkdir(os.path.join(BASE_DIR, 'data', 'images'))
+
+# Set image storage directory and URL
+MEDIA_ROOT = os.path.join(BASE_DIR, 'data', 'images')
+MEDIA_URL = "media/"
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

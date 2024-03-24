@@ -1,14 +1,27 @@
 import json
 import base64
+import piexif
+from PIL import Image
+from io import BytesIO
 from uuid import uuid4
 from datetime import datetime, timedelta
 
 from django.conf import settings
 from django.utils import timezone
 from django.test import Client, TestCase
+from django.test.client import MULTIPART_CONTENT
 from django.core.exceptions import ValidationError
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
-from .models import Tray, Plant, WaterEvent, FertilizeEvent, PruneEvent, RepotEvent
+from .models import (
+    Tray,
+    Plant,
+    WaterEvent,
+    FertilizeEvent,
+    PruneEvent,
+    RepotEvent,
+    Photo
+)
 from .view_decorators import (
     get_plant_from_post_body,
     get_tray_from_post_body,
@@ -730,6 +743,56 @@ class PlantEventTests(TestCase):
             {"deleted": "water", "plant": str(self.plant1.uuid)}
         )
         self.assertEqual(len(self.plant1.waterevent_set.all()), 0)
+
+    def test_add_plant_photos(self):
+        # Confirm no photos exist in database or plant reverse relation
+        self.assertEqual(len(Photo.objects.all()), 0)
+        self.assertEqual(len(self.plant1.photo_set.all()), 0)
+
+        # Create mock image with DateTimeOriginal exif param set
+        mock_photo = BytesIO()
+        image = Image.new('RGB', (1, 1), color='white')
+        exif_bytes = piexif.dump({
+            'Exif': {
+                36867: b'2024:03:22 10:52:03',
+            }
+        })
+        image.save(mock_photo, format='JPEG', exif=exif_bytes)
+        mock_photo.seek(0)
+
+        uploaded_photo = InMemoryUploadedFile(
+            file=mock_photo,
+            field_name='photo_1',
+            name='mock_photo.jpg',
+            content_type='image/jpeg',
+            size=mock_photo.getbuffer().nbytes,
+            charset=None
+        )
+
+        # Post mock photo to add_plant_photos endpoint
+        data = {
+            'plant_id': str(self.plant1.uuid),
+            'photo_0': uploaded_photo
+        }
+        response = self.client.post(
+            '/add_plant_photos',
+            data=data,
+            content_type=MULTIPART_CONTENT
+        )
+
+        # Confirm expected response
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"uploaded": "1 photo(s)"})
+
+        # Confirm Photo was added to database, reverse relation was created
+        self.assertEqual(len(Photo.objects.all()), 1)
+        self.assertEqual(len(self.plant1.photo_set.all()), 1)
+
+        # Confirm Photo.created was set from exif DateTimeOriginal param
+        self.assertEqual(
+            Photo.objects.all()[0].created.strftime('%Y:%m:%d %H:%M:%S'),
+            '2024:03:22 10:52:03'
+        )
 
 
 class PlantModelTests(TestCase):

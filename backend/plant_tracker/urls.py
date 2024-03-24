@@ -22,5 +22,6 @@ urlpatterns = [
     path('remove_plant_from_tray', views.remove_plant_from_tray, name='remove_plant_from_tray'),
     path('bulk_add_plants_to_tray', views.bulk_add_plants_to_tray, name='bulk_add_plants_to_tray'),
     path('bulk_remove_plants_from_tray', views.bulk_remove_plants_from_tray, name='bulk_remove_plants_from_tray'),
-    path('repot_plant', views.repot_plant, name='repot_plant')
+    path('repot_plant', views.repot_plant, name='repot_plant'),
+    path('add_plant_photos', views.add_plant_photos, name='add_plant_photos')
 ]

@@ -1,3 +1,5 @@
+from PIL import Image
+from datetime import datetime
 from django.db import models
 from django.core.cache import cache
 from django.dispatch import receiver
@@ -221,6 +223,38 @@ class Plant(models.Model):
 def clear_unnamed_plants_cache(**kwargs):
     '''Clear cached unnamed_plant list when a Plant is saved or deleted'''
     cache.delete('unnamed_plants')
+
+
+class Photo(models.Model):
+    '''Stores a user-uploaded image of a specific plant'''
+    photo = models.ImageField(upload_to="images")
+
+    # Save upload time, created time will be read from exifdata by save method
+    uploaded = models.DateTimeField(auto_now_add=True)
+    created = models.DateTimeField(null=True, blank=True)
+
+    # Required relation field matching Photo to correct Plant
+    plant = models.ForeignKey(Plant, on_delete=models.CASCADE)
+
+    def save(self, *args, **kwargs):
+        # Copy exif timestamp to created field when saved for the first time
+        if not self.pk:
+            # Read exif data
+            exif_data = Image.open(self.photo)._getexif()
+
+            if exif_data:
+                # Write Date/Time Original parameter to created field
+                datetime_original = exif_data.get(36867)
+                if datetime_original:
+                    self.created = datetime.strptime(datetime_original, '%Y:%m:%d %H:%M:%S')
+                # Default to upload time if exif param not found
+                else:
+                    self.created = self.uploaded
+            # Default to current time if no exif data found
+            else:
+                self.created = self.uploaded
+
+        super().save(*args, **kwargs)
 
 
 class Event(models.Model):

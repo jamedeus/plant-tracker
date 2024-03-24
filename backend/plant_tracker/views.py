@@ -9,7 +9,7 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 from generate_qr_code_grid import generate_layout
-from .models import Tray, Plant, RepotEvent
+from .models import Tray, Plant, RepotEvent, Photo
 from .view_decorators import (
     events_map,
     get_plant_by_uuid,
@@ -484,3 +484,27 @@ def repot_plant(plant, timestamp, data):
             {"error": "Event with same timestamp already exists"},
             status=409
         )
+
+
+def add_plant_photos(request):
+    '''Creates Photo model for each image in request body
+    Requires FormData with plant_id key (UUID) and one or more images
+    '''
+    if request.method != "POST":
+        return JsonResponse({'error': 'must post form data'}, status=405)
+
+    plant = get_plant_by_uuid(request.POST.get("plant_id"))
+    if not plant:
+        return JsonResponse({'error': 'unable to find plant'}, status=404)
+
+    if len(request.FILES) == 0:
+        return JsonResponse({'error': 'no photos were sent'}, status=404)
+
+    # Instantiate model for each file in payload
+    for key in request.FILES:
+        Photo.objects.create(
+            photo=request.FILES[key],
+            plant=plant
+        )
+
+    return JsonResponse({"uploaded": f"{len(request.FILES)} photo(s)"}, status=200)
