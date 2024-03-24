@@ -16,6 +16,7 @@ pylint-django = "*"
 sphinx = "*"
 pylint-exit = "*"
 anybadge = "*"
+coverage = "*"
 
 [requires]
 python_version = "3.10"
