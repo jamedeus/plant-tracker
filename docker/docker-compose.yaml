@@ -28,6 +28,11 @@ services:
       # Optional: Persistent key between sessions
       # If blank a new key will be generated each time
       - SECRET_KEY="xxxxxxxxxxxxxxxxxxxxxx"
+      # Optional: Admin interface credentials, will be created if
+      # username and password are set (email is optional)
+      - DJANGO_SUPERUSER_USERNAME=myusername
+      - DJANGO_SUPERUSER_PASSWORD=mypassword
+      #- DJANGO_SUPERUSER_EMAIL=
     volumes:
       # Persistent storage between sessions
       - plant-tracker-data:/mnt/backend/data/
