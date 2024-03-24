@@ -13,7 +13,7 @@ class JSONClient(Client):
         return super().post(path, data, content_type, **extra)
 
 
-def create_mock_photo(creation_time):
+def create_mock_photo(creation_time, name='mock_photo.jpg'):
     mock_photo = BytesIO()
     image = Image.new('RGB', (1, 1), color='white')
     exif_bytes = piexif.dump({
@@ -27,7 +27,7 @@ def create_mock_photo(creation_time):
     uploaded_photo = InMemoryUploadedFile(
         file=mock_photo,
         field_name='photo_1',
-        name='mock_photo.jpg',
+        name=name,
         content_type='image/jpeg',
         size=mock_photo.getbuffer().nbytes,
         charset=None

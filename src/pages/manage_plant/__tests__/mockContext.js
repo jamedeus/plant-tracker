@@ -40,6 +40,16 @@ export const mockContext = {
         "Parlor Palm",
         "Spider Plant",
         "Calathea"
+    ],
+    "photo_urls": [
+        {
+            'created': '2024:03:21 10:52:03',
+            'url': '/media/images/photo1.jpg'
+        },
+        {
+            'created': '2024:03:22 10:52:03',
+            'url': '/media/images/photo2.jpg'
+        }
     ]
 };
 
@@ -78,5 +88,6 @@ export const mockContextNoEvents = {
         "Parlor Palm",
         "Spider Plant",
         "Calathea"
-    ]
+    ],
+    "photo_urls": []
 };

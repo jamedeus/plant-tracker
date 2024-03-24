@@ -25,6 +25,7 @@ function App() {
     });
     const trays = parseDomContext("trays");
     const speciesOptions = parseDomContext("species_options");
+    const photoUrls = parseDomContext("photo_urls");
 
     // Get hook to show toast message
     const { showToast } = useToast();
@@ -39,6 +40,7 @@ function App() {
     // Create refs to track event history collapse open state between re-renders
     const waterHistoryOpen = useRef(false);
     const fertilizeHistoryOpen = useRef(false);
+    const photoHistoryOpen = useRef(false);
 
     const submitEditModal = async () => {
         const payload = Object.fromEntries(
@@ -209,6 +211,31 @@ function App() {
         events: PropTypes.array,
         type: PropTypes.string,
         openRef: PropTypes.object
+    };
+
+    const PhotoHistory = () => {
+        const PhotoCard = ({url, created}) => {
+            return (
+                <div className="card card-compact bg-neutral text-neutral-content mb-4 p-2">
+                    <a href={url}>
+                        <p className="text-lg text-center font-bold mb-2" title={created}>
+                            {timestampToRelative(
+                                DateTime.fromFormat(created, 'yyyy:MM:dd HH:mm:ss').toISO()
+                            )}
+                        </p>
+                        <img className="rounded-2xl" src={url} alt={created} />
+                    </a>
+                </div>
+            )
+        }
+
+        return (
+            <CollapseCol title={"Photos"} openRef={photoHistoryOpen}>
+                {photoUrls.map((photo, index) => {
+                    return <PhotoCard key={index} url={photo.url} created={photo.created} />
+                })}
+            </CollapseCol>
+        );
     };
 
     const DropdownOptions = () => {
@@ -589,7 +616,7 @@ function App() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 mx-auto">
-                <div className="md:mr-8 mb-8 md:mb-0">
+                <div className="md:mr-8 mb-8">
                     <EventsCol
                         title="Water History"
                         events={plant.events.water}
@@ -598,7 +625,7 @@ function App() {
                     />
                 </div>
 
-                <div className="md:ml-8">
+                <div className="md:ml-8 mb-8">
                     <EventsCol
                         title="Fertilize History"
                         events={plant.events.fertilize}
@@ -607,6 +634,8 @@ function App() {
                     />
                 </div>
             </div>
+
+            <PhotoHistory />
 
             <EditModal title="Edit Details" onSubmit={submitEditModal}>
                 <PlantDetailsForm

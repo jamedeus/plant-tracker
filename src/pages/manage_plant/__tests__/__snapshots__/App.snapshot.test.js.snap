@@ -1611,7 +1611,7 @@ exports[`App matches snapshot 1`] = `
       className="grid grid-cols-1 md:grid-cols-2 mx-auto"
     >
       <div
-        className="md:mr-8 mb-8 md:mb-0"
+        className="md:mr-8 mb-8"
       >
         <div
           className="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
@@ -1687,7 +1687,7 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="md:ml-8"
+        className="md:ml-8 mb-8"
       >
         <div
           className="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
@@ -1760,6 +1760,62 @@ exports[`App matches snapshot 1`] = `
               </button>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+    <div
+      className="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+    >
+      <input
+        defaultChecked={false}
+        onChange={[Function]}
+        type="checkbox"
+      />
+      <div
+        className="collapse-title text-xl font-medium text-center"
+      >
+        Photos
+      </div>
+      <div
+        className="collapse-content"
+      >
+        <div
+          className="card card-compact bg-neutral text-neutral-content mb-4 p-2"
+        >
+          <a
+            href="/media/images/photo1.jpg"
+          >
+            <p
+              className="text-lg text-center font-bold mb-2"
+              title="2024:03:21 10:52:03"
+            >
+              in 20 days
+            </p>
+            <img
+              alt="2024:03:21 10:52:03"
+              className="rounded-2xl"
+              src="/media/images/photo1.jpg"
+            />
+          </a>
+        </div>
+        <div
+          className="card card-compact bg-neutral text-neutral-content mb-4 p-2"
+        >
+          <a
+            href="/media/images/photo2.jpg"
+          >
+            <p
+              className="text-lg text-center font-bold mb-2"
+              title="2024:03:22 10:52:03"
+            >
+              in 21 days
+            </p>
+            <img
+              alt="2024:03:22 10:52:03"
+              className="rounded-2xl"
+              src="/media/images/photo2.jpg"
+            />
+          </a>
         </div>
       </div>
     </div>

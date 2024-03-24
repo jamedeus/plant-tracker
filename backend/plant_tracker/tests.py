@@ -167,6 +167,16 @@ class ManagePageTests(TestCase):
         # Create fake UUID that doesn't exist in database
         self.fake_id = uuid4()
 
+        # Create mock photos for plant1
+        Photo.objects.create(
+            photo=create_mock_photo('2024:03:21 10:52:03', 'photo1.jpg'),
+            plant=self.plant1
+        )
+        Photo.objects.create(
+            photo=create_mock_photo('2024:03:22 10:52:03', 'photo2.jpg'),
+            plant=self.plant1
+        )
+
     def _refresh_test_models(self):
         self.plant1.refresh_from_db()
         self.plant2.refresh_from_db()
@@ -287,6 +297,14 @@ class ManagePageTests(TestCase):
 
         # Confirm species_options list is empty (test plants have no species)
         self.assertEqual(response.context['state']['species_options'], [])
+
+        # Confirm photo_urls contains list of dicts with timestamp keys, URL values
+        photo_urls = response.context['state']['photo_urls']
+        self.assertEqual(len(photo_urls), 2)
+        self.assertEqual(photo_urls[0]['created'], '2024:03:21 10:52:03')
+        self.assertEqual(photo_urls[1]['created'], '2024:03:22 10:52:03')
+        self.assertTrue(photo_urls[0]['url'].startswith('/media/images/photo1'))
+        self.assertTrue(photo_urls[1]['url'].startswith('/media/images/photo2'))
 
         # Add test plant to tray, request page again
         self.plant1.tray = self.tray1

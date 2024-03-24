@@ -14,6 +14,7 @@ describe('App', () => {
         createMockContext('plant', mockContextNoEvents.plant);
         createMockContext('trays', mockContextNoEvents.trays);
         createMockContext('species_options', mockContextNoEvents.species_options);
+        createMockContext('photo_urls', mockContextNoEvents.photo_urls);
 
         // Render app + create userEvent instance to use in tests
         app = render(

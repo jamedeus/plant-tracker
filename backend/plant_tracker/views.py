@@ -123,7 +123,8 @@ def manage(request, uuid):
             'plant': plant.get_details(),
             'trays': [{'name': tray.get_display_name(), 'uuid': str(tray.uuid)}
                       for tray in Tray.objects.all()],
-            'species_options': get_plant_species_options()
+            'species_options': get_plant_species_options(),
+            'photo_urls': plant.get_photo_urls()
         }
 
         # Replace name key (get_details returns display_name) with actual name

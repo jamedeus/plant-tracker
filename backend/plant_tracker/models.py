@@ -1,6 +1,7 @@
 from PIL import Image
 from datetime import datetime
 from django.db import models
+from django.conf import settings
 from django.core.cache import cache
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
@@ -131,6 +132,16 @@ class Plant(models.Model):
         unnamed_plants = get_unnamed_plants()
         return f'Unnamed plant {unnamed_plants.index(self.id) + 1}'
 
+    def get_photo_urls(self):
+        '''Returns dict with photo creation timestamps as keys and URLS as values'''
+        return [
+            {
+                'created': photo.created.strftime('%Y:%m:%d %H:%M:%S'),
+                'url': photo.get_url()
+            }
+            for photo in self.photo_set.all()
+        ]
+
     def get_details(self):
         '''Returns dict containing all plant attributes and last_watered,
         last_fertilized timestamps. Used as state for frontend components.
@@ -235,6 +246,10 @@ class Photo(models.Model):
 
     # Required relation field matching Photo to correct Plant
     plant = models.ForeignKey(Plant, on_delete=models.CASCADE)
+
+    def get_url(self):
+        '''Returns public URL of the photo'''
+        return f'{settings.MEDIA_URL}{self.photo.name}'
 
     def save(self, *args, **kwargs):
         # Copy exif timestamp to created field when saved for the first time
