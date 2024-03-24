@@ -1,17 +1,13 @@
 import json
 import base64
-import piexif
-from PIL import Image
-from io import BytesIO
 from uuid import uuid4
 from datetime import datetime, timedelta
 
 from django.conf import settings
 from django.utils import timezone
-from django.test import Client, TestCase
+from django.test import TestCase
 from django.test.client import MULTIPART_CONTENT
 from django.core.exceptions import ValidationError
-from django.core.files.uploadedfile import InMemoryUploadedFile
 
 from .models import (
     Tray,
@@ -28,12 +24,7 @@ from .view_decorators import (
     get_timestamp_from_post_body,
     get_event_type_from_post_body
 )
-
-
-# Subclass Client, add default for content_type arg
-class JSONClient(Client):
-    def post(self, path, data=None, content_type='application/json', **extra):
-        return super().post(path, data, content_type, **extra)
+from .unit_test_helpers import JSONClient, create_mock_photo
 
 
 class OverviewTests(TestCase):
@@ -749,30 +740,10 @@ class PlantEventTests(TestCase):
         self.assertEqual(len(Photo.objects.all()), 0)
         self.assertEqual(len(self.plant1.photo_set.all()), 0)
 
-        # Create mock image with DateTimeOriginal exif param set
-        mock_photo = BytesIO()
-        image = Image.new('RGB', (1, 1), color='white')
-        exif_bytes = piexif.dump({
-            'Exif': {
-                36867: b'2024:03:22 10:52:03',
-            }
-        })
-        image.save(mock_photo, format='JPEG', exif=exif_bytes)
-        mock_photo.seek(0)
-
-        uploaded_photo = InMemoryUploadedFile(
-            file=mock_photo,
-            field_name='photo_1',
-            name='mock_photo.jpg',
-            content_type='image/jpeg',
-            size=mock_photo.getbuffer().nbytes,
-            charset=None
-        )
-
         # Post mock photo to add_plant_photos endpoint
         data = {
             'plant_id': str(self.plant1.uuid),
-            'photo_0': uploaded_photo
+            'photo_0': create_mock_photo('2024:03:22 10:52:03')
         }
         response = self.client.post(
             '/add_plant_photos',
@@ -1118,6 +1089,11 @@ class InvalidRequestTests(TestCase):
         self.assertEqual(response.status_code, 405)
         self.assertEqual(response.json(), {'error': 'must post data'})
 
+        # Send GET request to endpoint that expects FormData (handles own error)
+        response = self.client.get('/add_plant_photos')
+        self.assertEqual(response.status_code, 405)
+        self.assertEqual(response.json(), {'error': 'must post FormData'})
+
     def test_invalid_post_body(self):
         # Send POST with non-JSON body, confirm error
         response = self.client.post(
@@ -1262,6 +1238,28 @@ class InvalidRequestTests(TestCase):
         response = self.client.post('/change_tray_uuid', payload)
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(), {"error": "new_id key is not a valid UUID"})
+
+    def test_add_plant_photos_missing_plant_id(self):
+        # Send POST with no plant_id key in body, confirm error
+        response = self.client.post('/add_plant_photos', {'photo_0': ''})
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(
+            response.json(),
+            {'error': 'unable to find plant'}
+        )
+
+    def test_add_plant_photos_missing_photos(self):
+        # Post FormData with no files, confirm error
+        response = self.client.post(
+            '/add_plant_photos',
+            data={'plant_id': str(self.test_plant.uuid)},
+            content_type=MULTIPART_CONTENT
+        )
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(
+            response.json(),
+            {'error': 'no photos were sent'}
+        )
 
 
 class ViewDecoratorTests(TestCase):

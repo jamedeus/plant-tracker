@@ -491,7 +491,7 @@ def add_plant_photos(request):
     Requires FormData with plant_id key (UUID) and one or more images
     '''
     if request.method != "POST":
-        return JsonResponse({'error': 'must post form data'}, status=405)
+        return JsonResponse({'error': 'must post FormData'}, status=405)
 
     plant = get_plant_by_uuid(request.POST.get("plant_id"))
     if not plant:
