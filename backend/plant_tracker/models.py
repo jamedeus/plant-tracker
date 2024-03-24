@@ -139,7 +139,7 @@ class Plant(models.Model):
                 'created': photo.created.strftime('%Y:%m:%d %H:%M:%S'),
                 'url': photo.get_url()
             }
-            for photo in self.photo_set.all()
+            for photo in self.photo_set.all().order_by('-created')
         ]
 
     def get_details(self):

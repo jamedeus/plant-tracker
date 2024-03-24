@@ -301,10 +301,10 @@ class ManagePageTests(TestCase):
         # Confirm photo_urls contains list of dicts with timestamp keys, URL values
         photo_urls = response.context['state']['photo_urls']
         self.assertEqual(len(photo_urls), 2)
-        self.assertEqual(photo_urls[0]['created'], '2024:03:21 10:52:03')
-        self.assertEqual(photo_urls[1]['created'], '2024:03:22 10:52:03')
-        self.assertTrue(photo_urls[0]['url'].startswith('/media/images/photo1'))
-        self.assertTrue(photo_urls[1]['url'].startswith('/media/images/photo2'))
+        self.assertEqual(photo_urls[0]['created'], '2024:03:22 10:52:03')
+        self.assertEqual(photo_urls[1]['created'], '2024:03:21 10:52:03')
+        self.assertTrue(photo_urls[0]['url'].startswith('/media/images/photo2'))
+        self.assertTrue(photo_urls[1]['url'].startswith('/media/images/photo1'))
 
         # Add test plant to tray, request page again
         self.plant1.tray = self.tray1
@@ -945,6 +945,33 @@ class PlantModelTests(TestCase):
         self.assertEqual(unnamed[0].get_display_name(), 'Unnamed plant 1')
         self.assertEqual(unnamed[1].get_display_name(), 'Unnamed plant 2')
         self.assertEqual(unnamed[2].get_display_name(), 'Unnamed plant 3')
+
+    def test_get_photo_urls(self):
+        # Create 3 mock photos with non-chronological creation times
+        Photo.objects.create(
+            photo=create_mock_photo('2024:02:21 10:52:03', 'photo1.jpg'),
+            plant=self.plant
+        )
+        Photo.objects.create(
+            photo=create_mock_photo('2024:03:22 10:52:03', 'photo2.jpg'),
+            plant=self.plant
+        )
+        Photo.objects.create(
+            photo=create_mock_photo('2024:01:28 10:52:03', 'photo3.jpg'),
+            plant=self.plant
+        )
+
+        # Get object containing URLs
+        photo_urls = self.plant.get_photo_urls()
+
+        # Confirm photos are sorted most recent to least recent
+        self.assertEqual(len(photo_urls), 3)
+        self.assertEqual(photo_urls[0]['created'], '2024:03:22 10:52:03')
+        self.assertEqual(photo_urls[1]['created'], '2024:02:21 10:52:03')
+        self.assertEqual(photo_urls[2]['created'], '2024:01:28 10:52:03')
+        self.assertTrue(photo_urls[0]['url'].startswith('/media/images/photo2'))
+        self.assertTrue(photo_urls[1]['url'].startswith('/media/images/photo1'))
+        self.assertTrue(photo_urls[2]['url'].startswith('/media/images/photo3'))
 
 
 class TrayModelTests(TestCase):
