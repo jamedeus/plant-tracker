@@ -1,4 +1,4 @@
-import { render, within } from '@testing-library/react';
+import { render, within, fireEvent } from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
 import createMockContext from 'src/testUtils/createMockContext';
 import { postHeaders } from 'src/testUtils/headers';
@@ -326,6 +326,46 @@ describe('App', () => {
             }),
             headers: postHeaders
         });
+    });
+
+    it('sends correct payload when photos are uploaded', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                "uploaded": "2 photo(s)"
+            })
+        }));
+
+        // Click "Upload photos" dropdown option to open modal
+        await user.click(app.getByText('Upload photos'));
+
+        // Create 2 mock files
+        const file1 = new File(['file1'], 'file1.jpg', { type: 'image/jpeg' });
+        const file2 = new File(['file2'], 'file2.jpg', { type: 'image/jpeg' });
+
+        // Simulate user clicking input and selecting mock files
+        const fileInput = app.getByTestId('photo-input');
+        fireEvent.change(fileInput, { target: { files: [file1, file2] } });
+
+        // Simulate user clicking upload button
+        await user.click(app.getByText('Upload'));
+
+        // Confirm correct data posted to /add_plant_photos endpoint
+        expect(fetch).toHaveBeenCalledWith('/add_plant_photos', {
+            method: 'POST',
+            body: expect.any(FormData),
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'X-CSRFToken': undefined,
+            }
+        });
+
+        // Confirm FormData contains the correct files
+        const formData = fetch.mock.calls[0][1].body;
+        expect(formData.get('photo_0')).toEqual(file1);
+        expect(formData.get('photo_1')).toEqual(file2);
     });
 
     it('redirects to overview when dropdown option is clicked', async () => {

@@ -71,6 +71,13 @@ exports[`App matches snapshot 1`] = `
               <a
                 onClick={[Function]}
               >
+                Upload photos
+              </a>
+            </li>
+            <li>
+              <a
+                onClick={[Function]}
+              >
                 Light mode
               </a>
             </li>
@@ -2237,6 +2244,70 @@ exports[`App matches snapshot 1`] = `
         >
           Repot
         </button>
+      </div>
+      <form
+        className="modal-backdrop"
+        method="dialog"
+      >
+        <button>
+          close
+        </button>
+      </form>
+    </dialog>
+    <dialog
+      className="modal"
+    >
+      <div
+        className="modal-box text-center flex flex-col pt-4"
+      >
+        <form
+          method="dialog"
+        >
+          <button
+            className="btn-close absolute right-4 top-4"
+          >
+            <svg
+              aria-hidden="true"
+              className="w-8 h-8"
+              data-slot="icon"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+              />
+            </svg>
+          </button>
+        </form>
+        <p
+          className="text-lg mb-6"
+        >
+          Upload Photos
+        </p>
+        <div
+          className="h-36 flex flex-col justify-center mx-auto"
+        >
+          <input
+            accept="image/*"
+            className="file-input file-input-bordered w-full max-w-xs"
+            data-testid="photo-input"
+            multiple="multiple"
+            onChange={[Function]}
+            type="file"
+          />
+        </div>
+        <div
+          className="modal-action mx-auto"
+        >
+          <button
+            className="btn btn-success"
+            disabled={true}
+            onClick={[Function]}
+          >
+            Upload
+          </button>
+        </div>
       </div>
       <form
         className="modal-backdrop"

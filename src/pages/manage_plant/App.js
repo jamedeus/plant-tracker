@@ -1,5 +1,6 @@
 import React, { useState, useRef, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import Cookies from 'js-cookie';
 import { DateTime } from 'luxon';
 import { sendPostRequest, parseDomContext, localToUTC, timestampToRelative } from 'src/util';
 import CollapseCol from 'src/components/CollapseCol';
@@ -32,6 +33,8 @@ function App() {
     const trayModalRef = useRef(null);
     // Create ref for modal used to create RepotEvent
     const repotModalRef = useRef(null);
+    // Create ref for modal used to upload photos
+    const photoModalRef = useRef(null);
 
     // Create refs to track event history collapse open state between re-renders
     const waterHistoryOpen = useRef(false);
@@ -224,6 +227,10 @@ function App() {
             repotModalRef.current.showModal();
         };
 
+        const openPhotoModal = () => {
+            photoModalRef.current.showModal();
+        };
+
         const removeFromTray = async () => {
             const response = await sendPostRequest(
                 '/remove_plant_from_tray',
@@ -262,6 +269,7 @@ function App() {
                     }
                 })()}
                 <li><a onClick={openRepotModal}>Repot plant</a></li>
+                <li><a onClick={openPhotoModal}>Upload photos</a></li>
                 <ToggleThemeOption />
             </>
         );
@@ -456,6 +464,70 @@ function App() {
         );
     };
 
+    const PhotoModal = () => {
+        const [selectedFiles, setSelectedFiles] = useState([]);
+
+        const handleSelect = (event) => {
+            setSelectedFiles(Array.from(event.target.files));
+            console.log(selectedFiles)
+        };
+
+        const handleSubmit = async () => {
+            // Create FormData containing all photos + plant UUID
+            const formData = new FormData();
+            selectedFiles.forEach((file, index) => {
+                formData.append(`photo_${index}`, file);
+            });
+            formData.append('plant_id', plant.uuid)
+
+            // Post FormData to backend
+            const response = await fetch('/add_plant_photos', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json, text/plain, */*',
+                    "X-CSRFToken": Cookies.get('csrftoken')
+                }
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log(data)
+                photoModalRef.current.close();
+            } else {
+                alert("Upload failed!");
+            }
+        };
+
+        return (
+            <Modal dialogRef={photoModalRef}>
+                <p className="text-lg mb-6">Upload Photos</p>
+
+                <div className="h-36 flex flex-col justify-center mx-auto">
+                    <input
+                        type="file"
+                        accept="image/*"
+                        multiple="multiple"
+                        className="file-input file-input-bordered w-full max-w-xs"
+                        onChange={handleSelect}
+                        data-testid="photo-input"
+                    />
+                </div>
+
+                <div className="modal-action mx-auto">
+                    <button
+                        className="btn btn-success"
+                        onClick={handleSubmit}
+                        disabled={!selectedFiles.length}
+                    >
+                        Upload
+                    </button>
+                </div>
+
+            </Modal>
+        );
+    };
+
     return (
         <div className="container flex flex-col mx-auto mb-8">
             <Navbar
@@ -549,6 +621,8 @@ function App() {
             <AddToTrayModal />
 
             <RepotModal />
+
+            <PhotoModal />
         </div>
     );
 }
