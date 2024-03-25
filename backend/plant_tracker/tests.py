@@ -1,11 +1,14 @@
+import os
 import json
 import base64
+import shutil
 from uuid import uuid4
 from datetime import datetime, timedelta
 
 from django.conf import settings
 from django.utils import timezone
 from django.test import TestCase
+from django.test import override_settings
 from django.test.client import MULTIPART_CONTENT
 from django.core.exceptions import ValidationError
 
@@ -25,6 +28,21 @@ from .view_decorators import (
     get_event_type_from_post_body
 )
 from .unit_test_helpers import JSONClient, create_mock_photo
+
+# Temp directory for mock photo uploads, deleted after tests
+TEST_DIR = '/tmp/plant_tracker_unit_test'
+
+
+# Create test directory or mock photo uploads
+def setUpModule():
+    if not os.path.isdir(os.path.join(TEST_DIR, 'data', 'images')):
+        os.makedirs(os.path.join(TEST_DIR, 'data', 'images'))
+
+
+# Delete mock photo directory after tests
+def tearDownModule():
+    print("\nDeleting mock photos...\n")
+    shutil.rmtree(TEST_DIR, ignore_errors=True)
 
 
 class OverviewTests(TestCase):
@@ -155,6 +173,7 @@ class OverviewTests(TestCase):
 
 
 class ManagePageTests(TestCase):
+    @override_settings(MEDIA_ROOT=(os.path.join(TEST_DIR, 'data', 'images')))
     def setUp(self):
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
@@ -753,6 +772,7 @@ class PlantEventTests(TestCase):
         )
         self.assertEqual(len(self.plant1.waterevent_set.all()), 0)
 
+    @override_settings(MEDIA_ROOT=(os.path.join(TEST_DIR, 'data', 'images')))
     def test_add_plant_photos(self):
         # Confirm no photos exist in database or plant reverse relation
         self.assertEqual(len(Photo.objects.all()), 0)
@@ -790,6 +810,7 @@ class PlantEventTests(TestCase):
             '2024:03:22 10:52:03'
         )
 
+    @override_settings(MEDIA_ROOT=(os.path.join(TEST_DIR, 'data', 'images')))
     def test_delete_plant_photos(self):
         # Create 2 mock photos, add to database
         mock_photo1 = create_mock_photo('2024:03:21 10:52:03')
@@ -953,6 +974,7 @@ class PlantModelTests(TestCase):
         self.assertEqual(unnamed[1].get_display_name(), 'Unnamed plant 2')
         self.assertEqual(unnamed[2].get_display_name(), 'Unnamed plant 3')
 
+    @override_settings(MEDIA_ROOT=(os.path.join(TEST_DIR, 'data', 'images')))
     def test_get_photo_urls(self):
         # Create 3 mock photos with non-chronological creation times
         Photo.objects.create(
