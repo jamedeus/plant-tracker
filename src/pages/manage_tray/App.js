@@ -304,7 +304,7 @@ function App() {
             <FilterColumn
                 title="Plants"
                 contents={plantDetails}
-                cardComponent={PlantCard}
+                CardComponent={PlantCard}
                 editing={selectingPlants}
                 selected={selectedPlants}
                 openRef={plantsOpenRef}

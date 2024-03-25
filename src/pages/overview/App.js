@@ -92,7 +92,7 @@ function App() {
             <FilterColumn
                 title="Plants"
                 contents={plants}
-                cardComponent={PlantCard}
+                CardComponent={PlantCard}
                 editing={editing}
                 selected={selectedPlants}
                 openRef={plantsOpenRef}
@@ -105,7 +105,7 @@ function App() {
             <FilterColumn
                 title="Trays"
                 contents={trays}
-                cardComponent={TrayCard}
+                CardComponent={TrayCard}
                 editing={editing}
                 selected={selectedTrays}
                 openRef={traysOpenRef}

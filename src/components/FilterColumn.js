@@ -6,13 +6,13 @@ import { XMarkIcon } from '@heroicons/react/16/solid';
 
 // Renders CollapseCol with EditableNodeList and text input to filter contents
 //
-// Takes title string, contents (array of objects), cardComponent (functional
+// Takes title string, contents (array of objects), CardComponent (functional
 // component rendered for each item in contents, must take args matching object
 // keys), EditableNodeList args (editing bool state + selected ref), and
 // CollapseCol openRef (ref containing bool)
 //
 // Contents objects must have uuid (react key) and name (used to filter) keys
-const FilterColumn = ({title, contents, cardComponent, editing, selected, openRef, children}) => {
+const FilterColumn = ({title, contents, CardComponent, editing, selected, openRef, children}) => {
     const [query, setQuery] = useState('');
     const [current, setCurrent] = useState(contents);
 
@@ -67,10 +67,7 @@ const FilterColumn = ({title, contents, cardComponent, editing, selected, openRe
                 {current.map((item) => {
                     // Render cardComponent by expanding params of each item
                     // Must have UUID param to use as react key
-                    return React.createElement(
-                        cardComponent,
-                        {...item, key: item.uuid}
-                    );
+                    return <CardComponent key={item.uuid} {...item} />
                 })}
             </EditableNodeList>
             {children}

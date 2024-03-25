@@ -48,7 +48,7 @@ describe('App', () => {
             <FilterColumn
                 title="Plants"
                 contents={plants}
-                cardComponent={PlantCard}
+                CardComponent={PlantCard}
                 editing={false}
                 selected={[]}
                 openRef={{current: true}}
