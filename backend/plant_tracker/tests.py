@@ -771,7 +771,14 @@ class PlantEventTests(TestCase):
 
         # Confirm expected response
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {"uploaded": "1 photo(s)"})
+        self.assertEqual(len(response.json()), 2)
+        self.assertEqual(response.json()["uploaded"], "1 photo(s)")
+
+        # Confirm response contains creation timestamp and URL of new photo
+        self.assertEqual(len(response.json()["urls"]), 1)
+        photo = response.json()["urls"][0]
+        self.assertEqual(photo["created"], '2024:03:22 10:52:03')
+        self.assertTrue(photo["url"].startswith("/media/images/mock_photo"))
 
         # Confirm Photo was added to database, reverse relation was created
         self.assertEqual(len(Photo.objects.all()), 1)

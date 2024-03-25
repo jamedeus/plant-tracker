@@ -503,13 +503,25 @@ def add_plant_photos(request):
         return JsonResponse({'error': 'no photos were sent'}, status=404)
 
     # Instantiate model for each file in payload
+    created = []
     for key in request.FILES:
-        Photo.objects.create(
+        photo = Photo.objects.create(
             photo=request.FILES[key],
             plant=plant
         )
+        created.append({
+            "created": photo.created.strftime('%Y:%m:%d %H:%M:%S'),
+            "url": photo.get_url()
+        })
 
-    return JsonResponse({"uploaded": f"{len(request.FILES)} photo(s)"}, status=200)
+    # Return list of new photo URLs (added to frontend state)
+    return JsonResponse(
+        {
+            "uploaded": f"{len(request.FILES)} photo(s)",
+            "urls": created
+        },
+        status=200
+    )
 
 
 @requires_json_post(["plant_id", "delete_photos"])

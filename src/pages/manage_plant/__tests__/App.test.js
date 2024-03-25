@@ -335,7 +335,17 @@ describe('App', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                "uploaded": "2 photo(s)"
+                "uploaded": "2 photo(s)",
+                "urls": [
+                    {
+                        "created": "2024:03:21 10:52:03",
+                        "url": "/media/images/photo1.jpg"
+                    },
+                    {
+                        "created": "2024:03:22 10:52:03",
+                        "url": "/media/images/photo2.jpg"
+                    },
+                ]
             })
         }));
 

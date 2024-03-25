@@ -23,9 +23,11 @@ function App() {
     const [plant, setPlant] = useState(() => {
         return parseDomContext("plant");
     });
+    const [photoUrls, setPhotoUrls] = useState(() => {
+        return parseDomContext("photo_urls");
+    });
     const trays = parseDomContext("trays");
     const speciesOptions = parseDomContext("species_options");
-    const photoUrls = parseDomContext("photo_urls");
 
     // Get hook to show toast message
     const { showToast } = useToast();
@@ -523,7 +525,15 @@ function App() {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log(data);
+
+                // Update state with new photo URLs from response
+                const newPhotoUrls = photoUrls.concat(data.urls);
+                newPhotoUrls.sort((a, b) => {
+                    return a.created.localeCompare(b.created);
+                }).reverse();
+                setPhotoUrls(newPhotoUrls);
+
+                // Close modal
                 photoModalRef.current.close();
             } else {
                 alert("Upload failed!");
