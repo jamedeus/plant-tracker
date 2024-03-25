@@ -17,6 +17,7 @@ import { RadioGroup } from '@headlessui/react';
 import LastEventTime from 'src/components/LastEventTime';
 import PlantDetails from 'src/components/PlantDetails';
 import EventCalendar from './EventCalendar';
+import { XMarkIcon } from '@heroicons/react/16/solid';
 
 function App() {
     // Load context set by django template
@@ -505,6 +506,41 @@ function App() {
             setSelectedFiles(Array.from(event.target.files));
         };
 
+        // Handler for delete button shown next to each selected file
+        const removeFile = (filename) => {
+            setSelectedFiles(selectedFiles.filter(file => file.name !== filename));
+        };
+
+        // Displays selected files under input
+        const SelectedFiles = () => {
+            // Table row with delete button next to filename
+            const Row = ({ filename }) => {
+                return (
+                    <tr className="flex">
+                        <td className="my-auto">
+                            <button className="btn-close" onClick={() => removeFile(filename)}>
+                                <XMarkIcon className="w-8 h-8" />
+                            </button>
+                        </td>
+                        <td className="text-lg leading-8 w-full text-center">
+                            <p>{filename}</p>
+                        </td>
+                    </tr>
+                );
+            };
+
+            // Return table with 1 row for each selected file
+            return (
+                <table className="table mt-2">
+                    <tbody>
+                        {selectedFiles.map(file => {
+                            return <Row filename={file.name} />
+                        })}
+                    </tbody>
+                </table>
+            )
+        };
+
         const handleSubmit = async () => {
             // Create FormData containing all photos + plant UUID
             const formData = new FormData();
@@ -544,7 +580,7 @@ function App() {
             <Modal dialogRef={photoModalRef}>
                 <p className="text-lg mb-6">Upload Photos</p>
 
-                <div className="h-36 flex flex-col justify-center mx-auto">
+                <div className="min-h-36 flex flex-col justify-center mx-auto">
                     <input
                         type="file"
                         accept="image/*"
@@ -553,6 +589,7 @@ function App() {
                         onChange={handleSelect}
                         data-testid="photo-input"
                     />
+                    <SelectedFiles />
                 </div>
 
                 <div className="modal-action mx-auto">

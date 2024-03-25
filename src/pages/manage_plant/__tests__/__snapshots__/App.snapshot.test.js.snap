@@ -2342,7 +2342,7 @@ exports[`App matches snapshot 1`] = `
           Upload Photos
         </p>
         <div
-          className="h-36 flex flex-col justify-center mx-auto"
+          className="min-h-36 flex flex-col justify-center mx-auto"
         >
           <input
             accept="image/*"
@@ -2352,6 +2352,11 @@ exports[`App matches snapshot 1`] = `
             onChange={[Function]}
             type="file"
           />
+          <table
+            className="table mt-2"
+          >
+            <tbody />
+          </table>
         </div>
         <div
           className="modal-action mx-auto"
