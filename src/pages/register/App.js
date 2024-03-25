@@ -27,23 +27,23 @@ function App() {
     const [errorModalMessage, setErrorModalMessage] = useState('');
 
     const submit = async () => {
-        // Parse all fields from visible form, add type param
-        let payload;
+        // Parse all fields from visible form, set correct endpoint
+        let payload, endpoint;
         if (plantForm === 0) {
             payload = Object.fromEntries(
                 new FormData(document.getElementById('plantDetails'))
             );
-            payload.type = 'plant';
+            endpoint = '/register_plant';
         } else {
             payload = Object.fromEntries(
                 new FormData(document.getElementById('trayDetails'))
             );
-            payload.type = 'tray';
+            endpoint = '/register_tray';
         }
 
         // Add UUID, post to backend
         payload.uuid = newID;
-        const response = await sendPostRequest('/register', payload);
+        const response = await sendPostRequest(endpoint, payload);
         // Show error modal if registration failed
         if (!response.ok) {
             const data = await response.json();

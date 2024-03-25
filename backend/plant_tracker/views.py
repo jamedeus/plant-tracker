@@ -196,10 +196,10 @@ def manage(request, uuid):
     )
 
 
-@requires_json_post()
-def register(data):
-    '''Creates a Plant or Tray database entry with params from POST body
-    Requires JSON POST with parameters from plant or tray registration forms
+@requires_json_post(["name", "species", "pot_size", "description", "uuid"])
+def register_plant(data):
+    '''Creates a Plant database entry with params from POST body
+    Requires JSON POST with parameters from plant registration forms
     '''
 
     # Replace empty strings with None (prevent empty strings in db)
@@ -207,21 +207,26 @@ def register(data):
     data = {key: (value.strip() if value != '' else None)
             for key, value in data.items()}
 
-    if data["type"] == "plant":
-        Plant.objects.create(
-            uuid=data["uuid"],
-            name=data["name"],
-            species=data["species"],
-            description=data["description"],
-            pot_size=data["pot_size"]
-        )
-    elif data["type"] == "tray":
-        Tray.objects.create(
-            uuid=data["uuid"],
-            name=data["name"],
-            location=data["location"],
-            description=data["description"]
-        )
+    # Instantiate model with payload keys as kwargs
+    Plant.objects.create(**data)
+
+    # Redirect to manage page
+    return HttpResponseRedirect(f'/manage/{data["uuid"]}')
+
+
+@requires_json_post(["name", "location", "description", "uuid"])
+def register_tray(data):
+    '''Creates a Tray database entry with params from POST body
+    Requires JSON POST with parameters from  tray registration form
+    '''
+
+    # Replace empty strings with None (prevent empty strings in db)
+    # Remove leading/trailing whitespace (prevent weird display)
+    data = {key: (value.strip() if value != '' else None)
+            for key, value in data.items()}
+
+    # Instantiate model with payload keys as kwargs
+    Tray.objects.create(**data)
 
     # Redirect to manage page
     return HttpResponseRedirect(f'/manage/{data["uuid"]}')

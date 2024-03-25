@@ -213,10 +213,9 @@ class ManagePageTests(TestCase):
             'name': '     test plant',
             'species': 'Giant Sequoia    ',
             'description': '300 feet and a few thousand years old',
-            'pot_size': '4',
-            'type': 'plant'
+            'pot_size': '4'
         }
-        response = self.client.post('/register', payload)
+        response = self.client.post('/register_plant', payload)
 
         # Confirm response redirects to management page for new plant
         self.assertEqual(response.status_code, 302)
@@ -244,10 +243,9 @@ class ManagePageTests(TestCase):
             'uuid': test_id,
             'name': '    test tray',
             'location': 'top shelf    ',
-            'description': 'This tray is used for propagation',
-            'type': 'tray'
+            'description': 'This tray is used for propagation'
         }
-        response = self.client.post('/register', payload)
+        response = self.client.post('/register_tray', payload)
 
         # Confirm response redirects to management page for new tray
         self.assertEqual(response.status_code, 302)
@@ -1190,7 +1188,7 @@ class InvalidRequestTests(TestCase):
 
     def test_invalid_get_request(self):
         # Send GET request to endpoint that requires POST, confirm error
-        response = self.client.get('/register')
+        response = self.client.get('/register_plant')
         self.assertEqual(response.status_code, 405)
         self.assertEqual(response.json(), {'error': 'must post data'})
 
@@ -1202,7 +1200,7 @@ class InvalidRequestTests(TestCase):
     def test_invalid_post_body(self):
         # Send POST with non-JSON body, confirm error
         response = self.client.post(
-            '/register',
+            '/register_plant',
             f'uuid={uuid4()}&name=test&species=test&description=None&pot_size=4&type=plant',
             content_type='text/plain',
         )

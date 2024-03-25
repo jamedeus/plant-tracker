@@ -77,15 +77,14 @@ describe('App', () => {
         // Click Save button
         await userEvent.click(app.getByText('Save'));
 
-        // Confirm correct data posted to /register endpoint
-        expect(global.fetch).toHaveBeenCalledWith('/register', {
+        // Confirm correct data posted to /register_plant endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/register_plant', {
             method: 'POST',
             body: JSON.stringify({
                 "name": "Test plant",
                 "species": "Fittonia",
                 "pot_size": "6",
                 "description": "Clay pot",
-                "type": "plant",
                 "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             }),
             headers: postHeaders
@@ -111,14 +110,13 @@ describe('App', () => {
         // Click Save button
         await userEvent.click(app.getByText('Save'));
 
-        // Confirm correct data posted to /register endpoint
-        expect(global.fetch).toHaveBeenCalledWith('/register', {
+        // Confirm correct data posted to /register_tray endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/register_tray', {
             method: 'POST',
             body: JSON.stringify({
                 "name": "Test tray",
                 "location": "Middle shelf",
                 "description": "Microgreens",
-                "type": "tray",
                 "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             }),
             headers: postHeaders
