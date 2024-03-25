@@ -19,7 +19,8 @@ from .view_decorators import (
     get_plant_from_post_body,
     get_tray_from_post_body,
     get_timestamp_from_post_body,
-    get_event_type_from_post_body
+    get_event_type_from_post_body,
+    clean_payload_data
 )
 
 
@@ -197,15 +198,11 @@ def manage(request, uuid):
 
 
 @requires_json_post(["name", "species", "pot_size", "description", "uuid"])
+@clean_payload_data
 def register_plant(data):
     '''Creates a Plant database entry with params from POST body
     Requires JSON POST with parameters from plant registration forms
     '''
-
-    # Replace empty strings with None (prevent empty strings in db)
-    # Remove leading/trailing whitespace (prevent weird display)
-    data = {key: (value.strip() if value != '' else None)
-            for key, value in data.items()}
 
     # Instantiate model with payload keys as kwargs
     Plant.objects.create(**data)
@@ -215,15 +212,11 @@ def register_plant(data):
 
 
 @requires_json_post(["name", "location", "description", "uuid"])
+@clean_payload_data
 def register_tray(data):
     '''Creates a Tray database entry with params from POST body
     Requires JSON POST with parameters from  tray registration form
     '''
-
-    # Replace empty strings with None (prevent empty strings in db)
-    # Remove leading/trailing whitespace (prevent weird display)
-    data = {key: (value.strip() if value != '' else None)
-            for key, value in data.items()}
 
     # Instantiate model with payload keys as kwargs
     Tray.objects.create(**data)
@@ -262,16 +255,12 @@ def change_tray_uuid(tray, data):
 
 @requires_json_post(["plant_id", "name", "species", "description", "pot_size"])
 @get_plant_from_post_body
+@clean_payload_data
 def edit_plant_details(plant, data):
     '''Updates description attributes of existing Plant entry
     Requires JSON POST with plant_id (uuid), name, species, description, and pot_size keys
     '''
     print(json.dumps(data, indent=4))
-
-    # Replace empty strings with None (prevent empty strings in db)
-    # Remove leading/trailing whitespace (prevent weird display)
-    data = {key: (value.strip() if value != '' else None)
-            for key, value in data.items()}
 
     # Overwrite database params with user values (remove extra whitespace)
     plant.name = data["name"]
@@ -289,16 +278,12 @@ def edit_plant_details(plant, data):
 
 @requires_json_post(["tray_id", "name", "location", "description"])
 @get_tray_from_post_body
+@clean_payload_data
 def edit_tray_details(tray, data):
     '''Updates description attributes of existing Tray entry
     Requires JSON POST with tray_id (uuid), name, and location keys
     '''
     print(json.dumps(data, indent=4))
-
-    # Replace empty strings with None (prevent empty strings in db)
-    # Remove leading/trailing whitespace (prevent weird display)
-    data = {key: (value.strip() if value != '' else None)
-            for key, value in data.items()}
 
     # Overwrite database params with user values
     tray.name = data["name"]

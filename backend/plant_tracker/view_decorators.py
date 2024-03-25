@@ -150,3 +150,16 @@ def get_event_type_from_post_body(func):
             )
         return func(event_type=data["event_type"], data=data, **kwargs)
     return wrapper
+
+
+def clean_payload_data(func):
+    '''Decorator cleans up whitespace in payload that will be written to database
+    Replaces empty strings with None (writes nothing to db instead of empty string)
+    Remove leading and trailing whitespace (prevent frontend display issues)
+    Must call after requires_json_post (expects dict with event_type key as first arg)
+    '''
+    def wrapper(data, **kwargs):
+        data = {key: (value.strip() if value != '' else None)
+                for key, value in data.items()}
+        return func(data=data, **kwargs)
+    return wrapper
