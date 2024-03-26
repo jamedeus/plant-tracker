@@ -8,6 +8,9 @@ from django.core.exceptions import ValidationError
 from django.db.models.signals import post_save, post_delete
 from django.core.validators import MaxValueValidator, MinValueValidator
 
+# Timestamp format used to print DateTimeFields, parse exif into datetime, etc.
+TIME_FORMAT = '%Y:%m:%d %H:%M:%S'
+
 
 def get_unnamed_plants():
     '''Returns list of primary_key ints for all Plants with no name or species
@@ -54,6 +57,9 @@ class Tray(models.Model):
 
     # Store timestamp when created (not editable)
     created = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.get_display_name()} ({self.uuid})"
 
     def get_display_name(self):
         '''Returns frontend display string determined from description attributes'''
@@ -121,6 +127,9 @@ class Plant(models.Model):
     # Optional relation to manage multiple plants in the same tray
     tray = models.ForeignKey(Tray, on_delete=models.CASCADE, blank=True, null=True)
 
+    def __str__(self):
+        return f"{self.get_display_name()} ({self.uuid})"
+
     def get_display_name(self):
         '''Returns frontend display string determined from description attributes'''
         if self.name:
@@ -136,7 +145,7 @@ class Plant(models.Model):
         '''Returns dict with photo creation timestamps as keys and URLS as values'''
         return [
             {
-                'created': photo.created.strftime('%Y:%m:%d %H:%M:%S'),
+                'created': photo.created.strftime(TIME_FORMAT),
                 'url': photo.get_url()
             }
             for photo in self.photo_set.all().order_by('-created')
@@ -247,6 +256,12 @@ class Photo(models.Model):
     # Required relation field matching Photo to correct Plant
     plant = models.ForeignKey(Plant, on_delete=models.CASCADE)
 
+    def __str__(self):
+        name = self.plant.get_display_name()
+        timestamp = self.created.strftime(TIME_FORMAT)
+        filename = self.photo.file.file.name.split("/")[-1]
+        return f"{name} - {timestamp} - {filename}"
+
     def get_url(self):
         '''Returns public URL of the photo'''
         return f'{settings.MEDIA_URL}{self.photo.name}'
@@ -261,7 +276,7 @@ class Photo(models.Model):
                 # Write Date/Time Original parameter to created field
                 datetime_original = exif_data.get(36867)
                 if datetime_original:
-                    self.created = datetime.strptime(datetime_original, '%Y:%m:%d %H:%M:%S')
+                    self.created = datetime.strptime(datetime_original, TIME_FORMAT)
                 # Default to upload time if exif param not found
                 else:
                     self.created = self.uploaded
@@ -279,6 +294,11 @@ class Event(models.Model):
 
     class Meta:
         abstract = True
+
+    def __str__(self):
+        name = self.plant.get_display_name()
+        timestamp = self.timestamp.strftime(TIME_FORMAT)
+        return f"{name} - {timestamp}"
 
     def save(self, *args, **kwargs):
         # Prevent creating duplicate events with the same plant and timestamp

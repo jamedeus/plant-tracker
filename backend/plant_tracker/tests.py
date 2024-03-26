@@ -196,6 +196,12 @@ class ManagePageTests(TestCase):
             plant=self.plant1
         )
 
+    def tearDown(self):
+        # Delete mock photos between tests to prevent duplicate names (django
+        # appends random string to keep unique, which makes testing difficult)
+        for i in os.listdir(os.path.join(TEST_DIR, 'data', 'images', 'images')):
+            os.remove(os.path.join(TEST_DIR, 'data', 'images', 'images', i))
+
     def _refresh_test_models(self):
         self.plant1.refresh_from_db()
         self.plant2.refresh_from_db()
@@ -851,6 +857,16 @@ class PlantModelTests(TestCase):
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
 
+    def test_str_method(self):
+        # Should return "Unnamed plant <num> (UUID)" when no params are set
+        self.assertEqual(self.plant.__str__(), f"Unnamed plant 1 ({self.plant.uuid})")
+        # Add species, should return "Unnamed <species> (UUID)"
+        self.plant.species = "Fittonia"
+        self.assertEqual(self.plant.__str__(), f"Unnamed Fittonia ({self.plant.uuid})")
+        # Add name, should return "<name> (UUID)"
+        self.plant.name = "My Plant"
+        self.assertEqual(self.plant.__str__(), f"My Plant ({self.plant.uuid})")
+
     def test_last_event_methods(self):
         # Confirm all methods return None when no events exist
         self.assertIsNone(self.plant.last_watered())
@@ -1014,6 +1030,16 @@ class TrayModelTests(TestCase):
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
 
+    def test_str_method(self):
+        # Should return "Unnamed tray <num> (UUID)" when no params are set
+        self.assertEqual(self.test_tray.__str__(), f"Unnamed tray 1 ({self.test_tray.uuid})")
+        # Add location, should return "<location> tray (UUID)"
+        self.test_tray.location = "Top shelf"
+        self.assertEqual(self.test_tray.__str__(), f"Top shelf tray ({self.test_tray.uuid})")
+        # Add name, should return "<name> (UUID)"
+        self.test_tray.name = "Top shelf"
+        self.assertEqual(self.test_tray.__str__(), f"Top shelf ({self.test_tray.uuid})")
+
     def test_water_all(self):
         # Confirm plants have no water events
         self.assertEqual(len(self.plant1.waterevent_set.all()), 0)
@@ -1077,10 +1103,47 @@ class TrayModelTests(TestCase):
         self.assertEqual(unnamed[2].get_display_name(), 'Unnamed tray 3')
 
 
+class PhotoModelTests(TestCase):
+    @override_settings(MEDIA_ROOT=(os.path.join(TEST_DIR, 'data', 'images')))
+    def setUp(self):
+        self.plant = Plant.objects.create(uuid=uuid4())
+        self.timestamp = datetime.now()
+
+        self.photo = Photo.objects.create(
+            photo=create_mock_photo('2024:03:21 10:52:03', 'photo1.jpg'),
+            plant=self.plant
+        )
+
+
+    def tearDown(self):
+        # Delete mock photos between tests to prevent duplicate names (django
+        # appends random string to keep unique, which makes testing difficult)
+        for i in os.listdir(os.path.join(TEST_DIR, 'data', 'images', 'images')):
+            os.remove(os.path.join(TEST_DIR, 'data', 'images', 'images', i))
+
+    @override_settings(MEDIA_ROOT=(os.path.join(TEST_DIR, 'data', 'images')))
+    def test_str_method(self):
+        # Should return "<plant name> - <photo creation timestamp> - <filename>"
+        self.assertEqual(
+            self.photo.__str__(),
+            "Unnamed plant 1 - 2024:03:21 10:52:03 - photo1.jpg"
+        )
+
+
 class EventModelTests(TestCase):
     def setUp(self):
         self.plant = Plant.objects.create(uuid=uuid4())
         self.timestamp = datetime.now()
+
+    def test_str_method(self):
+        # Create test events
+        water = WaterEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
+        prune = PruneEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
+
+        # Should return "<plant name> - <event timestamp>"
+        timestamp_string = self.timestamp.strftime('%Y:%m:%d %H:%M:%S')
+        self.assertEqual(water.__str__(), f"Unnamed plant 1 - {timestamp_string}")
+        self.assertEqual(prune.__str__(), f"Unnamed plant 1 - {timestamp_string}")
 
     def test_duplicate_water_event(self):
         # Create WaterEvent, confirm 1 entry exists
