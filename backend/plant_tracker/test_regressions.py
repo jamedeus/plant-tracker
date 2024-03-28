@@ -1,6 +1,7 @@
 import os
 import shutil
 from uuid import uuid4
+from types import NoneType
 from datetime import datetime
 
 from django.test import TestCase
@@ -9,6 +10,7 @@ from django.core.exceptions import ValidationError
 from .models import (
     Tray,
     Plant,
+    Photo,
     WaterEvent,
     RepotEvent
 )
@@ -18,7 +20,7 @@ from .view_decorators import (
     get_timestamp_from_post_body,
     get_event_type_from_post_body
 )
-from .unit_test_helpers import JSONClient
+from .unit_test_helpers import JSONClient, create_mock_photo
 
 # Temp directory for mock photo uploads, deleted after tests
 TEST_DIR = '/tmp/plant_tracker_unit_test'
@@ -58,6 +60,25 @@ class ModelRegressionTests(TestCase):
         tray.save()
         self.assertEqual(len(Plant.objects.all()), 1)
         self.assertEqual(len(Tray.objects.all()), 1)
+
+    def test_photos_with_no_exif_data_should_set_created_time_to_upload_time(self):
+        '''Issue: The created field is populated in the save method using a
+        timestamp parsed from exif data, or with the current time if the exif
+        param was not found. The current time was copied from the uploaded
+        field resulting in a None value because uploaded (set by auto_now_add)
+        had not been written to the database yet when it was copied.
+        '''
+
+        # Create Photo using mock image with no exif data
+        plant = Plant.objects.create(uuid=uuid4())
+        photo = Photo.objects.create(
+            photo=create_mock_photo(name='photo1.jpg'),
+            plant=plant
+        )
+
+        # Photo.created should be a datetime object, not NoneType
+        self.assertNotEqual(type(photo.created), NoneType)
+        self.assertEqual(type(photo.created), datetime)
 
 
 class ViewRegressionTests(TestCase):

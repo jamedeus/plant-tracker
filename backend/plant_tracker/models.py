@@ -2,6 +2,7 @@ from datetime import datetime
 from PIL import Image
 from django.db import models
 from django.conf import settings
+from django.utils import timezone
 from django.core.cache import cache
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
@@ -277,12 +278,12 @@ class Photo(models.Model):
                 datetime_original = exif_data.get(36867)
                 if datetime_original:
                     self.created = datetime.strptime(datetime_original, TIME_FORMAT)
-                # Default to upload time if exif param not found
+                # Default to current time if exif param not found
                 else:
-                    self.created = self.uploaded
+                    self.created = timezone.now()
             # Default to current time if no exif data found
             else:
-                self.created = self.uploaded
+                self.created = timezone.now()
 
         super().save(*args, **kwargs)
 
