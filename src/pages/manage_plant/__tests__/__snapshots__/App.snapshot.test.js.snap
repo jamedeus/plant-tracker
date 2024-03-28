@@ -2352,11 +2352,15 @@ exports[`App matches snapshot 1`] = `
             onChange={[Function]}
             type="file"
           />
-          <table
-            className="table mt-2"
+          <div
+            className="max-h-half-screen overflow-scroll"
           >
-            <tbody />
-          </table>
+            <table
+              className="table mt-2"
+            >
+              <tbody />
+            </table>
+          </div>
         </div>
         <div
           className="modal-action mx-auto"

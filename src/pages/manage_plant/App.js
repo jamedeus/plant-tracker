@@ -531,13 +531,15 @@ function App() {
 
             // Return table with 1 row for each selected file
             return (
-                <table className="table mt-2">
-                    <tbody>
-                        {selectedFiles.map(file => {
-                            return <Row filename={file.name} />
-                        })}
-                    </tbody>
-                </table>
+                <div className="max-h-half-screen overflow-scroll">
+                    <table className="table mt-2">
+                        <tbody>
+                            {selectedFiles.map(file => {
+                                return <Row filename={file.name} />
+                            })}
+                        </tbody>
+                    </table>
+                </div>
             )
         };
 
@@ -601,7 +603,6 @@ function App() {
                         Upload
                     </button>
                 </div>
-
             </Modal>
         );
     };
