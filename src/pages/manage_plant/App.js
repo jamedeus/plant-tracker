@@ -500,6 +500,7 @@ function App() {
     };
 
     const PhotoModal = () => {
+        const inputRef = useRef(null);
         const [selectedFiles, setSelectedFiles] = useState([]);
 
         const handleSelect = (event) => {
@@ -508,7 +509,19 @@ function App() {
 
         // Handler for delete button shown next to each selected file
         const removeFile = (filename) => {
+            // Remove deleted file from state
             setSelectedFiles(selectedFiles.filter(file => file.name !== filename));
+
+            // Copy input FileList into array, remove deleted file
+            const inputFiles = Array.from(inputRef.current.files);
+            const newFiles = inputFiles.filter(file => file.name !== filename);
+
+            // Add remaining files to DataTransfer, overwrite input FileList
+            const data = new DataTransfer();
+            for (let file of newFiles) {
+                data.items.add(file);
+            }
+            inputRef.current.files = data.files;
         };
 
         // Displays selected files under input
@@ -535,7 +548,7 @@ function App() {
                     <table className="table mt-2">
                         <tbody>
                             {selectedFiles.map(file => {
-                                return <Row filename={file.name} />
+                                return <Row key={file.name} filename={file.name} />
                             })}
                         </tbody>
                     </table>
@@ -584,6 +597,7 @@ function App() {
 
                 <div className="min-h-36 flex flex-col justify-center mx-auto">
                     <input
+                        ref={inputRef}
                         type="file"
                         accept="image/*"
                         multiple="multiple"

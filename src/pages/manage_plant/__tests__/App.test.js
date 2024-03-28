@@ -379,6 +379,47 @@ describe('App', () => {
         expect(formData.get('photo_1')).toEqual(file2);
     });
 
+    it('removes selected files in PhotoModal when X buttons are clicked', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                "uploaded": "2 photo(s)",
+                "urls": [
+                    {
+                        "created": "2024:03:21 10:52:03",
+                        "url": "/media/images/photo1.jpg"
+                    }
+                ]
+            })
+        }));
+
+        // Create 2 mock files
+        const file1 = new File(['file1'], 'file1.jpg', { type: 'image/jpeg' });
+        const file2 = new File(['file2'], 'file2.jpg', { type: 'image/jpeg' });
+
+        // Simulate user clicking input and selecting both mock files
+        const fileInput = app.getByTestId('photo-input');
+        fireEvent.change(fileInput, { target: { files: [file1, file2] } });
+
+        // Simulate user clicking delete button next to second file in list
+        const fileToRemove = app.getByText('file2.jpg');
+        const removeButton = fileToRemove.parentNode.parentNode.children[0].children[0];
+        await user.click(removeButton);
+
+        // Confirm second file no longer shown on page
+        expect(app.queryByText('file2.jpg')).toBeNull();
+
+        // Simulate user clicking upload button
+        await user.click(app.getByText('Upload'));
+
+        // Confirm FormData posted to backend only contains first file
+        const formData = fetch.mock.calls[0][1].body;
+        expect(formData.get('photo_0')).toEqual(file1);
+        expect(formData.get('photo_1')).toBeNull();
+    });
+
     it('redirects to overview when dropdown option is clicked', async () => {
         Object.defineProperty(window, 'location', {
             value: {
