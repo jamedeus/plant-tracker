@@ -1780,42 +1780,60 @@ exports[`App matches snapshot 1`] = `
         className="collapse-content"
       >
         <div
-          className="card card-compact bg-neutral text-neutral-content mb-4 p-2"
+          className="mb-4"
         >
-          <a
-            href="/media/images/photo1.jpg"
+          <div
+            className="card card-compact bg-neutral text-neutral-content mb-4 p-2"
           >
-            <p
-              className="text-lg text-center font-bold mb-2"
-              title="2024:03:21 10:52:03"
+            <a
+              href="/media/images/photo1.jpg"
             >
-              in 20 days
-            </p>
-            <img
-              alt="2024:03:21 10:52:03"
-              className="rounded-2xl"
-              src="/media/images/photo1.jpg"
-            />
-          </a>
+              <p
+                className="text-lg text-center font-bold mb-2"
+                title="2024:03:21 10:52:03"
+              >
+                in 20 days
+              </p>
+              <img
+                alt="2024:03:21 10:52:03"
+                className="rounded-2xl"
+                src="/media/images/photo1.jpg"
+              />
+            </a>
+          </div>
         </div>
         <div
-          className="card card-compact bg-neutral text-neutral-content mb-4 p-2"
+          className="mb-4"
         >
-          <a
-            href="/media/images/photo2.jpg"
+          <div
+            className="card card-compact bg-neutral text-neutral-content mb-4 p-2"
           >
-            <p
-              className="text-lg text-center font-bold mb-2"
-              title="2024:03:22 10:52:03"
+            <a
+              href="/media/images/photo2.jpg"
             >
-              in 21 days
-            </p>
-            <img
-              alt="2024:03:22 10:52:03"
-              className="rounded-2xl"
-              src="/media/images/photo2.jpg"
-            />
-          </a>
+              <p
+                className="text-lg text-center font-bold mb-2"
+                title="2024:03:22 10:52:03"
+              >
+                in 21 days
+              </p>
+              <img
+                alt="2024:03:22 10:52:03"
+                className="rounded-2xl"
+                src="/media/images/photo2.jpg"
+              />
+            </a>
+          </div>
+        </div>
+        <div
+          className="flex mt-4"
+        >
+          <button
+            className="btn btn-outline mx-auto"
+            onClick={[Function]}
+          >
+            Edit
+          </button>
         </div>
       </div>
     </div>

@@ -242,7 +242,7 @@ describe('App', () => {
         // Click first checkbox to select event
         user.click(app.container.querySelectorAll('.radio')[0]);
 
-        // Click delete buttonm confirm buttons reset
+        // Click delete button, confirm buttons reset
         await user.click(within(waterHistory).getByText('Delete'));
         expect(within(waterHistory).getByText('Edit').nodeName).toBe('BUTTON');
         expect(within(waterHistory).queryByText('Delete')).toBeNull();
@@ -377,6 +377,41 @@ describe('App', () => {
         const formData = fetch.mock.calls[0][1].body;
         expect(formData.get('photo_0')).toEqual(file1);
         expect(formData.get('photo_1')).toEqual(file2);
+    });
+
+    it('sends correct payload when photos are deleted', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                "deleted": [
+                    "2024:03:21 10:52:03"
+                ],
+                "failed": []
+            })
+        }));
+
+        // Get reference to Photo History div, open collapse, click edit button
+        const photoHistory = app.getByText("Photos").parentElement;
+        await user.click(photoHistory.children[0]);
+        await user.click(within(photoHistory).getByText('Edit'));
+
+        // Click first checkbox to select photo, click delete button
+        user.click(app.container.querySelectorAll('.radio')[0]);
+        await user.click(within(photoHistory).getByText('Delete'));
+
+        // Confirm correct data posted to /delete_plant_photos endpoint
+        expect(fetch).toHaveBeenCalledWith('/delete_plant_photos', {
+            method: 'POST',
+            body: JSON.stringify({
+                "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                "delete_photos": [
+                    "2024:03:21 10:52:03"
+                ]
+            }),
+            headers: postHeaders
+        });
     });
 
     it('removes selected files in PhotoModal when X buttons are clicked', async () => {

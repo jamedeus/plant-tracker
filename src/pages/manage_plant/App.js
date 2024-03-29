@@ -217,6 +217,27 @@ function App() {
     };
 
     const PhotoHistory = () => {
+        // Create edit mode state + ref to track selected photos while editing
+        const [editing, setEditing] = useState(false);
+        const selected = useRef([]);
+
+        // Delete button handler
+        const onDelete = async () => {
+            const payload = {
+                plant_id: plant.uuid,
+                delete_photos: selected.current
+            };
+            const response = await sendPostRequest('/delete_plant_photos', payload)
+            // If successful remove photos from history column
+            if (response.ok) {
+                const data = await response.json();
+                let oldPhotoUrls = [...photoUrls];
+                setPhotoUrls(
+                    oldPhotoUrls.filter(photo => !data.deleted.includes(photo.created))
+                );
+            }
+        };
+
         const PhotoCard = ({url, created}) => {
             return (
                 <div className="card card-compact bg-neutral text-neutral-content mb-4 p-2">
@@ -239,9 +260,25 @@ function App() {
 
         return (
             <CollapseCol title={"Photos"} openRef={photoHistoryOpen}>
-                {photoUrls.map((photo, index) => {
-                    return <PhotoCard key={index} url={photo.url} created={photo.created} />;
-                })}
+                <EditableNodeList
+                    editing={editing}
+                    selected={selected}
+                >
+                    {photoUrls.map((photo) => {
+                        return (
+                            <PhotoCard
+                                key={photo.created}
+                                url={photo.url}
+                                created={photo.created}
+                            />
+                        );
+                    })}
+                </EditableNodeList>
+                <EventHistoryButtons
+                    editing={editing}
+                    setEditing={setEditing}
+                    handleDelete={onDelete}
+                />
             </CollapseCol>
         );
     };
