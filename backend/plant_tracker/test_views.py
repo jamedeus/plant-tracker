@@ -797,11 +797,17 @@ class PlantEventTests(TestCase):
         self.assertEqual(len(response.json()), 2)
         self.assertEqual(response.json()["uploaded"], "1 photo(s)")
 
-        # Confirm response contains creation timestamp and URL of new photo
-        self.assertEqual(len(response.json()["urls"]), 1)
-        photo = response.json()["urls"][0]
-        self.assertEqual(photo["created"], '2024:03:22 10:52:03')
-        self.assertTrue(photo["url"].startswith("/media/images/mock_photo"))
+        # Confirm response contains new photo creation timestamp, URL, primary key
+        self.assertEqual(
+            response.json()["urls"],
+            [
+                {
+                    "created": "2024:03:22 10:52:03",
+                    "url": "/media/images/mock_photo.jpg",
+                    "key": 1
+                }
+            ]
+        )
 
         # Confirm Photo was added to database, reverse relation was created
         self.assertEqual(len(Photo.objects.all()), 1)
@@ -818,29 +824,30 @@ class PlantEventTests(TestCase):
         # Create 2 mock photos, add to database
         mock_photo1 = create_mock_photo('2024:03:21 10:52:03')
         mock_photo2 = create_mock_photo('2024:03:22 10:52:03')
-        Photo.objects.create(photo=mock_photo1, plant=self.plant1)
-        Photo.objects.create(photo=mock_photo2, plant=self.plant1)
+        photo1 = Photo.objects.create(photo=mock_photo1, plant=self.plant1)
+        photo2 = Photo.objects.create(photo=mock_photo2, plant=self.plant1)
         self.assertEqual(len(Photo.objects.all()), 2)
 
-        # Post creation timestamps to delete_plant_photos endpoint
-        # Add a non-existing timestamp, should add to response failed section
+        # Post primary keys of both photos to delete_plant_photos endpoint
+        # Add a non-existing primary key, should add to response failed section
         payload = {
             'plant_id': str(self.plant1.uuid),
             'delete_photos': [
-                '2024:03:21 10:52:03',
-                '2024:03:22 10:52:03',
-                '2044:03:22 10:52:03'
+                photo1.pk,
+                photo2.pk,
+                999
             ]
         }
         response = self.client.post('/delete_plant_photos', payload)
 
-        # Confirm response, confirm both removed from database
+        # Confirm response, confirm both removed from database, confirm fake
+        # primary key was added to failed section
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
             {
-                "deleted": ['2024:03:21 10:52:03', '2024:03:22 10:52:03'],
-                "failed": ['2044:03:22 10:52:03']
+                "deleted": [photo1.pk, photo2.pk],
+                "failed": [999]
             }
         )
         self.assertEqual(len(Photo.objects.all()), 0)

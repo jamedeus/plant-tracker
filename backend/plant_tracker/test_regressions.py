@@ -160,6 +160,37 @@ class ViewRegressionTests(TestCase):
         )
         self.assertEqual(len(plant.repotevent_set.all()), 1)
 
+    def test_delete_plant_photos_fails_due_to_duplicate_creation_times(self):
+        '''Issue: delete_plant_photos looked up photos in the database using a
+        plant UUID and creation timestamp. If multiple photos of the same plant
+        had identical creation timestamps an uncaught exception was raised,
+        preventing the photos from being deleted. The primary key is now used
+        instead, which also prevents a duplicate react key on the frontend.
+        '''
+
+        # Create 2 mock photos with identical creation times
+        plant = Plant.objects.create(uuid=uuid4())
+        photo1 = Photo.objects.create(
+            photo=create_mock_photo('2024:03:21 10:52:03'),
+            plant=plant
+        )
+        photo2 = Photo.objects.create(
+            photo=create_mock_photo('2024:03:21 10:52:03'),
+            plant=plant
+        )
+        self.assertEqual(len(Photo.objects.all()), 2)
+
+        # Make request to delete both photos from database
+        payload = {
+            'plant_id': str(plant.uuid),
+            'delete_photos': [photo1.pk, photo2.pk]
+        }
+        response = JSONClient().post('/delete_plant_photos', payload)
+
+        # Should succeed despite duplicate timestamp, confirm removed from db
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(Photo.objects.all()), 0)
+
 
 class ViewDecoratorRegressionTests(TestCase):
     def setUp(self):

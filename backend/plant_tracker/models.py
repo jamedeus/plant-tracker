@@ -147,7 +147,8 @@ class Plant(models.Model):
         return [
             {
                 'created': photo.created.strftime(TIME_FORMAT),
-                'url': photo.get_url()
+                'url': photo.get_url(),
+                'key': photo.pk
             }
             for photo in self.photo_set.all().order_by('-created')
         ]

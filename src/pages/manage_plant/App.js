@@ -223,17 +223,18 @@ function App() {
 
         // Delete button handler
         const onDelete = async () => {
+            // Build payload with plant UUID and array of selected photo IDs
             const payload = {
                 plant_id: plant.uuid,
-                delete_photos: selected.current
+                delete_photos: selected.current.map(key => parseInt(key))
             };
-            const response = await sendPostRequest('/delete_plant_photos', payload)
+            const response = await sendPostRequest('/delete_plant_photos', payload);
             // If successful remove photos from history column
             if (response.ok) {
                 const data = await response.json();
                 let oldPhotoUrls = [...photoUrls];
                 setPhotoUrls(
-                    oldPhotoUrls.filter(photo => !data.deleted.includes(photo.created))
+                    oldPhotoUrls.filter(photo => !data.deleted.includes(photo.key))
                 );
             }
         };
@@ -267,7 +268,7 @@ function App() {
                     {photoUrls.map((photo) => {
                         return (
                             <PhotoCard
-                                key={photo.created}
+                                key={photo.key}
                                 url={photo.url}
                                 created={photo.created}
                             />

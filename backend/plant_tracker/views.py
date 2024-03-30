@@ -505,7 +505,8 @@ def add_plant_photos(request):
         )
         created.append({
             "created": photo.created.strftime('%Y:%m:%d %H:%M:%S'),
-            "url": photo.get_url()
+            "url": photo.get_url(),
+            "key": photo.pk
         })
 
     # Return list of new photo URLs (added to frontend state)
@@ -522,19 +523,15 @@ def add_plant_photos(request):
 @get_plant_from_post_body
 def delete_plant_photos(plant, data):
     '''Deletes a list of Photos associated with a specific Plant
-    Requires JSON POST with plant_id (uuid) and delete_photos (list of photo
-    creation timestamps) keys
+    Requires JSON POST with plant_id (uuid) and delete_photos (list of db keys)
     '''
     deleted = []
     failed = []
-    for created_timestamp in data["delete_photos"]:
+    for primary_key in data["delete_photos"]:
         try:
-            photo = Photo.objects.get(
-                plant=plant,
-                created=datetime.strptime(created_timestamp, '%Y:%m:%d %H:%M:%S')
-            )
+            photo = Photo.objects.get(plant=plant, pk=primary_key)
             photo.delete()
-            deleted.append(created_timestamp)
+            deleted.append(primary_key)
         except Photo.DoesNotExist:
-            failed.append(created_timestamp)
+            failed.append(primary_key)
     return JsonResponse({"deleted": deleted, "failed": failed}, status=200)

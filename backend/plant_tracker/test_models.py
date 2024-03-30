@@ -196,13 +196,26 @@ class PlantModelTests(TestCase):
         photo_urls = self.plant.get_photo_urls()
 
         # Confirm photos are sorted most recent to least recent
-        self.assertEqual(len(photo_urls), 3)
-        self.assertEqual(photo_urls[0]['created'], '2024:03:22 10:52:03')
-        self.assertEqual(photo_urls[1]['created'], '2024:02:21 10:52:03')
-        self.assertEqual(photo_urls[2]['created'], '2024:01:28 10:52:03')
-        self.assertTrue(photo_urls[0]['url'].startswith('/media/images/photo2'))
-        self.assertTrue(photo_urls[1]['url'].startswith('/media/images/photo1'))
-        self.assertTrue(photo_urls[2]['url'].startswith('/media/images/photo3'))
+        self.assertEqual(
+            photo_urls,
+            [
+                {
+                    'created': '2024:03:22 10:52:03',
+                    'url': '/media/images/photo2.jpg',
+                    'key': 2
+                },
+                {
+                    'created': '2024:02:21 10:52:03',
+                    'url': '/media/images/photo1.jpg',
+                    'key': 1
+                },
+                {
+                    'created': '2024:01:28 10:52:03',
+                    'url': '/media/images/photo3.jpg',
+                    'key': 3
+                },
+            ]
+        )
 
 
 class TrayModelTests(TestCase):
