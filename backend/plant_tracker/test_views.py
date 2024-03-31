@@ -200,6 +200,8 @@ class ManagePageTests(TestCase):
         # appends random string to keep unique, which makes testing difficult)
         for i in os.listdir(os.path.join(TEST_DIR, 'data', 'images', 'images')):
             os.remove(os.path.join(TEST_DIR, 'data', 'images', 'images', i))
+        for i in os.listdir(os.path.join(TEST_DIR, 'data', 'images', 'thumbnails')):
+            os.remove(os.path.join(TEST_DIR, 'data', 'images', 'thumbnails', i))
 
     def _refresh_test_models(self):
         self.plant1.refresh_from_db()
@@ -322,11 +324,23 @@ class ManagePageTests(TestCase):
 
         # Confirm photo_urls contains list of dicts with timestamp keys, URL values
         photo_urls = response.context['state']['photo_urls']
-        self.assertEqual(len(photo_urls), 2)
-        self.assertEqual(photo_urls[0]['created'], '2024:03:22 10:52:03')
-        self.assertEqual(photo_urls[1]['created'], '2024:03:21 10:52:03')
-        self.assertTrue(photo_urls[0]['url'].startswith('/media/images/photo2'))
-        self.assertTrue(photo_urls[1]['url'].startswith('/media/images/photo1'))
+        self.assertEqual(
+            photo_urls,
+            [
+                {
+                    'created': '2024:03:22 10:52:03',
+                    'image': '/media/images/photo2.jpg',
+                    'thumbnail': '/media/thumbnails/photo2_thumb.jpg',
+                    'key': 2
+                },
+                {
+                    'created': '2024:03:21 10:52:03',
+                    'image': '/media/images/photo1.jpg',
+                    'thumbnail': '/media/thumbnails/photo1_thumb.jpg',
+                    'key': 1
+                },
+            ]
+        )
 
         # Add test plant to tray, request page again
         self.plant1.tray = self.tray1
@@ -803,7 +817,8 @@ class PlantEventTests(TestCase):
             [
                 {
                     "created": "2024:03:22 10:52:03",
-                    "url": "/media/images/mock_photo.jpg",
+                    "image": "/media/images/mock_photo.jpg",
+                    "thumbnail": "/media/thumbnails/mock_photo_thumb.jpg",
                     "key": 1
                 }
             ]

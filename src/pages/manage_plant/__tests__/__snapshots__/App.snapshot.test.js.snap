@@ -1797,7 +1797,7 @@ exports[`App matches snapshot 1`] = `
               <img
                 alt="2024:03:21 10:52:03"
                 className="rounded-2xl"
-                src="/media/images/photo1.jpg"
+                src="/media/thumbnails/photo1_thumb.jpg"
               />
             </a>
           </div>
@@ -1820,7 +1820,7 @@ exports[`App matches snapshot 1`] = `
               <img
                 alt="2024:03:22 10:52:03"
                 className="rounded-2xl"
-                src="/media/images/photo2.jpg"
+                src="/media/thumbnails/photo2_thumb.jpg"
               />
             </a>
           </div>

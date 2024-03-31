@@ -1,5 +1,7 @@
+from io import BytesIO
 from datetime import datetime
-from PIL import Image
+
+from PIL import Image, ImageOps
 from django.db import models
 from django.conf import settings
 from django.utils import timezone
@@ -7,6 +9,7 @@ from django.core.cache import cache
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
 from django.db.models.signals import post_save, post_delete
+from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Timestamp format used to print DateTimeFields, parse exif into datetime, etc.
@@ -143,11 +146,14 @@ class Plant(models.Model):
         return f'Unnamed plant {unnamed_plants.index(self.id) + 1}'
 
     def get_photo_urls(self):
-        '''Returns dict with photo creation timestamps as keys and URLS as values'''
+        '''Returns list of dicts containing photo and thumbnail URLs, creation
+        timestamps, and database keys of each photo associated with this plant
+        '''
         return [
             {
                 'created': photo.created.strftime(TIME_FORMAT),
-                'url': photo.get_url(),
+                'image': photo.get_photo_url(),
+                'thumbnail': photo.get_thumbnail_url(),
                 'key': photo.pk
             }
             for photo in self.photo_set.all().order_by('-created')
@@ -250,6 +256,7 @@ def clear_unnamed_plants_cache(**kwargs):
 class Photo(models.Model):
     '''Stores a user-uploaded image of a specific plant'''
     photo = models.ImageField(upload_to="images")
+    thumbnail = models.ImageField(upload_to="thumbnails", null=True, blank=True)
 
     # Save upload time, created time will be read from exifdata by save method
     uploaded = models.DateTimeField(auto_now_add=True)
@@ -264,11 +271,47 @@ class Photo(models.Model):
         filename = self.photo.file.file.name.split("/")[-1]
         return f"{name} - {timestamp} - {filename}"
 
-    def get_url(self):
-        '''Returns public URL of the photo'''
+    def get_photo_url(self):
+        '''Returns public URL of the full-resolution photo'''
         return f'{settings.MEDIA_URL}{self.photo.name}'
 
+    def get_thumbnail_url(self):
+        '''Returns public URL of the reduced-resolution thumbnail'''
+        return f'{settings.MEDIA_URL}{self.thumbnail.name}'
+
+    def create_thumbnail(self):
+        '''Generate a reduced-resolution image and write to the thumbnail field'''
+
+        # Skip if no photo exists
+        if not self.photo:
+            return
+
+        # Open image, rotate and remove exif rotation param if needed
+        image = ImageOps.exif_transpose(
+            Image.open(self.photo)
+        )
+
+        # Resize to a maximum resolution of 800x800, write to buffer
+        image.thumbnail((800, 800))
+        image_buffer = BytesIO()
+        image.save(image_buffer, format='JPEG', quality=80)
+
+        # Save to thumbnail field, write to disk with _thumb suffix
+        image_name = self.photo.name.split('.')[0]
+        self.thumbnail = InMemoryUploadedFile(
+            image_buffer,
+            'ImageField',
+            f"{image_name}_thumb.jpg",
+            'image/jpeg',
+            image_buffer.tell(),
+            None
+        )
+
     def save(self, *args, **kwargs):
+        # Create thumbnail if it doesn't exist
+        if not self.thumbnail:
+            self.create_thumbnail()
+
         # Copy exif timestamp to created field when saved for the first time
         if not self.pk:
             # Read exif data

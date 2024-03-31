@@ -180,15 +180,15 @@ class PlantModelTests(TestCase):
     def test_get_photo_urls(self):
         # Create 3 mock photos with non-chronological creation times
         Photo.objects.create(
-            photo=create_mock_photo('2024:02:21 10:52:03', 'photo1.jpg'),
+            photo=create_mock_photo('2024:02:21 10:52:03', 'IMG1.jpg'),
             plant=self.plant
         )
         Photo.objects.create(
-            photo=create_mock_photo('2024:03:22 10:52:03', 'photo2.jpg'),
+            photo=create_mock_photo('2024:03:22 10:52:03', 'IMG2.jpg'),
             plant=self.plant
         )
         Photo.objects.create(
-            photo=create_mock_photo('2024:01:28 10:52:03', 'photo3.jpg'),
+            photo=create_mock_photo('2024:01:28 10:52:03', 'IMG3.jpg'),
             plant=self.plant
         )
 
@@ -201,17 +201,20 @@ class PlantModelTests(TestCase):
             [
                 {
                     'created': '2024:03:22 10:52:03',
-                    'url': '/media/images/photo2.jpg',
+                    'image': '/media/images/IMG2.jpg',
+                    'thumbnail': '/media/thumbnails/IMG2_thumb.jpg',
                     'key': 2
                 },
                 {
                     'created': '2024:02:21 10:52:03',
-                    'url': '/media/images/photo1.jpg',
+                    'image': '/media/images/IMG1.jpg',
+                    'thumbnail': '/media/thumbnails/IMG1_thumb.jpg',
                     'key': 1
                 },
                 {
                     'created': '2024:01:28 10:52:03',
-                    'url': '/media/images/photo3.jpg',
+                    'image': '/media/images/IMG3.jpg',
+                    'thumbnail': '/media/thumbnails/IMG3_thumb.jpg',
                     'key': 3
                 },
             ]
@@ -321,6 +324,8 @@ class PhotoModelTests(TestCase):
         # appends random string to keep unique, which makes testing difficult)
         for i in os.listdir(os.path.join(TEST_DIR, 'data', 'images', 'images')):
             os.remove(os.path.join(TEST_DIR, 'data', 'images', 'images', i))
+        for i in os.listdir(os.path.join(TEST_DIR, 'data', 'images', 'thumbnails')):
+            os.remove(os.path.join(TEST_DIR, 'data', 'images', 'thumbnails', i))
 
     @override_settings(MEDIA_ROOT=os.path.join(TEST_DIR, 'data', 'images'))
     def test_str_method(self):

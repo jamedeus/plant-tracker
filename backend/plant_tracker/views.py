@@ -505,7 +505,8 @@ def add_plant_photos(request):
         )
         created.append({
             "created": photo.created.strftime('%Y:%m:%d %H:%M:%S'),
-            "url": photo.get_url(),
+            "image": photo.get_photo_url(),
+            "thumbnail": photo.get_thumbnail_url(),
             "key": photo.pk
         })
 
