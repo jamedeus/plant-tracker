@@ -1,3 +1,4 @@
+import 'src/testUtils/dateMock';
 import { DateTime } from 'src/testUtils/luxonMock';
 
 beforeAll(() => {
