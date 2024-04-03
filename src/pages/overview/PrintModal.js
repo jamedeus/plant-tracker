@@ -16,20 +16,22 @@ const PrintModal = ({ printModalRef }) => {
     // Set to true when request starts, response only processed if still true
     const cancelPrinting = useRef(false);
 
-    // Cancel button handler
+    // Cancel button handler, aborts printing and resets modal contents
     const cancel = () => {
         cancelPrinting.current = true;
         setModalContents("options");
     };
 
-    // Resets modal contents after close animation completes
+    // Called by listener when modal is closed - aborts printing immediately,
+    // waits for close animation to complete then resets modal contents
     const resetModal = () => {
+        cancelPrinting.current = true;
         setTimeout(() => {
             setModalContents("options");
         }, 150);
     };
 
-    // Listen for modal close event, reset contents to default after animation
+    // Listen for modal close event, cancel printing and reset contents to default
     useEffect(() => {
         if (printModalRef.current) {
             printModalRef.current.addEventListener('close', resetModal);

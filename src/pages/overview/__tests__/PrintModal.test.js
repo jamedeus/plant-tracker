@@ -9,7 +9,20 @@ jest.mock('print-js');
 
 const TestComponent = () => {
     const printModalRef = useRef(null);
-    return <PrintModal printModalRef={printModalRef} />;
+
+    // Simulate modal being closed (HTMLDialogElement not implemented in jsdom)
+    const closeModal = () => {
+        let event = new Event("close");
+        printModalRef.current.dispatchEvent(event);
+    };
+
+    return (
+        <>
+            <PrintModal printModalRef={printModalRef} />;
+            <button onClick={closeModal}>Close Modal</button>
+        </>
+    );
+
 };
 
 describe('App', () => {
@@ -140,6 +153,32 @@ describe('App', () => {
 
         // Click cancel button before response received
         await user.click(component.getByText('Cancel'));
+
+        // Resolve fetch promise with simulated API response
+        resolveFetch({
+            ok: true,
+            json: () => Promise.resolve({ qr_codes: 'base64data' }),
+        });
+        await new Promise((resolve) => setTimeout(resolve, 0));
+
+        // Confirm no Blob was created, print dialog was not opened
+        expect(global.Blob).not.toHaveBeenCalled();
+        expect(print).not.toHaveBeenCalled();
+    });
+
+    it('aborts printing QR codes if modal closed during request', async () => {
+        // Mock fetch function to return blank promise, save resolve function
+        // in variable so it can be called manually to resolve the promise
+        let resolveFetch;
+        global.fetch = jest.fn(() => new Promise((resolve) => {
+            resolveFetch = resolve;
+        }));
+
+        // Click generate button (fetch will not complete until resolveFetch called)
+        await user.click(component.getByText('Generate'));
+
+        // Close modal before response received
+        await user.click(component.getByText('Close Modal'));
 
         // Resolve fetch promise with simulated API response
         resolveFetch({
