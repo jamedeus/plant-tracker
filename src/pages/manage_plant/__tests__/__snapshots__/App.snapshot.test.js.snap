@@ -2354,42 +2354,62 @@ exports[`App matches snapshot 1`] = `
             </svg>
           </button>
         </form>
-        <p
-          className="text-lg mb-6"
-        >
-          Upload Photos
-        </p>
         <div
-          className="min-h-36 flex flex-col justify-center mx-auto"
+          className="flex flex-col"
         >
-          <input
-            accept="image/*"
-            className="file-input file-input-bordered w-full max-w-xs"
-            data-testid="photo-input"
-            multiple="multiple"
-            onChange={[Function]}
-            type="file"
-          />
-          <div
-            className="max-h-half-screen overflow-scroll"
+          <p
+            className="text-lg mb-6"
           >
-            <table
-              className="table mt-2"
+            Upload Photos
+          </p>
+          <div
+            className="min-h-36 flex flex-col justify-center mx-auto"
+          >
+            <input
+              accept="image/*"
+              className="file-input file-input-bordered w-full max-w-xs"
+              data-testid="photo-input"
+              multiple="multiple"
+              onChange={[Function]}
+              type="file"
+            />
+            <div
+              className="max-h-half-screen overflow-scroll"
             >
-              <tbody />
-            </table>
+              <table
+                className="table mt-2"
+              >
+                <tbody />
+              </table>
+            </div>
+          </div>
+          <div
+            className="modal-action mx-auto"
+          >
+            <button
+              className="btn btn-success"
+              disabled={true}
+              onClick={[Function]}
+            >
+              Upload
+            </button>
           </div>
         </div>
         <div
-          className="modal-action mx-auto"
+          className="hidden"
         >
-          <button
-            className="btn btn-success"
-            disabled={true}
-            onClick={[Function]}
+          <p
+            className="text-lg mb-6"
           >
-            Upload
-          </button>
+            Uploading...
+          </p>
+          <div
+            className="h-36 flex flex-col justify-center mx-auto"
+          >
+            <span
+              className="loading loading-spinner loading-lg"
+            />
+          </div>
         </div>
       </div>
       <form
