@@ -4,7 +4,7 @@ import Cookies from 'js-cookie';
 import Modal from 'src/components/Modal';
 import { XMarkIcon } from '@heroicons/react/16/solid';
 
-const PhotoModal = ({ modalRef, plantID, photoUrls, setPhotoUrls }) => {
+const PhotoModal = ({ modalRef, plantID, addPlantPhotoUrls }) => {
     // File input ref, used to remove selected files when X buttons clicked
     const inputRef = useRef(null);
 
@@ -41,14 +41,9 @@ const PhotoModal = ({ modalRef, plantID, photoUrls, setPhotoUrls }) => {
         });
 
         if (response.ok) {
-            const data = await response.json();
-
             // Update state with new photo URLs from response
-            const newPhotoUrls = photoUrls.concat(data.urls);
-            newPhotoUrls.sort((a, b) => {
-                return a.created.localeCompare(b.created);
-            }).reverse();
-            setPhotoUrls(newPhotoUrls);
+            const data = await response.json();
+            addPlantPhotoUrls(data.urls);
 
             // Close modal, stop loading animation after close animation completes
             modalRef.current.close();
@@ -158,8 +153,7 @@ const PhotoModal = ({ modalRef, plantID, photoUrls, setPhotoUrls }) => {
 PhotoModal.propTypes = {
     modalRef: PropTypes.object,
     plantID: PropTypes.string,
-    photoUrls: PropTypes.array,
-    setPhotoUrls: PropTypes.func
+    addPlantPhotoUrls: PropTypes.func
 };
 
 export default PhotoModal;

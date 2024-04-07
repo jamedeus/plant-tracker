@@ -44,6 +44,16 @@ function App() {
     const fertilizeHistoryOpen = useRef(false);
     const photoHistoryOpen = useRef(false);
 
+    // Takes photo URLs from API response when new photos are uploaded
+    const addPlantPhotoUrls = (newUrls) => {
+        // Add new URLs to photoUrl state, sort chronologically, re-render
+        const newPhotoUrls = photoUrls.concat(newUrls);
+        newPhotoUrls.sort((a, b) => {
+            return a.created.localeCompare(b.created);
+        }).reverse();
+        setPhotoUrls(newPhotoUrls);
+    };
+
     const submitEditModal = async () => {
         const payload = Object.fromEntries(
             new FormData(document.getElementById('plantDetails'))
@@ -637,8 +647,7 @@ function App() {
             <PhotoModal
                 modalRef={photoModalRef}
                 plantID={plant.uuid}
-                photoUrls={photoUrls}
-                setPhotoUrls={setPhotoUrls}
+                addPlantPhotoUrls={addPlantPhotoUrls}
             />
         </div>
     );
