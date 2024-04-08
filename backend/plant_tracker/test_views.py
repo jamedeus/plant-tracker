@@ -1043,7 +1043,7 @@ class InvalidRequestTests(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response.json(),
-            {"error": "invalid event_type, must be 'water', 'fertilize', 'prune', or 'repot"}
+            {"error": "invalid event_type, must be 'water', 'fertilize', 'prune', or 'repot'"}
         )
 
     def test_target_event_does_not_exist(self):

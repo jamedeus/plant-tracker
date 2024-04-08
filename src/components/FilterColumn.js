@@ -67,7 +67,7 @@ const FilterColumn = ({title, contents, CardComponent, editing, selected, openRe
                 {current.map((item) => {
                     // Render cardComponent by expanding params of each item
                     // Must have UUID param to use as react key
-                    return <CardComponent key={item.uuid} {...item} />
+                    return <CardComponent key={item.uuid} {...item} />;
                 })}
             </EditableNodeList>
             {children}
@@ -78,7 +78,7 @@ const FilterColumn = ({title, contents, CardComponent, editing, selected, openRe
 FilterColumn.propTypes = {
     title: PropTypes.string,
     contents: PropTypes.array,
-    cardComponent: PropTypes.func,
+    CardComponent: PropTypes.func,
     editing: PropTypes.bool,
     selected: PropTypes.object,
     openRef: PropTypes.object,

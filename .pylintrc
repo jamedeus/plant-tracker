@@ -46,7 +46,13 @@ fail-under=9
 #from-stdin=
 
 # Files or directories to be skipped. They should be base names, not paths.
-ignore=CVS,tests.py,apps.py,admin.py
+ignore=CVS,
+       test_models.py,
+       test_views.py,
+       test_regressions.py,
+       unit_test_helpers.py,
+       apps.py,
+       admin.py
 
 # Add files or directories matching the regular expressions patterns to the
 # ignore-list. The regex matches against paths and can be in Posix or Windows

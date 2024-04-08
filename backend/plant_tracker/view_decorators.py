@@ -17,6 +17,11 @@ events_map = {
 }
 
 
+# Get list of event type options for error message when invalid type received
+options = list(events_map.keys())
+EVENT_TYPE_OPTIONS = "'{}'".format("', '".join(options[:-1]) + "', or '" + options[-1])
+
+
 def get_plant_by_uuid(uuid):
     '''Returns Plant model instance matching UUID, or None if not found'''
     try:
@@ -140,7 +145,7 @@ def get_event_type_from_post_body(func):
         try:
             if data["event_type"] not in events_map:
                 return JsonResponse(
-                    {"error": "invalid event_type, must be 'water', 'fertilize', 'prune', or 'repot"},
+                    {"error": f"invalid event_type, must be {EVENT_TYPE_OPTIONS}"},
                     status=400
                 )
         except KeyError:

@@ -1,4 +1,4 @@
-import { render, fireEvent, prettyDOM } from '@testing-library/react';
+import { render, fireEvent } from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
 import createMockContext from 'src/testUtils/createMockContext';
 import App from '../App';
