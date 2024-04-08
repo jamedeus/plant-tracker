@@ -19,6 +19,16 @@ const PhotoModal = ({ modalRef, plantID, addPlantPhotoUrls }) => {
         setSelectedFiles(Array.from(event.target.files));
     };
 
+    const resetSelection = () => {
+        // Clear selectedFiles state
+        setSelectedFiles([]);
+        // Replace file input value with empty FileList
+        if (inputRef.current) {
+            const data = new DataTransfer();
+            inputRef.current.files = data.files;
+        }
+    };
+
     const handleSubmit = async () => {
         // Start loading animation
         setUploading(true);
@@ -45,10 +55,12 @@ const PhotoModal = ({ modalRef, plantID, addPlantPhotoUrls }) => {
             const data = await response.json();
             addPlantPhotoUrls(data.urls);
 
-            // Close modal, stop loading animation after close animation completes
+            // Close modal, wait for close animation to complete then stop
+            // loading animation and remove selected files from input/state
             modalRef.current.close();
             setTimeout(() => {
                 setUploading(false);
+                resetSelection();
             }, 150);
         } else {
             alert("Upload failed!");
