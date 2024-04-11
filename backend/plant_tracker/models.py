@@ -159,6 +159,13 @@ class Plant(models.Model):
             for photo in self.photo_set.all().order_by('-created')
         ]
 
+    def get_most_recent_thumbnail(self):
+        '''Returns thumbnail URL of most recent photo, or None if no Photos exist'''
+        try:
+            return self.photo_set.all().order_by('-created')[0].get_thumbnail_url()
+        except IndexError:
+            return None
+
     def get_details(self):
         '''Returns dict containing all plant attributes and last_watered,
         last_fertilized timestamps. Used as state for frontend components.
@@ -170,7 +177,8 @@ class Plant(models.Model):
             'description': self.description,
             'pot_size': self.pot_size,
             'last_watered': self.last_watered(),
-            'last_fertilized': self.last_fertilized()
+            'last_fertilized': self.last_fertilized(),
+            'thumbnail': self.get_most_recent_thumbnail()
         }
 
     def last_watered(self):

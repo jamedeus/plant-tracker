@@ -31,20 +31,20 @@ describe('App', () => {
 
     it('shows the correct information', () => {
         expect(component.getByText('Test Plant').nodeName).toBe('H2');
-        expect(component.getByText('Watered 3 days ago')).toBeInTheDocument();
+        expect(component.getByText('3 days ago')).toBeInTheDocument();
         expect(component.queryByText('Calathea')).toBeInTheDocument();
         expect(component.queryByText('Mother plant')).toBeInTheDocument();
     });
 
     it('flips chevron icon when details collapse is opened', async () => {
         // Confirm that ChevronDownIcon is present, ChevronUpIcon is not
-        const icon = component.container.querySelector('svg');
+        const icon = component.container.querySelectorAll('svg')[1];
         expect(icon.innerHTML.includes('M4.22')).toBe(true);
         expect(icon.innerHTML.includes('M11.78')).toBe(false);
 
         // Click button, confirm that icon changes to ChevronUpIcon
         await user.click(component.container.querySelector('.btn-close'));
-        const newIcon = component.container.querySelector('svg');
+        const newIcon = component.container.querySelectorAll('svg')[1];
         expect(newIcon.innerHTML.includes('M4.22')).toBe(false);
         expect(newIcon.innerHTML.includes('M11.78')).toBe(true);
     });
