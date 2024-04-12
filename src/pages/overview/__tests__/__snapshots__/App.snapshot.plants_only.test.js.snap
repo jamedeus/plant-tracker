@@ -171,7 +171,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
           onClick={[Function]}
         >
           <figure
-            className="h-24 w-20"
+            className="h-24 w-20 min-h-20 min-w-20"
           >
             <img
               className="w-full h-full object-cover"

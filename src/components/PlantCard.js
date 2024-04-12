@@ -42,7 +42,7 @@ const PlantCard = ({ name, uuid, species, description, pot_size, last_watered, t
 
     const Thumbnail = () => {
         return (
-            <figure className="h-24 w-20">
+            <figure className="h-24 w-20 min-h-20 min-w-20">
                 <img src={thumbnail} className="w-full h-full object-cover" />
             </figure>
         );
