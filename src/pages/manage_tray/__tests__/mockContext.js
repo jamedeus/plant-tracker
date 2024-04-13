@@ -15,7 +15,8 @@ export const mockContext = {
             "description": "This is a plant with a long description with",
             "pot_size": 4,
             "last_watered": "2024-03-01T05:45:44+00:00",
-            "last_fertilized": "2024-03-01T05:45:44+00:00"
+            "last_fertilized": "2024-03-01T05:45:44+00:00",
+            "thumbnail": null
         },
         {
             "name": "Unnamed Spider Plant",
@@ -24,7 +25,8 @@ export const mockContext = {
             "description": null,
             "pot_size": 2,
             "last_watered": "2024-03-01T05:45:44+00:00",
-            "last_fertilized": "2024-03-01T05:45:44+00:00"
+            "last_fertilized": "2024-03-01T05:45:44+00:00",
+            "thumbnail": "/media/thumbnails/photo_thumb.jpg"
         },
     ],
     "options": [

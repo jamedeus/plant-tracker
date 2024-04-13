@@ -8,7 +8,8 @@ export const mockContext = {
             "description": "",
             "pot_size": 4,
             "last_watered": "2024-02-26T02:44:12+00:00",
-            "last_fertilized": "2024-02-26T02:44:12+00:00"
+            "last_fertilized": "2024-02-26T02:44:12+00:00",
+            "thumbnail": "/media/thumbnails/photo_thumb.jpg"
         }
     ],
     "trays": [

@@ -175,6 +175,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
           >
             <img
               className="w-full h-full object-cover"
+              src="/media/thumbnails/photo_thumb.jpg"
             />
           </figure>
           <div

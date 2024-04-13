@@ -243,18 +243,11 @@ exports[`App matches snapshot 1`] = `
                 "
             onClick={[Function]}
           >
-            <figure
-              className="h-24 w-20 min-h-20 min-w-20"
-            >
-              <img
-                className="w-full h-full object-cover"
-              />
-            </figure>
             <div
-              className="card-body my-auto"
+              className="card-body text-center"
             >
               <h2
-                className="card-title line-clamp-1 pr-8"
+                className="card-title mx-auto px-8 line-clamp-1"
               >
                 Test Plant
               </h2>
@@ -374,6 +367,7 @@ exports[`App matches snapshot 1`] = `
             >
               <img
                 className="w-full h-full object-cover"
+                src="/media/thumbnails/photo_thumb.jpg"
               />
             </figure>
             <div
