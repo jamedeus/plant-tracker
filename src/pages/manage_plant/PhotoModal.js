@@ -4,7 +4,14 @@ import Cookies from 'js-cookie';
 import Modal from 'src/components/Modal';
 import { XMarkIcon } from '@heroicons/react/16/solid';
 
-const PhotoModal = ({ modalRef, plantID, addPlantPhotoUrls }) => {
+let photoModalRef;
+
+export const openPhotoModal = () => {
+    photoModalRef.current.showModal();
+};
+
+const PhotoModal = ({ plantID, addPlantPhotoUrls }) => {
+    photoModalRef = useRef(null);
     // File input ref, used to remove selected files when X buttons clicked
     const inputRef = useRef(null);
 
@@ -57,7 +64,7 @@ const PhotoModal = ({ modalRef, plantID, addPlantPhotoUrls }) => {
 
             // Close modal, wait for close animation to complete then stop
             // loading animation and remove selected files from input/state
-            modalRef.current.close();
+            photoModalRef.current.close();
             setTimeout(() => {
                 setUploading(false);
                 resetSelection();
@@ -92,7 +99,10 @@ const PhotoModal = ({ modalRef, plantID, addPlantPhotoUrls }) => {
             return (
                 <tr className="flex">
                     <td className="my-auto">
-                        <button className="btn-close" onClick={() => removeFile(filename)}>
+                        <button
+                            className="btn-close"
+                            onClick={() => removeFile(filename)}
+                        >
                             <XMarkIcon className="w-8 h-8" />
                         </button>
                     </td>
@@ -122,7 +132,7 @@ const PhotoModal = ({ modalRef, plantID, addPlantPhotoUrls }) => {
     };
 
     return (
-        <Modal dialogRef={modalRef}>
+        <Modal dialogRef={photoModalRef}>
             {/* Photo select/unselect input, shown until user clicks submit */}
             <div className={`${uploading ? "hidden" : "flex flex-col"}`}>
                 <p className="text-lg mb-6">Upload Photos</p>
@@ -163,7 +173,6 @@ const PhotoModal = ({ modalRef, plantID, addPlantPhotoUrls }) => {
 };
 
 PhotoModal.propTypes = {
-    modalRef: PropTypes.object,
     plantID: PropTypes.string,
     addPlantPhotoUrls: PropTypes.func
 };

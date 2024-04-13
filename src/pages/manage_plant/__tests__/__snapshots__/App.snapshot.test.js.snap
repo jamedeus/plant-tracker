@@ -2024,7 +2024,6 @@ exports[`App matches snapshot 1`] = `
         <select
           className="select select-bordered m-8"
           defaultValue=""
-          id="traySelect"
         >
           <option
             disabled={true}

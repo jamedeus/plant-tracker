@@ -1,4 +1,4 @@
-import React, { useState, useRef, Fragment } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { DateTime } from 'luxon';
 import { sendPostRequest, parseDomContext, localToUTC, timestampToRelative } from 'src/util';
@@ -11,12 +11,12 @@ import DatetimeInput from 'src/components/DatetimeInput';
 import { useToast } from 'src/context/ToastContext';
 import { useTheme } from 'src/context/ThemeContext';
 import DetailsCard from 'src/components/DetailsCard';
-import Modal from 'src/components/Modal';
-import { RadioGroup } from '@headlessui/react';
 import LastEventTime from 'src/components/LastEventTime';
 import PlantDetails from 'src/components/PlantDetails';
 import EventCalendar from './EventCalendar';
-import PhotoModal from './PhotoModal';
+import TrayModal, { openTrayModal } from './TrayModal';
+import PhotoModal, { openPhotoModal } from './PhotoModal';
+import RepotModal, { openRepotModal } from './RepotModal';
 
 function App() {
     // Load context set by django template
@@ -32,13 +32,6 @@ function App() {
     // Get hook to show toast message
     const { showToast } = useToast();
 
-    // Create ref for modal used to add plant to tray
-    const trayModalRef = useRef(null);
-    // Create ref for modal used to create RepotEvent
-    const repotModalRef = useRef(null);
-    // Create ref for modal used to upload photos
-    const photoModalRef = useRef(null);
-
     // Create refs to track event history collapse open state between re-renders
     const waterHistoryOpen = useRef(false);
     const fertilizeHistoryOpen = useRef(false);
@@ -52,6 +45,25 @@ function App() {
             return a.created.localeCompare(b.created);
         }).reverse();
         setPhotoUrls(newPhotoUrls);
+    };
+
+    // Called after successful repot_plant API call, takes RepotEvent params
+    const handleRepot = (newPotSize, repotTimestamp) => {
+        // Update state with new pot_size and event timestamp
+        let newPlant = {...plant, pot_size: newPotSize};
+        newPlant.events['repot'].push(repotTimestamp);
+        newPlant.events['repot'].sort().reverse();
+        setPlant(newPlant);
+    };
+
+    // Called after successful add_plant_to_tray API call, takes name and UUID
+    const handleAddTray = (newTrayName, newTrayID) => {
+        setPlant({...plant,
+            tray: {
+                name: newTrayName,
+                uuid: newTrayID
+            }
+        });
     };
 
     const submitEditModal = async () => {
@@ -299,22 +311,6 @@ function App() {
         // Get toggle theme option from context
         const { ToggleThemeOption } = useTheme();
 
-        const overview = () => {
-            window.location.href = "/";
-        };
-
-        const openTrayModal = () => {
-            trayModalRef.current.showModal();
-        };
-
-        const openRepotModal = () => {
-            repotModalRef.current.showModal();
-        };
-
-        const openPhotoModal = () => {
-            photoModalRef.current.showModal();
-        };
-
         const removeFromTray = async () => {
             const response = await sendPostRequest(
                 '/remove_plant_from_tray',
@@ -328,22 +324,32 @@ function App() {
 
         // Options shown when plant is not in tray
         const AddTray = () => {
-            return <li><a onClick={openTrayModal}>Add to tray</a></li>;
+            return (
+                <li><a onClick={openTrayModal}>
+                    Add to tray
+                </a></li>
+            );
         };
 
         // Options shown when plant is in tray
         const RemoveTray = () => {
             return (
                 <>
-                    <li><a href={"/manage/" + plant.tray.uuid}>Go to tray</a></li>
-                    <li><a onClick={removeFromTray}>Remove from tray</a></li>
+                    <li><a href={"/manage/" + plant.tray.uuid}>
+                        Go to tray
+                    </a></li>
+                    <li><a onClick={removeFromTray}>
+                        Remove from tray
+                    </a></li>
                 </>
             );
         };
 
         return (
             <>
-                <li><a onClick={overview}>Overview</a></li>
+                <li><a onClick={() => window.location.href = "/"}>
+                    Overview
+                </a></li>
                 {(() => {
                     switch(plant.tray) {
                         case(null):
@@ -352,8 +358,12 @@ function App() {
                             return <RemoveTray />;
                     }
                 })()}
-                <li><a onClick={openRepotModal}>Repot plant</a></li>
-                <li><a onClick={openPhotoModal}>Upload photos</a></li>
+                <li><a onClick={openRepotModal}>
+                    Repot plant
+                </a></li>
+                <li><a onClick={openPhotoModal}>
+                    Upload photos
+                </a></li>
                 <ToggleThemeOption />
             </>
         );
@@ -378,174 +388,6 @@ function App() {
                     </div>
                 );
         }
-    };
-
-    const AddToTrayModal = () => {
-        // Handler for confirm button
-        const addToTray = async () => {
-            const payload = {
-                plant_id: plant.uuid,
-                tray_id: document.getElementById('traySelect').value
-            };
-            const response = await sendPostRequest('/add_plant_to_tray', payload);
-            if (response.ok) {
-                // Update plant state with tray name and UUID from response
-                const data = await response.json();
-                setPlant({...plant,
-                    tray: {
-                        name: data.tray_name,
-                        uuid: data.tray_uuid
-                    }
-                });
-            }
-            // Close modal
-            trayModalRef.current.close();
-        };
-
-        return (
-            <Modal dialogRef={trayModalRef}>
-                <p className="text-lg">Add plant to tray</p>
-                <select
-                    id="traySelect"
-                    defaultValue=""
-                    className="select select-bordered m-8"
-                >
-                    <option value="" disabled>Select tray</option>
-                    {trays.map(tray => {
-                        return <option key={tray.uuid} value={tray.uuid}>{tray.name}</option>;
-                    })}
-                </select>
-                <button
-                    className="btn btn-success mx-auto"
-                    onClick={addToTray}
-                >
-                    Confirm
-                </button>
-            </Modal>
-        );
-    };
-
-    const RepotModal = () => {
-        const potSizes = [2, 3, 4, 6, 8, 10, 12, 14, 18, 21];
-
-        // Default to next size if plant.pot_size set, otherwise default to 2in
-        const [selected, setSelected] = useState((() => {
-            if (plant.pot_size && potSizes.includes(plant.pot_size)) {
-                return potSizes[potSizes.indexOf(plant.pot_size) + 1];
-            } else {
-                return 2;
-            }
-        })());
-
-        // Access custom pot size input value
-        const customPotRef = useRef(null);
-
-        // Takes integer pot size, renders round div with number centered
-        const PotSizeOption = ({ option }) => {
-            return (
-                <RadioGroup.Option value={option} as={Fragment}>
-                    {({ checked }) => (
-                        <div
-                            className={`pot-size w-10 h-10 md:w-12 md:h-12 ${
-                                checked ? 'pot-size-selected' : 'bg-base-300'
-                            }`}
-                        >
-                            <span className="m-auto">{option}</span>
-                        </div>
-                    )}
-                </RadioGroup.Option>
-            );
-        };
-
-        PotSizeOption.propTypes = {
-            option: PropTypes.number
-        };
-
-        const isInt = (value) => {
-            return !isNaN(value) &&
-            parseInt(Number(value)) == value &&
-            !isNaN(parseInt(value, 10));
-        };
-
-        // Post user selection to backend, create RepotEvent in database
-        const submit = async () => {
-            const payload = {
-                plant_id: plant.uuid,
-                new_pot_size: null,
-                timestamp: document.getElementById("repotTime").value
-            };
-
-            // Selected will be integer value of chosen option, or "custom" if
-            // the custom pot size input is selected
-            if (isInt(selected)) {
-                payload.new_pot_size = parseInt(selected);
-            } else {
-                payload.new_pot_size = parseInt(customPotRef.current.value);
-            }
-
-            const response = await sendPostRequest('/repot_plant', payload);
-            if (response.ok) {
-                // Update plant state pot_size
-                setPlant({...plant, pot_size: payload.new_pot_size});
-
-                // Add repot event to history state, sort chronologically
-                let oldPlant = {...plant};
-                oldPlant.events['repot'].push(payload.timestamp);
-                oldPlant.events['repot'].sort().reverse();
-                setPlant(oldPlant);
-            } else {
-                const data = await response.json();
-                alert(data);
-            }
-        };
-
-        return (
-            <Modal dialogRef={repotModalRef}>
-                <p className="text-lg mb-8">Repot plant</p>
-
-                <div>
-                    <p>Repot time</p>
-                    <DatetimeInput id="repotTime" />
-                </div>
-
-                <div className="my-8">
-                    <p className="text-md">New pot size</p>
-                    <RadioGroup
-                        value={selected}
-                        onChange={setSelected}
-                        className="flex flex-col"
-                    >
-                        <div className="flex justify-center mx-auto">
-                            {potSizes.slice(0, 5).map((option) => (
-                                <PotSizeOption key={option} option={option} />
-                            ))}
-                        </div>
-                        <div className="flex justify-center mx-auto">
-                            {potSizes.slice(5).map((option) => (
-                                <PotSizeOption key={option} option={option} />
-                            ))}
-                        </div>
-                        <div className="flex justify-center mx-auto">
-                            <RadioGroup.Option value="custom" as={Fragment}>
-                                {({ checked }) => (
-                                    <input
-                                        ref={customPotRef}
-                                        className={`pot-size w-32 ${checked ?
-                                            'pot-size-selected' : 'bg-base-300'
-                                        }`}
-                                        placeholder="custom"
-                                    />
-                                )}
-                            </RadioGroup.Option>
-                        </div>
-                    </RadioGroup>
-                </div>
-
-                <button className="btn btn-success mx-auto" onClick={submit}>
-                    Repot
-                </button>
-            </Modal>
-        );
     };
 
     return (
@@ -640,12 +482,19 @@ function App() {
                 />
             </EditModal>
 
-            <AddToTrayModal />
+            <TrayModal
+                plantID={plant.uuid}
+                trayOptions={trays}
+                handleAddTray={handleAddTray}
+            />
 
-            <RepotModal />
+            <RepotModal
+                plantID={plant.uuid}
+                currentPotSize={plant.pot_size}
+                handleRepot={handleRepot}
+            />
 
             <PhotoModal
-                modalRef={photoModalRef}
                 plantID={plant.uuid}
                 addPlantPhotoUrls={addPlantPhotoUrls}
             />
