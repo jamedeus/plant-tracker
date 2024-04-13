@@ -1,7 +1,6 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { sendPostRequest, parseDomContext, localToUTC, pastTense } from 'src/util';
-import EditableNodeList from 'src/components/EditableNodeList';
 import EditModal from 'src/components/EditModal';
 import TrayDetailsForm from 'src/forms/TrayDetailsForm';
 import Navbar from 'src/components/Navbar';
@@ -11,8 +10,9 @@ import FilterColumn from 'src/components/FilterColumn';
 import { useToast } from 'src/context/ToastContext';
 import { useTheme } from 'src/context/ThemeContext';
 import DetailsCard from 'src/components/DetailsCard';
-import Modal from 'src/components/Modal';
 import TrayDetails from 'src/components/TrayDetails';
+import AddPlantsModal, { openAddPlantsModal } from './AddPlantsModal';
+import RemovePlantsModal, { openRemovePlantsModal } from './RemovePlantsModal';
 
 function App() {
     // Load context set by django template
@@ -35,14 +35,8 @@ function App() {
     // Track plants column open/close state between re-renders
     const plantsOpenRef = useRef(true);
 
-    // Create state to track whether manage modal opened to add or remove
-    const [managePlants, setManagePlants] = useState('');
-
     // Get hook to show toast message
     const { showToast } = useToast();
-
-    // Create ref for modal used to add/remove plants to/from tray
-    const managePlantsModalRef = useRef(null);
 
     // Get toggle theme option from context
     const { ToggleThemeOption } = useTheme();
@@ -115,106 +109,6 @@ function App() {
         setPlantDetails(newPlantDetails);
     };
 
-    // Opens modal with list of new plant options if arg is 'add'
-    // Opens modal with list of existing plants if arg is 'remove'
-    const openManagePlantsModal = (action) => {
-        setManagePlants(action);
-        managePlantsModalRef.current.showModal();
-    };
-
-    // Displays plant options in managePlantsModal
-    const ManagePlantsCard = ({ name }) => {
-        return (
-            <div className="card bg-neutral text-neutral-content mx-auto w-full">
-                <div className="card-body text-center">
-                    <h2 className="card-title mx-auto">{name}</h2>
-                </div>
-            </div>
-        );
-    };
-
-    ManagePlantsCard.propTypes = {
-        name: PropTypes.string
-    };
-
-    // Contents of managePlantsModal when managePlants === 'add'
-    const AddPlantsModalContents = () => {
-        // Ref to track selected items
-        const selected = useRef([]);
-
-        // Handler for add button in manage plants modal
-        const addPlants = async () => {
-            const payload = {
-                tray_id: tray.uuid,
-                plants: selected.current
-            };
-            const response = await sendPostRequest('/bulk_add_plants_to_tray', payload);
-            if (response.ok) {
-                // Add objects in response to plantDetails state
-                const data = await response.json();
-                setPlantDetails([...plantDetails, ...data.added]);
-            }
-        };
-
-        // Get object with name and UUID of all plants not already in tray
-        const existing = plantDetails.map(plant => plant.uuid);
-        const plantOptions = options.filter(plant => !existing.includes(plant.uuid));
-
-        return (
-            <>
-                <EditableNodeList editing={true} selected={selected}>
-                    {plantOptions.map((plant) => {
-                        return <ManagePlantsCard key={plant.uuid} name={plant.name} />;
-                    })}
-                </EditableNodeList>
-
-                <div className="modal-action mx-auto">
-                    <form method="dialog">
-                        <button className="btn mr-2">Cancel</button>
-                        <button className="btn btn-success ml-2" onClick={addPlants}>Add</button>
-                    </form>
-                </div>
-            </>
-        );
-    };
-
-    // Contents of managePlantsModal when managePlants === 'remove'
-    const RemovePlantsModalContents = () => {
-        // Ref to track selected items
-        const selected = useRef([]);
-
-        // Handler for remove button in manage plants modal
-        const removePlants = async () => {
-            const payload = {
-                tray_id: tray.uuid,
-                plants: selected.current
-            };
-            const response = await sendPostRequest('/bulk_remove_plants_from_tray', payload);
-            if (response.ok) {
-                // Remove UUIDs in response from plantDetails
-                const data = await response.json();
-                setPlantDetails(plantDetails.filter(plant => !data.removed.includes(plant.uuid)));
-            }
-        };
-
-        return (
-            <>
-                <EditableNodeList editing={true} selected={selected}>
-                    {plantDetails.map((plant) => {
-                        return <ManagePlantsCard key={plant.uuid} name={plant.name} />;
-                    })}
-                </EditableNodeList>
-
-                <div className="modal-action mx-auto">
-                    <form method="dialog">
-                        <button className="btn mr-2">Cancel</button>
-                        <button className="btn btn-error ml-2" onClick={removePlants}>Remove</button>
-                    </form>
-                </div>
-            </>
-        );
-    };
-
     // Buttons used to add bulk events to plants in tray
     const PlantEventButtons = ({editing, setEditing}) => {
         switch(editing) {
@@ -274,9 +168,15 @@ function App() {
             <Navbar
                 menuOptions={
                     <>
-                        <li><a onClick={overview}>Overview</a></li>
-                        <li><a onClick={() => openManagePlantsModal('add')}>Add plants</a></li>
-                        <li><a onClick={() => openManagePlantsModal('remove')}>Remove plants</a></li>
+                        <li><a onClick={overview}>
+                            Overview
+                        </a></li>
+                        <li><a onClick={openAddPlantsModal}>
+                            Add plants
+                        </a></li>
+                        <li><a onClick={openRemovePlantsModal}>
+                            Remove plants
+                        </a></li>
                         <ToggleThemeOption />
                     </>
                 }
@@ -320,31 +220,18 @@ function App() {
                 />
             </EditModal>
 
-            {/* Shown when 'Add plants' or 'Remove plants' clicked in dropdown */}
-            <Modal dialogRef={managePlantsModalRef}>
-                {(() => {
-                    switch(managePlants) {
-                        case('add'):
-                            return (
-                                <>
-                                    <p className="font-bold text-2xl mb-8">
-                                        Add Plants
-                                    </p>
-                                    <AddPlantsModalContents />
-                                </>
-                            );
-                        case('remove'):
-                            return (
-                                <>
-                                    <p className="font-bold text-2xl mb-8">
-                                        Remove Plants
-                                    </p>
-                                    <RemovePlantsModalContents />
-                                </>
-                            );
-                    }
-                })()}
-            </Modal>
+            <AddPlantsModal
+                trayID={tray.uuid}
+                options={options}
+                plantDetails={plantDetails}
+                setPlantDetails={setPlantDetails}
+            />
+
+            <RemovePlantsModal
+                trayID={tray.uuid}
+                plantDetails={plantDetails}
+                setPlantDetails={setPlantDetails}
+            />
         </div>
     );
 }

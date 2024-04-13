@@ -636,6 +636,214 @@ exports[`App matches snapshot 1`] = `
             </svg>
           </button>
         </form>
+        <p
+          className="font-bold text-2xl mb-8"
+        >
+          Add Plants
+        </p>
+        <div
+          className="flex mb-4"
+        >
+          <label
+            className="label cursor-pointer"
+          >
+            <input
+              className="radio checked:bg-blue-500"
+              defaultChecked={false}
+              onChange={[Function]}
+              type="checkbox"
+            />
+          </label>
+          <div
+            className="ml-2 w-full"
+          >
+            <div
+              className="card bg-neutral text-neutral-content mx-auto w-full"
+            >
+              <div
+                className="card-body text-center"
+              >
+                <h2
+                  className="card-title mx-auto"
+                >
+                  Another test plant
+                </h2>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="flex mb-4"
+        >
+          <label
+            className="label cursor-pointer"
+          >
+            <input
+              className="radio checked:bg-blue-500"
+              defaultChecked={false}
+              onChange={[Function]}
+              type="checkbox"
+            />
+          </label>
+          <div
+            className="ml-2 w-full"
+          >
+            <div
+              className="card bg-neutral text-neutral-content mx-auto w-full"
+            >
+              <div
+                className="card-body text-center"
+              >
+                <h2
+                  className="card-title mx-auto"
+                >
+                  Third test plant
+                </h2>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="modal-action mx-auto"
+        >
+          <form
+            method="dialog"
+          >
+            <button
+              className="btn mr-2"
+            >
+              Cancel
+            </button>
+            <button
+              className="btn btn-success ml-2"
+              onClick={[Function]}
+            >
+              Add
+            </button>
+          </form>
+        </div>
+      </div>
+      <form
+        className="modal-backdrop"
+        method="dialog"
+      >
+        <button>
+          close
+        </button>
+      </form>
+    </dialog>
+    <dialog
+      className="modal"
+    >
+      <div
+        className="modal-box text-center flex flex-col pt-4"
+      >
+        <form
+          method="dialog"
+        >
+          <button
+            className="btn-close absolute right-4 top-4"
+          >
+            <svg
+              aria-hidden="true"
+              className="w-8 h-8"
+              data-slot="icon"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+              />
+            </svg>
+          </button>
+        </form>
+        <p
+          className="font-bold text-2xl mb-8"
+        >
+          Remove Plants
+        </p>
+        <div
+          className="flex mb-4"
+        >
+          <label
+            className="label cursor-pointer"
+          >
+            <input
+              className="radio checked:bg-blue-500"
+              defaultChecked={false}
+              onChange={[Function]}
+              type="checkbox"
+            />
+          </label>
+          <div
+            className="ml-2 w-full"
+          >
+            <div
+              className="card bg-neutral text-neutral-content mx-auto w-full"
+            >
+              <div
+                className="card-body text-center"
+              >
+                <h2
+                  className="card-title mx-auto"
+                >
+                  Test Plant
+                </h2>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="flex mb-4"
+        >
+          <label
+            className="label cursor-pointer"
+          >
+            <input
+              className="radio checked:bg-blue-500"
+              defaultChecked={false}
+              onChange={[Function]}
+              type="checkbox"
+            />
+          </label>
+          <div
+            className="ml-2 w-full"
+          >
+            <div
+              className="card bg-neutral text-neutral-content mx-auto w-full"
+            >
+              <div
+                className="card-body text-center"
+              >
+                <h2
+                  className="card-title mx-auto"
+                >
+                  Unnamed Spider Plant
+                </h2>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="modal-action mx-auto"
+        >
+          <form
+            method="dialog"
+          >
+            <button
+              className="btn mr-2"
+            >
+              Cancel
+            </button>
+            <button
+              className="btn btn-error ml-2"
+              onClick={[Function]}
+            >
+              Remove
+            </button>
+          </form>
+        </div>
       </div>
       <form
         className="modal-backdrop"
