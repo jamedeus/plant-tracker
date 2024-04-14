@@ -192,7 +192,8 @@ exports[`App matches snapshot 1`] = `
       </div>
     </div>
     <div
-      className="card card-compact mb-8 mx-auto bg-base-200 text-center px-8"
+      className="card card-compact mb-8 mx-auto bg-base-200
+                                     text-center px-8"
     >
       <div
         className="card-body"
@@ -1635,10 +1636,10 @@ exports[`App matches snapshot 1`] = `
                 className="mb-4"
               >
                 <div
-                  className="card card-compact bg-neutral text-neutral-content text-center"
+                  className="card card-compact bg-neutral text-neutral-content"
                 >
                   <div
-                    className="card-body"
+                    className="card-body text-center"
                   >
                     <p
                       className="text-lg font-bold"
@@ -1655,10 +1656,10 @@ exports[`App matches snapshot 1`] = `
                 className="mb-4"
               >
                 <div
-                  className="card card-compact bg-neutral text-neutral-content text-center"
+                  className="card card-compact bg-neutral text-neutral-content"
                 >
                   <div
-                    className="card-body"
+                    className="card-body text-center"
                   >
                     <p
                       className="text-lg font-bold"
@@ -1711,10 +1712,10 @@ exports[`App matches snapshot 1`] = `
                 className="mb-4"
               >
                 <div
-                  className="card card-compact bg-neutral text-neutral-content text-center"
+                  className="card card-compact bg-neutral text-neutral-content"
                 >
                   <div
-                    className="card-body"
+                    className="card-body text-center"
                   >
                     <p
                       className="text-lg font-bold"
@@ -1731,10 +1732,10 @@ exports[`App matches snapshot 1`] = `
                 className="mb-4"
               >
                 <div
-                  className="card card-compact bg-neutral text-neutral-content text-center"
+                  className="card card-compact bg-neutral text-neutral-content"
                 >
                   <div
-                    className="card-body"
+                    className="card-body text-center"
                   >
                     <p
                       className="text-lg font-bold"
@@ -2420,7 +2421,8 @@ exports[`App matches snapshot 1`] = `
     </dialog>
   </div>,
   <div
-    className="toast toast-center opacity-0 z-[-1] transition-all duration-500"
+    className="toast toast-center opacity-0 z-[-1]
+                            transition-all duration-500"
   >
     <div
       className="alert alert-info gap-0"

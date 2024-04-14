@@ -55,13 +55,17 @@ function App() {
         selectedPlants.current.forEach(async plant_id => {
             await sendPostRequest('/delete_plant', {plant_id: plant_id});
         });
-        setPlants(plants.filter(plant => !selectedPlants.current.includes(plant.uuid)));
+        setPlants(plants.filter(
+            plant => !selectedPlants.current.includes(plant.uuid))
+        );
 
         // Send delete request for each selected tray, remove uuid from state
         selectedTrays.current.forEach(async tray_id => {
             await sendPostRequest('/delete_tray', {tray_id: tray_id});
         });
-        setTrays(trays.filter(tray => !selectedTrays.current.includes(tray.uuid)));
+        setTrays(trays.filter(
+            tray => !selectedTrays.current.includes(tray.uuid))
+        );
 
         // Reset editing state
         setEditing(false);

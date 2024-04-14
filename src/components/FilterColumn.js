@@ -43,7 +43,10 @@ const FilterColumn = ({title, contents, CardComponent, editing, selected, openRe
     }, [contents]);
 
     return (
-        <CollapseCol title={`${title} (${Object.keys(current).length})`} openRef={openRef}>
+        <CollapseCol
+            title={`${title} (${Object.keys(current).length})`}
+            openRef={openRef}
+        >
             <div className="px-4 mb-4 relative">
                 <input
                     type="text"

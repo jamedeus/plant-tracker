@@ -855,7 +855,8 @@ exports[`App matches snapshot 1`] = `
     </dialog>
   </div>,
   <div
-    className="toast toast-center opacity-0 z-[-1] transition-all duration-500"
+    className="toast toast-center opacity-0 z-[-1]
+                            transition-all duration-500"
   >
     <div
       className="alert alert-info gap-0"

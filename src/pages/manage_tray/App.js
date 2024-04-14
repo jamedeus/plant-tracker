@@ -47,10 +47,6 @@ function App() {
     // Get toggle theme option from context
     const { ToggleThemeOption } = useTheme();
 
-    const overview = () => {
-        window.location.href = "/";
-    };
-
     const submitEditModal = async () => {
         const payload = Object.fromEntries(
             new FormData(editDetailsRef.current)
@@ -115,39 +111,49 @@ function App() {
 
     // Buttons used to add bulk events to plants in tray
     const PlantEventButtons = ({editing, setEditing}) => {
+        const addEventTimeInput = useRef(null);
+
+        // Handler for water button (only used in this case scope)
+        const water = async () => {
+            const timestamp = localToUTC(addEventTimeInput.current.value);
+            await bulkAddPlantEvents('water', selectedPlants.current, timestamp);
+            setEditing(false);
+        };
+
+        // Handler for fertilize button (only used in this case scope)
+        const fertilize = async () => {
+            const timestamp = localToUTC(addEventTimeInput.current.value);
+            await bulkAddPlantEvents('fertilize', selectedPlants.current, timestamp);
+            setEditing(false);
+        };
+
         switch(editing) {
             case(true):
-                const addEventTimeInput = useRef(null);
-
-                // Handler for water button (only used in this case scope)
-                // eslint-disable-next-line no-case-declarations
-                const water = async () => {
-                    const timestamp = localToUTC(addEventTimeInput.current.value);
-                    await bulkAddPlantEvents('water', selectedPlants.current, timestamp);
-                    setEditing(false);
-                };
-
-                // Handler for fertilize button (only used in this case scope)
-                // eslint-disable-next-line no-case-declarations
-                const fertilize = async () => {
-                    const timestamp = localToUTC(addEventTimeInput.current.value);
-                    await bulkAddPlantEvents('fertilize', selectedPlants.current, timestamp);
-                    setEditing(false);
-                };
-
                 return (
                     <>
-                        <div className="flex mx-auto mb-4" data-testid="addEventTimeInput">
+                        <div
+                            className="flex mx-auto mb-4"
+                            data-testid="addEventTimeInput"
+                        >
                             <DatetimeInput inputRef={addEventTimeInput} />
                         </div>
                         <div className="flex">
-                            <button className="btn btn-outline mx-auto" onClick={() => setEditing(false)}>
+                            <button
+                                className="btn btn-outline mx-auto"
+                                onClick={() => setEditing(false)}
+                            >
                                 Cancel
                             </button>
-                            <button className="btn btn-outline btn-info mx-auto" onClick={water}>
+                            <button
+                                className="btn btn-outline btn-info mx-auto"
+                                onClick={water}
+                            >
                                 Water
                             </button>
-                            <button className="btn btn-outline btn-success mx-auto" onClick={fertilize}>
+                            <button
+                                className="btn btn-outline btn-success mx-auto"
+                                onClick={fertilize}
+                            >
                                 Fertilize
                             </button>
                         </div>
@@ -156,7 +162,9 @@ function App() {
             case(false):
                 return (
                     <div className="flex">
-                        <button className="btn btn-outline mx-auto" onClick={() => setEditing(true)}>
+                        <button
+                            className="btn btn-outline mx-auto"
+                            onClick={() => setEditing(true)}>
                             Manage
                         </button>
                     </div>
@@ -174,7 +182,7 @@ function App() {
             <Navbar
                 menuOptions={
                     <>
-                        <li><a onClick={overview}>
+                        <li><a onClick={() => window.location.href = "/"}>
                             Overview
                         </a></li>
                         <li><a onClick={openAddPlantsModal}>
@@ -199,10 +207,16 @@ function App() {
 
             <DatetimeInput inputRef={addEventAllTimeInput} />
             <div className="flex mx-auto mb-8">
-                <button className="btn btn-info m-2" onClick={() => addEventAll('water')}>
+                <button
+                    className="btn btn-info m-2"
+                    onClick={() => addEventAll('water')}
+                >
                     Water All
                 </button>
-                <button className="btn btn-success m-2" onClick={() => addEventAll('fertilize')}>
+                <button
+                    className="btn btn-success m-2"
+                    onClick={() => addEventAll('fertilize')}
+                >
                     Fertilize All
                 </button>
             </div>
@@ -215,7 +229,10 @@ function App() {
                 selected={selectedPlants}
                 openRef={plantsOpenRef}
             >
-                <PlantEventButtons editing={selectingPlants} setEditing={setSelectingPlants} />
+                <PlantEventButtons
+                    editing={selectingPlants}
+                    setEditing={setSelectingPlants}
+                />
             </FilterColumn>
 
             <EditModal title="Edit Details" onSubmit={submitEditModal}>

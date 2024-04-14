@@ -52,7 +52,8 @@ export const ToastProvider = ({ children }) => {
             {children}
             <div
                 ref={toastRef}
-                className={"toast toast-center opacity-0 z-[-1] transition-all duration-500"}
+                className={`toast toast-center opacity-0 z-[-1]
+                            transition-all duration-500`}
             >
                 <div className={`alert ${colorMap[color]} gap-0`}>
                     <span>{message}</span>

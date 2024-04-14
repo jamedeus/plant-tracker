@@ -14,6 +14,7 @@ import DetailsCard from 'src/components/DetailsCard';
 import LastEventTime from 'src/components/LastEventTime';
 import PlantDetails from 'src/components/PlantDetails';
 import EventCalendar from './EventCalendar';
+import PhotoCard from './PhotoCard';
 import TrayModal, { openTrayModal } from './TrayModal';
 import PhotoModal, { openPhotoModal } from './PhotoModal';
 import RepotModal, { openRepotModal } from './RepotModal';
@@ -145,10 +146,16 @@ function App() {
     // Displays timestamp and relative time in event history sections
     const EventCard = ({ timestamp }) => {
         return (
-            <div className="card card-compact bg-neutral text-neutral-content text-center">
-                <div className="card-body">
-                    <p className="text-lg font-bold">{timestampToRelative(timestamp)}</p>
-                    <p>{DateTime.fromISO(timestamp).toFormat("h:mm\u202Fa MMMM dd, yyyy")}</p>
+            <div className="card card-compact bg-neutral text-neutral-content">
+                <div className="card-body text-center">
+                    <p className="text-lg font-bold">
+                        {timestampToRelative(timestamp)}
+                    </p>
+                    <p>
+                        {DateTime.fromISO(
+                            timestamp
+                        ).toFormat("h:mm\u202Fa MMMM dd, yyyy")}
+                    </p>
                 </div>
             </div>
         );
@@ -223,7 +230,12 @@ function App() {
                         selected={selected}
                     >
                         {events.map((timestamp) => {
-                            return <EventCard key={timestamp} timestamp={timestamp} />;
+                            return (
+                                <EventCard
+                                    key={timestamp}
+                                    timestamp={timestamp}
+                                />
+                            );
                         })}
                     </EditableNodeList>
                 </div>
@@ -260,31 +272,10 @@ function App() {
             if (response.ok) {
                 const data = await response.json();
                 let oldPhotoUrls = [...photoUrls];
-                setPhotoUrls(
-                    oldPhotoUrls.filter(photo => !data.deleted.includes(photo.key))
-                );
+                setPhotoUrls(oldPhotoUrls.filter(
+                    photo => !data.deleted.includes(photo.key)
+                ));
             }
-        };
-
-        const PhotoCard = ({image_url, thumbnail_url, created}) => {
-            return (
-                <div className="card card-compact bg-neutral text-neutral-content mb-4 p-2">
-                    <a href={image_url}>
-                        <p className="text-lg text-center font-bold mb-2" title={created}>
-                            {timestampToRelative(
-                                DateTime.fromFormat(created, 'yyyy:MM:dd HH:mm:ss').toISO()
-                            )}
-                        </p>
-                        <img className="rounded-2xl" src={thumbnail_url} alt={created} />
-                    </a>
-                </div>
-            );
-        };
-
-        PhotoCard.propTypes = {
-            image_url: PropTypes.string,
-            thumbnail_url: PropTypes.string,
-            created: PropTypes.string
         };
 
         return (
@@ -382,7 +373,9 @@ function App() {
                 return null;
             default:
                 return (
-                    <div className="card card-compact mb-8 mx-auto bg-base-200 text-center px-8">
+                    <div className={`card card-compact mb-8 mx-auto bg-base-200
+                                     text-center px-8`}
+                    >
                         <div className="card-body">
                             <p className="text-sm">Plant is in tray:</p>
                             <p className="text-xl font-bold">
