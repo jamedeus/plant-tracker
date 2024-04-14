@@ -668,9 +668,6 @@ exports[`App matches snapshot 1`] = `
                         className="dot dot-water"
                       />
                       <span
-                        className="dot dot-water"
-                      />
-                      <span
                         className="dot dot-fertilize"
                       />
                     </div>

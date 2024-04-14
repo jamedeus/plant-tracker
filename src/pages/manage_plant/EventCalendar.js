@@ -10,10 +10,14 @@ const EventCalendar = ({ events }) => {
         (acc, [eventType, eventDates]) => {
             eventDates.forEach(date => {
                 const dateKey = new Date(date).toDateString();
+                // Add new date key unless it already exists
                 if (!acc[dateKey]) {
                     acc[dateKey] = [];
                 }
-                acc[dateKey].push(eventType);
+                // Add event to date key unless same type already exists
+                if (!acc[dateKey].includes(eventType)) {
+                    acc[dateKey].push(eventType);
+                }
             });
             return acc;
         },

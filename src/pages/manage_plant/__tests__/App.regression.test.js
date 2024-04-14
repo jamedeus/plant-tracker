@@ -142,4 +142,26 @@ describe('App', () => {
         expect(app.queryByText('file1.jpg')).toBeNull();
         expect(app.queryByText('file2.jpg')).toBeNull();
     });
+
+    // Original bug: EventCalendar added a dot for each event in history, even
+    // if another event with the same type existed on the same day. This caused
+    // the layout to break if duplicate events were created.
+    it('only shows one dot for each event type per calendar day', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "action": "water",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
+
+        // Click water buttonn, confirm only 1 WaterEvent is displayed
+        await user.click(app.getByText("Water"));
+        expect(app.container.querySelectorAll('.dot-water').length).toBe(1);
+
+        // Click water button again, confirm no additional dot is added
+        await user.click(app.getByText("Water"));
+        expect(app.container.querySelectorAll('.dot-water').length).toBe(1);
+    });
 });
