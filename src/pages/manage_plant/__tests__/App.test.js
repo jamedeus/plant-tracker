@@ -70,7 +70,7 @@ describe('App', () => {
         }));
 
         // Click water button
-        await user.click(app.getByText("Water"));
+        await user.click(app.getByRole("button", {name: "Water"}));
 
         // Confirm correct data posted to /add_plant_event endpoint
         expect(global.fetch).toHaveBeenCalledWith('/add_plant_event', {
@@ -95,7 +95,7 @@ describe('App', () => {
         }));
 
         // Click fertilize button
-        await user.click(app.getByText("Fertilize"));
+        await user.click(app.getByRole("button", {name: "Fertilize"}));
 
         // Confirm correct data posted to /add_plant_event endpoint
         expect(global.fetch).toHaveBeenCalledWith('/add_plant_event', {
@@ -120,7 +120,7 @@ describe('App', () => {
         }));
 
         // Click prune button
-        await user.click(app.getByText("Prune"));
+        await user.click(app.getByRole("button", {name: "Prune"}));
 
         // Confirm correct data posted to /add_plant_event endpoint
         expect(global.fetch).toHaveBeenCalledWith('/add_plant_event', {
@@ -145,7 +145,7 @@ describe('App', () => {
         }));
 
         // Click water button
-        await user.click(app.getByText("Water"));
+        await user.click(app.getByRole("button", {name: "Water"}));
     });
 
     it('sends correct payload when "Remove from tray" clicked', async () => {
@@ -199,27 +199,27 @@ describe('App', () => {
 
     it('enters edit mode when event history edit button clicked', async () => {
         // Get reference to Water History div, open collapse
-        const waterHistory = app.getByText("Water History").parentElement;
-        await user.click(waterHistory.children[0]);
+        const eventHistory = app.getByText("Event History").parentElement;
+        await user.click(eventHistory.children[0]);
 
         // Confirm edit button is rendered, delete and cancel buttons are not
-        expect(within(waterHistory).getByText('Edit').nodeName).toBe('BUTTON');
-        expect(within(waterHistory).queryByText('Delete')).toBeNull();
-        expect(within(waterHistory).queryByText('Cancel')).toBeNull();
+        expect(within(eventHistory).getByText('Edit').nodeName).toBe('BUTTON');
+        expect(within(eventHistory).queryByText('Delete')).toBeNull();
+        expect(within(eventHistory).queryByText('Cancel')).toBeNull();
 
         // Click edit button
-        await user.click(within(waterHistory).getByText('Edit'));
+        await user.click(within(eventHistory).getByText('Edit'));
 
         // Edit button should disappear, delete and cancel buttons should appear
-        expect(within(waterHistory).queryByText('Edit')).toBeNull();
-        expect(within(waterHistory).getByText('Delete').nodeName).toBe('BUTTON');
-        expect(within(waterHistory).getByText('Cancel').nodeName).toBe('BUTTON');
+        expect(within(eventHistory).queryByText('Edit')).toBeNull();
+        expect(within(eventHistory).getByText('Delete').nodeName).toBe('BUTTON');
+        expect(within(eventHistory).getByText('Cancel').nodeName).toBe('BUTTON');
 
         // Click cancel button, confirm buttons reset
-        await user.click(within(waterHistory).getByText('Cancel'));
-        expect(within(waterHistory).getByText('Edit').nodeName).toBe('BUTTON');
-        expect(within(waterHistory).queryByText('Delete')).toBeNull();
-        expect(within(waterHistory).queryByText('Cancel')).toBeNull();
+        await user.click(within(eventHistory).getByText('Cancel'));
+        expect(within(eventHistory).getByText('Edit').nodeName).toBe('BUTTON');
+        expect(within(eventHistory).queryByText('Delete')).toBeNull();
+        expect(within(eventHistory).queryByText('Cancel')).toBeNull();
     });
 
     it('sends correct payload when water event is deleted', async () => {
@@ -233,20 +233,20 @@ describe('App', () => {
         }));
 
         // Get reference to Water History div, open collapse
-        const waterHistory = app.getByText("Water History").parentElement;
-        await user.click(waterHistory.children[0]);
+        const eventHistory = app.getByText("Event History").parentElement;
+        await user.click(eventHistory.children[0]);
 
         // Click edit button
-        await user.click(within(waterHistory).getByText('Edit'));
+        await user.click(within(eventHistory).getByText('Edit'));
 
         // Click first checkbox to select event
         user.click(app.container.querySelectorAll('.radio')[0]);
 
         // Click delete button, confirm buttons reset
-        await user.click(within(waterHistory).getByText('Delete'));
-        expect(within(waterHistory).getByText('Edit').nodeName).toBe('BUTTON');
-        expect(within(waterHistory).queryByText('Delete')).toBeNull();
-        expect(within(waterHistory).queryByText('Cancel')).toBeNull();
+        await user.click(within(eventHistory).getByText('Delete'));
+        expect(within(eventHistory).getByText('Edit').nodeName).toBe('BUTTON');
+        expect(within(eventHistory).queryByText('Delete')).toBeNull();
+        expect(within(eventHistory).queryByText('Cancel')).toBeNull();
 
         // Confirm correct data posted to /delete_plant_event endpoint
         expect(global.fetch).toHaveBeenCalledWith('/delete_plant_event', {

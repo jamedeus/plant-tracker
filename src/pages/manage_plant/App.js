@@ -319,11 +319,13 @@ function App() {
                 <EventCalendar events={plant.events} />
             </div>
 
-            <EventHistory
-                plantId={plant.uuid}
-                events={plant.events}
-                removeEvent={removeEvent}
-            />
+            <div className="mb-8">
+                <EventHistory
+                    plantId={plant.uuid}
+                    events={plant.events}
+                    removeEvent={removeEvent}
+                />
+            </div>
 
             <PhotoHistory />
 

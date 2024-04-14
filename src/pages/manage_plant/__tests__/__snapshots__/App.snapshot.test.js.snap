@@ -1605,192 +1605,182 @@ exports[`App matches snapshot 1`] = `
       </div>
     </div>
     <div
-      className="grid grid-cols-1 md:grid-cols-3 mx-auto"
+      className="mb-8"
     >
       <div
-        className="md:mr-8 mb-8"
+        className="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
       >
+        <input
+          defaultChecked={false}
+          onChange={[Function]}
+          type="checkbox"
+        />
         <div
-          className="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+          className="collapse-title text-xl font-medium text-center"
         >
-          <input
-            defaultChecked={false}
-            onChange={[Function]}
-            type="checkbox"
-          />
-          <div
-            className="collapse-title text-xl font-medium text-center"
-          >
-            Water History
-          </div>
-          <div
-            className="collapse-content"
-          >
-            <div
-              className="max-h-half-screen overflow-scroll no-scrollbar"
-            >
-              <div
-                className="mb-4"
-              >
-                <div
-                  className="card card-compact bg-neutral text-neutral-content"
-                >
-                  <div
-                    className="card-body text-center"
-                  >
-                    <p
-                      className="text-lg font-bold"
-                    >
-                      14 hours ago
-                    </p>
-                    <p>
-                      9:45 PM February 29, 2024
-                    </p>
-                  </div>
-                </div>
-              </div>
-              <div
-                className="mb-4"
-              >
-                <div
-                  className="card card-compact bg-neutral text-neutral-content"
-                >
-                  <div
-                    className="card-body text-center"
-                  >
-                    <p
-                      className="text-lg font-bold"
-                    >
-                      1 day ago
-                    </p>
-                    <p>
-                      2:20 AM February 29, 2024
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              className="flex mt-4"
-            >
-              <button
-                className="btn btn-outline mx-auto"
-                onClick={[Function]}
-              >
-                Edit
-              </button>
-            </div>
-          </div>
+          Event History
         </div>
-      </div>
-      <div
-        className="mb-8"
-      >
         <div
-          className="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+          className="collapse-content"
         >
-          <input
-            defaultChecked={false}
-            onChange={[Function]}
-            type="checkbox"
-          />
           <div
-            className="collapse-title text-xl font-medium text-center"
+            aria-orientation="horizontal"
+            className="tab-group"
+            role="tablist"
           >
-            Fertilize History
+            <button
+              aria-selected={true}
+              className="tab-option tab-option-selected"
+              data-headlessui-state="selected"
+              id="headlessui-tabs-tab-:r0:"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              onMouseDown={[Function]}
+              role="tab"
+              tabIndex={0}
+              type="button"
+            >
+              Water
+            </button>
+            <button
+              aria-selected={false}
+              className="tab-option "
+              data-headlessui-state=""
+              id="headlessui-tabs-tab-:r1:"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              onMouseDown={[Function]}
+              role="tab"
+              tabIndex={-1}
+              type="button"
+            >
+              Fertilize
+            </button>
+            <button
+              aria-selected={false}
+              className="tab-option "
+              data-headlessui-state=""
+              id="headlessui-tabs-tab-:r2:"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              onMouseDown={[Function]}
+              role="tab"
+              tabIndex={-1}
+              type="button"
+            >
+              Prune
+            </button>
           </div>
           <div
-            className="collapse-content"
+            className="mt-8"
           >
             <div
-              className="max-h-half-screen overflow-scroll no-scrollbar"
+              data-headlessui-state="selected"
+              id="headlessui-tabs-panel-:r3:"
+              role="tabpanel"
+              tabIndex={0}
             >
               <div
-                className="mb-4"
+                className="flex flex-col"
               >
                 <div
-                  className="card card-compact bg-neutral text-neutral-content"
+                  className="max-h-half-screen overflow-scroll no-scrollbar"
                 >
                   <div
-                    className="card-body text-center"
+                    className="mb-4"
                   >
-                    <p
-                      className="text-lg font-bold"
+                    <div
+                      className="card card-compact bg-neutral text-neutral-content"
                     >
-                      14 hours ago
-                    </p>
-                    <p>
-                      9:45 PM February 29, 2024
-                    </p>
+                      <div
+                        className="card-body text-center"
+                      >
+                        <p
+                          className="text-lg font-bold"
+                        >
+                          14 hours ago
+                        </p>
+                        <p>
+                          9:45 PM February 29, 2024
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    className="mb-4"
+                  >
+                    <div
+                      className="card card-compact bg-neutral text-neutral-content"
+                    >
+                      <div
+                        className="card-body text-center"
+                      >
+                        <p
+                          className="text-lg font-bold"
+                        >
+                          1 day ago
+                        </p>
+                        <p>
+                          2:20 AM February 29, 2024
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-              <div
-                className="mb-4"
-              >
                 <div
-                  className="card card-compact bg-neutral text-neutral-content"
+                  className="flex mt-4"
                 >
-                  <div
-                    className="card-body text-center"
+                  <button
+                    className="btn btn-outline mx-auto"
+                    onClick={[Function]}
                   >
-                    <p
-                      className="text-lg font-bold"
-                    >
-                      4 days ago
-                    </p>
-                    <p>
-                      6:44 PM February 25, 2024
-                    </p>
-                  </div>
+                    Edit
+                  </button>
                 </div>
               </div>
             </div>
-            <div
-              className="flex mt-4"
-            >
-              <button
-                className="btn btn-outline mx-auto"
-                onClick={[Function]}
-              >
-                Edit
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div
-        className="md:ml-8 mb-8"
-      >
-        <div
-          className="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
-        >
-          <input
-            defaultChecked={false}
-            onChange={[Function]}
-            type="checkbox"
-          />
-          <div
-            className="collapse-title text-xl font-medium text-center"
-          >
-            Prune History
-          </div>
-          <div
-            className="collapse-content"
-          >
-            <div
-              className="max-h-half-screen overflow-scroll no-scrollbar"
+            <span
+              aria-hidden="true"
+              id="headlessui-tabs-panel-:r4:"
+              role="tabpanel"
+              style={
+                {
+                  "borderWidth": "0",
+                  "clip": "rect(0, 0, 0, 0)",
+                  "height": 0,
+                  "left": 1,
+                  "margin": -1,
+                  "overflow": "hidden",
+                  "padding": 0,
+                  "position": "fixed",
+                  "top": 1,
+                  "whiteSpace": "nowrap",
+                  "width": 1,
+                }
+              }
+              tabIndex={-1}
             />
-            <div
-              className="flex mt-4"
-            >
-              <button
-                className="btn btn-outline mx-auto"
-                onClick={[Function]}
-              >
-                Edit
-              </button>
-            </div>
+            <span
+              aria-hidden="true"
+              id="headlessui-tabs-panel-:r5:"
+              role="tabpanel"
+              style={
+                {
+                  "borderWidth": "0",
+                  "clip": "rect(0, 0, 0, 0)",
+                  "height": 0,
+                  "left": 1,
+                  "margin": -1,
+                  "overflow": "hidden",
+                  "padding": 0,
+                  "position": "fixed",
+                  "top": 1,
+                  "whiteSpace": "nowrap",
+                  "width": 1,
+                }
+              }
+              tabIndex={-1}
+            />
           </div>
         </div>
       </div>
@@ -1941,7 +1931,7 @@ exports[`App matches snapshot 1`] = `
               className="input w-full input-bordered"
               data-headlessui-state=""
               disabled={false}
-              id="headlessui-combobox-input-:r0:"
+              id="headlessui-combobox-input-:r6:"
               name="species"
               onBlur={[Function]}
               onChange={[Function]}
@@ -2142,7 +2132,7 @@ exports[`App matches snapshot 1`] = `
           </p>
           <div
             className="flex flex-col"
-            id="headlessui-radiogroup-:r1:"
+            id="headlessui-radiogroup-:r7:"
             onKeyDown={[Function]}
             role="radiogroup"
           >
@@ -2153,7 +2143,7 @@ exports[`App matches snapshot 1`] = `
                 aria-checked="false"
                 className="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
                 data-headlessui-state=""
-                id="headlessui-radiogroup-option-:r2:"
+                id="headlessui-radiogroup-option-:r8:"
                 onBlur={[Function]}
                 onClick={[Function]}
                 onFocus={[Function]}
@@ -2170,7 +2160,7 @@ exports[`App matches snapshot 1`] = `
                 aria-checked="false"
                 className="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
                 data-headlessui-state=""
-                id="headlessui-radiogroup-option-:r3:"
+                id="headlessui-radiogroup-option-:r9:"
                 onBlur={[Function]}
                 onClick={[Function]}
                 onFocus={[Function]}
@@ -2187,7 +2177,7 @@ exports[`App matches snapshot 1`] = `
                 aria-checked="false"
                 className="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
                 data-headlessui-state=""
-                id="headlessui-radiogroup-option-:r4:"
+                id="headlessui-radiogroup-option-:ra:"
                 onBlur={[Function]}
                 onClick={[Function]}
                 onFocus={[Function]}
@@ -2204,7 +2194,7 @@ exports[`App matches snapshot 1`] = `
                 aria-checked="true"
                 className="pot-size w-10 h-10 md:w-12 md:h-12 pot-size-selected"
                 data-headlessui-state="checked"
-                id="headlessui-radiogroup-option-:r5:"
+                id="headlessui-radiogroup-option-:rb:"
                 onBlur={[Function]}
                 onClick={[Function]}
                 onFocus={[Function]}
@@ -2221,7 +2211,7 @@ exports[`App matches snapshot 1`] = `
                 aria-checked="false"
                 className="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
                 data-headlessui-state=""
-                id="headlessui-radiogroup-option-:r6:"
+                id="headlessui-radiogroup-option-:rc:"
                 onBlur={[Function]}
                 onClick={[Function]}
                 onFocus={[Function]}
@@ -2242,7 +2232,7 @@ exports[`App matches snapshot 1`] = `
                 aria-checked="false"
                 className="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
                 data-headlessui-state=""
-                id="headlessui-radiogroup-option-:r7:"
+                id="headlessui-radiogroup-option-:rd:"
                 onBlur={[Function]}
                 onClick={[Function]}
                 onFocus={[Function]}
@@ -2259,7 +2249,7 @@ exports[`App matches snapshot 1`] = `
                 aria-checked="false"
                 className="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
                 data-headlessui-state=""
-                id="headlessui-radiogroup-option-:r8:"
+                id="headlessui-radiogroup-option-:re:"
                 onBlur={[Function]}
                 onClick={[Function]}
                 onFocus={[Function]}
@@ -2276,7 +2266,7 @@ exports[`App matches snapshot 1`] = `
                 aria-checked="false"
                 className="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
                 data-headlessui-state=""
-                id="headlessui-radiogroup-option-:r9:"
+                id="headlessui-radiogroup-option-:rf:"
                 onBlur={[Function]}
                 onClick={[Function]}
                 onFocus={[Function]}
@@ -2293,7 +2283,7 @@ exports[`App matches snapshot 1`] = `
                 aria-checked="false"
                 className="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
                 data-headlessui-state=""
-                id="headlessui-radiogroup-option-:ra:"
+                id="headlessui-radiogroup-option-:rg:"
                 onBlur={[Function]}
                 onClick={[Function]}
                 onFocus={[Function]}
@@ -2310,7 +2300,7 @@ exports[`App matches snapshot 1`] = `
                 aria-checked="false"
                 className="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
                 data-headlessui-state=""
-                id="headlessui-radiogroup-option-:rb:"
+                id="headlessui-radiogroup-option-:rh:"
                 onBlur={[Function]}
                 onClick={[Function]}
                 onFocus={[Function]}
@@ -2331,7 +2321,7 @@ exports[`App matches snapshot 1`] = `
                 aria-checked="false"
                 className="pot-size w-32 bg-base-300"
                 data-headlessui-state=""
-                id="headlessui-radiogroup-option-:rc:"
+                id="headlessui-radiogroup-option-:ri:"
                 onBlur={[Function]}
                 onClick={[Function]}
                 onFocus={[Function]}

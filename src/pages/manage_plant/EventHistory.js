@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
+import { Tab } from '@headlessui/react';
 import { DateTime } from 'luxon';
 import { sendPostRequest, timestampToRelative } from 'src/util';
 import CollapseCol from 'src/components/CollapseCol';
@@ -48,10 +49,8 @@ EventHistoryButtons.propTypes = {
 };
 
 const EventHistory = ({ plantId, events, removeEvent }) => {
-    // Create refs to preserve collapse open state between re-renders
-    const waterHistoryOpen = useRef(false);
-    const fertilizeHistoryOpen = useRef(false);
-    const pruneHistoryOpen = useRef(false);
+    // Create ref to preserve collapse open state between re-renders
+    const eventHistoryOpen = useRef(false);
 
     // Takes event timestamp and types, sends delete request to backend
     // If successful removes timestamp from react state to re-render history
@@ -92,7 +91,7 @@ const EventHistory = ({ plantId, events, removeEvent }) => {
 
     // Takes events array (eg plant.water_events) and type (water or fertilize)
     // Renders EditableNodeList with edit + delete button and handlers
-    const EventsCol = ({ title, events, type, openRef }) => {
+    const EventsCol = ({ events, type }) => {
         // Create edit mode state + ref to track selected events while editing
         const [editing, setEditing] = useState(false);
         const selected = useRef([]);
@@ -106,7 +105,7 @@ const EventHistory = ({ plantId, events, removeEvent }) => {
         };
 
         return (
-            <CollapseCol title={title} openRef={openRef} scroll={true}>
+            <div className="flex flex-col">
                 <div className="max-h-half-screen overflow-scroll no-scrollbar">
                     <EditableNodeList
                         editing={editing}
@@ -127,46 +126,63 @@ const EventHistory = ({ plantId, events, removeEvent }) => {
                     setEditing={setEditing}
                     handleDelete={onDelete}
                 />
-            </CollapseCol>
+            </div>
         );
     };
 
     EventsCol.propTypes = {
-        title: PropTypes.string,
         events: PropTypes.array,
-        type: PropTypes.string,
-        openRef: PropTypes.object
+        type: PropTypes.string
     };
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-3 mx-auto">
-            <div className="md:mr-8 mb-8">
-                <EventsCol
-                    title="Water History"
-                    events={events.water}
-                    type="water"
-                    openRef={waterHistoryOpen}
-                />
-            </div>
+        <CollapseCol
+            title={"Event History"}
+            openRef={eventHistoryOpen}
+            scroll={true}
+            className="mb-8"
+        >
+            <Tab.Group>
+                <Tab.List className="tab-group">
+                    <Tab className={({ selected }) => `tab-option ${
+                        selected ? 'tab-option-selected' : ''}`
+                    }>
+                        Water
+                    </Tab>
+                    <Tab className={({ selected }) => `tab-option ${
+                        selected ? 'tab-option-selected' : ''}`
+                    }>
+                        Fertilize
+                    </Tab>
+                    <Tab className={({ selected }) => `tab-option ${
+                        selected ? 'tab-option-selected' : ''}`
+                    }>
+                        Prune
+                    </Tab>
+                </Tab.List>
 
-            <div className="mb-8">
-                <EventsCol
-                    title="Fertilize History"
-                    events={events.fertilize}
-                    type="fertilize"
-                    openRef={fertilizeHistoryOpen}
-                />
-            </div>
-
-            <div className="md:ml-8 mb-8">
-                <EventsCol
-                    title="Prune History"
-                    events={events.prune}
-                    type="prune"
-                    openRef={pruneHistoryOpen}
-                />
-            </div>
-        </div>
+                <Tab.Panels className="mt-8">
+                    <Tab.Panel>
+                        <EventsCol
+                            events={events.water}
+                            type="water"
+                        />
+                    </Tab.Panel>
+                    <Tab.Panel>
+                        <EventsCol
+                            events={events.fertilize}
+                            type="fertilize"
+                        />
+                    </Tab.Panel>
+                    <Tab.Panel>
+                        <EventsCol
+                            events={events.prune}
+                            type="prune"
+                        />
+                    </Tab.Panel>
+                </Tab.Panels>
+            </Tab.Group>
+        </CollapseCol>
     );
 };
 

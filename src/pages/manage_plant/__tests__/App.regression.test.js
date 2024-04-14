@@ -44,7 +44,7 @@ describe('App', () => {
         expect(app.getByText("Never fertilized")).not.toBeNull();
 
         // Click water button
-        await user.click(app.getByText("Water"));
+        await user.click(app.getByRole("button", {name: "Water"}));
 
         // Last watered time should change, last fertilized should not
         expect(app.queryByText("Never watered")).toBeNull();
@@ -68,7 +68,7 @@ describe('App', () => {
         expect(app.getByText("Never fertilized")).not.toBeNull();
 
         // Click fertilize button
-        await user.click(app.getByText("Fertilize"));
+        await user.click(app.getByRole("button", {name: "Fertilize"}));
 
         // Last fertilized time should change, last watered should not
         expect(app.getByText("Never watered")).not.toBeNull();
@@ -157,11 +157,11 @@ describe('App', () => {
         }));
 
         // Click water buttonn, confirm only 1 WaterEvent is displayed
-        await user.click(app.getByText("Water"));
+        await user.click(app.getByRole("button", {name: "Water"}));
         expect(app.container.querySelectorAll('.dot-water').length).toBe(1);
 
         // Click water button again, confirm no additional dot is added
-        await user.click(app.getByText("Water"));
+        await user.click(app.getByRole("button", {name: "Water"}));
         expect(app.container.querySelectorAll('.dot-water').length).toBe(1);
     });
 });
