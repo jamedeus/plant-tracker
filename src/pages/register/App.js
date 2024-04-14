@@ -26,17 +26,20 @@ function App() {
     const errorModalRef = useRef(null);
     const [errorModalMessage, setErrorModalMessage] = useState('');
 
+    const plantDetailsRef = useRef(null);
+    const trayDetailsRef = useRef(null);
+
     const submit = async () => {
         // Parse all fields from visible form, set correct endpoint
         let payload, endpoint;
         if (plantForm === 0) {
             payload = Object.fromEntries(
-                new FormData(document.getElementById('plantDetails'))
+                new FormData(plantDetailsRef.current)
             );
             endpoint = '/register_plant';
         } else {
             payload = Object.fromEntries(
-                new FormData(document.getElementById('trayDetails'))
+                new FormData(trayDetailsRef.current)
             );
             endpoint = '/register_tray';
         }
@@ -92,6 +95,7 @@ function App() {
                     <Tab.Panels className="my-8">
                         <Tab.Panel>
                             <PlantDetailsForm
+                                formRef={plantDetailsRef}
                                 name=""
                                 species=""
                                 pot_size=""
@@ -100,7 +104,9 @@ function App() {
                             />
                         </Tab.Panel>
                         <Tab.Panel>
-                            <TrayDetailsForm />
+                            <TrayDetailsForm
+                                formRef={trayDetailsRef}
+                            />
                         </Tab.Panel>
                     </Tab.Panels>
                 </Tab.Group>

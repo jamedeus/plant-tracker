@@ -79,9 +79,9 @@ SpeciesSelect.propTypes = {
 };
 
 
-const PlantDetailsForm = ({ name, species, pot_size, description, species_options }) => {
+const PlantDetailsForm = ({ formRef, name, species, pot_size, description, species_options }) => {
     return (
-        <form id="plantDetails">
+        <form id="plantDetails" ref={formRef}>
             <label className="form-control w-full">
                 <div className="label">
                     <span className="label-text-alt">Plant name</span>
@@ -130,6 +130,10 @@ const PlantDetailsForm = ({ name, species, pot_size, description, species_option
 };
 
 PlantDetailsForm.propTypes = {
+    formRef: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+    ]),
     name: PropTypes.string,
     species: PropTypes.string,
     pot_size: PropTypes.oneOfType([

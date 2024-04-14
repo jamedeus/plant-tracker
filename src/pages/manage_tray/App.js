@@ -38,6 +38,9 @@ function App() {
     // Ref to access timestamp input used by water all/fertilize all
     const addEventAllTimeInput = useRef(null);
 
+    // Create ref to access edit details form
+    const editDetailsRef = useRef(null);
+
     // Get hook to show toast message
     const { showToast } = useToast();
 
@@ -50,7 +53,7 @@ function App() {
 
     const submitEditModal = async () => {
         const payload = Object.fromEntries(
-            new FormData(document.getElementById('trayDetails'))
+            new FormData(editDetailsRef.current)
         );
         payload["tray_id"] = tray.uuid;
         console.log(payload);
@@ -217,6 +220,7 @@ function App() {
 
             <EditModal title="Edit Details" onSubmit={submitEditModal}>
                 <TrayDetailsForm
+                    formRef={editDetailsRef}
                     name={tray.name}
                     location={tray.location}
                     description={tray.description}

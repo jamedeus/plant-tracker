@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const TrayDetailsForm = ({ name, location, description }) => {
+const TrayDetailsForm = ({ formRef, name, location, description }) => {
     return (
-        <form id="trayDetails">
+        <form id="trayDetails" ref={formRef}>
             <label className="form-control w-full">
                 <div className="label">
                     <span className="label-text-alt">Tray name</span>
@@ -41,6 +41,10 @@ const TrayDetailsForm = ({ name, location, description }) => {
 };
 
 TrayDetailsForm.propTypes = {
+    formRef: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+    ]),
     name: PropTypes.string,
     location: PropTypes.string,
     description: PropTypes.string

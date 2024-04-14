@@ -40,6 +40,9 @@ function App() {
     // Create ref to access new event datetime input
     const eventTimeInput = useRef(null);
 
+    // Create ref to access edit details form
+    const editDetailsRef = useRef(null);
+
     // Takes photo URLs from API response when new photos are uploaded
     const addPlantPhotoUrls = (newUrls) => {
         // Add new URLs to photoUrl state, sort chronologically, re-render
@@ -71,7 +74,7 @@ function App() {
 
     const submitEditModal = async () => {
         const payload = Object.fromEntries(
-            new FormData(document.getElementById('plantDetails'))
+            new FormData(editDetailsRef.current)
         );
         payload["plant_id"] = plant.uuid;
 
@@ -477,6 +480,7 @@ function App() {
 
             <EditModal title="Edit Details" onSubmit={submitEditModal}>
                 <PlantDetailsForm
+                    formRef={editDetailsRef}
                     name={plant.name}
                     species={plant.species}
                     pot_size={plant.pot_size}
