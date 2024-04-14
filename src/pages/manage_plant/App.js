@@ -37,6 +37,9 @@ function App() {
     const fertilizeHistoryOpen = useRef(false);
     const photoHistoryOpen = useRef(false);
 
+    // Create ref to access new event datetime input
+    const eventTimeInput = useRef(null);
+
     // Takes photo URLs from API response when new photos are uploaded
     const addPlantPhotoUrls = (newUrls) => {
         // Add new URLs to photoUrl state, sort chronologically, re-render
@@ -86,7 +89,7 @@ function App() {
         const payload = {
             plant_id: plant.uuid,
             event_type: eventType,
-            timestamp: localToUTC(document.getElementById("eventTime").value)
+            timestamp: localToUTC(eventTimeInput.current.value)
         };
         const response = await sendPostRequest('/add_plant_event', payload);
         if (response.ok) {
@@ -423,7 +426,7 @@ function App() {
                         timestamp={plant.events.fertilize[0]}
                     />
                 </span>
-                <DatetimeInput id="eventTime" />
+                <DatetimeInput inputRef={eventTimeInput} />
                 <div className="flex mx-auto">
                     <button
                         className="btn btn-info m-2"

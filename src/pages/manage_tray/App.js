@@ -35,6 +35,9 @@ function App() {
     // Track plants column open/close state between re-renders
     const plantsOpenRef = useRef(true);
 
+    // Ref to access timestamp input used by water all/fertilize all
+    const addEventAllTimeInput = useRef(null);
+
     // Get hook to show toast message
     const { showToast } = useToast();
 
@@ -62,9 +65,7 @@ function App() {
 
     // Handler for "Water All" and "Fertilize All" buttons
     const addEventAll = async (eventType) => {
-        const timestamp = localToUTC(
-            document.getElementById("addEventAllTime").value
-        );
+        const timestamp = localToUTC(addEventAllTimeInput.current.value);
         // Post eventType, all plant UUIDs, and timestamp to backend endpoint
         await bulkAddPlantEvents(
             eventType,
@@ -113,10 +114,12 @@ function App() {
     const PlantEventButtons = ({editing, setEditing}) => {
         switch(editing) {
             case(true):
+                const addEventTimeInput = useRef(null);
+
                 // Handler for water button (only used in this case scope)
                 // eslint-disable-next-line no-case-declarations
                 const water = async () => {
-                    const timestamp = localToUTC(document.getElementById("addEventTime").value);
+                    const timestamp = localToUTC(addEventTimeInput.current.value);
                     await bulkAddPlantEvents('water', selectedPlants.current, timestamp);
                     setEditing(false);
                 };
@@ -124,15 +127,15 @@ function App() {
                 // Handler for fertilize button (only used in this case scope)
                 // eslint-disable-next-line no-case-declarations
                 const fertilize = async () => {
-                    const timestamp = localToUTC(document.getElementById("addEventTime").value);
+                    const timestamp = localToUTC(addEventTimeInput.current.value);
                     await bulkAddPlantEvents('fertilize', selectedPlants.current, timestamp);
                     setEditing(false);
                 };
 
                 return (
                     <>
-                        <div className="flex mx-auto mb-4">
-                            <DatetimeInput id="addEventTime" />
+                        <div className="flex mx-auto mb-4" data-testid="addEventTimeInput">
+                            <DatetimeInput inputRef={addEventTimeInput} />
                         </div>
                         <div className="flex">
                             <button className="btn btn-outline mx-auto" onClick={() => setEditing(false)}>
@@ -191,7 +194,7 @@ function App() {
                 }
             />
 
-            <DatetimeInput id="addEventAllTime" />
+            <DatetimeInput inputRef={addEventAllTimeInput} />
             <div className="flex mx-auto mb-8">
                 <button className="btn btn-info m-2" onClick={() => addEventAll('water')}>
                     Water All

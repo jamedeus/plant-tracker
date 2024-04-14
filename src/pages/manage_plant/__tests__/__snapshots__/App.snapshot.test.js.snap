@@ -229,7 +229,6 @@ exports[`App matches snapshot 1`] = `
       <input
         className="input input-bordered mx-auto my-2"
         defaultValue="2024-03-01T12:00:00"
-        id="eventTime"
         step="1"
         type="datetime-local"
       />
@@ -2096,7 +2095,6 @@ exports[`App matches snapshot 1`] = `
           <input
             className="input input-bordered mx-auto my-2"
             defaultValue="2024-03-01T12:00:00"
-            id="repotTime"
             step="1"
             type="datetime-local"
           />

@@ -164,7 +164,6 @@ exports[`App matches snapshot 1`] = `
     <input
       className="input input-bordered mx-auto my-2"
       defaultValue="2024-03-01T12:00:00"
-      id="addEventAllTime"
       step="1"
       type="datetime-local"
     />

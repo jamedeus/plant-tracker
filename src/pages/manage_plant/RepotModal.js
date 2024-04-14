@@ -17,8 +17,9 @@ const RepotModal = ({ plantID, currentPotSize, handleRepot }) => {
     // Pot size options (inches)
     const potSizes = [2, 3, 4, 6, 8, 10, 12, 14, 18, 21];
 
-    // Ref to access custom pot size input
+    // Refs to access custom pot size input, timestamp input
     const customPotRef = useRef(null);
+    const repotTimeRef = useRef(null);
 
     // Default to next size if currentPotSize set, otherwise default to 2in
     const [selected, setSelected] = useState((() => {
@@ -61,7 +62,7 @@ const RepotModal = ({ plantID, currentPotSize, handleRepot }) => {
         const payload = {
             plant_id: plantID,
             new_pot_size: null,
-            timestamp: document.getElementById("repotTime").value
+            timestamp: repotTimeRef.current.value
         };
 
         // Selected will be integer value of chosen option, or "custom" if the
@@ -89,7 +90,7 @@ const RepotModal = ({ plantID, currentPotSize, handleRepot }) => {
 
             <div>
                 <p>Repot time</p>
-                <DatetimeInput id="repotTime" />
+                <DatetimeInput inputRef={repotTimeRef} />
             </div>
 
             <div className="my-8">

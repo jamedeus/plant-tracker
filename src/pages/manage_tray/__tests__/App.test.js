@@ -134,7 +134,7 @@ describe('App', () => {
         expect(within(plantsCol).getAllByRole('checkbox')
             .filter(button => button.classList.contains('radio')).length
         ).toBe(0);
-        expect(app.container.querySelector('#addEventTime')).toBeNull();
+        expect(app.queryByTestId('addEventTimeInput')).toBeNull();
 
         // Click Manage button, confirm buttons, checkboxes, and input appear
         await user.click(app.getByText("Manage"));
@@ -144,7 +144,7 @@ describe('App', () => {
         expect(within(plantsCol).getAllByRole('checkbox')
             .filter(button => button.classList.contains('radio')).length
         ).toBe(2);
-        expect(app.container.querySelector('#addEventTime')).not.toBeNull();
+        expect(app.queryByTestId('addEventTimeInput')).not.toBeNull();
 
         // Click cancel button, confirm elements disappear
         await user.click(within(plantsCol).getByText("Cancel"));
@@ -154,7 +154,7 @@ describe('App', () => {
         expect(within(plantsCol).getAllByRole('checkbox')
             .filter(button => button.classList.contains('radio')).length
         ).toBe(0);
-        expect(app.container.querySelector('#addEventTime')).toBeNull();
+        expect(app.queryByTestId('addEventTimeInput')).toBeNull();
     });
 
     it('sends correct payload when only 1 plant is watered', async () => {
