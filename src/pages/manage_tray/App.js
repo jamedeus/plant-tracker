@@ -91,6 +91,9 @@ function App() {
             showToast(`All plants ${pastTense(eventType)}!`, 'blue', 5000);
             const data = await response.json();
             updatePlantTimestamps(data.plants, timestamp, eventType);
+        } else {
+            const error = await response.json();
+            showErrorModal(JSON.stringify(error));
         }
     };
 

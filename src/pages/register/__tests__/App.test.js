@@ -156,4 +156,22 @@ describe('App', () => {
         expect(window.location.href).toBe('/');
         jest.resetAllMocks();
     });
+
+    it('shows unexpected API response in error modal', async () => {
+        // Mock fetch function to return unexpected response (not error or redirect)
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            redirected: false,
+            json: () => Promise.resolve({
+                "error": "Unexpected, should return redirect or error"
+            })
+        }));
+
+        // Confirm error text is not in document
+        expect(app.queryByText(/Unexpected, should return redirect or error/)).toBeNull();
+
+        // Click Save button, confirm error modal appears
+        await userEvent.click(app.getByText('Save'));
+        expect(app.getByText(/Unexpected, should return redirect or error/)).toBeInTheDocument();
+    });
 });

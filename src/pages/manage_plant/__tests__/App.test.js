@@ -137,7 +137,7 @@ describe('App', () => {
         });
     });
 
-    it('shows error toast after failing to create event', async() => {
+    it('shows error toast if duplicate event error received', async() => {
         // Mock fetch function to return error response
         global.fetch = jest.fn(() => Promise.resolve({
             ok: false,

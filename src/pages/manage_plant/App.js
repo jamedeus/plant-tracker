@@ -150,6 +150,9 @@ function App() {
                 setPhotoUrls(oldPhotoUrls.filter(
                     photo => !data.deleted.includes(photo.key)
                 ));
+            } else {
+                const error = await response.json();
+                showErrorModal(JSON.stringify(error));
             }
         };
 
@@ -191,6 +194,9 @@ function App() {
             if (response.ok) {
                 // Remove tray details from plant state
                 setPlant({...plant, tray: null});
+            } else {
+                const error = await response.json();
+                showErrorModal(JSON.stringify(error));
             }
         };
 

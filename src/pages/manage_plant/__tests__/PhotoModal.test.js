@@ -117,4 +117,27 @@ describe('App', () => {
         expect(formData.get('photo_0')).toEqual(file1);
         expect(formData.get('photo_1')).toBeNull();
     });
+
+    it('shows error in modal when API call fails', async () => {
+        // Mock fetch function to return arbitrary error message
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            status: 500,
+            json: () => Promise.resolve({
+                "error": "failed to upload photos"
+            })
+        }));
+
+        // Confirm arbitrary error does not appear on page
+        expect(app.queryByText(/failed to upload photos/)).toBeNull();
+
+        // Simulate user selecting a file and clicking upload
+        const file1 = new File(['file1'], 'file1.jpg', { type: 'image/jpeg' });
+        const fileInput = app.getByTestId('photo-input');
+        fireEvent.change(fileInput, { target: { files: [file1] } });
+        await user.click(app.getByText('Upload'));
+
+        // Confirm modal appeared with arbitrary error text
+        expect(app.queryByText(/failed to upload photos/)).not.toBeNull();
+    });
 });
