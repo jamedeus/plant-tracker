@@ -871,6 +871,31 @@ class PlantEventTests(TestCase):
         )
         self.assertEqual(len(Photo.objects.all()), 0)
 
+    @override_settings(MEDIA_ROOT=os.path.join(TEST_DIR, 'data', 'images'))
+    def test_set_plant_default_photo(self):
+        # Create mock photo, add to database
+        mock_photo = create_mock_photo('2024:03:21 10:52:03')
+        photo = Photo.objects.create(photo=mock_photo, plant=self.plant1)
+
+        # Confirm plant has no default_photo
+        self.assertIsNone(self.plant1.default_photo)
+
+        # Post photo primary key to set_plant_default_photo endpoint
+        payload = {
+            'plant_id': str(self.plant1.uuid),
+            'photo_key': photo.pk
+        }
+        response = self.client.post('/set_plant_default_photo', payload)
+
+        # Confirm response, confirm plant now has default_photo
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {"default_photo": photo.get_thumbnail_url()}
+        )
+        self._refresh_test_models()
+        self.assertEqual(self.plant1.default_photo, photo)
+
 
 class InvalidRequestTests(TestCase):
     def setUp(self):
@@ -1104,6 +1129,43 @@ class InvalidRequestTests(TestCase):
             response.json(),
             {'error': 'no photos were sent'}
         )
+
+    def test_set_non_existing_default_photo(self):
+        # Post fake primary key to set_plant_default_photo endpoint
+        payload = {
+            'plant_id': str(self.test_plant.uuid),
+            'photo_key': 1337
+        }
+        response = self.client.post('/set_plant_default_photo', payload)
+
+        # Confirm error, confirm plant does not have default_photo
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json(), {"error": "unable to find photo"})
+        self.test_plant.refresh_from_db()
+        self.assertIsNone(self.test_plant.default_photo)
+
+    @override_settings(MEDIA_ROOT=os.path.join(TEST_DIR, 'data', 'images'))
+    def test_set_photo_of_wrong_plant_as_default_photo(self):
+        # Create second plant entry + photo associated with second plant
+        wrong_plant = Plant.objects.create(uuid=uuid4())
+        wrong_plant_photo = Photo.objects.create(
+            photo=create_mock_photo('2024:02:21 10:52:03', 'IMG1.jpg'),
+            plant=wrong_plant
+        )
+        wrong_plant_photo.save()
+
+        # Post primary key of wrong photo to set_plant_default_photo endpoint
+        payload = {
+            'plant_id': str(self.test_plant.uuid),
+            'photo_key': wrong_plant_photo.pk
+        }
+        response = self.client.post('/set_plant_default_photo', payload)
+
+        # Confirm error, confirm plant does not have default_photo
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json(), {"error": "unable to find photo"})
+        self.test_plant.refresh_from_db()
+        self.assertIsNone(self.test_plant.default_photo)
 
 
 class ViewDecoratorTests(TestCase):

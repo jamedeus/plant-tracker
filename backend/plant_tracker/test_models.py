@@ -220,6 +220,42 @@ class PlantModelTests(TestCase):
             ]
         )
 
+    @override_settings(MEDIA_ROOT=os.path.join(TEST_DIR, 'data', 'images'))
+    def test_get_thumbnail(self):
+        # Create 2 mock photos for test plant
+        photo1 = Photo.objects.create(
+            photo=create_mock_photo('2024:02:21 10:52:03', 'IMG1.jpg'),
+            plant=self.plant
+        )
+        photo2 = Photo.objects.create(
+            photo=create_mock_photo('2024:03:22 10:52:03', 'IMG2.jpg'),
+            plant=self.plant
+        )
+
+        # Confirm get_thumbnail method returns most-recent photo thumbnail URL
+        self.assertEqual(self.plant.get_thumbnail(), photo2.get_thumbnail_url())
+
+        # Set older photo as default_photo
+        self.plant.default_photo = photo1
+
+        # Confirm get_thumbnail method now returns default photo thumbnail URL
+        self.assertEqual(self.plant.get_thumbnail(), photo1.get_thumbnail_url())
+
+    @override_settings(MEDIA_ROOT=os.path.join(TEST_DIR, 'data', 'images'))
+    def test_set_invalid_default_photo(self):
+        # Create second plant entry + photo associated with second plant
+        wrong_plant = Plant.objects.create(uuid=uuid4())
+        wrong_plant_photo = Photo.objects.create(
+            photo=create_mock_photo('2024:02:21 10:52:03', 'IMG1.jpg'),
+            plant=wrong_plant
+        )
+
+        # Confirm an exception is raised if new photo is set as default for the
+        # first plant (default_photo must have reverse relation to same plant)
+        with self.assertRaises(ValueError):
+            self.plant.default_photo = wrong_plant_photo
+            self.plant.save()
+
 
 class TrayModelTests(TestCase):
     def setUp(self):

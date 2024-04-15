@@ -535,3 +535,18 @@ def delete_plant_photos(plant, data):
         except Photo.DoesNotExist:
             failed.append(primary_key)
     return JsonResponse({"deleted": deleted, "failed": failed}, status=200)
+
+
+@requires_json_post(["plant_id", "photo_key"])
+@get_plant_from_post_body
+def set_plant_default_photo(plant, data):
+    '''Sets the photo used for overview page thumbnail
+    Requires JSON POST with plant_id (uuid) and photo_key (db primary key)
+    '''
+    try:
+        photo = Photo.objects.get(plant=plant, pk=data["photo_key"])
+        plant.default_photo = photo
+        plant.save()
+    except Photo.DoesNotExist:
+        return JsonResponse({"error": "unable to find photo"}, status=404)
+    return JsonResponse({"default_photo": plant.get_thumbnail()}, status=200)

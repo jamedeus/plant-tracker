@@ -131,6 +131,16 @@ class Plant(models.Model):
     # Optional relation to manage multiple plants in the same tray
     tray = models.ForeignKey(Tray, on_delete=models.CASCADE, blank=True, null=True)
 
+    # Optional relation to set photo used for overview page thumbnail
+    # No related_name (redundant, Photo already has reverse relation)
+    default_photo = models.OneToOneField(
+        'Photo',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='+'
+    )
+
     def __str__(self):
         return f"{self.get_display_name()} ({self.uuid})"
 
@@ -159,6 +169,15 @@ class Plant(models.Model):
             for photo in self.photo_set.all().order_by('-created')
         ]
 
+    def get_thumbnail(self):
+        '''Returns thumbnail URL shown on frontend overview page
+        Uses user-configured default_photo if set, or most recent photo
+        '''
+        if self.default_photo:
+            return self.default_photo.get_thumbnail_url()
+        else:
+            return self.get_most_recent_thumbnail()
+
     def get_most_recent_thumbnail(self):
         '''Returns thumbnail URL of most recent photo, or None if no Photos exist'''
         try:
@@ -178,7 +197,7 @@ class Plant(models.Model):
             'pot_size': self.pot_size,
             'last_watered': self.last_watered(),
             'last_fertilized': self.last_fertilized(),
-            'thumbnail': self.get_most_recent_thumbnail()
+            'thumbnail': self.get_thumbnail()
         }
 
     def last_watered(self):
@@ -252,6 +271,12 @@ class Plant(models.Model):
             .order_by('-timestamp')
             .values_list('timestamp')
         ]
+
+    def save(self, *args, **kwargs):
+        # Prevent setting photo of a different plant as default
+        if self.default_photo and self.default_photo.plant != self:
+            raise ValueError("Default photo is associated with a different plant")
+        super().save(*args, **kwargs)
 
 
 @receiver(post_save, sender=Plant)
