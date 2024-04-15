@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
-import PhotoModal from '../PhotoModal';
+import PhotoModal, { openPhotoModal } from '../PhotoModal';
 import { mockContext } from './mockContext';
 import { ErrorModalProvider } from 'src/context/ErrorModalContext';
 
@@ -10,11 +10,18 @@ const TestComponent = () => {
     const [photoUrls, setPhotoUrls] = useState(mockContext.photo_urls);
 
     // Render app
-    return <PhotoModal
-        modalRef={photoModalRef}
-        plantID={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"}
-        addPlantPhotoUrls={jest.fn()}
-    />;
+    return (
+        <>
+            <PhotoModal
+                modalRef={photoModalRef}
+                plantID={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"}
+                addPlantPhotoUrls={jest.fn()}
+            />
+            <button onClick={openPhotoModal}>
+                Open photo modal
+            </button>
+        </>
+    );
 };
 
 describe('App', () => {
@@ -139,5 +146,11 @@ describe('App', () => {
 
         // Confirm modal appeared with arbitrary error text
         expect(app.queryByText(/failed to upload photos/)).not.toBeNull();
+    });
+
+    it('opens modal when openPhotoModal called', async () => {
+        // Click button, confirm HTMLDialogElement method was called
+        await user.click(app.getByText('Open photo modal'));
+        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
     });
 });

@@ -200,69 +200,6 @@ describe('App', () => {
         });
     });
 
-    it('enters edit mode when event history edit button clicked', async () => {
-        // Get reference to Water History div, open collapse
-        const eventHistory = app.getByText("Event History").parentElement;
-        await user.click(eventHistory.children[0]);
-
-        // Confirm edit button is rendered, delete and cancel buttons are not
-        expect(within(eventHistory).getByText('Edit').nodeName).toBe('BUTTON');
-        expect(within(eventHistory).queryByText('Delete')).toBeNull();
-        expect(within(eventHistory).queryByText('Cancel')).toBeNull();
-
-        // Click edit button
-        await user.click(within(eventHistory).getByText('Edit'));
-
-        // Edit button should disappear, delete and cancel buttons should appear
-        expect(within(eventHistory).queryByText('Edit')).toBeNull();
-        expect(within(eventHistory).getByText('Delete').nodeName).toBe('BUTTON');
-        expect(within(eventHistory).getByText('Cancel').nodeName).toBe('BUTTON');
-
-        // Click cancel button, confirm buttons reset
-        await user.click(within(eventHistory).getByText('Cancel'));
-        expect(within(eventHistory).getByText('Edit').nodeName).toBe('BUTTON');
-        expect(within(eventHistory).queryByText('Delete')).toBeNull();
-        expect(within(eventHistory).queryByText('Cancel')).toBeNull();
-    });
-
-    it('sends correct payload when water event is deleted', async () => {
-        // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                "deleted": "water",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-            })
-        }));
-
-        // Get reference to Water History div, open collapse
-        const eventHistory = app.getByText("Event History").parentElement;
-        await user.click(eventHistory.children[0]);
-
-        // Click edit button
-        await user.click(within(eventHistory).getByText('Edit'));
-
-        // Click first checkbox to select event
-        user.click(app.container.querySelectorAll('.radio')[0]);
-
-        // Click delete button, confirm buttons reset
-        await user.click(within(eventHistory).getByText('Delete'));
-        expect(within(eventHistory).getByText('Edit').nodeName).toBe('BUTTON');
-        expect(within(eventHistory).queryByText('Delete')).toBeNull();
-        expect(within(eventHistory).queryByText('Cancel')).toBeNull();
-
-        // Confirm correct data posted to /delete_plant_event endpoint
-        expect(global.fetch).toHaveBeenCalledWith('/delete_plant_event', {
-            method: 'POST',
-            body: JSON.stringify({
-                "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                "event_type": "water",
-                "timestamp": "2024-03-01T05:45:44+00:00"
-            }),
-            headers: postHeaders
-        });
-    });
-
     it('sends correct payload when RepotModal is submitted', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({

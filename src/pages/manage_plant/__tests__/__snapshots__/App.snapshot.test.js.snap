@@ -220,12 +220,12 @@ exports[`App matches snapshot 1`] = `
       <span
         className="text-lg"
       >
-        Watered 14 hours ago
+        Watered 4 hours ago
       </span>
       <span
         className="text-lg"
       >
-        Fertilized 14 hours ago
+        Fertilized 4 hours ago
       </span>
       <input
         className="input input-bordered mx-auto my-2"
@@ -559,11 +559,7 @@ exports[`App matches snapshot 1`] = `
                     </abbr>
                     <div
                       className="dots"
-                    >
-                      <span
-                        className="dot dot-fertilize"
-                      />
-                    </div>
+                    />
                   </button>
                   <button
                     className="react-calendar__tile react-calendar__month-view__days__day react-calendar__month-view__days__day--neighboringMonth"
@@ -588,7 +584,11 @@ exports[`App matches snapshot 1`] = `
                     </abbr>
                     <div
                       className="dots"
-                    />
+                    >
+                      <span
+                        className="dot dot-fertilize"
+                      />
+                    </div>
                   </button>
                   <button
                     className="react-calendar__tile react-calendar__month-view__days__day react-calendar__month-view__days__day--neighboringMonth"
@@ -667,9 +667,6 @@ exports[`App matches snapshot 1`] = `
                       <span
                         className="dot dot-water"
                       />
-                      <span
-                        className="dot dot-fertilize"
-                      />
                     </div>
                   </button>
                   <button
@@ -695,7 +692,14 @@ exports[`App matches snapshot 1`] = `
                     </abbr>
                     <div
                       className="dots"
-                    />
+                    >
+                      <span
+                        className="dot dot-water"
+                      />
+                      <span
+                        className="dot dot-fertilize"
+                      />
+                    </div>
                   </button>
                   <button
                     className="react-calendar__tile react-calendar__month-view__days__day react-calendar__month-view__days__day--weekend"
@@ -1698,10 +1702,10 @@ exports[`App matches snapshot 1`] = `
                         <p
                           className="text-lg font-bold"
                         >
-                          14 hours ago
+                          4 hours ago
                         </p>
                         <p>
-                          9:45 PM February 29, 2024
+                          7:45 AM March 01, 2024
                         </p>
                       </div>
                     </div>
