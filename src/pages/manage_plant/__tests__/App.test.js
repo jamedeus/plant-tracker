@@ -5,6 +5,7 @@ import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
 import { ToastProvider } from 'src/context/ToastContext';
 import { ThemeProvider } from 'src/context/ThemeContext';
+import { ErrorModalProvider } from 'src/context/ErrorModalContext';
 import { mockContext } from './mockContext';
 
 describe('App', () => {
@@ -21,7 +22,9 @@ describe('App', () => {
         app = render(
             <ThemeProvider>
                 <ToastProvider>
-                    <App />
+                    <ErrorModalProvider>
+                        <App />
+                    </ErrorModalProvider>
                 </ToastProvider>
             </ThemeProvider>
         );

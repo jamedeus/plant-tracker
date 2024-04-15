@@ -1,17 +1,87 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`App matches snapshot 1`] = `
-<div
-  className="container flex flex-col mx-auto mb-8"
->
+[
   <div
-    className="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
+    className="container flex flex-col mx-auto mb-8"
   >
     <div
-      className="navbar-start w-auto"
+      className="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
     >
       <div
-        className="dropdown"
+        className="navbar-start w-auto"
+      >
+        <div
+          className="dropdown"
+        >
+          <div
+            className="btn btn-ghost btn-circle"
+            role="button"
+            tabIndex={0}
+          >
+            <svg
+              className="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M4 6h16M4 12h16M4 18h7"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+              />
+            </svg>
+          </div>
+          <ul
+            className="menu menu-md dropdown-content mt-3 z-[99]
+                                    p-2 shadow bg-base-300 rounded-box w-52"
+            tabIndex={0}
+          >
+            <li>
+              <a
+                onClick={[Function]}
+              >
+                Overview
+              </a>
+            </li>
+            <li>
+              <a
+                onClick={[Function]}
+              >
+                Light mode
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div
+        className="navbar-center mx-auto"
+      >
+        <div
+          className="dropdown dropdown-center"
+        >
+          <a
+            className="btn btn-ghost"
+            role="button"
+            style={
+              {
+                "fontSize": "32px",
+              }
+            }
+            tabIndex={0}
+          >
+            Registration
+          </a>
+          <div
+            className="dropdown-content z-[1] flex"
+            tabIndex={0}
+          />
+        </div>
+      </div>
+      <div
+        className="navbar-end w-auto invisible"
       >
         <div
           className="btn btn-ghost btn-circle"
@@ -33,246 +103,178 @@ exports[`App matches snapshot 1`] = `
             />
           </svg>
         </div>
-        <ul
-          className="menu menu-md dropdown-content mt-3 z-[99]
-                                    p-2 shadow bg-base-300 rounded-box w-52"
-          tabIndex={0}
-        >
-          <li>
-            <a
-              onClick={[Function]}
-            >
-              Overview
-            </a>
-          </li>
-          <li>
-            <a
-              onClick={[Function]}
-            >
-              Light mode
-            </a>
-          </li>
-        </ul>
       </div>
     </div>
     <div
-      className="navbar-center mx-auto"
+      className="flex flex-col mx-8 md:w-1/2 md:mx-auto"
     >
       <div
-        className="dropdown dropdown-center"
+        aria-orientation="horizontal"
+        className="tab-group"
+        role="tablist"
       >
-        <a
-          className="btn btn-ghost"
-          role="button"
+        <button
+          aria-selected={true}
+          className="tab-option tab-option-selected"
+          data-headlessui-state="selected"
+          id="headlessui-tabs-tab-:r0:"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          onMouseDown={[Function]}
+          role="tab"
+          tabIndex={0}
+          type="button"
+        >
+          Plant
+        </button>
+        <button
+          aria-selected={false}
+          className="tab-option "
+          data-headlessui-state=""
+          id="headlessui-tabs-tab-:r1:"
+          onClick={[Function]}
+          onKeyDown={[Function]}
+          onMouseDown={[Function]}
+          role="tab"
+          tabIndex={-1}
+          type="button"
+        >
+          Tray
+        </button>
+      </div>
+      <div
+        className="my-8"
+      >
+        <div
+          data-headlessui-state="selected"
+          id="headlessui-tabs-panel-:r2:"
+          role="tabpanel"
+          tabIndex={0}
+        >
+          <form
+            id="plantDetails"
+          >
+            <label
+              className="form-control w-full"
+            >
+              <div
+                className="label"
+              >
+                <span
+                  className="label-text-alt"
+                >
+                  Plant name
+                </span>
+              </div>
+              <input
+                className="input w-full input-bordered"
+                defaultValue=""
+                name="name"
+                type="text"
+              />
+            </label>
+            <label
+              className="form-control w-full relative"
+            >
+              <div
+                className="label"
+              >
+                <span
+                  className="label-text-alt"
+                >
+                  Plant species
+                </span>
+              </div>
+              <input
+                aria-autocomplete="list"
+                aria-expanded={false}
+                autoComplete="off"
+                className="input w-full input-bordered"
+                data-headlessui-state=""
+                disabled={false}
+                id="headlessui-combobox-input-:r3:"
+                name="species"
+                onBlur={[Function]}
+                onChange={[Function]}
+                onCompositionEnd={[Function]}
+                onCompositionStart={[Function]}
+                onFocus={[Function]}
+                onKeyDown={[Function]}
+                role="combobox"
+                type="text"
+              />
+            </label>
+            <label
+              className="form-control w-full"
+            >
+              <div
+                className="label"
+              >
+                <span
+                  className="label-text-alt"
+                >
+                  Pot size
+                </span>
+              </div>
+              <input
+                className="input w-full input-bordered"
+                defaultValue=""
+                max="36"
+                min="1"
+                name="pot_size"
+                type="number"
+              />
+            </label>
+            <label
+              className="form-control w-full"
+            >
+              <div
+                className="label"
+              >
+                <span
+                  className="label-text-alt"
+                >
+                  Description
+                </span>
+              </div>
+              <textarea
+                className="textarea textarea-bordered"
+                defaultValue=""
+                name="description"
+              />
+            </label>
+          </form>
+        </div>
+        <span
+          aria-hidden="true"
+          id="headlessui-tabs-panel-:r4:"
+          role="tabpanel"
           style={
             {
-              "fontSize": "32px",
+              "borderWidth": "0",
+              "clip": "rect(0, 0, 0, 0)",
+              "height": 0,
+              "left": 1,
+              "margin": -1,
+              "overflow": "hidden",
+              "padding": 0,
+              "position": "fixed",
+              "top": 1,
+              "whiteSpace": "nowrap",
+              "width": 1,
             }
           }
-          tabIndex={0}
-        >
-          Registration
-        </a>
-        <div
-          className="dropdown-content z-[1] flex"
-          tabIndex={0}
+          tabIndex={-1}
         />
       </div>
-    </div>
-    <div
-      className="navbar-end w-auto invisible"
-    >
-      <div
-        className="btn btn-ghost btn-circle"
-        role="button"
-        tabIndex={0}
-      >
-        <svg
-          className="h-5 w-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M4 6h16M4 12h16M4 18h7"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-          />
-        </svg>
-      </div>
-    </div>
-  </div>
-  <div
-    className="flex flex-col mx-8 md:w-1/2 md:mx-auto"
-  >
-    <div
-      aria-orientation="horizontal"
-      className="tab-group"
-      role="tablist"
-    >
       <button
-        aria-selected={true}
-        className="tab-option tab-option-selected"
-        data-headlessui-state="selected"
-        id="headlessui-tabs-tab-:r0:"
+        className="btn btn-accent mx-auto"
         onClick={[Function]}
-        onKeyDown={[Function]}
-        onMouseDown={[Function]}
-        role="tab"
-        tabIndex={0}
-        type="button"
       >
-        Plant
-      </button>
-      <button
-        aria-selected={false}
-        className="tab-option "
-        data-headlessui-state=""
-        id="headlessui-tabs-tab-:r1:"
-        onClick={[Function]}
-        onKeyDown={[Function]}
-        onMouseDown={[Function]}
-        role="tab"
-        tabIndex={-1}
-        type="button"
-      >
-        Tray
+        Save
       </button>
     </div>
-    <div
-      className="my-8"
-    >
-      <div
-        data-headlessui-state="selected"
-        id="headlessui-tabs-panel-:r2:"
-        role="tabpanel"
-        tabIndex={0}
-      >
-        <form
-          id="plantDetails"
-        >
-          <label
-            className="form-control w-full"
-          >
-            <div
-              className="label"
-            >
-              <span
-                className="label-text-alt"
-              >
-                Plant name
-              </span>
-            </div>
-            <input
-              className="input w-full input-bordered"
-              defaultValue=""
-              name="name"
-              type="text"
-            />
-          </label>
-          <label
-            className="form-control w-full relative"
-          >
-            <div
-              className="label"
-            >
-              <span
-                className="label-text-alt"
-              >
-                Plant species
-              </span>
-            </div>
-            <input
-              aria-autocomplete="list"
-              aria-expanded={false}
-              autoComplete="off"
-              className="input w-full input-bordered"
-              data-headlessui-state=""
-              disabled={false}
-              id="headlessui-combobox-input-:r3:"
-              name="species"
-              onBlur={[Function]}
-              onChange={[Function]}
-              onCompositionEnd={[Function]}
-              onCompositionStart={[Function]}
-              onFocus={[Function]}
-              onKeyDown={[Function]}
-              role="combobox"
-              type="text"
-            />
-          </label>
-          <label
-            className="form-control w-full"
-          >
-            <div
-              className="label"
-            >
-              <span
-                className="label-text-alt"
-              >
-                Pot size
-              </span>
-            </div>
-            <input
-              className="input w-full input-bordered"
-              defaultValue=""
-              max="36"
-              min="1"
-              name="pot_size"
-              type="number"
-            />
-          </label>
-          <label
-            className="form-control w-full"
-          >
-            <div
-              className="label"
-            >
-              <span
-                className="label-text-alt"
-              >
-                Description
-              </span>
-            </div>
-            <textarea
-              className="textarea textarea-bordered"
-              defaultValue=""
-              name="description"
-            />
-          </label>
-        </form>
-      </div>
-      <span
-        aria-hidden="true"
-        id="headlessui-tabs-panel-:r4:"
-        role="tabpanel"
-        style={
-          {
-            "borderWidth": "0",
-            "clip": "rect(0, 0, 0, 0)",
-            "height": 0,
-            "left": 1,
-            "margin": -1,
-            "overflow": "hidden",
-            "padding": 0,
-            "position": "fixed",
-            "top": 1,
-            "whiteSpace": "nowrap",
-            "width": 1,
-          }
-        }
-        tabIndex={-1}
-      />
-    </div>
-    <button
-      className="btn btn-accent mx-auto"
-      onClick={[Function]}
-    >
-      Save
-    </button>
-  </div>
+  </div>,
   <dialog
     className="modal"
   >
@@ -300,25 +302,22 @@ exports[`App matches snapshot 1`] = `
         </button>
       </form>
       <h3
-        className="font-bold text-lg"
+        className="font-bold text-lg mb-6"
       >
         Error
       </h3>
-      <p
-        className="text-center mt-8 mb-4"
+      <div
+        className="min-h-36 flex flex-col justify-center mx-auto"
       />
       <div
         className="modal-action mx-auto"
       >
-        <form
-          method="dialog"
+        <button
+          className="btn"
+          onClick={[Function]}
         >
-          <button
-            className="btn"
-          >
-            OK
-          </button>
-        </form>
+          OK
+        </button>
       </div>
     </div>
     <form
@@ -329,6 +328,6 @@ exports[`App matches snapshot 1`] = `
         close
       </button>
     </form>
-  </dialog>
-</div>
+  </dialog>,
+]
 `;

@@ -4,6 +4,7 @@ import EditableNodeList from 'src/components/EditableNodeList';
 import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
 import ManagePlantsCard from './ManagePlantsCard';
+import { useErrorModal } from 'src/context/ErrorModalContext';
 
 let addPlantsModalRef;
 
@@ -16,6 +17,9 @@ const AddPlantsModal = ({ trayID, options, plantDetails, setPlantDetails }) => {
 
     // Ref to track selected items
     const selected = useRef([]);
+
+    // Get hook to show error modal
+    const { showErrorModal } = useErrorModal();
 
     // Handler for add button in manage plants modal
     const addPlants = async () => {
@@ -31,6 +35,9 @@ const AddPlantsModal = ({ trayID, options, plantDetails, setPlantDetails }) => {
             // Add objects in response to plantDetails state
             const data = await response.json();
             setPlantDetails([...plantDetails, ...data.added]);
+        } else {
+            const error = await response.json();
+            showErrorModal(JSON.stringify(error));
         }
     };
 

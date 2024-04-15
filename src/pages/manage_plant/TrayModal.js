@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
+import { useErrorModal } from 'src/context/ErrorModalContext';
 
 let trayModalRef;
 
@@ -12,6 +13,9 @@ export const openTrayModal = () => {
 const TrayModal = ({ plantID, trayOptions, handleAddTray }) => {
     trayModalRef = useRef(null);
     const traySelectRef = useRef(null);
+
+    // Get hook to show error modal
+    const { showErrorModal } = useErrorModal();
 
     // Handler for confirm button
     const addToTray = async () => {
@@ -24,6 +28,9 @@ const TrayModal = ({ plantID, trayOptions, handleAddTray }) => {
             // Update plant state with tray name and UUID from response
             const data = await response.json();
             handleAddTray(data.tray_name, data.tray_uuid);
+        } else {
+            const error = await response.json();
+            showErrorModal(JSON.stringify(error));
         }
         // Close modal
         trayModalRef.current.close();

@@ -3,6 +3,7 @@ import { render, fireEvent } from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
 import PhotoModal from '../PhotoModal';
 import { mockContext } from './mockContext';
+import { ErrorModalProvider } from 'src/context/ErrorModalContext';
 
 const TestComponent = () => {
     const photoModalRef = useRef(null);
@@ -22,7 +23,9 @@ describe('App', () => {
     beforeEach(() => {
         // Render app + create userEvent instance to use in tests
         app = render(
-            <TestComponent />
+            <ErrorModalProvider>
+                <TestComponent />
+            </ErrorModalProvider>
         );
         user = userEvent.setup();
     });

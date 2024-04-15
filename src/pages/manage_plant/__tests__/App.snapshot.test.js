@@ -3,6 +3,7 @@ import createMockContext from 'src/testUtils/createMockContext';
 import App from '../App';
 import { ToastProvider } from 'src/context/ToastContext';
 import { ThemeProvider } from 'src/context/ThemeContext';
+import { ErrorModalProvider } from 'src/context/ErrorModalContext';
 import { mockContext } from './mockContext';
 
 describe('App', () => {
@@ -17,7 +18,9 @@ describe('App', () => {
         const component = renderer.create(
             <ThemeProvider>
                 <ToastProvider>
-                    <App />
+                    <ErrorModalProvider>
+                        <App />
+                    </ErrorModalProvider>
                 </ToastProvider>
             </ThemeProvider>
         );

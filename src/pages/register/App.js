@@ -5,7 +5,7 @@ import { useTheme } from 'src/context/ThemeContext';
 import { sendPostRequest, parseDomContext } from 'src/util';
 import TrayDetailsForm from 'src/forms/TrayDetailsForm';
 import PlantDetailsForm from 'src/forms/PlantDetailsForm';
-import Modal from 'src/components/Modal';
+import { useErrorModal } from 'src/context/ErrorModalContext';
 
 function App() {
     // Load context set by django template
@@ -23,8 +23,8 @@ function App() {
     // Get toggle theme option from context
     const { ToggleThemeOption } = useTheme();
 
-    const errorModalRef = useRef(null);
-    const [errorModalMessage, setErrorModalMessage] = useState('');
+    // Get hook to show error modal
+    const { showErrorModal } = useErrorModal();
 
     const plantDetailsRef = useRef(null);
     const trayDetailsRef = useRef(null);
@@ -50,14 +50,13 @@ function App() {
         // Show error modal if registration failed
         if (!response.ok) {
             const data = await response.json();
-            setErrorModalMessage(data.error);
-            errorModalRef.current.showModal();
+            showErrorModal(data.error);
         // Redirect to manage page if successfully registered
         } else if (response.redirected) {
             window.location.href = response.url;
         } else {
             const responseData = await response.json();
-            console.log(responseData);
+            showErrorModal(responseData);
         }
     };
 
@@ -115,16 +114,6 @@ function App() {
                     Save
                 </button>
             </div>
-
-            <Modal dialogRef={errorModalRef}>
-                <h3 className="font-bold text-lg">Error</h3>
-                <p className="text-center mt-8 mb-4">{errorModalMessage}</p>
-                <div className="modal-action mx-auto">
-                    <form method="dialog">
-                        <button className="btn">OK</button>
-                    </form>
-                </div>
-            </Modal>
         </div>
     );
 }

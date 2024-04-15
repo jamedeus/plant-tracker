@@ -17,6 +17,7 @@ import TrayModal, { openTrayModal } from './TrayModal';
 import PhotoModal, { openPhotoModal } from './PhotoModal';
 import RepotModal, { openRepotModal } from './RepotModal';
 import EventHistory, { EventHistoryButtons } from './EventHistory';
+import { useErrorModal } from 'src/context/ErrorModalContext';
 
 function App() {
     // Load context set by django template
@@ -29,8 +30,9 @@ function App() {
     const trays = parseDomContext("trays");
     const speciesOptions = parseDomContext("species_options");
 
-    // Get hook to show toast message
+    // Get hooks to show toast message, error modal
     const { showToast } = useToast();
+    const { showErrorModal } = useErrorModal();
 
     // Create ref to preserve photo history open state between re-renders
     const photoHistoryOpen = useRef(false);
@@ -81,6 +83,9 @@ function App() {
             // Update plant state with new values from response
             const data = await response.json();
             setPlant({...plant, ...data});
+        } else {
+            const error = await response.json();
+            showErrorModal(JSON.stringify(error));
         }
     };
 
@@ -107,10 +112,10 @@ function App() {
                     'red',
                     5000
                 );
-            // Other error (unexpected): show in alert
+            // Other error (unexpected): show in error modal
             } else {
-                const data = await response.json();
-                alert(data);
+                const error = await response.json();
+                showErrorModal(JSON.stringify(error));
             }
         }
     };

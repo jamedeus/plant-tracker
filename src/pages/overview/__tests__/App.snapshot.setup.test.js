@@ -1,6 +1,7 @@
 import renderer from 'react-test-renderer';
 import createMockContext from 'src/testUtils/createMockContext';
 import { ThemeProvider } from 'src/context/ThemeContext';
+import { ErrorModalProvider } from 'src/context/ErrorModalContext';
 import App from '../App';
 
 describe('App', () => {
@@ -16,7 +17,9 @@ describe('App', () => {
         // Render App, confirm matches snapshot
         const component = renderer.create(
             <ThemeProvider>
-                <App />
+                <ErrorModalProvider>
+                    <App />
+                </ErrorModalProvider>
             </ThemeProvider>
         );
         let tree = component.toJSON();

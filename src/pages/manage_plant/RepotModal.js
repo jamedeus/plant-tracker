@@ -4,6 +4,7 @@ import { RadioGroup } from '@headlessui/react';
 import Modal from 'src/components/Modal';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { sendPostRequest } from 'src/util';
+import { useErrorModal } from 'src/context/ErrorModalContext';
 
 let repotModalRef;
 
@@ -20,6 +21,9 @@ const RepotModal = ({ plantID, currentPotSize, handleRepot }) => {
     // Refs to access custom pot size input, timestamp input
     const customPotRef = useRef(null);
     const repotTimeRef = useRef(null);
+
+    // Get hook to show error modal
+    const { showErrorModal } = useErrorModal();
 
     // Default to next size if currentPotSize set, otherwise default to 2in
     const [selected, setSelected] = useState((() => {
@@ -79,8 +83,8 @@ const RepotModal = ({ plantID, currentPotSize, handleRepot }) => {
             handleRepot(payload.new_pot_size, payload.timestamp);
             repotModalRef.current.close();
         } else {
-            const data = await response.json();
-            alert(data);
+            const error = await response.json();
+            showErrorModal(JSON.stringify(error));
         }
     };
 

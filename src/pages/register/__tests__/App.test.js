@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import createMockContext from 'src/testUtils/createMockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import { ThemeProvider } from 'src/context/ThemeContext';
+import { ErrorModalProvider } from 'src/context/ErrorModalContext';
 import App from '../App';
 import { mockContext } from './mockContext';
 import '@testing-library/jest-dom';
@@ -18,7 +19,9 @@ describe('App', () => {
         // Render app + create userEvent instance to use in tests
         app = render(
             <ThemeProvider>
-                <App />
+                <ErrorModalProvider>
+                    <App />
+                </ErrorModalProvider>
             </ThemeProvider>
         );
         user = userEvent.setup();

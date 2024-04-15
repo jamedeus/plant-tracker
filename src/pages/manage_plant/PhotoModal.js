@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
 import Modal from 'src/components/Modal';
 import { XMarkIcon } from '@heroicons/react/16/solid';
+import { useErrorModal } from 'src/context/ErrorModalContext';
 
 let photoModalRef;
 
@@ -21,6 +22,9 @@ const PhotoModal = ({ plantID, addPlantPhotoUrls }) => {
 
     // State to control loading animation visibility
     const [uploading, setUploading] = useState(false);
+
+    // Get hook to show error modal
+    const { showErrorModal } = useErrorModal();
 
     const handleSelect = (event) => {
         setSelectedFiles(Array.from(event.target.files));
@@ -70,7 +74,8 @@ const PhotoModal = ({ plantID, addPlantPhotoUrls }) => {
                 resetSelection();
             }, 150);
         } else {
-            alert("Upload failed!");
+            const error = await response.json();
+            showErrorModal(JSON.stringify(error));
             setUploading(false);
         }
     };

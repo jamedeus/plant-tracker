@@ -1,17 +1,94 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`App matches snapshot when no models exist (setup) 1`] = `
-<div
-  className="container flex flex-col min-h-screen mx-auto pb-16"
->
+[
   <div
-    className="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
+    className="container flex flex-col min-h-screen mx-auto pb-16"
   >
     <div
-      className="navbar-start w-auto"
+      className="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
     >
       <div
-        className="dropdown"
+        className="navbar-start w-auto"
+      >
+        <div
+          className="dropdown"
+        >
+          <div
+            className="btn btn-ghost btn-circle"
+            role="button"
+            tabIndex={0}
+          >
+            <svg
+              className="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M4 6h16M4 12h16M4 18h7"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+              />
+            </svg>
+          </div>
+          <ul
+            className="menu menu-md dropdown-content mt-3 z-[99]
+                                    p-2 shadow bg-base-300 rounded-box w-52"
+            tabIndex={0}
+          >
+            <li>
+              <a
+                onClick={[Function]}
+              >
+                Edit
+              </a>
+            </li>
+            <li>
+              <a
+                onClick={[Function]}
+              >
+                Print QR Codes
+              </a>
+            </li>
+            <li>
+              <a
+                onClick={[Function]}
+              >
+                Light mode
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div
+        className="navbar-center mx-auto"
+      >
+        <div
+          className="dropdown dropdown-center"
+        >
+          <a
+            className="btn btn-ghost"
+            role="button"
+            style={
+              {
+                "fontSize": "32px",
+              }
+            }
+            tabIndex={0}
+          >
+            Plant Overview
+          </a>
+          <div
+            className="dropdown-content z-[1] flex"
+            tabIndex={0}
+          />
+        </div>
+      </div>
+      <div
+        className="navbar-end w-auto invisible"
       >
         <div
           className="btn btn-ghost btn-circle"
@@ -33,118 +110,207 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
             />
           </svg>
         </div>
-        <ul
-          className="menu menu-md dropdown-content mt-3 z-[99]
-                                    p-2 shadow bg-base-300 rounded-box w-52"
-          tabIndex={0}
-        >
-          <li>
-            <a
-              onClick={[Function]}
-            >
-              Edit
-            </a>
-          </li>
-          <li>
-            <a
-              onClick={[Function]}
-            >
-              Print QR Codes
-            </a>
-          </li>
-          <li>
-            <a
-              onClick={[Function]}
-            >
-              Light mode
-            </a>
-          </li>
-        </ul>
       </div>
     </div>
     <div
-      className="navbar-center mx-auto"
+      className="flex flex-col mx-auto text-center my-auto px-8"
+    >
+      <p
+        className="text-2xl"
+      >
+        No plants found!
+      </p>
+      <ul
+        className="steps steps-vertical my-8"
+      >
+        <li
+          className="step"
+        >
+          Print QR codes on sticker paper
+        </li>
+        <li
+          className="step"
+        >
+          Add a sticker to each plant pot
+        </li>
+        <li
+          className="step"
+        >
+          Scan codes to register plants!
+        </li>
+      </ul>
+      <button
+        className="btn btn-accent text-lg"
+        onClick={[Function]}
+      >
+        Print QR Codes
+      </button>
+    </div>
+    <dialog
+      className="modal"
     >
       <div
-        className="dropdown dropdown-center"
+        className="modal-box text-center flex flex-col pt-4"
       >
-        <a
-          className="btn btn-ghost"
-          role="button"
-          style={
-            {
-              "fontSize": "32px",
-            }
-          }
-          tabIndex={0}
+        <form
+          method="dialog"
         >
-          Plant Overview
-        </a>
+          <button
+            className="btn-close absolute right-4 top-4"
+          >
+            <svg
+              aria-hidden="true"
+              className="w-8 h-8"
+              data-slot="icon"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+              />
+            </svg>
+          </button>
+        </form>
+        <h3
+          className="font-bold text-lg mb-6"
+        >
+          Select QR Code Size
+        </h3>
         <div
-          className="dropdown-content z-[1] flex"
-          tabIndex={0}
-        />
-      </div>
-    </div>
-    <div
-      className="navbar-end w-auto invisible"
-    >
-      <div
-        className="btn btn-ghost btn-circle"
-        role="button"
-        tabIndex={0}
-      >
-        <svg
-          className="h-5 w-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-          xmlns="http://www.w3.org/2000/svg"
+          className="h-36 flex flex-col justify-center"
         >
-          <path
-            d="M4 6h16M4 12h16M4 18h7"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth="2"
-          />
-        </svg>
+          <div
+            aria-orientation="horizontal"
+            className="tab-group"
+            role="tablist"
+          >
+            <button
+              aria-selected={true}
+              className="tab-option tab-option-selected"
+              data-headlessui-state="selected"
+              id="headlessui-tabs-tab-:r0:"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              onMouseDown={[Function]}
+              role="tab"
+              tabIndex={0}
+              type="button"
+            >
+              small
+            </button>
+            <button
+              aria-selected={false}
+              className="tab-option "
+              data-headlessui-state=""
+              id="headlessui-tabs-tab-:r1:"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              onMouseDown={[Function]}
+              role="tab"
+              tabIndex={-1}
+              type="button"
+            >
+              medium
+            </button>
+            <button
+              aria-selected={false}
+              className="tab-option "
+              data-headlessui-state=""
+              id="headlessui-tabs-tab-:r2:"
+              onClick={[Function]}
+              onKeyDown={[Function]}
+              onMouseDown={[Function]}
+              role="tab"
+              tabIndex={-1}
+              type="button"
+            >
+              large
+            </button>
+          </div>
+          <div
+            className="mt-4"
+          >
+            <div
+              data-headlessui-state="selected"
+              id="headlessui-tabs-panel-:r3:"
+              role="tabpanel"
+              tabIndex={0}
+            >
+              <span
+                className="text-center"
+              >
+                About ¾ inch wide
+                <br />
+                96
+                 QR codes per sheet
+              </span>
+            </div>
+            <span
+              aria-hidden="true"
+              id="headlessui-tabs-panel-:r4:"
+              role="tabpanel"
+              style={
+                {
+                  "borderWidth": "0",
+                  "clip": "rect(0, 0, 0, 0)",
+                  "height": 0,
+                  "left": 1,
+                  "margin": -1,
+                  "overflow": "hidden",
+                  "padding": 0,
+                  "position": "fixed",
+                  "top": 1,
+                  "whiteSpace": "nowrap",
+                  "width": 1,
+                }
+              }
+              tabIndex={-1}
+            />
+            <span
+              aria-hidden="true"
+              id="headlessui-tabs-panel-:r5:"
+              role="tabpanel"
+              style={
+                {
+                  "borderWidth": "0",
+                  "clip": "rect(0, 0, 0, 0)",
+                  "height": 0,
+                  "left": 1,
+                  "margin": -1,
+                  "overflow": "hidden",
+                  "padding": 0,
+                  "position": "fixed",
+                  "top": 1,
+                  "whiteSpace": "nowrap",
+                  "width": 1,
+                }
+              }
+              tabIndex={-1}
+            />
+          </div>
+        </div>
+        <div
+          className="modal-action mx-auto"
+        >
+          <button
+            className="btn btn-accent"
+            onClick={[Function]}
+          >
+            Generate
+          </button>
+        </div>
       </div>
-    </div>
-  </div>
-  <div
-    className="flex flex-col mx-auto text-center my-auto px-8"
-  >
-    <p
-      className="text-2xl"
-    >
-      No plants found!
-    </p>
-    <ul
-      className="steps steps-vertical my-8"
-    >
-      <li
-        className="step"
+      <form
+        className="modal-backdrop"
+        method="dialog"
       >
-        Print QR codes on sticker paper
-      </li>
-      <li
-        className="step"
-      >
-        Add a sticker to each plant pot
-      </li>
-      <li
-        className="step"
-      >
-        Scan codes to register plants!
-      </li>
-    </ul>
-    <button
-      className="btn btn-accent text-lg"
-      onClick={[Function]}
-    >
-      Print QR Codes
-    </button>
-  </div>
+        <button>
+          close
+        </button>
+      </form>
+    </dialog>
+  </div>,
   <dialog
     className="modal"
   >
@@ -174,129 +340,19 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
       <h3
         className="font-bold text-lg mb-6"
       >
-        Select QR Code Size
+        Error
       </h3>
       <div
-        className="h-36 flex flex-col justify-center"
-      >
-        <div
-          aria-orientation="horizontal"
-          className="tab-group"
-          role="tablist"
-        >
-          <button
-            aria-selected={true}
-            className="tab-option tab-option-selected"
-            data-headlessui-state="selected"
-            id="headlessui-tabs-tab-:r0:"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            onMouseDown={[Function]}
-            role="tab"
-            tabIndex={0}
-            type="button"
-          >
-            small
-          </button>
-          <button
-            aria-selected={false}
-            className="tab-option "
-            data-headlessui-state=""
-            id="headlessui-tabs-tab-:r1:"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            onMouseDown={[Function]}
-            role="tab"
-            tabIndex={-1}
-            type="button"
-          >
-            medium
-          </button>
-          <button
-            aria-selected={false}
-            className="tab-option "
-            data-headlessui-state=""
-            id="headlessui-tabs-tab-:r2:"
-            onClick={[Function]}
-            onKeyDown={[Function]}
-            onMouseDown={[Function]}
-            role="tab"
-            tabIndex={-1}
-            type="button"
-          >
-            large
-          </button>
-        </div>
-        <div
-          className="mt-4"
-        >
-          <div
-            data-headlessui-state="selected"
-            id="headlessui-tabs-panel-:r3:"
-            role="tabpanel"
-            tabIndex={0}
-          >
-            <span
-              className="text-center"
-            >
-              About ¾ inch wide
-              <br />
-              96
-               QR codes per sheet
-            </span>
-          </div>
-          <span
-            aria-hidden="true"
-            id="headlessui-tabs-panel-:r4:"
-            role="tabpanel"
-            style={
-              {
-                "borderWidth": "0",
-                "clip": "rect(0, 0, 0, 0)",
-                "height": 0,
-                "left": 1,
-                "margin": -1,
-                "overflow": "hidden",
-                "padding": 0,
-                "position": "fixed",
-                "top": 1,
-                "whiteSpace": "nowrap",
-                "width": 1,
-              }
-            }
-            tabIndex={-1}
-          />
-          <span
-            aria-hidden="true"
-            id="headlessui-tabs-panel-:r5:"
-            role="tabpanel"
-            style={
-              {
-                "borderWidth": "0",
-                "clip": "rect(0, 0, 0, 0)",
-                "height": 0,
-                "left": 1,
-                "margin": -1,
-                "overflow": "hidden",
-                "padding": 0,
-                "position": "fixed",
-                "top": 1,
-                "whiteSpace": "nowrap",
-                "width": 1,
-              }
-            }
-            tabIndex={-1}
-          />
-        </div>
-      </div>
+        className="min-h-36 flex flex-col justify-center mx-auto"
+      />
       <div
         className="modal-action mx-auto"
       >
         <button
-          className="btn btn-accent"
+          className="btn"
           onClick={[Function]}
         >
-          Generate
+          OK
         </button>
       </div>
     </div>
@@ -308,6 +364,6 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
         close
       </button>
     </form>
-  </dialog>
-</div>
+  </dialog>,
+]
 `;

@@ -13,6 +13,7 @@ import DetailsCard from 'src/components/DetailsCard';
 import TrayDetails from 'src/components/TrayDetails';
 import AddPlantsModal, { openAddPlantsModal } from './AddPlantsModal';
 import RemovePlantsModal, { openRemovePlantsModal } from './RemovePlantsModal';
+import { useErrorModal } from 'src/context/ErrorModalContext';
 
 function App() {
     // Load context set by django template
@@ -41,8 +42,9 @@ function App() {
     // Create ref to access edit details form
     const editDetailsRef = useRef(null);
 
-    // Get hook to show toast message
+    // Get hooks to show toast message, error modal
     const { showToast } = useToast();
+    const { showErrorModal } = useErrorModal();
 
     // Get toggle theme option from context
     const { ToggleThemeOption } = useTheme();
@@ -59,6 +61,9 @@ function App() {
             // Update plant state with new values from response
             const data = await response.json();
             setTray({...tray, ...data});
+        } else {
+            const error = await response.json();
+            showErrorModal(JSON.stringify(error));
         }
     };
 

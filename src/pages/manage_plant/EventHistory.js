@@ -5,6 +5,7 @@ import { DateTime } from 'luxon';
 import { sendPostRequest, timestampToRelative } from 'src/util';
 import CollapseCol from 'src/components/CollapseCol';
 import EditableNodeList from 'src/components/EditableNodeList';
+import { useErrorModal } from 'src/context/ErrorModalContext';
 
 // Takes state bool, function to set state bool, delete button handler
 // Shows edit button when bool is false, cancel and delete buttons when true
@@ -52,6 +53,9 @@ const EventHistory = ({ plantId, events, removeEvent }) => {
     // Create ref to preserve collapse open state between re-renders
     const eventHistoryOpen = useRef(false);
 
+    // Get hook to show error modal
+    const { showErrorModal } = useErrorModal();
+
     // Takes event timestamp and types, sends delete request to backend
     // If successful removes timestamp from react state to re-render history
     const deleteEvent = async (timestamp, type) => {
@@ -64,6 +68,9 @@ const EventHistory = ({ plantId, events, removeEvent }) => {
         // If successful remove event from history column
         if (response.ok) {
             removeEvent(timestamp, type);
+        } else {
+            const error = await response.json();
+            showErrorModal(JSON.stringify(error));
         }
     };
 

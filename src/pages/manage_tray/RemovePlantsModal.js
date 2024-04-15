@@ -4,6 +4,7 @@ import EditableNodeList from 'src/components/EditableNodeList';
 import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
 import ManagePlantsCard from './ManagePlantsCard';
+import { useErrorModal } from 'src/context/ErrorModalContext';
 
 let removePlantsModalRef;
 
@@ -16,6 +17,9 @@ const RemovePlantsModal = ({ trayID, plantDetails, setPlantDetails }) => {
 
     // Ref to track selected items
     const selected = useRef([]);
+
+    // Get hook to show error modal
+    const { showErrorModal } = useErrorModal();
 
     // Handler for remove button in manage plants modal
     const removePlants = async () => {
@@ -33,6 +37,9 @@ const RemovePlantsModal = ({ trayID, plantDetails, setPlantDetails }) => {
             setPlantDetails(plantDetails.filter(
                 plant => !data.removed.includes(plant.uuid)
             ));
+        } else {
+            const error = await response.json();
+            showErrorModal(JSON.stringify(error));
         }
     };
 
