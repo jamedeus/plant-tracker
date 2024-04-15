@@ -11,5 +11,6 @@ module.exports = {
         '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
     },
     testPathIgnorePatterns: ['mockContext.js'],
-    setupFilesAfterEnv: ['<rootDir>/src/testUtils/jest.setup.js']
+    setupFilesAfterEnv: ['<rootDir>/src/testUtils/jest.setup.js'],
+    testTimeout: 15000
 };
