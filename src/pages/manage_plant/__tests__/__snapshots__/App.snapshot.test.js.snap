@@ -78,6 +78,13 @@ exports[`App matches snapshot 1`] = `
               <a
                 onClick={[Function]}
               >
+                Set default photo
+              </a>
+            </li>
+            <li>
+              <a
+                onClick={[Function]}
+              >
                 Light mode
               </a>
             </li>
@@ -1852,6 +1859,29 @@ exports[`App matches snapshot 1`] = `
           </div>
         </div>
         <div
+          className="mb-4"
+        >
+          <div
+            className="card card-compact bg-neutral text-neutral-content mb-4 p-2"
+          >
+            <a
+              href="/media/images/photo3.jpg"
+            >
+              <p
+                className="text-lg text-center font-bold mb-2"
+                title="2024:03:23 10:52:03"
+              >
+                in 21 days
+              </p>
+              <img
+                alt="2024:03:23 10:52:03"
+                className="rounded-2xl"
+                src="/media/thumbnails/photo3_thumb.jpg"
+              />
+            </a>
+          </div>
+        </div>
+        <div
           className="flex mt-4"
         >
           <button
@@ -2433,6 +2463,237 @@ exports[`App matches snapshot 1`] = `
             <span
               className="loading loading-spinner loading-lg"
             />
+          </div>
+        </div>
+      </div>
+      <form
+        className="modal-backdrop"
+        method="dialog"
+      >
+        <button>
+          close
+        </button>
+      </form>
+    </dialog>
+    <dialog
+      className="modal"
+    >
+      <div
+        className="modal-box text-center flex flex-col pt-4"
+      >
+        <form
+          method="dialog"
+        >
+          <button
+            className="btn-close absolute right-4 top-4"
+          >
+            <svg
+              aria-hidden="true"
+              className="w-8 h-8"
+              data-slot="icon"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+              />
+            </svg>
+          </button>
+        </form>
+        <p
+          className="text-lg mb-4"
+        >
+          Select Default Photo
+        </p>
+        <div
+          className="carousel w-full h-min"
+        >
+          <div
+            className="carousel-item relative w-full mx-1"
+            id="slide0"
+          >
+            <img
+              className="w-full rounded-xl object-scale-down my-auto"
+              src="/media/thumbnails/photo1_thumb.jpg"
+            />
+            <div
+              className="absolute flex justify-between transform
+                                    -translate-y-1/2 left-5 right-5 top-1/2"
+            >
+              <a
+                className="btn btn-circle"
+                disabled={true}
+              >
+                <svg
+                  aria-hidden="true"
+                  className="w-6 h-6"
+                  data-slot="icon"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    clipRule="evenodd"
+                    d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z"
+                    fillRule="evenodd"
+                  />
+                </svg>
+              </a>
+              <a
+                className="btn btn-circle"
+                href="#slide1"
+              >
+                <svg
+                  aria-hidden="true"
+                  className="w-6 h-6"
+                  data-slot="icon"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    clipRule="evenodd"
+                    d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z"
+                    fillRule="evenodd"
+                  />
+                </svg>
+              </a>
+            </div>
+            <div
+              className="absolute flex bottom-5 -translate-x-1/2 left-1/2"
+            >
+              <button
+                className="btn rounded-full text-white font-bold"
+                onClick={[Function]}
+              >
+                Select
+              </button>
+            </div>
+          </div>
+          <div
+            className="carousel-item relative w-full mx-1"
+            id="slide1"
+          >
+            <img
+              className="w-full rounded-xl object-scale-down my-auto"
+              src="/media/thumbnails/photo2_thumb.jpg"
+            />
+            <div
+              className="absolute flex justify-between transform
+                                    -translate-y-1/2 left-5 right-5 top-1/2"
+            >
+              <a
+                className="btn btn-circle"
+                href="#slide0"
+              >
+                <svg
+                  aria-hidden="true"
+                  className="w-6 h-6"
+                  data-slot="icon"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    clipRule="evenodd"
+                    d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z"
+                    fillRule="evenodd"
+                  />
+                </svg>
+              </a>
+              <a
+                className="btn btn-circle"
+                href="#slide2"
+              >
+                <svg
+                  aria-hidden="true"
+                  className="w-6 h-6"
+                  data-slot="icon"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    clipRule="evenodd"
+                    d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z"
+                    fillRule="evenodd"
+                  />
+                </svg>
+              </a>
+            </div>
+            <div
+              className="absolute flex bottom-5 -translate-x-1/2 left-1/2"
+            >
+              <button
+                className="btn rounded-full text-white font-bold"
+                onClick={[Function]}
+              >
+                Select
+              </button>
+            </div>
+          </div>
+          <div
+            className="carousel-item relative w-full mx-1"
+            id="slide2"
+          >
+            <img
+              className="w-full rounded-xl object-scale-down my-auto"
+              src="/media/thumbnails/photo3_thumb.jpg"
+            />
+            <div
+              className="absolute flex justify-between transform
+                                    -translate-y-1/2 left-5 right-5 top-1/2"
+            >
+              <a
+                className="btn btn-circle"
+                href="#slide1"
+              >
+                <svg
+                  aria-hidden="true"
+                  className="w-6 h-6"
+                  data-slot="icon"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    clipRule="evenodd"
+                    d="M9.78 4.22a.75.75 0 0 1 0 1.06L7.06 8l2.72 2.72a.75.75 0 1 1-1.06 1.06L5.47 8.53a.75.75 0 0 1 0-1.06l3.25-3.25a.75.75 0 0 1 1.06 0Z"
+                    fillRule="evenodd"
+                  />
+                </svg>
+              </a>
+              <a
+                className="btn btn-circle"
+                disabled={true}
+              >
+                <svg
+                  aria-hidden="true"
+                  className="w-6 h-6"
+                  data-slot="icon"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    clipRule="evenodd"
+                    d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L8.94 8 6.22 5.28a.75.75 0 0 1 0-1.06Z"
+                    fillRule="evenodd"
+                  />
+                </svg>
+              </a>
+            </div>
+            <div
+              className="absolute flex bottom-5 -translate-x-1/2 left-1/2"
+            >
+              <button
+                className="btn rounded-full text-white font-bold"
+                onClick={[Function]}
+              >
+                Select
+              </button>
+            </div>
           </div>
         </div>
       </div>

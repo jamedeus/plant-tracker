@@ -53,6 +53,12 @@ export const mockContext = {
             'image': '/media/images/photo2.jpg',
             'thumbnail': '/media/thumbnails/photo2_thumb.jpg',
             'key': 2
+        },
+        {
+            'created': '2024:03:23 10:52:03',
+            'image': '/media/images/photo3.jpg',
+            'thumbnail': '/media/thumbnails/photo3_thumb.jpg',
+            'key': 3
         }
     ]
 };

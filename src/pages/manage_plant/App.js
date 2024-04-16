@@ -16,6 +16,7 @@ import PhotoCard from './PhotoCard';
 import TrayModal, { openTrayModal } from './TrayModal';
 import PhotoModal, { openPhotoModal } from './PhotoModal';
 import RepotModal, { openRepotModal } from './RepotModal';
+import DefaultPhotoModal, { openDefaultPhotoModal } from './DefaultPhotoModal';
 import EventHistory, { EventHistoryButtons } from './EventHistory';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 
@@ -242,6 +243,9 @@ function App() {
                 <li><a onClick={openPhotoModal}>
                     Upload photos
                 </a></li>
+                <li><a onClick={openDefaultPhotoModal}>
+                    Set default photo
+                </a></li>
                 <ToggleThemeOption />
             </>
         );
@@ -366,6 +370,11 @@ function App() {
             <PhotoModal
                 plantID={plant.uuid}
                 addPlantPhotoUrls={addPlantPhotoUrls}
+            />
+
+            <DefaultPhotoModal
+                plantID={plant.uuid}
+                photoUrls={photoUrls}
             />
         </div>
     );
