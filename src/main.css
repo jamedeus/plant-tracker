@@ -95,3 +95,7 @@ html[data-theme="light"] .pot-size-selected::placeholder {
     background-color: color-mix(in oklab, theme('colors.orange.300'), black 10%);
     border-color: color-mix(in oklab, theme('colors.orange.300'), black 10%);
 }
+
+.alert {
+    @apply whitespace-normal md:whitespace-nowrap;
+}
