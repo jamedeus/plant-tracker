@@ -107,14 +107,27 @@ function App() {
     // Called by bulkAddPlantEvents to update plant water/fertilize timestamps
     const updatePlantTimestamps = (updatedPlants, timestamp, eventType) => {
         let newPlantDetails = [];
+        const lastEvent = eventTypeMap[eventType];
         plantDetails.forEach(plant => {
-            // Overwrite last_watered if UUID in JSON response
+            // Update lastEvent timestamp if UUID in JSON response
             if (updatedPlants.includes(plant.uuid)) {
-                plant[eventTypeMap[eventType]] = timestamp;
+                plant[lastEvent] = getMostRecent(plant[lastEvent], timestamp);
             }
             newPlantDetails.push(plant);
         });
         setPlantDetails(newPlantDetails);
+    };
+
+    // Takes 2 ISO 8601 timestamps, returns most recent
+    const getMostRecent = (oldTime, newTime) => {
+        // Return new if old is null (ie plant had no water events before)
+        if (!oldTime) {
+            return newTime;
+        } else if (newTime > oldTime) {
+            return newTime;
+        } else {
+            return oldTime
+        }
     };
 
     // Buttons used to add bulk events to plants in tray
