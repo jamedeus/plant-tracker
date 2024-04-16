@@ -2519,11 +2519,11 @@ exports[`App matches snapshot 1`] = `
             />
             <div
               className="absolute flex justify-between transform
-                                    -translate-y-1/2 left-5 right-5 top-1/2"
+                                -translate-y-1/2 left-5 right-5 top-1/2"
             >
               <a
                 className="btn btn-circle"
-                disabled={true}
+                href="#slide2"
               >
                 <svg
                   aria-hidden="true"
@@ -2581,7 +2581,7 @@ exports[`App matches snapshot 1`] = `
             />
             <div
               className="absolute flex justify-between transform
-                                    -translate-y-1/2 left-5 right-5 top-1/2"
+                                -translate-y-1/2 left-5 right-5 top-1/2"
             >
               <a
                 className="btn btn-circle"
@@ -2643,7 +2643,7 @@ exports[`App matches snapshot 1`] = `
             />
             <div
               className="absolute flex justify-between transform
-                                    -translate-y-1/2 left-5 right-5 top-1/2"
+                                -translate-y-1/2 left-5 right-5 top-1/2"
             >
               <a
                 className="btn btn-circle"
@@ -2666,7 +2666,7 @@ exports[`App matches snapshot 1`] = `
               </a>
               <a
                 className="btn btn-circle"
-                disabled={true}
+                href="#slide0"
               >
                 <svg
                   aria-hidden="true"

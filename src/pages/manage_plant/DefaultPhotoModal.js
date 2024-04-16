@@ -31,57 +31,29 @@ const DefaultPhotoModal = ({ plantID, photoUrls }) => {
         }
     };
 
-    // Takes photo slide index, returns prev/next buttons
-    // Prev button disabled on first photo, next button disabled on last photo
-    const PhotoButtons = ({ index }) => {
+    // Takes index of photo slide, returns link to next slide
+    // If last slide return link to first (wrap when end reached)
+    const nextPhotoLink = (index) => {
         switch(index) {
-            case(0):
-                return (
-                    <div className={`absolute flex justify-between transform
-                                    -translate-y-1/2 left-5 right-5 top-1/2`}
-                    >
-                        <a className="btn btn-circle" disabled>
-                            <ChevronLeftIcon className="w-6 h-6" />
-                        </a>
-                        <a href={`#slide${index + 1}`} className="btn btn-circle">
-                            <ChevronRightIcon className="w-6 h-6" />
-                        </a>
-                    </div>
-                );
             case(photoUrls.length - 1):
-                return (
-                    <div className={`absolute flex justify-between transform
-                                    -translate-y-1/2 left-5 right-5 top-1/2`}
-                    >
-                        <a href={`#slide${index - 1}`} className="btn btn-circle">
-                            <ChevronLeftIcon className="w-6 h-6" />
-                        </a>
-                        <a className="btn btn-circle" disabled>
-                            <ChevronRightIcon className="w-6 h-6" />
-                        </a>
-                    </div>
-                );
+                return '#slide0'
             default:
-                return (
-                    <div className={`absolute flex justify-between transform
-                                    -translate-y-1/2 left-5 right-5 top-1/2`}
-                    >
-                        <a href={`#slide${index - 1}`} className="btn btn-circle">
-                            <ChevronLeftIcon className="w-6 h-6" />
-                        </a>
-                        <a href={`#slide${index + 1}`} className="btn btn-circle">
-                            <ChevronRightIcon className="w-6 h-6" />
-                        </a>
-                    </div>
-                );
+                return `#slide${index + 1}`;
         }
     };
 
-    PhotoButtons.propTypes = {
-        index: PropTypes.number
+    // Takes index of photo slide, returns link to prev slide
+    // If first slide return link to last (wrap when start reached)
+    const prevPhotoLink = (index) => {
+        switch(index) {
+            case(0):
+                return `#slide${photoUrls.length - 1}`;
+            default:
+                return `#slide${index - 1}`;
+        }
     };
 
-    //
+    // Renders single photo slide with next, prev, and select buttons
     const PhotoSlide = ({ index, photoUrl, photoKey }) => {
         return (
             <div id={`slide${index}`} className="carousel-item relative w-full mx-1">
@@ -89,7 +61,16 @@ const DefaultPhotoModal = ({ plantID, photoUrls }) => {
                     src={photoUrl}
                     className="w-full rounded-xl object-scale-down my-auto"
                 />
-                <PhotoButtons index={index} />
+                <div className={`absolute flex justify-between transform
+                                -translate-y-1/2 left-5 right-5 top-1/2`}
+                >
+                    <a href={prevPhotoLink(index)} className="btn btn-circle">
+                        <ChevronLeftIcon className="w-6 h-6" />
+                    </a>
+                    <a href={nextPhotoLink(index)} className="btn btn-circle">
+                        <ChevronRightIcon className="w-6 h-6" />
+                    </a>
+                </div>
                 <div className="absolute flex bottom-5 -translate-x-1/2 left-1/2">
                     <button
                         className="btn rounded-full text-white font-bold"
