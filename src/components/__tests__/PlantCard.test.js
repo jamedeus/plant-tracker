@@ -1,16 +1,12 @@
-import { render } from '@testing-library/react';
+import { render, within } from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
 import PlantCard from '../PlantCard';
 import '@testing-library/jest-dom';
 
-describe('App', () => {
+describe('PlantCard with water event', () => {
     let component, user;
 
     beforeEach(() => {
-        // Mock system time so last watered time doesn't change
-        jest.useFakeTimers();
-        jest.setSystemTime(new Date('2024-03-01T12:00:00Z'));
-
         // Render component + create userEvent instance to use in tests
         component = render(
             <PlantCard
@@ -20,13 +16,10 @@ describe('App', () => {
                 description={"Mother plant"}
                 pot_size={12}
                 last_watered={"2024-02-27T05:45:44+00:00"}
+                thumbnail={"/media/thumbnails/photo1_thumb.jpg"}
             />
         );
         user = userEvent.setup();
-
-        // Reset all mocks to isolate tests
-        jest.resetAllMocks();
-        jest.useRealTimers();
     });
 
     it('shows the correct information', () => {
@@ -62,5 +55,40 @@ describe('App', () => {
             '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
         );
         jest.resetAllMocks();
+    });
+
+    it('shows water icon and time since the plant was last watered', () => {
+        // Confirm that FA droplet icon is present
+        expect(component.container.querySelector('.fa-droplet')).toBeInTheDocument();
+        expect(component.getByText(/3 days ago/)).toBeInTheDocument();
+    });
+});
+
+
+describe('PlantCard with no water event', () => {
+    let component, user;
+
+    beforeEach(() => {
+        // Render component + create userEvent instance to use in tests
+        component = render(
+            <PlantCard
+                name={"Test Plant"}
+                uuid={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"}
+                species={"Calathea"}
+                description={"Mother plant"}
+                pot_size={12}
+                last_watered={null}
+                thumbnail={"/media/thumbnails/photo1_thumb.jpg"}
+            />
+        );
+        user = userEvent.setup();
+    });
+
+    it('says "never watered" with no icon if plant was never watered', () => {
+        // Confirm icon and relative time are not present
+        expect(component.container.querySelector('.fa-droplet')).toBeNull();
+        expect(component.queryByText(/3 days ago/)).toBeNull();
+        // Confirm "Never watered" is present
+        expect(component.getByText(/Never watered/)).toBeInTheDocument();
     });
 });

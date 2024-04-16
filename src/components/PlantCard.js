@@ -49,15 +49,20 @@ const PlantCard = ({ name, uuid, species, description, pot_size, last_watered, t
     };
 
     const LastWatered = () => {
-        return (
-            <span>
-                <FontAwesomeIcon
-                    icon={faDroplet}
-                    className="mr-2 text-info"
-                />
-                {timestampToRelative(last_watered)}
-            </span>
-        );
+        switch(last_watered) {
+            case(null):
+                return <span>Never watered</span>;
+            default:
+                return (
+                    <span>
+                        <FontAwesomeIcon
+                            icon={faDroplet}
+                            className="mr-2 text-info"
+                        />
+                        {timestampToRelative(last_watered)}
+                    </span>
+                );
+        }
     };
 
     const Body = () => {
