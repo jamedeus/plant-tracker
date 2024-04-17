@@ -8,9 +8,7 @@ const PhotoCard = ({image_url, thumbnail_url, created}) => {
         <div className="card card-compact bg-neutral text-neutral-content mb-4 p-2">
             <a href={image_url}>
                 <p className="text-lg text-center font-bold mb-2" title={created}>
-                    {timestampToRelative(
-                        DateTime.fromFormat(created, 'yyyy:MM:dd HH:mm:ss').toISO()
-                    )}
+                    {timestampToRelative(created)}
                 </p>
                 <img className="rounded-2xl" src={thumbnail_url} alt={created} />
             </a>

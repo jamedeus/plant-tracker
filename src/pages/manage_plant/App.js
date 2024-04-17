@@ -19,6 +19,7 @@ import RepotModal, { openRepotModal } from './RepotModal';
 import DefaultPhotoModal, { openDefaultPhotoModal } from './DefaultPhotoModal';
 import EventHistory, { EventHistoryButtons } from './EventHistory';
 import { useErrorModal } from 'src/context/ErrorModalContext';
+import Timeline from './Timeline';
 
 function App() {
     // Load context set by django template
@@ -343,6 +344,11 @@ function App() {
             </div>
 
             <PhotoHistory />
+
+            <Timeline
+                events={plant.events}
+                photoUrls={photoUrls}
+            />
 
             <EditModal title="Edit Details" onSubmit={submitEditModal}>
                 <PlantDetailsForm

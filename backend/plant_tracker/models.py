@@ -161,7 +161,7 @@ class Plant(models.Model):
         '''
         return [
             {
-                'created': photo.created.strftime(TIME_FORMAT),
+                'created': photo.created.isoformat(),
                 'image': photo.get_photo_url(),
                 'thumbnail': photo.get_thumbnail_url(),
                 'key': photo.pk
