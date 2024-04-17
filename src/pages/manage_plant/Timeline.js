@@ -151,7 +151,7 @@ const Timeline = ({ events, photoUrls }) => {
                     const photos = day[1]['photos'];
                     return (
                         <Fragment key={timestamp}>
-                            <div className="my-auto">
+                            <div className="my-auto" data-date={timestamp}>
                                 <TimelineDate timestamp={timestamp} />
                             </div>
                             <div>

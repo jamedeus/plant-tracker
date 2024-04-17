@@ -300,6 +300,16 @@ describe('App', () => {
         });
     });
 
+    it('scrolls to timeline when calendar day with events is clicked', async () => {
+        // Click calendar day with no events, confirm scrollIntoView NOT called
+        await user.click(app.getByLabelText('March 10, 2024'));
+        expect(window.HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled();
+
+        // Click calendar day with events, confirm scrollIntoView called
+        await user.click(app.getByLabelText('March 1, 2024'));
+        expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled();
+    });
+
     it('redirects to overview when dropdown option is clicked', async () => {
         Object.defineProperty(window, 'location', {
             value: {

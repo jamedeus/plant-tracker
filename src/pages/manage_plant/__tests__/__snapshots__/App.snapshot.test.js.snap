@@ -1906,6 +1906,7 @@ exports[`App matches snapshot 1`] = `
       >
         <div
           className="my-auto"
+          data-date="2024-03-01"
         >
           <div
             className="flex flex-col whitespace-nowrap text-end"
@@ -1981,6 +1982,7 @@ exports[`App matches snapshot 1`] = `
         </div>
         <div
           className="my-auto"
+          data-date="2024-02-29"
         >
           <div
             className="flex flex-col whitespace-nowrap text-end"
@@ -2034,6 +2036,7 @@ exports[`App matches snapshot 1`] = `
         </div>
         <div
           className="my-auto"
+          data-date="2024-02-26"
         >
           <div
             className="flex flex-col whitespace-nowrap text-end"
@@ -2087,6 +2090,7 @@ exports[`App matches snapshot 1`] = `
         </div>
         <div
           className="my-auto"
+          data-date="2024-03-21"
         >
           <div
             className="flex flex-col whitespace-nowrap text-end"
@@ -2130,6 +2134,7 @@ exports[`App matches snapshot 1`] = `
         </div>
         <div
           className="my-auto"
+          data-date="2024-03-22"
         >
           <div
             className="flex flex-col whitespace-nowrap text-end"
@@ -2173,6 +2178,7 @@ exports[`App matches snapshot 1`] = `
         </div>
         <div
           className="my-auto"
+          data-date="2024-03-23"
         >
           <div
             className="flex flex-col whitespace-nowrap text-end"

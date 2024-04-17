@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { DateTime } from 'luxon';
 import Calendar from 'react-calendar';
 import 'src/calendar.css';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/16/solid';
@@ -45,6 +46,18 @@ const EventCalendar = ({ events }) => {
         );
     };
 
+    // Called when user clicks calendar day, scrolls timeline day into view
+    const handleClickDay = (value) => {
+        const t = DateTime.fromISO(value.toISOString()).toFormat('yyyy-MM-dd');
+        const timelineRow = document.querySelector(`[data-date="${t}"]`);
+        if (timelineRow) {
+            timelineRow.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+        }
+    };
+
     return (
         <Calendar
             calendarType={"gregory"}
@@ -55,6 +68,7 @@ const EventCalendar = ({ events }) => {
             tileContent={
                 ({ date, view }) => view === 'month' ? renderDots(date) : null
             }
+            onClickDay={handleClickDay}
         />
     );
 };
