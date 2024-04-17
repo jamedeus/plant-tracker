@@ -1896,16 +1896,52 @@ exports[`App matches snapshot 1`] = `
     <div
       className="flex flex-col mt-8 px-4 lg:max-w-screen-lg mx-auto w-screen"
     >
-      <h1
-        className="text-xl font-medium text-center mb-4"
+      <div
+        className="dropdown dropdown-center dropdown-hover mx-auto"
       >
-        History
-      </h1>
+        <div
+          className="btn btn-ghost text-center text-xl font-bold m-1"
+          role="button"
+          tabIndex={0}
+        >
+          History
+        </div>
+        <ul
+          className="dropdown-content z-[1] menu p-2 shadow
+                                bg-base-300 rounded-box w-44"
+          tabIndex={0}
+        >
+          <li>
+            <details>
+              <summary>
+                2024
+              </summary>
+              <ul>
+                <li>
+                  <a
+                    onClick={[Function]}
+                  >
+                    March
+                  </a>
+                </li>
+                <li>
+                  <a
+                    onClick={[Function]}
+                  >
+                    February
+                  </a>
+                </li>
+              </ul>
+            </details>
+          </li>
+        </ul>
+      </div>
       <div
         className="grid grid-cols-2 grid-cols-[min-content_1fr] gap-4 md:gap-8"
       >
         <div
           className="divider col-span-2 mt-4 mb-0 font-bold"
+          data-yearmonth="2024-03"
         >
           March 2024
         </div>
@@ -2119,6 +2155,7 @@ exports[`App matches snapshot 1`] = `
         </div>
         <div
           className="divider col-span-2 mt-4 mb-0 font-bold"
+          data-yearmonth="2024-02"
         >
           February 2024
         </div>

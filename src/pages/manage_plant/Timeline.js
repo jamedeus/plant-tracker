@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { useRef, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { DateTime } from 'luxon';
 import { timestampToRelative } from 'src/util';
@@ -66,6 +66,18 @@ const Timeline = ({ events, photoUrls }) => {
             splitEvents[yearMonth] = [day];
         } else {
             splitEvents[yearMonth].push(day);
+        }
+    });
+
+    // Build object used to populate quick navigation menu
+    // Contains years as keys, list of month numbers as values
+    const navigationOptions = {};
+    Object.keys(splitEvents).forEach(yearMonth => {
+        const [year, month] = yearMonth.split('-');
+        if (!navigationOptions[year]) {
+            navigationOptions[year] = [month];
+        } else {
+            navigationOptions[year].push(month);
         }
     });
 
@@ -184,7 +196,10 @@ const Timeline = ({ events, photoUrls }) => {
     // Takes year-month string (ie 2024-03)
     const MonthDivider = ({ yearMonth }) => {
         return (
-            <div className="divider col-span-2 mt-4 mb-0 font-bold">
+            <div
+                className="divider col-span-2 mt-4 mb-0 font-bold"
+                data-yearmonth={yearMonth}
+            >
                 {DateTime.fromFormat(yearMonth, 'yyyy-MM').toFormat('MMMM yyyy')}
             </div>
         );
@@ -217,7 +232,7 @@ const Timeline = ({ events, photoUrls }) => {
                     );
                 })}
             </>
-        )
+        );
     };
 
     MonthSection.propTypes = {
@@ -225,9 +240,124 @@ const Timeline = ({ events, photoUrls }) => {
         days: PropTypes.array
     };
 
+    // History title with dropdown menu (hover) to jump to month/year sections
+    const Title = () => {
+        return (
+            <div className="dropdown dropdown-center dropdown-hover mx-auto">
+                <div
+                    tabIndex={0}
+                    role="button"
+                    className="btn btn-ghost text-center text-xl font-bold m-1"
+                >
+                    History
+                </div>
+                <ul
+                    tabIndex={0}
+                    className={`dropdown-content z-[1] menu p-2 shadow
+                                bg-base-300 rounded-box w-44`}
+                >
+                    <QuickNavigation navigationOptions={navigationOptions} />
+                </ul>
+            </div>
+        );
+    };
+
+    const QuickNavigation = ({ navigationOptions }) => {
+        return (
+            <>
+                {Object.keys(navigationOptions).reverse().map(year => {
+                    return (
+                        <QuickNavigationYear
+                            key={year}
+                            year={year}
+                            months={navigationOptions[year]}
+                        />
+                    );
+                })}
+            </>
+        );
+    };
+
+    QuickNavigation.propTypes = {
+        navigationOptions: PropTypes.object
+    };
+
+    // Takes year (string) and array of months (numbers not string) with events
+    // Returns dropdown item with year which expands on hover to show sub-menu
+    // of clickable months that jump to the matching timeline section
+    const QuickNavigationYear = ({year, months}) => {
+        // Create ref used to open sub-menu on hover
+        const detailsRef = useRef(null);
+
+        const open = () => {
+            detailsRef.current.open = true;
+        };
+
+        const close = () => {
+            detailsRef.current.open = false;
+        };
+
+        useEffect(() => {
+            if (detailsRef.current) {
+                detailsRef.current.addEventListener('mouseover', open);
+                detailsRef.current.addEventListener('mouseout', close);
+                return () => {
+                    if (detailsRef.current) {
+                        detailsRef.current.removeEventListener('mouseover', open);
+                        detailsRef.current.removeEventListener('mouseout', close);
+                    }
+                };
+            }
+        }, []);
+
+        // Takes year-month string (ie 2024-03), scrolls to timeline section
+        const JumpTo = (yearMonth) => {
+            const timelineSection = document.querySelector(
+                `[data-yearmonth="${yearMonth}"]`
+            );
+            if (timelineSection) {
+                timelineSection.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center"
+                });
+            }
+            // Close dropdown after click
+            document.activeElement.blur();
+        };
+
+        // Converts month number to name string (ie 04 -> April)
+        const monthNumToName = (month) => {
+            return DateTime.fromFormat(month, 'MM').toFormat('MMMM');
+        };
+
+        return (
+            <li>
+                <details ref={detailsRef}>
+                    <summary>{year}</summary>
+                    <ul>
+                        {months.map(month => {
+                            return (
+                                <li key={month}>
+                                    <a onClick={() => JumpTo(`${year}-${month}`)}>
+                                        {monthNumToName(month)}
+                                    </a>
+                                </li>
+                            );
+                        })}
+                    </ul>
+                </details>
+            </li>
+        );
+    };
+
+    QuickNavigationYear.propTypes = {
+        year: PropTypes.string,
+        months: PropTypes.array
+    };
+
     return (
         <div className="flex flex-col mt-8 px-4 lg:max-w-screen-lg mx-auto w-screen">
-            <h1 className="text-xl font-medium text-center mb-4">History</h1>
+            <Title />
             <div className="grid grid-cols-2 grid-cols-[min-content_1fr] gap-4 md:gap-8">
                 {Object.keys(splitEvents).map(yearMonth => {
                     return (
