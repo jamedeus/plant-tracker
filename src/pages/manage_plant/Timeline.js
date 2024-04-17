@@ -15,8 +15,7 @@ import { faDroplet, faSeedling, faScissors, faMound } from '@fortawesome/free-so
 const Timeline = ({ events, photoUrls }) => {
     // Takes timestamp, returns ISO date string (no hours/minutes)
     const timestampToDateString = (timestamp) => {
-        const date = new Date(timestamp);
-        return date.toISOString().split('T')[0];
+        return DateTime.fromISO(timestamp).setZone('system').toISO().split('T')[0];
     };
 
     // Convert to object with date strings as keys, object with events and
@@ -53,7 +52,7 @@ const Timeline = ({ events, photoUrls }) => {
         return (
             <div className="flex flex-col whitespace-nowrap text-end">
                 <span className="md:text-lg">
-                    {timestampToRelative(timestamp)}
+                    {timestampToRelative(timestamp, true)}
                 </span>
                 <span className="hidden md:block text-sm">
                     {DateTime.fromISO(timestamp).toFormat('MMMM dd, yyyy')}
