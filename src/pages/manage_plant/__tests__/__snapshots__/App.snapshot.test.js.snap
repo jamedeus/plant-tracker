@@ -1905,6 +1905,11 @@ exports[`App matches snapshot 1`] = `
         className="grid grid-cols-2 grid-cols-[min-content_1fr] gap-4 md:gap-8"
       >
         <div
+          className="divider col-span-2 mt-4 mb-0 font-bold"
+        >
+          March 2024
+        </div>
+        <div
           className="my-auto"
           data-date="2024-03-23"
         >
@@ -2111,6 +2116,11 @@ exports[`App matches snapshot 1`] = `
               className="flex flex-row flex-wrap"
             />
           </div>
+        </div>
+        <div
+          className="divider col-span-2 mt-4 mb-0 font-bold"
+        >
+          February 2024
         </div>
         <div
           className="my-auto"

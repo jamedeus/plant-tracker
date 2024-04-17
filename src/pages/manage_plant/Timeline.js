@@ -56,6 +56,19 @@ const Timeline = ({ events, photoUrls }) => {
         });
     });
 
+    // Divide into month increments (dividers rendered between), build object
+    // with year-month string (ie 2024-03) keys, array of day objects as values
+    const splitEvents = {};
+    sortedEvents.forEach(day => {
+        // Slice YYYY-MM from timestamp, truncate day
+        const yearMonth = day.timestamp.slice(0, 7);
+        if (!splitEvents[yearMonth]) {
+            splitEvents[yearMonth] = [day];
+        } else {
+            splitEvents[yearMonth].push(day);
+        }
+    });
+
     const TimelineDate = ({ timestamp }) => {
         return (
             <div className="flex flex-col whitespace-nowrap text-end">
@@ -168,11 +181,27 @@ const Timeline = ({ events, photoUrls }) => {
         photoUrl: PropTypes.string
     };
 
-    return (
-        <div className="flex flex-col mt-8 px-4 lg:max-w-screen-lg mx-auto w-screen">
-            <h1 className="text-xl font-medium text-center mb-4">History</h1>
-            <div className="grid grid-cols-2 grid-cols-[min-content_1fr] gap-4 md:gap-8">
-                {sortedEvents.map((day) => {
+    // Takes year-month string (ie 2024-03)
+    const MonthDivider = ({ yearMonth }) => {
+        return (
+            <div className="divider col-span-2 mt-4 mb-0 font-bold">
+                {DateTime.fromFormat(yearMonth, 'yyyy-MM').toFormat('MMMM yyyy')}
+            </div>
+        );
+    };
+
+    MonthDivider.propTypes = {
+        yearMonth: PropTypes.string
+    };
+
+    // Takes year-month string (ie 2024-03) and array containing object for
+    // each day within month with events/photos. Returns divider with year and
+    // month text followed by pairs of divs for each day (populates grid).
+    const MonthSection = ({ yearMonth, days }) => {
+        return (
+            <>
+                <MonthDivider yearMonth={yearMonth} />
+                {days.map((day) => {
                     return (
                         <Fragment key={day.timestamp}>
                             <div className="my-auto" data-date={day.timestamp}>
@@ -184,6 +213,30 @@ const Timeline = ({ events, photoUrls }) => {
                                     photos={day.photos}
                                 />
                             </div>
+                        </Fragment>
+                    );
+                })}
+            </>
+        )
+    };
+
+    MonthSection.propTypes = {
+        yearMonth: PropTypes.string,
+        days: PropTypes.array
+    };
+
+    return (
+        <div className="flex flex-col mt-8 px-4 lg:max-w-screen-lg mx-auto w-screen">
+            <h1 className="text-xl font-medium text-center mb-4">History</h1>
+            <div className="grid grid-cols-2 grid-cols-[min-content_1fr] gap-4 md:gap-8">
+                {Object.keys(splitEvents).map(yearMonth => {
+                    return (
+                        <Fragment key={yearMonth}>
+                            <MonthSection
+                                key={yearMonth}
+                                yearMonth={yearMonth}
+                                days={splitEvents[yearMonth]}
+                            />
                         </Fragment>
                     );
                 })}
