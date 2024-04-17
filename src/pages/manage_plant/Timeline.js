@@ -111,7 +111,7 @@ const Timeline = ({ events, photoUrls }) => {
                     <span className="m-2 whitespace-nowrap text-sm md:text-base">
                         <FontAwesomeIcon
                             icon={faScissors}
-                            className="mr-2 text-orange-300"
+                            className="mr-2 text-prune"
                         />
                         Pruned
                     </span>
@@ -121,8 +121,7 @@ const Timeline = ({ events, photoUrls }) => {
                     <span className="m-2 whitespace-nowrap text-sm md:text-base">
                         <FontAwesomeIcon
                             icon={faMound}
-                            className="mr-2"
-                            style={{color: '#60381b'}}
+                            className="mr-2 text-repot"
                         />
                         Repoted
                     </span>

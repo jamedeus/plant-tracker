@@ -88,12 +88,12 @@ html[data-theme="light"] .pot-size-selected::placeholder {
 }
 
 .btn-prune {
-    @apply bg-orange-300 text-warning-content border border-transparent;
+    @apply bg-prune text-warning-content border border-transparent;
 }
 
 .btn-prune:hover {
-    background-color: color-mix(in oklab, theme('colors.orange.300'), black 10%);
-    border-color: color-mix(in oklab, theme('colors.orange.300'), black 10%);
+    background-color: color-mix(in oklab, theme('colors.prune'), black 10%);
+    border-color: color-mix(in oklab, theme('colors.prune'), black 10%);
 }
 
 .alert {

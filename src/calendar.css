@@ -98,13 +98,9 @@
 }
 
 .dot-prune {
-    @apply bg-orange-300;
+    @apply bg-prune;
 }
 
-[data-theme="dark"] .dot-repot {
-    background: #60381b;
-}
-
-[data-theme="light"] .dot-repot {
-    background: #703f21;
+.dot-repot {
+    @apply bg-repot;
 }
