@@ -1,11 +1,9 @@
-import React, { useState, useRef, Fragment } from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { DateTime } from 'luxon';
 import { timestampToRelative } from 'src/util';
 import CollapseCol from 'src/components/CollapseCol';
 import EditableNodeList from 'src/components/EditableNodeList';
-import DatetimeInput from 'src/components/DatetimeInput';
-import LastEventTime from 'src/components/LastEventTime';
 import PhotoModal, { openPhotoModal } from './PhotoModal';
 import DefaultPhotoModal, { openDefaultPhotoModal } from './DefaultPhotoModal';
 import { useErrorModal } from 'src/context/ErrorModalContext';
@@ -71,18 +69,23 @@ const Timeline = ({ events, photoUrls }) => {
         );
     };
 
+    TimelineDate.propTypes = {
+        timestamp: PropTypes.string
+    };
+
     const TimelineContent = ({ events, photos}) => {
         return (
             <div className="flex flex-col bg-neutral rounded-xl p-2 md:p-4">
                 <div className="flex flex-row flex-wrap">
                     {events.map((e) => {
-                        return <EventMarker eventType={e} />;
+                        return <EventMarker key={e} eventType={e} />;
                     })}
                 </div>
                 <div className="flex flex-row flex-wrap">
                     {photos.map((photo) => {
                         return (
                             <PhotoThumbnail
+                                key={photo.key}
                                 thumbnailUrl={photo.thumbnail}
                                 photoUrl={photo.image}
                             />
@@ -91,6 +94,11 @@ const Timeline = ({ events, photoUrls }) => {
                 </div>
             </div>
         );
+    };
+
+    TimelineContent.propTypes = {
+        events: PropTypes.array,
+        photos: PropTypes.array
     };
 
     const EventMarker = ({ eventType }) => {
@@ -138,6 +146,10 @@ const Timeline = ({ events, photoUrls }) => {
         }
     };
 
+    EventMarker.propTypes = {
+        eventType: PropTypes.string
+    };
+
     const PhotoThumbnail = ({ thumbnailUrl, photoUrl }) => {
         return (
             <div className="rounded-xl m-2">
@@ -148,7 +160,12 @@ const Timeline = ({ events, photoUrls }) => {
                     />
                 </a>
             </div>
-        )
+        );
+    };
+
+    PhotoThumbnail.propTypes = {
+        thumbnailUrl: PropTypes.string,
+        photoUrl: PropTypes.string
     };
 
     return (

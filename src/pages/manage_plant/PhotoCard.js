@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { DateTime } from 'luxon';
 import { timestampToRelative } from 'src/util';
 
 const PhotoCard = ({image_url, thumbnail_url, created}) => {
