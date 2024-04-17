@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { DateTime } from 'luxon';
-import { timestampToRelative } from 'src/util';
+import { timestampToRelative, capitalize, pastTense } from 'src/util';
 import CollapseCol from 'src/components/CollapseCol';
 import EditableNodeList from 'src/components/EditableNodeList';
 import PhotoModal, { openPhotoModal } from './PhotoModal';
@@ -130,49 +130,28 @@ const Timeline = ({ events, photoUrls }) => {
         photos: PropTypes.array
     };
 
+    const eventIconMap = {
+        'water': (
+            <FontAwesomeIcon icon={faDroplet} className="mr-2 text-info" />
+        ),
+        'fertilize': (
+            <FontAwesomeIcon icon={faSeedling} className="mr-2 text-success" />
+        ),
+        'prune': (
+            <FontAwesomeIcon icon={faScissors} className="mr-2 text-prune" />
+        ),
+        'repot': (
+            <FontAwesomeIcon icon={faMound} className="mr-2 text-repot" />
+        ),
+    };
+
     const EventMarker = ({ eventType }) => {
-        switch(eventType) {
-            case('water'):
-                return (
-                    <span className="m-2 whitespace-nowrap text-sm md:text-base">
-                        <FontAwesomeIcon
-                            icon={faDroplet}
-                            className="mr-2 text-info"
-                        />
-                        Watered
-                    </span>
-                );
-            case('fertilize'):
-                return (
-                    <span className="m-2 whitespace-nowrap text-sm md:text-base">
-                        <FontAwesomeIcon
-                            icon={faSeedling}
-                            className="mr-2 text-success"
-                        />
-                        Fertilized
-                    </span>
-                );
-            case('prune'):
-                return (
-                    <span className="m-2 whitespace-nowrap text-sm md:text-base">
-                        <FontAwesomeIcon
-                            icon={faScissors}
-                            className="mr-2 text-prune"
-                        />
-                        Pruned
-                    </span>
-                );
-            case('repot'):
-                return (
-                    <span className="m-2 whitespace-nowrap text-sm md:text-base">
-                        <FontAwesomeIcon
-                            icon={faMound}
-                            className="mr-2 text-repot"
-                        />
-                        Repoted
-                    </span>
-                );
-        }
+        return (
+            <span className="m-2 whitespace-nowrap text-sm md:text-base">
+                {eventIconMap[eventType]}
+                {pastTense(capitalize(eventType))}
+            </span>
+        );
     };
 
     EventMarker.propTypes = {
