@@ -45,8 +45,18 @@ const Timeline = ({ events, photoUrls }) => {
             formattedEvents[dateKey] = {events: [], photos: []};
         }
         formattedEvents[dateKey]['photos'].push(photo);
-    })
-    console.log(formattedEvents)
+    });
+
+    // Iterate days chronologically and build array of objects with timestamp,
+    // events, and photos keys (each object populates 1 row of timeline)
+    const sortedEvents = [];
+    Object.keys(formattedEvents).sort().reverse().forEach(timestamp => {
+        sortedEvents.push({
+            timestamp: timestamp,
+            events: formattedEvents[timestamp]['events'],
+            photos: formattedEvents[timestamp]['photos']
+        });
+    });
 
     const TimelineDate = ({ timestamp }) => {
         return (
@@ -145,17 +155,17 @@ const Timeline = ({ events, photoUrls }) => {
         <div className="flex flex-col mt-8 px-4 lg:max-w-screen-lg mx-auto w-screen">
             <h1 className="text-xl font-medium text-center mb-4">History</h1>
             <div className="grid grid-cols-2 grid-cols-[min-content_1fr] gap-4 md:gap-8">
-                {Object.entries(formattedEvents).map((day) => {
-                    const timestamp = day[0];
-                    const events = day[1]['events'];
-                    const photos = day[1]['photos'];
+                {sortedEvents.map((day) => {
                     return (
-                        <Fragment key={timestamp}>
-                            <div className="my-auto" data-date={timestamp}>
-                                <TimelineDate timestamp={timestamp} />
+                        <Fragment key={day.timestamp}>
+                            <div className="my-auto" data-date={day.timestamp}>
+                                <TimelineDate timestamp={day.timestamp} />
                             </div>
                             <div>
-                                <TimelineContent events={events} photos={photos} />
+                                <TimelineContent
+                                    events={day.events}
+                                    photos={day.photos}
+                                />
                             </div>
                         </Fragment>
                     );

@@ -1906,6 +1906,138 @@ exports[`App matches snapshot 1`] = `
       >
         <div
           className="my-auto"
+          data-date="2024-03-23"
+        >
+          <div
+            className="flex flex-col whitespace-nowrap text-end"
+          >
+            <span
+              className="md:text-lg"
+            >
+              in 22 days
+            </span>
+            <span
+              className="hidden md:block text-sm"
+            >
+              March 23, 2024
+            </span>
+          </div>
+        </div>
+        <div>
+          <div
+            className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+          >
+            <div
+              className="flex flex-row flex-wrap"
+            />
+            <div
+              className="flex flex-row flex-wrap"
+            >
+              <div
+                className="rounded-xl m-2"
+              >
+                <a
+                  href="/media/images/photo3.jpg"
+                >
+                  <img
+                    className="rounded-lg w-16 h-16 object-cover"
+                    src="/media/thumbnails/photo3_thumb.jpg"
+                  />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="my-auto"
+          data-date="2024-03-22"
+        >
+          <div
+            className="flex flex-col whitespace-nowrap text-end"
+          >
+            <span
+              className="md:text-lg"
+            >
+              in 21 days
+            </span>
+            <span
+              className="hidden md:block text-sm"
+            >
+              March 22, 2024
+            </span>
+          </div>
+        </div>
+        <div>
+          <div
+            className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+          >
+            <div
+              className="flex flex-row flex-wrap"
+            />
+            <div
+              className="flex flex-row flex-wrap"
+            >
+              <div
+                className="rounded-xl m-2"
+              >
+                <a
+                  href="/media/images/photo2.jpg"
+                >
+                  <img
+                    className="rounded-lg w-16 h-16 object-cover"
+                    src="/media/thumbnails/photo2_thumb.jpg"
+                  />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="my-auto"
+          data-date="2024-03-21"
+        >
+          <div
+            className="flex flex-col whitespace-nowrap text-end"
+          >
+            <span
+              className="md:text-lg"
+            >
+              in 20 days
+            </span>
+            <span
+              className="hidden md:block text-sm"
+            >
+              March 21, 2024
+            </span>
+          </div>
+        </div>
+        <div>
+          <div
+            className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+          >
+            <div
+              className="flex flex-row flex-wrap"
+            />
+            <div
+              className="flex flex-row flex-wrap"
+            >
+              <div
+                className="rounded-xl m-2"
+              >
+                <a
+                  href="/media/images/photo1.jpg"
+                >
+                  <img
+                    className="rounded-lg w-16 h-16 object-cover"
+                    src="/media/thumbnails/photo1_thumb.jpg"
+                  />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          className="my-auto"
           data-date="2024-03-01"
         >
           <div
@@ -2086,138 +2218,6 @@ exports[`App matches snapshot 1`] = `
             <div
               className="flex flex-row flex-wrap"
             />
-          </div>
-        </div>
-        <div
-          className="my-auto"
-          data-date="2024-03-21"
-        >
-          <div
-            className="flex flex-col whitespace-nowrap text-end"
-          >
-            <span
-              className="md:text-lg"
-            >
-              in 20 days
-            </span>
-            <span
-              className="hidden md:block text-sm"
-            >
-              March 21, 2024
-            </span>
-          </div>
-        </div>
-        <div>
-          <div
-            className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
-          >
-            <div
-              className="flex flex-row flex-wrap"
-            />
-            <div
-              className="flex flex-row flex-wrap"
-            >
-              <div
-                className="rounded-xl m-2"
-              >
-                <a
-                  href="/media/images/photo1.jpg"
-                >
-                  <img
-                    className="rounded-lg w-16 h-16 object-cover"
-                    src="/media/thumbnails/photo1_thumb.jpg"
-                  />
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          className="my-auto"
-          data-date="2024-03-22"
-        >
-          <div
-            className="flex flex-col whitespace-nowrap text-end"
-          >
-            <span
-              className="md:text-lg"
-            >
-              in 21 days
-            </span>
-            <span
-              className="hidden md:block text-sm"
-            >
-              March 22, 2024
-            </span>
-          </div>
-        </div>
-        <div>
-          <div
-            className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
-          >
-            <div
-              className="flex flex-row flex-wrap"
-            />
-            <div
-              className="flex flex-row flex-wrap"
-            >
-              <div
-                className="rounded-xl m-2"
-              >
-                <a
-                  href="/media/images/photo2.jpg"
-                >
-                  <img
-                    className="rounded-lg w-16 h-16 object-cover"
-                    src="/media/thumbnails/photo2_thumb.jpg"
-                  />
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          className="my-auto"
-          data-date="2024-03-23"
-        >
-          <div
-            className="flex flex-col whitespace-nowrap text-end"
-          >
-            <span
-              className="md:text-lg"
-            >
-              in 22 days
-            </span>
-            <span
-              className="hidden md:block text-sm"
-            >
-              March 23, 2024
-            </span>
-          </div>
-        </div>
-        <div>
-          <div
-            className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
-          >
-            <div
-              className="flex flex-row flex-wrap"
-            />
-            <div
-              className="flex flex-row flex-wrap"
-            >
-              <div
-                className="rounded-xl m-2"
-              >
-                <a
-                  href="/media/images/photo3.jpg"
-                >
-                  <img
-                    className="rounded-lg w-16 h-16 object-cover"
-                    src="/media/thumbnails/photo3_thumb.jpg"
-                  />
-                </a>
-              </div>
-            </div>
           </div>
         </div>
       </div>
