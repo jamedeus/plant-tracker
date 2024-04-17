@@ -275,9 +275,7 @@ describe('App', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                "deleted": [
-                    "2024:03:21 10:52:03"
-                ],
+                "deleted": [1],
                 "failed": []
             })
         }));

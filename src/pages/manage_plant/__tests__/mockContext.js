@@ -43,19 +43,19 @@ export const mockContext = {
     ],
     "photo_urls": [
         {
-            'created': '2024:03:21 10:52:03',
+            'created': '2024-03-21T10:52:03+00:00',
             'image': '/media/images/photo1.jpg',
             'thumbnail': '/media/thumbnails/photo1_thumb.jpg',
             'key': 1
         },
         {
-            'created': '2024:03:22 10:52:03',
+            'created': '2024-03-22T10:52:03+00:00',
             'image': '/media/images/photo2.jpg',
             'thumbnail': '/media/thumbnails/photo2_thumb.jpg',
             'key': 2
         },
         {
-            'created': '2024:03:23 10:52:03',
+            'created': '2024-03-23T10:52:03+00:00',
             'image': '/media/images/photo3.jpg',
             'thumbnail': '/media/thumbnails/photo3_thumb.jpg',
             'key': 3

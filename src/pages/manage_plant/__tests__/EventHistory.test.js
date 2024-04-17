@@ -66,7 +66,7 @@ describe('App', () => {
             })
         }));
 
-        // Get reference to Water History div, open collapse
+        // Get reference to Event History div, open collapse
         const eventHistory = app.getByText("Event History").parentElement;
         await user.click(eventHistory.children[0]);
 
@@ -95,22 +95,25 @@ describe('App', () => {
     });
 
     it('shows the correct history column when event type selected', async () => {
+        // Get reference to Event History div
+        const eventHistory = app.getByText("Event History").parentElement;
+
         // Confirm water event date is visible, fertilize event date is not
-        expect(app.queryByText(/February 29/)).not.toBeNull();
-        expect(app.queryByText(/February 26/)).toBeNull();
+        expect(within(eventHistory).queryByText(/February 29/)).not.toBeNull();
+        expect(within(eventHistory).queryByText(/February 26/)).toBeNull();
 
         // Click fertilize button
         await user.click(app.getByRole("tab", {name: "Fertilize"}));
 
         // Confirm fertilize event date is visible, water event date is not
-        expect(app.queryByText(/February 26/)).not.toBeNull();
-        expect(app.queryByText(/February 29/)).toBeNull();
+        expect(within(eventHistory).queryByText(/February 26/)).not.toBeNull();
+        expect(within(eventHistory).queryByText(/February 29/)).toBeNull();
 
         // Click prune button
         await user.click(app.getByRole("tab", {name: "Prune"}));
 
         // Confirm neither date is visible (no prune events in mock context)
-        expect(app.queryByText(/February 26/)).toBeNull();
-        expect(app.queryByText(/February 29/)).toBeNull();
+        expect(within(eventHistory).queryByText(/February 26/)).toBeNull();
+        expect(within(eventHistory).queryByText(/February 29/)).toBeNull();
     });
 });
