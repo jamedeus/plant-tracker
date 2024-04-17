@@ -9,6 +9,8 @@ import LastEventTime from 'src/components/LastEventTime';
 import PhotoModal, { openPhotoModal } from './PhotoModal';
 import DefaultPhotoModal, { openDefaultPhotoModal } from './DefaultPhotoModal';
 import { useErrorModal } from 'src/context/ErrorModalContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faDroplet, faSeedling, faScissors, faMound } from '@fortawesome/free-solid-svg-icons';
 
 const Timeline = ({ events, photoUrls }) => {
     // Takes timestamp, returns ISO date string (no hours/minutes)
@@ -62,13 +64,13 @@ const Timeline = ({ events, photoUrls }) => {
 
     const TimelineContent = ({ events, photos}) => {
         return (
-            <div className="flex flex-col bg-neutral rounded-xl p-4">
-                <div className="flex flex-row">
+            <div className="flex flex-col bg-neutral rounded-xl p-2 md:p-4">
+                <div className="flex flex-row flex-wrap">
                     {events.map((e) => {
                         return <EventMarker eventType={e} />;
                     })}
                 </div>
-                <div className="flex flex-row">
+                <div className="flex flex-row flex-wrap">
                     {photos.map((photo) => {
                         return (
                             <PhotoThumbnail
@@ -83,11 +85,49 @@ const Timeline = ({ events, photoUrls }) => {
     };
 
     const EventMarker = ({ eventType }) => {
-        return (
-            <span className="m-2">
-                {eventType}
-            </span>
-        );
+        switch(eventType) {
+            case('water'):
+                return (
+                    <span className="m-2 whitespace-nowrap text-sm md:text-base">
+                        <FontAwesomeIcon
+                            icon={faDroplet}
+                            className="mr-2 text-info"
+                        />
+                        Watered
+                    </span>
+                );
+            case('fertilize'):
+                return (
+                    <span className="m-2 whitespace-nowrap text-sm md:text-base">
+                        <FontAwesomeIcon
+                            icon={faSeedling}
+                            className="mr-2 text-success"
+                        />
+                        Fertilized
+                    </span>
+                );
+            case('prune'):
+                return (
+                    <span className="m-2 whitespace-nowrap text-sm md:text-base">
+                        <FontAwesomeIcon
+                            icon={faScissors}
+                            className="mr-2 text-orange-300"
+                        />
+                        Pruned
+                    </span>
+                );
+            case('repot'):
+                return (
+                    <span className="m-2 whitespace-nowrap text-sm md:text-base">
+                        <FontAwesomeIcon
+                            icon={faMound}
+                            className="mr-2"
+                            style={{color: '#60381b'}}
+                        />
+                        Repoted
+                    </span>
+                );
+        }
     };
 
     const PhotoThumbnail = ({ thumbnailUrl, photoUrl }) => {
