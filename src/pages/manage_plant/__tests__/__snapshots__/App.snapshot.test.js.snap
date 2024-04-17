@@ -1940,13 +1940,12 @@ exports[`App matches snapshot 1`] = `
         className="grid grid-cols-2 grid-cols-[min-content_1fr] gap-4 md:gap-8"
       >
         <div
-          className="divider col-span-2 mt-4 mb-0 font-bold"
-          data-yearmonth="2024-03"
+          className="divider col-span-2 mt-4 mb-0 font-bold scroll-mt-20"
         >
           March 2024
         </div>
         <div
-          className="my-auto"
+          className="my-auto scroll-mt-24"
           data-date="2024-03-23"
         >
           <div
@@ -1990,7 +1989,7 @@ exports[`App matches snapshot 1`] = `
           </div>
         </div>
         <div
-          className="my-auto"
+          className="my-auto scroll-mt-24"
           data-date="2024-03-22"
         >
           <div
@@ -2034,7 +2033,7 @@ exports[`App matches snapshot 1`] = `
           </div>
         </div>
         <div
-          className="my-auto"
+          className="my-auto scroll-mt-24"
           data-date="2024-03-21"
         >
           <div
@@ -2078,7 +2077,7 @@ exports[`App matches snapshot 1`] = `
           </div>
         </div>
         <div
-          className="my-auto"
+          className="my-auto scroll-mt-24"
           data-date="2024-03-01"
         >
           <div
@@ -2154,13 +2153,12 @@ exports[`App matches snapshot 1`] = `
           </div>
         </div>
         <div
-          className="divider col-span-2 mt-4 mb-0 font-bold"
-          data-yearmonth="2024-02"
+          className="divider col-span-2 mt-4 mb-0 font-bold scroll-mt-20"
         >
           February 2024
         </div>
         <div
-          className="my-auto"
+          className="my-auto scroll-mt-24"
           data-date="2024-02-29"
         >
           <div
@@ -2214,7 +2212,7 @@ exports[`App matches snapshot 1`] = `
           </div>
         </div>
         <div
-          className="my-auto"
+          className="my-auto scroll-mt-24"
           data-date="2024-02-26"
         >
           <div

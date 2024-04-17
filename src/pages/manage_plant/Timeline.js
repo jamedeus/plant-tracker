@@ -180,7 +180,7 @@ const Timeline = ({ events, photoUrls }) => {
     const MonthDivider = ({ yearMonth }) => {
         return (
             <div
-                className="divider col-span-2 mt-4 mb-0 font-bold"
+                className="divider col-span-2 mt-4 mb-0 font-bold scroll-mt-20"
                 ref={el => sectionRefs.current[yearMonth] = el}
             >
                 {DateTime.fromFormat(yearMonth, 'yyyy-MM').toFormat('MMMM yyyy')}
@@ -202,7 +202,10 @@ const Timeline = ({ events, photoUrls }) => {
                 {days.map((day) => {
                     return (
                         <Fragment key={day.timestamp}>
-                            <div className="my-auto" data-date={day.timestamp}>
+                            <div
+                                className="my-auto scroll-mt-24"
+                                data-date={day.timestamp}
+                            >
                                 <TimelineDate timestamp={day.timestamp} />
                             </div>
                             <div>
@@ -299,7 +302,7 @@ const Timeline = ({ events, photoUrls }) => {
             if (timelineSection) {
                 timelineSection.scrollIntoView({
                     behavior: "smooth",
-                    block: "center"
+                    block: "start"
                 });
             }
             // Close dropdown after click

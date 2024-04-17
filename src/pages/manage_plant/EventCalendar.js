@@ -53,7 +53,7 @@ const EventCalendar = ({ events }) => {
         if (timelineRow) {
             timelineRow.scrollIntoView({
                 behavior: "smooth",
-                block: "center"
+                block: "start"
             });
         }
     };
