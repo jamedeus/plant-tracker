@@ -81,6 +81,10 @@ const Timeline = ({ events, photoUrls }) => {
         }
     });
 
+    // Contains object with year-month strings (ie 2024-03) as keys, divider
+    // elements as values (used form quick navigation scrolling)
+    const sectionRefs = useRef({});
+
     const TimelineDate = ({ timestamp }) => {
         return (
             <div className="flex flex-col whitespace-nowrap text-end">
@@ -198,7 +202,7 @@ const Timeline = ({ events, photoUrls }) => {
         return (
             <div
                 className="divider col-span-2 mt-4 mb-0 font-bold"
-                data-yearmonth={yearMonth}
+                ref={el => sectionRefs.current[yearMonth] = el}
             >
                 {DateTime.fromFormat(yearMonth, 'yyyy-MM').toFormat('MMMM yyyy')}
             </div>
@@ -312,9 +316,7 @@ const Timeline = ({ events, photoUrls }) => {
 
         // Takes year-month string (ie 2024-03), scrolls to timeline section
         const JumpTo = (yearMonth) => {
-            const timelineSection = document.querySelector(
-                `[data-yearmonth="${yearMonth}"]`
-            );
+            const timelineSection = sectionRefs.current[yearMonth];
             if (timelineSection) {
                 timelineSection.scrollIntoView({
                     behavior: "smooth",
