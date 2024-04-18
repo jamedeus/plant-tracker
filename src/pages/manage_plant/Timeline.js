@@ -45,40 +45,40 @@ const Timeline = ({ events, photoUrls }) => {
         formattedEvents[dateKey]['photos'].push(photo);
     });
 
-    // Iterate days chronologically and build array of objects with timestamp,
-    // events, and photos keys (each object populates 1 row of timeline)
-    const sortedEvents = [];
+    // Iterate days chronologically and build object with 1 key per month
+    // containing array of day objects (timestamp, events, and photos keys).
+    //
+    // Month sections are iterated to populate timeline with divider inserted
+    // between each month, day objects populate a single row of the timeline.
+    const sortedEvents = {};
     Object.keys(formattedEvents).sort().reverse().forEach(timestamp => {
-        sortedEvents.push({
+        // Slice YYYY-MM from timestamp, truncate day
+        const yearMonth = timestamp.slice(0, 7);
+
+        // Build object used to populate 1 day of timeline
+        const day = {
             timestamp: timestamp,
             events: formattedEvents[timestamp]['events'],
             photos: formattedEvents[timestamp]['photos']
-        });
-    });
+        }
 
-    // Divide into month increments (dividers rendered between), build object
-    // with year-month string (ie 2024-03) keys, array of day objects as values
-    const splitEvents = {};
-    sortedEvents.forEach(day => {
-        // Slice YYYY-MM from timestamp, truncate day
-        const yearMonth = day.timestamp.slice(0, 7);
-        if (!splitEvents[yearMonth]) {
-            splitEvents[yearMonth] = [day];
+        // Add to correct yearMonth section (or create if first day in month)
+        if (!sortedEvents[yearMonth]) {
+            sortedEvents[yearMonth] = [day];
         } else {
-            splitEvents[yearMonth].push(day);
+            sortedEvents[yearMonth].push(day);
         }
     });
 
     // Build object used to populate quick navigation menu
     // Contains years as keys, list of month numbers as values
     const navigationOptions = {};
-    Object.keys(splitEvents).forEach(yearMonth => {
+    Object.keys(sortedEvents).forEach(yearMonth => {
         const [year, month] = yearMonth.split('-');
         if (!navigationOptions[year]) {
-            navigationOptions[year] = [month];
-        } else {
-            navigationOptions[year].push(month);
+            navigationOptions[year] = [];
         }
+        navigationOptions[year].push(month);
     });
 
     // Contains object with year-month strings (ie 2024-03) as keys, divider
@@ -343,13 +343,13 @@ const Timeline = ({ events, photoUrls }) => {
         <div className="flex flex-col mt-8 px-4 lg:max-w-screen-lg mx-auto w-screen">
             <Title />
             <div className="grid grid-cols-2 grid-cols-[min-content_1fr] gap-4 md:gap-8">
-                {Object.keys(splitEvents).map(yearMonth => {
+                {Object.keys(sortedEvents).map(yearMonth => {
                     return (
                         <Fragment key={yearMonth}>
                             <MonthSection
                                 key={yearMonth}
                                 yearMonth={yearMonth}
-                                days={splitEvents[yearMonth]}
+                                days={sortedEvents[yearMonth]}
                             />
                         </Fragment>
                     );
