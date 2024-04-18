@@ -1,6 +1,7 @@
-import React, { useRef, useEffect, Fragment } from 'react';
+import React, { useRef, useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { DateTime } from 'luxon';
+import { Popover } from "react-tiny-popover";
 import { timestampToRelative, capitalize, pastTense } from 'src/util';
 import CollapseCol from 'src/components/CollapseCol';
 import EditableNodeList from 'src/components/EditableNodeList';
@@ -158,16 +159,36 @@ const Timeline = ({ events, photoUrls }) => {
         eventType: PropTypes.string
     };
 
+    // Photo thumbnail that opens larger popover when clicked
     const PhotoThumbnail = ({ thumbnailUrl, photoUrl }) => {
+        const [popoverOpen, setPopoverOpen] = useState(false);
+
         return (
-            <div className="rounded-xl m-2">
-                <a href={photoUrl}>
+            <Popover
+                isOpen={popoverOpen}
+                positions={["top", "bottom", "left", "right"]}
+                align="center"
+                padding={8}
+                reposition={true}
+                onClickOutside={() => setPopoverOpen(false)}
+                content={
+                    <div className="popover-content popover-enter">
+                        <a href={photoUrl}>
+                            <img
+                                className="rounded-lg popover-image mx-4"
+                                src={thumbnailUrl}
+                            />
+                        </a>
+                    </div>
+                }
+            >
+                <div onClick={() => setPopoverOpen(!popoverOpen)}>
                     <img
-                        className="rounded-lg w-16 h-16 object-cover"
+                        className="rounded-lg m-2 w-16 h-16 object-cover"
                         src={thumbnailUrl}
                     />
-                </a>
-            </div>
+                </div>
+            </Popover>
         );
     };
 
