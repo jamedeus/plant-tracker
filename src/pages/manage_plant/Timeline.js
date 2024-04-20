@@ -5,8 +5,9 @@ import { Popover } from "react-tiny-popover";
 import { timestampToRelative, capitalize, pastTense } from 'src/util';
 import CollapseCol from 'src/components/CollapseCol';
 import EditableNodeList from 'src/components/EditableNodeList';
-import PhotoModal, { openPhotoModal } from './PhotoModal';
+import { openPhotoModal } from './PhotoModal';
 import DefaultPhotoModal, { openDefaultPhotoModal } from './DefaultPhotoModal';
+import { openDeletePhotosModal } from './DeletePhotosModal';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -310,8 +311,12 @@ const Timeline = ({ events, photoUrls }) => {
                             className={`dropdown-content z-[1] menu p-2 shadow
                                         bg-base-300 rounded-box w-40`}
                         >
-                        <li className="ml-auto"><a>Add photos</a></li>
-                        <li className="ml-auto"><a>Delete photos</a></li>
+                        <li className="ml-auto"><a onClick={openPhotoModal}>
+                            Add photos
+                        </a></li>
+                        <li className="ml-auto"><a onClick={openDeletePhotosModal}>
+                            Delete photos
+                        </a></li>
                         <li className="ml-auto"><a>Delete events</a></li>
                         </ul>
                     </div>

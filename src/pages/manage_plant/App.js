@@ -17,6 +17,7 @@ import TrayModal, { openTrayModal } from './TrayModal';
 import PhotoModal, { openPhotoModal } from './PhotoModal';
 import RepotModal, { openRepotModal } from './RepotModal';
 import DefaultPhotoModal, { openDefaultPhotoModal } from './DefaultPhotoModal';
+import DeletePhotosModal from './DeletePhotosModal';
 import EventHistory, { EventHistoryButtons } from './EventHistory';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 import Timeline from './Timeline';
@@ -35,9 +36,6 @@ function App() {
     // Get hooks to show toast message, error modal
     const { showToast } = useToast();
     const { showErrorModal } = useErrorModal();
-
-    // Create ref to preserve photo history open state between re-renders
-    const photoHistoryOpen = useRef(false);
 
     // Create ref to access new event datetime input
     const eventTimeInput = useRef(null);
@@ -130,58 +128,6 @@ function App() {
             1
         );
         setPlant(oldPlant);
-    };
-
-    const PhotoHistory = () => {
-        // Create edit mode state + ref to track selected photos while editing
-        const [editing, setEditing] = useState(false);
-        const selected = useRef([]);
-
-        // Delete button handler
-        const onDelete = async () => {
-            // Build payload with plant UUID and array of selected photo IDs
-            const payload = {
-                plant_id: plant.uuid,
-                delete_photos: selected.current.map(key => parseInt(key))
-            };
-            const response = await sendPostRequest('/delete_plant_photos', payload);
-            // If successful remove photos from history column
-            if (response.ok) {
-                const data = await response.json();
-                let oldPhotoUrls = [...photoUrls];
-                setPhotoUrls(oldPhotoUrls.filter(
-                    photo => !data.deleted.includes(photo.key)
-                ));
-            } else {
-                const error = await response.json();
-                showErrorModal(JSON.stringify(error));
-            }
-        };
-
-        return (
-            <CollapseCol title={"Photos"} openRef={photoHistoryOpen}>
-                <EditableNodeList
-                    editing={editing}
-                    selected={selected}
-                >
-                    {photoUrls.map((photo) => {
-                        return (
-                            <PhotoCard
-                                key={photo.key}
-                                image_url={photo.image}
-                                thumbnail_url={photo.thumbnail}
-                                created={photo.created}
-                            />
-                        );
-                    })}
-                </EditableNodeList>
-                <EventHistoryButtons
-                    editing={editing}
-                    setEditing={setEditing}
-                    handleDelete={onDelete}
-                />
-            </CollapseCol>
-        );
     };
 
     const DropdownOptions = () => {
@@ -343,8 +289,6 @@ function App() {
                 />
             </div>
 
-            <PhotoHistory />
-
             <Timeline
                 events={plant.events}
                 photoUrls={photoUrls}
@@ -381,6 +325,12 @@ function App() {
             <DefaultPhotoModal
                 plantID={plant.uuid}
                 photoUrls={photoUrls}
+            />
+
+            <DeletePhotosModal
+                plantID={plant.uuid}
+                photoUrls={photoUrls}
+                setPhotoUrls={setPhotoUrls}
             />
         </div>
     );
