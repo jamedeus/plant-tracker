@@ -9,7 +9,13 @@ import PhotoModal, { openPhotoModal } from './PhotoModal';
 import DefaultPhotoModal, { openDefaultPhotoModal } from './DefaultPhotoModal';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDroplet, faSeedling, faScissors, faMound } from '@fortawesome/free-solid-svg-icons';
+import {
+    faDroplet,
+    faSeedling,
+    faScissors,
+    faMound,
+    faEllipsis
+} from '@fortawesome/free-solid-svg-icons';
 
 const Timeline = ({ events, photoUrls }) => {
     // Takes timestamp, returns ISO date string (no hours/minutes)
@@ -249,22 +255,52 @@ const Timeline = ({ events, photoUrls }) => {
 
     // History title with dropdown menu (hover) to jump to month/year sections
     const Title = () => {
-        return (
-            <div className="dropdown dropdown-center dropdown-hover mx-auto">
-                <div
-                    tabIndex={0}
-                    role="button"
-                    className="btn btn-ghost text-center text-xl font-bold m-1"
-                >
-                    History
+        const MenuButton = () => {
+            return (
+                <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
+                    <FontAwesomeIcon icon={faEllipsis} className="w-6 h-6" />
                 </div>
-                <ul
-                    tabIndex={0}
-                    className={`dropdown-content z-[1] menu p-2 shadow
-                                bg-base-300 rounded-box w-44`}
-                >
-                    <QuickNavigation navigationOptions={navigationOptions} />
-                </ul>
+            );
+        };
+
+        return (
+            <div className="navbar bg-base-200 rounded-2xl">
+                <div className="navbar-start w-auto invisible">
+                    <MenuButton />
+                </div>
+                <div className="navbar-center mx-auto">
+                    <div className="dropdown dropdown-center dropdown-hover mx-auto">
+                        <div
+                            tabIndex={0}
+                            role="button"
+                            className="btn btn-ghost text-xl font-bold m-1"
+                        >
+                            History
+                        </div>
+                        <ul
+                            tabIndex={0}
+                            className={`dropdown-content z-[1] menu p-2 shadow
+                                        bg-base-300 rounded-box w-44`}
+                        >
+                            <QuickNavigation navigationOptions={navigationOptions} />
+                        </ul>
+                    </div>
+                </div>
+
+                <div className="navbar-end w-auto">
+                    <div className="dropdown dropdown-end">
+                        <MenuButton />
+                        <ul
+                            tabIndex={0}
+                            className={`dropdown-content z-[1] menu p-2 shadow
+                                        bg-base-300 rounded-box w-40`}
+                        >
+                        <li className="ml-auto"><a>Add photos</a></li>
+                        <li className="ml-auto"><a>Delete photos</a></li>
+                        <li className="ml-auto"><a>Delete events</a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
         );
     };
@@ -361,7 +397,7 @@ const Timeline = ({ events, photoUrls }) => {
     };
 
     return (
-        <div className="flex flex-col mt-8 px-4 lg:max-w-screen-lg mx-auto w-screen">
+        <div className="flex flex-col mt-8 mx-4 px-4 pb-4 lg:max-w-screen-lg bg-base-200 rounded-2xl">
             <Title />
             <div className="grid grid-cols-2 grid-cols-[min-content_1fr] gap-4 md:gap-8">
                 {Object.keys(sortedEvents).map(yearMonth => {
