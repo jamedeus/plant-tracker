@@ -92,14 +92,29 @@ const Timeline = ({ events, photoUrls }) => {
     // elements as values (used form quick navigation scrolling)
     const sectionRefs = useRef({});
 
+    // Takes ISO timestamp string, returns "x days ago"
+    const getRelativeTimeString = (timestamp) => {
+        const relative = DateTime.fromISO(
+            timestamp
+        ).setZone('system').toRelativeCalendar({unit: 'days'});
+
+        // Remove " ago" if > 1000 days old
+        const days = relative.split(' ')[0];
+        if (days.length > 3) {
+            return relative.replace(' ago', '');
+        } else {
+            return relative;
+        }
+    };
+
     const TimelineDate = ({ timestamp }) => {
         return (
-            <div className="flex flex-col whitespace-nowrap text-end">
-                <span className="md:text-lg">
-                    {timestampToRelative(timestamp, true)}
+            <div className="flex flex-col whitespace-nowrap text-end md:ml-4">
+                <span className="text-sm md:text-lg">
+                    {getRelativeTimeString(timestamp)}
                 </span>
                 <span className="hidden md:block text-sm">
-                    {DateTime.fromISO(timestamp).toFormat('MMMM dd, yyyy')}
+                    {DateTime.fromISO(timestamp).toFormat('MMM dd, yyyy')}
                 </span>
             </div>
         );
@@ -207,7 +222,7 @@ const Timeline = ({ events, photoUrls }) => {
     const MonthDivider = ({ yearMonth }) => {
         return (
             <div
-                className="divider col-span-2 mt-4 mb-0 font-bold scroll-mt-20"
+                className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
                 ref={el => sectionRefs.current[yearMonth] = el}
             >
                 {DateTime.fromFormat(yearMonth, 'yyyy-MM').toFormat('MMMM yyyy')}
