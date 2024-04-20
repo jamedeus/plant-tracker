@@ -109,11 +109,11 @@ const Timeline = ({ events, photoUrls }) => {
 
     const TimelineDate = ({ timestamp }) => {
         return (
-            <div className="flex flex-col whitespace-nowrap text-end md:ml-4">
-                <span className="text-sm md:text-lg">
+            <div className="flex flex-col h-full whitespace-nowrap text-end md:ml-4">
+                <span className="text-sm md:text-lg my-auto md:mt-auto md:mb-0">
                     {getRelativeTimeString(timestamp)}
                 </span>
-                <span className="hidden md:block text-sm">
+                <span className="hidden md:block text-sm mb-auto">
                     {DateTime.fromISO(timestamp).toFormat('MMM dd, yyyy')}
                 </span>
             </div>
@@ -245,7 +245,7 @@ const Timeline = ({ events, photoUrls }) => {
                     return (
                         <Fragment key={day.timestamp}>
                             <div
-                                className="my-auto scroll-mt-24"
+                                className="h-full scroll-mt-20"
                                 data-date={day.timestamp}
                             >
                                 <TimelineDate timestamp={day.timestamp} />
@@ -412,7 +412,9 @@ const Timeline = ({ events, photoUrls }) => {
     };
 
     return (
-        <div className="flex flex-col mt-8 mx-4 px-4 pb-4 lg:max-w-screen-lg bg-base-200 rounded-2xl">
+        <div className={`flex flex-col mt-8 mx-4 md:mx-auto px-4 pb-4
+                        lg:max-w-screen-lg bg-base-200 rounded-2xl`}
+        >
             <Title />
             <div className="grid grid-cols-2 grid-cols-[min-content_1fr] gap-4 md:gap-8">
                 {Object.keys(sortedEvents).map(yearMonth => {
