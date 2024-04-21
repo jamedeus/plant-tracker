@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { render, within } from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
 import createMockContext from 'src/testUtils/createMockContext';
@@ -8,6 +9,32 @@ import { ThemeProvider } from 'src/context/ThemeContext';
 import { ErrorModalProvider } from 'src/context/ErrorModalContext';
 import { mockContext } from './mockContext';
 
+const TestComponent = () => {
+    // Add prune and repot events to mock context
+    const state = {
+        ...mockContext.plant,
+        events: {
+            ...mockContext.plant.events,
+            prune: ["2024-01-01T15:45:44+00:00"],
+            repot: ["2024-01-01T15:45:44+00:00"],
+        }
+    }
+    const [plant, setPlant] = useState(state);
+
+    // Render app
+    return (
+        <>
+            <EventHistoryModal
+                plant={state}
+                removeEvent={jest.fn()}
+            />
+            <button onClick={openEventHistoryModal}>
+                Open event history modal
+            </button>
+        </>
+    );
+};
+
 describe('App', () => {
     let component, user;
 
@@ -15,31 +42,51 @@ describe('App', () => {
         // Render component + create userEvent instance to use in tests
         component = render(
             <ErrorModalProvider>
-                <EventHistoryModal
-                    plant={mockContext.plant}
-                    removeEvent={jest.fn()}
-                />
+                <TestComponent />
             </ErrorModalProvider>
         );
         user = userEvent.setup();
     });
 
-    it('sends correct payload when water event is deleted', async () => {
+    it('opens modal when openDeletePhotosModal called', async () => {
+        // Click button, confirm HTMLDialogElement method was called
+        await user.click(component.getByText('Open event history modal'));
+        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
+    });
+
+    it('sends correct payload when events are deleted', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "deleted": "water",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                "deleted": [
+                    {"type": "water", "timestamp": "2024-03-01T15:45:44+00:00"},
+                    {"type": "fertilize", "timestamp": "2024-03-01T15:45:44+00:00"},
+                    {"type": "prune", "timestamp": "2024-01-01T15:45:44+00:00"},
+                    {"type": "repot", "timestamp": "2024-01-01T15:45:44+00:00"}
+                ],
+                "failed": []
             })
         }));
 
         // Click first event in water column (default)
         await user.click(component.getByText(/4 hours ago/));
 
+        // Click second water event twice (un-select), should not be in payload
+        await user.click(component.getByText(/1 day ago/));
+        await user.click(component.getByText(/1 day ago/));
+
         // Switch to fertilize column, click first event
         await user.click(component.getByText(/Fertilize/));
         await user.click(component.getByText(/4 hours ago/));
+
+        // Switch to prune column, click first event
+        await user.click(component.getByText(/Prune/));
+        await user.click(component.getByText(/2 months ago/));
+
+        // Switch to repot column, click first event
+        await user.click(component.getByText(/Repot/));
+        await user.click(component.getByText(/2 months ago/));
 
         // Click delete button
         await user.click(component.getByText('Delete'));
@@ -51,7 +98,9 @@ describe('App', () => {
                 "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
                 "events": [
                     {"type": "water", "timestamp": "2024-03-01T15:45:44+00:00"},
-                    {"type": "fertilize", "timestamp": "2024-03-01T15:45:44+00:00"}
+                    {"type": "fertilize", "timestamp": "2024-03-01T15:45:44+00:00"},
+                    {"type": "prune", "timestamp": "2024-01-01T15:45:44+00:00"},
+                    {"type": "repot", "timestamp": "2024-01-01T15:45:44+00:00"}
                 ]
             }),
             headers: postHeaders
