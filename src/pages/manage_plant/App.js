@@ -278,7 +278,7 @@ function App() {
                 </div>
             </div>
 
-            <div className="mx-auto my-16">
+            <div className="mx-auto my-8">
                 <EventCalendar events={plant.events} />
             </div>
 

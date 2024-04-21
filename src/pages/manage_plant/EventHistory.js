@@ -69,20 +69,22 @@ const EventHistoryModal = ({ plant, removeEvent }) => {
     // When clicked color changes and timestamp is passed to onSelect callback
     const EventCard = ({ timestamp, selected, onSelect }) => {
         const [cardClass, setCardClass] = useState(
-            selected ? 'bg-primary text-white' : 'bg-neutral text-neutral-content'
+            selected ? 'ring-2 ring-error ring-inset' : ''
         );
 
         const toggle = (event) => {
             if (event.target.checked) {
-                setCardClass('bg-primary text-white');
+                setCardClass('ring-2 ring-error ring-inset');
             } else {
-                setCardClass('bg-neutral text-neutral-content');
+                setCardClass('');
             }
             onSelect(timestamp);
         };
 
         return (
-            <label className={`card card-compact max-w-80 mb-4 mx-auto select-none ${cardClass}`}>
+            <label className={`card card-compact max-w-80 mb-4 mx-auto
+                select-none bg-neutral text-neutral-content ${cardClass}`}
+            >
                 <input
                     type="checkbox"
                     className="hidden"
@@ -122,7 +124,7 @@ const EventHistoryModal = ({ plant, removeEvent }) => {
 
         return (
             <div className="flex flex-col mx-auto">
-                <div className="max-h-half-screen overflow-scroll">
+                <div className="max-h-half-screen overflow-scroll px-4">
                     {events.map((timestamp) => {
                         return (
                             <EventCard
@@ -173,7 +175,7 @@ const EventHistoryModal = ({ plant, removeEvent }) => {
                     </Tab>
                 </Tab.List>
 
-                <Tab.Panels className="mt-8">
+                <Tab.Panels className="mt-8 mb-4">
                     <Tab.Panel>
                         <EventsCol
                             events={plant.events.water}
@@ -202,7 +204,7 @@ const EventHistoryModal = ({ plant, removeEvent }) => {
             </Tab.Group>
             <div className="flex mt-4">
                 <button
-                    className="btn btn-outline btn-error mx-auto"
+                    className="btn btn-error text-white mx-auto"
                     onClick={deleteAllSelected}
                 >
                     Delete

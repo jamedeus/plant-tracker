@@ -420,7 +420,7 @@ const Timeline = ({ events, photoUrls }) => {
     };
 
     return (
-        <div className={`flex flex-col mt-8 mx-4 md:mx-auto px-4 pb-4
+        <div className={`flex flex-col mt-2 mx-4 md:mx-auto px-4 pb-4
                         lg:max-w-screen-lg bg-base-200 rounded-2xl`}
         >
             <Title />
