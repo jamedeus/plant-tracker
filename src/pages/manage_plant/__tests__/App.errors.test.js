@@ -70,29 +70,6 @@ describe('App', () => {
         expect(app.queryByText(/failed to create event/)).not.toBeNull();
     });
 
-    it('shows error modal if error received while deleting event', async() => {
-        // Mock fetch function to return arbitrary error
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            json: () => Promise.resolve({
-                "error": "failed to delete event"
-            })
-        }));
-
-        // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to delete event/)).toBeNull();
-
-        // Simulate user deleting first event in water history
-        const eventHistory = app.getByText("Event History").parentElement;
-        await user.click(eventHistory.children[0]);
-        await user.click(within(eventHistory).getByText('Edit'));
-        user.click(app.container.querySelectorAll('.radio')[0]);
-        await user.click(within(eventHistory).getByText('Delete'));
-
-        // Confirm modal appeared with arbitrary error text
-        expect(app.queryByText(/failed to delete event/)).not.toBeNull();
-    });
-
     it('shows error modal if error received while removing from tray', async() => {
         // Mock fetch function to return arbitrary error
         global.fetch = jest.fn(() => Promise.resolve({
@@ -110,29 +87,6 @@ describe('App', () => {
 
         // Confirm modal appeared with arbitrary error text
         expect(app.queryByText(/failed to remove plant from tray/)).not.toBeNull();
-    });
-
-    it('shows error modal if error received while deleting photos', async() => {
-        // Mock fetch function to return arbitrary error
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: false,
-            json: () => Promise.resolve({
-                "error": "failed to delete photos"
-            })
-        }));
-
-        // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to delete photos/)).toBeNull();
-
-        // Simulate user deleting first photo in history
-        const photoHistory = app.getByText("Photos").parentElement;
-        await user.click(photoHistory.children[0]);
-        await user.click(within(photoHistory).getByText('Edit'));
-        user.click(app.container.querySelectorAll('.radio')[0]);
-        await user.click(within(photoHistory).getByText('Delete'));
-
-        // Confirm modal appeared with arbitrary error text
-        expect(app.queryByText(/failed to delete photos/)).not.toBeNull();
     });
 
     it('shows error modal if error received while repotting plant', async() => {

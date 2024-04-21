@@ -1,0 +1,103 @@
+import { render, within } from '@testing-library/react';
+import userEvent from "@testing-library/user-event";
+import createMockContext from 'src/testUtils/createMockContext';
+import { postHeaders } from 'src/testUtils/headers';
+import EventHistoryModal, { openEventHistoryModal } from '../EventHistoryModal';
+import { ToastProvider } from 'src/context/ToastContext';
+import { ThemeProvider } from 'src/context/ThemeContext';
+import { ErrorModalProvider } from 'src/context/ErrorModalContext';
+import { mockContext } from './mockContext';
+
+describe('App', () => {
+    let component, user;
+
+    beforeEach(() => {
+        // Render component + create userEvent instance to use in tests
+        component = render(
+            <ErrorModalProvider>
+                <EventHistoryModal
+                    plant={mockContext.plant}
+                    removeEvent={jest.fn()}
+                />
+            </ErrorModalProvider>
+        );
+        user = userEvent.setup();
+    });
+
+    it('sends correct payload when water event is deleted', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "deleted": "water",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
+
+        // Click first event in water column (default)
+        await user.click(component.getByText(/4 hours ago/));
+
+        // Switch to fertilize column, click first event
+        await user.click(component.getByText(/Fertilize/));
+        await user.click(component.getByText(/4 hours ago/));
+
+        // Click delete button
+        await user.click(component.getByText('Delete'));
+
+        // Confirm correct data posted to /delete_plant_event endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_delete_plant_events', {
+            method: 'POST',
+            body: JSON.stringify({
+                "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                "events": [
+                    {"type": "water", "timestamp": "2024-03-01T15:45:44+00:00"},
+                    {"type": "fertilize", "timestamp": "2024-03-01T15:45:44+00:00"}
+                ]
+            }),
+            headers: postHeaders
+        });
+    });
+
+    it('shows the correct history column when event type selected', async () => {
+        // Get reference to Event History div
+        const eventHistory = component.getByText("Event History").parentElement;
+
+        // Confirm water event date is visible, fertilize event date is not
+        expect(component.queryByText(/February 29/)).not.toBeNull();
+        expect(component.queryByText(/February 26/)).toBeNull();
+
+        // Click fertilize button
+        await user.click(component.getByText(/Fertilize/));
+
+        // Confirm fertilize event date is visible, water event date is not
+        expect(component.queryByText(/February 26/)).not.toBeNull();
+        expect(component.queryByText(/February 29/)).toBeNull();
+
+        // Click prune button
+        await user.click(component.getByText(/Prune/));
+
+        // Confirm neither date is visible (no prune events in mock context)
+        expect(component.queryByText(/February 26/)).toBeNull();
+        expect(component.queryByText(/February 29/)).toBeNull();
+    });
+
+    it('shows error modal if error received while deleting event', async() => {
+        // Mock fetch function to return arbitrary error
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            json: () => Promise.resolve({
+                "error": "failed to delete event"
+            })
+        }));
+
+        // Confirm arbitrary error does not appear on page
+        expect(component.queryByText(/failed to delete event/)).toBeNull();
+
+        // Simulate user deleting first event in water history
+        await user.click(component.getByText(/4 hours ago/));
+        await user.click(component.getByText('Delete'));
+
+        // Confirm modal appeared with arbitrary error text
+        expect(component.queryByText(/failed to delete event/)).not.toBeNull();
+    });
+});

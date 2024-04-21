@@ -3,195 +3,295 @@
 exports[`App matches snapshot 1`] = `
 [
   <div
-    className="flex flex-col mt-8 px-4 lg:max-w-screen-lg mx-auto w-screen"
+    className="flex flex-col mt-2 mx-4 md:mx-auto px-4 pb-4
+                        lg:max-w-screen-lg bg-base-200 rounded-2xl"
   >
     <div
-      className="dropdown dropdown-center dropdown-hover mx-auto"
+      className="navbar bg-base-200 rounded-2xl"
     >
       <div
-        className="btn btn-ghost text-center text-xl font-bold m-1"
-        role="button"
-        tabIndex={0}
+        className="navbar-start w-auto invisible"
       >
-        History
+        <div
+          className="btn btn-ghost btn-circle"
+          role="button"
+          tabIndex={0}
+        >
+          <svg
+            aria-hidden="true"
+            className="svg-inline--fa fa-ellipsis w-6 h-6"
+            data-icon="ellipsis"
+            data-prefix="fas"
+            focusable="false"
+            role="img"
+            style={{}}
+            viewBox="0 0 448 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z"
+              fill="currentColor"
+              style={{}}
+            />
+          </svg>
+        </div>
       </div>
-      <ul
-        className="dropdown-content z-[1] menu p-2 shadow
-                                bg-base-300 rounded-box w-44"
-        tabIndex={0}
+      <div
+        className="navbar-center mx-auto"
       >
-        <li>
-          <details>
-            <summary>
-              2024
-            </summary>
-            <ul>
-              <li>
-                <a
-                  onClick={[Function]}
-                >
-                  April
-                </a>
-              </li>
-              <li>
-                <a
-                  onClick={[Function]}
-                >
-                  March
-                </a>
-              </li>
-              <li>
-                <a
-                  onClick={[Function]}
-                >
-                  February
-                </a>
-              </li>
-              <li>
-                <a
-                  onClick={[Function]}
-                >
-                  January
-                </a>
-              </li>
-            </ul>
-          </details>
-        </li>
-        <li>
-          <details>
-            <summary>
-              2023
-            </summary>
-            <ul>
-              <li>
-                <a
-                  onClick={[Function]}
-                >
-                  December
-                </a>
-              </li>
-              <li>
-                <a
-                  onClick={[Function]}
-                >
-                  November
-                </a>
-              </li>
-              <li>
-                <a
-                  onClick={[Function]}
-                >
-                  October
-                </a>
-              </li>
-              <li>
-                <a
-                  onClick={[Function]}
-                >
-                  September
-                </a>
-              </li>
-              <li>
-                <a
-                  onClick={[Function]}
-                >
-                  August
-                </a>
-              </li>
-              <li>
-                <a
-                  onClick={[Function]}
-                >
-                  July
-                </a>
-              </li>
-              <li>
-                <a
-                  onClick={[Function]}
-                >
-                  June
-                </a>
-              </li>
-              <li>
-                <a
-                  onClick={[Function]}
-                >
-                  May
-                </a>
-              </li>
-              <li>
-                <a
-                  onClick={[Function]}
-                >
-                  April
-                </a>
-              </li>
-              <li>
-                <a
-                  onClick={[Function]}
-                >
-                  March
-                </a>
-              </li>
-              <li>
-                <a
-                  onClick={[Function]}
-                >
-                  February
-                </a>
-              </li>
-              <li>
-                <a
-                  onClick={[Function]}
-                >
-                  January
-                </a>
-              </li>
-            </ul>
-          </details>
-        </li>
-        <li>
-          <details>
-            <summary>
-              2008
-            </summary>
-            <ul>
-              <li>
-                <a
-                  onClick={[Function]}
-                >
-                  August
-                </a>
-              </li>
-            </ul>
-          </details>
-        </li>
-      </ul>
+        <div
+          className="dropdown dropdown-center dropdown-hover mx-auto"
+        >
+          <div
+            className="btn btn-ghost text-xl font-bold m-1"
+            role="button"
+            tabIndex={0}
+          >
+            History
+          </div>
+          <ul
+            className="dropdown-content z-[1] menu p-2 shadow
+                                        bg-base-300 rounded-box w-44"
+            tabIndex={0}
+          >
+            <li>
+              <details>
+                <summary>
+                  2024
+                </summary>
+                <ul>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      April
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      March
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      February
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      January
+                    </a>
+                  </li>
+                </ul>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  2023
+                </summary>
+                <ul>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      December
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      November
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      October
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      September
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      August
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      July
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      June
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      May
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      April
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      March
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      February
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      January
+                    </a>
+                  </li>
+                </ul>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  2008
+                </summary>
+                <ul>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      August
+                    </a>
+                  </li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div
+        className="navbar-end w-auto"
+      >
+        <div
+          className="dropdown dropdown-end"
+        >
+          <div
+            className="btn btn-ghost btn-circle"
+            role="button"
+            tabIndex={0}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-ellipsis w-6 h-6"
+              data-icon="ellipsis"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              style={{}}
+              viewBox="0 0 448 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z"
+                fill="currentColor"
+                style={{}}
+              />
+            </svg>
+          </div>
+          <ul
+            className="dropdown-content z-[1] menu p-2 shadow
+                                        bg-base-300 rounded-box w-40"
+            tabIndex={0}
+          >
+            <li
+              className="ml-auto"
+            >
+              <a
+                onClick={[Function]}
+              >
+                Add photos
+              </a>
+            </li>
+            <li
+              className="ml-auto"
+            >
+              <a
+                onClick={[Function]}
+              >
+                Delete photos
+              </a>
+            </li>
+            <li
+              className="ml-auto"
+            >
+              <a
+                onClick={[Function]}
+              >
+                Delete events
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
     <div
       className="grid grid-cols-2 grid-cols-[min-content_1fr] gap-4 md:gap-8"
     >
       <div
-        className="divider col-span-2 mt-4 mb-0 font-bold scroll-mt-20"
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
       >
         April 2024
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2024-04-17"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
-            next month
+            in 47 days
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            April 17, 2024
+            Apr 17, 2024
           </span>
         </div>
       </div>
@@ -231,21 +331,21 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2024-04-16"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
-            next month
+            in 46 days
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            April 16, 2024
+            Apr 16, 2024
           </span>
         </div>
       </div>
@@ -285,21 +385,21 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2024-04-15"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
-            next month
+            in 45 days
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            April 15, 2024
+            Apr 15, 2024
           </span>
         </div>
       </div>
@@ -339,21 +439,21 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2024-04-14"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
-            next month
+            in 44 days
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            April 14, 2024
+            Apr 14, 2024
           </span>
         </div>
       </div>
@@ -393,21 +493,21 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2024-04-13"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
-            next month
+            in 43 days
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            April 13, 2024
+            Apr 13, 2024
           </span>
         </div>
       </div>
@@ -491,21 +591,21 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2024-04-12"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
-            next month
+            in 42 days
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            April 12, 2024
+            Apr 12, 2024
           </span>
         </div>
       </div>
@@ -567,21 +667,21 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2024-04-11"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
-            next month
+            in 41 days
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            April 11, 2024
+            Apr 11, 2024
           </span>
         </div>
       </div>
@@ -621,26 +721,26 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="divider col-span-2 mt-4 mb-0 font-bold scroll-mt-20"
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
       >
         March 2024
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2024-03-31"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
             in 30 days
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            March 31, 2024
+            Mar 31, 2024
           </span>
         </div>
       </div>
@@ -680,21 +780,21 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2024-03-25"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
             in 24 days
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            March 25, 2024
+            Mar 25, 2024
           </span>
         </div>
       </div>
@@ -776,168 +876,120 @@ exports[`App matches snapshot 1`] = `
             className="flex flex-row flex-wrap"
           >
             <div
-              className="rounded-xl m-2"
+              onClick={[Function]}
             >
-              <a
-                href="/media/images/IMG_8103.jpeg"
-              >
-                <img
-                  className="rounded-lg w-16 h-16 object-cover"
-                  src="/media/thumbnails/IMG_8103_thumb.jpg"
-                />
-              </a>
+              <img
+                className="rounded-lg m-2 w-16 h-16 object-cover"
+                src="/media/thumbnails/IMG_8103_thumb.jpg"
+              />
             </div>
             <div
-              className="rounded-xl m-2"
+              onClick={[Function]}
             >
-              <a
-                href="/media/images/IMG_8102.jpeg"
-              >
-                <img
-                  className="rounded-lg w-16 h-16 object-cover"
-                  src="/media/thumbnails/IMG_8102_thumb.jpg"
-                />
-              </a>
+              <img
+                className="rounded-lg m-2 w-16 h-16 object-cover"
+                src="/media/thumbnails/IMG_8102_thumb.jpg"
+              />
             </div>
             <div
-              className="rounded-xl m-2"
+              onClick={[Function]}
             >
-              <a
-                href="/media/images/IMG_8101.jpeg"
-              >
-                <img
-                  className="rounded-lg w-16 h-16 object-cover"
-                  src="/media/thumbnails/IMG_8101_thumb.jpg"
-                />
-              </a>
+              <img
+                className="rounded-lg m-2 w-16 h-16 object-cover"
+                src="/media/thumbnails/IMG_8101_thumb.jpg"
+              />
             </div>
             <div
-              className="rounded-xl m-2"
+              onClick={[Function]}
             >
-              <a
-                href="/media/images/IMG_8098.jpeg"
-              >
-                <img
-                  className="rounded-lg w-16 h-16 object-cover"
-                  src="/media/thumbnails/IMG_8098_thumb.jpg"
-                />
-              </a>
+              <img
+                className="rounded-lg m-2 w-16 h-16 object-cover"
+                src="/media/thumbnails/IMG_8098_thumb.jpg"
+              />
             </div>
             <div
-              className="rounded-xl m-2"
+              onClick={[Function]}
             >
-              <a
-                href="/media/images/IMG_8097.jpeg"
-              >
-                <img
-                  className="rounded-lg w-16 h-16 object-cover"
-                  src="/media/thumbnails/IMG_8097_thumb.jpg"
-                />
-              </a>
+              <img
+                className="rounded-lg m-2 w-16 h-16 object-cover"
+                src="/media/thumbnails/IMG_8097_thumb.jpg"
+              />
             </div>
             <div
-              className="rounded-xl m-2"
+              onClick={[Function]}
             >
-              <a
-                href="/media/images/IMG_8095.jpeg"
-              >
-                <img
-                  className="rounded-lg w-16 h-16 object-cover"
-                  src="/media/thumbnails/IMG_8095_thumb.jpg"
-                />
-              </a>
+              <img
+                className="rounded-lg m-2 w-16 h-16 object-cover"
+                src="/media/thumbnails/IMG_8095_thumb.jpg"
+              />
             </div>
             <div
-              className="rounded-xl m-2"
+              onClick={[Function]}
             >
-              <a
-                href="/media/images/IMG_8094.jpeg"
-              >
-                <img
-                  className="rounded-lg w-16 h-16 object-cover"
-                  src="/media/thumbnails/IMG_8094_thumb.jpg"
-                />
-              </a>
+              <img
+                className="rounded-lg m-2 w-16 h-16 object-cover"
+                src="/media/thumbnails/IMG_8094_thumb.jpg"
+              />
             </div>
             <div
-              className="rounded-xl m-2"
+              onClick={[Function]}
             >
-              <a
-                href="/media/images/IMG_8093.jpeg"
-              >
-                <img
-                  className="rounded-lg w-16 h-16 object-cover"
-                  src="/media/thumbnails/IMG_8093_thumb.jpg"
-                />
-              </a>
+              <img
+                className="rounded-lg m-2 w-16 h-16 object-cover"
+                src="/media/thumbnails/IMG_8093_thumb.jpg"
+              />
             </div>
             <div
-              className="rounded-xl m-2"
+              onClick={[Function]}
             >
-              <a
-                href="/media/images/IMG_8092.jpeg"
-              >
-                <img
-                  className="rounded-lg w-16 h-16 object-cover"
-                  src="/media/thumbnails/IMG_8092_thumb.jpg"
-                />
-              </a>
+              <img
+                className="rounded-lg m-2 w-16 h-16 object-cover"
+                src="/media/thumbnails/IMG_8092_thumb.jpg"
+              />
             </div>
             <div
-              className="rounded-xl m-2"
+              onClick={[Function]}
             >
-              <a
-                href="/media/images/IMG_8091.jpeg"
-              >
-                <img
-                  className="rounded-lg w-16 h-16 object-cover"
-                  src="/media/thumbnails/IMG_8091_thumb.jpg"
-                />
-              </a>
+              <img
+                className="rounded-lg m-2 w-16 h-16 object-cover"
+                src="/media/thumbnails/IMG_8091_thumb.jpg"
+              />
             </div>
             <div
-              className="rounded-xl m-2"
+              onClick={[Function]}
             >
-              <a
-                href="/media/images/IMG_8090.jpeg"
-              >
-                <img
-                  className="rounded-lg w-16 h-16 object-cover"
-                  src="/media/thumbnails/IMG_8090_thumb.jpg"
-                />
-              </a>
+              <img
+                className="rounded-lg m-2 w-16 h-16 object-cover"
+                src="/media/thumbnails/IMG_8090_thumb.jpg"
+              />
             </div>
             <div
-              className="rounded-xl m-2"
+              onClick={[Function]}
             >
-              <a
-                href="/media/images/IMG_8089.jpeg"
-              >
-                <img
-                  className="rounded-lg w-16 h-16 object-cover"
-                  src="/media/thumbnails/IMG_8089_thumb.jpg"
-                />
-              </a>
+              <img
+                className="rounded-lg m-2 w-16 h-16 object-cover"
+                src="/media/thumbnails/IMG_8089_thumb.jpg"
+              />
             </div>
           </div>
         </div>
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2024-03-24"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
             in 23 days
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            March 24, 2024
+            Mar 24, 2024
           </span>
         </div>
       </div>
@@ -999,21 +1051,21 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2024-03-23"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
             in 22 days
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            March 23, 2024
+            Mar 23, 2024
           </span>
         </div>
       </div>
@@ -1075,21 +1127,21 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2024-03-22"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
             in 21 days
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            March 22, 2024
+            Mar 22, 2024
           </span>
         </div>
       </div>
@@ -1151,21 +1203,21 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2024-03-21"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
             in 20 days
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            March 21, 2024
+            Mar 21, 2024
           </span>
         </div>
       </div>
@@ -1227,21 +1279,21 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2024-03-17"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
             in 16 days
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            March 17, 2024
+            Mar 17, 2024
           </span>
         </div>
       </div>
@@ -1281,21 +1333,21 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2024-03-13"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
             in 12 days
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            March 13, 2024
+            Mar 13, 2024
           </span>
         </div>
       </div>
@@ -1357,26 +1409,26 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="divider col-span-2 mt-4 mb-0 font-bold scroll-mt-20"
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
       >
         February 2024
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2024-02-21"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
-            last month
+            9 days ago
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            February 21, 2024
+            Feb 21, 2024
           </span>
         </div>
       </div>
@@ -1391,36 +1443,32 @@ exports[`App matches snapshot 1`] = `
             className="flex flex-row flex-wrap"
           >
             <div
-              className="rounded-xl m-2"
+              onClick={[Function]}
             >
-              <a
-                href="/media/images/IMG_7598.jpeg"
-              >
-                <img
-                  className="rounded-lg w-16 h-16 object-cover"
-                  src="/media/thumbnails/IMG_7598_thumb.jpg"
-                />
-              </a>
+              <img
+                className="rounded-lg m-2 w-16 h-16 object-cover"
+                src="/media/thumbnails/IMG_7598_thumb.jpg"
+              />
             </div>
           </div>
         </div>
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2024-02-17"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
-            last month
+            13 days ago
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            February 17, 2024
+            Feb 17, 2024
           </span>
         </div>
       </div>
@@ -1460,26 +1508,26 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="divider col-span-2 mt-4 mb-0 font-bold scroll-mt-20"
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
       >
         January 2024
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2024-01-17"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
-            2 months ago
+            44 days ago
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            January 17, 2024
+            Jan 17, 2024
           </span>
         </div>
       </div>
@@ -1519,26 +1567,26 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="divider col-span-2 mt-4 mb-0 font-bold scroll-mt-20"
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
       >
         December 2023
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2023-12-17"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
-            last year
+            75 days ago
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            December 17, 2023
+            Dec 17, 2023
           </span>
         </div>
       </div>
@@ -1578,26 +1626,26 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="divider col-span-2 mt-4 mb-0 font-bold scroll-mt-20"
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
       >
         November 2023
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2023-11-22"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
-            last year
+            100 days ago
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            November 22, 2023
+            Nov 22, 2023
           </span>
         </div>
       </div>
@@ -1659,21 +1707,21 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2023-11-21"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
-            last year
+            101 days ago
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            November 21, 2023
+            Nov 21, 2023
           </span>
         </div>
       </div>
@@ -1733,36 +1781,32 @@ exports[`App matches snapshot 1`] = `
             className="flex flex-row flex-wrap"
           >
             <div
-              className="rounded-xl m-2"
+              onClick={[Function]}
             >
-              <a
-                href="/media/images/IMG_5866.jpeg"
-              >
-                <img
-                  className="rounded-lg w-16 h-16 object-cover"
-                  src="/media/thumbnails/IMG_5866_thumb.jpg"
-                />
-              </a>
+              <img
+                className="rounded-lg m-2 w-16 h-16 object-cover"
+                src="/media/thumbnails/IMG_5866_thumb.jpg"
+              />
             </div>
           </div>
         </div>
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2023-11-20"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
-            last year
+            102 days ago
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            November 20, 2023
+            Nov 20, 2023
           </span>
         </div>
       </div>
@@ -1802,21 +1846,21 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2023-11-17"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
-            last year
+            105 days ago
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            November 17, 2023
+            Nov 17, 2023
           </span>
         </div>
       </div>
@@ -1900,26 +1944,26 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="divider col-span-2 mt-4 mb-0 font-bold scroll-mt-20"
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
       >
         October 2023
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2023-10-17"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
-            last year
+            136 days ago
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            October 17, 2023
+            Oct 17, 2023
           </span>
         </div>
       </div>
@@ -1959,26 +2003,26 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="divider col-span-2 mt-4 mb-0 font-bold scroll-mt-20"
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
       >
         September 2023
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2023-09-17"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
-            last year
+            166 days ago
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            September 17, 2023
+            Sep 17, 2023
           </span>
         </div>
       </div>
@@ -2018,21 +2062,21 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2023-09-11"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
-            last year
+            172 days ago
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            September 11, 2023
+            Sep 11, 2023
           </span>
         </div>
       </div>
@@ -2047,41 +2091,37 @@ exports[`App matches snapshot 1`] = `
             className="flex flex-row flex-wrap"
           >
             <div
-              className="rounded-xl m-2"
+              onClick={[Function]}
             >
-              <a
-                href="/media/images/IMG_5040.jpeg"
-              >
-                <img
-                  className="rounded-lg w-16 h-16 object-cover"
-                  src="/media/thumbnails/IMG_5040_thumb.jpg"
-                />
-              </a>
+              <img
+                className="rounded-lg m-2 w-16 h-16 object-cover"
+                src="/media/thumbnails/IMG_5040_thumb.jpg"
+              />
             </div>
           </div>
         </div>
       </div>
       <div
-        className="divider col-span-2 mt-4 mb-0 font-bold scroll-mt-20"
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
       >
         August 2023
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2023-08-23"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
-            last year
+            191 days ago
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            August 23, 2023
+            Aug 23, 2023
           </span>
         </div>
       </div>
@@ -2096,36 +2136,32 @@ exports[`App matches snapshot 1`] = `
             className="flex flex-row flex-wrap"
           >
             <div
-              className="rounded-xl m-2"
+              onClick={[Function]}
             >
-              <a
-                href="/media/images/IMG_4813.jpeg"
-              >
-                <img
-                  className="rounded-lg w-16 h-16 object-cover"
-                  src="/media/thumbnails/IMG_4813_thumb.jpg"
-                />
-              </a>
+              <img
+                className="rounded-lg m-2 w-16 h-16 object-cover"
+                src="/media/thumbnails/IMG_4813_thumb.jpg"
+              />
             </div>
           </div>
         </div>
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2023-08-17"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
-            last year
+            197 days ago
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            August 17, 2023
+            Aug 17, 2023
           </span>
         </div>
       </div>
@@ -2165,26 +2201,26 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="divider col-span-2 mt-4 mb-0 font-bold scroll-mt-20"
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
       >
         July 2023
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2023-07-17"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
-            last year
+            228 days ago
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            July 17, 2023
+            Jul 17, 2023
           </span>
         </div>
       </div>
@@ -2224,26 +2260,26 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="divider col-span-2 mt-4 mb-0 font-bold scroll-mt-20"
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
       >
         June 2023
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2023-06-17"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
-            last year
+            258 days ago
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            June 17, 2023
+            Jun 17, 2023
           </span>
         </div>
       </div>
@@ -2283,24 +2319,24 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="divider col-span-2 mt-4 mb-0 font-bold scroll-mt-20"
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
       >
         May 2023
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2023-05-17"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
-            last year
+            289 days ago
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
             May 17, 2023
           </span>
@@ -2342,26 +2378,26 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="divider col-span-2 mt-4 mb-0 font-bold scroll-mt-20"
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
       >
         April 2023
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2023-04-17"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
-            last year
+            319 days ago
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            April 17, 2023
+            Apr 17, 2023
           </span>
         </div>
       </div>
@@ -2401,26 +2437,26 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="divider col-span-2 mt-4 mb-0 font-bold scroll-mt-20"
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
       >
         March 2023
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2023-03-17"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
-            last year
+            350 days ago
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            March 17, 2023
+            Mar 17, 2023
           </span>
         </div>
       </div>
@@ -2460,26 +2496,26 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="divider col-span-2 mt-4 mb-0 font-bold scroll-mt-20"
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
       >
         February 2023
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2023-02-17"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
-            last year
+            378 days ago
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            February 17, 2023
+            Feb 17, 2023
           </span>
         </div>
       </div>
@@ -2519,26 +2555,26 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="divider col-span-2 mt-4 mb-0 font-bold scroll-mt-20"
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
       >
         January 2023
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2023-01-17"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
-            last year
+            409 days ago
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            January 17, 2023
+            Jan 17, 2023
           </span>
         </div>
       </div>
@@ -2578,26 +2614,26 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        className="divider col-span-2 mt-4 mb-0 font-bold scroll-mt-20"
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
       >
         August 2008
       </div>
       <div
-        className="my-auto scroll-mt-24"
+        className="h-full scroll-mt-20"
         data-date="2008-08-22"
       >
         <div
-          className="flex flex-col whitespace-nowrap text-end"
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
         >
           <span
-            className="md:text-lg"
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
           >
-            16 years ago
+            5670 days
           </span>
           <span
-            className="hidden md:block text-sm"
+            className="hidden md:block text-sm mb-auto"
           >
-            August 22, 2008
+            Aug 22, 2008
           </span>
         </div>
       </div>
@@ -2612,16 +2648,12 @@ exports[`App matches snapshot 1`] = `
             className="flex flex-row flex-wrap"
           >
             <div
-              className="rounded-xl m-2"
+              onClick={[Function]}
             >
-              <a
-                href="/media/images/IMG_4811.jpeg"
-              >
-                <img
-                  className="rounded-lg w-16 h-16 object-cover"
-                  src="/media/thumbnails/IMG_4811_thumb.jpeg"
-                />
-              </a>
+              <img
+                className="rounded-lg m-2 w-16 h-16 object-cover"
+                src="/media/thumbnails/IMG_4811_thumb.jpeg"
+              />
             </div>
           </div>
         </div>
