@@ -793,6 +793,49 @@ class PlantEventTests(TestCase):
         )
         self.assertEqual(len(self.plant1.waterevent_set.all()), 0)
 
+    def test_bulk_delete_plant_events(self):
+        # Create multiple events with different types, confirm number in db
+        timestamp = timezone.now()
+        WaterEvent.objects.create(plant=self.plant1, timestamp=timestamp)
+        FertilizeEvent.objects.create(plant=self.plant1, timestamp=timestamp)
+        PruneEvent.objects.create(plant=self.plant1, timestamp=timestamp)
+        RepotEvent.objects.create(plant=self.plant1, timestamp=timestamp)
+        self.assertEqual(len(self.plant1.waterevent_set.all()), 1)
+        self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 1)
+        self.assertEqual(len(self.plant1.pruneevent_set.all()), 1)
+        self.assertEqual(len(self.plant1.repotevent_set.all()), 1)
+
+        # Post timestamp and type of each event to bulk_delete_plant_events endpoint
+        payload = {
+            'plant_id': self.plant1.uuid,
+            'events': [
+                {'type': 'water', 'timestamp': timestamp.isoformat()},
+                {'type': 'fertilize', 'timestamp': timestamp.isoformat()},
+                {'type': 'prune', 'timestamp': timestamp.isoformat()},
+                {'type': 'repot', 'timestamp': timestamp.isoformat()},
+            ]
+        }
+        response = self.client.post('/bulk_delete_plant_events', payload)
+
+        # Confirm correct response, confirm removed from database
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {
+                "deleted": [
+                    {'type': 'water', 'timestamp': timestamp.isoformat()},
+                    {'type': 'fertilize', 'timestamp': timestamp.isoformat()},
+                    {'type': 'prune', 'timestamp': timestamp.isoformat()},
+                    {'type': 'repot', 'timestamp': timestamp.isoformat()},
+                ],
+                "failed": []
+            }
+        )
+        self.assertEqual(len(self.plant1.waterevent_set.all()), 0)
+        self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 0)
+        self.assertEqual(len(self.plant1.pruneevent_set.all()), 0)
+        self.assertEqual(len(self.plant1.repotevent_set.all()), 0)
+
     @override_settings(MEDIA_ROOT=os.path.join(TEST_DIR, 'data', 'images'))
     def test_add_plant_photos(self):
         # Confirm no photos exist in database or plant reverse relation
@@ -1087,6 +1130,56 @@ class InvalidRequestTests(TestCase):
         # Confirm correct error
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(), {"error": "event not found"})
+
+    def test_bulk_delete_plant_events_does_not_exist(self):
+        # Post payload containing event that does not exist
+        payload = {
+            'plant_id': self.test_plant.uuid,
+            'events': [
+                {'type': 'water', 'timestamp': '2024-04-19T00:13:37+00:00'}
+            ]
+        }
+        response = self.client.post('/bulk_delete_plant_events', payload)
+
+        # Confirm event is in failed section
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {
+                "deleted": [],
+                "failed": [
+                    {'type': 'water', 'timestamp': '2024-04-19T00:13:37+00:00'}
+                ]
+            }
+        )
+
+    def test_bulk_delete_plant_events_missing_params(self):
+        # Create test event, confirm exists in database
+        timestamp = timezone.now()
+        WaterEvent.objects.create(plant=self.test_plant, timestamp=timestamp)
+        self.assertEqual(len(self.test_plant.waterevent_set.all()), 1)
+
+        # Post incomplete event dict to backend with missing timestamp key
+        payload = {
+            'plant_id': self.test_plant.uuid,
+            'events': [
+                {'type': 'water'}
+            ]
+        }
+        response = self.client.post('/bulk_delete_plant_events', payload)
+
+        # Confirm event is in failed section, confirm still in database
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {
+                "deleted": [],
+                "failed": [
+                    {'type': 'water'}
+                ]
+            }
+        )
+        self.assertEqual(len(self.test_plant.waterevent_set.all()), 1)
 
     def test_change_plant_uuid_invalid(self):
         # Call change_plant_uuid endpoint, confirm error

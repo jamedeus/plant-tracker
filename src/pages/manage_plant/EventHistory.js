@@ -24,45 +24,45 @@ const EventHistoryModal = ({ plant, removeEvent }) => {
     const selectedPruneRef = useRef([]);
     const selectedRepotRef = useRef([]);
 
-    // Takes event timestamp and types, sends delete request to backend
-    // If successful removes timestamp from react state to re-render history
-    const deleteEvent = async (timestamp, type) => {
+    // Handler for modal delete button, posts all selected event types and
+    // timestamps to backend, removes events from state if successfully deleted
+    const deleteAllSelected = async () => {
         const payload = {
             plant_id: plant.uuid,
-            event_type: type,
-            timestamp: timestamp
+            events: []
         };
-        const response = await sendPostRequest('/delete_plant_event', payload);
+
+        selectedWaterRef.current.forEach(async timestamp => {
+            payload.events.push({type: 'water', timestamp: timestamp});
+        });
+        selectedFertilizeRef.current.forEach(async timestamp => {
+            payload.events.push({type: 'fertilize', timestamp: timestamp});
+        });
+        selectedPruneRef.current.forEach(async timestamp => {
+            payload.events.push({type: 'prune', timestamp: timestamp});
+        });
+        selectedRepotRef.current.forEach(async timestamp => {
+            payload.events.push({type: 'repot', timestamp: timestamp});
+        });
+
+        const response = await sendPostRequest('/bulk_delete_plant_events', payload);
+
         // If successful remove event from history column
         if (response.ok) {
-            removeEvent(timestamp, type);
+            payload.events.forEach(event => {
+                removeEvent(event.timestamp, event.type);
+            });
+
+            // Clear all refs, close modal
+            selectedWaterRef.current = [];
+            selectedFertilizeRef.current = [];
+            selectedPruneRef.current = [];
+            selectedRepotRef.current = [];
+            eventHistoryModalRef.current.close();
         } else {
             const error = await response.json();
             showErrorModal(JSON.stringify(error));
         }
-    };
-
-    // Handler for modal delete button, iterates all selected refs and deletes
-    // each event (TODO add bulk delete endpoint)
-    const deleteAllSelected = async () => {
-        selectedWaterRef.current.forEach(async timestamp => {
-            await deleteEvent(timestamp, 'water');
-        });
-        selectedFertilizeRef.current.forEach(async timestamp => {
-            await deleteEvent(timestamp, 'fertilize');
-        });
-        selectedPruneRef.current.forEach(async timestamp => {
-            await deleteEvent(timestamp, 'prune');
-        });
-        selectedRepotRef.current.forEach(async timestamp => {
-            await deleteEvent(timestamp, 'repot');
-        });
-        // Clear all refs, close modal
-        selectedWaterRef.current = [];
-        selectedFertilizeRef.current = [];
-        selectedPruneRef.current = [];
-        selectedRepotRef.current = [];
-        eventHistoryModalRef.current.close();
     };
 
     // Displays timestamp and relative time of a single event
