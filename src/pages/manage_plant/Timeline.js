@@ -205,7 +205,8 @@ const Timeline = ({ events, photoUrls }) => {
             >
                 <div onClick={() => setPopoverOpen(!popoverOpen)}>
                     <img
-                        className="rounded-lg m-2 w-16 h-16 object-cover"
+                        className={`rounded-lg m-2 object-cover w-[4.9rem]
+                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]`}
                         src={thumbnailUrl}
                     />
                 </div>
@@ -245,7 +246,7 @@ const Timeline = ({ events, photoUrls }) => {
                     return (
                         <Fragment key={day.timestamp}>
                             <div
-                                className="h-full scroll-mt-20"
+                                className="scroll-mt-20"
                                 data-date={day.timestamp}
                             >
                                 <TimelineDate timestamp={day.timestamp} />
@@ -418,8 +419,8 @@ const Timeline = ({ events, photoUrls }) => {
     };
 
     return (
-        <div className={`flex flex-col mt-2 mx-4 md:mx-auto px-4 pb-4
-                        lg:max-w-screen-lg bg-base-200 rounded-2xl`}
+        <div className={`flex flex-col mt-2 mx-4 md:mx-auto p-4 md:p-8 pt-0 md:pt-0
+                        md:w-full md:max-w-screen-md bg-base-200 rounded-2xl`}
         >
             <Title />
             <div className="grid grid-cols-2 grid-cols-[min-content_1fr] gap-4 md:gap-8">

@@ -142,13 +142,13 @@ const PhotoModal = ({ plantID, addPlantPhotoUrls }) => {
             <div className={`${uploading ? "hidden" : "flex flex-col"}`}>
                 <p className="text-lg mb-6">Upload Photos</p>
 
-                <div className="min-h-36 flex flex-col justify-center mx-auto">
+                <div className="min-h-36 flex flex-col justify-center">
                     <input
                         ref={inputRef}
                         type="file"
                         accept="image/*"
                         multiple="multiple"
-                        className="file-input file-input-bordered w-full max-w-xs"
+                        className="file-input file-input-bordered w-full max-w-xs mx-auto"
                         onChange={handleSelect}
                         data-testid="photo-input"
                     />
