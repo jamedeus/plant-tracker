@@ -51,4 +51,23 @@ describe('App', () => {
         // Confirm scrollIntoView was called
         expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled();
     });
+
+    it('opens photo popover when thumbnails are clicked', async () => {
+        // Confirm no popover div exists
+        expect(document.body.querySelector(
+            '#react-tiny-popover-container'
+        )).toBeNull();
+
+        // Click image thumbnail, confirm popover appears
+        await user.click(app.getAllByRole('img')[0]);
+        expect(document.body.querySelector(
+            '#react-tiny-popover-container'
+        )).not.toBeNull();
+
+        // Click outside, confirm popover closed
+        await user.click(document.body);
+        expect(document.body.querySelector(
+            '#react-tiny-popover-container'
+        )).toBeNull();
+    });
 });

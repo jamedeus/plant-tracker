@@ -52,6 +52,28 @@ describe('App', () => {
         expect(HTMLDialogElement.prototype.close).toHaveBeenCalled();
     });
 
+    it('shows confirmation screen before deleting photos', async () => {
+        // Get references to select screen and confirmation screen
+        const select = component.container.querySelector('.modal-box').children[1];
+        const confirm = component.container.querySelector('.modal-box').children[2];
+        // Select screen should be visible, confirmation should be hidden
+        expect(select.classList.contains('hidden')).toBe(false);
+        expect(confirm.classList.contains('hidden')).toBe(true);
+
+        // Simulate user selecting first photo and clicking delete button
+        await user.click(component.getAllByText(/Select/)[0]);
+        await user.click(component.getAllByText(/Delete/)[1]);
+
+        // Confirmation screen should now be visible, select should be hidden
+        expect(select.classList.contains('hidden')).toBe(true);
+        expect(confirm.classList.contains('hidden')).toBe(false);
+
+        // Click cancel button, confirm switches back to select screen
+        await user.click(component.getAllByText(/Cancel/)[1]);
+        expect(select.classList.contains('hidden')).toBe(false);
+        expect(confirm.classList.contains('hidden')).toBe(true);
+    });
+
     it('sends correct payload when photos are deleted', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({

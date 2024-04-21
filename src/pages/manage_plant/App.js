@@ -117,16 +117,6 @@ function App() {
         }
     };
 
-    // Takes timestamp and eventType, removes timestamp from plant.events state
-    const removeEvent = (timestamp, eventType) => {
-        let oldPlant = {...plant};
-        oldPlant.events[eventType].splice(
-            oldPlant.events[eventType].indexOf(timestamp),
-            1
-        );
-        setPlant(oldPlant);
-    };
-
     const DropdownOptions = () => {
         // Get toggle theme option from context
         const { ToggleThemeOption } = useTheme();
@@ -324,7 +314,7 @@ function App() {
 
             <EventHistoryModal
                 plant={plant}
-                removeEvent={removeEvent}
+                setPlant={setPlant}
             />
         </div>
     );

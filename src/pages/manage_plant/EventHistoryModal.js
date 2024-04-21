@@ -12,7 +12,7 @@ export const openEventHistoryModal = () => {
     eventHistoryModalRef.current.showModal();
 };
 
-const EventHistoryModal = ({ plant, removeEvent }) => {
+const EventHistoryModal = ({ plant, setPlant }) => {
     eventHistoryModalRef = useRef(null);
 
     // Get hook to show error modal
@@ -23,6 +23,16 @@ const EventHistoryModal = ({ plant, removeEvent }) => {
     const selectedFertilizeRef = useRef([]);
     const selectedPruneRef = useRef([]);
     const selectedRepotRef = useRef([]);
+
+    // Takes timestamp and eventType, removes timestamp from plant.events state
+    const removeEvent = (timestamp, eventType) => {
+        let oldPlant = {...plant};
+        oldPlant.events[eventType].splice(
+            oldPlant.events[eventType].indexOf(timestamp),
+            1
+        );
+        setPlant(oldPlant);
+    };
 
     // Handler for modal delete button, posts all selected event types and
     // timestamps to backend, removes events from state if successfully deleted
@@ -216,7 +226,7 @@ const EventHistoryModal = ({ plant, removeEvent }) => {
 
 EventHistoryModal.propTypes = {
     plant: PropTypes.object,
-    removeEvent: PropTypes.func
+    setPlant: PropTypes.func
 };
 
 export default EventHistoryModal;

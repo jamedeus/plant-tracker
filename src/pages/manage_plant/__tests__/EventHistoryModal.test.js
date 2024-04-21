@@ -9,12 +9,12 @@ import { ThemeProvider } from 'src/context/ThemeContext';
 import { ErrorModalProvider } from 'src/context/ErrorModalContext';
 import { mockContext } from './mockContext';
 
-const TestComponent = () => {
+const TestComponent = ({ context }) => {
     // Add prune and repot events to mock context
     const state = {
-        ...mockContext.plant,
+        ...context.plant,
         events: {
-            ...mockContext.plant.events,
+            ...context.plant.events,
             prune: ["2024-01-01T15:45:44+00:00"],
             repot: ["2024-01-01T15:45:44+00:00"],
         }
@@ -25,8 +25,8 @@ const TestComponent = () => {
     return (
         <>
             <EventHistoryModal
-                plant={state}
-                removeEvent={jest.fn()}
+                plant={plant}
+                setPlant={setPlant}
             />
             <button onClick={openEventHistoryModal}>
                 Open event history modal
@@ -39,10 +39,13 @@ describe('App', () => {
     let component, user;
 
     beforeEach(() => {
+        // Deep copy context to prevent changes carrying over to next test
+        const context = JSON.parse(JSON.stringify(mockContext));
+
         // Render component + create userEvent instance to use in tests
         component = render(
             <ErrorModalProvider>
-                <TestComponent />
+                <TestComponent context={context} />
             </ErrorModalProvider>
         );
         user = userEvent.setup();
