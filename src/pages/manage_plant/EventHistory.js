@@ -3,64 +3,32 @@ import PropTypes from 'prop-types';
 import { Tab } from '@headlessui/react';
 import { DateTime } from 'luxon';
 import { sendPostRequest, timestampToRelative } from 'src/util';
-import CollapseCol from 'src/components/CollapseCol';
-import EditableNodeList from 'src/components/EditableNodeList';
+import Modal from 'src/components/Modal';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 
-// Takes state bool, function to set state bool, delete button handler
-// Shows edit button when bool is false, cancel and delete buttons when true
-// Rendered at the bottom of water/fertilize event history columns
-export const EventHistoryButtons = ({editing, setEditing, handleDelete}) => {
-    switch(editing) {
-        case(true):
-            return (
-                <div className="flex mt-4">
-                    <button
-                        className="btn btn-outline mx-auto"
-                        onClick={() => setEditing(false)}
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        className="btn btn-outline btn-error mx-auto"
-                        onClick={() => handleDelete()}
-                    >
-                        Delete
-                    </button>
-                </div>
-            );
-        case(false):
-            return (
-                <div className="flex mt-4">
-                    <button
-                        className="btn btn-outline mx-auto"
-                        onClick={() => setEditing(true)}
-                    >
-                        Edit
-                    </button>
-                </div>
-            );
-    }
+let eventHistoryModalRef;
+
+export const openEventHistoryModal = () => {
+    eventHistoryModalRef.current.showModal();
 };
 
-EventHistoryButtons.propTypes = {
-    editing: PropTypes.bool,
-    setEditing: PropTypes.func,
-    handleDelete: PropTypes.func,
-};
-
-const EventHistory = ({ plantId, events, removeEvent }) => {
-    // Create ref to preserve collapse open state between re-renders
-    const eventHistoryOpen = useRef(false);
+const EventHistoryModal = ({ plant, removeEvent }) => {
+    eventHistoryModalRef = useRef(null);
 
     // Get hook to show error modal
     const { showErrorModal } = useErrorModal();
+
+    // Create ref to store selected events in each column
+    const selectedWaterRef = useRef([]);
+    const selectedFertilizeRef = useRef([]);
+    const selectedPruneRef = useRef([]);
+    const selectedRepotRef = useRef([]);
 
     // Takes event timestamp and types, sends delete request to backend
     // If successful removes timestamp from react state to re-render history
     const deleteEvent = async (timestamp, type) => {
         const payload = {
-            plant_id: plantId,
+            plant_id: plant.uuid,
             event_type: type,
             timestamp: timestamp
         };
@@ -74,10 +42,52 @@ const EventHistory = ({ plantId, events, removeEvent }) => {
         }
     };
 
-    // Displays timestamp and relative time in event history sections
-    const EventCard = ({ timestamp }) => {
+    // Handler for modal delete button, iterates all selected refs and deletes
+    // each event (TODO add bulk delete endpoint)
+    const deleteAllSelected = async () => {
+        selectedWaterRef.current.forEach(async timestamp => {
+            await deleteEvent(timestamp, 'water');
+        });
+        selectedFertilizeRef.current.forEach(async timestamp => {
+            await deleteEvent(timestamp, 'fertilize');
+        });
+        selectedPruneRef.current.forEach(async timestamp => {
+            await deleteEvent(timestamp, 'prune');
+        });
+        selectedRepotRef.current.forEach(async timestamp => {
+            await deleteEvent(timestamp, 'repot');
+        });
+        // Clear all refs, close modal
+        selectedWaterRef.current = [];
+        selectedFertilizeRef.current = [];
+        selectedPruneRef.current = [];
+        selectedRepotRef.current = [];
+        eventHistoryModalRef.current.close();
+    };
+
+    // Displays timestamp and relative time of a single event
+    // When clicked color changes and timestamp is passed to onSelect callback
+    const EventCard = ({ timestamp, selected, onSelect }) => {
+        const [cardClass, setCardClass] = useState(
+            selected ? 'bg-primary text-white' : 'bg-neutral text-neutral-content'
+        );
+
+        const toggle = (event) => {
+            if (event.target.checked) {
+                setCardClass('bg-primary text-white');
+            } else {
+                setCardClass('bg-neutral text-neutral-content');
+            }
+            onSelect(timestamp);
+        };
+
         return (
-            <div className="card card-compact bg-neutral text-neutral-content">
+            <label className={`card card-compact max-w-80 mb-4 mx-auto select-none ${cardClass}`}>
+                <input
+                    type="checkbox"
+                    className="hidden"
+                    onChange={toggle}
+                />
                 <div className="card-body text-center">
                     <p className="text-lg font-bold">
                         {timestampToRelative(timestamp)}
@@ -88,67 +98,56 @@ const EventHistory = ({ plantId, events, removeEvent }) => {
                         ).toFormat("h:mm\u202Fa MMMM dd, yyyy")}
                     </p>
                 </div>
-            </div>
+            </label>
         );
     };
 
     EventCard.propTypes = {
-        timestamp: PropTypes.string
+        timestamp: PropTypes.string,
+        selected: PropTypes.bool,
+        onSelect: PropTypes.func
     };
 
-    // Takes events array (eg plant.water_events) and type (water or fertilize)
-    // Renders EditableNodeList with edit + delete button and handlers
-    const EventsCol = ({ events, type }) => {
-        // Create edit mode state + ref to track selected events while editing
-        const [editing, setEditing] = useState(false);
-        const selected = useRef([]);
-
-        // Delete button handler
-        const onDelete = () => {
-            selected.current.forEach(async timestamp => {
-                await deleteEvent(timestamp, type);
-            });
-            setEditing(false);
+    // Takes plant.events subkey + ref containing array (track selected events)
+    // Renders column of EventCard instances (appends to selected when clicked)
+    const EventsCol = ({ events, selectedRef }) => {
+        const selectEvent = (key) => {
+            if (selectedRef.current.includes(key)) {
+                selectedRef.current = selectedRef.current.filter(item => item !== key);
+            } else {
+                selectedRef.current.push(key);
+            }
         };
 
         return (
-            <div className="flex flex-col">
-                <div className="max-h-half-screen overflow-scroll no-scrollbar">
-                    <EditableNodeList
-                        editing={editing}
-                        selected={selected}
-                    >
-                        {events.map((timestamp) => {
-                            return (
-                                <EventCard
-                                    key={timestamp}
-                                    timestamp={timestamp}
-                                />
-                            );
-                        })}
-                    </EditableNodeList>
+            <div className="flex flex-col mx-auto">
+                <div className="max-h-half-screen overflow-scroll">
+                    {events.map((timestamp) => {
+                        return (
+                            <EventCard
+                                key={timestamp}
+                                timestamp={timestamp}
+                                selected={selectedRef.current.includes(timestamp)}
+                                onSelect={selectEvent}
+                            />
+                        );
+                    })}
                 </div>
-                <EventHistoryButtons
-                    editing={editing}
-                    setEditing={setEditing}
-                    handleDelete={onDelete}
-                />
             </div>
         );
     };
 
     EventsCol.propTypes = {
         events: PropTypes.array,
-        type: PropTypes.string
+        selectedRef: PropTypes.oneOfType([
+            PropTypes.func,
+            PropTypes.shape({ current: PropTypes.array }),
+        ])
     };
 
     return (
-        <CollapseCol
-            title={"Event History"}
-            openRef={eventHistoryOpen}
-            scroll={true}
-            className="mb-8"
-        >
+        <Modal dialogRef={eventHistoryModalRef}>
+            <p className="text-lg mb-6">Event History</p>
             <Tab.Group>
                 <Tab.List className="tab-group">
                     <Tab className={({ selected }) => `tab-option ${
@@ -166,37 +165,55 @@ const EventHistory = ({ plantId, events, removeEvent }) => {
                     }>
                         Prune
                     </Tab>
+                    <Tab className={({ selected }) => `tab-option ${
+                        selected ? 'tab-option-selected' : ''}`
+                    }>
+                        Repot
+                    </Tab>
                 </Tab.List>
 
                 <Tab.Panels className="mt-8">
                     <Tab.Panel>
                         <EventsCol
-                            events={events.water}
-                            type="water"
+                            events={plant.events.water}
+                            selectedRef={selectedWaterRef}
                         />
                     </Tab.Panel>
                     <Tab.Panel>
                         <EventsCol
-                            events={events.fertilize}
-                            type="fertilize"
+                            events={plant.events.fertilize}
+                            selectedRef={selectedFertilizeRef}
                         />
                     </Tab.Panel>
                     <Tab.Panel>
                         <EventsCol
-                            events={events.prune}
-                            type="prune"
+                            events={plant.events.prune}
+                            selectedRef={selectedPruneRef}
+                        />
+                    </Tab.Panel>
+                    <Tab.Panel>
+                        <EventsCol
+                            events={plant.events.repot}
+                            selectedRef={selectedRepotRef}
                         />
                     </Tab.Panel>
                 </Tab.Panels>
             </Tab.Group>
-        </CollapseCol>
+            <div className="flex mt-4">
+                <button
+                    className="btn btn-outline btn-error mx-auto"
+                    onClick={deleteAllSelected}
+                >
+                    Delete
+                </button>
+            </div>
+        </Modal>
     );
 };
 
-EventHistory.propTypes = {
-    plantId: PropTypes.string,
-    events: PropTypes.object,
+EventHistoryModal.propTypes = {
+    plant: PropTypes.object,
     removeEvent: PropTypes.func
 };
 
-export default EventHistory;
+export default EventHistoryModal;

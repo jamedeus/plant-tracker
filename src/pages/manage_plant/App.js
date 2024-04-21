@@ -16,6 +16,7 @@ import PhotoCard from './PhotoCard';
 import TrayModal, { openTrayModal } from './TrayModal';
 import PhotoModal, { openPhotoModal } from './PhotoModal';
 import RepotModal, { openRepotModal } from './RepotModal';
+import EventHistoryModal from './EventHistory';
 import DefaultPhotoModal, { openDefaultPhotoModal } from './DefaultPhotoModal';
 import DeletePhotosModal from './DeletePhotosModal';
 import EventHistory, { EventHistoryButtons } from './EventHistory';
@@ -281,14 +282,6 @@ function App() {
                 <EventCalendar events={plant.events} />
             </div>
 
-            <div className="mb-8">
-                <EventHistory
-                    plantId={plant.uuid}
-                    events={plant.events}
-                    removeEvent={removeEvent}
-                />
-            </div>
-
             <Timeline
                 events={plant.events}
                 photoUrls={photoUrls}
@@ -331,6 +324,11 @@ function App() {
                 plantID={plant.uuid}
                 photoUrls={photoUrls}
                 setPhotoUrls={setPhotoUrls}
+            />
+
+            <EventHistoryModal
+                plant={plant}
+                removeEvent={removeEvent}
             />
         </div>
     );

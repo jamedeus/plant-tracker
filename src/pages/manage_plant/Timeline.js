@@ -8,6 +8,7 @@ import EditableNodeList from 'src/components/EditableNodeList';
 import { openPhotoModal } from './PhotoModal';
 import DefaultPhotoModal, { openDefaultPhotoModal } from './DefaultPhotoModal';
 import { openDeletePhotosModal } from './DeletePhotosModal';
+import { openEventHistoryModal } from './EventHistory';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -311,13 +312,15 @@ const Timeline = ({ events, photoUrls }) => {
                             className={`dropdown-content z-[1] menu p-2 shadow
                                         bg-base-300 rounded-box w-40`}
                         >
-                        <li className="ml-auto"><a onClick={openPhotoModal}>
-                            Add photos
-                        </a></li>
-                        <li className="ml-auto"><a onClick={openDeletePhotosModal}>
-                            Delete photos
-                        </a></li>
-                        <li className="ml-auto"><a>Delete events</a></li>
+                            <li className="ml-auto"><a onClick={openPhotoModal}>
+                                Add photos
+                            </a></li>
+                            <li className="ml-auto"><a onClick={openDeletePhotosModal}>
+                                Delete photos
+                            </a></li>
+                            <li className="ml-auto"><a onClick={openEventHistoryModal}>
+                                Delete events
+                            </a></li>
                         </ul>
                     </div>
                 </div>
