@@ -86,6 +86,7 @@ const EventHistoryModal = ({ plant, removeEvent }) => {
                 <input
                     type="checkbox"
                     className="hidden"
+                    defaultChecked={selected}
                     onChange={toggle}
                 />
                 <div className="card-body text-center">
