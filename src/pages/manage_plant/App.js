@@ -1,7 +1,5 @@
 import React, { useState, useRef } from 'react';
 import { sendPostRequest, parseDomContext, localToUTC } from 'src/util';
-import CollapseCol from 'src/components/CollapseCol';
-import EditableNodeList from 'src/components/EditableNodeList';
 import EditModal from 'src/components/EditModal';
 import PlantDetailsForm from 'src/forms/PlantDetailsForm';
 import Navbar from 'src/components/Navbar';
@@ -12,14 +10,12 @@ import DetailsCard from 'src/components/DetailsCard';
 import LastEventTime from 'src/components/LastEventTime';
 import PlantDetails from 'src/components/PlantDetails';
 import EventCalendar from './EventCalendar';
-import PhotoCard from './PhotoCard';
 import TrayModal, { openTrayModal } from './TrayModal';
 import PhotoModal, { openPhotoModal } from './PhotoModal';
 import RepotModal, { openRepotModal } from './RepotModal';
-import EventHistoryModal from './EventHistory';
+import EventHistoryModal from './EventHistoryModal';
 import DefaultPhotoModal, { openDefaultPhotoModal } from './DefaultPhotoModal';
 import DeletePhotosModal from './DeletePhotosModal';
-import EventHistory, { EventHistoryButtons } from './EventHistory';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 import Timeline from './Timeline';
 

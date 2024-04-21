@@ -2,13 +2,11 @@ import React, { useRef, useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { DateTime } from 'luxon';
 import { Popover } from "react-tiny-popover";
-import { timestampToRelative, capitalize, pastTense } from 'src/util';
-import CollapseCol from 'src/components/CollapseCol';
-import EditableNodeList from 'src/components/EditableNodeList';
+import { capitalize, pastTense } from 'src/util';
 import { openPhotoModal } from './PhotoModal';
-import DefaultPhotoModal, { openDefaultPhotoModal } from './DefaultPhotoModal';
+import { openDefaultPhotoModal } from './DefaultPhotoModal';
 import { openDeletePhotosModal } from './DeletePhotosModal';
-import { openEventHistoryModal } from './EventHistory';
+import { openEventHistoryModal } from './EventHistoryModal';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -69,7 +67,7 @@ const Timeline = ({ events, photoUrls }) => {
             timestamp: timestamp,
             events: formattedEvents[timestamp]['events'],
             photos: formattedEvents[timestamp]['photos']
-        }
+        };
 
         // Add to correct yearMonth section (or create if first day in month)
         if (!sortedEvents[yearMonth]) {

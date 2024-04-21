@@ -59,7 +59,7 @@ const DeletePhotosModal = ({ plantID, photoUrls, setPhotoUrls }) => {
     const nextPhotoLink = (index) => {
         switch(index) {
             case(photoUrls.length - 1):
-                return '#photo0'
+                return '#photo0';
             default:
                 return `#photo${index + 1}`;
         }
@@ -100,6 +100,11 @@ const DeletePhotosModal = ({ plantID, photoUrls, setPhotoUrls }) => {
                 Select
             </label>
         );
+    };
+
+    SelectButton.propTypes = {
+        photo: PropTypes.object,
+        selected: PropTypes.bool
     };
 
     // Renders single photo slide with next, prev, and select buttons
@@ -235,7 +240,8 @@ const DeletePhotosModal = ({ plantID, photoUrls, setPhotoUrls }) => {
 
 DeletePhotosModal.propTypes = {
     plantID: PropTypes.string,
-    photoUrls: PropTypes.array
+    photoUrls: PropTypes.array,
+    setPhotoUrls: PropTypes.func
 };
 
 export default DeletePhotosModal;

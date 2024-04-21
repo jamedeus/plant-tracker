@@ -36,7 +36,7 @@ const DefaultPhotoModal = ({ plantID, photoUrls }) => {
     const nextPhotoLink = (index) => {
         switch(index) {
             case(photoUrls.length - 1):
-                return '#slide0'
+                return '#slide0';
             default:
                 return `#slide${index + 1}`;
         }
