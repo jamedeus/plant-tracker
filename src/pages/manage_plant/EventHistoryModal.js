@@ -135,16 +135,18 @@ const EventHistoryModal = ({ plant, setPlant }) => {
         return (
             <div className="flex flex-col mx-auto">
                 <div className="max-h-half-screen overflow-scroll px-4">
-                    {events.map((timestamp) => {
-                        return (
+                    {events.length > 0 ? (
+                        events.map((timestamp) => (
                             <EventCard
                                 key={timestamp}
                                 timestamp={timestamp}
                                 selected={selectedRef.current.includes(timestamp)}
                                 onSelect={selectEvent}
                             />
-                        );
-                    })}
+                        ))
+                    ) : (
+                        <p className="my-8">No events</p>
+                    )}
                 </div>
             </div>
         );

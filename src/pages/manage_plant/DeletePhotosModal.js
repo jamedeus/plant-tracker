@@ -179,18 +179,19 @@ const DeletePhotosModal = ({ plantID, photoUrls, setPhotoUrls }) => {
         <Modal dialogRef={deletePhotosModalRef}>
             <div className={`${confirmDelete ? "hidden" : "flex flex-col"}`}>
                 <p className="text-lg mb-4">Delete Photos</p>
-
-                <div className="carousel w-full h-min">
-                    {photoUrls.map((photo, index) => {
-                        return (
+                {photoUrls.length > 0 ? (
+                    <div className="carousel w-full h-min">
+                        {photoUrls.map((photo, index) => (
                             <PhotoSlide
                                 key={index}
                                 photo={photo}
                                 index={index}
                             />
-                        );
-                    })}
-                </div>
+                        ))}
+                    </div>
+                ) : (
+                    <p className="my-8">No photos</p>
+                )}
 
                 <div className="flex mt-6 mx-auto">
                     <button
@@ -214,9 +215,9 @@ const DeletePhotosModal = ({ plantID, photoUrls, setPhotoUrls }) => {
                 <div className={`grid grid-cols-2 grid-cols-[min-content_1fr]
                     mx-auto px-8 gap-4 max-h-half-screen overflow-scroll`}
                 >
-                    {selectedPhotos.map(photo => {
-                        return <ConfirmDeleteRow key={photo.key} photo={photo} />;
-                    })}
+                    {selectedPhotos.map(photo => (
+                        <ConfirmDeleteRow key={photo.key} photo={photo} />
+                    ))}
                 </div>
 
                 <div className="flex mt-6 mx-auto">
