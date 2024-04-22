@@ -2615,7 +2615,7 @@ exports[`App matches snapshot 1`] = `
               type="file"
             />
             <div
-              className="max-h-half-screen overflow-scroll"
+              className="max-h-half-screen overflow-y-scroll overflow-x-hidden"
             >
               <table
                 className="table mt-2"

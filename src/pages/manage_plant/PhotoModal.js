@@ -102,7 +102,7 @@ const PhotoModal = ({ plantID, addPlantPhotoUrls }) => {
         // Table row with delete button next to filename
         const Row = ({ filename }) => {
             return (
-                <tr className="flex">
+                <tr className="flex max-w-96">
                     <td className="my-auto">
                         <button
                             className="btn-close"
@@ -112,7 +112,7 @@ const PhotoModal = ({ plantID, addPlantPhotoUrls }) => {
                         </button>
                     </td>
                     <td className="text-lg leading-8 w-full text-center">
-                        <p>{filename}</p>
+                        <p className="w-full truncate">{filename}</p>
                     </td>
                 </tr>
             );
@@ -124,7 +124,7 @@ const PhotoModal = ({ plantID, addPlantPhotoUrls }) => {
 
         // Return table with 1 row for each selected file
         return (
-            <div className="max-h-half-screen overflow-scroll">
+            <div className="max-h-half-screen overflow-y-scroll overflow-x-hidden">
                 <table className="table mt-2">
                     <tbody>
                         {selectedFiles.map(file => {
