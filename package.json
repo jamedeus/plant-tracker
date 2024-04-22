@@ -24,7 +24,8 @@
     "react": "^18.2.0",
     "react-calendar": "^4.8.0",
     "react-dom": "^18.2.0",
-    "react-test-renderer": "^18.2.0"
+    "react-test-renderer": "^18.2.0",
+    "react-tiny-popover": "^8.0.4"
   },
   "devDependencies": {
     "@babel/core": "^7.23.9",

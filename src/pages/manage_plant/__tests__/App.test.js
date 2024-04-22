@@ -269,37 +269,14 @@ describe('App', () => {
         });
     });
 
-    it('sends correct payload when photos are deleted', async () => {
-        // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                "deleted": [
-                    "2024:03:21 10:52:03"
-                ],
-                "failed": []
-            })
-        }));
+    it('scrolls to timeline when calendar day with events is clicked', async () => {
+        // Click calendar day with no events, confirm scrollIntoView NOT called
+        await user.click(app.getByLabelText('March 10, 2024'));
+        expect(window.HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled();
 
-        // Get reference to Photo History div, open collapse, click edit button
-        const photoHistory = app.getByText("Photos").parentElement;
-        await user.click(photoHistory.children[0]);
-        await user.click(within(photoHistory).getByText('Edit'));
-
-        // Click first checkbox to select photo, click delete button
-        user.click(app.container.querySelectorAll('.radio')[0]);
-        await user.click(within(photoHistory).getByText('Delete'));
-
-        // Confirm correct data posted to /delete_plant_photos endpoint
-        expect(fetch).toHaveBeenCalledWith('/delete_plant_photos', {
-            method: 'POST',
-            body: JSON.stringify({
-                "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                "delete_photos": [1]
-            }),
-            headers: postHeaders
-        });
+        // Click calendar day with events, confirm scrollIntoView called
+        await user.click(app.getByLabelText('March 1, 2024'));
+        expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled();
     });
 
     it('redirects to overview when dropdown option is clicked', async () => {

@@ -378,6 +378,31 @@ def delete_plant_event(plant, timestamp, event_type, **kwargs):
         return JsonResponse({"error": "event not found"}, status=404)
 
 
+@requires_json_post(["plant_id", "events"])
+@get_plant_from_post_body
+def bulk_delete_plant_events(plant, data):
+    '''Deletes a list of events (any type) associated with a single plant
+    Requires JSON POST with plant_id (uuid) and events (list of dicts) keys
+    The events list must contain dicts with timestamp and type keys
+    '''
+    deleted = []
+    failed = []
+    for event in data["events"]:
+        print(event)
+        try:
+            events_map[event["type"]].objects.get(
+                plant=plant,
+                timestamp=event["timestamp"]
+            ).delete()
+            deleted.append(event)
+        except (KeyError, TypeError):
+            failed.append(event)
+        except events_map[event["type"]].DoesNotExist:
+            failed.append(event)
+
+    return JsonResponse({"deleted": deleted, "failed": failed}, status=200)
+
+
 @requires_json_post(["plant_id", "tray_id"])
 @get_plant_from_post_body
 @get_tray_from_post_body
@@ -503,7 +528,7 @@ def add_plant_photos(request):
             plant=plant
         )
         created.append({
-            "created": photo.created.strftime('%Y:%m:%d %H:%M:%S'),
+            "created": photo.created.strftime('%Y-%m-%dT%H:%M:%S'),
             "image": photo.get_photo_url(),
             "thumbnail": photo.get_thumbnail_url(),
             "key": photo.pk

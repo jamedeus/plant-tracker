@@ -200,19 +200,19 @@ class PlantModelTests(TestCase):
             photo_urls,
             [
                 {
-                    'created': '2024:03:22 10:52:03',
+                    'created': '2024-03-22T10:52:03+00:00',
                     'image': '/media/images/IMG2.jpg',
                     'thumbnail': '/media/thumbnails/IMG2_thumb.jpg',
                     'key': 2
                 },
                 {
-                    'created': '2024:02:21 10:52:03',
+                    'created': '2024-02-21T10:52:03+00:00',
                     'image': '/media/images/IMG1.jpg',
                     'thumbnail': '/media/thumbnails/IMG1_thumb.jpg',
                     'key': 1
                 },
                 {
-                    'created': '2024:01:28 10:52:03',
+                    'created': '2024-01-28T10:52:03+00:00',
                     'image': '/media/images/IMG3.jpg',
                     'thumbnail': '/media/thumbnails/IMG3_thumb.jpg',
                     'key': 3

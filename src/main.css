@@ -88,14 +88,34 @@ html[data-theme="light"] .pot-size-selected::placeholder {
 }
 
 .btn-prune {
-    @apply bg-orange-300 text-warning-content border border-transparent;
+    @apply bg-prune text-warning-content border border-transparent;
 }
 
 .btn-prune:hover {
-    background-color: color-mix(in oklab, theme('colors.orange.300'), black 10%);
-    border-color: color-mix(in oklab, theme('colors.orange.300'), black 10%);
+    background-color: color-mix(in oklab, theme('colors.prune'), black 10%);
+    border-color: color-mix(in oklab, theme('colors.prune'), black 10%);
 }
 
 .alert {
     @apply whitespace-normal md:whitespace-nowrap;
+}
+
+@keyframes popover-animation {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.popover-enter {
+    transform-origin: bottom;
+    animation: popover-animation 0.3s cubic-bezier(0, 0, 0.2, 1);
+}
+
+.popover-image {
+    @apply object-scale-down max-h-[80vh] max-w-[80vw] md:max-h-[50vh] md:max-w-[50vw];
 }

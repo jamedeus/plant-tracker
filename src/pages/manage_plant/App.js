@@ -1,7 +1,5 @@
 import React, { useState, useRef } from 'react';
 import { sendPostRequest, parseDomContext, localToUTC } from 'src/util';
-import CollapseCol from 'src/components/CollapseCol';
-import EditableNodeList from 'src/components/EditableNodeList';
 import EditModal from 'src/components/EditModal';
 import PlantDetailsForm from 'src/forms/PlantDetailsForm';
 import Navbar from 'src/components/Navbar';
@@ -12,13 +10,14 @@ import DetailsCard from 'src/components/DetailsCard';
 import LastEventTime from 'src/components/LastEventTime';
 import PlantDetails from 'src/components/PlantDetails';
 import EventCalendar from './EventCalendar';
-import PhotoCard from './PhotoCard';
 import TrayModal, { openTrayModal } from './TrayModal';
 import PhotoModal, { openPhotoModal } from './PhotoModal';
 import RepotModal, { openRepotModal } from './RepotModal';
+import EventHistoryModal from './EventHistoryModal';
 import DefaultPhotoModal, { openDefaultPhotoModal } from './DefaultPhotoModal';
-import EventHistory, { EventHistoryButtons } from './EventHistory';
+import DeletePhotosModal from './DeletePhotosModal';
 import { useErrorModal } from 'src/context/ErrorModalContext';
+import Timeline from './Timeline';
 
 function App() {
     // Load context set by django template
@@ -34,9 +33,6 @@ function App() {
     // Get hooks to show toast message, error modal
     const { showToast } = useToast();
     const { showErrorModal } = useErrorModal();
-
-    // Create ref to preserve photo history open state between re-renders
-    const photoHistoryOpen = useRef(false);
 
     // Create ref to access new event datetime input
     const eventTimeInput = useRef(null);
@@ -119,68 +115,6 @@ function App() {
                 showErrorModal(JSON.stringify(error));
             }
         }
-    };
-
-    // Takes timestamp and eventType, removes timestamp from plant.events state
-    const removeEvent = (timestamp, eventType) => {
-        let oldPlant = {...plant};
-        oldPlant.events[eventType].splice(
-            oldPlant.events[eventType].indexOf(timestamp),
-            1
-        );
-        setPlant(oldPlant);
-    };
-
-    const PhotoHistory = () => {
-        // Create edit mode state + ref to track selected photos while editing
-        const [editing, setEditing] = useState(false);
-        const selected = useRef([]);
-
-        // Delete button handler
-        const onDelete = async () => {
-            // Build payload with plant UUID and array of selected photo IDs
-            const payload = {
-                plant_id: plant.uuid,
-                delete_photos: selected.current.map(key => parseInt(key))
-            };
-            const response = await sendPostRequest('/delete_plant_photos', payload);
-            // If successful remove photos from history column
-            if (response.ok) {
-                const data = await response.json();
-                let oldPhotoUrls = [...photoUrls];
-                setPhotoUrls(oldPhotoUrls.filter(
-                    photo => !data.deleted.includes(photo.key)
-                ));
-            } else {
-                const error = await response.json();
-                showErrorModal(JSON.stringify(error));
-            }
-        };
-
-        return (
-            <CollapseCol title={"Photos"} openRef={photoHistoryOpen}>
-                <EditableNodeList
-                    editing={editing}
-                    selected={selected}
-                >
-                    {photoUrls.map((photo) => {
-                        return (
-                            <PhotoCard
-                                key={photo.key}
-                                image_url={photo.image}
-                                thumbnail_url={photo.thumbnail}
-                                created={photo.created}
-                            />
-                        );
-                    })}
-                </EditableNodeList>
-                <EventHistoryButtons
-                    editing={editing}
-                    setEditing={setEditing}
-                    handleDelete={onDelete}
-                />
-            </CollapseCol>
-        );
     };
 
     const DropdownOptions = () => {
@@ -330,19 +264,14 @@ function App() {
                 </div>
             </div>
 
-            <div className="mx-auto my-16">
+            <div className="mx-auto my-8">
                 <EventCalendar events={plant.events} />
             </div>
 
-            <div className="mb-8">
-                <EventHistory
-                    plantId={plant.uuid}
-                    events={plant.events}
-                    removeEvent={removeEvent}
-                />
-            </div>
-
-            <PhotoHistory />
+            <Timeline
+                events={plant.events}
+                photoUrls={photoUrls}
+            />
 
             <EditModal title="Edit Details" onSubmit={submitEditModal}>
                 <PlantDetailsForm
@@ -375,6 +304,17 @@ function App() {
             <DefaultPhotoModal
                 plantID={plant.uuid}
                 photoUrls={photoUrls}
+            />
+
+            <DeletePhotosModal
+                plantID={plant.uuid}
+                photoUrls={photoUrls}
+                setPhotoUrls={setPhotoUrls}
+            />
+
+            <EventHistoryModal
+                plant={plant}
+                setPlant={setPlant}
             />
         </div>
     );

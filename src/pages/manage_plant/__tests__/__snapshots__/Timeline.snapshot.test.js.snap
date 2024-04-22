@@ -1,0 +1,2735 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`App matches snapshot 1`] = `
+[
+  <div
+    className="flex flex-col mt-2 mx-4 md:mx-auto p-4 md:p-8 pt-0 md:pt-0
+                        md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
+  >
+    <div
+      className="navbar bg-base-200 rounded-2xl"
+    >
+      <div
+        className="navbar-start w-auto invisible"
+      >
+        <div
+          className="btn btn-ghost btn-circle"
+          role="button"
+          tabIndex={0}
+        >
+          <svg
+            aria-hidden="true"
+            className="svg-inline--fa fa-ellipsis w-6 h-6"
+            data-icon="ellipsis"
+            data-prefix="fas"
+            focusable="false"
+            role="img"
+            style={{}}
+            viewBox="0 0 448 512"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z"
+              fill="currentColor"
+              style={{}}
+            />
+          </svg>
+        </div>
+      </div>
+      <div
+        className="navbar-center mx-auto"
+      >
+        <div
+          className="dropdown dropdown-center dropdown-hover mx-auto"
+        >
+          <div
+            className="btn btn-ghost text-xl font-bold m-1"
+            role="button"
+            tabIndex={0}
+          >
+            History
+          </div>
+          <ul
+            className="dropdown-content z-[1] menu p-2 shadow
+                                        bg-base-300 rounded-box w-44"
+            tabIndex={0}
+          >
+            <li>
+              <details>
+                <summary>
+                  2024
+                </summary>
+                <ul>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      April
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      March
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      February
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      January
+                    </a>
+                  </li>
+                </ul>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  2023
+                </summary>
+                <ul>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      December
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      November
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      October
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      September
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      August
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      July
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      June
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      May
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      April
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      March
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      February
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      January
+                    </a>
+                  </li>
+                </ul>
+              </details>
+            </li>
+            <li>
+              <details>
+                <summary>
+                  2008
+                </summary>
+                <ul>
+                  <li>
+                    <a
+                      onClick={[Function]}
+                    >
+                      August
+                    </a>
+                  </li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div
+        className="navbar-end w-auto"
+      >
+        <div
+          className="dropdown dropdown-end"
+        >
+          <div
+            className="btn btn-ghost btn-circle"
+            role="button"
+            tabIndex={0}
+          >
+            <svg
+              aria-hidden="true"
+              className="svg-inline--fa fa-ellipsis w-6 h-6"
+              data-icon="ellipsis"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              style={{}}
+              viewBox="0 0 448 512"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z"
+                fill="currentColor"
+                style={{}}
+              />
+            </svg>
+          </div>
+          <ul
+            className="dropdown-content z-[1] menu p-2 shadow
+                                        bg-base-300 rounded-box w-40"
+            tabIndex={0}
+          >
+            <li
+              className="ml-auto"
+            >
+              <a
+                onClick={[Function]}
+              >
+                Add photos
+              </a>
+            </li>
+            <li
+              className="ml-auto"
+            >
+              <a
+                onClick={[Function]}
+              >
+                Delete photos
+              </a>
+            </li>
+            <li
+              className="ml-auto"
+            >
+              <a
+                onClick={[Function]}
+              >
+                Delete events
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div
+      className="grid grid-cols-2 grid-cols-[min-content_1fr] gap-4 md:gap-8"
+    >
+      <div
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+      >
+        April 2024
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2024-04-17"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            in 47 days
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Apr 17, 2024
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2024-04-16"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            in 46 days
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Apr 16, 2024
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2024-04-15"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            in 45 days
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Apr 15, 2024
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2024-04-14"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            in 44 days
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Apr 14, 2024
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2024-04-13"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            in 43 days
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Apr 13, 2024
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-seedling mr-2 text-success"
+                data-icon="seedling"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 512 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Fertilized
+            </span>
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-scissors mr-2 text-prune"
+                data-icon="scissors"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 512 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M256 192l-39.5-39.5c4.9-12.6 7.5-26.2 7.5-40.5C224 50.1 173.9 0 112 0S0 50.1 0 112s50.1 112 112 112c14.3 0 27.9-2.7 40.5-7.5L192 256l-39.5 39.5c-12.6-4.9-26.2-7.5-40.5-7.5C50.1 288 0 338.1 0 400s50.1 112 112 112s112-50.1 112-112c0-14.3-2.7-27.9-7.5-40.5L499.2 76.8c7.1-7.1 7.1-18.5 0-25.6c-28.3-28.3-74.1-28.3-102.4 0L256 192zm22.6 150.6L396.8 460.8c28.3 28.3 74.1 28.3 102.4 0c7.1-7.1 7.1-18.5 0-25.6L342.6 278.6l-64 64zM64 112a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm48 240a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Pruned
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2024-04-12"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            in 42 days
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Apr 12, 2024
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-mound mr-2 text-repot"
+                data-icon="mound"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 576 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M144.1 179.2C173.8 127.7 228.6 96 288 96s114.2 31.7 143.9 83.2L540.4 368c12.3 21.3-3.1 48-27.7 48H63.3c-24.6 0-40-26.6-27.7-48L144.1 179.2z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Repoted
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2024-04-11"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            in 41 days
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Apr 11, 2024
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+      >
+        March 2024
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2024-03-31"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            in 30 days
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Mar 31, 2024
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-seedling mr-2 text-success"
+                data-icon="seedling"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 512 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Fertilized
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2024-03-25"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            in 24 days
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Mar 25, 2024
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-seedling mr-2 text-success"
+                data-icon="seedling"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 512 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Fertilized
+            </span>
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-scissors mr-2 text-prune"
+                data-icon="scissors"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 512 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M256 192l-39.5-39.5c4.9-12.6 7.5-26.2 7.5-40.5C224 50.1 173.9 0 112 0S0 50.1 0 112s50.1 112 112 112c14.3 0 27.9-2.7 40.5-7.5L192 256l-39.5 39.5c-12.6-4.9-26.2-7.5-40.5-7.5C50.1 288 0 338.1 0 400s50.1 112 112 112s112-50.1 112-112c0-14.3-2.7-27.9-7.5-40.5L499.2 76.8c7.1-7.1 7.1-18.5 0-25.6c-28.3-28.3-74.1-28.3-102.4 0L256 192zm22.6 150.6L396.8 460.8c28.3 28.3 74.1 28.3 102.4 0c7.1-7.1 7.1-18.5 0-25.6L342.6 278.6l-64 64zM64 112a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm48 240a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Pruned
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <div
+              onClick={[Function]}
+            >
+              <img
+                className="rounded-lg m-2 object-cover w-[4.9rem]
+                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                src="/media/thumbnails/IMG_8103_thumb.jpg"
+              />
+            </div>
+            <div
+              onClick={[Function]}
+            >
+              <img
+                className="rounded-lg m-2 object-cover w-[4.9rem]
+                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                src="/media/thumbnails/IMG_8102_thumb.jpg"
+              />
+            </div>
+            <div
+              onClick={[Function]}
+            >
+              <img
+                className="rounded-lg m-2 object-cover w-[4.9rem]
+                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                src="/media/thumbnails/IMG_8101_thumb.jpg"
+              />
+            </div>
+            <div
+              onClick={[Function]}
+            >
+              <img
+                className="rounded-lg m-2 object-cover w-[4.9rem]
+                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                src="/media/thumbnails/IMG_8098_thumb.jpg"
+              />
+            </div>
+            <div
+              onClick={[Function]}
+            >
+              <img
+                className="rounded-lg m-2 object-cover w-[4.9rem]
+                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                src="/media/thumbnails/IMG_8097_thumb.jpg"
+              />
+            </div>
+            <div
+              onClick={[Function]}
+            >
+              <img
+                className="rounded-lg m-2 object-cover w-[4.9rem]
+                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                src="/media/thumbnails/IMG_8095_thumb.jpg"
+              />
+            </div>
+            <div
+              onClick={[Function]}
+            >
+              <img
+                className="rounded-lg m-2 object-cover w-[4.9rem]
+                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                src="/media/thumbnails/IMG_8094_thumb.jpg"
+              />
+            </div>
+            <div
+              onClick={[Function]}
+            >
+              <img
+                className="rounded-lg m-2 object-cover w-[4.9rem]
+                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                src="/media/thumbnails/IMG_8093_thumb.jpg"
+              />
+            </div>
+            <div
+              onClick={[Function]}
+            >
+              <img
+                className="rounded-lg m-2 object-cover w-[4.9rem]
+                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                src="/media/thumbnails/IMG_8092_thumb.jpg"
+              />
+            </div>
+            <div
+              onClick={[Function]}
+            >
+              <img
+                className="rounded-lg m-2 object-cover w-[4.9rem]
+                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                src="/media/thumbnails/IMG_8091_thumb.jpg"
+              />
+            </div>
+            <div
+              onClick={[Function]}
+            >
+              <img
+                className="rounded-lg m-2 object-cover w-[4.9rem]
+                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                src="/media/thumbnails/IMG_8090_thumb.jpg"
+              />
+            </div>
+            <div
+              onClick={[Function]}
+            >
+              <img
+                className="rounded-lg m-2 object-cover w-[4.9rem]
+                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                src="/media/thumbnails/IMG_8089_thumb.jpg"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2024-03-24"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            in 23 days
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Mar 24, 2024
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-scissors mr-2 text-prune"
+                data-icon="scissors"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 512 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M256 192l-39.5-39.5c4.9-12.6 7.5-26.2 7.5-40.5C224 50.1 173.9 0 112 0S0 50.1 0 112s50.1 112 112 112c14.3 0 27.9-2.7 40.5-7.5L192 256l-39.5 39.5c-12.6-4.9-26.2-7.5-40.5-7.5C50.1 288 0 338.1 0 400s50.1 112 112 112s112-50.1 112-112c0-14.3-2.7-27.9-7.5-40.5L499.2 76.8c7.1-7.1 7.1-18.5 0-25.6c-28.3-28.3-74.1-28.3-102.4 0L256 192zm22.6 150.6L396.8 460.8c28.3 28.3 74.1 28.3 102.4 0c7.1-7.1 7.1-18.5 0-25.6L342.6 278.6l-64 64zM64 112a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm48 240a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Pruned
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2024-03-23"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            in 22 days
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Mar 23, 2024
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-seedling mr-2 text-success"
+                data-icon="seedling"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 512 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Fertilized
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2024-03-22"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            in 21 days
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Mar 22, 2024
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-seedling mr-2 text-success"
+                data-icon="seedling"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 512 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Fertilized
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2024-03-21"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            in 20 days
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Mar 21, 2024
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-seedling mr-2 text-success"
+                data-icon="seedling"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 512 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Fertilized
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2024-03-17"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            in 16 days
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Mar 17, 2024
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2024-03-13"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            in 12 days
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Mar 13, 2024
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-mound mr-2 text-repot"
+                data-icon="mound"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 576 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M144.1 179.2C173.8 127.7 228.6 96 288 96s114.2 31.7 143.9 83.2L540.4 368c12.3 21.3-3.1 48-27.7 48H63.3c-24.6 0-40-26.6-27.7-48L144.1 179.2z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Repoted
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+      >
+        February 2024
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2024-02-21"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            9 days ago
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Feb 21, 2024
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          />
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <div
+              onClick={[Function]}
+            >
+              <img
+                className="rounded-lg m-2 object-cover w-[4.9rem]
+                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                src="/media/thumbnails/IMG_7598_thumb.jpg"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2024-02-17"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            13 days ago
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Feb 17, 2024
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+      >
+        January 2024
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2024-01-17"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            44 days ago
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Jan 17, 2024
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+      >
+        December 2023
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2023-12-17"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            75 days ago
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Dec 17, 2023
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+      >
+        November 2023
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2023-11-22"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            100 days ago
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Nov 22, 2023
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-seedling mr-2 text-success"
+                data-icon="seedling"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 512 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Fertilized
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2023-11-21"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            101 days ago
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Nov 21, 2023
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-seedling mr-2 text-success"
+                data-icon="seedling"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 512 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Fertilized
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <div
+              onClick={[Function]}
+            >
+              <img
+                className="rounded-lg m-2 object-cover w-[4.9rem]
+                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                src="/media/thumbnails/IMG_5866_thumb.jpg"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2023-11-20"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            102 days ago
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Nov 20, 2023
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2023-11-17"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            105 days ago
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Nov 17, 2023
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-seedling mr-2 text-success"
+                data-icon="seedling"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 512 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Fertilized
+            </span>
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-scissors mr-2 text-prune"
+                data-icon="scissors"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 512 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M256 192l-39.5-39.5c4.9-12.6 7.5-26.2 7.5-40.5C224 50.1 173.9 0 112 0S0 50.1 0 112s50.1 112 112 112c14.3 0 27.9-2.7 40.5-7.5L192 256l-39.5 39.5c-12.6-4.9-26.2-7.5-40.5-7.5C50.1 288 0 338.1 0 400s50.1 112 112 112s112-50.1 112-112c0-14.3-2.7-27.9-7.5-40.5L499.2 76.8c7.1-7.1 7.1-18.5 0-25.6c-28.3-28.3-74.1-28.3-102.4 0L256 192zm22.6 150.6L396.8 460.8c28.3 28.3 74.1 28.3 102.4 0c7.1-7.1 7.1-18.5 0-25.6L342.6 278.6l-64 64zM64 112a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm48 240a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Pruned
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+      >
+        October 2023
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2023-10-17"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            136 days ago
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Oct 17, 2023
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+      >
+        September 2023
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2023-09-17"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            166 days ago
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Sep 17, 2023
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2023-09-11"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            172 days ago
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Sep 11, 2023
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          />
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <div
+              onClick={[Function]}
+            >
+              <img
+                className="rounded-lg m-2 object-cover w-[4.9rem]
+                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                src="/media/thumbnails/IMG_5040_thumb.jpg"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+      >
+        August 2023
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2023-08-23"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            191 days ago
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Aug 23, 2023
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          />
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <div
+              onClick={[Function]}
+            >
+              <img
+                className="rounded-lg m-2 object-cover w-[4.9rem]
+                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                src="/media/thumbnails/IMG_4813_thumb.jpg"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2023-08-17"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            197 days ago
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Aug 17, 2023
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+      >
+        July 2023
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2023-07-17"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            228 days ago
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Jul 17, 2023
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+      >
+        June 2023
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2023-06-17"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            258 days ago
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Jun 17, 2023
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+      >
+        May 2023
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2023-05-17"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            289 days ago
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            May 17, 2023
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+      >
+        April 2023
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2023-04-17"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            319 days ago
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Apr 17, 2023
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+      >
+        March 2023
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2023-03-17"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            350 days ago
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Mar 17, 2023
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+      >
+        February 2023
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2023-02-17"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            378 days ago
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Feb 17, 2023
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+      >
+        January 2023
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2023-01-17"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            409 days ago
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Jan 17, 2023
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <span
+              className="m-2 whitespace-nowrap text-sm md:text-base"
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-droplet mr-2 text-info"
+                data-icon="droplet"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                style={{}}
+                viewBox="0 0 384 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              Watered
+            </span>
+          </div>
+          <div
+            className="flex flex-row flex-wrap"
+          />
+        </div>
+      </div>
+      <div
+        className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+      >
+        August 2008
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2008-08-22"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            5670 days
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Aug 22, 2008
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          />
+          <div
+            className="flex flex-row flex-wrap"
+          >
+            <div
+              onClick={[Function]}
+            >
+              <img
+                className="rounded-lg m-2 object-cover w-[4.9rem]
+                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                src="/media/thumbnails/IMG_4811_thumb.jpeg"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>,
+  <dialog
+    className="modal"
+  >
+    <div
+      className="modal-box text-center flex flex-col pt-4"
+    >
+      <form
+        method="dialog"
+      >
+        <button
+          className="btn-close absolute right-4 top-4"
+        >
+          <svg
+            aria-hidden="true"
+            className="w-8 h-8"
+            data-slot="icon"
+            fill="currentColor"
+            viewBox="0 0 16 16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+            />
+          </svg>
+        </button>
+      </form>
+      <h3
+        className="font-bold text-lg mb-6"
+      >
+        Error
+      </h3>
+      <div
+        className="min-h-36 flex flex-col justify-center mx-auto"
+      />
+      <div
+        className="modal-action mx-auto"
+      >
+        <button
+          className="btn"
+          onClick={[Function]}
+        >
+          OK
+        </button>
+      </div>
+    </div>
+    <form
+      className="modal-backdrop"
+      method="dialog"
+    >
+      <button>
+        close
+      </button>
+    </form>
+  </dialog>,
+]
+`;

@@ -1,8 +1,13 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-    content: ["./src/**/*.{html,js}"],
+    content: ["./src/**/*.{html,js,css}"],
     theme: {
-        extend: {},
+        extend: {
+            colors: {
+                prune: 'var(--prune)',
+                repot: 'var(--repot)',
+            },
+        },
     },
     plugins: [require("daisyui")],
     daisyui: {
@@ -11,10 +16,16 @@ module.exports = {
                 light: {
                     ...require("daisyui/src/theming/themes")["light"],
                     "neutral": "#dddddd",
-                    "neutral-content": "#000"
+                    "neutral-content": "#000",
+                    "--prune": "theme('colors.orange.300')",
+                    "--repot": "#703f21",
                 },
-            },
-            "dark"
+                dark: {
+                    ...require("daisyui/src/theming/themes")["dark"],
+                    "--prune": "theme('colors.orange.300')",
+                    "--repot": "#60381b",
+                },
+            }
         ],
     },
 }

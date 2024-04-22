@@ -35,8 +35,13 @@ function localToUTC(timestamp) {
 }
 
 // Takes isoformat timestamp, returns relative time string ("5 minutes ago")
-function timestampToRelative(timestamp) {
-    return DateTime.fromISO(timestamp).setZone('system').toRelative();
+// If optional calendar arg passed returns days only (yesterday, x days ago, etc)
+function timestampToRelative(timestamp, calendar=false) {
+    if (calendar) {
+        return DateTime.fromISO(timestamp).setZone('system').toRelativeCalendar();
+    } else {
+        return DateTime.fromISO(timestamp).setZone('system').toRelative();
+    }
 }
 
 // Takes string, returns with first letter capitalized and all others lowercase
