@@ -1,9 +1,9 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import EditableNodeList from 'src/components/EditableNodeList';
+import PlantCard from 'src/components/PlantCard';
 import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
-import ManagePlantsCard from './ManagePlantsCard';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 
 let removePlantsModalRef;
@@ -44,16 +44,13 @@ const RemovePlantsModal = ({ trayID, plantDetails, setPlantDetails }) => {
     };
 
     return (
-        <Modal dialogRef={removePlantsModalRef}>
+        <Modal dialogRef={removePlantsModalRef} className="max-w-[26rem]">
             <p className="font-bold text-2xl mb-8">Remove Plants</p>
 
             {plantDetails.length > 0 ? (
                 <EditableNodeList editing={true} selected={selected}>
                     {plantDetails.map((plant) => (
-                        <ManagePlantsCard
-                            key={plant.uuid}
-                            name={plant.name}
-                        />
+                        <PlantCard key={plant.uuid} {...plant} />
                     ))}
                 </EditableNodeList>
             ) : (

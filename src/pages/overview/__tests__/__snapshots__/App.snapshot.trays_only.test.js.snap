@@ -191,7 +191,7 @@ exports[`App matches snapshot when only trays exist 1`] = `
       className="modal"
     >
       <div
-        className="modal-box text-center flex flex-col pt-4"
+        className="modal-box text-center flex flex-col pt-4 "
       >
         <form
           method="dialog"
@@ -356,7 +356,7 @@ exports[`App matches snapshot when only trays exist 1`] = `
     className="modal"
   >
     <div
-      className="modal-box text-center flex flex-col pt-4"
+      className="modal-box text-center flex flex-col pt-4 "
     >
       <form
         method="dialog"

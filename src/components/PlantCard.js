@@ -78,7 +78,7 @@ const PlantCard = ({ name, uuid, species, description, pot_size, last_watered, t
                 );
             default:
                 return (
-                    <div className="card-body my-auto">
+                    <div className="card-body my-auto text-start">
                         <h2 className="card-title line-clamp-1 pr-8">
                             {name}
                         </h2>

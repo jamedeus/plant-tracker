@@ -66,14 +66,14 @@ describe('App', () => {
         }));
 
         // Confirm last_watered timestamps say "14 hours ago"
-        expect(app.queryAllByText(/14 hours ago/).length).toBe(2);
+        expect(app.queryAllByText(/14 hours ago/).length).toBe(4);
 
         // Simulate user selecting 2 days ago in datetime input, click Water All
         simulateUserDatetimeInput('2024-02-28T05:45:00.000Z');
         await user.click(app.getByText("Water All"));
 
         // Confirm last_watered did not change (new timestamp older than existing)
-        expect(app.queryAllByText(/14 hours ago/).length).toBe(2);
+        expect(app.queryAllByText(/14 hours ago/).length).toBe(4);
 
         // Simulate user selecting 15 min ago in datetime input, click Water All
         simulateUserDatetimeInput('2024-03-01T19:45:00.000Z');
@@ -81,6 +81,6 @@ describe('App', () => {
 
         // Confirm last_watered changed (new timestamp newer than existing)
         expect(app.queryAllByText(/14 hours ago/).length).toBe(0);
-        expect(app.queryAllByText(/15 minutes ago/).length).toBe(2);
+        expect(app.queryAllByText(/15 minutes ago/).length).toBe(4);
     });
 });
