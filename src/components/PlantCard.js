@@ -6,15 +6,20 @@ import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/16/solid';
 import PlantDetails from 'src/components/PlantDetails';
 import { timestampToRelative } from 'src/util';
 
-const PlantCard = ({ name, uuid, species, description, pot_size, last_watered, thumbnail }) => {
+const PlantCard = ({ name, uuid, species, description, pot_size, last_watered, thumbnail, linkPage=true }) => {
     // Track details collapse open state
     const [open, setOpen] = useState(false);
 
     // Button handler toggles collapse state, prevents click propagating
-    // to card (redirects to manage_plant page)
+    // to card (redirects to manage_plant page unless linkpage arg is false)
     const toggle = (e) => {
         setOpen(!open);
         e.stopPropagation();
+    };
+
+    // Click handler, redirects to manage_plant unless linkpage arg is false
+    const manageLink = () => {
+        window.location.href = `/manage/${uuid}`;
     };
 
     // Renders collapse with Plant details, opened with arrow button
@@ -93,9 +98,9 @@ const PlantCard = ({ name, uuid, species, description, pot_size, last_watered, t
             <div
                 className={
                     `card card-side bg-neutral text-neutral-content mx-auto relative
-                    ${open ? "rounded-b-none" : ""}
+                    ${open ? "rounded-b-none" : ""} ${linkPage ? 'cursor-pointer' : ''}
                 `}
-                onClick={() => window.location.href = `/manage/${uuid}`}
+                onClick={linkPage ? manageLink : null}
             >
                 {(() => {
                     switch(thumbnail) {
@@ -136,7 +141,8 @@ PlantCard.propTypes = {
     description: PropTypes.string,
     pot_size: PropTypes.number,
     last_watered: PropTypes.string,
-    thumbnail: PropTypes.string
+    thumbnail: PropTypes.string,
+    linkPage: PropTypes.bool
 };
 
 export default PlantCard;

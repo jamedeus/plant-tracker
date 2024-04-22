@@ -167,7 +167,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
         >
           <div
             className="card card-side bg-neutral text-neutral-content mx-auto relative
-                    
+                     cursor-pointer
                 "
             onClick={[Function]}
           >

@@ -55,7 +55,11 @@ const AddPlantsModal = ({ trayID, options, plantDetails, setPlantDetails }) => {
                 {plantOptions.length > 0 ? (
                     <EditableNodeList editing={true} selected={selected}>
                         {plantOptions.map((plant) => (
-                            <PlantCard key={plant.uuid} {...plant} />
+                            <PlantCard
+                                key={plant.uuid}
+                                {...plant}
+                                linkPage={false}
+                            />
                         ))}
                     </EditableNodeList>
                 ) : (

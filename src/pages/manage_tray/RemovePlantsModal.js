@@ -51,7 +51,11 @@ const RemovePlantsModal = ({ trayID, plantDetails, setPlantDetails }) => {
                 {plantDetails.length > 0 ? (
                     <EditableNodeList editing={true} selected={selected}>
                         {plantDetails.map((plant) => (
-                            <PlantCard key={plant.uuid} {...plant} />
+                            <PlantCard
+                                key={plant.uuid}
+                                {...plant}
+                                linkPage={false}
+                            />
                         ))}
                     </EditableNodeList>
                 ) : (

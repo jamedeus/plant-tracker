@@ -238,7 +238,7 @@ exports[`App matches snapshot 1`] = `
         >
           <div
             className="card card-side bg-neutral text-neutral-content mx-auto relative
-                    
+                     cursor-pointer
                 "
             onClick={[Function]}
           >
@@ -357,7 +357,7 @@ exports[`App matches snapshot 1`] = `
         >
           <div
             className="card card-side bg-neutral text-neutral-content mx-auto relative
-                    
+                     cursor-pointer
                 "
             onClick={[Function]}
           >
@@ -661,9 +661,9 @@ exports[`App matches snapshot 1`] = `
             >
               <div
                 className="card card-side bg-neutral text-neutral-content mx-auto relative
-                    
+                     
                 "
-                onClick={[Function]}
+                onClick={null}
               >
                 <figure
                   className="h-24 w-20 min-h-20 min-w-20"
@@ -781,9 +781,9 @@ exports[`App matches snapshot 1`] = `
             >
               <div
                 className="card card-side bg-neutral text-neutral-content mx-auto relative
-                    
+                     
                 "
-                onClick={[Function]}
+                onClick={null}
               >
                 <figure
                   className="h-24 w-20 min-h-20 min-w-20"
@@ -932,9 +932,9 @@ exports[`App matches snapshot 1`] = `
             >
               <div
                 className="card card-side bg-neutral text-neutral-content mx-auto relative
-                    
+                     
                 "
-                onClick={[Function]}
+                onClick={null}
               >
                 <div
                   className="card-body text-center"
@@ -1065,9 +1065,9 @@ exports[`App matches snapshot 1`] = `
             >
               <div
                 className="card card-side bg-neutral text-neutral-content mx-auto relative
-                    
+                     
                 "
-                onClick={[Function]}
+                onClick={null}
               >
                 <figure
                   className="h-24 w-20 min-h-20 min-w-20"
