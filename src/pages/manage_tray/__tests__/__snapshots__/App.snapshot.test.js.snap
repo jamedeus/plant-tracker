@@ -641,208 +641,212 @@ exports[`App matches snapshot 1`] = `
           Add Plants
         </p>
         <div
-          className="flex mb-4"
+          className="max-h-screen md:max-h-half-screen overflow-scroll pr-4"
         >
-          <label
-            className="label cursor-pointer"
-          >
-            <input
-              className="radio checked:bg-blue-500"
-              defaultChecked={false}
-              onChange={[Function]}
-              type="checkbox"
-            />
-          </label>
           <div
-            className="ml-2 w-full"
+            className="flex mb-4"
           >
-            <div
-              className="card card-side bg-neutral text-neutral-content mx-auto relative
-                    
-                "
-              onClick={[Function]}
-            >
-              <figure
-                className="h-24 w-20 min-h-20 min-w-20"
-              >
-                <img
-                  className="w-full h-full object-cover"
-                  src="/media/thumbnails/photo2_thumb.jpg"
-                />
-              </figure>
-              <div
-                className="card-body my-auto text-start"
-              >
-                <h2
-                  className="card-title line-clamp-1 pr-8"
-                >
-                  Another test plant
-                </h2>
-                <span>
-                  Never watered
-                </span>
-              </div>
-              <button
-                className="btn-close absolute right-2 top-8 z-40"
-                onClick={[Function]}
-                role="button"
-                tabIndex={0}
-              >
-                <svg
-                  aria-hidden="true"
-                  className="w-8 h-8"
-                  data-slot="icon"
-                  fill="currentColor"
-                  viewBox="0 0 16 16"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    clipRule="evenodd"
-                    d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                    fillRule="evenodd"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div
-              className="collapse bg-neutral rounded-t-none
-                
-            "
+            <label
+              className="label cursor-pointer"
             >
               <input
-                className="hidden"
+                className="radio checked:bg-blue-500"
                 defaultChecked={false}
                 onChange={[Function]}
                 type="checkbox"
               />
+            </label>
+            <div
+              className="ml-2 w-full"
+            >
               <div
-                className="collapse-content"
+                className="card card-side bg-neutral text-neutral-content mx-auto relative
+                    
+                "
+                onClick={[Function]}
               >
-                <p
-                  className="hidden"
+                <figure
+                  className="h-24 w-20 min-h-20 min-w-20"
                 >
-                  <span
-                    className="font-semibold"
-                  >
-                    Species:
-                  </span>
-                  <span
-                    className="ml-auto text-right"
+                  <img
+                    className="w-full h-full object-cover"
+                    src="/media/thumbnails/photo2_thumb.jpg"
                   />
-                </p>
-                <p
-                  className="flex"
-                >
-                  <span
-                    className="font-semibold"
-                  >
-                    Pot size:
-                  </span>
-                  <span
-                    className="ml-auto text-right"
-                  >
-                    4
-                  </span>
-                </p>
+                </figure>
                 <div
+                  className="card-body my-auto text-start"
+                >
+                  <h2
+                    className="card-title line-clamp-1 pr-8"
+                  >
+                    Another test plant
+                  </h2>
+                  <span>
+                    Never watered
+                  </span>
+                </div>
+                <button
+                  className="btn-close absolute right-2 top-8 z-40"
+                  onClick={[Function]}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <svg
+                    aria-hidden="true"
+                    className="w-8 h-8"
+                    data-slot="icon"
+                    fill="currentColor"
+                    viewBox="0 0 16 16"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      clipRule="evenodd"
+                      d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                      fillRule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div
+                className="collapse bg-neutral rounded-t-none
+                
+            "
+              >
+                <input
                   className="hidden"
+                  defaultChecked={false}
+                  onChange={[Function]}
+                  type="checkbox"
+                />
+                <div
+                  className="collapse-content"
                 >
                   <p
-                    className="font-semibold mt-3"
+                    className="hidden"
                   >
-                    Description:
+                    <span
+                      className="font-semibold"
+                    >
+                      Species:
+                    </span>
+                    <span
+                      className="ml-auto text-right"
+                    />
                   </p>
                   <p
-                    className="text-sm line-clamp-6"
-                  />
+                    className="flex"
+                  >
+                    <span
+                      className="font-semibold"
+                    >
+                      Pot size:
+                    </span>
+                    <span
+                      className="ml-auto text-right"
+                    >
+                      4
+                    </span>
+                  </p>
+                  <div
+                    className="hidden"
+                  >
+                    <p
+                      className="font-semibold mt-3"
+                    >
+                      Description:
+                    </p>
+                    <p
+                      className="text-sm line-clamp-6"
+                    />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div
-          className="flex mb-4"
-        >
-          <label
-            className="label cursor-pointer"
-          >
-            <input
-              className="radio checked:bg-blue-500"
-              defaultChecked={false}
-              onChange={[Function]}
-              type="checkbox"
-            />
-          </label>
           <div
-            className="ml-2 w-full"
+            className="flex mb-4"
           >
-            <div
-              className="card card-side bg-neutral text-neutral-content mx-auto relative
-                    
-                "
-              onClick={[Function]}
-            >
-              <figure
-                className="h-24 w-20 min-h-20 min-w-20"
-              >
-                <img
-                  className="w-full h-full object-cover"
-                  src="/media/thumbnails/photo3_thumb.jpg"
-                />
-              </figure>
-              <div
-                className="card-body my-auto text-start"
-              >
-                <h2
-                  className="card-title line-clamp-1 pr-8"
-                >
-                  Third test plant
-                </h2>
-                <span>
-                  Never watered
-                </span>
-              </div>
-              <button
-                className="btn-close absolute right-2 top-8 z-40"
-                onClick={[Function]}
-                role="button"
-                tabIndex={0}
-              >
-                <svg
-                  aria-hidden="true"
-                  className="w-8 h-8"
-                  data-slot="icon"
-                  fill="currentColor"
-                  viewBox="0 0 16 16"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    clipRule="evenodd"
-                    d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                    fillRule="evenodd"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div
-              className="collapse bg-neutral rounded-t-none
-                
-            "
+            <label
+              className="label cursor-pointer"
             >
               <input
-                className="hidden"
+                className="radio checked:bg-blue-500"
                 defaultChecked={false}
                 onChange={[Function]}
                 type="checkbox"
               />
+            </label>
+            <div
+              className="ml-2 w-full"
+            >
               <div
-                className="collapse-content"
+                className="card card-side bg-neutral text-neutral-content mx-auto relative
+                    
+                "
+                onClick={[Function]}
               >
-                <p
-                  className="text-center"
+                <figure
+                  className="h-24 w-20 min-h-20 min-w-20"
                 >
-                  No details
-                </p>
+                  <img
+                    className="w-full h-full object-cover"
+                    src="/media/thumbnails/photo3_thumb.jpg"
+                  />
+                </figure>
+                <div
+                  className="card-body my-auto text-start"
+                >
+                  <h2
+                    className="card-title line-clamp-1 pr-8"
+                  >
+                    Third test plant
+                  </h2>
+                  <span>
+                    Never watered
+                  </span>
+                </div>
+                <button
+                  className="btn-close absolute right-2 top-8 z-40"
+                  onClick={[Function]}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <svg
+                    aria-hidden="true"
+                    className="w-8 h-8"
+                    data-slot="icon"
+                    fill="currentColor"
+                    viewBox="0 0 16 16"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      clipRule="evenodd"
+                      d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                      fillRule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div
+                className="collapse bg-neutral rounded-t-none
+                
+            "
+              >
+                <input
+                  className="hidden"
+                  defaultChecked={false}
+                  onChange={[Function]}
+                  type="checkbox"
+                />
+                <div
+                  className="collapse-content"
+                >
+                  <p
+                    className="text-center"
+                  >
+                    No details
+                  </p>
+                </div>
               </div>
             </div>
           </div>
@@ -908,272 +912,276 @@ exports[`App matches snapshot 1`] = `
           Remove Plants
         </p>
         <div
-          className="flex mb-4"
+          className="max-h-screen md:max-h-half-screen overflow-scroll pr-4"
         >
-          <label
-            className="label cursor-pointer"
-          >
-            <input
-              className="radio checked:bg-blue-500"
-              defaultChecked={false}
-              onChange={[Function]}
-              type="checkbox"
-            />
-          </label>
           <div
-            className="ml-2 w-full"
+            className="flex mb-4"
           >
-            <div
-              className="card card-side bg-neutral text-neutral-content mx-auto relative
-                    
-                "
-              onClick={[Function]}
-            >
-              <div
-                className="card-body text-center"
-              >
-                <h2
-                  className="card-title mx-auto px-8 line-clamp-1"
-                >
-                  Test Plant
-                </h2>
-                <span>
-                  <svg
-                    aria-hidden="true"
-                    className="svg-inline--fa fa-droplet mr-2 text-info"
-                    data-icon="droplet"
-                    data-prefix="fas"
-                    focusable="false"
-                    role="img"
-                    style={{}}
-                    viewBox="0 0 384 512"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                      fill="currentColor"
-                      style={{}}
-                    />
-                  </svg>
-                  14 hours ago
-                </span>
-              </div>
-              <button
-                className="btn-close absolute right-2 top-8 z-40"
-                onClick={[Function]}
-                role="button"
-                tabIndex={0}
-              >
-                <svg
-                  aria-hidden="true"
-                  className="w-8 h-8"
-                  data-slot="icon"
-                  fill="currentColor"
-                  viewBox="0 0 16 16"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    clipRule="evenodd"
-                    d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                    fillRule="evenodd"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div
-              className="collapse bg-neutral rounded-t-none
-                
-            "
+            <label
+              className="label cursor-pointer"
             >
               <input
-                className="hidden"
+                className="radio checked:bg-blue-500"
                 defaultChecked={false}
                 onChange={[Function]}
                 type="checkbox"
               />
+            </label>
+            <div
+              className="ml-2 w-full"
+            >
               <div
-                className="collapse-content"
+                className="card card-side bg-neutral text-neutral-content mx-auto relative
+                    
+                "
+                onClick={[Function]}
               >
-                <p
-                  className="flex"
-                >
-                  <span
-                    className="font-semibold"
-                  >
-                    Species:
-                  </span>
-                  <span
-                    className="ml-auto text-right"
-                  >
-                    Calathea
-                  </span>
-                </p>
-                <p
-                  className="flex"
-                >
-                  <span
-                    className="font-semibold"
-                  >
-                    Pot size:
-                  </span>
-                  <span
-                    className="ml-auto text-right"
-                  >
-                    4
-                  </span>
-                </p>
                 <div
-                  className="text-center"
+                  className="card-body text-center"
+                >
+                  <h2
+                    className="card-title mx-auto px-8 line-clamp-1"
+                  >
+                    Test Plant
+                  </h2>
+                  <span>
+                    <svg
+                      aria-hidden="true"
+                      className="svg-inline--fa fa-droplet mr-2 text-info"
+                      data-icon="droplet"
+                      data-prefix="fas"
+                      focusable="false"
+                      role="img"
+                      style={{}}
+                      viewBox="0 0 384 512"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                        fill="currentColor"
+                        style={{}}
+                      />
+                    </svg>
+                    14 hours ago
+                  </span>
+                </div>
+                <button
+                  className="btn-close absolute right-2 top-8 z-40"
+                  onClick={[Function]}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <svg
+                    aria-hidden="true"
+                    className="w-8 h-8"
+                    data-slot="icon"
+                    fill="currentColor"
+                    viewBox="0 0 16 16"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      clipRule="evenodd"
+                      d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                      fillRule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div
+                className="collapse bg-neutral rounded-t-none
+                
+            "
+              >
+                <input
+                  className="hidden"
+                  defaultChecked={false}
+                  onChange={[Function]}
+                  type="checkbox"
+                />
+                <div
+                  className="collapse-content"
                 >
                   <p
-                    className="font-semibold mt-3"
+                    className="flex"
                   >
-                    Description:
+                    <span
+                      className="font-semibold"
+                    >
+                      Species:
+                    </span>
+                    <span
+                      className="ml-auto text-right"
+                    >
+                      Calathea
+                    </span>
                   </p>
                   <p
-                    className="text-sm line-clamp-6"
+                    className="flex"
                   >
-                    This is a plant with a long description with
+                    <span
+                      className="font-semibold"
+                    >
+                      Pot size:
+                    </span>
+                    <span
+                      className="ml-auto text-right"
+                    >
+                      4
+                    </span>
                   </p>
+                  <div
+                    className="text-center"
+                  >
+                    <p
+                      className="font-semibold mt-3"
+                    >
+                      Description:
+                    </p>
+                    <p
+                      className="text-sm line-clamp-6"
+                    >
+                      This is a plant with a long description with
+                    </p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div
-          className="flex mb-4"
-        >
-          <label
-            className="label cursor-pointer"
-          >
-            <input
-              className="radio checked:bg-blue-500"
-              defaultChecked={false}
-              onChange={[Function]}
-              type="checkbox"
-            />
-          </label>
           <div
-            className="ml-2 w-full"
+            className="flex mb-4"
           >
-            <div
-              className="card card-side bg-neutral text-neutral-content mx-auto relative
-                    
-                "
-              onClick={[Function]}
-            >
-              <figure
-                className="h-24 w-20 min-h-20 min-w-20"
-              >
-                <img
-                  className="w-full h-full object-cover"
-                  src="/media/thumbnails/photo_thumb.jpg"
-                />
-              </figure>
-              <div
-                className="card-body my-auto text-start"
-              >
-                <h2
-                  className="card-title line-clamp-1 pr-8"
-                >
-                  Unnamed Spider Plant
-                </h2>
-                <span>
-                  <svg
-                    aria-hidden="true"
-                    className="svg-inline--fa fa-droplet mr-2 text-info"
-                    data-icon="droplet"
-                    data-prefix="fas"
-                    focusable="false"
-                    role="img"
-                    style={{}}
-                    viewBox="0 0 384 512"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                      fill="currentColor"
-                      style={{}}
-                    />
-                  </svg>
-                  14 hours ago
-                </span>
-              </div>
-              <button
-                className="btn-close absolute right-2 top-8 z-40"
-                onClick={[Function]}
-                role="button"
-                tabIndex={0}
-              >
-                <svg
-                  aria-hidden="true"
-                  className="w-8 h-8"
-                  data-slot="icon"
-                  fill="currentColor"
-                  viewBox="0 0 16 16"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    clipRule="evenodd"
-                    d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                    fillRule="evenodd"
-                  />
-                </svg>
-              </button>
-            </div>
-            <div
-              className="collapse bg-neutral rounded-t-none
-                
-            "
+            <label
+              className="label cursor-pointer"
             >
               <input
-                className="hidden"
+                className="radio checked:bg-blue-500"
                 defaultChecked={false}
                 onChange={[Function]}
                 type="checkbox"
               />
+            </label>
+            <div
+              className="ml-2 w-full"
+            >
               <div
-                className="collapse-content"
+                className="card card-side bg-neutral text-neutral-content mx-auto relative
+                    
+                "
+                onClick={[Function]}
               >
-                <p
-                  className="flex"
+                <figure
+                  className="h-24 w-20 min-h-20 min-w-20"
                 >
-                  <span
-                    className="font-semibold"
-                  >
-                    Species:
-                  </span>
-                  <span
-                    className="ml-auto text-right"
-                  >
-                    Spider Plant
-                  </span>
-                </p>
-                <p
-                  className="flex"
-                >
-                  <span
-                    className="font-semibold"
-                  >
-                    Pot size:
-                  </span>
-                  <span
-                    className="ml-auto text-right"
-                  >
-                    2
-                  </span>
-                </p>
+                  <img
+                    className="w-full h-full object-cover"
+                    src="/media/thumbnails/photo_thumb.jpg"
+                  />
+                </figure>
                 <div
+                  className="card-body my-auto text-start"
+                >
+                  <h2
+                    className="card-title line-clamp-1 pr-8"
+                  >
+                    Unnamed Spider Plant
+                  </h2>
+                  <span>
+                    <svg
+                      aria-hidden="true"
+                      className="svg-inline--fa fa-droplet mr-2 text-info"
+                      data-icon="droplet"
+                      data-prefix="fas"
+                      focusable="false"
+                      role="img"
+                      style={{}}
+                      viewBox="0 0 384 512"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                        fill="currentColor"
+                        style={{}}
+                      />
+                    </svg>
+                    14 hours ago
+                  </span>
+                </div>
+                <button
+                  className="btn-close absolute right-2 top-8 z-40"
+                  onClick={[Function]}
+                  role="button"
+                  tabIndex={0}
+                >
+                  <svg
+                    aria-hidden="true"
+                    className="w-8 h-8"
+                    data-slot="icon"
+                    fill="currentColor"
+                    viewBox="0 0 16 16"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      clipRule="evenodd"
+                      d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                      fillRule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div
+                className="collapse bg-neutral rounded-t-none
+                
+            "
+              >
+                <input
                   className="hidden"
+                  defaultChecked={false}
+                  onChange={[Function]}
+                  type="checkbox"
+                />
+                <div
+                  className="collapse-content"
                 >
                   <p
-                    className="font-semibold mt-3"
+                    className="flex"
                   >
-                    Description:
+                    <span
+                      className="font-semibold"
+                    >
+                      Species:
+                    </span>
+                    <span
+                      className="ml-auto text-right"
+                    >
+                      Spider Plant
+                    </span>
                   </p>
                   <p
-                    className="text-sm line-clamp-6"
-                  />
+                    className="flex"
+                  >
+                    <span
+                      className="font-semibold"
+                    >
+                      Pot size:
+                    </span>
+                    <span
+                      className="ml-auto text-right"
+                    >
+                      2
+                    </span>
+                  </p>
+                  <div
+                    className="hidden"
+                  >
+                    <p
+                      className="font-semibold mt-3"
+                    >
+                      Description:
+                    </p>
+                    <p
+                      className="text-sm line-clamp-6"
+                    />
+                  </div>
                 </div>
               </div>
             </div>

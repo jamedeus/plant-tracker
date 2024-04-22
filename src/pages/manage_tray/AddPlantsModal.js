@@ -51,15 +51,17 @@ const AddPlantsModal = ({ trayID, options, plantDetails, setPlantDetails }) => {
         <Modal dialogRef={addPlantsModalRef} className="max-w-[26rem]">
             <p className="font-bold text-2xl mb-8">Add Plants</p>
 
-            {plantOptions.length > 0 ? (
-                <EditableNodeList editing={true} selected={selected}>
-                    {plantOptions.map((plant) => (
-                        <PlantCard key={plant.uuid} {...plant} />
-                    ))}
-                </EditableNodeList>
-            ) : (
-                <p className="my-4">No plants</p>
-            )}
+            <div className="max-h-screen md:max-h-half-screen overflow-scroll pr-4">
+                {plantOptions.length > 0 ? (
+                    <EditableNodeList editing={true} selected={selected}>
+                        {plantOptions.map((plant) => (
+                            <PlantCard key={plant.uuid} {...plant} />
+                        ))}
+                    </EditableNodeList>
+                ) : (
+                    <p className="my-4">No plants</p>
+                )}
+            </div>
 
             <div className="modal-action mx-auto">
                 <form method="dialog">

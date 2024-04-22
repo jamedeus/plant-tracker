@@ -247,10 +247,9 @@ describe('App', () => {
         // Click Add plants dropdown option
         await user.click(app.getByText("Add plants"));
 
-        // Get reference to modal, confirm contains 5 items
-        // (close button, title, 2 plant options, submit buttons)
+        // Get reference to modal, confirm contains 2 plant options
         const addPlantsModal = app.getByText("Add Plants").parentElement;
-        expect(addPlantsModal.children.length).toBe(5);
+        expect(addPlantsModal.children[2].children.length).toBe(2);
 
         // Select the first plant option, click Add button
         await user.click(addPlantsModal.querySelectorAll('.radio')[0]);
@@ -285,10 +284,9 @@ describe('App', () => {
         // Click Remove plants dropdown option
         await user.click(app.getByText("Remove plants"));
 
-        // Get reference to modal, confirm contains 5 items
-        // (close button, title, 2 plant options, submit buttons)
+        // Get reference to modal, confirm contains 2 plant options
         const addPlantsModal = app.getByText("Remove Plants").parentElement;
-        expect(addPlantsModal.children.length).toBe(5);
+        expect(addPlantsModal.children[2].children.length).toBe(2);
 
         // Select the first plant option, click Remove button
         await user.click(addPlantsModal.querySelectorAll('.radio')[0]);
