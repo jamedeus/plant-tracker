@@ -47,14 +47,18 @@ const RemovePlantsModal = ({ trayID, plantDetails, setPlantDetails }) => {
         <Modal dialogRef={removePlantsModalRef}>
             <p className="font-bold text-2xl mb-8">Remove Plants</p>
 
-            <EditableNodeList editing={true} selected={selected}>
-                {plantDetails.map((plant) => {
-                    return <ManagePlantsCard
-                        key={plant.uuid}
-                        name={plant.name}
-                    />;
-                })}
-            </EditableNodeList>
+            {plantDetails.length > 0 ? (
+                <EditableNodeList editing={true} selected={selected}>
+                    {plantDetails.map((plant) => (
+                        <ManagePlantsCard
+                            key={plant.uuid}
+                            name={plant.name}
+                        />
+                    ))}
+                </EditableNodeList>
+            ) : (
+                <p className="my-4">No plants</p>
+            )}
 
             <div className="modal-action mx-auto">
                 <form method="dialog">
