@@ -24,11 +24,10 @@ from .view_decorators import (
 
 
 def get_plant_options():
-    '''Returns a list of dicts with name and uuid attributes of all existing plants
-    Used to populate bulk management checkbox options in frontend
+    '''Returns a list of dicts with attributes of all existing plants
+    Used to populate options in add plants modal on manage_tray page
     '''
-    return [{'uuid': str(plant.uuid), 'name': plant.get_display_name()}
-            for plant in Plant.objects.all()]
+    return [plant.get_details() for plant in Plant.objects.all()]
 
 
 def get_plant_species_options():

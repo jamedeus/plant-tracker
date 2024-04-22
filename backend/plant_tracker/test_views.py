@@ -407,11 +407,23 @@ class ManagePageTests(TestCase):
             [
                 {
                     'name': self.plant1.get_display_name(),
-                    'uuid': str(self.plant1.uuid)
+                    'uuid': str(self.plant1.uuid),
+                    'species': None,
+                    'pot_size': None,
+                    'description': None,
+                    'last_watered': None,
+                    'last_fertilized': None,
+                    'thumbnail': '/media/thumbnails/photo2_thumb.jpg'
                 },
                 {
                     'name': self.plant2.get_display_name(),
-                    'uuid': str(self.plant2.uuid)
+                    'uuid': str(self.plant2.uuid),
+                    'species': None,
+                    'pot_size': None,
+                    'description': None,
+                    'last_watered': None,
+                    'last_fertilized': None,
+                    'thumbnail': None
                 }
             ]
         )

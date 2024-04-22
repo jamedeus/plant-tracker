@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import EditableNodeList from 'src/components/EditableNodeList';
 import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
-import ManagePlantsCard from './ManagePlantsCard';
+import PlantCard from 'src/components/PlantCard';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 
 let addPlantsModalRef;
@@ -48,16 +48,13 @@ const AddPlantsModal = ({ trayID, options, plantDetails, setPlantDetails }) => {
     );
 
     return (
-        <Modal dialogRef={addPlantsModalRef}>
+        <Modal dialogRef={addPlantsModalRef} className="max-w-[26rem]">
             <p className="font-bold text-2xl mb-8">Add Plants</p>
 
             {plantOptions.length > 0 ? (
                 <EditableNodeList editing={true} selected={selected}>
                     {plantOptions.map((plant) => (
-                        <ManagePlantsCard
-                            key={plant.uuid}
-                            name={plant.name}
-                        />
+                        <PlantCard key={plant.uuid} {...plant} />
                     ))}
                 </EditableNodeList>
             ) : (

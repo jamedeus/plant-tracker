@@ -613,7 +613,7 @@ exports[`App matches snapshot 1`] = `
       className="modal"
     >
       <div
-        className="modal-box text-center flex flex-col pt-4 "
+        className="modal-box text-center flex flex-col pt-4 max-w-[26rem]"
       >
         <form
           method="dialog"
@@ -657,16 +657,105 @@ exports[`App matches snapshot 1`] = `
             className="ml-2 w-full"
           >
             <div
-              className="card bg-neutral text-neutral-content mx-auto w-full"
+              className="card card-side bg-neutral text-neutral-content mx-auto relative
+                    
+                "
+              onClick={[Function]}
             >
+              <figure
+                className="h-24 w-20 min-h-20 min-w-20"
+              >
+                <img
+                  className="w-full h-full object-cover"
+                  src="/media/thumbnails/photo2_thumb.jpg"
+                />
+              </figure>
               <div
-                className="card-body text-center"
+                className="card-body my-auto text-start"
               >
                 <h2
-                  className="card-title mx-auto"
+                  className="card-title line-clamp-1 pr-8"
                 >
                   Another test plant
                 </h2>
+                <span>
+                  Never watered
+                </span>
+              </div>
+              <button
+                className="btn-close absolute right-2 top-8 z-40"
+                onClick={[Function]}
+                role="button"
+                tabIndex={0}
+              >
+                <svg
+                  aria-hidden="true"
+                  className="w-8 h-8"
+                  data-slot="icon"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    clipRule="evenodd"
+                    d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                    fillRule="evenodd"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div
+              className="collapse bg-neutral rounded-t-none
+                
+            "
+            >
+              <input
+                className="hidden"
+                defaultChecked={false}
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <div
+                className="collapse-content"
+              >
+                <p
+                  className="hidden"
+                >
+                  <span
+                    className="font-semibold"
+                  >
+                    Species:
+                  </span>
+                  <span
+                    className="ml-auto text-right"
+                  />
+                </p>
+                <p
+                  className="flex"
+                >
+                  <span
+                    className="font-semibold"
+                  >
+                    Pot size:
+                  </span>
+                  <span
+                    className="ml-auto text-right"
+                  >
+                    4
+                  </span>
+                </p>
+                <div
+                  className="hidden"
+                >
+                  <p
+                    className="font-semibold mt-3"
+                  >
+                    Description:
+                  </p>
+                  <p
+                    className="text-sm line-clamp-6"
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -688,16 +777,72 @@ exports[`App matches snapshot 1`] = `
             className="ml-2 w-full"
           >
             <div
-              className="card bg-neutral text-neutral-content mx-auto w-full"
+              className="card card-side bg-neutral text-neutral-content mx-auto relative
+                    
+                "
+              onClick={[Function]}
             >
+              <figure
+                className="h-24 w-20 min-h-20 min-w-20"
+              >
+                <img
+                  className="w-full h-full object-cover"
+                  src="/media/thumbnails/photo3_thumb.jpg"
+                />
+              </figure>
               <div
-                className="card-body text-center"
+                className="card-body my-auto text-start"
               >
                 <h2
-                  className="card-title mx-auto"
+                  className="card-title line-clamp-1 pr-8"
                 >
                   Third test plant
                 </h2>
+                <span>
+                  Never watered
+                </span>
+              </div>
+              <button
+                className="btn-close absolute right-2 top-8 z-40"
+                onClick={[Function]}
+                role="button"
+                tabIndex={0}
+              >
+                <svg
+                  aria-hidden="true"
+                  className="w-8 h-8"
+                  data-slot="icon"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    clipRule="evenodd"
+                    d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                    fillRule="evenodd"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div
+              className="collapse bg-neutral rounded-t-none
+                
+            "
+            >
+              <input
+                className="hidden"
+                defaultChecked={false}
+                onChange={[Function]}
+                type="checkbox"
+              />
+              <div
+                className="collapse-content"
+              >
+                <p
+                  className="text-center"
+                >
+                  No details
+                </p>
               </div>
             </div>
           </div>
