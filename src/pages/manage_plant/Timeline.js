@@ -423,19 +423,22 @@ const Timeline = ({ events, photoUrls }) => {
                         md:w-full md:max-w-screen-md bg-base-200 rounded-2xl`}
         >
             <Title />
-            <div className="grid grid-cols-2 grid-cols-[min-content_1fr] gap-4 md:gap-8">
-                {Object.keys(sortedEvents).map(yearMonth => {
-                    return (
+            {Object.keys(sortedEvents).length > 0 ? (
+                <div className="grid grid-cols-2 grid-cols-[min-content_1fr] gap-4 md:gap-8">
+                    {Object.keys(sortedEvents).map(yearMonth => (
                         <Fragment key={yearMonth}>
                             <MonthSection
-                                key={yearMonth}
                                 yearMonth={yearMonth}
                                 days={sortedEvents[yearMonth]}
                             />
                         </Fragment>
-                    );
-                })}
-            </div>
+                    ))}
+                </div>
+            ) : (
+                <div className="text-center text-lg p-4">
+                    <p>Events created with the buttons above will appear here</p>
+                </div>
+            )}
         </div>
     );
 };
