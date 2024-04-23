@@ -126,7 +126,7 @@ exports[`App matches snapshot when only trays exist 1`] = `
         Trays (1)
       </div>
       <div
-        className="collapse-content"
+        className="collapse-content min-w-0"
       >
         <div
           className="px-4 mb-4 relative"

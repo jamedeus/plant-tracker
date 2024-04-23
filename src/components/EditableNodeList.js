@@ -30,7 +30,7 @@ const EditableNodeList = ({ editing, selected, children }) => {
                                 onChange={() => selectNode(node.key)}
                             />
                         </label>
-                        <div className="ml-2 w-full">
+                        <div className="ml-2 w-full overflow-hidden">
                             {node}
                         </div>
                     </div>
