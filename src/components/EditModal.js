@@ -14,9 +14,7 @@ const EditModal = ({ title, onSubmit, children }) => {
     editModalRef = useRef(null);
 
     return (
-        <Modal dialogRef={editModalRef}>
-            <h3 className="font-bold text-lg">{title}</h3>
-
+        <Modal dialogRef={editModalRef} title={title}>
             {children}
 
             <div className="modal-action mx-auto">

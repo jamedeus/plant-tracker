@@ -315,13 +315,13 @@ exports[`App matches snapshot when only plants exist 1`] = `
             </svg>
           </button>
         </form>
-        <h3
-          className="font-bold text-lg mb-6"
+        <h1
+          className="font-bold text-lg md:text-xl mb-4"
         >
           Select QR Code Size
-        </h3>
+        </h1>
         <div
-          className="h-36 flex flex-col justify-center"
+          className="h-36 mt-2 flex flex-col justify-center"
         >
           <div
             aria-orientation="horizontal"

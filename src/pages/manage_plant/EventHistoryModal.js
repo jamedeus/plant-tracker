@@ -161,10 +161,9 @@ const EventHistoryModal = ({ plant, setPlant }) => {
     };
 
     return (
-        <Modal dialogRef={eventHistoryModalRef}>
-            <p className="text-lg mb-6">Event History</p>
+        <Modal dialogRef={eventHistoryModalRef} title={"Event History"}>
             <Tab.Group>
-                <Tab.List className="tab-group">
+                <Tab.List className="tab-group mt-2">
                     <Tab className={({ selected }) => `tab-option ${
                         selected ? 'tab-option-selected' : ''}`
                     }>

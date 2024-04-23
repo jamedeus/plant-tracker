@@ -178,7 +178,9 @@ const DeletePhotosModal = ({ plantID, photoUrls, setPhotoUrls }) => {
     return (
         <Modal dialogRef={deletePhotosModalRef}>
             <div className={`${confirmDelete ? "hidden" : "flex flex-col"}`}>
-                <p className="text-lg mb-4">Delete Photos</p>
+                <h1 className="font-bold text-lg md:text-xl mb-4">
+                    Delete Photos
+                </h1>
                 {photoUrls.length > 0 ? (
                     <div className="carousel w-full h-min">
                         {photoUrls.map((photo, index) => (
@@ -210,7 +212,9 @@ const DeletePhotosModal = ({ plantID, photoUrls, setPhotoUrls }) => {
             </div>
 
             <div className={`${confirmDelete ? "flex flex-col" : "hidden"}`}>
-                <p className="text-lg mb-4">Confirm Delete</p>
+                <h1 className="font-bold text-lg md:text-xl mb-4">
+                    Confirm Delete
+                </h1>
 
                 <div className={`grid grid-cols-2 grid-cols-[min-content_1fr]
                     mx-auto px-8 gap-4 max-h-half-screen overflow-scroll`}

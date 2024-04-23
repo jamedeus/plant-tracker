@@ -515,11 +515,11 @@ exports[`App matches snapshot 1`] = `
             </svg>
           </button>
         </form>
-        <h3
-          className="font-bold text-lg"
+        <h1
+          className="font-bold text-lg md:text-xl mb-4"
         >
           Edit Details
-        </h3>
+        </h1>
         <form
           id="trayDetails"
         >
@@ -635,13 +635,13 @@ exports[`App matches snapshot 1`] = `
             </svg>
           </button>
         </form>
-        <p
-          className="font-bold text-2xl mb-8"
+        <h1
+          className="font-bold text-lg md:text-xl mb-4"
         >
           Add Plants
-        </p>
+        </h1>
         <div
-          className="max-h-screen md:max-h-half-screen overflow-scroll pr-4"
+          className="max-h-screen md:max-h-half-screen overflow-scroll pr-4 mt-4"
         >
           <div
             className="flex mb-4"
@@ -906,13 +906,13 @@ exports[`App matches snapshot 1`] = `
             </svg>
           </button>
         </form>
-        <p
-          className="font-bold text-2xl mb-8"
+        <h1
+          className="font-bold text-lg md:text-xl mb-4"
         >
           Remove Plants
-        </p>
+        </h1>
         <div
-          className="max-h-screen md:max-h-half-screen overflow-scroll pr-4"
+          className="max-h-screen md:max-h-half-screen overflow-scroll pr-4 mt-4"
         >
           <div
             className="flex mb-4"

@@ -44,10 +44,12 @@ const RemovePlantsModal = ({ trayID, plantDetails, setPlantDetails }) => {
     };
 
     return (
-        <Modal dialogRef={removePlantsModalRef} className="max-w-[26rem]">
-            <p className="font-bold text-2xl mb-8">Remove Plants</p>
-
-            <div className="max-h-screen md:max-h-half-screen overflow-scroll pr-4">
+        <Modal
+            dialogRef={removePlantsModalRef}
+            title={"Remove Plants"}
+            className="max-w-[26rem]"
+        >
+            <div className="max-h-screen md:max-h-half-screen overflow-scroll pr-4 mt-4">
                 {plantDetails.length > 0 ? (
                     <EditableNodeList editing={true} selected={selected}>
                         {plantDetails.map((plant) => (

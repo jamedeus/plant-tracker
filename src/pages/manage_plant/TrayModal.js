@@ -37,8 +37,7 @@ const TrayModal = ({ plantID, trayOptions, handleAddTray }) => {
     };
 
     return (
-        <Modal dialogRef={trayModalRef}>
-            <p className="text-lg">Add plant to tray</p>
+        <Modal dialogRef={trayModalRef} title={"Add plant to tray"}>
             <select
                 ref={traySelectRef}
                 defaultValue=""
@@ -54,7 +53,7 @@ const TrayModal = ({ plantID, trayOptions, handleAddTray }) => {
                 })}
             </select>
             <button
-                className="btn btn-success mx-auto"
+                className="btn btn-success mx-auto mt-4"
                 onClick={addToTray}
             >
                 Confirm

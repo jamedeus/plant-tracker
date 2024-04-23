@@ -89,10 +89,8 @@ const RepotModal = ({ plantID, currentPotSize, handleRepot }) => {
     };
 
     return (
-        <Modal dialogRef={repotModalRef}>
-            <p className="text-lg mb-8">Repot plant</p>
-
-            <div>
+        <Modal dialogRef={repotModalRef} title={"Repot plant"}>
+            <div className="mt-4">
                 <p>Repot time</p>
                 <DatetimeInput inputRef={repotTimeRef} />
             </div>

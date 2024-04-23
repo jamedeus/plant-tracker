@@ -2106,11 +2106,11 @@ exports[`App matches snapshot 1`] = `
             </svg>
           </button>
         </form>
-        <h3
-          className="font-bold text-lg"
+        <h1
+          className="font-bold text-lg md:text-xl mb-4"
         >
           Edit Details
-        </h3>
+        </h1>
         <form
           id="plantDetails"
         >
@@ -2259,11 +2259,11 @@ exports[`App matches snapshot 1`] = `
             </svg>
           </button>
         </form>
-        <p
-          className="text-lg"
+        <h1
+          className="font-bold text-lg md:text-xl mb-4"
         >
           Add plant to tray
-        </p>
+        </h1>
         <select
           className="select select-bordered m-8"
           defaultValue=""
@@ -2286,7 +2286,7 @@ exports[`App matches snapshot 1`] = `
           </option>
         </select>
         <button
-          className="btn btn-success mx-auto"
+          className="btn btn-success mx-auto mt-4"
           onClick={[Function]}
         >
           Confirm
@@ -2327,12 +2327,14 @@ exports[`App matches snapshot 1`] = `
             </svg>
           </button>
         </form>
-        <p
-          className="text-lg mb-8"
+        <h1
+          className="font-bold text-lg md:text-xl mb-4"
         >
           Repot plant
-        </p>
-        <div>
+        </h1>
+        <div
+          className="mt-4"
+        >
           <p>
             Repot time
           </p>
@@ -2595,16 +2597,16 @@ exports[`App matches snapshot 1`] = `
             </svg>
           </button>
         </form>
+        <h1
+          className="font-bold text-lg md:text-xl mb-4"
+        >
+          Upload Photos
+        </h1>
         <div
           className="flex flex-col"
         >
-          <p
-            className="text-lg mb-6"
-          >
-            Upload Photos
-          </p>
           <div
-            className="min-h-36 flex flex-col justify-center"
+            className="min-h-36 flex flex-col justify-center mt-2"
           >
             <input
               accept="image/*"
@@ -2639,11 +2641,6 @@ exports[`App matches snapshot 1`] = `
         <div
           className="hidden"
         >
-          <p
-            className="text-lg mb-6"
-          >
-            Uploading...
-          </p>
           <div
             className="h-36 flex flex-col justify-center mx-auto"
           >
@@ -2688,11 +2685,11 @@ exports[`App matches snapshot 1`] = `
             </svg>
           </button>
         </form>
-        <p
-          className="text-lg mb-4"
+        <h1
+          className="font-bold text-lg md:text-xl mb-4"
         >
           Select Default Photo
-        </p>
+        </h1>
         <div
           className="carousel w-full h-min"
         >
@@ -2922,11 +2919,11 @@ exports[`App matches snapshot 1`] = `
         <div
           className="flex flex-col"
         >
-          <p
-            className="text-lg mb-4"
+          <h1
+            className="font-bold text-lg md:text-xl mb-4"
           >
             Delete Photos
-          </p>
+          </h1>
           <div
             className="carousel w-full h-min"
           >
@@ -3179,11 +3176,11 @@ exports[`App matches snapshot 1`] = `
         <div
           className="hidden"
         >
-          <p
-            className="text-lg mb-4"
+          <h1
+            className="font-bold text-lg md:text-xl mb-4"
           >
             Confirm Delete
-          </p>
+          </h1>
           <div
             className="grid grid-cols-2 grid-cols-[min-content_1fr]
                     mx-auto px-8 gap-4 max-h-half-screen overflow-scroll"
@@ -3241,14 +3238,14 @@ exports[`App matches snapshot 1`] = `
             </svg>
           </button>
         </form>
-        <p
-          className="text-lg mb-6"
+        <h1
+          className="font-bold text-lg md:text-xl mb-4"
         >
           Event History
-        </p>
+        </h1>
         <div
           aria-orientation="horizontal"
-          className="tab-group"
+          className="tab-group mt-2"
           role="tablist"
         >
           <button

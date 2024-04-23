@@ -90,8 +90,7 @@ const DefaultPhotoModal = ({ plantID, photoUrls }) => {
     };
 
     return (
-        <Modal dialogRef={defaultPhotoModalRef}>
-            <p className="text-lg mb-4">Select Default Photo</p>
+        <Modal dialogRef={defaultPhotoModalRef} title={"Select Default Photo"}>
             <div className="carousel w-full h-min">
                 {photoUrls.map((photo, index) => {
                     return (

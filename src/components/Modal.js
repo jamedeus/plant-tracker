@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { XMarkIcon } from '@heroicons/react/16/solid';
 
 // Reusable modal component, can be closed with button or by clicking outside
-const Modal = ({ dialogRef, children, className='' }) => {
+const Modal = ({ dialogRef, title, children, className='' }) => {
     return (
         <dialog className="modal" ref={dialogRef}>
             <div className={`modal-box text-center flex flex-col pt-4 ${className}`}>
@@ -12,6 +12,15 @@ const Modal = ({ dialogRef, children, className='' }) => {
                         <XMarkIcon className="w-8 h-8" />
                     </button>
                 </form>
+
+                {title ? (
+                    <h1 className="font-bold text-lg md:text-xl mb-4">
+                        {title}
+                    </h1>
+                ) : (
+                    null
+                )}
+
                 {children}
             </div>
             <form method="dialog" className="modal-backdrop">
@@ -26,6 +35,7 @@ Modal.propTypes = {
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
     ]),
+    title: PropTypes.string,
     children: PropTypes.node,
     className: PropTypes.string
 };

@@ -142,10 +142,7 @@ const PrintModal = ({ printModalRef }) => {
 
         return (
             <>
-                <h3 className="font-bold text-lg mb-6">
-                    Select QR Code Size
-                </h3>
-                <div className="h-36 flex flex-col justify-center">
+                <div className="h-36 mt-2 flex flex-col justify-center">
                     <Tab.Group onChange={(index) => {
                         setQrSize(Object.values(options)[index]);
                     }}>
@@ -185,8 +182,7 @@ const PrintModal = ({ printModalRef }) => {
     const LoadingAnimation = () => {
         return (
             <>
-                <h3 className="font-bold text-lg mb-6">Fetching QR Codes</h3>
-                <div className="h-36 flex flex-col justify-center mx-auto">
+                <div className="h-36 mt-2 flex flex-col justify-center mx-auto">
                     <span className="loading loading-spinner loading-lg"></span>
                 </div>
                 <div className="modal-action mx-auto">
@@ -213,8 +209,7 @@ const PrintModal = ({ printModalRef }) => {
 
         return (
             <>
-                <h3 className="font-bold text-lg mb-6">Error</h3>
-                <div className="h-36 flex flex-col justify-center mx-auto">
+                <div className="h-36 mt-2 flex flex-col justify-center mx-auto">
                     {(() => {
                         switch(error) {
                             case("unset"):
@@ -236,7 +231,19 @@ const PrintModal = ({ printModalRef }) => {
     };
 
     return (
-        <Modal dialogRef={printModalRef}>
+        <Modal
+            dialogRef={printModalRef}
+            title={(() => {
+                switch(modalContents) {
+                    case("loading"):
+                        return "Fetching QR Codes";
+                    case("options"):
+                        return "Select QR Code Size";
+                    case("error"):
+                        return "Error";
+                }
+            })()}
+        >
             {(() => {
                 switch(modalContents) {
                     case("loading"):

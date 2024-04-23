@@ -137,12 +137,13 @@ const PhotoModal = ({ plantID, addPlantPhotoUrls }) => {
     };
 
     return (
-        <Modal dialogRef={photoModalRef}>
+        <Modal
+            dialogRef={photoModalRef}
+            title={`${uploading ? "Uploading..." : "Upload Photos"}`}
+        >
             {/* Photo select/unselect input, shown until user clicks submit */}
             <div className={`${uploading ? "hidden" : "flex flex-col"}`}>
-                <p className="text-lg mb-6">Upload Photos</p>
-
-                <div className="min-h-36 flex flex-col justify-center">
+                <div className="min-h-36 flex flex-col justify-center mt-2">
                     <input
                         ref={inputRef}
                         type="file"
@@ -168,7 +169,6 @@ const PhotoModal = ({ plantID, addPlantPhotoUrls }) => {
 
             {/* Loading animation shown after user clicks submit */}
             <div className={`${uploading ? "flex flex-col" : "hidden"}`}>
-                <p className="text-lg mb-6">Uploading...</p>
                 <div className="h-36 flex flex-col justify-center mx-auto">
                     <span className="loading loading-spinner loading-lg"></span>
                 </div>

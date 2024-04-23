@@ -48,10 +48,12 @@ const AddPlantsModal = ({ trayID, options, plantDetails, setPlantDetails }) => {
     );
 
     return (
-        <Modal dialogRef={addPlantsModalRef} className="max-w-[26rem]">
-            <p className="font-bold text-2xl mb-8">Add Plants</p>
-
-            <div className="max-h-screen md:max-h-half-screen overflow-scroll pr-4">
+        <Modal
+            dialogRef={addPlantsModalRef}
+            title={"Add Plants"}
+            className="max-w-[26rem]"
+        >
+            <div className="max-h-screen md:max-h-half-screen overflow-scroll pr-4 mt-4">
                 {plantOptions.length > 0 ? (
                     <EditableNodeList editing={true} selected={selected}>
                         {plantOptions.map((plant) => (
