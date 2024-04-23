@@ -282,8 +282,12 @@ class Plant(models.Model):
 @receiver(post_save, sender=Plant)
 @receiver(post_delete, sender=Plant)
 def clear_unnamed_plants_cache(**kwargs):
-    '''Clear cached unnamed_plant list when a Plant is saved or deleted'''
+    '''Clear cached plant_options, unnamed_plant and species_options lists when
+    a Plant is saved or deleted
+    '''
+    cache.delete('plant_options')
     cache.delete('unnamed_plants')
+    cache.delete('species_options')
 
 
 class Photo(models.Model):

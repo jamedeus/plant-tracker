@@ -4,6 +4,7 @@ from io import BytesIO
 
 from django.conf import settings
 from django.shortcuts import render
+from django.core.cache import cache
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponseRedirect
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -25,17 +26,27 @@ from .view_decorators import (
 
 def get_plant_options():
     '''Returns a list of dicts with attributes of all existing plants
+    List is cached for up to 10 minutes, or until Plant model changed
     Used to populate options in add plants modal on manage_tray page
     '''
-    return [plant.get_details() for plant in Plant.objects.all()]
+    plant_options = cache.get('plant_options')
+    if not plant_options:
+        plant_options = [plant.get_details() for plant in Plant.objects.all()]
+        cache.set('plant_options', plant_options, 600)
+    return plant_options
 
 
 def get_plant_species_options():
     '''Returns a list of species for every Plant in database with no duplicates
+    List is cached for up to 10 minutes, or until Plant model changed
     Used to populate species suggestions on plant registration form
     '''
-    species = Plant.objects.all().values_list('species', flat=True)
-    return list(set(i for i in species if i is not None))
+    species_options = cache.get('species_options')
+    if not species_options:
+        species = Plant.objects.all().values_list('species', flat=True)
+        species_options = list(set(i for i in species if i is not None))
+        cache.set('species_options', species_options, 600)
+    return species_options
 
 
 @ensure_csrf_cookie
