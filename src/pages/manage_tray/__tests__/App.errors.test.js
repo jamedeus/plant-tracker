@@ -1,7 +1,6 @@
 import { render, within } from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
 import createMockContext from 'src/testUtils/createMockContext';
-import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
 import { ToastProvider } from 'src/context/ToastContext';
 import { ThemeProvider } from 'src/context/ThemeContext';

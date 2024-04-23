@@ -1,4 +1,4 @@
-import { render, within } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
 import PlantCard from '../PlantCard';
 import '@testing-library/jest-dom';
@@ -66,10 +66,9 @@ describe('PlantCard with water event', () => {
 
 
 describe('PlantCard with no water event', () => {
-    let component, user;
+    let component;
 
     beforeEach(() => {
-        // Render component + create userEvent instance to use in tests
         component = render(
             <PlantCard
                 name={"Test Plant"}
@@ -81,7 +80,6 @@ describe('PlantCard with no water event', () => {
                 thumbnail={"/media/thumbnails/photo1_thumb.jpg"}
             />
         );
-        user = userEvent.setup();
     });
 
     it('says "never watered" with no icon if plant was never watered', () => {

@@ -126,7 +126,7 @@ function App() {
         } else if (newTime > oldTime) {
             return newTime;
         } else {
-            return oldTime
+            return oldTime;
         }
     };
 

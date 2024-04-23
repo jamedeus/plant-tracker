@@ -1,13 +1,11 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import { render, fireEvent } from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
 import PhotoModal, { openPhotoModal } from '../PhotoModal';
-import { mockContext } from './mockContext';
 import { ErrorModalProvider } from 'src/context/ErrorModalContext';
 
 const TestComponent = () => {
     const photoModalRef = useRef(null);
-    const [photoUrls, setPhotoUrls] = useState(mockContext.photo_urls);
 
     // Render app
     return (

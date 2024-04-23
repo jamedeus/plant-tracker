@@ -1,14 +1,12 @@
 import { useState } from 'react';
-import { render, within } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
-import createMockContext from 'src/testUtils/createMockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import EventHistoryModal, { openEventHistoryModal } from '../EventHistoryModal';
-import { ToastProvider } from 'src/context/ToastContext';
-import { ThemeProvider } from 'src/context/ThemeContext';
 import { ErrorModalProvider } from 'src/context/ErrorModalContext';
 import { mockContext } from './mockContext';
 
+/* eslint react/prop-types: 0 */
 const TestComponent = ({ context }) => {
     // Add prune and repot events to mock context
     const state = {
@@ -18,7 +16,7 @@ const TestComponent = ({ context }) => {
             prune: ["2024-01-01T15:45:44+00:00"],
             repot: ["2024-01-01T15:45:44+00:00"],
         }
-    }
+    };
     const [plant, setPlant] = useState(state);
 
     // Render app
@@ -111,9 +109,6 @@ describe('App', () => {
     });
 
     it('shows the correct history column when event type selected', async () => {
-        // Get reference to Event History div
-        const eventHistory = component.getByText("Event History").parentElement;
-
         // Confirm water event date is visible, fertilize event date is not
         expect(component.queryByText(/February 29/)).not.toBeNull();
         expect(component.queryByText(/February 26/)).toBeNull();

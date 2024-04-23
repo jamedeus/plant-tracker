@@ -4,10 +4,8 @@ import { DateTime } from 'luxon';
 import { Popover } from "react-tiny-popover";
 import { capitalize, pastTense } from 'src/util';
 import { openPhotoModal } from './PhotoModal';
-import { openDefaultPhotoModal } from './DefaultPhotoModal';
 import { openDeletePhotosModal } from './DeletePhotosModal';
 import { openEventHistoryModal } from './EventHistoryModal';
-import { useErrorModal } from 'src/context/ErrorModalContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faDroplet,

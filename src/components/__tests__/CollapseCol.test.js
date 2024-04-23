@@ -1,5 +1,5 @@
 import { useRef } from 'react';
-import { render, within } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
 import CollapseCol from '../CollapseCol';
 import '@testing-library/jest-dom';
