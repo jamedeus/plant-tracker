@@ -23,7 +23,7 @@ const FilterColumn = ({title, contents, CardComponent, editing, selected, openRe
                 // Ignore UUID to prevent single characters matching everything
                 // Ignore timestamps to prevent numbers matching everything
                 const {
-                    uuid, last_watered, last_fertilized, ...otherProps
+                    uuid, last_watered, last_fertilized, thumbnail, ...otherProps
                 } = item;
                 return Object.values(otherProps)
                              .toString()

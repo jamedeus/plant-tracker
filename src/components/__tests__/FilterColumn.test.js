@@ -11,7 +11,9 @@ const plants = [
         "species": "Parlor Palm",
         "description": "Palms aren't really trees",
         "pot_size": 6,
-        "last_watered": "2024-03-01T05:45:44+00:00"
+        "last_watered": "2024-03-01T05:45:44+00:00",
+        "last_watered": "2024-03-01T05:45:44+00:00",
+        "thumbnail": "/media/thumbnails/IMG_8000_thumb.jpg"
     },
     {
         "name": "Unnamed Fittonia",
@@ -19,7 +21,9 @@ const plants = [
         "species": "Fittonia",
         "description": null,
         "pot_size": 4,
-        "last_watered": "2024-03-01T05:45:44+00:00"
+        "last_watered": "2024-03-01T05:45:44+00:00",
+        "last_watered": "2024-03-01T05:45:44+00:00",
+        "thumbnail": "/media/thumbnails/IMG_8001_thumb.jpg"
     },
     {
         "name": "Unnamed plant 1",
@@ -27,7 +31,9 @@ const plants = [
         "species": null,
         "description": null,
         "pot_size": 8,
-        "last_watered": "2024-03-01T05:45:44+00:00"
+        "last_watered": "2024-03-01T05:45:44+00:00",
+        "last_watered": "2024-03-01T05:45:44+00:00",
+        "thumbnail": "/media/thumbnails/IMG_8002_thumb.jpg"
     },
     {
         "name": "Favorite plant",
@@ -35,7 +41,9 @@ const plants = [
         "species": "Calathea",
         "description": null,
         "pot_size": 14,
-        "last_watered": "2024-03-01T05:13:48+00:00"
+        "last_watered": "2024-03-01T05:13:48+00:00",
+        "last_watered": "2024-03-01T05:45:44+00:00",
+        "thumbnail": "/media/thumbnails/IMG_8003_thumb.jpg"
     }
 ];
 
@@ -91,7 +99,7 @@ describe('App', () => {
         expect(component.getByText('Mini palm tree')).toBeInTheDocument();
     });
 
-    it('does not match UUIDs or timestamps when filtering', async () => {
+    it('does not match UUIDs, timestamps, or image URLs when filtering', async () => {
         // Type part of UUID, should remove all cards
         const filterInput = component.getByRole('textbox');
         await userEvent.type(filterInput, '2c0991a08806');
@@ -100,6 +108,11 @@ describe('App', () => {
         // Type part of timsetamp, should remove all cards
         await userEvent.clear(filterInput);
         await userEvent.type(filterInput, '2024-03-01');
+        expect(component.container.querySelectorAll('.card').length).toBe(0);
+
+        // Type part of thumbnail URL, should remove all cards
+        await userEvent.clear(filterInput);
+        await userEvent.type(filterInput, 'IMG_8');
         expect(component.container.querySelectorAll('.card').length).toBe(0);
     });
 
