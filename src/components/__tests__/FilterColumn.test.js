@@ -12,7 +12,7 @@ const plants = [
         "description": "Palms aren't really trees",
         "pot_size": 6,
         "last_watered": "2024-03-01T05:45:44+00:00",
-        "last_watered": "2024-03-01T05:45:44+00:00",
+        "last_fertilized": "2024-03-01T05:45:44+00:00",
         "thumbnail": "/media/thumbnails/IMG_8000_thumb.jpg"
     },
     {
@@ -22,7 +22,7 @@ const plants = [
         "description": null,
         "pot_size": 4,
         "last_watered": "2024-03-01T05:45:44+00:00",
-        "last_watered": "2024-03-01T05:45:44+00:00",
+        "last_fertilized": "2024-03-01T05:45:44+00:00",
         "thumbnail": "/media/thumbnails/IMG_8001_thumb.jpg"
     },
     {
@@ -32,7 +32,7 @@ const plants = [
         "description": null,
         "pot_size": 8,
         "last_watered": "2024-03-01T05:45:44+00:00",
-        "last_watered": "2024-03-01T05:45:44+00:00",
+        "last_fertilized": "2024-03-01T05:45:44+00:00",
         "thumbnail": "/media/thumbnails/IMG_8002_thumb.jpg"
     },
     {
@@ -42,7 +42,7 @@ const plants = [
         "description": null,
         "pot_size": 14,
         "last_watered": "2024-03-01T05:13:48+00:00",
-        "last_watered": "2024-03-01T05:45:44+00:00",
+        "last_fertilized": "2024-03-01T05:45:44+00:00",
         "thumbnail": "/media/thumbnails/IMG_8003_thumb.jpg"
     }
 ];
@@ -60,6 +60,12 @@ describe('App', () => {
                 editing={false}
                 selected={[]}
                 openRef={{current: true}}
+                ignoreKeys={[
+                    'uuid',
+                    'last_watered',
+                    'last_fertilized',
+                    'thumbnail'
+                ]}
             />
         );
         user = userEvent.setup();
@@ -99,7 +105,7 @@ describe('App', () => {
         expect(component.getByText('Mini palm tree')).toBeInTheDocument();
     });
 
-    it('does not match UUIDs, timestamps, or image URLs when filtering', async () => {
+    it('does not match the keys in ignoreKeys arg when filtering', async () => {
         // Type part of UUID, should remove all cards
         const filterInput = component.getByRole('textbox');
         await userEvent.type(filterInput, '2c0991a08806');

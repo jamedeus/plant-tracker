@@ -1,0 +1,56 @@
+import { render, within } from '@testing-library/react';
+import userEvent from "@testing-library/user-event";
+import createMockContext from 'src/testUtils/createMockContext';
+import { ThemeProvider } from 'src/context/ThemeContext';
+import { ErrorModalProvider } from 'src/context/ErrorModalContext';
+import App from '../App';
+import { mockContext } from './mockContext';
+
+jest.mock('print-js');
+
+describe('App', () => {
+    let app;
+
+    beforeEach(() => {
+        // Create mock state objects
+        createMockContext('plants', mockContext.plants);
+        createMockContext('trays', mockContext.trays);
+
+        // Render app + create userEvent instance to use in tests
+        app = render(
+            <ThemeProvider>
+                <ErrorModalProvider>
+                    <App />
+                </ErrorModalProvider>
+            </ThemeProvider>
+        );
+
+        // Reset all mocks to isolate tests
+        jest.resetAllMocks();
+    });
+
+    // Original bug: Plant and Tray filter inputs included results where the
+    // UUID, last_watered timestamp, or thumbnail URL matched the user's query.
+    it('does not match match UUIDs, timestamps, or URLs when filtering', async () => {
+        const plantColumn = app.getByText(/Plants/).parentElement;
+        const trayColumn = app.getByText(/Trays/).parentElement;
+        const plantFilterInput = within(plantColumn).getByRole('textbox');
+        const trayFilterInput = within(trayColumn).getByRole('textbox');
+
+        // Type part of UUID in both inputs, should remove all cards
+        await userEvent.type(plantFilterInput, '0640');
+        await userEvent.type(trayFilterInput, '0640');
+        expect(plantColumn.querySelectorAll('.card').length).toBe(0);
+        expect(trayColumn.querySelectorAll('.card').length).toBe(0);
+
+        // Type part of timsetamp in plant input, should remove all cards
+        await userEvent.clear(plantFilterInput);
+        await userEvent.type(plantFilterInput, '2024-02-26');
+        expect(plantColumn.querySelectorAll('.card').length).toBe(0);
+
+        // Type part of thumbnail URL in plant input, should remove all cards
+        await userEvent.clear(plantFilterInput);
+        await userEvent.type(plantFilterInput, 'photo_thumb');
+        expect(plantColumn.querySelectorAll('.card').length).toBe(0);
+    });
+});

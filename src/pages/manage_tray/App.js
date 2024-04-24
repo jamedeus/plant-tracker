@@ -249,6 +249,12 @@ function App() {
                 editing={selectingPlants}
                 selected={selectedPlants}
                 openRef={plantsOpenRef}
+                ignoreKeys={[
+                    'uuid',
+                    'last_watered',
+                    'last_fertilized',
+                    'thumbnail'
+                ]}
             >
                 <PlantEventButtons
                     editing={selectingPlants}

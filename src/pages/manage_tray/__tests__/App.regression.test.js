@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render, within } from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
 import createMockContext from 'src/testUtils/createMockContext';
 import { mockContext } from './mockContext';
@@ -82,5 +82,26 @@ describe('App', () => {
         // Confirm last_watered changed (new timestamp newer than existing)
         expect(app.queryAllByText(/14 hours ago/).length).toBe(0);
         expect(app.queryAllByText(/15 minutes ago/).length).toBe(4);
+    });
+
+    // Original bug: Plant filter input included results where the UUID,
+    // last_watered timestamp, or thumbnail URL matched the user's query.
+    it('does not match match UUIDs, timestamps, or URLs when filtering', async () => {
+        const plantColumn = app.getByText(/Plants \(2\)/).parentElement;
+        const filterInput = within(plantColumn).getByRole('textbox');
+
+        // Type part of UUID in input, should remove all cards
+        await userEvent.type(filterInput, '0640');
+        expect(plantColumn.querySelectorAll('.card').length).toBe(0);
+
+        // Type part of timsetamp in input, should remove all cards
+        await userEvent.clear(filterInput);
+        await userEvent.type(filterInput, '2024-03-01');
+        expect(plantColumn.querySelectorAll('.card').length).toBe(0);
+
+        // Type part of thumbnail URL in input, should remove all cards
+        await userEvent.clear(filterInput);
+        await userEvent.type(filterInput, 'photo_thumb');
+        expect(plantColumn.querySelectorAll('.card').length).toBe(0);
     });
 });

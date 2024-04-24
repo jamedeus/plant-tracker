@@ -11,24 +11,28 @@ import { XMarkIcon } from '@heroicons/react/16/solid';
 // keys), EditableNodeList args (editing bool state + selected ref), and
 // CollapseCol openRef (ref containing bool)
 //
+// Optional ignoreKeys array allows filter to skip certain contents object keys
+//
 // Contents objects must have uuid (react key) and name (used to filter) keys
-const FilterColumn = ({title, contents, CardComponent, editing, selected, openRef, children}) => {
+const FilterColumn = ({title, contents, CardComponent, editing, selected, openRef, ignoreKeys=[], children}) => {
     const [query, setQuery] = useState('');
     const [current, setCurrent] = useState(contents);
 
-    // Filter contents to items with any attribute that contains filter query
+    // Filter contents to items with an attribute that contains filter query
     useEffect(() => {
         if (query) {
+            // Convert filter query to lowercase once (instead of each loop)
+            const lowercaseQuery = query.toLowerCase();
+
+            // Iterate over keys of each item, add the item to current state
+            // once a single key is found that is not in ignoreKeys array and
+            // has a value that contains filter query (case insensitive)
             setCurrent(contents.filter(item => {
-                // Ignore UUID to prevent single characters matching everything
-                // Ignore timestamps to prevent numbers matching everything
-                const {
-                    uuid, last_watered, last_fertilized, thumbnail, ...otherProps
-                } = item;
-                return Object.values(otherProps)
-                             .toString()
-                             .toLowerCase()
-                             .includes(query.toLowerCase());
+                return Object.entries(item).some(([key, value]) => {
+                    return !ignoreKeys.includes(key)
+                        && value !== null
+                        && value.toString().toLowerCase().includes(lowercaseQuery);
+                });
             }));
         } else {
             setCurrent(contents);
@@ -85,6 +89,7 @@ FilterColumn.propTypes = {
     editing: PropTypes.bool,
     selected: PropTypes.object,
     openRef: PropTypes.object,
+    ignoreKeys: PropTypes.array,
     children: PropTypes.node
 };
 

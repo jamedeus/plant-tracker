@@ -100,6 +100,12 @@ function App() {
                 editing={editing}
                 selected={selectedPlants}
                 openRef={plantsOpenRef}
+                ignoreKeys={[
+                    'uuid',
+                    'last_watered',
+                    'last_fertilized',
+                    'thumbnail'
+                ]}
             />
         );
     };
@@ -113,6 +119,7 @@ function App() {
                 editing={editing}
                 selected={selectedTrays}
                 openRef={traysOpenRef}
+                ignoreKeys={['uuid']}
             />
         );
     };
