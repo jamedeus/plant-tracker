@@ -111,7 +111,7 @@ const DeletePhotosModal = ({ plantID, photoUrls, setPhotoUrls }) => {
     const PhotoSlide = ({ photo, index }) => {
         return (
             <div id={`photo${index}`} className="carousel-item relative w-full mx-1">
-                <div className="flex flex-col">
+                <div className="flex flex-col mx-auto">
                     <h1 className="mt-auto mb-1 md:text-lg">
                         {DateTime.fromISO(photo.created).toFormat('MMMM dd, yyyy')}
                     </h1>
