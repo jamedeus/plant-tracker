@@ -303,30 +303,47 @@ class ManagePageTests(TestCase):
 
         # Confirm expected state object
         state = response.context['state']
-        self.assertEqual(state['plant'], {
-            'uuid': str(self.plant1.uuid),
-            'name': None,
-            'display_name': 'Unnamed plant 1',
-            'species': None,
-            'thumbnail': '/media/thumbnails/photo2_thumb.jpg',
-            'pot_size': None,
-            'description': None,
-            'last_watered': None,
-            'last_fertilized': None,
-            'events': {
-                'water': [],
-                'fertilize': [],
-                'prune': [],
-                'repot': []
-            },
-            'tray': None,
-        })
+        self.assertEqual(
+            state['plant'],
+            {
+                'uuid': str(self.plant1.uuid),
+                'name': None,
+                'display_name': 'Unnamed plant 1',
+                'species': None,
+                'thumbnail': '/media/thumbnails/photo2_thumb.jpg',
+                'pot_size': None,
+                'description': None,
+                'last_watered': None,
+                'last_fertilized': None,
+                'events': {
+                    'water': [],
+                    'fertilize': [],
+                    'prune': [],
+                    'repot': []
+                },
+                'tray': None,
+            }
+        )
+
+        # Confirm trays contains details of all existing trays
+        self.assertEqual(
+            state['trays'],
+            [
+                {
+                    'name': 'Unnamed tray 1',
+                    'uuid': str(self.tray1.uuid),
+                    'location': None,
+                    'description': None,
+                    'plants': 0
+                }
+            ]
+        )
 
         # Confirm species_options list is empty (test plants have no species)
-        self.assertEqual(response.context['state']['species_options'], [])
+        self.assertEqual(state['species_options'], [])
 
         # Confirm photo_urls contains list of dicts with timestamp keys, URL values
-        photo_urls = response.context['state']['photo_urls']
+        photo_urls = state['photo_urls']
         self.assertEqual(
             photo_urls,
             [

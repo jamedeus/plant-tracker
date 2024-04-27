@@ -90,6 +90,16 @@ class Tray(models.Model):
         '''Returns a list of UUID strings for all Plants in Tray'''
         return [str(uuid) for uuid in self.plant_set.all().values_list('uuid', flat=True)]
 
+    def get_details(self):
+        '''Returns dict containing all tray attributes and number of plants'''
+        return {
+            'name': self.get_display_name(),
+            'uuid': str(self.uuid),
+            'location': self.location,
+            'description': self.description,
+            'plants': len(self.plant_set.all())
+        }
+
     def get_plant_details(self):
         '''Returns list of dicts with parameters for each Plant in Tray
         See Plant.get_details for dict parameters

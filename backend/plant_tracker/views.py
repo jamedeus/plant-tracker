@@ -108,13 +108,7 @@ def overview(request):
         state['plants'].append(plant.get_details())
 
     for tray in Tray.objects.all():
-        state['trays'].append({
-            'uuid': str(tray.uuid),
-            'name': tray.get_display_name(),
-            'location': tray.location,
-            'description': tray.description,
-            'plants': len(tray.plant_set.all())
-        })
+        state['trays'].append(tray.get_details())
 
     return render_react_app(
         request,
@@ -135,8 +129,7 @@ def manage(request, uuid):
         # Create state object parsed by react app
         state = {
             'plant': plant.get_details(),
-            'trays': [{'name': tray.get_display_name(), 'uuid': str(tray.uuid)}
-                      for tray in Tray.objects.all()],
+            'trays': [tray.get_details() for tray in Tray.objects.all()],
             'species_options': get_plant_species_options(),
             'photo_urls': plant.get_photo_urls()
         }
