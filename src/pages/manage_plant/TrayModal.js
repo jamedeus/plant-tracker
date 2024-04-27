@@ -45,12 +45,7 @@ const TrayModal = ({ plantID, trayOptions, handleAddTray }) => {
                         className="max-w-80 w-full mx-auto mb-4 cursor-pointer"
                         onClick={() => addToTray(tray.uuid)}
                     >
-                        <TrayCard
-                            key={tray.uuid}
-                            name={tray.name}
-                            plants={tray.plants}
-                            linkPage={false}
-                        />
+                        <TrayCard key={tray.uuid} linkPage={false} {...tray} />
                     </div>
                 ))}
             </div>

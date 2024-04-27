@@ -10,6 +10,8 @@ describe('App', () => {
                 name={"Test Tray"}
                 plants={2}
                 uuid={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"}
+                location={"Top shelf"}
+                description={"Brightest grow light"}
             />
         );
         user = userEvent.setup();
@@ -21,6 +23,19 @@ describe('App', () => {
     it('shows the correct information', () => {
         expect(component.getByText('Test Tray').nodeName).toBe('H2');
         expect(component.getByText('Contains 2 plants')).toBeInTheDocument();
+    });
+
+    it('flips chevron icon when details collapse is opened', async () => {
+        // Confirm that ChevronDownIcon is present, ChevronUpIcon is not
+        const icon = component.container.querySelector('svg');
+        expect(icon.innerHTML.includes('M4.22')).toBe(true);
+        expect(icon.innerHTML.includes('M11.78')).toBe(false);
+
+        // Click button, confirm that icon changes to ChevronUpIcon
+        await user.click(component.container.querySelector('.btn-close'));
+        const newIcon = component.container.querySelector('svg');
+        expect(newIcon.innerHTML.includes('M4.22')).toBe(false);
+        expect(newIcon.innerHTML.includes('M11.78')).toBe(true);
     });
 
     it('redirects to manage tray page when clicked', async () => {

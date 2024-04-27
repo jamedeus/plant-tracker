@@ -11,13 +11,13 @@ const PlantCard = ({ name, uuid, species, description, pot_size, last_watered, t
     const [open, setOpen] = useState(false);
 
     // Button handler toggles collapse state, prevents click propagating
-    // to card (redirects to manage_plant page unless linkpage arg is false)
+    // to card (redirects to manage_plant page unless linkPage arg is false)
     const toggle = (e) => {
         setOpen(!open);
         e.stopPropagation();
     };
 
-    // Click handler, redirects to manage_plant unless linkpage arg is false
+    // Click handler, redirects to manage_plant unless linkPage arg is false
     const manageLink = () => {
         window.location.href = `/manage/${uuid}`;
     };

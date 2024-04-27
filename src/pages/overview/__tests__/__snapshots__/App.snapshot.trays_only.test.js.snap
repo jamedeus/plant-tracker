@@ -167,7 +167,8 @@ exports[`App matches snapshot when only trays exist 1`] = `
         >
           <div
             className="card bg-neutral text-neutral-content mx-auto w-full
-                cursor-pointer"
+                    cursor-pointer
+                    "
             onClick={[Function]}
           >
             <div
@@ -183,6 +184,68 @@ exports[`App matches snapshot when only trays exist 1`] = `
                 4
                  plants
               </p>
+            </div>
+            <button
+              className="btn-close absolute right-2 top-8 z-40"
+              onClick={[Function]}
+              role="button"
+              tabIndex={0}
+            >
+              <svg
+                aria-hidden="true"
+                className="w-8 h-8"
+                data-slot="icon"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  clipRule="evenodd"
+                  d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                  fillRule="evenodd"
+                />
+              </svg>
+            </button>
+          </div>
+          <div
+            className="collapse bg-neutral rounded-t-none cursor-default
+                "
+          >
+            <input
+              className="hidden"
+              defaultChecked={false}
+              onChange={[Function]}
+              type="checkbox"
+            />
+            <div
+              className="collapse-content"
+            >
+              <p
+                className="flex"
+              >
+                <span
+                  className="font-semibold"
+                >
+                  Location:
+                </span>
+                <span
+                  className="ml-auto text-right"
+                >
+                  Middle shelf
+                </span>
+              </p>
+              <div
+                className="hidden"
+              >
+                <p
+                  className="font-semibold mt-3"
+                >
+                  Description:
+                </p>
+                <p
+                  className="text-sm line-clamp-6"
+                />
+              </div>
             </div>
           </div>
         </div>
