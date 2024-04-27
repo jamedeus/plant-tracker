@@ -11,6 +11,14 @@
         "eslint:recommended"
     ],
     "overrides": [
+        {
+            "files": ["*.test.js"],
+            "globals": {
+                "render": "readonly",
+                "within": "readonly",
+                "userEvent": "readonly"
+            }
+        }
     ],
     "parserOptions": {
         "ecmaVersion": "latest",
