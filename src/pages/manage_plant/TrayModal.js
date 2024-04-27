@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
@@ -12,7 +12,9 @@ export const openTrayModal = () => {
 
 const TrayModal = ({ plantID, trayOptions, handleAddTray }) => {
     trayModalRef = useRef(null);
-    const traySelectRef = useRef(null);
+
+    // Track user selection
+    const [selectedTray, setSelectedTray] = useState('');
 
     // Get hook to show error modal
     const { showErrorModal } = useErrorModal();
@@ -21,7 +23,7 @@ const TrayModal = ({ plantID, trayOptions, handleAddTray }) => {
     const addToTray = async () => {
         const payload = {
             plant_id: plantID,
-            tray_id: traySelectRef.current.value
+            tray_id: selectedTray
         };
         const response = await sendPostRequest('/add_plant_to_tray', payload);
         if (response.ok) {
@@ -39,9 +41,9 @@ const TrayModal = ({ plantID, trayOptions, handleAddTray }) => {
     return (
         <Modal dialogRef={trayModalRef} title={"Add plant to tray"}>
             <select
-                ref={traySelectRef}
-                defaultValue=""
+                value={selectedTray}
                 className="select select-bordered m-8"
+                onChange={(e) => setSelectedTray(e.target.value)}
             >
                 <option value="" disabled>Select tray</option>
                 {trayOptions.map(tray => {
@@ -55,6 +57,7 @@ const TrayModal = ({ plantID, trayOptions, handleAddTray }) => {
             <button
                 className="btn btn-success mx-auto mt-4"
                 onClick={addToTray}
+                disabled={!selectedTray}
             >
                 Confirm
             </button>

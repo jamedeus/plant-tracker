@@ -2266,7 +2266,8 @@ exports[`App matches snapshot 1`] = `
         </h1>
         <select
           className="select select-bordered m-8"
-          defaultValue=""
+          onChange={[Function]}
+          value=""
         >
           <option
             disabled={true}
@@ -2287,6 +2288,7 @@ exports[`App matches snapshot 1`] = `
         </select>
         <button
           className="btn btn-success mx-auto mt-4"
+          disabled={true}
           onClick={[Function]}
         >
           Confirm
@@ -3167,6 +3169,7 @@ exports[`App matches snapshot 1`] = `
             </button>
             <button
               className="btn btn-error text-white ml-2"
+              disabled={true}
               onClick={[Function]}
             >
               Delete
@@ -3438,6 +3441,7 @@ exports[`App matches snapshot 1`] = `
         >
           <button
             className="btn btn-error text-white mx-auto"
+            disabled={true}
             onClick={[Function]}
           >
             Delete

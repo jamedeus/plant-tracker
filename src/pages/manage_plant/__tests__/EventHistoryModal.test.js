@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { render } from '@testing-library/react';
+import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 import { postHeaders } from 'src/testUtils/headers';
 import EventHistoryModal, { openEventHistoryModal } from '../EventHistoryModal';
@@ -53,6 +54,19 @@ describe('App', () => {
         // Click button, confirm HTMLDialogElement method was called
         await user.click(component.getByText('Open event history modal'));
         expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
+    });
+
+    it('disables delete button until at least one event selected', async() => {
+        // Delete button should be disabled
+        expect(component.getByText('Delete')).toBeDisabled();
+
+        // Select first water event, confirm delete button is enabled
+        await user.click(component.getByText(/4 hours ago/));
+        expect(component.getByText('Delete')).not.toBeDisabled();
+
+        // Un-select event, confirm delete button is disabled
+        await user.click(component.getByText(/4 hours ago/));
+        expect(component.getByText('Delete')).toBeDisabled();
     });
 
     it('sends correct payload when events are deleted', async () => {

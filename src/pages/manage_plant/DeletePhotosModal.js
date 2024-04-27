@@ -205,6 +205,7 @@ const DeletePhotosModal = ({ plantID, photoUrls, setPhotoUrls }) => {
                     <button
                         className="btn btn-error text-white ml-2"
                         onClick={() => setConfirmDelete(true)}
+                        disabled={!selectedPhotos.length}
                     >
                         Delete
                     </button>

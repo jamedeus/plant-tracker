@@ -1,5 +1,6 @@
 import { render, within } from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
+import "@testing-library/jest-dom";
 import createMockContext from 'src/testUtils/createMockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
@@ -182,11 +183,13 @@ describe('App', () => {
         // Click "Add to tray" dropdown option (open modal)
         await user.click(app.getByText(/Add to tray/));
 
-        // Get reference to AddToTrayModal
+        // Get reference to AddToTrayModal, confirm button should be disabled
         const addToTrayModal = app.getByText("Add plant to tray").parentElement;
+        expect(within(addToTrayModal).getByText('Confirm')).toBeDisabled();
 
-        // Select tray option, click confirm
+        // Select tray option (confirm should now be enabled), click confirm
         await user.selectOptions(addToTrayModal.children[2], "Test tray");
+        expect(within(addToTrayModal).getByText('Confirm')).not.toBeDisabled();
         await user.click(within(addToTrayModal).getByText("Confirm"));
 
         // Confirm correct data posted to /add_plant_to_tray endpoint

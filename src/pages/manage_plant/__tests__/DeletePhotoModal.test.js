@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { render } from '@testing-library/react';
+import "@testing-library/jest-dom";
 import userEvent from "@testing-library/user-event";
 import { postHeaders } from 'src/testUtils/headers';
 import DeletePhotosModal, { openDeletePhotosModal } from '../DeletePhotosModal';
@@ -41,6 +42,19 @@ describe('App', () => {
         // Click button, confirm HTMLDialogElement method was called
         await user.click(component.getByText('Open delete photos modal'));
         expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
+    });
+
+    it('disables delete button until at least one photo selected', async() => {
+        // Delete button should be disabled
+        expect(component.getAllByText('Delete')[0]).toBeDisabled();
+
+        // Select first photo, confirm delete button is enabled
+        await user.click(component.getAllByText(/Select/)[0]);
+        expect(component.getAllByText('Delete')[0]).not.toBeDisabled();
+
+        // Un-select photo, confirm delete button is disabled
+        await user.click(component.getAllByText(/Select/)[0]);
+        expect(component.getAllByText('Delete')[0]).toBeDisabled();
     });
 
     it('closes modal when cancel button clicked', async () => {

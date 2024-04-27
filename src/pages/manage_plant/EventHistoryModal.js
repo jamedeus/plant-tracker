@@ -24,6 +24,23 @@ const EventHistoryModal = ({ plant, setPlant }) => {
     const selectedPruneRef = useRef([]);
     const selectedRepotRef = useRef([]);
 
+    // Controls delete button enable state (disabled until >0 events selected)
+    const [deleteDisabled, setDeleteDisabled] = useState(true);
+
+    // Enable delete button if at least 1 event selected, disable if 0 selected
+    const updateDeleteDisabled = () => {
+        if (
+            selectedWaterRef.current.length > 0
+            || selectedFertilizeRef.current.length > 0
+            || selectedPruneRef.current.length > 0
+            || selectedRepotRef.current.length > 0
+        ) {
+            setDeleteDisabled(false);
+        } else {
+            setDeleteDisabled(true);
+        }
+    };
+
     // Takes timestamp and eventType, removes timestamp from plant.events state
     const removeEvent = (timestamp, eventType) => {
         let oldPlant = {...plant};
@@ -130,6 +147,7 @@ const EventHistoryModal = ({ plant, setPlant }) => {
             } else {
                 selectedRef.current.push(key);
             }
+            updateDeleteDisabled();
         };
 
         return (
@@ -217,6 +235,7 @@ const EventHistoryModal = ({ plant, setPlant }) => {
                 <button
                     className="btn btn-error text-white mx-auto"
                     onClick={deleteAllSelected}
+                    disabled={deleteDisabled}
                 >
                     Delete
                 </button>
