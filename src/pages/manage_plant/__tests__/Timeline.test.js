@@ -1,5 +1,3 @@
-import { render, within } from '@testing-library/react';
-import userEvent from "@testing-library/user-event";
 import Timeline from '../Timeline';
 import { ErrorModalProvider } from 'src/context/ErrorModalContext';
 import { mockEvents, mockPhotoUrls } from './mockContext';

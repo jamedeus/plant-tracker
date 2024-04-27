@@ -1,7 +1,4 @@
 import { useState } from 'react';
-import { render } from '@testing-library/react';
-import "@testing-library/jest-dom";
-import userEvent from "@testing-library/user-event";
 import { postHeaders } from 'src/testUtils/headers';
 import EventHistoryModal, { openEventHistoryModal } from '../EventHistoryModal';
 import { ErrorModalProvider } from 'src/context/ErrorModalContext';

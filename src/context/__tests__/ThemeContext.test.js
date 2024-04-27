@@ -1,5 +1,4 @@
-import { render, act } from '@testing-library/react';
-import userEvent from "@testing-library/user-event";
+import { act } from '@testing-library/react';
 import { useTheme, ThemeProvider } from 'src/context/ThemeContext';
 
 const localStorageMock = (() => {

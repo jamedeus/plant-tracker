@@ -1,8 +1,5 @@
 import { useRef } from 'react';
-import { render } from '@testing-library/react';
-import userEvent from "@testing-library/user-event";
 import CollapseCol from '../CollapseCol';
-import '@testing-library/jest-dom';
 
 const TestComponent = () => {
     const openRef = useRef(false);

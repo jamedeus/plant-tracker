@@ -1,6 +1,4 @@
 import React, { useRef } from 'react';
-import { render } from '@testing-library/react';
-import userEvent from "@testing-library/user-event";
 import { postHeaders } from 'src/testUtils/headers';
 import PrintModal from '../PrintModal';
 import print from 'print-js';

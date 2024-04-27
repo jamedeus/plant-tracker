@@ -1,6 +1,4 @@
-import { render } from '@testing-library/react';
 import LastEventTime from '../LastEventTime';
-import '@testing-library/jest-dom';
 
 describe('App', () => {
     it('displays "Never watered" when timestamp is null', () => {

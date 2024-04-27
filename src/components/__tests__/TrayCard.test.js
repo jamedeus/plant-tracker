@@ -1,7 +1,4 @@
-import { render } from '@testing-library/react';
-import userEvent from "@testing-library/user-event";
 import TrayCard from '../TrayCard';
-import '@testing-library/jest-dom';
 
 describe('App', () => {
     let component, user;

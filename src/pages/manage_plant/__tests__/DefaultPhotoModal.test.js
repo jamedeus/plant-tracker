@@ -1,6 +1,4 @@
 import React, { useState } from 'react';
-import { render } from '@testing-library/react';
-import userEvent from "@testing-library/user-event";
 import DefaultPhotoModal, { openDefaultPhotoModal } from '../DefaultPhotoModal';
 import { mockContext } from './mockContext';
 import { ErrorModalProvider } from 'src/context/ErrorModalContext';

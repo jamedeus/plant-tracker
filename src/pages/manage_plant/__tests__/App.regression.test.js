@@ -1,5 +1,4 @@
-import { render, fireEvent } from '@testing-library/react';
-import userEvent from "@testing-library/user-event";
+import { fireEvent } from '@testing-library/react';
 import createMockContext from 'src/testUtils/createMockContext';
 import App from '../App';
 import { ToastProvider } from 'src/context/ToastContext';

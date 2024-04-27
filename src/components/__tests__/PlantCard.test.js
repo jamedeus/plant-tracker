@@ -1,7 +1,4 @@
-import { render } from '@testing-library/react';
-import userEvent from "@testing-library/user-event";
 import PlantCard from '../PlantCard';
-import '@testing-library/jest-dom';
 
 describe('PlantCard with water event', () => {
     let component, user;

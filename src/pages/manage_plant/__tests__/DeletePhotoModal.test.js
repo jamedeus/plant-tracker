@@ -1,7 +1,4 @@
 import { useState } from 'react';
-import { render } from '@testing-library/react';
-import "@testing-library/jest-dom";
-import userEvent from "@testing-library/user-event";
 import { postHeaders } from 'src/testUtils/headers';
 import DeletePhotosModal, { openDeletePhotosModal } from '../DeletePhotosModal';
 import { ErrorModalProvider } from 'src/context/ErrorModalContext';

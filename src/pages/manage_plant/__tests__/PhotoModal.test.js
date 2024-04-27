@@ -1,6 +1,5 @@
 import React, { useRef } from 'react';
-import { render, fireEvent } from '@testing-library/react';
-import userEvent from "@testing-library/user-event";
+import { fireEvent } from '@testing-library/react';
 import PhotoModal, { openPhotoModal } from '../PhotoModal';
 import { ErrorModalProvider } from 'src/context/ErrorModalContext';
 

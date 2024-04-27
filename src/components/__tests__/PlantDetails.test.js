@@ -1,6 +1,4 @@
-import { render } from '@testing-library/react';
 import PlantDetails from '../PlantDetails';
-import '@testing-library/jest-dom';
 
 describe('App', () => {
     it('displays correct details', () => {

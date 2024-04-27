@@ -1,7 +1,16 @@
+import { render, within } from '@testing-library/react';
+import userEvent from "@testing-library/user-event";
+import '@testing-library/jest-dom';
 import 'src/testUtils/dateMock';
 import { DateTime } from 'src/testUtils/luxonMock';
 
 beforeAll(() => {
+    // Make available in all tests
+    global.render = render;
+    global.within = within;
+    global.userEvent = userEvent;
+
+    // Mock methods not implemented in jsdom
     HTMLDialogElement.prototype.show = jest.fn();
     HTMLDialogElement.prototype.showModal = jest.fn();
     HTMLDialogElement.prototype.close = jest.fn();

@@ -1,8 +1,5 @@
-import { render } from '@testing-library/react';
-import userEvent from "@testing-library/user-event";
 import PlantCard from '../PlantCard';
 import FilterColumn from '../FilterColumn';
-import '@testing-library/jest-dom';
 
 const plants = [
     {
