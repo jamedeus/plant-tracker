@@ -167,8 +167,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
         >
           <div
             className="card card-side bg-neutral text-neutral-content mx-auto relative
-                     cursor-pointer
-                "
+                     cursor-pointer"
             onClick={[Function]}
           >
             <figure
@@ -180,7 +179,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
               />
             </figure>
             <div
-              className="card-body my-auto text-start"
+              className="card-body my-auto text-start cursor-default"
             >
               <h2
                 className="card-title line-clamp-1 pr-8"
@@ -231,9 +230,8 @@ exports[`App matches snapshot when only plants exist 1`] = `
             </button>
           </div>
           <div
-            className="collapse bg-neutral rounded-t-none
-                
-            "
+            className="collapse bg-neutral rounded-t-none cursor-default
+                "
           >
             <input
               className="hidden"

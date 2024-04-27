@@ -25,9 +25,10 @@ const PlantCard = ({ name, uuid, species, description, pot_size, last_watered, t
     // Renders collapse with Plant details, opened with arrow button
     const DetailsSection = () => {
         return (
-            <div className={`collapse bg-neutral rounded-t-none
-                ${open ? "pt-4" : ""}
-            `}>
+            <div className={
+                `collapse bg-neutral rounded-t-none cursor-default
+                ${open ? "pt-4" : ""}`
+            }>
                 <input
                     type="checkbox"
                     className="hidden"
@@ -74,7 +75,7 @@ const PlantCard = ({ name, uuid, species, description, pot_size, last_watered, t
         switch(thumbnail) {
             case(null):
                 return (
-                    <div className="card-body text-center">
+                    <div className="card-body text-center cursor-default">
                         <h2 className="card-title mx-auto px-8 line-clamp-1">
                             {name}
                         </h2>
@@ -83,7 +84,7 @@ const PlantCard = ({ name, uuid, species, description, pot_size, last_watered, t
                 );
             default:
                 return (
-                    <div className="card-body my-auto text-start">
+                    <div className="card-body my-auto text-start cursor-default">
                         <h2 className="card-title line-clamp-1 pr-8">
                             {name}
                         </h2>
@@ -98,8 +99,8 @@ const PlantCard = ({ name, uuid, species, description, pot_size, last_watered, t
             <div
                 className={
                     `card card-side bg-neutral text-neutral-content mx-auto relative
-                    ${open ? "rounded-b-none" : ""} ${linkPage ? 'cursor-pointer' : ''}
-                `}
+                    ${open ? "rounded-b-none" : ""} ${linkPage ? 'cursor-pointer' : ''}`
+                }
                 onClick={linkPage ? manageLink : null}
             >
                 {(() => {

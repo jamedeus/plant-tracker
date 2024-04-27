@@ -12,7 +12,7 @@ const TrayCard = ({ name, plants, uuid, linkPage=true }) => {
         <div
             className={
                 `card bg-neutral text-neutral-content mx-auto w-full
-                ${linkPage ? 'cursor-pointer' : ''}`
+                ${linkPage ? 'cursor-pointer' : 'cursor-default'}`
             }
             onClick={linkPage ? manageLink : null}
         >

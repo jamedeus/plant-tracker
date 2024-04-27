@@ -2273,7 +2273,7 @@ exports[`App matches snapshot 1`] = `
           >
             <div
               className="card bg-neutral text-neutral-content mx-auto w-full
-                "
+                cursor-default"
               onClick={null}
             >
               <div
@@ -2297,7 +2297,7 @@ exports[`App matches snapshot 1`] = `
           >
             <div
               className="card bg-neutral text-neutral-content mx-auto w-full
-                "
+                cursor-default"
               onClick={null}
             >
               <div

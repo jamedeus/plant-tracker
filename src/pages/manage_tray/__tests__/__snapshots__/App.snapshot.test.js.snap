@@ -238,12 +238,11 @@ exports[`App matches snapshot 1`] = `
         >
           <div
             className="card card-side bg-neutral text-neutral-content mx-auto relative
-                     cursor-pointer
-                "
+                     cursor-pointer"
             onClick={[Function]}
           >
             <div
-              className="card-body text-center"
+              className="card-body text-center cursor-default"
             >
               <h2
                 className="card-title mx-auto px-8 line-clamp-1"
@@ -294,9 +293,8 @@ exports[`App matches snapshot 1`] = `
             </button>
           </div>
           <div
-            className="collapse bg-neutral rounded-t-none
-                
-            "
+            className="collapse bg-neutral rounded-t-none cursor-default
+                "
           >
             <input
               className="hidden"
@@ -357,8 +355,7 @@ exports[`App matches snapshot 1`] = `
         >
           <div
             className="card card-side bg-neutral text-neutral-content mx-auto relative
-                     cursor-pointer
-                "
+                     cursor-pointer"
             onClick={[Function]}
           >
             <figure
@@ -370,7 +367,7 @@ exports[`App matches snapshot 1`] = `
               />
             </figure>
             <div
-              className="card-body my-auto text-start"
+              className="card-body my-auto text-start cursor-default"
             >
               <h2
                 className="card-title line-clamp-1 pr-8"
@@ -421,9 +418,8 @@ exports[`App matches snapshot 1`] = `
             </button>
           </div>
           <div
-            className="collapse bg-neutral rounded-t-none
-                
-            "
+            className="collapse bg-neutral rounded-t-none cursor-default
+                "
           >
             <input
               className="hidden"
@@ -661,8 +657,7 @@ exports[`App matches snapshot 1`] = `
             >
               <div
                 className="card card-side bg-neutral text-neutral-content mx-auto relative
-                     
-                "
+                     "
                 onClick={null}
               >
                 <figure
@@ -674,7 +669,7 @@ exports[`App matches snapshot 1`] = `
                   />
                 </figure>
                 <div
-                  className="card-body my-auto text-start"
+                  className="card-body my-auto text-start cursor-default"
                 >
                   <h2
                     className="card-title line-clamp-1 pr-8"
@@ -708,9 +703,8 @@ exports[`App matches snapshot 1`] = `
                 </button>
               </div>
               <div
-                className="collapse bg-neutral rounded-t-none
-                
-            "
+                className="collapse bg-neutral rounded-t-none cursor-default
+                "
               >
                 <input
                   className="hidden"
@@ -781,8 +775,7 @@ exports[`App matches snapshot 1`] = `
             >
               <div
                 className="card card-side bg-neutral text-neutral-content mx-auto relative
-                     
-                "
+                     "
                 onClick={null}
               >
                 <figure
@@ -794,7 +787,7 @@ exports[`App matches snapshot 1`] = `
                   />
                 </figure>
                 <div
-                  className="card-body my-auto text-start"
+                  className="card-body my-auto text-start cursor-default"
                 >
                   <h2
                     className="card-title line-clamp-1 pr-8"
@@ -828,9 +821,8 @@ exports[`App matches snapshot 1`] = `
                 </button>
               </div>
               <div
-                className="collapse bg-neutral rounded-t-none
-                
-            "
+                className="collapse bg-neutral rounded-t-none cursor-default
+                "
               >
                 <input
                   className="hidden"
@@ -932,12 +924,11 @@ exports[`App matches snapshot 1`] = `
             >
               <div
                 className="card card-side bg-neutral text-neutral-content mx-auto relative
-                     
-                "
+                     "
                 onClick={null}
               >
                 <div
-                  className="card-body text-center"
+                  className="card-body text-center cursor-default"
                 >
                   <h2
                     className="card-title mx-auto px-8 line-clamp-1"
@@ -988,9 +979,8 @@ exports[`App matches snapshot 1`] = `
                 </button>
               </div>
               <div
-                className="collapse bg-neutral rounded-t-none
-                
-            "
+                className="collapse bg-neutral rounded-t-none cursor-default
+                "
               >
                 <input
                   className="hidden"
@@ -1065,8 +1055,7 @@ exports[`App matches snapshot 1`] = `
             >
               <div
                 className="card card-side bg-neutral text-neutral-content mx-auto relative
-                     
-                "
+                     "
                 onClick={null}
               >
                 <figure
@@ -1078,7 +1067,7 @@ exports[`App matches snapshot 1`] = `
                   />
                 </figure>
                 <div
-                  className="card-body my-auto text-start"
+                  className="card-body my-auto text-start cursor-default"
                 >
                   <h2
                     className="card-title line-clamp-1 pr-8"
@@ -1129,9 +1118,8 @@ exports[`App matches snapshot 1`] = `
                 </button>
               </div>
               <div
-                className="collapse bg-neutral rounded-t-none
-                
-            "
+                className="collapse bg-neutral rounded-t-none cursor-default
+                "
               >
                 <input
                   className="hidden"
