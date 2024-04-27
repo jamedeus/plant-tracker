@@ -2286,6 +2286,7 @@ exports[`App matches snapshot 1`] = `
                 </h2>
                 <p>
                   Contains 
+                  3
                    plants
                 </p>
               </div>
@@ -2310,6 +2311,7 @@ exports[`App matches snapshot 1`] = `
                 </h2>
                 <p>
                   Contains 
+                  5
                    plants
                 </p>
               </div>

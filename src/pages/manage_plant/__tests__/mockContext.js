@@ -29,11 +29,17 @@ export const mockContext = {
     "trays": [
         {
             "name": "Test tray",
-            "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+            "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+            "location": "Top shelf",
+            "description": "Medium brightness grow light",
+            "plants": 3
         },
         {
             "name": "Testing",
-            "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be61"
+            "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be61",
+            "location": "Middle shelf",
+            "description": "Brightest grow light",
+            "plants": 5
         }
     ],
     "species_options": [
