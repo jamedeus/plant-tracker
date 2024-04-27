@@ -205,7 +205,7 @@ const DeletePhotosModal = ({ plantID, photoUrls, setPhotoUrls }) => {
                         Cancel
                     </button>
                     <button
-                        className="btn btn-error text-white ml-2"
+                        className="btn btn-error ml-2"
                         onClick={() => setConfirmDelete(true)}
                         disabled={!selectedPhotos.length}
                     >
@@ -235,7 +235,7 @@ const DeletePhotosModal = ({ plantID, photoUrls, setPhotoUrls }) => {
                         Cancel
                     </button>
                     <button
-                        className="btn btn-error text-white ml-2"
+                        className="btn btn-error ml-2"
                         onClick={deleteSelected}
                     >
                         Delete

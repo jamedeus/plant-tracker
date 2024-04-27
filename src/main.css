@@ -128,3 +128,7 @@ html[data-theme="light"] .pot-size-selected::placeholder {
 .cursor-pointer, .cursor-pointer * {
     cursor: pointer !important;
 }
+
+.btn-error {
+    color: #eee;
+}

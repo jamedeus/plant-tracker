@@ -233,7 +233,7 @@ const EventHistoryModal = ({ plant, setPlant }) => {
             </Tab.Group>
             <div className="flex mt-4">
                 <button
-                    className="btn btn-error text-white mx-auto"
+                    className="btn btn-error mx-auto"
                     onClick={deleteAllSelected}
                     disabled={deleteDisabled}
                 >

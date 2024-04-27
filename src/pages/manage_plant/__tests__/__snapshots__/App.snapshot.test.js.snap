@@ -3191,7 +3191,7 @@ exports[`App matches snapshot 1`] = `
               Cancel
             </button>
             <button
-              className="btn btn-error text-white ml-2"
+              className="btn btn-error ml-2"
               disabled={true}
               onClick={[Function]}
             >
@@ -3221,7 +3221,7 @@ exports[`App matches snapshot 1`] = `
               Cancel
             </button>
             <button
-              className="btn btn-error text-white ml-2"
+              className="btn btn-error ml-2"
               onClick={[Function]}
             >
               Delete
@@ -3463,7 +3463,7 @@ exports[`App matches snapshot 1`] = `
           className="flex mt-4"
         >
           <button
-            className="btn btn-error text-white mx-auto"
+            className="btn btn-error mx-auto"
             disabled={true}
             onClick={[Function]}
           >
