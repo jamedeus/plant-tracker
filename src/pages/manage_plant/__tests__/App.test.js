@@ -180,16 +180,11 @@ describe('App', () => {
         // Click "Add to tray" dropdown option (open modal)
         await user.click(app.getByText(/Add to tray/));
 
-        // Get reference to AddToTrayModal, confirm button should be disabled
+        // Get reference to AddToTrayModal
         const addToTrayModal = app.getByText("Add plant to tray").parentElement;
-        expect(within(addToTrayModal).getByText('Confirm')).toBeDisabled();
 
-        // Select tray option (confirm should now be enabled), click confirm
-        await user.selectOptions(addToTrayModal.children[2], "Test tray");
-        expect(within(addToTrayModal).getByText('Confirm')).not.toBeDisabled();
-        await user.click(within(addToTrayModal).getByText("Confirm"));
-
-        // Confirm correct data posted to /add_plant_to_tray endpoint
+        // Select tray option, confirm correct data posted to /add_plant_to_tray
+        await user.click(within(addToTrayModal).getByText("Test tray"));
         expect(global.fetch).toHaveBeenCalledWith('/add_plant_to_tray', {
             method: 'POST',
             body: JSON.stringify({

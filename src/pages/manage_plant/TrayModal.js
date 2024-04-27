@@ -1,6 +1,7 @@
-import React, { useState, useRef } from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
+import TrayCard from 'src/components/TrayCard';
 import { sendPostRequest } from 'src/util';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 
@@ -13,17 +14,14 @@ export const openTrayModal = () => {
 const TrayModal = ({ plantID, trayOptions, handleAddTray }) => {
     trayModalRef = useRef(null);
 
-    // Track user selection
-    const [selectedTray, setSelectedTray] = useState('');
-
     // Get hook to show error modal
     const { showErrorModal } = useErrorModal();
 
     // Handler for confirm button
-    const addToTray = async () => {
+    const addToTray = async (trayID) => {
         const payload = {
             plant_id: plantID,
-            tray_id: selectedTray
+            tray_id: trayID
         };
         const response = await sendPostRequest('/add_plant_to_tray', payload);
         if (response.ok) {
@@ -40,27 +38,22 @@ const TrayModal = ({ plantID, trayOptions, handleAddTray }) => {
 
     return (
         <Modal dialogRef={trayModalRef} title={"Add plant to tray"}>
-            <select
-                value={selectedTray}
-                className="select select-bordered m-8"
-                onChange={(e) => setSelectedTray(e.target.value)}
-            >
-                <option value="" disabled>Select tray</option>
-                {trayOptions.map(tray => {
-                    return (
-                        <option key={tray.uuid} value={tray.uuid}>
-                            {tray.name}
-                        </option>
-                    );
-                })}
-            </select>
-            <button
-                className="btn btn-success mx-auto mt-4"
-                onClick={addToTray}
-                disabled={!selectedTray}
-            >
-                Confirm
-            </button>
+            <div className="flex flex-col px-4 overflow-scroll">
+                {trayOptions.map(tray => (
+                    <div
+                        key={tray.uuid}
+                        className="max-w-80 w-full mx-auto mb-4 cursor-pointer"
+                        onClick={() => addToTray(tray.uuid)}
+                    >
+                        <TrayCard
+                            key={tray.uuid}
+                            name={tray.name}
+                            plants={tray.plants}
+                            linkPage={false}
+                        />
+                    </div>
+                ))}
+            </div>
         </Modal>
     );
 };

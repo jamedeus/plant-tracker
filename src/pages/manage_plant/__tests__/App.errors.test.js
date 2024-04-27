@@ -119,10 +119,9 @@ describe('App', () => {
         // Confirm arbitrary error does not appear on page
         expect(app.queryByText(/failed to add plant to tray/)).toBeNull();
 
-        // Simulate user selecting tray and clicking submit
+        // Simulate user selecting tray
         const addToTrayModal = app.getByText("Add plant to tray").parentElement;
-        await user.selectOptions(addToTrayModal.children[2], "Test tray");
-        await user.click(within(addToTrayModal).getByText("Confirm"));
+        await user.click(within(addToTrayModal).getByText("Test tray"));
 
         // Confirm modal appeared with arbitrary error text
         expect(app.queryByText(/failed to add plant to tray/)).not.toBeNull();

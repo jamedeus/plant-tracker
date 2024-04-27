@@ -2264,35 +2264,58 @@ exports[`App matches snapshot 1`] = `
         >
           Add plant to tray
         </h1>
-        <select
-          className="select select-bordered m-8"
-          onChange={[Function]}
-          value=""
+        <div
+          className="flex flex-col px-4 overflow-scroll"
         >
-          <option
-            disabled={true}
-            value=""
+          <div
+            className="max-w-80 w-full mx-auto mb-4 cursor-pointer"
+            onClick={[Function]}
           >
-            Select tray
-          </option>
-          <option
-            value="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+            <div
+              className="card bg-neutral text-neutral-content mx-auto w-full
+                "
+              onClick={null}
+            >
+              <div
+                className="card-body text-center"
+              >
+                <h2
+                  className="card-title mx-auto"
+                >
+                  Test tray
+                </h2>
+                <p>
+                  Contains 
+                   plants
+                </p>
+              </div>
+            </div>
+          </div>
+          <div
+            className="max-w-80 w-full mx-auto mb-4 cursor-pointer"
+            onClick={[Function]}
           >
-            Test tray
-          </option>
-          <option
-            value="0640ec3b-1bed-4b15-a078-d6e7ec66be61"
-          >
-            Testing
-          </option>
-        </select>
-        <button
-          className="btn btn-success mx-auto mt-4"
-          disabled={true}
-          onClick={[Function]}
-        >
-          Confirm
-        </button>
+            <div
+              className="card bg-neutral text-neutral-content mx-auto w-full
+                "
+              onClick={null}
+            >
+              <div
+                className="card-body text-center"
+              >
+                <h2
+                  className="card-title mx-auto"
+                >
+                  Testing
+                </h2>
+                <p>
+                  Contains 
+                   plants
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
       <form
         className="modal-backdrop"

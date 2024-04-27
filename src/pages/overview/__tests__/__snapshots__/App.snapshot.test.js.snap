@@ -353,7 +353,8 @@ exports[`App matches snapshot when plants and trays exist 1`] = `
               className="mb-4"
             >
               <div
-                className="card bg-neutral text-neutral-content mx-auto w-full cursor-pointer"
+                className="card bg-neutral text-neutral-content mx-auto w-full
+                cursor-pointer"
                 onClick={[Function]}
               >
                 <div
