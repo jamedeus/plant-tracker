@@ -2919,7 +2919,7 @@ exports[`App matches snapshot 1`] = `
           </button>
         </form>
         <div
-          className="flex flex-col"
+          className="flex flex-col overflow-hidden"
         >
           <h1
             className="font-bold text-lg md:text-xl mb-4"
@@ -2942,7 +2942,7 @@ exports[`App matches snapshot 1`] = `
                   March 21, 2024
                 </h1>
                 <img
-                  className="w-full rounded-xl object-scale-down mb-auto"
+                  className="rounded-xl overflow-hidden mx-auto mb-auto"
                   src="/media/thumbnails/photo1_thumb.jpg"
                 />
                 <div
@@ -3018,7 +3018,7 @@ exports[`App matches snapshot 1`] = `
                   March 22, 2024
                 </h1>
                 <img
-                  className="w-full rounded-xl object-scale-down mb-auto"
+                  className="rounded-xl overflow-hidden mx-auto mb-auto"
                   src="/media/thumbnails/photo2_thumb.jpg"
                 />
                 <div
@@ -3094,7 +3094,7 @@ exports[`App matches snapshot 1`] = `
                   March 23, 2024
                 </h1>
                 <img
-                  className="w-full rounded-xl object-scale-down mb-auto"
+                  className="rounded-xl overflow-hidden mx-auto mb-auto"
                   src="/media/thumbnails/photo3_thumb.jpg"
                 />
                 <div

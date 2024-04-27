@@ -117,7 +117,7 @@ const DeletePhotosModal = ({ plantID, photoUrls, setPhotoUrls }) => {
                     </h1>
                     <img
                         src={photo.thumbnail}
-                        className="w-full rounded-xl object-scale-down mb-auto"
+                        className="rounded-xl overflow-hidden mx-auto mb-auto"
                     />
                     <div className={`absolute flex justify-between transform
                                     -translate-y-1/2 left-5 right-5 top-1/2`}
@@ -177,7 +177,9 @@ const DeletePhotosModal = ({ plantID, photoUrls, setPhotoUrls }) => {
 
     return (
         <Modal dialogRef={deletePhotosModalRef}>
-            <div className={`${confirmDelete ? "hidden" : "flex flex-col"}`}>
+            <div className={
+                `${confirmDelete ? "hidden" : "flex flex-col overflow-hidden"}`
+            }>
                 <h1 className="font-bold text-lg md:text-xl mb-4">
                     Delete Photos
                 </h1>
