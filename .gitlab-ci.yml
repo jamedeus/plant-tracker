@@ -11,12 +11,13 @@ stages:
 # Run django unit tests
 test_backend:
   stage: test
+  image: python:3.10-bullseye
   tags:
     - nas
+    - docker
   before_script:
     - pip3 install pipenv
-    - export PATH=$PATH:/home/gitlab-runner/.local/bin
-    - pipenv install
+    - pipenv install --dev
   script:
     - cd backend/
     - pipenv run coverage run --source='.' --omit='*manage.py,*wsgi.py,*asgi.py,*/test_*.py,*unit_test_helpers.py,*/migrations/*.py' manage.py test
@@ -28,13 +29,13 @@ test_backend:
 # Run react unit tests
 test_frontend:
   stage: test
+  image: node:20-bullseye
   tags:
     - nas
+    - docker
   before_script:
     - npm install -D
-    - curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-    - ". ~/.nvm/nvm.sh"
-    - nvm use 19.6
+    - export TZ='America/Los_Angeles'
   script:
     - npm test -- --coverage
   coverage: '/All files.*\|.*\|.*\|.*\|.*\s+(\d+\.\d+)/'
@@ -44,11 +45,12 @@ test_frontend:
 # Update pylint badge
 pylint:
   stage: test
+  image: python:3.10-bullseye
   tags:
     - nas
+    - docker
   before_script:
     - pip3 install pipenv
-    - export PATH=$PATH:/home/gitlab-runner/.local/bin
     - pipenv install --dev
   script:
     - mkdir ./pylint
@@ -67,6 +69,7 @@ build:
   stage: build
   tags:
     - nas
+    - shell
   script:
     - 'export IMAGE_NAME="plant-tracker"'
     - 'export LAST_TAG=$(docker images --format "{{.Repository}}:{{.Tag}}" | grep "^${IMAGE_NAME}:[0-9]*\.[0-9]*$" | sort --version-sort | tail -n 1 | cut -d\: -f 2)'
@@ -80,6 +83,7 @@ deploy:
   stage: deploy
   tags:
     - nas
+    - shell
   script:
     - 'export IMAGE_NAME="plant-tracker"'
     - 'export LAST_TAG=$(docker images --format "{{.Repository}}:{{.Tag}}" | grep "^${IMAGE_NAME}:[0-9]*\.[0-9]*$" | sort --version-sort | tail -n 1 | cut -d\: -f 2)'
