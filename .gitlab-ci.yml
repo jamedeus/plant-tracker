@@ -87,7 +87,7 @@ deploy:
   script:
     - 'export IMAGE_NAME="plant-tracker"'
     - 'export LAST_TAG=$(docker images --format "{{.Repository}}:{{.Tag}}" | grep "^${IMAGE_NAME}:[0-9]*\.[0-9]*$" | sort --version-sort | tail -n 1 | cut -d\: -f 2)'
-    - 'sed -i "s|$IMAGE_NAME:[0-9]*\.[0-9]*|$IMAGE_NAME:$LAST_TAG|g" /home/pi/docker/docker-compose.yaml'
-    - 'docker compose -f /home/pi/docker/docker-compose.yaml up -d'
+    - 'sed -i "s|$IMAGE_NAME:[0-9]*\.[0-9]*|$IMAGE_NAME:$LAST_TAG|g" /home/jamedeus/docker/docker-compose.yaml'
+    - 'docker compose -f /home/jamedeus/docker/docker-compose.yaml up -d'
   only:
     - master
