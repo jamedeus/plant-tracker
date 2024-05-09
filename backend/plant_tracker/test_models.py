@@ -15,7 +15,8 @@ from .models import (
     FertilizeEvent,
     PruneEvent,
     RepotEvent,
-    Photo
+    Photo,
+    NoteEvent
 )
 from .unit_test_helpers import JSONClient, create_mock_photo
 
@@ -434,3 +435,15 @@ class EventModelTests(TestCase):
 
         # Confirm second event was not created
         self.assertEqual(len(RepotEvent.objects.all()), 1)
+
+    def test_duplicate_note_event(self):
+        # Create NoteEvent, confirm 1 entry exists
+        NoteEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
+        self.assertEqual(len(NoteEvent.objects.all()), 1)
+
+        # Attempt to create duplicate with same timestamp, should raise error
+        with self.assertRaises(ValidationError):
+            NoteEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
+
+        # Confirm second event was not created
+        self.assertEqual(len(NoteEvent.objects.all()), 1)

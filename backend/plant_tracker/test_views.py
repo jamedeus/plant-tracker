@@ -18,7 +18,8 @@ from .models import (
     FertilizeEvent,
     PruneEvent,
     RepotEvent,
-    Photo
+    Photo,
+    NoteEvent
 )
 from .view_decorators import (
     get_plant_from_post_body,
@@ -699,7 +700,7 @@ class PlantEventTests(TestCase):
             'timestamp': '2024-02-06T03:06:26.000Z'
         }
 
-        # Send water request, confirm event created
+        # Send fertilize request, confirm event created
         response = self.client.post('/add_plant_event', payload)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {"action": "fertilize", "plant": str(self.plant1.uuid)})
@@ -717,7 +718,7 @@ class PlantEventTests(TestCase):
             'timestamp': '2024-02-06T03:06:26.000Z'
         }
 
-        # Send water request, confirm event created
+        # Send prune request, confirm event created
         response = self.client.post('/add_plant_event', payload)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {"action": "prune", "plant": str(self.plant1.uuid)})
@@ -735,12 +736,30 @@ class PlantEventTests(TestCase):
             'timestamp': '2024-02-06T03:06:26.000Z'
         }
 
-        # Send water request, confirm event created
+        # Send repot request, confirm event created
         response = self.client.post('/add_plant_event', payload)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {"action": "repot", "plant": str(self.plant1.uuid)})
         self.assertEqual(len(RepotEvent.objects.all()), 1)
         self.assertEqual(self.plant1.last_repotted(), '2024-02-06T03:06:26+00:00')
+
+    def test_add_note_event(self):
+        # Confirm test plant has no note events
+        self.assertEqual(len(self.plant1.noteevent_set.all()), 0)
+        self.assertEqual(len(NoteEvent.objects.all()), 0)
+
+        payload = {
+            'plant_id': self.plant1.uuid,
+            'timestamp': '2024-02-06T03:06:26.000Z',
+            'note_text': 'plant is looking healthier than last week'
+        }
+
+        # Send add_note request, confirm event created
+        response = self.client.post('/add_plant_note', payload)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"action": "add_note", "plant": str(self.plant1.uuid)})
+        self.assertEqual(len(NoteEvent.objects.all()), 1)
+        self.assertEqual(len(self.plant1.noteevent_set.all()), 1)
 
     def test_bulk_water_plants(self):
         # Confirm test plants have no WaterEvents
@@ -1122,6 +1141,27 @@ class InvalidRequestTests(TestCase):
             {'error': 'event with same timestamp already exists'}
         )
         self.assertEqual(len(WaterEvent.objects.all()), 1)
+
+    def test_duplicate_note_timestamp(self):
+        # Create NoteEvent manually, then attempt to create with API call
+        timestamp = datetime.now()
+        NoteEvent.objects.create(plant=self.test_plant, timestamp=timestamp)
+        self.assertEqual(len(NoteEvent.objects.all()), 1)
+        response = self.client.post(
+            '/add_plant_note',
+            {
+                'plant_id': self.test_plant.uuid,
+                'timestamp': timestamp.isoformat(),
+                'note_text': 'plant is looking healthier than last week'
+            }
+        )
+        # Confirm correct error, confirm no NoteEvent created
+        self.assertEqual(response.status_code, 409)
+        self.assertEqual(
+            response.json(),
+            {'error': 'note with same timestamp already exists'}
+        )
+        self.assertEqual(len(NoteEvent.objects.all()), 1)
 
     def test_missing_event_type_key(self):
         # Send POST with with no event_type in body, confirm error

@@ -10,7 +10,7 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 from generate_qr_code_grid import generate_layout
-from .models import Tray, Plant, RepotEvent, Photo
+from .models import Tray, Plant, RepotEvent, Photo, NoteEvent
 from .view_decorators import (
     events_map,
     get_plant_by_uuid,
@@ -404,6 +404,30 @@ def bulk_delete_plant_events(plant, data):
             failed.append(event)
 
     return JsonResponse({"deleted": deleted, "failed": failed}, status=200)
+
+
+@requires_json_post(["plant_id", "timestamp", "note_text"])
+@get_plant_from_post_body
+@get_timestamp_from_post_body
+def add_plant_note(plant, timestamp, data):
+    '''Creates new NoteEvent with user-entered text for specified Plant entry
+    Requires JSON POST with plant_id (uuid), timestamp, and note_text keys
+    '''
+    try:
+        NoteEvent.objects.create(
+            plant=plant,
+            timestamp=timestamp,
+            text=data["note_text"]
+        )
+        return JsonResponse(
+            {"action": "add_note", "plant": plant.uuid},
+            status=200
+        )
+    except ValidationError:
+        return JsonResponse(
+            {"error": "note with same timestamp already exists"},
+            status=409
+        )
 
 
 @requires_json_post(["plant_id", "tray_id"])

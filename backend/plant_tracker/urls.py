@@ -20,6 +20,7 @@ urlpatterns = [
     path('bulk_add_plant_events', views.bulk_add_plant_events, name='bulk_add_plant_events'),
     path('delete_plant_event', views.delete_plant_event, name='delete_plant_event'),
     path('bulk_delete_plant_events', views.bulk_delete_plant_events, name='bulk_delete_plant_events'),
+    path('add_plant_note', views.add_plant_note, name='add_plant_note'),
     path('add_plant_to_tray', views.add_plant_to_tray, name='add_plant_to_tray'),
     path('remove_plant_from_tray', views.remove_plant_from_tray, name='remove_plant_from_tray'),
     path('bulk_add_plants_to_tray', views.bulk_add_plants_to_tray, name='bulk_add_plants_to_tray'),
