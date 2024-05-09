@@ -12,10 +12,11 @@ import {
     faSeedling,
     faScissors,
     faMound,
-    faEllipsis
+    faEllipsis,
+    faPenToSquare
 } from '@fortawesome/free-solid-svg-icons';
 
-const Timeline = ({ events, photoUrls }) => {
+const Timeline = ({ events, notes, photoUrls }) => {
     // Takes timestamp, returns ISO date string (no hours/minutes)
     const timestampToDateString = (timestamp) => {
         return DateTime.fromISO(timestamp).setZone('system').toISO().split('T')[0];
@@ -29,7 +30,7 @@ const Timeline = ({ events, photoUrls }) => {
                 const dateKey = timestampToDateString(date);
                 // Add new date key unless it already exists
                 if (!acc[dateKey]) {
-                    acc[dateKey] = {events: [], photos: []};
+                    acc[dateKey] = {events: [], notes: [], photos: []};
                 }
                 // Add event to date key unless same type already exists
                 if (!acc[dateKey]['events'].includes(eventType)) {
@@ -45,9 +46,18 @@ const Timeline = ({ events, photoUrls }) => {
     photoUrls.forEach(photo => {
         const dateKey = timestampToDateString(photo.created);
         if (!formattedEvents[dateKey]) {
-            formattedEvents[dateKey] = {events: [], photos: []};
+            formattedEvents[dateKey] = {events: [], notes: [], photos: []};
         }
         formattedEvents[dateKey]['photos'].push(photo);
+    });
+
+    // Add note text to notes key under correct date
+    notes.forEach(note => {
+        const dateKey = timestampToDateString(note.timestamp);
+        if (!formattedEvents[dateKey]) {
+            formattedEvents[dateKey] = {events: [], notes: [], photos: []};
+        }
+        formattedEvents[dateKey]['notes'].push(note);
     });
 
     // Iterate days chronologically and build object with 1 key per month
@@ -64,6 +74,7 @@ const Timeline = ({ events, photoUrls }) => {
         const day = {
             timestamp: timestamp,
             events: formattedEvents[timestamp]['events'],
+            notes: formattedEvents[timestamp]['notes'],
             photos: formattedEvents[timestamp]['photos']
         };
 
@@ -122,7 +133,7 @@ const Timeline = ({ events, photoUrls }) => {
         timestamp: PropTypes.string
     };
 
-    const TimelineContent = ({ events, photos}) => {
+    const TimelineContent = ({ events, notes, photos}) => {
         return (
             <div className="flex flex-col bg-neutral rounded-xl p-2 md:p-4">
                 <div className="flex flex-row flex-wrap">
@@ -141,12 +152,23 @@ const Timeline = ({ events, photoUrls }) => {
                         );
                     })}
                 </div>
+                <div className="flex flex-row flex-wrap">
+                    {notes.map((note) => {
+                        return (
+                            <NoteCollapse
+                                key={note.timestamp}
+                                text={note.text}
+                            />
+                        );
+                    })}
+                </div>
             </div>
         );
     };
 
     TimelineContent.propTypes = {
         events: PropTypes.array,
+        notes: PropTypes.array,
         photos: PropTypes.array
     };
 
@@ -217,6 +239,24 @@ const Timeline = ({ events, photoUrls }) => {
         photoUrl: PropTypes.string
     };
 
+    const NoteCollapse = ({ text }) => {
+        const [expanded, setExpanded] = useState(false);
+
+        return (
+            <div
+                className={`m-2 cursor-pointer ${expanded ? '' : `line-clamp-1`}`}
+                onClick={() => setExpanded(!expanded)}
+            >
+                <FontAwesomeIcon icon={faPenToSquare} className="w-4 h-4 mr-2" />
+                {text}
+            </div>
+        );
+    };
+
+    NoteCollapse.propTypes = {
+        text: PropTypes.string
+    };
+
     // Takes year-month string (ie 2024-03)
     const MonthDivider = ({ yearMonth }) => {
         return (
@@ -252,6 +292,7 @@ const Timeline = ({ events, photoUrls }) => {
                             <div>
                                 <TimelineContent
                                     events={day.events}
+                                    notes={day.notes}
                                     photos={day.photos}
                                 />
                             </div>
@@ -443,6 +484,7 @@ const Timeline = ({ events, photoUrls }) => {
 
 Timeline.propTypes = {
     events: PropTypes.object,
+    notes: PropTypes.array,
     photoUrls: PropTypes.array
 };
 

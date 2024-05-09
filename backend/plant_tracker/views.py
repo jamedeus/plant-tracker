@@ -146,6 +146,12 @@ def manage(request, uuid):
             'repot': plant.get_repot_timestamps()
         }
 
+        # Add timestamps and text of all notes
+        state['plant']['notes'] = [
+            {'timestamp': note.timestamp.isoformat(), 'text': note.text}
+            for note in plant.noteevent_set.all()
+        ]
+
         # Add tray details if plant is in a tray
         if plant.tray:
             state['plant']['tray'] = {

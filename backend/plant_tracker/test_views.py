@@ -322,6 +322,7 @@ class ManagePageTests(TestCase):
                     'prune': [],
                     'repot': []
                 },
+                'notes': [],
                 'tray': None,
             }
         )

@@ -1,6 +1,6 @@
 import Timeline from '../Timeline';
 import { ErrorModalProvider } from 'src/context/ErrorModalContext';
-import { mockEvents, mockPhotoUrls } from './mockContext';
+import { mockEvents, mockPhotoUrls, mockNotes } from './mockContext';
 
 describe('App', () => {
     let app, user;
@@ -9,7 +9,11 @@ describe('App', () => {
         // Render app + create userEvent instance to use in tests
         app = render(
             <ErrorModalProvider>
-                <Timeline events={mockEvents} photoUrls={mockPhotoUrls} />
+                <Timeline
+                    events={mockEvents}
+                    notes={mockNotes}
+                    photoUrls={mockPhotoUrls}
+                />
             </ErrorModalProvider>
         );
         user = userEvent.setup();

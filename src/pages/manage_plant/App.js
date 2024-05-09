@@ -270,6 +270,7 @@ function App() {
 
             <Timeline
                 events={plant.events}
+                notes={plant.notes}
                 photoUrls={photoUrls}
             />
 
