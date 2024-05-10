@@ -1815,7 +1815,7 @@ exports[`App matches snapshot 1`] = `
               </div>
             </div>
             <div
-              className="flex flex-row flex-wrap"
+              className="flex flex-col"
             />
           </div>
         </div>
@@ -1859,7 +1859,7 @@ exports[`App matches snapshot 1`] = `
               </div>
             </div>
             <div
-              className="flex flex-row flex-wrap"
+              className="flex flex-col"
             />
           </div>
         </div>
@@ -1903,7 +1903,7 @@ exports[`App matches snapshot 1`] = `
               </div>
             </div>
             <div
-              className="flex flex-row flex-wrap"
+              className="flex flex-col"
             />
           </div>
         </div>
@@ -1982,7 +1982,7 @@ exports[`App matches snapshot 1`] = `
               className="flex flex-row flex-wrap"
             />
             <div
-              className="flex flex-row flex-wrap"
+              className="flex flex-col"
             >
               <div
                 className="m-2 cursor-pointer line-clamp-1"
@@ -2068,7 +2068,7 @@ exports[`App matches snapshot 1`] = `
               className="flex flex-row flex-wrap"
             />
             <div
-              className="flex flex-row flex-wrap"
+              className="flex flex-col"
             />
           </div>
         </div>
@@ -2125,7 +2125,7 @@ exports[`App matches snapshot 1`] = `
               className="flex flex-row flex-wrap"
             />
             <div
-              className="flex flex-row flex-wrap"
+              className="flex flex-col"
             >
               <div
                 className="m-2 cursor-pointer line-clamp-1"

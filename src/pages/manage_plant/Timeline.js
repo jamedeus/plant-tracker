@@ -153,7 +153,7 @@ const Timeline = ({ events, notes, photoUrls }) => {
                         );
                     })}
                 </div>
-                <div className="flex flex-row flex-wrap">
+                <div className="flex flex-col">
                     {notes.map((note) => {
                         return (
                             <NoteCollapse
