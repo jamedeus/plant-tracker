@@ -243,6 +243,15 @@ exports[`App matches snapshot 1`] = `
               <a
                 onClick={[Function]}
               >
+                Add note
+              </a>
+            </li>
+            <li
+              className="ml-auto"
+            >
+              <a
+                onClick={[Function]}
+              >
                 Add photos
               </a>
             </li>

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { DateTime } from 'luxon';
 import { Popover } from "react-tiny-popover";
 import { capitalize, pastTense } from 'src/util';
+import { openNoteModal } from './NoteModal';
 import { openPhotoModal } from './PhotoModal';
 import { openDeletePhotosModal } from './DeletePhotosModal';
 import { openEventHistoryModal } from './EventHistoryModal';
@@ -350,6 +351,9 @@ const Timeline = ({ events, notes, photoUrls }) => {
                             className={`dropdown-content z-[1] menu p-2 shadow
                                         bg-base-300 rounded-box w-40`}
                         >
+                            <li className="ml-auto"><a onClick={openNoteModal}>
+                                Add note
+                            </a></li>
                             <li className="ml-auto"><a onClick={openPhotoModal}>
                                 Add photos
                             </a></li>

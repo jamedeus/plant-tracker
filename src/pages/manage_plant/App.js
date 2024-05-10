@@ -10,6 +10,7 @@ import DetailsCard from 'src/components/DetailsCard';
 import LastEventTime from 'src/components/LastEventTime';
 import PlantDetails from 'src/components/PlantDetails';
 import EventCalendar from './EventCalendar';
+import NoteModal from './NoteModal';
 import TrayModal, { openTrayModal } from './TrayModal';
 import PhotoModal, { openPhotoModal } from './PhotoModal';
 import RepotModal, { openRepotModal } from './RepotModal';
@@ -115,6 +116,13 @@ function App() {
                 showErrorModal(JSON.stringify(error));
             }
         }
+    };
+
+    // Called after successful add_plant_note API call, updates state
+    const addNote = async (timestamp, text) => {
+        let oldPlant = {...plant};
+        oldPlant.notes.push({timestamp: timestamp, text: text});
+        setPlant(oldPlant);
     };
 
     const DropdownOptions = () => {
@@ -316,6 +324,11 @@ function App() {
             <EventHistoryModal
                 plant={plant}
                 setPlant={setPlant}
+            />
+
+            <NoteModal
+                plantID={plant.uuid}
+                addNote={addNote}
             />
         </div>
     );
