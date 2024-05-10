@@ -762,6 +762,25 @@ class PlantEventTests(TestCase):
         self.assertEqual(len(NoteEvent.objects.all()), 1)
         self.assertEqual(len(self.plant1.noteevent_set.all()), 1)
 
+    def test_delete_note_event(self):
+        # Create NoteEvent, confirm exists
+        timestamp = timezone.now()
+        NoteEvent.objects.create(plant=self.plant1, timestamp=timestamp, text="")
+        self.assertEqual(len(self.plant1.noteevent_set.all()), 1)
+
+        # Call delete_plant_note endpoint, confirm response + event deleted
+        payload = {
+            'plant_id': self.plant1.uuid,
+            'timestamp': timestamp.isoformat()
+        }
+        response = self.client.post('/delete_plant_note', payload)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {"deleted": "note", "plant": str(self.plant1.uuid)}
+        )
+        self.assertEqual(len(self.plant1.noteevent_set.all()), 0)
+
     def test_bulk_water_plants(self):
         # Confirm test plants have no WaterEvents
         self.assertEqual(len(self.plant1.waterevent_set.all()), 0)
@@ -1200,6 +1219,18 @@ class InvalidRequestTests(TestCase):
         # Confirm correct error
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(), {"error": "event not found"})
+
+    def test_target_note_does_not_exist(self):
+        # Call delete_plant_note endpoint with a timestamp that doesn't exist
+        payload = {
+            'plant_id': self.test_plant.uuid,
+            'timestamp': timezone.now().isoformat()
+        }
+        response = self.client.post('/delete_plant_note', payload)
+
+        # Confirm correct error
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json(), {"error": "note not found"})
 
     def test_bulk_delete_plant_events_does_not_exist(self):
         # Post payload containing event that does not exist
