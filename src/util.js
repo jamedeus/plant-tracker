@@ -61,11 +61,21 @@ function pastTense(text) {
     }
 }
 
+// Custom PropTypes string regex validator
+function stringMatchesPattern(regex) {
+    return function(props, propName, componentName) {
+        if (props[propName] && !regex.test(props[propName])) {
+            throw new Error(`${componentName}.${propName} must match ${regex}`);
+        }
+    };
+}
+
 export {
     parseDomContext,
     sendPostRequest,
     localToUTC,
     timestampToRelative,
     capitalize,
-    pastTense
+    pastTense,
+    stringMatchesPattern
 };
