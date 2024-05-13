@@ -1,9 +1,14 @@
 import { useRef } from 'react';
+import PropTypes from 'prop-types';
 import DatetimeInput from '../DatetimeInput';
 
 const TestComponent = ({ value=null }) => {
-    return <DatetimeInput inputRef={useRef(null)} value={value} />
-}
+    return <DatetimeInput inputRef={useRef(null)} value={value} />;
+};
+
+TestComponent.propTypes = {
+    value: PropTypes.string
+};
 
 describe('DatetimeInput', () => {
     let consoleErrorSpy;

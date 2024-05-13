@@ -1,5 +1,4 @@
 import React, { useRef } from 'react';
-import { fireEvent } from '@testing-library/react';
 import NoteModal, { openNoteModal } from '../NoteModal';
 import { ToastProvider } from 'src/context/ToastContext';
 import { ErrorModalProvider } from 'src/context/ErrorModalContext';
@@ -52,7 +51,7 @@ describe('App', () => {
         await user.type(
             app.container.querySelector('.textarea'),
             'Some leaves turning yellow, probably watering too often'
-        )
+        );
         await user.click(app.getByText('Save'));
 
         // Confirm correct data posted to /add_plant_note endpoint
@@ -83,7 +82,7 @@ describe('App', () => {
         await user.type(
             app.container.querySelector('.textarea'),
             'Some leaves turning yellow, probably watering too often'
-        )
+        );
         await user.click(app.getByText('Save'));
 
         // Confirm modal appeared with arbitrary error text
@@ -104,7 +103,7 @@ describe('App', () => {
         await user.type(
             app.container.querySelector('.textarea'),
             'Some leaves turning yellow, probably watering too often'
-        )
+        );
         await user.click(app.getByText('Save'));
     });
 
