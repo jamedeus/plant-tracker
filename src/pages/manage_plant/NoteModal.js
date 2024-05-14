@@ -7,7 +7,7 @@ import DatetimeInput from 'src/components/DatetimeInput';
 import { useToast } from 'src/context/ToastContext';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 
-const NoteModal = ({ plantID, addNote, modalRef, noteText, noteTime, editingNote }) => {
+const NoteModal = ({ plantID, addNote, removeNote, modalRef, noteText, noteTime, editingNote }) => {
     // Refs to track timestamp and text inputs
     const timestampRef = useRef(null);
     const noteTextRef = useRef(null);
@@ -65,7 +65,31 @@ const NoteModal = ({ plantID, addNote, modalRef, noteText, noteTime, editingNote
     };
 
     const handleDelete = async () => {
-        alert("Not implemented");
+        // Build payload
+        const payload = {
+            plant_id: plantID,
+            timestamp: noteTime
+        };
+
+        // Post to backend
+        const response = await fetch('/delete_plant_note', {
+            method: 'POST',
+            body: JSON.stringify(payload),
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                "X-CSRFToken": Cookies.get('csrftoken')
+            }
+        });
+
+        if (response.ok) {
+            // Remove note from state, close modal
+            removeNote(payload.timestamp);
+            modalRef.current.close();
+        } else {
+            // Show error in modal
+            const error = await response.json();
+            showErrorModal(JSON.stringify(error));
+        }
     };
 
     // Renders input when adding new note, timestamp string when editing
@@ -135,6 +159,7 @@ const NoteModal = ({ plantID, addNote, modalRef, noteText, noteTime, editingNote
 NoteModal.propTypes = {
     plantID: PropTypes.string,
     addNote: PropTypes.func,
+    removeNote: PropTypes.func,
     modalRef: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.instanceOf(Element) }),

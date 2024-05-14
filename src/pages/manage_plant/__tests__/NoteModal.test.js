@@ -11,6 +11,7 @@ const TestComponent = ({ noteText='', noteTime='', editingNote=false }) => {
             modalRef={noteModalRef}
             plantID={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"}
             addNote={jest.fn()}
+            removeNote={jest.fn()}
             noteText={noteText}
             noteTime={noteTime}
             editingNote={editingNote}
@@ -102,5 +103,54 @@ describe('Add new note', () => {
             'Some leaves turning yellow, probably watering too often'
         );
         await user.click(app.getByText('Save'));
+    });
+});
+
+
+describe('Edit existing note', () => {
+    let app, user;
+
+    beforeEach(() => {
+        // Render app + create userEvent instance to use in tests
+        app = render(
+            <ToastProvider>
+                <ErrorModalProvider>
+                    <TestComponent
+                        noteText={'This is the existing text'}
+                        noteTime={'2024-02-13T12:00:00'}
+                        editingNote={true}
+                    />
+                </ErrorModalProvider>
+            </ToastProvider>
+        );
+        user = userEvent.setup();
+    });
+
+    it('sends correct payload when note is deleted', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                "deleted": "note",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
+
+        // Simulate user clicking delete button
+        await user.click(app.getByText('Delete'));
+
+        // Confirm correct data posted to /add_plant_note endpoint
+        expect(fetch).toHaveBeenCalledWith('/delete_plant_note', {
+            method: 'POST',
+            body: JSON.stringify({
+                plant_id: '0640ec3b-1bed-4b15-a078-d6e7ec66be12',
+                timestamp: '2024-02-13T12:00:00'
+            }),
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'X-CSRFToken': undefined,
+            }
+        });
     });
 });

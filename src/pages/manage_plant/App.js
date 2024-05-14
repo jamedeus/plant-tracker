@@ -53,11 +53,7 @@ function App() {
     const openNoteModal = (editNote=null) => {
         if (editNote) {
             setNoteText(editNote.text);
-            setNoteTime(
-                DateTime.fromISO(
-                    editNote.timestamp
-                ).toFormat("yyyy-MM-dd'T'HH:mm:ss")
-            );
+            setNoteTime(editNote.timestamp);
             setEditingNote(true);
         } else {
             setNoteText('');
@@ -144,10 +140,20 @@ function App() {
     };
 
     // Called after successful add_plant_note API call, updates state
-    const addNote = async (timestamp, text) => {
+    const addNote = (timestamp, text) => {
         let oldPlant = {...plant};
         oldPlant.notes.push({timestamp: timestamp, text: text});
         setPlant(oldPlant);
+    };
+
+    // Called after successful delete_plant_note API call, updates state
+    const removeNote = (timestamp) => {
+        setPlant({
+            ...plant,
+            notes: plant.notes.filter(
+                note => note.timestamp !== timestamp
+            )
+        });
     };
 
     const DropdownOptions = () => {
@@ -355,6 +361,7 @@ function App() {
             <NoteModal
                 plantID={plant.uuid}
                 addNote={addNote}
+                removeNote={removeNote}
                 modalRef={noteModalRef}
                 noteText={noteText}
                 noteTime={noteTime}
