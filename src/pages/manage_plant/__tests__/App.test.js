@@ -274,6 +274,12 @@ describe('App', () => {
         expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled();
     });
 
+    it('opens note modal when add note dropdown option is clicked', async () => {
+        // Click dropdown option, confirm HTMLDialogElement method was called
+        await user.click(app.getByText('Add note'));
+        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
+    });
+
     it('redirects to overview when dropdown option is clicked', async () => {
         Object.defineProperty(window, 'location', {
             value: {

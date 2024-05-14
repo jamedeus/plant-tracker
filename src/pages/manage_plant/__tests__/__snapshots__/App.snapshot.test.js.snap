@@ -1994,6 +1994,7 @@ exports[`App matches snapshot 1`] = `
                   data-icon="pen-to-square"
                   data-prefix="fas"
                   focusable="false"
+                  onClick={[Function]}
                   role="img"
                   style={{}}
                   viewBox="0 0 512 512"
@@ -2137,6 +2138,7 @@ exports[`App matches snapshot 1`] = `
                   data-icon="pen-to-square"
                   data-prefix="fas"
                   focusable="false"
+                  onClick={[Function]}
                   role="img"
                   style={{}}
                   viewBox="0 0 512 512"
@@ -3733,7 +3735,8 @@ exports[`App matches snapshot 1`] = `
             <textarea
               className="textarea textarea-bordered w-full max-w-xs
                                     mx-auto mt-8 mb-4 min-h-40"
-              onInput={[Function]}
+              onChange={[Function]}
+              value=""
             />
           </div>
           <div

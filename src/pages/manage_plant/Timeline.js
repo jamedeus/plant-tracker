@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { DateTime } from 'luxon';
 import { Popover } from "react-tiny-popover";
 import { capitalize, pastTense } from 'src/util';
-import { openNoteModal } from './NoteModal';
 import { openPhotoModal } from './PhotoModal';
 import { openDeletePhotosModal } from './DeletePhotosModal';
 import { openEventHistoryModal } from './EventHistoryModal';
@@ -17,7 +16,7 @@ import {
     faPenToSquare
 } from '@fortawesome/free-solid-svg-icons';
 
-const Timeline = ({ events, notes, photoUrls }) => {
+const Timeline = ({ events, notes, photoUrls, openNoteModal }) => {
     // Takes timestamp, returns ISO date string (no hours/minutes)
     const timestampToDateString = (timestamp) => {
         return DateTime.fromISO(timestamp).setZone('system').toISO().split('T')[0];
@@ -158,7 +157,7 @@ const Timeline = ({ events, notes, photoUrls }) => {
                         return (
                             <NoteCollapse
                                 key={note.timestamp}
-                                text={note.text}
+                                note={note}
                             />
                         );
                     })}
@@ -240,7 +239,7 @@ const Timeline = ({ events, notes, photoUrls }) => {
         photoUrl: PropTypes.string
     };
 
-    const NoteCollapse = ({ text }) => {
+    const NoteCollapse = ({ note }) => {
         const [expanded, setExpanded] = useState(false);
 
         return (
@@ -248,14 +247,21 @@ const Timeline = ({ events, notes, photoUrls }) => {
                 className={`m-2 cursor-pointer ${expanded ? '' : `line-clamp-1`}`}
                 onClick={() => setExpanded(!expanded)}
             >
-                <FontAwesomeIcon icon={faPenToSquare} className="w-4 h-4 mr-2" />
-                {text}
+                <FontAwesomeIcon
+                    icon={faPenToSquare}
+                    className="w-4 h-4 mr-2"
+                    onClick={() => openNoteModal(note)}
+                />
+                {note.text}
             </div>
         );
     };
 
     NoteCollapse.propTypes = {
-        text: PropTypes.string
+        note: PropTypes.shape({
+            text: PropTypes.string,
+            timestamp: PropTypes.string
+        })
     };
 
     // Takes year-month string (ie 2024-03)
@@ -351,7 +357,7 @@ const Timeline = ({ events, notes, photoUrls }) => {
                             className={`dropdown-content z-[1] menu p-2 shadow
                                         bg-base-300 rounded-box w-40`}
                         >
-                            <li className="ml-auto"><a onClick={openNoteModal}>
+                            <li className="ml-auto"><a onClick={() => openNoteModal()}>
                                 Add note
                             </a></li>
                             <li className="ml-auto"><a onClick={openPhotoModal}>
@@ -489,7 +495,8 @@ const Timeline = ({ events, notes, photoUrls }) => {
 Timeline.propTypes = {
     events: PropTypes.object,
     notes: PropTypes.array,
-    photoUrls: PropTypes.array
+    photoUrls: PropTypes.array,
+    openNoteModal: PropTypes.func
 };
 
 export default Timeline;

@@ -3,6 +3,7 @@ import { sendPostRequest, parseDomContext, localToUTC } from 'src/util';
 import EditModal from 'src/components/EditModal';
 import PlantDetailsForm from 'src/forms/PlantDetailsForm';
 import Navbar from 'src/components/Navbar';
+import { DateTime } from 'luxon';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { useToast } from 'src/context/ToastContext';
 import { useTheme } from 'src/context/ThemeContext';
@@ -40,6 +41,30 @@ function App() {
 
     // Create ref to access edit details form
     const editDetailsRef = useRef(null);
+
+    // Create ref and states for NoteModal input contents
+    const noteModalRef = useRef(null);
+    const [noteText, setNoteText] = useState('');
+    const [noteTime, setNoteTime] = useState('');
+    const [editingNote, setEditingNote] = useState(false);
+
+    // Call with no arg to open empty modal (add new note)
+    // Call with existing note object (text and timestamp keys) to edit note
+    const openNoteModal = (editNote=null) => {
+        if (editNote) {
+            setNoteText(editNote.text);
+            setNoteTime(
+                DateTime.fromISO(
+                    editNote.timestamp
+                ).toFormat("yyyy-MM-dd'T'HH:mm:ss")
+            );
+            setEditingNote(true);
+        } else {
+            setNoteText('');
+            setEditingNote(false);
+        }
+        noteModalRef.current.showModal();
+    };
 
     // Takes photo URLs from API response when new photos are uploaded
     const addPlantPhotoUrls = (newUrls) => {
@@ -280,6 +305,7 @@ function App() {
                 events={plant.events}
                 notes={plant.notes}
                 photoUrls={photoUrls}
+                openNoteModal={openNoteModal}
             />
 
             <EditModal title="Edit Details" onSubmit={submitEditModal}>
@@ -329,6 +355,10 @@ function App() {
             <NoteModal
                 plantID={plant.uuid}
                 addNote={addNote}
+                modalRef={noteModalRef}
+                noteText={noteText}
+                noteTime={noteTime}
+                editingNote={editingNote}
             />
         </div>
     );

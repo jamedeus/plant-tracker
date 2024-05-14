@@ -1,27 +1,24 @@
 import React, { useRef } from 'react';
-import NoteModal, { openNoteModal } from '../NoteModal';
+import NoteModal from '../NoteModal';
 import { ToastProvider } from 'src/context/ToastContext';
 import { ErrorModalProvider } from 'src/context/ErrorModalContext';
 
-const TestComponent = () => {
+const TestComponent = ({ noteText='', noteTime='', editingNote=false }) => {
     const noteModalRef = useRef(null);
 
-    // Render app
     return (
-        <>
-            <NoteModal
-                modalRef={noteModalRef}
-                plantID={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"}
-                addNote={jest.fn()}
-            />
-            <button onClick={openNoteModal}>
-                Open note modal
-            </button>
-        </>
+        <NoteModal
+            modalRef={noteModalRef}
+            plantID={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"}
+            addNote={jest.fn()}
+            noteText={noteText}
+            noteTime={noteTime}
+            editingNote={editingNote}
+        />
     );
 };
 
-describe('App', () => {
+describe('Add new note', () => {
     let app, user;
 
     beforeEach(() => {
@@ -105,11 +102,5 @@ describe('App', () => {
             'Some leaves turning yellow, probably watering too often'
         );
         await user.click(app.getByText('Save'));
-    });
-
-    it('opens modal when openNoteModal called', async () => {
-        // Click button, confirm HTMLDialogElement method was called
-        await user.click(app.getByText('Open note modal'));
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
     });
 });

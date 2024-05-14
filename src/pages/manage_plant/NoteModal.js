@@ -1,26 +1,22 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
 import Modal from 'src/components/Modal';
+import { DateTime } from 'luxon';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { useToast } from 'src/context/ToastContext';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 
-let noteModalRef;
-
-export const openNoteModal = () => {
-    noteModalRef.current.showModal();
-};
-
-const NoteModal = ({ plantID, addNote }) => {
-    noteModalRef = useRef(null);
-
-    // Submit button enable state
-    const [disabled, setDisabled] = useState(true);
-
+const NoteModal = ({ plantID, addNote, modalRef, noteText, noteTime, editingNote }) => {
     // Refs to track timestamp and text inputs
     const timestampRef = useRef(null);
     const noteTextRef = useRef(null);
+
+    const [text, setText] = useState(noteText);
+
+    useEffect(() => {
+        setText(noteText);
+    }, [noteText]);
 
     // Get hooks to show toast message, error modal
     const { showToast } = useToast();
@@ -32,7 +28,7 @@ const NoteModal = ({ plantID, addNote }) => {
             plant_id: plantID,
             timestamp: timestampRef.current.value,
             note_text: noteTextRef.current.value
-        }
+        };
 
         // Post to backend
         const response = await fetch('/add_plant_note', {
@@ -47,7 +43,7 @@ const NoteModal = ({ plantID, addNote }) => {
         if (response.ok) {
             // Update state with new note, close modal
             addNote(payload.timestamp, payload.note_text);
-            noteModalRef.current.close();
+            modalRef.current.close();
         } else {
             // Duplicate note timestamp: show error toast for 5 seconds
             if (response.status === 409) {
@@ -64,28 +60,73 @@ const NoteModal = ({ plantID, addNote }) => {
         }
     };
 
+    const handleEdit = async () => {
+        alert("Not implemented");
+    };
+
+    const handleDelete = async () => {
+        alert("Not implemented");
+    };
+
+    // Renders input when adding new note, timestamp string when editing
+    const TimestampInput = () => {
+        switch(editingNote) {
+            case(true):
+                return (
+                    <p>{DateTime.fromISO(noteTime).toFormat('MMM dd, yyyy')}</p>
+                );
+            case(false):
+                return <DatetimeInput inputRef={timestampRef} />;
+        }
+    };
+
     return (
-        <Modal dialogRef={noteModalRef} title={"Add Note"}>
+        <Modal dialogRef={modalRef} title={editingNote ? "Edit Note" : "Add Note"}>
             <div className="flex flex-col">
                 <div className="min-h-36 flex flex-col justify-center mt-2">
-                    <DatetimeInput inputRef={timestampRef} />
+                    <TimestampInput />
                     <textarea
                         className={`textarea textarea-bordered w-full max-w-xs
                                     mx-auto mt-8 mb-4 min-h-40`}
                         ref={noteTextRef}
-                        onInput={e => setDisabled(!Boolean(e.target.value.length))}
+                        value={text}
+                        onChange={e => setText(e.target.value)}
                     ></textarea>
                 </div>
-
-                <div className="modal-action mx-auto">
-                    <button
-                        className="btn btn-success"
-                        onClick={handleSubmit}
-                        disabled={disabled}
-                    >
-                        Save
-                    </button>
-                </div>
+                {(() => {
+                    switch(editingNote) {
+                        case(true):
+                            return (
+                                <div className="modal-action mx-auto">
+                                    <button
+                                        className="btn btn-error"
+                                        onClick={handleDelete}
+                                    >
+                                        Delete
+                                    </button>
+                                    <button
+                                        className="btn btn-success"
+                                        onClick={handleEdit}
+                                        disabled={!text.length}
+                                    >
+                                        Save
+                                    </button>
+                                </div>
+                            );
+                        case(false):
+                            return (
+                                <div className="modal-action mx-auto">
+                                    <button
+                                        className="btn btn-success"
+                                        onClick={handleSubmit}
+                                        disabled={!text.length}
+                                    >
+                                        Save
+                                    </button>
+                                </div>
+                            );
+                    }
+                })()}
             </div>
         </Modal>
     );
@@ -93,7 +134,14 @@ const NoteModal = ({ plantID, addNote }) => {
 
 NoteModal.propTypes = {
     plantID: PropTypes.string,
-    addNote: PropTypes.func
+    addNote: PropTypes.func,
+    modalRef: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+    ]),
+    noteText: PropTypes.string,
+    noteTime: PropTypes.string,
+    editingNote: PropTypes.bool
 };
 
 export default NoteModal;
