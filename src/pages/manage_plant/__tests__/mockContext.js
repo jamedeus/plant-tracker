@@ -21,21 +21,21 @@ export const mockContext = {
             "prune": [],
             "repot": [],
         },
-        "notes": [
-            {
-                "timestamp": "2024-03-01T15:45:44+00:00",
-                "text": "Fertilized with dilute 10-15-10 liquid fertilizer"
-            },
-            {
-                "timestamp": "2024-02-26T12:44:12+00:00",
-                "text": "One of the older leaves is starting to turn yellow"
-            }
-        ],
         "tray": {
             "name": "Test tray",
             "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
         }
     },
+    "notes": [
+        {
+            "timestamp": "2024-03-01T15:45:44+00:00",
+            "text": "Fertilized with dilute 10-15-10 liquid fertilizer"
+        },
+        {
+            "timestamp": "2024-02-26T12:44:12+00:00",
+            "text": "One of the older leaves is starting to turn yellow"
+        }
+    ],
     "trays": [
         {
             "name": "Test tray",
@@ -95,12 +95,12 @@ export const mockContextNoEvents = {
             "prune": [],
             "repot": [],
         },
-        "notes": [],
         "tray": {
             "name": "Test tray",
             "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
         }
     },
+    "notes": [],
     "trays": [
         {
             "name": "Test tray",

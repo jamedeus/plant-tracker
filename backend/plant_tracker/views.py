@@ -147,7 +147,7 @@ def manage(request, uuid):
         }
 
         # Add timestamps and text of all notes
-        state['plant']['notes'] = [
+        state['notes'] = [
             {'timestamp': note.timestamp.isoformat(), 'text': note.text}
             for note in plant.noteevent_set.all()
         ]

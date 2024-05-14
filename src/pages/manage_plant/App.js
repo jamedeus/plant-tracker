@@ -3,7 +3,6 @@ import { sendPostRequest, parseDomContext, localToUTC } from 'src/util';
 import EditModal from 'src/components/EditModal';
 import PlantDetailsForm from 'src/forms/PlantDetailsForm';
 import Navbar from 'src/components/Navbar';
-import { DateTime } from 'luxon';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { useToast } from 'src/context/ToastContext';
 import { useTheme } from 'src/context/ThemeContext';
@@ -28,6 +27,9 @@ function App() {
     });
     const [photoUrls, setPhotoUrls] = useState(() => {
         return parseDomContext("photo_urls");
+    });
+    const [notes, setNotes] = useState(() => {
+        return parseDomContext("notes");
     });
     const trays = parseDomContext("trays");
     const speciesOptions = parseDomContext("species_options");
@@ -141,19 +143,12 @@ function App() {
 
     // Called after successful add_plant_note API call, updates state
     const addNote = (timestamp, text) => {
-        let oldPlant = {...plant};
-        oldPlant.notes.push({timestamp: timestamp, text: text});
-        setPlant(oldPlant);
+        setNotes([...notes, {timestamp: timestamp, text: text}]);
     };
 
     // Called after successful delete_plant_note API call, updates state
     const removeNote = (timestamp) => {
-        setPlant({
-            ...plant,
-            notes: plant.notes.filter(
-                note => note.timestamp !== timestamp
-            )
-        });
+        setNotes(notes.filter(note => note.timestamp !== timestamp));
     };
 
     const DropdownOptions = () => {
@@ -309,7 +304,7 @@ function App() {
 
             <Timeline
                 events={plant.events}
-                notes={plant.notes}
+                notes={notes}
                 photoUrls={photoUrls}
                 openNoteModal={openNoteModal}
             />

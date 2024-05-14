@@ -10,6 +10,7 @@ describe('App', () => {
     it('matches snapshot', () => {
         // Create mock state objects
         createMockContext('plant', mockContext.plant);
+        createMockContext('notes', mockContext.notes);
         createMockContext('trays', mockContext.trays);
         createMockContext('species_options', mockContext.species_options);
         createMockContext('photo_urls', mockContext.photo_urls);

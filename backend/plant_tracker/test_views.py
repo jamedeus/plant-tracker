@@ -322,10 +322,12 @@ class ManagePageTests(TestCase):
                     'prune': [],
                     'repot': []
                 },
-                'notes': [],
                 'tray': None,
             }
         )
+
+        # Confirm notes state is empty
+        self.assertEqual(state['notes'], [])
 
         # Confirm trays contains details of all existing trays
         self.assertEqual(
