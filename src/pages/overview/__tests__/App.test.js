@@ -10,11 +10,13 @@ jest.mock('print-js');
 describe('App', () => {
     let app, user;
 
-    beforeEach(() => {
+    beforeAll(() => {
         // Create mock state objects
         createMockContext('plants', mockContext.plants);
         createMockContext('trays', mockContext.trays);
+    });
 
+    beforeEach(() => {
         // Render app + create userEvent instance to use in tests
         app = render(
             <ThemeProvider>

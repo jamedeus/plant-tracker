@@ -9,14 +9,16 @@ import { mockContextNoEvents } from './mockContext';
 describe('App', () => {
     let app, user;
 
-    beforeEach(() => {
+    beforeAll(() => {
         // Create mock state objects
         createMockContext('plant', mockContextNoEvents.plant);
         createMockContext('notes', mockContextNoEvents.notes);
         createMockContext('trays', mockContextNoEvents.trays);
         createMockContext('species_options', mockContextNoEvents.species_options);
         createMockContext('photo_urls', mockContextNoEvents.photo_urls);
+    });
 
+    beforeEach(() => {
         // Render app + create userEvent instance to use in tests
         app = render(
             <ThemeProvider>

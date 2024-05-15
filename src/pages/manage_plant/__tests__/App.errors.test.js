@@ -8,14 +8,16 @@ import { mockContext } from './mockContext';
 describe('App', () => {
     let app, user;
 
-    beforeEach(() => {
+    beforeAll(() => {
         // Create mock state objects
         createMockContext('plant', mockContext.plant);
         createMockContext('notes', mockContext.notes);
         createMockContext('trays', mockContext.trays);
         createMockContext('species_options', mockContext.species_options);
         createMockContext('photo_urls', mockContext.photo_urls);
+    });
 
+    beforeEach(() => {
         // Render app + create userEvent instance to use in tests
         app = render(
             <ThemeProvider>

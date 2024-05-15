@@ -38,9 +38,12 @@ const TestComponent = ({ noteText='', noteTime='', editingNote=false }) => {
 describe('Add new note', () => {
     let app, user;
 
-    beforeEach(async () => {
+    beforeAll(() => {
+        // Create mock state object
         createMockContext('notes', []);
+    });
 
+    beforeEach(async () => {
         // Render app + create userEvent instance to use in tests
         app = render(
             <ToastProvider>
@@ -133,6 +136,11 @@ describe('Add new note', () => {
 
 describe('Edit existing note', () => {
     let app, user;
+
+    beforeAll(() => {
+        // Create mock state object
+        createMockContext('notes', []);
+    });
 
     beforeEach(async () => {
         // Render app + create userEvent instance to use in tests

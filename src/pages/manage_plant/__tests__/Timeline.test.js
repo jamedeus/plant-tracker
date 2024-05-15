@@ -8,10 +8,12 @@ import { mockContext, mockEvents, mockPhotoUrls } from './mockContext';
 describe('App', () => {
     let app, user;
 
-    beforeEach(() => {
+    beforeAll(() => {
         // Create mock state object
         createMockContext('notes', mockContext.notes);
+    });
 
+    beforeEach(() => {
         // Render app + create userEvent instance to use in tests
         app = render(
             <ErrorModalProvider>
