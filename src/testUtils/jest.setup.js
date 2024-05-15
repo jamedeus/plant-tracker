@@ -10,12 +10,6 @@ beforeAll(() => {
     global.within = within;
     global.userEvent = userEvent;
 
-    // Mock methods not implemented in jsdom
-    HTMLDialogElement.prototype.show = jest.fn();
-    HTMLDialogElement.prototype.showModal = jest.fn();
-    HTMLDialogElement.prototype.close = jest.fn();
-    window.HTMLElement.prototype.scrollIntoView = jest.fn();
-
     // Mock DataTransfer and DataTransferItemList objects
     const mockDataTransferItemList = {
         items: [],
@@ -37,3 +31,11 @@ beforeAll(() => {
 
     global.DataTransfer = jest.fn(() => mockDataTransfer);
 });
+
+beforeEach(() => {
+    // Mock methods not implemented in jsdom
+    HTMLDialogElement.prototype.show = jest.fn();
+    HTMLDialogElement.prototype.showModal = jest.fn();
+    HTMLDialogElement.prototype.close = jest.fn();
+    window.HTMLElement.prototype.scrollIntoView = jest.fn();
+})
