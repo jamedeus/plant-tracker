@@ -1985,12 +1985,11 @@ exports[`App matches snapshot 1`] = `
               className="flex flex-col"
             >
               <div
-                className="m-2 cursor-pointer line-clamp-1"
-                onClick={[Function]}
+                className="m-2 line-clamp-1"
               >
                 <svg
                   aria-hidden="true"
-                  className="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2"
+                  className="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 cursor-pointer"
                   data-icon="pen-to-square"
                   data-prefix="fas"
                   focusable="false"
@@ -2006,7 +2005,10 @@ exports[`App matches snapshot 1`] = `
                     style={{}}
                   />
                 </svg>
-                <span>
+                <span
+                  className="cursor-pointer"
+                  onClick={[Function]}
+                >
                   Fertilized with dilute 10-15-10 liquid fertilizer
                 </span>
               </div>
@@ -2131,12 +2133,11 @@ exports[`App matches snapshot 1`] = `
               className="flex flex-col"
             >
               <div
-                className="m-2 cursor-pointer line-clamp-1"
-                onClick={[Function]}
+                className="m-2 line-clamp-1"
               >
                 <svg
                   aria-hidden="true"
-                  className="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2"
+                  className="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 cursor-pointer"
                   data-icon="pen-to-square"
                   data-prefix="fas"
                   focusable="false"
@@ -2152,7 +2153,10 @@ exports[`App matches snapshot 1`] = `
                     style={{}}
                   />
                 </svg>
-                <span>
+                <span
+                  className="cursor-pointer"
+                  onClick={[Function]}
+                >
                   One of the older leaves is starting to turn yellow
                 </span>
               </div>

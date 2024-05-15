@@ -247,16 +247,18 @@ const Timeline = ({ plantID, events, photoUrls }) => {
         const [expanded, setExpanded] = useState(false);
 
         return (
-            <div
-                className={`m-2 cursor-pointer ${expanded ? '' : `line-clamp-1`}`}
-                onClick={() => setExpanded(!expanded)}
-            >
+            <div className={`m-2 ${expanded ? '' : `line-clamp-1`}`}>
                 <FontAwesomeIcon
                     icon={faPenToSquare}
-                    className="w-4 h-4 mr-2"
+                    className="w-4 h-4 mr-2 cursor-pointer"
                     onClick={() => openNoteModal(note)}
                 />
-                <span>{note.text}</span>
+                <span
+                    className={'cursor-pointer'}
+                    onClick={() => setExpanded(!expanded)}
+                >
+                    {note.text}
+                </span>
             </div>
         );
     };
