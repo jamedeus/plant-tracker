@@ -23,6 +23,17 @@ export const NoteModalProvider = ({ children }) => {
         setNotes([...notes, {timestamp: timestamp, text: text}]);
     };
 
+    // Updates state after successful edit_plant_note API call
+    const updateNote = (timestamp, text) => {
+        setNotes(notes.map(note => {
+            if (note.timestamp === timestamp) {
+                return {timestamp: timestamp, text: text};
+            } else {
+                return note;
+            }
+        }));
+    };
+
     // Updates state after successful delete_plant_note API call
     const removeNote = (timestamp) => {
         setNotes(notes.filter(note => note.timestamp !== timestamp));
@@ -56,6 +67,7 @@ export const NoteModalProvider = ({ children }) => {
         <NoteModalContext.Provider value={{
             notes,
             addNote,
+            updateNote,
             removeNote,
             noteModalRef,
             noteText,
@@ -82,6 +94,7 @@ const NoteModal = ({ plantID }) => {
     const {
         addNote,
         removeNote,
+        updateNote,
         noteModalRef,
         noteText,
         setNoteText,
@@ -133,7 +146,32 @@ const NoteModal = ({ plantID }) => {
     };
 
     const handleEdit = async () => {
-        alert("Not implemented");
+        // Build payload
+        const payload = {
+            plant_id: plantID,
+            timestamp: noteTime,
+            note_text: noteText
+        };
+
+        // Post to backend
+        const response = await fetch('/edit_plant_note', {
+            method: 'POST',
+            body: JSON.stringify(payload),
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                "X-CSRFToken": Cookies.get('csrftoken')
+            }
+        });
+
+        if (response.ok) {
+            // Update text in note state, close modal
+            updateNote(payload.timestamp, payload.note_text);
+            closeNoteModal();
+        } else {
+            // Show error in modal
+            const error = await response.json();
+            showErrorModal(JSON.stringify(error));
+        }
     };
 
     const handleDelete = async () => {

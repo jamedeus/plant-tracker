@@ -177,6 +177,39 @@ describe('Edit existing note', () => {
         });
     });
 
+    it('sends correct payload when note is edited', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                "action": "edit_note",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
+
+        // Simulate user adding more note text and clicking save
+        await user.type(
+            app.container.querySelector('.textarea'),
+            ' some more details'
+        );
+        await user.click(app.getByText('Save'));
+
+        // Confirm correct data posted to /add_plant_note endpoint
+        expect(fetch).toHaveBeenCalledWith('/edit_plant_note', {
+            method: 'POST',
+            body: JSON.stringify({
+                plant_id: '0640ec3b-1bed-4b15-a078-d6e7ec66be12',
+                timestamp: '2024-02-13T12:00:00',
+                note_text: 'this is an existing note some more details'
+            }),
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                'X-CSRFToken': undefined,
+            }
+        });
+    });
+
     it('shows error in modal when delete API call fails', async () => {
         // Mock fetch function to return arbitrary error message
         global.fetch = jest.fn(() => Promise.resolve({
@@ -196,5 +229,26 @@ describe('Edit existing note', () => {
         // Confirm modal appeared with arbitrary error text
         expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
         expect(app.queryByText(/failed to delete note/)).not.toBeNull();
+    });
+
+    it('shows error in modal when edit API call fails', async () => {
+        // Mock fetch function to return arbitrary error message
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            status: 500,
+            json: () => Promise.resolve({
+                "error": "failed to edit note"
+            })
+        }));
+
+        // Confirm arbitrary error does not appear on page
+        expect(app.queryByText(/failed to edit note/)).toBeNull();
+
+        // Simulate user clicking delete
+        await user.click(app.getByText('Save'));
+
+        // Confirm modal appeared with arbitrary error text
+        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
+        expect(app.queryByText(/failed to edit note/)).not.toBeNull();
     });
 });

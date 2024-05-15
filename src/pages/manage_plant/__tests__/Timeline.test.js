@@ -123,6 +123,46 @@ describe('App', () => {
         )).not.toBeNull();
     });
 
+    it('updates note text in timeline when note is edited', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                "action": "edit_note",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
+
+        // Get reference to timeline div (excluding NoteModal)
+        const timeline = app.container.querySelector('.grid');
+
+        // Confirm timeline contains note text from mockContext
+        expect(within(timeline).queryByText(
+            'One of the older leaves is starting to turn yellow'
+        )).not.toBeNull();
+        // Confirm timeline does not contain text we will add
+        expect(within(timeline).queryByText(
+            /pinched it off/
+        )).toBeNull();
+
+        // Simulate user clicking icon next to note, adding text, clicking save
+        const editButton = within(timeline).getByText(
+            'One of the older leaves is starting to turn yellow'
+        ).parentElement.children[0];
+        await user.click(editButton);
+        await user.type(
+            app.container.querySelector('.textarea'),
+            ', pinched it off'
+        );
+        await user.click(app.getByText('Save'));
+
+        // Confirm new text was added to note
+        expect(within(timeline).queryByText(
+            'One of the older leaves is starting to turn yellow, pinched it off'
+        )).not.toBeNull();
+    });
+
     it('removes notes from timeline when deleted', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
