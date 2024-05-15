@@ -101,7 +101,7 @@ describe('ToggleThemeOption', () => {
         expect(component.getByText('Light mode')).not.toBeNull();
 
         // Simulate user changing theme to light in another tab
-        await act(() => {
+        act(() => {
             const storageEvent = new Event('storage');
             storageEvent.key = 'theme';
             storageEvent.newValue = 'light';

@@ -1,30 +1,20 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import createMockContext from 'src/testUtils/createMockContext';
 import NoteModal, { NoteModalProvider, useNoteModal } from '../NoteModal';
 import { ToastProvider } from 'src/context/ToastContext';
 import { ErrorModalProvider } from 'src/context/ErrorModalContext';
 
-const TestComponent = ({ noteText='', noteTime='', editingNote=false }) => {
-    const noteModalRef = useRef(null);
-
+const TestComponent = () => {
     const { openNoteModal } = useNoteModal();
 
     const existingNote = {
         text: 'this is an existing note',
         timestamp: '2024-02-13T12:00:00'
-    }
+    };
 
     return (
         <>
-            <NoteModal
-                modalRef={noteModalRef}
-                plantID={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"}
-                addNote={jest.fn()}
-                removeNote={jest.fn()}
-                noteText={noteText}
-                noteTime={noteTime}
-                editingNote={editingNote}
-            />
+            <NoteModal plantID={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"} />
             <button onClick={() => openNoteModal()}>
                 Add New Note
             </button>
@@ -57,7 +47,7 @@ describe('Add new note', () => {
         user = userEvent.setup();
 
         // Open modal in new note mode
-        await user.click(app.getByText('Add New Note'))
+        await user.click(app.getByText('Add New Note'));
     });
 
     it('sends correct payload when note is saved', async () => {
@@ -156,7 +146,7 @@ describe('Edit existing note', () => {
         user = userEvent.setup();
 
         // Open modal in edit mode
-        await user.click(app.getByText('Edit Existing Note'))
+        await user.click(app.getByText('Edit Existing Note'));
     });
 
     it('sends correct payload when note is deleted', async () => {

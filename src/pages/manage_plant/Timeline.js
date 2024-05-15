@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { DateTime } from 'luxon';
 import { Popover } from "react-tiny-popover";
-import { capitalize, parseDomContext, pastTense } from 'src/util';
+import { capitalize, pastTense } from 'src/util';
 import NoteModal from './NoteModal';
 import { useNoteModal } from './NoteModal';
 import { openPhotoModal } from './PhotoModal';

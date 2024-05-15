@@ -145,7 +145,7 @@ describe('App', () => {
         // Simulate user clicking icon next to note, then clicking delete
         const editButton = within(timeline).getByText(
             'Fertilized with dilute 10-15-10 liquid fertilizer'
-        ).parentElement.children[0]
+        ).parentElement.children[0];
         await user.click(editButton);
         await user.click(app.getByText('Delete'));
 
