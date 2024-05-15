@@ -2,7 +2,9 @@ import React, { useRef, useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { DateTime } from 'luxon';
 import { Popover } from "react-tiny-popover";
-import { capitalize, pastTense } from 'src/util';
+import { capitalize, parseDomContext, pastTense } from 'src/util';
+import NoteModal from './NoteModal';
+import { useNoteModal } from './NoteModal';
 import { openPhotoModal } from './PhotoModal';
 import { openDeletePhotosModal } from './DeletePhotosModal';
 import { openEventHistoryModal } from './EventHistoryModal';
@@ -16,7 +18,9 @@ import {
     faPenToSquare
 } from '@fortawesome/free-solid-svg-icons';
 
-const Timeline = ({ events, notes, photoUrls, openNoteModal }) => {
+const Timeline = ({ plantID, events, photoUrls }) => {
+    const { notes, openNoteModal } = useNoteModal();
+
     // Takes timestamp, returns ISO date string (no hours/minutes)
     const timestampToDateString = (timestamp) => {
         return DateTime.fromISO(timestamp).setZone('system').toISO().split('T')[0];
@@ -252,7 +256,7 @@ const Timeline = ({ events, notes, photoUrls, openNoteModal }) => {
                     className="w-4 h-4 mr-2"
                     onClick={() => openNoteModal(note)}
                 />
-                {note.text}
+                <span>{note.text}</span>
             </div>
         );
     };
@@ -488,15 +492,18 @@ const Timeline = ({ events, notes, photoUrls, openNoteModal }) => {
                     <p>Events created with the buttons above will appear here</p>
                 </div>
             )}
+
+            <NoteModal
+                plantID={plantID}
+            />
         </div>
     );
 };
 
 Timeline.propTypes = {
+    plantID: PropTypes.string,
     events: PropTypes.object,
-    notes: PropTypes.array,
-    photoUrls: PropTypes.array,
-    openNoteModal: PropTypes.func
+    photoUrls: PropTypes.array
 };
 
 export default Timeline;

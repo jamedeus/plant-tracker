@@ -10,7 +10,6 @@ import DetailsCard from 'src/components/DetailsCard';
 import LastEventTime from 'src/components/LastEventTime';
 import PlantDetails from 'src/components/PlantDetails';
 import EventCalendar from './EventCalendar';
-import NoteModal from './NoteModal';
 import TrayModal, { openTrayModal } from './TrayModal';
 import PhotoModal, { openPhotoModal } from './PhotoModal';
 import RepotModal, { openRepotModal } from './RepotModal';
@@ -19,6 +18,7 @@ import DefaultPhotoModal, { openDefaultPhotoModal } from './DefaultPhotoModal';
 import DeletePhotosModal from './DeletePhotosModal';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 import Timeline from './Timeline';
+import { NoteModalProvider } from './NoteModal';
 
 function App() {
     // Load context set by django template
@@ -27,9 +27,6 @@ function App() {
     });
     const [photoUrls, setPhotoUrls] = useState(() => {
         return parseDomContext("photo_urls");
-    });
-    const [notes, setNotes] = useState(() => {
-        return parseDomContext("notes");
     });
     const trays = parseDomContext("trays");
     const speciesOptions = parseDomContext("species_options");
@@ -43,26 +40,6 @@ function App() {
 
     // Create ref to access edit details form
     const editDetailsRef = useRef(null);
-
-    // Create ref and states for NoteModal input contents
-    const noteModalRef = useRef(null);
-    const [noteText, setNoteText] = useState('');
-    const [noteTime, setNoteTime] = useState('');
-    const [editingNote, setEditingNote] = useState(false);
-
-    // Call with no arg to open empty modal (add new note)
-    // Call with existing note object (text and timestamp keys) to edit note
-    const openNoteModal = (editNote=null) => {
-        if (editNote) {
-            setNoteText(editNote.text);
-            setNoteTime(editNote.timestamp);
-            setEditingNote(true);
-        } else {
-            setNoteText('');
-            setEditingNote(false);
-        }
-        noteModalRef.current.showModal();
-    };
 
     // Takes photo URLs from API response when new photos are uploaded
     const addPlantPhotoUrls = (newUrls) => {
@@ -139,16 +116,6 @@ function App() {
                 showErrorModal(JSON.stringify(error));
             }
         }
-    };
-
-    // Called after successful add_plant_note API call, updates state
-    const addNote = (timestamp, text) => {
-        setNotes([...notes, {timestamp: timestamp, text: text}]);
-    };
-
-    // Called after successful delete_plant_note API call, updates state
-    const removeNote = (timestamp) => {
-        setNotes(notes.filter(note => note.timestamp !== timestamp));
     };
 
     const DropdownOptions = () => {
@@ -302,12 +269,13 @@ function App() {
                 <EventCalendar events={plant.events} />
             </div>
 
-            <Timeline
-                events={plant.events}
-                notes={notes}
-                photoUrls={photoUrls}
-                openNoteModal={openNoteModal}
-            />
+            <NoteModalProvider>
+                <Timeline
+                    plantID={plant.uuid}
+                    events={plant.events}
+                    photoUrls={photoUrls}
+                />
+            </NoteModalProvider>
 
             <EditModal title="Edit Details" onSubmit={submitEditModal}>
                 <PlantDetailsForm
@@ -351,16 +319,6 @@ function App() {
             <EventHistoryModal
                 plant={plant}
                 setPlant={setPlant}
-            />
-
-            <NoteModal
-                plantID={plant.uuid}
-                addNote={addNote}
-                removeNote={removeNote}
-                modalRef={noteModalRef}
-                noteText={noteText}
-                noteTime={noteTime}
-                editingNote={editingNote}
             />
         </div>
     );

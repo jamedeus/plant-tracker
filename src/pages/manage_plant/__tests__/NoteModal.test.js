@@ -1,37 +1,60 @@
 import React, { useRef } from 'react';
-import NoteModal from '../NoteModal';
+import createMockContext from 'src/testUtils/createMockContext';
+import NoteModal, { NoteModalProvider, useNoteModal } from '../NoteModal';
 import { ToastProvider } from 'src/context/ToastContext';
 import { ErrorModalProvider } from 'src/context/ErrorModalContext';
 
 const TestComponent = ({ noteText='', noteTime='', editingNote=false }) => {
     const noteModalRef = useRef(null);
 
+    const { openNoteModal } = useNoteModal();
+
+    const existingNote = {
+        text: 'this is an existing note',
+        timestamp: '2024-02-13T12:00:00'
+    }
+
     return (
-        <NoteModal
-            modalRef={noteModalRef}
-            plantID={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"}
-            addNote={jest.fn()}
-            removeNote={jest.fn()}
-            noteText={noteText}
-            noteTime={noteTime}
-            editingNote={editingNote}
-        />
+        <>
+            <NoteModal
+                modalRef={noteModalRef}
+                plantID={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"}
+                addNote={jest.fn()}
+                removeNote={jest.fn()}
+                noteText={noteText}
+                noteTime={noteTime}
+                editingNote={editingNote}
+            />
+            <button onClick={() => openNoteModal()}>
+                Add New Note
+            </button>
+            <button onClick={() => openNoteModal(existingNote)}>
+                Edit Existing Note
+            </button>
+        </>
     );
 };
 
 describe('Add new note', () => {
     let app, user;
 
-    beforeEach(() => {
+    beforeEach(async () => {
+        createMockContext('notes', []);
+
         // Render app + create userEvent instance to use in tests
         app = render(
             <ToastProvider>
                 <ErrorModalProvider>
-                    <TestComponent />
+                    <NoteModalProvider>
+                        <TestComponent />
+                    </NoteModalProvider>
                 </ErrorModalProvider>
             </ToastProvider>
         );
         user = userEvent.setup();
+
+        // Open modal in new note mode
+        await user.click(app.getByText('Add New Note'))
     });
 
     it('sends correct payload when note is saved', async () => {
@@ -84,6 +107,7 @@ describe('Add new note', () => {
         await user.click(app.getByText('Save'));
 
         // Confirm modal appeared with arbitrary error text
+        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
         expect(app.queryByText(/failed to save note/)).not.toBeNull();
     });
 
@@ -110,20 +134,21 @@ describe('Add new note', () => {
 describe('Edit existing note', () => {
     let app, user;
 
-    beforeEach(() => {
+    beforeEach(async () => {
         // Render app + create userEvent instance to use in tests
         app = render(
             <ToastProvider>
                 <ErrorModalProvider>
-                    <TestComponent
-                        noteText={'This is the existing text'}
-                        noteTime={'2024-02-13T12:00:00'}
-                        editingNote={true}
-                    />
+                    <NoteModalProvider>
+                        <TestComponent />
+                    </NoteModalProvider>
                 </ErrorModalProvider>
             </ToastProvider>
         );
         user = userEvent.setup();
+
+        // Open modal in edit mode
+        await user.click(app.getByText('Edit Existing Note'))
     });
 
     it('sends correct payload when note is deleted', async () => {
@@ -152,5 +177,26 @@ describe('Edit existing note', () => {
                 'X-CSRFToken': undefined,
             }
         });
+    });
+
+    it('shows error in modal when delete API call fails', async () => {
+        // Mock fetch function to return arbitrary error message
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            status: 500,
+            json: () => Promise.resolve({
+                "error": "failed to delete note"
+            })
+        }));
+
+        // Confirm arbitrary error does not appear on page
+        expect(app.queryByText(/failed to delete note/)).toBeNull();
+
+        // Simulate user clicking delete
+        await user.click(app.getByText('Delete'));
+
+        // Confirm modal appeared with arbitrary error text
+        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
+        expect(app.queryByText(/failed to delete note/)).not.toBeNull();
     });
 });

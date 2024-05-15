@@ -1019,32 +1019,7 @@ exports[`App matches snapshot 1`] = `
           </div>
           <div
             className="flex flex-col"
-          >
-            <div
-              className="m-2 cursor-pointer line-clamp-1"
-              onClick={[Function]}
-            >
-              <svg
-                aria-hidden="true"
-                className="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2"
-                data-icon="pen-to-square"
-                data-prefix="fas"
-                focusable="false"
-                onClick={[Function]}
-                role="img"
-                style={{}}
-                viewBox="0 0 512 512"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"
-                  fill="currentColor"
-                  style={{}}
-                />
-              </svg>
-              Fertilized with a balanced 10-10-10 fertilizer.
-            </div>
-          </div>
+          />
         </div>
       </div>
       <div
@@ -1500,9 +1475,131 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
+        className="scroll-mt-20"
+        data-date="2024-03-01"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            today
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Mar 01, 2024
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          />
+          <div
+            className="flex flex-row flex-wrap"
+          />
+          <div
+            className="flex flex-col"
+          >
+            <div
+              className="m-2 cursor-pointer line-clamp-1"
+              onClick={[Function]}
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2"
+                data-icon="pen-to-square"
+                data-prefix="fas"
+                focusable="false"
+                onClick={[Function]}
+                role="img"
+                style={{}}
+                viewBox="0 0 512 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              <span>
+                Fertilized with dilute 10-15-10 liquid fertilizer
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
         className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
       >
         February 2024
+      </div>
+      <div
+        className="scroll-mt-20"
+        data-date="2024-02-26"
+      >
+        <div
+          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
+        >
+          <span
+            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+          >
+            4 days ago
+          </span>
+          <span
+            className="hidden md:block text-sm mb-auto"
+          >
+            Feb 26, 2024
+          </span>
+        </div>
+      </div>
+      <div>
+        <div
+          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+        >
+          <div
+            className="flex flex-row flex-wrap"
+          />
+          <div
+            className="flex flex-row flex-wrap"
+          />
+          <div
+            className="flex flex-col"
+          >
+            <div
+              className="m-2 cursor-pointer line-clamp-1"
+              onClick={[Function]}
+            >
+              <svg
+                aria-hidden="true"
+                className="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2"
+                data-icon="pen-to-square"
+                data-prefix="fas"
+                focusable="false"
+                onClick={[Function]}
+                role="img"
+                style={{}}
+                viewBox="0 0 512 512"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"
+                  fill="currentColor"
+                  style={{}}
+                />
+              </svg>
+              <span>
+                One of the older leaves is starting to turn yellow
+              </span>
+            </div>
+          </div>
+        </div>
       </div>
       <div
         className="scroll-mt-20"
@@ -1545,32 +1642,7 @@ exports[`App matches snapshot 1`] = `
           </div>
           <div
             className="flex flex-col"
-          >
-            <div
-              className="m-2 cursor-pointer line-clamp-1"
-              onClick={[Function]}
-            >
-              <svg
-                aria-hidden="true"
-                className="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2"
-                data-icon="pen-to-square"
-                data-prefix="fas"
-                focusable="false"
-                onClick={[Function]}
-                role="img"
-                style={{}}
-                viewBox="0 0 512 512"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"
-                  fill="currentColor"
-                  style={{}}
-                />
-              </svg>
-              Noticed some yellow leaves, reduced watering and moved it away from direct sunlight.
-            </div>
-          </div>
+          />
         </div>
       </div>
       <div
@@ -1924,32 +1996,7 @@ exports[`App matches snapshot 1`] = `
           </div>
           <div
             className="flex flex-col"
-          >
-            <div
-              className="m-2 cursor-pointer line-clamp-1"
-              onClick={[Function]}
-            >
-              <svg
-                aria-hidden="true"
-                className="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2"
-                data-icon="pen-to-square"
-                data-prefix="fas"
-                focusable="false"
-                onClick={[Function]}
-                role="img"
-                style={{}}
-                viewBox="0 0 512 512"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"
-                  fill="currentColor"
-                  style={{}}
-                />
-              </svg>
-              Discovered aphids and applied the strongest pesticide I have, fuck aphids.
-            </div>
-          </div>
+          />
         </div>
       </div>
       <div
@@ -2275,97 +2322,13 @@ exports[`App matches snapshot 1`] = `
           </div>
           <div
             className="flex flex-col"
-          >
-            <div
-              className="m-2 cursor-pointer line-clamp-1"
-              onClick={[Function]}
-            >
-              <svg
-                aria-hidden="true"
-                className="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2"
-                data-icon="pen-to-square"
-                data-prefix="fas"
-                focusable="false"
-                onClick={[Function]}
-                role="img"
-                style={{}}
-                viewBox="0 0 512 512"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"
-                  fill="currentColor"
-                  style={{}}
-                />
-              </svg>
-              Needs to get repotted soon, roots are starting to grow through the bottom.
-            </div>
-          </div>
+          />
         </div>
       </div>
       <div
         className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
       >
         August 2023
-      </div>
-      <div
-        className="scroll-mt-20"
-        data-date="2023-08-28"
-      >
-        <div
-          className="flex flex-col h-full whitespace-nowrap text-end md:ml-4"
-        >
-          <span
-            className="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
-          >
-            186 days ago
-          </span>
-          <span
-            className="hidden md:block text-sm mb-auto"
-          >
-            Aug 28, 2023
-          </span>
-        </div>
-      </div>
-      <div>
-        <div
-          className="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
-        >
-          <div
-            className="flex flex-row flex-wrap"
-          />
-          <div
-            className="flex flex-row flex-wrap"
-          />
-          <div
-            className="flex flex-col"
-          >
-            <div
-              className="m-2 cursor-pointer line-clamp-1"
-              onClick={[Function]}
-            >
-              <svg
-                aria-hidden="true"
-                className="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2"
-                data-icon="pen-to-square"
-                data-prefix="fas"
-                focusable="false"
-                onClick={[Function]}
-                role="img"
-                style={{}}
-                viewBox="0 0 512 512"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"
-                  fill="currentColor"
-                  style={{}}
-                />
-              </svg>
-              Pruned a little to encourage new growth, removed dead heads and weaker branches.
-            </div>
-          </div>
-        </div>
       </div>
       <div
         className="scroll-mt-20"
@@ -2948,34 +2911,91 @@ exports[`App matches snapshot 1`] = `
           </div>
           <div
             className="flex flex-col"
+          />
+        </div>
+      </div>
+    </div>
+    <dialog
+      className="modal"
+    >
+      <div
+        className="modal-box text-center flex flex-col pt-4 "
+      >
+        <form
+          method="dialog"
+        >
+          <button
+            className="btn-close absolute right-4 top-4"
           >
-            <div
-              className="m-2 cursor-pointer line-clamp-1"
+            <svg
+              aria-hidden="true"
+              className="w-8 h-8"
+              data-slot="icon"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+              />
+            </svg>
+          </button>
+        </form>
+        <h1
+          className="font-bold text-lg md:text-xl mb-4"
+        >
+          Add Note
+        </h1>
+        <div
+          className="flex flex-col"
+        >
+          <div
+            className="min-h-36 flex flex-col justify-center mt-2"
+          >
+            <input
+              className="input input-bordered mx-auto my-2"
+              defaultValue="2024-03-01T12:00:00"
+              step="1"
+              type="datetime-local"
+            />
+            <textarea
+              className="textarea textarea-bordered w-full max-w-xs
+                                    mx-auto mt-8 mb-4 min-h-40"
+              onChange={[Function]}
+              value=""
+            />
+          </div>
+          <div
+            className="modal-action mx-auto"
+          >
+            <button
+              className="btn btn-success"
+              disabled={true}
               onClick={[Function]}
             >
-              <svg
-                aria-hidden="true"
-                className="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2"
-                data-icon="pen-to-square"
-                data-prefix="fas"
-                focusable="false"
-                onClick={[Function]}
-                role="img"
-                style={{}}
-                viewBox="0 0 512 512"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"
-                  fill="currentColor"
-                  style={{}}
-                />
-              </svg>
-              Flowers look like they will open within a couple days.
-            </div>
+              Save
+            </button>
           </div>
         </div>
       </div>
+      <form
+        className="modal-backdrop"
+        method="dialog"
+      >
+        <button>
+          close
+        </button>
+      </form>
+    </dialog>
+  </div>,
+  <div
+    className="toast toast-center opacity-0 z-[-1]
+                            transition-all duration-500"
+  >
+    <div
+      className="alert alert-info gap-0"
+    >
+      <span />
     </div>
   </div>,
   <dialog
