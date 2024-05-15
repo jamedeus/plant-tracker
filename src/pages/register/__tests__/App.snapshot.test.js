@@ -1,4 +1,3 @@
-import renderer from 'react-test-renderer';
 import createMockContext from 'src/testUtils/createMockContext';
 import { ThemeProvider } from 'src/context/ThemeContext';
 import { ErrorModalProvider } from 'src/context/ErrorModalContext';
@@ -16,14 +15,13 @@ describe('App', () => {
         createMockContext('species_options', mockContext.species_options);
 
         // Render App, confirm matches snapshot
-        const component = renderer.create(
+        const component = render(
             <ThemeProvider>
                 <ErrorModalProvider>
                     <App />
                 </ErrorModalProvider>
             </ThemeProvider>
         );
-        let tree = component.toJSON();
-        expect(tree).toMatchSnapshot();
+        expect(component).toMatchSnapshot();
     });
 });

@@ -1,26 +1,696 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`App matches snapshot when plants and trays exist 1`] = `
-[
-  <div
-    className="container flex flex-col min-h-screen mx-auto pb-16"
-  >
+{
+  "asFragment": [Function],
+  "baseElement": <body>
     <div
-      className="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
+      id="plants"
     >
+      [{"name":"Test Plant","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be12","species":"Calathea","description":"","pot_size":4,"last_watered":"2024-02-26T02:44:12+00:00","last_fertilized":"2024-02-26T02:44:12+00:00","thumbnail":"/media/thumbnails/photo_thumb.jpg"}]
+    </div>
+    <div
+      id="trays"
+    >
+      [{"uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be14","name":"Test tray","location":"Middle shelf","plants":4}]
+    </div>
+    <div>
       <div
-        className="navbar-start w-auto"
+        class="container flex flex-col min-h-screen mx-auto pb-16"
       >
         <div
-          className="dropdown"
+          class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
         >
           <div
-            className="btn btn-ghost btn-circle"
+            class="navbar-start w-auto"
+          >
+            <div
+              class="dropdown"
+            >
+              <div
+                class="btn btn-ghost btn-circle"
+                role="button"
+                tabindex="0"
+              >
+                <svg
+                  class="h-5 w-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M4 6h16M4 12h16M4 18h7"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                  />
+                </svg>
+              </div>
+              <ul
+                class="menu menu-md dropdown-content mt-3 z-[99]
+                                    p-2 shadow bg-base-300 rounded-box w-52"
+                tabindex="0"
+              >
+                <li>
+                  <a>
+                    Edit
+                  </a>
+                </li>
+                <li>
+                  <a>
+                    Print QR Codes
+                  </a>
+                </li>
+                <li>
+                  <a>
+                    Light mode
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="navbar-center mx-auto"
+          >
+            <div
+              class="dropdown dropdown-center"
+            >
+              <a
+                class="btn btn-ghost"
+                role="button"
+                style="font-size: 8px;"
+                tabindex="0"
+              >
+                Plant Overview
+              </a>
+              <div
+                class="dropdown-content z-[1] flex"
+                tabindex="0"
+              />
+            </div>
+          </div>
+          <div
+            class="navbar-end w-auto invisible"
+          >
+            <div
+              class="btn btn-ghost btn-circle"
+              role="button"
+              tabindex="0"
+            >
+              <svg
+                class="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4 6h16M4 12h16M4 18h7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div
+          class="grid grid-cols-1 md:grid-cols-2 mx-auto"
+        >
+          <div
+            class="md:mr-12 mb-8 md:mb-0"
+          >
+            <div
+              class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+            >
+              <input
+                checked=""
+                type="checkbox"
+              />
+              <div
+                class="collapse-title text-xl font-medium text-center"
+              >
+                Plants (1)
+              </div>
+              <div
+                class="collapse-content min-w-0"
+              >
+                <div
+                  class="px-4 mb-4 relative"
+                >
+                  <input
+                    class="input input-bordered w-full text-center pr-10"
+                    placeholder="filter"
+                    style="text-indent: 1.625rem;"
+                    type="text"
+                    value=""
+                  />
+                  <button
+                    class="btn-close absolute right-6 top-2
+                        opacity-0 -z-10"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="w-8 h-8"
+                      data-slot="icon"
+                      fill="currentColor"
+                      viewBox="0 0 16 16"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div
+                  class="mb-4"
+                >
+                  <div
+                    class="card card-side bg-neutral text-neutral-content mx-auto relative
+                     cursor-pointer"
+                  >
+                    <figure
+                      class="h-24 w-20 min-h-20 min-w-20"
+                    >
+                      <img
+                        class="w-full h-full object-cover"
+                        src="/media/thumbnails/photo_thumb.jpg"
+                      />
+                    </figure>
+                    <div
+                      class="card-body my-auto text-start cursor-default"
+                    >
+                      <h2
+                        class="card-title line-clamp-1 pr-8"
+                      >
+                        Test Plant
+                      </h2>
+                      <span>
+                        <svg
+                          aria-hidden="true"
+                          class="svg-inline--fa fa-droplet mr-2 text-info"
+                          data-icon="droplet"
+                          data-prefix="fas"
+                          focusable="false"
+                          role="img"
+                          viewBox="0 0 384 512"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                        4 days ago
+                      </span>
+                    </div>
+                    <button
+                      class="btn-close absolute right-2 top-8 z-40"
+                      role="button"
+                      tabindex="0"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="w-8 h-8"
+                        data-slot="icon"
+                        fill="currentColor"
+                        viewBox="0 0 16 16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          clip-rule="evenodd"
+                          d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                          fill-rule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                  <div
+                    class="collapse bg-neutral rounded-t-none cursor-default
+                "
+                  >
+                    <input
+                      class="hidden"
+                      type="checkbox"
+                    />
+                    <div
+                      class="collapse-content"
+                    >
+                      <p
+                        class="flex"
+                      >
+                        <span
+                          class="font-semibold"
+                        >
+                          Species:
+                        </span>
+                        <span
+                          class="ml-auto text-right"
+                        >
+                          Calathea
+                        </span>
+                      </p>
+                      <p
+                        class="flex"
+                      >
+                        <span
+                          class="font-semibold"
+                        >
+                          Pot size:
+                        </span>
+                        <span
+                          class="ml-auto text-right"
+                        >
+                          4
+                        </span>
+                      </p>
+                      <div
+                        class="hidden"
+                      >
+                        <p
+                          class="font-semibold mt-3"
+                        >
+                          Description:
+                        </p>
+                        <p
+                          class="text-sm line-clamp-6"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="md:ml-12"
+          >
+            <div
+              class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+            >
+              <input
+                checked=""
+                type="checkbox"
+              />
+              <div
+                class="collapse-title text-xl font-medium text-center"
+              >
+                Trays (1)
+              </div>
+              <div
+                class="collapse-content min-w-0"
+              >
+                <div
+                  class="px-4 mb-4 relative"
+                >
+                  <input
+                    class="input input-bordered w-full text-center pr-10"
+                    placeholder="filter"
+                    style="text-indent: 1.625rem;"
+                    type="text"
+                    value=""
+                  />
+                  <button
+                    class="btn-close absolute right-6 top-2
+                        opacity-0 -z-10"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="w-8 h-8"
+                      data-slot="icon"
+                      fill="currentColor"
+                      viewBox="0 0 16 16"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div
+                  class="mb-4"
+                >
+                  <div
+                    class="card bg-neutral text-neutral-content mx-auto w-full
+                    cursor-pointer
+                    "
+                  >
+                    <div
+                      class="card-body text-center"
+                    >
+                      <h2
+                        class="card-title mx-auto"
+                      >
+                        Test tray
+                      </h2>
+                      <p>
+                        Contains 
+                        4
+                         plants
+                      </p>
+                    </div>
+                    <button
+                      class="btn-close absolute right-2 top-8 z-40"
+                      role="button"
+                      tabindex="0"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="w-8 h-8"
+                        data-slot="icon"
+                        fill="currentColor"
+                        viewBox="0 0 16 16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          clip-rule="evenodd"
+                          d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                          fill-rule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                  <div
+                    class="collapse bg-neutral rounded-t-none cursor-default
+                "
+                  >
+                    <input
+                      class="hidden"
+                      type="checkbox"
+                    />
+                    <div
+                      class="collapse-content"
+                    >
+                      <p
+                        class="flex"
+                      >
+                        <span
+                          class="font-semibold"
+                        >
+                          Location:
+                        </span>
+                        <span
+                          class="ml-auto text-right"
+                        >
+                          Middle shelf
+                        </span>
+                      </p>
+                      <div
+                        class="hidden"
+                      >
+                        <p
+                          class="font-semibold mt-3"
+                        >
+                          Description:
+                        </p>
+                        <p
+                          class="text-sm line-clamp-6"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <dialog
+          class="modal"
+        >
+          <div
+            class="modal-box text-center flex flex-col pt-4 "
+          >
+            <form
+              method="dialog"
+            >
+              <button
+                class="btn-close absolute right-4 top-4"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="w-8 h-8"
+                  data-slot="icon"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+                  />
+                </svg>
+              </button>
+            </form>
+            <h1
+              class="font-bold text-lg md:text-xl mb-4"
+            >
+              Select QR Code Size
+            </h1>
+            <div
+              class="h-36 mt-2 flex flex-col justify-center"
+            >
+              <div
+                aria-orientation="horizontal"
+                class="tab-group"
+                role="tablist"
+              >
+                <button
+                  aria-controls="headlessui-tabs-panel-:r3:"
+                  aria-selected="true"
+                  class="tab-option tab-option-selected"
+                  data-headlessui-state="selected"
+                  id="headlessui-tabs-tab-:r0:"
+                  role="tab"
+                  tabindex="0"
+                  type="button"
+                >
+                  small
+                </button>
+                <button
+                  aria-controls="headlessui-tabs-panel-:r4:"
+                  aria-selected="false"
+                  class="tab-option "
+                  data-headlessui-state=""
+                  id="headlessui-tabs-tab-:r1:"
+                  role="tab"
+                  tabindex="-1"
+                  type="button"
+                >
+                  medium
+                </button>
+                <button
+                  aria-controls="headlessui-tabs-panel-:r5:"
+                  aria-selected="false"
+                  class="tab-option "
+                  data-headlessui-state=""
+                  id="headlessui-tabs-tab-:r2:"
+                  role="tab"
+                  tabindex="-1"
+                  type="button"
+                >
+                  large
+                </button>
+              </div>
+              <div
+                class="mt-4"
+              >
+                <div
+                  aria-labelledby="headlessui-tabs-tab-:r0:"
+                  data-headlessui-state="selected"
+                  id="headlessui-tabs-panel-:r3:"
+                  role="tabpanel"
+                  tabindex="0"
+                >
+                  <span
+                    class="text-center"
+                  >
+                    About ¾ inch wide
+                    <br />
+                    96
+                     QR codes per sheet
+                  </span>
+                </div>
+                <span
+                  aria-hidden="true"
+                  aria-labelledby="headlessui-tabs-tab-:r1:"
+                  id="headlessui-tabs-panel-:r4:"
+                  role="tabpanel"
+                  style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px;"
+                  tabindex="-1"
+                />
+                <span
+                  aria-hidden="true"
+                  aria-labelledby="headlessui-tabs-tab-:r2:"
+                  id="headlessui-tabs-panel-:r5:"
+                  role="tabpanel"
+                  style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px;"
+                  tabindex="-1"
+                />
+              </div>
+            </div>
+            <div
+              class="modal-action mx-auto"
+            >
+              <button
+                class="btn btn-accent"
+              >
+                Generate
+              </button>
+            </div>
+          </div>
+          <form
+            class="modal-backdrop"
+            method="dialog"
+          >
+            <button>
+              close
+            </button>
+          </form>
+        </dialog>
+      </div>
+      <dialog
+        class="modal"
+      >
+        <div
+          class="modal-box text-center flex flex-col pt-4 "
+        >
+          <form
+            method="dialog"
+          >
+            <button
+              class="btn-close absolute right-4 top-4"
+            >
+              <svg
+                aria-hidden="true"
+                class="w-8 h-8"
+                data-slot="icon"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+                />
+              </svg>
+            </button>
+          </form>
+          <h3
+            class="font-bold text-lg mb-6"
+          >
+            Error
+          </h3>
+          <div
+            class="min-h-36 flex flex-col justify-center mx-auto"
+          />
+          <div
+            class="modal-action mx-auto"
+          >
+            <button
+              class="btn"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+        <form
+          class="modal-backdrop"
+          method="dialog"
+        >
+          <button>
+            close
+          </button>
+        </form>
+      </dialog>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="container flex flex-col min-h-screen mx-auto pb-16"
+    >
+      <div
+        class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
+      >
+        <div
+          class="navbar-start w-auto"
+        >
+          <div
+            class="dropdown"
+          >
+            <div
+              class="btn btn-ghost btn-circle"
+              role="button"
+              tabindex="0"
+            >
+              <svg
+                class="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4 6h16M4 12h16M4 18h7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                />
+              </svg>
+            </div>
+            <ul
+              class="menu menu-md dropdown-content mt-3 z-[99]
+                                    p-2 shadow bg-base-300 rounded-box w-52"
+              tabindex="0"
+            >
+              <li>
+                <a>
+                  Edit
+                </a>
+              </li>
+              <li>
+                <a>
+                  Print QR Codes
+                </a>
+              </li>
+              <li>
+                <a>
+                  Light mode
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="navbar-center mx-auto"
+        >
+          <div
+            class="dropdown dropdown-center"
+          >
+            <a
+              class="btn btn-ghost"
+              role="button"
+              style="font-size: 8px;"
+              tabindex="0"
+            >
+              Plant Overview
+            </a>
+            <div
+              class="dropdown-content z-[1] flex"
+              tabindex="0"
+            />
+          </div>
+        </div>
+        <div
+          class="navbar-end w-auto invisible"
+        >
+          <div
+            class="btn btn-ghost btn-circle"
             role="button"
-            tabIndex={0}
+            tabindex="0"
           >
             <svg
-              className="h-5 w-5"
+              class="h-5 w-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -28,265 +698,309 @@ exports[`App matches snapshot when plants and trays exist 1`] = `
             >
               <path
                 d="M4 6h16M4 12h16M4 18h7"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
               />
             </svg>
           </div>
-          <ul
-            className="menu menu-md dropdown-content mt-3 z-[99]
-                                    p-2 shadow bg-base-300 rounded-box w-52"
-            tabIndex={0}
-          >
-            <li>
-              <a
-                onClick={[Function]}
-              >
-                Edit
-              </a>
-            </li>
-            <li>
-              <a
-                onClick={[Function]}
-              >
-                Print QR Codes
-              </a>
-            </li>
-            <li>
-              <a
-                onClick={[Function]}
-              >
-                Light mode
-              </a>
-            </li>
-          </ul>
         </div>
       </div>
       <div
-        className="navbar-center mx-auto"
+        class="grid grid-cols-1 md:grid-cols-2 mx-auto"
       >
         <div
-          className="dropdown dropdown-center"
+          class="md:mr-12 mb-8 md:mb-0"
         >
-          <a
-            className="btn btn-ghost"
-            role="button"
-            style={
-              {
-                "fontSize": "32px",
-              }
-            }
-            tabIndex={0}
-          >
-            Plant Overview
-          </a>
           <div
-            className="dropdown-content z-[1] flex"
-            tabIndex={0}
-          />
-        </div>
-      </div>
-      <div
-        className="navbar-end w-auto invisible"
-      >
-        <div
-          className="btn btn-ghost btn-circle"
-          role="button"
-          tabIndex={0}
-        >
-          <svg
-            className="h-5 w-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
+            class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
           >
-            <path
-              d="M4 6h16M4 12h16M4 18h7"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
+            <input
+              checked=""
+              type="checkbox"
             />
-          </svg>
-        </div>
-      </div>
-    </div>
-    <div
-      className="grid grid-cols-1 md:grid-cols-2 mx-auto"
-    >
-      <div
-        className="md:mr-12 mb-8 md:mb-0"
-      >
-        <div
-          className="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
-        >
-          <input
-            defaultChecked={true}
-            onChange={[Function]}
-            type="checkbox"
-          />
-          <div
-            className="collapse-title text-xl font-medium text-center"
-          >
-            Plants (1)
-          </div>
-          <div
-            className="collapse-content min-w-0"
-          >
             <div
-              className="px-4 mb-4 relative"
+              class="collapse-title text-xl font-medium text-center"
             >
-              <input
-                className="input input-bordered w-full text-center pr-10"
-                onChange={[Function]}
-                placeholder="filter"
-                style={
-                  {
-                    "textIndent": "1.625rem",
-                  }
-                }
-                type="text"
-                value=""
-              />
-              <button
-                className="btn-close absolute right-6 top-2
-                        opacity-0 -z-10"
-                onClick={[Function]}
-              >
-                <svg
-                  aria-hidden="true"
-                  className="w-8 h-8"
-                  data-slot="icon"
-                  fill="currentColor"
-                  viewBox="0 0 16 16"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
-                  />
-                </svg>
-              </button>
+              Plants (1)
             </div>
             <div
-              className="mb-4"
+              class="collapse-content min-w-0"
             >
               <div
-                className="card card-side bg-neutral text-neutral-content mx-auto relative
-                     cursor-pointer"
-                onClick={[Function]}
+                class="px-4 mb-4 relative"
               >
-                <figure
-                  className="h-24 w-20 min-h-20 min-w-20"
+                <input
+                  class="input input-bordered w-full text-center pr-10"
+                  placeholder="filter"
+                  style="text-indent: 1.625rem;"
+                  type="text"
+                  value=""
+                />
+                <button
+                  class="btn-close absolute right-6 top-2
+                        opacity-0 -z-10"
                 >
-                  <img
-                    className="w-full h-full object-cover"
-                    src="/media/thumbnails/photo_thumb.jpg"
-                  />
-                </figure>
-                <div
-                  className="card-body my-auto text-start cursor-default"
-                >
-                  <h2
-                    className="card-title line-clamp-1 pr-8"
+                  <svg
+                    aria-hidden="true"
+                    class="w-8 h-8"
+                    data-slot="icon"
+                    fill="currentColor"
+                    viewBox="0 0 16 16"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    Test Plant
-                  </h2>
-                  <span>
+                    <path
+                      d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div
+                class="mb-4"
+              >
+                <div
+                  class="card card-side bg-neutral text-neutral-content mx-auto relative
+                     cursor-pointer"
+                >
+                  <figure
+                    class="h-24 w-20 min-h-20 min-w-20"
+                  >
+                    <img
+                      class="w-full h-full object-cover"
+                      src="/media/thumbnails/photo_thumb.jpg"
+                    />
+                  </figure>
+                  <div
+                    class="card-body my-auto text-start cursor-default"
+                  >
+                    <h2
+                      class="card-title line-clamp-1 pr-8"
+                    >
+                      Test Plant
+                    </h2>
+                    <span>
+                      <svg
+                        aria-hidden="true"
+                        class="svg-inline--fa fa-droplet mr-2 text-info"
+                        data-icon="droplet"
+                        data-prefix="fas"
+                        focusable="false"
+                        role="img"
+                        viewBox="0 0 384 512"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                      4 days ago
+                    </span>
+                  </div>
+                  <button
+                    class="btn-close absolute right-2 top-8 z-40"
+                    role="button"
+                    tabindex="0"
+                  >
                     <svg
                       aria-hidden="true"
-                      className="svg-inline--fa fa-droplet mr-2 text-info"
-                      data-icon="droplet"
-                      data-prefix="fas"
-                      focusable="false"
-                      role="img"
-                      style={{}}
-                      viewBox="0 0 384 512"
+                      class="w-8 h-8"
+                      data-slot="icon"
+                      fill="currentColor"
+                      viewBox="0 0 16 16"
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                        fill="currentColor"
-                        style={{}}
+                        clip-rule="evenodd"
+                        d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                        fill-rule="evenodd"
                       />
                     </svg>
-                    4 days ago
-                  </span>
+                  </button>
                 </div>
+                <div
+                  class="collapse bg-neutral rounded-t-none cursor-default
+                "
+                >
+                  <input
+                    class="hidden"
+                    type="checkbox"
+                  />
+                  <div
+                    class="collapse-content"
+                  >
+                    <p
+                      class="flex"
+                    >
+                      <span
+                        class="font-semibold"
+                      >
+                        Species:
+                      </span>
+                      <span
+                        class="ml-auto text-right"
+                      >
+                        Calathea
+                      </span>
+                    </p>
+                    <p
+                      class="flex"
+                    >
+                      <span
+                        class="font-semibold"
+                      >
+                        Pot size:
+                      </span>
+                      <span
+                        class="ml-auto text-right"
+                      >
+                        4
+                      </span>
+                    </p>
+                    <div
+                      class="hidden"
+                    >
+                      <p
+                        class="font-semibold mt-3"
+                      >
+                        Description:
+                      </p>
+                      <p
+                        class="text-sm line-clamp-6"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="md:ml-12"
+        >
+          <div
+            class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+          >
+            <input
+              checked=""
+              type="checkbox"
+            />
+            <div
+              class="collapse-title text-xl font-medium text-center"
+            >
+              Trays (1)
+            </div>
+            <div
+              class="collapse-content min-w-0"
+            >
+              <div
+                class="px-4 mb-4 relative"
+              >
+                <input
+                  class="input input-bordered w-full text-center pr-10"
+                  placeholder="filter"
+                  style="text-indent: 1.625rem;"
+                  type="text"
+                  value=""
+                />
                 <button
-                  className="btn-close absolute right-2 top-8 z-40"
-                  onClick={[Function]}
-                  role="button"
-                  tabIndex={0}
+                  class="btn-close absolute right-6 top-2
+                        opacity-0 -z-10"
                 >
                   <svg
                     aria-hidden="true"
-                    className="w-8 h-8"
+                    class="w-8 h-8"
                     data-slot="icon"
                     fill="currentColor"
                     viewBox="0 0 16 16"
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      clipRule="evenodd"
-                      d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                      fillRule="evenodd"
+                      d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
                     />
                   </svg>
                 </button>
               </div>
               <div
-                className="collapse bg-neutral rounded-t-none cursor-default
-                "
+                class="mb-4"
               >
-                <input
-                  className="hidden"
-                  defaultChecked={false}
-                  onChange={[Function]}
-                  type="checkbox"
-                />
                 <div
-                  className="collapse-content"
+                  class="card bg-neutral text-neutral-content mx-auto w-full
+                    cursor-pointer
+                    "
                 >
-                  <p
-                    className="flex"
-                  >
-                    <span
-                      className="font-semibold"
-                    >
-                      Species:
-                    </span>
-                    <span
-                      className="ml-auto text-right"
-                    >
-                      Calathea
-                    </span>
-                  </p>
-                  <p
-                    className="flex"
-                  >
-                    <span
-                      className="font-semibold"
-                    >
-                      Pot size:
-                    </span>
-                    <span
-                      className="ml-auto text-right"
-                    >
-                      4
-                    </span>
-                  </p>
                   <div
-                    className="hidden"
+                    class="card-body text-center"
+                  >
+                    <h2
+                      class="card-title mx-auto"
+                    >
+                      Test tray
+                    </h2>
+                    <p>
+                      Contains 
+                      4
+                       plants
+                    </p>
+                  </div>
+                  <button
+                    class="btn-close absolute right-2 top-8 z-40"
+                    role="button"
+                    tabindex="0"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="w-8 h-8"
+                      data-slot="icon"
+                      fill="currentColor"
+                      viewBox="0 0 16 16"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        clip-rule="evenodd"
+                        d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                        fill-rule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div
+                  class="collapse bg-neutral rounded-t-none cursor-default
+                "
+                >
+                  <input
+                    class="hidden"
+                    type="checkbox"
+                  />
+                  <div
+                    class="collapse-content"
                   >
                     <p
-                      className="font-semibold mt-3"
+                      class="flex"
                     >
-                      Description:
+                      <span
+                        class="font-semibold"
+                      >
+                        Location:
+                      </span>
+                      <span
+                        class="ml-auto text-right"
+                      >
+                        Middle shelf
+                      </span>
                     </p>
-                    <p
-                      className="text-sm line-clamp-6"
-                    />
+                    <div
+                      class="hidden"
+                    >
+                      <p
+                        class="font-semibold mt-3"
+                      >
+                        Description:
+                      </p>
+                      <p
+                        class="text-sm line-clamp-6"
+                      />
+                    </div>
                   </div>
                 </div>
               </div>
@@ -294,165 +1008,154 @@ exports[`App matches snapshot when plants and trays exist 1`] = `
           </div>
         </div>
       </div>
-      <div
-        className="md:ml-12"
+      <dialog
+        class="modal"
       >
         <div
-          className="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+          class="modal-box text-center flex flex-col pt-4 "
         >
-          <input
-            defaultChecked={true}
-            onChange={[Function]}
-            type="checkbox"
-          />
-          <div
-            className="collapse-title text-xl font-medium text-center"
+          <form
+            method="dialog"
           >
-            Trays (1)
-          </div>
+            <button
+              class="btn-close absolute right-4 top-4"
+            >
+              <svg
+                aria-hidden="true"
+                class="w-8 h-8"
+                data-slot="icon"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+                />
+              </svg>
+            </button>
+          </form>
+          <h1
+            class="font-bold text-lg md:text-xl mb-4"
+          >
+            Select QR Code Size
+          </h1>
           <div
-            className="collapse-content min-w-0"
+            class="h-36 mt-2 flex flex-col justify-center"
           >
             <div
-              className="px-4 mb-4 relative"
+              aria-orientation="horizontal"
+              class="tab-group"
+              role="tablist"
             >
-              <input
-                className="input input-bordered w-full text-center pr-10"
-                onChange={[Function]}
-                placeholder="filter"
-                style={
-                  {
-                    "textIndent": "1.625rem",
-                  }
-                }
-                type="text"
-                value=""
-              />
               <button
-                className="btn-close absolute right-6 top-2
-                        opacity-0 -z-10"
-                onClick={[Function]}
+                aria-controls="headlessui-tabs-panel-:r3:"
+                aria-selected="true"
+                class="tab-option tab-option-selected"
+                data-headlessui-state="selected"
+                id="headlessui-tabs-tab-:r0:"
+                role="tab"
+                tabindex="0"
+                type="button"
               >
-                <svg
-                  aria-hidden="true"
-                  className="w-8 h-8"
-                  data-slot="icon"
-                  fill="currentColor"
-                  viewBox="0 0 16 16"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
-                  />
-                </svg>
+                small
+              </button>
+              <button
+                aria-controls="headlessui-tabs-panel-:r4:"
+                aria-selected="false"
+                class="tab-option "
+                data-headlessui-state=""
+                id="headlessui-tabs-tab-:r1:"
+                role="tab"
+                tabindex="-1"
+                type="button"
+              >
+                medium
+              </button>
+              <button
+                aria-controls="headlessui-tabs-panel-:r5:"
+                aria-selected="false"
+                class="tab-option "
+                data-headlessui-state=""
+                id="headlessui-tabs-tab-:r2:"
+                role="tab"
+                tabindex="-1"
+                type="button"
+              >
+                large
               </button>
             </div>
             <div
-              className="mb-4"
+              class="mt-4"
             >
               <div
-                className="card bg-neutral text-neutral-content mx-auto w-full
-                    cursor-pointer
-                    "
-                onClick={[Function]}
+                aria-labelledby="headlessui-tabs-tab-:r0:"
+                data-headlessui-state="selected"
+                id="headlessui-tabs-panel-:r3:"
+                role="tabpanel"
+                tabindex="0"
               >
-                <div
-                  className="card-body text-center"
+                <span
+                  class="text-center"
                 >
-                  <h2
-                    className="card-title mx-auto"
-                  >
-                    Test tray
-                  </h2>
-                  <p>
-                    Contains 
-                    4
-                     plants
-                  </p>
-                </div>
-                <button
-                  className="btn-close absolute right-2 top-8 z-40"
-                  onClick={[Function]}
-                  role="button"
-                  tabIndex={0}
-                >
-                  <svg
-                    aria-hidden="true"
-                    className="w-8 h-8"
-                    data-slot="icon"
-                    fill="currentColor"
-                    viewBox="0 0 16 16"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      clipRule="evenodd"
-                      d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                      fillRule="evenodd"
-                    />
-                  </svg>
-                </button>
+                  About ¾ inch wide
+                  <br />
+                  96
+                   QR codes per sheet
+                </span>
               </div>
-              <div
-                className="collapse bg-neutral rounded-t-none cursor-default
-                "
-              >
-                <input
-                  className="hidden"
-                  defaultChecked={false}
-                  onChange={[Function]}
-                  type="checkbox"
-                />
-                <div
-                  className="collapse-content"
-                >
-                  <p
-                    className="flex"
-                  >
-                    <span
-                      className="font-semibold"
-                    >
-                      Location:
-                    </span>
-                    <span
-                      className="ml-auto text-right"
-                    >
-                      Middle shelf
-                    </span>
-                  </p>
-                  <div
-                    className="hidden"
-                  >
-                    <p
-                      className="font-semibold mt-3"
-                    >
-                      Description:
-                    </p>
-                    <p
-                      className="text-sm line-clamp-6"
-                    />
-                  </div>
-                </div>
-              </div>
+              <span
+                aria-hidden="true"
+                aria-labelledby="headlessui-tabs-tab-:r1:"
+                id="headlessui-tabs-panel-:r4:"
+                role="tabpanel"
+                style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px;"
+                tabindex="-1"
+              />
+              <span
+                aria-hidden="true"
+                aria-labelledby="headlessui-tabs-tab-:r2:"
+                id="headlessui-tabs-panel-:r5:"
+                role="tabpanel"
+                style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px;"
+                tabindex="-1"
+              />
             </div>
           </div>
+          <div
+            class="modal-action mx-auto"
+          >
+            <button
+              class="btn btn-accent"
+            >
+              Generate
+            </button>
+          </div>
         </div>
-      </div>
+        <form
+          class="modal-backdrop"
+          method="dialog"
+        >
+          <button>
+            close
+          </button>
+        </form>
+      </dialog>
     </div>
     <dialog
-      className="modal"
+      class="modal"
     >
       <div
-        className="modal-box text-center flex flex-col pt-4 "
+        class="modal-box text-center flex flex-col pt-4 "
       >
         <form
           method="dialog"
         >
           <button
-            className="btn-close absolute right-4 top-4"
+            class="btn-close absolute right-4 top-4"
           >
             <svg
               aria-hidden="true"
-              className="w-8 h-8"
+              class="w-8 h-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"
@@ -464,137 +1167,26 @@ exports[`App matches snapshot when plants and trays exist 1`] = `
             </svg>
           </button>
         </form>
-        <h1
-          className="font-bold text-lg md:text-xl mb-4"
+        <h3
+          class="font-bold text-lg mb-6"
         >
-          Select QR Code Size
-        </h1>
+          Error
+        </h3>
         <div
-          className="h-36 mt-2 flex flex-col justify-center"
-        >
-          <div
-            aria-orientation="horizontal"
-            className="tab-group"
-            role="tablist"
-          >
-            <button
-              aria-selected={true}
-              className="tab-option tab-option-selected"
-              data-headlessui-state="selected"
-              id="headlessui-tabs-tab-:r0:"
-              onClick={[Function]}
-              onKeyDown={[Function]}
-              onMouseDown={[Function]}
-              role="tab"
-              tabIndex={0}
-              type="button"
-            >
-              small
-            </button>
-            <button
-              aria-selected={false}
-              className="tab-option "
-              data-headlessui-state=""
-              id="headlessui-tabs-tab-:r1:"
-              onClick={[Function]}
-              onKeyDown={[Function]}
-              onMouseDown={[Function]}
-              role="tab"
-              tabIndex={-1}
-              type="button"
-            >
-              medium
-            </button>
-            <button
-              aria-selected={false}
-              className="tab-option "
-              data-headlessui-state=""
-              id="headlessui-tabs-tab-:r2:"
-              onClick={[Function]}
-              onKeyDown={[Function]}
-              onMouseDown={[Function]}
-              role="tab"
-              tabIndex={-1}
-              type="button"
-            >
-              large
-            </button>
-          </div>
-          <div
-            className="mt-4"
-          >
-            <div
-              data-headlessui-state="selected"
-              id="headlessui-tabs-panel-:r3:"
-              role="tabpanel"
-              tabIndex={0}
-            >
-              <span
-                className="text-center"
-              >
-                About ¾ inch wide
-                <br />
-                96
-                 QR codes per sheet
-              </span>
-            </div>
-            <span
-              aria-hidden="true"
-              id="headlessui-tabs-panel-:r4:"
-              role="tabpanel"
-              style={
-                {
-                  "borderWidth": "0",
-                  "clip": "rect(0, 0, 0, 0)",
-                  "height": 0,
-                  "left": 1,
-                  "margin": -1,
-                  "overflow": "hidden",
-                  "padding": 0,
-                  "position": "fixed",
-                  "top": 1,
-                  "whiteSpace": "nowrap",
-                  "width": 1,
-                }
-              }
-              tabIndex={-1}
-            />
-            <span
-              aria-hidden="true"
-              id="headlessui-tabs-panel-:r5:"
-              role="tabpanel"
-              style={
-                {
-                  "borderWidth": "0",
-                  "clip": "rect(0, 0, 0, 0)",
-                  "height": 0,
-                  "left": 1,
-                  "margin": -1,
-                  "overflow": "hidden",
-                  "padding": 0,
-                  "position": "fixed",
-                  "top": 1,
-                  "whiteSpace": "nowrap",
-                  "width": 1,
-                }
-              }
-              tabIndex={-1}
-            />
-          </div>
-        </div>
+          class="min-h-36 flex flex-col justify-center mx-auto"
+        />
         <div
-          className="modal-action mx-auto"
+          class="modal-action mx-auto"
         >
           <button
-            className="btn btn-accent"
-            onClick={[Function]}
+            class="btn"
           >
-            Generate
+            OK
           </button>
         </div>
       </div>
       <form
-        className="modal-backdrop"
+        class="modal-backdrop"
         method="dialog"
       >
         <button>
@@ -603,59 +1195,56 @@ exports[`App matches snapshot when plants and trays exist 1`] = `
       </form>
     </dialog>
   </div>,
-  <dialog
-    className="modal"
-  >
-    <div
-      className="modal-box text-center flex flex-col pt-4 "
-    >
-      <form
-        method="dialog"
-      >
-        <button
-          className="btn-close absolute right-4 top-4"
-        >
-          <svg
-            aria-hidden="true"
-            className="w-8 h-8"
-            data-slot="icon"
-            fill="currentColor"
-            viewBox="0 0 16 16"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
-            />
-          </svg>
-        </button>
-      </form>
-      <h3
-        className="font-bold text-lg mb-6"
-      >
-        Error
-      </h3>
-      <div
-        className="min-h-36 flex flex-col justify-center mx-auto"
-      />
-      <div
-        className="modal-action mx-auto"
-      >
-        <button
-          className="btn"
-          onClick={[Function]}
-        >
-          OK
-        </button>
-      </div>
-    </div>
-    <form
-      className="modal-backdrop"
-      method="dialog"
-    >
-      <button>
-        close
-      </button>
-    </form>
-  </dialog>,
-]
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
 `;

@@ -1,26 +1,397 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`App matches snapshot 1`] = `
-[
-  <div
-    className="container flex flex-col mx-auto mb-8"
-  >
+{
+  "asFragment": [Function],
+  "baseElement": <body>
     <div
-      className="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
+      id="new_id"
     >
+      "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+    </div>
+    <div
+      id="species_options"
+    >
+      ["Parlor Palm","Spider Plant","Calathea"]
+    </div>
+    <div>
       <div
-        className="navbar-start w-auto"
+        class="container flex flex-col mx-auto mb-8"
       >
         <div
-          className="dropdown"
+          class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
         >
           <div
-            className="btn btn-ghost btn-circle"
+            class="navbar-start w-auto"
+          >
+            <div
+              class="dropdown"
+            >
+              <div
+                class="btn btn-ghost btn-circle"
+                role="button"
+                tabindex="0"
+              >
+                <svg
+                  class="h-5 w-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M4 6h16M4 12h16M4 18h7"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                  />
+                </svg>
+              </div>
+              <ul
+                class="menu menu-md dropdown-content mt-3 z-[99]
+                                    p-2 shadow bg-base-300 rounded-box w-52"
+                tabindex="0"
+              >
+                <li>
+                  <a>
+                    Overview
+                  </a>
+                </li>
+                <li>
+                  <a>
+                    Light mode
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div
+            class="navbar-center mx-auto"
+          >
+            <div
+              class="dropdown dropdown-center"
+            >
+              <a
+                class="btn btn-ghost"
+                role="button"
+                style="font-size: 8px;"
+                tabindex="0"
+              >
+                Registration
+              </a>
+              <div
+                class="dropdown-content z-[1] flex"
+                tabindex="0"
+              />
+            </div>
+          </div>
+          <div
+            class="navbar-end w-auto invisible"
+          >
+            <div
+              class="btn btn-ghost btn-circle"
+              role="button"
+              tabindex="0"
+            >
+              <svg
+                class="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4 6h16M4 12h16M4 18h7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <div
+          class="flex flex-col mx-8 md:w-1/2 md:mx-auto"
+        >
+          <div
+            aria-orientation="horizontal"
+            class="tab-group"
+            role="tablist"
+          >
+            <button
+              aria-controls="headlessui-tabs-panel-:r2:"
+              aria-selected="true"
+              class="tab-option tab-option-selected"
+              data-headlessui-state="selected"
+              id="headlessui-tabs-tab-:r0:"
+              role="tab"
+              tabindex="0"
+              type="button"
+            >
+              Plant
+            </button>
+            <button
+              aria-controls="headlessui-tabs-panel-:r4:"
+              aria-selected="false"
+              class="tab-option "
+              data-headlessui-state=""
+              id="headlessui-tabs-tab-:r1:"
+              role="tab"
+              tabindex="-1"
+              type="button"
+            >
+              Tray
+            </button>
+          </div>
+          <div
+            class="my-8"
+          >
+            <div
+              aria-labelledby="headlessui-tabs-tab-:r0:"
+              data-headlessui-state="selected"
+              id="headlessui-tabs-panel-:r2:"
+              role="tabpanel"
+              tabindex="0"
+            >
+              <form
+                id="plantDetails"
+              >
+                <label
+                  class="form-control w-full"
+                >
+                  <div
+                    class="label"
+                  >
+                    <span
+                      class="label-text-alt"
+                    >
+                      Plant name
+                    </span>
+                  </div>
+                  <input
+                    class="input w-full input-bordered"
+                    name="name"
+                    type="text"
+                    value=""
+                  />
+                </label>
+                <label
+                  class="form-control w-full relative"
+                >
+                  <div
+                    class="label"
+                  >
+                    <span
+                      class="label-text-alt"
+                    >
+                      Plant species
+                    </span>
+                  </div>
+                  <input
+                    aria-autocomplete="list"
+                    aria-expanded="false"
+                    autocomplete="off"
+                    class="input w-full input-bordered"
+                    data-headlessui-state=""
+                    id="headlessui-combobox-input-:r3:"
+                    name="species"
+                    role="combobox"
+                    type="text"
+                    value=""
+                  />
+                </label>
+                <label
+                  class="form-control w-full"
+                >
+                  <div
+                    class="label"
+                  >
+                    <span
+                      class="label-text-alt"
+                    >
+                      Pot size
+                    </span>
+                  </div>
+                  <input
+                    class="input w-full input-bordered"
+                    max="36"
+                    min="1"
+                    name="pot_size"
+                    type="number"
+                    value=""
+                  />
+                </label>
+                <label
+                  class="form-control w-full"
+                >
+                  <div
+                    class="label"
+                  >
+                    <span
+                      class="label-text-alt"
+                    >
+                      Description
+                    </span>
+                  </div>
+                  <textarea
+                    class="textarea textarea-bordered"
+                    name="description"
+                  />
+                </label>
+              </form>
+            </div>
+            <span
+              aria-hidden="true"
+              aria-labelledby="headlessui-tabs-tab-:r1:"
+              id="headlessui-tabs-panel-:r4:"
+              role="tabpanel"
+              style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px;"
+              tabindex="-1"
+            />
+          </div>
+          <button
+            class="btn btn-accent mx-auto"
+          >
+            Save
+          </button>
+        </div>
+      </div>
+      <dialog
+        class="modal"
+      >
+        <div
+          class="modal-box text-center flex flex-col pt-4 "
+        >
+          <form
+            method="dialog"
+          >
+            <button
+              class="btn-close absolute right-4 top-4"
+            >
+              <svg
+                aria-hidden="true"
+                class="w-8 h-8"
+                data-slot="icon"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+                />
+              </svg>
+            </button>
+          </form>
+          <h3
+            class="font-bold text-lg mb-6"
+          >
+            Error
+          </h3>
+          <div
+            class="min-h-36 flex flex-col justify-center mx-auto"
+          />
+          <div
+            class="modal-action mx-auto"
+          >
+            <button
+              class="btn"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+        <form
+          class="modal-backdrop"
+          method="dialog"
+        >
+          <button>
+            close
+          </button>
+        </form>
+      </dialog>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="container flex flex-col mx-auto mb-8"
+    >
+      <div
+        class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
+      >
+        <div
+          class="navbar-start w-auto"
+        >
+          <div
+            class="dropdown"
+          >
+            <div
+              class="btn btn-ghost btn-circle"
+              role="button"
+              tabindex="0"
+            >
+              <svg
+                class="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M4 6h16M4 12h16M4 18h7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                />
+              </svg>
+            </div>
+            <ul
+              class="menu menu-md dropdown-content mt-3 z-[99]
+                                    p-2 shadow bg-base-300 rounded-box w-52"
+              tabindex="0"
+            >
+              <li>
+                <a>
+                  Overview
+                </a>
+              </li>
+              <li>
+                <a>
+                  Light mode
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
+          class="navbar-center mx-auto"
+        >
+          <div
+            class="dropdown dropdown-center"
+          >
+            <a
+              class="btn btn-ghost"
+              role="button"
+              style="font-size: 8px;"
+              tabindex="0"
+            >
+              Registration
+            </a>
+            <div
+              class="dropdown-content z-[1] flex"
+              tabindex="0"
+            />
+          </div>
+        </div>
+        <div
+          class="navbar-end w-auto invisible"
+        >
+          <div
+            class="btn btn-ghost btn-circle"
             role="button"
-            tabIndex={0}
+            tabindex="0"
           >
             <svg
-              className="h-5 w-5"
+              class="h-5 w-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -28,306 +399,264 @@ exports[`App matches snapshot 1`] = `
             >
               <path
                 d="M4 6h16M4 12h16M4 18h7"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
               />
             </svg>
           </div>
-          <ul
-            className="menu menu-md dropdown-content mt-3 z-[99]
-                                    p-2 shadow bg-base-300 rounded-box w-52"
-            tabIndex={0}
-          >
-            <li>
-              <a
-                onClick={[Function]}
-              >
-                Overview
-              </a>
-            </li>
-            <li>
-              <a
-                onClick={[Function]}
-              >
-                Light mode
-              </a>
-            </li>
-          </ul>
         </div>
       </div>
       <div
-        className="navbar-center mx-auto"
+        class="flex flex-col mx-8 md:w-1/2 md:mx-auto"
       >
         <div
-          className="dropdown dropdown-center"
+          aria-orientation="horizontal"
+          class="tab-group"
+          role="tablist"
         >
-          <a
-            className="btn btn-ghost"
-            role="button"
-            style={
-              {
-                "fontSize": "32px",
-              }
-            }
-            tabIndex={0}
+          <button
+            aria-controls="headlessui-tabs-panel-:r2:"
+            aria-selected="true"
+            class="tab-option tab-option-selected"
+            data-headlessui-state="selected"
+            id="headlessui-tabs-tab-:r0:"
+            role="tab"
+            tabindex="0"
+            type="button"
           >
-            Registration
-          </a>
+            Plant
+          </button>
+          <button
+            aria-controls="headlessui-tabs-panel-:r4:"
+            aria-selected="false"
+            class="tab-option "
+            data-headlessui-state=""
+            id="headlessui-tabs-tab-:r1:"
+            role="tab"
+            tabindex="-1"
+            type="button"
+          >
+            Tray
+          </button>
+        </div>
+        <div
+          class="my-8"
+        >
           <div
-            className="dropdown-content z-[1] flex"
-            tabIndex={0}
+            aria-labelledby="headlessui-tabs-tab-:r0:"
+            data-headlessui-state="selected"
+            id="headlessui-tabs-panel-:r2:"
+            role="tabpanel"
+            tabindex="0"
+          >
+            <form
+              id="plantDetails"
+            >
+              <label
+                class="form-control w-full"
+              >
+                <div
+                  class="label"
+                >
+                  <span
+                    class="label-text-alt"
+                  >
+                    Plant name
+                  </span>
+                </div>
+                <input
+                  class="input w-full input-bordered"
+                  name="name"
+                  type="text"
+                  value=""
+                />
+              </label>
+              <label
+                class="form-control w-full relative"
+              >
+                <div
+                  class="label"
+                >
+                  <span
+                    class="label-text-alt"
+                  >
+                    Plant species
+                  </span>
+                </div>
+                <input
+                  aria-autocomplete="list"
+                  aria-expanded="false"
+                  autocomplete="off"
+                  class="input w-full input-bordered"
+                  data-headlessui-state=""
+                  id="headlessui-combobox-input-:r3:"
+                  name="species"
+                  role="combobox"
+                  type="text"
+                  value=""
+                />
+              </label>
+              <label
+                class="form-control w-full"
+              >
+                <div
+                  class="label"
+                >
+                  <span
+                    class="label-text-alt"
+                  >
+                    Pot size
+                  </span>
+                </div>
+                <input
+                  class="input w-full input-bordered"
+                  max="36"
+                  min="1"
+                  name="pot_size"
+                  type="number"
+                  value=""
+                />
+              </label>
+              <label
+                class="form-control w-full"
+              >
+                <div
+                  class="label"
+                >
+                  <span
+                    class="label-text-alt"
+                  >
+                    Description
+                  </span>
+                </div>
+                <textarea
+                  class="textarea textarea-bordered"
+                  name="description"
+                />
+              </label>
+            </form>
+          </div>
+          <span
+            aria-hidden="true"
+            aria-labelledby="headlessui-tabs-tab-:r1:"
+            id="headlessui-tabs-panel-:r4:"
+            role="tabpanel"
+            style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px;"
+            tabindex="-1"
           />
         </div>
-      </div>
-      <div
-        className="navbar-end w-auto invisible"
-      >
-        <div
-          className="btn btn-ghost btn-circle"
-          role="button"
-          tabIndex={0}
+        <button
+          class="btn btn-accent mx-auto"
         >
-          <svg
-            className="h-5 w-5"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M4 6h16M4 12h16M4 18h7"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-            />
-          </svg>
-        </div>
+          Save
+        </button>
       </div>
     </div>
-    <div
-      className="flex flex-col mx-8 md:w-1/2 md:mx-auto"
+    <dialog
+      class="modal"
     >
       <div
-        aria-orientation="horizontal"
-        className="tab-group"
-        role="tablist"
+        class="modal-box text-center flex flex-col pt-4 "
       >
-        <button
-          aria-selected={true}
-          className="tab-option tab-option-selected"
-          data-headlessui-state="selected"
-          id="headlessui-tabs-tab-:r0:"
-          onClick={[Function]}
-          onKeyDown={[Function]}
-          onMouseDown={[Function]}
-          role="tab"
-          tabIndex={0}
-          type="button"
+        <form
+          method="dialog"
         >
-          Plant
-        </button>
-        <button
-          aria-selected={false}
-          className="tab-option "
-          data-headlessui-state=""
-          id="headlessui-tabs-tab-:r1:"
-          onClick={[Function]}
-          onKeyDown={[Function]}
-          onMouseDown={[Function]}
-          role="tab"
-          tabIndex={-1}
-          type="button"
-        >
-          Tray
-        </button>
-      </div>
-      <div
-        className="my-8"
-      >
-        <div
-          data-headlessui-state="selected"
-          id="headlessui-tabs-panel-:r2:"
-          role="tabpanel"
-          tabIndex={0}
-        >
-          <form
-            id="plantDetails"
+          <button
+            class="btn-close absolute right-4 top-4"
           >
-            <label
-              className="form-control w-full"
+            <svg
+              aria-hidden="true"
+              class="w-8 h-8"
+              data-slot="icon"
+              fill="currentColor"
+              viewBox="0 0 16 16"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <div
-                className="label"
-              >
-                <span
-                  className="label-text-alt"
-                >
-                  Plant name
-                </span>
-              </div>
-              <input
-                className="input w-full input-bordered"
-                defaultValue=""
-                name="name"
-                type="text"
+              <path
+                d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
               />
-            </label>
-            <label
-              className="form-control w-full relative"
-            >
-              <div
-                className="label"
-              >
-                <span
-                  className="label-text-alt"
-                >
-                  Plant species
-                </span>
-              </div>
-              <input
-                aria-autocomplete="list"
-                aria-expanded={false}
-                autoComplete="off"
-                className="input w-full input-bordered"
-                data-headlessui-state=""
-                disabled={false}
-                id="headlessui-combobox-input-:r3:"
-                name="species"
-                onBlur={[Function]}
-                onChange={[Function]}
-                onCompositionEnd={[Function]}
-                onCompositionStart={[Function]}
-                onFocus={[Function]}
-                onKeyDown={[Function]}
-                role="combobox"
-                type="text"
-              />
-            </label>
-            <label
-              className="form-control w-full"
-            >
-              <div
-                className="label"
-              >
-                <span
-                  className="label-text-alt"
-                >
-                  Pot size
-                </span>
-              </div>
-              <input
-                className="input w-full input-bordered"
-                defaultValue=""
-                max="36"
-                min="1"
-                name="pot_size"
-                type="number"
-              />
-            </label>
-            <label
-              className="form-control w-full"
-            >
-              <div
-                className="label"
-              >
-                <span
-                  className="label-text-alt"
-                >
-                  Description
-                </span>
-              </div>
-              <textarea
-                className="textarea textarea-bordered"
-                defaultValue=""
-                name="description"
-              />
-            </label>
-          </form>
-        </div>
-        <span
-          aria-hidden="true"
-          id="headlessui-tabs-panel-:r4:"
-          role="tabpanel"
-          style={
-            {
-              "borderWidth": "0",
-              "clip": "rect(0, 0, 0, 0)",
-              "height": 0,
-              "left": 1,
-              "margin": -1,
-              "overflow": "hidden",
-              "padding": 0,
-              "position": "fixed",
-              "top": 1,
-              "whiteSpace": "nowrap",
-              "width": 1,
-            }
-          }
-          tabIndex={-1}
+            </svg>
+          </button>
+        </form>
+        <h3
+          class="font-bold text-lg mb-6"
+        >
+          Error
+        </h3>
+        <div
+          class="min-h-36 flex flex-col justify-center mx-auto"
         />
+        <div
+          class="modal-action mx-auto"
+        >
+          <button
+            class="btn"
+          >
+            OK
+          </button>
+        </div>
       </div>
-      <button
-        className="btn btn-accent mx-auto"
-        onClick={[Function]}
-      >
-        Save
-      </button>
-    </div>
-  </div>,
-  <dialog
-    className="modal"
-  >
-    <div
-      className="modal-box text-center flex flex-col pt-4 "
-    >
       <form
+        class="modal-backdrop"
         method="dialog"
       >
-        <button
-          className="btn-close absolute right-4 top-4"
-        >
-          <svg
-            aria-hidden="true"
-            className="w-8 h-8"
-            data-slot="icon"
-            fill="currentColor"
-            viewBox="0 0 16 16"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
-            />
-          </svg>
+        <button>
+          close
         </button>
       </form>
-      <h3
-        className="font-bold text-lg mb-6"
-      >
-        Error
-      </h3>
-      <div
-        className="min-h-36 flex flex-col justify-center mx-auto"
-      />
-      <div
-        className="modal-action mx-auto"
-      >
-        <button
-          className="btn"
-          onClick={[Function]}
-        >
-          OK
-        </button>
-      </div>
-    </div>
-    <form
-      className="modal-backdrop"
-      method="dialog"
-    >
-      <button>
-        close
-      </button>
-    </form>
-  </dialog>,
-]
+    </dialog>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
 `;

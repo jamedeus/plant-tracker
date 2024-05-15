@@ -1,4 +1,3 @@
-import renderer from 'react-test-renderer';
 import createMockContext from 'src/testUtils/createMockContext';
 import App from '../App';
 import { ToastProvider } from 'src/context/ToastContext';
@@ -16,7 +15,7 @@ describe('App', () => {
         createMockContext('photo_urls', mockContext.photo_urls);
 
         // Render App, confirm matches snapshot
-        const component = renderer.create(
+        const component = render(
             <ThemeProvider>
                 <ToastProvider>
                     <ErrorModalProvider>
@@ -25,7 +24,6 @@ describe('App', () => {
                 </ToastProvider>
             </ThemeProvider>
         );
-        let tree = component.toJSON();
-        expect(tree).toMatchSnapshot();
+        expect(component).toMatchSnapshot();
     });
 });

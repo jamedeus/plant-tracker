@@ -1,5 +1,4 @@
 import createMockContext from 'src/testUtils/createMockContext';
-import renderer from 'react-test-renderer';
 import Timeline from '../Timeline';
 import { NoteModalProvider } from '../NoteModal';
 import { ToastProvider } from 'src/context/ToastContext';
@@ -12,7 +11,7 @@ describe('App', () => {
         createMockContext('notes', mockContext.notes);
 
         // Render Timeline, confirm matches snapshot
-        const component = renderer.create(
+        const component = render(
             <ErrorModalProvider>
                 <ToastProvider>
                     <NoteModalProvider>
@@ -25,7 +24,6 @@ describe('App', () => {
                 </ToastProvider>
             </ErrorModalProvider>
         );
-        let tree = component.toJSON();
-        expect(tree).toMatchSnapshot();
+        expect(component).toMatchSnapshot();
     });
 });
