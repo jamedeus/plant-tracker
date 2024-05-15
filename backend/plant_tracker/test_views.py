@@ -764,6 +764,32 @@ class PlantEventTests(TestCase):
         self.assertEqual(len(NoteEvent.objects.all()), 1)
         self.assertEqual(len(self.plant1.noteevent_set.all()), 1)
 
+    def test_edit_note_event(self):
+        # Create NoteEvent with no text, confirm exists
+        timestamp = timezone.now()
+        NoteEvent.objects.create(plant=self.plant1, timestamp=timestamp, text="")
+        self.assertEqual(len(self.plant1.noteevent_set.all()), 1)
+
+        # Call edit_plant_note endpoint, confirm response
+        payload = {
+            'plant_id': self.plant1.uuid,
+            'timestamp': timestamp.isoformat(),
+            'note_text': 'This is the text I forgot to add'
+        }
+        response = self.client.post('/edit_plant_note', payload)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {"action": "edit_note", "plant": str(self.plant1.uuid)}
+        )
+
+        # Confirm text of existing NoteEvent was updated
+        self.assertEqual(len(self.plant1.noteevent_set.all()), 1)
+        self.assertEqual(
+            NoteEvent.objects.get(timestamp=timestamp).text,
+            'This is the text I forgot to add'
+        )
+
     def test_delete_note_event(self):
         # Create NoteEvent, confirm exists
         timestamp = timezone.now()
@@ -1229,6 +1255,18 @@ class InvalidRequestTests(TestCase):
             'timestamp': timezone.now().isoformat()
         }
         response = self.client.post('/delete_plant_note', payload)
+
+        # Confirm correct error
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json(), {"error": "note not found"})
+
+        # Call edit_plant_event endpoint with a timestamp that doesn't exist
+        payload = {
+            'plant_id': self.test_plant.uuid,
+            'timestamp': timezone.now().isoformat(),
+            'note_text': 'forgot to add this to my note'
+        }
+        response = self.client.post('/edit_plant_note', payload)
 
         # Confirm correct error
         self.assertEqual(response.status_code, 404)

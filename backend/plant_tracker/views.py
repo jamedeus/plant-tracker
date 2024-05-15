@@ -436,6 +436,22 @@ def add_plant_note(plant, timestamp, data):
         )
 
 
+@requires_json_post(["plant_id", "timestamp", "note_text"])
+@get_plant_from_post_body
+@get_timestamp_from_post_body
+def edit_plant_note(plant, timestamp, data):
+    '''Overwrites text of an existing NoteEvent with the specified timestamp
+    Requires JSON POST with plant_id (uuid), timestamp, and note_text keys
+    '''
+    try:
+        event = NoteEvent.objects.get(plant=plant, timestamp=timestamp)
+        event.text = data["note_text"]
+        event.save()
+        return JsonResponse({"action": "edit_note", "plant": plant.uuid}, status=200)
+    except NoteEvent.DoesNotExist:
+        return JsonResponse({"error": "note not found"}, status=404)
+
+
 @requires_json_post(["plant_id", "timestamp"])
 @get_plant_from_post_body
 @get_timestamp_from_post_body
