@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { parseDomContext } from 'src/util';
-import Cookies from 'js-cookie';
+import { parseDomContext, sendPostRequest } from 'src/util';
 import Modal from 'src/components/Modal';
 import { DateTime } from 'luxon';
 import DatetimeInput from 'src/components/DatetimeInput';
@@ -108,22 +107,13 @@ const NoteModal = ({ plantID }) => {
     const { showErrorModal } = useErrorModal();
 
     const handleSubmit = async () => {
-        // Build payload
+        // Build payload, post to backend
         const payload = {
             plant_id: plantID,
             timestamp: timestampRef.current.value,
             note_text: noteText
         };
-
-        // Post to backend
-        const response = await fetch('/add_plant_note', {
-            method: 'POST',
-            body: JSON.stringify(payload),
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                "X-CSRFToken": Cookies.get('csrftoken')
-            }
-        });
+        const response = await sendPostRequest('/add_plant_note', payload);
 
         if (response.ok) {
             // Update state with new note, close modal
@@ -146,22 +136,13 @@ const NoteModal = ({ plantID }) => {
     };
 
     const handleEdit = async () => {
-        // Build payload
+        // Build payload, post to backend
         const payload = {
             plant_id: plantID,
             timestamp: noteTime,
             note_text: noteText
         };
-
-        // Post to backend
-        const response = await fetch('/edit_plant_note', {
-            method: 'POST',
-            body: JSON.stringify(payload),
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                "X-CSRFToken": Cookies.get('csrftoken')
-            }
-        });
+        const response = await sendPostRequest('/edit_plant_note', payload);
 
         if (response.ok) {
             // Update text in note state, close modal
@@ -175,21 +156,12 @@ const NoteModal = ({ plantID }) => {
     };
 
     const handleDelete = async () => {
-        // Build payload
+        // Build payload, post to backend
         const payload = {
             plant_id: plantID,
             timestamp: noteTime
         };
-
-        // Post to backend
-        const response = await fetch('/delete_plant_note', {
-            method: 'POST',
-            body: JSON.stringify(payload),
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                "X-CSRFToken": Cookies.get('csrftoken')
-            }
-        });
+        const response = await sendPostRequest('/delete_plant_note', payload);
 
         if (response.ok) {
             // Remove note from state, close modal

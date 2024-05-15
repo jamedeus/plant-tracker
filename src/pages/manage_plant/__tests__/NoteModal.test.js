@@ -3,6 +3,7 @@ import createMockContext from 'src/testUtils/createMockContext';
 import NoteModal, { NoteModalProvider, useNoteModal } from '../NoteModal';
 import { ToastProvider } from 'src/context/ToastContext';
 import { ErrorModalProvider } from 'src/context/ErrorModalContext';
+import { postHeaders } from 'src/testUtils/headers';
 
 const TestComponent = () => {
     const { openNoteModal } = useNoteModal();
@@ -72,10 +73,7 @@ describe('Add new note', () => {
         expect(fetch).toHaveBeenCalledWith('/add_plant_note', {
             method: 'POST',
             body: expect.any(String),
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'X-CSRFToken': undefined,
-            }
+            headers: postHeaders
         });
     });
 
@@ -170,10 +168,7 @@ describe('Edit existing note', () => {
                 plant_id: '0640ec3b-1bed-4b15-a078-d6e7ec66be12',
                 timestamp: '2024-02-13T12:00:00'
             }),
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'X-CSRFToken': undefined,
-            }
+            headers: postHeaders
         });
     });
 
@@ -203,10 +198,7 @@ describe('Edit existing note', () => {
                 timestamp: '2024-02-13T12:00:00',
                 note_text: 'this is an existing note some more details'
             }),
-            headers: {
-                'Accept': 'application/json, text/plain, */*',
-                'X-CSRFToken': undefined,
-            }
+            headers: postHeaders
         });
     });
 
