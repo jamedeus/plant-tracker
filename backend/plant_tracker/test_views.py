@@ -959,7 +959,7 @@ class PlantEventTests(TestCase):
             response.json()["urls"],
             [
                 {
-                    "created": "2024-03-22T10:52:03",
+                    "created": "2024-03-22T10:52:03+00:00",
                     "image": "/media/images/mock_photo.jpg",
                     "thumbnail": "/media/thumbnails/mock_photo_thumb.jpg",
                     "key": 1

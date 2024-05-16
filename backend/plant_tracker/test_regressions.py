@@ -194,6 +194,53 @@ class ViewRegressionTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(Photo.objects.all()), 0)
 
+    @override_settings(MEDIA_ROOT=os.path.join(TEST_DIR, 'data', 'images'))
+    def test_add_plant_photos_returns_timestamp_with_no_timezone(self):
+        '''Issue: add_plant_photos returned a strftime string with no timezone,
+        which is not the same format as manage_plant state. This could cause
+        photos to appear on wrong timeline day when merged with existing state.
+
+        The database stores all timestamps as UTC, frontend converts to user's
+        timezone. If the frontend receives a timestamps with no timezone luxon
+        assumes it is already in the current timezone. This caused photos taken
+        after 4pm PST (after midnight UTC) to appear on next timeline day.
+
+        The add_plant_photos response now uses the same format as manage_plant.
+        '''
+
+        test_plant = Plant.objects.create(uuid=uuid4())
+
+        # Create photos with and without exif creation times
+        with_exif = create_mock_photo(
+            creation_time='2024:03:21 10:52:03',
+            timezone='-07:00',
+            name='both.jpg'
+        )
+        no_exif = create_mock_photo()
+
+        # Post both photos to add_plant_photos endpoint
+        data = {
+            'plant_id': str(test_plant.uuid),
+            'photo_0': with_exif,
+            'photo_1': no_exif
+        }
+        response = self.client.post(
+            '/add_plant_photos',
+            data=data,
+            content_type=MULTIPART_CONTENT
+        )
+
+        # Confirm both timestamp strings have timezone offset
+        photo_urls = response.json()["urls"]
+        self.assertRegex(
+            photo_urls[0]["created"],
+            r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?\+\d{2}:\d{2}'
+        )
+        self.assertRegex(
+            photo_urls[1]["created"],
+            r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?\+\d{2}:\d{2}'
+        )
+
 
 class ViewDecoratorRegressionTests(TestCase):
     def setUp(self):
