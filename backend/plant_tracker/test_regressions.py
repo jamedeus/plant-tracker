@@ -4,8 +4,9 @@ from uuid import uuid4
 from types import NoneType
 from datetime import datetime
 
-from django.test import TestCase
+from django.test.client import MULTIPART_CONTENT
 from django.core.exceptions import ValidationError
+from django.test import TestCase, override_settings
 
 from .models import (
     Tray,
@@ -61,6 +62,7 @@ class ModelRegressionTests(TestCase):
         self.assertEqual(len(Plant.objects.all()), 1)
         self.assertEqual(len(Tray.objects.all()), 1)
 
+    @override_settings(MEDIA_ROOT=os.path.join(TEST_DIR, 'data', 'images'))
     def test_photos_with_no_exif_data_should_set_created_time_to_upload_time(self):
         '''Issue: The created field is populated in the save method using a
         timestamp parsed from exif data, or with the current time if the exif
@@ -160,6 +162,7 @@ class ViewRegressionTests(TestCase):
         )
         self.assertEqual(len(plant.repotevent_set.all()), 1)
 
+    @override_settings(MEDIA_ROOT=os.path.join(TEST_DIR, 'data', 'images'))
     def test_delete_plant_photos_fails_due_to_duplicate_creation_times(self):
         '''Issue: delete_plant_photos looked up photos in the database using a
         plant UUID and creation timestamp. If multiple photos of the same plant

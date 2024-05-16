@@ -4,9 +4,8 @@ from uuid import uuid4
 from datetime import datetime, timedelta
 
 from django.utils import timezone
-from django.test import TestCase
-from django.test import override_settings
 from django.core.exceptions import ValidationError
+from django.test import TestCase, override_settings
 
 from .models import (
     Tray,
@@ -354,7 +353,6 @@ class PhotoModelTests(TestCase):
             photo=create_mock_photo('2024:03:21 10:52:03', 'photo1.jpg'),
             plant=self.plant
         )
-
 
     def tearDown(self):
         # Delete mock photos between tests to prevent duplicate names (django
