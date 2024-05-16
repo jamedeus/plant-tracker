@@ -4,6 +4,7 @@ from uuid import uuid4
 from types import NoneType
 from datetime import datetime
 
+from django.utils import timezone
 from django.test.client import MULTIPART_CONTENT
 from django.core.exceptions import ValidationError
 from django.test import TestCase, override_settings
@@ -95,7 +96,7 @@ class ViewRegressionTests(TestCase):
         plant1 = Plant.objects.create(uuid=uuid4())
         plant2 = Plant.objects.create(uuid=uuid4())
         plant3 = Plant.objects.create(uuid=uuid4())
-        timestamp = datetime.now()
+        timestamp = timezone.now()
         WaterEvent.objects.create(plant=plant2, timestamp=timestamp)
 
         # Confirm 1 WaterEvent exists, plant2 has event, plants 1 and 3 do not
@@ -142,7 +143,7 @@ class ViewRegressionTests(TestCase):
 
         # Create test plant with 1 RepotEvent
         plant = Plant.objects.create(uuid=uuid4())
-        timestamp = datetime.now()
+        timestamp = timezone.now()
         RepotEvent.objects.create(plant=plant, timestamp=timestamp)
         self.assertEqual(len(plant.repotevent_set.all()), 1)
 

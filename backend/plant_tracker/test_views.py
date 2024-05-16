@@ -3,7 +3,6 @@ import json
 import base64
 import shutil
 from uuid import uuid4
-from datetime import datetime
 
 from django.conf import settings
 from django.utils import timezone
@@ -1171,7 +1170,7 @@ class InvalidRequestTests(TestCase):
 
     def test_duplicate_event_timestamp(self):
         # Create WaterEvent manually, then attempt to create with API call
-        timestamp = datetime.now()
+        timestamp = timezone.now()
         WaterEvent.objects.create(plant=self.test_plant, timestamp=timestamp)
         self.assertEqual(len(WaterEvent.objects.all()), 1)
         response = self.client.post(
@@ -1192,7 +1191,7 @@ class InvalidRequestTests(TestCase):
 
     def test_duplicate_note_timestamp(self):
         # Create NoteEvent manually, then attempt to create with API call
-        timestamp = datetime.now()
+        timestamp = timezone.now()
         NoteEvent.objects.create(plant=self.test_plant, timestamp=timestamp)
         self.assertEqual(len(NoteEvent.objects.all()), 1)
         response = self.client.post(

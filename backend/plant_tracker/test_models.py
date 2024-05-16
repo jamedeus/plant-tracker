@@ -1,7 +1,7 @@
 import os
 import shutil
 from uuid import uuid4
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from django.utils import timezone
 from django.core.exceptions import ValidationError
@@ -287,7 +287,7 @@ class TrayModelTests(TestCase):
         self.assertEqual(len(self.plant3.waterevent_set.all()), 0)
 
         # Call water_all, plants in tray should have water event, other plant should not
-        self.test_tray.water_all(datetime.fromisoformat('2024-02-06T03:06:26+00:00'))
+        self.test_tray.water_all(timezone.datetime.fromisoformat('2024-02-06T03:06:26+00:00'))
         self.assertEqual(len(self.plant1.waterevent_set.all()), 1)
         self.assertEqual(len(self.plant2.waterevent_set.all()), 1)
         self.assertEqual(len(self.plant3.waterevent_set.all()), 0)
@@ -299,7 +299,7 @@ class TrayModelTests(TestCase):
         self.assertEqual(len(self.plant3.fertilizeevent_set.all()), 0)
 
         # Call water_all, plants in tray should have fertilize event, other plant should not
-        self.test_tray.fertilize_all(datetime.fromisoformat('2024-02-06T03:06:26+00:00'))
+        self.test_tray.fertilize_all(timezone.datetime.fromisoformat('2024-02-06T03:06:26+00:00'))
         self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 1)
         self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 1)
         self.assertEqual(len(self.plant3.fertilizeevent_set.all()), 0)
@@ -347,7 +347,7 @@ class PhotoModelTests(TestCase):
     @override_settings(MEDIA_ROOT=os.path.join(TEST_DIR, 'data', 'images'))
     def setUp(self):
         self.plant = Plant.objects.create(uuid=uuid4())
-        self.timestamp = datetime.now()
+        self.timestamp = timezone.now()
 
         self.photo = Photo.objects.create(
             photo=create_mock_photo('2024:03:21 10:52:03', 'photo1.jpg'),
@@ -420,7 +420,7 @@ class PhotoModelTests(TestCase):
 class EventModelTests(TestCase):
     def setUp(self):
         self.plant = Plant.objects.create(uuid=uuid4())
-        self.timestamp = datetime.now()
+        self.timestamp = timezone.now()
 
     def test_str_method(self):
         # Create test events
