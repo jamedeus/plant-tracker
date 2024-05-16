@@ -224,7 +224,7 @@ describe('App', () => {
             body: JSON.stringify({
                 "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
                 "new_pot_size": 6,
-                "timestamp": "2024-03-01T12:00"
+                "timestamp": "2024-03-01T20:00:00.000Z"
             }),
             headers: postHeaders
         });
@@ -261,7 +261,7 @@ describe('App', () => {
             body: JSON.stringify({
                 "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
                 "new_pot_size": 5,
-                "timestamp": "2024-03-01T12:00"
+                "timestamp": "2024-03-01T20:00:00.000Z"
             }),
             headers: postHeaders
         });

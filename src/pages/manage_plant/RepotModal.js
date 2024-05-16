@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { RadioGroup } from '@headlessui/react';
 import Modal from 'src/components/Modal';
 import DatetimeInput from 'src/components/DatetimeInput';
-import { sendPostRequest } from 'src/util';
+import { sendPostRequest, localToUTC } from 'src/util';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 
 let repotModalRef;
@@ -66,7 +66,7 @@ const RepotModal = ({ plantID, currentPotSize, handleRepot }) => {
         const payload = {
             plant_id: plantID,
             new_pot_size: null,
-            timestamp: repotTimeRef.current.value
+            timestamp: localToUTC(repotTimeRef.current.value)
         };
 
         // Selected will be integer value of chosen option, or "custom" if the
