@@ -13,20 +13,21 @@ class JSONClient(Client):
         return super().post(path, data, content_type, **extra)
 
 
-def create_mock_photo(creation_time=None, name='mock_photo.jpg'):
+def create_mock_photo(creation_time=None, name='mock_photo.jpg', timezone=None):
     '''Creates a mock JPG in memory with exif DateTimeOriginal parameter
     Takes DateTimeOriginal string (required) and filename string (optional)
     '''
     mock_photo = BytesIO()
     image = Image.new('RGB', (1, 1), color='white')
 
-    # Add creation time if arg passed
-    if creation_time:
-        exif_bytes = piexif.dump({
-            'Exif': {
-                36867: creation_time.encode(),
-            }
-        })
+    # Add creation time and/or timezone if args passed
+    if creation_time or timezone:
+        exif_params = {'Exif': {}}
+        if creation_time:
+            exif_params['Exif'][36867] = creation_time.encode()
+        if timezone:
+            exif_params['Exif'][36881] = timezone.encode()
+        exif_bytes = piexif.dump(exif_params)
         image.save(mock_photo, format='JPEG', exif=exif_bytes)
     else:
         image.save(mock_photo, format='JPEG')

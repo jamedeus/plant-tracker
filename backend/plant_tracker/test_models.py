@@ -370,6 +370,52 @@ class PhotoModelTests(TestCase):
             "Unnamed plant 1 - 2024:03:21 10:52:03 - photo1.jpg"
         )
 
+    @override_settings(MEDIA_ROOT=os.path.join(TEST_DIR, 'data', 'images'))
+    def test_sets_correct_created_timestamp(self):
+        # Create mock photo with DateTime and OffsetTime exif params
+        both_exif_params = Photo.objects.create(
+            plant=self.plant,
+            photo=create_mock_photo(
+                creation_time='2024:03:21 10:52:03',
+                timezone='-07:00',
+                name='both.jpg'
+            )
+        )
+
+        # Confirm created timestamp was converted from -07:00 to UTC
+        self.assertEqual(
+            both_exif_params.created.isoformat(),
+            '2024-03-21T17:52:03+00:00'
+        )
+
+        # Create mock photo with DateTime param but no OffsetTime
+        only_datetime_param = Photo.objects.create(
+            plant=self.plant,
+            photo=create_mock_photo(
+                creation_time='2024:03:21 10:52:03',
+                name='both.jpg'
+            )
+        )
+
+        # Confirm timestamp is unchanged, UTC timezone is added
+        self.assertEqual(
+            only_datetime_param.created.isoformat(),
+            '2024-03-21T10:52:03+00:00'
+        )
+
+        # Create mock photo with no exif data
+        no_exif_data = Photo.objects.create(
+            plant=self.plant,
+            photo=create_mock_photo()
+        )
+
+        # Confirm timestamp matches current time in UTC, has timezone offset
+        # (ignore seconds to reduce change of false negatives)
+        self.assertEqual(
+            no_exif_data.created.strftime('%Y:%m:%d %H:%M +z'),
+            timezone.now().strftime('%Y:%m:%d %H:%M +z')
+        )
+
 
 class EventModelTests(TestCase):
     def setUp(self):

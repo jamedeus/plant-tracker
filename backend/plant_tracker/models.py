@@ -1,13 +1,13 @@
 from io import BytesIO
-from datetime import datetime
+from datetime import datetime, timezone
 
 from PIL import Image, ImageOps
 from django.db import models
 from django.conf import settings
-from django.utils import timezone
 from django.core.cache import cache
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
+from django.utils import timezone as django_timezone
 from django.db.models.signals import post_save, post_delete
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -365,16 +365,30 @@ class Photo(models.Model):
             exif_data = Image.open(self.photo)._getexif()
 
             if exif_data:
-                # Write Date/Time Original parameter to created field
+                # Parse Date/Time Original and Offset Time Original parameters
                 datetime_original = exif_data.get(36867)
-                if datetime_original:
-                    self.created = datetime.strptime(datetime_original, TIME_FORMAT)
-                # Default to current time if exif param not found
+                offset_original = exif_data.get(36881)
+
+                # If both found parse as original timezone + convert to UTC
+                if datetime_original and offset_original:
+                    # Remove colon if present (not supported by strptime)
+                    timestamp = datetime.strptime(
+                        f"{datetime_original} {offset_original.replace(':', '')}",
+                        f"{TIME_FORMAT} %z"
+                    )
+                    self.created = timestamp.astimezone(timezone.utc)
+
+                # If offset not found parse as UTC
+                elif datetime_original:
+                    timestamp = datetime.strptime(datetime_original, TIME_FORMAT)
+                    self.created = timestamp.astimezone(timezone.utc)
+
+                # Default to current time if neither exif param found
                 else:
-                    self.created = timezone.now()
+                    self.created = django_timezone.now()
             # Default to current time if no exif data found
             else:
-                self.created = timezone.now()
+                self.created = django_timezone.now()
 
         super().save(*args, **kwargs)
 
