@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { parseDomContext, sendPostRequest } from 'src/util';
+import { parseDomContext, sendPostRequest, localToUTC } from 'src/util';
 import Modal from 'src/components/Modal';
 import { DateTime } from 'luxon';
 import DatetimeInput from 'src/components/DatetimeInput';
@@ -110,7 +110,7 @@ const NoteModal = ({ plantID }) => {
         // Build payload, post to backend
         const payload = {
             plant_id: plantID,
-            timestamp: timestampRef.current.value,
+            timestamp: localToUTC(timestampRef.current.value),
             note_text: noteText
         };
         const response = await sendPostRequest('/add_plant_note', payload);

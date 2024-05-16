@@ -72,7 +72,11 @@ describe('Add new note', () => {
         // Confirm correct data posted to /add_plant_note endpoint
         expect(fetch).toHaveBeenCalledWith('/add_plant_note', {
             method: 'POST',
-            body: expect.any(String),
+            body: JSON.stringify({
+                plant_id: '0640ec3b-1bed-4b15-a078-d6e7ec66be12',
+                timestamp: '2024-03-01T20:00:00.000Z',
+                note_text: 'Some leaves turning yellow, probably watering too often'
+            }),
             headers: postHeaders
         });
     });
