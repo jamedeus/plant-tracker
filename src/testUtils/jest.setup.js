@@ -16,6 +16,13 @@ beforeAll(() => {
     global.within = within;
     global.userEvent = userEvent;
 
+    // Mock method called when window.location.href set
+    Object.defineProperty(window, 'location', {
+        value: {
+            assign: jest.fn(),
+        },
+    });
+
     // Mock DataTransfer and DataTransferItemList objects
     const mockDataTransferItemList = {
         items: [],

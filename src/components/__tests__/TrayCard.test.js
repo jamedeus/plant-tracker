@@ -36,12 +36,6 @@ describe('App', () => {
     });
 
     it('redirects to manage tray page when clicked', async () => {
-        Object.defineProperty(window, 'location', {
-            value: {
-                assign: jest.fn(),
-            },
-        });
-
         // Click inside div, confirm redirected to manage page
         await user.click(component.getByText('Test Tray'));
         expect(window.location.href).toBe(
