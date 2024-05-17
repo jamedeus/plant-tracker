@@ -324,6 +324,5 @@ describe('App', () => {
         // Click overview dropdown option, confirm redirected
         await user.click(app.getByText('Overview'));
         expect(window.location.href).toBe('/');
-        jest.resetAllMocks();
     });
 });

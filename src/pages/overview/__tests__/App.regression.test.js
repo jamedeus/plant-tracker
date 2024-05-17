@@ -24,9 +24,6 @@ describe('App', () => {
                 </ErrorModalProvider>
             </ThemeProvider>
         );
-
-        // Reset all mocks to isolate tests
-        jest.resetAllMocks();
     });
 
     // Original bug: Plant and Tray filter inputs included results where the

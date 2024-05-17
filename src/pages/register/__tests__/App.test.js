@@ -24,9 +24,6 @@ describe('App', () => {
             </ThemeProvider>
         );
         user = userEvent.setup();
-
-        // Reset all mocks to isolate tests
-        jest.resetAllMocks();
     });
 
     it('shows the correct form when buttons are clicked', async () => {
@@ -153,7 +150,6 @@ describe('App', () => {
         // Click overview dropdown option, confirm redirected
         await user.click(app.getByText('Overview'));
         expect(window.location.href).toBe('/');
-        jest.resetAllMocks();
     });
 
     it('shows unexpected API response in error modal', async () => {

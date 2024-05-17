@@ -66,9 +66,6 @@ describe('App', () => {
             />
         );
         user = userEvent.setup();
-
-        // Reset all mocks to isolate tests
-        jest.resetAllMocks();
     });
 
     it('renders a card for each item in contents', () => {

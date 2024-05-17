@@ -20,7 +20,6 @@ const TestComponent = () => {
             <button onClick={closeModal}>Close Modal</button>
         </>
     );
-
 };
 
 describe('App', () => {
@@ -38,9 +37,6 @@ describe('App', () => {
             <TestComponent />
         );
         user = userEvent.setup();
-
-        // Reset all mocks to isolate tests
-        jest.resetAllMocks();
     });
 
     it('makes request and opens print dialog when small QR codes requested', async () => {

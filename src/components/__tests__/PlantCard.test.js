@@ -51,7 +51,6 @@ describe('PlantCard with water event', () => {
         expect(window.location.href).toBe(
             '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
         );
-        jest.resetAllMocks();
     });
 
     it('shows water icon and time since the plant was last watered', () => {

@@ -15,9 +15,6 @@ describe('App', () => {
             />
         );
         user = userEvent.setup();
-
-        // Reset all mocks to isolate tests
-        jest.resetAllMocks();
     });
 
     it('shows the correct information', () => {
@@ -50,6 +47,5 @@ describe('App', () => {
         expect(window.location.href).toBe(
             '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
         );
-        jest.resetAllMocks();
     });
 });

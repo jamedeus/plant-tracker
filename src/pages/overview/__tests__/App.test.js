@@ -26,9 +26,6 @@ describe('App', () => {
             </ThemeProvider>
         );
         user = userEvent.setup();
-
-        // Reset all mocks to isolate tests
-        jest.resetAllMocks();
     });
 
     it('opens modal when Print QR Codes dropdown option clicked', async () => {

@@ -5,6 +5,12 @@ import 'src/testUtils/dateMock';
 import { DateTime } from 'src/testUtils/luxonMock';
 
 beforeAll(() => {
+    // Mock methods not implemented in jsdom
+    HTMLDialogElement.prototype.show = jest.fn();
+    HTMLDialogElement.prototype.showModal = jest.fn();
+    HTMLDialogElement.prototype.close = jest.fn();
+    window.HTMLElement.prototype.scrollIntoView = jest.fn();
+
     // Make available in all tests
     global.render = render;
     global.within = within;
@@ -33,9 +39,6 @@ beforeAll(() => {
 });
 
 beforeEach(() => {
-    // Mock methods not implemented in jsdom
-    HTMLDialogElement.prototype.show = jest.fn();
-    HTMLDialogElement.prototype.showModal = jest.fn();
-    HTMLDialogElement.prototype.close = jest.fn();
-    window.HTMLElement.prototype.scrollIntoView = jest.fn();
-})
+    // Reset number of calls for each mock to isolate test
+    jest.clearAllMocks();
+});
