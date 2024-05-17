@@ -28,6 +28,16 @@ export const mockContext = {
             "last_fertilized": "2024-03-01T05:45:44+00:00",
             "thumbnail": "/media/thumbnails/photo_thumb.jpg"
         },
+        {
+            "name": "Newest plant",
+            "uuid": "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16",
+            "species": "null",
+            "description": null,
+            "pot_size": null,
+            "last_watered": null,
+            "last_fertilized": null,
+            "thumbnail": null
+        },
     ],
     "options": [
         {

@@ -67,7 +67,8 @@ describe('App', () => {
                 "action": "water",
                 "plants": [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                    "19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
+                    "19f65fa0-1c75-4cba-b590-0c9b5b315fcc",
+                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                 ],
                 "failed": []
             })
@@ -83,7 +84,8 @@ describe('App', () => {
             body: JSON.stringify({
                 "plants": [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                    "19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
+                    "19f65fa0-1c75-4cba-b590-0c9b5b315fcc",
+                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                 ],
                 "event_type": "water",
                 "timestamp": "2024-03-01T20:00:00.000Z"
@@ -100,7 +102,8 @@ describe('App', () => {
                 "action": "fertilize",
                 "plants": [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                    "19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
+                    "19f65fa0-1c75-4cba-b590-0c9b5b315fcc",
+                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                 ],
                 "failed": []
             })
@@ -116,7 +119,8 @@ describe('App', () => {
             body: JSON.stringify({
                 "plants": [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                    "19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
+                    "19f65fa0-1c75-4cba-b590-0c9b5b315fcc",
+                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                 ],
                 "event_type": "fertilize",
                 "timestamp": "2024-03-01T20:00:00.000Z"
@@ -127,7 +131,7 @@ describe('App', () => {
 
     it('shows checkboxes and event buttons when Manage button is clicked', async () => {
         // Get reference to plants column
-        const plantsCol = app.getByText("Plants (2)").parentElement;
+        const plantsCol = app.getByText("Plants (3)").parentElement;
         // Confirm Water, Fertilize, and Cancel buttons are not visible
         expect(within(plantsCol).queryByText('Water')).toBeNull();
         expect(within(plantsCol).queryByText('Fertilize')).toBeNull();
@@ -146,7 +150,7 @@ describe('App', () => {
         expect(within(plantsCol).getByText('Cancel').nodeName).toBe('BUTTON');
         expect(within(plantsCol).getAllByRole('checkbox')
             .filter(button => button.classList.contains('radio')).length
-        ).toBe(2);
+        ).toBe(3);
         expect(app.queryByTestId('addEventTimeInput')).not.toBeNull();
 
         // Click cancel button, confirm elements disappear
@@ -174,7 +178,7 @@ describe('App', () => {
         }));
 
         // Get reference to plants column
-        const plantsCol = app.getByText("Plants (2)").parentElement;
+        const plantsCol = app.getByText("Plants (3)").parentElement;
 
         // Click Manage button under plants, select first plant, click water
         await user.click(within(plantsCol).getByText("Manage"));
@@ -210,7 +214,7 @@ describe('App', () => {
         }));
 
         // Get reference to plants column
-        const plantsCol = app.getByText("Plants (2)").parentElement;
+        const plantsCol = app.getByText("Plants (3)").parentElement;
 
         // Click Manage button under plants, select second plant, click fertilize
         await user.click(within(plantsCol).getByText("Manage"));
@@ -251,6 +255,10 @@ describe('App', () => {
         const addPlantsModal = app.getByText("Add Plants").parentElement;
         expect(addPlantsModal.children[2].children.length).toBe(2);
 
+        // Click the second option twice (unselect, should not be in payload)
+        await user.click(addPlantsModal.querySelectorAll('.radio')[1]);
+        await user.click(addPlantsModal.querySelectorAll('.radio')[1]);
+
         // Select the first plant option, click Add button
         await user.click(addPlantsModal.querySelectorAll('.radio')[0]);
         await user.click(addPlantsModal.querySelector('.btn-success'));
@@ -284,9 +292,9 @@ describe('App', () => {
         // Click Remove plants dropdown option
         await user.click(app.getByText("Remove plants"));
 
-        // Get reference to modal, confirm contains 2 plant options
+        // Get reference to modal, confirm contains 3 plant options
         const addPlantsModal = app.getByText("Remove Plants").parentElement;
-        expect(addPlantsModal.children[2].children.length).toBe(2);
+        expect(addPlantsModal.children[2].children.length).toBe(3);
 
         // Select the first plant option, click Remove button
         await user.click(addPlantsModal.querySelectorAll('.radio')[0]);

@@ -85,6 +85,22 @@ describe('App', () => {
         )).toBeNull();
     });
 
+    it('expands/collapses note text when clicked', async () => {
+        // Get reference to note div, confirm is collapsed (default)
+        const note = within(app.container.querySelector('.grid')).queryByText(
+            'Fertilized with dilute 10-15-10 liquid fertilizer'
+        );
+        expect(note.parentElement.classList).toContain('line-clamp-1');
+
+        // Click note, confirm expanded (line clamp class removed)
+        await user.click(note);
+        expect(note.parentElement.classList).not.toContain('line-clamp-1');
+
+        // Click again, confirm collapsed (line clamp class added)
+        await user.click(note);
+        expect(note.parentElement.classList).toContain('line-clamp-1');
+    });
+
     it('opens note modal when add note dropdown option is clicked', async () => {
         // Click dropdown option, confirm HTMLDialogElement method was called
         await user.click(app.getByText('Add note'));

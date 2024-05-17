@@ -12,7 +12,7 @@ exports[`App matches snapshot 1`] = `
     <div
       id="details"
     >
-      [{"name":"Test Plant","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be12","species":"Calathea","description":"This is a plant with a long description with","pot_size":4,"last_watered":"2024-03-01T05:45:44+00:00","last_fertilized":"2024-03-01T05:45:44+00:00","thumbnail":null},{"name":"Unnamed Spider Plant","uuid":"19f65fa0-1c75-4cba-b590-0c9b5b315fcc","species":"Spider Plant","description":null,"pot_size":2,"last_watered":"2024-03-01T05:45:44+00:00","last_fertilized":"2024-03-01T05:45:44+00:00","thumbnail":"/media/thumbnails/photo_thumb.jpg"}]
+      [{"name":"Test Plant","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be12","species":"Calathea","description":"This is a plant with a long description with","pot_size":4,"last_watered":"2024-03-01T05:45:44+00:00","last_fertilized":"2024-03-01T05:45:44+00:00","thumbnail":null},{"name":"Unnamed Spider Plant","uuid":"19f65fa0-1c75-4cba-b590-0c9b5b315fcc","species":"Spider Plant","description":null,"pot_size":2,"last_watered":"2024-03-01T05:45:44+00:00","last_fertilized":"2024-03-01T05:45:44+00:00","thumbnail":"/media/thumbnails/photo_thumb.jpg"},{"name":"Newest plant","uuid":"26a9fc1f-ef04-4b0f-82ca-f14133fa3b16","species":"null","description":null,"pot_size":null,"last_watered":null,"last_fertilized":null,"thumbnail":null}]
     </div>
     <div
       id="options"
@@ -196,7 +196,7 @@ exports[`App matches snapshot 1`] = `
           <div
             class="collapse-title text-xl font-medium text-center"
           >
-            Plants (2)
+            Plants (3)
           </div>
           <div
             class="collapse-content min-w-0"
@@ -441,6 +441,98 @@ exports[`App matches snapshot 1`] = `
                     >
                       2
                     </span>
+                  </p>
+                  <div
+                    class="hidden"
+                  >
+                    <p
+                      class="font-semibold mt-3"
+                    >
+                      Description:
+                    </p>
+                    <p
+                      class="text-sm line-clamp-6"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="mb-4"
+            >
+              <div
+                class="card card-side bg-neutral text-neutral-content mx-auto relative
+                     cursor-pointer"
+              >
+                <div
+                  class="card-body text-center cursor-default"
+                >
+                  <h2
+                    class="card-title mx-auto px-8 line-clamp-1"
+                  >
+                    Newest plant
+                  </h2>
+                  <span>
+                    Never watered
+                  </span>
+                </div>
+                <button
+                  class="btn-close absolute right-2 top-8 z-40"
+                  role="button"
+                  tabindex="0"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="w-8 h-8"
+                    data-slot="icon"
+                    fill="currentColor"
+                    viewBox="0 0 16 16"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      clip-rule="evenodd"
+                      d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                      fill-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <div
+                class="collapse bg-neutral rounded-t-none cursor-default
+                "
+              >
+                <input
+                  class="hidden"
+                  type="checkbox"
+                />
+                <div
+                  class="collapse-content"
+                >
+                  <p
+                    class="flex"
+                  >
+                    <span
+                      class="font-semibold"
+                    >
+                      Species:
+                    </span>
+                    <span
+                      class="ml-auto text-right"
+                    >
+                      null
+                    </span>
+                  </p>
+                  <p
+                    class="hidden"
+                  >
+                    <span
+                      class="font-semibold"
+                    >
+                      Pot size:
+                    </span>
+                    <span
+                      class="ml-auto text-right"
+                    />
                   </p>
                   <div
                     class="hidden"
@@ -1126,6 +1218,110 @@ exports[`App matches snapshot 1`] = `
                   </div>
                 </div>
               </div>
+              <div
+                class="flex mb-4"
+              >
+                <label
+                  class="label cursor-pointer"
+                >
+                  <input
+                    class="radio checked:bg-blue-500"
+                    type="checkbox"
+                  />
+                </label>
+                <div
+                  class="ml-2 w-full overflow-hidden"
+                >
+                  <div
+                    class="card card-side bg-neutral text-neutral-content mx-auto relative
+                     "
+                  >
+                    <div
+                      class="card-body text-center cursor-default"
+                    >
+                      <h2
+                        class="card-title mx-auto px-8 line-clamp-1"
+                      >
+                        Newest plant
+                      </h2>
+                      <span>
+                        Never watered
+                      </span>
+                    </div>
+                    <button
+                      class="btn-close absolute right-2 top-8 z-40"
+                      role="button"
+                      tabindex="0"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="w-8 h-8"
+                        data-slot="icon"
+                        fill="currentColor"
+                        viewBox="0 0 16 16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          clip-rule="evenodd"
+                          d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                          fill-rule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                  <div
+                    class="collapse bg-neutral rounded-t-none cursor-default
+                "
+                  >
+                    <input
+                      class="hidden"
+                      type="checkbox"
+                    />
+                    <div
+                      class="collapse-content"
+                    >
+                      <p
+                        class="flex"
+                      >
+                        <span
+                          class="font-semibold"
+                        >
+                          Species:
+                        </span>
+                        <span
+                          class="ml-auto text-right"
+                        >
+                          null
+                        </span>
+                      </p>
+                      <p
+                        class="hidden"
+                      >
+                        <span
+                          class="font-semibold"
+                        >
+                          Pot size:
+                        </span>
+                        <span
+                          class="ml-auto text-right"
+                        />
+                      </p>
+                      <div
+                        class="hidden"
+                      >
+                        <p
+                          class="font-semibold mt-3"
+                        >
+                          Description:
+                        </p>
+                        <p
+                          class="text-sm line-clamp-6"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
             <div
               class="modal-action mx-auto"
@@ -1398,7 +1594,7 @@ exports[`App matches snapshot 1`] = `
         <div
           class="collapse-title text-xl font-medium text-center"
         >
-          Plants (2)
+          Plants (3)
         </div>
         <div
           class="collapse-content min-w-0"
@@ -1643,6 +1839,98 @@ exports[`App matches snapshot 1`] = `
                   >
                     2
                   </span>
+                </p>
+                <div
+                  class="hidden"
+                >
+                  <p
+                    class="font-semibold mt-3"
+                  >
+                    Description:
+                  </p>
+                  <p
+                    class="text-sm line-clamp-6"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="mb-4"
+          >
+            <div
+              class="card card-side bg-neutral text-neutral-content mx-auto relative
+                     cursor-pointer"
+            >
+              <div
+                class="card-body text-center cursor-default"
+              >
+                <h2
+                  class="card-title mx-auto px-8 line-clamp-1"
+                >
+                  Newest plant
+                </h2>
+                <span>
+                  Never watered
+                </span>
+              </div>
+              <button
+                class="btn-close absolute right-2 top-8 z-40"
+                role="button"
+                tabindex="0"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="w-8 h-8"
+                  data-slot="icon"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    clip-rule="evenodd"
+                    d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+              </button>
+            </div>
+            <div
+              class="collapse bg-neutral rounded-t-none cursor-default
+                "
+            >
+              <input
+                class="hidden"
+                type="checkbox"
+              />
+              <div
+                class="collapse-content"
+              >
+                <p
+                  class="flex"
+                >
+                  <span
+                    class="font-semibold"
+                  >
+                    Species:
+                  </span>
+                  <span
+                    class="ml-auto text-right"
+                  >
+                    null
+                  </span>
+                </p>
+                <p
+                  class="hidden"
+                >
+                  <span
+                    class="font-semibold"
+                  >
+                    Pot size:
+                  </span>
+                  <span
+                    class="ml-auto text-right"
+                  />
                 </p>
                 <div
                   class="hidden"
@@ -2311,6 +2599,110 @@ exports[`App matches snapshot 1`] = `
                       >
                         2
                       </span>
+                    </p>
+                    <div
+                      class="hidden"
+                    >
+                      <p
+                        class="font-semibold mt-3"
+                      >
+                        Description:
+                      </p>
+                      <p
+                        class="text-sm line-clamp-6"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div
+              class="flex mb-4"
+            >
+              <label
+                class="label cursor-pointer"
+              >
+                <input
+                  class="radio checked:bg-blue-500"
+                  type="checkbox"
+                />
+              </label>
+              <div
+                class="ml-2 w-full overflow-hidden"
+              >
+                <div
+                  class="card card-side bg-neutral text-neutral-content mx-auto relative
+                     "
+                >
+                  <div
+                    class="card-body text-center cursor-default"
+                  >
+                    <h2
+                      class="card-title mx-auto px-8 line-clamp-1"
+                    >
+                      Newest plant
+                    </h2>
+                    <span>
+                      Never watered
+                    </span>
+                  </div>
+                  <button
+                    class="btn-close absolute right-2 top-8 z-40"
+                    role="button"
+                    tabindex="0"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="w-8 h-8"
+                      data-slot="icon"
+                      fill="currentColor"
+                      viewBox="0 0 16 16"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        clip-rule="evenodd"
+                        d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                        fill-rule="evenodd"
+                      />
+                    </svg>
+                  </button>
+                </div>
+                <div
+                  class="collapse bg-neutral rounded-t-none cursor-default
+                "
+                >
+                  <input
+                    class="hidden"
+                    type="checkbox"
+                  />
+                  <div
+                    class="collapse-content"
+                  >
+                    <p
+                      class="flex"
+                    >
+                      <span
+                        class="font-semibold"
+                      >
+                        Species:
+                      </span>
+                      <span
+                        class="ml-auto text-right"
+                      >
+                        null
+                      </span>
+                    </p>
+                    <p
+                      class="hidden"
+                    >
+                      <span
+                        class="font-semibold"
+                      >
+                        Pot size:
+                      </span>
+                      <span
+                        class="ml-auto text-right"
+                      />
                     </p>
                     <div
                       class="hidden"

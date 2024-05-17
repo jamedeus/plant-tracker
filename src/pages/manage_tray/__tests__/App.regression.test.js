@@ -59,13 +59,14 @@ describe('App', () => {
                 "action": "water",
                 "plants": [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                    "19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
+                    "19f65fa0-1c75-4cba-b590-0c9b5b315fcc",
+                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                 ],
                 "failed": []
             })
         }));
 
-        // Confirm last_watered timestamps say "14 hours ago"
+        // Confirm last_watered timestamps of first 2 plants say "14 hours ago"
         expect(app.queryAllByText(/14 hours ago/).length).toBe(4);
 
         // Simulate user selecting 2 days ago in datetime input, click Water All
@@ -81,13 +82,13 @@ describe('App', () => {
 
         // Confirm last_watered changed (new timestamp newer than existing)
         expect(app.queryAllByText(/14 hours ago/).length).toBe(0);
-        expect(app.queryAllByText(/15 minutes ago/).length).toBe(4);
+        expect(app.queryAllByText(/15 minutes ago/).length).toBe(6);
     });
 
     // Original bug: Plant filter input included results where the UUID,
     // last_watered timestamp, or thumbnail URL matched the user's query.
     it('does not match match UUIDs, timestamps, or URLs when filtering', async () => {
-        const plantColumn = app.getByText(/Plants \(2\)/).parentElement;
+        const plantColumn = app.getByText('Plants (3)').parentElement;
         const filterInput = within(plantColumn).getByRole('textbox');
 
         // Type part of UUID in input, should remove all cards

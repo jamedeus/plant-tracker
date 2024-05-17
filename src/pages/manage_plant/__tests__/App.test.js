@@ -45,6 +45,11 @@ describe('App', () => {
             })
         }));
 
+        // Open edit modal
+        await user.click(within(
+            app.container.querySelector('.dropdown-center')
+        ).getByText("Edit"));
+
         // Click submit button inside edit modal
         const modal = app.getByText("Edit Details").parentElement;
         await user.click(within(modal).getByText("Edit"));
