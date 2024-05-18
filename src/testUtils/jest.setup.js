@@ -2,7 +2,6 @@ import { render, within } from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
 import '@testing-library/jest-dom';
 import 'src/testUtils/dateMock';
-import { DateTime } from 'src/testUtils/luxonMock';
 
 beforeAll(() => {
     // Mock methods not implemented in jsdom
