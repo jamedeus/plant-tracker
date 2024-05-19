@@ -66,23 +66,30 @@ describe('App', () => {
             })
         }));
 
-        // Confirm last_watered timestamps of first 2 plants say "14 hours ago"
-        expect(app.queryAllByText(/14 hours ago/).length).toBe(4);
+        // Get reference to plants column
+        const plantsCol = app.getByText("Plants (3)").parentElement;
+
+        // Confirm last_watered timestamps of first 2 plants say "yesterday"
+        expect(within(plantsCol).queryAllByText('yesterday').length).toBe(2);
+        // Confirm last_watered timestamp of last plant says "Never watered"
+        expect(within(plantsCol).queryAllByText('Never watered').length).toBe(1);
 
         // Simulate user selecting 2 days ago in datetime input, click Water All
-        simulateUserDatetimeInput('2024-02-28T05:45:00.000Z');
+        simulateUserDatetimeInput('2024-02-28T12:45:00.000Z');
         await user.click(app.getByText("Water All"));
 
-        // Confirm last_watered did not change (new timestamp older than existing)
-        expect(app.queryAllByText(/14 hours ago/).length).toBe(4);
+        // Confirm last_watered for first 2 plants didn't change (new timestamp
+        // older than existing), confirm last plant now says "2 days ago"
+        expect(within(plantsCol).queryAllByText('yesterday').length).toBe(2);
+        expect(within(plantsCol).queryAllByText('2 days ago').length).toBe(1);
 
         // Simulate user selecting 15 min ago in datetime input, click Water All
         simulateUserDatetimeInput('2024-03-01T19:45:00.000Z');
         await user.click(app.getByText("Water All"));
 
-        // Confirm last_watered changed (new timestamp newer than existing)
-        expect(app.queryAllByText(/14 hours ago/).length).toBe(0);
-        expect(app.queryAllByText(/15 minutes ago/).length).toBe(6);
+        // Confirm all last_watered changed (new timestamp newer than existing)
+        expect(within(plantsCol).queryAllByText('yesterday').length).toBe(0);
+        expect(within(plantsCol).queryAllByText('today').length).toBe(3);
     });
 
     // Original bug: Plant filter input included results where the UUID,

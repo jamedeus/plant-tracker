@@ -203,7 +203,7 @@ exports[`App matches snapshot when plants and trays exist 1`] = `
                             fill="currentColor"
                           />
                         </svg>
-                        4 days ago
+                        5 days ago
                       </span>
                     </div>
                     <button
@@ -794,7 +794,7 @@ exports[`App matches snapshot when plants and trays exist 1`] = `
                           fill="currentColor"
                         />
                       </svg>
-                      4 days ago
+                      5 days ago
                     </span>
                   </div>
                   <button
