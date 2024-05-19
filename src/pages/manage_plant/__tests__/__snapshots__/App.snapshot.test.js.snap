@@ -238,12 +238,20 @@ exports[`App matches snapshot 1`] = `
           <span
             class="text-lg"
           >
-            Watered 4 hours ago
+            <span
+              title="07:45 AM - March 1, 2024"
+            >
+              Watered 4 hours ago
+            </span>
           </span>
           <span
             class="text-lg"
           >
-            Fertilized 4 hours ago
+            <span
+              title="07:45 AM - March 1, 2024"
+            >
+              Fertilized 4 hours ago
+            </span>
           </span>
           <input
             class="input input-bordered mx-auto my-2"
@@ -3340,12 +3348,20 @@ exports[`App matches snapshot 1`] = `
         <span
           class="text-lg"
         >
-          Watered 4 hours ago
+          <span
+            title="07:45 AM - March 1, 2024"
+          >
+            Watered 4 hours ago
+          </span>
         </span>
         <span
           class="text-lg"
         >
-          Fertilized 4 hours ago
+          <span
+            title="07:45 AM - March 1, 2024"
+          >
+            Fertilized 4 hours ago
+          </span>
         </span>
         <input
           class="input input-bordered mx-auto my-2"
