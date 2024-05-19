@@ -1,7 +1,6 @@
 import React, { createContext, useContext, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
-import { DateTime } from 'luxon';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { useToast } from 'src/context/ToastContext';
 import { useErrorModal } from 'src/context/ErrorModalContext';
@@ -181,17 +180,16 @@ const NoteModal = ({ plantID }) => {
 
     // Renders input when adding new note, timestamp string when editing
     const TimestampInput = () => {
-        switch(editingNote) {
-            case(true):
-                const [time, date] = timestampToReadable(noteTime).split('-');
-                return (
-                    <>
-                        <p>{date}</p>
-                        <p className="text-sm">{time}</p>
-                    </>
-                );
-            case(false):
-                return <DatetimeInput inputRef={timestampRef} />;
+        if (editingNote) {
+            const [time, date] = timestampToReadable(noteTime).split('-');
+            return (
+                <>
+                    <p>{date}</p>
+                    <p className="text-sm">{time}</p>
+                </>
+            );
+        } else {
+            return <DatetimeInput inputRef={timestampRef} />;
         }
     };
 

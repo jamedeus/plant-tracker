@@ -105,13 +105,13 @@ describe('PlantCard last watered time display', () => {
 
     it('says "Today" if plant was watered during current calendar day', () => {
         // Render with timestamp 5 minutes before current time mock
-        let component = renderWithTimestamp("2024-03-01T11:55:00-08:00")
+        let component = renderWithTimestamp("2024-03-01T11:55:00-08:00");
         expect(within(getLastWateredSpan(component)).getByText(
             "Today"
         )).toBeInTheDocument();
 
         // Render with timestamp 1 minute after midnight on mocked day
-        component = renderWithTimestamp("2024-03-01T00:01:00-08:00")
+        component = renderWithTimestamp("2024-03-01T00:01:00-08:00");
         expect(within(getLastWateredSpan(component)).getByText(
             "Today"
         )).toBeInTheDocument();
@@ -119,13 +119,13 @@ describe('PlantCard last watered time display', () => {
 
     it('says "Yesterday" if plant was watered during previous calendar day', () => {
         // Render with timestamp 1 day and 5 minutes before current time mock
-        let component = renderWithTimestamp("2024-02-29T11:55:00-08:00")
+        let component = renderWithTimestamp("2024-02-29T11:55:00-08:00");
         expect(within(getLastWateredSpan(component)).getByText(
             "Yesterday"
         )).toBeInTheDocument();
 
         // Render with timestamp 1 minute after midnight on previous day
-        component = renderWithTimestamp("2024-02-29T00:01:00-08:00")
+        component = renderWithTimestamp("2024-02-29T00:01:00-08:00");
         expect(within(getLastWateredSpan(component)).getByText(
             "Yesterday"
         )).toBeInTheDocument();

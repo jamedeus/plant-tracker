@@ -1,6 +1,5 @@
 import React, { useRef, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { DateTime } from 'luxon';
 import Modal from 'src/components/Modal';
 import { sendPostRequest, timestampToReadable } from 'src/util';
 import { useErrorModal } from 'src/context/ErrorModalContext';

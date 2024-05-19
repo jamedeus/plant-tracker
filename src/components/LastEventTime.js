@@ -6,7 +6,7 @@ import {
     timestampToReadable
 } from 'src/util';
 
-// Takes event name and timestmap, formats and returns
+// Takes event name and timestamp, formats and returns
 // Used to display last watered/fertilized times
 const LastEventTime = ({ text, timestamp }) => {
     if (timestamp) {
@@ -22,7 +22,7 @@ const LastEventTime = ({ text, timestamp }) => {
 
 LastEventTime.propTypes = {
     text: PropTypes.string,
-    timestmap: PropTypes.string
+    timestamp: PropTypes.string
 };
 
 export default LastEventTime;
