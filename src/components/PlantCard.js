@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDroplet } from '@fortawesome/free-solid-svg-icons';
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/16/solid';
 import PlantDetails from 'src/components/PlantDetails';
-import { timestampToRelativeCalendar, capitalize } from 'src/util';
+import { timestampToRelativeCalendar, capitalize, timestampToReadable } from 'src/util';
 
 const PlantCard = ({ name, uuid, species, description, pot_size, last_watered, thumbnail, linkPage=true }) => {
     // Track details collapse open state
@@ -57,7 +57,7 @@ const PlantCard = ({ name, uuid, species, description, pot_size, last_watered, t
     const LastWatered = () => {
         if (last_watered) {
             return (
-                <span>
+                <span title={timestampToReadable(last_watered)}>
                     <FontAwesomeIcon
                         icon={faDroplet}
                         className="mr-2 text-info"

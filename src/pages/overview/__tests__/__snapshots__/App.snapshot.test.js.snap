@@ -187,7 +187,9 @@ exports[`App matches snapshot when plants and trays exist 1`] = `
                       >
                         Test Plant
                       </h2>
-                      <span>
+                      <span
+                        title="06:44 PM - February 25, 2024"
+                      >
                         <svg
                           aria-hidden="true"
                           class="svg-inline--fa fa-droplet mr-2 text-info"
@@ -778,7 +780,9 @@ exports[`App matches snapshot when plants and trays exist 1`] = `
                     >
                       Test Plant
                     </h2>
-                    <span>
+                    <span
+                      title="06:44 PM - February 25, 2024"
+                    >
                       <svg
                         aria-hidden="true"
                         class="svg-inline--fa fa-droplet mr-2 text-info"

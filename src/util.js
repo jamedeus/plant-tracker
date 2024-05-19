@@ -54,6 +54,14 @@ function timestampToRelativeCalendar(timestamp) {
     }
 }
 
+// Takes isoformat timestamp, converts to user's timezone and returns in more
+// readable format (example: "10:14 AM - May 12, 2024")
+function timestampToReadable(timestamp) {
+    return DateTime.fromISO(timestamp).setZone('system').toFormat(
+        'hh:mm a - MMMM d, yyyy'
+    );
+}
+
 // Takes string, returns with first letter capitalized and all others lowercase
 function capitalize(text) {
     return text.charAt(0).toUpperCase() + text.toLowerCase().slice(1);
@@ -86,6 +94,7 @@ export {
     localToUTC,
     timestampToRelative,
     timestampToRelativeCalendar,
+    timestampToReadable,
     capitalize,
     pastTense,
     stringMatchesPattern
