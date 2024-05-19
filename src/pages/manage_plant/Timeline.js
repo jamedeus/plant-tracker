@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { DateTime } from 'luxon';
 import { Popover } from "react-tiny-popover";
-import { capitalize, pastTense } from 'src/util';
+import { capitalize, pastTense, timestampToReadable } from 'src/util';
 import NoteModal from './NoteModal';
 import { useNoteModal } from './NoteModal';
 import { openPhotoModal } from './PhotoModal';
@@ -247,7 +247,10 @@ const Timeline = ({ plantID, events, photoUrls }) => {
         const [expanded, setExpanded] = useState(false);
 
         return (
-            <div className={`m-2 ${expanded ? '' : `line-clamp-1`}`}>
+            <div
+                className={`m-2 ${expanded ? '' : `line-clamp-1`}`}
+                title={timestampToReadable(note.timestamp)}
+            >
                 <FontAwesomeIcon
                     icon={faPenToSquare}
                     className="w-4 h-4 mr-2 cursor-pointer"

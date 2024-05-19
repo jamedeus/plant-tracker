@@ -1,11 +1,16 @@
 import React, { createContext, useContext, useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { parseDomContext, sendPostRequest, localToUTC } from 'src/util';
 import Modal from 'src/components/Modal';
 import { DateTime } from 'luxon';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { useToast } from 'src/context/ToastContext';
 import { useErrorModal } from 'src/context/ErrorModalContext';
+import {
+    parseDomContext,
+    sendPostRequest,
+    localToUTC,
+    timestampToReadable
+} from 'src/util';
 
 const NoteModalContext = createContext();
 
@@ -178,8 +183,12 @@ const NoteModal = ({ plantID }) => {
     const TimestampInput = () => {
         switch(editingNote) {
             case(true):
+                const [time, date] = timestampToReadable(noteTime).split('-');
                 return (
-                    <p>{DateTime.fromISO(noteTime).toFormat('MMM dd, yyyy')}</p>
+                    <>
+                        <p>{date}</p>
+                        <p className="text-sm">{time}</p>
+                    </>
                 );
             case(false):
                 return <DatetimeInput inputRef={timestampRef} />;
