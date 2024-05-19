@@ -123,19 +123,19 @@ describe('App', () => {
 
         // Confirm timeline does not contain note text
         expect(within(timeline).queryByText(
-            'Some leaves turning yellow, probably watering too often'
+            'Started flowering'
         )).toBeNull();
 
         // Simulate user typing new note and clicking save
         await user.type(
             app.container.querySelector('.textarea'),
-            'Some leaves turning yellow, probably watering too often'
+            'Started flowering'
         );
         await user.click(app.getByText('Save'));
 
         // Confirm note text appeared on page
         expect(within(timeline).queryByText(
-            'Some leaves turning yellow, probably watering too often'
+            'Started flowering'
         )).not.toBeNull();
     });
 
