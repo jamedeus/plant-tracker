@@ -152,6 +152,7 @@ const Timeline = ({ plantID, events, photoUrls }) => {
                                 key={photo.key}
                                 thumbnailUrl={photo.thumbnail}
                                 photoUrl={photo.image}
+                                timestamp={photo.created}
                             />
                         );
                     })}
@@ -205,7 +206,7 @@ const Timeline = ({ plantID, events, photoUrls }) => {
     };
 
     // Photo thumbnail that opens larger popover when clicked
-    const PhotoThumbnail = ({ thumbnailUrl, photoUrl }) => {
+    const PhotoThumbnail = ({ thumbnailUrl, photoUrl, timestamp }) => {
         const [popoverOpen, setPopoverOpen] = useState(false);
 
         return (
@@ -227,7 +228,10 @@ const Timeline = ({ plantID, events, photoUrls }) => {
                     </div>
                 }
             >
-                <div onClick={() => setPopoverOpen(!popoverOpen)}>
+                <div
+                    onClick={() => setPopoverOpen(!popoverOpen)}
+                    title={timestampToReadable(timestamp)}
+                >
                     <img
                         className={`rounded-lg m-2 object-cover w-[4.9rem]
                                     h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]`}
@@ -240,7 +244,8 @@ const Timeline = ({ plantID, events, photoUrls }) => {
 
     PhotoThumbnail.propTypes = {
         thumbnailUrl: PropTypes.string,
-        photoUrl: PropTypes.string
+        photoUrl: PropTypes.string,
+        timestamp: PropTypes.string
     };
 
     const NoteCollapse = ({ note }) => {

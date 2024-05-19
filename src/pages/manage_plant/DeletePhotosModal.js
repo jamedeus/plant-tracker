@@ -2,7 +2,7 @@ import React, { useRef, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { DateTime } from 'luxon';
 import Modal from 'src/components/Modal';
-import { sendPostRequest } from 'src/util';
+import { sendPostRequest, timestampToReadable } from 'src/util';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 import {
     ChevronLeftIcon,
@@ -113,7 +113,7 @@ const DeletePhotosModal = ({ plantID, photoUrls, setPhotoUrls }) => {
             <div id={`photo${index}`} className="carousel-item relative w-full mx-1">
                 <div className="flex flex-col mx-auto">
                     <h1 className="mt-auto mb-1 md:text-lg">
-                        {DateTime.fromISO(photo.created).toFormat('MMMM dd, yyyy')}
+                        {timestampToReadable(photo.created)}
                     </h1>
                     <img
                         src={photo.thumbnail}

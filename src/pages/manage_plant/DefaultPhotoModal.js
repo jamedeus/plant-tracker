@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
-import { sendPostRequest } from 'src/util';
+import { sendPostRequest, timestampToReadable } from 'src/util';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/16/solid';
 
@@ -54,9 +54,12 @@ const DefaultPhotoModal = ({ plantID, photoUrls }) => {
     };
 
     // Renders single photo slide with next, prev, and select buttons
-    const PhotoSlide = ({ index, photoUrl, photoKey }) => {
+    const PhotoSlide = ({ index, photoUrl, photoKey, timestamp }) => {
         return (
-            <div id={`slide${index}`} className="carousel-item relative w-full mx-1">
+            <div
+                id={`slide${index}`} className="carousel-item relative w-full mx-1"
+                title={timestampToReadable(timestamp)}
+            >
                 <img
                     src={photoUrl}
                     className="w-full rounded-xl object-scale-down my-auto"
@@ -86,7 +89,8 @@ const DefaultPhotoModal = ({ plantID, photoUrls }) => {
     PhotoSlide.propTypes = {
         index: PropTypes.number,
         photoUrl: PropTypes.string,
-        photoKey: PropTypes.number
+        photoKey: PropTypes.number,
+        timestamp: PropTypes.string
     };
 
     return (
@@ -99,6 +103,7 @@ const DefaultPhotoModal = ({ plantID, photoUrls }) => {
                             index={index}
                             photoUrl={photo.thumbnail}
                             photoKey={photo.key}
+                            timestamp={photo.created}
                         />
                     );
                 })}
