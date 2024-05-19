@@ -260,7 +260,7 @@ exports[`App matches snapshot 1`] = `
                         fill="currentColor"
                       />
                     </svg>
-                    yesterday
+                    Yesterday
                   </span>
                 </div>
                 <button
@@ -379,7 +379,7 @@ exports[`App matches snapshot 1`] = `
                         fill="currentColor"
                       />
                     </svg>
-                    yesterday
+                    Yesterday
                   </span>
                 </div>
                 <button
@@ -1008,7 +1008,7 @@ exports[`App matches snapshot 1`] = `
                             fill="currentColor"
                           />
                         </svg>
-                        yesterday
+                        Yesterday
                       </span>
                     </div>
                     <button
@@ -1139,7 +1139,7 @@ exports[`App matches snapshot 1`] = `
                             fill="currentColor"
                           />
                         </svg>
-                        yesterday
+                        Yesterday
                       </span>
                     </div>
                     <button
@@ -1658,7 +1658,7 @@ exports[`App matches snapshot 1`] = `
                       fill="currentColor"
                     />
                   </svg>
-                  yesterday
+                  Yesterday
                 </span>
               </div>
               <button
@@ -1777,7 +1777,7 @@ exports[`App matches snapshot 1`] = `
                       fill="currentColor"
                     />
                   </svg>
-                  yesterday
+                  Yesterday
                 </span>
               </div>
               <button
@@ -2406,7 +2406,7 @@ exports[`App matches snapshot 1`] = `
                           fill="currentColor"
                         />
                       </svg>
-                      yesterday
+                      Yesterday
                     </span>
                   </div>
                   <button
@@ -2537,7 +2537,7 @@ exports[`App matches snapshot 1`] = `
                           fill="currentColor"
                         />
                       </svg>
-                      yesterday
+                      Yesterday
                     </span>
                   </div>
                   <button

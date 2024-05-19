@@ -69,8 +69,8 @@ describe('App', () => {
         // Get reference to plants column
         const plantsCol = app.getByText("Plants (3)").parentElement;
 
-        // Confirm last_watered timestamps of first 2 plants say "yesterday"
-        expect(within(plantsCol).queryAllByText('yesterday').length).toBe(2);
+        // Confirm last_watered timestamps of first 2 plants say "Yesterday"
+        expect(within(plantsCol).queryAllByText('Yesterday').length).toBe(2);
         // Confirm last_watered timestamp of last plant says "Never watered"
         expect(within(plantsCol).queryAllByText('Never watered').length).toBe(1);
 
@@ -80,7 +80,7 @@ describe('App', () => {
 
         // Confirm last_watered for first 2 plants didn't change (new timestamp
         // older than existing), confirm last plant now says "2 days ago"
-        expect(within(plantsCol).queryAllByText('yesterday').length).toBe(2);
+        expect(within(plantsCol).queryAllByText('Yesterday').length).toBe(2);
         expect(within(plantsCol).queryAllByText('2 days ago').length).toBe(1);
 
         // Simulate user selecting 15 min ago in datetime input, click Water All
@@ -88,8 +88,8 @@ describe('App', () => {
         await user.click(app.getByText("Water All"));
 
         // Confirm all last_watered changed (new timestamp newer than existing)
-        expect(within(plantsCol).queryAllByText('yesterday').length).toBe(0);
-        expect(within(plantsCol).queryAllByText('today').length).toBe(3);
+        expect(within(plantsCol).queryAllByText('Yesterday').length).toBe(0);
+        expect(within(plantsCol).queryAllByText('Today').length).toBe(3);
     });
 
     // Original bug: Plant filter input included results where the UUID,
