@@ -1,5 +1,10 @@
 const path = require('path');
 
+// Mock system timezone
+// UTC is deliberately not used to test frontend localization (receives UTC
+// timestamps from backend and converts to user's system timezone)
+process.env.TZ = 'PST';
+
 module.exports = {
     testEnvironment: 'jsdom',
     transform: {
