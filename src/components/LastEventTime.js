@@ -1,10 +1,6 @@
 import PropTypes from 'prop-types';
-import {
-    capitalize,
-    pastTense,
-    timestampToRelative,
-    timestampToReadable
-} from 'src/util';
+import { capitalize, pastTense } from 'src/util';
+import { timestampToRelative, timestampToReadable} from 'src/timestampUtils';
 
 // Takes event name and timestamp, formats and returns
 // Used to display last watered/fertilized times

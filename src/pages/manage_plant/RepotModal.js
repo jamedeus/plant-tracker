@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { RadioGroup } from '@headlessui/react';
 import Modal from 'src/components/Modal';
 import DatetimeInput from 'src/components/DatetimeInput';
-import { sendPostRequest, localToUTC } from 'src/util';
+import { localToUTC } from 'src/timestampUtils';
+import { sendPostRequest } from 'src/util';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 
 let repotModalRef;

@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
-import { sendPostRequest, parseDomContext, localToUTC } from 'src/util';
+import { localToUTC } from 'src/timestampUtils';
+import { sendPostRequest, parseDomContext } from 'src/util';
 import EditModal from 'src/components/EditModal';
 import PlantDetailsForm from 'src/forms/PlantDetailsForm';
 import Navbar from 'src/components/Navbar';

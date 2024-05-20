@@ -2,7 +2,12 @@ import React, { useRef, useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { DateTime } from 'luxon';
 import { Popover } from "react-tiny-popover";
-import { capitalize, pastTense, timestampToReadable, timestampToRelativeDays } from 'src/util';
+import { capitalize, pastTense } from 'src/util';
+import {
+    timestampToReadable,
+    timestampToRelativeDays,
+    timestampToUserTimezone
+} from 'src/timestampUtils';
 import NoteModal from './NoteModal';
 import { useNoteModal } from './NoteModal';
 import { openPhotoModal } from './PhotoModal';
@@ -23,7 +28,7 @@ const Timeline = ({ plantID, events, photoUrls }) => {
 
     // Takes timestamp, returns ISO date string (no hours/minutes) in user's timezone
     const timestampToDateString = (timestamp) => {
-        return DateTime.fromISO(timestamp).setZone('system').toISO().split('T')[0];
+        return timestampToUserTimezone(timestamp).toISO().split('T')[0];
     };
 
     // Convert to object with date strings as keys, object with events and

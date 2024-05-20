@@ -1,7 +1,8 @@
 import React, { useRef, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
-import { sendPostRequest, timestampToReadable } from 'src/util';
+import { sendPostRequest } from 'src/util';
+import { timestampToReadable } from 'src/timestampUtils';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 import {
     ChevronLeftIcon,

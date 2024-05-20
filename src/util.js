@@ -1,5 +1,4 @@
 import Cookies from 'js-cookie';
-import { DateTime } from 'luxon';
 
 // Takes name of context element created with json_script django tag
 // Parses JSON contents if it exists and returns, otherwise returns null
@@ -27,56 +26,6 @@ async function sendPostRequest(url, body) {
     });
 
     return response;
-}
-
-// Takes isoformat timestamp in local timezone, returns as UTC
-function localToUTC(timestamp) {
-    return String(DateTime.fromISO(timestamp).toUTC());
-}
-
-// Takes isoformat timestamp, returns relative time string ("5 minutes ago").
-//
-// NOT calendarized (example: a 47 hour old timestamp will return "1 day ago",
-// then an hour later will return "2 days ago" even if its still the same day).
-function timestampToRelative(timestamp) {
-    return DateTime.fromISO(timestamp).setZone('system').toRelative();
-}
-
-// Takes isoformat timestamp, returns relative days string ("3 days ago").
-//
-// Unit does not change to months or years regardless of timestamp age.
-//
-// Calendarized, return wont change until midnight in user's timezone (example:
-// if a timestamp is 3 days ago at 10am it will NOT change to 4 days ago at 11 am).
-function timestampToRelativeDays(timestamp) {
-    return DateTime.fromISO(
-        timestamp
-    ).setZone('system').toRelativeCalendar({unit: 'days'});
-}
-
-// Takes isoformat timestamp, returns relative time string ("3 days/months ago").
-//
-// Unit changes to months if timestamp >30 days old (years if >365 days old).
-//
-// Return string does not change until midnight in user's timezone (example: if
-// timestamp is 3 days ago at 10am it will NOT change to 4 days ago at 11 am).
-function timestampToRelativeCalendar(timestamp) {
-    const date = DateTime.fromISO(timestamp).setZone('system');
-    const daysDiff = DateTime.now().diff(date, 'days').days;
-
-    if (daysDiff < 30) {
-        return date.toRelativeCalendar({unit: 'days'});
-    } else {
-        return date.toRelative();
-    }
-}
-
-// Takes isoformat timestamp, converts to user's timezone and returns in more
-// readable format (example: "10:14 AM - May 12, 2024")
-function timestampToReadable(timestamp) {
-    return DateTime.fromISO(timestamp).setZone('system').toFormat(
-        'hh:mm a - MMMM d, yyyy'
-    );
 }
 
 // Takes string, returns with first letter capitalized and all others lowercase
@@ -108,11 +57,6 @@ function stringMatchesPattern(regex) {
 export {
     parseDomContext,
     sendPostRequest,
-    localToUTC,
-    timestampToRelative,
-    timestampToRelativeDays,
-    timestampToRelativeCalendar,
-    timestampToReadable,
     capitalize,
     pastTense,
     stringMatchesPattern

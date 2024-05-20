@@ -4,12 +4,8 @@ import Modal from 'src/components/Modal';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { useToast } from 'src/context/ToastContext';
 import { useErrorModal } from 'src/context/ErrorModalContext';
-import {
-    parseDomContext,
-    sendPostRequest,
-    localToUTC,
-    timestampToReadable
-} from 'src/util';
+import { parseDomContext, sendPostRequest } from 'src/util';
+import { localToUTC, timestampToReadable } from 'src/timestampUtils';
 
 const NoteModalContext = createContext();
 

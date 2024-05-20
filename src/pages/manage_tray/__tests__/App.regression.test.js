@@ -1,10 +1,10 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import { mockContext } from './mockContext';
-import { localToUTC } from 'src/util';
+import { localToUTC } from 'src/timestampUtils';
 
 // Mock localToUTC so the return value can be set to an arbitrary string
-jest.mock('src/util', () => {
-    const module = jest.requireActual('src/util');
+jest.mock('src/timestampUtils', () => {
+    const module = jest.requireActual('src/timestampUtils');
     return {
         ...module,
         localToUTC: jest.fn()

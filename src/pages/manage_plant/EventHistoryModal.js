@@ -2,7 +2,8 @@ import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Tab } from '@headlessui/react';
 import { DateTime } from 'luxon';
-import { sendPostRequest, timestampToRelativeDays } from 'src/util';
+import { sendPostRequest } from 'src/util';
+import { timestampToRelativeDays } from 'src/timestampUtils';
 import Modal from 'src/components/Modal';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 

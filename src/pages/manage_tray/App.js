@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { sendPostRequest, parseDomContext, localToUTC, pastTense } from 'src/util';
+import { localToUTC } from 'src/timestampUtils';
+import { sendPostRequest, parseDomContext, pastTense } from 'src/util';
 import EditModal from 'src/components/EditModal';
 import TrayDetailsForm from 'src/forms/TrayDetailsForm';
 import Navbar from 'src/components/Navbar';
