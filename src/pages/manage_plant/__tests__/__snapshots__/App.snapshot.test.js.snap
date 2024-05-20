@@ -2997,7 +2997,7 @@ exports[`App matches snapshot 1`] = `
                         <p
                           class="text-lg font-bold"
                         >
-                          4 hours ago
+                          today
                         </p>
                         <p>
                           7:45 AM March 01, 2024
@@ -3018,7 +3018,7 @@ exports[`App matches snapshot 1`] = `
                         <p
                           class="text-lg font-bold"
                         >
-                          1 day ago
+                          yesterday
                         </p>
                         <p>
                           2:20 AM February 29, 2024
@@ -6107,7 +6107,7 @@ exports[`App matches snapshot 1`] = `
                       <p
                         class="text-lg font-bold"
                       >
-                        4 hours ago
+                        today
                       </p>
                       <p>
                         7:45 AM March 01, 2024
@@ -6128,7 +6128,7 @@ exports[`App matches snapshot 1`] = `
                       <p
                         class="text-lg font-bold"
                       >
-                        1 day ago
+                        yesterday
                       </p>
                       <p>
                         2:20 AM February 29, 2024

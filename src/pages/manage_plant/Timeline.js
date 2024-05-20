@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { DateTime } from 'luxon';
 import { Popover } from "react-tiny-popover";
-import { capitalize, pastTense, timestampToReadable } from 'src/util';
+import { capitalize, pastTense, timestampToReadable, timestampToRelativeDays } from 'src/util';
 import NoteModal from './NoteModal';
 import { useNoteModal } from './NoteModal';
 import { openPhotoModal } from './PhotoModal';
@@ -21,7 +21,7 @@ import {
 const Timeline = ({ plantID, events, photoUrls }) => {
     const { notes, openNoteModal } = useNoteModal();
 
-    // Takes timestamp, returns ISO date string (no hours/minutes)
+    // Takes timestamp, returns ISO date string (no hours/minutes) in user's timezone
     const timestampToDateString = (timestamp) => {
         return DateTime.fromISO(timestamp).setZone('system').toISO().split('T')[0];
     };
@@ -107,11 +107,9 @@ const Timeline = ({ plantID, events, photoUrls }) => {
 
     // Takes ISO timestamp string, returns "x days ago"
     const getRelativeTimeString = (timestamp) => {
-        const relative = DateTime.fromISO(
-            timestamp
-        ).setZone('system').toRelativeCalendar({unit: 'days'});
+        const relative = timestampToRelativeDays(timestamp);
 
-        // Remove " ago" if > 1000 days old
+        // Remove " ago" if > 1000 days old (breaks flex layout)
         const days = relative.split(' ')[0];
         if (days.length > 3) {
             return relative.replace(' ago', '');

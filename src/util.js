@@ -34,13 +34,30 @@ function localToUTC(timestamp) {
     return String(DateTime.fromISO(timestamp).toUTC());
 }
 
-// Takes isoformat timestamp, returns relative time string ("5 minutes ago")
+// Takes isoformat timestamp, returns relative time string ("5 minutes ago").
+//
+// NOT calendarized (example: a 47 hour old timestamp will return "1 day ago",
+// then an hour later will return "2 days ago" even if its still the same day).
 function timestampToRelative(timestamp) {
     return DateTime.fromISO(timestamp).setZone('system').toRelative();
 }
 
 // Takes isoformat timestamp, returns relative days string ("3 days ago").
+//
+// Unit does not change to months or years regardless of timestamp age.
+//
+// Calendarized, return wont change until midnight in user's timezone (example:
+// if a timestamp is 3 days ago at 10am it will NOT change to 4 days ago at 11 am).
+function timestampToRelativeDays(timestamp) {
+    return DateTime.fromISO(
+        timestamp
+    ).setZone('system').toRelativeCalendar({unit: 'days'});
+}
+
+// Takes isoformat timestamp, returns relative time string ("3 days/months ago").
+//
 // Unit changes to months if timestamp >30 days old (years if >365 days old).
+//
 // Return string does not change until midnight in user's timezone (example: if
 // timestamp is 3 days ago at 10am it will NOT change to 4 days ago at 11 am).
 function timestampToRelativeCalendar(timestamp) {
@@ -93,6 +110,7 @@ export {
     sendPostRequest,
     localToUTC,
     timestampToRelative,
+    timestampToRelativeDays,
     timestampToRelativeCalendar,
     timestampToReadable,
     capitalize,

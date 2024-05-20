@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Tab } from '@headlessui/react';
 import { DateTime } from 'luxon';
-import { sendPostRequest, timestampToRelative } from 'src/util';
+import { sendPostRequest, timestampToRelativeDays } from 'src/util';
 import Modal from 'src/components/Modal';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 
@@ -120,7 +120,7 @@ const EventHistoryModal = ({ plant, setPlant }) => {
                 />
                 <div className="card-body text-center">
                     <p className="text-lg font-bold">
-                        {timestampToRelative(timestamp)}
+                        {timestampToRelativeDays(timestamp)}
                     </p>
                     <p>
                         {DateTime.fromISO(

@@ -58,11 +58,11 @@ describe('App', () => {
         expect(component.getByText('Delete')).toBeDisabled();
 
         // Select first water event, confirm delete button is enabled
-        await user.click(component.getByText(/4 hours ago/));
+        await user.click(component.getByText(/today/));
         expect(component.getByText('Delete')).not.toBeDisabled();
 
         // Un-select event, confirm delete button is disabled
-        await user.click(component.getByText(/4 hours ago/));
+        await user.click(component.getByText(/today/));
         expect(component.getByText('Delete')).toBeDisabled();
     });
 
@@ -82,23 +82,23 @@ describe('App', () => {
         }));
 
         // Click first event in water column (default)
-        await user.click(component.getByText(/4 hours ago/));
+        await user.click(component.getByText(/today/));
 
         // Click second water event twice (un-select), should not be in payload
-        await user.click(component.getByText(/1 day ago/));
-        await user.click(component.getByText(/1 day ago/));
+        await user.click(component.getByText(/yesterday/));
+        await user.click(component.getByText(/yesterday/));
 
         // Switch to fertilize column, click first event
         await user.click(component.getByText(/Fertilize/));
-        await user.click(component.getByText(/4 hours ago/));
+        await user.click(component.getByText(/today/));
 
         // Switch to prune column, click first event
         await user.click(component.getByText(/Prune/));
-        await user.click(component.getByText(/2 months ago/));
+        await user.click(component.getByText(/60 days ago/));
 
         // Switch to repot column, click first event
         await user.click(component.getByText(/Repot/));
-        await user.click(component.getByText(/2 months ago/));
+        await user.click(component.getByText(/60 days ago/));
 
         // Click delete button
         await user.click(component.getByText('Delete'));
@@ -152,7 +152,7 @@ describe('App', () => {
         expect(component.queryByText(/failed to delete event/)).toBeNull();
 
         // Simulate user deleting first event in water history
-        await user.click(component.getByText(/4 hours ago/));
+        await user.click(component.getByText(/today/));
         await user.click(component.getByText('Delete'));
 
         // Confirm modal appeared with arbitrary error text
