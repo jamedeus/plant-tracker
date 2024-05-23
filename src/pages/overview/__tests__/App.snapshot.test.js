@@ -5,10 +5,10 @@ import App from '../App';
 import { mockContext } from './mockContext';
 
 describe('App', () => {
-    it('matches snapshot when plants and trays exist', () => {
+    it('matches snapshot when plants and groups exist', () => {
         // Create mock state objects
         createMockContext('plants', mockContext.plants);
-        createMockContext('trays', mockContext.trays);
+        createMockContext('groups', mockContext.groups);
 
         // Render App, confirm matches snapshot
         const component = render(

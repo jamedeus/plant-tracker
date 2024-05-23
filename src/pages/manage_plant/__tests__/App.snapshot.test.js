@@ -10,7 +10,7 @@ describe('App', () => {
         // Create mock state objects
         createMockContext('plant', mockContext.plant);
         createMockContext('notes', mockContext.notes);
-        createMockContext('trays', mockContext.trays);
+        createMockContext('groups', mockContext.groups);
         createMockContext('species_options', mockContext.species_options);
         createMockContext('photo_urls', mockContext.photo_urls);
 

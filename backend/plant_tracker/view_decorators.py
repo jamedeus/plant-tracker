@@ -5,7 +5,7 @@ from datetime import datetime
 from django.http import JsonResponse
 from django.core.exceptions import ValidationError
 
-from .models import Tray, Plant, WaterEvent, FertilizeEvent, PruneEvent, RepotEvent
+from .models import Group, Plant, WaterEvent, FertilizeEvent, PruneEvent, RepotEvent
 
 
 # Map event types to model that should be instantiated
@@ -30,11 +30,11 @@ def get_plant_by_uuid(uuid):
         return None
 
 
-def get_tray_by_uuid(uuid):
-    '''Returns Tray model instance matching UUID, or None if not found'''
+def get_group_by_uuid(uuid):
+    '''Returns Group model instance matching UUID, or None if not found'''
     try:
-        return Tray.objects.get(uuid=uuid)
-    except Tray.DoesNotExist:
+        return Group.objects.get(uuid=uuid)
+    except Group.DoesNotExist:
         return None
 
 
@@ -92,28 +92,28 @@ def get_plant_from_post_body(func):
     return wrapper
 
 
-def get_tray_from_post_body(func):
-    '''Decorator looks up tray by UUID, throws error if not found
-    Must call after requires_json_post (expects dict with tray_id key as first arg)
-    Passes Tray instance and data dict to wrapped function as tray and data kwargs
+def get_group_from_post_body(func):
+    '''Decorator looks up group by UUID, throws error if not found
+    Must call after requires_json_post (expects dict with group_id key as first arg)
+    Passes Group instance and data dict to wrapped function as group and data kwargs
     '''
     @wraps(func)
     def wrapper(data, **kwargs):
         try:
-            tray = get_tray_by_uuid(data["tray_id"])
-            if tray is None:
-                return JsonResponse({"error": "tray not found"}, status=404)
+            group = get_group_by_uuid(data["group_id"])
+            if group is None:
+                return JsonResponse({"error": "group not found"}, status=404)
         except KeyError:
             return JsonResponse(
-                {"error": "POST body missing required 'tray_id' key"},
+                {"error": "POST body missing required 'group_id' key"},
                 status=400
             )
         except ValidationError:
             return JsonResponse(
-                {"error": "tray_id key is not a valid UUID"},
+                {"error": "group_id key is not a valid UUID"},
                 status=400
             )
-        return func(tray=tray, data=data, **kwargs)
+        return func(group=group, data=data, **kwargs)
     return wrapper
 
 

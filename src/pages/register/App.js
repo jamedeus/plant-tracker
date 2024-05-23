@@ -3,7 +3,7 @@ import { Tab } from '@headlessui/react';
 import Navbar from 'src/components/Navbar';
 import { useTheme } from 'src/context/ThemeContext';
 import { sendPostRequest, parseDomContext } from 'src/util';
-import TrayDetailsForm from 'src/forms/TrayDetailsForm';
+import GroupDetailsForm from 'src/forms/GroupDetailsForm';
 import PlantDetailsForm from 'src/forms/PlantDetailsForm';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 
@@ -17,7 +17,7 @@ function App() {
     };
 
     // Track visible form (changed by tabs, used to get correct endpoint)
-    // Set to 0 for plant form, 1 for tray form
+    // Set to 0 for plant form, 1 for group form
     const [plantForm, setPlantForm] = useState(0);
 
     // Get toggle theme option from context
@@ -27,7 +27,7 @@ function App() {
     const { showErrorModal } = useErrorModal();
 
     const plantDetailsRef = useRef(null);
-    const trayDetailsRef = useRef(null);
+    const groupDetailsRef = useRef(null);
 
     const submit = async () => {
         // Parse all fields from visible form, set correct endpoint
@@ -39,9 +39,9 @@ function App() {
             endpoint = '/register_plant';
         } else {
             payload = Object.fromEntries(
-                new FormData(trayDetailsRef.current)
+                new FormData(groupDetailsRef.current)
             );
-            endpoint = '/register_tray';
+            endpoint = '/register_group';
         }
 
         // Add UUID, post to backend
@@ -87,7 +87,7 @@ function App() {
                                 selected ? 'tab-option-selected' : ''
                             }`
                         }>
-                            Tray
+                            Group
                         </Tab>
                     </Tab.List>
 
@@ -103,8 +103,8 @@ function App() {
                             />
                         </Tab.Panel>
                         <Tab.Panel>
-                            <TrayDetailsForm
-                                formRef={trayDetailsRef}
+                            <GroupDetailsForm
+                                formRef={groupDetailsRef}
                             />
                         </Tab.Panel>
                     </Tab.Panels>

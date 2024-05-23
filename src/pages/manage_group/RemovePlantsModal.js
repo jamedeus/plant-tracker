@@ -1,19 +1,19 @@
 import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import EditableNodeList from 'src/components/EditableNodeList';
+import PlantCard from 'src/components/PlantCard';
 import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
-import PlantCard from 'src/components/PlantCard';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 
-let addPlantsModalRef;
+let removePlantsModalRef;
 
-export const openAddPlantsModal = () => {
-    addPlantsModalRef.current.showModal();
+export const openRemovePlantsModal = () => {
+    removePlantsModalRef.current.showModal();
 };
 
-const AddPlantsModal = ({ trayID, options, plantDetails, setPlantDetails }) => {
-    addPlantsModalRef = useRef(null);
+const RemovePlantsModal = ({ groupID, plantDetails, setPlantDetails }) => {
+    removePlantsModalRef = useRef(null);
 
     // Ref to track selected items
     const selected = useRef([]);
@@ -21,42 +21,38 @@ const AddPlantsModal = ({ trayID, options, plantDetails, setPlantDetails }) => {
     // Get hook to show error modal
     const { showErrorModal } = useErrorModal();
 
-    // Handler for add button in manage plants modal
-    const addPlants = async () => {
+    // Handler for remove button in manage plants modal
+    const removePlants = async () => {
         const payload = {
-            tray_id: trayID,
+            group_id: groupID,
             plants: selected.current
         };
         const response = await sendPostRequest(
-            '/bulk_add_plants_to_tray',
+            '/bulk_remove_plants_from_group',
             payload
         );
         if (response.ok) {
-            // Add objects in response to plantDetails state
+            // Remove UUIDs in response from plantDetails
             const data = await response.json();
-            setPlantDetails([...plantDetails, ...data.added]);
+            setPlantDetails(plantDetails.filter(
+                plant => !data.removed.includes(plant.uuid)
+            ));
         } else {
             const error = await response.json();
             showErrorModal(JSON.stringify(error));
         }
     };
 
-    // Get object with name and UUID of all plants not already in tray
-    const existing = plantDetails.map(plant => plant.uuid);
-    const plantOptions = options.filter(
-        plant => !existing.includes(plant.uuid)
-    );
-
     return (
         <Modal
-            dialogRef={addPlantsModalRef}
-            title={"Add Plants"}
+            dialogRef={removePlantsModalRef}
+            title={"Remove Plants"}
             className="max-w-[26rem]"
         >
             <div className="max-h-screen md:max-h-half-screen overflow-scroll pr-4 mt-4">
-                {plantOptions.length > 0 ? (
+                {plantDetails.length > 0 ? (
                     <EditableNodeList editing={true} selected={selected}>
-                        {plantOptions.map((plant) => (
+                        {plantDetails.map((plant) => (
                             <PlantCard
                                 key={plant.uuid}
                                 {...plant}
@@ -75,10 +71,10 @@ const AddPlantsModal = ({ trayID, options, plantDetails, setPlantDetails }) => {
                         Cancel
                     </button>
                     <button
-                        className="btn btn-success ml-2"
-                        onClick={addPlants}
+                        className="btn btn-error ml-2"
+                        onClick={removePlants}
                     >
-                        Add
+                        Remove
                     </button>
                 </form>
             </div>
@@ -86,11 +82,10 @@ const AddPlantsModal = ({ trayID, options, plantDetails, setPlantDetails }) => {
     );
 };
 
-AddPlantsModal.propTypes = {
-    trayID: PropTypes.string,
-    options: PropTypes.array,
+RemovePlantsModal.propTypes = {
+    groupID: PropTypes.string,
     plantDetails: PropTypes.array,
     setPlantDetails: PropTypes.func
 };
 
-export default AddPlantsModal;
+export default RemovePlantsModal;

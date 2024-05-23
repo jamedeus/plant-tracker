@@ -11,7 +11,7 @@ from django.test import override_settings
 from django.test.client import MULTIPART_CONTENT
 
 from .models import (
-    Tray,
+    Group,
     Plant,
     WaterEvent,
     FertilizeEvent,
@@ -22,7 +22,7 @@ from .models import (
 )
 from .view_decorators import (
     get_plant_from_post_body,
-    get_tray_from_post_body,
+    get_group_from_post_body,
     get_timestamp_from_post_body,
     get_event_type_from_post_body
 )
@@ -57,17 +57,17 @@ class OverviewTests(TestCase):
         self.assertEqual(response.context['js_bundle'], 'plant_tracker/overview.js')
         self.assertEqual(response.context['title'], 'Overview')
 
-        # Confirm correct state object (no plants or trays in database)
+        # Confirm correct state object (no plants or groups in database)
         self.assertEqual(
             response.context['state'],
-            {'plants': [], 'trays': []}
+            {'plants': [], 'groups': []}
         )
 
     def test_overview_page_with_database_entries(self):
-        # Create test tray and 2 test plants
-        tray = Tray.objects.create(uuid=uuid4())
+        # Create test group and 2 test plants
+        group = Group.objects.create(uuid=uuid4())
         plant1 = Plant.objects.create(uuid=uuid4(), name='Test plant')
-        plant2 = Plant.objects.create(uuid=uuid4(), species='fittonia', tray=tray)
+        plant2 = Plant.objects.create(uuid=uuid4(), species='fittonia', group=group)
 
         # Request overview, confirm uses correct JS bundle and title
         response = self.client.get('/')
@@ -76,7 +76,7 @@ class OverviewTests(TestCase):
         self.assertEqual(response.context['js_bundle'], 'plant_tracker/overview.js')
         self.assertEqual(response.context['title'], 'Overview')
 
-        # Confirm state object has details of all plants and trays
+        # Confirm state object has details of all plants and groups
         state = response.context['state']
         self.assertEqual(
             state['plants'],
@@ -104,11 +104,11 @@ class OverviewTests(TestCase):
             ]
         )
         self.assertEqual(
-            state['trays'],
+            state['groups'],
             [
                 {
-                    'uuid': str(tray.uuid),
-                    'name': 'Unnamed tray 1',
+                    'uuid': str(group.uuid),
+                    'name': 'Unnamed group 1',
                     'location': None,
                     'description': None,
                     'plants': 1
@@ -155,22 +155,22 @@ class OverviewTests(TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(), {'error': 'plant not found'})
 
-    def test_delete_tray(self):
-        # Create test tray, confirm exists in database
+    def test_delete_group(self):
+        # Create test group, confirm exists in database
         test_id = uuid4()
-        Tray.objects.create(uuid=test_id, name='test tray')
-        self.assertEqual(len(Tray.objects.all()), 1)
+        Group.objects.create(uuid=test_id, name='test group')
+        self.assertEqual(len(Group.objects.all()), 1)
 
         # Call delete endpoint, confirm response, confirm removed from database
-        response = self.client.post('/delete_tray', {'tray_id': str(test_id)})
+        response = self.client.post('/delete_group', {'group_id': str(test_id)})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {'deleted': str(test_id)})
-        self.assertEqual(len(Tray.objects.all()), 0)
+        self.assertEqual(len(Group.objects.all()), 0)
 
-        # Attempt to delete non-existing tray, confirm error
-        response = self.client.post('/delete_tray', {'tray_id': str(test_id)})
+        # Attempt to delete non-existing group, confirm error
+        response = self.client.post('/delete_group', {'group_id': str(test_id)})
         self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.json(), {'error': 'tray not found'})
+        self.assertEqual(response.json(), {'error': 'group not found'})
 
 
 class ManagePageTests(TestCase):
@@ -179,10 +179,10 @@ class ManagePageTests(TestCase):
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
 
-        # Create test plants and trays
+        # Create test plants and groups
         self.plant1 = Plant.objects.create(uuid=uuid4())
         self.plant2 = Plant.objects.create(uuid=uuid4())
-        self.tray1 = Tray.objects.create(uuid=uuid4())
+        self.group1 = Group.objects.create(uuid=uuid4())
 
         # Create fake UUID that doesn't exist in database
         self.fake_id = uuid4()
@@ -208,12 +208,12 @@ class ManagePageTests(TestCase):
     def _refresh_test_models(self):
         self.plant1.refresh_from_db()
         self.plant2.refresh_from_db()
-        self.tray1.refresh_from_db()
+        self.group1.refresh_from_db()
 
     def test_registration_plant(self):
-        # Confirm no plants or trays in database (except test entries)
+        # Confirm no plants or groups in database (except test entries)
         self.assertEqual(len(Plant.objects.all()), 2)
-        self.assertEqual(len(Tray.objects.all()), 1)
+        self.assertEqual(len(Group.objects.all()), 1)
 
         # Send plant registration request with extra spaces on some params
         test_id = uuid4()
@@ -238,35 +238,35 @@ class ManagePageTests(TestCase):
         self.assertEqual(plant.species, 'Giant Sequoia')
         self.assertEqual(plant.description, '300 feet and a few thousand years old')
         self.assertEqual(plant.pot_size, 4)
-        # Confirm no extra tray created
-        self.assertEqual(len(Tray.objects.all()), 1)
+        # Confirm no extra group created
+        self.assertEqual(len(Group.objects.all()), 1)
 
-    def test_registration_tray(self):
-        # Confirm no plants or trays in database (except test entries)
+    def test_registration_group(self):
+        # Confirm no plants or groups in database (except test entries)
         self.assertEqual(len(Plant.objects.all()), 2)
-        self.assertEqual(len(Tray.objects.all()), 1)
+        self.assertEqual(len(Group.objects.all()), 1)
 
         # Send plant registration request with extra spaces on some params
         test_id = uuid4()
         payload = {
             'uuid': test_id,
-            'name': '    test tray',
+            'name': '    test group',
             'location': 'top shelf    ',
-            'description': 'This tray is used for propagation'
+            'description': 'This group is used for propagation'
         }
-        response = self.client.post('/register_tray', payload)
+        response = self.client.post('/register_group', payload)
 
-        # Confirm response redirects to management page for new tray
+        # Confirm response redirects to management page for new group
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, f'/manage/{test_id}')
 
         # Confirm exists in database
-        self.assertEqual(len(Tray.objects.all()), 2)
-        # Confirm tray has corrrect params, confirm extra spaces were removed
-        tray = Tray.objects.get(uuid=test_id)
-        self.assertEqual(tray.name, 'test tray')
-        self.assertEqual(tray.location, 'top shelf')
-        self.assertEqual(tray.description, 'This tray is used for propagation')
+        self.assertEqual(len(Group.objects.all()), 2)
+        # Confirm group has corrrect params, confirm extra spaces were removed
+        group = Group.objects.get(uuid=test_id)
+        self.assertEqual(group.name, 'test group')
+        self.assertEqual(group.location, 'top shelf')
+        self.assertEqual(group.description, 'This group is used for propagation')
         # Confirm no extra plant created
         self.assertEqual(len(Plant.objects.all()), 2)
 
@@ -321,20 +321,20 @@ class ManagePageTests(TestCase):
                     'prune': [],
                     'repot': []
                 },
-                'tray': None,
+                'group': None,
             }
         )
 
         # Confirm notes state is empty
         self.assertEqual(state['notes'], [])
 
-        # Confirm trays contains details of all existing trays
+        # Confirm groups contains details of all existing groups
         self.assertEqual(
-            state['trays'],
+            state['groups'],
             [
                 {
-                    'name': 'Unnamed tray 1',
-                    'uuid': str(self.tray1.uuid),
+                    'name': 'Unnamed group 1',
+                    'uuid': str(self.group1.uuid),
                     'location': None,
                     'description': None,
                     'plants': 0
@@ -365,48 +365,48 @@ class ManagePageTests(TestCase):
             ]
         )
 
-        # Add test plant to tray, request page again
-        self.plant1.tray = self.tray1
+        # Add test plant to group, request page again
+        self.plant1.group = self.group1
         self.plant1.save()
         response = self.client.get(f'/manage/{self.plant1.uuid}')
 
-        # Confirm state object contains tray details
+        # Confirm state object contains group details
         self.assertEqual(
-            response.context['state']['plant']['tray'],
+            response.context['state']['plant']['group'],
             {
-                'name': self.tray1.get_display_name(),
-                'uuid': str(self.tray1.uuid)
+                'name': self.group1.get_display_name(),
+                'uuid': str(self.group1.uuid)
             }
         )
 
-    def test_manage_existing_tray(self):
-        # Add test plant to tray
-        self.plant1.tray = self.tray1
+    def test_manage_existing_group(self):
+        # Add test plant to group
+        self.plant1.group = self.group1
         self.plant1.save()
 
-        # Request management page for test tray, confirm status
-        response = self.client.get(f'/manage/{self.tray1.uuid}')
+        # Request management page for test group, confirm status
+        response = self.client.get(f'/manage/{self.group1.uuid}')
         self.assertEqual(response.status_code, 200)
 
-        # Confirm used manage_tray bundle and correct title
+        # Confirm used manage_group bundle and correct title
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['js_bundle'], 'plant_tracker/manage_tray.js')
-        self.assertEqual(response.context['title'], 'Manage Tray')
+        self.assertEqual(response.context['js_bundle'], 'plant_tracker/manage_group.js')
+        self.assertEqual(response.context['title'], 'Manage Group')
 
         # Confirm expected state objects
         state = response.context['state']
         self.assertEqual(
-            state['tray'],
+            state['group'],
             {
-                'uuid': str(self.tray1.uuid),
-                'name': self.tray1.name,
+                'uuid': str(self.group1.uuid),
+                'name': self.group1.name,
                 'location': None,
                 'description': None,
-                'display_name': self.tray1.get_display_name()
+                'display_name': self.group1.get_display_name()
             }
         )
 
-        # Confirm details state contains params for plant in tray
+        # Confirm details state contains params for plant in group
         self.assertEqual(
             state['details'],
             [{
@@ -484,94 +484,94 @@ class ManagePageTests(TestCase):
         self.assertEqual(self.plant1.name, 'test plant')
         self.assertEqual(self.plant1.species, 'Giant Sequoia')
 
-    def test_edit_tray_details(self):
-        # Confirm test tray has no name
-        self.assertIsNone(self.tray1.name)
+    def test_edit_group_details(self):
+        # Confirm test group has no name
+        self.assertIsNone(self.group1.name)
 
         # Send edit details request
         # Note trailing spaces on name, leading spaces on location
         payload = {
-            'tray_id': self.tray1.uuid,
-            'name': 'test tray    ',
+            'group_id': self.group1.uuid,
+            'name': 'test group    ',
             'location': '    middle shelf',
-            'description': 'This tray is used for propagation'
+            'description': 'This group is used for propagation'
         }
-        response = self.client.post('/edit_tray', payload)
+        response = self.client.post('/edit_group', payload)
 
         # Confirm response contains correct details with extra spaces removed
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
             {
-                'name': 'test tray',
-                'display_name': 'test tray',
+                'name': 'test group',
+                'display_name': 'test group',
                 'location': 'middle shelf',
-                'description': 'This tray is used for propagation'
+                'description': 'This group is used for propagation'
             }
         )
 
-        # Confirm no additional tray created
-        self.assertEqual(len(Tray.objects.all()), 1)
+        # Confirm no additional group created
+        self.assertEqual(len(Group.objects.all()), 1)
         # Confirm details now match, leading/trailing spaces were removed
         self._refresh_test_models()
-        self.assertEqual(self.tray1.name, 'test tray')
-        self.assertEqual(self.tray1.location, 'middle shelf')
-        self.assertEqual(self.tray1.description, 'This tray is used for propagation')
+        self.assertEqual(self.group1.name, 'test group')
+        self.assertEqual(self.group1.location, 'middle shelf')
+        self.assertEqual(self.group1.description, 'This group is used for propagation')
 
-    def test_add_plant_to_tray(self):
-        # Confirm test plant and tray have no database relation
-        self.assertIsNone(self.plant1.tray)
-        self.assertEqual(len(self.tray1.plant_set.all()), 0)
+    def test_add_plant_to_group(self):
+        # Confirm test plant and group have no database relation
+        self.assertIsNone(self.plant1.group)
+        self.assertEqual(len(self.group1.plant_set.all()), 0)
 
-        # Send add_plant_to_tray request, confirm response
-        payload = {'plant_id': self.plant1.uuid, 'tray_id': self.tray1.uuid}
-        response = self.client.post('/add_plant_to_tray', payload)
+        # Send add_plant_to_group request, confirm response
+        payload = {'plant_id': self.plant1.uuid, 'group_id': self.group1.uuid}
+        response = self.client.post('/add_plant_to_group', payload)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
             {
-                "action": "add_plant_to_tray",
+                "action": "add_plant_to_group",
                 "plant": str(self.plant1.uuid),
-                "tray_name": self.tray1.get_display_name(),
-                "tray_uuid": str(self.tray1.uuid)
+                "group_name": self.group1.get_display_name(),
+                "group_uuid": str(self.group1.uuid)
             }
         )
 
         # Confirm database relation created
         self._refresh_test_models()
-        self.assertEqual(self.plant1.tray, self.tray1)
-        self.assertEqual(len(self.tray1.plant_set.all()), 1)
+        self.assertEqual(self.plant1.group, self.group1)
+        self.assertEqual(len(self.group1.plant_set.all()), 1)
 
-    def test_remove_plant_from_tray(self):
-        # Add test plant to tray, confirm relation
-        self.plant1.tray = self.tray1
+    def test_remove_plant_from_group(self):
+        # Add test plant to group, confirm relation
+        self.plant1.group = self.group1
         self.plant1.save()
-        self.assertEqual(self.plant1.tray, self.tray1)
-        self.assertEqual(len(self.tray1.plant_set.all()), 1)
+        self.assertEqual(self.plant1.group, self.group1)
+        self.assertEqual(len(self.group1.plant_set.all()), 1)
 
-        # Send add_plant_to_tray request, confirm response + relation removed
-        response = self.client.post('/remove_plant_from_tray', {'plant_id': self.plant1.uuid})
+        # Send add_plant_to_group request, confirm response + relation removed
+        response = self.client.post('/remove_plant_from_group', {'plant_id': self.plant1.uuid})
         self.assertEqual(response.status_code, 200)
         self._refresh_test_models()
-        self.assertIsNone(self.plant1.tray)
-        self.assertEqual(len(self.tray1.plant_set.all()), 0)
+        self.assertIsNone(self.plant1.group)
+        self.assertEqual(len(self.group1.plant_set.all()), 0)
 
-    def test_bulk_add_plants_to_tray(self):
-        # Confirm test plants are not in test tray
-        self.assertIsNone(self.plant1.tray)
-        self.assertIsNone(self.plant2.tray)
-        self.assertEqual(len(self.tray1.plant_set.all()), 0)
+    def test_bulk_add_plants_to_group(self):
+        # Confirm test plants are not in test group
+        self.assertIsNone(self.plant1.group)
+        self.assertIsNone(self.plant2.group)
+        self.assertEqual(len(self.group1.plant_set.all()), 0)
 
-        # Send bulk_add_plants_to_tray request with both IDs + 1 fake ID
+        # Send bulk_add_plants_to_group request with both IDs + 1 fake ID
         payload = {
-            'tray_id': self.tray1.uuid,
+            'group_id': self.group1.uuid,
             'plants': [
                 self.plant1.uuid,
                 self.plant2.uuid,
                 self.fake_id
             ]
         }
-        response = self.client.post('/bulk_add_plants_to_tray', payload)
+        response = self.client.post('/bulk_add_plants_to_group', payload)
 
         # Confirm plant UUIDs were added, fake ID failed
         self.assertEqual(response.status_code, 200)
@@ -583,32 +583,32 @@ class ManagePageTests(TestCase):
             }
         )
 
-        # Confirm plants both have relation to tray
+        # Confirm plants both have relation to group
         self._refresh_test_models()
-        self.assertEqual(self.plant1.tray, self.tray1)
-        self.assertEqual(self.plant2.tray, self.tray1)
-        self.assertEqual(len(self.tray1.plant_set.all()), 2)
+        self.assertEqual(self.plant1.group, self.group1)
+        self.assertEqual(self.plant2.group, self.group1)
+        self.assertEqual(len(self.group1.plant_set.all()), 2)
 
-    def test_bulk_remove_plants_from_tray(self):
-        # Add 2 test plants to test tray, confirm relation exists
-        self.plant1.tray = self.tray1
-        self.plant2.tray = self.tray1
+    def test_bulk_remove_plants_from_group(self):
+        # Add 2 test plants to test group, confirm relation exists
+        self.plant1.group = self.group1
+        self.plant2.group = self.group1
         self.plant1.save()
         self.plant2.save()
-        self.assertEqual(self.plant1.tray, self.tray1)
-        self.assertEqual(self.plant2.tray, self.tray1)
-        self.assertEqual(len(self.tray1.plant_set.all()), 2)
+        self.assertEqual(self.plant1.group, self.group1)
+        self.assertEqual(self.plant2.group, self.group1)
+        self.assertEqual(len(self.group1.plant_set.all()), 2)
 
-        # Send bulk_add_plants_to_tray request with both IDs + 1 fake ID
+        # Send bulk_add_plants_to_group request with both IDs + 1 fake ID
         payload = {
-            'tray_id': self.tray1.uuid,
+            'group_id': self.group1.uuid,
             'plants': [
                 self.plant1.uuid,
                 self.plant2.uuid,
                 self.fake_id
             ]
         }
-        response = self.client.post('/bulk_remove_plants_from_tray', payload)
+        response = self.client.post('/bulk_remove_plants_from_group', payload)
 
         # Confirm plant UUIDs were removed, fake ID failed
         self.assertEqual(response.status_code, 200)
@@ -620,11 +620,11 @@ class ManagePageTests(TestCase):
             }
         )
 
-        # Confirm plants no longer have relation to tray
+        # Confirm plants no longer have relation to group
         self._refresh_test_models()
-        self.assertIsNone(self.plant1.tray)
-        self.assertIsNone(self.plant2.tray)
-        self.assertEqual(len(self.tray1.plant_set.all()), 0)
+        self.assertIsNone(self.plant1.group)
+        self.assertIsNone(self.plant2.group)
+        self.assertEqual(len(self.group1.plant_set.all()), 0)
 
     def test_repot_plant(self):
         # Set starting pot_size
@@ -662,7 +662,7 @@ class PlantEventTests(TestCase):
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
 
-        # Create test plants and trays
+        # Create test plants and groups
         self.plant1 = Plant.objects.create(uuid=uuid4())
         self.plant2 = Plant.objects.create(uuid=uuid4())
 
@@ -813,7 +813,7 @@ class PlantEventTests(TestCase):
         self.assertEqual(len(self.plant1.waterevent_set.all()), 0)
         self.assertEqual(len(self.plant2.waterevent_set.all()), 0)
 
-        # Send bulk_add_plants_to_tray request with both IDs
+        # Send bulk_add_plants_to_group request with both IDs
         payload = {
             'plants': [
                 str(self.plant1.uuid),
@@ -843,7 +843,7 @@ class PlantEventTests(TestCase):
         self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 0)
         self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 0)
 
-        # Send bulk_add_plants_to_tray request with both IDs
+        # Send bulk_add_plants_to_group request with both IDs
         payload = {
             'plants': [
                 str(self.plant1.uuid),
@@ -1039,7 +1039,7 @@ class InvalidRequestTests(TestCase):
     def setUp(self):
         # Create test models to use in tests
         self.test_plant = Plant.objects.create(uuid=uuid4())
-        self.test_tray = Tray.objects.create(uuid=uuid4())
+        self.test_group = Group.objects.create(uuid=uuid4())
 
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
@@ -1126,13 +1126,13 @@ class InvalidRequestTests(TestCase):
             {"error": "POST body missing required keys", "keys": ['plant_id']}
         )
 
-    def test_missing_tray_id(self):
-        # Send POST with no tray_id key in body, confirm error
-        response = self.client.post('/delete_tray')
+    def test_missing_group_id(self):
+        # Send POST with no group_id key in body, confirm error
+        response = self.client.post('/delete_group')
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response.json(),
-            {"error": "POST body missing required keys", "keys": ['tray_id']}
+            {"error": "POST body missing required keys", "keys": ['group_id']}
         )
 
     def test_invalid_plant_uuid(self):
@@ -1141,11 +1141,11 @@ class InvalidRequestTests(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(), {"error": "plant_id key is not a valid UUID"})
 
-    def test_invalid_tray_uuid(self):
-        # Send POST with tray_id that is not a valid UUID, confirm error
-        response = self.client.post('/delete_tray', {'tray_id': '31670857'})
+    def test_invalid_group_uuid(self):
+        # Send POST with group_id that is not a valid UUID, confirm error
+        response = self.client.post('/delete_group', {'group_id': '31670857'})
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json(), {"error": "tray_id key is not a valid UUID"})
+        self.assertEqual(response.json(), {"error": "group_id key is not a valid UUID"})
 
     def test_missing_timestamp_key(self):
         # Send POST with no timestamp key in body, confirm error
@@ -1331,13 +1331,13 @@ class InvalidRequestTests(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(), {"error": "new_id key is not a valid UUID"})
 
-    def test_change_tray_uuid_invalid(self):
-        # Call change_tray_uuid endpoint, confirm error
+    def test_change_group_uuid_invalid(self):
+        # Call change_group_uuid endpoint, confirm error
         payload = {
-            'tray_id': self.test_tray.uuid,
+            'group_id': self.test_group.uuid,
             'new_id': '31670857'
         }
-        response = self.client.post('/change_tray_uuid', payload)
+        response = self.client.post('/change_group_uuid', payload)
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(), {"error": "new_id key is not a valid UUID"})
 
@@ -1419,8 +1419,8 @@ class ViewDecoratorTests(TestCase):
             {"error": "POST body missing required 'plant_id' key"}
         )
 
-    def test_get_tray_from_post_body_missing_tray_id(self):
-        @get_tray_from_post_body
+    def test_get_group_from_post_body_missing_group_id(self):
+        @get_group_from_post_body
         def mock_view_function(data, **kwargs):
             pass
 
@@ -1429,7 +1429,7 @@ class ViewDecoratorTests(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             json.loads(response.content),
-            {"error": "POST body missing required 'tray_id' key"}
+            {"error": "POST body missing required 'group_id' key"}
         )
 
     def test_get_timestamp_from_post_body_missing_timestamp(self):

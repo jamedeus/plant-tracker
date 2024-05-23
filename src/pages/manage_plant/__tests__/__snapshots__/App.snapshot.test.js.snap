@@ -7,7 +7,7 @@ exports[`App matches snapshot 1`] = `
     <div
       id="plant"
     >
-      {"name":"Test Plant","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be12","species":"Calathea","description":"This is a plant with a long description","pot_size":4,"last_watered":"2024-03-01T05:45:44+00:00","last_fertilized":"2024-03-01T05:45:44+00:00","display_name":"Test Plant","events":{"water":["2024-03-01T15:45:44+00:00","2024-02-29T10:20:15+00:00"],"fertilize":["2024-03-01T15:45:44+00:00","2024-02-26T12:44:12+00:00"],"prune":[],"repot":[]},"tray":{"name":"Test tray","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be14"}}
+      {"name":"Test Plant","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be12","species":"Calathea","description":"This is a plant with a long description","pot_size":4,"last_watered":"2024-03-01T05:45:44+00:00","last_fertilized":"2024-03-01T05:45:44+00:00","display_name":"Test Plant","events":{"water":["2024-03-01T15:45:44+00:00","2024-02-29T10:20:15+00:00"],"fertilize":["2024-03-01T15:45:44+00:00","2024-02-26T12:44:12+00:00"],"prune":[],"repot":[]},"group":{"name":"Test group","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be14"}}
     </div>
     <div
       id="notes"
@@ -15,9 +15,9 @@ exports[`App matches snapshot 1`] = `
       [{"timestamp":"2024-03-01T15:45:44+00:00","text":"Fertilized with dilute 10-15-10 liquid fertilizer"},{"timestamp":"2024-02-26T12:44:12+00:00","text":"One of the older leaves is starting to turn yellow"}]
     </div>
     <div
-      id="trays"
+      id="groups"
     >
-      [{"name":"Test tray","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be14","location":"Top shelf","description":"Medium brightness grow light","plants":3},{"name":"Testing","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be61","location":"Middle shelf","description":"Brightest grow light","plants":5}]
+      [{"name":"Test group","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be14","location":"Top shelf","description":"Medium brightness grow light","plants":3},{"name":"Testing","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be61","location":"Middle shelf","description":"Brightest grow light","plants":5}]
     </div>
     <div
       id="species_options"
@@ -76,12 +76,12 @@ exports[`App matches snapshot 1`] = `
                   <a
                     href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                   >
-                    Go to tray
+                    Go to group
                   </a>
                 </li>
                 <li>
                   <a>
-                    Remove from tray
+                    Remove from group
                   </a>
                 </li>
                 <li>
@@ -219,7 +219,7 @@ exports[`App matches snapshot 1`] = `
             <p
               class="text-sm"
             >
-              Plant is in tray:
+              Plant is in group:
             </p>
             <p
               class="text-xl font-bold"
@@ -227,7 +227,7 @@ exports[`App matches snapshot 1`] = `
               <a
                 href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
               >
-                Test tray
+                Test group
               </a>
             </p>
           </div>
@@ -1828,7 +1828,7 @@ exports[`App matches snapshot 1`] = `
             <h1
               class="font-bold text-lg md:text-xl mb-4"
             >
-              Add plant to tray
+              Add plant to group
             </h1>
             <div
               class="flex flex-col px-4 overflow-scroll"
@@ -1847,7 +1847,7 @@ exports[`App matches snapshot 1`] = `
                     <h2
                       class="card-title mx-auto"
                     >
-                      Test tray
+                      Test group
                     </h2>
                     <p>
                       Contains 
@@ -3186,12 +3186,12 @@ exports[`App matches snapshot 1`] = `
                 <a
                   href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                 >
-                  Go to tray
+                  Go to group
                 </a>
               </li>
               <li>
                 <a>
-                  Remove from tray
+                  Remove from group
                 </a>
               </li>
               <li>
@@ -3329,7 +3329,7 @@ exports[`App matches snapshot 1`] = `
           <p
             class="text-sm"
           >
-            Plant is in tray:
+            Plant is in group:
           </p>
           <p
             class="text-xl font-bold"
@@ -3337,7 +3337,7 @@ exports[`App matches snapshot 1`] = `
             <a
               href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
             >
-              Test tray
+              Test group
             </a>
           </p>
         </div>
@@ -4938,7 +4938,7 @@ exports[`App matches snapshot 1`] = `
           <h1
             class="font-bold text-lg md:text-xl mb-4"
           >
-            Add plant to tray
+            Add plant to group
           </h1>
           <div
             class="flex flex-col px-4 overflow-scroll"
@@ -4957,7 +4957,7 @@ exports[`App matches snapshot 1`] = `
                   <h2
                     class="card-title mx-auto"
                   >
-                    Test tray
+                    Test group
                   </h2>
                   <p>
                     Contains 

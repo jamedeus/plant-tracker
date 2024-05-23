@@ -13,7 +13,7 @@ describe('App', () => {
         // Create mock state objects
         createMockContext('plant', mockContext.plant);
         createMockContext('notes', mockContext.notes);
-        createMockContext('trays', mockContext.trays);
+        createMockContext('groups', mockContext.groups);
         createMockContext('species_options', mockContext.species_options);
         createMockContext('photo_urls', mockContext.photo_urls);
     });
@@ -157,22 +157,22 @@ describe('App', () => {
         await user.click(app.getByRole("button", {name: "Water"}));
     });
 
-    it('sends correct payload when "Remove from tray" clicked', async () => {
+    it('sends correct payload when "Remove from group" clicked', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                "action": "remove_plant_from_tray",
+                "action": "remove_plant_from_group",
                 "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
 
-        // Click "Remove from tray" dropdown option
-        await user.click(app.getByText(/Remove from tray/));
+        // Click "Remove from group" dropdown option
+        await user.click(app.getByText(/Remove from group/));
 
-        // Confirm correct data posted to /remove_plant_from_tray endpoint
-        expect(global.fetch).toHaveBeenCalledWith('/remove_plant_from_tray', {
+        // Confirm correct data posted to /remove_plant_from_group endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/remove_plant_from_group', {
             method: 'POST',
             body: JSON.stringify({
                 "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
@@ -181,23 +181,23 @@ describe('App', () => {
         });
     });
 
-    it('sends the correct payload when "Add to tray" modal submitted', async () => {
-        // Click remove from tray (re-renders with add to tray option)
-        await user.click(app.getByText(/Remove from tray/));
+    it('sends the correct payload when "Add to group" modal submitted', async () => {
+        // Click remove from group (re-renders with add to group option)
+        await user.click(app.getByText(/Remove from group/));
 
-        // Click "Add to tray" dropdown option (open modal)
-        await user.click(app.getByText(/Add to tray/));
+        // Click "Add to group" dropdown option (open modal)
+        await user.click(app.getByText(/Add to group/));
 
-        // Get reference to AddToTrayModal
-        const addToTrayModal = app.getByText("Add plant to tray").parentElement;
+        // Get reference to AddToGroupModal
+        const addToGroupModal = app.getByText("Add plant to group").parentElement;
 
-        // Select tray option, confirm correct data posted to /add_plant_to_tray
-        await user.click(within(addToTrayModal).getByText("Test tray"));
-        expect(global.fetch).toHaveBeenCalledWith('/add_plant_to_tray', {
+        // Select group option, confirm correct data posted to /add_plant_to_group
+        await user.click(within(addToGroupModal).getByText("Test group"));
+        expect(global.fetch).toHaveBeenCalledWith('/add_plant_to_group', {
             method: 'POST',
             body: JSON.stringify({
                 "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                "tray_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                "group_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
             }),
             headers: postHeaders
         });

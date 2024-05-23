@@ -31,17 +31,17 @@ describe('App', () => {
         expect(app.getByText('Plant name').nodeName).toBe('SPAN');
         expect(app.getByText('Plant species').nodeName).toBe('SPAN');
         expect(app.getByText('Pot size').nodeName).toBe('SPAN');
-        // Confirm tray form is not visible
-        expect(app.queryByText('Tray name')).toBeNull();
-        expect(app.queryByText('Tray location')).toBeNull();
+        // Confirm group form is not visible
+        expect(app.queryByText('Group name')).toBeNull();
+        expect(app.queryByText('Group location')).toBeNull();
 
-        // Click tray button
+        // Click group button
         const buttons = app.container.querySelector('.tab-group');
-        await user.click(within(buttons).getByText('Tray'));
+        await user.click(within(buttons).getByText('Group'));
 
-        // Confirm tray form is visible
-        expect(app.getByText('Tray name').nodeName).toBe('SPAN');
-        expect(app.getByText('Tray location').nodeName).toBe('SPAN');
+        // Confirm group form is visible
+        expect(app.getByText('Group name').nodeName).toBe('SPAN');
+        expect(app.getByText('Group location').nodeName).toBe('SPAN');
         // Confirm plant form is not visible
         expect(app.queryByText('Plant name')).toBeNull();
         expect(app.queryByText('Plant species')).toBeNull();
@@ -54,9 +54,9 @@ describe('App', () => {
         expect(app.getByText('Plant name').nodeName).toBe('SPAN');
         expect(app.getByText('Plant species').nodeName).toBe('SPAN');
         expect(app.getByText('Pot size').nodeName).toBe('SPAN');
-        // Confirm tray form is not visible
-        expect(app.queryByText('Tray name')).toBeNull();
-        expect(app.queryByText('Tray location')).toBeNull();
+        // Confirm group form is not visible
+        expect(app.queryByText('Group name')).toBeNull();
+        expect(app.queryByText('Group location')).toBeNull();
     });
 
     it('sends the correct payload when plant form is submitted', async () => {
@@ -90,7 +90,7 @@ describe('App', () => {
         });
     });
 
-    it('sends the correct payload when tray form is submitted', async () => {
+    it('sends the correct payload when group form is submitted', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
@@ -98,22 +98,22 @@ describe('App', () => {
             url: '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
         }));
 
-        // Click Tray button
-        await user.click(app.getByText('Tray'));
+        // Click Group button
+        await user.click(app.getByText('Group'));
 
         // Fill in form fields
-        await userEvent.type(app.getByLabelText('Tray name'), 'Test tray');
-        await userEvent.type(app.getByLabelText('Tray location'), 'Middle shelf');
+        await userEvent.type(app.getByLabelText('Group name'), 'Test group');
+        await userEvent.type(app.getByLabelText('Group location'), 'Middle shelf');
         await userEvent.type(app.getByLabelText('Description'), 'Microgreens');
 
         // Click Save button
         await userEvent.click(app.getByText('Save'));
 
-        // Confirm correct data posted to /register_tray endpoint
-        expect(global.fetch).toHaveBeenCalledWith('/register_tray', {
+        // Confirm correct data posted to /register_group endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/register_group', {
             method: 'POST',
             body: JSON.stringify({
-                "name": "Test tray",
+                "name": "Test group",
                 "location": "Middle shelf",
                 "description": "Microgreens",
                 "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"

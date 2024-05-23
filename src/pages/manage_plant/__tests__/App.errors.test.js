@@ -12,7 +12,7 @@ describe('App', () => {
         // Create mock state objects
         createMockContext('plant', mockContext.plant);
         createMockContext('notes', mockContext.notes);
-        createMockContext('trays', mockContext.trays);
+        createMockContext('groups', mockContext.groups);
         createMockContext('species_options', mockContext.species_options);
         createMockContext('photo_urls', mockContext.photo_urls);
     });
@@ -70,23 +70,23 @@ describe('App', () => {
         expect(app.queryByText(/failed to create event/)).not.toBeNull();
     });
 
-    it('shows error modal if error received while removing from tray', async() => {
+    it('shows error modal if error received while removing from group', async() => {
         // Mock fetch function to return arbitrary error
         global.fetch = jest.fn(() => Promise.resolve({
             ok: false,
             json: () => Promise.resolve({
-                "error": "failed to remove plant from tray"
+                "error": "failed to remove plant from group"
             })
         }));
 
         // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to remove plant from tray/)).toBeNull();
+        expect(app.queryByText(/failed to remove plant from group/)).toBeNull();
 
-        // Click "Remove from tray" dropdown option
-        await user.click(app.getByText(/Remove from tray/));
+        // Click "Remove from group" dropdown option
+        await user.click(app.getByText(/Remove from group/));
 
         // Confirm modal appeared with arbitrary error text
-        expect(app.queryByText(/failed to remove plant from tray/)).not.toBeNull();
+        expect(app.queryByText(/failed to remove plant from group/)).not.toBeNull();
     });
 
     it('shows error modal if error received while repotting plant', async() => {
@@ -110,23 +110,23 @@ describe('App', () => {
         expect(app.queryByText(/failed to repot plant/)).not.toBeNull();
     });
 
-    it('shows error modal if error received while adding to tray', async() => {
+    it('shows error modal if error received while adding to group', async() => {
         // Mock fetch function to return arbitrary error
         global.fetch = jest.fn(() => Promise.resolve({
             ok: false,
             json: () => Promise.resolve({
-                "error": "failed to add plant to tray"
+                "error": "failed to add plant to group"
             })
         }));
 
         // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to add plant to tray/)).toBeNull();
+        expect(app.queryByText(/failed to add plant to group/)).toBeNull();
 
-        // Simulate user selecting tray
-        const addToTrayModal = app.getByText("Add plant to tray").parentElement;
-        await user.click(within(addToTrayModal).getByText("Test tray"));
+        // Simulate user selecting group
+        const addToGroupModal = app.getByText("Add plant to group").parentElement;
+        await user.click(within(addToGroupModal).getByText("Test group"));
 
         // Confirm modal appeared with arbitrary error text
-        expect(app.queryByText(/failed to add plant to tray/)).not.toBeNull();
+        expect(app.queryByText(/failed to add plant to group/)).not.toBeNull();
     });
 });

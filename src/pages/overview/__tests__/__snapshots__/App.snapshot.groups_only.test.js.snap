@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`App matches snapshot when only trays exist 1`] = `
+exports[`App matches snapshot when only groups exist 1`] = `
 {
   "asFragment": [Function],
   "baseElement": <body>
@@ -10,9 +10,9 @@ exports[`App matches snapshot when only trays exist 1`] = `
       []
     </div>
     <div
-      id="trays"
+      id="groups"
     >
-      [{"uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be14","name":"Test tray","location":"Middle shelf","plants":4}]
+      [{"uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be14","name":"Test group","location":"Middle shelf","plants":4}]
     </div>
     <div>
       <div
@@ -125,7 +125,7 @@ exports[`App matches snapshot when only trays exist 1`] = `
           <div
             class="collapse-title text-xl font-medium text-center"
           >
-            Trays (1)
+            Groups (1)
           </div>
           <div
             class="collapse-content min-w-0"
@@ -172,7 +172,7 @@ exports[`App matches snapshot when only trays exist 1`] = `
                   <h2
                     class="card-title mx-auto"
                   >
-                    Test tray
+                    Test group
                   </h2>
                   <p>
                     Contains 
@@ -542,7 +542,7 @@ exports[`App matches snapshot when only trays exist 1`] = `
         <div
           class="collapse-title text-xl font-medium text-center"
         >
-          Trays (1)
+          Groups (1)
         </div>
         <div
           class="collapse-content min-w-0"
@@ -589,7 +589,7 @@ exports[`App matches snapshot when only trays exist 1`] = `
                 <h2
                   class="card-title mx-auto"
                 >
-                  Test tray
+                  Test group
                 </h2>
                 <p>
                   Contains 

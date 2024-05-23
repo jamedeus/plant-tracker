@@ -21,8 +21,8 @@ export const mockContext = {
             "prune": [],
             "repot": [],
         },
-        "tray": {
-            "name": "Test tray",
+        "group": {
+            "name": "Test group",
             "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
         }
     },
@@ -36,9 +36,9 @@ export const mockContext = {
             "text": "One of the older leaves is starting to turn yellow"
         }
     ],
-    "trays": [
+    "groups": [
         {
-            "name": "Test tray",
+            "name": "Test group",
             "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
             "location": "Top shelf",
             "description": "Medium brightness grow light",
@@ -95,15 +95,15 @@ export const mockContextNoEvents = {
             "prune": [],
             "repot": [],
         },
-        "tray": {
-            "name": "Test tray",
+        "group": {
+            "name": "Test group",
             "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
         }
     },
     "notes": [],
-    "trays": [
+    "groups": [
         {
-            "name": "Test tray",
+            "name": "Test group",
             "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
         },
         {

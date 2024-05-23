@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const TrayDetailsForm = ({ formRef, name, location, description }) => {
+const GroupDetailsForm = ({ formRef, name, location, description }) => {
     return (
-        <form id="trayDetails" ref={formRef}>
+        <form id="groupDetails" ref={formRef}>
             <label className="form-control w-full">
                 <div className="label">
-                    <span className="label-text-alt">Tray name</span>
+                    <span className="label-text-alt">Group name</span>
                 </div>
                 <input
                     name="name"
@@ -17,7 +17,7 @@ const TrayDetailsForm = ({ formRef, name, location, description }) => {
             </label>
             <label className="form-control w-full">
                 <div className="label">
-                    <span className="label-text-alt">Tray location</span>
+                    <span className="label-text-alt">Group location</span>
                 </div>
                 <input
                     name="location"
@@ -40,7 +40,7 @@ const TrayDetailsForm = ({ formRef, name, location, description }) => {
     );
 };
 
-TrayDetailsForm.propTypes = {
+GroupDetailsForm.propTypes = {
     formRef: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
@@ -50,4 +50,4 @@ TrayDetailsForm.propTypes = {
     description: PropTypes.string
 };
 
-export default TrayDetailsForm;
+export default GroupDetailsForm;

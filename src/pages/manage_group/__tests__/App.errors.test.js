@@ -10,7 +10,7 @@ describe('App', () => {
 
     beforeAll(() => {
         // Create mock state objects
-        createMockContext('tray', mockContext.tray);
+        createMockContext('group', mockContext.group);
         createMockContext('details', mockContext.details);
         createMockContext('options', mockContext.options);
     });
@@ -34,19 +34,19 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: false,
             json: () => Promise.resolve({
-                "error": "failed to edit tray details"
+                "error": "failed to edit group details"
             })
         }));
 
         // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to edit tray details/)).toBeNull();
+        expect(app.queryByText(/failed to edit group details/)).toBeNull();
 
         // Click submit button inside edit modal
         const modal = app.getByText("Edit Details").parentElement;
         await user.click(within(modal).getByText("Edit"));
 
         // Confirm modal appeared with arbitrary error text
-        expect(app.queryByText(/failed to edit tray details/)).not.toBeNull();
+        expect(app.queryByText(/failed to edit group details/)).not.toBeNull();
     });
 
     it('shows error modal if error received while bulk add events', async() => {
@@ -68,17 +68,17 @@ describe('App', () => {
         expect(app.queryByText(/failed to bulk add events/)).not.toBeNull();
     });
 
-    it('shows error modal if error received while adding plants to tray', async() => {
+    it('shows error modal if error received while adding plants to group', async() => {
         // Mock fetch function to return arbitrary error
         global.fetch = jest.fn(() => Promise.resolve({
             ok: false,
             json: () => Promise.resolve({
-                "error": "failed to add plants to tray"
+                "error": "failed to add plants to group"
             })
         }));
 
         // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to add plants to tray/)).toBeNull();
+        expect(app.queryByText(/failed to add plants to group/)).toBeNull();
 
         // Simulate user selecting first plant in modal and clicking add
         const addPlantsModal = app.getByText("Add Plants").parentElement;
@@ -86,20 +86,20 @@ describe('App', () => {
         await user.click(addPlantsModal.querySelector('.btn-success'));
 
         // Confirm modal appeared with arbitrary error text
-        expect(app.queryByText(/failed to add plants to tray/)).not.toBeNull();
+        expect(app.queryByText(/failed to add plants to group/)).not.toBeNull();
     });
 
-    it('shows error modal if error received while removing plants from tray', async() => {
+    it('shows error modal if error received while removing plants from group', async() => {
         // Mock fetch function to return arbitrary error
         global.fetch = jest.fn(() => Promise.resolve({
             ok: false,
             json: () => Promise.resolve({
-                "error": "failed to remove plants from tray"
+                "error": "failed to remove plants from group"
             })
         }));
 
         // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to remove plants from tray/)).toBeNull();
+        expect(app.queryByText(/failed to remove plants from group/)).toBeNull();
 
         // Simulate user selecting first plant in modal and clicking remove
         const addPlantsModal = app.getByText("Remove Plants").parentElement;
@@ -107,6 +107,6 @@ describe('App', () => {
         await user.click(addPlantsModal.querySelector('.btn-error'));
 
         // Confirm modal appeared with arbitrary error text
-        expect(app.queryByText(/failed to remove plants from tray/)).not.toBeNull();
+        expect(app.queryByText(/failed to remove plants from group/)).not.toBeNull();
     });
 });

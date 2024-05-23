@@ -11,7 +11,7 @@ describe('App', () => {
 
     beforeAll(() => {
         // Create mock state objects
-        createMockContext('tray', mockContext.tray);
+        createMockContext('group', mockContext.group);
         createMockContext('details', mockContext.details);
         createMockContext('options', mockContext.options);
     });
@@ -35,10 +35,10 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "name": "Test tray",
+                "name": "Test group",
                 "location": "Middle shelf",
                 "description": "",
-                "display_name": "Test tray"
+                "display_name": "Test group"
             })
         }));
 
@@ -47,13 +47,13 @@ describe('App', () => {
         await user.click(within(modal).getByText("Edit"));
 
         // Confirm correct data posted to /edit_plant endpoint
-        expect(global.fetch).toHaveBeenCalledWith('/edit_tray', {
+        expect(global.fetch).toHaveBeenCalledWith('/edit_group', {
             method: 'POST',
             body: JSON.stringify({
-                "name": "Test tray",
+                "name": "Test group",
                 "location": "Middle shelf",
                 "description": "",
-                "tray_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                "group_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
             }),
             headers: postHeaders
         });
@@ -78,7 +78,7 @@ describe('App', () => {
         await user.click(app.getByText("Water All"));
 
         // Confirm correct data posted to /bulk_add_plant_events endpoint
-        // Should contain UUIDs of both plants in tray
+        // Should contain UUIDs of both plants in group
         expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plant_events', {
             method: 'POST',
             body: JSON.stringify({
@@ -113,7 +113,7 @@ describe('App', () => {
         await user.click(app.getByText("Fertilize All"));
 
         // Confirm correct data posted to /bulk_add_plant_events endpoint
-        // Should contain UUIDs of both plants in tray
+        // Should contain UUIDs of both plants in group
         expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plant_events', {
             method: 'POST',
             body: JSON.stringify({
@@ -263,12 +263,12 @@ describe('App', () => {
         await user.click(addPlantsModal.querySelectorAll('.radio')[0]);
         await user.click(addPlantsModal.querySelector('.btn-success'));
 
-        // Confirm correct data posted to /bulk_add_plants_to_tray endpoint
+        // Confirm correct data posted to /bulk_add_plants_to_group endpoint
         // Should only contain UUID of first plant
-        expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plants_to_tray', {
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plants_to_group', {
             method: 'POST',
             body: JSON.stringify({
-                "tray_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                "group_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
                 "plants": [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be16"
                 ]
@@ -300,12 +300,12 @@ describe('App', () => {
         await user.click(addPlantsModal.querySelectorAll('.radio')[0]);
         await user.click(addPlantsModal.querySelector('.btn-error'));
 
-        // Confirm correct data posted to /bulk_remove_plants_from_tray endpoint
+        // Confirm correct data posted to /bulk_remove_plants_from_group endpoint
         // Should only contain UUID of first plant
-        expect(global.fetch).toHaveBeenCalledWith('/bulk_remove_plants_from_tray', {
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_remove_plants_from_group', {
             method: 'POST',
             body: JSON.stringify({
-                "tray_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                "group_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
                 "plants": [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                 ]

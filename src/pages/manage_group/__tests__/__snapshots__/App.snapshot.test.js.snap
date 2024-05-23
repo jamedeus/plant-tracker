@@ -5,9 +5,9 @@ exports[`App matches snapshot 1`] = `
   "asFragment": [Function],
   "baseElement": <body>
     <div
-      id="tray"
+      id="group"
     >
-      {"uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be14","name":"Test tray","display_name":"Test tray","location":"Middle shelf","description":null}
+      {"uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be14","name":"Test group","display_name":"Test group","location":"Middle shelf","description":null}
     </div>
     <div
       id="details"
@@ -17,7 +17,7 @@ exports[`App matches snapshot 1`] = `
     <div
       id="options"
     >
-      [{"uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be12","name":"Test Plant","species":null,"description":"This plant is not in a tray yet","pot_size":null,"last_watered":null,"last_fertilized":null,"thumbnail":null},{"uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be16","name":"Another test plant","species":null,"description":null,"pot_size":4,"last_watered":null,"last_fertilized":null,"thumbnail":"/media/thumbnails/photo2_thumb.jpg"},{"uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be69","name":"Third test plant","species":null,"description":null,"pot_size":null,"last_watered":null,"last_fertilized":null,"thumbnail":"/media/thumbnails/photo3_thumb.jpg"},{"uuid":"19f65fa0-1c75-4cba-b590-0c9b5b315fcc","name":"Unnamed Spider Plant","species":null,"description":null,"pot_size":null,"last_watered":null,"last_fertilized":"2024-03-01T05:45:44+00:00","thumbnail":null}]
+      [{"uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be12","name":"Test Plant","species":null,"description":"This plant is not in a group yet","pot_size":null,"last_watered":null,"last_fertilized":null,"thumbnail":null},{"uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be16","name":"Another test plant","species":null,"description":null,"pot_size":4,"last_watered":null,"last_fertilized":null,"thumbnail":"/media/thumbnails/photo2_thumb.jpg"},{"uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be69","name":"Third test plant","species":null,"description":null,"pot_size":null,"last_watered":null,"last_fertilized":null,"thumbnail":"/media/thumbnails/photo3_thumb.jpg"},{"uuid":"19f65fa0-1c75-4cba-b590-0c9b5b315fcc","name":"Unnamed Spider Plant","species":null,"description":null,"pot_size":null,"last_watered":null,"last_fertilized":"2024-03-01T05:45:44+00:00","thumbnail":null}]
     </div>
     <div>
       <div
@@ -92,7 +92,7 @@ exports[`App matches snapshot 1`] = `
                 style="font-size: 8px;"
                 tabindex="0"
               >
-                Test tray
+                Test group
               </a>
               <div
                 class="dropdown-content z-[1] flex"
@@ -596,7 +596,7 @@ exports[`App matches snapshot 1`] = `
               Edit Details
             </h1>
             <form
-              id="trayDetails"
+              id="groupDetails"
             >
               <label
                 class="form-control w-full"
@@ -607,14 +607,14 @@ exports[`App matches snapshot 1`] = `
                   <span
                     class="label-text-alt"
                   >
-                    Tray name
+                    Group name
                   </span>
                 </div>
                 <input
                   class="input w-full input-bordered"
                   name="name"
                   type="text"
-                  value="Test tray"
+                  value="Test group"
                 />
               </label>
               <label
@@ -626,7 +626,7 @@ exports[`App matches snapshot 1`] = `
                   <span
                     class="label-text-alt"
                   >
-                    Tray location
+                    Group location
                   </span>
                 </div>
                 <input
@@ -1498,7 +1498,7 @@ exports[`App matches snapshot 1`] = `
               style="font-size: 8px;"
               tabindex="0"
             >
-              Test tray
+              Test group
             </a>
             <div
               class="dropdown-content z-[1] flex"
@@ -2002,7 +2002,7 @@ exports[`App matches snapshot 1`] = `
             Edit Details
           </h1>
           <form
-            id="trayDetails"
+            id="groupDetails"
           >
             <label
               class="form-control w-full"
@@ -2013,14 +2013,14 @@ exports[`App matches snapshot 1`] = `
                 <span
                   class="label-text-alt"
                 >
-                  Tray name
+                  Group name
                 </span>
               </div>
               <input
                 class="input w-full input-bordered"
                 name="name"
                 type="text"
-                value="Test tray"
+                value="Test group"
               />
             </label>
             <label
@@ -2032,7 +2032,7 @@ exports[`App matches snapshot 1`] = `
                 <span
                   class="label-text-alt"
                 >
-                  Tray location
+                  Group location
                 </span>
               </div>
               <input

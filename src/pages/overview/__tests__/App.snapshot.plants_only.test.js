@@ -8,7 +8,7 @@ describe('App', () => {
     it('matches snapshot when only plants exist', () => {
         // Create mock state objects
         createMockContext('plants', mockContext.plants);
-        createMockContext('trays', []);
+        createMockContext('groups', []);
 
         // Render App, confirm matches snapshot
         const component = render(
