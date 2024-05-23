@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { localToUTC } from 'src/timestampUtils';
 import { sendPostRequest, parseDomContext, pastTense } from 'src/util';
 import EditModal from 'src/components/EditModal';
-import TrayDetailsForm from 'src/forms/TrayDetailsForm';
+import GroupDetailsForm from 'src/forms/GroupDetailsForm';
 import Navbar from 'src/components/Navbar';
 import PlantCard from 'src/components/PlantCard';
 import DatetimeInput from 'src/components/DatetimeInput';
@@ -11,15 +11,15 @@ import FilterColumn from 'src/components/FilterColumn';
 import { useToast } from 'src/context/ToastContext';
 import { useTheme } from 'src/context/ThemeContext';
 import DetailsCard from 'src/components/DetailsCard';
-import TrayDetails from 'src/components/TrayDetails';
+import GroupDetails from 'src/components/GroupDetails';
 import AddPlantsModal, { openAddPlantsModal } from './AddPlantsModal';
 import RemovePlantsModal, { openRemovePlantsModal } from './RemovePlantsModal';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 
 function App() {
     // Load context set by django template
-    const [tray, setTray] = useState(() => {
-        return parseDomContext("tray");
+    const [group, setGroup] = useState(() => {
+        return parseDomContext("group");
     });
     const [plantDetails, setPlantDetails] = useState(() => {
         return parseDomContext("details");
@@ -54,14 +54,14 @@ function App() {
         const payload = Object.fromEntries(
             new FormData(editDetailsRef.current)
         );
-        payload["tray_id"] = tray.uuid;
+        payload["group_id"] = group.uuid;
         console.log(payload);
 
-        const response = await sendPostRequest('/edit_tray', payload);
+        const response = await sendPostRequest('/edit_group', payload);
         if (response.ok) {
             // Update plant state with new values from response
             const data = await response.json();
-            setTray({...tray, ...data});
+            setGroup({...group, ...data});
         } else {
             const error = await response.json();
             showErrorModal(JSON.stringify(error));
@@ -131,7 +131,7 @@ function App() {
         }
     };
 
-    // Buttons used to add bulk events to plants in tray
+    // Buttons used to add bulk events to plants in group
     const PlantEventButtons = ({editing, setEditing}) => {
         const addEventTimeInput = useRef(null);
 
@@ -216,12 +216,12 @@ function App() {
                         <ToggleThemeOption />
                     </>
                 }
-                title={tray.display_name}
+                title={group.display_name}
                 titleOptions={
                     <DetailsCard>
-                        <TrayDetails
-                            location={tray.location}
-                            description={tray.description}
+                        <GroupDetails
+                            location={group.location}
+                            description={group.description}
                         />
                     </DetailsCard>
                 }
@@ -264,23 +264,23 @@ function App() {
             </FilterColumn>
 
             <EditModal title="Edit Details" onSubmit={submitEditModal}>
-                <TrayDetailsForm
+                <GroupDetailsForm
                     formRef={editDetailsRef}
-                    name={tray.name}
-                    location={tray.location}
-                    description={tray.description}
+                    name={group.name}
+                    location={group.location}
+                    description={group.description}
                 />
             </EditModal>
 
             <AddPlantsModal
-                trayID={tray.uuid}
+                groupID={group.uuid}
                 options={options}
                 plantDetails={plantDetails}
                 setPlantDetails={setPlantDetails}
             />
 
             <RemovePlantsModal
-                trayID={tray.uuid}
+                groupID={group.uuid}
                 plantDetails={plantDetails}
                 setPlantDetails={setPlantDetails}
             />

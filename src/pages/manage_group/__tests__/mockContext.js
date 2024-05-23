@@ -1,9 +1,9 @@
 // Simulated django context, parsed into state object
 export const mockContext = {
-    "tray": {
+    "group": {
         "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
-        "name": "Test tray",
-        "display_name": "Test tray",
+        "name": "Test group",
+        "display_name": "Test group",
         "location": "Middle shelf",
         "description": null
     },
@@ -44,7 +44,7 @@ export const mockContext = {
             "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
             "name": "Test Plant",
             "species": null,
-            "description": "This plant is not in a tray yet",
+            "description": "This plant is not in a group yet",
             "pot_size": null,
             "last_watered": null,
             "last_fertilized": null,

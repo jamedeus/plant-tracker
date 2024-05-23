@@ -11,7 +11,7 @@ const config = {
         overview: './src/pages/overview/index.js',
         register: './src/pages/register/index.js',
         manage_plant: './src/pages/manage_plant/index.js',
-        manage_tray: './src/pages/manage_tray/index.js',
+        manage_group: './src/pages/manage_group/index.js',
     },
     output: {
         path: path.resolve(__dirname, 'backend/plant_tracker/static/plant_tracker/'),

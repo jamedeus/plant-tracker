@@ -13,7 +13,7 @@ describe('App', () => {
     beforeAll(() => {
         // Create mock state objects
         createMockContext('plants', mockContext.plants);
-        createMockContext('trays', mockContext.trays);
+        createMockContext('groups', mockContext.groups);
     });
 
     beforeEach(() => {
@@ -80,7 +80,7 @@ describe('App', () => {
         });
     });
 
-    it('sends correct payload when trays are deleted', async () => {
+    it('sends correct payload when groups are deleted', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
@@ -89,18 +89,18 @@ describe('App', () => {
             })
         }));
 
-        // Click edit option, click second checkbox (tray)
+        // Click edit option, click second checkbox (group)
         await user.click(app.getByText("Edit"));
         await user.click(app.container.querySelectorAll('.radio')[1]);
 
         // Click delete button in floating div
         await user.click(app.getByText('Delete'));
 
-        // Confirm correct data posted to /delete_tray endpoint
-        expect(global.fetch).toHaveBeenCalledWith('/delete_tray', {
+        // Confirm correct data posted to /delete_group endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/delete_group', {
             method: 'POST',
             body: JSON.stringify({
-                "tray_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                "group_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
             }),
             headers: postHeaders
         });

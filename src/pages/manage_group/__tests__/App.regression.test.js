@@ -29,7 +29,7 @@ describe('App', () => {
 
     beforeAll(() => {
         // Create mock state objects
-        createMockContext('tray', mockContext.tray);
+        createMockContext('group', mockContext.group);
         createMockContext('details', mockContext.details);
         createMockContext('options', mockContext.options);
     });

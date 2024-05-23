@@ -11,7 +11,7 @@ import DetailsCard from 'src/components/DetailsCard';
 import LastEventTime from 'src/components/LastEventTime';
 import PlantDetails from 'src/components/PlantDetails';
 import EventCalendar from './EventCalendar';
-import TrayModal, { openTrayModal } from './TrayModal';
+import GroupModal, { openGroupModal } from './GroupModal';
 import PhotoModal, { openPhotoModal } from './PhotoModal';
 import RepotModal, { openRepotModal } from './RepotModal';
 import EventHistoryModal from './EventHistoryModal';
@@ -29,7 +29,7 @@ function App() {
     const [photoUrls, setPhotoUrls] = useState(() => {
         return parseDomContext("photo_urls");
     });
-    const trays = parseDomContext("trays");
+    const groups = parseDomContext("groups");
     const speciesOptions = parseDomContext("species_options");
 
     // Get hooks to show toast message, error modal
@@ -61,12 +61,12 @@ function App() {
         setPlant(newPlant);
     };
 
-    // Called after successful add_plant_to_tray API call, takes name and UUID
-    const handleAddTray = (newTrayName, newTrayID) => {
+    // Called after successful add_plant_to_group API call, takes name and UUID
+    const handleAddGroup = (newGroupName, newGroupID) => {
         setPlant({...plant,
-            tray: {
-                name: newTrayName,
-                uuid: newTrayID
+            group: {
+                name: newGroupName,
+                uuid: newGroupID
             }
         });
     };
@@ -123,38 +123,38 @@ function App() {
         // Get toggle theme option from context
         const { ToggleThemeOption } = useTheme();
 
-        const removeFromTray = async () => {
+        const removeFromGroup = async () => {
             const response = await sendPostRequest(
-                '/remove_plant_from_tray',
+                '/remove_plant_from_group',
                 {plant_id: plant.uuid}
             );
             if (response.ok) {
-                // Remove tray details from plant state
-                setPlant({...plant, tray: null});
+                // Remove group details from plant state
+                setPlant({...plant, group: null});
             } else {
                 const error = await response.json();
                 showErrorModal(JSON.stringify(error));
             }
         };
 
-        // Options shown when plant is not in tray
-        const AddTray = () => {
+        // Options shown when plant is not in group
+        const AddGroup = () => {
             return (
-                <li><a onClick={openTrayModal}>
-                    Add to tray
+                <li><a onClick={openGroupModal}>
+                    Add to group
                 </a></li>
             );
         };
 
-        // Options shown when plant is in tray
-        const RemoveTray = () => {
+        // Options shown when plant is in group
+        const RemoveGroup = () => {
             return (
                 <>
-                    <li><a href={"/manage/" + plant.tray.uuid}>
-                        Go to tray
+                    <li><a href={"/manage/" + plant.group.uuid}>
+                        Go to group
                     </a></li>
-                    <li><a onClick={removeFromTray}>
-                        Remove from tray
+                    <li><a onClick={removeFromGroup}>
+                        Remove from group
                     </a></li>
                 </>
             );
@@ -166,11 +166,11 @@ function App() {
                     Overview
                 </a></li>
                 {(() => {
-                    switch(plant.tray) {
+                    switch(plant.group) {
                         case(null):
-                            return <AddTray />;
+                            return <AddGroup />;
                         default:
-                            return <RemoveTray />;
+                            return <RemoveGroup />;
                     }
                 })()}
                 <li><a onClick={openRepotModal}>
@@ -187,9 +187,9 @@ function App() {
         );
     };
 
-    // Renders div with link to tray if plant is in tray
-    const PlantTraySection = () => {
-        switch(plant.tray) {
+    // Renders div with link to group if plant is in group
+    const PlantGroupSection = () => {
+        switch(plant.group) {
             case(null):
                 return null;
             default:
@@ -198,10 +198,10 @@ function App() {
                                      text-center px-8`}
                     >
                         <div className="card-body">
-                            <p className="text-sm">Plant is in tray:</p>
+                            <p className="text-sm">Plant is in group:</p>
                             <p className="text-xl font-bold">
-                                <a href={"/manage/" + plant.tray.uuid}>
-                                    { plant.tray.name }
+                                <a href={"/manage/" + plant.group.uuid}>
+                                    { plant.group.name }
                                 </a>
                             </p>
                         </div>
@@ -228,7 +228,7 @@ function App() {
                 }
             />
 
-            <PlantTraySection />
+            <PlantGroupSection />
 
             <div className="flex flex-col text-center">
                 <span className="text-lg">
@@ -289,10 +289,10 @@ function App() {
                 />
             </EditModal>
 
-            <TrayModal
+            <GroupModal
                 plantID={plant.uuid}
-                trayOptions={trays}
-                handleAddTray={handleAddTray}
+                groupOptions={groups}
+                handleAddGroup={handleAddGroup}
             />
 
             <RepotModal

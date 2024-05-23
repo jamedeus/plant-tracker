@@ -7,7 +7,7 @@ describe('App', () => {
     it('matches snapshot when no models exist (setup)', () => {
         // Create mock state objects
         createMockContext('plants', []);
-        createMockContext('trays', []);
+        createMockContext('groups', []);
 
         // Render App, confirm matches snapshot
         const component = render(

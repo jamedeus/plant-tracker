@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-// Renders dropdown contents for ManageTray details section
-const TrayDetails = ({ location, description }) => {
+// Renders dropdown contents for ManageGroup details section
+const GroupDetails = ({ location, description }) => {
     if (!location && !description) {
         return <p className="text-center">No details</p>;
     } else {
@@ -21,9 +21,9 @@ const TrayDetails = ({ location, description }) => {
     }
 };
 
-TrayDetails.propTypes = {
+GroupDetails.propTypes = {
     location: PropTypes.string,
     description: PropTypes.string
 };
 
-export default TrayDetails;
+export default GroupDetails;

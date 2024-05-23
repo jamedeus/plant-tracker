@@ -10,14 +10,14 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 from generate_qr_code_grid import generate_layout
-from .models import Tray, Plant, RepotEvent, Photo, NoteEvent
+from .models import Group, Plant, RepotEvent, Photo, NoteEvent
 from .view_decorators import (
     events_map,
     get_plant_by_uuid,
-    get_tray_by_uuid,
+    get_group_by_uuid,
     requires_json_post,
     get_plant_from_post_body,
-    get_tray_from_post_body,
+    get_group_from_post_body,
     get_timestamp_from_post_body,
     get_event_type_from_post_body,
     clean_payload_data
@@ -27,7 +27,7 @@ from .view_decorators import (
 def get_plant_options():
     '''Returns a list of dicts with attributes of all existing plants
     List is cached for up to 10 minutes, or until Plant model changed
-    Used to populate options in add plants modal on manage_tray page
+    Used to populate options in add plants modal on manage_group page
     '''
     plant_options = cache.get('plant_options')
     if not plant_options:
@@ -70,7 +70,7 @@ def render_react_app(request, title, bundle, state, log_state=True):
 @requires_json_post(["qr_per_row"])
 def get_qr_codes(data):
     '''Returns printer-sized grid of QR code links as base64-encoded PNG
-    QR codes point to manage endpoint, can be used for plants or trays
+    QR codes point to manage endpoint, can be used for plants or groups
     '''
 
     # Return error if URL_PREFIX env var is unset or invalid
@@ -96,19 +96,19 @@ def get_qr_codes(data):
 
 
 def overview(request):
-    '''Renders the overview page (shows existing plants/trays, or setup if none)'''
+    '''Renders the overview page (shows existing plants/groups, or setup if none)'''
 
     # Create state object parsed by react app
     state = {
         'plants': [],
-        'trays': []
+        'groups': []
     }
 
     for plant in Plant.objects.all():
         state['plants'].append(plant.get_details())
 
-    for tray in Tray.objects.all():
-        state['trays'].append(tray.get_details())
+    for group in Group.objects.all():
+        state['groups'].append(group.get_details())
 
     return render_react_app(
         request,
@@ -119,7 +119,7 @@ def overview(request):
 
 
 def manage(request, uuid):
-    '''Renders plant/tray management pages, or registration page if UUID is new
+    '''Renders plant/group management pages, or registration page if UUID is new
     Accessed by scanning QR code sticker containing UUID
     '''
 
@@ -129,7 +129,7 @@ def manage(request, uuid):
         # Create state object parsed by react app
         state = {
             'plant': plant.get_details(),
-            'trays': [tray.get_details() for tray in Tray.objects.all()],
+            'groups': [group.get_details() for group in Group.objects.all()],
             'species_options': get_plant_species_options(),
             'photo_urls': plant.get_photo_urls()
         }
@@ -152,14 +152,14 @@ def manage(request, uuid):
             for note in plant.noteevent_set.all()
         ]
 
-        # Add tray details if plant is in a tray
-        if plant.tray:
-            state['plant']['tray'] = {
-                'name': plant.tray.get_display_name(),
-                'uuid': str(plant.tray.uuid)
+        # Add group details if plant is in a group
+        if plant.group:
+            state['plant']['group'] = {
+                'name': plant.group.get_display_name(),
+                'uuid': str(plant.group.uuid)
             }
         else:
-            state['plant']['tray'] = None
+            state['plant']['group'] = None
 
         return render_react_app(
             request,
@@ -168,26 +168,26 @@ def manage(request, uuid):
             state=state
         )
 
-    # Loop up UUID in tray database, render template if found
-    tray = get_tray_by_uuid(uuid)
-    if tray:
+    # Loop up UUID in group database, render template if found
+    group = get_group_by_uuid(uuid)
+    if group:
         # Create state object parsed by react app
         state = {
-            'tray': {
-                'uuid': str(tray.uuid),
-                'name': tray.name,
-                'display_name': tray.get_display_name(),
-                'location': tray.location,
-                'description': tray.description
+            'group': {
+                'uuid': str(group.uuid),
+                'name': group.name,
+                'display_name': group.get_display_name(),
+                'location': group.location,
+                'description': group.description
             },
-            'details': tray.get_plant_details(),
+            'details': group.get_plant_details(),
             'options': get_plant_options()
         }
 
         return render_react_app(
             request,
-            title='Manage Tray',
-            bundle='manage_tray',
+            title='Manage Group',
+            bundle='manage_group',
             state=state
         )
 
@@ -221,13 +221,13 @@ def register_plant(data):
 
 @requires_json_post(["name", "location", "description", "uuid"])
 @clean_payload_data
-def register_tray(data):
-    '''Creates a Tray database entry with params from POST body
-    Requires JSON POST with parameters from  tray registration form
+def register_group(data):
+    '''Creates a Group database entry with params from POST body
+    Requires JSON POST with parameters from  group registration form
     '''
 
     # Instantiate model with payload keys as kwargs
-    Tray.objects.create(**data)
+    Group.objects.create(**data)
 
     # Redirect to manage page
     return HttpResponseRedirect(f'/manage/{data["uuid"]}')
@@ -247,16 +247,16 @@ def change_plant_uuid(plant, data):
         return JsonResponse({"error": "new_id key is not a valid UUID"}, status=400)
 
 
-@requires_json_post(["tray_id", "new_id"])
-@get_tray_from_post_body
-def change_tray_uuid(tray, data):
-    '''Changes UUID of an existing Tray, called when QR code sticker changed
-    Requires JSON POST with tray_id (uuid) and new_id (uuid) keys
+@requires_json_post(["group_id", "new_id"])
+@get_group_from_post_body
+def change_group_uuid(group, data):
+    '''Changes UUID of an existing Group, called when QR code sticker changed
+    Requires JSON POST with group_id (uuid) and new_id (uuid) keys
     '''
     try:
-        tray.uuid = data["new_id"]
-        tray.save()
-        return JsonResponse({"new_uuid": str(tray.uuid)}, status=200)
+        group.uuid = data["new_id"]
+        group.save()
+        return JsonResponse({"new_uuid": str(group.uuid)}, status=200)
     except ValidationError:
         return JsonResponse({"error": "new_id key is not a valid UUID"}, status=400)
 
@@ -284,24 +284,24 @@ def edit_plant_details(plant, data):
     return JsonResponse(data, status=200)
 
 
-@requires_json_post(["tray_id", "name", "location", "description"])
-@get_tray_from_post_body
+@requires_json_post(["group_id", "name", "location", "description"])
+@get_group_from_post_body
 @clean_payload_data
-def edit_tray_details(tray, data):
-    '''Updates description attributes of existing Tray entry
-    Requires JSON POST with tray_id (uuid), name, and location keys
+def edit_group_details(group, data):
+    '''Updates description attributes of existing Group entry
+    Requires JSON POST with group_id (uuid), name, and location keys
     '''
     print(json.dumps(data, indent=4))
 
     # Overwrite database params with user values
-    tray.name = data["name"]
-    tray.location = data["location"]
-    tray.description = data["description"]
-    tray.save()
+    group.name = data["name"]
+    group.location = data["location"]
+    group.description = data["description"]
+    group.save()
 
     # Return modified payload with new display_name
-    del data["tray_id"]
-    data["display_name"] = tray.get_display_name()
+    del data["group_id"]
+    data["display_name"] = group.get_display_name()
     return JsonResponse(data, status=200)
 
 
@@ -315,14 +315,14 @@ def delete_plant(plant, **kwargs):
     return JsonResponse({"deleted": plant.uuid}, status=200)
 
 
-@requires_json_post(["tray_id"])
-@get_tray_from_post_body
-def delete_tray(tray, **kwargs):
-    '''Deletes an existing Tray from database
-    Requires JSON POST with tray_id (uuid) key
+@requires_json_post(["group_id"])
+@get_group_from_post_body
+def delete_group(group, **kwargs):
+    '''Deletes an existing Group from database
+    Requires JSON POST with group_id (uuid) key
     '''
-    tray.delete()
-    return JsonResponse({"deleted": tray.uuid}, status=200)
+    group.delete()
+    return JsonResponse({"deleted": group.uuid}, status=200)
 
 
 @requires_json_post(["plant_id", "event_type", "timestamp"])
@@ -467,21 +467,21 @@ def delete_plant_note(plant, timestamp, data):
         return JsonResponse({"error": "note not found"}, status=404)
 
 
-@requires_json_post(["plant_id", "tray_id"])
+@requires_json_post(["plant_id", "group_id"])
 @get_plant_from_post_body
-@get_tray_from_post_body
-def add_plant_to_tray(plant, tray, **kwargs):
-    '''Adds specified Plant to specified Tray (creates database relation)
-    Requires JSON POST with plant_id (uuid) and tray_id (uuid) keys
+@get_group_from_post_body
+def add_plant_to_group(plant, group, **kwargs):
+    '''Adds specified Plant to specified Group (creates database relation)
+    Requires JSON POST with plant_id (uuid) and group_id (uuid) keys
     '''
-    plant.tray = tray
+    plant.group = group
     plant.save()
     return JsonResponse(
         {
-            "action": "add_plant_to_tray",
+            "action": "add_plant_to_group",
             "plant": plant.uuid,
-            "tray_name": tray.get_display_name(),
-            "tray_uuid": tray.uuid
+            "group_name": group.get_display_name(),
+            "group_uuid": group.uuid
         },
         status=200
     )
@@ -489,30 +489,30 @@ def add_plant_to_tray(plant, tray, **kwargs):
 
 @requires_json_post(["plant_id"])
 @get_plant_from_post_body
-def remove_plant_from_tray(plant, **kwargs):
-    '''Removes specified Plant from Tray (deletes database relation)
+def remove_plant_from_group(plant, **kwargs):
+    '''Removes specified Plant from Group (deletes database relation)
     Requires JSON POST with plant_id (uuid) key
     '''
-    plant.tray = None
+    plant.group = None
     plant.save()
     return JsonResponse(
-        {"action": "remove_plant_from_tray", "plant": plant.uuid},
+        {"action": "remove_plant_from_group", "plant": plant.uuid},
         status=200
     )
 
 
-@requires_json_post(["tray_id", "plants"])
-@get_tray_from_post_body
-def bulk_add_plants_to_tray(tray, data):
-    '''Adds a list of Plants to specified Tray (creates database relation for each)
-    Requires JSON POST with tray_id (uuid) and plants (list of UUIDs) keys
+@requires_json_post(["group_id", "plants"])
+@get_group_from_post_body
+def bulk_add_plants_to_group(group, data):
+    '''Adds a list of Plants to specified Group (creates database relation for each)
+    Requires JSON POST with group_id (uuid) and plants (list of UUIDs) keys
     '''
     added = []
     failed = []
     for plant_id in data["plants"]:
         plant = get_plant_by_uuid(plant_id)
         if plant:
-            plant.tray = tray
+            plant.group = group
             plant.save()
             added.append(plant.get_details())
         else:
@@ -520,18 +520,18 @@ def bulk_add_plants_to_tray(tray, data):
     return JsonResponse({"added": added, "failed": failed}, status=200)
 
 
-@requires_json_post(["tray_id", "plants"])
-@get_tray_from_post_body
-def bulk_remove_plants_from_tray(tray, data):
-    '''Removes a list of Plants from specified Tray (deletes database relations)
-    Requires JSON POST with tray_id (uuid) and plants (list of UUIDs) keys
+@requires_json_post(["group_id", "plants"])
+@get_group_from_post_body
+def bulk_remove_plants_from_group(group, data):
+    '''Removes a list of Plants from specified Group (deletes database relations)
+    Requires JSON POST with group_id (uuid) and plants (list of UUIDs) keys
     '''
     added = []
     failed = []
     for plant_id in data["plants"]:
         plant = get_plant_by_uuid(plant_id)
         if plant:
-            plant.tray = None
+            plant.group = None
             plant.save()
             added.append(plant_id)
         else:

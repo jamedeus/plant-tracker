@@ -1,9 +1,9 @@
-import TrayDetails from '../TrayDetails';
+import GroupDetails from '../GroupDetails';
 
 describe('App', () => {
     it('displays correct details', () => {
         const { getByText, queryByText } = render(
-            <TrayDetails
+            <GroupDetails
                 location={"Middle shelf"}
                 description={"Used for propagation"}
             />
@@ -15,7 +15,7 @@ describe('App', () => {
 
     it('hides location row if argument is null', () => {
         const { getByText } = render(
-            <TrayDetails
+            <GroupDetails
                 location={null}
                 description={"Used for propagation"}
             />
@@ -26,7 +26,7 @@ describe('App', () => {
 
     it('hides description row if argument is null', () => {
         const { getByText } = render(
-            <TrayDetails
+            <GroupDetails
                 location={"Middle shelf"}
                 description={null}
             />
@@ -37,7 +37,7 @@ describe('App', () => {
 
     it('displays "No details" when both arguments are null', () => {
         const { getByText, queryByText } = render(
-            <TrayDetails location={null} description={null} />
+            <GroupDetails location={null} description={null} />
         );
         expect(getByText('No details')).toBeInTheDocument();
         expect(queryByText('Location')).toBeNull();

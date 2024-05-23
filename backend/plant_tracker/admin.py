@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from .models import (
     Plant,
-    Tray,
+    Group,
     Photo,
     WaterEvent,
     FertilizeEvent,
@@ -12,7 +12,7 @@ from .models import (
 )
 
 admin.site.register(Plant)
-admin.site.register(Tray)
+admin.site.register(Group)
 admin.site.register(Photo)
 admin.site.register(WaterEvent)
 admin.site.register(FertilizeEvent)

@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import Navbar from 'src/components/Navbar';
 import { useTheme } from 'src/context/ThemeContext';
-import TrayCard from 'src/components/TrayCard';
+import GroupCard from 'src/components/GroupCard';
 import PlantCard from 'src/components/PlantCard';
 import { sendPostRequest, parseDomContext } from 'src/util';
 import FilterColumn from 'src/components/FilterColumn';
@@ -13,8 +13,8 @@ function App() {
     const [plants, setPlants] = useState(() => {
         return parseDomContext("plants");
     });
-    const [trays, setTrays] = useState(() => {
-        return parseDomContext("trays");
+    const [groups, setGroups] = useState(() => {
+        return parseDomContext("groups");
     });
 
     // Create ref for modal used to generate QR codes
@@ -32,20 +32,20 @@ function App() {
     // State object to track edit mode (shows checkbox for each card when true)
     const [editing, setEditing] = useState(false);
 
-    // Track which plant and tray checkboxes the user has selected
+    // Track which plant and group checkboxes the user has selected
     const selectedPlants = useRef([]);
-    const selectedTrays = useRef([]);
+    const selectedGroups = useRef([]);
 
-    // Track plant and tray column open state between re-renders
+    // Track plant and group column open state between re-renders
     const plantsOpenRef = useRef(true);
-    const traysOpenRef = useRef(true);
+    const groupsOpenRef = useRef(true);
 
     // Handler for edit option in top-left dropdown
     // Toggle editing state, clear selected, remove focus (closes dropdown)
     const toggleEditing = () => {
         setEditing(!editing);
         selectedPlants.current = [];
-        selectedTrays.current = [];
+        selectedGroups.current = [];
         document.activeElement.blur();
     };
 
@@ -59,12 +59,12 @@ function App() {
             plant => !selectedPlants.current.includes(plant.uuid))
         );
 
-        // Send delete request for each selected tray, remove uuid from state
-        selectedTrays.current.forEach(async tray_id => {
-            await sendPostRequest('/delete_tray', {tray_id: tray_id});
+        // Send delete request for each selected group, remove uuid from state
+        selectedGroups.current.forEach(async group_id => {
+            await sendPostRequest('/delete_group', {group_id: group_id});
         });
-        setTrays(trays.filter(
-            tray => !selectedTrays.current.includes(tray.uuid))
+        setGroups(groups.filter(
+            group => !selectedGroups.current.includes(group.uuid))
         );
 
         // Reset editing state
@@ -110,15 +110,15 @@ function App() {
         );
     };
 
-    const TraysCol = () => {
+    const GroupsCol = () => {
         return (
             <FilterColumn
-                title="Trays"
-                contents={trays}
-                CardComponent={TrayCard}
+                title="Groups"
+                contents={groups}
+                CardComponent={GroupCard}
                 editing={editing}
-                selected={selectedTrays}
-                openRef={traysOpenRef}
+                selected={selectedGroups}
+                openRef={groupsOpenRef}
                 ignoreKeys={['uuid']}
             />
         );
@@ -127,8 +127,8 @@ function App() {
     // Render correct components for current state objects
     const Layout = () => {
         switch(true) {
-            // Render 2-column layout if both plants and trays exist
-            case(plants.length > 0 && trays.length > 0):
+            // Render 2-column layout if both plants and groups exist
+            case(plants.length > 0 && groups.length > 0):
                 return (
                     <div className="grid grid-cols-1 md:grid-cols-2 mx-auto">
                         <div className="md:mr-12 mb-8 md:mb-0">
@@ -136,16 +136,16 @@ function App() {
                         </div>
 
                         <div className="md:ml-12">
-                            <TraysCol />
+                            <GroupsCol />
                         </div>
                     </div>
                 );
             // Render centered plants column if only plants exist
             case(plants.length > 0):
                 return <PlantsCol />;
-            // Render centered trays column if only trays exist
-            case(trays.length > 0):
-                return <TraysCol />;
+            // Render centered groups column if only groups exist
+            case(groups.length > 0):
+                return <GroupsCol />;
             // Render setup instructions if database is empty
             default:
                 return <Setup />;

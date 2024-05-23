@@ -1,25 +1,25 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/16/solid';
-import TrayDetails from 'src/components/TrayDetails';
+import GroupDetails from 'src/components/GroupDetails';
 
-const TrayCard = ({ name, plants, uuid, location, description, linkPage=true }) => {
+const GroupCard = ({ name, plants, uuid, location, description, linkPage=true }) => {
     // Track details collapse open state
     const [open, setOpen] = useState(false);
 
     // Button handler toggles collapse state, prevents click propagating
-    // to card (redirects to manage_tray page unless linkPage arg is false)
+    // to card (redirects to manage_group page unless linkPage arg is false)
     const toggle = (e) => {
         setOpen(!open);
         e.stopPropagation();
     };
 
-    // Click handler, redirects to manage_tray unless linkPage arg is false
+    // Click handler, redirects to manage_group unless linkPage arg is false
     const manageLink = () => {
         window.location.href = `/manage/${uuid}`;
     };
 
-    // Renders collapse with Tray details, opened with arrow button
+    // Renders collapse with Group details, opened with arrow button
     const DetailsSection = () => {
         return (
             <div className={
@@ -33,7 +33,7 @@ const TrayCard = ({ name, plants, uuid, location, description, linkPage=true }) 
                     defaultChecked={open}
                 />
                 <div className="collapse-content">
-                    <TrayDetails
+                    <GroupDetails
                         location={location}
                         description={description}
                     />
@@ -78,7 +78,7 @@ const TrayCard = ({ name, plants, uuid, location, description, linkPage=true }) 
     );
 };
 
-TrayCard.propTypes = {
+GroupCard.propTypes = {
     name: PropTypes.string,
     plants: PropTypes.number,
     uuid: PropTypes.string,
@@ -87,4 +87,4 @@ TrayCard.propTypes = {
     linkPage: PropTypes.bool
 };
 
-export default TrayCard;
+export default GroupCard;

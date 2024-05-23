@@ -140,7 +140,7 @@ exports[`App matches snapshot 1`] = `
               tabindex="-1"
               type="button"
             >
-              Tray
+              Group
             </button>
           </div>
           <div
@@ -437,7 +437,7 @@ exports[`App matches snapshot 1`] = `
             tabindex="-1"
             type="button"
           >
-            Tray
+            Group
           </button>
         </div>
         <div

@@ -31,30 +31,30 @@ def get_unnamed_plants():
     return unnamed_plants
 
 
-def get_unnamed_trays():
-    '''Returns list of primary_key ints for all Trays with no name or location
-    List is cached for up to 10 minutes, or until Tray model changed
+def get_unnamed_groups():
+    '''Returns list of primary_key ints for all Groups with no name or location
+    List is cached for up to 10 minutes, or until Group model changed
     Uses list instead of QuerySet to avoid serialization overhead
     '''
-    unnamed_trays = cache.get('unnamed_trays')
-    if not unnamed_trays:
-        unnamed_trays = list(Tray.objects.filter(
+    unnamed_groups = cache.get('unnamed_groups')
+    if not unnamed_groups:
+        unnamed_groups = list(Group.objects.filter(
             name__isnull=True,
             location__isnull=True
         ).values_list('id', flat=True))
-        cache.set('unnamed_trays', unnamed_trays, 600)
-    return unnamed_trays
+        cache.set('unnamed_groups', unnamed_groups, 600)
+    return unnamed_groups
 
 
-class Tray(models.Model):
-    '''Tracks a tray containing multiple plants, created by scanning QR code
-    Provides methods to water or fertilize all plants within tray
+class Group(models.Model):
+    '''Tracks a group containing multiple plants, created by scanning QR code
+    Provides methods to water or fertilize all plants within group
     '''
 
-    # UUID of QR code attached to tray
+    # UUID of QR code attached to group
     uuid = models.UUIDField(unique=True)
 
-    # Description fields are optional, if blank user will just see "Unnamed tray"
+    # Description fields are optional, if blank user will just see "Unnamed group"
     name = models.CharField(max_length=50, blank=True, null=True)
     location = models.CharField(max_length=50, blank=True, null=True)
     description = models.CharField(max_length=500, blank=True, null=True)
@@ -70,28 +70,28 @@ class Tray(models.Model):
         if self.name:
             return self.name
         if self.location:
-            return f'{self.location} tray'
+            return f'{self.location} group'
 
-        # If no name or location return string with unnamed tray index
-        unnamed_trays = get_unnamed_trays()
-        return f'Unnamed tray {unnamed_trays.index(self.id) + 1}'
+        # If no name or location return string with unnamed group index
+        unnamed_groups = get_unnamed_groups()
+        return f'Unnamed group {unnamed_groups.index(self.id) + 1}'
 
     def water_all(self, timestamp):
-        '''Takes datetime instance, creates WaterEvent for each Plant in Tray'''
+        '''Takes datetime instance, creates WaterEvent for each Plant in Group'''
         for plant in self.plant_set.all():
             WaterEvent.objects.create(plant=plant, timestamp=timestamp)
 
     def fertilize_all(self, timestamp):
-        '''Takes datetime instance, creates FertilizeEvent for each Plant in Tray'''
+        '''Takes datetime instance, creates FertilizeEvent for each Plant in Group'''
         for plant in self.plant_set.all():
             FertilizeEvent.objects.create(plant=plant, timestamp=timestamp)
 
     def get_plant_uuids(self):
-        '''Returns a list of UUID strings for all Plants in Tray'''
+        '''Returns a list of UUID strings for all Plants in Group'''
         return [str(uuid) for uuid in self.plant_set.all().values_list('uuid', flat=True)]
 
     def get_details(self):
-        '''Returns dict containing all tray attributes and number of plants'''
+        '''Returns dict containing all group attributes and number of plants'''
         return {
             'name': self.get_display_name(),
             'uuid': str(self.uuid),
@@ -101,17 +101,17 @@ class Tray(models.Model):
         }
 
     def get_plant_details(self):
-        '''Returns list of dicts with parameters for each Plant in Tray
+        '''Returns list of dicts with parameters for each Plant in Group
         See Plant.get_details for dict parameters
         '''
         return [plant.get_details() for plant in self.plant_set.all()]
 
 
-@receiver(post_save, sender=Tray)
-@receiver(post_delete, sender=Tray)
-def clear_unnamed_trays_cache(**kwargs):
-    '''Clear cached unnamed_trays list when a Tray is saved or deleted'''
-    cache.delete('unnamed_trays')
+@receiver(post_save, sender=Group)
+@receiver(post_delete, sender=Group)
+def clear_unnamed_groups_cache(**kwargs):
+    '''Clear cached unnamed_groups list when a Group is saved or deleted'''
+    cache.delete('unnamed_groups')
 
 
 class Plant(models.Model):
@@ -138,8 +138,8 @@ class Plant(models.Model):
         null=True
     )
 
-    # Optional relation to manage multiple plants in the same tray
-    tray = models.ForeignKey(Tray, on_delete=models.CASCADE, blank=True, null=True)
+    # Optional relation to manage multiple plants in the same group
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, blank=True, null=True)
 
     # Optional relation to set photo used for overview page thumbnail
     # No related_name (redundant, Photo already has reverse relation)

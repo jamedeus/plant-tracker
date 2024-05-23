@@ -8,7 +8,7 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase, override_settings
 
 from .models import (
-    Tray,
+    Group,
     Plant,
     WaterEvent,
     FertilizeEvent,
@@ -257,28 +257,28 @@ class PlantModelTests(TestCase):
             self.plant.save()
 
 
-class TrayModelTests(TestCase):
+class GroupModelTests(TestCase):
     def setUp(self):
-        # Create test tray
-        self.test_tray = Tray.objects.create(uuid=uuid4())
+        # Create test group
+        self.test_group = Group.objects.create(uuid=uuid4())
 
-        # Create 2 plants with relations to Tray and 1 without
-        self.plant1 = Plant.objects.create(uuid=uuid4(), name="plant1", tray=self.test_tray)
-        self.plant2 = Plant.objects.create(uuid=uuid4(), name="plant2", tray=self.test_tray)
+        # Create 2 plants with relations to Group and 1 without
+        self.plant1 = Plant.objects.create(uuid=uuid4(), name="plant1", group=self.test_group)
+        self.plant2 = Plant.objects.create(uuid=uuid4(), name="plant2", group=self.test_group)
         self.plant3 = Plant.objects.create(uuid=uuid4(), name="plant3")
 
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
 
     def test_str_method(self):
-        # Should return "Unnamed tray <num> (UUID)" when no params are set
-        self.assertEqual(str(self.test_tray), f"Unnamed tray 1 ({self.test_tray.uuid})")
-        # Add location, should return "<location> tray (UUID)"
-        self.test_tray.location = "Top shelf"
-        self.assertEqual(str(self.test_tray), f"Top shelf tray ({self.test_tray.uuid})")
+        # Should return "Unnamed group <num> (UUID)" when no params are set
+        self.assertEqual(str(self.test_group), f"Unnamed group 1 ({self.test_group.uuid})")
+        # Add location, should return "<location> group (UUID)"
+        self.test_group.location = "Top shelf"
+        self.assertEqual(str(self.test_group), f"Top shelf group ({self.test_group.uuid})")
         # Add name, should return "<name> (UUID)"
-        self.test_tray.name = "Top shelf"
-        self.assertEqual(str(self.test_tray), f"Top shelf ({self.test_tray.uuid})")
+        self.test_group.name = "Top shelf"
+        self.assertEqual(str(self.test_group), f"Top shelf ({self.test_group.uuid})")
 
     def test_water_all(self):
         # Confirm plants have no water events
@@ -286,8 +286,8 @@ class TrayModelTests(TestCase):
         self.assertEqual(len(self.plant2.waterevent_set.all()), 0)
         self.assertEqual(len(self.plant3.waterevent_set.all()), 0)
 
-        # Call water_all, plants in tray should have water event, other plant should not
-        self.test_tray.water_all(timezone.datetime.fromisoformat('2024-02-06T03:06:26+00:00'))
+        # Call water_all, plants in group should have water event, other plant should not
+        self.test_group.water_all(timezone.datetime.fromisoformat('2024-02-06T03:06:26+00:00'))
         self.assertEqual(len(self.plant1.waterevent_set.all()), 1)
         self.assertEqual(len(self.plant2.waterevent_set.all()), 1)
         self.assertEqual(len(self.plant3.waterevent_set.all()), 0)
@@ -298,49 +298,49 @@ class TrayModelTests(TestCase):
         self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 0)
         self.assertEqual(len(self.plant3.fertilizeevent_set.all()), 0)
 
-        # Call water_all, plants in tray should have fertilize event, other plant should not
-        self.test_tray.fertilize_all(timezone.datetime.fromisoformat('2024-02-06T03:06:26+00:00'))
+        # Call water_all, plants in group should have fertilize event, other plant should not
+        self.test_group.fertilize_all(timezone.datetime.fromisoformat('2024-02-06T03:06:26+00:00'))
         self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 1)
         self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 1)
         self.assertEqual(len(self.plant3.fertilizeevent_set.all()), 0)
 
-    def test_change_tray_uuid(self):
-        # Call change_tray_uuid endpoint, confirm response + uuid changed
+    def test_change_group_uuid(self):
+        # Call change_group_uuid endpoint, confirm response + uuid changed
         payload = {
-            'tray_id': self.test_tray.uuid,
+            'group_id': self.test_group.uuid,
             'new_id': str(uuid4())
         }
-        response = self.client.post('/change_tray_uuid', payload)
+        response = self.client.post('/change_group_uuid', payload)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {'new_uuid': payload['new_id']})
-        self.test_tray.refresh_from_db()
-        self.assertEqual(str(self.test_tray.uuid), payload['new_id'])
+        self.test_group.refresh_from_db()
+        self.assertEqual(str(self.test_group.uuid), payload['new_id'])
 
     def test_get_display_name(self):
         # Confirm name and location are null, display_name should be unnamed index
-        self.assertIsNone(self.test_tray.name)
-        self.assertIsNone(self.test_tray.location)
-        self.assertEqual(self.test_tray.get_display_name(), 'Unnamed tray 1')
+        self.assertIsNone(self.test_group.name)
+        self.assertIsNone(self.test_group.location)
+        self.assertEqual(self.test_group.get_display_name(), 'Unnamed group 1')
 
-        # Add location, display_name should be "<location> tray"
-        self.test_tray.location = 'Middle shelf'
-        self.test_tray.save()
-        self.assertEqual(self.test_tray.get_display_name(), 'Middle shelf tray')
+        # Add location, display_name should be "<location> group"
+        self.test_group.location = 'Middle shelf'
+        self.test_group.save()
+        self.assertEqual(self.test_group.get_display_name(), 'Middle shelf group')
 
         # Add name, display_name should be name attribute
-        self.test_tray.name = 'Real name'
-        self.test_tray.save()
-        self.assertEqual(self.test_tray.get_display_name(), 'Real name')
+        self.test_group.name = 'Real name'
+        self.test_group.save()
+        self.assertEqual(self.test_group.get_display_name(), 'Real name')
 
-        # Create 3 unnamed trays
+        # Create 3 unnamed groups
         unnamed = []
         for i in range(0, 3):
-            unnamed.append(Tray.objects.create(uuid=uuid4()))
+            unnamed.append(Group.objects.create(uuid=uuid4()))
 
-        # Confirm Unnamed trays have correct sequential display_names
-        self.assertEqual(unnamed[0].get_display_name(), 'Unnamed tray 1')
-        self.assertEqual(unnamed[1].get_display_name(), 'Unnamed tray 2')
-        self.assertEqual(unnamed[2].get_display_name(), 'Unnamed tray 3')
+        # Confirm Unnamed groups have correct sequential display_names
+        self.assertEqual(unnamed[0].get_display_name(), 'Unnamed group 1')
+        self.assertEqual(unnamed[1].get_display_name(), 'Unnamed group 2')
+        self.assertEqual(unnamed[2].get_display_name(), 'Unnamed group 3')
 
 
 class PhotoModelTests(TestCase):

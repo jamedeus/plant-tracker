@@ -12,10 +12,10 @@ export const mockContext = {
             "thumbnail": "/media/thumbnails/photo_thumb.jpg"
         }
     ],
-    "trays": [
+    "groups": [
         {
             "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
-            "name": "Test tray",
+            "name": "Test group",
             "location": "Middle shelf",
             "plants": 4
         }

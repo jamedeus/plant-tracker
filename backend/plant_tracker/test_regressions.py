@@ -10,7 +10,7 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase, override_settings
 
 from .models import (
-    Tray,
+    Group,
     Plant,
     Photo,
     WaterEvent,
@@ -18,7 +18,7 @@ from .models import (
 )
 from .view_decorators import (
     get_plant_from_post_body,
-    get_tray_from_post_body,
+    get_group_from_post_body,
     get_timestamp_from_post_body,
     get_event_type_from_post_body
 )
@@ -49,19 +49,19 @@ class ModelRegressionTests(TestCase):
         from id to uuid and removing primary_key=True (use default BigAuto).
         '''
 
-        # Create test plant and tray, confirm 1 entry each
+        # Create test plant and group, confirm 1 entry each
         plant = Plant.objects.create(uuid=uuid4())
-        tray = Tray.objects.create(uuid=uuid4())
+        group = Group.objects.create(uuid=uuid4())
         self.assertEqual(len(Plant.objects.all()), 1)
-        self.assertEqual(len(Tray.objects.all()), 1)
+        self.assertEqual(len(Group.objects.all()), 1)
 
         # Change both UUIDs, confirm no duplicates were created
         plant.uuid = uuid4()
-        tray.uuid = uuid4()
+        group.uuid = uuid4()
         plant.save()
-        tray.save()
+        group.save()
         self.assertEqual(len(Plant.objects.all()), 1)
-        self.assertEqual(len(Tray.objects.all()), 1)
+        self.assertEqual(len(Group.objects.all()), 1)
 
     @override_settings(MEDIA_ROOT=os.path.join(TEST_DIR, 'data', 'images'))
     def test_photos_with_no_exif_data_should_set_created_time_to_upload_time(self):
@@ -85,7 +85,7 @@ class ModelRegressionTests(TestCase):
 
 
 class ViewRegressionTests(TestCase):
-    def test_water_tray_fails_due_to_duplicate_timestamp(self):
+    def test_water_group_fails_due_to_duplicate_timestamp(self):
         '''Issue: The bulk_add_plant_events endpoint did not trap errors when
         creating events. If a plant in UUID list already had an event with the
         same timestamp an uncaught exception would occur, preventing remaining
@@ -105,7 +105,7 @@ class ViewRegressionTests(TestCase):
         self.assertEqual(len(plant2.waterevent_set.all()), 1)
         self.assertEqual(len(plant3.waterevent_set.all()), 0)
 
-        # Send bulk_add_plants_to_tray request for all plants with same
+        # Send bulk_add_plants_to_group request for all plants with same
         # timestamp as the existing WaterEvent
         payload = {
             'plants': [
@@ -246,7 +246,7 @@ class ViewRegressionTests(TestCase):
 class ViewDecoratorRegressionTests(TestCase):
     def setUp(self):
         self.plant = Plant.objects.create(uuid=uuid4())
-        self.tray = Tray.objects.create(uuid=uuid4())
+        self.group = Group.objects.create(uuid=uuid4())
 
     def test_get_plant_from_post_body_traps_wrapped_function_exceptions(self):
         '''Issue: get_plant_from_post_body called the wrapped function inside a
@@ -274,30 +274,30 @@ class ViewDecoratorRegressionTests(TestCase):
             test_validation_error({'plant_id': str(self.plant.uuid)})
         self.assertEqual(e.exception.args[0], "wrapped function error")
 
-    def test_get_tray_from_post_body_traps_wrapped_function_exceptions(self):
-        '''Issue: get_tray_from_post_body called the wrapped function inside a
+    def test_get_group_from_post_body_traps_wrapped_function_exceptions(self):
+        '''Issue: get_group_from_post_body called the wrapped function inside a
         try/except block used to handle request payload errors. If an uncaught
         exception occurred in the wrapped function it would be caught by the
         wrapper, resulting in a JsonResponse with misleading error.
         '''
 
         # Create test functions that raise errors caught by decorator
-        @get_tray_from_post_body
-        def test_key_error(tray, data):
+        @get_group_from_post_body
+        def test_key_error(group, data):
             raise KeyError("wrapped function error")
 
-        @get_tray_from_post_body
-        def test_validation_error(tray, data):
+        @get_group_from_post_body
+        def test_validation_error(group, data):
             raise ValidationError("wrapped function error")
 
         # Exceptions should not be caught by the decorator
         # Confirm exceptions were raised by wrapped function and not decorator
         with self.assertRaises(KeyError) as e:
-            test_key_error({'tray_id': str(self.tray.uuid)})
+            test_key_error({'group_id': str(self.group.uuid)})
         self.assertEqual(e.exception.args[0], "wrapped function error")
 
         with self.assertRaises(ValidationError) as e:
-            test_validation_error({'tray_id': str(self.tray.uuid)})
+            test_validation_error({'group_id': str(self.group.uuid)})
         self.assertEqual(e.exception.args[0], "wrapped function error")
 
     def test_get_timestamp_from_post_body_traps_wrapped_function_exceptions(self):

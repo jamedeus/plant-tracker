@@ -12,7 +12,7 @@ describe('App', () => {
     beforeAll(() => {
         // Create mock state objects
         createMockContext('plants', mockContext.plants);
-        createMockContext('trays', mockContext.trays);
+        createMockContext('groups', mockContext.groups);
     });
 
     beforeEach(() => {
@@ -26,19 +26,19 @@ describe('App', () => {
         );
     });
 
-    // Original bug: Plant and Tray filter inputs included results where the
+    // Original bug: Plant and Group filter inputs included results where the
     // UUID, last_watered timestamp, or thumbnail URL matched the user's query.
     it('does not match match UUIDs, timestamps, or URLs when filtering', async () => {
         const plantColumn = app.getByText(/Plants/).parentElement;
-        const trayColumn = app.getByText(/Trays/).parentElement;
+        const groupColumn = app.getByText(/Groups/).parentElement;
         const plantFilterInput = within(plantColumn).getByRole('textbox');
-        const trayFilterInput = within(trayColumn).getByRole('textbox');
+        const groupFilterInput = within(groupColumn).getByRole('textbox');
 
         // Type part of UUID in both inputs, should remove all cards
         await userEvent.type(plantFilterInput, '0640');
-        await userEvent.type(trayFilterInput, '0640');
+        await userEvent.type(groupFilterInput, '0640');
         expect(plantColumn.querySelectorAll('.card').length).toBe(0);
-        expect(trayColumn.querySelectorAll('.card').length).toBe(0);
+        expect(groupColumn.querySelectorAll('.card').length).toBe(0);
 
         // Type part of timsetamp in plant input, should remove all cards
         await userEvent.clear(plantFilterInput);
