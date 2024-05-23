@@ -185,8 +185,7 @@ class Plant(models.Model):
         '''
         if self.default_photo:
             return self.default_photo.get_thumbnail_url()
-        else:
-            return self.get_most_recent_thumbnail()
+        return self.get_most_recent_thumbnail()
 
     def get_most_recent_thumbnail(self):
         '''Returns thumbnail URL of most recent photo, or None if no Photos exist'''

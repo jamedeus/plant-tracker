@@ -4,6 +4,7 @@ from . import views
 
 app_name = "api"
 
+# pylint: disable=line-too-long
 urlpatterns = [
     path('', views.overview, name='overview'),
     path('get_qr_codes', views.get_qr_codes, name='get_qr_codes'),

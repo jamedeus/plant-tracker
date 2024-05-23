@@ -455,7 +455,7 @@ def edit_plant_note(plant, timestamp, data):
 @requires_json_post(["plant_id", "timestamp"])
 @get_plant_from_post_body
 @get_timestamp_from_post_body
-def delete_plant_note(plant, timestamp, data):
+def delete_plant_note(plant, timestamp, **kwargs):
     '''Deletes the NoteEvent matching the plant and timestamp specified in body
     Requires JSON POST with plant_id (uuid) and timestamp keys
     '''
@@ -522,7 +522,7 @@ def bulk_add_plants_to_group(group, data):
 
 @requires_json_post(["group_id", "plants"])
 @get_group_from_post_body
-def bulk_remove_plants_from_group(group, data):
+def bulk_remove_plants_from_group(data, **kwargs):
     '''Removes a list of Plants from specified Group (deletes database relations)
     Requires JSON POST with group_id (uuid) and plants (list of UUIDs) keys
     '''

@@ -19,6 +19,7 @@ events_map = {
 
 # Get list of event type options for error message when invalid type received
 options = list(events_map.keys())
+# pylint: disable-next=consider-using-f-string
 EVENT_TYPE_OPTIONS = "'{}'".format("', '".join(options[:-1]) + "', or '" + options[-1])
 
 
