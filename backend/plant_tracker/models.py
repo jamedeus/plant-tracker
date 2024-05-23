@@ -1,3 +1,5 @@
+'''Django database models'''
+
 from io import BytesIO
 from datetime import datetime, timezone
 

@@ -1,3 +1,11 @@
+'''Decorators to simplify endpoint error handling and POST body parsing.
+
+Several decorators can be chained to validate that the expected JSON keys are
+present, query model entries from the database, and pass models to the wrapped
+endpoint function as arguments. An error response is returned to the client
+from the decorator if any of these steps fail, simplifying endpoint functions.
+'''
+
 import json
 from functools import wraps
 from datetime import datetime
