@@ -20,6 +20,8 @@ import DeletePhotosModal from './DeletePhotosModal';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 import Timeline from './Timeline';
 import { NoteModalProvider } from './NoteModal';
+import { faPlus, faBan, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function App() {
     // Load context set by django template
@@ -69,6 +71,21 @@ function App() {
                 uuid: newGroupID
             }
         });
+    };
+
+    // Makes remove_plant_from_group API call, updates state if successful
+    const handleRemoveGroup = async () => {
+        const response = await sendPostRequest(
+            '/remove_plant_from_group',
+            {plant_id: plant.uuid}
+        );
+        if (response.ok) {
+            // Remove group details from plant state
+            setPlant({...plant, group: null});
+        } else {
+            const error = await response.json();
+            showErrorModal(JSON.stringify(error));
+        }
     };
 
     const submitEditModal = async () => {
@@ -123,20 +140,6 @@ function App() {
         // Get toggle theme option from context
         const { ToggleThemeOption } = useTheme();
 
-        const removeFromGroup = async () => {
-            const response = await sendPostRequest(
-                '/remove_plant_from_group',
-                {plant_id: plant.uuid}
-            );
-            if (response.ok) {
-                // Remove group details from plant state
-                setPlant({...plant, group: null});
-            } else {
-                const error = await response.json();
-                showErrorModal(JSON.stringify(error));
-            }
-        };
-
         // Options shown when plant is not in group
         const AddGroup = () => {
             return (
@@ -153,7 +156,7 @@ function App() {
                     <li><a href={"/manage/" + plant.group.uuid}>
                         Go to group
                     </a></li>
-                    <li><a onClick={removeFromGroup}>
+                    <li><a onClick={handleRemoveGroup}>
                         Remove from group
                     </a></li>
                 </>
@@ -189,25 +192,63 @@ function App() {
 
     // Renders div with link to group if plant is in group
     const PlantGroupSection = () => {
-        switch(plant.group) {
-            case(null):
-                return null;
-            default:
-                return (
-                    <div className={`card card-compact mb-8 mx-auto bg-base-200
-                                     text-center px-8`}
-                    >
-                        <div className="card-body">
-                            <p className="text-sm">Plant is in group:</p>
-                            <p className="text-xl font-bold">
-                                <a href={"/manage/" + plant.group.uuid}>
-                                    { plant.group.name }
-                                </a>
-                            </p>
-                        </div>
+        const IconButton = ({ onClick=null, href=null, title=null, icon}) => {
+            return (
+                <a
+                    className={"btn btn-square h-10 w-10 min-h-10 min-w-10"}
+                    href={href}
+                    onClick={onClick}
+                    title={title}
+                >
+                    <FontAwesomeIcon className={"w-4 h-4"} icon={icon} />
+                </a>
+            );
+        };
+
+        // Rendered when plant is in a group
+        const Group = () => {
+            const groupLink = `/manage/${plant.group.uuid}`;
+
+            return (
+                <div className="flex flex-col text-center">
+                    <a className="font-bold text-lg" href={groupLink}>
+                        { plant.group.name }
+                    </a>
+                    <div className="flex gap-2 mx-auto mt-2">
+                        <IconButton
+                            onClick={handleRemoveGroup}
+                            title={"Remove plant from group"}
+                            icon={faBan}
+                        />
+                        <IconButton
+                            href={groupLink}
+                            title={"Go to group page"}
+                            icon={faUpRightFromSquare}
+                        />
                     </div>
-                );
-        }
+                </div>
+            );
+        };
+
+        // Rendered when plant is not in a group
+        const AddGroup = () => {
+            return (
+                <div className="mx-auto mt-2">
+                    <IconButton
+                        onClick={openGroupModal}
+                        title={"Add plant to group"}
+                        icon={faPlus}
+                    />
+                </div>
+            );
+        };
+
+        return (
+            <div className="flex flex-col">
+                <div className="divider font-bold mt-0">Group</div>
+                {plant.group ? <Group /> : <AddGroup />}
+            </div>
+        );
     };
 
     return (
@@ -219,6 +260,8 @@ function App() {
                 title={plant.display_name}
                 titleOptions={
                     <DetailsCard>
+                        <PlantGroupSection />
+                        <div className="divider font-bold">Details</div>
                         <PlantDetails
                             species={plant.species}
                             pot_size={plant.pot_size}
@@ -227,8 +270,6 @@ function App() {
                     </DetailsCard>
                 }
             />
-
-            <PlantGroupSection />
 
             <div className="flex flex-col text-center">
                 <span className="text-lg">
