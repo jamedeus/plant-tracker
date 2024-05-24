@@ -10,6 +10,7 @@ import { useTheme } from 'src/context/ThemeContext';
 import DetailsCard from 'src/components/DetailsCard';
 import LastEventTime from 'src/components/LastEventTime';
 import PlantDetails from 'src/components/PlantDetails';
+import IconButton from 'src/components/IconButton';
 import EventCalendar from './EventCalendar';
 import GroupModal, { openGroupModal } from './GroupModal';
 import PhotoModal, { openPhotoModal } from './PhotoModal';
@@ -21,7 +22,6 @@ import { useErrorModal } from 'src/context/ErrorModalContext';
 import Timeline from './Timeline';
 import { NoteModalProvider } from './NoteModal';
 import { faPlus, faBan, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 function App() {
     // Load context set by django template
@@ -190,21 +190,8 @@ function App() {
         );
     };
 
-    // Renders div with link to group if plant is in group
-    const PlantGroupSection = () => {
-        const IconButton = ({ onClick=null, href=null, title=null, icon}) => {
-            return (
-                <a
-                    className={"btn btn-square h-10 w-10 min-h-10 min-w-10"}
-                    href={href}
-                    onClick={onClick}
-                    title={title}
-                >
-                    <FontAwesomeIcon className={"w-4 h-4"} icon={icon} />
-                </a>
-            );
-        };
-
+    // Contents of dropdown shown when name plant clicked in header
+    const DetailsDropdown = () => {
         // Rendered when plant is in a group
         const Group = () => {
             const groupLink = `/manage/${plant.group.uuid}`;
@@ -244,10 +231,18 @@ function App() {
         };
 
         return (
-            <div className="flex flex-col">
-                <div className="divider font-bold mt-0">Group</div>
-                {plant.group ? <Group /> : <AddGroup />}
-            </div>
+            <DetailsCard>
+                <div className="flex flex-col">
+                    <div className="divider font-bold mt-0">Group</div>
+                    {plant.group ? <Group /> : <AddGroup />}
+                </div>
+                <div className="divider font-bold">Details</div>
+                <PlantDetails
+                    species={plant.species}
+                    pot_size={plant.pot_size}
+                    description={plant.description}
+                />
+            </DetailsCard>
         );
     };
 
@@ -259,15 +254,7 @@ function App() {
                 }
                 title={plant.display_name}
                 titleOptions={
-                    <DetailsCard>
-                        <PlantGroupSection />
-                        <div className="divider font-bold">Details</div>
-                        <PlantDetails
-                            species={plant.species}
-                            pot_size={plant.pot_size}
-                            description={plant.description}
-                        />
-                    </DetailsCard>
+                    <DetailsDropdown />
                 }
             />
 
