@@ -666,7 +666,9 @@ class ChangeQrCodeTests(TestCase):
         self.client = JSONClient()
 
         # Create test plants and groups
-        self.plant = Plant.objects.create(uuid=uuid4())
+        self.plant1 = Plant.objects.create(uuid=uuid4())
+        self.plant2 = Plant.objects.create(uuid=uuid4())
+        self.group1 = Group.objects.create(uuid=uuid4())
 
         # Create fake UUID that doesn't exist in database
         self.fake_id = uuid4()
@@ -676,7 +678,7 @@ class ChangeQrCodeTests(TestCase):
         cache.delete('old_uuid')
 
     def _refresh_test_models(self):
-        self.plant.refresh_from_db()
+        self.plant1.refresh_from_db()
 
     def test_change_qr_code_endpoint(self):
         # Confirm cache key is empty
@@ -685,7 +687,7 @@ class ChangeQrCodeTests(TestCase):
         # Post UUID to change_qr_code endpoint, confirm response
         response = self.client.post(
             '/change_qr_code',
-            {'plant_id': str(self.plant.uuid)}
+            {'plant_id': str(self.plant1.uuid)}
         )
         self.assertEqual(
             response.json(),
@@ -694,17 +696,17 @@ class ChangeQrCodeTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
         # Confirm cache key contains UUID
-        self.assertEqual(cache.get('old_uuid'), str(self.plant.uuid))
+        self.assertEqual(cache.get('old_uuid'), str(self.plant1.uuid))
 
     def test_change_plant_uuid_endpoint(self):
         # Simulate cached UUID from change_qr_code request
-        cache.set('old_uuid', str(self.plant.uuid))
-        self.assertEqual(cache.get('old_uuid'), str(self.plant.uuid))
+        cache.set('old_uuid', str(self.plant1.uuid))
+        self.assertEqual(cache.get('old_uuid'), str(self.plant1.uuid))
 
         # Post new UUID to change_plant_uuid endpoint, confirm response
         response = self.client.post(
             '/change_plant_uuid',
-            {'plant_id': str(self.plant.uuid), 'new_id': str(self.fake_id)}
+            {'plant_id': str(self.plant1.uuid), 'new_id': str(self.fake_id)}
         )
         self.assertEqual(
             response.json(),
@@ -714,13 +716,13 @@ class ChangeQrCodeTests(TestCase):
 
         # Confirm plant UUID changed + cache cleared
         self._refresh_test_models()
-        self.assertEqual(str(self.plant.uuid), str(self.fake_id))
+        self.assertEqual(str(self.plant1.uuid), str(self.fake_id))
         self.assertIsNone(cache.get('old_uuid'))
 
     def test_confirmation_page(self):
         # Simulate cached UUID from change_qr_code request
-        cache.set('old_uuid', str(self.plant.uuid))
-        self.assertEqual(cache.get('old_uuid'), str(self.plant.uuid))
+        cache.set('old_uuid', str(self.plant1.uuid))
+        self.assertEqual(cache.get('old_uuid'), str(self.plant1.uuid))
 
         # Request management page with new UUID (simulate user scanning new QR)
         response = self.client.get(f'/manage/{self.fake_id}')
@@ -739,7 +741,7 @@ class ChangeQrCodeTests(TestCase):
         self.assertEqual(
             state['plant'],
             {
-                'uuid': str(self.plant.uuid),
+                'uuid': str(self.plant1.uuid),
                 'name': None,
                 'display_name': 'Unnamed plant 1',
                 'species': None,
@@ -751,6 +753,45 @@ class ChangeQrCodeTests(TestCase):
             }
         )
         self.assertEqual(state['new_uuid'], str(self.fake_id))
+
+    def test_manage_page_while_waiting_for_new_qr_code(self):
+        '''The /manage endpoint should only return the confirmation page if a
+        new QR code is scanned. If the QR code of an existing plant or group is
+        scanned it should return the manage page for the plant or group.
+        '''
+
+        # Simulate cached UUID from change_qr_code request
+        cache.set('old_uuid', str(self.plant1.uuid))
+        self.assertEqual(cache.get('old_uuid'), str(self.plant1.uuid))
+
+        # Request management page with new UUID (should return confirmation page)
+        response = self.client.get(f'/manage/{self.fake_id}')
+        self.assertEqual(
+            response.context['js_bundle'],
+            'plant_tracker/confirm_new_qr_code.js'
+        )
+
+        # Request management page with existing plant UUID (should return manage_plant)
+        response = self.client.get(f'/manage/{self.plant2.uuid}')
+        self.assertEqual(
+            response.context['js_bundle'],
+            'plant_tracker/manage_plant.js'
+        )
+
+        # Request management page with existing group UUID (should return manage_group)
+        response = self.client.get(f'/manage/{self.group1.uuid}')
+        self.assertEqual(
+            response.context['js_bundle'],
+            'plant_tracker/manage_group.js'
+        )
+
+        # Request management page with UUID of plant waiting for new QR code,
+        # should return manage_plant page like normal
+        response = self.client.get(f'/manage/{self.plant1.uuid}')
+        self.assertEqual(
+            response.context['js_bundle'],
+            'plant_tracker/manage_plant.js'
+        )
 
 
 class PlantEventTests(TestCase):
