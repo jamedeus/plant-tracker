@@ -101,6 +101,11 @@ exports[`App matches snapshot 1`] = `
                 </li>
                 <li>
                   <a>
+                    Change QR code
+                  </a>
+                </li>
+                <li>
+                  <a>
                     Light mode
                   </a>
                 </li>
@@ -3253,6 +3258,11 @@ exports[`App matches snapshot 1`] = `
               <li>
                 <a>
                   Set default photo
+                </a>
+              </li>
+              <li>
+                <a>
+                  Change QR code
                 </a>
               </li>
               <li>

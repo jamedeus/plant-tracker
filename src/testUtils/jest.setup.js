@@ -22,6 +22,12 @@ beforeAll(() => {
         },
     });
 
+    // Mock window.location.reload
+    Object.defineProperty(window, 'location', {
+        configurable: true,
+        value: { reload: jest.fn() },
+    });
+
     // Mock DataTransfer and DataTransferItemList objects
     const mockDataTransferItemList = {
         items: [],

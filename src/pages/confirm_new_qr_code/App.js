@@ -28,7 +28,8 @@ function App() {
         if (response.ok) {
             window.location.reload();
         } else {
-            alert('failed')
+            const error = await response.json();
+            showErrorModal(JSON.stringify(error));
         }
     };
 
