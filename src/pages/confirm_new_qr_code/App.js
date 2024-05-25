@@ -4,6 +4,8 @@ import Navbar from 'src/components/Navbar';
 import { useToast } from 'src/context/ToastContext';
 import { useTheme } from 'src/context/ThemeContext';
 import { useErrorModal } from 'src/context/ErrorModalContext';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 function App() {
     // Load UUIDs from django template context
@@ -30,10 +32,6 @@ function App() {
         }
     };
 
-    const handleCancel = () => {
-        alert('not implemented');
-    };
-
     const DropdownOptions = () => {
         // Get toggle theme option from context
         const { ToggleThemeOption } = useTheme();
@@ -48,8 +46,38 @@ function App() {
         );
     };
 
+    const Image = () => {
+        return (
+            <div className="mx-auto p-4 bg-base-200 rounded-3xl">
+                <img
+                    className="max-h-[50vh] rounded-xl object-contain"
+                    src={plant.thumbnail}
+                />
+            </div>
+        );
+    };
+
+    const Buttons = () => {
+        return (
+            <div className="flex gap-4 mx-auto mb-8">
+                <button
+                    className="btn btn-error btn-square text-white"
+                    onClick={() => window.location.href = "/"}
+                >
+                    <FontAwesomeIcon className="h-6 w-6" icon={faXmark} />
+                </button>
+                <button
+                    className="btn btn-success btn-square text-white"
+                    onClick={handleConfirm}
+                >
+                    <FontAwesomeIcon className="h-6 w-6" icon={faCheck} />
+                </button>
+            </div>
+        );
+    };
+
     return (
-        <div className="container flex flex-col mx-auto mb-8">
+        <div className="container flex flex-col mx-auto h-screen">
             <Navbar
                 menuOptions={
                     <DropdownOptions />
@@ -57,16 +85,12 @@ function App() {
                 title={plant.display_name}
             />
 
-            <div className="flex flex-col text-center">
-                <p className="text-xl font-bold">Confirm new QR code?</p>
-                <div className="flex gap-4 mx-auto">
-                    <button className="btn btn-error" onClick={handleCancel}>
-                        Cancel
-                    </button>
-                    <button className="btn btn-success" onClick={handleConfirm}>
-                        Confirm
-                    </button>
-                </div>
+            <div className="flex flex-col gap-8 text-center my-auto">
+                <p className="text-lg font-bold">
+                    Is this the new QR code for your plant?
+                </p>
+                <Image />
+                <Buttons />
             </div>
         </div>
     );
