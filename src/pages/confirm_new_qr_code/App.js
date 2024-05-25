@@ -1,7 +1,6 @@
 import React from 'react';
 import { sendPostRequest, parseDomContext } from 'src/util';
 import Navbar from 'src/components/Navbar';
-import { useToast } from 'src/context/ToastContext';
 import { useTheme } from 'src/context/ThemeContext';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,8 +11,7 @@ function App() {
     const plant = parseDomContext("plant");
     const newUuid = parseDomContext("new_uuid");
 
-    // Get hooks to show toast message, error modal
-    const { showToast } = useToast();
+    // Get hook to show error modal
     const { showErrorModal } = useErrorModal();
 
     const handleConfirm = async () => {
