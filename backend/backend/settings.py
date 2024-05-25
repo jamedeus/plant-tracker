@@ -111,6 +111,12 @@ if not os.path.isdir(os.path.join(BASE_DIR, 'data', 'images')):
 MEDIA_ROOT = os.path.join(BASE_DIR, 'data', 'images')
 MEDIA_URL = "media/"
 
+# Use local memory cache
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.locmem.LocMemCache"
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
