@@ -163,6 +163,26 @@ function App() {
             );
         };
 
+        const ChangeQRCode = () => {
+            const sendRequest = async () => {
+                const response = await sendPostRequest(
+                    '/change_qr_code',
+                    {plant_id: plant.uuid}
+                );
+                if (response.ok) {
+                    alert('Scan new QR code within 15 minutes')
+                } else {
+                    alert('failed')
+                }
+            };
+
+            return (
+                <li><a onClick={sendRequest}>
+                    Change QR code
+                </a></li>
+            );
+        };
+
         return (
             <>
                 <li><a onClick={() => window.location.href = "/"}>
@@ -185,6 +205,7 @@ function App() {
                 <li><a onClick={openDefaultPhotoModal}>
                     Set default photo
                 </a></li>
+                <ChangeQRCode />
                 <ToggleThemeOption />
             </>
         );

@@ -193,6 +193,24 @@ def manage(request, uuid):
             state=state
         )
 
+    # If does not match existing plant or group, check if repot mode is active
+    # (waiting for user to scan the new QR code after beginning repot)
+    old_plant_uuid = cache.get('old_uuid')
+    if old_plant_uuid:
+        plant = get_plant_by_uuid(old_plant_uuid)
+        state = {
+            'plant': plant.get_details(),
+            'new_uuid': uuid
+        }
+        state['plant']['name'] = plant.name
+        state['plant']['display_name'] = plant.get_display_name()
+        return render_react_app(
+            request,
+            title='Confirm new QR code',
+            bundle='confirm_new_qr_code',
+            state=state
+        )
+
     # Render state for registration form if UUID does not exist in either table
     state = {
         'new_id': uuid,
@@ -235,6 +253,17 @@ def register_group(data):
     return HttpResponseRedirect(f'/manage/{data["uuid"]}')
 
 
+@requires_json_post(["plant_id"])
+@get_plant_from_post_body
+def change_qr_code(plant, **kwargs):
+    # Cache current UUID for 15 minutes
+    cache.set('old_uuid', str(plant.uuid), 900)
+    return JsonResponse(
+        {"success": "scan new QR code within 15 minutes to confirm"},
+        status=200
+    )
+
+
 @requires_json_post(["plant_id", "new_id"])
 @get_plant_from_post_body
 def change_plant_uuid(plant, data):
@@ -244,6 +273,7 @@ def change_plant_uuid(plant, data):
     try:
         plant.uuid = data["new_id"]
         plant.save()
+        cache.delete('old_uuid')
         return JsonResponse({"new_uuid": str(plant.uuid)}, status=200)
     except ValidationError:
         return JsonResponse({"error": "new_id key is not a valid UUID"}, status=400)
