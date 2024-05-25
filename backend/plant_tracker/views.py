@@ -256,7 +256,10 @@ def register_group(data):
 @requires_json_post(["plant_id"])
 @get_plant_from_post_body
 def change_qr_code(plant, **kwargs):
-    # Cache current UUID for 15 minutes
+    '''Caches plant UUID from POST body for 15 minutes, if a new QR code is
+    scanned before timeout /manage endpoint will return a confirmation page
+    with a button that calls /change_plant_uuid to overwrite UUID.
+    '''
     cache.set('old_uuid', str(plant.uuid), 900)
     return JsonResponse(
         {"success": "scan new QR code within 15 minutes to confirm"},

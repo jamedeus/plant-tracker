@@ -5,8 +5,9 @@ import shutil
 from uuid import uuid4
 
 from django.conf import settings
-from django.utils import timezone
 from django.test import TestCase
+from django.utils import timezone
+from django.core.cache import cache
 from django.test import override_settings
 from django.test.client import MULTIPART_CONTENT
 
@@ -655,6 +656,101 @@ class ManagePageTests(TestCase):
         self.assertEqual(self.plant1.pot_size, 6)
         self.assertEqual(self.plant1.repotevent_set.all()[0].old_pot_size, 4)
         self.assertEqual(self.plant1.repotevent_set.all()[0].new_pot_size, 6)
+
+
+class ChangeQrCodeTests(TestCase):
+    '''Separate test case to prevent leftover cache breaking other tests'''
+
+    def setUp(self):
+        # Set default content_type for post requests (avoid long lines)
+        self.client = JSONClient()
+
+        # Create test plants and groups
+        self.plant = Plant.objects.create(uuid=uuid4())
+
+        # Create fake UUID that doesn't exist in database
+        self.fake_id = uuid4()
+
+    def tearDown(self):
+        # Clear cache after each test
+        cache.delete('old_uuid')
+
+    def _refresh_test_models(self):
+        self.plant.refresh_from_db()
+
+    def test_change_qr_code_endpoint(self):
+        # Confirm cache key is empty
+        self.assertIsNone(cache.get('old_uuid'))
+
+        # Post UUID to change_qr_code endpoint, confirm response
+        response = self.client.post(
+            '/change_qr_code',
+            {'plant_id': str(self.plant.uuid)}
+        )
+        self.assertEqual(
+            response.json(),
+            {"success": "scan new QR code within 15 minutes to confirm"}
+        )
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm cache key contains UUID
+        self.assertEqual(cache.get('old_uuid'), str(self.plant.uuid))
+
+    def test_change_plant_uuid_endpoint(self):
+        # Simulate cached UUID from change_qr_code request
+        cache.set('old_uuid', str(self.plant.uuid))
+        self.assertEqual(cache.get('old_uuid'), str(self.plant.uuid))
+
+        # Post new UUID to change_plant_uuid endpoint, confirm response
+        response = self.client.post(
+            '/change_plant_uuid',
+            {'plant_id': str(self.plant.uuid), 'new_id': str(self.fake_id)}
+        )
+        self.assertEqual(
+            response.json(),
+            {"new_uuid": str(self.fake_id)}
+        )
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm plant UUID changed + cache cleared
+        self._refresh_test_models()
+        self.assertEqual(str(self.plant.uuid), str(self.fake_id))
+        self.assertIsNone(cache.get('old_uuid'))
+
+    def test_confirmation_page(self):
+        # Simulate cached UUID from change_qr_code request
+        cache.set('old_uuid', str(self.plant.uuid))
+        self.assertEqual(cache.get('old_uuid'), str(self.plant.uuid))
+
+        # Request management page with new UUID (simulate user scanning new QR)
+        response = self.client.get(f'/manage/{self.fake_id}')
+
+        # Confirm status code, correct bundle and title
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'plant_tracker/index.html')
+        self.assertEqual(
+            response.context['js_bundle'],
+            'plant_tracker/confirm_new_qr_code.js'
+        )
+        self.assertEqual(response.context['title'], 'Confirm new QR code')
+
+        # Confirm state contains plant details and new UUID
+        state = response.context['state']
+        self.assertEqual(
+            state['plant'],
+            {
+                'uuid': str(self.plant.uuid),
+                'name': None,
+                'display_name': 'Unnamed plant 1',
+                'species': None,
+                'thumbnail': None,
+                'pot_size': None,
+                'description': None,
+                'last_watered': None,
+                'last_fertilized': None
+            }
+        )
+        self.assertEqual(state['new_uuid'], str(self.fake_id))
 
 
 class PlantEventTests(TestCase):
