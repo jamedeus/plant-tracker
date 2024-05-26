@@ -20,6 +20,7 @@ from .view_decorators import (
     requires_json_post,
     get_plant_from_post_body,
     get_group_from_post_body,
+    get_qr_instance_from_post_body,
     get_timestamp_from_post_body,
     get_event_type_from_post_body,
     clean_payload_data
@@ -253,45 +254,33 @@ def register_group(data):
     return HttpResponseRedirect(f'/manage/{data["uuid"]}')
 
 
-@requires_json_post(["plant_id"])
-@get_plant_from_post_body
-def change_qr_code(plant, **kwargs):
-    '''Caches plant UUID from POST body for 15 minutes, if a new QR code is
-    scanned before timeout /manage endpoint will return a confirmation page
-    with a button that calls /change_plant_uuid to overwrite UUID.
+@requires_json_post(["uuid"])
+@get_qr_instance_from_post_body
+def change_qr_code(instance, **kwargs):
+    '''Caches plant or group UUID from POST body for 15 minutes, if a new QR
+    code is scanned before timeout /manage endpoint will return a confirmation
+    page with a button that calls /change_uuid to overwrite UUID
+    Requires JSON POST with uuid (uuid) key
     '''
-    cache.set('old_uuid', str(plant.uuid), 900)
+    cache.set('old_uuid', str(instance.uuid), 900)
     return JsonResponse(
         {"success": "scan new QR code within 15 minutes to confirm"},
         status=200
     )
 
 
-@requires_json_post(["plant_id", "new_id"])
-@get_plant_from_post_body
-def change_plant_uuid(plant, data):
-    '''Changes UUID of an existing Plant, called when QR code sticker changed
-    Requires JSON POST with plant_id (uuid) and new_id (uuid) keys
+@requires_json_post(["uuid", "new_id"])
+@get_qr_instance_from_post_body
+def change_uuid(instance, data):
+    '''Changes UUID of an existing Plant or Group, called from confirmation
+    page served when new QR code scanned (after calling /change_qr_code)
+    Requires JSON POST with uuid (uuid) and new_id (uuid) keys
     '''
     try:
-        plant.uuid = data["new_id"]
-        plant.save()
+        instance.uuid = data["new_id"]
+        instance.save()
         cache.delete('old_uuid')
-        return JsonResponse({"new_uuid": str(plant.uuid)}, status=200)
-    except ValidationError:
-        return JsonResponse({"error": "new_id key is not a valid UUID"}, status=400)
-
-
-@requires_json_post(["group_id", "new_id"])
-@get_group_from_post_body
-def change_group_uuid(group, data):
-    '''Changes UUID of an existing Group, called when QR code sticker changed
-    Requires JSON POST with group_id (uuid) and new_id (uuid) keys
-    '''
-    try:
-        group.uuid = data["new_id"]
-        group.save()
-        return JsonResponse({"new_uuid": str(group.uuid)}, status=200)
+        return JsonResponse({"new_uuid": str(instance.uuid)}, status=200)
     except ValidationError:
         return JsonResponse({"error": "new_id key is not a valid UUID"}, status=400)
 

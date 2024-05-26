@@ -24,6 +24,7 @@ from .models import (
 from .view_decorators import (
     get_plant_from_post_body,
     get_group_from_post_body,
+    get_qr_instance_from_post_body,
     get_timestamp_from_post_body,
     get_event_type_from_post_body
 )
@@ -687,7 +688,7 @@ class ChangeQrCodeTests(TestCase):
         # Post UUID to change_qr_code endpoint, confirm response
         response = self.client.post(
             '/change_qr_code',
-            {'plant_id': str(self.plant1.uuid)}
+            {'uuid': str(self.plant1.uuid)}
         )
         self.assertEqual(
             response.json(),
@@ -698,15 +699,15 @@ class ChangeQrCodeTests(TestCase):
         # Confirm cache key contains UUID
         self.assertEqual(cache.get('old_uuid'), str(self.plant1.uuid))
 
-    def test_change_plant_uuid_endpoint(self):
+    def test_change_uuid_endpoint(self):
         # Simulate cached UUID from change_qr_code request
         cache.set('old_uuid', str(self.plant1.uuid))
         self.assertEqual(cache.get('old_uuid'), str(self.plant1.uuid))
 
-        # Post new UUID to change_plant_uuid endpoint, confirm response
+        # Post new UUID to change_uuid endpoint, confirm response
         response = self.client.post(
-            '/change_plant_uuid',
-            {'plant_id': str(self.plant1.uuid), 'new_id': str(self.fake_id)}
+            '/change_uuid',
+            {'uuid': str(self.plant1.uuid), 'new_id': str(self.fake_id)}
         )
         self.assertEqual(
             response.json(),
@@ -1248,11 +1249,17 @@ class InvalidRequestTests(TestCase):
         self.assertEqual(response.status_code, 405)
         self.assertEqual(response.json(), {'error': 'request body must be JSON'})
 
-    def test_uuid_does_not_exist(self):
+    def test_plant_uuid_does_not_exist(self):
         # Send POST with UUID that does not exist in database, confirm error
         response = self.client.post('/delete_plant', {'plant_id': uuid4()})
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(), {"error": "plant not found"})
+
+    def test_qr_instance_uuid_does_not_exist(self):
+        # Send POST with UUID that does not exist in database, confirm error
+        response = self.client.post('/change_qr_code', {'uuid': uuid4()})
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json(), {"error": "uuid does not match any plant or group"})
 
     def test_missing_plant_id(self):
         # Send POST with no plant_id key in body, confirm error
@@ -1283,6 +1290,12 @@ class InvalidRequestTests(TestCase):
         response = self.client.post('/delete_group', {'group_id': '31670857'})
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(), {"error": "group_id key is not a valid UUID"})
+
+    def test_invalid_qr_instance_uuid(self):
+        # Send POST with uuid that is not a valid UUID, confirm error
+        response = self.client.post('/change_qr_code', {'uuid': '31670857'})
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {"error": "uuid key is not a valid UUID"})
 
     def test_missing_timestamp_key(self):
         # Send POST with no timestamp key in body, confirm error
@@ -1458,23 +1471,13 @@ class InvalidRequestTests(TestCase):
         )
         self.assertEqual(len(self.test_plant.waterevent_set.all()), 1)
 
-    def test_change_plant_uuid_invalid(self):
-        # Call change_plant_uuid endpoint, confirm error
+    def test_change_uuid_invalid(self):
+        # Call change_uuid endpoint, confirm error
         payload = {
-            'plant_id': self.test_plant.uuid,
+            'uuid': self.test_plant.uuid,
             'new_id': '31670857'
         }
-        response = self.client.post('/change_plant_uuid', payload)
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json(), {"error": "new_id key is not a valid UUID"})
-
-    def test_change_group_uuid_invalid(self):
-        # Call change_group_uuid endpoint, confirm error
-        payload = {
-            'group_id': self.test_group.uuid,
-            'new_id': '31670857'
-        }
-        response = self.client.post('/change_group_uuid', payload)
+        response = self.client.post('/change_uuid', payload)
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(), {"error": "new_id key is not a valid UUID"})
 
@@ -1543,6 +1546,7 @@ class ViewDecoratorTests(TestCase):
     to requires_json_post, as it currently is for all views. However, they are
     kept for an extra layer of safety in case args are omitted from the list.
     '''
+
     def test_get_plant_from_post_body_missing_plant_id(self):
         @get_plant_from_post_body
         def mock_view_function(data, **kwargs):
@@ -1567,6 +1571,19 @@ class ViewDecoratorTests(TestCase):
         self.assertEqual(
             json.loads(response.content),
             {"error": "POST body missing required 'group_id' key"}
+        )
+
+    def test_get_qr_instance_from_post_body_missing_uuid(self):
+        @get_qr_instance_from_post_body
+        def mock_view_function(data, **kwargs):
+            pass
+
+        # Call function with empty data dict, confirm correct error
+        response = mock_view_function(data={})
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            json.loads(response.content),
+            {"error": "POST body missing required 'uuid' key"}
         )
 
     def test_get_timestamp_from_post_body_missing_timestamp(self):
