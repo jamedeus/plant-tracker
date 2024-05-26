@@ -230,32 +230,35 @@ const PrintModal = ({ printModalRef }) => {
         );
     };
 
-    return (
-        <Modal
-            dialogRef={printModalRef}
-            title={(() => {
-                switch(modalContents) {
-                    case("loading"):
-                        return "Fetching QR Codes";
-                    case("options"):
-                        return "Select QR Code Size";
-                    case("error"):
-                        return "Error";
-                }
-            })()}
-        >
-            {(() => {
-                switch(modalContents) {
-                    case("loading"):
-                        return <LoadingAnimation />;
-                    case("options"):
-                        return <QrCodeSizeSelect />;
-                    case("error"):
-                        return <ErrorMessage />;
-                }
-            })()}
-        </Modal>
-    );
+    switch(modalContents) {
+        case("loading"):
+            return (
+                <Modal
+                    dialogRef={printModalRef}
+                    title={"Fetching QR Codes"}
+                >
+                    <LoadingAnimation />
+                </Modal>
+            );
+        case("options"):
+            return (
+                <Modal
+                    dialogRef={printModalRef}
+                    title={"Select QR Code Size"}
+                >
+                    <QrCodeSizeSelect />
+                </Modal>
+            );
+        default:
+            return (
+                <Modal
+                    dialogRef={printModalRef}
+                    title={"Error"}
+                >
+                    <ErrorMessage />
+                </Modal>
+            );
+    }
 };
 
 PrintModal.propTypes = {
