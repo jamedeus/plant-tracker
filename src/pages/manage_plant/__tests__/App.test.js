@@ -255,7 +255,7 @@ describe('App', () => {
         // Click custom pot size option, enter "5"
         const customPotSize = repotModal.querySelector('.pot-size.w-32');
         await user.click(customPotSize);
-        await userEvent.type(customPotSize, '5');
+        await user.type(customPotSize, '5');
 
         // Click submit button
         await user.click(submit);

@@ -71,6 +71,7 @@ describe('ToggleThemeOption', () => {
     it('toggles the theme when toggle option is clicked', async () => {
         // Render component in dark mode
         window.localStorage.setItem('theme', 'dark');
+        const user = userEvent.setup();
         const component = render(
             <ThemeProvider>
                 <TestComponent />
@@ -78,14 +79,14 @@ describe('ToggleThemeOption', () => {
         );
 
         // Click toggle option
-        await userEvent.click(component.getByText('Light mode'));
+        await user.click(component.getByText('Light mode'));
 
         // Confirm localStorage and html dataset attribute changed to light
         expect(window.localStorage.getItem('theme')).toBe('light');
         expect(document.documentElement.getAttribute('data-theme')).toBe('light');
 
         // Click toggle again, confirm both change to dark
-        await userEvent.click(component.getByText('Dark mode'));
+        await user.click(component.getByText('Dark mode'));
         expect(window.localStorage.getItem('theme')).toBe('dark');
         expect(document.documentElement.getAttribute('data-theme')).toBe('dark');
     });

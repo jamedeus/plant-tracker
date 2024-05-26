@@ -99,17 +99,17 @@ describe('App', () => {
         const filterInput = within(plantColumn).getByRole('textbox');
 
         // Type part of UUID in input, should remove all cards
-        await userEvent.type(filterInput, '0640');
+        await user.type(filterInput, '0640');
         expect(plantColumn.querySelectorAll('.card').length).toBe(0);
 
         // Type part of timsetamp in input, should remove all cards
-        await userEvent.clear(filterInput);
-        await userEvent.type(filterInput, '2024-03-01');
+        await user.clear(filterInput);
+        await user.type(filterInput, '2024-03-01');
         expect(plantColumn.querySelectorAll('.card').length).toBe(0);
 
         // Type part of thumbnail URL in input, should remove all cards
-        await userEvent.clear(filterInput);
-        await userEvent.type(filterInput, 'photo_thumb');
+        await user.clear(filterInput);
+        await user.type(filterInput, 'photo_thumb');
         expect(plantColumn.querySelectorAll('.card').length).toBe(0);
     });
 });

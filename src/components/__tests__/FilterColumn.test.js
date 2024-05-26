@@ -75,26 +75,26 @@ describe('App', () => {
     it('filters visible cards when user types in the filter input', async () => {
         // Type "plant", should only show "Unnamed plant 1" and "Favorite plant"
         const filterInput = component.getByRole('textbox');
-        await userEvent.type(filterInput, 'plant');
+        await user.type(filterInput, 'plant');
         expect(component.container.querySelectorAll('.card').length).toBe(2);
         expect(component.getByText('Unnamed plant 1')).toBeInTheDocument();
         expect(component.getByText('Favorite plant')).toBeInTheDocument();
 
         // Type "calathea", should only show "Favorite plant" (matches species)
-        await userEvent.clear(filterInput);
-        await userEvent.type(filterInput, 'calathea');
+        await user.clear(filterInput);
+        await user.type(filterInput, 'calathea');
         expect(component.container.querySelectorAll('.card').length).toBe(1);
         expect(component.getByText('Favorite plant')).toBeInTheDocument();
 
         // Type "6", should only show "Mini palm tree" (matches 6 inch pot)
-        await userEvent.clear(filterInput);
-        await userEvent.type(filterInput, '6');
+        await user.clear(filterInput);
+        await user.type(filterInput, '6');
         expect(component.container.querySelectorAll('.card').length).toBe(1);
         expect(component.getByText('Mini palm tree')).toBeInTheDocument();
 
         // Type "really", should only show "Mini palm tree" (matches description)
-        await userEvent.clear(filterInput);
-        await userEvent.type(filterInput, 'really');
+        await user.clear(filterInput);
+        await user.type(filterInput, 'really');
         expect(component.container.querySelectorAll('.card').length).toBe(1);
         expect(component.getByText('Mini palm tree')).toBeInTheDocument();
     });
@@ -102,24 +102,24 @@ describe('App', () => {
     it('does not match the keys in ignoreKeys arg when filtering', async () => {
         // Type part of UUID, should remove all cards
         const filterInput = component.getByRole('textbox');
-        await userEvent.type(filterInput, '2c0991a08806');
+        await user.type(filterInput, '2c0991a08806');
         expect(component.container.querySelectorAll('.card').length).toBe(0);
 
         // Type part of timsetamp, should remove all cards
-        await userEvent.clear(filterInput);
-        await userEvent.type(filterInput, '2024-03-01');
+        await user.clear(filterInput);
+        await user.type(filterInput, '2024-03-01');
         expect(component.container.querySelectorAll('.card').length).toBe(0);
 
         // Type part of thumbnail URL, should remove all cards
-        await userEvent.clear(filterInput);
-        await userEvent.type(filterInput, 'IMG_8');
+        await user.clear(filterInput);
+        await user.type(filterInput, 'IMG_8');
         expect(component.container.querySelectorAll('.card').length).toBe(0);
     });
 
     it('clears the filter input when X button is clcked', async () => {
         // Type random characters in field, confirm no cards visible
         const filterInput = component.getByRole('textbox');
-        await userEvent.type(filterInput, 'ffduiwafh');
+        await user.type(filterInput, 'ffduiwafh');
         expect(component.container.querySelectorAll('.card').length).toBe(0);
 
         // Click clear button, confirm all 4 cards reappear

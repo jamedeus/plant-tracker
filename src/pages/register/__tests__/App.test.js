@@ -68,13 +68,13 @@ describe('App', () => {
         }));
 
         // Fill in form fields
-        await userEvent.type(app.getByLabelText('Plant name'), 'Test plant');
-        await userEvent.type(app.getByLabelText('Plant species'), 'Fittonia');
-        await userEvent.type(app.getByLabelText('Description'), 'Clay pot');
-        await userEvent.type(app.getByLabelText('Pot size'), '6');
+        await user.type(app.getByLabelText('Plant name'), 'Test plant');
+        await user.type(app.getByLabelText('Plant species'), 'Fittonia');
+        await user.type(app.getByLabelText('Description'), 'Clay pot');
+        await user.type(app.getByLabelText('Pot size'), '6');
 
         // Click Save button
-        await userEvent.click(app.getByText('Save'));
+        await user.click(app.getByText('Save'));
 
         // Confirm correct data posted to /register_plant endpoint
         expect(global.fetch).toHaveBeenCalledWith('/register_plant', {
@@ -102,12 +102,12 @@ describe('App', () => {
         await user.click(app.getByText('Group'));
 
         // Fill in form fields
-        await userEvent.type(app.getByLabelText('Group name'), 'Test group');
-        await userEvent.type(app.getByLabelText('Group location'), 'Middle shelf');
-        await userEvent.type(app.getByLabelText('Description'), 'Microgreens');
+        await user.type(app.getByLabelText('Group name'), 'Test group');
+        await user.type(app.getByLabelText('Group location'), 'Middle shelf');
+        await user.type(app.getByLabelText('Description'), 'Microgreens');
 
         // Click Save button
-        await userEvent.click(app.getByText('Save'));
+        await user.click(app.getByText('Save'));
 
         // Confirm correct data posted to /register_group endpoint
         expect(global.fetch).toHaveBeenCalledWith('/register_group', {
@@ -136,7 +136,7 @@ describe('App', () => {
         expect(app.queryByText('Failed to register plant')).toBeNull();
 
         // Click Save button, confirm error modal appears
-        await userEvent.click(app.getByText('Save'));
+        await user.click(app.getByText('Save'));
         expect(app.getByText('Failed to register plant')).toBeInTheDocument();
     });
 
@@ -160,7 +160,7 @@ describe('App', () => {
         expect(app.queryByText(/Unexpected, should return redirect or error/)).toBeNull();
 
         // Click Save button, confirm error modal appears
-        await userEvent.click(app.getByText('Save'));
+        await user.click(app.getByText('Save'));
         expect(app.getByText(/Unexpected, should return redirect or error/)).toBeInTheDocument();
     });
 });
