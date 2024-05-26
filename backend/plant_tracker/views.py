@@ -231,7 +231,9 @@ def render_confirm_new_qr_code_page(request, uuid, old_uuid):
     old_uuid cache is set (see /change_qr_code endpoint)
     '''
 
+    # Returns Plant instance, Group Instance, or None (not found)
     instance = get_plant_or_group_by_uuid(old_uuid)
+
     if isinstance(instance, Plant):
         state = {
             'type': 'plant',
@@ -247,7 +249,8 @@ def render_confirm_new_qr_code_page(request, uuid, old_uuid):
             bundle='confirm_new_qr_code',
             state=state
         )
-    elif isinstance(instance, Group):
+
+    if isinstance(instance, Group):
         state = {
             'type': 'group',
             'group': {
@@ -266,6 +269,11 @@ def render_confirm_new_qr_code_page(request, uuid, old_uuid):
             bundle='confirm_new_qr_code',
             state=state
         )
+
+    # If UUID no longer exists in database (plant/group deleted) clear cache
+    # and redirect to registration page
+    cache.delete('old_uuid')
+    return render_registration_page(request, uuid)
 
 
 def render_registration_page(request, uuid):
