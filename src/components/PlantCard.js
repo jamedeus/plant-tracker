@@ -103,14 +103,7 @@ const PlantCard = ({ name, uuid, species, description, pot_size, last_watered, t
                 }
                 onClick={linkPage ? manageLink : null}
             >
-                {(() => {
-                    switch(thumbnail) {
-                        case(null):
-                            return null;
-                        default:
-                            return <Thumbnail />;
-                    }
-                })()}
+                {thumbnail ? <Thumbnail /> : null}
 
                 <Body />
 
@@ -120,14 +113,10 @@ const PlantCard = ({ name, uuid, species, description, pot_size, last_watered, t
                     className="btn-close absolute right-2 top-8 z-40"
                     onClick={(e) => toggle(e)}
                 >
-                    {(() => {
-                        switch(open) {
-                            case(true):
-                                return <ChevronUpIcon className="w-8 h-8" />;
-                            case(false):
-                                return <ChevronDownIcon className="w-8 h-8" />;
-                        }
-                    })()}
+                    {open
+                        ? <ChevronUpIcon className="w-8 h-8" />
+                        : <ChevronDownIcon className="w-8 h-8" />
+                    }
                 </button>
             </div>
             <DetailsSection />

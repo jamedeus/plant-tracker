@@ -63,14 +63,10 @@ const GroupCard = ({ name, plants, uuid, location, description, linkPage=true })
                     className="btn-close absolute right-2 top-8 z-40"
                     onClick={(e) => toggle(e)}
                 >
-                    {(() => {
-                        switch(open) {
-                            case(true):
-                                return <ChevronUpIcon className="w-8 h-8" />;
-                            case(false):
-                                return <ChevronDownIcon className="w-8 h-8" />;
-                        }
-                    })()}
+                    {open
+                        ? <ChevronUpIcon className="w-8 h-8" />
+                        : <ChevronDownIcon className="w-8 h-8" />
+                    }
                 </button>
             </div>
             <DetailsSection />

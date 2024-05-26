@@ -172,14 +172,7 @@ function App() {
                 <li><a onClick={() => window.location.href = "/"}>
                     Overview
                 </a></li>
-                {(() => {
-                    switch(plant.group) {
-                        case(null):
-                            return <AddGroup />;
-                        default:
-                            return <RemoveGroup />;
-                    }
-                })()}
+                {plant.group ? <RemoveGroup /> : <AddGroup />}
                 <li><a onClick={openRepotModal}>
                     Repot plant
                 </a></li>

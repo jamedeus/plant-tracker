@@ -201,40 +201,35 @@ const NoteModal = ({ plantID }) => {
                         onChange={e => setNoteText(e.target.value)}
                     ></textarea>
                 </div>
-                {(() => {
-                    switch(editingNote) {
-                        case(true):
-                            return (
-                                <div className="modal-action mx-auto">
-                                    <button
-                                        className="btn btn-error"
-                                        onClick={handleDelete}
-                                    >
-                                        Delete
-                                    </button>
-                                    <button
-                                        className="btn btn-success"
-                                        onClick={handleEdit}
-                                        disabled={!noteText.length}
-                                    >
-                                        Save
-                                    </button>
-                                </div>
-                            );
-                        case(false):
-                            return (
-                                <div className="modal-action mx-auto">
-                                    <button
-                                        className="btn btn-success"
-                                        onClick={handleSubmit}
-                                        disabled={!noteText.length}
-                                    >
-                                        Save
-                                    </button>
-                                </div>
-                            );
-                    }
-                })()}
+                {editingNote
+                    ? (
+                        <div className="modal-action mx-auto">
+                            <button
+                                className="btn btn-error"
+                                onClick={handleDelete}
+                            >
+                                Delete
+                            </button>
+                            <button
+                                className="btn btn-success"
+                                onClick={handleEdit}
+                                disabled={!noteText.length}
+                            >
+                                Save
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="modal-action mx-auto">
+                            <button
+                                className="btn btn-success"
+                                onClick={handleSubmit}
+                                disabled={!noteText.length}
+                            >
+                                Save
+                            </button>
+                        </div>
+                    )
+                }
             </div>
         </Modal>
     );
