@@ -15,7 +15,7 @@ import EventCalendar from './EventCalendar';
 import GroupModal, { openGroupModal } from './GroupModal';
 import PhotoModal, { openPhotoModal } from './PhotoModal';
 import RepotModal, { openRepotModal } from './RepotModal';
-import ChangeQrModal, { openChangeQrModal } from './ChangeQrModal';
+import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
 import EventHistoryModal from './EventHistoryModal';
 import DefaultPhotoModal, { openDefaultPhotoModal } from './DefaultPhotoModal';
 import DeletePhotosModal from './DeletePhotosModal';
@@ -358,7 +358,7 @@ function App() {
             />
 
             <ChangeQrModal
-                plantID={plant.uuid}
+                uuid={plant.uuid}
             />
         </div>
     );

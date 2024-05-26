@@ -7,7 +7,7 @@ const TestComponent = () => {
     return (
         <>
             <ChangeQrModal
-                plantID={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"}
+                uuid={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"}
             />
             <button onClick={openChangeQrModal}>
                 Open Change QR Modal
@@ -46,7 +46,7 @@ describe('App', () => {
         expect(fetch).toHaveBeenCalledWith('/change_qr_code', {
             method: 'POST',
             body: JSON.stringify({
-                plant_id: '0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+                uuid: '0640ec3b-1bed-4b15-a078-d6e7ec66be12'
             }),
             headers: postHeaders
         });

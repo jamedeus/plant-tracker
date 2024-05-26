@@ -16,9 +16,9 @@ function App() {
 
     const handleConfirm = async () => {
         const response = await sendPostRequest(
-            '/change_plant_uuid',
+            '/change_uuid',
             {
-                plant_id: plant.uuid,
+                uuid: plant.uuid,
                 new_id: newUuid
             }
         );

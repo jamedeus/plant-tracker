@@ -35,18 +35,18 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                'new_uuid': '07919189-514d-4ec1-a967-8af553dfa7e8'
+                'uuid': '07919189-514d-4ec1-a967-8af553dfa7e8'
             })
         }));
 
         // Click confirm button
         await user.click(app.container.querySelector('.btn-success'));
 
-        // Confirm correct data posted to /change_plant_uuid endpoint
-        expect(global.fetch).toHaveBeenCalledWith('/change_plant_uuid', {
+        // Confirm correct data posted to /change_uuid endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/change_uuid', {
             method: 'POST',
             body: JSON.stringify({
-                'plant_id': '0640ec3b-1bed-4b15-a078-d6e7ec66be12',
+                'uuid': '0640ec3b-1bed-4b15-a078-d6e7ec66be12',
                 'new_id': '07919189-514d-4ec1-a967-8af553dfa7e8'
             }),
             headers: postHeaders

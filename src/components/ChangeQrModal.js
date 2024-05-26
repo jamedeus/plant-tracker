@@ -10,7 +10,7 @@ export const openChangeQrModal = () => {
     changeQrModalRef.current.showModal();
 };
 
-const ChangeQrModal = ({ plantID }) => {
+const ChangeQrModal = ({ uuid }) => {
     changeQrModalRef = useRef(null);
 
     // Get hook to show error modal
@@ -19,7 +19,7 @@ const ChangeQrModal = ({ plantID }) => {
     const submit = async () => {
         const response = await sendPostRequest(
             '/change_qr_code',
-            {plant_id: plantID}
+            {uuid: uuid}
         );
         if (response.ok) {
             changeQrModalRef.current.close();
@@ -49,7 +49,7 @@ const ChangeQrModal = ({ plantID }) => {
 };
 
 ChangeQrModal.propTypes = {
-    plantID: PropTypes.string
+    uuid: PropTypes.string
 };
 
 export default ChangeQrModal;
