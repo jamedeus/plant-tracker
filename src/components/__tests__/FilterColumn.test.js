@@ -49,6 +49,7 @@ describe('App', () => {
 
     beforeEach(() => {
         // Render component + create userEvent instance to use in tests
+        user = userEvent.setup();
         component = render(
             <FilterColumn
                 title="Plants"
@@ -65,7 +66,6 @@ describe('App', () => {
                 ]}
             />
         );
-        user = userEvent.setup();
     });
 
     it('renders a card for each item in contents', () => {

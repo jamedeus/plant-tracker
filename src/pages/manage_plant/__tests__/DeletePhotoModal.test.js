@@ -27,12 +27,12 @@ describe('App', () => {
 
     beforeEach(() => {
         // Render component + create userEvent instance to use in tests
+        user = userEvent.setup();
         component = render(
             <ErrorModalProvider>
                 <TestComponent />
             </ErrorModalProvider>
         );
-        user = userEvent.setup();
     });
 
     it('opens modal when openDeletePhotosModal called', async () => {

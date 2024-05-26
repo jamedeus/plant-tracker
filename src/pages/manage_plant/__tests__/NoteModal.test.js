@@ -36,6 +36,7 @@ describe('Add new note', () => {
 
     beforeEach(async () => {
         // Render app + create userEvent instance to use in tests
+        user = userEvent.setup();
         app = render(
             <ToastProvider>
                 <ErrorModalProvider>
@@ -45,7 +46,6 @@ describe('Add new note', () => {
                 </ErrorModalProvider>
             </ToastProvider>
         );
-        user = userEvent.setup();
 
         // Open modal in new note mode
         await user.click(app.getByText('Add New Note'));
@@ -136,6 +136,7 @@ describe('Edit existing note', () => {
 
     beforeEach(async () => {
         // Render app + create userEvent instance to use in tests
+        user = userEvent.setup();
         app = render(
             <ToastProvider>
                 <ErrorModalProvider>
@@ -145,7 +146,6 @@ describe('Edit existing note', () => {
                 </ErrorModalProvider>
             </ToastProvider>
         );
-        user = userEvent.setup();
 
         // Open modal in edit mode
         await user.click(app.getByText('Edit Existing Note'));

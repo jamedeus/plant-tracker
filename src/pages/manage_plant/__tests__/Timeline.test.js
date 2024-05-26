@@ -15,6 +15,7 @@ describe('App', () => {
 
     beforeEach(() => {
         // Render app + create userEvent instance to use in tests
+        user = userEvent.setup();
         app = render(
             <ErrorModalProvider>
                 <ToastProvider>
@@ -28,7 +29,6 @@ describe('App', () => {
                 </ToastProvider>
             </ErrorModalProvider>
         );
-        user = userEvent.setup();
     });
 
     it('expands quick navigation subsections when user hovers', async () => {

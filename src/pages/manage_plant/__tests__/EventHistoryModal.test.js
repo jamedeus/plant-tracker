@@ -39,12 +39,12 @@ describe('App', () => {
         const context = JSON.parse(JSON.stringify(mockContext));
 
         // Render component + create userEvent instance to use in tests
+        user = userEvent.setup();
         component = render(
             <ErrorModalProvider>
                 <TestComponent context={context} />
             </ErrorModalProvider>
         );
-        user = userEvent.setup();
     });
 
     it('opens modal when openDeletePhotosModal called', async () => {

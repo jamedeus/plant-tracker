@@ -5,6 +5,7 @@ describe('App', () => {
 
     beforeEach(() => {
         // Render component + create userEvent instance to use in tests
+        user = userEvent.setup();
         component = render(
             <GroupCard
                 name={"Test Group"}
@@ -14,7 +15,6 @@ describe('App', () => {
                 description={"Brightest grow light"}
             />
         );
-        user = userEvent.setup();
     });
 
     it('shows the correct information', () => {

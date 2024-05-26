@@ -5,6 +5,7 @@ describe('PlantCard with water event', () => {
 
     beforeEach(() => {
         // Render component + create userEvent instance to use in tests
+        user = userEvent.setup();
         component = render(
             <PlantCard
                 name={"Test Plant"}
@@ -16,7 +17,6 @@ describe('PlantCard with water event', () => {
                 thumbnail={"/media/thumbnails/photo1_thumb.jpg"}
             />
         );
-        user = userEvent.setup();
     });
 
     it('shows the correct information', () => {

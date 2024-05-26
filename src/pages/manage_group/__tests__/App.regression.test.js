@@ -36,6 +36,7 @@ describe('App', () => {
 
     beforeEach(() => {
         // Render app + create userEvent instance to use in tests
+        user = userEvent.setup();
         app = render(
             <ThemeProvider>
                 <ToastProvider>
@@ -45,7 +46,6 @@ describe('App', () => {
                 </ToastProvider>
             </ThemeProvider>
         );
-        user = userEvent.setup();
     });
 
     // Original bug: The updatePlantTimestamps function overwrote last_watered

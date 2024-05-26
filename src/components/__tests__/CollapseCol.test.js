@@ -22,10 +22,10 @@ describe('CollapseCol', () => {
 
     beforeEach(() => {
         // Render component + create userEvent instance to use in tests
+        user = userEvent.setup();
         component = render(
             <TestComponent />
         );
-        user = userEvent.setup();
     });
 
     it('opens when title is clicked', async () => {

@@ -18,6 +18,7 @@ describe('App', () => {
 
     beforeEach(() => {
         // Render app + create userEvent instance to use in tests
+        user = userEvent.setup();
         app = render(
             <ThemeProvider>
                 <ToastProvider>
@@ -27,7 +28,6 @@ describe('App', () => {
                 </ToastProvider>
             </ThemeProvider>
         );
-        user = userEvent.setup();
     });
 
     it('sends correct payload when confirm button is clicked', async () => {

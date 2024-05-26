@@ -26,12 +26,12 @@ describe('App', () => {
 
     beforeEach(() => {
         // Render app + create userEvent instance to use in tests
+        user = userEvent.setup();
         app = render(
             <ErrorModalProvider>
                 <TestComponent />
             </ErrorModalProvider>
         );
-        user = userEvent.setup();
     });
 
     it('sends correct payload when default photo is selected', async () => {

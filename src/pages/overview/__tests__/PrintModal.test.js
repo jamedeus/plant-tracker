@@ -33,10 +33,10 @@ describe('App', () => {
 
     beforeEach(() => {
         // Render component + create userEvent instance to use in tests
+        user = userEvent.setup();
         component = render(
             <TestComponent />
         );
-        user = userEvent.setup();
     });
 
     it('makes request and opens print dialog when small QR codes requested', async () => {

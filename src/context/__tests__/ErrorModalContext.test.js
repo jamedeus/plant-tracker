@@ -13,12 +13,12 @@ describe('ErrorModal', () => {
 
     it('opens error modal when method called', async () => {
         // Render component
+        const user = userEvent.setup();
         const component = render(
             <ErrorModalProvider>
                 <TestComponent />
             </ErrorModalProvider>
         );
-        const user = userEvent.setup();
 
         // Confirm mock error text is not present
         expect(component.queryByText('Error message here')).toBeNull();
