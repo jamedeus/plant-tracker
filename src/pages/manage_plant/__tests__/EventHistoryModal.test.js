@@ -31,7 +31,7 @@ const TestComponent = ({ context }) => {
     );
 };
 
-describe('App', () => {
+describe('EventHistoryModal', () => {
     let component, user;
 
     beforeEach(() => {

@@ -1,6 +1,6 @@
 import PlantDetails from '../PlantDetails';
 
-describe('App', () => {
+describe('PlantDetails', () => {
     it('displays correct details', () => {
         const { getByText, queryByText } = render(
             <PlantDetails

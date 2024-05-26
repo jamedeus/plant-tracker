@@ -16,7 +16,7 @@ const TestComponent = () => {
     );
 };
 
-describe('App', () => {
+describe('ChangeQrModal', () => {
     let app, user;
 
     beforeEach(() => {

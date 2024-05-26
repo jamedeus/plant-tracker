@@ -22,7 +22,7 @@ const TestComponent = () => {
     );
 };
 
-describe('App', () => {
+describe('PrintModal', () => {
     let component, user;
 
     // Mock Blob and URL.createObjectURL (used to print QR codes)

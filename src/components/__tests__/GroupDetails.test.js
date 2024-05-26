@@ -1,6 +1,6 @@
 import GroupDetails from '../GroupDetails';
 
-describe('App', () => {
+describe('GroupDetails', () => {
     it('displays correct details', () => {
         const { getByText, queryByText } = render(
             <GroupDetails

@@ -22,7 +22,7 @@ const TestComponent = () => {
     );
 };
 
-describe('App', () => {
+describe('DeletePhotosModal', () => {
     let component, user;
 
     beforeEach(() => {

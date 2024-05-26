@@ -5,7 +5,7 @@ import { ToastProvider } from 'src/context/ToastContext';
 import { ErrorModalProvider } from 'src/context/ErrorModalContext';
 import { mockContext, mockEvents, mockPhotoUrls } from './mockContext';
 
-describe('App', () => {
+describe('Timeline', () => {
     let app, user;
 
     beforeAll(() => {

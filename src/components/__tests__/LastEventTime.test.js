@@ -1,6 +1,6 @@
 import LastEventTime from '../LastEventTime';
 
-describe('App', () => {
+describe('LastEventTime', () => {
     it('displays "Never watered" when timestamp is null', () => {
         const { getByText } = render(
             <LastEventTime text="Watered" timestamp={null} />

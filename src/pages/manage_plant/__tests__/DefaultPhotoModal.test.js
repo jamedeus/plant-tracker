@@ -21,7 +21,7 @@ const TestComponent = () => {
     );
 };
 
-describe('App', () => {
+describe('DefaultPhotoModal', () => {
     let app, user;
 
     beforeEach(() => {

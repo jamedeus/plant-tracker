@@ -1,6 +1,6 @@
 import GroupCard from '../GroupCard';
 
-describe('App', () => {
+describe('GroupCard', () => {
     let component, user;
 
     beforeEach(() => {

@@ -44,7 +44,7 @@ const plants = [
     }
 ];
 
-describe('App', () => {
+describe('FilterColumn', () => {
     let component, user;
 
     beforeEach(() => {
