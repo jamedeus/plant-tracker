@@ -17,9 +17,11 @@ from .view_decorators import (
     events_map,
     get_plant_by_uuid,
     get_group_by_uuid,
+    get_plant_or_group_by_uuid,
     requires_json_post,
     get_plant_from_post_body,
     get_group_from_post_body,
+    get_qr_instance_from_post_body,
     get_timestamp_from_post_body,
     get_event_type_from_post_body,
     clean_payload_data
@@ -121,79 +123,165 @@ def overview(request):
 
 
 def manage(request, uuid):
-    '''Renders plant/group management pages, or registration page if UUID is new
-    Accessed by scanning QR code sticker containing UUID
+    '''Renders the correct page when a QR code is scanned:
+      - manage_plant: rendered if QR code UUID matches an existing Plant entry
+      - manage_group: rendered if QR code UUID matches an existing Group entry
+      - confirm_new_qr_code: rendered if QR code UUID does not match an existing
+        Plant/Group AND the old_uuid cache is set (see /change_qr_code endpoint)
+      - register: rendered if the QR code UUID does not match an existing Plant/
+        Group and the old_uuid cache is NOT set
     '''
 
-    # Look up UUID in plant database, render template if found
+    # Look up UUID in plant table, render manage_plant page if found
     plant = get_plant_by_uuid(uuid)
     if plant:
-        # Create state object parsed by react app
-        state = {
-            'plant': plant.get_details(),
-            'groups': [group.get_details() for group in Group.objects.all()],
-            'species_options': get_plant_species_options(),
-            'photo_urls': plant.get_photo_urls()
-        }
+        return render_manage_plant_page(request, plant)
 
-        # Replace name key (get_details returns display_name) with actual name
-        state['plant']['name'] = plant.name
-        state['plant']['display_name'] = plant.get_display_name()
-
-        # Add all water and fertilize timestamps
-        state['plant']['events'] = {
-            'water': plant.get_water_timestamps(),
-            'fertilize': plant.get_fertilize_timestamps(),
-            'prune': plant.get_prune_timestamps(),
-            'repot': plant.get_repot_timestamps()
-        }
-
-        # Add timestamps and text of all notes
-        state['notes'] = [
-            {'timestamp': note.timestamp.isoformat(), 'text': note.text}
-            for note in plant.noteevent_set.all()
-        ]
-
-        # Add group details if plant is in a group
-        if plant.group:
-            state['plant']['group'] = {
-                'name': plant.group.get_display_name(),
-                'uuid': str(plant.group.uuid)
-            }
-        else:
-            state['plant']['group'] = None
-
-        return render_react_app(
-            request,
-            title='Manage Plant',
-            bundle='manage_plant',
-            state=state
-        )
-
-    # Loop up UUID in group database, render template if found
+    # Loop up UUID in group table, render manage_group page if found
     group = get_group_by_uuid(uuid)
     if group:
-        # Create state object parsed by react app
+        return render_manage_group_page(request, group)
+
+    # Query old_uuid cache, render confirmation page if found
+    old_uuid = cache.get('old_uuid')
+    if old_uuid:
+        return render_confirm_new_qr_code_page(request, uuid, old_uuid)
+
+    # Render register page if UUID is new and old_uuid cache was not found
+    return render_registration_page(request, uuid)
+
+
+def render_manage_plant_page(request, plant):
+    '''Renders management page for an existing plant
+    Called by /manage endpoint if UUID is found in database plant table
+    '''
+
+    # Create state object parsed by react app
+    state = {
+        'plant': plant.get_details(),
+        'groups': [group.get_details() for group in Group.objects.all()],
+        'species_options': get_plant_species_options(),
+        'photo_urls': plant.get_photo_urls()
+    }
+
+    # Replace name key (get_details returns display_name) with actual name
+    state['plant']['name'] = plant.name
+    state['plant']['display_name'] = plant.get_display_name()
+
+    # Add all water and fertilize timestamps
+    state['plant']['events'] = {
+        'water': plant.get_water_timestamps(),
+        'fertilize': plant.get_fertilize_timestamps(),
+        'prune': plant.get_prune_timestamps(),
+        'repot': plant.get_repot_timestamps()
+    }
+
+    # Add timestamps and text of all notes
+    state['notes'] = [
+        {'timestamp': note.timestamp.isoformat(), 'text': note.text}
+        for note in plant.noteevent_set.all()
+    ]
+
+    # Add group details if plant is in a group
+    if plant.group:
+        state['plant']['group'] = {
+            'name': plant.group.get_display_name(),
+            'uuid': str(plant.group.uuid)
+        }
+    else:
+        state['plant']['group'] = None
+
+    return render_react_app(
+        request,
+        title='Manage Plant',
+        bundle='manage_plant',
+        state=state
+    )
+
+
+def render_manage_group_page(request, group):
+    '''Renders management page for an existing group
+    Called by /manage endpoint if UUID is found in database group table
+    '''
+
+    # Create state object parsed by react app
+    state = {
+        'group': {
+            'uuid': str(group.uuid),
+            'name': group.name,
+            'display_name': group.get_display_name(),
+            'location': group.location,
+            'description': group.description
+        },
+        'details': group.get_plant_details(),
+        'options': get_plant_options()
+    }
+
+    return render_react_app(
+        request,
+        title='Manage Group',
+        bundle='manage_group',
+        state=state
+    )
+
+
+def render_confirm_new_qr_code_page(request, uuid, old_uuid):
+    '''Renders confirmation page used to change a plant or group QR code
+    Called by /manage endpoint if UUID does not exist in database and the
+    old_uuid cache is set (see /change_qr_code endpoint)
+    '''
+
+    # Returns Plant instance, Group Instance, or None (not found)
+    instance = get_plant_or_group_by_uuid(old_uuid)
+
+    if isinstance(instance, Plant):
         state = {
+            'type': 'plant',
+            'plant': instance.get_details(),
+            'new_uuid': uuid
+        }
+        state['plant']['name'] = instance.name
+        state['plant']['display_name'] = instance.get_display_name()
+
+        return render_react_app(
+            request,
+            title='Confirm new QR code',
+            bundle='confirm_new_qr_code',
+            state=state
+        )
+
+    if isinstance(instance, Group):
+        state = {
+            'type': 'group',
             'group': {
-                'uuid': str(group.uuid),
-                'name': group.name,
-                'display_name': group.get_display_name(),
-                'location': group.location,
-                'description': group.description
+                'uuid': str(instance.uuid),
+                'name': instance.name,
+                'display_name': instance.get_display_name(),
+                'location': instance.location,
+                'description': instance.description
             },
-            'details': group.get_plant_details(),
-            'options': get_plant_options()
+            'new_uuid': uuid
         }
 
         return render_react_app(
             request,
-            title='Manage Group',
-            bundle='manage_group',
+            title='Confirm new QR code',
+            bundle='confirm_new_qr_code',
             state=state
         )
 
-    # Render state for registration form if UUID does not exist in either table
+    # If UUID no longer exists in database (plant/group deleted) clear cache
+    # and redirect to registration page
+    cache.delete('old_uuid')
+    return render_registration_page(request, uuid)
+
+
+def render_registration_page(request, uuid):
+    '''Renders registration page used to create a new plant or group
+    Called by /manage endpoint if UUID does not exist in database and the
+    old_uuid cache is NOT set
+    '''
+
     state = {
         'new_id': uuid,
         'species_options': get_plant_species_options()
@@ -235,30 +323,33 @@ def register_group(data):
     return HttpResponseRedirect(f'/manage/{data["uuid"]}')
 
 
-@requires_json_post(["plant_id", "new_id"])
-@get_plant_from_post_body
-def change_plant_uuid(plant, data):
-    '''Changes UUID of an existing Plant, called when QR code sticker changed
-    Requires JSON POST with plant_id (uuid) and new_id (uuid) keys
+@requires_json_post(["uuid"])
+@get_qr_instance_from_post_body
+def change_qr_code(instance, **kwargs):
+    '''Caches plant or group UUID from POST body for 15 minutes, if a new QR
+    code is scanned before timeout /manage endpoint will return a confirmation
+    page with a button that calls /change_uuid to overwrite UUID
+    Requires JSON POST with uuid (uuid) key
     '''
-    try:
-        plant.uuid = data["new_id"]
-        plant.save()
-        return JsonResponse({"new_uuid": str(plant.uuid)}, status=200)
-    except ValidationError:
-        return JsonResponse({"error": "new_id key is not a valid UUID"}, status=400)
+    cache.set('old_uuid', str(instance.uuid), 900)
+    return JsonResponse(
+        {"success": "scan new QR code within 15 minutes to confirm"},
+        status=200
+    )
 
 
-@requires_json_post(["group_id", "new_id"])
-@get_group_from_post_body
-def change_group_uuid(group, data):
-    '''Changes UUID of an existing Group, called when QR code sticker changed
-    Requires JSON POST with group_id (uuid) and new_id (uuid) keys
+@requires_json_post(["uuid", "new_id"])
+@get_qr_instance_from_post_body
+def change_uuid(instance, data):
+    '''Changes UUID of an existing Plant or Group, called from confirmation
+    page served when new QR code scanned (after calling /change_qr_code)
+    Requires JSON POST with uuid (uuid) and new_id (uuid) keys
     '''
     try:
-        group.uuid = data["new_id"]
-        group.save()
-        return JsonResponse({"new_uuid": str(group.uuid)}, status=200)
+        instance.uuid = data["new_id"]
+        instance.save()
+        cache.delete('old_uuid')
+        return JsonResponse({"new_uuid": str(instance.uuid)}, status=200)
     except ValidationError:
         return JsonResponse({"error": "new_id key is not a valid UUID"}, status=400)
 

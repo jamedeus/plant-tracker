@@ -47,6 +47,14 @@ def get_group_by_uuid(uuid):
         return None
 
 
+def get_plant_or_group_by_uuid(uuid):
+    '''Returns Plant or Group model instance matching UUID, or None if neither found'''
+    instance = get_plant_by_uuid(uuid)
+    if not instance:
+        instance = get_group_by_uuid(uuid)
+    return instance
+
+
 def requires_json_post(required_keys=None):
     '''Decorator throws error if request is not POST with JSON body
     Accepts optional list of required keys, throws error if any are missing
@@ -123,6 +131,34 @@ def get_group_from_post_body(func):
                 status=400
             )
         return func(group=group, data=data, **kwargs)
+    return wrapper
+
+
+def get_qr_instance_from_post_body(func):
+    '''Decorator looks up plant or group by UUID, throws error if neither found
+    Must call after requires_json_post (expects dict with uuid key as first arg)
+    Passes instance and data dict to wrapped function as instance and data kwargs
+    '''
+    @wraps(func)
+    def wrapper(data, **kwargs):
+        try:
+            instance = get_plant_or_group_by_uuid(data["uuid"])
+            if instance is None:
+                return JsonResponse(
+                    {"error": "uuid does not match any plant or group"},
+                    status=404
+                )
+        except KeyError:
+            return JsonResponse(
+                {"error": "POST body missing required 'uuid' key"},
+                status=400
+            )
+        except ValidationError:
+            return JsonResponse(
+                {"error": "uuid key is not a valid UUID"},
+                status=400
+            )
+        return func(instance=instance, data=data, **kwargs)
     return wrapper
 
 

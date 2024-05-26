@@ -12,6 +12,7 @@ const config = {
         register: './src/pages/register/index.js',
         manage_plant: './src/pages/manage_plant/index.js',
         manage_group: './src/pages/manage_group/index.js',
+        confirm_new_qr_code: './src/pages/confirm_new_qr_code/index.js',
     },
     output: {
         path: path.resolve(__dirname, 'backend/plant_tracker/static/plant_tracker/'),

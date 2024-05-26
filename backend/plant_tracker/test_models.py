@@ -139,12 +139,12 @@ class PlantModelTests(TestCase):
         )
 
     def test_change_plant_uuid(self):
-        # Call change_plant_uuid endpoint, confirm response + uuid changed
+        # Call change_uuid endpoint, confirm response + uuid changed
         payload = {
-            'plant_id': self.plant.uuid,
+            'uuid': self.plant.uuid,
             'new_id': str(uuid4())
         }
-        response = self.client.post('/change_plant_uuid', payload)
+        response = self.client.post('/change_uuid', payload)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {'new_uuid': payload['new_id']})
         self.plant.refresh_from_db()
@@ -305,12 +305,12 @@ class GroupModelTests(TestCase):
         self.assertEqual(len(self.plant3.fertilizeevent_set.all()), 0)
 
     def test_change_group_uuid(self):
-        # Call change_group_uuid endpoint, confirm response + uuid changed
+        # Call change_uuid endpoint, confirm response + uuid changed
         payload = {
-            'group_id': self.test_group.uuid,
+            'uuid': self.test_group.uuid,
             'new_id': str(uuid4())
         }
-        response = self.client.post('/change_group_uuid', payload)
+        response = self.client.post('/change_uuid', payload)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {'new_uuid': payload['new_id']})
         self.test_group.refresh_from_db()

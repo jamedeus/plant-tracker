@@ -5,6 +5,7 @@ from types import NoneType
 from datetime import datetime
 
 from django.utils import timezone
+from django.core.cache import cache
 from django.test.client import MULTIPART_CONTENT
 from django.core.exceptions import ValidationError
 from django.test import TestCase, override_settings
@@ -85,6 +86,10 @@ class ModelRegressionTests(TestCase):
 
 
 class ViewRegressionTests(TestCase):
+    def tearDown(self):
+        # Clear cache after each test (prevent leftover after failed test)
+        cache.delete('old_uuid')
+
     def test_water_group_fails_due_to_duplicate_timestamp(self):
         '''Issue: The bulk_add_plant_events endpoint did not trap errors when
         creating events. If a plant in UUID list already had an event with the
@@ -241,6 +246,40 @@ class ViewRegressionTests(TestCase):
             photo_urls[1]["created"],
             r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?\+\d{2}:\d{2}'
         )
+
+    def test_manage_endpoint_crashes_if_plant_expecting_new_qr_is_deleted(self):
+        '''Issue: after /manage was split in f6e229fd requests for new UUIDs
+        while old_uuid cache was set (expecting new QR code) were passed to
+        render_confirm_new_qr_code_page, which did not have a default return
+        statement. If the cached UUID was deleted from database before the new
+        QR code was scanned no response was returned. Previously this would
+        fall through the conditional and return the registration page.
+
+        Fix: render_confirm_new_qr_code_page now calls render_registration_page
+        and clears old_uuid cache if the UUID is not found in the database.
+        '''
+
+        # Create test plant, post UUID to /change_qr_code, confirm cache set
+        plant = Plant.objects.create(uuid=uuid4())
+        JSONClient().post('/change_qr_code', {'uuid': str(plant.uuid)})
+        self.assertEqual(cache.get('old_uuid'), str(plant.uuid))
+
+        # Delete plant from database
+        plant.delete()
+
+        # Simulate user scanning QR code with UUID that is not in database
+        response = self.client.get(f'/manage/{uuid4()}')
+
+        # Confirm request succeeded and rendered registration page
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'plant_tracker/index.html')
+        self.assertEqual(
+            response.context['js_bundle'],
+            'plant_tracker/register.js'
+        )
+
+        # Confirm cache was cleared
+        self.assertIsNone(cache.get('old_uuid'))
 
 
 class ViewDecoratorRegressionTests(TestCase):

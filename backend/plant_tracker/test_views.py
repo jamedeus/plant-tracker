@@ -5,8 +5,9 @@ import shutil
 from uuid import uuid4
 
 from django.conf import settings
-from django.utils import timezone
 from django.test import TestCase
+from django.utils import timezone
+from django.core.cache import cache
 from django.test import override_settings
 from django.test.client import MULTIPART_CONTENT
 
@@ -23,6 +24,7 @@ from .models import (
 from .view_decorators import (
     get_plant_from_post_body,
     get_group_from_post_body,
+    get_qr_instance_from_post_body,
     get_timestamp_from_post_body,
     get_event_type_from_post_body
 )
@@ -657,6 +659,200 @@ class ManagePageTests(TestCase):
         self.assertEqual(self.plant1.repotevent_set.all()[0].new_pot_size, 6)
 
 
+class ChangeQrCodeTests(TestCase):
+    '''Separate test case to prevent leftover cache breaking other tests'''
+
+    def setUp(self):
+        # Set default content_type for post requests (avoid long lines)
+        self.client = JSONClient()
+
+        # Create test plants and groups
+        self.plant1 = Plant.objects.create(uuid=uuid4())
+        self.plant2 = Plant.objects.create(uuid=uuid4())
+        self.group1 = Group.objects.create(uuid=uuid4())
+
+        # Create fake UUID that doesn't exist in database
+        self.fake_id = uuid4()
+
+    def tearDown(self):
+        # Clear cache after each test
+        cache.delete('old_uuid')
+
+    def _refresh_test_models(self):
+        self.plant1.refresh_from_db()
+        self.plant2.refresh_from_db()
+        self.group1.refresh_from_db()
+
+    def test_change_qr_code_endpoint(self):
+        # Confirm cache key is empty
+        self.assertIsNone(cache.get('old_uuid'))
+
+        # Post UUID to change_qr_code endpoint, confirm response
+        response = self.client.post(
+            '/change_qr_code',
+            {'uuid': str(self.plant1.uuid)}
+        )
+        self.assertEqual(
+            response.json(),
+            {"success": "scan new QR code within 15 minutes to confirm"}
+        )
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm cache key contains UUID
+        self.assertEqual(cache.get('old_uuid'), str(self.plant1.uuid))
+
+    def test_change_uuid_endpoint_plant(self):
+        # Simulate cached UUID from change_qr_code request
+        cache.set('old_uuid', str(self.plant1.uuid))
+        self.assertEqual(cache.get('old_uuid'), str(self.plant1.uuid))
+
+        # Post new UUID to change_uuid endpoint, confirm response
+        response = self.client.post(
+            '/change_uuid',
+            {'uuid': str(self.plant1.uuid), 'new_id': str(self.fake_id)}
+        )
+        self.assertEqual(
+            response.json(),
+            {"new_uuid": str(self.fake_id)}
+        )
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm plant UUID changed + cache cleared
+        self._refresh_test_models()
+        self.assertEqual(str(self.plant1.uuid), str(self.fake_id))
+        self.assertIsNone(cache.get('old_uuid'))
+
+    def test_change_uuid_endpoint_group(self):
+        # Simulate cached UUID from change_qr_code request
+        cache.set('old_uuid', str(self.group1.uuid))
+        self.assertEqual(cache.get('old_uuid'), str(self.group1.uuid))
+
+        # Post new UUID to change_uuid endpoint, confirm response
+        response = self.client.post(
+            '/change_uuid',
+            {'uuid': str(self.group1.uuid), 'new_id': str(self.fake_id)}
+        )
+        self.assertEqual(
+            response.json(),
+            {"new_uuid": str(self.fake_id)}
+        )
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm plant UUID changed + cache cleared
+        self._refresh_test_models()
+        self.assertEqual(str(self.group1.uuid), str(self.fake_id))
+        self.assertIsNone(cache.get('old_uuid'))
+
+    def test_confirmation_page_plant(self):
+        # Simulate cached UUID from change_qr_code request
+        cache.set('old_uuid', str(self.plant1.uuid))
+        self.assertEqual(cache.get('old_uuid'), str(self.plant1.uuid))
+
+        # Request management page with new UUID (simulate user scanning new QR)
+        response = self.client.get(f'/manage/{self.fake_id}')
+
+        # Confirm status code, correct bundle and title
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'plant_tracker/index.html')
+        self.assertEqual(
+            response.context['js_bundle'],
+            'plant_tracker/confirm_new_qr_code.js'
+        )
+        self.assertEqual(response.context['title'], 'Confirm new QR code')
+
+        # Confirm state contains plant details and new UUID
+        self.assertEqual(
+            response.context['state'],
+            {
+                'type': 'plant',
+                'plant': {
+                    'uuid': str(self.plant1.uuid),
+                    'name': None,
+                    'display_name': 'Unnamed plant 1',
+                    'species': None,
+                    'thumbnail': None,
+                    'pot_size': None,
+                    'description': None,
+                    'last_watered': None,
+                    'last_fertilized': None
+                },
+                'new_uuid': str(self.fake_id)
+            }
+        )
+
+    def test_confirmation_page_group(self):
+        # Simulate cached UUID from change_qr_code request
+        cache.set('old_uuid', str(self.group1.uuid))
+        self.assertEqual(cache.get('old_uuid'), str(self.group1.uuid))
+
+        # Request management page with new UUID (simulate user scanning new QR)
+        response = self.client.get(f'/manage/{self.fake_id}')
+
+        # Confirm status code, correct bundle and title
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'plant_tracker/index.html')
+        self.assertEqual(
+            response.context['js_bundle'],
+            'plant_tracker/confirm_new_qr_code.js'
+        )
+        self.assertEqual(response.context['title'], 'Confirm new QR code')
+
+        # Confirm state contains plant details and new UUID
+        self.assertEqual(
+            response.context['state'],
+            {
+                'type': 'group',
+                'group': {
+                    'uuid': str(self.group1.uuid),
+                    'name': None,
+                    'display_name': 'Unnamed group 1',
+                    'location': None,
+                    'description': None
+                },
+                'new_uuid': str(self.fake_id)
+            }
+        )
+
+    def test_manage_page_while_waiting_for_new_qr_code(self):
+        '''The /manage endpoint should only return the confirmation page if a
+        new QR code is scanned. If the QR code of an existing plant or group is
+        scanned it should return the manage page for the plant or group.
+        '''
+
+        # Simulate cached UUID from change_qr_code request
+        cache.set('old_uuid', str(self.plant1.uuid))
+        self.assertEqual(cache.get('old_uuid'), str(self.plant1.uuid))
+
+        # Request management page with new UUID (should return confirmation page)
+        response = self.client.get(f'/manage/{self.fake_id}')
+        self.assertEqual(
+            response.context['js_bundle'],
+            'plant_tracker/confirm_new_qr_code.js'
+        )
+
+        # Request management page with existing plant UUID (should return manage_plant)
+        response = self.client.get(f'/manage/{self.plant2.uuid}')
+        self.assertEqual(
+            response.context['js_bundle'],
+            'plant_tracker/manage_plant.js'
+        )
+
+        # Request management page with existing group UUID (should return manage_group)
+        response = self.client.get(f'/manage/{self.group1.uuid}')
+        self.assertEqual(
+            response.context['js_bundle'],
+            'plant_tracker/manage_group.js'
+        )
+
+        # Request management page with UUID of plant waiting for new QR code,
+        # should return manage_plant page like normal
+        response = self.client.get(f'/manage/{self.plant1.uuid}')
+        self.assertEqual(
+            response.context['js_bundle'],
+            'plant_tracker/manage_plant.js'
+        )
+
+
 class PlantEventTests(TestCase):
     def setUp(self):
         # Set default content_type for post requests (avoid long lines)
@@ -1111,11 +1307,17 @@ class InvalidRequestTests(TestCase):
         self.assertEqual(response.status_code, 405)
         self.assertEqual(response.json(), {'error': 'request body must be JSON'})
 
-    def test_uuid_does_not_exist(self):
+    def test_plant_uuid_does_not_exist(self):
         # Send POST with UUID that does not exist in database, confirm error
         response = self.client.post('/delete_plant', {'plant_id': uuid4()})
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(), {"error": "plant not found"})
+
+    def test_qr_instance_uuid_does_not_exist(self):
+        # Send POST with UUID that does not exist in database, confirm error
+        response = self.client.post('/change_qr_code', {'uuid': uuid4()})
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json(), {"error": "uuid does not match any plant or group"})
 
     def test_missing_plant_id(self):
         # Send POST with no plant_id key in body, confirm error
@@ -1146,6 +1348,12 @@ class InvalidRequestTests(TestCase):
         response = self.client.post('/delete_group', {'group_id': '31670857'})
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(), {"error": "group_id key is not a valid UUID"})
+
+    def test_invalid_qr_instance_uuid(self):
+        # Send POST with uuid that is not a valid UUID, confirm error
+        response = self.client.post('/change_qr_code', {'uuid': '31670857'})
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {"error": "uuid key is not a valid UUID"})
 
     def test_missing_timestamp_key(self):
         # Send POST with no timestamp key in body, confirm error
@@ -1321,23 +1529,13 @@ class InvalidRequestTests(TestCase):
         )
         self.assertEqual(len(self.test_plant.waterevent_set.all()), 1)
 
-    def test_change_plant_uuid_invalid(self):
-        # Call change_plant_uuid endpoint, confirm error
+    def test_change_uuid_invalid(self):
+        # Call change_uuid endpoint, confirm error
         payload = {
-            'plant_id': self.test_plant.uuid,
+            'uuid': self.test_plant.uuid,
             'new_id': '31670857'
         }
-        response = self.client.post('/change_plant_uuid', payload)
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json(), {"error": "new_id key is not a valid UUID"})
-
-    def test_change_group_uuid_invalid(self):
-        # Call change_group_uuid endpoint, confirm error
-        payload = {
-            'group_id': self.test_group.uuid,
-            'new_id': '31670857'
-        }
-        response = self.client.post('/change_group_uuid', payload)
+        response = self.client.post('/change_uuid', payload)
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(), {"error": "new_id key is not a valid UUID"})
 
@@ -1406,6 +1604,7 @@ class ViewDecoratorTests(TestCase):
     to requires_json_post, as it currently is for all views. However, they are
     kept for an extra layer of safety in case args are omitted from the list.
     '''
+
     def test_get_plant_from_post_body_missing_plant_id(self):
         @get_plant_from_post_body
         def mock_view_function(data, **kwargs):
@@ -1430,6 +1629,19 @@ class ViewDecoratorTests(TestCase):
         self.assertEqual(
             json.loads(response.content),
             {"error": "POST body missing required 'group_id' key"}
+        )
+
+    def test_get_qr_instance_from_post_body_missing_uuid(self):
+        @get_qr_instance_from_post_body
+        def mock_view_function(data, **kwargs):
+            pass
+
+        # Call function with empty data dict, confirm correct error
+        response = mock_view_function(data={})
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            json.loads(response.content),
+            {"error": "POST body missing required 'uuid' key"}
         )
 
     def test_get_timestamp_from_post_body_missing_timestamp(self):

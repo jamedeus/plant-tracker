@@ -15,6 +15,7 @@ import EventCalendar from './EventCalendar';
 import GroupModal, { openGroupModal } from './GroupModal';
 import PhotoModal, { openPhotoModal } from './PhotoModal';
 import RepotModal, { openRepotModal } from './RepotModal';
+import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
 import EventHistoryModal from './EventHistoryModal';
 import DefaultPhotoModal, { openDefaultPhotoModal } from './DefaultPhotoModal';
 import DeletePhotosModal from './DeletePhotosModal';
@@ -61,6 +62,9 @@ function App() {
         newPlant.events['repot'].push(repotTimestamp);
         newPlant.events['repot'].sort().reverse();
         setPlant(newPlant);
+
+        // Open modal with instructions to change QR code
+        openChangeQrModal();
     };
 
     // Called after successful add_plant_to_group API call, takes name and UUID
@@ -184,6 +188,9 @@ function App() {
                 </a></li>
                 <li><a onClick={openDefaultPhotoModal}>
                     Set default photo
+                </a></li>
+                <li><a onClick={openChangeQrModal}>
+                    Change QR code
                 </a></li>
                 <ToggleThemeOption />
             </>
@@ -348,6 +355,10 @@ function App() {
             <EventHistoryModal
                 plant={plant}
                 setPlant={setPlant}
+            />
+
+            <ChangeQrModal
+                uuid={plant.uuid}
             />
         </div>
     );

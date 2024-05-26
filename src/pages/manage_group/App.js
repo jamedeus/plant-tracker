@@ -14,6 +14,7 @@ import DetailsCard from 'src/components/DetailsCard';
 import GroupDetails from 'src/components/GroupDetails';
 import AddPlantsModal, { openAddPlantsModal } from './AddPlantsModal';
 import RemovePlantsModal, { openRemovePlantsModal } from './RemovePlantsModal';
+import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 
 function App() {
@@ -213,6 +214,9 @@ function App() {
                         <li><a onClick={openRemovePlantsModal}>
                             Remove plants
                         </a></li>
+                        <li><a onClick={openChangeQrModal}>
+                            Change QR code
+                        </a></li>
                         <ToggleThemeOption />
                     </>
                 }
@@ -283,6 +287,10 @@ function App() {
                 groupID={group.uuid}
                 plantDetails={plantDetails}
                 setPlantDetails={setPlantDetails}
+            />
+
+            <ChangeQrModal
+                uuid={group.uuid}
             />
         </div>
     );
