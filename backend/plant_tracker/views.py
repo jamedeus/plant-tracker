@@ -17,6 +17,7 @@ from .view_decorators import (
     events_map,
     get_plant_by_uuid,
     get_group_by_uuid,
+    get_plant_or_group_by_uuid,
     requires_json_post,
     get_plant_from_post_body,
     get_group_from_post_body,
@@ -196,21 +197,43 @@ def manage(request, uuid):
 
     # If does not match existing plant or group, check if repot mode is active
     # (waiting for user to scan the new QR code after beginning repot)
-    old_plant_uuid = cache.get('old_uuid')
-    if old_plant_uuid:
-        plant = get_plant_by_uuid(old_plant_uuid)
-        state = {
-            'plant': plant.get_details(),
-            'new_uuid': uuid
-        }
-        state['plant']['name'] = plant.name
-        state['plant']['display_name'] = plant.get_display_name()
-        return render_react_app(
-            request,
-            title='Confirm new QR code',
-            bundle='confirm_new_qr_code',
-            state=state
-        )
+    old_uuid = cache.get('old_uuid')
+    if old_uuid:
+        instance = get_plant_or_group_by_uuid(old_uuid)
+        if isinstance(instance, Plant):
+            state = {
+                'type': 'plant',
+                'plant': instance.get_details(),
+                'new_uuid': uuid
+            }
+            state['plant']['name'] = instance.name
+            state['plant']['display_name'] = instance.get_display_name()
+
+            return render_react_app(
+                request,
+                title='Confirm new QR code',
+                bundle='confirm_new_qr_code',
+                state=state
+            )
+        elif isinstance(instance, Group):
+            state = {
+                'type': 'group',
+                'group': {
+                    'uuid': str(instance.uuid),
+                    'name': instance.name,
+                    'display_name': instance.get_display_name(),
+                    'location': instance.location,
+                    'description': instance.description
+                },
+                'new_uuid': uuid
+            }
+
+            return render_react_app(
+                request,
+                title='Confirm new QR code',
+                bundle='confirm_new_qr_code',
+                state=state
+            )
 
     # Render state for registration form if UUID does not exist in either table
     state = {

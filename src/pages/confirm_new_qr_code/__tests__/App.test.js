@@ -11,7 +11,7 @@ describe('App', () => {
 
     beforeAll(() => {
         // Create mock state objects
-        // Create mock state objects
+        createMockContext('type', mockContext.type);
         createMockContext('plant', mockContext.plant);
         createMockContext('new_uuid', mockContext.new_uuid);
     });

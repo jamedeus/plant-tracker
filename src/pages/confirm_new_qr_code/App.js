@@ -8,7 +8,8 @@ import { faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 function App() {
     // Load UUIDs from django template context
-    const plant = parseDomContext("plant");
+    const type = parseDomContext("type");
+    const instance = parseDomContext(type)
     const newUuid = parseDomContext("new_uuid");
 
     // Get hook to show error modal
@@ -18,7 +19,7 @@ function App() {
         const response = await sendPostRequest(
             '/change_uuid',
             {
-                uuid: plant.uuid,
+                uuid: instance.uuid,
                 new_id: newUuid
             }
         );
@@ -50,7 +51,7 @@ function App() {
             <div className="mx-auto p-4 bg-base-200 rounded-3xl">
                 <img
                     className="max-h-[50vh] rounded-xl object-contain"
-                    src={plant.thumbnail}
+                    src={instance.thumbnail}
                 />
             </div>
         );
@@ -81,14 +82,14 @@ function App() {
                 menuOptions={
                     <DropdownOptions />
                 }
-                title={plant.display_name}
+                title={instance.display_name}
             />
 
             <div className="flex flex-col gap-8 text-center my-auto">
                 <p className="text-lg font-bold">
-                    Is this the new QR code for your plant?
+                    Is this the new QR code for your {type}?
                 </p>
-                <Image />
+                {instance.thumbnail ? <Image /> : null}
                 <Buttons />
             </div>
         </div>
