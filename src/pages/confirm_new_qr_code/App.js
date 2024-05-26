@@ -1,15 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { sendPostRequest, parseDomContext } from 'src/util';
 import Navbar from 'src/components/Navbar';
+import PlantDetails from 'src/components/PlantDetails.js';
+import GroupDetails from 'src/components/GroupDetails.js';
 import { useTheme } from 'src/context/ThemeContext';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
 
 function App() {
-    // Load UUIDs from django template context
+    // Load UUIDs and plant/group state from django template context
     const type = parseDomContext("type");
-    const instance = parseDomContext(type)
+    const instance = parseDomContext(type);
     const newUuid = parseDomContext("new_uuid");
 
     // Get hook to show error modal
@@ -32,6 +35,7 @@ function App() {
         }
     };
 
+    // Top left dropdown contents
     const DropdownOptions = () => {
         // Get toggle theme option from context
         const { ToggleThemeOption } = useTheme();
@@ -44,6 +48,46 @@ function App() {
                 <ToggleThemeOption />
             </>
         );
+    };
+
+    // Navbar title dropdown contents
+    const Details = () => {
+        const Wrapper = ({ children }) => {
+            return (
+                <div className={`card card-compact w-72 p-2 mt-2 mx-auto
+                    shadow bg-neutral text-neutral-content`}>
+                    <div className="card-body">
+                        {children}
+                    </div>
+                </div>
+            );
+        };
+
+        Wrapper.propTypes = {
+            children: PropTypes.node
+        };
+
+        switch(type) {
+            case('plant'):
+                return (
+                    <Wrapper>
+                        <PlantDetails
+                            species={instance.species}
+                            pot_size={instance.pot_size}
+                            description={instance.description}
+                        />
+                    </Wrapper>
+                );
+            case('group'):
+                return (
+                    <Wrapper>
+                        <GroupDetails
+                            location={instance.location}
+                            description={instance.description}
+                        />
+                    </Wrapper>
+                );
+        }
     };
 
     const Image = () => {
@@ -83,6 +127,9 @@ function App() {
                     <DropdownOptions />
                 }
                 title={instance.display_name}
+                titleOptions={
+                    <Details />
+                }
             />
 
             <div className="flex flex-col gap-8 text-center my-auto">
