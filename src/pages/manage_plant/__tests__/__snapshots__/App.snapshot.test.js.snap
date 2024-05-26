@@ -3156,14 +3156,17 @@ exports[`App matches snapshot 1`] = `
               Change QR Code
             </h1>
             <div
-              class="min-h-36 flex flex-col justify-center mx-auto"
+              class="min-h-36 flex flex-col justify-evenly mx-auto"
             >
               <p>
-                Click the OK button when you're ready, then scan the new QR code within 15 minutes.
+                Get your new QR code ready, then click OK.
+              </p>
+              <p>
+                You will have 15 minutes to scan the new QR code.
               </p>
             </div>
             <button
-              class="btn btn-success mx-auto"
+              class="btn btn-success mx-auto mt-4"
             >
               OK
             </button>
@@ -6370,14 +6373,17 @@ exports[`App matches snapshot 1`] = `
             Change QR Code
           </h1>
           <div
-            class="min-h-36 flex flex-col justify-center mx-auto"
+            class="min-h-36 flex flex-col justify-evenly mx-auto"
           >
             <p>
-              Click the OK button when you're ready, then scan the new QR code within 15 minutes.
+              Get your new QR code ready, then click OK.
+            </p>
+            <p>
+              You will have 15 minutes to scan the new QR code.
             </p>
           </div>
           <button
-            class="btn btn-success mx-auto"
+            class="btn btn-success mx-auto mt-4"
           >
             OK
           </button>

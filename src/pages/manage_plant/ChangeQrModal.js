@@ -31,14 +31,17 @@ const ChangeQrModal = ({ plantID }) => {
 
     return (
         <Modal dialogRef={changeQrModalRef} title={"Change QR Code"}>
-            <div className="min-h-36 flex flex-col justify-center mx-auto">
+            <div className="min-h-36 flex flex-col justify-evenly mx-auto">
                 <p>
-                    Click the OK button when you&apos;re ready,
-                    then scan the new QR code within 15 minutes.
+                    Get your new QR code ready, then click OK.
+                </p>
+
+                <p>
+                    You will have 15 minutes to scan the new QR code.
                 </p>
             </div>
 
-            <button className="btn btn-success mx-auto" onClick={submit}>
+            <button className="btn btn-success mx-auto mt-4" onClick={submit}>
                 OK
             </button>
         </Modal>

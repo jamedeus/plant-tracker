@@ -62,6 +62,9 @@ function App() {
         newPlant.events['repot'].push(repotTimestamp);
         newPlant.events['repot'].sort().reverse();
         setPlant(newPlant);
+
+        // Open modal with instructions to change QR code
+        openChangeQrModal();
     };
 
     // Called after successful add_plant_to_group API call, takes name and UUID
