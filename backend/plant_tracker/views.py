@@ -102,17 +102,25 @@ def get_qr_codes(data):
 def overview(request):
     '''Renders the overview page (shows existing plants/groups, or setup if none)'''
 
-    # Create state object parsed by react app
-    state = {
-        'plants': [],
-        'groups': []
-    }
+    # Load state object parsed by react app from cache
+    state = cache.get('overview_state')
 
-    for plant in Plant.objects.all():
-        state['plants'].append(plant.get_details())
+    # Build state if not found in cache
+    if state is None:
+        # Create state object parsed by react app
+        state = {
+            'plants': [],
+            'groups': []
+        }
 
-    for group in Group.objects.all():
-        state['groups'].append(group.get_details())
+        for plant in Plant.objects.all():
+            state['plants'].append(plant.get_details())
+
+        for group in Group.objects.all():
+            state['groups'].append(group.get_details())
+
+        # Cache state for up to 24 hours
+        cache.set('overview_state', state, 86400)
 
     return render_react_app(
         request,
@@ -428,6 +436,10 @@ def add_plant_event(plant, timestamp, event_type, **kwargs):
     '''
     try:
         events_map[event_type].objects.create(plant=plant, timestamp=timestamp)
+
+        # Clear cached overview state (last_watered/fertilized may be outdated)
+        cache.delete('overview_state')
+
         return JsonResponse(
             {"action": event_type, "plant": plant.uuid},
             status=200
@@ -458,6 +470,10 @@ def bulk_add_plant_events(timestamp, event_type, data):
                 failed.append(plant_id)
         else:
             failed.append(plant_id)
+
+    # Clear cached overview state (last_watered/fertilized may be outdated)
+    cache.delete('overview_state')
+
     return JsonResponse(
         {"action": event_type, "plants": added, "failed": failed},
         status=200
@@ -475,6 +491,10 @@ def delete_plant_event(plant, timestamp, event_type, **kwargs):
     try:
         event = events_map[event_type].objects.get(plant=plant, timestamp=timestamp)
         event.delete()
+
+        # Clear cached overview state (last_watered/fertilized may be outdated)
+        cache.delete('overview_state')
+
         return JsonResponse({"deleted": event_type, "plant": plant.uuid}, status=200)
     except events_map[event_type].DoesNotExist:
         return JsonResponse({"error": "event not found"}, status=404)
@@ -501,6 +521,9 @@ def bulk_delete_plant_events(plant, data):
             failed.append(event)
         except events_map[event["type"]].DoesNotExist:
             failed.append(event)
+
+    # Clear cached overview state (last_watered/fertilized may be outdated)
+    cache.delete('overview_state')
 
     return JsonResponse({"deleted": deleted, "failed": failed}, status=200)
 
@@ -691,6 +714,9 @@ def add_plant_photos(request):
             "key": photo.pk
         })
 
+    # Clear cached overview state (thumbnail may be outdated)
+    cache.delete('overview_state')
+
     # Return list of new photo URLs (added to frontend state)
     return JsonResponse(
         {
@@ -716,6 +742,10 @@ def delete_plant_photos(plant, data):
             deleted.append(primary_key)
         except Photo.DoesNotExist:
             failed.append(primary_key)
+
+    # Clear cached overview state (thumbnail may be outdated)
+    cache.delete('overview_state')
+
     return JsonResponse({"deleted": deleted, "failed": failed}, status=200)
 
 
