@@ -53,6 +53,17 @@ def get_plant_species_options():
     return species_options
 
 
+def get_group_options():
+    '''Returns a list of groups used to populate manage_plant add group modal
+    List is cached for up to 10 minutes, or until Group model changed
+    '''
+    group_options = cache.get('group_options')
+    if not group_options:
+        group_options = [group.get_details() for group in Group.objects.all()]
+        cache.set('group_options', group_options, 600)
+    return group_options
+
+
 @ensure_csrf_cookie
 def render_react_app(request, title, bundle, state, log_state=True):
     '''Helper function to render react app in boilerplate HTML template
@@ -159,6 +170,45 @@ def manage(request, uuid):
     return render_registration_page(request, uuid)
 
 
+def build_manage_plant_state(plant):
+    '''Returns state object parsed by manage_plant react app
+    Called when cached state object has expired
+    '''
+    state = {
+        'plant': plant.get_details(),
+        'photo_urls': plant.get_photo_urls()
+    }
+
+    # Replace name key (get_details returns display_name) with actual name
+    state['plant']['name'] = plant.name
+    state['plant']['display_name'] = plant.get_display_name()
+
+    # Add all water and fertilize timestamps
+    state['plant']['events'] = {
+        'water': plant.get_water_timestamps(),
+        'fertilize': plant.get_fertilize_timestamps(),
+        'prune': plant.get_prune_timestamps(),
+        'repot': plant.get_repot_timestamps()
+    }
+
+    # Add timestamps and text of all notes
+    state['notes'] = [
+        {'timestamp': note.timestamp.isoformat(), 'text': note.text}
+        for note in plant.noteevent_set.all()
+    ]
+
+    # Add group details if plant is in a group
+    if plant.group:
+        state['plant']['group'] = {
+            'name': plant.group.get_display_name(),
+            'uuid': str(plant.group.uuid)
+        }
+    else:
+        state['plant']['group'] = None
+
+    return state
+
+
 def render_manage_plant_page(request, plant):
     '''Renders management page for an existing plant
     Called by /manage endpoint if UUID is found in database plant table
@@ -167,45 +217,14 @@ def render_manage_plant_page(request, plant):
     # Load state object parsed by react app from cache
     state = cache.get(f'{plant.uuid}_state')
 
-    # Build state if not found in cache
+    # Build state if not found, cache for up to 24 hours
     if state is None:
-        # Create state object parsed by react app
-        state = {
-            'plant': plant.get_details(),
-            'groups': [group.get_details() for group in Group.objects.all()],
-            'species_options': get_plant_species_options(),
-            'photo_urls': plant.get_photo_urls()
-        }
-
-        # Replace name key (get_details returns display_name) with actual name
-        state['plant']['name'] = plant.name
-        state['plant']['display_name'] = plant.get_display_name()
-
-        # Add all water and fertilize timestamps
-        state['plant']['events'] = {
-            'water': plant.get_water_timestamps(),
-            'fertilize': plant.get_fertilize_timestamps(),
-            'prune': plant.get_prune_timestamps(),
-            'repot': plant.get_repot_timestamps()
-        }
-
-        # Add timestamps and text of all notes
-        state['notes'] = [
-            {'timestamp': note.timestamp.isoformat(), 'text': note.text}
-            for note in plant.noteevent_set.all()
-        ]
-
-        # Add group details if plant is in a group
-        if plant.group:
-            state['plant']['group'] = {
-                'name': plant.group.get_display_name(),
-                'uuid': str(plant.group.uuid)
-            }
-        else:
-            state['plant']['group'] = None
-
-        # Cache state for up to 24 hours
+        state = build_manage_plant_state(plant)
         cache.set(f'{plant.uuid}_state', state, 86400)
+
+    # Add species and group options (cached separately)
+    state['groups'] = get_group_options()
+    state['species_options'] = get_plant_species_options()
 
     return render_react_app(
         request,

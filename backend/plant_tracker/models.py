@@ -116,6 +116,8 @@ def clear_unnamed_groups_cache(**kwargs):
     cache.delete('unnamed_groups')
     # Clear cached overview state (outdated if group added/removed/edited)
     cache.delete('overview_state')
+    # Clear cached group options (populates manage_plant add group modal)
+    cache.delete('group_options')
 
 
 class Plant(models.Model):
