@@ -170,6 +170,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                 >
                   <img
                     class="w-full h-full object-cover"
+                    loading="lazy"
                     src="/media/thumbnails/photo_thumb.jpg"
                   />
                 </figure>
@@ -623,6 +624,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
               >
                 <img
                   class="w-full h-full object-cover"
+                  loading="lazy"
                   src="/media/thumbnails/photo_thumb.jpg"
                 />
               </figure>

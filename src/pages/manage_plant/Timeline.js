@@ -224,6 +224,7 @@ const Timeline = ({ plantID, events, photoUrls }) => {
                     <div className="popover-content popover-enter">
                         <a href={photoUrl}>
                             <img
+                                loading="lazy"
                                 className="rounded-lg popover-image mx-4"
                                 src={thumbnailUrl}
                             />
@@ -236,6 +237,7 @@ const Timeline = ({ plantID, events, photoUrls }) => {
                     title={timestampToReadable(timestamp)}
                 >
                     <img
+                        loading="lazy"
                         className={`rounded-lg m-2 object-cover w-[4.9rem]
                                     h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]`}
                         src={thumbnailUrl}
