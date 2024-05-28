@@ -9,6 +9,9 @@ pyqrcode = "*"
 pypng = "*"
 django = "*"
 piexif = "*"
+celery = "*"
+redis = "*"
+django-redis = "*"
 
 [dev-packages]
 ipython = "*"

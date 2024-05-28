@@ -114,8 +114,6 @@ class Group(models.Model):
 def clear_unnamed_groups_cache(**kwargs):
     '''Clear cached unnamed_groups list when a Group is saved or deleted'''
     cache.delete('unnamed_groups')
-    # Clear cached overview state (outdated if group added/removed/edited)
-    cache.delete('overview_state')
     # Clear cached group options (populates manage_plant add group modal)
     cache.delete('group_options')
 
@@ -303,9 +301,6 @@ def clear_unnamed_plants_cache(**kwargs):
     cache.delete('plant_options')
     cache.delete('unnamed_plants')
     cache.delete('species_options')
-    # Clear cached overview state (outdated if plant added, removed, details
-    # edited, added to group, removed from group, default photo set, etc)
-    cache.delete('overview_state')
 
 
 @receiver(post_save, sender=Plant)
