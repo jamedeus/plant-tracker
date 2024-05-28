@@ -26,7 +26,7 @@ from .view_decorators import (
     get_event_type_from_post_body,
     clean_payload_data
 )
-from .tasks import build_overview_state, update_cached_overview_state
+from .tasks import build_overview_state, schedule_cached_overview_state_update
 
 
 def get_plant_options():
@@ -453,7 +453,7 @@ def add_plant_event(plant, timestamp, event_type, **kwargs):
         events_map[event_type].objects.create(plant=plant, timestamp=timestamp)
 
         # Create task to update cached overview state (last_watered outdated)
-        update_cached_overview_state.delay()
+        schedule_cached_overview_state_update()
 
         return JsonResponse(
             {"action": event_type, "plant": plant.uuid},
@@ -487,7 +487,7 @@ def bulk_add_plant_events(timestamp, event_type, data):
             failed.append(plant_id)
 
     # Create task to update cached overview state (last_watered outdated)
-    update_cached_overview_state.delay()
+    schedule_cached_overview_state_update()
 
     return JsonResponse(
         {"action": event_type, "plants": added, "failed": failed},
@@ -508,7 +508,7 @@ def delete_plant_event(plant, timestamp, event_type, **kwargs):
         event.delete()
 
         # Create task to update cached overview state (last_watered outdated)
-        update_cached_overview_state.delay()
+        schedule_cached_overview_state_update()
 
         return JsonResponse({"deleted": event_type, "plant": plant.uuid}, status=200)
     except events_map[event_type].DoesNotExist:
@@ -538,7 +538,7 @@ def bulk_delete_plant_events(plant, data):
             failed.append(event)
 
     # Create task to update cached overview state (last_watered outdated)
-    update_cached_overview_state.delay()
+    schedule_cached_overview_state_update()
 
     return JsonResponse({"deleted": deleted, "failed": failed}, status=200)
 
@@ -730,7 +730,7 @@ def add_plant_photos(request):
         })
 
     # Create task to update cached overview state (thumbnail outdated)
-    update_cached_overview_state.delay()
+    schedule_cached_overview_state_update()
 
     # Return list of new photo URLs (added to frontend state)
     return JsonResponse(
@@ -759,7 +759,7 @@ def delete_plant_photos(plant, data):
             failed.append(primary_key)
 
     # Create task to update cached overview state (thumbnail outdated)
-    update_cached_overview_state.delay()
+    schedule_cached_overview_state_update()
 
     return JsonResponse({"deleted": deleted, "failed": failed}, status=200)
 
