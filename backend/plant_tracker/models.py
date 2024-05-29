@@ -303,12 +303,6 @@ def clear_unnamed_plants_cache(**kwargs):
     cache.delete('species_options')
 
 
-@receiver(post_save, sender=Plant)
-def clear_manage_plant_cache(instance, **kwargs):
-    '''Clear cached manage_plant state when model is saved (outdated)'''
-    cache.delete(f'{instance.uuid}_state')
-
-
 class Photo(models.Model):
     '''Stores a user-uploaded image of a specific plant'''
     photo = models.ImageField(upload_to="images")
@@ -402,13 +396,6 @@ class Photo(models.Model):
         super().save(*args, **kwargs)
 
 
-@receiver(post_save, sender=Photo)
-@receiver(post_delete, sender=Photo)
-def clear_manage_plant_cache_photo(instance, **kwargs):
-    '''Clear cached manage_plant state for the plant associated with saved/deleted Photo'''
-    cache.delete(f'{instance.plant.uuid}_state')
-
-
 class Event(models.Model):
     '''Abstract base class for all plant events'''
     plant = models.ForeignKey(Plant, on_delete=models.CASCADE)
@@ -465,18 +452,3 @@ class RepotEvent(Event):
 class NoteEvent(Event):
     '''Records timestamp and user-entered text about a specific Plant'''
     text = models.CharField(max_length=2000, blank=True, null=True)
-
-
-@receiver(post_save, sender=WaterEvent)
-@receiver(post_save, sender=FertilizeEvent)
-@receiver(post_save, sender=PruneEvent)
-@receiver(post_save, sender=RepotEvent)
-@receiver(post_save, sender=NoteEvent)
-@receiver(post_delete, sender=WaterEvent)
-@receiver(post_delete, sender=FertilizeEvent)
-@receiver(post_delete, sender=PruneEvent)
-@receiver(post_delete, sender=RepotEvent)
-@receiver(post_delete, sender=NoteEvent)
-def clear_manage_plant_cache_event(instance, **kwargs):
-    '''Clear cached manage_plant state for the plant associated with saved/deleted Event'''
-    cache.delete(f'{instance.plant.uuid}_state')

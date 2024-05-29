@@ -26,7 +26,11 @@ from .view_decorators import (
     get_event_type_from_post_body,
     clean_payload_data
 )
-from .tasks import build_overview_state, schedule_cached_overview_state_update
+from .tasks import (
+    build_overview_state,
+    schedule_cached_overview_state_update,
+    build_manage_plant_state
+)
 
 
 def get_plant_options():
@@ -158,45 +162,6 @@ def manage(request, uuid):
     return render_registration_page(request, uuid)
 
 
-def build_manage_plant_state(plant):
-    '''Returns state object parsed by manage_plant react app
-    Called when cached state object has expired
-    '''
-    state = {
-        'plant': plant.get_details(),
-        'photo_urls': plant.get_photo_urls()
-    }
-
-    # Replace name key (get_details returns display_name) with actual name
-    state['plant']['name'] = plant.name
-    state['plant']['display_name'] = plant.get_display_name()
-
-    # Add all water and fertilize timestamps
-    state['plant']['events'] = {
-        'water': plant.get_water_timestamps(),
-        'fertilize': plant.get_fertilize_timestamps(),
-        'prune': plant.get_prune_timestamps(),
-        'repot': plant.get_repot_timestamps()
-    }
-
-    # Add timestamps and text of all notes
-    state['notes'] = [
-        {'timestamp': note.timestamp.isoformat(), 'text': note.text}
-        for note in plant.noteevent_set.all()
-    ]
-
-    # Add group details if plant is in a group
-    if plant.group:
-        state['plant']['group'] = {
-            'name': plant.group.get_display_name(),
-            'uuid': str(plant.group.uuid)
-        }
-    else:
-        state['plant']['group'] = None
-
-    return state
-
-
 def render_manage_plant_page(request, plant):
     '''Renders management page for an existing plant
     Called by /manage endpoint if UUID is found in database plant table
@@ -207,8 +172,7 @@ def render_manage_plant_page(request, plant):
 
     # Build state if not found, cache for up to 24 hours
     if state is None:
-        state = build_manage_plant_state(plant)
-        cache.set(f'{plant.uuid}_state', state, 86400)
+        state = build_manage_plant_state(plant.uuid)
 
     # Add species and group options (cached separately)
     state['groups'] = get_group_options()
