@@ -3,9 +3,10 @@ import shutil
 from uuid import uuid4
 from datetime import timedelta
 
+from django.conf import settings
+from django.test import TestCase
 from django.utils import timezone
 from django.core.exceptions import ValidationError
-from django.test import TestCase, override_settings
 
 from .models import (
     Group,
@@ -23,23 +24,16 @@ from .unit_test_helpers import (
     schedule_cached_state_update_patch
 )
 
-# Temp directory for mock photo uploads, deleted after tests
-TEST_DIR = '/tmp/plant_tracker_unit_test'
 
-
-# Create test directory or mock photo uploads
 def setUpModule():
-    if not os.path.isdir(os.path.join(TEST_DIR, 'data', 'images')):
-        os.makedirs(os.path.join(TEST_DIR, 'data', 'images'))
-
     # Prevent creating celery tasks to rebuild cached states
     schedule_cached_state_update_patch.start()
 
 
-# Delete mock photo directory after tests
 def tearDownModule():
+    # Delete mock photo directory after tests
     print("\nDeleting mock photos...\n")
-    shutil.rmtree(TEST_DIR, ignore_errors=True)
+    shutil.rmtree(settings.TEST_DIR, ignore_errors=True)
 
     # Re-enable cached state celery tasks
     schedule_cached_state_update_patch.stop()
@@ -186,7 +180,6 @@ class PlantModelTests(TestCase):
         self.assertEqual(unnamed[1].get_display_name(), 'Unnamed plant 2')
         self.assertEqual(unnamed[2].get_display_name(), 'Unnamed plant 3')
 
-    @override_settings(MEDIA_ROOT=os.path.join(TEST_DIR, 'data', 'images'))
     def test_get_photo_urls(self):
         # Create 3 mock photos with non-chronological creation times
         Photo.objects.create(
@@ -230,7 +223,6 @@ class PlantModelTests(TestCase):
             ]
         )
 
-    @override_settings(MEDIA_ROOT=os.path.join(TEST_DIR, 'data', 'images'))
     def test_get_thumbnail(self):
         # Create 2 mock photos for test plant
         photo1 = Photo.objects.create(
@@ -251,7 +243,6 @@ class PlantModelTests(TestCase):
         # Confirm get_thumbnail method now returns default photo thumbnail URL
         self.assertEqual(self.plant.get_thumbnail(), photo1.get_thumbnail_url())
 
-    @override_settings(MEDIA_ROOT=os.path.join(TEST_DIR, 'data', 'images'))
     def test_set_invalid_default_photo(self):
         # Create second plant entry + photo associated with second plant
         wrong_plant = Plant.objects.create(uuid=uuid4())
@@ -354,7 +345,6 @@ class GroupModelTests(TestCase):
 
 
 class PhotoModelTests(TestCase):
-    @override_settings(MEDIA_ROOT=os.path.join(TEST_DIR, 'data', 'images'))
     def setUp(self):
         self.plant = Plant.objects.create(uuid=uuid4())
         self.timestamp = timezone.now()
@@ -367,12 +357,11 @@ class PhotoModelTests(TestCase):
     def tearDown(self):
         # Delete mock photos between tests to prevent duplicate names (django
         # appends random string to keep unique, which makes testing difficult)
-        for i in os.listdir(os.path.join(TEST_DIR, 'data', 'images', 'images')):
-            os.remove(os.path.join(TEST_DIR, 'data', 'images', 'images', i))
-        for i in os.listdir(os.path.join(TEST_DIR, 'data', 'images', 'thumbnails')):
-            os.remove(os.path.join(TEST_DIR, 'data', 'images', 'thumbnails', i))
+        for i in os.listdir(os.path.join(settings.TEST_DIR, 'data', 'images', 'images')):
+            os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'images', i))
+        for i in os.listdir(os.path.join(settings.TEST_DIR, 'data', 'images', 'thumbnails')):
+            os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'thumbnails', i))
 
-    @override_settings(MEDIA_ROOT=os.path.join(TEST_DIR, 'data', 'images'))
     def test_str_method(self):
         # Should return "<plant name> - <photo creation timestamp> - <filename>"
         self.assertEqual(
@@ -380,7 +369,6 @@ class PhotoModelTests(TestCase):
             "Unnamed plant 1 - 2024:03:21 10:52:03 - photo1.jpg"
         )
 
-    @override_settings(MEDIA_ROOT=os.path.join(TEST_DIR, 'data', 'images'))
     def test_sets_correct_created_timestamp(self):
         # Create mock photo with DateTime and OffsetTime exif params
         both_exif_params = Photo.objects.create(

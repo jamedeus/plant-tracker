@@ -8,7 +8,6 @@ from django.conf import settings
 from django.test import TestCase
 from django.utils import timezone
 from django.core.cache import cache
-from django.test import override_settings
 from django.test.client import MULTIPART_CONTENT
 
 from .models import (
@@ -34,23 +33,16 @@ from .unit_test_helpers import (
     schedule_cached_state_update_patch
 )
 
-# Temp directory for mock photo uploads, deleted after tests
-TEST_DIR = '/tmp/plant_tracker_unit_test'
 
-
-# Create test directory or mock photo uploads
 def setUpModule():
-    if not os.path.isdir(os.path.join(TEST_DIR, 'data', 'images')):
-        os.makedirs(os.path.join(TEST_DIR, 'data', 'images'))
-
     # Prevent creating celery tasks to rebuild cached states
     schedule_cached_state_update_patch.start()
 
 
-# Delete mock photo directory after tests
 def tearDownModule():
+    # Delete mock photo directory after tests
     print("\nDeleting mock photos...\n")
-    shutil.rmtree(TEST_DIR, ignore_errors=True)
+    shutil.rmtree(settings.TEST_DIR, ignore_errors=True)
 
     # Re-enable cached state celery tasks
     schedule_cached_state_update_patch.stop()
@@ -186,7 +178,6 @@ class OverviewTests(TestCase):
 
 
 class ManagePageTests(TestCase):
-    @override_settings(MEDIA_ROOT=os.path.join(TEST_DIR, 'data', 'images'))
     def setUp(self):
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
@@ -212,10 +203,10 @@ class ManagePageTests(TestCase):
     def tearDown(self):
         # Delete mock photos between tests to prevent duplicate names (django
         # appends random string to keep unique, which makes testing difficult)
-        for i in os.listdir(os.path.join(TEST_DIR, 'data', 'images', 'images')):
-            os.remove(os.path.join(TEST_DIR, 'data', 'images', 'images', i))
-        for i in os.listdir(os.path.join(TEST_DIR, 'data', 'images', 'thumbnails')):
-            os.remove(os.path.join(TEST_DIR, 'data', 'images', 'thumbnails', i))
+        for i in os.listdir(os.path.join(settings.TEST_DIR, 'data', 'images', 'images')):
+            os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'images', i))
+        for i in os.listdir(os.path.join(settings.TEST_DIR, 'data', 'images', 'thumbnails')):
+            os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'thumbnails', i))
 
     def _refresh_test_models(self):
         self.plant1.refresh_from_db()
@@ -1137,7 +1128,6 @@ class PlantEventTests(TestCase):
         self.assertEqual(len(self.plant1.pruneevent_set.all()), 0)
         self.assertEqual(len(self.plant1.repotevent_set.all()), 0)
 
-    @override_settings(MEDIA_ROOT=os.path.join(TEST_DIR, 'data', 'images'))
     def test_add_plant_photos(self):
         # Confirm no photos exist in database or plant reverse relation
         self.assertEqual(len(Photo.objects.all()), 0)
@@ -1182,7 +1172,6 @@ class PlantEventTests(TestCase):
             '2024:03:22 10:52:03'
         )
 
-    @override_settings(MEDIA_ROOT=os.path.join(TEST_DIR, 'data', 'images'))
     def test_delete_plant_photos(self):
         # Create 2 mock photos, add to database
         mock_photo1 = create_mock_photo('2024:03:21 10:52:03')
@@ -1215,7 +1204,6 @@ class PlantEventTests(TestCase):
         )
         self.assertEqual(len(Photo.objects.all()), 0)
 
-    @override_settings(MEDIA_ROOT=os.path.join(TEST_DIR, 'data', 'images'))
     def test_set_plant_default_photo(self):
         # Create mock photo, add to database
         mock_photo = create_mock_photo('2024:03:21 10:52:03')
@@ -1585,7 +1573,6 @@ class InvalidRequestTests(TestCase):
         self.test_plant.refresh_from_db()
         self.assertIsNone(self.test_plant.default_photo)
 
-    @override_settings(MEDIA_ROOT=os.path.join(TEST_DIR, 'data', 'images'))
     def test_set_photo_of_wrong_plant_as_default_photo(self):
         # Create second plant entry + photo associated with second plant
         wrong_plant = Plant.objects.create(uuid=uuid4())

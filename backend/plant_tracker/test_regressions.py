@@ -1,14 +1,14 @@
-import os
 import shutil
 from uuid import uuid4
 from types import NoneType
 from datetime import datetime
 
+from django.conf import settings
+from django.test import TestCase
 from django.utils import timezone
 from django.core.cache import cache
 from django.test.client import MULTIPART_CONTENT
 from django.core.exceptions import ValidationError
-from django.test import TestCase, override_settings
 
 from .models import (
     Group,
@@ -29,23 +29,16 @@ from .unit_test_helpers import (
     schedule_cached_state_update_patch
 )
 
-# Temp directory for mock photo uploads, deleted after tests
-TEST_DIR = '/tmp/plant_tracker_unit_test'
 
-
-# Create test directory or mock photo uploads
 def setUpModule():
-    if not os.path.isdir(os.path.join(TEST_DIR, 'data', 'images')):
-        os.makedirs(os.path.join(TEST_DIR, 'data', 'images'))
-
     # Prevent creating celery tasks to rebuild cached states
     schedule_cached_state_update_patch.start()
 
 
-# Delete mock photo directory after tests
 def tearDownModule():
+    # Delete mock photo directory after tests
     print("\nDeleting mock photos...\n")
-    shutil.rmtree(TEST_DIR, ignore_errors=True)
+    shutil.rmtree(settings.TEST_DIR, ignore_errors=True)
 
     # Re-enable cached state celery tasks
     schedule_cached_state_update_patch.stop()
@@ -74,7 +67,6 @@ class ModelRegressionTests(TestCase):
         self.assertEqual(len(Plant.objects.all()), 1)
         self.assertEqual(len(Group.objects.all()), 1)
 
-    @override_settings(MEDIA_ROOT=os.path.join(TEST_DIR, 'data', 'images'))
     def test_photos_with_no_exif_data_should_set_created_time_to_upload_time(self):
         '''Issue: The created field is populated in the save method using a
         timestamp parsed from exif data, or with the current time if the exif
@@ -178,7 +170,6 @@ class ViewRegressionTests(TestCase):
         )
         self.assertEqual(len(plant.repotevent_set.all()), 1)
 
-    @override_settings(MEDIA_ROOT=os.path.join(TEST_DIR, 'data', 'images'))
     def test_delete_plant_photos_fails_due_to_duplicate_creation_times(self):
         '''Issue: delete_plant_photos looked up photos in the database using a
         plant UUID and creation timestamp. If multiple photos of the same plant
@@ -210,7 +201,6 @@ class ViewRegressionTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(Photo.objects.all()), 0)
 
-    @override_settings(MEDIA_ROOT=os.path.join(TEST_DIR, 'data', 'images'))
     def test_add_plant_photos_returns_timestamp_with_no_timezone(self):
         '''Issue: add_plant_photos returned a strftime string with no timezone,
         which is not the same format as manage_plant state. This could cause
