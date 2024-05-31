@@ -23,7 +23,11 @@ from .view_decorators import (
     get_timestamp_from_post_body,
     get_event_type_from_post_body
 )
-from .unit_test_helpers import JSONClient, create_mock_photo
+from .unit_test_helpers import (
+    JSONClient,
+    create_mock_photo,
+    schedule_cached_state_update_patch
+)
 
 # Temp directory for mock photo uploads, deleted after tests
 TEST_DIR = '/tmp/plant_tracker_unit_test'
@@ -34,11 +38,17 @@ def setUpModule():
     if not os.path.isdir(os.path.join(TEST_DIR, 'data', 'images')):
         os.makedirs(os.path.join(TEST_DIR, 'data', 'images'))
 
+    # Prevent creating celery tasks to rebuild cached states
+    schedule_cached_state_update_patch.start()
+
 
 # Delete mock photo directory after tests
 def tearDownModule():
     print("\nDeleting mock photos...\n")
     shutil.rmtree(TEST_DIR, ignore_errors=True)
+
+    # Re-enable cached state celery tasks
+    schedule_cached_state_update_patch.stop()
 
 
 class ModelRegressionTests(TestCase):
