@@ -44,10 +44,13 @@ COPY --from=py_build /usr/local/lib/python3.10/site-packages/ /usr/local/lib/pyt
 # Copy celery binary from build stage
 COPY --from=py_build /usr/local/bin/celery /usr/local/bin/
 
-# Install redis, start service
+# Install redis
 RUN apt update
 RUN apt install -y redis-server
-RUN service redis-server start
+
+# Create celery user
+RUN groupadd -r celery
+RUN useradd -r -g celery celery
 
 # Run migrations, start dev server
 COPY docker/entrypoint.sh /mnt/entrypoint.sh

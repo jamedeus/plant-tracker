@@ -6,8 +6,8 @@ service redis-server start
 
 # Start celery worker in background
 printf "Starting celery worker...\n"
-cd /mnt/backend
-celery -A backend worker &
+cd /mnt/backend || (printf "FATAL: Unable to find /mnt/backend\n" && exit)
+celery -A backend worker --uid "$(id -u celery)" &
 
 # Generate database on first run, apply migrations in new releases
 printf "Running database migrations...\n"
