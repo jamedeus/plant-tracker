@@ -195,8 +195,19 @@ def schedule_cached_manage_plant_state_update(uuid):
 @receiver(post_delete, sender=Photo)
 def update_cached_manage_plant_state_hook(instance, **kwargs):
     '''Schedules task to update cached manage_plant state when Plant or events
-    with reverse relation to Plant are modified'''
+    with reverse relation to Plant are modified
+    '''
     if isinstance(instance, Plant):
         schedule_cached_manage_plant_state_update(instance.uuid)
     else:
         schedule_cached_manage_plant_state_update(instance.plant.uuid)
+
+
+@shared_task()
+def update_all_cached_states():
+    '''Updates cached overview state and all cached manage_plant states
+    Called when server starts to prevent serving outdated states
+    '''
+    update_cached_overview_state.delay()
+    for plant in Plant.objects.all():
+        update_cached_manage_plant_state.delay(plant.uuid)

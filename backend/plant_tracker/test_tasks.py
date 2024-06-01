@@ -24,7 +24,8 @@ from .tasks import (
     update_cached_overview_state,
     schedule_cached_overview_state_update,
     update_cached_manage_plant_state,
-    schedule_cached_manage_plant_state_update
+    schedule_cached_manage_plant_state_update,
+    update_all_cached_states
 )
 from .unit_test_helpers import (
     JSONClient,
@@ -113,6 +114,25 @@ class HelperFunctionTests(TestCase):
 
             # Confirm ID of newly queued task was cached so it can be canceled if needed
             mock_cache_set.assert_called_once_with(f'rebuild_{uuid}_state_task_id', 'mock_task_id')
+
+    def test_update_all_cached_states(self):
+        # Create 5 Plant entries
+        for i in range(0, 5):
+            Plant.objects.create(uuid=uuid4())
+
+        # Clear entire cache, confirm no cached states
+        cache.clear()
+        self.assertIsNone(cache.get('overview_state'))
+        for i in range(0, 5):
+            self.assertIsNone(cache.get(f'{Plant.objects.all()[i].uuid}_state'))
+
+        # Call method, confirm all states were cached
+        update_all_cached_states()
+        self.assertTrue(isinstance(cache.get('overview_state'), dict))
+        for i in range(0, 5):
+            self.assertTrue(
+                isinstance(cache.get(f'{Plant.objects.all()[i].uuid}_state'), dict)
+            )
 
 
 class TaskTests(TestCase):
