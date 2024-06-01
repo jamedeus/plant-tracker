@@ -175,12 +175,12 @@ def schedule_cached_manage_plant_state_update(uuid):
 @receiver(post_save, sender=PruneEvent)
 @receiver(post_save, sender=RepotEvent)
 @receiver(post_save, sender=NoteEvent)
+@receiver(post_save, sender=Photo)
 @receiver(post_delete, sender=WaterEvent)
 @receiver(post_delete, sender=FertilizeEvent)
 @receiver(post_delete, sender=PruneEvent)
 @receiver(post_delete, sender=RepotEvent)
 @receiver(post_delete, sender=NoteEvent)
-@receiver(post_save, sender=Photo)
 @receiver(post_delete, sender=Photo)
 def update_cached_manage_plant_state_hook(instance, **kwargs):
     '''Schedules task to update cached manage_plant state when Plant or events
