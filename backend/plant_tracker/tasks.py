@@ -1,11 +1,22 @@
-# feedback/tasks.py
+'''Async tasks run by celery worker to build and cache frontend states.
+
+Using cached states can reduce page load time when many database entries exist,
+particularly the overview page (state takes 150-200ms to build with 60 plants).
+
+Django database signals are used to create hooks that update cached states when
+relevant models are created, deleted, or modified.
+
+In most cases the schedule_cached_state_update is used to update states after a
+30 second delay, preventing the same state object being built multiple times as
+the user logs events on the frontend.
+'''
 
 from celery import shared_task
-from backend.celery import app
 from django.core.cache import cache
 from django.dispatch import receiver
 from django.db.models.signals import post_save, post_delete
 
+from backend.celery import app
 from .models import (
     Plant,
     Group,
@@ -25,7 +36,7 @@ def revoke_queued_task(task_id_cache_name):
         app.control.revoke(task_id, terminate=True)
 
 
-def schedule_cached_state_update(cache_name, callback_task, callback_kwargs={}, delay=0):
+def schedule_cached_state_update(cache_name, callback_task, callback_kwargs=None, delay=0):
     '''Clears cache_name and schedules callback_task to run in delay seconds.
 
     Cache is cleared immediately to prevent serving outdated state if requested
