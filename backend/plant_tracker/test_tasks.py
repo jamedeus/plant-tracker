@@ -4,7 +4,9 @@ from unittest.mock import patch, MagicMock
 
 from django.conf import settings
 from django.test import TestCase
+from django.utils import timezone
 from django.core.cache import cache
+from django.test.client import MULTIPART_CONTENT
 
 from .models import (
     Group,
@@ -175,3 +177,302 @@ class TaskTests(TestCase):
         # Confirm existing cached state was replaced (not just cleared)
         self.assertIsNotNone(cache.get('overview_state'))
         self.assertTrue(isinstance(cache.get('overview_state'), dict))
+
+
+class HookTests(TestCase):
+    '''Test that cached states are updated correctly when database changes'''
+
+    def setUp(self):
+        # Clear entire cache before each test
+        clear_cache()
+
+        # Set default content_type for post requests (avoid long lines)
+        self.client = JSONClient()
+
+        # Generate UUID to use in tests
+        self.uuid = uuid4()
+
+    def test_overview_state_updates_when_plant_created_changed_or_deleted(self):
+        # Confirm no cached overview state
+        self.assertIsNone(cache.get('overview_state'))
+
+        # Save Plant model entry
+        plant = Plant.objects.create(uuid=self.uuid)
+
+        # Confirm overview_state was generated and cached
+        self.assertEqual(
+            cache.get('overview_state'),
+            {
+                "plants": [
+                    {
+                        "name": "Unnamed plant 1",
+                        "uuid": str(self.uuid),
+                        "species": None,
+                        "description": None,
+                        "pot_size": None,
+                        "last_watered": None,
+                        "last_fertilized": None,
+                        "thumbnail": None
+                    }
+                ],
+                "groups": []
+            }
+        )
+
+        # Update Plant entry details, save
+        plant.name = "Favorite Plant"
+        plant.species = "Calathea"
+        plant.pot_size = 10
+        plant.save()
+
+        # Confirm cached state was updated automatically
+        self.assertEqual(
+            cache.get('overview_state'),
+            {
+                "plants": [
+                    {
+                        "name": "Favorite Plant",
+                        "uuid": str(self.uuid),
+                        "species": "Calathea",
+                        "description": None,
+                        "pot_size": 10,
+                        "last_watered": None,
+                        "last_fertilized": None,
+                        "thumbnail": None
+                    }
+                ],
+                "groups": []
+            }
+        )
+
+        # Delete Plant entry, confirm cached state was updated
+        plant.delete()
+        self.assertEqual(
+            cache.get('overview_state'),
+            {
+                "plants": [],
+                "groups": []
+            }
+        )
+
+    def test_overview_state_updates_when_group_created_changed_or_deleted(self):
+        # Confirm no cached overview state
+        self.assertIsNone(cache.get('overview_state'))
+
+        # Save Group model entry
+        group = Group.objects.create(uuid=self.uuid)
+
+        # Confirm overview_state was generated and cached
+        self.assertEqual(
+            cache.get('overview_state'),
+            {
+                "plants": [],
+                "groups": [
+                    {
+                        "name": "Unnamed group 1",
+                        "uuid": str(self.uuid),
+                        "location": None,
+                        "description": None,
+                        "plants": 0
+                    }
+                ]
+            }
+        )
+
+        # Change group entry details, save
+        group.name = "Living room plants"
+        group.location = "Living room"
+        group.save()
+
+        # Confirm cached state was updated automatically
+        self.assertEqual(
+            cache.get('overview_state'),
+            {
+                "plants": [],
+                "groups": [
+                    {
+                        "name": "Living room plants",
+                        "uuid": str(self.uuid),
+                        "location": "Living room",
+                        "description": None,
+                        "plants": 0
+                    }
+                ]
+            }
+        )
+
+        # Delete Group entry, confirm cached state was updated
+        group.delete()
+        self.assertEqual(
+            cache.get('overview_state'),
+            {
+                "plants": [],
+                "groups": []
+            }
+        )
+
+    def test_overview_state_updates_when_plant_events_created_or_deleted(self):
+        # Create Plant model entry
+        plant = Plant.objects.create(uuid=self.uuid)
+
+        # Confirm state was generated, confirm Plant has no water events
+        cached_state = cache.get('overview_state')
+        self.assertIsNotNone(cached_state)
+        self.assertIsNone(cached_state["plants"][0]["last_watered"])
+
+        # Create WaterEvent for plant entry with API call
+        self.client.post(
+            '/add_plant_event',
+            {
+                'plant_id': plant.uuid,
+                'event_type': 'water',
+                'timestamp': '2024-02-06T03:06:26.000Z'
+            }
+        )
+
+        # Confirm last_watered in cached state matches timestamp
+        cached_state = cache.get('overview_state')
+        self.assertEqual(
+            cached_state["plants"][0]["last_watered"],
+            '2024-02-06T03:06:26+00:00'
+        )
+
+        # Delete water event with API call
+        self.client.post(
+            '/delete_plant_event',
+            {
+                'plant_id': plant.uuid,
+                'event_type': 'water',
+                'timestamp': '2024-02-06T03:06:26.000Z'
+            }
+        )
+
+        # Confirm last_watered in cached state reverted to None
+        cached_state = cache.get('overview_state')
+        self.assertIsNone(cached_state["plants"][0]["last_watered"])
+
+    def test_overview_state_updates_when_plant_events_bulk_created_or_bulk_deleted(self):
+        # Create 1 Plant model entries
+        plant1 = Plant.objects.create(uuid=self.uuid)
+        plant2 = Plant.objects.create(uuid=uuid4())
+
+        # Confirm state was generated, confirm Plants have no water events
+        cached_state = cache.get('overview_state')
+        self.assertIsNotNone(cached_state)
+        self.assertIsNone(cached_state["plants"][0]["last_watered"])
+        self.assertIsNone(cached_state["plants"][1]["last_watered"])
+
+        # Create WaterEvent for both plants with API call
+        self.client.post(
+            '/bulk_add_plant_events',
+            {
+                'plants': [
+                    str(plant1.uuid),
+                    str(plant2.uuid)
+                ],
+                'event_type': 'water',
+                'timestamp': '2024-02-06T03:06:26.000Z'
+            }
+        )
+
+        # Confirm last_watered in cached state matches timestamp for both plants
+        cached_state = cache.get('overview_state')
+        self.assertEqual(
+            cached_state["plants"][0]["last_watered"],
+            '2024-02-06T03:06:26+00:00'
+        )
+        self.assertEqual(
+            cached_state["plants"][1]["last_watered"],
+            '2024-02-06T03:06:26+00:00'
+        )
+
+        # Delete WaterEvent for first plant with API call
+        self.client.post(
+            '/bulk_delete_plant_events',
+            {
+                'plant_id': plant1.uuid,
+                'events': [
+                    {'type': 'water', 'timestamp': '2024-02-06T03:06:26.000Z'}
+                ]
+            }
+        )
+
+        # Confirm last_watered in cached state is None for first plant, but not second
+        cached_state = cache.get('overview_state')
+        self.assertIsNone(cached_state["plants"][0]["last_watered"])
+        self.assertEqual(
+            cached_state["plants"][1]["last_watered"],
+            '2024-02-06T03:06:26+00:00'
+        )
+
+    def test_overview_state_updates_when_plant_photo_added_or_deleted(self):
+        # Create Plant model entry
+        plant = Plant.objects.create(uuid=self.uuid)
+
+        # Confirm state was generated, confirm Plant has no photo thumbnail
+        cached_state = cache.get('overview_state')
+        self.assertIsNotNone(cached_state)
+        self.assertIsNone(cached_state["plants"][0]["thumbnail"])
+
+        # Create mock photo, upload with API call
+        data = {
+            'plant_id': str(plant.uuid),
+            'photo_0': create_mock_photo('2024:03:22 10:52:03')
+        }
+        self.client.post(
+            '/add_plant_photos',
+            data=data,
+            content_type=MULTIPART_CONTENT
+        )
+
+        # Confirm thumbnail in cached state now matches uploaded photo
+        cached_state = cache.get('overview_state')
+        self.assertEqual(
+            cached_state["plants"][0]["thumbnail"],
+            f"/media/{Photo.objects.all()[0].thumbnail.name}"
+        )
+
+        # Delete mock photo with API call
+        photo = Photo.objects.all()[0]
+        payload = {
+            'plant_id': str(plant.uuid),
+            'delete_photos': [
+                photo.pk
+            ]
+        }
+        self.client.post('/delete_plant_photos', payload)
+
+        # Confirm thumbnail in cached state reverted to None
+        cached_state = cache.get('overview_state')
+        self.assertIsNone(cached_state["plants"][0]["thumbnail"])
+
+    def test_overview_state_updates_when_plant_default_photo_set(self):
+        # Create Plant model entry
+        plant = Plant.objects.create(uuid=self.uuid)
+
+        # Confirm state was generated, confirm Plant has no photo thumbnail
+        cached_state = cache.get('overview_state')
+        self.assertIsNotNone(cached_state)
+        self.assertIsNone(cached_state["plants"][0]["thumbnail"])
+
+        # Create 2 mock photos, add to database
+        mock_photo1 = create_mock_photo('2024:03:21 10:52:03')
+        mock_photo2 = create_mock_photo('2024:03:22 10:52:03')
+        Photo.objects.create(photo=mock_photo1, plant=plant)
+        Photo.objects.create(photo=mock_photo2, plant=plant)
+
+        # Set first photo as default with API call
+        self.client.post(
+            '/set_plant_default_photo',
+            {
+                'plant_id': str(plant.uuid),
+                'photo_key': Photo.objects.all()[0].pk
+            }
+        )
+
+        # Confirm thumbnail in cached state now matches first photo
+        cached_state = cache.get('overview_state')
+        self.assertEqual(
+            cached_state["plants"][0]["thumbnail"],
+            f"/media/{Photo.objects.all()[0].thumbnail.name}"
+        )
