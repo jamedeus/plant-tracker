@@ -225,7 +225,8 @@ class HookTests(TestCase):
             {
                 "plants": [
                     {
-                        "name": "Unnamed plant 1",
+                        "name": None,
+                        "display_name": "Unnamed plant 1",
                         "uuid": str(self.uuid),
                         "species": None,
                         "description": None,
@@ -252,6 +253,7 @@ class HookTests(TestCase):
                 "plants": [
                     {
                         "name": "Favorite Plant",
+                        "display_name": "Favorite Plant",
                         "uuid": str(self.uuid),
                         "species": "Calathea",
                         "description": None,

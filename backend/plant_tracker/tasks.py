@@ -125,10 +125,6 @@ def build_manage_plant_state(uuid):
         'photo_urls': plant.get_photo_urls()
     }
 
-    # Replace name key (get_details returns display_name) with actual name
-    state['plant']['name'] = plant.name
-    state['plant']['display_name'] = plant.get_display_name()
-
     # Add all water and fertilize timestamps
     state['plant']['events'] = {
         'water': plant.get_water_timestamps(),

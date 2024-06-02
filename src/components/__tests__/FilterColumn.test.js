@@ -4,6 +4,7 @@ import FilterColumn from '../FilterColumn';
 const plants = [
     {
         "name": "Mini palm tree",
+        "display_name": "Mini palm tree",
         "uuid": "49a55f1f-5703-4f5e-acad-2c0991a08806",
         "species": "Parlor Palm",
         "description": "Palms aren't really trees",
@@ -13,7 +14,8 @@ const plants = [
         "thumbnail": "/media/thumbnails/IMG_8000_thumb.jpg"
     },
     {
-        "name": "Unnamed Fittonia",
+        "name": null,
+        "display_name": "Unnamed Fittonia",
         "uuid": "6e8b3664-9b5a-4bc9-a62f-50f89a4c3aaf",
         "species": "Fittonia",
         "description": null,
@@ -23,7 +25,8 @@ const plants = [
         "thumbnail": "/media/thumbnails/IMG_8001_thumb.jpg"
     },
     {
-        "name": "Unnamed plant 1",
+        "name": null,
+        "display_name": "Unnamed plant 1",
         "uuid": "645f3149-dd59-4419-b9a2-d8c796fa29e1",
         "species": null,
         "description": null,
@@ -34,6 +37,7 @@ const plants = [
     },
     {
         "name": "Favorite plant",
+        "display_name": "Favorite plant",
         "uuid": "9c9d1767-a97f-4ca8-ad6e-b706ff943ff2",
         "species": "Calathea",
         "description": null,

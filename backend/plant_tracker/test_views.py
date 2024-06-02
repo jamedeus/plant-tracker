@@ -88,6 +88,7 @@ class OverviewTests(TestCase):
                 {
                     'uuid': str(plant1.uuid),
                     'name': 'Test plant',
+                    'display_name': 'Test plant',
                     'species': None,
                     'thumbnail': None,
                     'description': None,
@@ -97,7 +98,8 @@ class OverviewTests(TestCase):
                 },
                 {
                     'uuid': str(plant2.uuid),
-                    'name': 'Unnamed fittonia',
+                    'name': None,
+                    'display_name': 'Unnamed fittonia',
                     'species': 'fittonia',
                     'thumbnail': None,
                     'description': None,
@@ -413,7 +415,8 @@ class ManagePageTests(TestCase):
         self.assertEqual(
             state['details'],
             [{
-                'name': 'Unnamed plant 1',
+                'name': None,
+                'display_name': 'Unnamed plant 1',
                 'uuid': str(self.plant1.uuid),
                 'species': None,
                 'thumbnail': '/media/thumbnails/photo2_thumb.jpg',
@@ -429,7 +432,8 @@ class ManagePageTests(TestCase):
             state['options'],
             [
                 {
-                    'name': self.plant1.get_display_name(),
+                    'name': self.plant1.name,
+                    'display_name': self.plant1.get_display_name(),
                     'uuid': str(self.plant1.uuid),
                     'species': None,
                     'pot_size': None,
@@ -439,7 +443,8 @@ class ManagePageTests(TestCase):
                     'thumbnail': '/media/thumbnails/photo2_thumb.jpg'
                 },
                 {
-                    'name': self.plant2.get_display_name(),
+                    'name': self.plant2.name,
+                    'display_name': self.plant2.get_display_name(),
                     'uuid': str(self.plant2.uuid),
                     'species': None,
                     'pot_size': None,

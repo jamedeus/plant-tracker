@@ -203,7 +203,8 @@ class Plant(models.Model):
         last_fertilized timestamps. Used as state for frontend components.
         '''
         return {
-            'name': self.get_display_name(),
+            'name': self.name,
+            'display_name': self.get_display_name(),
             'uuid': str(self.uuid),
             'species': self.species,
             'description': self.description,

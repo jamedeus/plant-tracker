@@ -8,7 +8,7 @@ describe('PlantCard with water event', () => {
         user = userEvent.setup();
         component = render(
             <PlantCard
-                name={"Test Plant"}
+                display_name={"Test Plant"}
                 uuid={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"}
                 species={"Calathea"}
                 description={"Mother plant"}
@@ -61,7 +61,7 @@ describe('PlantCard with no water event', () => {
     beforeEach(() => {
         component = render(
             <PlantCard
-                name={"Test Plant"}
+                display_name={"Test Plant"}
                 uuid={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"}
                 species={"Calathea"}
                 description={"Mother plant"}
@@ -87,7 +87,7 @@ describe('PlantCard last watered time display', () => {
     const renderWithTimestamp = (timestamp) => {
         return render(
             <PlantCard
-                name={"Test Plant"}
+                display_name={"Test Plant"}
                 uuid={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"}
                 species={"Calathea"}
                 description={"Mother plant"}

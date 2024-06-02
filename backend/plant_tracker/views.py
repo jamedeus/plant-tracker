@@ -227,8 +227,6 @@ def render_confirm_new_qr_code_page(request, uuid, old_uuid):
             'plant': instance.get_details(),
             'new_uuid': uuid
         }
-        state['plant']['name'] = instance.name
-        state['plant']['display_name'] = instance.get_display_name()
 
         return render_react_app(
             request,
