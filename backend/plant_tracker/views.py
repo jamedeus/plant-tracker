@@ -361,7 +361,6 @@ def edit_plant_details(plant, data):
 
     # Return modified payload with new display_name
     del data["plant_id"]
-    data["pot_size"] = int(data["pot_size"])
     data["display_name"] = plant.get_display_name()
     return JsonResponse(data, status=200)
 

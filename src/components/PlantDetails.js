@@ -27,7 +27,10 @@ const PlantDetails = ({ species, pot_size, description }) => {
 
 PlantDetails.propTypes = {
     species: PropTypes.string,
-    pot_size: PropTypes.number,
+    pot_size: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number
+    ]),
     description: PropTypes.string
 };
 

@@ -281,6 +281,41 @@ class ViewRegressionTests(TestCase):
         # Confirm cache was cleared
         self.assertIsNone(cache.get('old_uuid'))
 
+    def test_edit_plant_details_crashes_when_pot_size_is_null(self):
+        '''Issue: The /edit_plant endpoint returns a modified version of the
+        payload it received, which previously cast the pot_size param to int
+        with no error handling. If the pot_size field was not filled in this
+        resulted in a TypeError when None was passed to int().
+
+        The frontend now handles both string and integer values for pot_size,
+        the backend returns pot_size unchanged.
+        '''
+
+        # Create test plant
+        plant = Plant.objects.create(uuid=uuid4())
+
+        # Post details with blank pot_size to /edit_plant endpoint
+        response = JSONClient().post('/edit_plant', {
+            'plant_id': plant.uuid,
+            'name': 'test plant',
+            'species': 'Giant Sequoia',
+            'description': '',
+            'pot_size': ''
+        })
+
+        # Post details with string pot_size to /edit_plant endpoint
+        response = JSONClient().post('/edit_plant', {
+            'plant_id': plant.uuid,
+            'name': 'test plant',
+            'species': 'Giant Sequoia',
+            'description': '',
+            'pot_size': '36'
+        })
+
+        # Confirm request succeeded, response did not change pot_size
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['pot_size'], '36')
+
 
 class CachedStateRegressionTests(TestCase):
     def setUp(self):
