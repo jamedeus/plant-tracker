@@ -174,6 +174,11 @@ def render_manage_plant_page(request, plant):
     if state is None:
         state = build_manage_plant_state(plant.uuid)
 
+    # Overwrite cached display_name if plant has no name (sequential names like)
+    # "Unnamed plant 3" may be outdated if other unnamed plants were named)
+    if not plant.name:
+        state['plant']['display_name'] = plant.get_display_name()
+
     # Add species and group options (cached separately)
     state['groups'] = get_group_options()
     state['species_options'] = get_plant_species_options()

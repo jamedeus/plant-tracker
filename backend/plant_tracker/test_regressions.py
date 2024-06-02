@@ -282,6 +282,53 @@ class ViewRegressionTests(TestCase):
         self.assertIsNone(cache.get('old_uuid'))
 
 
+class CachedStateRegressionTests(TestCase):
+    def setUp(self):
+        # Allow creating celery tasks (and prevent hook called when saving a
+        # single model from clearing all cached states)
+        schedule_cached_state_update_patch.stop()
+
+    def tearDown(self):
+        # Prevent creating celery tasks in other test suites
+        schedule_cached_state_update_patch.start()
+
+    def test_display_name_of_unnamed_plants_update_correctly(self):
+        '''Issue: cached manage_plant state is not updated until plant is saved
+        in database. If plant has no name or species its display_name will have
+        a sequential number (eg "Unnamed plant 3") which will change if another
+        unnamed plant with lower database key is given a name (eg should become
+        "Unnamed plant 2"). Since editing a different plant does not update the
+        cached states of others this could result in an outdated display_name.
+
+        The /manage endpoint now overwrites cached display_name with current
+        value if the plant has no name.
+        '''
+
+        # Create 2 unnamed plants
+        plant1 = Plant.objects.create(uuid=uuid4(), name=None)
+        plant2 = Plant.objects.create(uuid=uuid4(), name=None)
+
+        # Request manage_plant page for second plant
+        response = self.client.get(f'/manage/{plant2.uuid}')
+        state = response.context['state']
+
+        # Confirm display_name in context is "Unnamed plant 2"
+        self.assertEqual(state['plant']['display_name'], 'Unnamed plant 2')
+
+        # Give first plant a name
+        plant1.name = 'My plant'
+        plant1.save()
+
+        # Request manage_plant for second plant again
+        response = self.client.get(f'/manage/{plant2.uuid}')
+
+        # Confirm display_name in context updated to "Unnamed plant 1"
+        self.assertEqual(
+            response.context['state']['plant']['display_name'],
+            'Unnamed plant 1'
+        )
+
+
 class ViewDecoratorRegressionTests(TestCase):
     def setUp(self):
         self.plant = Plant.objects.create(uuid=uuid4())
