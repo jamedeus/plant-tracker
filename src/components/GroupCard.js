@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/16/solid';
 import GroupDetails from 'src/components/GroupDetails';
 
-const GroupCard = ({ name, plants, uuid, location, description, linkPage=true }) => {
+const GroupCard = ({ display_name, plants, uuid, location, description, linkPage=true }) => {
     // Track details collapse open state
     const [open, setOpen] = useState(false);
 
@@ -53,7 +53,7 @@ const GroupCard = ({ name, plants, uuid, location, description, linkPage=true })
                 onClick={linkPage ? manageLink : null}
             >
                 <div className="card-body text-center">
-                    <h2 className="card-title mx-auto">{name}</h2>
+                    <h2 className="card-title mx-auto">{display_name}</h2>
                     <p>Contains {plants} plants</p>
                 </div>
 
@@ -75,7 +75,7 @@ const GroupCard = ({ name, plants, uuid, location, description, linkPage=true })
 };
 
 GroupCard.propTypes = {
-    name: PropTypes.string,
+    display_name: PropTypes.string,
     plants: PropTypes.number,
     uuid: PropTypes.string,
     location: PropTypes.string,

@@ -193,13 +193,7 @@ def render_manage_group_page(request, group):
 
     # Create state object parsed by react app
     state = {
-        'group': {
-            'uuid': str(group.uuid),
-            'name': group.name,
-            'display_name': group.get_display_name(),
-            'location': group.location,
-            'description': group.description
-        },
+        'group': group.get_details(),
         'details': group.get_plant_details(),
         'options': get_plant_options()
     }

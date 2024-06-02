@@ -39,6 +39,7 @@ export const mockContext = {
     "groups": [
         {
             "name": "Test group",
+            "display_name": "Test group",
             "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
             "location": "Top shelf",
             "description": "Medium brightness grow light",
@@ -46,6 +47,7 @@ export const mockContext = {
         },
         {
             "name": "Testing",
+            "display_name": "Testing",
             "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be61",
             "location": "Middle shelf",
             "description": "Brightest grow light",
@@ -104,10 +106,12 @@ export const mockContextNoEvents = {
     "groups": [
         {
             "name": "Test group",
+            "display_name": "Test group",
             "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
         },
         {
             "name": "Testing",
+            "display_name": "Testing",
             "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be61"
         }
     ],

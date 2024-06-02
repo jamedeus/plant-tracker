@@ -114,7 +114,8 @@ class OverviewTests(TestCase):
             [
                 {
                     'uuid': str(group.uuid),
-                    'name': 'Unnamed group 1',
+                    'name': None,
+                    'display_name': 'Unnamed group 1',
                     'location': None,
                     'description': None,
                     'plants': 1
@@ -338,7 +339,8 @@ class ManagePageTests(TestCase):
             state['groups'],
             [
                 {
-                    'name': 'Unnamed group 1',
+                    'name': None,
+                    'display_name': 'Unnamed group 1',
                     'uuid': str(self.group1.uuid),
                     'location': None,
                     'description': None,
@@ -407,7 +409,8 @@ class ManagePageTests(TestCase):
                 'name': self.group1.name,
                 'location': None,
                 'description': None,
-                'display_name': self.group1.get_display_name()
+                'display_name': self.group1.get_display_name(),
+                'plants': 1
             }
         )
 

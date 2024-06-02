@@ -291,7 +291,8 @@ class HookTests(TestCase):
                 "plants": [],
                 "groups": [
                     {
-                        "name": "Unnamed group 1",
+                        "name": None,
+                        "display_name": "Unnamed group 1",
                         "uuid": str(self.uuid),
                         "location": None,
                         "description": None,
@@ -314,6 +315,7 @@ class HookTests(TestCase):
                 "groups": [
                     {
                         "name": "Living room plants",
+                        "display_name": "Living room plants",
                         "uuid": str(self.uuid),
                         "location": "Living room",
                         "description": None,

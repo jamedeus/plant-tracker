@@ -95,7 +95,8 @@ class Group(models.Model):
     def get_details(self):
         '''Returns dict containing all group attributes and number of plants'''
         return {
-            'name': self.get_display_name(),
+            'name': self.name,
+            'display_name': self.get_display_name(),
             'uuid': str(self.uuid),
             'location': self.location,
             'description': self.description,
