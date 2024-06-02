@@ -328,6 +328,34 @@ class CachedStateRegressionTests(TestCase):
             'Unnamed plant 1'
         )
 
+    def test_group_name_on_manage_plant_page_updates_correctly(self):
+        '''Issue: cached manage_plant state contained display_name of plant's
+        group and did not update if group display_name changed (group renamed,
+        or unnamed group index changed due to other unnamed group being named).
+        This resulted in an outdated group name being shown in the plant
+        details dropdown.
+
+        The /manage endpoint now overwrites cached group name with current name.
+        '''
+
+        # Create unnamed group containing 1 plant
+        group = Group.objects.create(uuid=uuid4())
+        plant = Plant.objects.create(uuid=uuid4(), group=group)
+
+        # Request manage_plant page, confirm group name is "Unnamed group 1"
+        response = self.client.get(f'/manage/{plant.uuid}')
+        state = response.context['state']
+        self.assertEqual(state['plant']['group']['name'], 'Unnamed group 1')
+
+        # Give group a name
+        group.name = 'Living room'
+        group.save()
+
+        # Request manage_plant page again, confirm group name was updated
+        response = self.client.get(f'/manage/{plant.uuid}')
+        state = response.context['state']
+        self.assertEqual(state['plant']['group']['name'], 'Living room')
+
 
 class ViewDecoratorRegressionTests(TestCase):
     def setUp(self):

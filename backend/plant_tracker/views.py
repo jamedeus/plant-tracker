@@ -179,6 +179,11 @@ def render_manage_plant_page(request, plant):
     if not plant.name:
         state['plant']['display_name'] = plant.get_display_name()
 
+    # Overwrite cached group name if plant is in a group (may be outdated if
+    # group was renamed since cache saved)
+    if plant.group:
+        state['plant']['group']['name'] = plant.group.get_display_name()
+
     # Add species and group options (cached separately)
     state['groups'] = get_group_options()
     state['species_options'] = get_plant_species_options()
