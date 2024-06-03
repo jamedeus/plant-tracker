@@ -464,6 +464,61 @@ class CachedStateRegressionTests(TestCase):
             photo1.get_thumbnail_url()
         )
 
+    def test_group_options_cache_contains_outdated_number_of_plants_in_group(self):
+        '''Issue: the group_options object that populates manage_plant add to
+        group options only expired when a Group was saved or deleted. If plants
+        were added or removed from the group (saves plant entry, but not group)
+        the cached object would contain an outdated number of plants in group.
+
+        The group_options cache is now cleared by add/remove group endpoints.
+        '''
+
+        # Create group, plant that is in group, plant that is not in group
+        group = Group.objects.create(uuid=uuid4())
+        plant1 = Plant.objects.create(uuid=uuid4(), group=group)
+        plant2 = Plant.objects.create(uuid=uuid4())
+
+        # Confirm group option in manage_plant state says 1 plant in group
+        response = self.client.get(f'/manage/{plant1.uuid}')
+        self.assertEqual(response.context['state']['groups'][0]['plants'], 1)
+
+        # Add plant2 to the group
+        JSONClient().post(
+            '/add_plant_to_group',
+            {'plant_id': plant2.uuid, 'group_id': group.uuid}
+        )
+
+        # Confirm group option in manage_plant state now says 2 plants in group
+        response = self.client.get(f'/manage/{plant1.uuid}')
+        self.assertEqual(response.context['state']['groups'][0]['plants'], 2)
+
+        # Remove plant2 from the group
+        JSONClient().post('/remove_plant_from_group', {'plant_id': plant2.uuid})
+
+        # Confirm group option in manage_plant state now says 1 plant in group
+        response = self.client.get(f'/manage/{plant1.uuid}')
+        self.assertEqual(response.context['state']['groups'][0]['plants'], 1)
+
+        # Add plant2 to group using the /bulk_add_plants_to_group endpoint
+        JSONClient().post(
+            '/bulk_add_plants_to_group',
+            {'group_id': group.uuid, 'plants': [plant2.uuid]}
+        )
+
+        # Confirm group option in manage_plant state now says 2 plants in group
+        response = self.client.get(f'/manage/{plant1.uuid}')
+        self.assertEqual(response.context['state']['groups'][0]['plants'], 2)
+
+        # Remove plant2 from group using the /bulk_remove_plants_from_group endpoint
+        JSONClient().post(
+            '/bulk_remove_plants_from_group',
+            {'group_id': group.uuid, 'plants': [plant2.uuid]}
+        )
+
+        # Confirm group option in manage_plant state now says 1 plant in group
+        response = self.client.get(f'/manage/{plant1.uuid}')
+        self.assertEqual(response.context['state']['groups'][0]['plants'], 1)
+
 
 class ViewDecoratorRegressionTests(TestCase):
     def setUp(self):

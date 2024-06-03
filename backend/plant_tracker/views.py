@@ -572,6 +572,10 @@ def add_plant_to_group(plant, group, **kwargs):
     '''
     plant.group = group
     plant.save()
+
+    # Clear cached group_options (number of plants in group changed)
+    cache.delete('group_options')
+
     return JsonResponse(
         {
             "action": "add_plant_to_group",
@@ -591,6 +595,10 @@ def remove_plant_from_group(plant, **kwargs):
     '''
     plant.group = None
     plant.save()
+
+    # Clear cached group_options (number of plants in group changed)
+    cache.delete('group_options')
+
     return JsonResponse(
         {"action": "remove_plant_from_group", "plant": plant.uuid},
         status=200
@@ -613,6 +621,10 @@ def bulk_add_plants_to_group(group, data):
             added.append(plant.get_details())
         else:
             failed.append(plant_id)
+
+    # Clear cached group_options (number of plants in group changed)
+    cache.delete('group_options')
+
     return JsonResponse({"added": added, "failed": failed}, status=200)
 
 
@@ -632,6 +644,10 @@ def bulk_remove_plants_from_group(data, **kwargs):
             added.append(plant_id)
         else:
             failed.append(plant_id)
+
+    # Clear cached group_options (number of plants in group changed)
+    cache.delete('group_options')
+
     return JsonResponse({"removed": added, "failed": failed}, status=200)
 
 
