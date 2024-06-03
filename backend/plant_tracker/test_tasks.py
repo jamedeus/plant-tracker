@@ -762,3 +762,55 @@ class HookTests(TestCase):
             cache.get(f'{self.uuid}_state')['photo_urls'],
             []
         )
+
+    def test_plant_options_list_updates_when_plant_created_modified_or_deleted(self):
+        # Confirm no cached plant_options list
+        self.assertIsNone(cache.get('plant_options'))
+
+        # Create Plant model entry
+        plant = Plant.objects.create(uuid=uuid4())
+
+        # Confirm plant_options was generated and cached
+        self.assertIsNotNone(cache.get('plant_options'))
+
+        # Clear cache, change plant details
+        cache.delete('plant_options')
+        plant.name = 'New Plant'
+        plant.species = 'Cilantro'
+        plant.save()
+
+        # Confirm plant_options was generated and cached
+        self.assertIsNotNone(cache.get('plant_options'))
+
+        # Delete cache, delete plant model entry
+        cache.delete('plant_options')
+        plant.delete()
+
+        # Confirm plant_options was generated and cached
+        self.assertIsNotNone(cache.get('plant_options'))
+
+    def test_group_options_list_updates_when_group_created_modified_or_deleted(self):
+        # Confirm no cached group_options list
+        self.assertIsNone(cache.get('group_options'))
+
+        # Create Group model entry
+        group = Group.objects.create(uuid=uuid4())
+
+        # Confirm group_options was generated and cached
+        self.assertIsNotNone(cache.get('group_options'))
+
+        # Clear cache, change group details
+        cache.delete('group_options')
+        group.name = 'New Group'
+        group.location = 'Roof'
+        group.save()
+
+        # Confirm group_options was generated and cached
+        self.assertIsNotNone(cache.get('group_options'))
+
+        # Delete cache, delete group model entry
+        cache.delete('group_options')
+        group.delete()
+
+        # Confirm group_options was generated and cached
+        self.assertIsNotNone(cache.get('group_options'))

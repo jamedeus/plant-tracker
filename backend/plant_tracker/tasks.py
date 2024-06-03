@@ -25,7 +25,9 @@ from .models import (
     FertilizeEvent,
     PruneEvent,
     RepotEvent,
-    NoteEvent
+    NoteEvent,
+    get_plant_options,
+    get_group_options
 )
 
 
@@ -197,6 +199,54 @@ def update_cached_manage_plant_state_hook(instance, **kwargs):
         schedule_cached_manage_plant_state_update(instance.uuid)
     else:
         schedule_cached_manage_plant_state_update(instance.plant.uuid)
+
+
+@shared_task()
+def update_cached_plant_options():
+    '''Builds and caches plant options for manage_group add plants modal'''
+    get_plant_options()
+    print('Rebuilt plant_options (manage_group add plants modal)')
+
+
+def schedule_cached_plant_options_update():
+    '''Clears cached plant_options immediately and schedules task to update it
+    in 30 seconds (timer resets if called again within 30 seconds)'''
+    schedule_cached_state_update(
+        cache_name='plant_options',
+        callback_task=update_cached_plant_options,
+        delay=30
+    )
+
+
+@receiver(post_save, sender=Plant)
+@receiver(post_delete, sender=Plant)
+def update_cached_plant_options_hook(**kwargs):
+    '''Schedules task to update cached plant_options when Plant is saved/deleted'''
+    schedule_cached_plant_options_update()
+
+
+@shared_task()
+def update_cached_group_options():
+    '''Builds and caches group options for manage_plant add group modal'''
+    get_group_options()
+    print('Rebuilt group_options (manage_plant add group modal)')
+
+
+def schedule_cached_group_options_update():
+    '''Clears cached group_options immediately and schedules task to update it
+    in 30 seconds (timer resets if called again within 30 seconds)'''
+    schedule_cached_state_update(
+        cache_name='group_options',
+        callback_task=update_cached_group_options,
+        delay=30
+    )
+
+
+@receiver(post_save, sender=Group)
+@receiver(post_delete, sender=Group)
+def update_cached_group_options_hook(**kwargs):
+    '''Schedules task to update cached group_options when Group is saved/deleted'''
+    schedule_cached_group_options_update()
 
 
 @shared_task()

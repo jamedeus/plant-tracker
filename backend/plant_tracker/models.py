@@ -150,11 +150,12 @@ class Group(models.Model):
 @receiver(post_save, sender=Group)
 @receiver(post_delete, sender=Group)
 def clear_cached_group_lists(**kwargs):
-    '''Clear cached unnamed_groups and group_options lists when a Group is
-    saved or deleted (will be generated and cached next time needed)
+    '''Clear cached unnamed_groups list when a Group is saved or deleted (will
+    be generated and cached next time needed).
+
+    The group_options list is updated automatically by hook in tasks.py.
     '''
     cache.delete('unnamed_groups')
-    cache.delete('group_options')
 
 
 class Plant(models.Model):
@@ -346,10 +347,11 @@ class Plant(models.Model):
 @receiver(post_save, sender=Plant)
 @receiver(post_delete, sender=Plant)
 def clear_cached_plant_lists(**kwargs):
-    '''Clear cached plant_options, unnamed_plant and species_options lists when
-    a Plant is saved or deleted (will be generated and cached next time needed)
+    '''Clear cached unnamed_plant and species_options lists when a Plant is
+    saved or deleted (will be generated and cached next time needed)
+
+    The plant_options list is updated automatically by hook in tasks.py.
     '''
-    cache.delete('plant_options')
     cache.delete('unnamed_plants')
     cache.delete('species_options')
 

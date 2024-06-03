@@ -435,9 +435,6 @@ class CachedStateRegressionTests(TestCase):
             plant=plant
         )
 
-        # Confirm plant_options cache was deleted
-        self.assertIsNone(cache.get('plant_options'))
-
         # Confirm manage_group state now contains photo2 thumbnail (most-recent)
         response = self.client.get(f'/manage/{group.uuid}')
         self.assertEqual(
@@ -445,17 +442,11 @@ class CachedStateRegressionTests(TestCase):
             photo2.get_thumbnail_url()
         )
 
-        # Confirm plant_options object is cached again
-        self.assertIsNotNone(cache.get('plant_options'))
-
         # Delete second photo
         JSONClient().post(
             '/delete_plant_photos',
             {'plant_id': str(plant.uuid), 'delete_photos': [photo2.pk]}
         )
-
-        # Confirm plant_options cache was deleted when photo was deleted
-        self.assertIsNone(cache.get('plant_options'))
 
         # Confirm manage_group state reverted to photo1 thumbnail
         response = self.client.get(f'/manage/{group.uuid}')
@@ -477,6 +468,8 @@ class CachedStateRegressionTests(TestCase):
         group = Group.objects.create(uuid=uuid4())
         plant1 = Plant.objects.create(uuid=uuid4(), group=group)
         plant2 = Plant.objects.create(uuid=uuid4())
+        # Trigger group_options cache update (normally called from endpoint)
+        group.save()
 
         # Confirm group option in manage_plant state says 1 plant in group
         response = self.client.get(f'/manage/{plant1.uuid}')
