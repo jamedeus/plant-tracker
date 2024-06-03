@@ -12,7 +12,16 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 from generate_qr_code_grid import generate_layout
-from .models import Group, Plant, RepotEvent, Photo, NoteEvent
+from .models import (
+    Group,
+    Plant,
+    RepotEvent,
+    Photo,
+    NoteEvent,
+    get_plant_options,
+    get_plant_species_options,
+    get_group_options
+)
 from .view_decorators import (
     events_map,
     get_plant_by_uuid,
@@ -26,31 +35,12 @@ from .view_decorators import (
     get_event_type_from_post_body,
     clean_payload_data
 )
-
-
-def get_plant_options():
-    '''Returns a list of dicts with attributes of all existing plants
-    List is cached for up to 10 minutes, or until Plant model changed
-    Used to populate options in add plants modal on manage_group page
-    '''
-    plant_options = cache.get('plant_options')
-    if not plant_options:
-        plant_options = [plant.get_details() for plant in Plant.objects.all()]
-        cache.set('plant_options', plant_options, 600)
-    return plant_options
-
-
-def get_plant_species_options():
-    '''Returns a list of species for every Plant in database with no duplicates
-    List is cached for up to 10 minutes, or until Plant model changed
-    Used to populate species suggestions on plant registration form
-    '''
-    species_options = cache.get('species_options')
-    if not species_options:
-        species = Plant.objects.all().values_list('species', flat=True)
-        species_options = list(set(i for i in species if i is not None))
-        cache.set('species_options', species_options, 600)
-    return species_options
+from .tasks import (
+    build_overview_state,
+    schedule_cached_overview_state_update,
+    build_manage_plant_state,
+    schedule_cached_group_options_update
+)
 
 
 @ensure_csrf_cookie
@@ -102,17 +92,12 @@ def get_qr_codes(data):
 def overview(request):
     '''Renders the overview page (shows existing plants/groups, or setup if none)'''
 
-    # Create state object parsed by react app
-    state = {
-        'plants': [],
-        'groups': []
-    }
+    # Load state object parsed by react app from cache
+    state = cache.get('overview_state')
 
-    for plant in Plant.objects.all():
-        state['plants'].append(plant.get_details())
-
-    for group in Group.objects.all():
-        state['groups'].append(group.get_details())
+    # Build state if not found in cache
+    if state is None:
+        state = build_overview_state()
 
     return render_react_app(
         request,
@@ -156,40 +141,26 @@ def render_manage_plant_page(request, plant):
     Called by /manage endpoint if UUID is found in database plant table
     '''
 
-    # Create state object parsed by react app
-    state = {
-        'plant': plant.get_details(),
-        'groups': [group.get_details() for group in Group.objects.all()],
-        'species_options': get_plant_species_options(),
-        'photo_urls': plant.get_photo_urls()
-    }
+    # Load state object parsed by react app from cache
+    state = cache.get(f'{plant.uuid}_state')
 
-    # Replace name key (get_details returns display_name) with actual name
-    state['plant']['name'] = plant.name
-    state['plant']['display_name'] = plant.get_display_name()
+    # Build state if not found, cache for up to 24 hours
+    if state is None:
+        state = build_manage_plant_state(plant.uuid)
 
-    # Add all water and fertilize timestamps
-    state['plant']['events'] = {
-        'water': plant.get_water_timestamps(),
-        'fertilize': plant.get_fertilize_timestamps(),
-        'prune': plant.get_prune_timestamps(),
-        'repot': plant.get_repot_timestamps()
-    }
+    # Overwrite cached display_name if plant has no name (sequential names like)
+    # "Unnamed plant 3" may be outdated if other unnamed plants were named)
+    if not plant.name:
+        state['plant']['display_name'] = plant.get_display_name()
 
-    # Add timestamps and text of all notes
-    state['notes'] = [
-        {'timestamp': note.timestamp.isoformat(), 'text': note.text}
-        for note in plant.noteevent_set.all()
-    ]
-
-    # Add group details if plant is in a group
+    # Overwrite cached group name if plant is in a group (may be outdated if
+    # group was renamed since cache saved)
     if plant.group:
-        state['plant']['group'] = {
-            'name': plant.group.get_display_name(),
-            'uuid': str(plant.group.uuid)
-        }
-    else:
-        state['plant']['group'] = None
+        state['plant']['group']['name'] = plant.group.get_display_name()
+
+    # Add species and group options (cached separately)
+    state['groups'] = get_group_options()
+    state['species_options'] = get_plant_species_options()
 
     return render_react_app(
         request,
@@ -206,13 +177,7 @@ def render_manage_group_page(request, group):
 
     # Create state object parsed by react app
     state = {
-        'group': {
-            'uuid': str(group.uuid),
-            'name': group.name,
-            'display_name': group.get_display_name(),
-            'location': group.location,
-            'description': group.description
-        },
+        'group': group.get_details(),
         'details': group.get_plant_details(),
         'options': get_plant_options()
     }
@@ -240,8 +205,6 @@ def render_confirm_new_qr_code_page(request, uuid, old_uuid):
             'plant': instance.get_details(),
             'new_uuid': uuid
         }
-        state['plant']['name'] = instance.name
-        state['plant']['display_name'] = instance.get_display_name()
 
         return render_react_app(
             request,
@@ -372,7 +335,6 @@ def edit_plant_details(plant, data):
 
     # Return modified payload with new display_name
     del data["plant_id"]
-    data["pot_size"] = int(data["pot_size"])
     data["display_name"] = plant.get_display_name()
     return JsonResponse(data, status=200)
 
@@ -428,6 +390,10 @@ def add_plant_event(plant, timestamp, event_type, **kwargs):
     '''
     try:
         events_map[event_type].objects.create(plant=plant, timestamp=timestamp)
+
+        # Create task to update cached overview state (last_watered outdated)
+        schedule_cached_overview_state_update()
+
         return JsonResponse(
             {"action": event_type, "plant": plant.uuid},
             status=200
@@ -458,6 +424,10 @@ def bulk_add_plant_events(timestamp, event_type, data):
                 failed.append(plant_id)
         else:
             failed.append(plant_id)
+
+    # Create task to update cached overview state (last_watered outdated)
+    schedule_cached_overview_state_update()
+
     return JsonResponse(
         {"action": event_type, "plants": added, "failed": failed},
         status=200
@@ -475,6 +445,10 @@ def delete_plant_event(plant, timestamp, event_type, **kwargs):
     try:
         event = events_map[event_type].objects.get(plant=plant, timestamp=timestamp)
         event.delete()
+
+        # Create task to update cached overview state (last_watered outdated)
+        schedule_cached_overview_state_update()
+
         return JsonResponse({"deleted": event_type, "plant": plant.uuid}, status=200)
     except events_map[event_type].DoesNotExist:
         return JsonResponse({"error": "event not found"}, status=404)
@@ -501,6 +475,9 @@ def bulk_delete_plant_events(plant, data):
             failed.append(event)
         except events_map[event["type"]].DoesNotExist:
             failed.append(event)
+
+    # Create task to update cached overview state (last_watered outdated)
+    schedule_cached_overview_state_update()
 
     return JsonResponse({"deleted": deleted, "failed": failed}, status=200)
 
@@ -569,6 +546,10 @@ def add_plant_to_group(plant, group, **kwargs):
     '''
     plant.group = group
     plant.save()
+
+    # Update cached group_options (number of plants in group changed)
+    schedule_cached_group_options_update()
+
     return JsonResponse(
         {
             "action": "add_plant_to_group",
@@ -588,6 +569,10 @@ def remove_plant_from_group(plant, **kwargs):
     '''
     plant.group = None
     plant.save()
+
+    # Update cached group_options (number of plants in group changed)
+    schedule_cached_group_options_update()
+
     return JsonResponse(
         {"action": "remove_plant_from_group", "plant": plant.uuid},
         status=200
@@ -610,6 +595,10 @@ def bulk_add_plants_to_group(group, data):
             added.append(plant.get_details())
         else:
             failed.append(plant_id)
+
+    # Update cached group_options (number of plants in group changed)
+    schedule_cached_group_options_update()
+
     return JsonResponse({"added": added, "failed": failed}, status=200)
 
 
@@ -629,6 +618,10 @@ def bulk_remove_plants_from_group(data, **kwargs):
             added.append(plant_id)
         else:
             failed.append(plant_id)
+
+    # Update cached group_options (number of plants in group changed)
+    schedule_cached_group_options_update()
+
     return JsonResponse({"removed": added, "failed": failed}, status=200)
 
 
@@ -716,6 +709,7 @@ def delete_plant_photos(plant, data):
             deleted.append(primary_key)
         except Photo.DoesNotExist:
             failed.append(primary_key)
+
     return JsonResponse({"deleted": deleted, "failed": failed}, status=200)
 
 
@@ -728,7 +722,8 @@ def set_plant_default_photo(plant, data):
     try:
         photo = Photo.objects.get(plant=plant, pk=data["photo_key"])
         plant.default_photo = photo
+        plant.update_thumbnail_url()
         plant.save()
     except Photo.DoesNotExist:
         return JsonResponse({"error": "unable to find photo"}, status=404)
-    return JsonResponse({"default_photo": plant.get_thumbnail()}, status=200)
+    return JsonResponse({"default_photo": plant.thumbnail_url}, status=200)

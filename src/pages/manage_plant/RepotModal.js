@@ -28,8 +28,8 @@ const RepotModal = ({ plantID, currentPotSize, handleRepot }) => {
 
     // Default to next size if currentPotSize set, otherwise default to 2in
     const [selected, setSelected] = useState((() => {
-        if (currentPotSize && potSizes.includes(currentPotSize)) {
-            return potSizes[potSizes.indexOf(currentPotSize) + 1];
+        if (currentPotSize && potSizes.includes(parseInt(currentPotSize))) {
+            return potSizes[potSizes.indexOf(parseInt(currentPotSize)) + 1];
         } else {
             return 2;
         }
@@ -138,7 +138,10 @@ const RepotModal = ({ plantID, currentPotSize, handleRepot }) => {
 
 RepotModal.propTypes = {
     plantID: PropTypes.string,
-    currentPotSize: PropTypes.number,
+    currentPotSize: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number
+    ]),
     handleRepot: PropTypes.func
 };
 

@@ -49,6 +49,7 @@ fail-under=9
 ignore=CVS,
        test_models.py,
        test_views.py,
+       test_tasks.py,
        test_regressions.py,
        unit_test_helpers.py,
        apps.py,

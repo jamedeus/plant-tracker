@@ -17,7 +17,7 @@ exports[`App matches snapshot 1`] = `
     <div
       id="groups"
     >
-      [{"name":"Test group","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be14","location":"Top shelf","description":"Medium brightness grow light","plants":3},{"name":"Testing","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be61","location":"Middle shelf","description":"Brightest grow light","plants":5}]
+      [{"name":"Test group","display_name":"Test group","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be14","location":"Top shelf","description":"Medium brightness grow light","plants":3},{"name":"Testing","display_name":"Testing","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be61","location":"Middle shelf","description":"Brightest grow light","plants":5}]
     </div>
     <div
       id="species_options"
@@ -1293,6 +1293,7 @@ exports[`App matches snapshot 1`] = `
                     <img
                       class="rounded-lg m-2 object-cover w-[4.9rem]
                                     h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                      loading="lazy"
                       src="/media/thumbnails/photo3_thumb.jpg"
                     />
                   </div>
@@ -1337,6 +1338,7 @@ exports[`App matches snapshot 1`] = `
                     <img
                       class="rounded-lg m-2 object-cover w-[4.9rem]
                                     h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                      loading="lazy"
                       src="/media/thumbnails/photo2_thumb.jpg"
                     />
                   </div>
@@ -1381,6 +1383,7 @@ exports[`App matches snapshot 1`] = `
                     <img
                       class="rounded-lg m-2 object-cover w-[4.9rem]
                                     h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                      loading="lazy"
                       src="/media/thumbnails/photo1_thumb.jpg"
                     />
                   </div>
@@ -2430,6 +2433,7 @@ exports[`App matches snapshot 1`] = `
               >
                 <img
                   class="w-full rounded-xl object-scale-down my-auto"
+                  loading="lazy"
                   src="/media/thumbnails/photo1_thumb.jpg"
                 />
                 <div
@@ -2492,6 +2496,7 @@ exports[`App matches snapshot 1`] = `
               >
                 <img
                   class="w-full rounded-xl object-scale-down my-auto"
+                  loading="lazy"
                   src="/media/thumbnails/photo2_thumb.jpg"
                 />
                 <div
@@ -2554,6 +2559,7 @@ exports[`App matches snapshot 1`] = `
               >
                 <img
                   class="w-full rounded-xl object-scale-down my-auto"
+                  loading="lazy"
                   src="/media/thumbnails/photo3_thumb.jpg"
                 />
                 <div
@@ -2671,6 +2677,7 @@ exports[`App matches snapshot 1`] = `
                     </h1>
                     <img
                       class="rounded-xl overflow-hidden mx-auto mb-auto"
+                      loading="lazy"
                       src="/media/thumbnails/photo1_thumb.jpg"
                     />
                     <div
@@ -2745,6 +2752,7 @@ exports[`App matches snapshot 1`] = `
                     </h1>
                     <img
                       class="rounded-xl overflow-hidden mx-auto mb-auto"
+                      loading="lazy"
                       src="/media/thumbnails/photo2_thumb.jpg"
                     />
                     <div
@@ -2819,6 +2827,7 @@ exports[`App matches snapshot 1`] = `
                     </h1>
                     <img
                       class="rounded-xl overflow-hidden mx-auto mb-auto"
+                      loading="lazy"
                       src="/media/thumbnails/photo3_thumb.jpg"
                     />
                     <div
@@ -4510,6 +4519,7 @@ exports[`App matches snapshot 1`] = `
                   <img
                     class="rounded-lg m-2 object-cover w-[4.9rem]
                                     h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    loading="lazy"
                     src="/media/thumbnails/photo3_thumb.jpg"
                   />
                 </div>
@@ -4554,6 +4564,7 @@ exports[`App matches snapshot 1`] = `
                   <img
                     class="rounded-lg m-2 object-cover w-[4.9rem]
                                     h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    loading="lazy"
                     src="/media/thumbnails/photo2_thumb.jpg"
                   />
                 </div>
@@ -4598,6 +4609,7 @@ exports[`App matches snapshot 1`] = `
                   <img
                     class="rounded-lg m-2 object-cover w-[4.9rem]
                                     h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    loading="lazy"
                     src="/media/thumbnails/photo1_thumb.jpg"
                   />
                 </div>
@@ -5647,6 +5659,7 @@ exports[`App matches snapshot 1`] = `
             >
               <img
                 class="w-full rounded-xl object-scale-down my-auto"
+                loading="lazy"
                 src="/media/thumbnails/photo1_thumb.jpg"
               />
               <div
@@ -5709,6 +5722,7 @@ exports[`App matches snapshot 1`] = `
             >
               <img
                 class="w-full rounded-xl object-scale-down my-auto"
+                loading="lazy"
                 src="/media/thumbnails/photo2_thumb.jpg"
               />
               <div
@@ -5771,6 +5785,7 @@ exports[`App matches snapshot 1`] = `
             >
               <img
                 class="w-full rounded-xl object-scale-down my-auto"
+                loading="lazy"
                 src="/media/thumbnails/photo3_thumb.jpg"
               />
               <div
@@ -5888,6 +5903,7 @@ exports[`App matches snapshot 1`] = `
                   </h1>
                   <img
                     class="rounded-xl overflow-hidden mx-auto mb-auto"
+                    loading="lazy"
                     src="/media/thumbnails/photo1_thumb.jpg"
                   />
                   <div
@@ -5962,6 +5978,7 @@ exports[`App matches snapshot 1`] = `
                   </h1>
                   <img
                     class="rounded-xl overflow-hidden mx-auto mb-auto"
+                    loading="lazy"
                     src="/media/thumbnails/photo2_thumb.jpg"
                   />
                   <div
@@ -6036,6 +6053,7 @@ exports[`App matches snapshot 1`] = `
                   </h1>
                   <img
                     class="rounded-xl overflow-hidden mx-auto mb-auto"
+                    loading="lazy"
                     src="/media/thumbnails/photo3_thumb.jpg"
                   />
                   <div

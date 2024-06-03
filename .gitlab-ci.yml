@@ -20,6 +20,7 @@ test_backend:
     - pipenv install --dev
   script:
     - cd backend/
+    - export DJANGO_SETTINGS_MODULE=backend.test_settings
     - pipenv run coverage run --source='.' --omit='*manage.py,*wsgi.py,*asgi.py,*/test_*.py,*unit_test_helpers.py,*/migrations/*.py' manage.py test
     - pipenv run coverage report -m --precision=1
   coverage: '/TOTAL.*\s+(\d+\.\d+\%)$/'

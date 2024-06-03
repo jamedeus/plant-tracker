@@ -62,6 +62,7 @@ const DefaultPhotoModal = ({ plantID, photoUrls }) => {
                 title={timestampToReadable(timestamp)}
             >
                 <img
+                    loading="lazy"
                     src={photoUrl}
                     className="w-full rounded-xl object-scale-down my-auto"
                 />

@@ -1,14 +1,14 @@
-import os
 import shutil
 from uuid import uuid4
 from types import NoneType
 from datetime import datetime
 
+from django.conf import settings
+from django.test import TestCase
 from django.utils import timezone
 from django.core.cache import cache
 from django.test.client import MULTIPART_CONTENT
 from django.core.exceptions import ValidationError
-from django.test import TestCase, override_settings
 
 from .models import (
     Group,
@@ -23,22 +23,25 @@ from .view_decorators import (
     get_timestamp_from_post_body,
     get_event_type_from_post_body
 )
-from .unit_test_helpers import JSONClient, create_mock_photo
+from .unit_test_helpers import (
+    JSONClient,
+    create_mock_photo,
+    schedule_cached_state_update_patch
+)
 
-# Temp directory for mock photo uploads, deleted after tests
-TEST_DIR = '/tmp/plant_tracker_unit_test'
 
-
-# Create test directory or mock photo uploads
 def setUpModule():
-    if not os.path.isdir(os.path.join(TEST_DIR, 'data', 'images')):
-        os.makedirs(os.path.join(TEST_DIR, 'data', 'images'))
+    # Prevent creating celery tasks to rebuild cached states
+    schedule_cached_state_update_patch.start()
 
 
-# Delete mock photo directory after tests
 def tearDownModule():
+    # Delete mock photo directory after tests
     print("\nDeleting mock photos...\n")
-    shutil.rmtree(TEST_DIR, ignore_errors=True)
+    shutil.rmtree(settings.TEST_DIR, ignore_errors=True)
+
+    # Re-enable cached state celery tasks
+    schedule_cached_state_update_patch.stop()
 
 
 class ModelRegressionTests(TestCase):
@@ -64,7 +67,6 @@ class ModelRegressionTests(TestCase):
         self.assertEqual(len(Plant.objects.all()), 1)
         self.assertEqual(len(Group.objects.all()), 1)
 
-    @override_settings(MEDIA_ROOT=os.path.join(TEST_DIR, 'data', 'images'))
     def test_photos_with_no_exif_data_should_set_created_time_to_upload_time(self):
         '''Issue: The created field is populated in the save method using a
         timestamp parsed from exif data, or with the current time if the exif
@@ -168,7 +170,6 @@ class ViewRegressionTests(TestCase):
         )
         self.assertEqual(len(plant.repotevent_set.all()), 1)
 
-    @override_settings(MEDIA_ROOT=os.path.join(TEST_DIR, 'data', 'images'))
     def test_delete_plant_photos_fails_due_to_duplicate_creation_times(self):
         '''Issue: delete_plant_photos looked up photos in the database using a
         plant UUID and creation timestamp. If multiple photos of the same plant
@@ -200,7 +201,6 @@ class ViewRegressionTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(len(Photo.objects.all()), 0)
 
-    @override_settings(MEDIA_ROOT=os.path.join(TEST_DIR, 'data', 'images'))
     def test_add_plant_photos_returns_timestamp_with_no_timezone(self):
         '''Issue: add_plant_photos returned a strftime string with no timezone,
         which is not the same format as manage_plant state. This could cause
@@ -280,6 +280,237 @@ class ViewRegressionTests(TestCase):
 
         # Confirm cache was cleared
         self.assertIsNone(cache.get('old_uuid'))
+
+    def test_edit_plant_details_crashes_when_pot_size_is_null(self):
+        '''Issue: The /edit_plant endpoint returns a modified version of the
+        payload it received, which previously cast the pot_size param to int
+        with no error handling. If the pot_size field was not filled in this
+        resulted in a TypeError when None was passed to int().
+
+        The frontend now handles both string and integer values for pot_size,
+        the backend returns pot_size unchanged.
+        '''
+
+        # Create test plant
+        plant = Plant.objects.create(uuid=uuid4())
+
+        # Post details with blank pot_size to /edit_plant endpoint
+        response = JSONClient().post('/edit_plant', {
+            'plant_id': plant.uuid,
+            'name': 'test plant',
+            'species': 'Giant Sequoia',
+            'description': '',
+            'pot_size': ''
+        })
+
+        # Post details with string pot_size to /edit_plant endpoint
+        response = JSONClient().post('/edit_plant', {
+            'plant_id': plant.uuid,
+            'name': 'test plant',
+            'species': 'Giant Sequoia',
+            'description': '',
+            'pot_size': '36'
+        })
+
+        # Confirm request succeeded, response did not change pot_size
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['pot_size'], '36')
+
+
+class CachedStateRegressionTests(TestCase):
+    def setUp(self):
+        # Allow creating celery tasks (and prevent hook called when saving a
+        # single model from clearing all cached states)
+        schedule_cached_state_update_patch.stop()
+
+    def tearDown(self):
+        # Prevent creating celery tasks in other test suites
+        schedule_cached_state_update_patch.start()
+
+    def test_display_name_of_unnamed_plants_update_correctly(self):
+        '''Issue: cached manage_plant state is not updated until plant is saved
+        in database. If plant has no name or species its display_name will have
+        a sequential number (eg "Unnamed plant 3") which will change if another
+        unnamed plant with lower database key is given a name (eg should become
+        "Unnamed plant 2"). Since editing a different plant does not update the
+        cached states of others this could result in an outdated display_name.
+
+        The /manage endpoint now overwrites cached display_name with current
+        value if the plant has no name.
+        '''
+
+        # Create 2 unnamed plants
+        plant1 = Plant.objects.create(uuid=uuid4(), name=None)
+        plant2 = Plant.objects.create(uuid=uuid4(), name=None)
+
+        # Request manage_plant page for second plant
+        response = self.client.get(f'/manage/{plant2.uuid}')
+        state = response.context['state']
+
+        # Confirm display_name in context is "Unnamed plant 2"
+        self.assertEqual(state['plant']['display_name'], 'Unnamed plant 2')
+
+        # Give first plant a name
+        plant1.name = 'My plant'
+        plant1.save()
+
+        # Request manage_plant for second plant again
+        response = self.client.get(f'/manage/{plant2.uuid}')
+
+        # Confirm display_name in context updated to "Unnamed plant 1"
+        self.assertEqual(
+            response.context['state']['plant']['display_name'],
+            'Unnamed plant 1'
+        )
+
+    def test_group_name_on_manage_plant_page_updates_correctly(self):
+        '''Issue: cached manage_plant state contained display_name of plant's
+        group and did not update if group display_name changed (group renamed,
+        or unnamed group index changed due to other unnamed group being named).
+        This resulted in an outdated group name being shown in the plant
+        details dropdown.
+
+        The /manage endpoint now overwrites cached group name with current name.
+        '''
+
+        # Create unnamed group containing 1 plant
+        group = Group.objects.create(uuid=uuid4())
+        plant = Plant.objects.create(uuid=uuid4(), group=group)
+
+        # Request manage_plant page, confirm group name is "Unnamed group 1"
+        response = self.client.get(f'/manage/{plant.uuid}')
+        state = response.context['state']
+        self.assertEqual(state['plant']['group']['name'], 'Unnamed group 1')
+
+        # Give group a name
+        group.name = 'Living room'
+        group.save()
+
+        # Request manage_plant page again, confirm group name was updated
+        response = self.client.get(f'/manage/{plant.uuid}')
+        state = response.context['state']
+        self.assertEqual(state['plant']['group']['name'], 'Living room')
+
+    def test_plant_options_cache_contains_outdated_plant_thumbnail_url(self):
+        '''Issue: the plant_options object that populates manage_group add
+        plants modal options only expired when a Plant was saved or deleted. If
+        the defualt_photo was set the Plant was saved and the cache updated,
+        but if there was no default_photo and a newer photo was uploaded it did
+        not update (only the Photo model was saved). This resulted in outdated
+        (possibly no longer existing) thumbnails in the add plant options.
+
+        Saving or deleting a Photo now calls Plant.update_thumbnail_url, which
+        updates Plant.thumbnail_url and saves (updates cached state).
+        '''
+
+        # Create test group, create test plant (not in group) with 1 photo
+        group = Group.objects.create(uuid=uuid4())
+        plant = Plant.objects.create(uuid=uuid4())
+        photo1 = Photo.objects.create(
+            photo=create_mock_photo(
+                creation_time='2024:02:21 10:52:03',
+                name='photo1.jpg'
+            ),
+            plant=plant
+        )
+
+        # Request manage_group page
+        response = self.client.get(f'/manage/{group.uuid}')
+
+        # Confirm options state contains photo1 thumbnail (most-recent)
+        self.assertEqual(
+            response.context['state']['options'][0]['thumbnail'],
+            photo1.get_thumbnail_url()
+        )
+
+        # Confirm plant_options object is cached when manage_group loaded
+        self.assertIsNotNone(cache.get('plant_options'))
+
+        # Create a second Photo with more recent timestamp
+        photo2 = Photo.objects.create(
+            photo=create_mock_photo(
+                creation_time='2024:03:22 10:52:03',
+                name='photo2.jpg'
+            ),
+            plant=plant
+        )
+
+        # Confirm manage_group state now contains photo2 thumbnail (most-recent)
+        response = self.client.get(f'/manage/{group.uuid}')
+        self.assertEqual(
+            response.context['state']['options'][0]['thumbnail'],
+            photo2.get_thumbnail_url()
+        )
+
+        # Delete second photo
+        JSONClient().post(
+            '/delete_plant_photos',
+            {'plant_id': str(plant.uuid), 'delete_photos': [photo2.pk]}
+        )
+
+        # Confirm manage_group state reverted to photo1 thumbnail
+        response = self.client.get(f'/manage/{group.uuid}')
+        self.assertEqual(
+            response.context['state']['options'][0]['thumbnail'],
+            photo1.get_thumbnail_url()
+        )
+
+    def test_group_options_cache_contains_outdated_number_of_plants_in_group(self):
+        '''Issue: the group_options object that populates manage_plant add to
+        group options only expired when a Group was saved or deleted. If plants
+        were added or removed from the group (saves plant entry, but not group)
+        the cached object would contain an outdated number of plants in group.
+
+        The group_options cache is now cleared by add/remove group endpoints.
+        '''
+
+        # Create group, plant that is in group, plant that is not in group
+        group = Group.objects.create(uuid=uuid4())
+        plant1 = Plant.objects.create(uuid=uuid4(), group=group)
+        plant2 = Plant.objects.create(uuid=uuid4())
+        # Trigger group_options cache update (normally called from endpoint)
+        group.save()
+
+        # Confirm group option in manage_plant state says 1 plant in group
+        response = self.client.get(f'/manage/{plant1.uuid}')
+        self.assertEqual(response.context['state']['groups'][0]['plants'], 1)
+
+        # Add plant2 to the group
+        JSONClient().post(
+            '/add_plant_to_group',
+            {'plant_id': plant2.uuid, 'group_id': group.uuid}
+        )
+
+        # Confirm group option in manage_plant state now says 2 plants in group
+        response = self.client.get(f'/manage/{plant1.uuid}')
+        self.assertEqual(response.context['state']['groups'][0]['plants'], 2)
+
+        # Remove plant2 from the group
+        JSONClient().post('/remove_plant_from_group', {'plant_id': plant2.uuid})
+
+        # Confirm group option in manage_plant state now says 1 plant in group
+        response = self.client.get(f'/manage/{plant1.uuid}')
+        self.assertEqual(response.context['state']['groups'][0]['plants'], 1)
+
+        # Add plant2 to group using the /bulk_add_plants_to_group endpoint
+        JSONClient().post(
+            '/bulk_add_plants_to_group',
+            {'group_id': group.uuid, 'plants': [plant2.uuid]}
+        )
+
+        # Confirm group option in manage_plant state now says 2 plants in group
+        response = self.client.get(f'/manage/{plant1.uuid}')
+        self.assertEqual(response.context['state']['groups'][0]['plants'], 2)
+
+        # Remove plant2 from group using the /bulk_remove_plants_from_group endpoint
+        JSONClient().post(
+            '/bulk_remove_plants_from_group',
+            {'group_id': group.uuid, 'plants': [plant2.uuid]}
+        )
+
+        # Confirm group option in manage_plant state now says 1 plant in group
+        response = self.client.get(f'/manage/{plant1.uuid}')
+        self.assertEqual(response.context['state']['groups'][0]['plants'], 1)
 
 
 class ViewDecoratorRegressionTests(TestCase):

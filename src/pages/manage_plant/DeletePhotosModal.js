@@ -116,6 +116,7 @@ const DeletePhotosModal = ({ plantID, photoUrls, setPhotoUrls }) => {
                         {timestampToReadable(photo.created)}
                     </h1>
                     <img
+                        loading="lazy"
                         src={photo.thumbnail}
                         className="rounded-xl overflow-hidden mx-auto mb-auto"
                     />

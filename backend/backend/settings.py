@@ -111,10 +111,14 @@ if not os.path.isdir(os.path.join(BASE_DIR, 'data', 'images')):
 MEDIA_ROOT = os.path.join(BASE_DIR, 'data', 'images')
 MEDIA_URL = "media/"
 
-# Use local memory cache
+# Use redis cache (shared with celery)
 CACHES = {
     "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache"
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
     }
 }
 
@@ -158,3 +162,7 @@ STATIC_URL = "static/"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# Celery settings
+CELERY_BROKER_URL = "redis://localhost:6379"
+CELERY_RESULT_BACKEND = "redis://localhost:6379"

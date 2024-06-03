@@ -48,6 +48,43 @@ def get_unnamed_groups():
     return unnamed_groups
 
 
+def get_plant_options():
+    '''Returns a list of dicts with attributes of all existing plants.
+    List is cached until Plant model changes (detected by hooks in tasks.py).
+    Used to populate options in add plants modal on manage_group page.
+    '''
+    plant_options = cache.get('plant_options')
+    if not plant_options:
+        plant_options = [plant.get_details() for plant in Plant.objects.all()]
+        cache.set('plant_options', plant_options, None)
+    return plant_options
+
+
+def get_plant_species_options():
+    '''Returns a list of species for every Plant in database (no duplicates).
+    List is cached for up to 10 minutes, or until Plant model changed.
+    Used to populate species suggestions on plant registration form.
+    '''
+    species_options = cache.get('species_options')
+    if not species_options:
+        species = Plant.objects.all().values_list('species', flat=True)
+        species_options = list(set(i for i in species if i is not None))
+        cache.set('species_options', species_options, 600)
+    return species_options
+
+
+def get_group_options():
+    '''Returns a list of dicts with attributes of all existing groups.
+    List is cached until Group model changes (detected by hooks in tasks.py).
+    Used to populate options in add group modal on manage_plant page.
+    '''
+    group_options = cache.get('group_options')
+    if not group_options:
+        group_options = [group.get_details() for group in Group.objects.all()]
+        cache.set('group_options', group_options, None)
+    return group_options
+
+
 class Group(models.Model):
     '''Tracks a group containing multiple plants, created by scanning QR code
     Provides methods to water or fertilize all plants within group
@@ -95,7 +132,8 @@ class Group(models.Model):
     def get_details(self):
         '''Returns dict containing all group attributes and number of plants'''
         return {
-            'name': self.get_display_name(),
+            'name': self.name,
+            'display_name': self.get_display_name(),
             'uuid': str(self.uuid),
             'location': self.location,
             'description': self.description,
@@ -111,8 +149,12 @@ class Group(models.Model):
 
 @receiver(post_save, sender=Group)
 @receiver(post_delete, sender=Group)
-def clear_unnamed_groups_cache(**kwargs):
-    '''Clear cached unnamed_groups list when a Group is saved or deleted'''
+def clear_cached_group_lists(**kwargs):
+    '''Clear cached unnamed_groups list when a Group is saved or deleted (will
+    be generated and cached next time needed).
+
+    The group_options list is updated automatically by hook in tasks.py.
+    '''
     cache.delete('unnamed_groups')
 
 
@@ -144,6 +186,7 @@ class Plant(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, blank=True, null=True)
 
     # Optional relation to set photo used for overview page thumbnail
+    # If not set the most recent photo of this plant will be used
     # No related_name (redundant, Photo already has reverse relation)
     default_photo = models.OneToOneField(
         'Photo',
@@ -152,6 +195,10 @@ class Plant(models.Model):
         blank=True,
         related_name='+'
     )
+
+    # Store the URL of the current overview page thumbnail
+    # This is updated automatically if a new Photo is uploaded (see Photo.save)
+    thumbnail_url = models.URLField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.get_display_name()} ({self.uuid})"
@@ -187,28 +234,35 @@ class Plant(models.Model):
         '''
         if self.default_photo:
             return self.default_photo.get_thumbnail_url()
-        return self.get_most_recent_thumbnail()
-
-    def get_most_recent_thumbnail(self):
-        '''Returns thumbnail URL of most recent photo, or None if no Photos exist'''
         try:
+            # Most recent photo
             return self.photo_set.all().order_by('-created')[0].get_thumbnail_url()
         except IndexError:
             return None
+
+    def update_thumbnail_url(self):
+        '''Updates thumbnail_url field if it is outdated.
+        Called when a new Photo associated with this Plant is saved.
+        '''
+        new_thumbnail_url = self.get_thumbnail()
+        if self.thumbnail_url != new_thumbnail_url:
+            self.thumbnail_url = new_thumbnail_url
+            self.save(update_fields=['thumbnail_url'])
 
     def get_details(self):
         '''Returns dict containing all plant attributes and last_watered,
         last_fertilized timestamps. Used as state for frontend components.
         '''
         return {
-            'name': self.get_display_name(),
+            'name': self.name,
+            'display_name': self.get_display_name(),
             'uuid': str(self.uuid),
             'species': self.species,
             'description': self.description,
             'pot_size': self.pot_size,
             'last_watered': self.last_watered(),
             'last_fertilized': self.last_fertilized(),
-            'thumbnail': self.get_thumbnail()
+            'thumbnail': self.thumbnail_url
         }
 
     def last_watered(self):
@@ -292,11 +346,12 @@ class Plant(models.Model):
 
 @receiver(post_save, sender=Plant)
 @receiver(post_delete, sender=Plant)
-def clear_unnamed_plants_cache(**kwargs):
-    '''Clear cached plant_options, unnamed_plant and species_options lists when
-    a Plant is saved or deleted
+def clear_cached_plant_lists(**kwargs):
+    '''Clear cached unnamed_plant and species_options lists when a Plant is
+    saved or deleted (will be generated and cached next time needed)
+
+    The plant_options list is updated automatically by hook in tasks.py.
     '''
-    cache.delete('plant_options')
     cache.delete('unnamed_plants')
     cache.delete('species_options')
 
@@ -392,6 +447,17 @@ class Photo(models.Model):
                 self.created = django_timezone.now()
 
         super().save(*args, **kwargs)
+
+        # Update Plant's thumbnail URL if new Photo is most recent
+        self.plant.update_thumbnail_url()
+
+
+@receiver(post_delete, sender=Photo)
+def update_plant_thumbnail_when_photo_deleted(instance, **kwargs):
+    '''Updates Plant.thumbnail_url field when associated Photo is deleted (if
+    deleted photo was most recent photo the thumbnail_url will be outdated)
+    '''
+    instance.plant.update_thumbnail_url()
 
 
 class Event(models.Model):

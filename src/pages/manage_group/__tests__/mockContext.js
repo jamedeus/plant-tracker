@@ -4,12 +4,15 @@ export const mockContext = {
         "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
         "name": "Test group",
         "display_name": "Test group",
+        "display_name": "Test group",
         "location": "Middle shelf",
-        "description": null
+        "description": null,
+        "plants": 3
     },
     "details": [
         {
             "name": "Test Plant",
+            "display_name": "Test Plant",
             "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
             "species": "Calathea",
             "description": "This is a plant with a long description with",
@@ -19,7 +22,8 @@ export const mockContext = {
             "thumbnail": null
         },
         {
-            "name": "Unnamed Spider Plant",
+            "name": null,
+            "display_name": "Unnamed Spider Plant",
             "uuid": "19f65fa0-1c75-4cba-b590-0c9b5b315fcc",
             "species": "Spider Plant",
             "description": null,
@@ -30,6 +34,7 @@ export const mockContext = {
         },
         {
             "name": "Newest plant",
+            "display_name": "Newest plant",
             "uuid": "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16",
             "species": "null",
             "description": null,
@@ -43,6 +48,7 @@ export const mockContext = {
         {
             "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
             "name": "Test Plant",
+            "display_name": "Test Plant",
             "species": null,
             "description": "This plant is not in a group yet",
             "pot_size": null,
@@ -53,6 +59,7 @@ export const mockContext = {
         {
             "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be16",
             "name": "Another test plant",
+            "display_name": "Another test plant",
             "species": null,
             "description": null,
             "pot_size": 4,
@@ -63,6 +70,7 @@ export const mockContext = {
         {
             "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be69",
             "name": "Third test plant",
+            "display_name": "Third test plant",
             "species": null,
             "description": null,
             "pot_size": null,
@@ -72,7 +80,8 @@ export const mockContext = {
         },
         {
             "uuid": "19f65fa0-1c75-4cba-b590-0c9b5b315fcc",
-            "name": "Unnamed Spider Plant",
+            "name": null,
+            "display_name": "Unnamed Spider Plant",
             "species": null,
             "description": null,
             "pot_size": null,

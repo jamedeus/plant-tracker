@@ -1,9 +1,11 @@
 from io import BytesIO
+from unittest.mock import patch
 
 import piexif
 from PIL import Image
 
 from django.test import Client
+from django.core.cache import cache
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
 
@@ -44,3 +46,18 @@ def create_mock_photo(creation_time=None, name='mock_photo.jpg', timezone=None):
     )
 
     return uploaded_photo
+
+
+def clear_cache(*args, **kwargs):
+    '''Clears all entries from django cache
+    Accepts (and ignores) args/kwargs so it can be used to mock other functions
+    '''
+    cache.clear()
+
+
+# Patch function that schedules celery tasks to replace cached state objects
+# to clear cache without scheduling task (unnecessary in most unit tests)
+schedule_cached_state_update_patch = patch(
+    'plant_tracker.tasks.schedule_cached_state_update',
+    side_effect=clear_cache
+)

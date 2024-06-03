@@ -7,7 +7,7 @@ import PlantDetails from 'src/components/PlantDetails';
 import { capitalize } from 'src/util';
 import { timestampToRelativeCalendar, timestampToReadable} from 'src/timestampUtils';
 
-const PlantCard = ({ name, uuid, species, description, pot_size, last_watered, thumbnail, linkPage=true }) => {
+const PlantCard = ({ display_name, uuid, species, description, pot_size, last_watered, thumbnail, linkPage=true }) => {
     // Track details collapse open state
     const [open, setOpen] = useState(false);
 
@@ -50,7 +50,10 @@ const PlantCard = ({ name, uuid, species, description, pot_size, last_watered, t
     const Thumbnail = () => {
         return (
             <figure className="h-24 w-20 min-h-20 min-w-20">
-                <img src={thumbnail} className="w-full h-full object-cover" />
+                <img
+                    loading="lazy"
+                    src={thumbnail} className="w-full h-full object-cover"
+                />
             </figure>
         );
     };
@@ -77,7 +80,7 @@ const PlantCard = ({ name, uuid, species, description, pot_size, last_watered, t
                 return (
                     <div className="card-body text-center cursor-default">
                         <h2 className="card-title mx-auto px-8 line-clamp-1">
-                            {name}
+                            {display_name}
                         </h2>
                         <LastWatered />
                     </div>
@@ -86,7 +89,7 @@ const PlantCard = ({ name, uuid, species, description, pot_size, last_watered, t
                 return (
                     <div className="card-body my-auto text-start cursor-default">
                         <h2 className="card-title line-clamp-1 pr-8">
-                            {name}
+                            {display_name}
                         </h2>
                         <LastWatered />
                     </div>
@@ -125,7 +128,7 @@ const PlantCard = ({ name, uuid, species, description, pot_size, last_watered, t
 };
 
 PlantCard.propTypes = {
-    name: PropTypes.string,
+    display_name: PropTypes.string,
     uuid: PropTypes.string,
     species: PropTypes.string,
     description: PropTypes.string,

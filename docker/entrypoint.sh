@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Start redis-server (celery message broker)
+printf "Starting redis server...\n"
+service redis-server start
+
+# Start celery worker in background
+printf "Starting celery worker...\n"
+cd /mnt/backend || (printf "FATAL: Unable to find /mnt/backend\n" && exit)
+celery -A backend worker --uid "$(id -u celery)" &
+
 # Generate database on first run, apply migrations in new releases
 printf "Running database migrations...\n"
 python /mnt/backend/manage.py migrate
