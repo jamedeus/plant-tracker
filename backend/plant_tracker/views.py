@@ -12,7 +12,16 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.views.decorators.csrf import ensure_csrf_cookie
 
 from generate_qr_code_grid import generate_layout
-from .models import Group, Plant, RepotEvent, Photo, NoteEvent
+from .models import (
+    Group,
+    Plant,
+    RepotEvent,
+    Photo,
+    NoteEvent,
+    get_plant_options,
+    get_plant_species_options,
+    get_group_options
+)
 from .view_decorators import (
     events_map,
     get_plant_by_uuid,
@@ -31,42 +40,6 @@ from .tasks import (
     schedule_cached_overview_state_update,
     build_manage_plant_state
 )
-
-
-def get_plant_options():
-    '''Returns a list of dicts with attributes of all existing plants
-    List is cached for up to 10 minutes, or until Plant model changed
-    Used to populate options in add plants modal on manage_group page
-    '''
-    plant_options = cache.get('plant_options')
-    if not plant_options:
-        plant_options = [plant.get_details() for plant in Plant.objects.all()]
-        cache.set('plant_options', plant_options, 600)
-    return plant_options
-
-
-def get_plant_species_options():
-    '''Returns a list of species for every Plant in database with no duplicates
-    List is cached for up to 10 minutes, or until Plant model changed
-    Used to populate species suggestions on plant registration form
-    '''
-    species_options = cache.get('species_options')
-    if not species_options:
-        species = Plant.objects.all().values_list('species', flat=True)
-        species_options = list(set(i for i in species if i is not None))
-        cache.set('species_options', species_options, 600)
-    return species_options
-
-
-def get_group_options():
-    '''Returns a list of groups used to populate manage_plant add group modal
-    List is cached for up to 10 minutes, or until Group model changed
-    '''
-    group_options = cache.get('group_options')
-    if not group_options:
-        group_options = [group.get_details() for group in Group.objects.all()]
-        cache.set('group_options', group_options, 600)
-    return group_options
 
 
 @ensure_csrf_cookie

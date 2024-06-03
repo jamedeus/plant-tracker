@@ -48,6 +48,43 @@ def get_unnamed_groups():
     return unnamed_groups
 
 
+def get_plant_options():
+    '''Returns a list of dicts with attributes of all existing plants.
+    List is cached for up to 10 minutes, or until Plant model changed.
+    Used to populate options in add plants modal on manage_group page.
+    '''
+    plant_options = cache.get('plant_options')
+    if not plant_options:
+        plant_options = [plant.get_details() for plant in Plant.objects.all()]
+        cache.set('plant_options', plant_options, 600)
+    return plant_options
+
+
+def get_plant_species_options():
+    '''Returns a list of species for every Plant in database (no duplicates).
+    List is cached for up to 10 minutes, or until Plant model changed.
+    Used to populate species suggestions on plant registration form.
+    '''
+    species_options = cache.get('species_options')
+    if not species_options:
+        species = Plant.objects.all().values_list('species', flat=True)
+        species_options = list(set(i for i in species if i is not None))
+        cache.set('species_options', species_options, 600)
+    return species_options
+
+
+def get_group_options():
+    '''Returns a list of dicts with attributes of all existing groups.
+    List is cached for up to 10 minutes, or until Group model changed.
+    Used to populate options in add group modal on manage_plant page.
+    '''
+    group_options = cache.get('group_options')
+    if not group_options:
+        group_options = [group.get_details() for group in Group.objects.all()]
+        cache.set('group_options', group_options, 600)
+    return group_options
+
+
 class Group(models.Model):
     '''Tracks a group containing multiple plants, created by scanning QR code
     Provides methods to water or fertilize all plants within group
@@ -112,10 +149,11 @@ class Group(models.Model):
 
 @receiver(post_save, sender=Group)
 @receiver(post_delete, sender=Group)
-def clear_unnamed_groups_cache(**kwargs):
-    '''Clear cached unnamed_groups list when a Group is saved or deleted'''
+def clear_cached_group_lists(**kwargs):
+    '''Clear cached unnamed_groups and group_options lists when a Group is
+    saved or deleted (will be generated and cached next time needed)
+    '''
     cache.delete('unnamed_groups')
-    # Clear cached group options (populates manage_plant add group modal)
     cache.delete('group_options')
 
 
@@ -307,9 +345,9 @@ class Plant(models.Model):
 
 @receiver(post_save, sender=Plant)
 @receiver(post_delete, sender=Plant)
-def clear_unnamed_plants_cache(**kwargs):
+def clear_cached_plant_lists(**kwargs):
     '''Clear cached plant_options, unnamed_plant and species_options lists when
-    a Plant is saved or deleted
+    a Plant is saved or deleted (will be generated and cached next time needed)
     '''
     cache.delete('plant_options')
     cache.delete('unnamed_plants')
