@@ -391,6 +391,79 @@ class CachedStateRegressionTests(TestCase):
         state = response.context['state']
         self.assertEqual(state['plant']['group']['name'], 'Living room')
 
+    def test_plant_options_cache_contains_outdated_plant_thumbnail_url(self):
+        '''Issue: the plant_options object that populates manage_group add
+        plants modal options only expired when a Plant was saved or deleted. If
+        the defualt_photo was set the Plant was saved and the cache updated,
+        but if there was no default_photo and a newer photo was uploaded it did
+        not update (only the Photo model was saved). This resulted in outdated
+        (possibly no longer existing) thumbnails in the add plant options.
+
+        Saving or deleting a Photo now calls Plant.update_thumbnail_url, which
+        updates Plant.thumbnail_url and saves (updates cached state).
+        '''
+
+        # Create test group, create test plant (not in group) with 1 photo
+        group = Group.objects.create(uuid=uuid4())
+        plant = Plant.objects.create(uuid=uuid4())
+        photo1 = Photo.objects.create(
+            photo=create_mock_photo(
+                creation_time='2024:02:21 10:52:03',
+                name='photo1.jpg'
+            ),
+            plant=plant
+        )
+
+        # Request manage_group page
+        response = self.client.get(f'/manage/{group.uuid}')
+
+        # Confirm options state contains photo1 thumbnail (most-recent)
+        self.assertEqual(
+            response.context['state']['options'][0]['thumbnail'],
+            photo1.get_thumbnail_url()
+        )
+
+        # Confirm plant_options object is cached when manage_group loaded
+        self.assertIsNotNone(cache.get('plant_options'))
+
+        # Create a second Photo with more recent timestamp
+        photo2 = Photo.objects.create(
+            photo=create_mock_photo(
+                creation_time='2024:03:22 10:52:03',
+                name='photo2.jpg'
+            ),
+            plant=plant
+        )
+
+        # Confirm plant_options cache was deleted
+        self.assertIsNone(cache.get('plant_options'))
+
+        # Confirm manage_group state now contains photo2 thumbnail (most-recent)
+        response = self.client.get(f'/manage/{group.uuid}')
+        self.assertEqual(
+            response.context['state']['options'][0]['thumbnail'],
+            photo2.get_thumbnail_url()
+        )
+
+        # Confirm plant_options object is cached again
+        self.assertIsNotNone(cache.get('plant_options'))
+
+        # Delete second photo
+        JSONClient().post(
+            '/delete_plant_photos',
+            {'plant_id': str(plant.uuid), 'delete_photos': [photo2.pk]}
+        )
+
+        # Confirm plant_options cache was deleted when photo was deleted
+        self.assertIsNone(cache.get('plant_options'))
+
+        # Confirm manage_group state reverted to photo1 thumbnail
+        response = self.client.get(f'/manage/{group.uuid}')
+        self.assertEqual(
+            response.context['state']['options'][0]['thumbnail'],
+            photo1.get_thumbnail_url()
+        )
+
 
 class ViewDecoratorRegressionTests(TestCase):
     def setUp(self):

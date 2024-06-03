@@ -147,6 +147,7 @@ class Plant(models.Model):
     group = models.ForeignKey(Group, on_delete=models.CASCADE, blank=True, null=True)
 
     # Optional relation to set photo used for overview page thumbnail
+    # If not set the most recent photo of this plant will be used
     # No related_name (redundant, Photo already has reverse relation)
     default_photo = models.OneToOneField(
         'Photo',
@@ -155,6 +156,10 @@ class Plant(models.Model):
         blank=True,
         related_name='+'
     )
+
+    # Store the URL of the current overview page thumbnail
+    # This is updated automatically if a new Photo is uploaded (see Photo.save)
+    thumbnail_url = models.URLField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.get_display_name()} ({self.uuid})"
@@ -190,14 +195,20 @@ class Plant(models.Model):
         '''
         if self.default_photo:
             return self.default_photo.get_thumbnail_url()
-        return self.get_most_recent_thumbnail()
-
-    def get_most_recent_thumbnail(self):
-        '''Returns thumbnail URL of most recent photo, or None if no Photos exist'''
         try:
+            # Most recent photo
             return self.photo_set.all().order_by('-created')[0].get_thumbnail_url()
         except IndexError:
             return None
+
+    def update_thumbnail_url(self):
+        '''Updates thumbnail_url field if it is outdated.
+        Called when a new Photo associated with this Plant is saved.
+        '''
+        new_thumbnail_url = self.get_thumbnail()
+        if self.thumbnail_url != new_thumbnail_url:
+            self.thumbnail_url = new_thumbnail_url
+            self.save(update_fields=['thumbnail_url'])
 
     def get_details(self):
         '''Returns dict containing all plant attributes and last_watered,
@@ -212,7 +223,7 @@ class Plant(models.Model):
             'pot_size': self.pot_size,
             'last_watered': self.last_watered(),
             'last_fertilized': self.last_fertilized(),
-            'thumbnail': self.get_thumbnail()
+            'thumbnail': self.thumbnail_url
         }
 
     def last_watered(self):
@@ -396,6 +407,17 @@ class Photo(models.Model):
                 self.created = django_timezone.now()
 
         super().save(*args, **kwargs)
+
+        # Update Plant's thumbnail URL if new Photo is most recent
+        self.plant.update_thumbnail_url()
+
+
+@receiver(post_delete, sender=Photo)
+def update_plant_thumbnail_when_photo_deleted(instance, **kwargs):
+    '''Updates Plant.thumbnail_url field when associated Photo is deleted (if
+    deleted photo was most recent photo the thumbnail_url will be outdated)
+    '''
+    instance.plant.update_thumbnail_url()
 
 
 class Event(models.Model):

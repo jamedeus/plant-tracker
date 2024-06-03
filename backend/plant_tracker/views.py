@@ -738,7 +738,8 @@ def set_plant_default_photo(plant, data):
     try:
         photo = Photo.objects.get(plant=plant, pk=data["photo_key"])
         plant.default_photo = photo
+        plant.update_thumbnail_url()
         plant.save()
     except Photo.DoesNotExist:
         return JsonResponse({"error": "unable to find photo"}, status=404)
-    return JsonResponse({"default_photo": plant.get_thumbnail()}, status=200)
+    return JsonResponse({"default_photo": plant.thumbnail_url}, status=200)
