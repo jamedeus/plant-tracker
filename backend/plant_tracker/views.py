@@ -694,9 +694,6 @@ def add_plant_photos(request):
             "key": photo.pk
         })
 
-    # Create task to update cached overview state (thumbnail outdated)
-    schedule_cached_overview_state_update()
-
     # Return list of new photo URLs (added to frontend state)
     return JsonResponse(
         {
@@ -722,9 +719,6 @@ def delete_plant_photos(plant, data):
             deleted.append(primary_key)
         except Photo.DoesNotExist:
             failed.append(primary_key)
-
-    # Create task to update cached overview state (thumbnail outdated)
-    schedule_cached_overview_state_update()
 
     return JsonResponse({"deleted": deleted, "failed": failed}, status=200)
 
