@@ -78,8 +78,8 @@ def build_overview_state():
     for group in Group.objects.all():
         state['groups'].append(group.get_details())
 
-    # Cache state for up to 24 hours
-    cache.set('overview_state', state, 86400)
+    # Cache state indefinitely (updates automatically when database changes)
+    cache.set('overview_state', state, None)
 
     # Revoke queued update tasks (prevent rebuilding again after manual call)
     revoke_queued_task('rebuild_overview_state_task_id')
@@ -89,7 +89,7 @@ def build_overview_state():
 
 @shared_task()
 def update_cached_overview_state():
-    '''Builds overview state and caches for up to 24 hours'''
+    '''Builds and caches overview state'''
     build_overview_state()
     print('Rebuilt overview state')
 
@@ -150,8 +150,8 @@ def build_manage_plant_state(uuid):
     else:
         state['plant']['group'] = None
 
-    # Cache state for up to 24 hours
-    cache.set(f'{uuid}_state', state, 86400)
+    # Cache state indefinitely (updates automatically when database changes)
+    cache.set(f'{uuid}_state', state, None)
 
     # Revoke queued update tasks (prevent rebuilding again after manual call)
     revoke_queued_task(f'rebuild_{uuid}_state_task_id')
@@ -161,7 +161,7 @@ def build_manage_plant_state(uuid):
 
 @shared_task()
 def update_cached_manage_plant_state(uuid):
-    '''Builds manage_plant state and caches for up to 24 hours'''
+    '''Builds and caches manage_plant state'''
     build_manage_plant_state(uuid)
     print(f'Rebuilt {uuid} state')
 
@@ -199,6 +199,12 @@ def update_cached_manage_plant_state_hook(instance, **kwargs):
         schedule_cached_manage_plant_state_update(instance.uuid)
     else:
         schedule_cached_manage_plant_state_update(instance.plant.uuid)
+
+
+@receiver(post_delete, sender=Plant)
+def delete_cached_manage_plant_state_hook(instance, **kwargs):
+    '''Deletes cached manage_plant state when plant is deleted from database'''
+    cache.delete(f'{instance.uuid}_state')
 
 
 @shared_task()
@@ -255,5 +261,7 @@ def update_all_cached_states():
     Called when server starts to prevent serving outdated states
     '''
     update_cached_overview_state.delay()
+    update_cached_plant_options.delay()
+    update_cached_group_options.delay()
     for plant in Plant.objects.all():
         update_cached_manage_plant_state.delay(plant.uuid)
