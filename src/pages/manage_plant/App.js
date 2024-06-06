@@ -32,7 +32,6 @@ function App() {
         return parseDomContext("photo_urls");
     });
     const groups = parseDomContext("groups");
-    const speciesOptions = parseDomContext("species_options");
 
     // Get hooks to show toast message, error modal
     const { showToast } = useToast();
@@ -310,7 +309,6 @@ function App() {
                     species={plant.species}
                     pot_size={plant.pot_size}
                     description={plant.description}
-                    species_options={speciesOptions}
                 />
             </EditModal>
 

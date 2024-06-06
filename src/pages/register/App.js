@@ -10,7 +10,6 @@ import { useErrorModal } from 'src/context/ErrorModalContext';
 function App() {
     // Load context set by django template
     const newID = parseDomContext("new_id");
-    const speciesOptions = parseDomContext("species_options");
 
     const overview = () => {
         window.location.href = "/";
@@ -99,7 +98,6 @@ function App() {
                                 species=""
                                 pot_size=""
                                 description=""
-                                species_options={speciesOptions}
                             />
                         </Tab.Panel>
                         <Tab.Panel>

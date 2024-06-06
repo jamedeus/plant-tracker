@@ -1,8 +1,12 @@
 import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
+import { parseDomContext } from 'src/util';
 import { Combobox, Transition } from '@headlessui/react';
 
-const SpeciesSelect = ({ value, species_options }) => {
+const SpeciesSelect = ({ value }) => {
+    // Load existing species options from django template context
+    const speciesOptions = parseDomContext("species_options");
+
     // State for current input value
     const [query, setQuery] = useState('');
 
@@ -11,8 +15,8 @@ const SpeciesSelect = ({ value, species_options }) => {
 
     const filteredOptions =
         query === ''
-            ? species_options
-            : species_options.filter((option) => {
+            ? speciesOptions
+            : speciesOptions.filter((option) => {
                 return option.toLowerCase().includes(query.toLowerCase());
             });
 
@@ -59,8 +63,8 @@ const SpeciesSelect = ({ value, species_options }) => {
                 leaveTo="opacity-0"
             >
                 <Combobox.Options className="combobox-options-div">
-                    {/* Add option if current input not in species_options */}
-                    {query.length > 0 && !species_options.includes(query) && (
+                    {/* Add option if current input not in speciesOptions */}
+                    {query.length > 0 && !speciesOptions.includes(query) && (
                         <Option value={query} text={`Create "${query}"`} />
                     )}
                     {/* Add option for each string in filteredOptions */}
@@ -74,12 +78,11 @@ const SpeciesSelect = ({ value, species_options }) => {
 };
 
 SpeciesSelect.propTypes = {
-    value: PropTypes.string,
-    species_options: PropTypes.array
+    value: PropTypes.string
 };
 
 
-const PlantDetailsForm = ({ formRef, name, species, pot_size, description, species_options }) => {
+const PlantDetailsForm = ({ formRef, name, species, pot_size, description }) => {
     return (
         <form id="plantDetails" ref={formRef}>
             <label className="form-control w-full">
@@ -97,10 +100,7 @@ const PlantDetailsForm = ({ formRef, name, species, pot_size, description, speci
                 <div className="label">
                     <span className="label-text-alt">Plant species</span>
                 </div>
-                <SpeciesSelect
-                    value={species}
-                    species_options={species_options}
-                />
+                <SpeciesSelect value={species} />
             </label>
             <label className="form-control w-full">
                 <div className="label">
@@ -140,8 +140,7 @@ PlantDetailsForm.propTypes = {
         PropTypes.string,
         PropTypes.number
     ]),
-    description: PropTypes.string,
-    species_options: PropTypes.array
+    description: PropTypes.string
 };
 
 export default PlantDetailsForm;
