@@ -21,7 +21,6 @@ import DefaultPhotoModal, { openDefaultPhotoModal } from './DefaultPhotoModal';
 import DeletePhotosModal from './DeletePhotosModal';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 import Timeline from './Timeline';
-import { NoteModalProvider } from './NoteModal';
 import { faPlus, faBan, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 
 function App() {
@@ -298,13 +297,11 @@ function App() {
                 <EventCalendar events={plant.events} />
             </div>
 
-            <NoteModalProvider>
-                <Timeline
-                    plantID={plant.uuid}
-                    events={plant.events}
-                    photoUrls={photoUrls}
-                />
-            </NoteModalProvider>
+            <Timeline
+                plantID={plant.uuid}
+                events={plant.events}
+                photoUrls={photoUrls}
+            />
 
             <EditModal title="Edit Details" onSubmit={submitEditModal}>
                 <PlantDetailsForm

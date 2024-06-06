@@ -2,14 +2,13 @@ import React, { useRef, useState, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { DateTime } from 'luxon';
 import { Popover } from "react-tiny-popover";
-import { capitalize, pastTense } from 'src/util';
+import { parseDomContext, capitalize, pastTense } from 'src/util';
 import {
     timestampToReadable,
     timestampToRelativeDays,
     timestampToUserTimezone
 } from 'src/timestampUtils';
 import NoteModal from './NoteModal';
-import { useNoteModal } from './NoteModal';
 import { openPhotoModal } from './PhotoModal';
 import { openDeletePhotosModal } from './DeletePhotosModal';
 import { openEventHistoryModal } from './EventHistoryModal';
@@ -24,7 +23,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 const Timeline = ({ plantID, events, photoUrls }) => {
-    const { notes, openNoteModal } = useNoteModal();
+    // Load context set by django template
+    const [notes, setNotes] = useState(() => {
+        return parseDomContext("notes");
+    });
 
     // Takes timestamp, returns ISO date string (no hours/minutes) in user's timezone
     const timestampToDateString = (timestamp) => {
@@ -109,6 +111,9 @@ const Timeline = ({ plantID, events, photoUrls }) => {
     // Contains object with year-month strings (ie 2024-03) as keys, divider
     // elements as values (used form quick navigation scrolling)
     const sectionRefs = useRef({});
+
+    // Create ref used to open/close NoteModal
+    const noteModalRef = useRef(null);
 
     // Takes ISO timestamp string, returns "x days ago"
     const getRelativeTimeString = (timestamp) => {
@@ -264,7 +269,7 @@ const Timeline = ({ plantID, events, photoUrls }) => {
                 <FontAwesomeIcon
                     icon={faPenToSquare}
                     className="w-4 h-4 mr-2 cursor-pointer"
-                    onClick={() => openNoteModal(note)}
+                    onClick={() => noteModalRef.current.open(note)}
                 />
                 <span
                     className={'cursor-pointer'}
@@ -376,7 +381,7 @@ const Timeline = ({ plantID, events, photoUrls }) => {
                             className={`dropdown-content z-[1] menu p-2 shadow
                                         bg-base-300 rounded-box w-40`}
                         >
-                            <li className="ml-auto"><a onClick={() => openNoteModal()}>
+                            <li className="ml-auto"><a onClick={() => noteModalRef.current.open()}>
                                 Add note
                             </a></li>
                             <li className="ml-auto"><a onClick={openPhotoModal}>
@@ -510,6 +515,9 @@ const Timeline = ({ plantID, events, photoUrls }) => {
 
             <NoteModal
                 plantID={plantID}
+                notes={notes}
+                setNotes={setNotes}
+                ref={noteModalRef}
             />
         </div>
     );

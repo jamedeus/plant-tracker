@@ -1,106 +1,47 @@
-import React, { createContext, useContext, useState, useRef } from 'react';
+import React, { useState, useRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { useToast } from 'src/context/ToastContext';
 import { useErrorModal } from 'src/context/ErrorModalContext';
-import { parseDomContext, sendPostRequest } from 'src/util';
+import { sendPostRequest } from 'src/util';
 import { localToUTC, timestampToReadable } from 'src/timestampUtils';
+import { DateTime } from 'luxon';
 
-const NoteModalContext = createContext();
-
-export const useNoteModal = () => useContext(NoteModalContext);
-
-export const NoteModalProvider = ({ children }) => {
-    // Load context set by django template
-    const [notes, setNotes] = useState(() => {
-        return parseDomContext("notes");
-    });
-
-    // Updates state after successful add_plant_note API call
-    const addNote = (timestamp, text) => {
-        setNotes([...notes, {timestamp: timestamp, text: text}]);
-    };
-
-    // Updates state after successful edit_plant_note API call
-    const updateNote = (timestamp, text) => {
-        setNotes(notes.map(note => {
-            if (note.timestamp === timestamp) {
-                return {timestamp: timestamp, text: text};
-            } else {
-                return note;
-            }
-        }));
-    };
-
-    // Updates state after successful delete_plant_note API call
-    const removeNote = (timestamp) => {
-        setNotes(notes.filter(note => note.timestamp !== timestamp));
-    };
-
-    // Create ref and states for NoteModal input contents
-    const noteModalRef = useRef(null);
+const NoteModal = React.forwardRef(function NoteModal({ plantID, notes, setNotes }, ref) {
+    // States for text and timestamp inputs
     const [noteText, setNoteText] = useState('');
     const [noteTime, setNoteTime] = useState('');
+
+    // State shows delete button and prevents editing timestamp if true
     const [editingNote, setEditingNote] = useState(false);
 
-    // Call with no arg to open empty modal (add new note)
-    // Call with existing note object (text and timestamp keys) to edit note
-    const openNoteModal = (editNote=null) => {
-        if (editNote) {
-            setNoteText(editNote.text);
-            setNoteTime(editNote.timestamp);
-            setEditingNote(true);
-        } else {
-            setNoteText('');
-            setEditingNote(false);
-        }
-        noteModalRef.current.showModal();
-    };
-
-    const closeNoteModal = () => {
-        noteModalRef.current.close();
-    };
-
-    return (
-        <NoteModalContext.Provider value={{
-            notes,
-            addNote,
-            updateNote,
-            removeNote,
-            noteModalRef,
-            noteText,
-            setNoteText,
-            noteTime,
-            editingNote,
-            openNoteModal,
-            closeNoteModal,
-        }}>
-            {children}
-        </NoteModalContext.Provider>
-    );
-};
-
-NoteModalProvider.propTypes = {
-    children: PropTypes.node,
-};
-
-const NoteModal = ({ plantID }) => {
     // Ref to read value of timestamp input
     const timestampRef = useRef(null);
 
-    // Get states and hooks from context
-    const {
-        addNote,
-        removeNote,
-        updateNote,
-        noteModalRef,
-        noteText,
-        setNoteText,
-        noteTime,
-        editingNote,
-        closeNoteModal
-    } = useNoteModal();
+    // Create ref for Modal component (used to show/hide)
+    const noteModalRef = useRef(null);
+
+    // Make open and close methods available in parent component
+    useImperativeHandle(ref, () => {
+        return {
+            open(note) {
+                if (note) {
+                    setNoteText(note.text);
+                    setNoteTime(note.timestamp);
+                    setEditingNote(true);
+                } else {
+                    setNoteText('');
+                    setNoteTime(DateTime.now().toFormat("yyyy-MM-dd'T'HH:mm:ss"));
+                    setEditingNote(false);
+                }
+                noteModalRef.current.showModal();
+            },
+            close() {
+                noteModalRef.current.close();
+            },
+        };
+    });
 
     // Get hooks to show toast message, error modal
     const { showToast } = useToast();
@@ -117,8 +58,11 @@ const NoteModal = ({ plantID }) => {
 
         if (response.ok) {
             // Update state with new note, close modal
-            addNote(payload.timestamp, payload.note_text);
-            closeNoteModal();
+            setNotes([
+                ...notes,
+                {timestamp: payload.timestamp, text: payload.note_text}
+            ]);
+            noteModalRef.current.close();
         } else {
             // Duplicate note timestamp: show error toast for 5 seconds
             if (response.status === 409) {
@@ -146,8 +90,14 @@ const NoteModal = ({ plantID }) => {
 
         if (response.ok) {
             // Update text in note state, close modal
-            updateNote(payload.timestamp, payload.note_text);
-            closeNoteModal();
+            setNotes(notes.map(note => {
+                if (note.timestamp === payload.timestamp) {
+                    return {timestamp: payload.timestamp, text: payload.note_text};
+                } else {
+                    return note;
+                }
+            }));
+            noteModalRef.current.close();
         } else {
             // Show error in modal
             const error = await response.json();
@@ -165,8 +115,8 @@ const NoteModal = ({ plantID }) => {
 
         if (response.ok) {
             // Remove note from state, close modal
-            removeNote(payload.timestamp);
-            closeNoteModal();
+            setNotes(notes.filter(note => note.timestamp !== noteTime));
+            noteModalRef.current.close();
         } else {
             // Show error in modal
             const error = await response.json();
@@ -174,26 +124,25 @@ const NoteModal = ({ plantID }) => {
         }
     };
 
-    // Renders input when adding new note, timestamp string when editing
-    const TimestampInput = () => {
-        if (editingNote) {
-            const [time, date] = timestampToReadable(noteTime).split('-');
-            return (
-                <>
-                    <p>{date}</p>
-                    <p className="text-sm">{time}</p>
-                </>
-            );
-        } else {
-            return <DatetimeInput inputRef={timestampRef} />;
-        }
+    // Rendered instead of timestamp input when editing note (can't change time)
+    const ExistingNoteTimestamp = () => {
+        const [time, date] = timestampToReadable(noteTime).split('-');
+        return (
+            <>
+                <p>{date}</p>
+                <p className="text-sm">{time}</p>
+            </>
+        );
     };
 
     return (
         <Modal dialogRef={noteModalRef} title={editingNote ? "Edit Note" : "Add Note"}>
             <div className="flex flex-col">
                 <div className="min-h-36 flex flex-col justify-center mt-2">
-                    <TimestampInput />
+                    {editingNote
+                        ? <ExistingNoteTimestamp />
+                        : <DatetimeInput inputRef={timestampRef} />
+                    }
                     <textarea
                         className={`textarea textarea-bordered w-full max-w-xs
                                     mx-auto mt-8 mb-4 min-h-40`}
@@ -233,10 +182,12 @@ const NoteModal = ({ plantID }) => {
             </div>
         </Modal>
     );
-};
+});
 
 NoteModal.propTypes = {
-    plantID: PropTypes.string
+    plantID: PropTypes.string,
+    notes: PropTypes.array,
+    setNotes: PropTypes.func
 };
 
 export default NoteModal;

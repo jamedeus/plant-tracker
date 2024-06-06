@@ -1,12 +1,13 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import createMockContext from 'src/testUtils/createMockContext';
-import NoteModal, { NoteModalProvider, useNoteModal } from '../NoteModal';
+import NoteModal from '../NoteModal';
 import { ToastProvider } from 'src/context/ToastContext';
 import { ErrorModalProvider } from 'src/context/ErrorModalContext';
 import { postHeaders } from 'src/testUtils/headers';
 
 const TestComponent = () => {
-    const { openNoteModal } = useNoteModal();
+    const modalRef = useRef(null);
+    const [notes, setNotes] = useState([]);
 
     const existingNote = {
         text: 'this is an existing note',
@@ -15,11 +16,16 @@ const TestComponent = () => {
 
     return (
         <>
-            <NoteModal plantID={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"} />
-            <button onClick={() => openNoteModal()}>
+            <NoteModal
+                plantID={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"}
+                notes={notes}
+                setNotes={setNotes}
+                ref={modalRef}
+            />
+            <button onClick={() => modalRef.current.open()}>
                 Add New Note
             </button>
-            <button onClick={() => openNoteModal(existingNote)}>
+            <button onClick={() => modalRef.current.open(existingNote)}>
                 Edit Existing Note
             </button>
         </>
@@ -40,9 +46,7 @@ describe('Add new note', () => {
         app = render(
             <ToastProvider>
                 <ErrorModalProvider>
-                    <NoteModalProvider>
-                        <TestComponent />
-                    </NoteModalProvider>
+                    <TestComponent />
                 </ErrorModalProvider>
             </ToastProvider>
         );
@@ -140,9 +144,7 @@ describe('Edit existing note', () => {
         app = render(
             <ToastProvider>
                 <ErrorModalProvider>
-                    <NoteModalProvider>
-                        <TestComponent />
-                    </NoteModalProvider>
+                    <TestComponent />
                 </ErrorModalProvider>
             </ToastProvider>
         );
