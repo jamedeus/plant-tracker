@@ -9,8 +9,9 @@ import {
     timestampToUserTimezone
 } from 'src/timestampUtils';
 import NoteModal from './NoteModal';
-import { openPhotoModal } from './PhotoModal';
-import { openDeletePhotosModal } from './DeletePhotosModal';
+import DefaultPhotoModal from './DefaultPhotoModal';
+import PhotoModal, { openPhotoModal } from './PhotoModal';
+import DeletePhotosModal, { openDeletePhotosModal } from './DeletePhotosModal';
 import { openEventHistoryModal } from './EventHistoryModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -22,10 +23,13 @@ import {
     faPenToSquare
 } from '@fortawesome/free-solid-svg-icons';
 
-const Timeline = ({ plantID, events, photoUrls }) => {
+const Timeline = ({ plantID, events }) => {
     // Load context set by django template
     const [notes, setNotes] = useState(() => {
         return parseDomContext("notes");
+    });
+    const [photoUrls, setPhotoUrls] = useState(() => {
+        return parseDomContext("photo_urls");
     });
 
     // Takes timestamp, returns ISO date string (no hours/minutes) in user's timezone
@@ -519,14 +523,30 @@ const Timeline = ({ plantID, events, photoUrls }) => {
                 setNotes={setNotes}
                 ref={noteModalRef}
             />
+
+            <PhotoModal
+                plantID={plantID}
+                photoUrls={photoUrls}
+                setPhotoUrls={setPhotoUrls}
+            />
+
+            <DefaultPhotoModal
+                plantID={plantID}
+                photoUrls={photoUrls}
+            />
+
+            <DeletePhotosModal
+                plantID={plantID}
+                photoUrls={photoUrls}
+                setPhotoUrls={setPhotoUrls}
+            />
         </div>
     );
 };
 
 Timeline.propTypes = {
     plantID: PropTypes.string,
-    events: PropTypes.object,
-    photoUrls: PropTypes.array
+    events: PropTypes.object
 };
 
 export default Timeline;

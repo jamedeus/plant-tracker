@@ -12,13 +12,12 @@ import LastEventTime from 'src/components/LastEventTime';
 import PlantDetails from 'src/components/PlantDetails';
 import IconButton from 'src/components/IconButton';
 import EventCalendar from './EventCalendar';
+import { openPhotoModal } from './PhotoModal';
 import GroupModal, { openGroupModal } from './GroupModal';
-import PhotoModal, { openPhotoModal } from './PhotoModal';
 import RepotModal, { openRepotModal } from './RepotModal';
 import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
 import EventHistoryModal from './EventHistoryModal';
-import DefaultPhotoModal, { openDefaultPhotoModal } from './DefaultPhotoModal';
-import DeletePhotosModal from './DeletePhotosModal';
+import { openDefaultPhotoModal } from './DefaultPhotoModal';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 import Timeline from './Timeline';
 import { faPlus, faBan, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
@@ -27,9 +26,6 @@ function App() {
     // Load context set by django template
     const [plant, setPlant] = useState(() => {
         return parseDomContext("plant");
-    });
-    const [photoUrls, setPhotoUrls] = useState(() => {
-        return parseDomContext("photo_urls");
     });
 
     // Get hooks to show toast message, error modal
@@ -41,16 +37,6 @@ function App() {
 
     // Create ref to access edit details form
     const editDetailsRef = useRef(null);
-
-    // Takes photo URLs from API response when new photos are uploaded
-    const addPlantPhotoUrls = (newUrls) => {
-        // Add new URLs to photoUrl state, sort chronologically, re-render
-        const newPhotoUrls = photoUrls.concat(newUrls);
-        newPhotoUrls.sort((a, b) => {
-            return a.created.localeCompare(b.created);
-        }).reverse();
-        setPhotoUrls(newPhotoUrls);
-    };
 
     // Called after successful repot_plant API call, takes RepotEvent params
     const handleRepot = (newPotSize, repotTimestamp) => {
@@ -298,7 +284,6 @@ function App() {
             <Timeline
                 plantID={plant.uuid}
                 events={plant.events}
-                photoUrls={photoUrls}
             />
 
             <EditModal title="Edit Details" onSubmit={submitEditModal}>
@@ -320,22 +305,6 @@ function App() {
                 plantID={plant.uuid}
                 currentPotSize={plant.pot_size}
                 handleRepot={handleRepot}
-            />
-
-            <PhotoModal
-                plantID={plant.uuid}
-                addPlantPhotoUrls={addPlantPhotoUrls}
-            />
-
-            <DefaultPhotoModal
-                plantID={plant.uuid}
-                photoUrls={photoUrls}
-            />
-
-            <DeletePhotosModal
-                plantID={plant.uuid}
-                photoUrls={photoUrls}
-                setPhotoUrls={setPhotoUrls}
             />
 
             <EventHistoryModal

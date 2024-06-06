@@ -10,6 +10,7 @@ describe('Timeline', () => {
     beforeAll(() => {
         // Create mock state object
         createMockContext('notes', mockContext.notes);
+        createMockContext('photo_urls', mockPhotoUrls);
     });
 
     beforeEach(() => {
@@ -21,7 +22,6 @@ describe('Timeline', () => {
                     <Timeline
                         plantID={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"}
                         events={mockEvents}
-                        photoUrls={mockPhotoUrls}
                     />
                 </ToastProvider>
             </ErrorModalProvider>
@@ -200,7 +200,9 @@ describe('Timeline', () => {
             'Fertilized with dilute 10-15-10 liquid fertilizer'
         ).parentElement.children[0];
         await user.click(editButton);
-        await user.click(app.getByText('Delete'));
+        await user.click(
+            within(app.getByText('Edit Note').parentElement).getByText('Delete')
+        );
 
         // Confirm timeline no longer contains note text
         expect(within(timeline).queryByText(

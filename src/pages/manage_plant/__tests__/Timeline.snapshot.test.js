@@ -8,6 +8,7 @@ describe('Timeline', () => {
     it('matches snapshot', () => {
         // Create mock state object
         createMockContext('notes', mockContext.notes);
+        createMockContext('photo_urls', mockPhotoUrls);
 
         // Render Timeline, confirm matches snapshot
         const component = render(
@@ -16,7 +17,6 @@ describe('Timeline', () => {
                     <Timeline
                         plantID={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"}
                         events={mockEvents}
-                        photoUrls={mockPhotoUrls}
                     />
                 </ToastProvider>
             </ErrorModalProvider>

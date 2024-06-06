@@ -11,7 +11,7 @@ export const openPhotoModal = () => {
     photoModalRef.current.showModal();
 };
 
-const PhotoModal = ({ plantID, addPlantPhotoUrls }) => {
+const PhotoModal = ({ plantID, photoUrls, setPhotoUrls }) => {
     photoModalRef = useRef(null);
     // File input ref, used to remove selected files when X buttons clicked
     const inputRef = useRef(null);
@@ -38,6 +38,16 @@ const PhotoModal = ({ plantID, addPlantPhotoUrls }) => {
             const data = new DataTransfer();
             inputRef.current.files = data.files;
         }
+    };
+
+    // Takes photo URLs from API response when new photos are uploaded
+    const addPlantPhotoUrls = (newUrls) => {
+        // Add new URLs to photoUrl state, sort chronologically, re-render
+        const newPhotoUrls = photoUrls.concat(newUrls);
+        newPhotoUrls.sort((a, b) => {
+            return a.created.localeCompare(b.created);
+        }).reverse();
+        setPhotoUrls(newPhotoUrls);
     };
 
     const handleSubmit = async () => {
@@ -179,7 +189,8 @@ const PhotoModal = ({ plantID, addPlantPhotoUrls }) => {
 
 PhotoModal.propTypes = {
     plantID: PropTypes.string,
-    addPlantPhotoUrls: PropTypes.func
+    photoUrls: PropTypes.array,
+    setPhotoUrls: PropTypes.func
 };
 
 export default PhotoModal;
