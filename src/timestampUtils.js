@@ -18,6 +18,16 @@ function timestampToReadable(timestamp) {
     );
 }
 
+// Takes isoformat timestamp, returns true if timestamp is on current date in
+// user's timezone, otherwise returns false.
+//
+// Example: 2024-06-05T23:00:00 returns true at any time on 2024-06-05, but
+// returns false on 2024-06-06T00:00:00 (less than 24 hours but not same day)
+function timestampIsToday(timestamp) {
+    const today = DateTime.now().toISODate();
+    return timestampToUserTimezone(timestamp).toISODate() === today;
+}
+
 
 // The functions below convert ISO format timestamps into human-readable
 // relative time strings with various formats.
@@ -61,6 +71,7 @@ export {
     localToUTC,
     timestampToUserTimezone,
     timestampToReadable,
+    timestampIsToday,
     timestampToRelative,
     timestampToRelativeDays,
     timestampToRelativeCalendar

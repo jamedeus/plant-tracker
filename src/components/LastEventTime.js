@@ -1,6 +1,21 @@
 import PropTypes from 'prop-types';
 import { capitalize, pastTense } from 'src/util';
-import { timestampToRelative, timestampToReadable} from 'src/timestampUtils';
+import {
+    timestampIsToday,
+    timestampToReadable,
+    timestampToRelative,
+    timestampToRelativeCalendar
+} from 'src/timestampUtils';
+
+// Return relative sec/min/hours if timestamp on current date in user timezone.
+// Return number of days since timestamp if not on current date.
+const getDisplayTime = (timestamp) => {
+    if (timestampIsToday(timestamp)) {
+        return timestampToRelative(timestamp);
+    } else {
+        return timestampToRelativeCalendar(timestamp)
+    }
+}
 
 // Takes event name and timestamp, formats and returns
 // Used to display last watered/fertilized times
@@ -8,7 +23,7 @@ const LastEventTime = ({ text, timestamp }) => {
     if (timestamp) {
         return (
             <span title={timestampToReadable(timestamp)}>
-                {`${pastTense(capitalize(text))} ${timestampToRelative(timestamp)}`}
+                {`${pastTense(capitalize(text))} ${getDisplayTime(timestamp)}`}
             </span>
         );
     } else {
