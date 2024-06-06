@@ -121,9 +121,6 @@ describe('Timeline', () => {
         // Get reference to timeline div (excluding NoteModal)
         const timeline = app.container.querySelector('.grid');
 
-        // Get reference to NewNoteModal
-        const modal = app.getByText("Add Note").parentElement;
-
         // Confirm timeline does not contain note text
         expect(within(timeline).queryByText(
             'Started flowering'
@@ -131,10 +128,10 @@ describe('Timeline', () => {
 
         // Simulate user typing new note and clicking save
         await user.type(
-            modal.querySelector('.textarea'),
+            app.container.querySelector('.textarea'),
             'Started flowering'
         );
-        await user.click(within(modal).getByText('Save'));
+        await user.click(app.getByText('Save'));
 
         // Confirm note text appeared on page
         expect(within(timeline).queryByText(
@@ -156,9 +153,6 @@ describe('Timeline', () => {
         // Get reference to timeline div (excluding NoteModal)
         const timeline = app.container.querySelector('.grid');
 
-        // Get reference to EditNoteModal
-        const modal = app.getByText("Edit Note").parentElement;
-
         // Confirm timeline contains note text from mockContext
         expect(within(timeline).queryByText(
             'One of the older leaves is starting to turn yellow'
@@ -174,10 +168,10 @@ describe('Timeline', () => {
         ).parentElement.children[0];
         await user.click(editButton);
         await user.type(
-            modal.querySelector('.textarea'),
+            app.container.querySelector('.textarea'),
             ', pinched it off'
         );
-        await user.click(within(modal).getByText('Save'));
+        await user.click(app.getByText('Save'));
 
         // Confirm new text was added to note
         expect(within(timeline).queryByText(

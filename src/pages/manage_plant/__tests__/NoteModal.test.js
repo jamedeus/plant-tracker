@@ -1,25 +1,25 @@
 import React from 'react';
 import createMockContext from 'src/testUtils/createMockContext';
-import { NoteModalProvider, useNoteModal, NewNoteModal, EditNoteModal } from '../NoteModal';
+import NoteModal, { NoteModalProvider, useNoteModal } from '../NoteModal';
 import { ToastProvider } from 'src/context/ToastContext';
 import { ErrorModalProvider } from 'src/context/ErrorModalContext';
 import { postHeaders } from 'src/testUtils/headers';
 
 const TestComponent = () => {
-    const { openNewNoteModal, openEditNoteModal } = useNoteModal();
+    const { openNoteModal } = useNoteModal();
 
-    const editNote = () => {
-        openEditNoteModal('2024-02-13T12:00:00', 'this is an existing note');
+    const existingNote = {
+        text: 'this is an existing note',
+        timestamp: '2024-02-13T12:00:00'
     };
 
     return (
         <>
-            <NewNoteModal plantID={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"} />
-            <EditNoteModal plantID={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"} />
-            <button onClick={() => openNewNoteModal()}>
+            <NoteModal plantID={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"} />
+            <button onClick={() => openNoteModal()}>
                 Add New Note
             </button>
-            <button onClick={editNote}>
+            <button onClick={() => openNoteModal(existingNote)}>
                 Edit Existing Note
             </button>
         </>
@@ -67,9 +67,7 @@ describe('Add new note', () => {
             app.container.querySelector('.textarea'),
             'Some leaves turning yellow, probably watering too often'
         );
-        await user.click(
-            within(app.getByText("Add Note").parentElement).getByText('Save')
-        );
+        await user.click(app.getByText('Save'));
 
         // Confirm correct data posted to /add_plant_note endpoint
         expect(fetch).toHaveBeenCalledWith('/add_plant_note', {
@@ -101,9 +99,7 @@ describe('Add new note', () => {
             app.container.querySelector('.textarea'),
             'Some leaves turning yellow, probably watering too often'
         );
-        await user.click(
-            within(app.getByText("Add Note").parentElement).getByText('Save')
-        );
+        await user.click(app.getByText('Save'));
 
         // Confirm modal appeared with arbitrary error text
         expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
@@ -125,9 +121,7 @@ describe('Add new note', () => {
             app.container.querySelector('.textarea'),
             'Some leaves turning yellow, probably watering too often'
         );
-        await user.click(
-            within(app.getByText("Add Note").parentElement).getByText('Save')
-        );
+        await user.click(app.getByText('Save'));
     });
 });
 
@@ -193,15 +187,12 @@ describe('Edit existing note', () => {
             })
         }));
 
-        // Get reference to EditNoteModal
-        const modal = app.getByText("Edit Note").parentElement;
-
         // Simulate user adding more note text and clicking save
         await user.type(
-            modal.querySelector('.textarea'),
+            app.container.querySelector('.textarea'),
             ' some more details'
         );
-        await user.click(within(modal).getByText('Save'));
+        await user.click(app.getByText('Save'));
 
         // Confirm correct data posted to /add_plant_note endpoint
         expect(fetch).toHaveBeenCalledWith('/edit_plant_note', {
@@ -249,10 +240,8 @@ describe('Edit existing note', () => {
         // Confirm arbitrary error does not appear on page
         expect(app.queryByText(/failed to edit note/)).toBeNull();
 
-        // Simulate user clicking save
-        await user.click(
-            within(app.getByText("Edit Note").parentElement).getByText('Save')
-        );
+        // Simulate user clicking delete
+        await user.click(app.getByText('Save'));
 
         // Confirm modal appeared with arbitrary error text
         expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();

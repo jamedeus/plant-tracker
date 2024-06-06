@@ -38,24 +38,28 @@ export const NoteModalProvider = ({ children }) => {
         setNotes(notes.filter(note => note.timestamp !== timestamp));
     };
 
-    // Create state to set EditNoteModal timestamp
+    // Create ref and states for NoteModal input contents
+    const noteModalRef = useRef(null);
+    const [noteText, setNoteText] = useState('');
     const [noteTime, setNoteTime] = useState('');
+    const [editingNote, setEditingNote] = useState(false);
 
-    // Create ref to set/read value of textarea
-    const noteTextRef = useRef(null);
-
-    // Create refs to open/close each modal
-    const newNoteModalRef = useRef(null);
-    const editNoteModalRef = useRef(null);
-
-    const openNewNoteModal = () => {
-        newNoteModalRef.current.showModal();
+    // Call with no arg to open empty modal (add new note)
+    // Call with existing note object (text and timestamp keys) to edit note
+    const openNoteModal = (editNote=null) => {
+        if (editNote) {
+            setNoteText(editNote.text);
+            setNoteTime(editNote.timestamp);
+            setEditingNote(true);
+        } else {
+            setNoteText('');
+            setEditingNote(false);
+        }
+        noteModalRef.current.showModal();
     };
 
-    const openEditNoteModal = (timestamp, text) => {
-        setNoteTime(timestamp);
-        noteTextRef.current.value = text;
-        editNoteModalRef.current.showModal();
+    const closeNoteModal = () => {
+        noteModalRef.current.close();
     };
 
     return (
@@ -64,12 +68,13 @@ export const NoteModalProvider = ({ children }) => {
             addNote,
             updateNote,
             removeNote,
-            newNoteModalRef,
-            editNoteModalRef,
+            noteModalRef,
+            noteText,
+            setNoteText,
             noteTime,
-            noteTextRef,
-            openNewNoteModal,
-            openEditNoteModal
+            editingNote,
+            openNoteModal,
+            closeNoteModal,
         }}>
             {children}
         </NoteModalContext.Provider>
@@ -80,16 +85,22 @@ NoteModalProvider.propTypes = {
     children: PropTypes.node,
 };
 
-export const NewNoteModal = ({ plantID }) => {
-    // Create refs to read values of timestamp input and textarea
+const NoteModal = ({ plantID }) => {
+    // Ref to read value of timestamp input
     const timestampRef = useRef(null);
-    const noteTextRef = useRef(null);
-
-    // Create state to control submit button enable state
-    const [disabled, setDisabled] = useState(true);
 
     // Get states and hooks from context
-    const { addNote, newNoteModalRef } = useNoteModal();
+    const {
+        addNote,
+        removeNote,
+        updateNote,
+        noteModalRef,
+        noteText,
+        setNoteText,
+        noteTime,
+        editingNote,
+        closeNoteModal
+    } = useNoteModal();
 
     // Get hooks to show toast message, error modal
     const { showToast } = useToast();
@@ -100,14 +111,14 @@ export const NewNoteModal = ({ plantID }) => {
         const payload = {
             plant_id: plantID,
             timestamp: localToUTC(timestampRef.current.value),
-            note_text: noteTextRef.current.value
+            note_text: noteText
         };
         const response = await sendPostRequest('/add_plant_note', payload);
 
         if (response.ok) {
             // Update state with new note, close modal
             addNote(payload.timestamp, payload.note_text);
-            newNoteModalRef.current.close();
+            closeNoteModal();
         } else {
             // Duplicate note timestamp: show error toast for 5 seconds
             if (response.status === 409) {
@@ -124,68 +135,19 @@ export const NewNoteModal = ({ plantID }) => {
         }
     };
 
-    return (
-        <Modal dialogRef={newNoteModalRef} title="Add Note">
-            <div className="flex flex-col">
-                <div className="min-h-36 flex flex-col justify-center mt-2">
-                    <DatetimeInput inputRef={timestampRef} />
-                    <textarea
-                        className={`textarea textarea-bordered w-full max-w-xs
-                                    mx-auto mt-8 mb-4 min-h-40`}
-                        ref={noteTextRef}
-                        onChange={(e) => setDisabled(!e.target.value.length)}
-                    ></textarea>
-                </div>
-                <div className="modal-action mx-auto">
-                    <button
-                        className="btn btn-success"
-                        onClick={handleSubmit}
-                        disabled={disabled}
-                    >
-                        Save
-                    </button>
-                </div>
-            </div>
-        </Modal>
-    );
-};
-
-NewNoteModal.propTypes = {
-    plantID: PropTypes.string
-};
-
-export const EditNoteModal = ({ plantID }) => {
-    // Get states and hooks from context
-    const {
-        removeNote,
-        updateNote,
-        editNoteModalRef,
-        noteTime,
-        noteTextRef
-    } = useNoteModal();
-
-    // Create state to control submit button enable state
-    const [disabled, setDisabled] = useState(false);
-
-    // Get hook to show error modal
-    const { showErrorModal } = useErrorModal();
-
-    // Shown above text area (can't be edited)
-    const [time, date] = timestampToReadable(noteTime).split('-');
-
     const handleEdit = async () => {
         // Build payload, post to backend
         const payload = {
             plant_id: plantID,
             timestamp: noteTime,
-            note_text: noteTextRef.current.value
+            note_text: noteText
         };
         const response = await sendPostRequest('/edit_plant_note', payload);
 
         if (response.ok) {
             // Update text in note state, close modal
             updateNote(payload.timestamp, payload.note_text);
-            editNoteModalRef.current.close();
+            closeNoteModal();
         } else {
             // Show error in modal
             const error = await response.json();
@@ -204,7 +166,7 @@ export const EditNoteModal = ({ plantID }) => {
         if (response.ok) {
             // Remove note from state, close modal
             removeNote(payload.timestamp);
-            editNoteModalRef.current.close();
+            closeNoteModal();
         } else {
             // Show error in modal
             const error = await response.json();
@@ -212,39 +174,69 @@ export const EditNoteModal = ({ plantID }) => {
         }
     };
 
-    return (
-        <Modal dialogRef={editNoteModalRef} title="Edit Note">
-            <div className="flex flex-col">
-                <div className="min-h-36 flex flex-col justify-center mt-2">
+    // Renders input when adding new note, timestamp string when editing
+    const TimestampInput = () => {
+        if (editingNote) {
+            const [time, date] = timestampToReadable(noteTime).split('-');
+            return (
+                <>
                     <p>{date}</p>
                     <p className="text-sm">{time}</p>
+                </>
+            );
+        } else {
+            return <DatetimeInput inputRef={timestampRef} />;
+        }
+    };
+
+    return (
+        <Modal dialogRef={noteModalRef} title={editingNote ? "Edit Note" : "Add Note"}>
+            <div className="flex flex-col">
+                <div className="min-h-36 flex flex-col justify-center mt-2">
+                    <TimestampInput />
                     <textarea
                         className={`textarea textarea-bordered w-full max-w-xs
                                     mx-auto mt-8 mb-4 min-h-40`}
-                        ref={noteTextRef}
-                        onChange={(e) => setDisabled(!e.target.value.length)}
+                        value={noteText}
+                        onChange={e => setNoteText(e.target.value)}
                     ></textarea>
                 </div>
-                <div className="modal-action mx-auto">
-                    <button
-                        className="btn btn-error"
-                        onClick={handleDelete}
-                    >
-                        Delete
-                    </button>
-                    <button
-                        className="btn btn-success"
-                        onClick={handleEdit}
-                        disabled={disabled}
-                    >
-                        Save
-                    </button>
-                </div>
+                {editingNote
+                    ? (
+                        <div className="modal-action mx-auto">
+                            <button
+                                className="btn btn-error"
+                                onClick={handleDelete}
+                            >
+                                Delete
+                            </button>
+                            <button
+                                className="btn btn-success"
+                                onClick={handleEdit}
+                                disabled={!noteText.length}
+                            >
+                                Save
+                            </button>
+                        </div>
+                    ) : (
+                        <div className="modal-action mx-auto">
+                            <button
+                                className="btn btn-success"
+                                onClick={handleSubmit}
+                                disabled={!noteText.length}
+                            >
+                                Save
+                            </button>
+                        </div>
+                    )
+                }
             </div>
         </Modal>
     );
 };
 
-EditNoteModal.propTypes = {
+NoteModal.propTypes = {
     plantID: PropTypes.string
 };
+
+export default NoteModal;

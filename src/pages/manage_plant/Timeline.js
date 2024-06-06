@@ -8,10 +8,11 @@ import {
     timestampToRelativeDays,
     timestampToUserTimezone
 } from 'src/timestampUtils';
+import NoteModal from './NoteModal';
+import { useNoteModal } from './NoteModal';
 import { openPhotoModal } from './PhotoModal';
 import { openDeletePhotosModal } from './DeletePhotosModal';
 import { openEventHistoryModal } from './EventHistoryModal';
-import { useNoteModal, NewNoteModal, EditNoteModal } from './NoteModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
     faDroplet,
@@ -23,7 +24,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 const Timeline = ({ plantID, events, photoUrls }) => {
-    const { notes, openNewNoteModal, openEditNoteModal } = useNoteModal();
+    const { notes, openNoteModal } = useNoteModal();
 
     // Takes timestamp, returns ISO date string (no hours/minutes) in user's timezone
     const timestampToDateString = (timestamp) => {
@@ -263,7 +264,7 @@ const Timeline = ({ plantID, events, photoUrls }) => {
                 <FontAwesomeIcon
                     icon={faPenToSquare}
                     className="w-4 h-4 mr-2 cursor-pointer"
-                    onClick={() => openEditNoteModal(note.timestamp, note.text)}
+                    onClick={() => openNoteModal(note)}
                 />
                 <span
                     className={'cursor-pointer'}
@@ -375,7 +376,7 @@ const Timeline = ({ plantID, events, photoUrls }) => {
                             className={`dropdown-content z-[1] menu p-2 shadow
                                         bg-base-300 rounded-box w-40`}
                         >
-                            <li className="ml-auto"><a onClick={() => openNewNoteModal()}>
+                            <li className="ml-auto"><a onClick={() => openNoteModal()}>
                                 Add note
                             </a></li>
                             <li className="ml-auto"><a onClick={openPhotoModal}>
@@ -507,10 +508,7 @@ const Timeline = ({ plantID, events, photoUrls }) => {
                 </div>
             )}
 
-            <NewNoteModal
-                plantID={plantID}
-            />
-            <EditNoteModal
+            <NoteModal
                 plantID={plantID}
             />
         </div>
