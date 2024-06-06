@@ -1,3 +1,4 @@
+import os
 import sys
 from django.apps import AppConfig
 
@@ -12,6 +13,10 @@ class PlantTrackerConfig(AppConfig):
         '''
         if 'test' in sys.argv or 'pylint' in str(sys.argv):
             # Skip cache updates when running unit tests or pylint
+            return
+        if not os.environ.get('RUN_MAIN'):
+            # Prevent running when celery starts, running twice when dev server
+            # starts (dev server starts second process to detect file changes)
             return
 
         from .tasks import update_all_cached_states
