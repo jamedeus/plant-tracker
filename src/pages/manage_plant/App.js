@@ -31,7 +31,6 @@ function App() {
     const [photoUrls, setPhotoUrls] = useState(() => {
         return parseDomContext("photo_urls");
     });
-    const groups = parseDomContext("groups");
 
     // Get hooks to show toast message, error modal
     const { showToast } = useToast();
@@ -314,7 +313,6 @@ function App() {
 
             <GroupModal
                 plantID={plant.uuid}
-                groupOptions={groups}
                 handleAddGroup={handleAddGroup}
             />
 

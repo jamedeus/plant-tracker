@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 import GroupCard from 'src/components/GroupCard';
-import { sendPostRequest } from 'src/util';
+import { sendPostRequest, parseDomContext } from 'src/util';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 
 let groupModalRef;
@@ -11,7 +11,10 @@ export const openGroupModal = () => {
     groupModalRef.current.showModal();
 };
 
-const GroupModal = ({ plantID, groupOptions, handleAddGroup }) => {
+const GroupModal = ({ plantID, handleAddGroup }) => {
+    // Load options from context set by django template
+    const groupOptions = parseDomContext("groups");
+
     groupModalRef = useRef(null);
 
     // Get hook to show error modal
@@ -55,7 +58,6 @@ const GroupModal = ({ plantID, groupOptions, handleAddGroup }) => {
 
 GroupModal.propTypes = {
     plantID: PropTypes.string,
-    groupOptions: PropTypes.array,
     handleAddGroup: PropTypes.func
 };
 
