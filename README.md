@@ -58,3 +58,31 @@ python manage.py runserver 0.0.0.0:8000
 This runs celery tasks synchronously (no delay) and uses local memory caching instead of redis. Redis does not need to be installed. Photo uploads are also written to `/tmp/plant_tracker_unit_test` instead of the data dir.
 
 This setup behaves differently than production and should not be used for backend development.
+
+## Unit tests
+
+### Backend
+
+Django tests should be run with the [test_settings](backend/backend/test_settings.py) (see `--settings` flag below). This prevents the tests writing caches to redis, does not require a celery worker, and prevents writing mock photos to the real data directory.
+
+```
+pipenv install --dev
+pipenv shell
+cd backend
+coverage run --source='.' --omit='*manage.py,*wsgi.py,*asgi.py,*/test_*.py,*unit_test_helpers.py,*/migrations/*.py' manage.py test --settings=backend.test_settings
+coverage report -m --precision=1
+```
+
+### Frontend
+
+Should be run with **node v22.1** (some mocks don't work on 19.6, other versions not tested).
+
+Run tests and print coverage report:
+```
+npm run test -- --coverage -u
+```
+
+Update outdated snapshots and print coverage:
+```
+npm run test -- --coverage -u
+```
