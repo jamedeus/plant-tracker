@@ -30,7 +30,7 @@ test_backend:
 # Run react unit tests
 test_frontend:
   stage: test
-  image: node:20-bullseye
+  image: node:22-bookworm-slim
   tags:
     - nas
     - docker
