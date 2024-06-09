@@ -10,8 +10,9 @@ import { DateTime } from 'luxon';
 
 const NoteModal = React.forwardRef(function NoteModal({ plantID, notes, setNotes }, ref) {
     // States for text and timestamp inputs
-    const [noteText, setNoteText] = useState('');
     const [noteTime, setNoteTime] = useState('');
+    const [noteText, setNoteText] = useState('');
+    const [charCount, setCharCount] = useState(0);
 
     // State shows delete button and prevents editing timestamp if true
     const [editingNote, setEditingNote] = useState(false);
@@ -22,16 +23,22 @@ const NoteModal = React.forwardRef(function NoteModal({ plantID, notes, setNotes
     // Create ref for Modal component (used to show/hide)
     const noteModalRef = useRef(null);
 
+    // Textarea listener
+    const updateNoteText = (text) => {
+        setNoteText(text);
+        setCharCount(text.length);
+    };
+
     // Make open and close methods available in parent component
     useImperativeHandle(ref, () => {
         return {
             open(note) {
                 if (note) {
-                    setNoteText(note.text);
+                    updateNoteText(note.text);
                     setNoteTime(note.timestamp);
                     setEditingNote(true);
                 } else {
-                    setNoteText('');
+                    updateNoteText('');
                     setNoteTime(DateTime.now().toFormat("yyyy-MM-dd'T'HH:mm:ss"));
                     setEditingNote(false);
                 }
@@ -145,10 +152,14 @@ const NoteModal = React.forwardRef(function NoteModal({ plantID, notes, setNotes
                     }
                     <textarea
                         className={`textarea textarea-bordered w-full max-w-xs
-                                    mx-auto mt-8 mb-4 min-h-40`}
+                                    mx-auto mt-8 mb-4 min-h-40
+                                    ${charCount > 500 ? 'textarea-error' : ''}`}
                         value={noteText}
-                        onChange={e => setNoteText(e.target.value)}
+                        onChange={e => updateNoteText(e.target.value)}
                     ></textarea>
+                    <span className={`text-sm ${charCount > 500 ? 'text-error' : ''}`}>
+                        {charCount} / 500
+                    </span>
                 </div>
                 {editingNote
                     ? (

@@ -1681,8 +1681,15 @@ exports[`App matches snapshot 1`] = `
                   />
                   <textarea
                     class="textarea textarea-bordered w-full max-w-xs
-                                    mx-auto mt-8 mb-4 min-h-40"
+                                    mx-auto mt-8 mb-4 min-h-40
+                                    "
                   />
+                  <span
+                    class="text-sm "
+                  >
+                    0
+                     / 500
+                  </span>
                 </div>
                 <div
                   class="modal-action mx-auto"
@@ -4907,8 +4914,15 @@ exports[`App matches snapshot 1`] = `
                 />
                 <textarea
                   class="textarea textarea-bordered w-full max-w-xs
-                                    mx-auto mt-8 mb-4 min-h-40"
+                                    mx-auto mt-8 mb-4 min-h-40
+                                    "
                 />
+                <span
+                  class="text-sm "
+                >
+                  0
+                   / 500
+                </span>
               </div>
               <div
                 class="modal-action mx-auto"
