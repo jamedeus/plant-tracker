@@ -75,7 +75,7 @@ coverage report -m --precision=1
 
 ### Frontend
 
-Should be run with **node v22.1** (some mocks don't work on 19.6, other versions not tested).
+Frontend tests require **node v20.12** or newer (some mocks don't work on earlier versions).
 
 Run tests and print coverage report:
 ```

@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Track house plant watering, fertilizing, etc",
   "main": "index.js",
+  "engines" : {
+    "node" : ">=20.12.2"
+  },
   "scripts": {
     "test": "jest",
     "build": "webpack --mode=production --node-env=production",
