@@ -69,8 +69,8 @@ Django tests should be run with the [test_settings](backend/backend/test_setting
 pipenv install --dev
 pipenv shell
 cd backend
-coverage run --source='.' --omit='*manage.py,*wsgi.py,*asgi.py,*/test_*.py,*unit_test_helpers.py,*/migrations/*.py' manage.py test --settings=backend.test_settings
-coverage report -m --precision=1
+coverage run manage.py test --settings=backend.test_settings
+coverage report
 ```
 
 ### Frontend
