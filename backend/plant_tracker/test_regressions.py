@@ -1,3 +1,5 @@
+# pylint: disable=missing-docstring,R0801
+
 import shutil
 from uuid import uuid4
 from types import NoneType
@@ -114,7 +116,7 @@ class ViewRegressionTests(TestCase):
 
         # Send bulk_add_plants_to_group request for all plants with same
         # timestamp as the existing WaterEvent
-        payload = {
+        response = JSONClient().post('/bulk_add_plant_events', {
             'plants': [
                 str(plant1.uuid),
                 str(plant2.uuid),
@@ -122,8 +124,7 @@ class ViewRegressionTests(TestCase):
             ],
             'event_type': 'water',
             'timestamp': timestamp.isoformat()
-        }
-        response = JSONClient().post('/bulk_add_plant_events', payload)
+        })
 
         # Request should succeed despite conflicting event, plant2 should be
         # listed as failed in response
@@ -155,12 +156,11 @@ class ViewRegressionTests(TestCase):
         self.assertEqual(len(plant.repotevent_set.all()), 1)
 
         # Send request to repot plant with same timestamp
-        payload = {
+        response = JSONClient().post('/repot_plant', {
             'plant_id': str(plant.uuid),
             'timestamp': timestamp.isoformat(),
             'new_pot_size': ''
-        }
-        response = JSONClient().post('/repot_plant', payload)
+        })
 
         # Confirm correct error, confirm no RepotEvent was created
         self.assertEqual(response.status_code, 409)
@@ -191,11 +191,10 @@ class ViewRegressionTests(TestCase):
         self.assertEqual(len(Photo.objects.all()), 2)
 
         # Make request to delete both photos from database
-        payload = {
+        response = JSONClient().post('/delete_plant_photos', {
             'plant_id': str(plant.uuid),
             'delete_photos': [photo1.pk, photo2.pk]
-        }
-        response = JSONClient().post('/delete_plant_photos', payload)
+        })
 
         # Should succeed despite duplicate timestamp, confirm removed from db
         self.assertEqual(response.status_code, 200)
@@ -443,10 +442,10 @@ class CachedStateRegressionTests(TestCase):
         )
 
         # Delete second photo
-        JSONClient().post(
-            '/delete_plant_photos',
-            {'plant_id': str(plant.uuid), 'delete_photos': [photo2.pk]}
-        )
+        JSONClient().post('/delete_plant_photos', {
+            'plant_id': str(plant.uuid),
+            'delete_photos': [photo2.pk]
+        })
 
         # Confirm manage_group state reverted to photo1 thumbnail
         response = self.client.get(f'/manage/{group.uuid}')
@@ -486,27 +485,29 @@ class CachedStateRegressionTests(TestCase):
         self.assertEqual(response.context['state']['groups'][0]['plants'], 2)
 
         # Remove plant2 from the group
-        JSONClient().post('/remove_plant_from_group', {'plant_id': plant2.uuid})
+        JSONClient().post('/remove_plant_from_group', {
+            'plant_id': plant2.uuid
+        })
 
         # Confirm group option in manage_plant state now says 1 plant in group
         response = self.client.get(f'/manage/{plant1.uuid}')
         self.assertEqual(response.context['state']['groups'][0]['plants'], 1)
 
         # Add plant2 to group using the /bulk_add_plants_to_group endpoint
-        JSONClient().post(
-            '/bulk_add_plants_to_group',
-            {'group_id': group.uuid, 'plants': [plant2.uuid]}
-        )
+        JSONClient().post('/bulk_add_plants_to_group', {
+            'group_id': group.uuid,
+            'plants': [plant2.uuid]
+        })
 
         # Confirm group option in manage_plant state now says 2 plants in group
         response = self.client.get(f'/manage/{plant1.uuid}')
         self.assertEqual(response.context['state']['groups'][0]['plants'], 2)
 
         # Remove plant2 from group using the /bulk_remove_plants_from_group endpoint
-        JSONClient().post(
-            '/bulk_remove_plants_from_group',
-            {'group_id': group.uuid, 'plants': [plant2.uuid]}
-        )
+        JSONClient().post('/bulk_remove_plants_from_group', {
+            'group_id': group.uuid,
+            'plants': [plant2.uuid]
+        })
 
         # Confirm group option in manage_plant state now says 1 plant in group
         response = self.client.get(f'/manage/{plant1.uuid}')
@@ -527,11 +528,11 @@ class ViewDecoratorRegressionTests(TestCase):
 
         # Create test functions that raise errors caught by decorator
         @get_plant_from_post_body
-        def test_key_error(plant, data):
+        def test_key_error(plant, **kwargs):
             raise KeyError("wrapped function error")
 
         @get_plant_from_post_body
-        def test_validation_error(plant, data):
+        def test_validation_error(plant, **kwargs):
             raise ValidationError("wrapped function error")
 
         # Exceptions should not be caught by the decorator
@@ -553,11 +554,11 @@ class ViewDecoratorRegressionTests(TestCase):
 
         # Create test functions that raise errors caught by decorator
         @get_group_from_post_body
-        def test_key_error(group, data):
+        def test_key_error(group, **kwargs):
             raise KeyError("wrapped function error")
 
         @get_group_from_post_body
-        def test_validation_error(group, data):
+        def test_validation_error(group, **kwargs):
             raise ValidationError("wrapped function error")
 
         # Exceptions should not be caught by the decorator
@@ -579,11 +580,11 @@ class ViewDecoratorRegressionTests(TestCase):
 
         # Create test functions that raise errors caught by decorator
         @get_timestamp_from_post_body
-        def test_key_error(timestamp, data):
+        def test_key_error(timestamp, **kwargs):
             raise KeyError("wrapped function error")
 
         @get_timestamp_from_post_body
-        def test_value_error(timestamp, data):
+        def test_value_error(timestamp, **kwargs):
             raise ValueError("wrapped function error")
 
         # Exceptions should not be caught by the decorator
@@ -605,7 +606,7 @@ class ViewDecoratorRegressionTests(TestCase):
 
         # Create test function that raise error caught by decorator
         @get_event_type_from_post_body
-        def test_key_error(event_type, data):
+        def test_key_error(event_type, **kwargs):
             raise KeyError("wrapped function error")
 
         # Exceptions should not be caught by the decorator

@@ -47,11 +47,6 @@ fail-under=9
 
 # Files or directories to be skipped. They should be base names, not paths.
 ignore=CVS,
-       test_models.py,
-       test_views.py,
-       test_tasks.py,
-       test_regressions.py,
-       unit_test_helpers.py,
        apps.py,
        admin.py
 
@@ -198,7 +193,9 @@ good-names=i,
            k,
            ex,
            Run,
-           _
+           _,
+           setUpModule,
+           tearDownModule
 
 # Good variable names regexes, separated by a comma. If names match any regex,
 # they will always be accepted

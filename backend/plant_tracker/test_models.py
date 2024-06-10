@@ -1,3 +1,5 @@
+# pylint: disable=missing-docstring,line-too-long
+
 import os
 import shutil
 from uuid import uuid4
@@ -45,9 +47,6 @@ class PlantModelTests(TestCase):
         self.plant = Plant.objects.create(uuid=uuid4())
         # Create test datetime object for creating events
         self.timestamp = timezone.now()
-
-        # Set default content_type for post requests (avoid long lines)
-        self.client = JSONClient()
 
     def test_str_method(self):
         # Should return "Unnamed plant <num> (UUID)" when no params are set
@@ -144,15 +143,15 @@ class PlantModelTests(TestCase):
 
     def test_change_plant_uuid(self):
         # Call change_uuid endpoint, confirm response + uuid changed
-        payload = {
+        new_id = str(uuid4())
+        response = JSONClient().post('/change_uuid', {
             'uuid': self.plant.uuid,
-            'new_id': str(uuid4())
-        }
-        response = self.client.post('/change_uuid', payload)
+            'new_id': new_id
+        })
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'new_uuid': payload['new_id']})
+        self.assertEqual(response.json(), {'new_uuid': new_id})
         self.plant.refresh_from_db()
-        self.assertEqual(str(self.plant.uuid), payload['new_id'])
+        self.assertEqual(str(self.plant.uuid), new_id)
 
     def test_get_display_name(self):
         # Confirm name and species are null, display_name should be unnamed index
@@ -172,7 +171,7 @@ class PlantModelTests(TestCase):
 
         # Create 3 unnamed plants
         unnamed = []
-        for i in range(0, 3):
+        for _ in range(0, 3):
             unnamed.append(Plant.objects.create(uuid=uuid4()))
 
         # Confirm Unnamed plants have correct sequential display_names
@@ -268,9 +267,6 @@ class GroupModelTests(TestCase):
         self.plant2 = Plant.objects.create(uuid=uuid4(), name="plant2", group=self.test_group)
         self.plant3 = Plant.objects.create(uuid=uuid4(), name="plant3")
 
-        # Set default content_type for post requests (avoid long lines)
-        self.client = JSONClient()
-
     def test_str_method(self):
         # Should return "Unnamed group <num> (UUID)" when no params are set
         self.assertEqual(str(self.test_group), f"Unnamed group 1 ({self.test_group.uuid})")
@@ -307,15 +303,15 @@ class GroupModelTests(TestCase):
 
     def test_change_group_uuid(self):
         # Call change_uuid endpoint, confirm response + uuid changed
-        payload = {
+        new_id = str(uuid4())
+        response = JSONClient().post('/change_uuid', {
             'uuid': self.test_group.uuid,
-            'new_id': str(uuid4())
-        }
-        response = self.client.post('/change_uuid', payload)
+            'new_id': new_id
+        })
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'new_uuid': payload['new_id']})
+        self.assertEqual(response.json(), {'new_uuid': new_id})
         self.test_group.refresh_from_db()
-        self.assertEqual(str(self.test_group.uuid), payload['new_id'])
+        self.assertEqual(str(self.test_group.uuid), new_id)
 
     def test_get_display_name(self):
         # Confirm name and location are null, display_name should be unnamed index
@@ -335,7 +331,7 @@ class GroupModelTests(TestCase):
 
         # Create 3 unnamed groups
         unnamed = []
-        for i in range(0, 3):
+        for _ in range(0, 3):
             unnamed.append(Group.objects.create(uuid=uuid4()))
 
         # Confirm Unnamed groups have correct sequential display_names
