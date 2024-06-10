@@ -4,9 +4,12 @@ import json
 from uuid import uuid4
 
 from django.test import TestCase
+from django.http import HttpResponse
+from django.test.client import RequestFactory
 
 from .models import Plant
 from .view_decorators import (
+    requires_json_post,
     get_plant_from_post_body,
     get_group_from_post_body,
     get_qr_instance_from_post_body,
@@ -232,3 +235,27 @@ class FallbackErrorHandlingTests(TestCase):
             json.loads(response.content),
             {"error": "POST body missing required 'event_type' key"}
         )
+
+
+class UnusedBranchCoverageTests(TestCase):
+    '''These tests provide full coverage for branches that are not currently
+    used by any endpoint.
+    '''
+
+    def test_requires_json_post_no_required_keys(self):
+        # Create mock function with no required JSON keys
+        @requires_json_post()
+        def mock_view_function(**kwargs):
+            return HttpResponse(200)
+
+        # Create mock POST request with arbitrary JSON data
+        factory = RequestFactory()
+        request = factory.post(
+            '/mock_endpoint',
+            json.dumps({'mock': 'data'}),
+            content_type='application/json'
+        )
+
+        # Pass mock request to mock view, confirm decorator does not return error
+        response = mock_view_function(request)
+        self.assertEqual(response.status_code, 200)

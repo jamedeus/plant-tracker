@@ -1,17 +1,22 @@
 # pylint: disable=missing-docstring,too-many-lines,R0801
 
 import os
+import io
+import sys
+import json
 import base64
 import shutil
 from uuid import uuid4
 from datetime import datetime
+from unittest.mock import patch
 
 from django.conf import settings
 from django.test import TestCase
 from django.utils import timezone
 from django.core.cache import cache
-from django.test.client import MULTIPART_CONTENT
+from django.test.client import RequestFactory, MULTIPART_CONTENT
 
+from .views import render_react_app
 from .models import (
     Group,
     Plant,
@@ -41,6 +46,62 @@ def tearDownModule():
 
     # Re-enable cached state celery tasks
     schedule_cached_state_update_patch.stop()
+
+
+class RenderReactAppTests(TestCase):
+    def setUp(self):
+        # Create GET request for mock endpoint
+        factory = RequestFactory()
+        self.request = factory.get('/mock')
+
+        # Redirect stdout to variable
+        self.stdout = io.StringIO()
+        sys.stdout = self.stdout
+
+    def tearDown(self):
+        # Reset stdout redirect
+        sys.stdout = sys.__stdout__
+
+    def test_render_react_app_without_logging_state(self):
+        # Call function with mock arguments and log_state set to False
+        response = render_react_app(
+            request=self.request,
+            title='Mock Title',
+            bundle='mock',
+            state={
+                'data': 'mock'
+            },
+            log_state=False
+        )
+
+        # Confirm returned status 200, confirm nothing was printed to stdout
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.stdout.getvalue(), '')
+
+    def test_render_react_app_and_log_state(self):
+        # Call function with mock arguments and log_state set to True
+        response = render_react_app(
+            request=self.request,
+            title='Mock Title',
+            bundle='mock',
+            state={
+                'data': 'mock'
+            },
+            log_state=True
+        )
+
+        # Confirm returned status 200 and pretty printed context to stdout
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            self.stdout.getvalue(),
+            json.dumps({
+                'title': 'Mock Title',
+                'js_bundle': 'plant_tracker/mock.js',
+                'state': {
+                    'data': 'mock'
+                }
+            }, indent=4) + '\n'
+        )
 
 
 class OverviewTests(TestCase):
@@ -117,6 +178,26 @@ class OverviewTests(TestCase):
                 }
             ]
         )
+
+    def test_overview_page_cached_state(self):
+        # Cache arbitrary string as overview_state
+        cache.set('overview_state', 'cached')
+
+        # Mock build_overview_state to return a different string
+        with patch('plant_tracker.views.build_overview_state', return_value='built'):
+            # Request overview page, confirm state was loaded from cache
+            response = self.client.get('/')
+            self.assertEqual(response.context['state'], 'cached')
+
+        # Delete cached overview__state
+        cache.delete('overview_state')
+
+        # Mock build_overview_state to return a different string
+        with patch('plant_tracker.views.build_overview_state', return_value='built'):
+            # Request overview page, confirm was built by calling mocked
+            # function (failed to load from cache)
+            response = self.client.get('/')
+            self.assertEqual(response.context['state'], 'built')
 
     def test_get_qr_codes(self):
         # Mock URL_PREFIX env var
@@ -475,6 +556,41 @@ class ManagePageTests(TestCase):
             }
         )
 
+    def test_manage_plant_with_name(self):
+        # Give plant1 a name
+        self.plant1.name = 'Favorite Plant'
+        self.plant1.save()
+
+        # Request manage page, confirm display_name matches name attribute
+        response = self.client.get(f'/manage/{self.plant1.uuid}')
+        self.assertEqual(
+            response.context['state']['plant']['display_name'],
+            'Favorite Plant'
+        )
+
+    def test_manage_plant_with_species_options(self):
+        # Add species to both plants
+        self.plant1.species = 'Calathea'
+        self.plant1.save()
+        self.plant2.species = 'Fittonia'
+        self.plant2.save()
+
+        # Request manage page, confirm species_options contains both species
+        response = self.client.get(f'/manage/{self.plant1.uuid}')
+        self.assertIn('Calathea', response.context['state']['species_options'])
+        self.assertIn('Fittonia', response.context['state']['species_options'])
+        self.assertEqual(len(response.context['state']['species_options']), 2)
+
+        # Save species_options
+        plant1_species_options = response.context['state']['species_options']
+
+        # Request mangage oage for second plant, confirm identical species_options
+        response = self.client.get(f'/manage/{self.plant2.uuid}')
+        self.assertEqual(
+            response.context['state']['species_options'],
+            plant1_species_options
+        )
+
     def test_manage_group_with_no_plants(self):
         # Request management page for test group, confirm status
         response = self.client.get(f'/manage/{self.group1.uuid}')
@@ -688,6 +804,22 @@ class ManagePlantEndpointTests(TestCase):
         self.assertEqual(self.plant.pot_size, 6)
         self.assertEqual(self.plant.repotevent_set.all()[0].old_pot_size, 4)
         self.assertEqual(self.plant.repotevent_set.all()[0].new_pot_size, 6)
+
+    def test_repot_plant_blank_new_pot_size(self):
+        # Set starting pot_size
+        self.plant.pot_size = 4
+        self.plant.save()
+
+        # Send repot_plant request with blank new_pot_size
+        response = self.client.post('/repot_plant', {
+            'plant_id': self.plant.uuid,
+            'timestamp': '2024-02-06T03:06:26.000Z',
+            'new_pot_size': None
+        })
+
+        # Confirm status, confirm plant pot_size did not change
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(self.plant.pot_size, 4)
 
 
 class ManageGroupEndpointTests(TestCase):
