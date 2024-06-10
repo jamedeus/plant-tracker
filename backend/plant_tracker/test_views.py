@@ -1,8 +1,10 @@
+# pylint: disable=missing-docstring,too-many-lines,R0801
+
 import os
-import json
 import base64
 import shutil
 from uuid import uuid4
+from datetime import datetime
 
 from django.conf import settings
 from django.test import TestCase
@@ -19,13 +21,6 @@ from .models import (
     RepotEvent,
     Photo,
     NoteEvent
-)
-from .view_decorators import (
-    get_plant_from_post_body,
-    get_group_from_post_body,
-    get_qr_instance_from_post_body,
-    get_timestamp_from_post_body,
-    get_event_type_from_post_body
 )
 from .unit_test_helpers import (
     JSONClient,
@@ -131,10 +126,11 @@ class OverviewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         try:
             base64.b64decode(response.json()['qr_codes'], validate=True)
-        except:
-            self.assertTrue(False)
+        # pylint: disable-next=bare-except
+        except:  # noqa
+            self.fail('Failed to decode base64 string returned by /get_qr_codes')
 
-    def test_get_qr_codes_with_long_URL(self):
+    def test_get_qr_codes_with_long_url(self):
         # Mock URL_PREFIX env var with a very long URL
         settings.URL_PREFIX = 'planttracker.several.more.subdomains.mysite.com'
         # Send request, confirm response contains base64 string
@@ -142,8 +138,56 @@ class OverviewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         try:
             base64.b64decode(response.json()['qr_codes'], validate=True)
-        except:
-            self.assertTrue(False)
+        # pylint: disable-next=bare-except
+        except:  # noqa
+            self.fail('Failed to decode base64 string returned by /get_qr_codes')
+
+    def test_get_qr_codes_url_prefix_not_set(self):
+        # Mock missing URL_PREFIX env var
+        settings.URL_PREFIX = None
+        # Send request, confirm correct error
+        response = self.client.post('/get_qr_codes', {'qr_per_row': 8})
+        self.assertEqual(response.status_code, 501)
+        self.assertEqual(response.json(), {'error': 'URL_PREFIX not configured'})
+
+    def test_get_qr_codes_invalid_qr_per_row(self):
+        # Send request with string qr_per_row, confirm correct error
+        response = self.client.post('/get_qr_codes', {'qr_per_row': 'five'})
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.json(),
+            {'error': 'qr_per_row must be an integer between 2 and 25'}
+        )
+
+        # Send request with qr_per_row less than 2, confirm correct error
+        response = self.client.post('/get_qr_codes', {'qr_per_row': 1})
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.json(),
+            {'error': 'qr_per_row must be an integer between 2 and 25'}
+        )
+
+        # Send request with qr_per_row greater than 25, confirm correct error
+        response = self.client.post('/get_qr_codes', {'qr_per_row': 26})
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.json(),
+            {'error': 'qr_per_row must be an integer between 2 and 25'}
+        )
+
+    def test_get_qr_codes_excessively_long_url_prefix(self):
+        # Mock excessively long URL_PREFIX, will not be possible to generate QR
+        # codes with width less than max_width
+        # pylint: disable-next=line-too-long
+        settings.URL_PREFIX = 'https://excessive.number.of.extremely.long.repeating.subdomains.excessive.number.of.extremely.long.repeating.subdomains.excessive.number.of.extremely.long.repeating.subdomains.excessive.number.of.extremely.long.repeating.subdomains.longdomainname.com/'  # noqa
+
+        # Send request with qr_per_row = 25 (worst case), confirm correct error
+        response = self.client.post('/get_qr_codes', {'qr_per_row': 25})
+        self.assertEqual(response.status_code, 500)
+        self.assertEqual(
+            response.json(),
+            {'error': 'failed to generate, try a shorter URL_PREFIX'}
+        )
 
     def test_delete_plant(self):
         # Create test plant, confirm exists in database
@@ -180,6 +224,98 @@ class OverviewTests(TestCase):
         self.assertEqual(response.json(), {'error': 'group not found'})
 
 
+class RegistrationTests(TestCase):
+    def setUp(self):
+        # Set default content_type for post requests (avoid long lines)
+        self.client = JSONClient()
+
+    def test_register_plant_endpoint(self):
+        # Confirm no plants or groups in database
+        self.assertEqual(len(Plant.objects.all()), 0)
+        self.assertEqual(len(Group.objects.all()), 0)
+
+        # Send plant registration request with extra spaces on some params
+        test_id = uuid4()
+        response = self.client.post('/register_plant', {
+            'uuid': test_id,
+            'name': '     test plant',
+            'species': 'Giant Sequoia    ',
+            'description': '300 feet and a few thousand years old',
+            'pot_size': '4'
+        })
+
+        # Confirm response redirects to management page for new plant
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, f'/manage/{test_id}')
+
+        # Confirm new plant exists in database, confirm no group was created
+        self.assertEqual(len(Plant.objects.all()), 1)
+        self.assertEqual(len(Group.objects.all()), 0)
+
+        # Confirm plant has corrrect params, confirm extra spaces were removed
+        plant = Plant.objects.get(uuid=test_id)
+        self.assertEqual(plant.name, 'test plant')
+        self.assertEqual(plant.species, 'Giant Sequoia')
+        self.assertEqual(plant.description, '300 feet and a few thousand years old')
+        self.assertEqual(plant.pot_size, 4)
+
+    def test_register_group_endpoint(self):
+        # Confirm no plants or groups in database
+        self.assertEqual(len(Plant.objects.all()), 0)
+        self.assertEqual(len(Group.objects.all()), 0)
+
+        # Send plant registration request with extra spaces on some params
+        test_id = uuid4()
+        response = self.client.post('/register_group', {
+            'uuid': test_id,
+            'name': '    test group',
+            'location': 'top shelf    ',
+            'description': 'This group is used for propagation'
+        })
+
+        # Confirm response redirects to management page for new group
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, f'/manage/{test_id}')
+
+        # Confirm new group exists in database, confirm no plant was created
+        self.assertEqual(len(Group.objects.all()), 1)
+        self.assertEqual(len(Plant.objects.all()), 0)
+
+        # Confirm group has corrrect params, confirm extra spaces were removed
+        group = Group.objects.get(uuid=test_id)
+        self.assertEqual(group.name, 'test group')
+        self.assertEqual(group.location, 'top shelf')
+        self.assertEqual(group.description, 'This group is used for propagation')
+
+    def test_registration_page(self):
+        # Request management page with uuid that doesn't exist in database
+        response = self.client.get(f'/manage/{uuid4()}')
+
+        # Confirm used register bundle and correct title
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'plant_tracker/index.html')
+        self.assertEqual(response.context['js_bundle'], 'plant_tracker/register.js')
+        self.assertEqual(response.context['title'], 'Register New Plant')
+
+    def test_registration_page_plant_species_options(self):
+        # Request management page with uuid that doesn't exist in database
+        response = self.client.get(f'/manage/{uuid4()}')
+
+        # Confirm species_options list is empty (no plants in database)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['state']['species_options'], [])
+
+        # Create 2 test plants with species set
+        Plant.objects.create(uuid=uuid4(), species='Calathea')
+        Plant.objects.create(uuid=uuid4(), species='Fittonia')
+
+        # Reguest page again, confirm species_options contains both species
+        response = self.client.get(f'/manage/{uuid4()}')
+        self.assertIn('Calathea', response.context['state']['species_options'])
+        self.assertIn('Fittonia', response.context['state']['species_options'])
+        self.assertEqual(len(response.context['state']['species_options']), 2)
+
+
 class ManagePageTests(TestCase):
     def setUp(self):
         # Set default content_type for post requests (avoid long lines)
@@ -190,114 +326,7 @@ class ManagePageTests(TestCase):
         self.plant2 = Plant.objects.create(uuid=uuid4())
         self.group1 = Group.objects.create(uuid=uuid4())
 
-        # Create fake UUID that doesn't exist in database
-        self.fake_id = uuid4()
-
-        # Create mock photos for plant1
-        Photo.objects.create(
-            photo=create_mock_photo('2024:03:21 10:52:03', 'photo1.jpg'),
-            plant=self.plant1
-        )
-        Photo.objects.create(
-            photo=create_mock_photo('2024:03:22 10:52:03', 'photo2.jpg'),
-            plant=self.plant1
-        )
-
-    def tearDown(self):
-        # Delete mock photos between tests to prevent duplicate names (django
-        # appends random string to keep unique, which makes testing difficult)
-        for i in os.listdir(os.path.join(settings.TEST_DIR, 'data', 'images', 'images')):
-            os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'images', i))
-        for i in os.listdir(os.path.join(settings.TEST_DIR, 'data', 'images', 'thumbnails')):
-            os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'thumbnails', i))
-
-    def _refresh_test_models(self):
-        self.plant1.refresh_from_db()
-        self.plant2.refresh_from_db()
-        self.group1.refresh_from_db()
-
-    def test_registration_plant(self):
-        # Confirm no plants or groups in database (except test entries)
-        self.assertEqual(len(Plant.objects.all()), 2)
-        self.assertEqual(len(Group.objects.all()), 1)
-
-        # Send plant registration request with extra spaces on some params
-        test_id = uuid4()
-        payload = {
-            'uuid': test_id,
-            'name': '     test plant',
-            'species': 'Giant Sequoia    ',
-            'description': '300 feet and a few thousand years old',
-            'pot_size': '4'
-        }
-        response = self.client.post('/register_plant', payload)
-
-        # Confirm response redirects to management page for new plant
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/manage/{test_id}')
-
-        # Confirm exists in database
-        self.assertEqual(len(Plant.objects.all()), 3)
-        # Confirm plant has corrrect params, confirm extra spaces were removed
-        plant = Plant.objects.get(uuid=test_id)
-        self.assertEqual(plant.name, 'test plant')
-        self.assertEqual(plant.species, 'Giant Sequoia')
-        self.assertEqual(plant.description, '300 feet and a few thousand years old')
-        self.assertEqual(plant.pot_size, 4)
-        # Confirm no extra group created
-        self.assertEqual(len(Group.objects.all()), 1)
-
-    def test_registration_group(self):
-        # Confirm no plants or groups in database (except test entries)
-        self.assertEqual(len(Plant.objects.all()), 2)
-        self.assertEqual(len(Group.objects.all()), 1)
-
-        # Send plant registration request with extra spaces on some params
-        test_id = uuid4()
-        payload = {
-            'uuid': test_id,
-            'name': '    test group',
-            'location': 'top shelf    ',
-            'description': 'This group is used for propagation'
-        }
-        response = self.client.post('/register_group', payload)
-
-        # Confirm response redirects to management page for new group
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, f'/manage/{test_id}')
-
-        # Confirm exists in database
-        self.assertEqual(len(Group.objects.all()), 2)
-        # Confirm group has corrrect params, confirm extra spaces were removed
-        group = Group.objects.get(uuid=test_id)
-        self.assertEqual(group.name, 'test group')
-        self.assertEqual(group.location, 'top shelf')
-        self.assertEqual(group.description, 'This group is used for propagation')
-        # Confirm no extra plant created
-        self.assertEqual(len(Plant.objects.all()), 2)
-
-    def test_manage_new_plant(self):
-        # Add species to test plants
-        self.plant1.species = "Fittonia"
-        self.plant2.species = "Calathea"
-        self.plant1.save()
-        self.plant2.save()
-
-        # Request management page for new plant, confirm status
-        response = self.client.get(f'/manage/{uuid4()}')
-        self.assertEqual(response.status_code, 200)
-
-        # Confirm used register bundle and correct title
-        self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['js_bundle'], 'plant_tracker/register.js')
-        self.assertEqual(response.context['title'], 'Register New Plant')
-
-        # Confirm react state contains list of existing plant species options
-        self.assertIn('Calathea', response.context['state']['species_options'])
-        self.assertIn('Fittonia', response.context['state']['species_options'])
-        self.assertEqual(len(response.context['state']['species_options']), 2)
-
-    def test_manage_existing_plant(self):
+    def test_manage_plant(self):
         # Request management page for test plant, confirm status
         response = self.client.get(f'/manage/{self.plant1.uuid}')
         self.assertEqual(response.status_code, 200)
@@ -316,7 +345,7 @@ class ManagePageTests(TestCase):
                 'name': None,
                 'display_name': 'Unnamed plant 1',
                 'species': None,
-                'thumbnail': '/media/thumbnails/photo2_thumb.jpg',
+                'thumbnail': None,
                 'pot_size': None,
                 'description': None,
                 'last_watered': None,
@@ -331,10 +360,16 @@ class ManagePageTests(TestCase):
             }
         )
 
-        # Confirm notes state is empty
+        # Confirm notes list is empty (test plant has no notes)
         self.assertEqual(state['notes'], [])
 
-        # Confirm groups contains details of all existing groups
+        # Confirm species_options list is empty (test plants have no species)
+        self.assertEqual(state['species_options'], [])
+
+        # Confirm photo_urls list is empty (test plant has no photos)
+        self.assertEqual(state['photo_urls'], [])
+
+        # Confirm groups key contains details of all existing groups
         self.assertEqual(
             state['groups'],
             [
@@ -349,13 +384,31 @@ class ManagePageTests(TestCase):
             ]
         )
 
-        # Confirm species_options list is empty (test plants have no species)
-        self.assertEqual(state['species_options'], [])
+    def test_manage_plant_with_photos(self):
+        # Create mock photos for plant1
+        Photo.objects.create(
+            photo=create_mock_photo('2024:03:21 10:52:03', 'photo1.jpg'),
+            plant=self.plant1
+        )
+        Photo.objects.create(
+            photo=create_mock_photo('2024:03:22 10:52:03', 'photo2.jpg'),
+            plant=self.plant1
+        )
 
-        # Confirm photo_urls contains list of dicts with timestamp keys, URL values
-        photo_urls = state['photo_urls']
+        # Request management page, confirm status
+        response = self.client.get(f'/manage/{self.plant1.uuid}')
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm plant.thumbnail contains URL of most recent photo
         self.assertEqual(
-            photo_urls,
+            response.context['state']['plant']['thumbnail'],
+            '/media/thumbnails/photo2_thumb.jpg'
+        )
+
+        # Confirm photo_urls contains list of dicts with timestamps, database
+        # keys, thumbnail URLs, and full-res URLs of each photo
+        self.assertEqual(
+            response.context['state']['photo_urls'],
             [
                 {
                     'created': '2024-03-22T10:52:03+00:00',
@@ -372,12 +425,48 @@ class ManagePageTests(TestCase):
             ]
         )
 
-        # Add test plant to group, request page again
+    def test_manage_plant_with_notes(self):
+        # Create 2 notes for plant1 with different timestamps
+        NoteEvent.objects.create(
+            plant=self.plant1,
+            timestamp=datetime.fromisoformat('2024-02-06T03:06:26+00:00'),
+            text='Leaves drooping, needs to be watered more often'
+        )
+        NoteEvent.objects.create(
+            plant=self.plant1,
+            timestamp=datetime.fromisoformat('2024-02-16T03:06:26+00:00'),
+            text='Looks much better now'
+        )
+
+        # Request management page, confirm status
+        response = self.client.get(f'/manage/{self.plant1.uuid}')
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm notes list contains dicts with timestamp and text of both notes
+        self.assertEqual(
+            response.context['state']['notes'],
+            [
+                {
+                    'text': 'Leaves drooping, needs to be watered more often',
+                    'timestamp': '2024-02-06T03:06:26+00:00'
+                },
+                {
+                    'text': 'Looks much better now',
+                    'timestamp': '2024-02-16T03:06:26+00:00'
+                }
+            ]
+        )
+
+    def test_manage_plant_with_group(self):
+        # Add test plant to group
         self.plant1.group = self.group1
         self.plant1.save()
-        response = self.client.get(f'/manage/{self.plant1.uuid}')
 
-        # Confirm state object contains group details
+        # Request management page, confirm status
+        response = self.client.get(f'/manage/{self.plant1.uuid}')
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm group key in plant state state contains group details
         self.assertEqual(
             response.context['state']['plant']['group'],
             {
@@ -386,11 +475,7 @@ class ManagePageTests(TestCase):
             }
         )
 
-    def test_manage_existing_group(self):
-        # Add test plant to group
-        self.plant1.group = self.group1
-        self.plant1.save()
-
+    def test_manage_group_with_no_plants(self):
         # Request management page for test group, confirm status
         response = self.client.get(f'/manage/{self.group1.uuid}')
         self.assertEqual(response.status_code, 200)
@@ -409,26 +494,13 @@ class ManagePageTests(TestCase):
                 'name': self.group1.name,
                 'location': None,
                 'description': None,
-                'display_name': self.group1.get_display_name(),
-                'plants': 1
+                'display_name': 'Unnamed group 1',
+                'plants': 0
             }
         )
 
-        # Confirm details state contains params for plant in group
-        self.assertEqual(
-            state['details'],
-            [{
-                'name': None,
-                'display_name': 'Unnamed plant 1',
-                'uuid': str(self.plant1.uuid),
-                'species': None,
-                'thumbnail': '/media/thumbnails/photo2_thumb.jpg',
-                'description': None,
-                'pot_size': None,
-                'last_watered': None,
-                'last_fertilized': None
-            }]
-        )
+        # Confirm details state contains empty list (no plants in group)
+        self.assertEqual(state['details'], [])
 
         # Confirm options state contains params for all plants
         self.assertEqual(
@@ -443,7 +515,7 @@ class ManagePageTests(TestCase):
                     'description': None,
                     'last_watered': None,
                     'last_fertilized': None,
-                    'thumbnail': '/media/thumbnails/photo2_thumb.jpg'
+                    'thumbnail': None
                 },
                 {
                     'name': self.plant2.name,
@@ -459,21 +531,62 @@ class ManagePageTests(TestCase):
             ]
         )
 
+    def test_manage_group_with_plant(self):
+        # Add test plant to group
+        self.plant1.group = self.group1
+        self.plant1.save()
+
+        # Request management page for test group, confirm status
+        response = self.client.get(f'/manage/{self.group1.uuid}')
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm plants key in group state matches number of plants
+        state = response.context['state']
+        self.assertEqual(state['group']['plants'], 1)
+
+        # Confirm details state contains params for plant in group
+        self.assertEqual(
+            state['details'],
+            [{
+                'name': None,
+                'display_name': 'Unnamed plant 1',
+                'uuid': str(self.plant1.uuid),
+                'species': None,
+                'thumbnail': None,
+                'description': None,
+                'pot_size': None,
+                'last_watered': None,
+                'last_fertilized': None
+            }]
+        )
+
+
+class ManagePlantEndpointTests(TestCase):
+    def setUp(self):
+        # Set default content_type for post requests (avoid long lines)
+        self.client = JSONClient()
+
+        # Create test plant and group
+        self.plant = Plant.objects.create(uuid=uuid4())
+        self.group = Group.objects.create(uuid=uuid4())
+
+    def _refresh_test_models(self):
+        self.plant.refresh_from_db()
+        self.group.refresh_from_db()
+
     def test_edit_plant_details(self):
         # Confirm test plant has no name or species
-        self.assertIsNone(self.plant1.name)
-        self.assertIsNone(self.plant1.species)
+        self.assertIsNone(self.plant.name)
+        self.assertIsNone(self.plant.species)
 
-        # Send edit details request
-        # Note trailing spaces on name, leading spaces on species
-        payload = {
-            'plant_id': self.plant1.uuid,
+        # Send edit_plant request with leading/trailing spaces on some params
+        response = self.client.post('/edit_plant', {
+            'plant_id': self.plant.uuid,
             'name': 'test plant    ',
             'species': '   Giant Sequoia',
             'description': '300 feet and a few thousand years old',
             'pot_size': '4'
-        }
-        response = self.client.post('/edit_plant', payload)
+        })
 
         # Confirm response contains correct details with extra spaces removed
         self.assertEqual(response.status_code, 200)
@@ -489,25 +602,125 @@ class ManagePageTests(TestCase):
         )
 
         # Confirm no additional plant created
-        self.assertEqual(len(Plant.objects.all()), 2)
+        self.assertEqual(len(Plant.objects.all()), 1)
+
         # Confirm details now match, leading/trailing spaces were removed
         self._refresh_test_models()
-        self.assertEqual(self.plant1.name, 'test plant')
-        self.assertEqual(self.plant1.species, 'Giant Sequoia')
+        self.assertEqual(self.plant.name, 'test plant')
+        self.assertEqual(self.plant.species, 'Giant Sequoia')
+
+    def test_add_plant_to_group(self):
+        # Confirm test plant and group have no database relation
+        self.assertIsNone(self.plant.group)
+        self.assertEqual(len(self.group.plant_set.all()), 0)
+
+        # Send add_plant_to_group request, confirm response
+        response = self.client.post('/add_plant_to_group', {
+            'plant_id': self.plant.uuid,
+            'group_id': self.group.uuid
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {
+                "action": "add_plant_to_group",
+                "plant": str(self.plant.uuid),
+                "group_name": 'Unnamed group 1',
+                "group_uuid": str(self.group.uuid)
+            }
+        )
+
+        # Confirm database relation created
+        self._refresh_test_models()
+        self.assertEqual(self.plant.group, self.group)
+        self.assertEqual(len(self.group.plant_set.all()), 1)
+
+    def test_remove_plant_from_group(self):
+        # Add test plant to group, confirm relation
+        self.plant.group = self.group
+        self.plant.save()
+        self.assertEqual(self.plant.group, self.group)
+        self.assertEqual(len(self.group.plant_set.all()), 1)
+
+        # Send add_plant_to_group request, confirm response
+        response = self.client.post('/remove_plant_from_group', {
+            'plant_id': self.plant.uuid
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {
+                'action': 'remove_plant_from_group',
+                'plant': str(self.plant.uuid)
+            }
+        )
+
+        # Confirm database relation removed
+        self._refresh_test_models()
+        self.assertIsNone(self.plant.group)
+        self.assertEqual(len(self.group.plant_set.all()), 0)
+
+    def test_repot_plant(self):
+        # Set starting pot_size
+        self.plant.pot_size = 4
+        self.plant.save()
+
+        # Confirm plant has no RepotEvents
+        self.assertEqual(len(self.plant.repotevent_set.all()), 0)
+
+        # Send repot_plant request
+        response = self.client.post('/repot_plant', {
+            'plant_id': self.plant.uuid,
+            'timestamp': '2024-02-06T03:06:26.000Z',
+            'new_pot_size': 6
+        })
+
+        # Confirm response, confirm RepotEvent created
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {"action": "repot", "plant": str(self.plant.uuid)}
+        )
+        self._refresh_test_models()
+        self.assertEqual(len(self.plant.repotevent_set.all()), 1)
+
+        # Confirm correct pot_size attributes on plant and event entries
+        self.assertEqual(self.plant.pot_size, 6)
+        self.assertEqual(self.plant.repotevent_set.all()[0].old_pot_size, 4)
+        self.assertEqual(self.plant.repotevent_set.all()[0].new_pot_size, 6)
+
+
+class ManageGroupEndpointTests(TestCase):
+    def setUp(self):
+        # Set default content_type for post requests (avoid long lines)
+        self.client = JSONClient()
+
+        # Create test plants and groups
+        self.plant1 = Plant.objects.create(uuid=uuid4())
+        self.plant2 = Plant.objects.create(uuid=uuid4())
+        self.group1 = Group.objects.create(uuid=uuid4())
+
+        # Create fake UUID that doesn't exist in database
+        self.fake_id = uuid4()
+
+    def _refresh_test_models(self):
+        self.plant1.refresh_from_db()
+        self.plant2.refresh_from_db()
+        self.group1.refresh_from_db()
 
     def test_edit_group_details(self):
-        # Confirm test group has no name
+        # Confirm test group has no name, location, or description
         self.assertIsNone(self.group1.name)
+        self.assertIsNone(self.group1.location)
+        self.assertIsNone(self.group1.description)
 
-        # Send edit details request
-        # Note trailing spaces on name, leading spaces on location
-        payload = {
+        # Send edit_group request with leading/trailing spaces on some params
+        response = self.client.post('/edit_group', {
             'group_id': self.group1.uuid,
             'name': 'test group    ',
             'location': '    middle shelf',
             'description': 'This group is used for propagation'
-        }
-        response = self.client.post('/edit_group', payload)
+        })
 
         # Confirm response contains correct details with extra spaces removed
         self.assertEqual(response.status_code, 200)
@@ -523,49 +736,15 @@ class ManagePageTests(TestCase):
 
         # Confirm no additional group created
         self.assertEqual(len(Group.objects.all()), 1)
+
         # Confirm details now match, leading/trailing spaces were removed
         self._refresh_test_models()
         self.assertEqual(self.group1.name, 'test group')
         self.assertEqual(self.group1.location, 'middle shelf')
-        self.assertEqual(self.group1.description, 'This group is used for propagation')
-
-    def test_add_plant_to_group(self):
-        # Confirm test plant and group have no database relation
-        self.assertIsNone(self.plant1.group)
-        self.assertEqual(len(self.group1.plant_set.all()), 0)
-
-        # Send add_plant_to_group request, confirm response
-        payload = {'plant_id': self.plant1.uuid, 'group_id': self.group1.uuid}
-        response = self.client.post('/add_plant_to_group', payload)
-        self.assertEqual(response.status_code, 200)
         self.assertEqual(
-            response.json(),
-            {
-                "action": "add_plant_to_group",
-                "plant": str(self.plant1.uuid),
-                "group_name": self.group1.get_display_name(),
-                "group_uuid": str(self.group1.uuid)
-            }
+            self.group1.description,
+            'This group is used for propagation'
         )
-
-        # Confirm database relation created
-        self._refresh_test_models()
-        self.assertEqual(self.plant1.group, self.group1)
-        self.assertEqual(len(self.group1.plant_set.all()), 1)
-
-    def test_remove_plant_from_group(self):
-        # Add test plant to group, confirm relation
-        self.plant1.group = self.group1
-        self.plant1.save()
-        self.assertEqual(self.plant1.group, self.group1)
-        self.assertEqual(len(self.group1.plant_set.all()), 1)
-
-        # Send add_plant_to_group request, confirm response + relation removed
-        response = self.client.post('/remove_plant_from_group', {'plant_id': self.plant1.uuid})
-        self.assertEqual(response.status_code, 200)
-        self._refresh_test_models()
-        self.assertIsNone(self.plant1.group)
-        self.assertEqual(len(self.group1.plant_set.all()), 0)
 
     def test_bulk_add_plants_to_group(self):
         # Confirm test plants are not in test group
@@ -574,15 +753,14 @@ class ManagePageTests(TestCase):
         self.assertEqual(len(self.group1.plant_set.all()), 0)
 
         # Send bulk_add_plants_to_group request with both IDs + 1 fake ID
-        payload = {
+        response = self.client.post('/bulk_add_plants_to_group', {
             'group_id': self.group1.uuid,
             'plants': [
                 self.plant1.uuid,
                 self.plant2.uuid,
                 self.fake_id
             ]
-        }
-        response = self.client.post('/bulk_add_plants_to_group', payload)
+        })
 
         # Confirm plant UUIDs were added, fake ID failed
         self.assertEqual(response.status_code, 200)
@@ -611,15 +789,14 @@ class ManagePageTests(TestCase):
         self.assertEqual(len(self.group1.plant_set.all()), 2)
 
         # Send bulk_add_plants_to_group request with both IDs + 1 fake ID
-        payload = {
+        response = self.client.post('/bulk_remove_plants_from_group', {
             'group_id': self.group1.uuid,
             'plants': [
                 self.plant1.uuid,
                 self.plant2.uuid,
                 self.fake_id
             ]
-        }
-        response = self.client.post('/bulk_remove_plants_from_group', payload)
+        })
 
         # Confirm plant UUIDs were removed, fake ID failed
         self.assertEqual(response.status_code, 200)
@@ -636,36 +813,6 @@ class ManagePageTests(TestCase):
         self.assertIsNone(self.plant1.group)
         self.assertIsNone(self.plant2.group)
         self.assertEqual(len(self.group1.plant_set.all()), 0)
-
-    def test_repot_plant(self):
-        # Set starting pot_size
-        self.plant1.pot_size = 4
-        self.plant1.save()
-
-        # Confirm plant has no RepotEvents
-        self.assertEqual(len(self.plant1.repotevent_set.all()), 0)
-
-        # Send repot_plant request
-        payload = {
-            'plant_id': self.plant1.uuid,
-            'timestamp': '2024-02-06T03:06:26.000Z',
-            'new_pot_size': 6
-        }
-        response = self.client.post('/repot_plant', payload)
-
-        # Confirm response, confirm RepotEvent created
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.json(),
-            {"action": "repot", "plant": str(self.plant1.uuid)}
-        )
-        self._refresh_test_models()
-        self.assertEqual(len(self.plant1.repotevent_set.all()), 1)
-
-        # Confirm correct pot_size attributes on plant and event entries
-        self.assertEqual(self.plant1.pot_size, 6)
-        self.assertEqual(self.plant1.repotevent_set.all()[0].old_pot_size, 4)
-        self.assertEqual(self.plant1.repotevent_set.all()[0].new_pot_size, 6)
 
 
 class ChangeQrCodeTests(TestCase):
@@ -697,10 +844,9 @@ class ChangeQrCodeTests(TestCase):
         self.assertIsNone(cache.get('old_uuid'))
 
         # Post UUID to change_qr_code endpoint, confirm response
-        response = self.client.post(
-            '/change_qr_code',
-            {'uuid': str(self.plant1.uuid)}
-        )
+        response = self.client.post('/change_qr_code', {
+            'uuid': str(self.plant1.uuid)
+        })
         self.assertEqual(
             response.json(),
             {"success": "scan new QR code within 15 minutes to confirm"}
@@ -716,10 +862,10 @@ class ChangeQrCodeTests(TestCase):
         self.assertEqual(cache.get('old_uuid'), str(self.plant1.uuid))
 
         # Post new UUID to change_uuid endpoint, confirm response
-        response = self.client.post(
-            '/change_uuid',
-            {'uuid': str(self.plant1.uuid), 'new_id': str(self.fake_id)}
-        )
+        response = self.client.post('/change_uuid', {
+            'uuid': str(self.plant1.uuid),
+            'new_id': str(self.fake_id)
+        })
         self.assertEqual(
             response.json(),
             {"new_uuid": str(self.fake_id)}
@@ -737,10 +883,10 @@ class ChangeQrCodeTests(TestCase):
         self.assertEqual(cache.get('old_uuid'), str(self.group1.uuid))
 
         # Post new UUID to change_uuid endpoint, confirm response
-        response = self.client.post(
-            '/change_uuid',
-            {'uuid': str(self.group1.uuid), 'new_id': str(self.fake_id)}
-        )
+        response = self.client.post('/change_uuid', {
+            'uuid': str(self.group1.uuid),
+            'new_id': str(self.fake_id)
+        })
         self.assertEqual(
             response.json(),
             {"new_uuid": str(self.fake_id)}
@@ -751,6 +897,18 @@ class ChangeQrCodeTests(TestCase):
         self._refresh_test_models()
         self.assertEqual(str(self.group1.uuid), str(self.fake_id))
         self.assertIsNone(cache.get('old_uuid'))
+
+    def test_change_uuid_invalid(self):
+        # post invalid UUID to change_uuid endpoint, confirm error
+        response = self.client.post('/change_uuid', {
+            'uuid': self.plant1.uuid,
+            'new_id': '31670857'
+        })
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.json(),
+            {"error": "new_id key is not a valid UUID"}
+        )
 
     def test_confirmation_page_plant(self):
         # Simulate cached UUID from change_qr_code request
@@ -862,37 +1020,36 @@ class ChangeQrCodeTests(TestCase):
         )
 
 
-class PlantEventTests(TestCase):
+class PlantEventEndpointTests(TestCase):
     def setUp(self):
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
 
-        # Create test plants and groups
+        # Create test plants
         self.plant1 = Plant.objects.create(uuid=uuid4())
         self.plant2 = Plant.objects.create(uuid=uuid4())
 
         # Create fake UUID that doesn't exist in database
         self.fake_id = uuid4()
 
-    def _refresh_test_models(self):
-        self.plant1.refresh_from_db()
-        self.plant2.refresh_from_db()
-
     def test_add_water_event(self):
         # Confirm test plant has no water events
         self.assertIsNone(self.plant1.last_watered())
         self.assertEqual(len(WaterEvent.objects.all()), 0)
 
-        payload = {
+        # Send add_plant_event request, confirm response
+        response = self.client.post('/add_plant_event', {
             'plant_id': self.plant1.uuid,
             'event_type': 'water',
             'timestamp': '2024-02-06T03:06:26.000Z'
-        }
-
-        # Send water request, confirm event created
-        response = self.client.post('/add_plant_event', payload)
+        })
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {"action": "water", "plant": str(self.plant1.uuid)})
+        self.assertEqual(
+            response.json(),
+            {"action": "water", "plant": str(self.plant1.uuid)}
+        )
+
+        # Confirm WaterEvent was created
         self.assertEqual(len(WaterEvent.objects.all()), 1)
         self.assertEqual(self.plant1.last_watered(), '2024-02-06T03:06:26+00:00')
 
@@ -901,16 +1058,19 @@ class PlantEventTests(TestCase):
         self.assertIsNone(self.plant1.last_fertilized())
         self.assertEqual(len(FertilizeEvent.objects.all()), 0)
 
-        payload = {
+        # Send add_plant_event request, confirm response
+        response = self.client.post('/add_plant_event', {
             'plant_id': self.plant1.uuid,
             'event_type': 'fertilize',
             'timestamp': '2024-02-06T03:06:26.000Z'
-        }
-
-        # Send fertilize request, confirm event created
-        response = self.client.post('/add_plant_event', payload)
+        })
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {"action": "fertilize", "plant": str(self.plant1.uuid)})
+        self.assertEqual(
+            response.json(),
+            {"action": "fertilize", "plant": str(self.plant1.uuid)}
+        )
+
+        # Confirm FertilizeEvent was created
         self.assertEqual(len(FertilizeEvent.objects.all()), 1)
         self.assertEqual(self.plant1.last_fertilized(), '2024-02-06T03:06:26+00:00')
 
@@ -919,16 +1079,19 @@ class PlantEventTests(TestCase):
         self.assertIsNone(self.plant1.last_pruned())
         self.assertEqual(len(PruneEvent.objects.all()), 0)
 
-        payload = {
+        # Send add_plant_event request, confirm response
+        response = self.client.post('/add_plant_event', {
             'plant_id': self.plant1.uuid,
             'event_type': 'prune',
             'timestamp': '2024-02-06T03:06:26.000Z'
-        }
-
-        # Send prune request, confirm event created
-        response = self.client.post('/add_plant_event', payload)
+        })
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {"action": "prune", "plant": str(self.plant1.uuid)})
+        self.assertEqual(
+            response.json(),
+            {"action": "prune", "plant": str(self.plant1.uuid)}
+        )
+
+        # Confirm PruneEvent was created
         self.assertEqual(len(PruneEvent.objects.all()), 1)
         self.assertEqual(self.plant1.last_pruned(), '2024-02-06T03:06:26+00:00')
 
@@ -937,81 +1100,39 @@ class PlantEventTests(TestCase):
         self.assertIsNone(self.plant1.last_repotted())
         self.assertEqual(len(RepotEvent.objects.all()), 0)
 
-        payload = {
+        # Send add_plant_event request, confirm response
+        response = self.client.post('/add_plant_event', {
             'plant_id': self.plant1.uuid,
             'event_type': 'repot',
             'timestamp': '2024-02-06T03:06:26.000Z'
-        }
-
-        # Send repot request, confirm event created
-        response = self.client.post('/add_plant_event', payload)
+        })
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {"action": "repot", "plant": str(self.plant1.uuid)})
+        self.assertEqual(
+            response.json(),
+            {"action": "repot", "plant": str(self.plant1.uuid)}
+        )
+
+        # Confirm RepotEvent was created
         self.assertEqual(len(RepotEvent.objects.all()), 1)
         self.assertEqual(self.plant1.last_repotted(), '2024-02-06T03:06:26+00:00')
 
-    def test_add_note_event(self):
-        # Confirm test plant has no note events
-        self.assertEqual(len(self.plant1.noteevent_set.all()), 0)
-        self.assertEqual(len(NoteEvent.objects.all()), 0)
-
-        payload = {
-            'plant_id': self.plant1.uuid,
-            'timestamp': '2024-02-06T03:06:26.000Z',
-            'note_text': 'plant is looking healthier than last week'
-        }
-
-        # Send add_note request, confirm event created
-        response = self.client.post('/add_plant_note', payload)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {"action": "add_note", "plant": str(self.plant1.uuid)})
-        self.assertEqual(len(NoteEvent.objects.all()), 1)
-        self.assertEqual(len(self.plant1.noteevent_set.all()), 1)
-
-    def test_edit_note_event(self):
-        # Create NoteEvent with no text, confirm exists
+    def test_add_event_with_duplicate_timestamp(self):
+        # Create WaterEvent manually, then attempt to create with API call
         timestamp = timezone.now()
-        NoteEvent.objects.create(plant=self.plant1, timestamp=timestamp, text="")
-        self.assertEqual(len(self.plant1.noteevent_set.all()), 1)
-
-        # Call edit_plant_note endpoint, confirm response
-        payload = {
+        WaterEvent.objects.create(plant=self.plant1, timestamp=timestamp)
+        self.assertEqual(len(WaterEvent.objects.all()), 1)
+        response = self.client.post('/add_plant_event', {
             'plant_id': self.plant1.uuid,
             'timestamp': timestamp.isoformat(),
-            'note_text': 'This is the text I forgot to add'
-        }
-        response = self.client.post('/edit_plant_note', payload)
-        self.assertEqual(response.status_code, 200)
+            'event_type': 'water'
+        })
+        # Confirm correct error, confirm no WaterEvent created
+        self.assertEqual(response.status_code, 409)
         self.assertEqual(
             response.json(),
-            {"action": "edit_note", "plant": str(self.plant1.uuid)}
+            {'error': 'event with same timestamp already exists'}
         )
-
-        # Confirm text of existing NoteEvent was updated
-        self.assertEqual(len(self.plant1.noteevent_set.all()), 1)
-        self.assertEqual(
-            NoteEvent.objects.get(timestamp=timestamp).text,
-            'This is the text I forgot to add'
-        )
-
-    def test_delete_note_event(self):
-        # Create NoteEvent, confirm exists
-        timestamp = timezone.now()
-        NoteEvent.objects.create(plant=self.plant1, timestamp=timestamp, text="")
-        self.assertEqual(len(self.plant1.noteevent_set.all()), 1)
-
-        # Call delete_plant_note endpoint, confirm response + event deleted
-        payload = {
-            'plant_id': self.plant1.uuid,
-            'timestamp': timestamp.isoformat()
-        }
-        response = self.client.post('/delete_plant_note', payload)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.json(),
-            {"deleted": "note", "plant": str(self.plant1.uuid)}
-        )
-        self.assertEqual(len(self.plant1.noteevent_set.all()), 0)
+        self.assertEqual(len(WaterEvent.objects.all()), 1)
 
     def test_bulk_water_plants(self):
         # Confirm test plants have no WaterEvents
@@ -1019,7 +1140,7 @@ class PlantEventTests(TestCase):
         self.assertEqual(len(self.plant2.waterevent_set.all()), 0)
 
         # Send bulk_add_plants_to_group request with both IDs
-        payload = {
+        response = self.client.post('/bulk_add_plant_events', {
             'plants': [
                 str(self.plant1.uuid),
                 str(self.plant2.uuid),
@@ -1027,8 +1148,7 @@ class PlantEventTests(TestCase):
             ],
             'event_type': 'water',
             'timestamp': '2024-02-06T03:06:26.000Z'
-        }
-        response = self.client.post('/bulk_add_plant_events', payload)
+        })
 
         # Confirm response, confirm WaterEvent created for both plants
         self.assertEqual(response.status_code, 200)
@@ -1049,7 +1169,7 @@ class PlantEventTests(TestCase):
         self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 0)
 
         # Send bulk_add_plants_to_group request with both IDs
-        payload = {
+        response = self.client.post('/bulk_add_plant_events', {
             'plants': [
                 str(self.plant1.uuid),
                 str(self.plant2.uuid),
@@ -1057,8 +1177,7 @@ class PlantEventTests(TestCase):
             ],
             'event_type': 'fertilize',
             'timestamp': '2024-02-06T03:06:26.000Z'
-        }
-        response = self.client.post('/bulk_add_plant_events', payload)
+        })
 
         # Confirm response, confirm WaterEvent created for both plants
         self.assertEqual(response.status_code, 200)
@@ -1079,19 +1198,32 @@ class PlantEventTests(TestCase):
         WaterEvent.objects.create(plant=self.plant1, timestamp=timestamp)
         self.assertEqual(len(self.plant1.waterevent_set.all()), 1)
 
-        # Call delete_plant_event endpoint, confirm response + event deleted
-        payload = {
+        # Call delete_plant_event endpoint, confirm response
+        response = self.client.post('/delete_plant_event', {
             'plant_id': self.plant1.uuid,
             'event_type': 'water',
             'timestamp': timestamp.isoformat()
-        }
-        response = self.client.post('/delete_plant_event', payload)
+        })
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
             {"deleted": "water", "plant": str(self.plant1.uuid)}
         )
+
+        # Confirm WaterEvent was deleted
         self.assertEqual(len(self.plant1.waterevent_set.all()), 0)
+
+    def test_delete_plant_event_timestamp_does_not_exist(self):
+        # Call delete_plant_event endpoint with a timestamp that doesn't exist
+        response = self.client.post('/delete_plant_event', {
+            'plant_id': self.plant1.uuid,
+            'event_type': 'water',
+            'timestamp': timezone.now().isoformat()
+        })
+
+        # Confirm correct error
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json(), {"error": "event not found"})
 
     def test_bulk_delete_plant_events(self):
         # Create multiple events with different types, confirm number in db
@@ -1106,7 +1238,7 @@ class PlantEventTests(TestCase):
         self.assertEqual(len(self.plant1.repotevent_set.all()), 1)
 
         # Post timestamp and type of each event to bulk_delete_plant_events endpoint
-        payload = {
+        response = self.client.post('/bulk_delete_plant_events', {
             'plant_id': self.plant1.uuid,
             'events': [
                 {'type': 'water', 'timestamp': timestamp.isoformat()},
@@ -1114,8 +1246,7 @@ class PlantEventTests(TestCase):
                 {'type': 'prune', 'timestamp': timestamp.isoformat()},
                 {'type': 'repot', 'timestamp': timestamp.isoformat()},
             ]
-        }
-        response = self.client.post('/bulk_delete_plant_events', payload)
+        })
 
         # Confirm correct response, confirm removed from database
         self.assertEqual(response.status_code, 200)
@@ -1136,14 +1267,195 @@ class PlantEventTests(TestCase):
         self.assertEqual(len(self.plant1.pruneevent_set.all()), 0)
         self.assertEqual(len(self.plant1.repotevent_set.all()), 0)
 
+    def test_bulk_delete_plant_events_does_not_exist(self):
+        # Post payload containing event that does not exist
+        response = self.client.post('/bulk_delete_plant_events', {
+            'plant_id': self.plant1.uuid,
+            'events': [
+                {'type': 'water', 'timestamp': '2024-04-19T00:13:37+00:00'}
+            ]
+        })
+
+        # Confirm event is in failed section
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {
+                "deleted": [],
+                "failed": [
+                    {'type': 'water', 'timestamp': '2024-04-19T00:13:37+00:00'}
+                ]
+            }
+        )
+
+    def test_bulk_delete_plant_events_missing_params(self):
+        # Create test event, confirm exists in database
+        timestamp = timezone.now()
+        WaterEvent.objects.create(plant=self.plant1, timestamp=timestamp)
+        self.assertEqual(len(self.plant1.waterevent_set.all()), 1)
+
+        # Post incomplete event dict to backend with missing timestamp key
+        response = self.client.post('/bulk_delete_plant_events', {
+            'plant_id': self.plant1.uuid,
+            'events': [
+                {'type': 'water'}
+            ]
+        })
+
+        # Confirm event is in failed section, confirm still in database
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {
+                "deleted": [],
+                "failed": [
+                    {'type': 'water'}
+                ]
+            }
+        )
+        self.assertEqual(len(self.plant1.waterevent_set.all()), 1)
+
+
+class NoteEventEndpointTests(TestCase):
+    def setUp(self):
+        # Set default content_type for post requests (avoid long lines)
+        self.client = JSONClient()
+
+        # Create test plant
+        self.plant = Plant.objects.create(uuid=uuid4())
+
+    def test_add_note_event(self):
+        # Confirm test plant has no note events
+        self.assertEqual(len(self.plant.noteevent_set.all()), 0)
+        self.assertEqual(len(NoteEvent.objects.all()), 0)
+
+        # Second add_plant_note request, confirm response
+        response = self.client.post('/add_plant_note', {
+            'plant_id': self.plant.uuid,
+            'timestamp': '2024-02-06T03:06:26.000Z',
+            'note_text': 'plant is looking healthier than last week'
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {"action": "add_note", "plant": str(self.plant.uuid)}
+        )
+
+        # Confirm NoteEvent was created
+        self.assertEqual(len(NoteEvent.objects.all()), 1)
+        self.assertEqual(len(self.plant.noteevent_set.all()), 1)
+
+    def test_add_note_event_duplicate_timestamp(self):
+        # Create NoteEvent manually, then attempt to create with API call
+        timestamp = timezone.now()
+        NoteEvent.objects.create(plant=self.plant, timestamp=timestamp)
+        self.assertEqual(len(NoteEvent.objects.all()), 1)
+        response = self.client.post('/add_plant_note', {
+            'plant_id': self.plant.uuid,
+            'timestamp': timestamp.isoformat(),
+            'note_text': 'plant is looking healthier than last week'
+        })
+        # Confirm correct error, confirm no NoteEvent created
+        self.assertEqual(response.status_code, 409)
+        self.assertEqual(
+            response.json(),
+            {'error': 'note with same timestamp already exists'}
+        )
+        self.assertEqual(len(NoteEvent.objects.all()), 1)
+
+    def test_edit_note_event(self):
+        # Create NoteEvent with no text, confirm exists
+        timestamp = timezone.now()
+        NoteEvent.objects.create(plant=self.plant, timestamp=timestamp, text="")
+        self.assertEqual(len(self.plant.noteevent_set.all()), 1)
+
+        # Send edit_plant_note request, confirm response
+        response = self.client.post('/edit_plant_note', {
+            'plant_id': self.plant.uuid,
+            'timestamp': timestamp.isoformat(),
+            'note_text': 'This is the text I forgot to add'
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {"action": "edit_note", "plant": str(self.plant.uuid)}
+        )
+
+        # Confirm text of existing NoteEvent was updated
+        self.assertEqual(len(self.plant.noteevent_set.all()), 1)
+        self.assertEqual(
+            NoteEvent.objects.get(timestamp=timestamp).text,
+            'This is the text I forgot to add'
+        )
+
+    def test_edit_note_event_target_does_not_exist(self):
+        # Call edit_plant_note endpoint with a timestamp that doesn't exist
+        response = self.client.post('/edit_plant_note', {
+            'plant_id': self.plant.uuid,
+            'timestamp': timezone.now().isoformat(),
+            'note_text': 'forgot to add this to my note'
+        })
+
+        # Confirm correct error
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json(), {"error": "note not found"})
+
+    def test_delete_note_event(self):
+        # Create NoteEvent, confirm exists
+        timestamp = timezone.now()
+        NoteEvent.objects.create(plant=self.plant, timestamp=timestamp, text="")
+        self.assertEqual(len(self.plant.noteevent_set.all()), 1)
+
+        # Send delete_plant_note request, confirm response + event deleted
+        response = self.client.post('/delete_plant_note', {
+            'plant_id': self.plant.uuid,
+            'timestamp': timestamp.isoformat()
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {"deleted": "note", "plant": str(self.plant.uuid)}
+        )
+
+        # Confirm NoteEvent was created
+        self.assertEqual(len(self.plant.noteevent_set.all()), 0)
+
+    def test_delete_note_event_target_does_not_exist(self):
+        # Call delete_plant_note endpoint with a timestamp that doesn't exist
+        response = self.client.post('/delete_plant_note', {
+            'plant_id': self.plant.uuid,
+            'timestamp': timezone.now().isoformat()
+        })
+
+        # Confirm correct error
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json(), {"error": "note not found"})
+
+
+class PlantPhotoEndpointTests(TestCase):
+    def setUp(self):
+        # Set default content_type for post requests (avoid long lines)
+        self.client = JSONClient()
+
+        # Create test plant
+        self.plant = Plant.objects.create(uuid=uuid4())
+
+    def tearDown(self):
+        # Delete mock photos between tests to prevent duplicate names (django
+        # appends random string to keep unique, which makes testing difficult)
+        for i in os.listdir(os.path.join(settings.TEST_DIR, 'data', 'images', 'images')):
+            os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'images', i))
+        for i in os.listdir(os.path.join(settings.TEST_DIR, 'data', 'images', 'thumbnails')):
+            os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'thumbnails', i))
+
     def test_add_plant_photos(self):
         # Confirm no photos exist in database or plant reverse relation
         self.assertEqual(len(Photo.objects.all()), 0)
-        self.assertEqual(len(self.plant1.photo_set.all()), 0)
+        self.assertEqual(len(self.plant.photo_set.all()), 0)
 
         # Post mock photo to add_plant_photos endpoint
         data = {
-            'plant_id': str(self.plant1.uuid),
+            'plant_id': str(self.plant.uuid),
             'photo_0': create_mock_photo('2024:03:22 10:52:03')
         }
         response = self.client.post(
@@ -1172,7 +1484,7 @@ class PlantEventTests(TestCase):
 
         # Confirm Photo was added to database, reverse relation was created
         self.assertEqual(len(Photo.objects.all()), 1)
-        self.assertEqual(len(self.plant1.photo_set.all()), 1)
+        self.assertEqual(len(self.plant.photo_set.all()), 1)
 
         # Confirm Photo.created was set from exif DateTimeOriginal param
         self.assertEqual(
@@ -1180,25 +1492,30 @@ class PlantEventTests(TestCase):
             '2024:03:22 10:52:03'
         )
 
+    def test_add_plant_photos_invalid_get_request(self):
+        # Send GET request (expects FormData), confirm error
+        response = self.client.get('/add_plant_photos')
+        self.assertEqual(response.status_code, 405)
+        self.assertEqual(response.json(), {'error': 'must post FormData'})
+
     def test_delete_plant_photos(self):
         # Create 2 mock photos, add to database
         mock_photo1 = create_mock_photo('2024:03:21 10:52:03')
         mock_photo2 = create_mock_photo('2024:03:22 10:52:03')
-        photo1 = Photo.objects.create(photo=mock_photo1, plant=self.plant1)
-        photo2 = Photo.objects.create(photo=mock_photo2, plant=self.plant1)
+        photo1 = Photo.objects.create(photo=mock_photo1, plant=self.plant)
+        photo2 = Photo.objects.create(photo=mock_photo2, plant=self.plant)
         self.assertEqual(len(Photo.objects.all()), 2)
 
         # Post primary keys of both photos to delete_plant_photos endpoint
         # Add a non-existing primary key, should add to response failed section
-        payload = {
-            'plant_id': str(self.plant1.uuid),
+        response = self.client.post('/delete_plant_photos', {
+            'plant_id': str(self.plant.uuid),
             'delete_photos': [
                 photo1.pk,
                 photo2.pk,
                 999
             ]
-        }
-        response = self.client.post('/delete_plant_photos', payload)
+        })
 
         # Confirm response, confirm both removed from database, confirm fake
         # primary key was added to failed section
@@ -1215,17 +1532,16 @@ class PlantEventTests(TestCase):
     def test_set_plant_default_photo(self):
         # Create mock photo, add to database
         mock_photo = create_mock_photo('2024:03:21 10:52:03')
-        photo = Photo.objects.create(photo=mock_photo, plant=self.plant1)
+        photo = Photo.objects.create(photo=mock_photo, plant=self.plant)
 
         # Confirm plant has no default_photo
-        self.assertIsNone(self.plant1.default_photo)
+        self.assertIsNone(self.plant.default_photo)
 
         # Post photo primary key to set_plant_default_photo endpoint
-        payload = {
-            'plant_id': str(self.plant1.uuid),
+        response = self.client.post('/set_plant_default_photo', {
+            'plant_id': str(self.plant.uuid),
             'photo_key': photo.pk
-        }
-        response = self.client.post('/set_plant_default_photo', payload)
+        })
 
         # Confirm response, confirm plant now has default_photo
         self.assertEqual(response.status_code, 200)
@@ -1233,317 +1549,8 @@ class PlantEventTests(TestCase):
             response.json(),
             {"default_photo": photo.get_thumbnail_url()}
         )
-        self._refresh_test_models()
-        self.assertEqual(self.plant1.default_photo, photo)
-
-
-class InvalidRequestTests(TestCase):
-    def setUp(self):
-        # Create test models to use in tests
-        self.test_plant = Plant.objects.create(uuid=uuid4())
-        self.test_group = Group.objects.create(uuid=uuid4())
-
-        # Set default content_type for post requests (avoid long lines)
-        self.client = JSONClient()
-
-    def test_get_qr_codes_url_prefix_not_set(self):
-        # Mock missing URL_PREFIX env var
-        settings.URL_PREFIX = None
-        # Send request, confirm correct error
-        response = self.client.post('/get_qr_codes', {'qr_per_row': 8})
-        self.assertEqual(response.status_code, 501)
-        self.assertEqual(response.json(), {'error': 'URL_PREFIX not configured'})
-
-    def test_get_qr_codes_invalid_qr_per_row(self):
-        # Send request with string qr_per_row, confirm correct error
-        response = self.client.post('/get_qr_codes', {'qr_per_row': 'five'})
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(
-            response.json(),
-            {'error': 'qr_per_row must be an integer between 2 and 25'}
-        )
-
-        # Send request with qr_per_row less than 2, confirm correct error
-        response = self.client.post('/get_qr_codes', {'qr_per_row': 1})
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(
-            response.json(),
-            {'error': 'qr_per_row must be an integer between 2 and 25'}
-        )
-
-        # Send request with qr_per_row greater than 25, confirm correct error
-        response = self.client.post('/get_qr_codes', {'qr_per_row': 26})
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(
-            response.json(),
-            {'error': 'qr_per_row must be an integer between 2 and 25'}
-        )
-
-    def test_get_qr_codes_excessively_long_url_prefix(self):
-        # Mock excessively long URL_PREFIX, will not be possible to generate QR
-        # codes with width less than max_width
-        settings.URL_PREFIX = 'https://excessive.number.of.extremely.long.repeating.subdomains.excessive.number.of.extremely.long.repeating.subdomains.excessive.number.of.extremely.long.repeating.subdomains.excessive.number.of.extremely.long.repeating.subdomains.longdomainname.com/'
-
-        # Send request with qr_per_row = 25 (worst case), confirm correct error
-        response = self.client.post('/get_qr_codes', {'qr_per_row': 25})
-        self.assertEqual(response.status_code, 500)
-        self.assertEqual(
-            response.json(),
-            {'error': 'failed to generate, try a shorter URL_PREFIX'}
-        )
-
-    def test_invalid_get_request(self):
-        # Send GET request to endpoint that requires POST, confirm error
-        response = self.client.get('/register_plant')
-        self.assertEqual(response.status_code, 405)
-        self.assertEqual(response.json(), {'error': 'must post data'})
-
-        # Send GET request to endpoint that expects FormData (handles own error)
-        response = self.client.get('/add_plant_photos')
-        self.assertEqual(response.status_code, 405)
-        self.assertEqual(response.json(), {'error': 'must post FormData'})
-
-    def test_invalid_post_body(self):
-        # Send POST with non-JSON body, confirm error
-        response = self.client.post(
-            '/register_plant',
-            f'uuid={uuid4()}&name=test&species=test&description=None&pot_size=4&type=plant',
-            content_type='text/plain',
-        )
-        self.assertEqual(response.status_code, 405)
-        self.assertEqual(response.json(), {'error': 'request body must be JSON'})
-
-    def test_plant_uuid_does_not_exist(self):
-        # Send POST with UUID that does not exist in database, confirm error
-        response = self.client.post('/delete_plant', {'plant_id': uuid4()})
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.json(), {"error": "plant not found"})
-
-    def test_qr_instance_uuid_does_not_exist(self):
-        # Send POST with UUID that does not exist in database, confirm error
-        response = self.client.post('/change_qr_code', {'uuid': uuid4()})
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.json(), {"error": "uuid does not match any plant or group"})
-
-    def test_missing_plant_id(self):
-        # Send POST with no plant_id key in body, confirm error
-        response = self.client.post('/delete_plant', {'timestamp': '2024-02-06T03:06:26.000Z'})
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(
-            response.json(),
-            {"error": "POST body missing required keys", "keys": ['plant_id']}
-        )
-
-    def test_missing_group_id(self):
-        # Send POST with no group_id key in body, confirm error
-        response = self.client.post('/delete_group')
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(
-            response.json(),
-            {"error": "POST body missing required keys", "keys": ['group_id']}
-        )
-
-    def test_invalid_plant_uuid(self):
-        # Send POST with plant_id that is not a valid UUID, confirm error
-        response = self.client.post('/delete_plant', {'plant_id': '31670857'})
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json(), {"error": "plant_id key is not a valid UUID"})
-
-    def test_invalid_group_uuid(self):
-        # Send POST with group_id that is not a valid UUID, confirm error
-        response = self.client.post('/delete_group', {'group_id': '31670857'})
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json(), {"error": "group_id key is not a valid UUID"})
-
-    def test_invalid_qr_instance_uuid(self):
-        # Send POST with uuid that is not a valid UUID, confirm error
-        response = self.client.post('/change_qr_code', {'uuid': '31670857'})
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json(), {"error": "uuid key is not a valid UUID"})
-
-    def test_missing_timestamp_key(self):
-        # Send POST with no timestamp key in body, confirm error
-        response = self.client.post(
-            '/add_plant_event',
-            {'plant_id': self.test_plant.uuid, 'event_type': 'water'}
-        )
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(
-            response.json(),
-            {"error": "POST body missing required keys", "keys": ['timestamp']}
-        )
-
-    def test_invalid_timestamp_format(self):
-        # Send POST with invalid timestamp in body, confirm error
-        response = self.client.post(
-            '/add_plant_event',
-            {'plant_id': self.test_plant.uuid, 'timestamp': '04:20', 'event_type': 'water'}
-        )
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json(), {"error": "timestamp format invalid"})
-
-    def test_duplicate_event_timestamp(self):
-        # Create WaterEvent manually, then attempt to create with API call
-        timestamp = timezone.now()
-        WaterEvent.objects.create(plant=self.test_plant, timestamp=timestamp)
-        self.assertEqual(len(WaterEvent.objects.all()), 1)
-        response = self.client.post(
-            '/add_plant_event',
-            {
-                'plant_id': self.test_plant.uuid,
-                'timestamp': timestamp.isoformat(),
-                'event_type': 'water'
-            }
-        )
-        # Confirm correct error, confirm no WaterEvent created
-        self.assertEqual(response.status_code, 409)
-        self.assertEqual(
-            response.json(),
-            {'error': 'event with same timestamp already exists'}
-        )
-        self.assertEqual(len(WaterEvent.objects.all()), 1)
-
-    def test_duplicate_note_timestamp(self):
-        # Create NoteEvent manually, then attempt to create with API call
-        timestamp = timezone.now()
-        NoteEvent.objects.create(plant=self.test_plant, timestamp=timestamp)
-        self.assertEqual(len(NoteEvent.objects.all()), 1)
-        response = self.client.post(
-            '/add_plant_note',
-            {
-                'plant_id': self.test_plant.uuid,
-                'timestamp': timestamp.isoformat(),
-                'note_text': 'plant is looking healthier than last week'
-            }
-        )
-        # Confirm correct error, confirm no NoteEvent created
-        self.assertEqual(response.status_code, 409)
-        self.assertEqual(
-            response.json(),
-            {'error': 'note with same timestamp already exists'}
-        )
-        self.assertEqual(len(NoteEvent.objects.all()), 1)
-
-    def test_missing_event_type_key(self):
-        # Send POST with with no event_type in body, confirm error
-        response = self.client.post(
-            '/add_plant_event',
-            {'plant_id': self.test_plant.uuid, 'timestamp': '2024-02-06T03:06:26.000Z'}
-        )
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(
-            response.json(),
-            {"error": "POST body missing required keys", "keys": ['event_type']}
-        )
-
-    def test_invalid_event_type(self):
-        # Send POST with invalid event_type in body, confirm error
-        response = self.client.post(
-            '/add_plant_event',
-            {'plant_id': self.test_plant.uuid, 'timestamp': '2024-02-06T03:06:26.000Z', 'event_type': 'juice'}
-        )
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(
-            response.json(),
-            {"error": "invalid event_type, must be 'water', 'fertilize', 'prune', or 'repot'"}
-        )
-
-    def test_target_event_does_not_exist(self):
-        # Call delete_plant_event endpoint with a timestamp that doesn't exist
-        payload = {
-            'plant_id': self.test_plant.uuid,
-            'event_type': 'water',
-            'timestamp': timezone.now().isoformat()
-        }
-        response = self.client.post('/delete_plant_event', payload)
-
-        # Confirm correct error
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.json(), {"error": "event not found"})
-
-    def test_target_note_does_not_exist(self):
-        # Call delete_plant_note endpoint with a timestamp that doesn't exist
-        payload = {
-            'plant_id': self.test_plant.uuid,
-            'timestamp': timezone.now().isoformat()
-        }
-        response = self.client.post('/delete_plant_note', payload)
-
-        # Confirm correct error
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.json(), {"error": "note not found"})
-
-        # Call edit_plant_event endpoint with a timestamp that doesn't exist
-        payload = {
-            'plant_id': self.test_plant.uuid,
-            'timestamp': timezone.now().isoformat(),
-            'note_text': 'forgot to add this to my note'
-        }
-        response = self.client.post('/edit_plant_note', payload)
-
-        # Confirm correct error
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.json(), {"error": "note not found"})
-
-    def test_bulk_delete_plant_events_does_not_exist(self):
-        # Post payload containing event that does not exist
-        payload = {
-            'plant_id': self.test_plant.uuid,
-            'events': [
-                {'type': 'water', 'timestamp': '2024-04-19T00:13:37+00:00'}
-            ]
-        }
-        response = self.client.post('/bulk_delete_plant_events', payload)
-
-        # Confirm event is in failed section
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.json(),
-            {
-                "deleted": [],
-                "failed": [
-                    {'type': 'water', 'timestamp': '2024-04-19T00:13:37+00:00'}
-                ]
-            }
-        )
-
-    def test_bulk_delete_plant_events_missing_params(self):
-        # Create test event, confirm exists in database
-        timestamp = timezone.now()
-        WaterEvent.objects.create(plant=self.test_plant, timestamp=timestamp)
-        self.assertEqual(len(self.test_plant.waterevent_set.all()), 1)
-
-        # Post incomplete event dict to backend with missing timestamp key
-        payload = {
-            'plant_id': self.test_plant.uuid,
-            'events': [
-                {'type': 'water'}
-            ]
-        }
-        response = self.client.post('/bulk_delete_plant_events', payload)
-
-        # Confirm event is in failed section, confirm still in database
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.json(),
-            {
-                "deleted": [],
-                "failed": [
-                    {'type': 'water'}
-                ]
-            }
-        )
-        self.assertEqual(len(self.test_plant.waterevent_set.all()), 1)
-
-    def test_change_uuid_invalid(self):
-        # Call change_uuid endpoint, confirm error
-        payload = {
-            'uuid': self.test_plant.uuid,
-            'new_id': '31670857'
-        }
-        response = self.client.post('/change_uuid', payload)
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json(), {"error": "new_id key is not a valid UUID"})
+        self.plant.refresh_from_db()
+        self.assertEqual(self.plant.default_photo, photo)
 
     def test_add_plant_photos_missing_plant_id(self):
         # Send POST with no plant_id key in body, confirm error
@@ -1558,7 +1565,7 @@ class InvalidRequestTests(TestCase):
         # Post FormData with no files, confirm error
         response = self.client.post(
             '/add_plant_photos',
-            data={'plant_id': str(self.test_plant.uuid)},
+            data={'plant_id': str(self.plant.uuid)},
             content_type=MULTIPART_CONTENT
         )
         self.assertEqual(response.status_code, 404)
@@ -1569,17 +1576,16 @@ class InvalidRequestTests(TestCase):
 
     def test_set_non_existing_default_photo(self):
         # Post fake primary key to set_plant_default_photo endpoint
-        payload = {
-            'plant_id': str(self.test_plant.uuid),
+        response = self.client.post('/set_plant_default_photo', {
+            'plant_id': str(self.plant.uuid),
             'photo_key': 1337
-        }
-        response = self.client.post('/set_plant_default_photo', payload)
+        })
 
         # Confirm error, confirm plant does not have default_photo
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(), {"error": "unable to find photo"})
-        self.test_plant.refresh_from_db()
-        self.assertIsNone(self.test_plant.default_photo)
+        self.plant.refresh_from_db()
+        self.assertIsNone(self.plant.default_photo)
 
     def test_set_photo_of_wrong_plant_as_default_photo(self):
         # Create second plant entry + photo associated with second plant
@@ -1591,86 +1597,13 @@ class InvalidRequestTests(TestCase):
         wrong_plant_photo.save()
 
         # Post primary key of wrong photo to set_plant_default_photo endpoint
-        payload = {
-            'plant_id': str(self.test_plant.uuid),
+        response = self.client.post('/set_plant_default_photo', {
+            'plant_id': str(self.plant.uuid),
             'photo_key': wrong_plant_photo.pk
-        }
-        response = self.client.post('/set_plant_default_photo', payload)
+        })
 
         # Confirm error, confirm plant does not have default_photo
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(), {"error": "unable to find photo"})
-        self.test_plant.refresh_from_db()
-        self.assertIsNone(self.test_plant.default_photo)
-
-
-class ViewDecoratorTests(TestCase):
-    '''These error handling lines are redundant if required_keys arg is passed
-    to requires_json_post, as it currently is for all views. However, they are
-    kept for an extra layer of safety in case args are omitted from the list.
-    '''
-
-    def test_get_plant_from_post_body_missing_plant_id(self):
-        @get_plant_from_post_body
-        def mock_view_function(data, **kwargs):
-            pass
-
-        # Call function with empty data dict, confirm correct error
-        response = mock_view_function(data={})
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(
-            json.loads(response.content),
-            {"error": "POST body missing required 'plant_id' key"}
-        )
-
-    def test_get_group_from_post_body_missing_group_id(self):
-        @get_group_from_post_body
-        def mock_view_function(data, **kwargs):
-            pass
-
-        # Call function with empty data dict, confirm correct error
-        response = mock_view_function(data={})
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(
-            json.loads(response.content),
-            {"error": "POST body missing required 'group_id' key"}
-        )
-
-    def test_get_qr_instance_from_post_body_missing_uuid(self):
-        @get_qr_instance_from_post_body
-        def mock_view_function(data, **kwargs):
-            pass
-
-        # Call function with empty data dict, confirm correct error
-        response = mock_view_function(data={})
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(
-            json.loads(response.content),
-            {"error": "POST body missing required 'uuid' key"}
-        )
-
-    def test_get_timestamp_from_post_body_missing_timestamp(self):
-        @get_timestamp_from_post_body
-        def mock_view_function(data, **kwargs):
-            pass
-
-        # Call function with empty data dict, confirm correct error
-        response = mock_view_function(data={})
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(
-            json.loads(response.content),
-            {"error": "POST body missing required 'timestamp' key"}
-        )
-
-    def test_get_event_type_from_post_body_missing_event_type(self):
-        @get_event_type_from_post_body
-        def mock_view_function(data, **kwargs):
-            pass
-
-        # Call function with empty data dict, confirm correct error
-        response = mock_view_function(data={})
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(
-            json.loads(response.content),
-            {"error": "POST body missing required 'event_type' key"}
-        )
+        self.plant.refresh_from_db()
+        self.assertIsNone(self.plant.default_photo)

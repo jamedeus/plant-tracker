@@ -1,3 +1,5 @@
+# pylint: disable=missing-docstring,line-too-long,R0801
+
 import shutil
 from uuid import uuid4
 from unittest.mock import patch, MagicMock
@@ -345,14 +347,11 @@ class HookTests(TestCase):
         self.assertIsNone(cached_state["plants"][0]["last_watered"])
 
         # Create WaterEvent for plant entry with API call
-        self.client.post(
-            '/add_plant_event',
-            {
-                'plant_id': plant.uuid,
-                'event_type': 'water',
-                'timestamp': '2024-02-06T03:06:26.000Z'
-            }
-        )
+        self.client.post('/add_plant_event', {
+            'plant_id': plant.uuid,
+            'event_type': 'water',
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        })
 
         # Confirm last_watered in cached state matches timestamp
         cached_state = cache.get('overview_state')
@@ -362,14 +361,11 @@ class HookTests(TestCase):
         )
 
         # Delete water event with API call
-        self.client.post(
-            '/delete_plant_event',
-            {
-                'plant_id': plant.uuid,
-                'event_type': 'water',
-                'timestamp': '2024-02-06T03:06:26.000Z'
-            }
-        )
+        self.client.post('/delete_plant_event', {
+            'plant_id': plant.uuid,
+            'event_type': 'water',
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        })
 
         # Confirm last_watered in cached state reverted to None
         cached_state = cache.get('overview_state')
@@ -387,17 +383,14 @@ class HookTests(TestCase):
         self.assertIsNone(cached_state["plants"][1]["last_watered"])
 
         # Create WaterEvent for both plants with API call
-        self.client.post(
-            '/bulk_add_plant_events',
-            {
-                'plants': [
-                    str(plant1.uuid),
-                    str(plant2.uuid)
-                ],
-                'event_type': 'water',
-                'timestamp': '2024-02-06T03:06:26.000Z'
-            }
-        )
+        self.client.post('/bulk_add_plant_events', {
+            'plants': [
+                str(plant1.uuid),
+                str(plant2.uuid)
+            ],
+            'event_type': 'water',
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        })
 
         # Confirm last_watered in cached state matches timestamp for both plants
         cached_state = cache.get('overview_state')
@@ -411,15 +404,12 @@ class HookTests(TestCase):
         )
 
         # Delete WaterEvent for first plant with API call
-        self.client.post(
-            '/bulk_delete_plant_events',
-            {
-                'plant_id': plant1.uuid,
-                'events': [
-                    {'type': 'water', 'timestamp': '2024-02-06T03:06:26.000Z'}
-                ]
-            }
-        )
+        self.client.post('/bulk_delete_plant_events', {
+            'plant_id': plant1.uuid,
+            'events': [
+                {'type': 'water', 'timestamp': '2024-02-06T03:06:26.000Z'}
+            ]
+        })
 
         # Confirm last_watered in cached state is None for first plant, but not second
         cached_state = cache.get('overview_state')
@@ -472,13 +462,10 @@ class HookTests(TestCase):
         Photo.objects.create(photo=mock_photo2, plant=plant)
 
         # Set first photo as default with API call
-        self.client.post(
-            '/set_plant_default_photo',
-            {
-                'plant_id': str(plant.uuid),
-                'photo_key': Photo.objects.all()[0].pk
-            }
-        )
+        self.client.post('/set_plant_default_photo', {
+            'plant_id': str(plant.uuid),
+            'photo_key': Photo.objects.all()[0].pk
+        })
 
         # Confirm thumbnail in cached state now matches first photo
         cached_state = cache.get('overview_state')
@@ -528,24 +515,18 @@ class HookTests(TestCase):
 
         # Confirm overview state NOT updated when photo with older timestamp deleted
         cache.delete('overview_state')
-        self.client.post(
-            '/delete_plant_photos',
-            {
-                'plant_id': str(plant.uuid),
-                'delete_photos': [photo2_pk]
-            }
-        )
+        self.client.post('/delete_plant_photos', {
+            'plant_id': str(plant.uuid),
+            'delete_photos': [photo2_pk]
+        })
         self.assertIsNone(cache.get('overview_state'))
 
         # Confirm overview state IS updated when most recent photo is deleted
         cache.delete('overview_state')
-        self.client.post(
-            '/delete_plant_photos',
-            {
-                'plant_id': str(plant.uuid),
-                'delete_photos': [photo1_pk]
-            }
-        )
+        self.client.post('/delete_plant_photos', {
+            'plant_id': str(plant.uuid),
+            'delete_photos': [photo1_pk]
+        })
         self.assertIsNotNone(cache.get('overview_state'))
 
     def test_manage_plant_state_updates_when_plant_saved(self):
