@@ -36,7 +36,7 @@ export const mockContext = {
             "text": "One of the older leaves is starting to turn yellow"
         }
     ],
-    "groups": [
+    "group_options": [
         {
             "name": "Test group",
             "display_name": "Test group",
@@ -103,7 +103,7 @@ export const mockContextNoEvents = {
         }
     },
     "notes": [],
-    "groups": [
+    "group_options": [
         {
             "name": "Test group",
             "display_name": "Test group",

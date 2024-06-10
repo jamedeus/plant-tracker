@@ -159,7 +159,7 @@ def render_manage_plant_page(request, plant):
         state['plant']['group']['name'] = plant.group.get_display_name()
 
     # Add species and group options (cached separately)
-    state['groups'] = get_group_options()
+    state['group_options'] = get_group_options()
     state['species_options'] = get_plant_species_options()
 
     return render_react_app(

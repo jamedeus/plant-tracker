@@ -13,7 +13,7 @@ export const openGroupModal = () => {
 
 const GroupModal = ({ plantID, handleAddGroup }) => {
     // Load options from context set by django template
-    const groupOptions = parseDomContext("groups");
+    const groupOptions = parseDomContext("group_options");
 
     groupModalRef = useRef(null);
 

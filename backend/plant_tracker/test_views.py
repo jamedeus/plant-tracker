@@ -369,9 +369,9 @@ class ManagePageTests(TestCase):
         # Confirm photo_urls list is empty (test plant has no photos)
         self.assertEqual(state['photo_urls'], [])
 
-        # Confirm groups key contains details of all existing groups
+        # Confirm group_options key contains details of all existing groups
         self.assertEqual(
-            state['groups'],
+            state['group_options'],
             [
                 {
                     'name': None,

@@ -472,7 +472,7 @@ class CachedStateRegressionTests(TestCase):
 
         # Confirm group option in manage_plant state says 1 plant in group
         response = self.client.get(f'/manage/{plant1.uuid}')
-        self.assertEqual(response.context['state']['groups'][0]['plants'], 1)
+        self.assertEqual(response.context['state']['group_options'][0]['plants'], 1)
 
         # Add plant2 to the group
         JSONClient().post(
@@ -482,7 +482,7 @@ class CachedStateRegressionTests(TestCase):
 
         # Confirm group option in manage_plant state now says 2 plants in group
         response = self.client.get(f'/manage/{plant1.uuid}')
-        self.assertEqual(response.context['state']['groups'][0]['plants'], 2)
+        self.assertEqual(response.context['state']['group_options'][0]['plants'], 2)
 
         # Remove plant2 from the group
         JSONClient().post('/remove_plant_from_group', {
@@ -491,7 +491,7 @@ class CachedStateRegressionTests(TestCase):
 
         # Confirm group option in manage_plant state now says 1 plant in group
         response = self.client.get(f'/manage/{plant1.uuid}')
-        self.assertEqual(response.context['state']['groups'][0]['plants'], 1)
+        self.assertEqual(response.context['state']['group_options'][0]['plants'], 1)
 
         # Add plant2 to group using the /bulk_add_plants_to_group endpoint
         JSONClient().post('/bulk_add_plants_to_group', {
@@ -501,7 +501,7 @@ class CachedStateRegressionTests(TestCase):
 
         # Confirm group option in manage_plant state now says 2 plants in group
         response = self.client.get(f'/manage/{plant1.uuid}')
-        self.assertEqual(response.context['state']['groups'][0]['plants'], 2)
+        self.assertEqual(response.context['state']['group_options'][0]['plants'], 2)
 
         # Remove plant2 from group using the /bulk_remove_plants_from_group endpoint
         JSONClient().post('/bulk_remove_plants_from_group', {
@@ -511,7 +511,7 @@ class CachedStateRegressionTests(TestCase):
 
         # Confirm group option in manage_plant state now says 1 plant in group
         response = self.client.get(f'/manage/{plant1.uuid}')
-        self.assertEqual(response.context['state']['groups'][0]['plants'], 1)
+        self.assertEqual(response.context['state']['group_options'][0]['plants'], 1)
 
 
 class ViewDecoratorRegressionTests(TestCase):

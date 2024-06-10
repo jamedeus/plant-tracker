@@ -15,7 +15,7 @@ exports[`App matches snapshot 1`] = `
       [{"timestamp":"2024-03-01T15:45:44+00:00","text":"Fertilized with dilute 10-15-10 liquid fertilizer"},{"timestamp":"2024-02-26T12:44:12+00:00","text":"One of the older leaves is starting to turn yellow"}]
     </div>
     <div
-      id="groups"
+      id="group_options"
     >
       [{"name":"Test group","display_name":"Test group","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be14","location":"Top shelf","description":"Medium brightness grow light","plants":3},{"name":"Testing","display_name":"Testing","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be61","location":"Middle shelf","description":"Brightest grow light","plants":5}]
     </div>
