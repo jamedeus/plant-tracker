@@ -414,7 +414,7 @@ class Photo(models.Model):
         # Copy exif timestamp to created field when saved for the first time
         if not self.pk:
             # Read exif data
-            exif_data = Image.open(self.photo)._getexif()
+            exif_data = Image.open(self.photo)._getexif()  # pylint: disable=W0212
 
             if exif_data:
                 # Parse Date/Time Original and Offset Time Original parameters

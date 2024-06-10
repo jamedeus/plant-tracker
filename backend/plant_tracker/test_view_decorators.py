@@ -257,5 +257,6 @@ class UnusedBranchCoverageTests(TestCase):
         )
 
         # Pass mock request to mock view, confirm decorator does not return error
+        # pylint: disable-next=too-many-function-args
         response = mock_view_function(request)
         self.assertEqual(response.status_code, 200)
