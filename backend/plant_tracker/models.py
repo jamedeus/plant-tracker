@@ -385,10 +385,6 @@ class Photo(models.Model):
     def create_thumbnail(self):
         '''Generate a reduced-resolution image and write to the thumbnail field'''
 
-        # Skip if no photo exists
-        if not self.photo:
-            return
-
         # Open image, rotate and remove exif rotation param if needed
         image = ImageOps.exif_transpose(
             Image.open(self.photo)

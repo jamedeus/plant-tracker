@@ -19,9 +19,15 @@ class JSONClient(Client):
         return super().post(path, data, content_type, **extra)
 
 
-def create_mock_photo(creation_time=None, name='mock_photo.jpg', timezone=None):
-    '''Creates a mock JPG in memory with exif DateTimeOriginal parameter
-    Takes DateTimeOriginal string (required) and filename string (optional)
+def create_mock_photo(creation_time=None, name='mock_photo.jpg', timezone=None, blank_exif=False):
+    '''Creates a mock JPG in memory with exif parameters set by optional args.
+
+    The creation_time and timezone args set the DateTimeOriginal and
+    OffsetTimeOriginal exif parameters respectively. If neither are passed an
+    image with no exif data will be created. If the blank_exif arg is True an
+    image with exif data containing irrelevant parameters will be created.
+
+    The name arg sets the filename written to disk and used in URLs.
     '''
     mock_photo = BytesIO()
     image = Image.new('RGB', (1, 1), color='white')
@@ -34,6 +40,10 @@ def create_mock_photo(creation_time=None, name='mock_photo.jpg', timezone=None):
         if timezone:
             exif_params['Exif'][36881] = timezone.encode()
         exif_bytes = piexif.dump(exif_params)
+        image.save(mock_photo, format='JPEG', exif=exif_bytes)
+    # Add exif data with no timestamp params if blank_exif arg is True
+    elif blank_exif:
+        exif_bytes = piexif.dump({'Exif': {42035: 'Canon'.encode()}})
         image.save(mock_photo, format='JPEG', exif=exif_bytes)
     else:
         image.save(mock_photo, format='JPEG')

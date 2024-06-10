@@ -339,6 +339,13 @@ class GroupModelTests(TestCase):
         self.assertEqual(unnamed[1].get_display_name(), 'Unnamed group 2')
         self.assertEqual(unnamed[2].get_display_name(), 'Unnamed group 3')
 
+    def test_get_plant_uuids(self):
+        # Confirm method returns list of UUIDs of all plants in group
+        self.assertEqual(
+            self.test_group.get_plant_uuids(),
+            [str(self.plant1.uuid), str(self.plant2.uuid)]
+        )
+
 
 class PhotoModelTests(TestCase):
     def setUp(self):
@@ -404,7 +411,20 @@ class PhotoModelTests(TestCase):
         )
 
         # Confirm timestamp matches current time in UTC, has timezone offset
-        # (ignore seconds to reduce change of false negatives)
+        # (ignore seconds to reduce chance of false negatives)
+        self.assertEqual(
+            no_exif_data.created.strftime('%Y:%m:%d %H:%M +z'),
+            timezone.now().strftime('%Y:%m:%d %H:%M +z')
+        )
+
+        # Create mock photo with exif data but no timestamp or timezone params
+        no_exif_data = Photo.objects.create(
+            plant=self.plant,
+            photo=create_mock_photo(blank_exif=True)
+        )
+
+        # Confirm timestamp matches current time in UTC, has timezone offset
+        # (ignore seconds to reduce chance of false negatives)
         self.assertEqual(
             no_exif_data.created.strftime('%Y:%m:%d %H:%M +z'),
             timezone.now().strftime('%Y:%m:%d %H:%M +z')

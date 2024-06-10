@@ -1151,6 +1151,30 @@ class ChangeQrCodeTests(TestCase):
             'plant_tracker/manage_plant.js'
         )
 
+    def test_target_plant_deleted_before_confirmation_page_loaded(self):
+        # Simulate user deleting plant before loading confirmation page
+        # (must delete before caching because schedule_cached_state_update_patch
+        # will clear entire cache immediately when Plant.delete hook is
+        # triggered. In production this wouldn't happen for 30 seconds.)
+        self.plant1.delete()
+        cache.set('old_uuid', str(self.plant1.uuid))
+        self.assertIsNotNone(cache.get('old_uuid'))
+
+        # Request management page with new UUID (simulate user scanning new QR)
+        response = self.client.get(f'/manage/{self.fake_id}')
+
+        # Confirm redirected to registration page (old_uuid no longer exists)
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'plant_tracker/index.html')
+        self.assertEqual(
+            response.context['js_bundle'],
+            'plant_tracker/register.js'
+        )
+        self.assertEqual(response.context['title'], 'Register New Plant')
+
+        # Confirm old_id cache was cleared
+        self.assertIsNone(cache.get('old_uuid'))
+
 
 class PlantEventEndpointTests(TestCase):
     def setUp(self):
