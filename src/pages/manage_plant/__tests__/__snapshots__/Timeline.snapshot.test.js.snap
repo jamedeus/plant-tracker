@@ -3093,7 +3093,7 @@ exports[`Timeline matches snapshot 1`] = `
                   class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                 >
                   <button
-                    class="btn rounded-full text-white font-bold"
+                    class="btn rounded-full font-bold"
                   >
                     Select
                   </button>
@@ -3156,7 +3156,7 @@ exports[`Timeline matches snapshot 1`] = `
                   class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                 >
                   <button
-                    class="btn rounded-full text-white font-bold"
+                    class="btn rounded-full font-bold"
                   >
                     Select
                   </button>
@@ -3219,7 +3219,7 @@ exports[`Timeline matches snapshot 1`] = `
                   class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                 >
                   <button
-                    class="btn rounded-full text-white font-bold"
+                    class="btn rounded-full font-bold"
                   >
                     Select
                   </button>
@@ -3282,7 +3282,7 @@ exports[`Timeline matches snapshot 1`] = `
                   class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                 >
                   <button
-                    class="btn rounded-full text-white font-bold"
+                    class="btn rounded-full font-bold"
                   >
                     Select
                   </button>
@@ -3345,7 +3345,7 @@ exports[`Timeline matches snapshot 1`] = `
                   class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                 >
                   <button
-                    class="btn rounded-full text-white font-bold"
+                    class="btn rounded-full font-bold"
                   >
                     Select
                   </button>
@@ -3408,7 +3408,7 @@ exports[`Timeline matches snapshot 1`] = `
                   class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                 >
                   <button
-                    class="btn rounded-full text-white font-bold"
+                    class="btn rounded-full font-bold"
                   >
                     Select
                   </button>
@@ -3471,7 +3471,7 @@ exports[`Timeline matches snapshot 1`] = `
                   class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                 >
                   <button
-                    class="btn rounded-full text-white font-bold"
+                    class="btn rounded-full font-bold"
                   >
                     Select
                   </button>
@@ -3534,7 +3534,7 @@ exports[`Timeline matches snapshot 1`] = `
                   class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                 >
                   <button
-                    class="btn rounded-full text-white font-bold"
+                    class="btn rounded-full font-bold"
                   >
                     Select
                   </button>
@@ -3597,7 +3597,7 @@ exports[`Timeline matches snapshot 1`] = `
                   class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                 >
                   <button
-                    class="btn rounded-full text-white font-bold"
+                    class="btn rounded-full font-bold"
                   >
                     Select
                   </button>
@@ -3660,7 +3660,7 @@ exports[`Timeline matches snapshot 1`] = `
                   class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                 >
                   <button
-                    class="btn rounded-full text-white font-bold"
+                    class="btn rounded-full font-bold"
                   >
                     Select
                   </button>
@@ -3723,7 +3723,7 @@ exports[`Timeline matches snapshot 1`] = `
                   class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                 >
                   <button
-                    class="btn rounded-full text-white font-bold"
+                    class="btn rounded-full font-bold"
                   >
                     Select
                   </button>
@@ -3786,7 +3786,7 @@ exports[`Timeline matches snapshot 1`] = `
                   class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                 >
                   <button
-                    class="btn rounded-full text-white font-bold"
+                    class="btn rounded-full font-bold"
                   >
                     Select
                   </button>
@@ -3849,7 +3849,7 @@ exports[`Timeline matches snapshot 1`] = `
                   class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                 >
                   <button
-                    class="btn rounded-full text-white font-bold"
+                    class="btn rounded-full font-bold"
                   >
                     Select
                   </button>
@@ -3912,7 +3912,7 @@ exports[`Timeline matches snapshot 1`] = `
                   class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                 >
                   <button
-                    class="btn rounded-full text-white font-bold"
+                    class="btn rounded-full font-bold"
                   >
                     Select
                   </button>
@@ -3975,7 +3975,7 @@ exports[`Timeline matches snapshot 1`] = `
                   class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                 >
                   <button
-                    class="btn rounded-full text-white font-bold"
+                    class="btn rounded-full font-bold"
                   >
                     Select
                   </button>
@@ -4038,7 +4038,7 @@ exports[`Timeline matches snapshot 1`] = `
                   class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                 >
                   <button
-                    class="btn rounded-full text-white font-bold"
+                    class="btn rounded-full font-bold"
                   >
                     Select
                   </button>
@@ -4101,7 +4101,7 @@ exports[`Timeline matches snapshot 1`] = `
                   class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                 >
                   <button
-                    class="btn rounded-full text-white font-bold"
+                    class="btn rounded-full font-bold"
                   >
                     Select
                   </button>
@@ -4219,7 +4219,7 @@ exports[`Timeline matches snapshot 1`] = `
                       class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                     >
                       <label
-                        class="btn  text-white rounded-full"
+                        class="btn  rounded-full"
                       >
                         <input
                           class="hidden"
@@ -4294,7 +4294,7 @@ exports[`Timeline matches snapshot 1`] = `
                       class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                     >
                       <label
-                        class="btn  text-white rounded-full"
+                        class="btn  rounded-full"
                       >
                         <input
                           class="hidden"
@@ -4369,7 +4369,7 @@ exports[`Timeline matches snapshot 1`] = `
                       class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                     >
                       <label
-                        class="btn  text-white rounded-full"
+                        class="btn  rounded-full"
                       >
                         <input
                           class="hidden"
@@ -4444,7 +4444,7 @@ exports[`Timeline matches snapshot 1`] = `
                       class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                     >
                       <label
-                        class="btn  text-white rounded-full"
+                        class="btn  rounded-full"
                       >
                         <input
                           class="hidden"
@@ -4519,7 +4519,7 @@ exports[`Timeline matches snapshot 1`] = `
                       class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                     >
                       <label
-                        class="btn  text-white rounded-full"
+                        class="btn  rounded-full"
                       >
                         <input
                           class="hidden"
@@ -4594,7 +4594,7 @@ exports[`Timeline matches snapshot 1`] = `
                       class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                     >
                       <label
-                        class="btn  text-white rounded-full"
+                        class="btn  rounded-full"
                       >
                         <input
                           class="hidden"
@@ -4669,7 +4669,7 @@ exports[`Timeline matches snapshot 1`] = `
                       class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                     >
                       <label
-                        class="btn  text-white rounded-full"
+                        class="btn  rounded-full"
                       >
                         <input
                           class="hidden"
@@ -4744,7 +4744,7 @@ exports[`Timeline matches snapshot 1`] = `
                       class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                     >
                       <label
-                        class="btn  text-white rounded-full"
+                        class="btn  rounded-full"
                       >
                         <input
                           class="hidden"
@@ -4819,7 +4819,7 @@ exports[`Timeline matches snapshot 1`] = `
                       class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                     >
                       <label
-                        class="btn  text-white rounded-full"
+                        class="btn  rounded-full"
                       >
                         <input
                           class="hidden"
@@ -4894,7 +4894,7 @@ exports[`Timeline matches snapshot 1`] = `
                       class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                     >
                       <label
-                        class="btn  text-white rounded-full"
+                        class="btn  rounded-full"
                       >
                         <input
                           class="hidden"
@@ -4969,7 +4969,7 @@ exports[`Timeline matches snapshot 1`] = `
                       class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                     >
                       <label
-                        class="btn  text-white rounded-full"
+                        class="btn  rounded-full"
                       >
                         <input
                           class="hidden"
@@ -5044,7 +5044,7 @@ exports[`Timeline matches snapshot 1`] = `
                       class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                     >
                       <label
-                        class="btn  text-white rounded-full"
+                        class="btn  rounded-full"
                       >
                         <input
                           class="hidden"
@@ -5119,7 +5119,7 @@ exports[`Timeline matches snapshot 1`] = `
                       class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                     >
                       <label
-                        class="btn  text-white rounded-full"
+                        class="btn  rounded-full"
                       >
                         <input
                           class="hidden"
@@ -5194,7 +5194,7 @@ exports[`Timeline matches snapshot 1`] = `
                       class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                     >
                       <label
-                        class="btn  text-white rounded-full"
+                        class="btn  rounded-full"
                       >
                         <input
                           class="hidden"
@@ -5269,7 +5269,7 @@ exports[`Timeline matches snapshot 1`] = `
                       class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                     >
                       <label
-                        class="btn  text-white rounded-full"
+                        class="btn  rounded-full"
                       >
                         <input
                           class="hidden"
@@ -5344,7 +5344,7 @@ exports[`Timeline matches snapshot 1`] = `
                       class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                     >
                       <label
-                        class="btn  text-white rounded-full"
+                        class="btn  rounded-full"
                       >
                         <input
                           class="hidden"
@@ -5419,7 +5419,7 @@ exports[`Timeline matches snapshot 1`] = `
                       class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                     >
                       <label
-                        class="btn  text-white rounded-full"
+                        class="btn  rounded-full"
                       >
                         <input
                           class="hidden"
@@ -8629,7 +8629,7 @@ exports[`Timeline matches snapshot 1`] = `
                 class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
               >
                 <button
-                  class="btn rounded-full text-white font-bold"
+                  class="btn rounded-full font-bold"
                 >
                   Select
                 </button>
@@ -8692,7 +8692,7 @@ exports[`Timeline matches snapshot 1`] = `
                 class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
               >
                 <button
-                  class="btn rounded-full text-white font-bold"
+                  class="btn rounded-full font-bold"
                 >
                   Select
                 </button>
@@ -8755,7 +8755,7 @@ exports[`Timeline matches snapshot 1`] = `
                 class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
               >
                 <button
-                  class="btn rounded-full text-white font-bold"
+                  class="btn rounded-full font-bold"
                 >
                   Select
                 </button>
@@ -8818,7 +8818,7 @@ exports[`Timeline matches snapshot 1`] = `
                 class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
               >
                 <button
-                  class="btn rounded-full text-white font-bold"
+                  class="btn rounded-full font-bold"
                 >
                   Select
                 </button>
@@ -8881,7 +8881,7 @@ exports[`Timeline matches snapshot 1`] = `
                 class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
               >
                 <button
-                  class="btn rounded-full text-white font-bold"
+                  class="btn rounded-full font-bold"
                 >
                   Select
                 </button>
@@ -8944,7 +8944,7 @@ exports[`Timeline matches snapshot 1`] = `
                 class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
               >
                 <button
-                  class="btn rounded-full text-white font-bold"
+                  class="btn rounded-full font-bold"
                 >
                   Select
                 </button>
@@ -9007,7 +9007,7 @@ exports[`Timeline matches snapshot 1`] = `
                 class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
               >
                 <button
-                  class="btn rounded-full text-white font-bold"
+                  class="btn rounded-full font-bold"
                 >
                   Select
                 </button>
@@ -9070,7 +9070,7 @@ exports[`Timeline matches snapshot 1`] = `
                 class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
               >
                 <button
-                  class="btn rounded-full text-white font-bold"
+                  class="btn rounded-full font-bold"
                 >
                   Select
                 </button>
@@ -9133,7 +9133,7 @@ exports[`Timeline matches snapshot 1`] = `
                 class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
               >
                 <button
-                  class="btn rounded-full text-white font-bold"
+                  class="btn rounded-full font-bold"
                 >
                   Select
                 </button>
@@ -9196,7 +9196,7 @@ exports[`Timeline matches snapshot 1`] = `
                 class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
               >
                 <button
-                  class="btn rounded-full text-white font-bold"
+                  class="btn rounded-full font-bold"
                 >
                   Select
                 </button>
@@ -9259,7 +9259,7 @@ exports[`Timeline matches snapshot 1`] = `
                 class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
               >
                 <button
-                  class="btn rounded-full text-white font-bold"
+                  class="btn rounded-full font-bold"
                 >
                   Select
                 </button>
@@ -9322,7 +9322,7 @@ exports[`Timeline matches snapshot 1`] = `
                 class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
               >
                 <button
-                  class="btn rounded-full text-white font-bold"
+                  class="btn rounded-full font-bold"
                 >
                   Select
                 </button>
@@ -9385,7 +9385,7 @@ exports[`Timeline matches snapshot 1`] = `
                 class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
               >
                 <button
-                  class="btn rounded-full text-white font-bold"
+                  class="btn rounded-full font-bold"
                 >
                   Select
                 </button>
@@ -9448,7 +9448,7 @@ exports[`Timeline matches snapshot 1`] = `
                 class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
               >
                 <button
-                  class="btn rounded-full text-white font-bold"
+                  class="btn rounded-full font-bold"
                 >
                   Select
                 </button>
@@ -9511,7 +9511,7 @@ exports[`Timeline matches snapshot 1`] = `
                 class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
               >
                 <button
-                  class="btn rounded-full text-white font-bold"
+                  class="btn rounded-full font-bold"
                 >
                   Select
                 </button>
@@ -9574,7 +9574,7 @@ exports[`Timeline matches snapshot 1`] = `
                 class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
               >
                 <button
-                  class="btn rounded-full text-white font-bold"
+                  class="btn rounded-full font-bold"
                 >
                   Select
                 </button>
@@ -9637,7 +9637,7 @@ exports[`Timeline matches snapshot 1`] = `
                 class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
               >
                 <button
-                  class="btn rounded-full text-white font-bold"
+                  class="btn rounded-full font-bold"
                 >
                   Select
                 </button>
@@ -9755,7 +9755,7 @@ exports[`Timeline matches snapshot 1`] = `
                     class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                   >
                     <label
-                      class="btn  text-white rounded-full"
+                      class="btn  rounded-full"
                     >
                       <input
                         class="hidden"
@@ -9830,7 +9830,7 @@ exports[`Timeline matches snapshot 1`] = `
                     class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                   >
                     <label
-                      class="btn  text-white rounded-full"
+                      class="btn  rounded-full"
                     >
                       <input
                         class="hidden"
@@ -9905,7 +9905,7 @@ exports[`Timeline matches snapshot 1`] = `
                     class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                   >
                     <label
-                      class="btn  text-white rounded-full"
+                      class="btn  rounded-full"
                     >
                       <input
                         class="hidden"
@@ -9980,7 +9980,7 @@ exports[`Timeline matches snapshot 1`] = `
                     class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                   >
                     <label
-                      class="btn  text-white rounded-full"
+                      class="btn  rounded-full"
                     >
                       <input
                         class="hidden"
@@ -10055,7 +10055,7 @@ exports[`Timeline matches snapshot 1`] = `
                     class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                   >
                     <label
-                      class="btn  text-white rounded-full"
+                      class="btn  rounded-full"
                     >
                       <input
                         class="hidden"
@@ -10130,7 +10130,7 @@ exports[`Timeline matches snapshot 1`] = `
                     class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                   >
                     <label
-                      class="btn  text-white rounded-full"
+                      class="btn  rounded-full"
                     >
                       <input
                         class="hidden"
@@ -10205,7 +10205,7 @@ exports[`Timeline matches snapshot 1`] = `
                     class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                   >
                     <label
-                      class="btn  text-white rounded-full"
+                      class="btn  rounded-full"
                     >
                       <input
                         class="hidden"
@@ -10280,7 +10280,7 @@ exports[`Timeline matches snapshot 1`] = `
                     class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                   >
                     <label
-                      class="btn  text-white rounded-full"
+                      class="btn  rounded-full"
                     >
                       <input
                         class="hidden"
@@ -10355,7 +10355,7 @@ exports[`Timeline matches snapshot 1`] = `
                     class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                   >
                     <label
-                      class="btn  text-white rounded-full"
+                      class="btn  rounded-full"
                     >
                       <input
                         class="hidden"
@@ -10430,7 +10430,7 @@ exports[`Timeline matches snapshot 1`] = `
                     class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                   >
                     <label
-                      class="btn  text-white rounded-full"
+                      class="btn  rounded-full"
                     >
                       <input
                         class="hidden"
@@ -10505,7 +10505,7 @@ exports[`Timeline matches snapshot 1`] = `
                     class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                   >
                     <label
-                      class="btn  text-white rounded-full"
+                      class="btn  rounded-full"
                     >
                       <input
                         class="hidden"
@@ -10580,7 +10580,7 @@ exports[`Timeline matches snapshot 1`] = `
                     class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                   >
                     <label
-                      class="btn  text-white rounded-full"
+                      class="btn  rounded-full"
                     >
                       <input
                         class="hidden"
@@ -10655,7 +10655,7 @@ exports[`Timeline matches snapshot 1`] = `
                     class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                   >
                     <label
-                      class="btn  text-white rounded-full"
+                      class="btn  rounded-full"
                     >
                       <input
                         class="hidden"
@@ -10730,7 +10730,7 @@ exports[`Timeline matches snapshot 1`] = `
                     class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                   >
                     <label
-                      class="btn  text-white rounded-full"
+                      class="btn  rounded-full"
                     >
                       <input
                         class="hidden"
@@ -10805,7 +10805,7 @@ exports[`Timeline matches snapshot 1`] = `
                     class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                   >
                     <label
-                      class="btn  text-white rounded-full"
+                      class="btn  rounded-full"
                     >
                       <input
                         class="hidden"
@@ -10880,7 +10880,7 @@ exports[`Timeline matches snapshot 1`] = `
                     class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                   >
                     <label
-                      class="btn  text-white rounded-full"
+                      class="btn  rounded-full"
                     >
                       <input
                         class="hidden"
@@ -10955,7 +10955,7 @@ exports[`Timeline matches snapshot 1`] = `
                     class="absolute flex bottom-5 -translate-x-1/2 left-1/2"
                   >
                     <label
-                      class="btn  text-white rounded-full"
+                      class="btn  rounded-full"
                     >
                       <input
                         class="hidden"

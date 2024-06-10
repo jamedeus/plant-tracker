@@ -78,7 +78,7 @@ const DefaultPhotoModal = ({ plantID, photoUrls }) => {
                 </div>
                 <div className="absolute flex bottom-5 -translate-x-1/2 left-1/2">
                     <button
-                        className="btn rounded-full text-white font-bold"
+                        className="btn rounded-full font-bold"
                         onClick={() => submit(photoKey)}
                     >
                         Select

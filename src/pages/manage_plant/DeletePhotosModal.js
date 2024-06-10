@@ -90,7 +90,7 @@ const DeletePhotosModal = ({ plantID, photoUrls, setPhotoUrls }) => {
         };
 
         return (
-            <label className={`btn ${btnClass} text-white rounded-full`}>
+            <label className={`btn ${btnClass} rounded-full`}>
                 <input
                     type="checkbox"
                     className="hidden"
