@@ -17,6 +17,17 @@ function App() {
         return parseDomContext("groups");
     });
 
+    // Request new state from backend if user navigates to overview by pressing
+    // back button (last watered/details may be outdated if coming from manage)
+    window.addEventListener('pageshow', async (event) => {
+        if (event.persisted) {
+            const response = await fetch('/get_overview_state');
+            const data = await response.json();
+            setPlants(data['plants']);
+            setGroups(data['groups']);
+        }
+    });
+
     // Create ref for modal used to generate QR codes
     const printModalRef = useRef(null);
 

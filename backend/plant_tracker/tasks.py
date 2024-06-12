@@ -87,6 +87,16 @@ def build_overview_state():
     return state
 
 
+def get_overview_state():
+    '''Returns the state object parsed by the overview page react app.
+    Loads state from cache if present, builds from database if not found.
+    '''
+    state = cache.get('overview_state')
+    if state is None:
+        state = build_overview_state()
+    return state
+
+
 @shared_task()
 def update_cached_overview_state():
     '''Builds and caches overview state'''

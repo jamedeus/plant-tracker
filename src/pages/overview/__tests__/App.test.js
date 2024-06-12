@@ -105,4 +105,33 @@ describe('App', () => {
             headers: postHeaders
         });
     });
+
+    it('fetches new state when user navigates to overview with back button', () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "plants": mockContext.plants,
+                "groups": mockContext.groups
+            })
+        }));
+
+        // Simulate user navigating to overview page with back button
+        const pageshowEvent = new Event('pageshow');
+        Object.defineProperty(pageshowEvent, 'persisted', { value: true });
+        window.dispatchEvent(pageshowEvent);
+
+        // Confirm fetched correct endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/get_overview_state');
+    });
+
+    it('does not fetch new state when other pageshow events are triggered', () => {
+        // Simulate pageshow event with persisted == false (ie initial load)
+        const pageshowEvent = new Event('pageshow');
+        Object.defineProperty(pageshowEvent, 'persisted', { value: false });
+        window.dispatchEvent(pageshowEvent);
+
+        // Confirm did not call fetch
+        expect(global.fetch).not.toHaveBeenCalled();
+    });
 });

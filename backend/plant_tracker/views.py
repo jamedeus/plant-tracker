@@ -36,7 +36,7 @@ from .view_decorators import (
     clean_payload_data
 )
 from .tasks import (
-    build_overview_state,
+    get_overview_state,
     schedule_cached_overview_state_update,
     build_manage_plant_state,
     schedule_cached_group_options_update
@@ -91,19 +91,19 @@ def get_qr_codes(data):
 
 def overview(request):
     '''Renders the overview page (shows existing plants/groups, or setup if none)'''
-
-    # Load state object parsed by react app from cache
-    state = cache.get('overview_state')
-
-    # Build state if not found in cache
-    if state is None:
-        state = build_overview_state()
-
     return render_react_app(
         request,
         title='Overview',
         bundle='overview',
-        state=state
+        state=get_overview_state()
+    )
+
+
+def update_overview_state(request):
+    '''Returns current state for the overview page, used to refresh contents'''
+    return JsonResponse(
+        get_overview_state(),
+        status=200
     )
 
 

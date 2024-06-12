@@ -184,7 +184,7 @@ class OverviewTests(TestCase):
         cache.set('overview_state', 'cached')
 
         # Mock build_overview_state to return a different string
-        with patch('plant_tracker.views.build_overview_state', return_value='built'):
+        with patch('plant_tracker.tasks.build_overview_state', return_value='built'):
             # Request overview page, confirm state was loaded from cache
             response = self.client.get('/')
             self.assertEqual(response.context['state'], 'cached')
@@ -193,11 +193,20 @@ class OverviewTests(TestCase):
         cache.delete('overview_state')
 
         # Mock build_overview_state to return a different string
-        with patch('plant_tracker.views.build_overview_state', return_value='built'):
+        with patch('plant_tracker.tasks.build_overview_state', return_value='built'):
             # Request overview page, confirm was built by calling mocked
             # function (failed to load from cache)
             response = self.client.get('/')
             self.assertEqual(response.context['state'], 'built')
+
+    def test_get_overview_state(self):
+        # Call get_overview_state endpoint, confirm returns overview state
+        response = self.client.get('/get_overview_state')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {'plants': [], 'groups': []}
+        )
 
     def test_get_qr_codes(self):
         # Mock URL_PREFIX env var
