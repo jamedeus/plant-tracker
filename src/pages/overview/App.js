@@ -51,6 +51,10 @@ function App() {
     const plantsOpenRef = useRef(true);
     const groupsOpenRef = useRef(true);
 
+    // Refs used to jump to top of plant and group columns
+    const plantsColRef = useRef(null);
+    const groupsColRef = useRef(null);
+
     // Handler for edit option in top-left dropdown
     // Toggle editing state, clear selected, remove focus (closes dropdown)
     const toggleEditing = () => {
@@ -142,11 +146,17 @@ function App() {
             case(plants.length > 0 && groups.length > 0):
                 return (
                     <div className="grid grid-cols-1 md:grid-cols-2 mx-auto">
-                        <div className="md:mr-12 mb-8 md:mb-0">
+                        <div
+                            className="md:mr-12 mb-8 md:mb-0 scroll-mt-20"
+                            ref={plantsColRef}
+                        >
                             <PlantsCol />
                         </div>
 
-                        <div className="md:ml-12">
+                        <div
+                            className="md:ml-12 scroll-mt-20"
+                            ref={groupsColRef}
+                        >
                             <GroupsCol />
                         </div>
                     </div>
@@ -163,6 +173,44 @@ function App() {
         }
     };
 
+    // Renders dropdown used to jump to plants or groups column if both present
+    const QuickNavigation = () => {
+        if (plants.length > 0 && groups.length > 0) {
+            const jumpToPlants = () => {
+                plantsColRef.current.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+                document.activeElement.blur();
+            };
+
+            const jumpToGroups = () => {
+                groupsColRef.current.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                });
+                document.activeElement.blur();
+            };
+
+            return (
+                <ul
+                    tabIndex={0}
+                    className={`menu menu-md dropdown-content mt-3 z-[99]
+                                p-2 shadow bg-base-300 rounded-box w-24`}
+                >
+                    <li className="mx-auto"><a onClick={jumpToPlants}>
+                        Plants
+                    </a></li>
+                    <li className="mx-auto"><a onClick={jumpToGroups}>
+                        Groups
+                    </a></li>
+                </ul>
+            );
+        } else {
+            return null;
+        }
+    };
+
     return (
         <div className="container flex flex-col min-h-screen mx-auto pb-16">
             <Navbar
@@ -174,6 +222,7 @@ function App() {
                     </>
                 }
                 title={"Plant Overview"}
+                titleOptions={<QuickNavigation />}
             />
 
             <Layout />

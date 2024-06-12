@@ -134,4 +134,16 @@ describe('App', () => {
         // Confirm did not call fetch
         expect(global.fetch).not.toHaveBeenCalled();
     });
+
+    it('scrolls to plants column when title dropdown is clicked', async () => {
+        // Click Plants title dropdown, confirm scrollIntoView was called
+        await user.click(app.getByText("Plants"));
+        expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled();
+    });
+
+    it('scrolls to groups column when title dropdown is clicked', async () => {
+        // Click Plants title dropdown, confirm scrollIntoView was called
+        await user.click(app.getByText("Groups"));
+        expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled();
+    });
 });

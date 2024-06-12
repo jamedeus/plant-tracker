@@ -30,8 +30,8 @@ describe('App', () => {
     // Original bug: Plant and Group filter inputs included results where the
     // UUID, last_watered timestamp, or thumbnail URL matched the user's query.
     it('does not match match UUIDs, timestamps, or URLs when filtering', async () => {
-        const plantColumn = app.getByText(/Plants/).parentElement;
-        const groupColumn = app.getByText(/Groups/).parentElement;
+        const plantColumn = app.getByText('Plants (1)').parentElement;
+        const groupColumn = app.getByText('Groups (1)').parentElement;
         const plantFilterInput = within(plantColumn).getByRole('textbox');
         const groupFilterInput = within(groupColumn).getByRole('textbox');
 

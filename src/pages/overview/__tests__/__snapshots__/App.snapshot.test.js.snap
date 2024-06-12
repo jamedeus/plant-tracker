@@ -87,7 +87,28 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
               <div
                 class="dropdown-content z-[1] flex"
                 tabindex="0"
-              />
+              >
+                <ul
+                  class="menu menu-md dropdown-content mt-3 z-[99]
+                                p-2 shadow bg-base-300 rounded-box w-24"
+                  tabindex="0"
+                >
+                  <li
+                    class="mx-auto"
+                  >
+                    <a>
+                      Plants
+                    </a>
+                  </li>
+                  <li
+                    class="mx-auto"
+                  >
+                    <a>
+                      Groups
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
           <div
@@ -119,7 +140,7 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
           class="grid grid-cols-1 md:grid-cols-2 mx-auto"
         >
           <div
-            class="md:mr-12 mb-8 md:mb-0"
+            class="md:mr-12 mb-8 md:mb-0 scroll-mt-20"
           >
             <div
               class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
@@ -288,7 +309,7 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
             </div>
           </div>
           <div
-            class="md:ml-12"
+            class="md:ml-12 scroll-mt-20"
           >
             <div
               class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
@@ -681,7 +702,28 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
             <div
               class="dropdown-content z-[1] flex"
               tabindex="0"
-            />
+            >
+              <ul
+                class="menu menu-md dropdown-content mt-3 z-[99]
+                                p-2 shadow bg-base-300 rounded-box w-24"
+                tabindex="0"
+              >
+                <li
+                  class="mx-auto"
+                >
+                  <a>
+                    Plants
+                  </a>
+                </li>
+                <li
+                  class="mx-auto"
+                >
+                  <a>
+                    Groups
+                  </a>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
         <div
@@ -713,7 +755,7 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
         class="grid grid-cols-1 md:grid-cols-2 mx-auto"
       >
         <div
-          class="md:mr-12 mb-8 md:mb-0"
+          class="md:mr-12 mb-8 md:mb-0 scroll-mt-20"
         >
           <div
             class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
@@ -882,7 +924,7 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
           </div>
         </div>
         <div
-          class="md:ml-12"
+          class="md:ml-12 scroll-mt-20"
         >
           <div
             class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
