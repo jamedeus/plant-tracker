@@ -1,0 +1,45 @@
+import { ErrorModalProvider } from 'src/context/ErrorModalContext';
+import AddPlantsModal from '../AddPlantsModal';
+import { mockContext } from './mockContext';
+
+describe('AddPlantsModal', () => {
+    it('renders a card for each plant option', async () => {
+        // Render context with mock context
+        const component = render(
+            <ErrorModalProvider>
+                <AddPlantsModal
+                    groupID={mockContext.group.uuid}
+                    options={mockContext.options}
+                    plantDetails={mockContext.details}
+                    setPlantDetails={jest.fn()}
+                />
+            </ErrorModalProvider>
+        );
+
+        // Confirm a card was rendered for each plant in options (all plants in
+        // database) that isn't already in details (all plants in group)
+        const titles = component.container.querySelectorAll('.card-title');
+        expect(titles.length).toBe(2);
+        expect(titles[0].innerHTML).toBe("Another test plant");
+        expect(titles[1].innerHTML).toBe("Third test plant");
+    });
+
+    it('renders expected text when no plant options', async () => {
+        // Render modal with no plant options
+        const component = render(
+            <ErrorModalProvider>
+                <AddPlantsModal
+                    groupID={mockContext.group.uuid}
+                    options={[]}
+                    plantDetails={mockContext.details}
+                    setPlantDetails={jest.fn()}
+                />
+            </ErrorModalProvider>
+        );
+
+        // Confirm no cards, confirm expected text
+        const titles = component.container.querySelectorAll('.card-title');
+        expect(titles.length).toBe(0);
+        expect(component.queryByText('No plants')).not.toBeNull();
+    });
+});
