@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import useDebounce from 'src/useDebounce';
 import CollapseCol from 'src/components/CollapseCol';
@@ -167,6 +167,12 @@ const FilterColumn = ({
     const [sortKey, setSortKey] = useState(defaultSortKey);
     // Sort alphabetically if true, reverse alphabetically if false
     const [sortDirection, setSortDirection] = useState(true);
+
+    // Update current contents state when upstream contents changes
+    // Will not re-render when contents changes unless parent re-renders
+    useEffect(() => {
+        setCurrent(contents);
+    }, [contents]);
 
     // Called when user types in filter input
     // Filters contents after 200ms delay, resets immediately if string empty

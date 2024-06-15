@@ -242,11 +242,15 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 "added": [
-                    "0640ec3b-1bed-4b15-a078-d6e7ec66be16"
+                    mockContext.options[1]
                 ],
                 "failed": []
             })
         }));
+
+        // Confirm plant list contains 3 cards
+        const plantsCol = app.getByText("Plants (3)").parentElement;
+        expect(plantsCol.querySelectorAll('.card-title').length).toBe(3);
 
         // Click Add plants dropdown option
         await user.click(app.getByText("Add plants"));
@@ -275,6 +279,11 @@ describe('App', () => {
             }),
             headers: postHeaders
         });
+
+        // Confirm 4th card was rendered for newly added plant
+        const titles = plantsCol.querySelectorAll('.card-title');
+        expect(titles.length).toBe(4);
+        expect(titles[3].innerHTML).toBe('Another test plant');
     });
 
     it('sends correct payload when Remove Plants modal is submitted', async () => {
@@ -288,6 +297,10 @@ describe('App', () => {
                 "failed": []
             })
         }));
+
+        // Confirm plant list contains 3 cards
+        const plantsCol = app.getByText("Plants (3)").parentElement;
+        expect(plantsCol.querySelectorAll('.card-title').length).toBe(3);
 
         // Click Remove plants dropdown option
         await user.click(app.getByText("Remove plants"));
@@ -312,6 +325,12 @@ describe('App', () => {
             }),
             headers: postHeaders
         });
+
+        // Confirm selected plant was removed from plant list
+        const titles = plantsCol.querySelectorAll('.card-title');
+        expect(titles.length).toBe(2);
+        expect(titles[0].innerHTML).toBe('Unnamed Spider Plant');
+        expect(titles[1].innerHTML).toBe('Newest plant');
     });
 
     it('redirects to overview when dropdown option is clicked', async () => {
