@@ -513,4 +513,4 @@ class RepotEvent(Event):
 
 class NoteEvent(Event):
     '''Records timestamp and user-entered text about a specific Plant'''
-    text = models.CharField(max_length=2000, blank=True, null=True)
+    text = models.CharField(max_length=500)

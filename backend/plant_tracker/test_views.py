@@ -1549,10 +1549,25 @@ class NoteEventEndpointTests(TestCase):
         )
         self.assertEqual(len(NoteEvent.objects.all()), 1)
 
+    def test_add_note_event_empty_text_field(self):
+        # Send add_plant_note request with empty note_text param
+        response = self.client.post('/add_plant_note', {
+            'plant_id': self.plant.uuid,
+            'timestamp': '2024-02-06T03:06:26.000Z',
+            'note_text': ''
+        })
+        # Confirm correct error, confirm no NoteEvent created
+        self.assertEqual(response.status_code, 411)
+        self.assertEqual(
+            response.json(),
+            {'error': 'note cannot be empty'}
+        )
+        self.assertEqual(len(NoteEvent.objects.all()), 0)
+
     def test_edit_note_event(self):
         # Create NoteEvent with no text, confirm exists
         timestamp = timezone.now()
-        NoteEvent.objects.create(plant=self.plant, timestamp=timestamp, text="")
+        NoteEvent.objects.create(plant=self.plant, timestamp=timestamp, text="note")
         self.assertEqual(len(self.plant.noteevent_set.all()), 1)
 
         # Send edit_plant_note request with leading and trailing spaces on text
@@ -1593,10 +1608,32 @@ class NoteEventEndpointTests(TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(), {"error": "note not found"})
 
+    def test_edit_note_event_empty_text_field(self):
+        # Create NoteEvent, confirm exists
+        timestamp = timezone.now()
+        NoteEvent.objects.create(plant=self.plant, timestamp=timestamp, text="note")
+        self.assertEqual(len(self.plant.noteevent_set.all()), 1)
+
+        # Send edit_plant_note request with empty note_text param
+        response = self.client.post('/edit_plant_note', {
+            'plant_id': self.plant.uuid,
+            'timestamp': timestamp.isoformat(),
+            'note_text': ''
+        })
+
+        # Confirm correct error, confirm NoteEvent was not modified
+        self.assertEqual(response.status_code, 411)
+        self.assertEqual(
+            response.json(),
+            {'error': 'note cannot be empty'}
+        )
+        self.assertEqual(len(NoteEvent.objects.all()), 1)
+        self.assertEqual(NoteEvent.objects.get(timestamp=timestamp).text, 'note')
+
     def test_delete_note_event(self):
         # Create NoteEvent, confirm exists
         timestamp = timezone.now()
-        NoteEvent.objects.create(plant=self.plant, timestamp=timestamp, text="")
+        NoteEvent.objects.create(plant=self.plant, timestamp=timestamp, text="note")
         self.assertEqual(len(self.plant.noteevent_set.all()), 1)
 
         # Send delete_plant_note request, confirm response + event deleted

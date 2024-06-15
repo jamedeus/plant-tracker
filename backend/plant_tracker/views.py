@@ -7,6 +7,7 @@ from io import BytesIO
 from django.conf import settings
 from django.shortcuts import render
 from django.core.cache import cache
+from django.db import transaction, IntegrityError
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponseRedirect
 from django.views.decorators.csrf import ensure_csrf_cookie
@@ -491,11 +492,13 @@ def add_plant_note(plant, timestamp, data):
     Requires JSON POST with plant_id (uuid), timestamp, and note_text keys
     '''
     try:
-        note = NoteEvent.objects.create(
-            plant=plant,
-            timestamp=timestamp,
-            text=data["note_text"]
-        )
+        # Use transaction.atomic to clean up after IntegrityError if text empty
+        with transaction.atomic():
+            note = NoteEvent.objects.create(
+                plant=plant,
+                timestamp=timestamp,
+                text=data["note_text"]
+            )
         return JsonResponse(
             {
                 "action": "add_note",
@@ -510,6 +513,11 @@ def add_plant_note(plant, timestamp, data):
             {"error": "note with same timestamp already exists"},
             status=409
         )
+    except IntegrityError:
+        return JsonResponse(
+            {"error": "note cannot be empty"},
+            status=411
+        )
 
 
 @requires_json_post(["plant_id", "timestamp", "note_text"])
@@ -521,9 +529,11 @@ def edit_plant_note(plant, timestamp, data):
     Requires JSON POST with plant_id (uuid), timestamp, and note_text keys
     '''
     try:
-        note = NoteEvent.objects.get(plant=plant, timestamp=timestamp)
-        note.text = data["note_text"]
-        note.save()
+        # Use transaction.atomic to clean up after IntegrityError if text empty
+        with transaction.atomic():
+            note = NoteEvent.objects.get(plant=plant, timestamp=timestamp)
+            note.text = data["note_text"]
+            note.save()
         return JsonResponse(
             {
                 "action": "edit_note",
@@ -535,6 +545,11 @@ def edit_plant_note(plant, timestamp, data):
         )
     except NoteEvent.DoesNotExist:
         return JsonResponse({"error": "note not found"}, status=404)
+    except IntegrityError:
+        return JsonResponse(
+            {"error": "note cannot be empty"},
+            status=411
+        )
 
 
 @requires_json_post(["plant_id", "timestamp"])
