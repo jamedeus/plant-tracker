@@ -62,7 +62,9 @@ describe('Add new note', () => {
             status: 200,
             json: () => Promise.resolve({
                 "action": "add_note",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                "timestamp": "2024-02-13T12:00:00+00:00",
+                "note_text": "Some leaves turning yellow, probably watering too often"
             })
         }));
 
@@ -205,7 +207,9 @@ describe('Edit existing note', () => {
             status: 200,
             json: () => Promise.resolve({
                 "action": "edit_note",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                "timestamp": "2024-02-13T12:00:00+00:00",
+                "note_text": "this is an existing note some more details"
             })
         }));
 

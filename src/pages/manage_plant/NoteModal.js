@@ -61,10 +61,11 @@ const NoteModal = React.forwardRef(function NoteModal({ plantID, notes, setNotes
         const response = await sendPostRequest('/add_plant_note', payload);
 
         if (response.ok) {
-            // Update state with new note, close modal
+            // Update state with new note from response, close modal
+            const data = await response.json();
             setNotes([
                 ...notes,
-                {timestamp: payload.timestamp, text: payload.note_text}
+                {timestamp: data.timestamp, text: data.note_text}
             ]);
             noteModalRef.current.close();
         } else {
@@ -93,10 +94,11 @@ const NoteModal = React.forwardRef(function NoteModal({ plantID, notes, setNotes
         const response = await sendPostRequest('/edit_plant_note', payload);
 
         if (response.ok) {
-            // Update text in note state, close modal
+            // Update note state with params from response, close modal
+            const data = await response.json();
             setNotes(notes.map(note => {
                 if (note.timestamp === payload.timestamp) {
-                    return {timestamp: payload.timestamp, text: payload.note_text};
+                    return {timestamp: data.timestamp, text: data.note_text};
                 } else {
                     return note;
                 }

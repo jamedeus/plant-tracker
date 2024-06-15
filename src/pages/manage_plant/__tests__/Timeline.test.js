@@ -111,7 +111,9 @@ describe('Timeline', () => {
             status: 200,
             json: () => Promise.resolve({
                 "action": "add_note",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                "timestamp": "2024-03-01T12:00:00+00:00",
+                "note_text": "Started flowering"
             })
         }));
 
@@ -126,7 +128,7 @@ describe('Timeline', () => {
         // Simulate user typing new note and clicking save
         await user.type(
             app.container.querySelector('.textarea'),
-            'Started flowering'
+            '  Started flowering  '
         );
         await user.click(app.getByText('Save'));
 
@@ -143,7 +145,9 @@ describe('Timeline', () => {
             status: 200,
             json: () => Promise.resolve({
                 "action": "edit_note",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                "timestamp": "2024-03-01T12:00:00+00:00",
+                "note_text": "One of the older leaves is starting to turn yellow, pinched it off"
             })
         }));
 

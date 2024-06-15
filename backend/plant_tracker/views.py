@@ -483,6 +483,7 @@ def bulk_delete_plant_events(plant, data):
 
 
 @requires_json_post(["plant_id", "timestamp", "note_text"])
+@clean_payload_data
 @get_plant_from_post_body
 @get_timestamp_from_post_body
 def add_plant_note(plant, timestamp, data):
@@ -490,13 +491,18 @@ def add_plant_note(plant, timestamp, data):
     Requires JSON POST with plant_id (uuid), timestamp, and note_text keys
     '''
     try:
-        NoteEvent.objects.create(
+        note = NoteEvent.objects.create(
             plant=plant,
             timestamp=timestamp,
             text=data["note_text"]
         )
         return JsonResponse(
-            {"action": "add_note", "plant": plant.uuid},
+            {
+                "action": "add_note",
+                "plant": plant.uuid,
+                "timestamp": note.timestamp.isoformat(),
+                "note_text": note.text
+            },
             status=200
         )
     except ValidationError:
@@ -507,6 +513,7 @@ def add_plant_note(plant, timestamp, data):
 
 
 @requires_json_post(["plant_id", "timestamp", "note_text"])
+@clean_payload_data
 @get_plant_from_post_body
 @get_timestamp_from_post_body
 def edit_plant_note(plant, timestamp, data):
@@ -514,10 +521,18 @@ def edit_plant_note(plant, timestamp, data):
     Requires JSON POST with plant_id (uuid), timestamp, and note_text keys
     '''
     try:
-        event = NoteEvent.objects.get(plant=plant, timestamp=timestamp)
-        event.text = data["note_text"]
-        event.save()
-        return JsonResponse({"action": "edit_note", "plant": plant.uuid}, status=200)
+        note = NoteEvent.objects.get(plant=plant, timestamp=timestamp)
+        note.text = data["note_text"]
+        note.save()
+        return JsonResponse(
+            {
+                "action": "edit_note",
+                "plant": plant.uuid,
+                "timestamp": note.timestamp.isoformat(),
+                "note_text": note.text
+            },
+            status=200
+        )
     except NoteEvent.DoesNotExist:
         return JsonResponse({"error": "note not found"}, status=404)
 

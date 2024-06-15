@@ -1504,21 +1504,32 @@ class NoteEventEndpointTests(TestCase):
         self.assertEqual(len(self.plant.noteevent_set.all()), 0)
         self.assertEqual(len(NoteEvent.objects.all()), 0)
 
-        # Second add_plant_note request, confirm response
+        # Send add_plant_note request with leading and trailing spaces on text
         response = self.client.post('/add_plant_note', {
             'plant_id': self.plant.uuid,
             'timestamp': '2024-02-06T03:06:26.000Z',
-            'note_text': 'plant is looking healthier than last week'
+            'note_text': '  plant is looking healthier than last week  '
         })
+
+        # Confirm response, confirm leading/trailing spaces were removed
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
-            {"action": "add_note", "plant": str(self.plant.uuid)}
+            {
+                'action': 'add_note',
+                'plant': str(self.plant.uuid),
+                'timestamp': '2024-02-06T03:06:26+00:00',
+                'note_text': 'plant is looking healthier than last week'
+            }
         )
 
-        # Confirm NoteEvent was created
+        # Confirm NoteEvent was created, leading/trailing spaces were removed
         self.assertEqual(len(NoteEvent.objects.all()), 1)
         self.assertEqual(len(self.plant.noteevent_set.all()), 1)
+        self.assertEqual(
+            NoteEvent.objects.all()[0].text,
+            'plant is looking healthier than last week'
+        )
 
     def test_add_note_event_duplicate_timestamp(self):
         # Create NoteEvent manually, then attempt to create with API call
@@ -1544,19 +1555,26 @@ class NoteEventEndpointTests(TestCase):
         NoteEvent.objects.create(plant=self.plant, timestamp=timestamp, text="")
         self.assertEqual(len(self.plant.noteevent_set.all()), 1)
 
-        # Send edit_plant_note request, confirm response
+        # Send edit_plant_note request with leading and trailing spaces on text
         response = self.client.post('/edit_plant_note', {
             'plant_id': self.plant.uuid,
             'timestamp': timestamp.isoformat(),
-            'note_text': 'This is the text I forgot to add'
+            'note_text': '   This is the text I forgot to add   '
         })
+
+        # Confirm response, confirm leading/trailing spaces were removed
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
-            {"action": "edit_note", "plant": str(self.plant.uuid)}
+            {
+                'action': 'edit_note',
+                'plant': str(self.plant.uuid),
+                'timestamp': timestamp.isoformat(),
+                'note_text': 'This is the text I forgot to add'
+            }
         )
 
-        # Confirm text of existing NoteEvent was updated
+        # Confirm text of existing NoteEvent was updated, extra spaces removed
         self.assertEqual(len(self.plant.noteevent_set.all()), 1)
         self.assertEqual(
             NoteEvent.objects.get(timestamp=timestamp).text,
