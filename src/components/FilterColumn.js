@@ -68,14 +68,14 @@ const FilterInput = ({
                 <div
                     role="button"
                     tabIndex="0"
-                    className="btn-close absolute right-2 top-2 h-8 w-8"
+                    className="btn-close h-8 w-8 no-animation"
                 >
                     <ArrowsUpDownIcon className="w-5 h-5 m-auto" />
                 </div>
                 <ul
                     tabIndex={0}
-                    className={`menu menu-md dropdown-content mt-14 z-[99]
-                                p-2 shadow bg-base-300 rounded-box w-min-content`}
+                    className={`menu menu-md dropdown-content mt-2 z-[99] p-2
+                                shadow bg-base-300 rounded-box w-min-content`}
                 >
                     {sortByKeys.map((key) => {
                         return <Option
@@ -89,27 +89,36 @@ const FilterInput = ({
         );
     };
 
+    // Button to clear input, appears when user types query
+    const ClearButton = () => {
+        return (
+            <button
+                className="btn-close h-8 w-8 no-animation"
+                onClick={() => onChange('')}
+            >
+                <XMarkIcon className="w-7 h-7 m-auto" />
+            </button>
+        );
+    };
+
     return (
         <div className="flex px-4 mb-4">
             <div className="relative w-full">
                 <input
                     type="text"
-                    className="input input-bordered w-full text-center indent-16 pr-20"
+                    className={`input input-bordered w-full text-center
+                                ${sortByKeys.length
+                                    ? 'indent-[3.625rem] pr-[4.5rem]'
+                                    : 'indent-[1.625rem] pr-10'}`}
                     value={query}
                     onChange={e => onChange(e.target.value)}
                     placeholder="filter"
                 />
-                <button
-                    className={
-                        `btn-close absolute right-10 top-2 h-8 w-8
-                        ${query ? 'opacity-100' : 'opacity-0 -z-10'}`
-                    }
-                    onClick={() => onChange('')}
-                >
-                    <XMarkIcon className="w-7 h-7 m-auto" />
-                </button>
+                <div className="absolute flex top-2 right-2">
+                    {query ? <ClearButton /> : null}
+                    {sortByKeys.length ? <SortMenu /> : null}
+                </div>
             </div>
-            {sortByKeys.length ? <SortMenu /> : null}
         </div>
     );
 };
@@ -160,7 +169,7 @@ const FilterColumn = ({
     const [sortDirection, setSortDirection] = useState(true);
 
     // Called when user types in filter input
-    // Filters contents after 200ms delay, or resets immediately if string empty
+    // Filters contents after 200ms delay, resets immediately if string empty
     const handleInput = (query) => {
         if (query) {
             filterContents(query);
