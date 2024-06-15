@@ -135,6 +135,7 @@ class Group(models.Model):
             'name': self.name,
             'display_name': self.get_display_name(),
             'uuid': str(self.uuid),
+            'created': self.created.isoformat(),
             'location': self.location,
             'description': self.description,
             'plants': len(self.plant_set.all())
@@ -257,6 +258,7 @@ class Plant(models.Model):
             'name': self.name,
             'display_name': self.get_display_name(),
             'uuid': str(self.uuid),
+            'created': self.created.isoformat(),
             'species': self.species,
             'description': self.description,
             'pot_size': self.pot_size,

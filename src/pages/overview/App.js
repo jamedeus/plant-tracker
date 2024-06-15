@@ -117,10 +117,18 @@ function App() {
                 openRef={plantsOpenRef}
                 ignoreKeys={[
                     'uuid',
+                    'created',
                     'last_watered',
                     'last_fertilized',
                     'thumbnail'
                 ]}
+                sortByKeys={[
+                    {key: 'created', display: 'Added'},
+                    {key: 'display_name', display: 'Name'},
+                    {key: 'species', display: 'Species'},
+                    {key: 'last_watered', display: 'Watered'}
+                ]}
+                defaultSortKey={'created'}
             />
         );
     };
@@ -134,7 +142,16 @@ function App() {
                 editing={editing}
                 selected={selectedGroups}
                 openRef={groupsOpenRef}
-                ignoreKeys={['uuid']}
+                ignoreKeys={[
+                    'uuid',
+                    'created'
+                ]}
+                sortByKeys={[
+                    {key: 'created', display: 'Added'},
+                    {key: 'name', display: 'Name'},
+                    {key: 'location', display: 'Location'}
+                ]}
+                defaultSortKey={'created'}
             />
         );
     };

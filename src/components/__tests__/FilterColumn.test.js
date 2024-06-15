@@ -6,10 +6,11 @@ const plants = [
         "name": "Mini palm tree",
         "display_name": "Mini palm tree",
         "uuid": "49a55f1f-5703-4f5e-acad-2c0991a08806",
+        "created": "2023-12-20T01:25:12+00:00",
         "species": "Parlor Palm",
         "description": "Palms aren't really trees",
         "pot_size": 6,
-        "last_watered": "2024-03-01T05:45:44+00:00",
+        "last_watered": "2024-02-26T05:45:44+00:00",
         "last_fertilized": "2024-03-01T05:45:44+00:00",
         "thumbnail": "/media/thumbnails/IMG_8000_thumb.jpg"
     },
@@ -17,10 +18,11 @@ const plants = [
         "name": null,
         "display_name": "Unnamed Fittonia",
         "uuid": "6e8b3664-9b5a-4bc9-a62f-50f89a4c3aaf",
+        "created": "2023-12-22T01:25:12+00:00",
         "species": "Fittonia",
         "description": null,
         "pot_size": 4,
-        "last_watered": "2024-03-01T05:45:44+00:00",
+        "last_watered": null,
         "last_fertilized": "2024-03-01T05:45:44+00:00",
         "thumbnail": "/media/thumbnails/IMG_8001_thumb.jpg"
     },
@@ -28,10 +30,11 @@ const plants = [
         "name": null,
         "display_name": "Unnamed plant 1",
         "uuid": "645f3149-dd59-4419-b9a2-d8c796fa29e1",
+        "created": "2023-12-24T01:25:12+00:00",
         "species": null,
         "description": null,
         "pot_size": 8,
-        "last_watered": "2024-03-01T05:45:44+00:00",
+        "last_watered": "2024-02-28T05:45:44+00:00",
         "last_fertilized": "2024-03-01T05:45:44+00:00",
         "thumbnail": "/media/thumbnails/IMG_8002_thumb.jpg"
     },
@@ -39,10 +42,11 @@ const plants = [
         "name": "Favorite plant",
         "display_name": "Favorite plant",
         "uuid": "9c9d1767-a97f-4ca8-ad6e-b706ff943ff2",
+        "created": "2023-12-26T01:25:12+00:00",
         "species": "Calathea",
         "description": null,
         "pot_size": 14,
-        "last_watered": "2024-03-01T05:13:48+00:00",
+        "last_watered": null,
         "last_fertilized": "2024-03-01T05:45:44+00:00",
         "thumbnail": "/media/thumbnails/IMG_8003_thumb.jpg"
     }
@@ -64,22 +68,43 @@ describe('FilterColumn', () => {
                 openRef={{current: true}}
                 ignoreKeys={[
                     'uuid',
+                    'created',
                     'last_watered',
                     'last_fertilized',
                     'thumbnail'
                 ]}
+                sortByKeys={[
+                    {key: 'created', display: 'Added'},
+                    {key: 'display_name', display: 'Name'},
+                    {key: 'species', display: 'Species'},
+                    {key: 'last_watered', display: 'Watered'}
+                ]}
+                defaultSortKey={'created'}
             />
         );
     });
 
-    it('renders a card for each item in contents', () => {
+    it('renders expected default state', () => {
+        // Confirm a card was rendered for each item in contents array
         expect(component.container.querySelectorAll('.card').length).toBe(4);
+
+        // Confirm the sort dropdown contains the options set in sortByKeys arg
+        const menu = component.container.querySelector('.dropdown-content');
+        expect(menu.children[0].children[0].innerHTML).toContain('Added');
+        expect(menu.children[1].children[0].innerHTML).toBe('Name');
+        expect(menu.children[2].children[0].innerHTML).toBe('Species');
+        expect(menu.children[3].children[0].innerHTML).toBe('Watered');
+
+        // Confirm there is a down arrow icon next to the default option
+        expect(menu.children[0].children[0].innerHTML).toContain('svg');
+        expect(menu.children[0].children[0].innerHTML).toContain('fa-arrow-down-long');
     });
 
     it('filters visible cards when user types in the filter input', async () => {
         // Type "plant", should only show "Unnamed plant 1" and "Favorite plant"
         const filterInput = component.getByRole('textbox');
         await user.type(filterInput, 'plant');
+        await new Promise((resolve) => setTimeout(resolve, 350));
         expect(component.container.querySelectorAll('.card').length).toBe(2);
         expect(component.getByText('Unnamed plant 1')).toBeInTheDocument();
         expect(component.getByText('Favorite plant')).toBeInTheDocument();
@@ -87,18 +112,21 @@ describe('FilterColumn', () => {
         // Type "calathea", should only show "Favorite plant" (matches species)
         await user.clear(filterInput);
         await user.type(filterInput, 'calathea');
+        await new Promise((resolve) => setTimeout(resolve, 350));
         expect(component.container.querySelectorAll('.card').length).toBe(1);
         expect(component.getByText('Favorite plant')).toBeInTheDocument();
 
         // Type "6", should only show "Mini palm tree" (matches 6 inch pot)
         await user.clear(filterInput);
         await user.type(filterInput, '6');
+        await new Promise((resolve) => setTimeout(resolve, 350));
         expect(component.container.querySelectorAll('.card').length).toBe(1);
         expect(component.getByText('Mini palm tree')).toBeInTheDocument();
 
         // Type "really", should only show "Mini palm tree" (matches description)
         await user.clear(filterInput);
         await user.type(filterInput, 'really');
+        await new Promise((resolve) => setTimeout(resolve, 350));
         expect(component.container.querySelectorAll('.card').length).toBe(1);
         expect(component.getByText('Mini palm tree')).toBeInTheDocument();
     });
@@ -107,16 +135,19 @@ describe('FilterColumn', () => {
         // Type part of UUID, should remove all cards
         const filterInput = component.getByRole('textbox');
         await user.type(filterInput, '2c0991a08806');
+        await new Promise((resolve) => setTimeout(resolve, 350));
         expect(component.container.querySelectorAll('.card').length).toBe(0);
 
-        // Type part of timsetamp, should remove all cards
+        // Type part of timestamp, should remove all cards
         await user.clear(filterInput);
         await user.type(filterInput, '2024-03-01');
+        await new Promise((resolve) => setTimeout(resolve, 350));
         expect(component.container.querySelectorAll('.card').length).toBe(0);
 
         // Type part of thumbnail URL, should remove all cards
         await user.clear(filterInput);
         await user.type(filterInput, 'IMG_8');
+        await new Promise((resolve) => setTimeout(resolve, 350));
         expect(component.container.querySelectorAll('.card').length).toBe(0);
     });
 
@@ -124,10 +155,167 @@ describe('FilterColumn', () => {
         // Type random characters in field, confirm no cards visible
         const filterInput = component.getByRole('textbox');
         await user.type(filterInput, 'ffduiwafh');
+        await new Promise((resolve) => setTimeout(resolve, 350));
         expect(component.container.querySelectorAll('.card').length).toBe(0);
 
         // Click clear button, confirm all 4 cards reappear
-        await user.click(component.getByRole('button'));
+        await user.click(component.getAllByRole('button')[0]);
+        await new Promise((resolve) => setTimeout(resolve, 350));
         expect(component.container.querySelectorAll('.card').length).toBe(4);
+    });
+
+    it('sorts cards correctly when sort dropdown option is clicked', async () => {
+        // Get array of card titles, confirm expected default order
+        let titles = component.container.querySelectorAll('.card-title');
+        expect(titles[0].innerHTML).toBe("Mini palm tree");
+        expect(titles[1].innerHTML).toBe("Unnamed Fittonia");
+        expect(titles[2].innerHTML).toBe("Unnamed plant 1");
+        expect(titles[3].innerHTML).toBe("Favorite plant");
+
+        // Click the Name option in sort dropdown
+        await user.click(component.getByText('Name'));
+
+        // Confirm cards were sorted alphabetically by name
+        titles = component.container.querySelectorAll('.card-title');
+        expect(titles[0].innerHTML).toBe("Favorite plant");
+        expect(titles[1].innerHTML).toBe("Mini palm tree");
+        expect(titles[2].innerHTML).toBe("Unnamed Fittonia");
+        expect(titles[3].innerHTML).toBe("Unnamed plant 1");
+
+        // Confirm a down arrow icon appeared next to name
+        let nameOption = component.getByText('Name').parentElement;
+        expect(nameOption.querySelector('.fa-arrow-down-long')).not.toBeNull();
+
+        // Click the Name option again to reverse sort order
+        await user.click(component.getByText('Name'));
+
+        // Confirm cards were sorted reverse alphabetically by name
+        titles = component.container.querySelectorAll('.card-title');
+        expect(titles[0].innerHTML).toBe("Unnamed plant 1");
+        expect(titles[1].innerHTML).toBe("Unnamed Fittonia");
+        expect(titles[2].innerHTML).toBe("Mini palm tree");
+        expect(titles[3].innerHTML).toBe("Favorite plant");
+
+        // Confirm the down arrow was replaced by an up arrow
+        nameOption = component.getByText('Name').parentElement;
+        expect(nameOption.querySelector('.fa-arrow-down-long')).toBeNull();
+        expect(nameOption.querySelector('.fa-arrow-up-long')).not.toBeNull();
+    });
+
+    it('sorts items where selected key is null to end of list', async () => {
+        // Click the Species option in sort dropdown
+        await user.click(component.getByText('Species'));
+
+        // Confirm cards sorted alphabetically, plants without species are last
+        let titles = component.container.querySelectorAll('.card-title');
+        expect(titles[0].innerHTML).toBe("Favorite plant");
+        expect(titles[1].innerHTML).toBe("Unnamed Fittonia");
+        expect(titles[2].innerHTML).toBe("Mini palm tree");
+        expect(titles[3].innerHTML).toBe("Unnamed plant 1");
+
+        // Click the Watered option in sort dropdown
+        await user.click(component.getByText('Watered'));
+
+        // Confirm cards sorted alphabetically, plants without last_watered are last
+        titles = component.container.querySelectorAll('.card-title');
+        expect(titles[0].innerHTML).toBe("Mini palm tree");
+        expect(titles[1].innerHTML).toBe("Unnamed plant 1");
+        expect(titles[2].innerHTML).toBe("Unnamed Fittonia");
+        expect(titles[3].innerHTML).toBe("Favorite plant");
+    });
+});
+
+describe('FilterColumn optional args', () => {
+    // Define default arguments used/overridden in tests below
+    let baseArgs;
+    beforeEach(() => {
+        baseArgs = {
+            title: 'Plants',
+            contents: plants,
+            CardComponent: PlantCard,
+            editing: false,
+            selected: [],
+            openRef: {current: true},
+            ignoreKeys: [
+                'uuid',
+                'last_watered',
+                'last_fertilized',
+                'thumbnail'
+            ],
+            sortByKeys: [
+                {key: 'created', display: 'Added'},
+                {key: 'display_name', display: 'Name'},
+                {key: 'species', display: 'Species'},
+                {key: 'last_watered', display: 'Watered'}
+            ],
+            defaultSortKey: 'created'
+        };
+    });
+
+    it('does not render dropdown when sortByKeys arg is empty', async () => {
+        // Render without sortByKeys arg
+        delete baseArgs.sortByKeys;
+        const component = render(
+            <FilterColumn { ...baseArgs } />
+        );
+
+        // Confirm dropdown button and menu were not rendered
+        expect(component.container.querySelector('.dropdown')).toBeNull();
+        expect(component.container.querySelector('.btn-square')).toBeNull();
+    });
+
+    it('matches any key when ignoreKeys arg is empty', async () => {
+        // Render without ignoreKeys arg
+        delete baseArgs.ignoreKeys;
+        const user = userEvent.setup();
+        const component = render(
+            <FilterColumn { ...baseArgs } />
+        );
+
+        // Type part of UUID, confirm 1 card still present
+        const filterInput = component.getByRole('textbox');
+        await user.type(filterInput, '2c0991a08806');
+        await new Promise((resolve) => setTimeout(resolve, 350));
+        expect(component.container.querySelectorAll('.card').length).toBe(1);
+
+        // Type part of timestamp, confirm all cards still present
+        await user.clear(filterInput);
+        await user.type(filterInput, '2024-03-01');
+        await new Promise((resolve) => setTimeout(resolve, 350));
+        expect(component.container.querySelectorAll('.card').length).toBe(4);
+    });
+
+    it('sorts cards by key in defaultSortKey arg by default', () => {
+        // Render with defaultSortKey set to display_name
+        const args = { ...baseArgs, defaultSortKey: 'display_name' };
+        const component = render(
+            <FilterColumn  { ...args} />
+        );
+
+        // Confirm cards are sorted alphabetically by default
+        const titles = component.container.querySelectorAll('.card-title');
+        expect(titles[0].innerHTML).toBe("Favorite plant");
+        expect(titles[1].innerHTML).toBe("Mini palm tree");
+        expect(titles[2].innerHTML).toBe("Unnamed Fittonia");
+        expect(titles[3].innerHTML).toBe("Unnamed plant 1");
+    });
+
+    it('sorts cards in same order as contents array if defaultSortKey arg empty', () => {
+        // Render without defaultSortKey arg
+        delete baseArgs.defaultSortKey;
+        const component = render(
+            <FilterColumn { ...baseArgs } />
+        );
+
+        // Confirm cards are in same order as contents array
+        const titles = component.container.querySelectorAll('.card-title');
+        expect(titles[0].innerHTML).toBe("Mini palm tree");
+        expect(titles[1].innerHTML).toBe("Unnamed Fittonia");
+        expect(titles[2].innerHTML).toBe("Unnamed plant 1");
+        expect(titles[3].innerHTML).toBe("Favorite plant");
+
+        // Confirm neither arrow icon is present anywhere in the component
+        expect(component.container.querySelector('.fa-arrow-up-long')).toBeNull();
+        expect(component.container.querySelector('.fa-arrow-down-long')).toBeNull();
     });
 });
