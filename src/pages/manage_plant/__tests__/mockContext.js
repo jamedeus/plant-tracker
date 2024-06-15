@@ -3,6 +3,7 @@ export const mockContext = {
     "plant": {
         "name": "Test Plant",
         "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+        "created": "2023-12-26T01:25:12+00:00",
         "species": "Calathea",
         "description": "This is a plant with a long description",
         "pot_size": 4,
@@ -41,6 +42,7 @@ export const mockContext = {
             "name": "Test group",
             "display_name": "Test group",
             "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+            "created": "2023-12-26T01:25:12+00:00",
             "location": "Top shelf",
             "description": "Medium brightness grow light",
             "plants": 3
@@ -49,6 +51,7 @@ export const mockContext = {
             "name": "Testing",
             "display_name": "Testing",
             "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be61",
+            "created": "2023-12-26T01:25:12+00:00",
             "location": "Middle shelf",
             "description": "Brightest grow light",
             "plants": 5
@@ -85,6 +88,7 @@ export const mockContextNoEvents = {
     "plant": {
         "name": "Test Plant",
         "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+        "created": "2023-12-26T01:25:12+00:00",
         "species": "Calathea",
         "description": "This is a plant with a long description",
         "pot_size": 4,
@@ -107,12 +111,14 @@ export const mockContextNoEvents = {
         {
             "name": "Test group",
             "display_name": "Test group",
-            "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+            "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+            "created": "2023-12-26T01:25:12+00:00"
         },
         {
             "name": "Testing",
             "display_name": "Testing",
-            "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be61"
+            "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be61",
+            "created": "2023-12-26T01:25:12+00:00"
         }
     ],
     "species_options": [

@@ -230,6 +230,7 @@ class HookTests(TestCase):
                         "name": None,
                         "display_name": "Unnamed plant 1",
                         "uuid": str(self.uuid),
+                        "created": plant.created.isoformat(),
                         "species": None,
                         "description": None,
                         "pot_size": None,
@@ -257,6 +258,7 @@ class HookTests(TestCase):
                         "name": "Favorite Plant",
                         "display_name": "Favorite Plant",
                         "uuid": str(self.uuid),
+                        "created": plant.created.isoformat(),
                         "species": "Calathea",
                         "description": None,
                         "pot_size": 10,
@@ -296,6 +298,7 @@ class HookTests(TestCase):
                         "name": None,
                         "display_name": "Unnamed group 1",
                         "uuid": str(self.uuid),
+                        "created": group.created.isoformat(),
                         "location": None,
                         "description": None,
                         "plants": 0
@@ -319,6 +322,7 @@ class HookTests(TestCase):
                         "name": "Living room plants",
                         "display_name": "Living room plants",
                         "uuid": str(self.uuid),
+                        "created": group.created.isoformat(),
                         "location": "Living room",
                         "description": None,
                         "plants": 0
@@ -543,6 +547,7 @@ class HookTests(TestCase):
                 "plant": {
                     "name": None,
                     "uuid": str(self.uuid),
+                    "created": plant.created.isoformat(),
                     "species": None,
                     "description": None,
                     "pot_size": None,
@@ -574,6 +579,7 @@ class HookTests(TestCase):
             {
                 "name": "Favorite Plant",
                 "uuid": str(self.uuid),
+                "created": plant.created.isoformat(),
                 "species": "Calathea",
                 "description": None,
                 "pot_size": None,

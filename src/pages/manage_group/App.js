@@ -256,10 +256,18 @@ function App() {
                 openRef={plantsOpenRef}
                 ignoreKeys={[
                     'uuid',
+                    'created',
                     'last_watered',
                     'last_fertilized',
                     'thumbnail'
                 ]}
+                sortByKeys={[
+                    {key: 'created', display: 'Added'},
+                    {key: 'display_name', display: 'Name'},
+                    {key: 'species', display: 'Species'},
+                    {key: 'last_watered', display: 'Watered'}
+                ]}
+                defaultSortKey={'created'}
             >
                 <PlantEventButtons
                     editing={selectingPlants}

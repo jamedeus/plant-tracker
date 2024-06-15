@@ -100,16 +100,19 @@ describe('App', () => {
 
         // Type part of UUID in input, should remove all cards
         await user.type(filterInput, '0640');
+        await new Promise((resolve) => setTimeout(resolve, 350));
         expect(plantColumn.querySelectorAll('.card').length).toBe(0);
 
         // Type part of timsetamp in input, should remove all cards
         await user.clear(filterInput);
         await user.type(filterInput, '2024-03-01');
+        await new Promise((resolve) => setTimeout(resolve, 350));
         expect(plantColumn.querySelectorAll('.card').length).toBe(0);
 
         // Type part of thumbnail URL in input, should remove all cards
         await user.clear(filterInput);
         await user.type(filterInput, 'photo_thumb');
+        await new Promise((resolve) => setTimeout(resolve, 350));
         expect(plantColumn.querySelectorAll('.card').length).toBe(0);
     });
 });
