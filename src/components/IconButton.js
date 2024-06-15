@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const IconButton = ({ onClick=null, href=null, title=null, icon}) => {
+const IconButton = ({ onClick=null, href=null, title, icon}) => {
     return (
         <a
             className={"btn btn-square h-10 w-10 min-h-10 min-w-10"}

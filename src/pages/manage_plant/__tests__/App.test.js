@@ -282,6 +282,18 @@ describe('App', () => {
         expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled();
     });
 
+    it('shows calendar month navigation when title is clicked', async () => {
+        // Get reference to calendar, confirm shows current month
+        const calendar = app.container.querySelector('.react-calendar');
+        expect(calendar.querySelector('.react-calendar__month-view')).not.toBeNull();
+        expect(calendar.querySelector('.react-calendar__year-view')).toBeNull();
+
+        // Click calendar title, confirm changed to year view
+        await user.click(within(calendar).getByText("March 2024"));
+        expect(calendar.querySelector('.react-calendar__month-view')).toBeNull();
+        expect(calendar.querySelector('.react-calendar__year-view')).not.toBeNull();
+    });
+
     it('redirects to overview when dropdown option is clicked', async () => {
         // Click overview dropdown option, confirm redirected
         await user.click(app.getByText('Overview'));

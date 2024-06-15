@@ -44,9 +44,6 @@ const NoteModal = React.forwardRef(function NoteModal({ plantID, notes, setNotes
                 }
                 noteModalRef.current.showModal();
             },
-            close() {
-                noteModalRef.current.close();
-            },
         };
     });
 

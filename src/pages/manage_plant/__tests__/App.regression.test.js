@@ -161,7 +161,7 @@ describe('App', () => {
             })
         }));
 
-        // Click water buttonn, confirm only 1 WaterEvent is displayed
+        // Click water button, confirm only 1 WaterEvent is displayed
         await user.click(app.getByRole("button", {name: "Water"}));
         expect(app.container.querySelectorAll('.dot-water').length).toBe(1);
 
