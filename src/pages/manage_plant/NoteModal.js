@@ -164,7 +164,7 @@ const NoteModal = React.forwardRef(function NoteModal({ plantID, notes, setNotes
                     ? (
                         <div className="modal-action mx-auto">
                             <button
-                                className="btn btn-error"
+                                className="btn btn-error !text-error-content"
                                 onClick={handleDelete}
                             >
                                 Delete
