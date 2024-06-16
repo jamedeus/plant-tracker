@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, Fragment } from 'react';
+import React, { useRef, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { DateTime } from 'luxon';
 import { Popover } from "react-tiny-popover";
@@ -439,28 +439,12 @@ const Timeline = ({ plantID, events }) => {
             detailsRef.current.open = false;
         };
 
-        useEffect(() => {
-            if (detailsRef.current) {
-                detailsRef.current.addEventListener('mouseover', open);
-                detailsRef.current.addEventListener('mouseout', close);
-                return () => {
-                    if (detailsRef.current) {
-                        detailsRef.current.removeEventListener('mouseover', open);
-                        detailsRef.current.removeEventListener('mouseout', close);
-                    }
-                };
-            }
-        }, []);
-
         // Takes year-month string (ie 2024-03), scrolls to timeline section
         const JumpTo = (yearMonth) => {
-            const timelineSection = sectionRefs.current[yearMonth];
-            if (timelineSection) {
-                timelineSection.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start"
-                });
-            }
+            sectionRefs.current[yearMonth].scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
             // Close dropdown after click
             document.activeElement.blur();
         };
@@ -472,7 +456,11 @@ const Timeline = ({ plantID, events }) => {
 
         return (
             <li>
-                <details ref={detailsRef}>
+                <details
+                    ref={detailsRef}
+                    onMouseOver={open}
+                    onMouseOut={close}
+                >
                     <summary>{year}</summary>
                     <ul>
                         {months.map(month => {
