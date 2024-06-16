@@ -29,7 +29,7 @@ const NoteModal = React.forwardRef(function NoteModal({ plantID, notes, setNotes
         setCharCount(text.length);
     };
 
-    // Make open and close methods available in parent component
+    // Make open method available in parent component
     useImperativeHandle(ref, () => {
         return {
             open(note) {

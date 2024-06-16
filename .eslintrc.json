@@ -30,7 +30,10 @@
     ],
     "ignorePatterns": ["jest.setup.js"],
     "rules": {
-        "indent": ["warn", 4, { "SwitchCase": 1 }],
+        "indent": ["warn", 4, {
+            "SwitchCase": 1,
+            "ignoredNodes": ["TemplateLiteral > *"]
+        }],
         "no-unused-vars": ["error", { "varsIgnorePattern": "^_" }],
         "padding-line-between-statements": [
             "warn",

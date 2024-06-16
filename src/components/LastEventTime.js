@@ -13,9 +13,9 @@ const getDisplayTime = (timestamp) => {
     if (timestampIsToday(timestamp)) {
         return timestampToRelative(timestamp);
     } else {
-        return timestampToRelativeCalendar(timestamp)
+        return timestampToRelativeCalendar(timestamp);
     }
-}
+};
 
 // Takes event name and timestamp, formats and returns
 // Used to display last watered/fertilized times

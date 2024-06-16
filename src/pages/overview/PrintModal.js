@@ -4,7 +4,7 @@ import print from 'print-js';
 import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
 
-const PrintModal = React.forwardRef(function PrintModal(props, ref) {
+const PrintModal = React.forwardRef(function PrintModal(_, ref) {
     // State controls modal contents, must be "options", "loading", or "error"
     const [modalContents, setModalContents] = useState("options");
 

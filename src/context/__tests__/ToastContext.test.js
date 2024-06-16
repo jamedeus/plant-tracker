@@ -16,7 +16,7 @@ const TestComponent = () => {
             <button onClick={showInfo}>Show Info Toast</button>
             <button onClick={showError}>Show Error Toast</button>
         </>
-    )
+    );
 };
 
 describe('ToggleThemeOption', () => {

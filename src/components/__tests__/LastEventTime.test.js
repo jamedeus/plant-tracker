@@ -13,7 +13,7 @@ describe('LastEventTime', () => {
             <LastEventTime text="Water" timestamp={"2024-03-01T14:00:00.000Z"} />
         );
         expect(getByText('Watered 6 hours ago')).toBeInTheDocument();
-    })
+    });
 
     it('displays relative time in days when timestamp is not today', () => {
         const { getByText } = render(

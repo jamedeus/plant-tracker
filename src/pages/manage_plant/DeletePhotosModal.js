@@ -173,7 +173,10 @@ const DeletePhotosModal = ({ plantID, photoUrls, setPhotoUrls }) => {
     };
 
     ConfirmDeleteRow.propTypes = {
-        photo: PropTypes.object
+        photo: PropTypes.shape({
+            thumbnail: PropTypes.string.isRequired,
+            key: PropTypes.number.isRequired
+        }).isRequired
     };
 
     return (
@@ -224,6 +227,7 @@ const DeletePhotosModal = ({ plantID, photoUrls, setPhotoUrls }) => {
                     mx-auto px-8 gap-4 max-h-half-screen overflow-scroll`}
                 >
                     {selectedPhotos.map(photo => (
+                        // eslint-disable-next-line react/prop-types
                         <ConfirmDeleteRow key={photo.key} photo={photo} />
                     ))}
                 </div>
