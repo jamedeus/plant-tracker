@@ -31,12 +31,6 @@ function App() {
     // Create ref for modal used to generate QR codes
     const printModalRef = useRef(null);
 
-    const showPrintModal = () => {
-        if (printModalRef.current) {
-            printModalRef.current.showModal();
-        }
-    };
-
     // Get toggle theme option from context
     const { ToggleThemeOption } = useTheme();
 
@@ -98,7 +92,7 @@ function App() {
                 </ul>
                 <button
                     className="btn btn-accent text-lg"
-                    onClick={showPrintModal}
+                    onClick={() => printModalRef.current.open()}
                 >
                     Print QR Codes
                 </button>
@@ -233,8 +227,12 @@ function App() {
             <Navbar
                 menuOptions={
                     <>
-                        <li><a onClick={toggleEditing}>Edit</a></li>
-                        <li><a onClick={showPrintModal}>Print QR Codes</a></li>
+                        <li><a onClick={toggleEditing}>
+                            Edit
+                        </a></li>
+                        <li><a onClick={() => printModalRef.current.open()}>
+                            Print QR Codes
+                        </a></li>
                         <ToggleThemeOption />
                     </>
                 }
@@ -253,7 +251,7 @@ function App() {
                 </button>
             </FloatingFooter>
 
-            <PrintModal printModalRef={printModalRef} />
+            <PrintModal ref={printModalRef} />
         </div>
     );
 }

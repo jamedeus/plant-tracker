@@ -1,11 +1,10 @@
-import React, { useState, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useRef, useImperativeHandle } from 'react';
 import { Tab } from '@headlessui/react';
 import print from 'print-js';
 import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
 
-const PrintModal = ({ printModalRef }) => {
+const PrintModal = React.forwardRef(function PrintModal(props, ref) {
     // State controls modal contents, must be "options", "loading", or "error"
     const [modalContents, setModalContents] = useState("options");
 
@@ -15,6 +14,17 @@ const PrintModal = ({ printModalRef }) => {
     // Ref used to abort printing if user clicks cancel before API response
     // Set to true when request starts, response only processed if still true
     const cancelPrinting = useRef(false);
+
+    const printModalRef = useRef(null);
+
+    // Make open method available in parent component
+    useImperativeHandle(ref, () => {
+        return {
+            open() {
+                printModalRef.current.showModal();
+            },
+        };
+    });
 
     // Cancel button handler, aborts printing and resets modal contents
     const cancel = () => {
@@ -30,18 +40,6 @@ const PrintModal = ({ printModalRef }) => {
             setModalContents("options");
         }, 150);
     };
-
-    // Listen for modal close event, cancel printing and reset contents to default
-    useEffect(() => {
-        if (printModalRef.current) {
-            printModalRef.current.addEventListener('close', resetModal);
-            return () => {
-                if (printModalRef.current) {
-                    printModalRef.current.removeEventListener('close', resetModal);
-                }
-            };
-        }
-    }, []);
 
     // Request QR codes from backend, open print dialog if user did not cancel
     const fetchQrCodes = async (size) => {
@@ -236,6 +234,7 @@ const PrintModal = ({ printModalRef }) => {
                 <Modal
                     dialogRef={printModalRef}
                     title={"Fetching QR Codes"}
+                    onClose={resetModal}
                 >
                     <LoadingAnimation />
                 </Modal>
@@ -254,15 +253,12 @@ const PrintModal = ({ printModalRef }) => {
                 <Modal
                     dialogRef={printModalRef}
                     title={"Error"}
+                    onClose={resetModal}
                 >
                     <ErrorMessage />
                 </Modal>
             );
     }
-};
-
-PrintModal.propTypes = {
-    printModalRef: PropTypes.object
-};
+});
 
 export default PrintModal;

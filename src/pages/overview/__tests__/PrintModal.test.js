@@ -11,12 +11,12 @@ const TestComponent = () => {
     // Simulate modal being closed (HTMLDialogElement not implemented in jsdom)
     const closeModal = () => {
         let event = new Event("close");
-        printModalRef.current.dispatchEvent(event);
+        document.querySelector('dialog').dispatchEvent(event);
     };
 
     return (
         <>
-            <PrintModal printModalRef={printModalRef} />;
+            <PrintModal ref={printModalRef} />;
             <button onClick={closeModal}>Close Modal</button>
         </>
     );
@@ -240,5 +240,27 @@ describe('PrintModal', () => {
         // Click generate button, confirm error text appears
         await user.click(component.getByText('Generate'));
         expect(component.getByText('An unknown error occurred')).not.toBeNull();
+    });
+
+    it('clears error when modal is closed', async () => {
+        // Mock fetch function to return unexpected error code
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            status: 418,
+            json: () => Promise.resolve({
+                'error': 'an unhandled exception was raised'
+            })
+        }));
+
+        // Click generate button, confirm error text appears
+        await user.click(component.getByText('Generate'));
+        expect(component.getByText('An unknown error occurred')).not.toBeNull();
+
+        // Close modal, wait for close animation to complete
+        await user.click(component.getByText('Close Modal'));
+        await new Promise((resolve) => setTimeout(resolve, 200));
+
+        // Confirm error text no longer in document
+        expect(component.queryByText('An unknown error occurred')).toBeNull();
     });
 });

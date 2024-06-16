@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { XMarkIcon } from '@heroicons/react/16/solid';
 
 // Reusable modal component, can be closed with button or by clicking outside
-const Modal = ({ dialogRef, title, children, className='' }) => {
+const Modal = ({ dialogRef, title, children, className='', onClose }) => {
     return (
-        <dialog className="modal" ref={dialogRef}>
+        <dialog className="modal" ref={dialogRef} onClose={onClose}>
             <div className={`modal-box text-center flex flex-col pt-4 ${className}`}>
                 <form method="dialog">
                     <button className="btn-close absolute right-4 top-4">
@@ -37,7 +37,8 @@ Modal.propTypes = {
     ]),
     title: PropTypes.string,
     children: PropTypes.node,
-    className: PropTypes.string
+    className: PropTypes.string,
+    onClose: PropTypes.func
 };
 
 export default Modal;
