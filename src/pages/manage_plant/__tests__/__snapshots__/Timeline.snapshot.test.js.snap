@@ -5485,16 +5485,6 @@ exports[`Timeline matches snapshot 1`] = `
           </form>
         </dialog>
       </div>
-      <div
-        class="toast toast-center opacity-0 z-[-1]
-                            transition-all duration-500"
-      >
-        <div
-          class="alert alert-info gap-0"
-        >
-          <span />
-        </div>
-      </div>
       <dialog
         class="modal"
       >
@@ -11020,16 +11010,6 @@ exports[`Timeline matches snapshot 1`] = `
           </button>
         </form>
       </dialog>
-    </div>
-    <div
-      class="toast toast-center opacity-0 z-[-1]
-                            transition-all duration-500"
-    >
-      <div
-        class="alert alert-info gap-0"
-      >
-        <span />
-      </div>
     </div>
     <dialog
       class="modal"

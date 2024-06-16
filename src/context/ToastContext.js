@@ -14,51 +14,52 @@ export const useToast = () => useContext(ToastContext);
 
 export const ToastProvider = ({ children }) => {
     // State for text and color, default to blue
-    const [message, setMessage] = useState('');
+    const [message, setMessage] = useState(null);
     const [color, setColor] = useState('blue');
+    // State to set fade in/out class
+    const [fade, setFade] = useState('toast-fade-in');
 
-    const toastRef = useRef();
-
-    // Keep timer reference between showToast calls, allows clearing old timer
-    // to prevent new toast being hidden before timeout expires
-    let timer;
+    // Keep timer reference between showToast calls, used to clear old timer
+    // and restart if showToast called again before current timeout expires
+    const timerRef = useRef(null);
 
     // Takes string, color (from colorMap), and timeout milliseconds
     const showToast = (message, color, timeout) => {
         // Clear old timer if running
-        clearTimeout(timer);
+        if (timerRef.current) {
+            clearTimeout(timerRef.current);
+        }
 
-        // Set color and message, fade toast in
+        // Set color and fade states, then message state (mounts Toast)
         setColor(color);
+        setFade('toast-fade-in');
         setMessage(message);
-        toastRef.current.classList.remove('opacity-0', 'z-[-1]');
 
         // Start timer to fade toast out after timeout milliseconds
-        timer = setTimeout(() => {
-            if (toastRef.current) {
-                toastRef.current.classList.add('opacity-0');
-                // Set negative Z index after fade animation
-                // (prevent hidden div blocking clicks)
-                setTimeout(() => {
-                    toastRef.current.classList.add('z-[-1]');
-                }, 500);
-            }
-            setTimeout(500);
+        timerRef.current = setTimeout(() => {
+            setFade('toast-fade-out');
+            // Wait for fade animation, clear message state (unmounts Toast)
+            setTimeout(() => {
+                setMessage(null);
+            }, 500);
         }, timeout);
+    };
+
+    // Rendered when message state set
+    const Toast = () => {
+        return (
+            <div className={`toast toast-center ${fade}`}>
+                <div className={`alert ${colorMap[color]} gap-0`}>
+                    <span>{message}</span>
+                </div>
+            </div>
+        );
     };
 
     return (
         <ToastContext.Provider value={{ showToast }}>
             {children}
-            <div
-                ref={toastRef}
-                className={`toast toast-center opacity-0 z-[-1]
-                            transition-all duration-500`}
-            >
-                <div className={`alert ${colorMap[color]} gap-0`}>
-                    <span>{message}</span>
-                </div>
-            </div>
+            {message ? <Toast /> : null }
         </ToastContext.Provider>
     );
 };

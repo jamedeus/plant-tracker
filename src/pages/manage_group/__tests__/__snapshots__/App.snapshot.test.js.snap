@@ -1542,16 +1542,6 @@ exports[`App matches snapshot 1`] = `
           </button>
         </form>
       </dialog>
-      <div
-        class="toast toast-center opacity-0 z-[-1]
-                            transition-all duration-500"
-      >
-        <div
-          class="alert alert-info gap-0"
-        >
-          <span />
-        </div>
-      </div>
     </div>
   </body>,
   "container": <div>
@@ -3077,16 +3067,6 @@ exports[`App matches snapshot 1`] = `
         </button>
       </form>
     </dialog>
-    <div
-      class="toast toast-center opacity-0 z-[-1]
-                            transition-all duration-500"
-    >
-      <div
-        class="alert alert-info gap-0"
-      >
-        <span />
-      </div>
-    </div>
   </div>,
   "debug": [Function],
   "findAllByAltText": [Function],
