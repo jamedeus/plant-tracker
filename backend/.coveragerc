@@ -8,6 +8,9 @@ omit =
     */test_*.py
     *unit_test_helpers.py
     */migrations/*.py
+    backend/settings.py
+    backend/urls.py
+    plant_tracker/apps.py
 
 [report]
 precision = 1
