@@ -1490,7 +1490,7 @@ exports[`Timeline matches snapshot 1`] = `
                     />
                   </svg>
                   <span
-                    class="cursor-pointer"
+                    class="cursor-pointer text-sm md:text-base"
                   >
                     Fertilized with dilute 10-15-10 liquid fertilizer
                   </span>
@@ -1555,7 +1555,7 @@ exports[`Timeline matches snapshot 1`] = `
                     />
                   </svg>
                   <span
-                    class="cursor-pointer"
+                    class="cursor-pointer text-sm md:text-base"
                   >
                     One of the older leaves is starting to turn yellow
                   </span>
@@ -7026,7 +7026,7 @@ exports[`Timeline matches snapshot 1`] = `
                   />
                 </svg>
                 <span
-                  class="cursor-pointer"
+                  class="cursor-pointer text-sm md:text-base"
                 >
                   Fertilized with dilute 10-15-10 liquid fertilizer
                 </span>
@@ -7091,7 +7091,7 @@ exports[`Timeline matches snapshot 1`] = `
                   />
                 </svg>
                 <span
-                  class="cursor-pointer"
+                  class="cursor-pointer text-sm md:text-base"
                 >
                   One of the older leaves is starting to turn yellow
                 </span>

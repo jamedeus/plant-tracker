@@ -276,7 +276,7 @@ const Timeline = ({ plantID, events }) => {
                     onClick={() => noteModalRef.current.open(note)}
                 />
                 <span
-                    className={'cursor-pointer'}
+                    className={'cursor-pointer text-sm md:text-base'}
                     onClick={() => setExpanded(!expanded)}
                 >
                     {note.text}
