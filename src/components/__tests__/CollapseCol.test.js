@@ -36,5 +36,9 @@ describe('CollapseCol', () => {
         // Click checkbox (title doesn't work in jsdom), confirm checked
         await user.click(checkbox);
         expect(checkbox.checked).toBe(true);
+
+        // Wait for animation, confirm scrollIntoView was called
+        await new Promise((resolve) => setTimeout(resolve, 150));
+        expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled();
     });
 });

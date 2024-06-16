@@ -100,6 +100,7 @@ describe('ToggleThemeOption', () => {
             </ThemeProvider>
         );
         expect(component.getByText('Light mode')).not.toBeNull();
+        expect(component.queryByText('Dark mode')).toBeNull();
 
         // Simulate user changing theme to light in another tab
         act(() => {
@@ -110,6 +111,19 @@ describe('ToggleThemeOption', () => {
         });
 
         // Confirm that toggle component re-rendered
+        expect(component.queryByText('Light mode')).toBeNull();
+        expect(component.getByText('Dark mode')).not.toBeNull();
+
+        // Simulate user changing an unrelated local storage key
+        act(() => {
+            const storageEvent = new Event('storage');
+            storageEvent.key = 'mode';
+            storageEvent.newValue = 'light';
+            window.dispatchEvent(storageEvent);
+        });
+
+        // Confirm that toggle component did NOT re-render
+        expect(component.queryByText('Light mode')).toBeNull();
         expect(component.getByText('Dark mode')).not.toBeNull();
     });
 });
