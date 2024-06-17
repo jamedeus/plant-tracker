@@ -196,8 +196,8 @@ function App() {
     };
 
     PlantEventButtons.propTypes = {
-        editing: PropTypes.bool,
-        setEditing: PropTypes.func
+        editing: PropTypes.bool.isRequired,
+        setEditing: PropTypes.func.isRequired
     };
 
     return (

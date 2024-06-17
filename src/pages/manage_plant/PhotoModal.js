@@ -128,8 +128,8 @@ const PhotoModal = ({ plantID, photoUrls, setPhotoUrls }) => {
             );
         };
 
-        PhotoModal.propTypes = {
-            filename: PropTypes.string
+        Row.propTypes = {
+            filename: PropTypes.string.isRequired
         };
 
         // Return table with 1 row for each selected file
@@ -188,9 +188,9 @@ const PhotoModal = ({ plantID, photoUrls, setPhotoUrls }) => {
 };
 
 PhotoModal.propTypes = {
-    plantID: PropTypes.string,
-    photoUrls: PropTypes.array,
-    setPhotoUrls: PropTypes.func
+    plantID: PropTypes.string.isRequired,
+    photoUrls: PropTypes.array.isRequired,
+    setPhotoUrls: PropTypes.func.isRequired
 };
 
 export default PhotoModal;

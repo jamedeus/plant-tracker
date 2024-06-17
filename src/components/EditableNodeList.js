@@ -61,7 +61,9 @@ const EditableNodeList = ({ editing, selected, children }) => {
 
 EditableNodeList.propTypes = {
     editing: PropTypes.bool,
-    selected: PropTypes.object,
+    selected: PropTypes.shape({
+        current: PropTypes.array
+    }).isRequired,
     children: PropTypes.node
 };
 

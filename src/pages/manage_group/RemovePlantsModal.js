@@ -83,9 +83,9 @@ const RemovePlantsModal = ({ groupID, plantDetails, setPlantDetails }) => {
 };
 
 RemovePlantsModal.propTypes = {
-    groupID: PropTypes.string,
-    plantDetails: PropTypes.array,
-    setPlantDetails: PropTypes.func
+    groupID: PropTypes.string.isRequired,
+    plantDetails: PropTypes.array.isRequired,
+    setPlantDetails: PropTypes.func.isRequired
 };
 
 export default RemovePlantsModal;

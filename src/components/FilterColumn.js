@@ -59,8 +59,8 @@ const FilterInput = ({
         };
 
         Option.propTypes = {
-            keyName: PropTypes.string,
-            displayString: PropTypes.string
+            keyName: PropTypes.string.isRequired,
+            displayString: PropTypes.string.isRequired
         };
 
         return (
@@ -129,7 +129,7 @@ FilterInput.propTypes = {
     setSortKey: PropTypes.func,
     sortDirection: PropTypes.bool,
     setSortDirection: PropTypes.func,
-    handleInput: PropTypes.func
+    handleInput: PropTypes.func.isRequired
 };
 
 // Renders CollapseCol with EditableNodeList, text input used to filter visible
@@ -260,9 +260,11 @@ const FilterColumn = ({
 FilterColumn.propTypes = {
     title: PropTypes.string,
     contents: PropTypes.array,
-    CardComponent: PropTypes.func,
+    CardComponent: PropTypes.func.isRequired,
     editing: PropTypes.bool,
-    selected: PropTypes.object,
+    selected: PropTypes.shape({
+        current: PropTypes.array
+    }).isRequired,
     openRef: PropTypes.object,
     ignoreKeys: PropTypes.array,
     sortByKeys: PropTypes.array,

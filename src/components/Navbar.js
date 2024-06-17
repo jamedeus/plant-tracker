@@ -115,7 +115,7 @@ const Navbar = ({ menuOptions, title, titleOptions }) => {
 
 Navbar.propTypes = {
     menuOptions: PropTypes.node,
-    title: PropTypes.string,
+    title: PropTypes.string.isRequired,
     titleOptions: PropTypes.node
 };
 

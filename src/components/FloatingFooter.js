@@ -13,8 +13,8 @@ const FloatingFooter = ({ visible, children }) => {
 };
 
 FloatingFooter.propTypes = {
-    visible: PropTypes.bool,
-    children: PropTypes.node
+    visible: PropTypes.bool.isRequired,
+    children: PropTypes.node.isRequired
 };
 
 export default FloatingFooter;

@@ -49,7 +49,7 @@ const ChangeQrModal = ({ uuid }) => {
 };
 
 ChangeQrModal.propTypes = {
-    uuid: PropTypes.string
+    uuid: PropTypes.string.isRequired
 };
 
 export default ChangeQrModal;

@@ -134,9 +134,9 @@ const EventHistoryModal = ({ plant, setPlant }) => {
     };
 
     EventCard.propTypes = {
-        timestamp: PropTypes.string,
-        selected: PropTypes.bool,
-        onSelect: PropTypes.func
+        timestamp: PropTypes.string.isRequired,
+        selected: PropTypes.bool.isRequired,
+        onSelect: PropTypes.func.isRequired
     };
 
     // Takes plant.events subkey + ref containing array (track selected events)
@@ -172,11 +172,11 @@ const EventHistoryModal = ({ plant, setPlant }) => {
     };
 
     EventsCol.propTypes = {
-        events: PropTypes.array,
+        events: PropTypes.array.isRequired,
         selectedRef: PropTypes.oneOfType([
             PropTypes.func,
             PropTypes.shape({ current: PropTypes.array }),
-        ])
+        ]).isRequired
     };
 
     return (
@@ -246,8 +246,8 @@ const EventHistoryModal = ({ plant, setPlant }) => {
 };
 
 EventHistoryModal.propTypes = {
-    plant: PropTypes.object,
-    setPlant: PropTypes.func
+    plant: PropTypes.object.isRequired,
+    setPlant: PropTypes.func.isRequired
 };
 
 export default EventHistoryModal;

@@ -103,8 +103,8 @@ const DeletePhotosModal = ({ plantID, photoUrls, setPhotoUrls }) => {
     };
 
     SelectButton.propTypes = {
-        photo: PropTypes.object,
-        selected: PropTypes.bool
+        photo: PropTypes.object.isRequired,
+        selected: PropTypes.bool.isRequired
     };
 
     // Renders single photo slide with next, prev, and select buttons
@@ -142,8 +142,8 @@ const DeletePhotosModal = ({ plantID, photoUrls, setPhotoUrls }) => {
     };
 
     PhotoSlide.propTypes = {
-        photo: PropTypes.object,
-        index: PropTypes.number
+        photo: PropTypes.object.isRequired,
+        index: PropTypes.number.isRequired
     };
 
     // Rendered on confirm delete screen, allows user to unselect photos
@@ -252,9 +252,9 @@ const DeletePhotosModal = ({ plantID, photoUrls, setPhotoUrls }) => {
 };
 
 DeletePhotosModal.propTypes = {
-    plantID: PropTypes.string,
-    photoUrls: PropTypes.array,
-    setPhotoUrls: PropTypes.func
+    plantID: PropTypes.string.isRequired,
+    photoUrls: PropTypes.array.isRequired,
+    setPhotoUrls: PropTypes.func.isRequired
 };
 
 export default DeletePhotosModal;

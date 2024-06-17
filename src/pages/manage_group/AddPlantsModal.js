@@ -87,10 +87,10 @@ const AddPlantsModal = ({ groupID, options, plantDetails, setPlantDetails }) => 
 };
 
 AddPlantsModal.propTypes = {
-    groupID: PropTypes.string,
-    options: PropTypes.array,
-    plantDetails: PropTypes.array,
-    setPlantDetails: PropTypes.func
+    groupID: PropTypes.string.isRequired,
+    options: PropTypes.array.isRequired,
+    plantDetails: PropTypes.array.isRequired,
+    setPlantDetails: PropTypes.func.isRequired
 };
 
 export default AddPlantsModal;

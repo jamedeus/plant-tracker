@@ -57,8 +57,8 @@ const GroupModal = ({ plantID, handleAddGroup }) => {
 };
 
 GroupModal.propTypes = {
-    plantID: PropTypes.string,
-    handleAddGroup: PropTypes.func
+    plantID: PropTypes.string.isRequired,
+    handleAddGroup: PropTypes.func.isRequired
 };
 
 export default GroupModal;

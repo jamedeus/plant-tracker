@@ -146,7 +146,7 @@ const Timeline = ({ plantID, events }) => {
     };
 
     TimelineDate.propTypes = {
-        timestamp: PropTypes.string
+        timestamp: PropTypes.string.isRequired
     };
 
     const TimelineContent = ({ events, notes, photos}) => {
@@ -184,9 +184,9 @@ const Timeline = ({ plantID, events }) => {
     };
 
     TimelineContent.propTypes = {
-        events: PropTypes.array,
-        notes: PropTypes.array,
-        photos: PropTypes.array
+        events: PropTypes.array.isRequired,
+        notes: PropTypes.array.isRequired,
+        photos: PropTypes.array.isRequired
     };
 
     const eventIconMap = {
@@ -214,7 +214,7 @@ const Timeline = ({ plantID, events }) => {
     };
 
     EventMarker.propTypes = {
-        eventType: PropTypes.string
+        eventType: PropTypes.string.isRequired
     };
 
     // Photo thumbnail that opens larger popover when clicked
@@ -257,9 +257,9 @@ const Timeline = ({ plantID, events }) => {
     };
 
     PhotoThumbnail.propTypes = {
-        thumbnailUrl: PropTypes.string,
-        photoUrl: PropTypes.string,
-        timestamp: PropTypes.string
+        thumbnailUrl: PropTypes.string.isRequired,
+        photoUrl: PropTypes.string.isRequired,
+        timestamp: PropTypes.string.isRequired
     };
 
     const NoteCollapse = ({ note }) => {
@@ -287,9 +287,9 @@ const Timeline = ({ plantID, events }) => {
 
     NoteCollapse.propTypes = {
         note: PropTypes.shape({
-            text: PropTypes.string,
-            timestamp: PropTypes.string
-        })
+            text: PropTypes.string.isRequired,
+            timestamp: PropTypes.string.isRequired
+        }).isRequired
     };
 
     // Takes year-month string (ie 2024-03)
@@ -305,7 +305,7 @@ const Timeline = ({ plantID, events }) => {
     };
 
     MonthDivider.propTypes = {
-        yearMonth: PropTypes.string
+        yearMonth: PropTypes.string.isRequired
     };
 
     // Takes year-month string (ie 2024-03) and array containing object for
@@ -339,8 +339,8 @@ const Timeline = ({ plantID, events }) => {
     };
 
     MonthSection.propTypes = {
-        yearMonth: PropTypes.string,
-        days: PropTypes.array
+        yearMonth: PropTypes.string.isRequired,
+        days: PropTypes.array.isRequired
     };
 
     // History title with dropdown menu (hover) to jump to month/year sections
@@ -421,7 +421,7 @@ const Timeline = ({ plantID, events }) => {
     };
 
     QuickNavigation.propTypes = {
-        navigationOptions: PropTypes.object
+        navigationOptions: PropTypes.object.isRequired
     };
 
     // Takes year (string) and array of months (numbers not string) with events
@@ -479,8 +479,8 @@ const Timeline = ({ plantID, events }) => {
     };
 
     QuickNavigationYear.propTypes = {
-        year: PropTypes.string,
-        months: PropTypes.array
+        year: PropTypes.string.isRequired,
+        months: PropTypes.array.isRequired
     };
 
     return (
@@ -533,8 +533,8 @@ const Timeline = ({ plantID, events }) => {
 };
 
 Timeline.propTypes = {
-    plantID: PropTypes.string,
-    events: PropTypes.object
+    plantID: PropTypes.string.isRequired,
+    events: PropTypes.object.isRequired
 };
 
 export default Timeline;

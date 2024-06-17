@@ -75,9 +75,9 @@ const GroupCard = ({ display_name, plants, uuid, location, description, linkPage
 };
 
 GroupCard.propTypes = {
-    display_name: PropTypes.string,
-    plants: PropTypes.number,
-    uuid: PropTypes.string,
+    display_name: PropTypes.string.isRequired,
+    plants: PropTypes.number.isRequired,
+    uuid: PropTypes.string.isRequired,
     location: PropTypes.string,
     description: PropTypes.string,
     linkPage: PropTypes.bool

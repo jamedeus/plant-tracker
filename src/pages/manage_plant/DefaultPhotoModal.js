@@ -89,10 +89,10 @@ const DefaultPhotoModal = ({ plantID, photoUrls }) => {
     };
 
     PhotoSlide.propTypes = {
-        index: PropTypes.number,
-        photoUrl: PropTypes.string,
-        photoKey: PropTypes.number,
-        timestamp: PropTypes.string
+        index: PropTypes.number.isRequired,
+        photoUrl: PropTypes.string.isRequired,
+        photoKey: PropTypes.number.isRequired,
+        timestamp: PropTypes.string.isRequired
     };
 
     return (
@@ -115,8 +115,8 @@ const DefaultPhotoModal = ({ plantID, photoUrls }) => {
 };
 
 DefaultPhotoModal.propTypes = {
-    plantID: PropTypes.string,
-    photoUrls: PropTypes.array
+    plantID: PropTypes.string.isRequired,
+    photoUrls: PropTypes.array.isRequired
 };
 
 export default DefaultPhotoModal;

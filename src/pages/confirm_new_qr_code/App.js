@@ -64,7 +64,7 @@ function App() {
         };
 
         Wrapper.propTypes = {
-            children: PropTypes.node
+            children: PropTypes.node.isRequired
         };
 
         switch(type) {

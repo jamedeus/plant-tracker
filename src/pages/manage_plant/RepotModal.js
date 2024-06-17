@@ -53,7 +53,7 @@ const RepotModal = ({ plantID, currentPotSize, handleRepot }) => {
     };
 
     PotSizeOption.propTypes = {
-        option: PropTypes.number
+        option: PropTypes.number.isRequired
     };
 
     const isInt = (value) => {
@@ -137,12 +137,12 @@ const RepotModal = ({ plantID, currentPotSize, handleRepot }) => {
 };
 
 RepotModal.propTypes = {
-    plantID: PropTypes.string,
+    plantID: PropTypes.string.isRequired,
     currentPotSize: PropTypes.oneOfType([
         PropTypes.string,
         PropTypes.number
     ]),
-    handleRepot: PropTypes.func
+    handleRepot: PropTypes.func.isRequired
 };
 
 export default RepotModal;

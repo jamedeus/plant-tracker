@@ -19,7 +19,7 @@ IconButton.propTypes = {
     onClick: PropTypes.func,
     href: PropTypes.string,
     title: PropTypes.string,
-    icon: PropTypes.object
+    icon: PropTypes.object.isRequired
 };
 
 export default IconButton;

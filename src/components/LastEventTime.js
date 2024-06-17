@@ -32,7 +32,7 @@ const LastEventTime = ({ text, timestamp }) => {
 };
 
 LastEventTime.propTypes = {
-    text: PropTypes.string,
+    text: PropTypes.string.isRequired,
     timestamp: PropTypes.string
 };
 

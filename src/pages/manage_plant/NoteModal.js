@@ -195,9 +195,9 @@ const NoteModal = React.forwardRef(function NoteModal({ plantID, notes, setNotes
 });
 
 NoteModal.propTypes = {
-    plantID: PropTypes.string,
-    notes: PropTypes.array,
-    setNotes: PropTypes.func
+    plantID: PropTypes.string.isRequired,
+    notes: PropTypes.array.isRequired,
+    setNotes: PropTypes.func.isRequired
 };
 
 export default NoteModal;

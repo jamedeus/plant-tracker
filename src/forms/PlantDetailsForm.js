@@ -36,8 +36,8 @@ const SpeciesSelect = ({ value }) => {
     };
 
     Option.propTypes = {
-        value: PropTypes.string,
-        text: PropTypes.string
+        value: PropTypes.string.isRequired,
+        text: PropTypes.string.isRequired
     };
 
     return (

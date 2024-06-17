@@ -128,8 +128,8 @@ const PlantCard = ({ display_name, uuid, species, description, pot_size, last_wa
 };
 
 PlantCard.propTypes = {
-    display_name: PropTypes.string,
-    uuid: PropTypes.string,
+    display_name: PropTypes.string.isRequired,
+    uuid: PropTypes.string.isRequired,
     species: PropTypes.string,
     description: PropTypes.string,
     pot_size: PropTypes.number,

@@ -36,7 +36,7 @@ Modal.propTypes = {
         PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
     ]),
     title: PropTypes.string,
-    children: PropTypes.node,
+    children: PropTypes.node.isRequired,
     className: PropTypes.string,
     onClose: PropTypes.func
 };

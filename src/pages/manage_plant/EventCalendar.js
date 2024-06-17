@@ -74,7 +74,7 @@ const EventCalendar = ({ events }) => {
 };
 
 EventCalendar.propTypes = {
-    events: PropTypes.object
+    events: PropTypes.object.isRequired
 };
 
 export default EventCalendar;
