@@ -1,4 +1,3 @@
-import { act } from '@testing-library/react';
 import { useTheme, ThemeProvider } from 'src/context/ThemeContext';
 
 const localStorageMock = (() => {

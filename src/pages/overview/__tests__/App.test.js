@@ -106,7 +106,7 @@ describe('App', () => {
         });
     });
 
-    it('fetches new state when user navigates to overview with back button', () => {
+    it('fetches new state when user navigates to overview with back button', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
@@ -122,7 +122,9 @@ describe('App', () => {
         window.dispatchEvent(pageshowEvent);
 
         // Confirm fetched correct endpoint
-        expect(global.fetch).toHaveBeenCalledWith('/get_overview_state');
+        await waitFor(() => {
+            expect(global.fetch).toHaveBeenCalledWith('/get_overview_state');
+        });
     });
 
     it('does not fetch new state when other pageshow events are triggered', () => {

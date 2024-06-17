@@ -64,7 +64,7 @@ describe('FilterColumn', () => {
                 contents={plants}
                 CardComponent={PlantCard}
                 editing={false}
-                selected={[]}
+                selected={{current: []}}
                 openRef={{current: true}}
                 ignoreKeys={[
                     'uuid',
@@ -104,64 +104,73 @@ describe('FilterColumn', () => {
         // Type "plant", should only show "Unnamed plant 1" and "Favorite plant"
         const filterInput = component.getByRole('textbox');
         await user.type(filterInput, 'plant');
-        await new Promise((resolve) => setTimeout(resolve, 350));
-        expect(component.container.querySelectorAll('.card').length).toBe(2);
-        expect(component.getByText('Unnamed plant 1')).toBeInTheDocument();
-        expect(component.getByText('Favorite plant')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(component.container.querySelectorAll('.card').length).toBe(2);
+            expect(component.getByText('Unnamed plant 1')).toBeInTheDocument();
+            expect(component.getByText('Favorite plant')).toBeInTheDocument();
+        });
 
         // Type "calathea", should only show "Favorite plant" (matches species)
         await user.clear(filterInput);
         await user.type(filterInput, 'calathea');
-        await new Promise((resolve) => setTimeout(resolve, 350));
-        expect(component.container.querySelectorAll('.card').length).toBe(1);
-        expect(component.getByText('Favorite plant')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(component.container.querySelectorAll('.card').length).toBe(1);
+            expect(component.getByText('Favorite plant')).toBeInTheDocument();
+        });
 
         // Type "6", should only show "Mini palm tree" (matches 6 inch pot)
         await user.clear(filterInput);
         await user.type(filterInput, '6');
-        await new Promise((resolve) => setTimeout(resolve, 350));
-        expect(component.container.querySelectorAll('.card').length).toBe(1);
-        expect(component.getByText('Mini palm tree')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(component.container.querySelectorAll('.card').length).toBe(1);
+            expect(component.getByText('Mini palm tree')).toBeInTheDocument();
+        });
 
         // Type "really", should only show "Mini palm tree" (matches description)
         await user.clear(filterInput);
         await user.type(filterInput, 'really');
-        await new Promise((resolve) => setTimeout(resolve, 350));
-        expect(component.container.querySelectorAll('.card').length).toBe(1);
-        expect(component.getByText('Mini palm tree')).toBeInTheDocument();
+        await waitFor(() => {
+            expect(component.container.querySelectorAll('.card').length).toBe(1);
+            expect(component.getByText('Mini palm tree')).toBeInTheDocument();
+        });
     });
 
     it('does not match the keys in ignoreKeys arg when filtering', async () => {
         // Type part of UUID, should remove all cards
         const filterInput = component.getByRole('textbox');
         await user.type(filterInput, '2c0991a08806');
-        await new Promise((resolve) => setTimeout(resolve, 350));
-        expect(component.container.querySelectorAll('.card').length).toBe(0);
+        await waitFor(() => {
+            expect(component.container.querySelectorAll('.card').length).toBe(0);
+        });
 
         // Type part of timestamp, should remove all cards
         await user.clear(filterInput);
         await user.type(filterInput, '2024-03-01');
-        await new Promise((resolve) => setTimeout(resolve, 350));
-        expect(component.container.querySelectorAll('.card').length).toBe(0);
+        await waitFor(() => {
+            expect(component.container.querySelectorAll('.card').length).toBe(0);
+        });
 
         // Type part of thumbnail URL, should remove all cards
         await user.clear(filterInput);
         await user.type(filterInput, 'IMG_8');
-        await new Promise((resolve) => setTimeout(resolve, 350));
-        expect(component.container.querySelectorAll('.card').length).toBe(0);
+        await waitFor(() => {
+            expect(component.container.querySelectorAll('.card').length).toBe(0);
+        });
     });
 
     it('clears the filter input when X button is clcked', async () => {
         // Type random characters in field, confirm no cards visible
         const filterInput = component.getByRole('textbox');
         await user.type(filterInput, 'ffduiwafh');
-        await new Promise((resolve) => setTimeout(resolve, 350));
-        expect(component.container.querySelectorAll('.card').length).toBe(0);
+        await waitFor(() => {
+            expect(component.container.querySelectorAll('.card').length).toBe(0);
+        });
 
         // Click clear button, confirm all 4 cards reappear
         await user.click(component.getAllByRole('button')[0]);
-        await new Promise((resolve) => setTimeout(resolve, 350));
-        expect(component.container.querySelectorAll('.card').length).toBe(4);
+        await waitFor(() => {
+            expect(component.container.querySelectorAll('.card').length).toBe(4);
+        });
     });
 
     it('sorts cards correctly when sort dropdown option is clicked', async () => {
@@ -234,7 +243,7 @@ describe('FilterColumn optional args', () => {
             contents: plants,
             CardComponent: PlantCard,
             editing: false,
-            selected: [],
+            selected: {current: []},
             openRef: {current: true},
             ignoreKeys: [
                 'uuid',
@@ -275,14 +284,16 @@ describe('FilterColumn optional args', () => {
         // Type part of UUID, confirm 1 card still present
         const filterInput = component.getByRole('textbox');
         await user.type(filterInput, '2c0991a08806');
-        await new Promise((resolve) => setTimeout(resolve, 350));
-        expect(component.container.querySelectorAll('.card').length).toBe(1);
+        await waitFor(() => {
+            expect(component.container.querySelectorAll('.card').length).toBe(1);
+        });
 
         // Type part of timestamp, confirm all cards still present
         await user.clear(filterInput);
         await user.type(filterInput, '2024-03-01');
-        await new Promise((resolve) => setTimeout(resolve, 350));
-        expect(component.container.querySelectorAll('.card').length).toBe(4);
+        await waitFor(() => {
+            expect(component.container.querySelectorAll('.card').length).toBe(4);
+        });
     });
 
     it('sorts cards by key in defaultSortKey arg by default', () => {

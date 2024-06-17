@@ -153,7 +153,6 @@ describe('PrintModal', () => {
             ok: true,
             json: () => Promise.resolve({ qr_codes: 'base64data' }),
         });
-        await new Promise((resolve) => setTimeout(resolve, 0));
 
         // Confirm no Blob was created, print dialog was not opened
         expect(global.Blob).not.toHaveBeenCalled();
@@ -179,7 +178,6 @@ describe('PrintModal', () => {
             ok: true,
             json: () => Promise.resolve({ qr_codes: 'base64data' }),
         });
-        await new Promise((resolve) => setTimeout(resolve, 0));
 
         // Confirm no Blob was created, print dialog was not opened
         expect(global.Blob).not.toHaveBeenCalled();
@@ -256,11 +254,10 @@ describe('PrintModal', () => {
         await user.click(component.getByText('Generate'));
         expect(component.getByText('An unknown error occurred')).not.toBeNull();
 
-        // Close modal, wait for close animation to complete
+        // Close modal, confirm error text no longer in document
         await user.click(component.getByText('Close Modal'));
-        await new Promise((resolve) => setTimeout(resolve, 200));
-
-        // Confirm error text no longer in document
-        expect(component.queryByText('An unknown error occurred')).toBeNull();
+        await waitFor(() => {
+            expect(component.queryByText('An unknown error occurred')).toBeNull();
+        });
     });
 });

@@ -139,13 +139,14 @@ describe('App', () => {
         expect(app.getByText('file1.jpg')).not.toBeNull();
         expect(app.getByText('file2.jpg')).not.toBeNull();
 
-        // Simulate user clicking upload button, wait for animation (re-render)
+        // Simulate user clicking upload button
         await user.click(app.getByText('Upload'));
-        await new Promise((resolve) => setTimeout(resolve, 150));
 
         // Confirm both filenames are no longer in document (selection reset)
-        expect(app.queryByText('file1.jpg')).toBeNull();
-        expect(app.queryByText('file2.jpg')).toBeNull();
+        await waitFor(() => {
+            expect(app.queryByText('file1.jpg')).toBeNull();
+            expect(app.queryByText('file2.jpg')).toBeNull();
+        });
     });
 
     // Original bug: EventCalendar added a dot for each event in history, even

@@ -19,7 +19,7 @@ const TestComponent = () => {
     );
 };
 
-describe('ToggleThemeOption', () => {
+describe('ToastContext', () => {
     let user, component;
 
     // Mock localStorage API
@@ -60,22 +60,16 @@ describe('ToggleThemeOption', () => {
         await user.click(component.getByText('Show Info Toast'));
         expect(component.container.querySelectorAll('.toast').length).toBe(1);
 
-        // Wait for timeout (100ms) plus animation (500ms) (+100 just in case)
-        await new Promise((resolve) => setTimeout(resolve, 700));
-
-        // Confirm toast disappeared
-        expect(component.container.querySelectorAll('.toast').length).toBe(0);
+        // Wait for timeout + animation (100 + 500ms), confirm toast disappeared
+        await waitFor(() => {
+            expect(component.container.querySelectorAll('.toast').length).toBe(0);
+        }, {timeout: 650});
     });
 
     it('resets hide timer each time showToast is called', async () => {
-        // Click button, confirm toast appears
+        // Click button, confirm toast appears and does not have fade-out class
         await user.click(component.getByText('Show Info Toast'));
         expect(component.container.querySelectorAll('.toast').length).toBe(1);
-
-        // Click button again half way through timeout
-        await new Promise((resolve) => setTimeout(resolve, 50));
-
-        // Confirm toast still visible, does not have fade-out class yet
         expect(
             component.container.querySelector('.toast').classList
         ).not.toContain('toast-fade-out');
@@ -89,19 +83,20 @@ describe('ToggleThemeOption', () => {
         await new Promise((resolve) => setTimeout(resolve, 50));
         await user.click(component.getByText('Show Info Toast'));
         await new Promise((resolve) => setTimeout(resolve, 50));
-        await user.click(component.getByText('Show Info Toast'));
         expect(
             component.container.querySelector('.toast').classList
         ).not.toContain('toast-fade-out');
 
         // Wait for full timeout without clicking, confirm toast is fading out
-        await new Promise((resolve) => setTimeout(resolve, 200));
-        expect(
-            component.container.querySelector('.toast').classList
-        ).toContain('toast-fade-out');
+        await waitFor(() => {
+            expect(
+                component.container.querySelector('.toast').classList
+            ).toContain('toast-fade-out');
+        }, {timeout: 150});
 
         // Wait for fade animation, confirm toast umounted
-        await new Promise((resolve) => setTimeout(resolve, 501));
-        expect(component.container.querySelectorAll('.toast').length).toBe(0);
+        await waitFor(() => {
+            expect(component.container.querySelectorAll('.toast').length).toBe(0);
+        }, {timeout: 600});
     });
 });

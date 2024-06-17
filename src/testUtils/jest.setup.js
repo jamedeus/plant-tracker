@@ -1,5 +1,6 @@
 import { render, within } from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
+import { act, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import 'src/testUtils/dateMock';
 
@@ -14,6 +15,8 @@ beforeAll(() => {
     global.render = render;
     global.within = within;
     global.userEvent = userEvent;
+    global.act = act;
+    global.waitFor = waitFor;
 
     // Mock method called when window.location.href set
     Object.defineProperty(window, 'location', {
