@@ -117,11 +117,15 @@ describe('App', () => {
                 "urls": [
                     {
                         "created": "2024-03-21T10:52:03",
-                        "url": "/media/images/photo1.jpg"
+                        "image": "/media/images/photo1.jpg",
+                        "thumbnail": "/media/images/photo1_thumb.jpg",
+                        "key": 1
                     },
                     {
-                        "created": "2024-03-22T10:52:03",
-                        "url": "/media/images/photo2.jpg"
+                        "created": "2024-03-22T10:52:04",
+                        "image": "/media/images/photo2.jpg",
+                        "thumbnail": "/media/images/photo2_thumb.jpg",
+                        "key": 2
                     },
                 ]
             })

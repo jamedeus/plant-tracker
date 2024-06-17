@@ -112,13 +112,19 @@ export const mockContextNoEvents = {
             "name": "Test group",
             "display_name": "Test group",
             "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
-            "created": "2023-12-26T01:25:12+00:00"
+            "created": "2023-12-26T01:25:12+00:00",
+            "location": "Top shelf",
+            "description": "Medium brightness grow light",
+            "plants": 3
         },
         {
             "name": "Testing",
             "display_name": "Testing",
             "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be61",
-            "created": "2023-12-26T01:25:12+00:00"
+            "created": "2023-12-26T01:25:12+00:00",
+            "location": "Middle shelf",
+            "description": "Brightest grow light",
+            "plants": 5
         }
     ],
     "species_options": [
