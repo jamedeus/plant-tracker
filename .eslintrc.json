@@ -16,7 +16,9 @@
             "globals": {
                 "render": "readonly",
                 "within": "readonly",
-                "userEvent": "readonly"
+                "userEvent": "readonly",
+                "waitFor": "readonly",
+                "act": "readonly"
             }
         }
     ],
