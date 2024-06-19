@@ -315,6 +315,90 @@ class ViewRegressionTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()['pot_size'], '36')
 
+    def test_register_plant_uncaught_exception_if_uuid_already_exists(self):
+        '''Issue: The /register_plant endpoint passed user input to the Plant
+        class with no error handling. If the UUID already existed in the
+        database an uncaught IntegrityError was raiased resulting in 500 error
+        response. This could occur if the same QR code was scanned on 2 phones,
+        registered on one, and then registered on the other.
+
+        The /register_plant endpoint now returns a 409 if UUID already exists.
+        '''
+
+        # Confirm no plants in database
+        self.assertEqual(len(Plant.objects.all()), 0)
+
+        # Send register_plant request, confirm expected redirect response
+        test_id = uuid4()
+        response = JSONClient().post('/register_plant', {
+            'uuid': test_id,
+            'name': 'test plant',
+            'species': 'Giant Sequoia',
+            'description': '300 feet and a few thousand years old',
+            'pot_size': '4'
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, f'/manage/{test_id}')
+
+        # Attempt to register the same UUID again, confirm expected error
+        response = JSONClient().post('/register_plant', {
+            'uuid': test_id,
+            'name': 'second plant',
+            'species': 'Redwood',
+            'description': 'Wide enough to drive a car through',
+            'pot_size': '4'
+        })
+        self.assertEqual(response.status_code, 409)
+        self.assertEqual(
+            response.json(),
+            {"error": "uuid already exists in database"}
+        )
+
+        # Confirm only the first plant was created in database
+        self.assertEqual(len(Plant.objects.all()), 1)
+        self.assertEqual(Plant.objects.all()[0].name, 'test plant')
+
+    def test_register_group_uncaught_exception_if_uuid_already_exists(self):
+        '''Issue: The /register_group endpoint passed user input to the Group
+        class with no error handling. If the UUID already existed in the
+        database an uncaught IntegrityError was raiased resulting in 500 error
+        response. This could occur if the same QR code was scanned on 2 phones,
+        registered on one, and then registered on the other.
+
+        The /register_group endpoint now returns a 409 if UUID already exists.
+        '''
+
+        # Confirm no plants in database
+        self.assertEqual(len(Group.objects.all()), 0)
+
+        # Send register_group request, confirm expected redirect response
+        test_id = uuid4()
+        response = JSONClient().post('/register_group', {
+            'uuid': test_id,
+            'name': 'test group',
+            'location': 'outside',
+            'description': ''
+        })
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, f'/manage/{test_id}')
+
+        # Attempt to register the same UUID again, confirm expected error
+        response = JSONClient().post('/register_group', {
+            'uuid': test_id,
+            'name': 'second group',
+            'location': 'inside',
+            'description': ''
+        })
+        self.assertEqual(response.status_code, 409)
+        self.assertEqual(
+            response.json(),
+            {"error": "uuid already exists in database"}
+        )
+
+        # Confirm only the first group was created in database
+        self.assertEqual(len(Group.objects.all()), 1)
+        self.assertEqual(Group.objects.all()[0].name, 'test group')
+
 
 class CachedStateRegressionTests(TestCase):
     def setUp(self):

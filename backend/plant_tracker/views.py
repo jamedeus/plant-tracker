@@ -275,26 +275,42 @@ def register_plant(data):
     '''Creates a Plant database entry with params from POST body
     Requires JSON POST with parameters from plant registration forms
     '''
+    try:
+        # transaction.atomic cleans up after IntegrityError if uuid not unique
+        with transaction.atomic():
+            # Instantiate model with payload keys as kwargs
+            Plant.objects.create(**data)
 
-    # Instantiate model with payload keys as kwargs
-    Plant.objects.create(**data)
+        # Redirect to manage page
+        return HttpResponseRedirect(f'/manage/{data["uuid"]}')
 
-    # Redirect to manage page
-    return HttpResponseRedirect(f'/manage/{data["uuid"]}')
+    except IntegrityError:
+        return JsonResponse(
+            {"error": "uuid already exists in database"},
+            status=409
+        )
 
 
 @requires_json_post(["name", "location", "description", "uuid"])
 @clean_payload_data
 def register_group(data):
     '''Creates a Group database entry with params from POST body
-    Requires JSON POST with parameters from  group registration form
+    Requires JSON POST with parameters from group registration form
     '''
+    try:
+        # transaction.atomic cleans up after IntegrityError if uuid not unique
+        with transaction.atomic():
+            # Instantiate model with payload keys as kwargs
+            Group.objects.create(**data)
 
-    # Instantiate model with payload keys as kwargs
-    Group.objects.create(**data)
+        # Redirect to manage page
+        return HttpResponseRedirect(f'/manage/{data["uuid"]}')
 
-    # Redirect to manage page
-    return HttpResponseRedirect(f'/manage/{data["uuid"]}')
+    except IntegrityError:
+        return JsonResponse(
+            {"error": "uuid already exists in database"},
+            status=409
+        )
 
 
 @requires_json_post(["uuid"])
