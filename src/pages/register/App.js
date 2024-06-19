@@ -11,6 +11,14 @@ function App() {
     // Load context set by django template
     const newID = parseDomContext("new_id");
 
+    // Reload if user navigates to page by pressing back button (uuid may now
+    // be registered, refresh will replace with manage plant/group page if so)
+    window.addEventListener('pageshow', async (event) => {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    });
+
     const overview = () => {
         window.location.href = "/";
     };

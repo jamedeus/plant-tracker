@@ -15,6 +15,14 @@ function App() {
     const instance = parseDomContext(type);
     const newUuid = parseDomContext("new_uuid");
 
+    // Reload if user navigates to page by pressing back button (change QR code
+    // request likely expired, replace with register or manage page)
+    window.addEventListener('pageshow', async (event) => {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    });
+
     // Get hook to show error modal
     const { showErrorModal } = useErrorModal();
 

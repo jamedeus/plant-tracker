@@ -86,4 +86,24 @@ describe('App', () => {
         await user.click(app.container.querySelector('.btn-error'));
         expect(window.location.href).toBe('/');
     });
+
+    it('refreshes when user navigates to confirm page with back button', async () => {
+        // Simulate user navigating to confirm_new_qr_code page with back button
+        const pageshowEvent = new Event('pageshow');
+        Object.defineProperty(pageshowEvent, 'persisted', { value: true });
+        window.dispatchEvent(pageshowEvent);
+
+        // Confirm page was reloaded
+        expect(window.location.reload).toHaveBeenCalled();
+    });
+
+    it('does not refresh when other pageshow events are triggered', () => {
+        // Simulate pageshow event with persisted == false (ie initial load)
+        const pageshowEvent = new Event('pageshow');
+        Object.defineProperty(pageshowEvent, 'persisted', { value: false });
+        window.dispatchEvent(pageshowEvent);
+
+        // Confirm page was not reloaded
+        expect(window.location.reload).not.toHaveBeenCalled();
+    });
 });
