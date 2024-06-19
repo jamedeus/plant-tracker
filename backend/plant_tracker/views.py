@@ -99,7 +99,7 @@ def overview(request):
     )
 
 
-def update_overview_state(request):
+def get_overview_page_state(request):
     '''Returns current state for the overview page, used to refresh contents'''
     return JsonResponse(
         get_overview_state(),
