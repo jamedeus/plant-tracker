@@ -39,7 +39,7 @@ test_frontend:
     - export TZ='America/Los_Angeles'
   script:
     - npm test -- --coverage
-  coverage: '/All files.*\|.*\|.*\|.*\|.*\s+(\d+\.\d+)/'
+  coverage: '/All files[^\|]*\|[^\|]*\s+([\d\.]+)/'
   only:
     - master
 
