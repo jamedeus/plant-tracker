@@ -36,11 +36,16 @@ function App() {
     window.addEventListener('pageshow', async (event) => {
         if (event.persisted) {
             const response = await fetch(`/get_plant_state/${plant.uuid}`);
-            const data = await response.json();
-            // Only update plant and groupOptions (photos and notes can only be
-            // added on this page, outdated species_options won't cause issues)
-            setPlant(data['plant']);
-            setGroupOptions(data['group_options']);
+            if (response.ok) {
+                const data = await response.json();
+                // Only update plant and groupOptions (photos and notes can only be
+                // added on this page, outdated species_options won't cause issues)
+                setPlant(data['plant']);
+                setGroupOptions(data['group_options']);
+            } else {
+                // Reload page if failed to get new state (plant deleted)
+                window.location.reload();
+            }
         }
     });
 

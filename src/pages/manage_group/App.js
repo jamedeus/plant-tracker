@@ -36,10 +36,15 @@ function App() {
     window.addEventListener('pageshow', async (event) => {
         if (event.persisted) {
             const response = await fetch(`/get_group_state/${group.uuid}`);
-            const data = await response.json();
-            setGroup(data['group']);
-            setPlantDetails(data['details']);
-            setOptions(data['options']);
+            if (response.ok) {
+                const data = await response.json();
+                setGroup(data['group']);
+                setPlantDetails(data['details']);
+                setOptions(data['options']);
+            } else {
+                // Reload page if failed to get new state (group deleted)
+                window.location.reload();
+            }
         }
     });
 

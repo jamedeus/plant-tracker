@@ -127,6 +127,29 @@ describe('App', () => {
         });
     });
 
+    it('shows alert if unable to fetch new state when user presses back button', async () => {
+        // Mock fetch function to return error response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            json: () => Promise.resolve({'Error': 'Unexpected'})
+        }));
+        // Mock alert function that will be called when request fails
+        global.alert = jest.fn();
+
+        // Simulate user navigating to page with back button
+        const pageshowEvent = new Event('pageshow');
+        Object.defineProperty(pageshowEvent, 'persisted', { value: true });
+        window.dispatchEvent(pageshowEvent);
+
+        // Confirm fetched correct endpoint
+        await waitFor(() => {
+            expect(global.fetch).toHaveBeenCalledWith('/get_overview_state');
+        });
+
+        // Confirm alert was shown
+        expect(global.alert).toHaveBeenCalled();
+    });
+
     it('does not fetch new state when other pageshow events are triggered', () => {
         // Simulate pageshow event with persisted == false (ie initial load)
         const pageshowEvent = new Event('pageshow');

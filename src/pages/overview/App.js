@@ -22,9 +22,13 @@ function App() {
     window.addEventListener('pageshow', async (event) => {
         if (event.persisted) {
             const response = await fetch('/get_overview_state');
-            const data = await response.json();
-            setPlants(data['plants']);
-            setGroups(data['groups']);
+            if (response.ok) {
+                const data = await response.json();
+                setPlants(data['plants']);
+                setGroups(data['groups']);
+            } else {
+                alert('Failed to fetch current state, page may be outdated');
+            }
         }
     });
 
