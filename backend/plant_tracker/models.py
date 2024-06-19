@@ -7,6 +7,7 @@ from PIL import Image, ImageOps
 from django.db import models
 from django.conf import settings
 from django.core.cache import cache
+from django.db import IntegrityError
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
 from django.utils import timezone as django_timezone
@@ -146,6 +147,12 @@ class Group(models.Model):
         See Plant.get_details for dict parameters
         '''
         return [plant.get_details() for plant in self.plant_set.all()]
+
+    def save(self, *args, **kwargs):
+        # Prevent saving Group with UUID that is already used by Plant
+        if Plant.objects.filter(uuid=self.uuid):
+            raise IntegrityError("UUID already exists in Plant table")
+        super().save(*args, **kwargs)
 
 
 @receiver(post_save, sender=Group)
@@ -343,6 +350,9 @@ class Plant(models.Model):
         # Prevent setting photo of a different plant as default
         if self.default_photo and self.default_photo.plant != self:
             raise ValueError("Default photo is associated with a different plant")
+        # Prevent saving Plant with UUID that is already used by Group
+        if Group.objects.filter(uuid=self.uuid):
+            raise IntegrityError("UUID already exists in Group table")
         super().save(*args, **kwargs)
 
 

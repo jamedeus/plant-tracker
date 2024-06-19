@@ -9,6 +9,7 @@ from django.conf import settings
 from django.test import TestCase
 from django.utils import timezone
 from django.core.cache import cache
+from django.db import IntegrityError
 from django.test.client import MULTIPART_CONTENT
 from django.core.exceptions import ValidationError
 
@@ -87,6 +88,40 @@ class ModelRegressionTests(TestCase):
         # Photo.created should be a datetime object, not NoneType
         self.assertNotEqual(type(photo.created), NoneType)
         self.assertEqual(type(photo.created), datetime)
+
+    def test_should_not_allow_creating_plant_with_same_uuid_as_group(self):
+        '''Issue: The unique constraint on the Plant.uuid field only applies to
+        the Plant table. This did not prevent the user from creating Plant with
+        the same UUID as an existing Group. The Group then became inaccessible
+        because the /manage endpoint looks up UUIDs in the Plant table first.
+
+        The save methods of both models now raise an exception if their UUID
+        already exists in the other table.
+        '''
+
+        # Instantiate Group model
+        group = Group.objects.create(uuid=uuid4())
+
+        # Attempt to instantiate Plant with same UUID, should raise exception
+        with self.assertRaises(IntegrityError):
+            Plant.objects.create(uuid=group.uuid)
+
+    def test_should_not_allow_creating_group_with_same_uuid_as_plant(self):
+        '''Issue: The unique constraint on the Group.uuid field only applies to
+        the Group table. This did not prevent the user from creating Group with
+        the same UUID as an existing Plant. The new Group could not be accessed
+        because the /manage endpoint looks up UUIDs in the Plant table first.
+
+        The save methods of both models now raise an exception if their UUID
+        already exists in the other table.
+        '''
+
+        # Instantiate Plant model
+        plant = Plant.objects.create(uuid=uuid4())
+
+        # Attempt to instantiate Group with same UUID, should raise exception
+        with self.assertRaises(IntegrityError):
+            Group.objects.create(uuid=plant.uuid)
 
 
 class ViewRegressionTests(TestCase):
@@ -398,6 +433,53 @@ class ViewRegressionTests(TestCase):
         # Confirm only the first group was created in database
         self.assertEqual(len(Group.objects.all()), 1)
         self.assertEqual(Group.objects.all()[0].name, 'test group')
+
+    def test_register_endpoints_allow_creating_plant_and_group_with_same_uuid(self):
+        '''Issue: The unique constraint on Plant and Group uuid fields only
+        applied to their respective tables. If an existing Plant uuid was used
+        to instantiate a Group (or vice versa) no error was thrown. This
+        resulted in an inaccessible group page because the /manage endpoint
+        looks up UUID in the plant table first and would never check group.
+
+        The Plant.save and Group.save methods now prevent duplicate UUIDs.
+        '''
+
+        # Create plant and group
+        plant = Plant.objects.create(uuid=uuid4())
+        group = Group.objects.create(uuid=uuid4())
+        self.assertEqual(len(Plant.objects.all()), 1)
+        self.assertEqual(len(Group.objects.all()), 1)
+
+        # Attempt to register group using plant's uuid, confirm expected error
+        response = JSONClient().post('/register_group', {
+            'uuid': plant.uuid,
+            'name': 'second group',
+            'location': 'inside',
+            'description': ''
+        })
+        self.assertEqual(response.status_code, 409)
+        self.assertEqual(
+            response.json(),
+            {"error": "uuid already exists in database"}
+        )
+
+        # Attempt to register plant using group's uuid, confirm expected error
+        response = JSONClient().post('/register_plant', {
+            'uuid': group.uuid,
+            'name': 'second plant',
+            'species': 'Redwood',
+            'description': 'Wide enough to drive a car through',
+            'pot_size': '4'
+        })
+        self.assertEqual(response.status_code, 409)
+        self.assertEqual(
+            response.json(),
+            {"error": "uuid already exists in database"}
+        )
+
+        # Confirm no extra model entries were created
+        self.assertEqual(len(Plant.objects.all()), 1)
+        self.assertEqual(len(Group.objects.all()), 1)
 
 
 class CachedStateRegressionTests(TestCase):
