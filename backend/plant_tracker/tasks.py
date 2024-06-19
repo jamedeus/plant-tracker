@@ -27,7 +27,8 @@ from .models import (
     RepotEvent,
     NoteEvent,
     get_plant_options,
-    get_group_options
+    get_group_options,
+    get_plant_species_options
 )
 
 
@@ -165,6 +166,32 @@ def build_manage_plant_state(uuid):
 
     # Revoke queued update tasks (prevent rebuilding again after manual call)
     revoke_queued_task(f'rebuild_{uuid}_state_task_id')
+
+    return state
+
+
+def get_manage_plant_state(plant):
+    '''Returns the state object parsed by the manage_plant page react app.
+    Loads state from cache if present, builds from database if not found.
+    Updates params that can't be reliably cached with values from database.
+    '''
+    state = cache.get(f'{plant.uuid}_state')
+    if state is None:
+        state = build_manage_plant_state(plant.uuid)
+
+    # Overwrite cached display_name if plant has no name (sequential names like)
+    # "Unnamed plant 3" may be outdated if other unnamed plants were named)
+    if not plant.name:
+        state['plant']['display_name'] = plant.get_display_name()
+
+    # Overwrite cached group name if plant is in a group (may be outdated if
+    # group was renamed since cache saved)
+    if plant.group:
+        state['plant']['group']['name'] = plant.group.get_display_name()
+
+    # Add species and group options (cached separately)
+    state['group_options'] = get_group_options()
+    state['species_options'] = get_plant_species_options()
 
     return state
 

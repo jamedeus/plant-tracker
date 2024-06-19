@@ -20,8 +20,7 @@ from .models import (
     Photo,
     NoteEvent,
     get_plant_options,
-    get_plant_species_options,
-    get_group_options
+    get_plant_species_options
 )
 from .view_decorators import (
     events_map,
@@ -39,7 +38,7 @@ from .view_decorators import (
 from .tasks import (
     get_overview_state,
     schedule_cached_overview_state_update,
-    build_manage_plant_state,
+    get_manage_plant_state,
     schedule_cached_group_options_update
 )
 
@@ -141,34 +140,28 @@ def render_manage_plant_page(request, plant):
     '''Renders management page for an existing plant
     Called by /manage endpoint if UUID is found in database plant table
     '''
-
-    # Load state object parsed by react app from cache
-    state = cache.get(f'{plant.uuid}_state')
-
-    # Build state if not found, cache for up to 24 hours
-    if state is None:
-        state = build_manage_plant_state(plant.uuid)
-
-    # Overwrite cached display_name if plant has no name (sequential names like)
-    # "Unnamed plant 3" may be outdated if other unnamed plants were named)
-    if not plant.name:
-        state['plant']['display_name'] = plant.get_display_name()
-
-    # Overwrite cached group name if plant is in a group (may be outdated if
-    # group was renamed since cache saved)
-    if plant.group:
-        state['plant']['group']['name'] = plant.group.get_display_name()
-
-    # Add species and group options (cached separately)
-    state['group_options'] = get_group_options()
-    state['species_options'] = get_plant_species_options()
-
     return render_react_app(
         request,
         title='Manage Plant',
         bundle='manage_plant',
-        state=state
+        state=get_manage_plant_state(plant)
     )
+
+
+def get_plant_state(request, uuid):
+    '''Returns current manage_plant state for the requested plant.
+    Used to refresh contents after user presses back button.
+    '''
+    try:
+        plant = Plant.objects.get(uuid=uuid)
+        return JsonResponse(
+            get_manage_plant_state(plant),
+            status=200
+        )
+    except Plant.DoesNotExist:
+        return JsonResponse({'Error': 'Plant not found'}, status=404)
+    except ValidationError:
+        return JsonResponse({'Error': 'Requires plant UUID'}, status=400)
 
 
 def build_manage_group_state(group):

@@ -27,6 +27,22 @@ function App() {
     const [plant, setPlant] = useState(() => {
         return parseDomContext("plant");
     });
+    const [groupOptions, setGroupOptions] = useState(() => {
+        return parseDomContext("group_options");
+    });
+
+    // Request new state from backend if user navigates to page by pressing
+    // back button (may be outdated if user clicked group and made changes)
+    window.addEventListener('pageshow', async (event) => {
+        if (event.persisted) {
+            const response = await fetch(`/get_plant_state/${plant.uuid}`);
+            const data = await response.json();
+            // Only update plant and groupOptions (photos and notes can only be
+            // added on this page, outdated species_options won't cause issues)
+            setPlant(data['plant']);
+            setGroupOptions(data['group_options']);
+        }
+    });
 
     // Get hooks to show toast message, error modal
     const { showToast } = useToast();
@@ -298,6 +314,7 @@ function App() {
 
             <GroupModal
                 plantID={plant.uuid}
+                groupOptions={groupOptions}
                 handleAddGroup={handleAddGroup}
             />
 

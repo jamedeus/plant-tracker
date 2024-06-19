@@ -605,6 +605,66 @@ class ManagePageTests(TestCase):
             plant1_species_options
         )
 
+    def test_get_plant_state(self):
+        # Call get_plant_state endpoint with UUID of existing plant entry
+        response = self.client.get(f'/get_plant_state/{self.plant1.uuid}')
+
+        # Confirm returned full manage_plant state
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {
+                'plant': {
+                    'uuid': str(self.plant1.uuid),
+                    'created': self.plant1.created.isoformat(),
+                    'name': None,
+                    'display_name': 'Unnamed plant 1',
+                    'species': None,
+                    'thumbnail': None,
+                    'pot_size': None,
+                    'description': None,
+                    'last_watered': None,
+                    'last_fertilized': None,
+                    'events': {
+                        'water': [],
+                        'fertilize': [],
+                        'prune': [],
+                        'repot': []
+                    },
+                    'group': None,
+                },
+                'notes': [],
+                'photo_urls': [],
+                'group_options': [
+                    {
+                        'name': None,
+                        'display_name': 'Unnamed group 1',
+                        'uuid': str(self.group1.uuid),
+                        'created': self.group1.created.isoformat(),
+                        'location': None,
+                        'description': None,
+                        'plants': 0
+                    }
+                ],
+                'species_options': []
+            }
+        )
+
+    def test_get_plant_state_invalid(self):
+        # Call get_plant_state endpoint with UUID that doesn't exist in database
+        response = self.client.get(f'/get_plant_state/{uuid4()}')
+
+        # Confirmer returned expected error
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json(), {'Error': 'Plant not found'})
+
+        # Call get_plant_state endpoint with non-UUID string
+        response = self.client.get('/get_plant_state/plant1')
+
+        # Confirmer returned expected error
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {'Error': 'Requires plant UUID'})
+
     def test_manage_group_with_no_plants(self):
         # Request management page for test group, confirm status
         response = self.client.get(f'/manage/{self.group1.uuid}')
