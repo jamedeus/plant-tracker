@@ -210,6 +210,12 @@ def render_confirm_new_qr_code_page(request, uuid, old_uuid):
     # Returns Plant instance, Group Instance, or None (not found)
     instance = get_plant_or_group_by_uuid(old_uuid)
 
+    # If UUID no longer exists in database (plant/group deleted) clear cache
+    # and redirect to registration page
+    if instance is None:
+        cache.delete('old_uuid')
+        return render_registration_page(request, uuid)
+
     if isinstance(instance, Plant):
         state = {
             'type': 'plant',
@@ -217,37 +223,19 @@ def render_confirm_new_qr_code_page(request, uuid, old_uuid):
             'new_uuid': uuid
         }
 
-        return render_react_app(
-            request,
-            title='Confirm new QR code',
-            bundle='confirm_new_qr_code',
-            state=state
-        )
-
     if isinstance(instance, Group):
         state = {
             'type': 'group',
-            'group': {
-                'uuid': str(instance.uuid),
-                'name': instance.name,
-                'display_name': instance.get_display_name(),
-                'location': instance.location,
-                'description': instance.description
-            },
+            'group': instance.get_details(),
             'new_uuid': uuid
         }
 
-        return render_react_app(
-            request,
-            title='Confirm new QR code',
-            bundle='confirm_new_qr_code',
-            state=state
-        )
-
-    # If UUID no longer exists in database (plant/group deleted) clear cache
-    # and redirect to registration page
-    cache.delete('old_uuid')
-    return render_registration_page(request, uuid)
+    return render_react_app(
+        request,
+        title='Confirm new QR code',
+        bundle='confirm_new_qr_code',
+        state=state
+    )
 
 
 def render_registration_page(request, uuid):

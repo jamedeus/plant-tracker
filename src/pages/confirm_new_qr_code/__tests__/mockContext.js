@@ -14,10 +14,12 @@ export const mockContext = {
     },
     "group": {
         "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+        "created": "2023-12-26T01:25:12+00:00",
         "name": "Test Group",
         "display_name": "Test Group",
         "location": "Nowhere",
-        "description": null
+        "description": null,
+        "plants": 2
     },
     "new_uuid": "07919189-514d-4ec1-a967-8af553dfa7e8"
 };

@@ -1245,10 +1245,12 @@ class ChangeQrCodeTests(TestCase):
                 'type': 'group',
                 'group': {
                     'uuid': str(self.group1.uuid),
+                    'created': self.group1.created.isoformat(),
                     'name': None,
                     'display_name': 'Unnamed group 1',
                     'location': None,
-                    'description': None
+                    'description': None,
+                    'plants': 0
                 },
                 'new_uuid': str(self.fake_id)
             }
