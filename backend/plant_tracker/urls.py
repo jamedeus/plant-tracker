@@ -14,6 +14,7 @@ urlpatterns = [
     path('register_plant', views.register_plant, name='register_plant'),
     path('register_group', views.register_group, name='register_group'),
     path('manage/<str:uuid>', views.manage, name='manage'),
+    path('get_group_state/<str:uuid>', views.get_group_state, name='get_group_state'),
     path('edit_plant', views.edit_plant_details, name='edit_plant_details'),
     path('edit_group', views.edit_group_details, name='edit_group_details'),
     path('change_qr_code', views.change_qr_code, name='change_qr_code'),

@@ -694,6 +694,69 @@ class ManagePageTests(TestCase):
             }]
         )
 
+    def test_get_group_state(self):
+        # Call get_group_state endpoint with UUID of existing group entry
+        response = self.client.get(f'/get_group_state/{self.group1.uuid}')
+
+        # Confirm returned full manage_group state
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {
+                'group': {
+                    'uuid': str(self.group1.uuid),
+                    'name': self.group1.name,
+                    'created': self.group1.created.isoformat(),
+                    'location': None,
+                    'description': None,
+                    'display_name': 'Unnamed group 1',
+                    'plants': 0
+                },
+                'details': [],
+                'options': [
+                    {
+                        'name': self.plant1.name,
+                        'display_name': self.plant1.get_display_name(),
+                        'uuid': str(self.plant1.uuid),
+                        'created': self.plant1.created.isoformat(),
+                        'species': None,
+                        'pot_size': None,
+                        'description': None,
+                        'last_watered': None,
+                        'last_fertilized': None,
+                        'thumbnail': None
+                    },
+                    {
+                        'name': self.plant2.name,
+                        'display_name': self.plant2.get_display_name(),
+                        'uuid': str(self.plant2.uuid),
+                        'created': self.plant2.created.isoformat(),
+                        'species': None,
+                        'pot_size': None,
+                        'description': None,
+                        'last_watered': None,
+                        'last_fertilized': None,
+                        'thumbnail': None
+                    }
+                ]
+            }
+        )
+
+    def test_get_group_state_invalid(self):
+        # Call get_group_state endpoint with UUID that doesn't exist in database
+        response = self.client.get(f'/get_group_state/{uuid4()}')
+
+        # Confirmer returned expected error
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json(), {'Error': 'Group not found'})
+
+        # Call get_group_state endpoint with non-UUID string
+        response = self.client.get('/get_group_state/group1')
+
+        # Confirmer returned expected error
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {'Error': 'Requires group UUID'})
+
 
 class ManagePlantEndpointTests(TestCase):
     def setUp(self):

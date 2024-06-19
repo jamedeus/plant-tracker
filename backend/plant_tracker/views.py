@@ -171,24 +171,41 @@ def render_manage_plant_page(request, plant):
     )
 
 
-def render_manage_group_page(request, group):
-    '''Renders management page for an existing group
-    Called by /manage endpoint if UUID is found in database group table
-    '''
-
-    # Create state object parsed by react app
-    state = {
+def build_manage_group_state(group):
+    '''Builds state parsed by manage_group react app and returns'''
+    return {
         'group': group.get_details(),
         'details': group.get_plant_details(),
         'options': get_plant_options()
     }
 
+
+def render_manage_group_page(request, group):
+    '''Renders management page for an existing group
+    Called by /manage endpoint if UUID is found in database group table
+    '''
     return render_react_app(
         request,
         title='Manage Group',
         bundle='manage_group',
-        state=state
+        state=build_manage_group_state(group)
     )
+
+
+def get_group_state(request, uuid):
+    '''Returns current manage_group state for the requested group.
+    Used to refresh contents after user presses back button.
+    '''
+    try:
+        group = Group.objects.get(uuid=uuid)
+        return JsonResponse(
+            build_manage_group_state(group),
+            status=200
+        )
+    except Group.DoesNotExist:
+        return JsonResponse({'Error': 'Group not found'}, status=404)
+    except ValidationError:
+        return JsonResponse({'Error': 'Requires group UUID'}, status=400)
 
 
 def render_confirm_new_qr_code_page(request, uuid, old_uuid):

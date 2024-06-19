@@ -26,8 +26,22 @@ function App() {
         return parseDomContext("details");
     });
     // Contains list of objects with name and uuid of every plant in database
-    // DO NOT mutate (used to generate add/remove plant menu options)
-    const options = parseDomContext("options");
+    // Should NOT be mutated except by pageshow listener below
+    const [options, setOptions] = useState(() => {
+        return parseDomContext("options");
+    });
+
+    // Request new state from backend if user navigates to page by pressing
+    // back button (may be outdated if user clicked plant and made changes)
+    window.addEventListener('pageshow', async (event) => {
+        if (event.persisted) {
+            const response = await fetch(`/get_group_state/${group.uuid}`);
+            const data = await response.json();
+            setGroup(data['group']);
+            setPlantDetails(data['details']);
+            setOptions(data['options']);
+        }
+    });
 
     // Create state to track whether selecting plants from list
     const [selectingPlants, setSelectingPlants] = useState(false);
