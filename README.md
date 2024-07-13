@@ -86,3 +86,9 @@ Update outdated snapshots and print coverage:
 ```
 npm run test -- --coverage -u
 ```
+
+## Documentation
+
+See [docs](docs) for sphinx configuration.
+
+See [here](backend/plant_tracker/cache_documentation.md) for redis cache documentation.
