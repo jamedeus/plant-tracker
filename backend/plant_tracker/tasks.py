@@ -37,6 +37,7 @@ def revoke_queued_task(task_id_cache_name):
     task_id = cache.get(task_id_cache_name)
     if task_id:
         app.control.revoke(task_id, terminate=True)
+        cache.delete(task_id_cache_name)
 
 
 def schedule_cached_state_update(cache_name, callback_task, callback_kwargs=None, delay=0):
