@@ -63,7 +63,7 @@ def schedule_cached_state_update(cache_name, callback_task, callback_kwargs=None
     result = callback_task.apply_async(kwargs=callback_kwargs, countdown=delay)
 
     # Store ID of queued task so it can be canceled if this is called again
-    cache.set(f'rebuild_{cache_name}_task_id', result.id)
+    cache.set(f'rebuild_{cache_name}_task_id', result.id, delay)
 
 
 def build_overview_state():

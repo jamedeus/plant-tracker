@@ -115,7 +115,7 @@ class HelperFunctionTests(TestCase):
             mock_apply_async.assert_called_once_with(kwargs={'uuid': uuid}, countdown=30)
 
             # Confirm ID of newly queued task was cached so it can be canceled if needed
-            mock_cache_set.assert_called_once_with(f'rebuild_{uuid}_state_task_id', 'mock_task_id')
+            mock_cache_set.assert_called_once_with(f'rebuild_{uuid}_state_task_id', 'mock_task_id', 30)
 
     def test_update_all_cached_states(self):
         # Create 5 Plant entries
