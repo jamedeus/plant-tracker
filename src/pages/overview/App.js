@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import Navbar from 'src/components/Navbar';
 import { useTheme } from 'src/context/ThemeContext';
 import GroupCard from 'src/components/GroupCard';
@@ -19,18 +19,26 @@ function App() {
 
     // Request new state from backend if user navigates to overview by pressing
     // back button (last watered/details may be outdated if coming from manage)
-    window.addEventListener('pageshow', async (event) => {
-        if (event.persisted) {
-            const response = await fetch('/get_overview_state');
-            if (response.ok) {
-                const data = await response.json();
-                setPlants(data['plants']);
-                setGroups(data['groups']);
-            } else {
-                alert('Failed to fetch current state, page may be outdated');
+    useEffect(() => {
+        const handleBackButton = async (event) => {
+            if (event.persisted) {
+                const response = await fetch('/get_overview_state');
+                if (response.ok) {
+                    const data = await response.json();
+                    setPlants(data['plants']);
+                    setGroups(data['groups']);
+                } else {
+                    alert('Failed to fetch current state, page may be outdated');
+                }
             }
-        }
-    });
+        };
+
+        // Add listener on mount, remove on unmount
+        window.addEventListener('pageshow', handleBackButton);
+        return () => {
+            window.removeEventListener('pageshow', handleBackButton);
+        };
+    }, []);
 
     // Create ref for modal used to generate QR codes
     const printModalRef = useRef(null);

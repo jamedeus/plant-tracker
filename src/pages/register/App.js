@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Tab } from '@headlessui/react';
 import Navbar from 'src/components/Navbar';
 import { useTheme } from 'src/context/ThemeContext';
@@ -13,11 +13,19 @@ function App() {
 
     // Reload if user navigates to page by pressing back button (uuid may now
     // be registered, refresh will replace with manage plant/group page if so)
-    window.addEventListener('pageshow', async (event) => {
-        if (event.persisted) {
-            window.location.reload();
-        }
-    });
+    useEffect(() => {
+        const handleBackButton = async (event) => {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        };
+
+        // Add listener on mount, remove on unmount
+        window.addEventListener('pageshow', handleBackButton);
+        return () => {
+            window.removeEventListener('pageshow', handleBackButton);
+        };
+    }, []);
 
     const overview = () => {
         window.location.href = "/";

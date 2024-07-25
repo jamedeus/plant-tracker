@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { sendPostRequest, parseDomContext } from 'src/util';
 import Navbar from 'src/components/Navbar';
@@ -17,11 +17,19 @@ function App() {
 
     // Reload if user navigates to page by pressing back button (change QR code
     // request likely expired, replace with register or manage page)
-    window.addEventListener('pageshow', async (event) => {
-        if (event.persisted) {
-            window.location.reload();
-        }
-    });
+    useEffect(() => {
+        const handleBackButton = async (event) => {
+            if (event.persisted) {
+                window.location.reload();
+            }
+        };
+
+        // Add listener on mount, remove on unmount
+        window.addEventListener('pageshow', handleBackButton);
+        return () => {
+            window.removeEventListener('pageshow', handleBackButton);
+        };
+    }, []);
 
     // Get hook to show error modal
     const { showErrorModal } = useErrorModal();

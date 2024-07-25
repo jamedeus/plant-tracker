@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { localToUTC } from 'src/timestampUtils';
 import { sendPostRequest, parseDomContext } from 'src/util';
 import EditModal from 'src/components/EditModal';
@@ -33,21 +33,29 @@ function App() {
 
     // Request new state from backend if user navigates to page by pressing
     // back button (may be outdated if user clicked group and made changes)
-    window.addEventListener('pageshow', async (event) => {
-        if (event.persisted) {
-            const response = await fetch(`/get_plant_state/${plant.uuid}`);
-            if (response.ok) {
-                const data = await response.json();
-                // Only update plant and groupOptions (photos and notes can only be
-                // added on this page, outdated species_options won't cause issues)
-                setPlant(data['plant']);
-                setGroupOptions(data['group_options']);
-            } else {
-                // Reload page if failed to get new state (plant deleted)
-                window.location.reload();
+    useEffect(() => {
+        const handleBackButton = async (event) => {
+            if (event.persisted) {
+                const response = await fetch(`/get_plant_state/${plant.uuid}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    // Only update plant and groupOptions (photos and notes can only be
+                    // added on this page, outdated species_options won't cause issues)
+                    setPlant(data['plant']);
+                    setGroupOptions(data['group_options']);
+                } else {
+                    // Reload page if failed to get new state (plant deleted)
+                    window.location.reload();
+                }
             }
-        }
-    });
+        };
+
+        // Add listener on mount, remove on unmount
+        window.addEventListener('pageshow', handleBackButton);
+        return () => {
+            window.removeEventListener('pageshow', handleBackButton);
+        };
+    }, []);
 
     // Get hooks to show toast message, error modal
     const { showToast } = useToast();

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { localToUTC } from 'src/timestampUtils';
 import { sendPostRequest, parseDomContext, pastTense } from 'src/util';
@@ -33,20 +33,28 @@ function App() {
 
     // Request new state from backend if user navigates to page by pressing
     // back button (may be outdated if user clicked plant and made changes)
-    window.addEventListener('pageshow', async (event) => {
-        if (event.persisted) {
-            const response = await fetch(`/get_group_state/${group.uuid}`);
-            if (response.ok) {
-                const data = await response.json();
-                setGroup(data['group']);
-                setPlantDetails(data['details']);
-                setOptions(data['options']);
-            } else {
-                // Reload page if failed to get new state (group deleted)
-                window.location.reload();
+    useEffect(() => {
+        const handleBackButton = async (event) => {
+            if (event.persisted) {
+                const response = await fetch(`/get_group_state/${group.uuid}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    setGroup(data['group']);
+                    setPlantDetails(data['details']);
+                    setOptions(data['options']);
+                } else {
+                    // Reload page if failed to get new state (group deleted)
+                    window.location.reload();
+                }
             }
-        }
-    });
+        };
+
+        window.addEventListener('pageshow', handleBackButton);
+
+        return () => {
+            window.removeEventListener('pageshow', handleBackButton);
+        };
+    }, []);
 
     // Create state to track whether selecting plants from list
     const [selectingPlants, setSelectingPlants] = useState(false);
