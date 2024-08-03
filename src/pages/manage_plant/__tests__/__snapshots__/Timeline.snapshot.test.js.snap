@@ -1494,6 +1494,11 @@ exports[`Timeline matches snapshot 1`] = `
                   >
                     Fertilized with dilute 10-15-10 liquid fertilizer
                   </span>
+                  <span
+                    class="text-xs ml-2"
+                  >
+                    07:45 AM
+                  </span>
                 </div>
               </div>
             </div>
@@ -1558,6 +1563,11 @@ exports[`Timeline matches snapshot 1`] = `
                     class="cursor-pointer text-sm md:text-base"
                   >
                     One of the older leaves is starting to turn yellow
+                  </span>
+                  <span
+                    class="text-xs ml-2"
+                  >
+                    04:44 AM
                   </span>
                 </div>
               </div>
@@ -7020,6 +7030,11 @@ exports[`Timeline matches snapshot 1`] = `
                 >
                   Fertilized with dilute 10-15-10 liquid fertilizer
                 </span>
+                <span
+                  class="text-xs ml-2"
+                >
+                  07:45 AM
+                </span>
               </div>
             </div>
           </div>
@@ -7084,6 +7099,11 @@ exports[`Timeline matches snapshot 1`] = `
                   class="cursor-pointer text-sm md:text-base"
                 >
                   One of the older leaves is starting to turn yellow
+                </span>
+                <span
+                  class="text-xs ml-2"
+                >
+                  04:44 AM
                 </span>
               </div>
             </div>

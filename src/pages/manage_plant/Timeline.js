@@ -265,10 +265,12 @@ const Timeline = ({ plantID, events }) => {
     const NoteCollapse = ({ note }) => {
         const [expanded, setExpanded] = useState(false);
 
+        const timestamp = timestampToReadable(note.timestamp);
+
         return (
             <div
                 className={`m-2 ${expanded ? '' : `line-clamp-1`}`}
-                title={timestampToReadable(note.timestamp)}
+                title={timestamp}
             >
                 <FontAwesomeIcon
                     icon={faPenToSquare}
@@ -280,6 +282,9 @@ const Timeline = ({ plantID, events }) => {
                     onClick={() => setExpanded(!expanded)}
                 >
                     {note.text}
+                </span>
+                <span className={'text-xs ml-2'}>
+                    {timestamp.split('-')[0].trim()}
                 </span>
             </div>
         );
