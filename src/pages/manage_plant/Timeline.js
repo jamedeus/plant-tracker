@@ -268,24 +268,26 @@ const Timeline = ({ plantID, events }) => {
         const timestamp = timestampToReadable(note.timestamp);
 
         return (
-            <div
-                className={`m-2 ${expanded ? '' : `line-clamp-1`}`}
-                title={timestamp}
-            >
+            <div className="m-2 flex flex-row">
                 <FontAwesomeIcon
                     icon={faPenToSquare}
-                    className="w-4 h-4 mr-2 cursor-pointer"
+                    className="w-4 h-4 mr-2 mt-1 cursor-pointer"
                     onClick={() => noteModalRef.current.open(note)}
                 />
-                <span
-                    className="cursor-pointer text-sm md:text-base mr-2 after:content-['\200B']"
+                <div
+                    className={`cursor-pointer ${expanded ? '' : `line-clamp-1`}`}
+                    title={timestamp}
                     onClick={() => setExpanded(!expanded)}
                 >
-                    {note.text}
-                </span>
-                <span className={'text-xs'}>
-                    {timestamp.split('-')[0].trim()}
-                </span>
+                    <span
+                        className="text-sm md:text-base mr-2 after:content-['\200B']"
+                    >
+                        {note.text}
+                    </span>
+                    <span className={'text-xs'}>
+                        {timestamp.split('-')[0].trim()}
+                    </span>
+                </div>
             </div>
         );
     };

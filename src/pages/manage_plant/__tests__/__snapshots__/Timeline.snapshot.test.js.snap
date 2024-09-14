@@ -1471,12 +1471,11 @@ exports[`Timeline matches snapshot 1`] = `
                 class="flex flex-col"
               >
                 <div
-                  class="m-2 line-clamp-1"
-                  title="07:45 AM - March 1, 2024"
+                  class="m-2 flex flex-row"
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 cursor-pointer"
+                    class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 cursor-pointer"
                     data-icon="pen-to-square"
                     data-prefix="fas"
                     focusable="false"
@@ -1489,16 +1488,21 @@ exports[`Timeline matches snapshot 1`] = `
                       fill="currentColor"
                     />
                   </svg>
-                  <span
-                    class="cursor-pointer text-sm md:text-base mr-2 after:content-['\\200B']"
+                  <div
+                    class="cursor-pointer line-clamp-1"
+                    title="07:45 AM - March 1, 2024"
                   >
-                    Fertilized with dilute 10-15-10 liquid fertilizer
-                  </span>
-                  <span
-                    class="text-xs"
-                  >
-                    07:45 AM
-                  </span>
+                    <span
+                      class="text-sm md:text-base mr-2 after:content-['\\200B']"
+                    >
+                      Fertilized with dilute 10-15-10 liquid fertilizer
+                    </span>
+                    <span
+                      class="text-xs"
+                    >
+                      07:45 AM
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1541,12 +1545,11 @@ exports[`Timeline matches snapshot 1`] = `
                 class="flex flex-col"
               >
                 <div
-                  class="m-2 line-clamp-1"
-                  title="04:44 AM - February 26, 2024"
+                  class="m-2 flex flex-row"
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 cursor-pointer"
+                    class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 cursor-pointer"
                     data-icon="pen-to-square"
                     data-prefix="fas"
                     focusable="false"
@@ -1559,16 +1562,21 @@ exports[`Timeline matches snapshot 1`] = `
                       fill="currentColor"
                     />
                   </svg>
-                  <span
-                    class="cursor-pointer text-sm md:text-base mr-2 after:content-['\\200B']"
+                  <div
+                    class="cursor-pointer line-clamp-1"
+                    title="04:44 AM - February 26, 2024"
                   >
-                    One of the older leaves is starting to turn yellow
-                  </span>
-                  <span
-                    class="text-xs"
-                  >
-                    04:44 AM
-                  </span>
+                    <span
+                      class="text-sm md:text-base mr-2 after:content-['\\200B']"
+                    >
+                      One of the older leaves is starting to turn yellow
+                    </span>
+                    <span
+                      class="text-xs"
+                    >
+                      04:44 AM
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -7007,12 +7015,11 @@ exports[`Timeline matches snapshot 1`] = `
               class="flex flex-col"
             >
               <div
-                class="m-2 line-clamp-1"
-                title="07:45 AM - March 1, 2024"
+                class="m-2 flex flex-row"
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 cursor-pointer"
+                  class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 cursor-pointer"
                   data-icon="pen-to-square"
                   data-prefix="fas"
                   focusable="false"
@@ -7025,16 +7032,21 @@ exports[`Timeline matches snapshot 1`] = `
                     fill="currentColor"
                   />
                 </svg>
-                <span
-                  class="cursor-pointer text-sm md:text-base mr-2 after:content-['\\200B']"
+                <div
+                  class="cursor-pointer line-clamp-1"
+                  title="07:45 AM - March 1, 2024"
                 >
-                  Fertilized with dilute 10-15-10 liquid fertilizer
-                </span>
-                <span
-                  class="text-xs"
-                >
-                  07:45 AM
-                </span>
+                  <span
+                    class="text-sm md:text-base mr-2 after:content-['\\200B']"
+                  >
+                    Fertilized with dilute 10-15-10 liquid fertilizer
+                  </span>
+                  <span
+                    class="text-xs"
+                  >
+                    07:45 AM
+                  </span>
+                </div>
               </div>
             </div>
           </div>
@@ -7077,12 +7089,11 @@ exports[`Timeline matches snapshot 1`] = `
               class="flex flex-col"
             >
               <div
-                class="m-2 line-clamp-1"
-                title="04:44 AM - February 26, 2024"
+                class="m-2 flex flex-row"
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 cursor-pointer"
+                  class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 cursor-pointer"
                   data-icon="pen-to-square"
                   data-prefix="fas"
                   focusable="false"
@@ -7095,16 +7106,21 @@ exports[`Timeline matches snapshot 1`] = `
                     fill="currentColor"
                   />
                 </svg>
-                <span
-                  class="cursor-pointer text-sm md:text-base mr-2 after:content-['\\200B']"
+                <div
+                  class="cursor-pointer line-clamp-1"
+                  title="04:44 AM - February 26, 2024"
                 >
-                  One of the older leaves is starting to turn yellow
-                </span>
-                <span
-                  class="text-xs"
-                >
-                  04:44 AM
-                </span>
+                  <span
+                    class="text-sm md:text-base mr-2 after:content-['\\200B']"
+                  >
+                    One of the older leaves is starting to turn yellow
+                  </span>
+                  <span
+                    class="text-xs"
+                  >
+                    04:44 AM
+                  </span>
+                </div>
               </div>
             </div>
           </div>
