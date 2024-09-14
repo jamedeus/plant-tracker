@@ -14,7 +14,7 @@ function timestampToUserTimezone(timestamp) {
 // readable format (example: "10:14 AM - May 12, 2024")
 function timestampToReadable(timestamp) {
     return timestampToUserTimezone(timestamp).toFormat(
-        'hh:mm a - MMMM d, yyyy'
+        'hh:mm\u00A0a - MMMM d, yyyy'
     );
 }
 

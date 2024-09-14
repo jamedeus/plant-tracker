@@ -247,7 +247,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                     Test Plant
                   </h2>
                   <span
-                    title="06:44 PM - February 25, 2024"
+                    title="06:44 PM - February 25, 2024"
                   >
                     <svg
                       aria-hidden="true"
@@ -765,7 +765,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                   Test Plant
                 </h2>
                 <span
-                  title="06:44 PM - February 25, 2024"
+                  title="06:44 PM - February 25, 2024"
                 >
                   <svg
                     aria-hidden="true"

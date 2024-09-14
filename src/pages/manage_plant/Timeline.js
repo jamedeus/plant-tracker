@@ -278,12 +278,12 @@ const Timeline = ({ plantID, events }) => {
                     onClick={() => noteModalRef.current.open(note)}
                 />
                 <span
-                    className={'cursor-pointer text-sm md:text-base'}
+                    className="cursor-pointer text-sm md:text-base mr-2 after:content-['\200B']"
                     onClick={() => setExpanded(!expanded)}
                 >
                     {note.text}
                 </span>
-                <span className={'text-xs ml-2'}>
+                <span className={'text-xs'}>
                     {timestamp.split('-')[0].trim()}
                 </span>
             </div>

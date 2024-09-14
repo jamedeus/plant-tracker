@@ -290,7 +290,7 @@ exports[`App matches snapshot 1`] = `
             class="text-lg"
           >
             <span
-              title="07:45 AM - March 1, 2024"
+              title="07:45 AM - March 1, 2024"
             >
               Watered 4 hours ago
             </span>
@@ -299,7 +299,7 @@ exports[`App matches snapshot 1`] = `
             class="text-lg"
           >
             <span
-              title="07:45 AM - March 1, 2024"
+              title="07:45 AM - March 1, 2024"
             >
               Fertilized 4 hours ago
             </span>
@@ -1288,7 +1288,7 @@ exports[`App matches snapshot 1`] = `
                   class="flex flex-row flex-wrap"
                 >
                   <div
-                    title="02:52 AM - March 23, 2024"
+                    title="02:52 AM - March 23, 2024"
                   >
                     <img
                       class="rounded-lg m-2 object-cover w-[4.9rem]
@@ -1333,7 +1333,7 @@ exports[`App matches snapshot 1`] = `
                   class="flex flex-row flex-wrap"
                 >
                   <div
-                    title="02:52 AM - March 22, 2024"
+                    title="02:52 AM - March 22, 2024"
                   >
                     <img
                       class="rounded-lg m-2 object-cover w-[4.9rem]
@@ -1378,7 +1378,7 @@ exports[`App matches snapshot 1`] = `
                   class="flex flex-row flex-wrap"
                 >
                   <div
-                    title="02:52 AM - March 21, 2024"
+                    title="02:52 AM - March 21, 2024"
                   >
                     <img
                       class="rounded-lg m-2 object-cover w-[4.9rem]
@@ -1468,7 +1468,7 @@ exports[`App matches snapshot 1`] = `
                 >
                   <div
                     class="m-2 line-clamp-1"
-                    title="07:45 AM - March 1, 2024"
+                    title="07:45 AM - March 1, 2024"
                   >
                     <svg
                       aria-hidden="true"
@@ -1486,14 +1486,14 @@ exports[`App matches snapshot 1`] = `
                       />
                     </svg>
                     <span
-                      class="cursor-pointer text-sm md:text-base"
+                      class="cursor-pointer text-sm md:text-base mr-2 after:content-['\\200B']"
                     >
                       Fertilized with dilute 10-15-10 liquid fertilizer
                     </span>
                     <span
-                      class="text-xs ml-2"
+                      class="text-xs"
                     >
-                      07:45 AM
+                      07:45 AM
                     </span>
                   </div>
                 </div>
@@ -1614,7 +1614,7 @@ exports[`App matches snapshot 1`] = `
                 >
                   <div
                     class="m-2 line-clamp-1"
-                    title="04:44 AM - February 26, 2024"
+                    title="04:44 AM - February 26, 2024"
                   >
                     <svg
                       aria-hidden="true"
@@ -1632,14 +1632,14 @@ exports[`App matches snapshot 1`] = `
                       />
                     </svg>
                     <span
-                      class="cursor-pointer text-sm md:text-base"
+                      class="cursor-pointer text-sm md:text-base mr-2 after:content-['\\200B']"
                     >
                       One of the older leaves is starting to turn yellow
                     </span>
                     <span
-                      class="text-xs ml-2"
+                      class="text-xs"
                     >
-                      04:44 AM
+                      04:44 AM
                     </span>
                   </div>
                 </div>
@@ -1845,7 +1845,7 @@ exports[`App matches snapshot 1`] = `
                 <div
                   class="carousel-item relative w-full mx-1"
                   id="slide0"
-                  title="02:52 AM - March 21, 2024"
+                  title="02:52 AM - March 21, 2024"
                 >
                   <img
                     class="w-full rounded-xl object-scale-down my-auto"
@@ -1908,7 +1908,7 @@ exports[`App matches snapshot 1`] = `
                 <div
                   class="carousel-item relative w-full mx-1"
                   id="slide1"
-                  title="02:52 AM - March 22, 2024"
+                  title="02:52 AM - March 22, 2024"
                 >
                   <img
                     class="w-full rounded-xl object-scale-down my-auto"
@@ -1971,7 +1971,7 @@ exports[`App matches snapshot 1`] = `
                 <div
                   class="carousel-item relative w-full mx-1"
                   id="slide2"
-                  title="02:52 AM - March 23, 2024"
+                  title="02:52 AM - March 23, 2024"
                 >
                   <img
                     class="w-full rounded-xl object-scale-down my-auto"
@@ -2089,7 +2089,7 @@ exports[`App matches snapshot 1`] = `
                       <h1
                         class="mt-auto mb-1 md:text-lg"
                       >
-                        02:52 AM - March 21, 2024
+                        02:52 AM - March 21, 2024
                       </h1>
                       <img
                         class="rounded-xl overflow-hidden mx-auto mb-auto"
@@ -2164,7 +2164,7 @@ exports[`App matches snapshot 1`] = `
                       <h1
                         class="mt-auto mb-1 md:text-lg"
                       >
-                        02:52 AM - March 22, 2024
+                        02:52 AM - March 22, 2024
                       </h1>
                       <img
                         class="rounded-xl overflow-hidden mx-auto mb-auto"
@@ -2239,7 +2239,7 @@ exports[`App matches snapshot 1`] = `
                       <h1
                         class="mt-auto mb-1 md:text-lg"
                       >
-                        02:52 AM - March 23, 2024
+                        02:52 AM - March 23, 2024
                       </h1>
                       <img
                         class="rounded-xl overflow-hidden mx-auto mb-auto"
@@ -3523,7 +3523,7 @@ exports[`App matches snapshot 1`] = `
           class="text-lg"
         >
           <span
-            title="07:45 AM - March 1, 2024"
+            title="07:45 AM - March 1, 2024"
           >
             Watered 4 hours ago
           </span>
@@ -3532,7 +3532,7 @@ exports[`App matches snapshot 1`] = `
           class="text-lg"
         >
           <span
-            title="07:45 AM - March 1, 2024"
+            title="07:45 AM - March 1, 2024"
           >
             Fertilized 4 hours ago
           </span>
@@ -4521,7 +4521,7 @@ exports[`App matches snapshot 1`] = `
                 class="flex flex-row flex-wrap"
               >
                 <div
-                  title="02:52 AM - March 23, 2024"
+                  title="02:52 AM - March 23, 2024"
                 >
                   <img
                     class="rounded-lg m-2 object-cover w-[4.9rem]
@@ -4566,7 +4566,7 @@ exports[`App matches snapshot 1`] = `
                 class="flex flex-row flex-wrap"
               >
                 <div
-                  title="02:52 AM - March 22, 2024"
+                  title="02:52 AM - March 22, 2024"
                 >
                   <img
                     class="rounded-lg m-2 object-cover w-[4.9rem]
@@ -4611,7 +4611,7 @@ exports[`App matches snapshot 1`] = `
                 class="flex flex-row flex-wrap"
               >
                 <div
-                  title="02:52 AM - March 21, 2024"
+                  title="02:52 AM - March 21, 2024"
                 >
                   <img
                     class="rounded-lg m-2 object-cover w-[4.9rem]
@@ -4701,7 +4701,7 @@ exports[`App matches snapshot 1`] = `
               >
                 <div
                   class="m-2 line-clamp-1"
-                  title="07:45 AM - March 1, 2024"
+                  title="07:45 AM - March 1, 2024"
                 >
                   <svg
                     aria-hidden="true"
@@ -4719,14 +4719,14 @@ exports[`App matches snapshot 1`] = `
                     />
                   </svg>
                   <span
-                    class="cursor-pointer text-sm md:text-base"
+                    class="cursor-pointer text-sm md:text-base mr-2 after:content-['\\200B']"
                   >
                     Fertilized with dilute 10-15-10 liquid fertilizer
                   </span>
                   <span
-                    class="text-xs ml-2"
+                    class="text-xs"
                   >
-                    07:45 AM
+                    07:45 AM
                   </span>
                 </div>
               </div>
@@ -4847,7 +4847,7 @@ exports[`App matches snapshot 1`] = `
               >
                 <div
                   class="m-2 line-clamp-1"
-                  title="04:44 AM - February 26, 2024"
+                  title="04:44 AM - February 26, 2024"
                 >
                   <svg
                     aria-hidden="true"
@@ -4865,14 +4865,14 @@ exports[`App matches snapshot 1`] = `
                     />
                   </svg>
                   <span
-                    class="cursor-pointer text-sm md:text-base"
+                    class="cursor-pointer text-sm md:text-base mr-2 after:content-['\\200B']"
                   >
                     One of the older leaves is starting to turn yellow
                   </span>
                   <span
-                    class="text-xs ml-2"
+                    class="text-xs"
                   >
-                    04:44 AM
+                    04:44 AM
                   </span>
                 </div>
               </div>
@@ -5078,7 +5078,7 @@ exports[`App matches snapshot 1`] = `
               <div
                 class="carousel-item relative w-full mx-1"
                 id="slide0"
-                title="02:52 AM - March 21, 2024"
+                title="02:52 AM - March 21, 2024"
               >
                 <img
                   class="w-full rounded-xl object-scale-down my-auto"
@@ -5141,7 +5141,7 @@ exports[`App matches snapshot 1`] = `
               <div
                 class="carousel-item relative w-full mx-1"
                 id="slide1"
-                title="02:52 AM - March 22, 2024"
+                title="02:52 AM - March 22, 2024"
               >
                 <img
                   class="w-full rounded-xl object-scale-down my-auto"
@@ -5204,7 +5204,7 @@ exports[`App matches snapshot 1`] = `
               <div
                 class="carousel-item relative w-full mx-1"
                 id="slide2"
-                title="02:52 AM - March 23, 2024"
+                title="02:52 AM - March 23, 2024"
               >
                 <img
                   class="w-full rounded-xl object-scale-down my-auto"
@@ -5322,7 +5322,7 @@ exports[`App matches snapshot 1`] = `
                     <h1
                       class="mt-auto mb-1 md:text-lg"
                     >
-                      02:52 AM - March 21, 2024
+                      02:52 AM - March 21, 2024
                     </h1>
                     <img
                       class="rounded-xl overflow-hidden mx-auto mb-auto"
@@ -5397,7 +5397,7 @@ exports[`App matches snapshot 1`] = `
                     <h1
                       class="mt-auto mb-1 md:text-lg"
                     >
-                      02:52 AM - March 22, 2024
+                      02:52 AM - March 22, 2024
                     </h1>
                     <img
                       class="rounded-xl overflow-hidden mx-auto mb-auto"
@@ -5472,7 +5472,7 @@ exports[`App matches snapshot 1`] = `
                     <h1
                       class="mt-auto mb-1 md:text-lg"
                     >
-                      02:52 AM - March 23, 2024
+                      02:52 AM - March 23, 2024
                     </h1>
                     <img
                       class="rounded-xl overflow-hidden mx-auto mb-auto"
