@@ -11,12 +11,8 @@ const GroupCard = ({ display_name, plants, uuid, location, description, linkPage
     // to card (redirects to manage_group page unless linkPage arg is false)
     const toggle = (e) => {
         setOpen(!open);
+        e.preventDefault();
         e.stopPropagation();
-    };
-
-    // Click handler, redirects to manage_group unless linkPage arg is false
-    const manageLink = () => {
-        window.location.href = `/manage/${uuid}`;
     };
 
     // Renders collapse with Group details, opened with arrow button
@@ -43,14 +39,15 @@ const GroupCard = ({ display_name, plants, uuid, location, description, linkPage
     };
 
     return (
-        <>
+        <a
+            href={linkPage ? `/manage/${uuid}` : null}
+            className={linkPage ? 'cursor-pointer' : ''}
+        >
             <div
                 className={
                     `card bg-neutral text-neutral-content mx-auto w-full
-                    ${linkPage ? 'cursor-pointer' : 'cursor-default'}
                     ${open ? "rounded-b-none" : ""}`
                 }
-                onClick={linkPage ? manageLink : null}
             >
                 <div className="card-body text-center">
                     <h2 className="card-title mx-auto">{display_name}</h2>
@@ -70,7 +67,7 @@ const GroupCard = ({ display_name, plants, uuid, location, description, linkPage
                 </button>
             </div>
             <DetailsSection />
-        </>
+        </a>
     );
 };
 

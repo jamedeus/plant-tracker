@@ -15,12 +15,8 @@ const PlantCard = ({ display_name, uuid, species, description, pot_size, last_wa
     // to card (redirects to manage_plant page unless linkPage arg is false)
     const toggle = (e) => {
         setOpen(!open);
+        e.preventDefault();
         e.stopPropagation();
-    };
-
-    // Click handler, redirects to manage_plant unless linkPage arg is false
-    const manageLink = () => {
-        window.location.href = `/manage/${uuid}`;
     };
 
     // Renders collapse with Plant details, opened with arrow button
@@ -98,13 +94,15 @@ const PlantCard = ({ display_name, uuid, species, description, pot_size, last_wa
     };
 
     return (
-        <>
+        <a
+            href={linkPage ? `/manage/${uuid}` : null}
+            className={linkPage ? 'cursor-pointer' : ''}
+        >
             <div
                 className={
-                    `card card-side bg-neutral text-neutral-content mx-auto relative
-                    ${open ? "rounded-b-none" : ""} ${linkPage ? 'cursor-pointer' : ''}`
+                    `card card-side bg-neutral text-neutral-content mx-auto
+                    relative ${open ? "rounded-b-none" : ""}`
                 }
-                onClick={linkPage ? manageLink : null}
             >
                 {thumbnail ? <Thumbnail /> : null}
 
@@ -123,7 +121,7 @@ const PlantCard = ({ display_name, uuid, species, description, pot_size, last_wa
                 </button>
             </div>
             <DetailsSection />
-        </>
+        </a>
     );
 };
 

@@ -36,9 +36,9 @@ describe('GroupCard', () => {
     });
 
     it('redirects to manage group page when clicked', async () => {
-        // Click inside div, confirm redirected to manage page
-        await user.click(component.getByText('Test Group'));
-        expect(window.location.href).toBe(
+        // Confirm card has correct href
+        expect(component.getByRole('link')).toHaveAttribute(
+            'href',
             '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
         );
     });
