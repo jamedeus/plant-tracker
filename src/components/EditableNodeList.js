@@ -45,8 +45,8 @@ const EditableNodeList = ({ editing, selected, children }) => {
     };
 
     NodeWrapper.propTypes = {
-        node: PropTypes.node,
-        editing: PropTypes.bool
+        node: PropTypes.node.isRequired,
+        editing: PropTypes.bool.isRequired
     };
 
     return (
@@ -60,7 +60,7 @@ const EditableNodeList = ({ editing, selected, children }) => {
 };
 
 EditableNodeList.propTypes = {
-    editing: PropTypes.bool,
+    editing: PropTypes.bool.isRequired,
     selected: PropTypes.shape({
         current: PropTypes.array
     }).isRequired,

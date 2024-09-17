@@ -133,7 +133,7 @@ PlantDetailsForm.propTypes = {
     formRef: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-    ]),
+    ]).isRequired,
     name: PropTypes.string,
     species: PropTypes.string,
     pot_size: PropTypes.oneOfType([

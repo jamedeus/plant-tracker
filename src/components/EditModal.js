@@ -32,7 +32,7 @@ const EditModal = ({ title, onSubmit, children }) => {
 };
 
 EditModal.propTypes = {
-    title: PropTypes.string,
+    title: PropTypes.string.isRequired,
     onSubmit: PropTypes.func.isRequired,
     children: PropTypes.node.isRequired
 };

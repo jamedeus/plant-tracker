@@ -34,7 +34,7 @@ Modal.propTypes = {
     dialogRef: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-    ]),
+    ]).isRequired,
     title: PropTypes.string,
     children: PropTypes.node.isRequired,
     className: PropTypes.string,

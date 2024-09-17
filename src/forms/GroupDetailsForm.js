@@ -44,7 +44,7 @@ GroupDetailsForm.propTypes = {
     formRef: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-    ]),
+    ]).isRequired,
     name: PropTypes.string,
     location: PropTypes.string,
     description: PropTypes.string

@@ -44,9 +44,9 @@ const CollapseCol = ({ title, children, openRef, scroll=false }) => {
 };
 
 CollapseCol.propTypes = {
-    title: PropTypes.string,
+    title: PropTypes.string.isRequired,
     children: PropTypes.node,
-    openRef: PropTypes.object,
+    openRef: PropTypes.object.isRequired,
     scroll: PropTypes.bool
 };
 

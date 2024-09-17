@@ -293,14 +293,14 @@ const FilterColumn = ({
 };
 
 FilterColumn.propTypes = {
-    title: PropTypes.string,
-    contents: PropTypes.array,
+    title: PropTypes.string.isRequired,
+    contents: PropTypes.array.isRequired,
     CardComponent: PropTypes.func.isRequired,
     editing: PropTypes.bool,
     selected: PropTypes.shape({
         current: PropTypes.array
     }).isRequired,
-    openRef: PropTypes.object,
+    openRef: PropTypes.object.isRequired,
     ignoreKeys: PropTypes.array,
     sortByKeys: PropTypes.array,
     defaultSortKey: PropTypes.string,
