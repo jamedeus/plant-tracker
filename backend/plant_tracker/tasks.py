@@ -74,10 +74,10 @@ def build_overview_state():
         'groups': []
     }
 
-    for plant in Plant.objects.all():
+    for plant in Plant.objects.filter(archived=False):
         state['plants'].append(plant.get_details())
 
-    for group in Group.objects.all():
+    for group in Group.objects.filter(archived=False):
         state['groups'].append(group.get_details())
 
     # Cache state indefinitely (updates automatically when database changes)

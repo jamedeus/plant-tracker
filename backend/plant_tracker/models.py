@@ -102,6 +102,9 @@ class Group(models.Model):
     # Store timestamp when created (not editable)
     created = models.DateTimeField(auto_now_add=True)
 
+    # Removes from overview page if True
+    archived = models.BooleanField(default=False)
+
     def __str__(self):
         return f"{self.get_display_name()} ({self.uuid})"
 
@@ -182,6 +185,9 @@ class Plant(models.Model):
 
     # Store timestamp when created (not editable)
     created = models.DateTimeField(auto_now_add=True)
+
+    # Removes from overview page if True
+    archived = models.BooleanField(default=False)
 
     # Accept pot sizes between 1 inch and 3 feet (optional)
     pot_size = models.PositiveIntegerField(

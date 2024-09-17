@@ -385,6 +385,17 @@ def delete_plant(plant, **kwargs):
     return JsonResponse({"deleted": plant.uuid}, status=200)
 
 
+@requires_json_post(["plant_id"])
+@get_plant_from_post_body
+def archive_plant(plant, **kwargs):
+    '''Sets the archived attribute of an existing Plant to True
+    Requires JSON POST with plant_id (uuid) key
+    '''
+    plant.archived = True
+    plant.save()
+    return JsonResponse({"archived": plant.uuid}, status=200)
+
+
 @requires_json_post(["group_id"])
 @get_group_from_post_body
 def delete_group(group, **kwargs):
@@ -393,6 +404,17 @@ def delete_group(group, **kwargs):
     '''
     group.delete()
     return JsonResponse({"deleted": group.uuid}, status=200)
+
+
+@requires_json_post(["group_id"])
+@get_group_from_post_body
+def archive_group(group, **kwargs):
+    '''Sets the archived attribute of an existing Group to True
+    Requires JSON POST with group_id (uuid) key
+    '''
+    group.archived = True
+    group.save()
+    return JsonResponse({"archived": group.uuid}, status=200)
 
 
 @requires_json_post(["plant_id", "event_type", "timestamp"])

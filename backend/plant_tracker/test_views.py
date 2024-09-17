@@ -128,6 +128,9 @@ class OverviewTests(TestCase):
         group = Group.objects.create(uuid=uuid4())
         plant1 = Plant.objects.create(uuid=uuid4(), name='Test plant')
         plant2 = Plant.objects.create(uuid=uuid4(), species='fittonia', group=group)
+        # Create archived group and archived plant (should not be in context)
+        Plant.objects.create(uuid=uuid4(), name='Archived plant', archived=True)
+        Group.objects.create(uuid=uuid4(), name='Archived group', archived=True)
 
         # Request overview, confirm uses correct JS bundle and title
         response = self.client.get('/')
@@ -136,7 +139,8 @@ class OverviewTests(TestCase):
         self.assertEqual(response.context['js_bundle'], 'plant_tracker/overview.js')
         self.assertEqual(response.context['title'], 'Overview')
 
-        # Confirm state object has details of all plants and groups
+        # Confirm state object has details of all non-archived plants and groups,
+        # does not contain archived plant and group
         state = response.context['state']
         self.assertEqual(
             state['plants'],
@@ -299,6 +303,19 @@ class OverviewTests(TestCase):
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(), {'error': 'plant not found'})
 
+    def test_archive_plant(self):
+        # Create test plant, confirm exists in database, is not archived
+        test_id = uuid4()
+        Plant.objects.create(uuid=test_id, name='test plant')
+        self.assertEqual(len(Plant.objects.all()), 1)
+        self.assertFalse(Plant.objects.all()[0].archived)
+
+        # Call archive endpoint, confirm response, confirm updated in database
+        response = self.client.post('/archive_plant', {'plant_id': str(test_id)})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'archived': str(test_id)})
+        self.assertTrue(Plant.objects.all()[0].archived)
+
     def test_delete_group(self):
         # Create test group, confirm exists in database
         test_id = uuid4()
@@ -315,6 +332,19 @@ class OverviewTests(TestCase):
         response = self.client.post('/delete_group', {'group_id': str(test_id)})
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(), {'error': 'group not found'})
+
+    def test_archive_group(self):
+        # Create test group, confirm exists in database, is not archived
+        test_id = uuid4()
+        Group.objects.create(uuid=test_id, name='test group')
+        self.assertEqual(len(Group.objects.all()), 1)
+        self.assertFalse(Group.objects.all()[0].archived)
+
+        # Call archive endpoint, confirm response, confirm updated in database
+        response = self.client.post('/archive_group', {'group_id': str(test_id)})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'archived': str(test_id)})
+        self.assertTrue(Group.objects.all()[0].archived)
 
 
 class RegistrationTests(TestCase):
