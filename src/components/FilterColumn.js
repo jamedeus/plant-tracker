@@ -17,21 +17,42 @@ const reducer = (state, action) => {
                 sortDirection: action.sortDirection
             };
         }
-        case('set_current_contents'): {
+        case('set_contents'): {
             return {
                 ...state,
-                currentContents: action.newContents
+                originalContents: action.contents,
+                currentContents: action.contents
+            };
+        }
+        case('filter_contents'): {
+            // Case-insensitive matching
+            const lowercaseQuery = action.query.toLowerCase();
+
+            // Iterate over keys of each item in state.originalContents, add
+            // item to currentContents once a single key is found that is not
+            // in state.ignoreKeys array and has a value that contains query
+            const newContents = state.originalContents.filter(item => {
+                return Object.entries(item).some(([key, value]) => {
+                    return !state.ignoreKeys.includes(key)
+                    && value !== null
+                    && value.toString().toLowerCase().includes(lowercaseQuery);
+                });
+            });
+
+            return {
+                ...state,
+                currentContents: newContents
             };
         }
         default: {
             throw Error('Unknown action: ' + action.type);
         }
     }
-}
+};
 
 
 // Renders filter text input and sort dropdown at top of FilterColumn
-const FilterInput = ({state, dispatch, contents, sortByKeys, ignoreKeys}) => {
+const FilterInput = ({state, dispatch, sortByKeys}) => {
     // Filter input state
     const [query, setQuery] = useState('');
 
@@ -42,26 +63,14 @@ const FilterInput = ({state, dispatch, contents, sortByKeys, ignoreKeys}) => {
         if (query) {
             filterContents(query);
         } else {
-            dispatch({type: 'set_current_contents', newContents: contents});
+            dispatch({type: 'filter_contents', query: ''});
         }
     };
 
-    // Sets state.currentContents to all items with an attribute that contains
-    // filter query (debounced 200ms to prevent re-render on every keystroke)
+    // Filters visible cards to all items with an attribute that contains query
+    // Debounced 200ms to prevent re-render on every keystroke
     const filterContents = useDebounce((query) => {
-        const lowercaseQuery = query.toLowerCase();
-
-        // Iterate over keys of each item, add the item to state.currentContents
-        // once a single key is found that is not in ignoreKeys array and
-        // has a value that contains filter query (case insensitive)
-        const newContents = contents.filter(item => {
-            return Object.entries(item).some(([key, value]) => {
-                return !ignoreKeys.includes(key)
-                && value !== null
-                && value.toString().toLowerCase().includes(lowercaseQuery);
-            });
-        });
-        dispatch({type: 'set_current_contents', newContents: newContents});
+        dispatch({type: 'filter_contents', query: query});
     }, 200);
 
     // Invert sort direction if selected key clicked again
@@ -172,9 +181,7 @@ const FilterInput = ({state, dispatch, contents, sortByKeys, ignoreKeys}) => {
 FilterInput.propTypes = {
     state: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
-    contents: PropTypes.array.isRequired,
-    sortByKeys: PropTypes.array.isRequired,
-    ignoreKeys: PropTypes.array.isRequired
+    sortByKeys: PropTypes.array.isRequired
 };
 
 // Renders CollapseCol with EditableNodeList, text input used to filter visible
@@ -209,16 +216,20 @@ const FilterColumn = ({
     // sortKey: contents object key used to sort items
     // sortDirection: alphabetical if true, reverse alphabetical if false
     // currentContents: array of contents objects matching current filter query
+    // originalContents: full array of contents objects (ignores filter query)
+    // ignoreKeys: array of contents object keys ignored by filter function
     const [state, dispatch] = useReducer(reducer, {
         sortKey: defaultSortKey,
         sortDirection: true,
-        currentContents: contents
+        currentContents: contents,
+        originalContents: contents,
+        ignoreKeys: ignoreKeys
     });
 
-    // Update state.currentContents when upstream contents changes
+    // Update state.originalContents when upstream contents changes
     // Will not re-render when contents changes unless parent re-renders
     useEffect(() => {
-        dispatch({type: 'set_current_contents', newContents: contents});
+        dispatch({type: 'set_contents', contents: contents});
     }, [contents]);
 
     // Array.sort compare function used by sortByKey
@@ -261,8 +272,6 @@ const FilterColumn = ({
                 sortByKeys={sortByKeys}
                 state={state}
                 dispatch={dispatch}
-                contents={contents}
-                ignoreKeys={ignoreKeys}
             />
             <EditableNodeList editing={editing} selected={selected}>
                 {sortByKey(state.currentContents, state.sortKey).map((item) => {
