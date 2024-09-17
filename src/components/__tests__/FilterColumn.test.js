@@ -3,8 +3,8 @@ import FilterColumn from '../FilterColumn';
 
 const plants = [
     {
-        "name": "Mini palm tree",
-        "display_name": "Mini palm tree",
+        "name": "mini palm tree",
+        "display_name": "mini palm tree",
         "uuid": "49a55f1f-5703-4f5e-acad-2c0991a08806",
         "created": "2023-12-20T01:25:12+00:00",
         "species": "Parlor Palm",
@@ -118,20 +118,20 @@ describe('FilterColumn', () => {
             expect(component.getByText('Favorite plant')).toBeInTheDocument();
         });
 
-        // Type "6", should only show "Mini palm tree" (matches 6 inch pot)
+        // Type "6", should only show "mini palm tree" (matches 6 inch pot)
         await user.clear(filterInput);
         await user.type(filterInput, '6');
         await waitFor(() => {
             expect(component.container.querySelectorAll('.card').length).toBe(1);
-            expect(component.getByText('Mini palm tree')).toBeInTheDocument();
+            expect(component.getByText('mini palm tree')).toBeInTheDocument();
         });
 
-        // Type "really", should only show "Mini palm tree" (matches description)
+        // Type "really", should only show "mini palm tree" (matches description)
         await user.clear(filterInput);
         await user.type(filterInput, 'really');
         await waitFor(() => {
             expect(component.container.querySelectorAll('.card').length).toBe(1);
-            expect(component.getByText('Mini palm tree')).toBeInTheDocument();
+            expect(component.getByText('mini palm tree')).toBeInTheDocument();
         });
     });
 
@@ -176,7 +176,7 @@ describe('FilterColumn', () => {
     it('sorts cards correctly when sort dropdown option is clicked', async () => {
         // Get array of card titles, confirm expected default order
         let titles = component.container.querySelectorAll('.card-title');
-        expect(titles[0].innerHTML).toBe("Mini palm tree");
+        expect(titles[0].innerHTML).toBe("mini palm tree");
         expect(titles[1].innerHTML).toBe("Unnamed Fittonia");
         expect(titles[2].innerHTML).toBe("Unnamed plant 1");
         expect(titles[3].innerHTML).toBe("Favorite plant");
@@ -184,10 +184,10 @@ describe('FilterColumn', () => {
         // Click the Name option in sort dropdown
         await user.click(component.getByText('Name'));
 
-        // Confirm cards were sorted alphabetically by name
+        // Confirm cards were sorted alphabetically by name (case insensitive)
         titles = component.container.querySelectorAll('.card-title');
         expect(titles[0].innerHTML).toBe("Favorite plant");
-        expect(titles[1].innerHTML).toBe("Mini palm tree");
+        expect(titles[1].innerHTML).toBe("mini palm tree");
         expect(titles[2].innerHTML).toBe("Unnamed Fittonia");
         expect(titles[3].innerHTML).toBe("Unnamed plant 1");
 
@@ -202,7 +202,7 @@ describe('FilterColumn', () => {
         titles = component.container.querySelectorAll('.card-title');
         expect(titles[0].innerHTML).toBe("Unnamed plant 1");
         expect(titles[1].innerHTML).toBe("Unnamed Fittonia");
-        expect(titles[2].innerHTML).toBe("Mini palm tree");
+        expect(titles[2].innerHTML).toBe("mini palm tree");
         expect(titles[3].innerHTML).toBe("Favorite plant");
 
         // Confirm the down arrow was replaced by an up arrow
@@ -219,7 +219,7 @@ describe('FilterColumn', () => {
         let titles = component.container.querySelectorAll('.card-title');
         expect(titles[0].innerHTML).toBe("Favorite plant");
         expect(titles[1].innerHTML).toBe("Unnamed Fittonia");
-        expect(titles[2].innerHTML).toBe("Mini palm tree");
+        expect(titles[2].innerHTML).toBe("mini palm tree");
         expect(titles[3].innerHTML).toBe("Unnamed plant 1");
 
         // Click the Watered option in sort dropdown
@@ -227,7 +227,7 @@ describe('FilterColumn', () => {
 
         // Confirm cards sorted alphabetically, plants without last_watered are last
         titles = component.container.querySelectorAll('.card-title');
-        expect(titles[0].innerHTML).toBe("Mini palm tree");
+        expect(titles[0].innerHTML).toBe("mini palm tree");
         expect(titles[1].innerHTML).toBe("Unnamed plant 1");
         expect(titles[2].innerHTML).toBe("Unnamed Fittonia");
         expect(titles[3].innerHTML).toBe("Favorite plant");
@@ -306,7 +306,7 @@ describe('FilterColumn optional args', () => {
         // Confirm cards are sorted alphabetically by default
         const titles = component.container.querySelectorAll('.card-title');
         expect(titles[0].innerHTML).toBe("Favorite plant");
-        expect(titles[1].innerHTML).toBe("Mini palm tree");
+        expect(titles[1].innerHTML).toBe("mini palm tree");
         expect(titles[2].innerHTML).toBe("Unnamed Fittonia");
         expect(titles[3].innerHTML).toBe("Unnamed plant 1");
     });
@@ -320,7 +320,7 @@ describe('FilterColumn optional args', () => {
 
         // Confirm cards are in same order as contents array
         const titles = component.container.querySelectorAll('.card-title');
-        expect(titles[0].innerHTML).toBe("Mini palm tree");
+        expect(titles[0].innerHTML).toBe("mini palm tree");
         expect(titles[1].innerHTML).toBe("Unnamed Fittonia");
         expect(titles[2].innerHTML).toBe("Unnamed plant 1");
         expect(titles[3].innerHTML).toBe("Favorite plant");
