@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import PropTypes from 'prop-types';
 import useDebounce from 'src/useDebounce';
 import CollapseCol from 'src/components/CollapseCol';
@@ -7,39 +7,83 @@ import { XMarkIcon, ArrowsUpDownIcon } from '@heroicons/react/16/solid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUpLong, faArrowDownLong } from '@fortawesome/free-solid-svg-icons';
 
+// Reducer used to set visible cards, sort key, and sort direction
+const reducer = (state, action) => {
+    switch(action.type) {
+        case('set_sort_key'): {
+            return {
+                ...state,
+                sortKey: action.sortKey
+            };
+        }
+        case('set_sort_direction'): {
+            return {
+                ...state,
+                sortDirection: action.sortDirection
+            };
+        }
+        case('set_current_contents'): {
+            return {
+                ...state,
+                currentContents: action.newContents
+            };
+        }
+        default: {
+            throw Error('Unknown action: ' + action.type);
+        }
+    }
+}
+
+
 // Renders filter text input and sort dropdown at top of FilterColumn
-const FilterInput = ({
-    sortByKeys,
-    sortKey,
-    setSortKey,
-    sortDirection,
-    setSortDirection,
-    handleInput
-}) => {
+const FilterInput = ({state, dispatch, contents, sortByKeys, ignoreKeys}) => {
     // Filter input state
     const [query, setQuery] = useState('');
 
-    // Set local state and pass query to parent component callback
-    const onChange = (query) => {
+    // Called when user types in filter input
+    // Filters contents after 200ms delay, resets immediately if string empty
+    const handleInput = (query) => {
         setQuery(query);
-        handleInput(query);
+        if (query) {
+            filterContents(query);
+        } else {
+            dispatch({type: 'set_current_contents', newContents: contents});
+        }
     };
+
+    // Sets state.currentContents to all items with an attribute that contains
+    // filter query (debounced 200ms to prevent re-render on every keystroke)
+    const filterContents = useDebounce((query) => {
+        const lowercaseQuery = query.toLowerCase();
+
+        // Iterate over keys of each item, add the item to state.currentContents
+        // once a single key is found that is not in ignoreKeys array and
+        // has a value that contains filter query (case insensitive)
+        const newContents = contents.filter(item => {
+            return Object.entries(item).some(([key, value]) => {
+                return !ignoreKeys.includes(key)
+                && value !== null
+                && value.toString().toLowerCase().includes(lowercaseQuery);
+            });
+        });
+        dispatch({type: 'set_current_contents', newContents: newContents});
+    }, 200);
 
     // Invert sort direction if selected key clicked again
     // Otherwise change selected key and set default direction
     const setSort = (keyName) => {
-        if (keyName === sortKey) {
-            setSortDirection(!sortDirection);
+        if (keyName === state.sortKey) {
+            dispatch({type: 'set_sort_direction', sortDirection: !state.sortDirection});
         } else {
-            setSortKey(keyName);
-            setSortDirection(true);
+            dispatch({type: 'set_sort_key', sortKey: keyName});
+            dispatch({type: 'set_sort_direction', sortDirection: true});
         }
         document.activeElement.blur();
     };
 
     // Indicates sort direction on selected option
     const Arrow = () => {
-        if (sortDirection) {
+        if (state.sortDirection) {
             return <FontAwesomeIcon icon={faArrowDownLong} />;
         } else {
             return <FontAwesomeIcon icon={faArrowUpLong} />;
@@ -52,7 +96,7 @@ const FilterInput = ({
         const Option = ({keyName, displayString}) => {
             return (
                 <li className="ml-auto"><a onClick={() => setSort(keyName)}>
-                    {sortKey === keyName ? <Arrow /> : null}
+                    {state.sortKey === keyName ? <Arrow /> : null}
                     {displayString}
                 </a></li>
             );
@@ -94,7 +138,7 @@ const FilterInput = ({
         return (
             <button
                 className="btn-close h-8 w-8 no-animation"
-                onClick={() => onChange('')}
+                onClick={() => handleInput('')}
             >
                 <XMarkIcon className="w-7 h-7 m-auto" />
             </button>
@@ -111,7 +155,7 @@ const FilterInput = ({
                                     ? 'indent-[3.625rem] pr-[4.5rem]'
                                     : 'indent-[1.625rem] pr-10'}`}
                     value={query}
-                    onChange={e => onChange(e.target.value)}
+                    onChange={e => handleInput(e.target.value)}
                     placeholder="filter"
                 />
                 <div className="absolute flex top-2 right-2">
@@ -124,12 +168,11 @@ const FilterInput = ({
 };
 
 FilterInput.propTypes = {
-    sortByKeys: PropTypes.array,
-    sortKey: PropTypes.string,
-    setSortKey: PropTypes.func,
-    sortDirection: PropTypes.bool,
-    setSortDirection: PropTypes.func,
-    handleInput: PropTypes.func.isRequired
+    state: PropTypes.object.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    contents: PropTypes.array.isRequired,
+    sortByKeys: PropTypes.array.isRequired,
+    ignoreKeys: PropTypes.array.isRequired
 };
 
 // Renders CollapseCol with EditableNodeList, text input used to filter visible
@@ -161,45 +204,20 @@ const FilterColumn = ({
     defaultSortKey=null,
     children
 }) => {
-    // Contains array of contents objects matching current filter query
-    const [current, setCurrent] = useState(contents);
-    // Contains contents object key used to sort items
-    const [sortKey, setSortKey] = useState(defaultSortKey);
-    // Sort alphabetically if true, reverse alphabetically if false
-    const [sortDirection, setSortDirection] = useState(true);
+    // sortKey: contents object key used to sort items
+    // sortDirection: alphabetical if true, reverse alphabetical if false
+    // currentContents: array of contents objects matching current filter query
+    const [state, dispatch] = useReducer(reducer, {
+        sortKey: defaultSortKey,
+        sortDirection: true,
+        currentContents: contents
+    });
 
-    // Update current contents state when upstream contents changes
+    // Update state.currentContents when upstream contents changes
     // Will not re-render when contents changes unless parent re-renders
     useEffect(() => {
-        setCurrent(contents);
+        dispatch({type: 'set_current_contents', newContents: contents});
     }, [contents]);
-
-    // Called when user types in filter input
-    // Filters contents after 200ms delay, resets immediately if string empty
-    const handleInput = (query) => {
-        if (query) {
-            filterContents(query);
-        } else {
-            setCurrent(contents);
-        }
-    };
-
-    // Sets current to all items with an attribute that contains filter query
-    // Debounced 200ms to prevent re-render on every keystroke
-    const filterContents = useDebounce((query) => {
-        const lowercaseQuery = query.toLowerCase();
-
-        // Iterate over keys of each item, add the item to current state
-        // once a single key is found that is not in ignoreKeys array and
-        // has a value that contains filter query (case insensitive)
-        setCurrent(contents.filter(item => {
-            return Object.entries(item).some(([key, value]) => {
-                return !ignoreKeys.includes(key)
-                && value !== null
-                && value.toString().toLowerCase().includes(lowercaseQuery);
-            });
-        }));
-    }, 200);
 
     // Array.sort compare function used by sortByKey
     const compare = (a, b) => {
@@ -219,7 +237,7 @@ const FilterColumn = ({
         }
 
         // Sort alphabetically if sortDirection is true, reverse if false
-        if (sortDirection) {
+        if (state.sortDirection) {
             const sorted = [...items].sort((a, b) => {
                 return compare(a[key], b[key]);
             });
@@ -234,19 +252,18 @@ const FilterColumn = ({
 
     return (
         <CollapseCol
-            title={`${title} (${Object.keys(current).length})`}
+            title={`${title} (${Object.keys(state.currentContents).length})`}
             openRef={openRef}
         >
             <FilterInput
                 sortByKeys={sortByKeys}
-                sortKey={sortKey}
-                setSortKey={setSortKey}
-                sortDirection={sortDirection}
-                setSortDirection={setSortDirection}
-                handleInput={handleInput}
+                state={state}
+                dispatch={dispatch}
+                contents={contents}
+                ignoreKeys={ignoreKeys}
             />
             <EditableNodeList editing={editing} selected={selected}>
-                {sortByKey(current, sortKey).map((item) => {
+                {sortByKey(state.currentContents, state.sortKey).map((item) => {
                     // Render cardComponent by expanding params of each item
                     // Must have UUID param to use as react key
                     return <CardComponent key={item.uuid} {...item} />;
