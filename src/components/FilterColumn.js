@@ -277,7 +277,14 @@ const FilterColumn = ({
                 {sortByKey(state.currentContents, state.sortKey).map((item) => {
                     // Render cardComponent by expanding params of each item
                     // Must have UUID param to use as react key
-                    return <CardComponent key={item.uuid} {...item} />;
+                    // Disable page links in edit mode
+                    return (
+                        <CardComponent
+                            key={item.uuid}
+                            {...item}
+                            linkPage={!editing}
+                        />
+                    );
                 })}
             </EditableNodeList>
             {children}
