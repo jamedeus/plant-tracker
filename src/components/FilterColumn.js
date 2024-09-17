@@ -10,15 +10,10 @@ import { faArrowUpLong, faArrowDownLong } from '@fortawesome/free-solid-svg-icon
 // Reducer used to set visible cards, sort key, and sort direction
 const reducer = (state, action) => {
     switch(action.type) {
-        case('set_sort_key'): {
+        case('set_sort'): {
             return {
                 ...state,
-                sortKey: action.sortKey
-            };
-        }
-        case('set_sort_direction'): {
-            return {
-                ...state,
+                sortKey: action.sortKey,
                 sortDirection: action.sortDirection
             };
         }
@@ -73,10 +68,17 @@ const FilterInput = ({state, dispatch, contents, sortByKeys, ignoreKeys}) => {
     // Otherwise change selected key and set default direction
     const setSort = (keyName) => {
         if (keyName === state.sortKey) {
-            dispatch({type: 'set_sort_direction', sortDirection: !state.sortDirection});
+            dispatch({
+                type: 'set_sort',
+                sortKey: state.sortKey,
+                sortDirection: !state.sortDirection
+            });
         } else {
-            dispatch({type: 'set_sort_key', sortKey: keyName});
-            dispatch({type: 'set_sort_direction', sortDirection: true});
+            dispatch({
+                type: 'set_sort',
+                sortKey: keyName,
+                sortDirection: true
+            });
         }
         document.activeElement.blur();
     };
