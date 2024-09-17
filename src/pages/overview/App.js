@@ -92,6 +92,28 @@ function App() {
         setEditing(false);
     };
 
+    // Handler for archive button that appears while editing
+    const handleArchive = () => {
+        // Send archive request for each selected plant, remove uuid from state
+        selectedPlants.current.forEach(async plant_id => {
+            await sendPostRequest('/archive_plant', {plant_id: plant_id});
+        });
+        setPlants(plants.filter(
+            plant => !selectedPlants.current.includes(plant.uuid))
+        );
+
+        // Send archive request for each selected group, remove uuid from state
+        selectedGroups.current.forEach(async group_id => {
+            await sendPostRequest('/archive_group', {group_id: group_id});
+        });
+        setGroups(groups.filter(
+            group => !selectedGroups.current.includes(group.uuid))
+        );
+
+        // Reset editing state
+        setEditing(false);
+    };
+
     // Rendered when both state objects are empty, shows setup instructions
     const Setup = () => {
         return (
@@ -255,8 +277,11 @@ function App() {
             <Layout />
 
             <FloatingFooter visible={editing}>
-                <button className="btn mr-4" onClick={() => setEditing(false)}>
+                <button className="btn btn-neutral mr-4" onClick={() => setEditing(false)}>
                     Cancel
+                </button>
+                <button className="btn mx-4" onClick={handleArchive}>
+                    Archive
                 </button>
                 <button className="btn btn-error ml-4" onClick={handleDelete}>
                     Delete
