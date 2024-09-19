@@ -44,6 +44,7 @@ const reducer = (state, action) => {
                 currentContents: newContents
             };
         }
+        /* istanbul ignore next */
         default: {
             throw Error('Unknown action: ' + action.type);
         }

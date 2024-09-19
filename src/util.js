@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 // Parses JSON contents if it exists and returns, otherwise returns null
 function parseDomContext(name) {
     const element = document.getElementById(name);
+    /* istanbul ignore else */
     if (element) {
         return JSON.parse(element.textContent);
     } else {

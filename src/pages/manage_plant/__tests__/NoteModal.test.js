@@ -7,12 +7,10 @@ import { postHeaders } from 'src/testUtils/headers';
 
 const TestComponent = () => {
     const modalRef = useRef(null);
-    const [notes, setNotes] = useState([]);
-
-    const existingNote = {
-        text: 'this is an existing note',
-        timestamp: '2024-02-13T12:00:00'
-    };
+    const [notes, setNotes] = useState([
+        {text: 'this is an existing note', timestamp: '2024-02-13T12:00:00'},
+        {text: 'another existing note', timestamp: '2024-02-12T12:00:00'}
+    ]);
 
     return (
         <>
@@ -25,7 +23,7 @@ const TestComponent = () => {
             <button onClick={() => modalRef.current.open()}>
                 Add New Note
             </button>
-            <button onClick={() => modalRef.current.open(existingNote)}>
+            <button onClick={() => modalRef.current.open(notes[0])}>
                 Edit Existing Note
             </button>
         </>
