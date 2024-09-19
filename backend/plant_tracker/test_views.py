@@ -15,6 +15,7 @@ from django.test import TestCase
 from django.utils import timezone
 from django.core.cache import cache
 from django.test.client import RequestFactory, MULTIPART_CONTENT
+from PIL import UnidentifiedImageError
 
 from .views import render_react_app
 from .models import (
@@ -1867,8 +1868,9 @@ class PlantPhotoEndpointTests(TestCase):
 
         # Confirm expected response
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(len(response.json()), 2)
+        self.assertEqual(len(response.json()), 3)
         self.assertEqual(response.json()["uploaded"], "1 photo(s)")
+        self.assertEqual(response.json()["failed"], [])
 
         # Confirm response contains new photo creation timestamp, URL, primary key
         self.assertEqual(
@@ -1892,6 +1894,37 @@ class PlantPhotoEndpointTests(TestCase):
             Photo.objects.all()[0].created.strftime('%Y:%m:%d %H:%M:%S'),
             '2024:03:22 10:52:03'
         )
+
+    def test_add_plant_photos_invalid_file_types(self):
+        # Confirm no photos exist in database or plant reverse relation
+        self.assertEqual(len(Photo.objects.all()), 0)
+        self.assertEqual(len(self.plant.photo_set.all()), 0)
+
+        # Post mock photo to add_plant_photos endpoint
+        # Raise PIL.UnidentifiedImageError to simulate invalid file type
+        with patch(
+            'plant_tracker.models.Photo.objects.create',
+            side_effect=UnidentifiedImageError
+        ):
+            data = {
+                'plant_id': str(self.plant.uuid),
+                'photo_0': create_mock_photo('2024:03:22 10:52:03')
+            }
+            response = self.client.post(
+                '/add_plant_photos',
+                data=data,
+                content_type=MULTIPART_CONTENT
+            )
+
+        # Confirm expected response
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(response.json()), 3)
+        self.assertEqual(response.json()["uploaded"], "0 photo(s)")
+        self.assertEqual(response.json()["failed"], ["mock_photo.jpg"])
+        self.assertEqual(response.json()["urls"], [])
+
+        # Confirm Photo was added to database
+        self.assertEqual(len(Photo.objects.all()), 0)
 
     def test_add_plant_photos_invalid_get_request(self):
         # Send GET request (expects FormData), confirm error

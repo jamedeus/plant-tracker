@@ -11,6 +11,7 @@ from django.db import transaction, IntegrityError
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponseRedirect
 from django.views.decorators.csrf import ensure_csrf_cookie
+from PIL import UnidentifiedImageError
 
 from generate_qr_code_grid import generate_layout
 from .models import (
@@ -738,22 +739,27 @@ def add_plant_photos(request):
 
     # Instantiate model for each file in payload
     created = []
+    failed = []
     for key in request.FILES:
-        photo = Photo.objects.create(
-            photo=request.FILES[key],
-            plant=plant
-        )
-        created.append({
-            "created": photo.created.isoformat(),
-            "image": photo.get_photo_url(),
-            "thumbnail": photo.get_thumbnail_url(),
-            "key": photo.pk
-        })
+        try:
+            photo = Photo.objects.create(
+                photo=request.FILES[key],
+                plant=plant
+            )
+            created.append({
+                "created": photo.created.isoformat(),
+                "image": photo.get_photo_url(),
+                "thumbnail": photo.get_thumbnail_url(),
+                "key": photo.pk
+            })
+        except UnidentifiedImageError:
+            failed.append(request.FILES[key].name)
 
     # Return list of new photo URLs (added to frontend state)
     return JsonResponse(
         {
-            "uploaded": f"{len(request.FILES)} photo(s)",
+            "uploaded": f"{len(created)} photo(s)",
+            "failed": failed,
             "urls": created
         },
         status=200

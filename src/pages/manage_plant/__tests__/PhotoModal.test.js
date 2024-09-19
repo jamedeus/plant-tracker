@@ -42,6 +42,7 @@ describe('PhotoModal', () => {
             status: 200,
             json: () => Promise.resolve({
                 "uploaded": "2 photo(s)",
+                "failed": [],
                 "urls": [
                     {
                         "created": "2024-03-21T10:52:03+00:00",
@@ -50,7 +51,7 @@ describe('PhotoModal', () => {
                     {
                         "created": "2024-03-22T10:52:03+00:00",
                         "url": "/media/images/photo2.jpg"
-                    },
+                    }
                 ]
             })
         }));
@@ -88,7 +89,8 @@ describe('PhotoModal', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                "uploaded": "2 photo(s)",
+                "uploaded": "1 photo(s)",
+                "failed": [],
                 "urls": [
                     {
                         "created": "2024-03-21T10:52:03",
@@ -121,6 +123,39 @@ describe('PhotoModal', () => {
         const formData = fetch.mock.calls[0][1].body;
         expect(formData.get('photo_0')).toEqual(file1);
         expect(formData.get('photo_1')).toBeNull();
+    });
+
+    it('shows error modal when photo uploads fail', async () => {
+        // Mock fetch function to return expected response when photos have
+        // unsupported file type
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                "uploaded": "0 photo(s)",
+                    "failed": [
+                    "photo1.heic",
+                    "photo2.heic"
+                ],
+                "urls": []
+            })
+        }));
+
+        // Create 2 mock files
+        const file1 = new File(['file1'], 'file1.heic', { type: 'image/heic' });
+        const file2 = new File(['file2'], 'file2.heic', { type: 'image/heic' });
+
+        // Simulate user clicking input and selecting mock files
+        const fileInput = app.getByTestId('photo-input');
+        fireEvent.change(fileInput, { target: { files: [file1, file2] } });
+
+        // Simulate user clicking upload button
+        await user.click(app.getByText('Upload'));
+
+        // Confirm modal appeared with failed photo names
+        expect(app.queryByText(/Failed to upload 2 photo(s)/)).not.toBeNull();
+        expect(app.queryByText(/photo2.heic/)).not.toBeNull();
+        expect(app.queryByText(/photo1.heic/)).not.toBeNull();
     });
 
     it('shows error in modal when API call fails', async () => {

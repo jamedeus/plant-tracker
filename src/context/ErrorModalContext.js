@@ -30,7 +30,9 @@ export const ErrorModalProvider = ({ children }) => {
             {children}
             <Modal dialogRef={modalRef}>
                 <h3 className="font-bold text-lg mb-6">Error</h3>
-                <div className="min-h-36 flex flex-col justify-center mx-auto">
+                <div className={`min-h-36 flex flex-col justify-center mx-auto
+                                 whitespace-pre-line`}
+                >
                     {message}
                 </div>
                 <div className="modal-action mx-auto">

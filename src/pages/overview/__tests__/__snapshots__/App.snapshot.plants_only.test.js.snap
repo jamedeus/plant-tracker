@@ -514,7 +514,8 @@ exports[`App matches snapshot when only plants exist 1`] = `
             Error
           </h3>
           <div
-            class="min-h-36 flex flex-col justify-center mx-auto"
+            class="min-h-36 flex flex-col justify-center mx-auto
+                                 whitespace-pre-line"
           />
           <div
             class="modal-action mx-auto"
@@ -1037,7 +1038,8 @@ exports[`App matches snapshot when only plants exist 1`] = `
           Error
         </h3>
         <div
-          class="min-h-36 flex flex-col justify-center mx-auto"
+          class="min-h-36 flex flex-col justify-center mx-auto
+                                 whitespace-pre-line"
         />
         <div
           class="modal-action mx-auto"

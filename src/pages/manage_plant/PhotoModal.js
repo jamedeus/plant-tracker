@@ -74,7 +74,9 @@ const PhotoModal = ({ plantID, photoUrls, setPhotoUrls }) => {
         if (response.ok) {
             // Update state with new photo URLs from response
             const data = await response.json();
-            addPlantPhotoUrls(data.urls);
+            if (data.urls.length) {
+                addPlantPhotoUrls(data.urls);
+            }
 
             // Close modal, wait for close animation to complete then stop
             // loading animation and remove selected files from input/state
@@ -83,6 +85,13 @@ const PhotoModal = ({ plantID, photoUrls, setPhotoUrls }) => {
                 setUploading(false);
                 resetSelection();
             }, 150);
+
+            // Show error if any photos failed
+            if (data.failed.length) {
+                const num = data.failed.length;
+                const list = data.failed.join('\n');
+                showErrorModal(`Failed to upload ${num} photos:\n${list}`);
+            }
         } else {
             setUploading(false);
             resetSelection();

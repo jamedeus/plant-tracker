@@ -5501,7 +5501,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             Error
           </h3>
           <div
-            class="min-h-36 flex flex-col justify-center mx-auto"
+            class="min-h-36 flex flex-col justify-center mx-auto
+                                 whitespace-pre-line"
           />
           <div
             class="modal-action mx-auto"
@@ -11011,7 +11012,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           Error
         </h3>
         <div
-          class="min-h-36 flex flex-col justify-center mx-auto"
+          class="min-h-36 flex flex-col justify-center mx-auto
+                                 whitespace-pre-line"
         />
         <div
           class="modal-action mx-auto"
@@ -16622,7 +16624,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             Error
           </h3>
           <div
-            class="min-h-36 flex flex-col justify-center mx-auto"
+            class="min-h-36 flex flex-col justify-center mx-auto
+                                 whitespace-pre-line"
           />
           <div
             class="modal-action mx-auto"
@@ -22166,7 +22169,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           Error
         </h3>
         <div
-          class="min-h-36 flex flex-col justify-center mx-auto"
+          class="min-h-36 flex flex-col justify-center mx-auto
+                                 whitespace-pre-line"
         />
         <div
           class="modal-action mx-auto"

@@ -114,6 +114,7 @@ describe('App', () => {
             status: 200,
             json: () => Promise.resolve({
                 "uploaded": "2 photo(s)",
+                "failed": [],
                 "urls": [
                     {
                         "created": "2024-03-21T10:52:03",
