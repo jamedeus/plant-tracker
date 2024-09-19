@@ -84,9 +84,14 @@ const PhotoModal = ({ plantID, photoUrls, setPhotoUrls }) => {
                 resetSelection();
             }, 150);
         } else {
-            const error = await response.json();
-            showErrorModal(JSON.stringify(error));
             setUploading(false);
+            resetSelection();
+            try {
+                const error = await response.json();
+                showErrorModal(JSON.stringify(error));
+            } catch(err) {
+                showErrorModal('Unexpected response from backend');
+            }
         }
     };
 

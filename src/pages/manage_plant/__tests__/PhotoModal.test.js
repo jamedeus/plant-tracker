@@ -144,6 +144,33 @@ describe('PhotoModal', () => {
 
         // Confirm modal appeared with arbitrary error text
         expect(app.queryByText(/failed to upload photos/)).not.toBeNull();
+        // Confirm file input was cleared
+        expect(fileInput.files.length).toBe(0);
+    });
+
+    it('shows error modal when API response does not contain JSON', async () => {
+        // Mock fetch function to return string (django uncaught exception)
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            status: 500,
+            text: () => Promise.resolve(
+                "this is not JSON"
+            )
+        }));
+
+        // Confirm arbitrary error does not appear on page
+        expect(app.queryByText(/failed to upload photos/)).toBeNull();
+
+        // Simulate user selecting a file and clicking upload
+        const file1 = new File(['file1'], 'file1.jpg', { type: 'image/jpeg' });
+        const fileInput = app.getByTestId('photo-input');
+        fireEvent.change(fileInput, { target: { files: [file1] } });
+        await user.click(app.getByText('Upload'));
+
+        // Confirm modal appeared with unexpected response string
+        expect(app.queryByText('Unexpected response from backend')).not.toBeNull();
+        // Confirm file input was cleared
+        expect(fileInput.files.length).toBe(0);
     });
 
     it('opens modal when openPhotoModal called', async () => {
