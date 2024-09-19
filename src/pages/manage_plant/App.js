@@ -156,6 +156,10 @@ function App() {
         // Get toggle theme option from context
         const { ToggleThemeOption } = useTheme();
 
+        const overview = () => {
+            window.location.href = "/";
+        };
+
         // Options shown when plant is not in group
         const AddGroup = () => {
             return (
@@ -179,27 +183,44 @@ function App() {
             );
         };
 
-        return (
-            <>
-                <li><a onClick={() => window.location.href = "/"}>
-                    Overview
-                </a></li>
-                {plant.group ? <RemoveGroup /> : <AddGroup />}
-                <li><a onClick={openRepotModal}>
-                    Repot plant
-                </a></li>
-                <li><a onClick={openPhotoModal}>
-                    Upload photos
-                </a></li>
-                <li><a onClick={openDefaultPhotoModal}>
-                    Set default photo
-                </a></li>
-                <li><a onClick={openChangeQrModal}>
-                    Change QR code
-                </a></li>
-                <ToggleThemeOption />
-            </>
-        );
+        switch(plant.archived) {
+            case(true): {
+                return (
+                    <>
+                        <li><a onClick={overview}>
+                            Overview
+                        </a></li>
+                        <li><a onClick={openDefaultPhotoModal}>
+                            Set default photo
+                        </a></li>
+                        <ToggleThemeOption />
+                    </>
+                );
+            }
+            case(false): {
+                return (
+                    <>
+                        <li><a onClick={overview}>
+                            Overview
+                        </a></li>
+                        {plant.group ? <RemoveGroup /> : <AddGroup />}
+                        <li><a onClick={openRepotModal}>
+                            Repot plant
+                        </a></li>
+                        <li><a onClick={openPhotoModal}>
+                            Upload photos
+                        </a></li>
+                        <li><a onClick={openDefaultPhotoModal}>
+                            Set default photo
+                        </a></li>
+                        <li><a onClick={openChangeQrModal}>
+                            Change QR code
+                        </a></li>
+                        <ToggleThemeOption />
+                    </>
+                );
+            }
+        }
     };
 
     // Contents of dropdown shown when name plant clicked in header
@@ -258,95 +279,129 @@ function App() {
         );
     };
 
-    return (
-        <div className="container flex flex-col mx-auto mb-8">
-            <Navbar
-                menuOptions={
-                    <DropdownOptions />
-                }
-                title={plant.display_name}
-                titleOptions={
-                    <DetailsDropdown />
-                }
-            />
+    switch(plant.archived) {
+        case(true): {
+            return (
+                <div className="container flex flex-col mx-auto mb-8">
+                    <Navbar
+                        menuOptions={
+                            <DropdownOptions />
+                        }
+                        title={plant.display_name}
+                        titleOptions={
+                            <DetailsDropdown />
+                        }
+                    />
 
-            <div className="flex flex-col text-center">
-                <span className="text-lg">
-                    <LastEventTime
-                        text="watered"
-                        timestamp={plant.events.water[0]}
+                    <div className="text-center text-xl">
+                        Plant Archived
+                    </div>
+
+                    <div className="mx-auto my-8">
+                        <EventCalendar events={plant.events} />
+                    </div>
+
+                    <Timeline
+                        plantID={plant.uuid}
+                        events={plant.events}
+                        archived={plant.archived}
                     />
-                </span>
-                <span className="text-lg">
-                    <LastEventTime
-                        text="fertilized"
-                        timestamp={plant.events.fertilize[0]}
-                    />
-                </span>
-                <DatetimeInput inputRef={eventTimeInput} />
-                <div className="flex mx-auto">
-                    <button
-                        className="btn btn-info m-2"
-                        onClick={() => addEvent('water')}
-                    >
-                        Water
-                    </button>
-                    <button
-                        className="btn btn-success m-2"
-                        onClick={() => addEvent('fertilize')}
-                    >
-                        Fertilize
-                    </button>
-                    <button
-                        className="btn btn-prune m-2"
-                        onClick={() => addEvent('prune')}
-                    >
-                        Prune
-                    </button>
                 </div>
-            </div>
+            );
+        }
+        case(false): {
+            return (
+                <div className="container flex flex-col mx-auto mb-8">
+                    <Navbar
+                        menuOptions={
+                            <DropdownOptions />
+                        }
+                        title={plant.display_name}
+                        titleOptions={
+                            <DetailsDropdown />
+                        }
+                    />
 
-            <div className="mx-auto my-8">
-                <EventCalendar events={plant.events} />
-            </div>
+                    <div className="flex flex-col text-center">
+                        <span className="text-lg">
+                            <LastEventTime
+                                text="watered"
+                                timestamp={plant.events.water[0]}
+                            />
+                        </span>
+                        <span className="text-lg">
+                            <LastEventTime
+                                text="fertilized"
+                                timestamp={plant.events.fertilize[0]}
+                            />
+                        </span>
+                        <DatetimeInput inputRef={eventTimeInput} />
+                        <div className="flex mx-auto">
+                            <button
+                                className="btn btn-info m-2"
+                                onClick={() => addEvent('water')}
+                            >
+                                Water
+                            </button>
+                            <button
+                                className="btn btn-success m-2"
+                                onClick={() => addEvent('fertilize')}
+                            >
+                                Fertilize
+                            </button>
+                            <button
+                                className="btn btn-prune m-2"
+                                onClick={() => addEvent('prune')}
+                            >
+                                Prune
+                            </button>
+                        </div>
+                    </div>
 
-            <Timeline
-                plantID={plant.uuid}
-                events={plant.events}
-            />
+                    <div className="mx-auto my-8">
+                        <EventCalendar events={plant.events} />
+                    </div>
 
-            <EditModal title="Edit Details" onSubmit={submitEditModal}>
-                <PlantDetailsForm
-                    formRef={editDetailsRef}
-                    name={plant.name}
-                    species={plant.species}
-                    pot_size={plant.pot_size}
-                    description={plant.description}
-                />
-            </EditModal>
+                    <Timeline
+                        plantID={plant.uuid}
+                        events={plant.events}
+                        archived={plant.archived}
+                    />
 
-            <GroupModal
-                plantID={plant.uuid}
-                groupOptions={groupOptions}
-                handleAddGroup={handleAddGroup}
-            />
+                    <EditModal title="Edit Details" onSubmit={submitEditModal}>
+                        <PlantDetailsForm
+                            formRef={editDetailsRef}
+                            name={plant.name}
+                            species={plant.species}
+                            pot_size={plant.pot_size}
+                            description={plant.description}
+                        />
+                    </EditModal>
 
-            <RepotModal
-                plantID={plant.uuid}
-                currentPotSize={plant.pot_size}
-                handleRepot={handleRepot}
-            />
+                    <GroupModal
+                        plantID={plant.uuid}
+                        groupOptions={groupOptions}
+                        handleAddGroup={handleAddGroup}
+                    />
 
-            <EventHistoryModal
-                plant={plant}
-                setPlant={setPlant}
-            />
+                    <RepotModal
+                        plantID={plant.uuid}
+                        currentPotSize={plant.pot_size}
+                        handleRepot={handleRepot}
+                    />
 
-            <ChangeQrModal
-                uuid={plant.uuid}
-            />
-        </div>
-    );
+                    <EventHistoryModal
+                        plant={plant}
+                        setPlant={setPlant}
+                    />
+
+                    <ChangeQrModal
+                        uuid={plant.uuid}
+                    />
+                </div>
+            );
+        }
+    }
 }
 
 export default App;

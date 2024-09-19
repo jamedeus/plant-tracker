@@ -148,6 +148,7 @@ class OverviewTests(TestCase):
                 {
                     'uuid': str(plant1.uuid),
                     'created': plant1.created.isoformat(),
+                    'archived': False,
                     'name': 'Test plant',
                     'display_name': 'Test plant',
                     'species': None,
@@ -160,6 +161,7 @@ class OverviewTests(TestCase):
                 {
                     'uuid': str(plant2.uuid),
                     'created': plant2.created.isoformat(),
+                    'archived': False,
                     'name': None,
                     'display_name': 'Unnamed fittonia',
                     'species': 'fittonia',
@@ -177,6 +179,7 @@ class OverviewTests(TestCase):
                 {
                     'uuid': str(group.uuid),
                     'created': group.created.isoformat(),
+                    'archived': False,
                     'name': None,
                     'display_name': 'Unnamed group 1',
                     'location': None,
@@ -466,6 +469,7 @@ class ManagePageTests(TestCase):
             {
                 'uuid': str(self.plant1.uuid),
                 'created': self.plant1.created.isoformat(),
+                'archived': False,
                 'name': None,
                 'display_name': 'Unnamed plant 1',
                 'species': None,
@@ -502,6 +506,7 @@ class ManagePageTests(TestCase):
                     'display_name': 'Unnamed group 1',
                     'uuid': str(self.group1.uuid),
                     'created': self.group1.created.isoformat(),
+                    'archived': False,
                     'location': None,
                     'description': None,
                     'plants': 0
@@ -647,6 +652,7 @@ class ManagePageTests(TestCase):
                 'plant': {
                     'uuid': str(self.plant1.uuid),
                     'created': self.plant1.created.isoformat(),
+                    'archived': False,
                     'name': None,
                     'display_name': 'Unnamed plant 1',
                     'species': None,
@@ -671,6 +677,7 @@ class ManagePageTests(TestCase):
                         'display_name': 'Unnamed group 1',
                         'uuid': str(self.group1.uuid),
                         'created': self.group1.created.isoformat(),
+                        'archived': False,
                         'location': None,
                         'description': None,
                         'plants': 0
@@ -713,6 +720,7 @@ class ManagePageTests(TestCase):
                 'uuid': str(self.group1.uuid),
                 'name': self.group1.name,
                 'created': self.group1.created.isoformat(),
+                'archived': False,
                 'location': None,
                 'description': None,
                 'display_name': 'Unnamed group 1',
@@ -732,6 +740,7 @@ class ManagePageTests(TestCase):
                     'display_name': self.plant1.get_display_name(),
                     'uuid': str(self.plant1.uuid),
                     'created': self.plant1.created.isoformat(),
+                    'archived': False,
                     'species': None,
                     'pot_size': None,
                     'description': None,
@@ -744,6 +753,7 @@ class ManagePageTests(TestCase):
                     'display_name': self.plant2.get_display_name(),
                     'uuid': str(self.plant2.uuid),
                     'created': self.plant2.created.isoformat(),
+                    'archived': False,
                     'species': None,
                     'pot_size': None,
                     'description': None,
@@ -775,6 +785,7 @@ class ManagePageTests(TestCase):
                 'display_name': 'Unnamed plant 1',
                 'uuid': str(self.plant1.uuid),
                 'created': self.plant1.created.isoformat(),
+                'archived': False,
                 'species': None,
                 'thumbnail': None,
                 'description': None,
@@ -797,6 +808,7 @@ class ManagePageTests(TestCase):
                     'uuid': str(self.group1.uuid),
                     'name': self.group1.name,
                     'created': self.group1.created.isoformat(),
+                    'archived': False,
                     'location': None,
                     'description': None,
                     'display_name': 'Unnamed group 1',
@@ -809,6 +821,7 @@ class ManagePageTests(TestCase):
                         'display_name': self.plant1.get_display_name(),
                         'uuid': str(self.plant1.uuid),
                         'created': self.plant1.created.isoformat(),
+                        'archived': False,
                         'species': None,
                         'pot_size': None,
                         'description': None,
@@ -821,6 +834,7 @@ class ManagePageTests(TestCase):
                         'display_name': self.plant2.get_display_name(),
                         'uuid': str(self.plant2.uuid),
                         'created': self.plant2.created.isoformat(),
+                        'archived': False,
                         'species': None,
                         'pot_size': None,
                         'description': None,
@@ -1238,6 +1252,7 @@ class ChangeQrCodeTests(TestCase):
                 'plant': {
                     'uuid': str(self.plant1.uuid),
                     'created': self.plant1.created.isoformat(),
+                    'archived': False,
                     'name': None,
                     'display_name': 'Unnamed plant 1',
                     'species': None,
@@ -1276,6 +1291,7 @@ class ChangeQrCodeTests(TestCase):
                 'group': {
                     'uuid': str(self.group1.uuid),
                     'created': self.group1.created.isoformat(),
+                    'archived': False,
                     'name': None,
                     'display_name': 'Unnamed group 1',
                     'location': None,

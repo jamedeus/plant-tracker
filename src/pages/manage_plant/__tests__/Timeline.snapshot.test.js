@@ -5,18 +5,37 @@ import { ErrorModalProvider } from 'src/context/ErrorModalContext';
 import { mockContext, mockEvents, mockPhotoUrls } from './mockContext';
 
 describe('Timeline', () => {
-    it('matches snapshot', () => {
+    beforeAll(() => {
         // Create mock state object
         createMockContext('notes', mockContext.notes);
         createMockContext('photo_urls', mockPhotoUrls);
+    });
 
-        // Render Timeline, confirm matches snapshot
+    it('matches snapshot when plant is not archived', () => {
+        // Render Timeline with archived=false, confirm matches snapshot
         const component = render(
             <ErrorModalProvider>
                 <ToastProvider>
                     <Timeline
                         plantID={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"}
                         events={mockEvents}
+                        archived={false}
+                    />
+                </ToastProvider>
+            </ErrorModalProvider>
+        );
+        expect(component).toMatchSnapshot();
+    });
+
+    it('matches snapshot when plant is archived', () => {
+        // Render Timeline with archived=true, confirm matches snapshot
+        const component = render(
+            <ErrorModalProvider>
+                <ToastProvider>
+                    <Timeline
+                        plantID={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"}
+                        events={mockEvents}
+                        archived={true}
                     />
                 </ToastProvider>
             </ErrorModalProvider>

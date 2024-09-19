@@ -23,7 +23,7 @@ import {
     faPenToSquare
 } from '@fortawesome/free-solid-svg-icons';
 
-const Timeline = ({ plantID, events }) => {
+const Timeline = ({ plantID, events, archived }) => {
     // Load context set by django template
     const [notes, setNotes] = useState(() => {
         return parseDomContext("notes");
@@ -267,12 +267,16 @@ const Timeline = ({ plantID, events }) => {
 
         const timestamp = timestampToReadable(note.timestamp);
 
+        const editNote = () => {
+            noteModalRef.current.open(note);
+        };
+
         return (
             <div className="m-2 flex flex-row">
                 <FontAwesomeIcon
                     icon={faPenToSquare}
-                    className="w-4 h-4 mr-2 mt-1 cursor-pointer"
-                    onClick={() => noteModalRef.current.open(note)}
+                    className={`w-4 h-4 mr-2 mt-1 ${archived ? null : 'cursor-pointer'}`}
+                    onClick={archived ? null : editNote}
                 />
                 <div
                     className={`cursor-pointer ${expanded ? '' : `line-clamp-1`}`}
@@ -284,7 +288,7 @@ const Timeline = ({ plantID, events }) => {
                     >
                         {note.text}
                     </span>
-                    <span className={'text-xs'}>
+                    <span className='text-xs'>
                         {timestamp.split('-')[0].trim()}
                     </span>
                 </div>
@@ -360,6 +364,29 @@ const Timeline = ({ plantID, events }) => {
             );
         };
 
+        const MenuOptions = () => {
+            return (
+                <ul
+                    tabIndex={0}
+                    className={`dropdown-content z-[1] menu p-2 shadow
+                                bg-base-300 rounded-box w-40`}
+                >
+                    <li className="ml-auto"><a onClick={() => noteModalRef.current.open()}>
+                        Add note
+                    </a></li>
+                    <li className="ml-auto"><a onClick={openPhotoModal}>
+                        Add photos
+                    </a></li>
+                    <li className="ml-auto"><a onClick={openDeletePhotosModal}>
+                        Delete photos
+                    </a></li>
+                    <li className="ml-auto"><a onClick={openEventHistoryModal}>
+                        Delete events
+                    </a></li>
+                </ul>
+            );
+        };
+
         return (
             <div className="navbar bg-base-200 rounded-2xl">
                 <div className="navbar-start w-auto invisible">
@@ -385,26 +412,11 @@ const Timeline = ({ plantID, events }) => {
                 </div>
 
                 <div className="navbar-end w-auto">
-                    <div className="dropdown dropdown-end">
+                    <div className={`dropdown dropdown-end ${archived ? 'invisible': ''}`}>
                         <MenuButton />
-                        <ul
-                            tabIndex={0}
-                            className={`dropdown-content z-[1] menu p-2 shadow
-                                        bg-base-300 rounded-box w-40`}
-                        >
-                            <li className="ml-auto"><a onClick={() => noteModalRef.current.open()}>
-                                Add note
-                            </a></li>
-                            <li className="ml-auto"><a onClick={openPhotoModal}>
-                                Add photos
-                            </a></li>
-                            <li className="ml-auto"><a onClick={openDeletePhotosModal}>
-                                Delete photos
-                            </a></li>
-                            <li className="ml-auto"><a onClick={openEventHistoryModal}>
-                                Delete events
-                            </a></li>
-                        </ul>
+                        {archived ? null : (
+                            <MenuOptions />
+                        )}
                     </div>
                 </div>
             </div>
@@ -541,7 +553,8 @@ const Timeline = ({ plantID, events }) => {
 
 Timeline.propTypes = {
     plantID: PropTypes.string.isRequired,
-    events: PropTypes.object.isRequired
+    events: PropTypes.object.isRequired,
+    archived: PropTypes.bool.isRequired
 };
 
 export default Timeline;
