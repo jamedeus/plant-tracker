@@ -3,7 +3,9 @@
 from io import BytesIO
 from datetime import datetime, timezone
 
+import piexif
 from PIL import Image, ImageOps
+from pillow_heif import register_heif_opener
 from django.db import models
 from django.conf import settings
 from django.core.cache import cache
@@ -17,6 +19,9 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 # Timestamp format used to print DateTimeFields, parse exif into datetime, etc.
 TIME_FORMAT = '%Y:%m:%d %H:%M:%S'
+
+# HEIC image support
+register_heif_opener()
 
 
 def get_unnamed_plants():
@@ -433,13 +438,18 @@ class Photo(models.Model):
 
         # Copy exif timestamp to created field when saved for the first time
         if not self.pk:
-            # Read exif data
-            exif_data = Image.open(self.photo)._getexif()  # pylint: disable=W0212
+            # Read raw exif data
+            exif_raw = Image.open(self.photo).info.get('exif')
 
-            if exif_data:
+            if exif_raw:
+                exif_data = piexif.load(exif_raw)
                 # Parse Date/Time Original and Offset Time Original parameters
-                datetime_original = exif_data.get(36867)
-                offset_original = exif_data.get(36881)
+                datetime_original = exif_data['Exif'].get(36867)
+                if datetime_original:
+                    datetime_original = datetime_original.decode()
+                offset_original = exif_data['Exif'].get(36881)
+                if offset_original:
+                    offset_original = offset_original.decode()
 
                 # If both found parse as original timezone + convert to UTC
                 if datetime_original and offset_original:

@@ -12,6 +12,7 @@ piexif = "*"
 celery = "*"
 redis = "*"
 django-redis = "*"
+pillow-heif = "*"
 
 [dev-packages]
 ipython = "*"
