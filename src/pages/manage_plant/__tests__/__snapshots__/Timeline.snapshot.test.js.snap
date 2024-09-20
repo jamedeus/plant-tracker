@@ -2935,11 +2935,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
               class="flex flex-col"
             >
               <div
-                class="min-h-36 flex flex-col justify-center mt-2"
+                class="min-h-36 flex flex-col justify-center mx-auto mt-2"
               >
                 <input
                   accept="image/*"
-                  class="file-input file-input-bordered w-full max-w-xs mx-auto"
+                  class="file-input file-input-bordered w-full max-w-xs"
                   data-testid="photo-input"
                   multiple=""
                   type="file"
@@ -8446,11 +8446,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="flex flex-col"
           >
             <div
-              class="min-h-36 flex flex-col justify-center mt-2"
+              class="min-h-36 flex flex-col justify-center mx-auto mt-2"
             >
               <input
                 accept="image/*"
-                class="file-input file-input-bordered w-full max-w-xs mx-auto"
+                class="file-input file-input-bordered w-full max-w-xs"
                 data-testid="photo-input"
                 multiple=""
                 type="file"
@@ -14058,11 +14058,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
               class="flex flex-col"
             >
               <div
-                class="min-h-36 flex flex-col justify-center mt-2"
+                class="min-h-36 flex flex-col justify-center mx-auto mt-2"
               >
                 <input
                   accept="image/*"
-                  class="file-input file-input-bordered w-full max-w-xs mx-auto"
+                  class="file-input file-input-bordered w-full max-w-xs"
                   data-testid="photo-input"
                   multiple=""
                   type="file"
@@ -19603,11 +19603,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="flex flex-col"
           >
             <div
-              class="min-h-36 flex flex-col justify-center mt-2"
+              class="min-h-36 flex flex-col justify-center mx-auto mt-2"
             >
               <input
                 accept="image/*"
-                class="file-input file-input-bordered w-full max-w-xs mx-auto"
+                class="file-input file-input-bordered w-full max-w-xs"
                 data-testid="photo-input"
                 multiple=""
                 type="file"
