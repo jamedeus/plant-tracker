@@ -266,7 +266,7 @@ const Timeline = ({ plantID, events, archived }) => {
     const NoteCollapse = ({ note }) => {
         const [expanded, setExpanded] = useState(false);
 
-        const timestamp = timestampToReadable(note.timestamp);
+        const readableTimestamp = timestampToReadable(note.timestamp);
 
         const editNote = () => {
             noteModalRef.current.open(note);
@@ -281,7 +281,7 @@ const Timeline = ({ plantID, events, archived }) => {
                 />
                 <div
                     className={`cursor-pointer ${expanded ? '' : `line-clamp-1`}`}
-                    title={timestamp}
+                    title={readableTimestamp}
                     onClick={() => setExpanded(!expanded)}
                 >
                     <span
@@ -290,7 +290,7 @@ const Timeline = ({ plantID, events, archived }) => {
                         {note.text}
                     </span>
                     <span className='text-xs'>
-                        {timestamp.split('-')[0].trim()}
+                        {readableTimestamp.split('-')[0].trim()}
                     </span>
                 </div>
             </div>

@@ -133,7 +133,7 @@ describe('PhotoModal', () => {
             status: 200,
             json: () => Promise.resolve({
                 "uploaded": "0 photo(s)",
-                    "failed": [
+                "failed": [
                     "photo1.heic",
                     "photo2.heic"
                 ],
