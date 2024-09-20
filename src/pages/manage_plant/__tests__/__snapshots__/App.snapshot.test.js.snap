@@ -81,21 +81,6 @@ exports[`App matches snapshot 1`] = `
                 </li>
                 <li>
                   <a>
-                    Remove from group
-                  </a>
-                </li>
-                <li>
-                  <a>
-                    Repot plant
-                  </a>
-                </li>
-                <li>
-                  <a>
-                    Upload photos
-                  </a>
-                </li>
-                <li>
-                  <a>
                     Set default photo
                   </a>
                 </li>
@@ -1230,6 +1215,13 @@ exports[`App matches snapshot 1`] = `
                   >
                     <a>
                       Add photos
+                    </a>
+                  </li>
+                  <li
+                    class="ml-auto"
+                  >
+                    <a>
+                      Repot plant
                     </a>
                   </li>
                   <li
@@ -3329,21 +3321,6 @@ exports[`App matches snapshot 1`] = `
               </li>
               <li>
                 <a>
-                  Remove from group
-                </a>
-              </li>
-              <li>
-                <a>
-                  Repot plant
-                </a>
-              </li>
-              <li>
-                <a>
-                  Upload photos
-                </a>
-              </li>
-              <li>
-                <a>
                   Set default photo
                 </a>
               </li>
@@ -4478,6 +4455,13 @@ exports[`App matches snapshot 1`] = `
                 >
                   <a>
                     Add photos
+                  </a>
+                </li>
+                <li
+                  class="ml-auto"
+                >
+                  <a>
+                    Repot plant
                   </a>
                 </li>
                 <li

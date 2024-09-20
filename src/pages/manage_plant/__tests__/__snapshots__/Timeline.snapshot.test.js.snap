@@ -11319,6 +11319,13 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                   class="ml-auto"
                 >
                   <a>
+                    Repot plant
+                  </a>
+                </li>
+                <li
+                  class="ml-auto"
+                >
+                  <a>
                     Delete photos
                   </a>
                 </li>
@@ -16858,6 +16865,13 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
               >
                 <a>
                   Add photos
+                </a>
+              </li>
+              <li
+                class="ml-auto"
+              >
+                <a>
+                  Repot plant
                 </a>
               </li>
               <li

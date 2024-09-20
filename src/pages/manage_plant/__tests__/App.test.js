@@ -168,8 +168,8 @@ describe('App', () => {
             })
         }));
 
-        // Click "Remove from group" dropdown option
-        await user.click(app.getByText(/Remove from group/));
+        // Click "Remove from group" button in details dropdown
+        await user.click(app.getByTitle(/Remove plant from group/));
 
         // Confirm correct data posted to /remove_plant_from_group endpoint
         expect(global.fetch).toHaveBeenCalledWith('/remove_plant_from_group', {
@@ -182,11 +182,11 @@ describe('App', () => {
     });
 
     it('sends the correct payload when "Add to group" modal submitted', async () => {
-        // Click remove from group (re-renders with add to group option)
-        await user.click(app.getByText(/Remove from group/));
+        // Click remove from group button (re-renders with add to group option)
+        await user.click(app.getByTitle(/Remove plant from group/));
 
-        // Click "Add to group" dropdown option (open modal)
-        await user.click(app.getByText(/Add to group/));
+        // Click "Add to group" button in details dropdown
+        await user.click(app.getByTitle(/Add plant to group/));
 
         // Get reference to AddToGroupModal
         const addToGroupModal = app.getByText("Add plant to group").parentElement;

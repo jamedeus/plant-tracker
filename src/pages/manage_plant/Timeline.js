@@ -10,6 +10,7 @@ import {
 } from 'src/timestampUtils';
 import NoteModal from './NoteModal';
 import DefaultPhotoModal from './DefaultPhotoModal';
+import { openRepotModal } from './RepotModal';
 import PhotoModal, { openPhotoModal } from './PhotoModal';
 import DeletePhotosModal, { openDeletePhotosModal } from './DeletePhotosModal';
 import { openEventHistoryModal } from './EventHistoryModal';
@@ -376,6 +377,9 @@ const Timeline = ({ plantID, events, archived }) => {
                     </a></li>
                     <li className="ml-auto"><a onClick={openPhotoModal}>
                         Add photos
+                    </a></li>
+                    <li className="ml-auto"><a onClick={openRepotModal}>
+                        Repot plant
                     </a></li>
                     <li className="ml-auto"><a onClick={openDeletePhotosModal}>
                         Delete photos

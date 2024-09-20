@@ -12,9 +12,8 @@ import LastEventTime from 'src/components/LastEventTime';
 import PlantDetails from 'src/components/PlantDetails';
 import IconButton from 'src/components/IconButton';
 import EventCalendar from './EventCalendar';
-import { openPhotoModal } from './PhotoModal';
 import GroupModal, { openGroupModal } from './GroupModal';
-import RepotModal, { openRepotModal } from './RepotModal';
+import RepotModal from './RepotModal';
 import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
 import EventHistoryModal from './EventHistoryModal';
 import { openDefaultPhotoModal } from './DefaultPhotoModal';
@@ -160,26 +159,12 @@ function App() {
             window.location.href = "/";
         };
 
-        // Options shown when plant is not in group
-        const AddGroup = () => {
-            return (
-                <li><a onClick={openGroupModal}>
-                    Add to group
-                </a></li>
-            );
-        };
-
         // Options shown when plant is in group
-        const RemoveGroup = () => {
+        const Group = () => {
             return (
-                <>
-                    <li><a href={"/manage/" + plant.group.uuid}>
-                        Go to group
-                    </a></li>
-                    <li><a onClick={handleRemoveGroup}>
-                        Remove from group
-                    </a></li>
-                </>
+                <li><a href={"/manage/" + plant.group.uuid}>
+                    Go to group
+                </a></li>
             );
         };
 
@@ -203,13 +188,7 @@ function App() {
                         <li><a onClick={overview}>
                             Overview
                         </a></li>
-                        {plant.group ? <RemoveGroup /> : <AddGroup />}
-                        <li><a onClick={openRepotModal}>
-                            Repot plant
-                        </a></li>
-                        <li><a onClick={openPhotoModal}>
-                            Upload photos
-                        </a></li>
+                        {plant.group ? <Group /> : null}
                         <li><a onClick={openDefaultPhotoModal}>
                             Set default photo
                         </a></li>

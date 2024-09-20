@@ -82,8 +82,8 @@ describe('App', () => {
         // Confirm arbitrary error does not appear on page
         expect(app.queryByText(/failed to remove plant from group/)).toBeNull();
 
-        // Click "Remove from group" dropdown option
-        await user.click(app.getByText(/Remove from group/));
+        // Click "Remove from group" button in details dropdown
+        await user.click(app.getByTitle(/Remove plant from group/));
 
         // Confirm modal appeared with arbitrary error text
         expect(app.queryByText(/failed to remove plant from group/)).not.toBeNull();
