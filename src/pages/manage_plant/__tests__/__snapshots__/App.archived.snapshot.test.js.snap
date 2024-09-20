@@ -74,11 +74,6 @@ exports[`App matches snapshot 1`] = `
                 </li>
                 <li>
                   <a>
-                    Set default photo
-                  </a>
-                </li>
-                <li>
-                  <a>
                     Light mode
                   </a>
                 </li>
@@ -2362,11 +2357,6 @@ exports[`App matches snapshot 1`] = `
               <li>
                 <a>
                   Overview
-                </a>
-              </li>
-              <li>
-                <a>
-                  Set default photo
                 </a>
               </li>
               <li>

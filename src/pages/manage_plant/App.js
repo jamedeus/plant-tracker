@@ -155,11 +155,6 @@ function App() {
         // Get toggle theme option from context
         const { ToggleThemeOption } = useTheme();
 
-        const overview = () => {
-            window.location.href = "/";
-        };
-
-        // Options shown when plant is in group
         const Group = () => {
             return (
                 <li><a href={"/manage/" + plant.group.uuid}>
@@ -168,26 +163,13 @@ function App() {
             );
         };
 
-        switch(plant.archived) {
-            case(true): {
-                return (
+        return (
+            <>
+                <li><a onClick={() => window.location.href = "/"}>
+                    Overview
+                </a></li>
+                {plant.archived ? null : (
                     <>
-                        <li><a onClick={overview}>
-                            Overview
-                        </a></li>
-                        <li><a onClick={openDefaultPhotoModal}>
-                            Set default photo
-                        </a></li>
-                        <ToggleThemeOption />
-                    </>
-                );
-            }
-            case(false): {
-                return (
-                    <>
-                        <li><a onClick={overview}>
-                            Overview
-                        </a></li>
                         {plant.group ? <Group /> : null}
                         <li><a onClick={openDefaultPhotoModal}>
                             Set default photo
@@ -195,11 +177,11 @@ function App() {
                         <li><a onClick={openChangeQrModal}>
                             Change QR code
                         </a></li>
-                        <ToggleThemeOption />
                     </>
-                );
-            }
-        }
+                )}
+                <ToggleThemeOption />
+            </>
+        );
     };
 
     // Contents of dropdown shown when name plant clicked in header
