@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 # Node dependencies build stage
-FROM node:22-bookworm-slim as node_build
+FROM node:22-bookworm-slim AS node_build
 
 # Copy source and config files
 COPY src/ ./src/
@@ -18,7 +18,7 @@ RUN npm run build
 
 
 # Python dependencies build stage
-FROM python:3.10-slim-buster as py_build
+FROM python:3.10-slim-buster AS py_build
 
 COPY docker/requirements.txt .
 RUN pip install --no-cache-dir -r /requirements.txt
