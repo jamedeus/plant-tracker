@@ -7,7 +7,7 @@ import PlantDetails from 'src/components/PlantDetails';
 import { capitalize } from 'src/util';
 import { timestampToRelativeCalendar, timestampToReadable} from 'src/timestampUtils';
 
-const PlantCard = ({ display_name, uuid, species, description, pot_size, last_watered, thumbnail, linkPage=true }) => {
+const PlantCard = ({ display_name, uuid, species, description, pot_size, last_watered, thumbnail, linkPage=true, archived=false }) => {
     // Track details collapse open state
     const [open, setOpen] = useState(false);
 
@@ -101,7 +101,8 @@ const PlantCard = ({ display_name, uuid, species, description, pot_size, last_wa
             <div
                 className={
                     `card card-side bg-neutral text-neutral-content mx-auto
-                    relative ${open ? "rounded-b-none" : ""}`
+                    relative ${open ? "rounded-b-none" : ""}
+                    ${archived ? 'grayscale' : ''}`
                 }
             >
                 {thumbnail ? <Thumbnail /> : null}
