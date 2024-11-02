@@ -99,10 +99,11 @@ function App() {
     // Handler for "Water All" and "Fertilize All" buttons
     const addEventAll = async (eventType) => {
         const timestamp = localToUTC(addEventAllTimeInput.current.value);
-        // Post eventType, all plant UUIDs, and timestamp to backend endpoint
+        // Post eventType, UUIDs of all plants that aren't archived, and
+        // timestamp to backend endpoint
         await bulkAddPlantEvents(
             eventType,
-            plantDetails.map(plant => plant.uuid),
+            plantDetails.filter(plant => !plant.archived).map(plant => plant.uuid),
             timestamp
         );
     };

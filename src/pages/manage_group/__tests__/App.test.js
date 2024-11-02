@@ -67,7 +67,6 @@ describe('App', () => {
                 "action": "water",
                 "plants": [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                    "19f65fa0-1c75-4cba-b590-0c9b5b315fcc",
                     "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                 ],
                 "failed": []
@@ -84,7 +83,6 @@ describe('App', () => {
             body: JSON.stringify({
                 "plants": [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                    "19f65fa0-1c75-4cba-b590-0c9b5b315fcc",
                     "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                 ],
                 "event_type": "water",
@@ -102,7 +100,6 @@ describe('App', () => {
                 "action": "fertilize",
                 "plants": [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                    "19f65fa0-1c75-4cba-b590-0c9b5b315fcc",
                     "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                 ],
                 "failed": []
@@ -119,7 +116,6 @@ describe('App', () => {
             body: JSON.stringify({
                 "plants": [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                    "19f65fa0-1c75-4cba-b590-0c9b5b315fcc",
                     "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                 ],
                 "event_type": "fertilize",
