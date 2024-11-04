@@ -4,3 +4,4 @@ docs/_build/
 .env
 backend/plant_tracker/static/
 backend/data/
+node_modules/
