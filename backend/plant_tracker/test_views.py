@@ -379,7 +379,7 @@ class RegistrationTests(TestCase):
         self.assertEqual(len(Plant.objects.all()), 1)
         self.assertEqual(len(Group.objects.all()), 0)
 
-        # Confirm plant has corrrect params, confirm extra spaces were removed
+        # Confirm plant has correct params, confirm extra spaces were removed
         plant = Plant.objects.get(uuid=test_id)
         self.assertEqual(plant.name, 'test plant')
         self.assertEqual(plant.species, 'Giant Sequoia')
@@ -408,7 +408,7 @@ class RegistrationTests(TestCase):
         self.assertEqual(len(Group.objects.all()), 1)
         self.assertEqual(len(Plant.objects.all()), 0)
 
-        # Confirm group has corrrect params, confirm extra spaces were removed
+        # Confirm group has correct params, confirm extra spaces were removed
         group = Group.objects.get(uuid=test_id)
         self.assertEqual(group.name, 'test group')
         self.assertEqual(group.location, 'top shelf')
@@ -634,7 +634,7 @@ class ManagePageTests(TestCase):
         # Save species_options
         plant1_species_options = response.context['state']['species_options']
 
-        # Request mangage oage for second plant, confirm identical species_options
+        # Request manage oage for second plant, confirm identical species_options
         response = self.client.get(f'/manage/{self.plant2.uuid}')
         self.assertEqual(
             response.context['state']['species_options'],

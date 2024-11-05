@@ -83,7 +83,7 @@ describe('PlantCard with no water event', () => {
 
 
 describe('PlantCard last watered time display', () => {
-    // Helper function takes ISO timetamp, returns rendered component
+    // Helper function takes ISO timestamp, returns rendered component
     const renderWithTimestamp = (timestamp) => {
         return render(
             <PlantCard

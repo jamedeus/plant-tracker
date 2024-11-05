@@ -5,7 +5,7 @@ import pyqrcode
 from PIL import Image
 
 # Dimensions of 8.5 x 11 sheet of paper at 300 dpi
-# Height reduced 100px to accomodate timestamp added by browser
+# Height reduced 100px to accommodate timestamp added by browser
 page_width, page_height = 2400, 3200
 
 

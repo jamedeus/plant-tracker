@@ -101,7 +101,7 @@ describe('DeletePhotosModal', () => {
         await user.click(component.getAllByText(/Select/)[1]);
 
         // Simulate user clicking delete button
-        // First occurence of "Delete" is title, second is delete button,
+        // First occurrence of "Delete" is title, second is delete button,
         // third is "Confirm Delete" title, forth is confirm delete button
         await user.click(component.getAllByText(/Delete/)[1]);
         await user.click(component.getAllByText(/Delete/)[3]);
@@ -168,7 +168,7 @@ describe('DeletePhotosModal', () => {
         expect(component.queryByText(/failed to delete photos/)).toBeNull();
 
         // Simulate user deleting first photo in history
-        // First occurence of "Delete" is title, second is delete button,
+        // First occurrence of "Delete" is title, second is delete button,
         // third is "Confirm Delete" title, forth is confirm delete button
         await user.click(component.getAllByText(/Select/)[0]);
         await user.click(component.getAllByText(/Delete/)[1]);
