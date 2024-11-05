@@ -11,7 +11,8 @@ export const mockContext = {
             "pot_size": 4,
             "last_watered": "2024-02-26T02:44:12+00:00",
             "last_fertilized": "2024-02-26T02:44:12+00:00",
-            "thumbnail": "/media/thumbnails/photo_thumb.jpg"
+            "thumbnail": "/media/thumbnails/photo_thumb.jpg",
+            "archived": false
         }
     ],
     "groups": [
@@ -21,7 +22,8 @@ export const mockContext = {
             "name": "Test group",
             "display_name": "Test group",
             "location": "Middle shelf",
-            "plants": 4
+            "plants": 4,
+            "archived": false
         }
     ]
 };

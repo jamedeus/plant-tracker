@@ -61,7 +61,8 @@ export const mockContext = {
             "pot_size": null,
             "last_watered": null,
             "last_fertilized": null,
-            "thumbnail": null
+            "thumbnail": null,
+            "archived": false
         },
         {
             "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be16",
@@ -73,7 +74,8 @@ export const mockContext = {
             "pot_size": 4,
             "last_watered": null,
             "last_fertilized": null,
-            "thumbnail": "/media/thumbnails/photo2_thumb.jpg"
+            "thumbnail": "/media/thumbnails/photo2_thumb.jpg",
+            "archived": false
         },
         {
             "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be69",
@@ -85,7 +87,8 @@ export const mockContext = {
             "pot_size": null,
             "last_watered": null,
             "last_fertilized": null,
-            "thumbnail": "/media/thumbnails/photo3_thumb.jpg"
+            "thumbnail": "/media/thumbnails/photo3_thumb.jpg",
+            "archived": false
         },
         {
             "uuid": "19f65fa0-1c75-4cba-b590-0c9b5b315fcc",
@@ -97,7 +100,8 @@ export const mockContext = {
             "pot_size": null,
             "last_watered": null,
             "last_fertilized": "2024-03-01T05:45:44+00:00",
-            "thumbnail": null
+            "thumbnail": null,
+            "archived": false
         }
     ]
 };

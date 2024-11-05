@@ -46,7 +46,8 @@ export const mockContext = {
             "created": "2023-12-26T01:25:12+00:00",
             "location": "Top shelf",
             "description": "Medium brightness grow light",
-            "plants": 3
+            "plants": 3,
+            "archived": false
         },
         {
             "name": "Testing",
@@ -55,7 +56,8 @@ export const mockContext = {
             "created": "2023-12-26T01:25:12+00:00",
             "location": "Middle shelf",
             "description": "Brightest grow light",
-            "plants": 5
+            "plants": 5,
+            "archived": false
         }
     ],
     "species_options": [
@@ -117,7 +119,8 @@ export const mockContextNoEvents = {
             "created": "2023-12-26T01:25:12+00:00",
             "location": "Top shelf",
             "description": "Medium brightness grow light",
-            "plants": 3
+            "plants": 3,
+            "archived": false
         },
         {
             "name": "Testing",
@@ -126,7 +129,8 @@ export const mockContextNoEvents = {
             "created": "2023-12-26T01:25:12+00:00",
             "location": "Middle shelf",
             "description": "Brightest grow light",
-            "plants": 5
+            "plants": 5,
+            "archived": false
         }
     ],
     "species_options": [
