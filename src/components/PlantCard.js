@@ -24,7 +24,7 @@ const PlantCard = ({ display_name, uuid, species, description, pot_size, last_wa
         return (
             <div className={
                 `collapse bg-neutral rounded-t-none cursor-default
-                ${open ? "pt-4" : ""}`
+                ${open ? "pt-4" : ""} ${archived ? 'grayscale' : ''}`
             }>
                 <input
                     type="checkbox"

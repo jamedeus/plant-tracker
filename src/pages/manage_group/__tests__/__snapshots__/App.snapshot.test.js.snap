@@ -362,7 +362,7 @@ exports[`App matches snapshot 1`] = `
                 </div>
                 <div
                   class="collapse bg-neutral rounded-t-none cursor-default
-                "
+                 "
                 >
                   <input
                     class="hidden"
@@ -490,7 +490,7 @@ exports[`App matches snapshot 1`] = `
                 </div>
                 <div
                   class="collapse bg-neutral rounded-t-none cursor-default
-                "
+                 grayscale"
                 >
                   <input
                     class="hidden"
@@ -590,7 +590,7 @@ exports[`App matches snapshot 1`] = `
                 </div>
                 <div
                   class="collapse bg-neutral rounded-t-none cursor-default
-                "
+                 "
                 >
                   <input
                     class="hidden"
@@ -870,7 +870,7 @@ exports[`App matches snapshot 1`] = `
                     </div>
                     <div
                       class="collapse bg-neutral rounded-t-none cursor-default
-                "
+                 "
                     >
                       <input
                         class="hidden"
@@ -988,7 +988,7 @@ exports[`App matches snapshot 1`] = `
                     </div>
                     <div
                       class="collapse bg-neutral rounded-t-none cursor-default
-                "
+                 "
                     >
                       <input
                         class="hidden"
@@ -1144,7 +1144,7 @@ exports[`App matches snapshot 1`] = `
                     </div>
                     <div
                       class="collapse bg-neutral rounded-t-none cursor-default
-                "
+                 "
                     >
                       <input
                         class="hidden"
@@ -1283,7 +1283,7 @@ exports[`App matches snapshot 1`] = `
                     </div>
                     <div
                       class="collapse bg-neutral rounded-t-none cursor-default
-                "
+                 grayscale"
                     >
                       <input
                         class="hidden"
@@ -1394,7 +1394,7 @@ exports[`App matches snapshot 1`] = `
                     </div>
                     <div
                       class="collapse bg-neutral rounded-t-none cursor-default
-                "
+                 "
                     >
                       <input
                         class="hidden"
@@ -1931,7 +1931,7 @@ exports[`App matches snapshot 1`] = `
               </div>
               <div
                 class="collapse bg-neutral rounded-t-none cursor-default
-                "
+                 "
               >
                 <input
                   class="hidden"
@@ -2059,7 +2059,7 @@ exports[`App matches snapshot 1`] = `
               </div>
               <div
                 class="collapse bg-neutral rounded-t-none cursor-default
-                "
+                 grayscale"
               >
                 <input
                   class="hidden"
@@ -2159,7 +2159,7 @@ exports[`App matches snapshot 1`] = `
               </div>
               <div
                 class="collapse bg-neutral rounded-t-none cursor-default
-                "
+                 "
               >
                 <input
                   class="hidden"
@@ -2439,7 +2439,7 @@ exports[`App matches snapshot 1`] = `
                   </div>
                   <div
                     class="collapse bg-neutral rounded-t-none cursor-default
-                "
+                 "
                   >
                     <input
                       class="hidden"
@@ -2557,7 +2557,7 @@ exports[`App matches snapshot 1`] = `
                   </div>
                   <div
                     class="collapse bg-neutral rounded-t-none cursor-default
-                "
+                 "
                   >
                     <input
                       class="hidden"
@@ -2713,7 +2713,7 @@ exports[`App matches snapshot 1`] = `
                   </div>
                   <div
                     class="collapse bg-neutral rounded-t-none cursor-default
-                "
+                 "
                   >
                     <input
                       class="hidden"
@@ -2852,7 +2852,7 @@ exports[`App matches snapshot 1`] = `
                   </div>
                   <div
                     class="collapse bg-neutral rounded-t-none cursor-default
-                "
+                 grayscale"
                   >
                     <input
                       class="hidden"
@@ -2963,7 +2963,7 @@ exports[`App matches snapshot 1`] = `
                   </div>
                   <div
                     class="collapse bg-neutral rounded-t-none cursor-default
-                "
+                 "
                   >
                     <input
                       class="hidden"
