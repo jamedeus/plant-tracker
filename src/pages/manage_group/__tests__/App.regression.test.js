@@ -1,6 +1,7 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import { mockContext } from './mockContext';
 import { localToUTC } from 'src/timestampUtils';
+import { postHeaders } from 'src/testUtils/headers';
 
 // Mock localToUTC so the return value can be set to an arbitrary string
 jest.mock('src/timestampUtils', () => {
@@ -116,6 +117,51 @@ describe('App', () => {
         await user.type(filterInput, 'photo_thumb');
         await waitFor(() => {
             expect(plantColumn.querySelectorAll('.card').length).toBe(0);
+        });
+    });
+
+    // Original bug: It was possible to create water/fertilize events for
+    // archived plants by selecting them with the FilterColumn radio buttons
+    it('does not create water or fertilize events for archived plants', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "action": "water",
+                "plants": [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+                ],
+                "failed": []
+            })
+        }));
+
+        // Set simulated datetime
+        simulateUserDatetimeInput('2024-03-01T20:00:00.000Z');
+
+        // Get reference to plants column
+        const plantsCol = app.getByText("Plants (3)").parentElement;
+
+        // Click Manage button under plants, select all plants, click water
+        await user.click(within(plantsCol).getByText("Manage"));
+        await user.click(app.container.querySelectorAll('.radio')[0]);
+        await user.click(app.container.querySelectorAll('.radio')[1]);
+        await user.click(app.container.querySelectorAll('.radio')[2]);
+        await user.click(within(plantsCol).getByText("Water"));
+
+        // Confirm payload only contains UUIDs of the first and third plants
+        // (the second plant is archived and can not be watered)
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plant_events', {
+            method: 'POST',
+            body: JSON.stringify({
+                "plants": [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+                ],
+                "event_type": "water",
+                "timestamp": "2024-03-01T20:00:00.000Z"
+            }),
+            headers: postHeaders
         });
     });
 });

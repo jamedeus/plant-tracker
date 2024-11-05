@@ -203,7 +203,7 @@ describe('App', () => {
             json: () => Promise.resolve({
                 "action": "fertilize",
                 "plants": [
-                    "19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
+                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                 ],
                 "failed": []
             })
@@ -212,18 +212,18 @@ describe('App', () => {
         // Get reference to plants column
         const plantsCol = app.getByText("Plants (3)").parentElement;
 
-        // Click Manage button under plants, select second plant, click fertilize
+        // Click Manage button under plants, select third plant, click fertilize
         await user.click(within(plantsCol).getByText("Manage"));
-        await user.click(app.container.querySelectorAll('.radio')[1]);
+        await user.click(app.container.querySelectorAll('.radio')[2]);
         await user.click(within(plantsCol).getByText("Fertilize"));
 
         // Confirm correct data posted to /bulk_add_plant_events endpoint
-        // Should only contain UUID of first plant
+        // Should only contain UUID of third plant
         expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plant_events', {
             method: 'POST',
             body: JSON.stringify({
                 "plants": [
-                    "19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
+                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                 ],
                 "event_type": "fertilize",
                 "timestamp": "2024-03-01T20:00:00.000Z"

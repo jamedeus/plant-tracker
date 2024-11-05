@@ -164,17 +164,28 @@ function App() {
     const PlantEventButtons = ({editing, setEditing}) => {
         const addEventTimeInput = useRef(null);
 
+        // Takes array of plant UUIDs, removes archived plants and returns
+        const removeArchivedPlants = (selected) => {
+            return selected.filter(uuid => !plantDetails.find(
+                plant => plant.uuid === uuid
+            ).archived);
+        };
+
         // Handler for water button (only used in this case scope)
         const water = async () => {
             const timestamp = localToUTC(addEventTimeInput.current.value);
-            await bulkAddPlantEvents('water', selectedPlants.current, timestamp);
+            // Prevent watering archived plants
+            const selected = removeArchivedPlants(selectedPlants.current)
+            await bulkAddPlantEvents('water', selected, timestamp);
             setEditing(false);
         };
 
         // Handler for fertilize button (only used in this case scope)
         const fertilize = async () => {
             const timestamp = localToUTC(addEventTimeInput.current.value);
-            await bulkAddPlantEvents('fertilize', selectedPlants.current, timestamp);
+            // Prevent fertilizing archived plants
+            const selected = removeArchivedPlants(selectedPlants.current)
+            await bulkAddPlantEvents('fertilize', selected, timestamp);
             setEditing(false);
         };
 
