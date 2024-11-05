@@ -175,7 +175,7 @@ function App() {
         const water = async () => {
             const timestamp = localToUTC(addEventTimeInput.current.value);
             // Prevent watering archived plants
-            const selected = removeArchivedPlants(selectedPlants.current)
+            const selected = removeArchivedPlants(selectedPlants.current);
             await bulkAddPlantEvents('water', selected, timestamp);
             setEditing(false);
         };
@@ -184,7 +184,7 @@ function App() {
         const fertilize = async () => {
             const timestamp = localToUTC(addEventTimeInput.current.value);
             // Prevent fertilizing archived plants
-            const selected = removeArchivedPlants(selectedPlants.current)
+            const selected = removeArchivedPlants(selectedPlants.current);
             await bulkAddPlantEvents('fertilize', selected, timestamp);
             setEditing(false);
         };

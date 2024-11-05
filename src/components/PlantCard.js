@@ -134,7 +134,8 @@ PlantCard.propTypes = {
     pot_size: PropTypes.number,
     last_watered: PropTypes.string,
     thumbnail: PropTypes.string,
-    linkPage: PropTypes.bool
+    linkPage: PropTypes.bool,
+    archived: PropTypes.bool
 };
 
 export default PlantCard;
