@@ -267,6 +267,12 @@ function App() {
                         events={plant.events}
                         archived={plant.archived}
                     />
+
+                    <GroupModal
+                        plantID={plant.uuid}
+                        groupOptions={groupOptions}
+                        handleAddGroup={handleAddGroup}
+                    />
                 </div>
             );
         }
