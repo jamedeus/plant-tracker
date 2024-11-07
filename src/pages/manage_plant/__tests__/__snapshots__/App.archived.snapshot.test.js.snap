@@ -2301,6 +2301,7 @@ exports[`App matches snapshot 1`] = `
                 >
                   <div
                     class="card bg-neutral text-neutral-content mx-auto w-full
+                    
                     "
                   >
                     <div
@@ -2340,7 +2341,7 @@ exports[`App matches snapshot 1`] = `
                   </div>
                   <div
                     class="collapse bg-neutral rounded-t-none cursor-default
-                "
+                 "
                   >
                     <input
                       class="hidden"
@@ -2389,6 +2390,7 @@ exports[`App matches snapshot 1`] = `
                 >
                   <div
                     class="card bg-neutral text-neutral-content mx-auto w-full
+                    
                     "
                   >
                     <div
@@ -2428,7 +2430,7 @@ exports[`App matches snapshot 1`] = `
                   </div>
                   <div
                     class="collapse bg-neutral rounded-t-none cursor-default
-                "
+                 "
                   >
                     <input
                       class="hidden"
@@ -4809,6 +4811,7 @@ exports[`App matches snapshot 1`] = `
               >
                 <div
                   class="card bg-neutral text-neutral-content mx-auto w-full
+                    
                     "
                 >
                   <div
@@ -4848,7 +4851,7 @@ exports[`App matches snapshot 1`] = `
                 </div>
                 <div
                   class="collapse bg-neutral rounded-t-none cursor-default
-                "
+                 "
                 >
                   <input
                     class="hidden"
@@ -4897,6 +4900,7 @@ exports[`App matches snapshot 1`] = `
               >
                 <div
                   class="card bg-neutral text-neutral-content mx-auto w-full
+                    
                     "
                 >
                   <div
@@ -4936,7 +4940,7 @@ exports[`App matches snapshot 1`] = `
                 </div>
                 <div
                   class="collapse bg-neutral rounded-t-none cursor-default
-                "
+                 "
                 >
                   <input
                     class="hidden"

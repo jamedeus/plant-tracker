@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/16/solid';
 import GroupDetails from 'src/components/GroupDetails';
 
-const GroupCard = ({ display_name, plants, uuid, location, description, linkPage=true }) => {
+const GroupCard = ({ display_name, plants, uuid, location, description, linkPage=true, archived=false }) => {
     // Track details collapse open state
     const [open, setOpen] = useState(false);
 
@@ -20,7 +20,7 @@ const GroupCard = ({ display_name, plants, uuid, location, description, linkPage
         return (
             <div className={
                 `collapse bg-neutral rounded-t-none cursor-default
-                ${open ? "pt-4" : ""}`
+                ${open ? "pt-4" : ""} ${archived ? 'grayscale' : ''}`
             }>
                 <input
                     type="checkbox"
@@ -46,7 +46,8 @@ const GroupCard = ({ display_name, plants, uuid, location, description, linkPage
             <div
                 className={
                     `card bg-neutral text-neutral-content mx-auto w-full
-                    ${open ? "rounded-b-none" : ""}`
+                    ${open ? "rounded-b-none" : ""}
+                    ${archived ? 'grayscale' : ''}`
                 }
             >
                 <div className="card-body text-center">
@@ -77,7 +78,8 @@ GroupCard.propTypes = {
     uuid: PropTypes.string.isRequired,
     location: PropTypes.string,
     description: PropTypes.string,
-    linkPage: PropTypes.bool
+    linkPage: PropTypes.bool,
+    archived: PropTypes.bool
 };
 
 export default GroupCard;
