@@ -108,6 +108,27 @@ def get_overview_page_state(request):
     )
 
 
+def archived_overview(request):
+    '''Renders overview page showing only archived plants and groups'''
+    state = {
+        'plants': [],
+        'groups': []
+    }
+
+    for plant in Plant.objects.filter(archived=True):
+        state['plants'].append(plant.get_details())
+
+    for group in Group.objects.filter(archived=True):
+        state['groups'].append(group.get_details())
+
+    return render_react_app(
+        request,
+        title='Archived',
+        bundle='archived',
+        state=state
+    )
+
+
 def manage(request, uuid):
     '''Renders the correct page when a QR code is scanned:
       - manage_plant: rendered if QR code UUID matches an existing Plant entry

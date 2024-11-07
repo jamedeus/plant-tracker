@@ -9,6 +9,7 @@ app_name = "api"
 # pylint: disable=line-too-long
 urlpatterns = [
     path('', views.overview, name='overview'),
+    path('archived', views.archived_overview, name='archived'),
     path('get_overview_state', views.get_overview_page_state, name='get_overview_state'),
     path('get_qr_codes', views.get_qr_codes, name='get_qr_codes'),
     path('register_plant', views.register_plant, name='register_plant'),

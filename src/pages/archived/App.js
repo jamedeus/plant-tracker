@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import Navbar from 'src/components/Navbar';
 import { useTheme } from 'src/context/ThemeContext';
 import GroupCard from 'src/components/GroupCard';
@@ -6,7 +6,6 @@ import PlantCard from 'src/components/PlantCard';
 import { sendPostRequest, parseDomContext } from 'src/util';
 import FilterColumn from 'src/components/FilterColumn';
 import FloatingFooter from 'src/components/FloatingFooter';
-import PrintModal from './PrintModal';
 
 function App() {
     // Load context set by django template
@@ -16,32 +15,6 @@ function App() {
     const [groups, setGroups] = useState(() => {
         return parseDomContext("groups");
     });
-
-    // Request new state from backend if user navigates to overview by pressing
-    // back button (last watered/details may be outdated if coming from manage)
-    useEffect(() => {
-        const handleBackButton = async (event) => {
-            if (event.persisted) {
-                const response = await fetch('/get_overview_state');
-                if (response.ok) {
-                    const data = await response.json();
-                    setPlants(data['plants']);
-                    setGroups(data['groups']);
-                } else {
-                    alert('Failed to fetch current state, page may be outdated');
-                }
-            }
-        };
-
-        // Add listener on mount, remove on unmount
-        window.addEventListener('pageshow', handleBackButton);
-        return () => {
-            window.removeEventListener('pageshow', handleBackButton);
-        };
-    }, []);
-
-    // Create ref for modal used to generate QR codes
-    const printModalRef = useRef(null);
 
     // Get toggle theme option from context
     const { ToggleThemeOption } = useTheme();
@@ -83,28 +56,6 @@ function App() {
         // Send delete request for each selected group, remove uuid from state
         selectedGroups.current.forEach(async group_id => {
             await sendPostRequest('/delete_group', {group_id: group_id});
-        });
-        setGroups(groups.filter(
-            group => !selectedGroups.current.includes(group.uuid))
-        );
-
-        // Reset editing state
-        setEditing(false);
-    };
-
-    // Handler for archive button that appears while editing
-    const handleArchive = () => {
-        // Send archive request for each selected plant, remove uuid from state
-        selectedPlants.current.forEach(async plant_id => {
-            await sendPostRequest('/archive_plant', {plant_id: plant_id});
-        });
-        setPlants(plants.filter(
-            plant => !selectedPlants.current.includes(plant.uuid))
-        );
-
-        // Send archive request for each selected group, remove uuid from state
-        selectedGroups.current.forEach(async group_id => {
-            await sendPostRequest('/archive_group', {group_id: group_id});
         });
         setGroups(groups.filter(
             group => !selectedGroups.current.includes(group.uuid))
@@ -264,16 +215,13 @@ function App() {
                         <li><a onClick={toggleEditing}>
                             Edit
                         </a></li>
-                        <li><a onClick={() => printModalRef.current.open()}>
-                            Print QR Codes
-                        </a></li>
                         <ToggleThemeOption />
-                        <li><a href={"/archived"}>
-                            Archived plants
+                        <li><a href={"/"}>
+                            Main overview
                         </a></li>
                     </>
                 }
-                title={"Plant Overview"}
+                title={"Archived"}
                 titleOptions={<QuickNavigation />}
             />
 
@@ -283,15 +231,13 @@ function App() {
                 <button className="btn btn-neutral mr-4" onClick={() => setEditing(false)}>
                     Cancel
                 </button>
-                <button className="btn mx-4" onClick={handleArchive}>
-                    Archive
+                <button className="btn mx-4" disabled={true}>
+                    Un-archive
                 </button>
                 <button className="btn btn-error ml-4" onClick={handleDelete}>
                     Delete
                 </button>
             </FloatingFooter>
-
-            <PrintModal ref={printModalRef} />
         </div>
     );
 }

@@ -67,6 +67,13 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
                     Light mode
                   </a>
                 </li>
+                <li>
+                  <a
+                    href="/archived"
+                  >
+                    Archived plants
+                  </a>
+                </li>
               </ul>
             </div>
           </div>
@@ -388,6 +395,13 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
               <li>
                 <a>
                   Light mode
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/archived"
+                >
+                  Archived plants
                 </a>
               </li>
             </ul>
