@@ -11,7 +11,7 @@ stages:
 # Run django unit tests
 test_backend:
   stage: test
-  image: python:3.10-bullseye
+  image: python:3.13-slim-bookworm
   tags:
     - nas
     - docker
@@ -46,7 +46,7 @@ test_frontend:
 # Update pylint badge
 pylint:
   stage: test
-  image: python:3.10-bullseye
+  image: python:3.13-slim-bookworm
   tags:
     - nas
     - docker
