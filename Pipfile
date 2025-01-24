@@ -4,24 +4,24 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pillow = "~=9.0"
 pyqrcode = "*"
 pypng = "*"
-django = "*"
 piexif = "*"
 celery = "*"
 redis = "*"
 django-redis = "*"
+pillow = "~=11.0"
 pillow-heif = "*"
+django = "*"
 
 [dev-packages]
-ipython = "*"
-pylint = "*"
 pylint-django = "*"
 sphinx = "*"
 pylint-exit = "*"
 anybadge = "*"
 coverage = "*"
+ipython = "*"
+pylint = "*"
 
 [requires]
 python_version = "3.10"

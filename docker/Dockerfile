@@ -20,8 +20,13 @@ RUN npm run build
 # Python dependencies build stage
 FROM python:3.10-slim-buster AS py_build
 
-COPY docker/requirements.txt .
-RUN pip install --no-cache-dir -r /requirements.txt
+COPY Pipfile .
+COPY Pipfile.lock .
+
+# Convert pipfile to requirements.txt, install
+RUN pip install pipenv
+RUN pipenv requirements > requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 
 # Final build stage
