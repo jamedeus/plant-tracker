@@ -72,9 +72,9 @@ build:
     - nas
     - shell
   script:
-    - 'export IMAGE_NAME="plant-tracker"'
-    - 'export LAST_TAG=$(docker images --format "{{.Repository}}:{{.Tag}}" | grep "^${IMAGE_NAME}:[0-9]*\.[0-9]*$" | sort --version-sort | tail -n 1 | cut -d\: -f 2)'
-    - "export NEW_TAG=$(echo $LAST_TAG | awk -F. '{$NF = $NF + 1;} 1' OFS=.)"
+    - 'IMAGE_NAME="plant-tracker"'
+    - 'LAST_TAG=$(docker images --format "{{.Repository}}:{{.Tag}}" | grep "^${IMAGE_NAME}:[0-9]*\.[0-9]*$" | sort --version-sort | tail -n 1 | cut -d\: -f 2)'
+    - "NEW_TAG=$(echo $LAST_TAG | awk -F. '{$NF = $NF + 1;} 1' OFS=.)"
     - 'docker build --platform linux/amd64 -t $IMAGE_NAME:$NEW_TAG . -f docker/Dockerfile'
   only:
     - master
@@ -86,8 +86,8 @@ deploy:
     - nas
     - shell
   script:
-    - 'export IMAGE_NAME="plant-tracker"'
-    - 'export LAST_TAG=$(docker images --format "{{.Repository}}:{{.Tag}}" | grep "^${IMAGE_NAME}:[0-9]*\.[0-9]*$" | sort --version-sort | tail -n 1 | cut -d\: -f 2)'
+    - 'IMAGE_NAME="plant-tracker"'
+    - 'LAST_TAG=$(docker images --format "{{.Repository}}:{{.Tag}}" | grep "^${IMAGE_NAME}:[0-9]*\.[0-9]*$" | sort --version-sort | tail -n 1 | cut -d\: -f 2)'
     - 'sed -i "s|$IMAGE_NAME:[0-9]*\.[0-9]*|$IMAGE_NAME:$LAST_TAG|g" /home/jamedeus/docker/docker-compose.yaml'
     - 'docker compose -f /home/jamedeus/docker/docker-compose.yaml up -d'
   only:

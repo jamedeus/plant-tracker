@@ -18,13 +18,13 @@ if [[ $DJANGO_SUPERUSER_USERNAME && $DJANGO_SUPERUSER_PASSWORD ]]; then
     printf "Creating superuser...\n"
     if [[ $DJANGO_SUPERUSER_EMAIL ]]; then
         python /mnt/backend/manage.py create_superuser \
-            --username $DJANGO_SUPERUSER_USERNAME \
-            --password $DJANGO_SUPERUSER_PASSWORD \
-            --email $DJANGO_SUPERUSER_EMAIL
+            --username "$DJANGO_SUPERUSER_USERNAME" \
+            --password "$DJANGO_SUPERUSER_PASSWORD" \
+            --email "$DJANGO_SUPERUSER_EMAIL"
     else
         python /mnt/backend/manage.py create_superuser \
-            --username $DJANGO_SUPERUSER_USERNAME \
-            --password $DJANGO_SUPERUSER_PASSWORD
+            --username "$DJANGO_SUPERUSER_USERNAME" \
+            --password "$DJANGO_SUPERUSER_PASSWORD"
     fi
 fi
 
