@@ -21,6 +21,11 @@
     @apply bg-base-300;
 }
 
+/* Disabled colors */
+.react-calendar__navigation button:disabled {
+    @apply bg-base-200 opacity-35;
+}
+
 /* Hide prev/next year buttons */
 .react-calendar__navigation__prev2-button {
     display: none;
