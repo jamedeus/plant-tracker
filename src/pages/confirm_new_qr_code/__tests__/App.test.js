@@ -12,7 +12,7 @@ describe('App', () => {
     beforeAll(() => {
         // Create mock state objects
         createMockContext('type', 'plant');
-        createMockContext('plant', mockContext.plant);
+        createMockContext('instance', mockContext.plant);
         createMockContext('new_uuid', mockContext.new_uuid);
     });
 

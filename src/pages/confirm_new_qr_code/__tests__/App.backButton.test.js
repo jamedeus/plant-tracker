@@ -9,7 +9,7 @@ describe('App', () => {
     it('does not stack pageshow listeners each time back button pressed', async () => {
         // Create mock state objects
         createMockContext('type', 'plant');
-        createMockContext('plant', mockContext.plant);
+        createMockContext('instance', mockContext.plant);
         createMockContext('new_uuid', mockContext.new_uuid);
 
         // Render app, confirm reload was not called

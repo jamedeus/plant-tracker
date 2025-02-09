@@ -12,7 +12,7 @@ import { faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
 function App() {
     // Load UUIDs and plant/group state from django template context
     const type = parseDomContext("type");
-    const instance = parseDomContext(type);
+    const instance = parseDomContext("instance");
     const newUuid = parseDomContext("new_uuid");
 
     // Reload if user navigates to page by pressing back button (change QR code

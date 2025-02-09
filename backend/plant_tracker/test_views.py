@@ -1250,7 +1250,7 @@ class ChangeQrCodeTests(TestCase):
             response.context['state'],
             {
                 'type': 'plant',
-                'plant': {
+                'instance': {
                     'uuid': str(self.plant1.uuid),
                     'created': self.plant1.created.isoformat(),
                     'archived': False,
@@ -1289,7 +1289,7 @@ class ChangeQrCodeTests(TestCase):
             response.context['state'],
             {
                 'type': 'group',
-                'group': {
+                'instance': {
                     'uuid': str(self.group1.uuid),
                     'created': self.group1.created.isoformat(),
                     'archived': False,

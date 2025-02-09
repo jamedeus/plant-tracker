@@ -238,19 +238,11 @@ def render_confirm_new_qr_code_page(request, uuid, old_uuid):
         cache.delete('old_uuid')
         return render_registration_page(request, uuid)
 
-    if isinstance(instance, Plant):
-        state = {
-            'type': 'plant',
-            'plant': instance.get_details(),
-            'new_uuid': uuid
-        }
-
-    if isinstance(instance, Group):
-        state = {
-            'type': 'group',
-            'group': instance.get_details(),
-            'new_uuid': uuid
-        }
+    state = {
+        'type': 'plant' if isinstance(instance, Plant) else 'group',
+        'instance': instance.get_details(),
+        'new_uuid': uuid
+    }
 
     return render_react_app(
         request,
