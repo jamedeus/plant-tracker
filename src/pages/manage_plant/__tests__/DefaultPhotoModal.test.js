@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import DefaultPhotoModal, { openDefaultPhotoModal } from '../DefaultPhotoModal';
 import { mockContext } from './mockContext';
-import { ErrorModalProvider } from 'src/context/ErrorModalContext';
+import { PageWrapper } from 'src/index';
 import { postHeaders } from 'src/testUtils/headers';
 
 const TestComponent = () => {
@@ -28,9 +28,9 @@ describe('DefaultPhotoModal', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
-            <ErrorModalProvider>
+            <PageWrapper>
                 <TestComponent />
-            </ErrorModalProvider>
+            </PageWrapper>
         );
     });
 

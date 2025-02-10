@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { fireEvent } from '@testing-library/react';
 import PhotoModal, { openPhotoModal } from '../PhotoModal';
-import { ErrorModalProvider } from 'src/context/ErrorModalContext';
+import { PageWrapper } from 'src/index';
 
 const TestComponent = () => {
     const photoModalRef = useRef(null);
@@ -29,9 +29,9 @@ describe('PhotoModal', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
-            <ErrorModalProvider>
+            <PageWrapper>
                 <TestComponent />
-            </ErrorModalProvider>
+            </PageWrapper>
         );
     });
 

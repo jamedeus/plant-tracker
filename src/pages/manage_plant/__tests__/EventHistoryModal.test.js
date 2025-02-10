@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { postHeaders } from 'src/testUtils/headers';
 import EventHistoryModal, { openEventHistoryModal } from '../EventHistoryModal';
-import { ErrorModalProvider } from 'src/context/ErrorModalContext';
+import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
 
 /* eslint react/prop-types: 0 */
@@ -41,9 +41,9 @@ describe('EventHistoryModal', () => {
         // Render component + create userEvent instance to use in tests
         user = userEvent.setup();
         component = render(
-            <ErrorModalProvider>
+            <PageWrapper>
                 <TestComponent context={context} />
-            </ErrorModalProvider>
+            </PageWrapper>
         );
     });
 

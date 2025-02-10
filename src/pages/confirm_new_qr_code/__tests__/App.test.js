@@ -1,8 +1,7 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
-import { ThemeProvider } from 'src/context/ThemeContext';
-import { ErrorModalProvider } from 'src/context/ErrorModalContext';
+import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
 
 describe('App', () => {
@@ -19,11 +18,9 @@ describe('App', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
-            <ThemeProvider>
-                <ErrorModalProvider>
-                    <App />
-                </ErrorModalProvider>
-            </ThemeProvider>
+            <PageWrapper>
+                <App />
+            </PageWrapper>
         );
     });
 

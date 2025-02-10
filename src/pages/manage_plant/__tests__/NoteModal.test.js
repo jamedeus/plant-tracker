@@ -2,7 +2,7 @@ import React, { useRef, useState } from 'react';
 import createMockContext from 'src/testUtils/createMockContext';
 import NoteModal from '../NoteModal';
 import { Toast } from 'src/components/Toast';
-import { ErrorModalProvider } from 'src/context/ErrorModalContext';
+import { PageWrapper } from 'src/index';
 import { postHeaders } from 'src/testUtils/headers';
 
 const TestComponent = () => {
@@ -42,10 +42,10 @@ describe('Add new note', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
-            <ErrorModalProvider>
+            <PageWrapper>
                 <TestComponent />
                 <Toast />
-            </ErrorModalProvider>
+            </PageWrapper>
         );
 
         // Open modal in new note mode
@@ -161,10 +161,10 @@ describe('Edit existing note', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
-            <ErrorModalProvider>
+            <PageWrapper>
                 <TestComponent />
                 <Toast />
-            </ErrorModalProvider>
+            </PageWrapper>
         );
 
         // Open modal in edit mode

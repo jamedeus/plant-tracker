@@ -1,4 +1,4 @@
 import App from './App';
-import PageWrapper from 'src/index';
+import RenderApp from 'src/index';
 
-PageWrapper({ App });
+RenderApp({ App });

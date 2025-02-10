@@ -1,7 +1,6 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import App from '../App';
-import { ThemeProvider } from 'src/context/ThemeContext';
-import { ErrorModalProvider } from 'src/context/ErrorModalContext';
+import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
 
 describe('App', () => {
@@ -18,11 +17,9 @@ describe('App', () => {
 
         // Render App, confirm matches snapshot
         const component = render(
-            <ThemeProvider>
-                <ErrorModalProvider>
-                    <App />
-                </ErrorModalProvider>
-            </ThemeProvider>
+            <PageWrapper>
+                <App />
+            </PageWrapper>
         );
         expect(component).toMatchSnapshot();
     });

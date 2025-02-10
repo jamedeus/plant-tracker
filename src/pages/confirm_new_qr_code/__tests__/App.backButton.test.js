@@ -1,7 +1,6 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import App from '../App';
-import { ThemeProvider } from 'src/context/ThemeContext';
-import { ErrorModalProvider } from 'src/context/ErrorModalContext';
+import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
 
 describe('App', () => {
@@ -13,11 +12,9 @@ describe('App', () => {
 
         // Render app, confirm reload was not called
         const { unmount } = render(
-            <ThemeProvider>
-                <ErrorModalProvider>
-                    <App />
-                </ErrorModalProvider>
-            </ThemeProvider>
+            <PageWrapper>
+                <App />
+            </PageWrapper>
         );
         expect(window.location.reload).not.toHaveBeenCalled();
 
@@ -31,12 +28,11 @@ describe('App', () => {
         jest.clearAllMocks();
 
         // Unmount and re-render the app
-        unmount();render(
-            <ThemeProvider>
-                <ErrorModalProvider>
-                    <App />
-                </ErrorModalProvider>
-            </ThemeProvider>
+        unmount();
+        render(
+            <PageWrapper>
+                <App />
+            </PageWrapper>
         );
 
         // Confirm reload was not called

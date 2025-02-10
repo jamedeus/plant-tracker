@@ -1,6 +1,6 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import Timeline from '../Timeline';
-import { ErrorModalProvider } from 'src/context/ErrorModalContext';
+import { PageWrapper } from 'src/index';
 import { mockContext, mockEvents, mockPhotoUrls } from './mockContext';
 
 describe('Timeline', () => {
@@ -13,13 +13,13 @@ describe('Timeline', () => {
     it('matches snapshot when plant is not archived', () => {
         // Render Timeline with archived=false, confirm matches snapshot
         const component = render(
-            <ErrorModalProvider>
+            <PageWrapper>
                 <Timeline
                     plantID={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"}
                     events={mockEvents}
                     archived={false}
                 />
-            </ErrorModalProvider>
+            </PageWrapper>
         );
         expect(component).toMatchSnapshot();
     });
@@ -27,13 +27,13 @@ describe('Timeline', () => {
     it('matches snapshot when plant is archived', () => {
         // Render Timeline with archived=true, confirm matches snapshot
         const component = render(
-            <ErrorModalProvider>
+            <PageWrapper>
                 <Timeline
                     plantID={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"}
                     events={mockEvents}
                     archived={true}
                 />
-            </ErrorModalProvider>
+            </PageWrapper>
         );
         expect(component).toMatchSnapshot();
     });

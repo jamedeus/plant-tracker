@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { postHeaders } from 'src/testUtils/headers';
 import DeletePhotosModal, { openDeletePhotosModal } from '../DeletePhotosModal';
-import { ErrorModalProvider } from 'src/context/ErrorModalContext';
+import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
 
 const TestComponent = () => {
@@ -29,9 +29,9 @@ describe('DeletePhotosModal', () => {
         // Render component + create userEvent instance to use in tests
         user = userEvent.setup();
         component = render(
-            <ErrorModalProvider>
+            <PageWrapper>
                 <TestComponent />
-            </ErrorModalProvider>
+            </PageWrapper>
         );
     });
 

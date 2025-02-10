@@ -1,4 +1,4 @@
-import { ErrorModalProvider } from 'src/context/ErrorModalContext';
+import { PageWrapper } from 'src/index';
 import RemovePlantsModal from '../RemovePlantsModal';
 import { mockContext } from './mockContext';
 
@@ -6,13 +6,13 @@ describe('RemovePlantsModal', () => {
     it('renders a card for each plant option', async () => {
         // Render context with mock context
         const component = render(
-            <ErrorModalProvider>
+            <PageWrapper>
                 <RemovePlantsModal
                     groupID={mockContext.group.uuid}
                     plantDetails={mockContext.details}
                     setPlantDetails={jest.fn()}
                 />
-            </ErrorModalProvider>
+            </PageWrapper>
         );
 
         // Confirm an option was rendered for each plant in plantDetails
@@ -26,13 +26,13 @@ describe('RemovePlantsModal', () => {
     it('renders expected text when no plant options', async () => {
         // Render modal with no plantDetails (contains current plants in group)
         const component = render(
-            <ErrorModalProvider>
+            <PageWrapper>
                 <RemovePlantsModal
                     groupID={mockContext.group.uuid}
                     plantDetails={[]}
                     setPlantDetails={jest.fn()}
                 />
-            </ErrorModalProvider>
+            </PageWrapper>
         );
 
         // Confirm no cards, confirm expected text

@@ -1,6 +1,5 @@
 import createMockContext from 'src/testUtils/createMockContext';
-import { ThemeProvider } from 'src/context/ThemeContext';
-import { ErrorModalProvider } from 'src/context/ErrorModalContext';
+import { PageWrapper } from 'src/index';
 import App from '../App';
 import { mockContext } from './mockContext';
 
@@ -23,11 +22,9 @@ describe('App', () => {
 
         // Render app, confirm /get_overview_state was not called
         const { unmount } = render(
-            <ThemeProvider>
-                <ErrorModalProvider>
-                    <App />
-                </ErrorModalProvider>
-            </ThemeProvider>
+            <PageWrapper>
+                <App />
+            </PageWrapper>
         );
         expect(global.fetch.mock.calls.filter(
             call => call[0] === '/get_overview_state'
@@ -47,11 +44,9 @@ describe('App', () => {
         // Unmount and re-render the app
         unmount();
         render(
-            <ThemeProvider>
-                <ErrorModalProvider>
-                    <App />
-                </ErrorModalProvider>
-            </ThemeProvider>
+            <PageWrapper>
+                <App />
+            </PageWrapper>
         );
 
         // Confirm /get_overview_state was not called when app re-mounted
