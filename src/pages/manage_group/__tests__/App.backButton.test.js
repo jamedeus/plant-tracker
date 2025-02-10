@@ -1,6 +1,5 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import App from '../App';
-import { ToastProvider } from 'src/context/ToastContext';
 import { ThemeProvider } from 'src/context/ThemeContext';
 import { ErrorModalProvider } from 'src/context/ErrorModalContext';
 import { mockContext } from './mockContext';
@@ -25,11 +24,9 @@ describe('App', () => {
         // Render app, confirm /get_group_state was not called
         const { unmount } = render(
             <ThemeProvider>
-                <ToastProvider>
-                    <ErrorModalProvider>
-                        <App />
-                    </ErrorModalProvider>
-                </ToastProvider>
+                <ErrorModalProvider>
+                    <App />
+                </ErrorModalProvider>
             </ThemeProvider>
         );
         expect(global.fetch.mock.calls.filter(
@@ -51,11 +48,9 @@ describe('App', () => {
         unmount();
         render(
             <ThemeProvider>
-                <ToastProvider>
-                    <ErrorModalProvider>
-                        <App />
-                    </ErrorModalProvider>
-                </ToastProvider>
+                <ErrorModalProvider>
+                    <App />
+                </ErrorModalProvider>
             </ThemeProvider>
         );
 

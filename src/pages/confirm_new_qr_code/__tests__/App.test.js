@@ -1,7 +1,6 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
-import { ToastProvider } from 'src/context/ToastContext';
 import { ThemeProvider } from 'src/context/ThemeContext';
 import { ErrorModalProvider } from 'src/context/ErrorModalContext';
 import { mockContext } from './mockContext';
@@ -21,11 +20,9 @@ describe('App', () => {
         user = userEvent.setup();
         app = render(
             <ThemeProvider>
-                <ToastProvider>
-                    <ErrorModalProvider>
-                        <App />
-                    </ErrorModalProvider>
-                </ToastProvider>
+                <ErrorModalProvider>
+                    <App />
+                </ErrorModalProvider>
             </ThemeProvider>
         );
     });

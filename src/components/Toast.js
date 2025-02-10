@@ -1,5 +1,4 @@
-import React, { createContext, useContext, useState, useRef } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState, useRef } from 'react';
 
 const colorMap = {
     red: 'alert-error',
@@ -8,23 +7,21 @@ const colorMap = {
     yellow: 'alert-warning'
 };
 
-const ToastContext = createContext();
+export let showToast;
 
-export const useToast = () => useContext(ToastContext);
-
-export const ToastProvider = ({ children }) => {
+export const Toast = () => {
     // State for text and color, default to blue
     const [message, setMessage] = useState(null);
     const [color, setColor] = useState('blue');
     // State to set fade in/out class
-    const [fade, setFade] = useState('toast-fade-in');
+    const [fade, setFade] = useState(false);
 
     // Keep timer reference between showToast calls, used to clear old timer
     // and restart if showToast called again before current timeout expires
     const timerRef = useRef(null);
 
     // Takes string, color (from colorMap), and timeout milliseconds
-    const showToast = (message, color, timeout) => {
+    showToast = (message, color, timeout) => {
         // Clear old timer if running
         if (timerRef.current) {
             clearTimeout(timerRef.current);
@@ -32,7 +29,7 @@ export const ToastProvider = ({ children }) => {
 
         // Set color and fade states, then message state (mounts Toast)
         setColor(color);
-        setFade('toast-fade-in');
+        setFade(true);
         setMessage(message);
 
         // Start timer to fade toast out after timeout milliseconds
@@ -42,7 +39,7 @@ export const ToastProvider = ({ children }) => {
     };
 
     const hideToast = () => {
-        setFade('toast-fade-out');
+        setFade(false);
         // Wait for fade animation, clear message state (unmounts Toast)
         setTimeout(() => {
             setMessage(null);
@@ -50,24 +47,17 @@ export const ToastProvider = ({ children }) => {
     };
 
     // Rendered when message state set
-    const Toast = () => {
-        return (
-            <div className={`toast toast-center ${fade}`} onClick={hideToast}>
-                <div className={`alert ${colorMap[color]} gap-0`}>
-                    <span>{message}</span>
-                </div>
+    return (message &&
+        <div
+            className={
+                `toast toast-center transition-opacity duration-500 z-100
+                ${fade ? 'opacity-100' : 'opacity-0'}`
+            }
+            onClick={hideToast}
+        >
+            <div className={`alert ${colorMap[color]} gap-0`}>
+                <span>{message}</span>
             </div>
-        );
-    };
-
-    return (
-        <ToastContext.Provider value={{ showToast }}>
-            {children}
-            {message ? <Toast /> : null }
-        </ToastContext.Provider>
+        </div>
     );
-};
-
-ToastProvider.propTypes = {
-    children: PropTypes.node,
 };

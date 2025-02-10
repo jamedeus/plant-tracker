@@ -1,8 +1,6 @@
-import { useToast, ToastProvider } from 'src/context/ToastContext';
+import { showToast, Toast } from 'src/components/Toast';
 
 const TestComponent = () => {
-    const { showToast } = useToast();
-
     const showInfo = () => {
         showToast('Everything is OK', 'blue', 100);
     };
@@ -15,6 +13,7 @@ const TestComponent = () => {
         <>
             <button onClick={showInfo}>Show Info Toast</button>
             <button onClick={showError}>Show Error Toast</button>
+            <Toast />
         </>
     );
 };
@@ -26,11 +25,7 @@ describe('ToastContext', () => {
     beforeEach(() => {
         // Render component + create userEvent instance to use in tests
         user = userEvent.setup();
-        component = render(
-            <ToastProvider>
-                <TestComponent />
-            </ToastProvider>
-        );
+        component = render(<TestComponent />);
     });
 
     it('renders toast div when showToast method called', async () => {
@@ -72,7 +67,7 @@ describe('ToastContext', () => {
         expect(component.container.querySelectorAll('.toast').length).toBe(1);
         expect(
             component.container.querySelector('.toast').classList
-        ).not.toContain('toast-fade-out');
+        ).not.toContain('opacity-0');
 
         // Keep clicking button half way through animation, confirm never
         // starts fading even though >100ms have passed
@@ -85,13 +80,13 @@ describe('ToastContext', () => {
         await new Promise((resolve) => setTimeout(resolve, 50));
         expect(
             component.container.querySelector('.toast').classList
-        ).not.toContain('toast-fade-out');
+        ).not.toContain('opacity-0');
 
         // Wait for full timeout without clicking, confirm toast is fading out
         await waitFor(() => {
             expect(
                 component.container.querySelector('.toast').classList
-            ).toContain('toast-fade-out');
+            ).toContain('opacity-0');
         }, {timeout: 150});
 
         // Wait for fade animation, confirm toast umounted

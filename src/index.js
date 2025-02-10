@@ -1,6 +1,5 @@
 import React from 'react';
 import { createRoot } from 'react-dom/client';
-import { ToastProvider } from 'src/context/ToastContext';
 import { ThemeProvider } from 'src/context/ThemeContext';
 import { ErrorModalProvider } from 'src/context/ErrorModalContext';
 import 'src/main.css';
@@ -12,11 +11,9 @@ const PageWrapper = ({ App }) => {
     const root = createRoot(container);
     root.render(
         <ThemeProvider>
-            <ToastProvider>
-                <ErrorModalProvider>
-                    <App />
-                </ErrorModalProvider>
-            </ToastProvider>
+            <ErrorModalProvider>
+                <App />
+            </ErrorModalProvider>
         </ThemeProvider>
     );
 };

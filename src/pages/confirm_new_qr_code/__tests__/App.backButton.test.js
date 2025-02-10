@@ -1,6 +1,5 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import App from '../App';
-import { ToastProvider } from 'src/context/ToastContext';
 import { ThemeProvider } from 'src/context/ThemeContext';
 import { ErrorModalProvider } from 'src/context/ErrorModalContext';
 import { mockContext } from './mockContext';
@@ -15,11 +14,9 @@ describe('App', () => {
         // Render app, confirm reload was not called
         const { unmount } = render(
             <ThemeProvider>
-                <ToastProvider>
-                    <ErrorModalProvider>
-                        <App />
-                    </ErrorModalProvider>
-                </ToastProvider>
+                <ErrorModalProvider>
+                    <App />
+                </ErrorModalProvider>
             </ThemeProvider>
         );
         expect(window.location.reload).not.toHaveBeenCalled();
@@ -36,11 +33,9 @@ describe('App', () => {
         // Unmount and re-render the app
         unmount();render(
             <ThemeProvider>
-                <ToastProvider>
-                    <ErrorModalProvider>
-                        <App />
-                    </ErrorModalProvider>
-                </ToastProvider>
+                <ErrorModalProvider>
+                    <App />
+                </ErrorModalProvider>
             </ThemeProvider>
         );
 

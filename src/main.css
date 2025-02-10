@@ -137,20 +137,3 @@ html[data-theme="light"] .pot-size-selected::placeholder {
 .textarea {
     @apply text-base;
 }
-
-@keyframes fade-in {
-    0% {
-        opacity: 0;
-    }
-    100% {
-        opacity: 1;
-    }
-}
-
-.toast-fade-in {
-    animation: fade-in 0.5s;
-}
-
-.toast-fade-out {
-    animation: fade-in 0.5s 1 reverse;
-}

@@ -21,7 +21,6 @@ const simulateUserDatetimeInput = (timestamp) => {
 
 // Import App, will use mocked localToUTC
 import App from '../App';
-import { ToastProvider } from 'src/context/ToastContext';
 import { ThemeProvider } from 'src/context/ThemeContext';
 import { ErrorModalProvider } from 'src/context/ErrorModalContext';
 
@@ -40,11 +39,9 @@ describe('App', () => {
         user = userEvent.setup();
         app = render(
             <ThemeProvider>
-                <ToastProvider>
-                    <ErrorModalProvider>
-                        <App />
-                    </ErrorModalProvider>
-                </ToastProvider>
+                <ErrorModalProvider>
+                    <App />
+                </ErrorModalProvider>
             </ThemeProvider>
         );
     });

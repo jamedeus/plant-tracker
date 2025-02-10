@@ -2,7 +2,7 @@ import React, { useState, useRef, useImperativeHandle } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 import DatetimeInput from 'src/components/DatetimeInput';
-import { useToast } from 'src/context/ToastContext';
+import { showToast } from 'src/components/Toast';
 import { useErrorModal } from 'src/context/ErrorModalContext';
 import { sendPostRequest } from 'src/util';
 import { localToUTC, timestampToReadable } from 'src/timestampUtils';
@@ -47,8 +47,7 @@ const NoteModal = React.forwardRef(function NoteModal({ plantID, notes, setNotes
         };
     });
 
-    // Get hooks to show toast message, error modal
-    const { showToast } = useToast();
+    // Get hook to show error modal
     const { showErrorModal } = useErrorModal();
 
     const handleSubmit = async () => {

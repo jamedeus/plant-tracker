@@ -8,7 +8,7 @@ import Navbar from 'src/components/Navbar';
 import PlantCard from 'src/components/PlantCard';
 import DatetimeInput from 'src/components/DatetimeInput';
 import FilterColumn from 'src/components/FilterColumn';
-import { useToast } from 'src/context/ToastContext';
+import { Toast, showToast } from 'src/components/Toast';
 import { useTheme } from 'src/context/ThemeContext';
 import DetailsCard from 'src/components/DetailsCard';
 import GroupDetails from 'src/components/GroupDetails';
@@ -71,8 +71,7 @@ function App() {
     // Create ref to access edit details form
     const editDetailsRef = useRef(null);
 
-    // Get hooks to show toast message, error modal
-    const { showToast } = useToast();
+    // Get hook to show error modal
     const { showErrorModal } = useErrorModal();
 
     // Get toggle theme option from context
@@ -339,6 +338,7 @@ function App() {
             <ChangeQrModal
                 uuid={group.uuid}
             />
+            <Toast />
         </div>
     );
 }

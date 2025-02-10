@@ -5,7 +5,7 @@ import EditModal from 'src/components/EditModal';
 import PlantDetailsForm from 'src/forms/PlantDetailsForm';
 import Navbar from 'src/components/Navbar';
 import DatetimeInput from 'src/components/DatetimeInput';
-import { useToast } from 'src/context/ToastContext';
+import { Toast, showToast } from 'src/components/Toast';
 import { useTheme } from 'src/context/ThemeContext';
 import DetailsCard from 'src/components/DetailsCard';
 import LastEventTime from 'src/components/LastEventTime';
@@ -56,8 +56,7 @@ function App() {
         };
     }, []);
 
-    // Get hooks to show toast message, error modal
-    const { showToast } = useToast();
+    // Get hook to show error modal
     const { showErrorModal } = useErrorModal();
 
     // Create ref to access new event datetime input
@@ -365,6 +364,8 @@ function App() {
                     <ChangeQrModal
                         uuid={plant.uuid}
                     />
+
+                    <Toast />
                 </div>
             );
         }
