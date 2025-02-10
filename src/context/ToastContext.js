@@ -37,18 +37,22 @@ export const ToastProvider = ({ children }) => {
 
         // Start timer to fade toast out after timeout milliseconds
         timerRef.current = setTimeout(() => {
-            setFade('toast-fade-out');
-            // Wait for fade animation, clear message state (unmounts Toast)
-            setTimeout(() => {
-                setMessage(null);
-            }, 500);
+            hideToast();
         }, timeout);
+    };
+
+    const hideToast = () => {
+        setFade('toast-fade-out');
+        // Wait for fade animation, clear message state (unmounts Toast)
+        setTimeout(() => {
+            setMessage(null);
+        }, 500);
     };
 
     // Rendered when message state set
     const Toast = () => {
         return (
-            <div className={`toast toast-center ${fade}`}>
+            <div className={`toast toast-center ${fade}`} onClick={hideToast}>
                 <div className={`alert ${colorMap[color]} gap-0`}>
                     <span>{message}</span>
                 </div>
