@@ -1,3 +1,5 @@
+# pylint: disable=missing-docstring,too-many-lines,R0801
+
 from django.test import TestCase
 
 from .validate_url_prefix import validate_url_prefix

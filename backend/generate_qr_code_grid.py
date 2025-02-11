@@ -1,3 +1,7 @@
+'''Contains functions used to generate a grid of URL QR codes, each with the
+same URL prefix followed by a random UUID. Used by /get_qr_codes endpoint.
+'''
+
 import io
 from uuid import uuid4
 

@@ -1,3 +1,7 @@
+'''Contains function used by backend.backend.settings to validate
+URL_PREFIX env var (sets beginning of URL embedded in QR codes).
+'''
+
 import re
 
 
@@ -6,7 +10,7 @@ import re
 # Must have valid domain or IP address
 # May have optional subdomain(s) or port
 # Must end with /manage/ (including trailing /)
-pattern = r"^(https?://)" \
+PATTERN = r"^(https?://)" \
           r"((([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,})|" \
           r"((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.){3}" \
           r"(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9]))" \
@@ -35,7 +39,7 @@ def validate_url_prefix(url_prefix):
 
     # Confirm that completed prefix starts with protocol, has valid IP or domain
     # (can have subdomain or port numbers), and ends with /manage/
-    if re.match(pattern, url_prefix):
+    if re.match(PATTERN, url_prefix):
         return url_prefix
 
     # Return None if regex failed

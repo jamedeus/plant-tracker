@@ -1,3 +1,13 @@
+'''Django settings used for unit testing and frontend development.
+
+Runs celery tasks synchronously (no delay) and uses local memory caching
+instead of redis (redis does not need to be installed or running).
+
+Should not be used for backend development (behaves differently).
+'''
+
+# pylint: disable=wildcard-import, unused-wildcard-import
+
 import os
 from .settings import *
 
