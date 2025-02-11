@@ -281,7 +281,7 @@ const Timeline = ({ plantID, events, archived }) => {
                         'w-4 h-4 mr-2 mt-1',
                         archived || 'cursor-pointer'
                     )}
-                    onClick={!archived && editNote}
+                    onClick={archived ? null : editNote}
                 />
                 <div
                     className={clsx(
