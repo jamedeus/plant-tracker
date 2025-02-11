@@ -19,7 +19,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
         class="container flex flex-col min-h-screen mx-auto pb-16"
       >
         <div
-          class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
+          class="navbar bg-base-100 mb-4 sticky top-0 z-[99] overflow-x-clip"
         >
           <div
             class="navbar-start w-auto"
@@ -503,7 +503,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
       class="container flex flex-col min-h-screen mx-auto pb-16"
     >
       <div
-        class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
+        class="navbar bg-base-100 mb-4 sticky top-0 z-[99] overflow-x-clip"
       >
         <div
           class="navbar-start w-auto"

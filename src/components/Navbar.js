@@ -75,7 +75,10 @@ const Navbar = ({ menuOptions, title, titleOptions }) => {
     }, [title, titleFontSize]);
 
     return (
-        <div ref={navbarRef} className="navbar bg-base-100 mb-4 sticky top-0 z-[99]">
+        <div
+            ref={navbarRef}
+            className="navbar bg-base-100 mb-4 sticky top-0 z-[99] overflow-x-clip"
+        >
             <div className="navbar-start w-auto">
                 <div className="dropdown">
                     <DropdownButton />
