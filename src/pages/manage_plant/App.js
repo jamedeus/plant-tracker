@@ -164,9 +164,9 @@ function App() {
                 <li><a onClick={() => window.location.href = "/"}>
                     Overview
                 </a></li>
-                {plant.archived ? null : (
+                {!plant.archived && (
                     <>
-                        {plant.group ? <Group /> : null}
+                        {plant.group && <Group />}
                         <li><a onClick={openDefaultPhotoModal}>
                             Set default photo
                         </a></li>

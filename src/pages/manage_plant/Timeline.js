@@ -276,8 +276,8 @@ const Timeline = ({ plantID, events, archived }) => {
             <div className="m-2 flex flex-row">
                 <FontAwesomeIcon
                     icon={faPenToSquare}
-                    className={`w-4 h-4 mr-2 mt-1 ${archived ? null : 'cursor-pointer'}`}
-                    onClick={archived ? null : editNote}
+                    className={`w-4 h-4 mr-2 mt-1 ${archived ? '' : 'cursor-pointer'}`}
+                    onClick={!archived && editNote}
                 />
                 <div
                     className={`cursor-pointer ${expanded ? '' : `line-clamp-1`}`}
@@ -418,7 +418,7 @@ const Timeline = ({ plantID, events, archived }) => {
                 <div className="navbar-end w-auto">
                     <div className={`dropdown dropdown-end ${archived ? 'invisible': ''}`}>
                         <MenuButton />
-                        {archived ? null : (
+                        {!archived && (
                             <MenuOptions />
                         )}
                     </div>

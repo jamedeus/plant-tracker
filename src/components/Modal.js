@@ -13,12 +13,10 @@ const Modal = ({ dialogRef, title, children, className='', onClose }) => {
                     </button>
                 </form>
 
-                {title ? (
+                {title && (
                     <h1 className="font-bold text-lg md:text-xl mb-4">
                         {title}
                     </h1>
-                ) : (
-                    null
                 )}
 
                 {children}

@@ -1441,7 +1441,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 null"
+                    class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 "
                     data-icon="pen-to-square"
                     data-prefix="fas"
                     focusable="false"
@@ -1515,7 +1515,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 null"
+                    class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 "
                     data-icon="pen-to-square"
                     data-prefix="fas"
                     focusable="false"
@@ -6952,7 +6952,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 null"
+                  class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 "
                   data-icon="pen-to-square"
                   data-prefix="fas"
                   focusable="false"
@@ -7026,7 +7026,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 null"
+                  class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 "
                   data-icon="pen-to-square"
                   data-prefix="fas"
                   focusable="false"

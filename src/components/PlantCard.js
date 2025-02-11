@@ -96,7 +96,7 @@ const PlantCard = ({ display_name, uuid, species, description, pot_size, last_wa
     return (
         <a
             href={linkPage ? `/manage/${uuid}` : null}
-            className={linkPage ? 'cursor-pointer' : ''}
+            className={linkPage ? 'cursor-pointer' : null}
         >
             <div
                 className={
@@ -105,7 +105,7 @@ const PlantCard = ({ display_name, uuid, species, description, pot_size, last_wa
                     ${archived ? 'grayscale' : ''}`
                 }
             >
-                {thumbnail ? <Thumbnail /> : null}
+                {thumbnail && <Thumbnail />}
 
                 <Body />
 

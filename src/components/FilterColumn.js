@@ -108,7 +108,7 @@ const FilterInput = ({state, dispatch, sortByKeys}) => {
         const Option = ({keyName, displayString}) => {
             return (
                 <li className="ml-auto"><a onClick={() => setSort(keyName)}>
-                    {state.sortKey === keyName ? <Arrow /> : null}
+                    {state.sortKey === keyName && <Arrow />}
                     {displayString}
                 </a></li>
             );
@@ -171,8 +171,8 @@ const FilterInput = ({state, dispatch, sortByKeys}) => {
                     placeholder="filter"
                 />
                 <div className="absolute flex top-2 right-2">
-                    {query ? <ClearButton /> : null}
-                    {sortByKeys.length ? <SortMenu /> : null}
+                    {query && <ClearButton />}
+                    {sortByKeys.length && <SortMenu />}
                 </div>
             </div>
         </div>

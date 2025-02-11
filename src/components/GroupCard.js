@@ -41,7 +41,7 @@ const GroupCard = ({ display_name, plants, uuid, location, description, linkPage
     return (
         <a
             href={linkPage ? `/manage/${uuid}` : null}
-            className={linkPage ? 'cursor-pointer' : ''}
+            className={linkPage ? 'cursor-pointer' : null}
         >
             <div
                 className={

@@ -818,9 +818,7 @@ exports[`App matches snapshot 1`] = `
                 <div
                   class="ml-2 w-full overflow-hidden"
                 >
-                  <a
-                    class=""
-                  >
+                  <a>
                     <div
                       class="card card-side bg-neutral text-neutral-content mx-auto
                     relative 
@@ -936,9 +934,7 @@ exports[`App matches snapshot 1`] = `
                 <div
                   class="ml-2 w-full overflow-hidden"
                 >
-                  <a
-                    class=""
-                  >
+                  <a>
                     <div
                       class="card card-side bg-neutral text-neutral-content mx-auto
                     relative 
@@ -1084,9 +1080,7 @@ exports[`App matches snapshot 1`] = `
                 <div
                   class="ml-2 w-full overflow-hidden"
                 >
-                  <a
-                    class=""
-                  >
+                  <a>
                     <div
                       class="card card-side bg-neutral text-neutral-content mx-auto
                     relative 
@@ -1214,9 +1208,7 @@ exports[`App matches snapshot 1`] = `
                 <div
                   class="ml-2 w-full overflow-hidden"
                 >
-                  <a
-                    class=""
-                  >
+                  <a>
                     <div
                       class="card card-side bg-neutral text-neutral-content mx-auto
                     relative 
@@ -1351,9 +1343,7 @@ exports[`App matches snapshot 1`] = `
                 <div
                   class="ml-2 w-full overflow-hidden"
                 >
-                  <a
-                    class=""
-                  >
+                  <a>
                     <div
                       class="card card-side bg-neutral text-neutral-content mx-auto
                     relative 
@@ -2387,9 +2377,7 @@ exports[`App matches snapshot 1`] = `
               <div
                 class="ml-2 w-full overflow-hidden"
               >
-                <a
-                  class=""
-                >
+                <a>
                   <div
                     class="card card-side bg-neutral text-neutral-content mx-auto
                     relative 
@@ -2505,9 +2493,7 @@ exports[`App matches snapshot 1`] = `
               <div
                 class="ml-2 w-full overflow-hidden"
               >
-                <a
-                  class=""
-                >
+                <a>
                   <div
                     class="card card-side bg-neutral text-neutral-content mx-auto
                     relative 
@@ -2653,9 +2639,7 @@ exports[`App matches snapshot 1`] = `
               <div
                 class="ml-2 w-full overflow-hidden"
               >
-                <a
-                  class=""
-                >
+                <a>
                   <div
                     class="card card-side bg-neutral text-neutral-content mx-auto
                     relative 
@@ -2783,9 +2767,7 @@ exports[`App matches snapshot 1`] = `
               <div
                 class="ml-2 w-full overflow-hidden"
               >
-                <a
-                  class=""
-                >
+                <a>
                   <div
                     class="card card-side bg-neutral text-neutral-content mx-auto
                     relative 
@@ -2920,9 +2902,7 @@ exports[`App matches snapshot 1`] = `
               <div
                 class="ml-2 w-full overflow-hidden"
               >
-                <a
-                  class=""
-                >
+                <a>
                   <div
                     class="card card-side bg-neutral text-neutral-content mx-auto
                     relative 

@@ -1363,7 +1363,7 @@ exports[`App matches snapshot 1`] = `
                   >
                     <svg
                       aria-hidden="true"
-                      class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 null"
+                      class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 "
                       data-icon="pen-to-square"
                       data-prefix="fas"
                       focusable="false"
@@ -1513,7 +1513,7 @@ exports[`App matches snapshot 1`] = `
                   >
                     <svg
                       aria-hidden="true"
-                      class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 null"
+                      class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 "
                       data-icon="pen-to-square"
                       data-prefix="fas"
                       focusable="false"
@@ -2443,9 +2443,7 @@ exports[`App matches snapshot 1`] = `
               <div
                 class="max-w-80 w-full mx-auto mb-4 cursor-pointer"
               >
-                <a
-                  class=""
-                >
+                <a>
                   <div
                     class="card bg-neutral text-neutral-content mx-auto w-full
                     
@@ -2532,9 +2530,7 @@ exports[`App matches snapshot 1`] = `
               <div
                 class="max-w-80 w-full mx-auto mb-4 cursor-pointer"
               >
-                <a
-                  class=""
-                >
+                <a>
                   <div
                     class="card bg-neutral text-neutral-content mx-auto w-full
                     
@@ -4505,7 +4501,7 @@ exports[`App matches snapshot 1`] = `
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 null"
+                    class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 "
                     data-icon="pen-to-square"
                     data-prefix="fas"
                     focusable="false"
@@ -4655,7 +4651,7 @@ exports[`App matches snapshot 1`] = `
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 null"
+                    class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 "
                     data-icon="pen-to-square"
                     data-prefix="fas"
                     focusable="false"
@@ -5585,9 +5581,7 @@ exports[`App matches snapshot 1`] = `
             <div
               class="max-w-80 w-full mx-auto mb-4 cursor-pointer"
             >
-              <a
-                class=""
-              >
+              <a>
                 <div
                   class="card bg-neutral text-neutral-content mx-auto w-full
                     
@@ -5674,9 +5668,7 @@ exports[`App matches snapshot 1`] = `
             <div
               class="max-w-80 w-full mx-auto mb-4 cursor-pointer"
             >
-              <a
-                class=""
-              >
+              <a>
                 <div
                   class="card bg-neutral text-neutral-content mx-auto w-full
                     

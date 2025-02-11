@@ -66,7 +66,7 @@ const EventCalendar = ({ events }) => {
             prevLabel=<ChevronLeftIcon className="w-6 h-6 m-auto" />
             nextLabel=<ChevronRightIcon className="w-6 h-6 m-auto" />
             tileContent={
-                ({ date, view }) => view === 'month' ? renderDots(date) : null
+                ({ date, view }) => view === 'month' && renderDots(date)
             }
             onClickDay={handleClickDay}
         />

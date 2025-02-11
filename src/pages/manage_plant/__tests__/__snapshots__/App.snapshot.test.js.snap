@@ -2543,9 +2543,7 @@ exports[`App matches snapshot 1`] = `
               <div
                 class="max-w-80 w-full mx-auto mb-4 cursor-pointer"
               >
-                <a
-                  class=""
-                >
+                <a>
                   <div
                     class="card bg-neutral text-neutral-content mx-auto w-full
                     
@@ -2632,9 +2630,7 @@ exports[`App matches snapshot 1`] = `
               <div
                 class="max-w-80 w-full mx-auto mb-4 cursor-pointer"
               >
-                <a
-                  class=""
-                >
+                <a>
                   <div
                     class="card bg-neutral text-neutral-content mx-auto w-full
                     
@@ -5785,9 +5781,7 @@ exports[`App matches snapshot 1`] = `
             <div
               class="max-w-80 w-full mx-auto mb-4 cursor-pointer"
             >
-              <a
-                class=""
-              >
+              <a>
                 <div
                   class="card bg-neutral text-neutral-content mx-auto w-full
                     
@@ -5874,9 +5868,7 @@ exports[`App matches snapshot 1`] = `
             <div
               class="max-w-80 w-full mx-auto mb-4 cursor-pointer"
             >
-              <a
-                class=""
-              >
+              <a>
                 <div
                   class="card bg-neutral text-neutral-content mx-auto w-full
                     

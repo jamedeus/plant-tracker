@@ -149,7 +149,7 @@ function App() {
                 <p className="text-lg font-bold">
                     Is this the new QR code for your {type}?
                 </p>
-                {instance.thumbnail ? <Image /> : null}
+                {instance.thumbnail && <Image />}
                 <Buttons />
             </div>
         </div>
