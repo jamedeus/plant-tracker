@@ -315,10 +315,39 @@ class OverviewTests(TestCase):
         self.assertFalse(Plant.objects.all()[0].archived)
 
         # Call archive endpoint, confirm response, confirm updated in database
-        response = self.client.post('/archive_plant', {'plant_id': str(test_id)})
+        response = self.client.post('/archive_plant', {
+            'plant_id': str(test_id),
+            'archived': True
+        })
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'archived': str(test_id)})
+        self.assertEqual(response.json(), {'updated': str(test_id)})
         self.assertTrue(Plant.objects.all()[0].archived)
+
+        # Call again to un-archive, confirm response, confirm updated in database
+        response = self.client.post('/archive_plant', {
+            'plant_id': str(test_id),
+            'archived': False
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'updated': str(test_id)})
+        self.assertFalse(Plant.objects.all()[0].archived)
+
+    def test_archive_plant_error(self):
+        # Create test plant, confirm exists in database, is not archived
+        test_id = uuid4()
+        Plant.objects.create(uuid=test_id, name='test plant')
+        self.assertEqual(len(Plant.objects.all()), 1)
+        self.assertFalse(Plant.objects.all()[0].archived)
+
+        # Call archive endpoint with invalid archived bool, confirm error,
+        # confirm database not updated
+        response = self.client.post('/archive_plant', {
+            'plant_id': str(test_id),
+            'archived': 'archived'
+        })
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {"error": "archived key is not bool"})
+        self.assertFalse(Plant.objects.all()[0].archived)
 
     def test_delete_group(self):
         # Create test group, confirm exists in database
@@ -345,10 +374,39 @@ class OverviewTests(TestCase):
         self.assertFalse(Group.objects.all()[0].archived)
 
         # Call archive endpoint, confirm response, confirm updated in database
-        response = self.client.post('/archive_group', {'group_id': str(test_id)})
+        response = self.client.post('/archive_group', {
+            'group_id': str(test_id),
+            'archived': True
+        })
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'archived': str(test_id)})
+        self.assertEqual(response.json(), {'updated': str(test_id)})
         self.assertTrue(Group.objects.all()[0].archived)
+
+        # Call again to un-archive, confirm response, confirm updated in database
+        response = self.client.post('/archive_group', {
+            'group_id': str(test_id),
+            'archived': False
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'updated': str(test_id)})
+        self.assertFalse(Group.objects.all()[0].archived)
+
+    def test_archive_group_error(self):
+        # Create test plant, confirm exists in database, is not archived
+        test_id = uuid4()
+        Group.objects.create(uuid=test_id, name='test group')
+        self.assertEqual(len(Group.objects.all()), 1)
+        self.assertFalse(Group.objects.all()[0].archived)
+
+        # Call archive endpoint with invalid archived bool, confirm error,
+        # confirm database not updated
+        response = self.client.post('/archive_group', {
+            'group_id': str(test_id),
+            'archived': 'archived'
+        })
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {"error": "archived key is not bool"})
+        self.assertFalse(Group.objects.all()[0].archived)
 
 
 class ArchivedOverviewTests(TestCase):

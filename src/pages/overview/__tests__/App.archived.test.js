@@ -92,6 +92,33 @@ describe('App', () => {
         });
     });
 
+    it('sends correct payload when plants are un-archived', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "updated": "uuid"
+            })
+        }));
+
+        // Click edit option, click first checkbox (plant)
+        await user.click(app.getByText("Edit"));
+        await user.click(app.container.querySelectorAll('.radio')[0]);
+
+        // Click archive button in floating div
+        await user.click(app.getByText('Un-archive'));
+
+        // Confirm correct data posted to /delete_plant endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/archive_plant', {
+            method: 'POST',
+            body: JSON.stringify({
+                plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                archived: false
+            }),
+            headers: postHeaders
+        });
+    });
+
     it('sends correct payload when groups are deleted', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
@@ -128,5 +155,32 @@ describe('App', () => {
         // Click Plants title dropdown, confirm scrollIntoView was called
         await user.click(app.getByText("Groups"));
         expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled();
+    });
+
+    it('sends correct payload when groups are un-archived', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "updated": "uuid"
+            })
+        }));
+
+        // Click edit option, click second checkbox (group)
+        await user.click(app.getByText("Edit"));
+        await user.click(app.container.querySelectorAll('.radio')[1]);
+
+        // Click archive button in floating div
+        await user.click(app.getByText('Un-archive'));
+
+        // Confirm correct data posted to /delete_group endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/archive_group', {
+            method: 'POST',
+            body: JSON.stringify({
+                group_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                archived: false
+            }),
+            headers: postHeaders
+        });
     });
 });

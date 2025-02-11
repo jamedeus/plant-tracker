@@ -98,7 +98,7 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "archived": "uuid"
+                "updated": "uuid"
             })
         }));
 
@@ -113,7 +113,8 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/archive_plant', {
             method: 'POST',
             body: JSON.stringify({
-                "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                archived: true
             }),
             headers: postHeaders
         });
@@ -150,7 +151,7 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "archived": "uuid"
+                "updated": "uuid"
             })
         }));
 
@@ -165,7 +166,8 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/archive_group', {
             method: 'POST',
             body: JSON.stringify({
-                "group_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                group_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                archived: true
             }),
             headers: postHeaders
         });

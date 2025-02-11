@@ -399,15 +399,18 @@ def delete_plant(plant, **kwargs):
     return JsonResponse({"deleted": plant.uuid}, status=200)
 
 
-@requires_json_post(["plant_id"])
+@requires_json_post(["plant_id", "archived"])
 @get_plant_from_post_body
-def archive_plant(plant, **kwargs):
-    '''Sets the archived attribute of an existing Plant to True
-    Requires JSON POST with plant_id (uuid) key
+def archive_plant(plant, data, **kwargs):
+    '''Sets the archived attribute of an existing Plant to bool in POST body
+    Requires JSON POST with plant_id (uuid) and archived (bool) keys
     '''
-    plant.archived = True
+    if not isinstance(data["archived"], bool):
+        return JsonResponse({"error": "archived key is not bool"}, status=400)
+
+    plant.archived = data["archived"]
     plant.save()
-    return JsonResponse({"archived": plant.uuid}, status=200)
+    return JsonResponse({"updated": plant.uuid}, status=200)
 
 
 @requires_json_post(["group_id"])
@@ -420,15 +423,18 @@ def delete_group(group, **kwargs):
     return JsonResponse({"deleted": group.uuid}, status=200)
 
 
-@requires_json_post(["group_id"])
+@requires_json_post(["group_id", "archived"])
 @get_group_from_post_body
-def archive_group(group, **kwargs):
-    '''Sets the archived attribute of an existing Group to True
-    Requires JSON POST with group_id (uuid) key
+def archive_group(group, data, **kwargs):
+    '''Sets the archived attribute of an existing Group to bool in POST body
+    Requires JSON POST with group_id (uuid) and archived (bool) keys
     '''
-    group.archived = True
+    if not isinstance(data["archived"], bool):
+        return JsonResponse({"error": "archived key is not bool"}, status=400)
+
+    group.archived = data["archived"]
     group.save()
-    return JsonResponse({"archived": group.uuid}, status=200)
+    return JsonResponse({"updated": group.uuid}, status=200)
 
 
 @requires_json_post(["plant_id", "event_type", "timestamp"])

@@ -95,11 +95,17 @@ function App() {
         setEditing(false);
     };
 
-    // Handler for archive button that appears while editing
-    const handleArchive = () => {
+    // Handler for archive button (main overview) and un-archive button
+    // (archive overview) that appear while editing. POSTS selected plants and
+    // groups to backend then removes from frontend state.
+    // Takes bool argument (true if archiving, false if un-archiving)
+    const handleArchive = (archived) => {
         // Send archive request for each selected plant, remove uuid from state
         selectedPlants.current.forEach(async plant_id => {
-            await sendPostRequest('/archive_plant', {plant_id: plant_id});
+            await sendPostRequest(
+                '/archive_plant',
+                {plant_id: plant_id, archived: archived}
+            );
         });
         setPlants(plants.filter(
             plant => !selectedPlants.current.includes(plant.uuid))
@@ -107,7 +113,10 @@ function App() {
 
         // Send archive request for each selected group, remove uuid from state
         selectedGroups.current.forEach(async group_id => {
-            await sendPostRequest('/archive_group', {group_id: group_id});
+            await sendPostRequest(
+                '/archive_group',
+                {group_id: group_id, archived: archived}
+            );
         });
         setGroups(groups.filter(
             group => !selectedGroups.current.includes(group.uuid))
@@ -310,11 +319,11 @@ function App() {
                     Cancel
                 </button>
                 {archivedOverview ? (
-                    <button className="btn mx-4" disabled={true}>
+                    <button className="btn mx-4" onClick={() => handleArchive(false)}>
                         Un-archive
                     </button>
                 ) : (
-                    <button className="btn mx-4" onClick={handleArchive}>
+                    <button className="btn mx-4" onClick={() => handleArchive(true)}>
                         Archive
                     </button>
                 )}
