@@ -5,7 +5,7 @@ import EditModal from 'src/components/EditModal';
 import PlantDetailsForm from 'src/forms/PlantDetailsForm';
 import Navbar from 'src/components/Navbar';
 import DatetimeInput from 'src/components/DatetimeInput';
-import { Toast, showToast } from 'src/components/Toast';
+import { showToast } from 'src/components/Toast';
 import { useTheme } from 'src/context/ThemeContext';
 import DetailsCard from 'src/components/DetailsCard';
 import LastEventTime from 'src/components/LastEventTime';
@@ -361,8 +361,6 @@ function App() {
                     <ChangeQrModal
                         uuid={plant.uuid}
                     />
-
-                    <Toast />
                 </div>
             );
         }

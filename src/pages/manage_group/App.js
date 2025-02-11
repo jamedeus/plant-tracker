@@ -8,7 +8,7 @@ import Navbar from 'src/components/Navbar';
 import PlantCard from 'src/components/PlantCard';
 import DatetimeInput from 'src/components/DatetimeInput';
 import FilterColumn from 'src/components/FilterColumn';
-import { Toast, showToast } from 'src/components/Toast';
+import { showToast } from 'src/components/Toast';
 import { useTheme } from 'src/context/ThemeContext';
 import DetailsCard from 'src/components/DetailsCard';
 import GroupDetails from 'src/components/GroupDetails';
@@ -335,7 +335,6 @@ function App() {
             <ChangeQrModal
                 uuid={group.uuid}
             />
-            <Toast />
         </div>
     );
 }

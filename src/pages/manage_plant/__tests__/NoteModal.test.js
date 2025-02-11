@@ -1,7 +1,6 @@
 import React, { useRef, useState } from 'react';
 import createMockContext from 'src/testUtils/createMockContext';
 import NoteModal from '../NoteModal';
-import { Toast } from 'src/components/Toast';
 import { PageWrapper } from 'src/index';
 import { postHeaders } from 'src/testUtils/headers';
 
@@ -44,7 +43,6 @@ describe('Add new note', () => {
         app = render(
             <PageWrapper>
                 <TestComponent />
-                <Toast />
             </PageWrapper>
         );
 
@@ -163,7 +161,6 @@ describe('Edit existing note', () => {
         app = render(
             <PageWrapper>
                 <TestComponent />
-                <Toast />
             </PageWrapper>
         );
 
