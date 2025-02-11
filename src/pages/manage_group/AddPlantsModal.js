@@ -38,10 +38,11 @@ const AddPlantsModal = ({ groupID, options, plantDetails, setPlantDetails }) => 
         }
     };
 
-    // Get object with name and UUID of all plants not already in group
+    // Get object with name and UUID of all plants that are not archived or
+    // already in group
     const existing = plantDetails.map(plant => plant.uuid);
     const plantOptions = options.filter(
-        plant => !existing.includes(plant.uuid)
+        plant => !existing.includes(plant.uuid) && !plant.archived
     );
 
     return (

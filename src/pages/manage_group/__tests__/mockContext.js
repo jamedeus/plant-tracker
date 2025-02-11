@@ -102,6 +102,19 @@ export const mockContext = {
             "last_fertilized": "2024-03-01T05:45:44+00:00",
             "thumbnail": null,
             "archived": false
+        },
+        {
+            "uuid": "102d1a8c-07e6-4ece-bac7-60ed6a95a463",
+            "created": "2022-12-26T01:25:12+00:00",
+            "name": null,
+            "display_name": "Unnamed Fern",
+            "species": null,
+            "description": null,
+            "pot_size": null,
+            "last_watered": null,
+            "last_fertilized": "2022-03-01T05:45:44+00:00",
+            "thumbnail": null,
+            "archived": true
         }
     ]
 };
