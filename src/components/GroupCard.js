@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/16/solid';
 import GroupDetails from 'src/components/GroupDetails';
 
@@ -18,10 +19,11 @@ const GroupCard = ({ display_name, plants, uuid, location, description, linkPage
     // Renders collapse with Group details, opened with arrow button
     const DetailsSection = () => {
         return (
-            <div className={
-                `collapse bg-neutral rounded-t-none cursor-default
-                ${open ? "pt-4" : ""} ${archived ? 'grayscale' : ''}`
-            }>
+            <div className={clsx(
+                'collapse bg-neutral rounded-t-none cursor-default',
+                open && 'pt-4',
+                archived && 'grayscale'
+            )}>
                 <input
                     type="checkbox"
                     className="hidden"
@@ -43,13 +45,11 @@ const GroupCard = ({ display_name, plants, uuid, location, description, linkPage
             href={linkPage ? `/manage/${uuid}` : null}
             className={linkPage ? 'cursor-pointer' : null}
         >
-            <div
-                className={
-                    `card bg-neutral text-neutral-content mx-auto w-full
-                    ${open ? "rounded-b-none" : ""}
-                    ${archived ? 'grayscale' : ''}`
-                }
-            >
+            <div className={clsx(
+                'card bg-neutral text-neutral-content mx-auto w-full',
+                open && 'rounded-b-none',
+                archived && 'grayscale'
+            )}>
                 <div className="card-body text-center">
                     <h2 className="card-title mx-auto">{display_name}</h2>
                     <p>Contains {plants} plants</p>

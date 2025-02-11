@@ -1,5 +1,6 @@
 import React, { Fragment, useState } from 'react';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
 import { parseDomContext } from 'src/util';
 import { Combobox, Transition } from '@headlessui/react';
 
@@ -24,11 +25,10 @@ const SpeciesSelect = ({ value }) => {
         return (
             <Combobox.Option
                 value={value}
-                className={({ active }) =>
-                    `combobox-option ${
-                        active ? 'bg-teal-600' : ''
-                    }`
-                }
+                className={({ active }) => clsx(
+                    'combobox-option',
+                    active && 'bg-teal-600'
+                )}
             >
                 {text}
             </Combobox.Option>

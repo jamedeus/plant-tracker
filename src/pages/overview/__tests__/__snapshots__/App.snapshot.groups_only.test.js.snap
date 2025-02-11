@@ -230,9 +230,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                 href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
               >
                 <div
-                  class="card bg-neutral text-neutral-content mx-auto w-full
-                    
-                    "
+                  class="card bg-neutral text-neutral-content mx-auto w-full"
                 >
                   <div
                     class="card-body text-center"
@@ -270,8 +268,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                   </button>
                 </div>
                 <div
-                  class="collapse bg-neutral rounded-t-none cursor-default
-                 "
+                  class="collapse bg-neutral rounded-t-none cursor-default"
                 >
                   <input
                     class="hidden"
@@ -366,7 +363,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                 <button
                   aria-controls="headlessui-tabs-panel-:r4:"
                   aria-selected="false"
-                  class="tab-option "
+                  class="tab-option"
                   data-headlessui-state=""
                   id="headlessui-tabs-tab-:r1:"
                   role="tab"
@@ -378,7 +375,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                 <button
                   aria-controls="headlessui-tabs-panel-:r5:"
                   aria-selected="false"
-                  class="tab-option "
+                  class="tab-option"
                   data-headlessui-state=""
                   id="headlessui-tabs-tab-:r2:"
                   role="tab"
@@ -717,9 +714,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
               href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
             >
               <div
-                class="card bg-neutral text-neutral-content mx-auto w-full
-                    
-                    "
+                class="card bg-neutral text-neutral-content mx-auto w-full"
               >
                 <div
                   class="card-body text-center"
@@ -757,8 +752,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                 </button>
               </div>
               <div
-                class="collapse bg-neutral rounded-t-none cursor-default
-                 "
+                class="collapse bg-neutral rounded-t-none cursor-default"
               >
                 <input
                   class="hidden"
@@ -853,7 +847,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
               <button
                 aria-controls="headlessui-tabs-panel-:r4:"
                 aria-selected="false"
-                class="tab-option "
+                class="tab-option"
                 data-headlessui-state=""
                 id="headlessui-tabs-tab-:r1:"
                 role="tab"
@@ -865,7 +859,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
               <button
                 aria-controls="headlessui-tabs-panel-:r5:"
                 aria-selected="false"
-                class="tab-option "
+                class="tab-option"
                 data-headlessui-state=""
                 id="headlessui-tabs-tab-:r2:"
                 role="tab"

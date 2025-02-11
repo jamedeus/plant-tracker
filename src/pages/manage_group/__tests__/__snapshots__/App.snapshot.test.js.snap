@@ -306,9 +306,7 @@ exports[`App matches snapshot 1`] = `
                 href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
               >
                 <div
-                  class="card card-side bg-neutral text-neutral-content mx-auto
-                    relative 
-                    "
+                  class="card card-side bg-neutral text-neutral-content mx-auto relative"
                 >
                   <div
                     class="card-body text-center cursor-default"
@@ -361,8 +359,7 @@ exports[`App matches snapshot 1`] = `
                   </button>
                 </div>
                 <div
-                  class="collapse bg-neutral rounded-t-none cursor-default
-                 "
+                  class="collapse bg-neutral rounded-t-none cursor-default"
                 >
                   <input
                     class="hidden"
@@ -425,9 +422,7 @@ exports[`App matches snapshot 1`] = `
                 href="/manage/19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
               >
                 <div
-                  class="card card-side bg-neutral text-neutral-content mx-auto
-                    relative 
-                    grayscale"
+                  class="card card-side bg-neutral text-neutral-content mx-auto relative grayscale"
                 >
                   <figure
                     class="h-24 w-20 min-h-20 min-w-20"
@@ -489,8 +484,7 @@ exports[`App matches snapshot 1`] = `
                   </button>
                 </div>
                 <div
-                  class="collapse bg-neutral rounded-t-none cursor-default
-                 grayscale"
+                  class="collapse bg-neutral rounded-t-none cursor-default grayscale"
                 >
                   <input
                     class="hidden"
@@ -551,9 +545,7 @@ exports[`App matches snapshot 1`] = `
                 href="/manage/26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
               >
                 <div
-                  class="card card-side bg-neutral text-neutral-content mx-auto
-                    relative 
-                    "
+                  class="card card-side bg-neutral text-neutral-content mx-auto relative"
                 >
                   <div
                     class="card-body text-center cursor-default"
@@ -589,8 +581,7 @@ exports[`App matches snapshot 1`] = `
                   </button>
                 </div>
                 <div
-                  class="collapse bg-neutral rounded-t-none cursor-default
-                 "
+                  class="collapse bg-neutral rounded-t-none cursor-default"
                 >
                   <input
                     class="hidden"
@@ -820,9 +811,7 @@ exports[`App matches snapshot 1`] = `
                 >
                   <a>
                     <div
-                      class="card card-side bg-neutral text-neutral-content mx-auto
-                    relative 
-                    "
+                      class="card card-side bg-neutral text-neutral-content mx-auto relative"
                     >
                       <figure
                         class="h-24 w-20 min-h-20 min-w-20"
@@ -867,8 +856,7 @@ exports[`App matches snapshot 1`] = `
                       </button>
                     </div>
                     <div
-                      class="collapse bg-neutral rounded-t-none cursor-default
-                 "
+                      class="collapse bg-neutral rounded-t-none cursor-default"
                     >
                       <input
                         class="hidden"
@@ -936,9 +924,7 @@ exports[`App matches snapshot 1`] = `
                 >
                   <a>
                     <div
-                      class="card card-side bg-neutral text-neutral-content mx-auto
-                    relative 
-                    "
+                      class="card card-side bg-neutral text-neutral-content mx-auto relative"
                     >
                       <figure
                         class="h-24 w-20 min-h-20 min-w-20"
@@ -983,8 +969,7 @@ exports[`App matches snapshot 1`] = `
                       </button>
                     </div>
                     <div
-                      class="collapse bg-neutral rounded-t-none cursor-default
-                 "
+                      class="collapse bg-neutral rounded-t-none cursor-default"
                     >
                       <input
                         class="hidden"
@@ -1082,9 +1067,7 @@ exports[`App matches snapshot 1`] = `
                 >
                   <a>
                     <div
-                      class="card card-side bg-neutral text-neutral-content mx-auto
-                    relative 
-                    "
+                      class="card card-side bg-neutral text-neutral-content mx-auto relative"
                     >
                       <div
                         class="card-body text-center cursor-default"
@@ -1137,8 +1120,7 @@ exports[`App matches snapshot 1`] = `
                       </button>
                     </div>
                     <div
-                      class="collapse bg-neutral rounded-t-none cursor-default
-                 "
+                      class="collapse bg-neutral rounded-t-none cursor-default"
                     >
                       <input
                         class="hidden"
@@ -1210,9 +1192,7 @@ exports[`App matches snapshot 1`] = `
                 >
                   <a>
                     <div
-                      class="card card-side bg-neutral text-neutral-content mx-auto
-                    relative 
-                    grayscale"
+                      class="card card-side bg-neutral text-neutral-content mx-auto relative grayscale"
                     >
                       <figure
                         class="h-24 w-20 min-h-20 min-w-20"
@@ -1274,8 +1254,7 @@ exports[`App matches snapshot 1`] = `
                       </button>
                     </div>
                     <div
-                      class="collapse bg-neutral rounded-t-none cursor-default
-                 grayscale"
+                      class="collapse bg-neutral rounded-t-none cursor-default grayscale"
                     >
                       <input
                         class="hidden"
@@ -1345,9 +1324,7 @@ exports[`App matches snapshot 1`] = `
                 >
                   <a>
                     <div
-                      class="card card-side bg-neutral text-neutral-content mx-auto
-                    relative 
-                    "
+                      class="card card-side bg-neutral text-neutral-content mx-auto relative"
                     >
                       <div
                         class="card-body text-center cursor-default"
@@ -1383,8 +1360,7 @@ exports[`App matches snapshot 1`] = `
                       </button>
                     </div>
                     <div
-                      class="collapse bg-neutral rounded-t-none cursor-default
-                 "
+                      class="collapse bg-neutral rounded-t-none cursor-default"
                     >
                       <input
                         class="hidden"
@@ -1865,9 +1841,7 @@ exports[`App matches snapshot 1`] = `
               href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             >
               <div
-                class="card card-side bg-neutral text-neutral-content mx-auto
-                    relative 
-                    "
+                class="card card-side bg-neutral text-neutral-content mx-auto relative"
               >
                 <div
                   class="card-body text-center cursor-default"
@@ -1920,8 +1894,7 @@ exports[`App matches snapshot 1`] = `
                 </button>
               </div>
               <div
-                class="collapse bg-neutral rounded-t-none cursor-default
-                 "
+                class="collapse bg-neutral rounded-t-none cursor-default"
               >
                 <input
                   class="hidden"
@@ -1984,9 +1957,7 @@ exports[`App matches snapshot 1`] = `
               href="/manage/19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
             >
               <div
-                class="card card-side bg-neutral text-neutral-content mx-auto
-                    relative 
-                    grayscale"
+                class="card card-side bg-neutral text-neutral-content mx-auto relative grayscale"
               >
                 <figure
                   class="h-24 w-20 min-h-20 min-w-20"
@@ -2048,8 +2019,7 @@ exports[`App matches snapshot 1`] = `
                 </button>
               </div>
               <div
-                class="collapse bg-neutral rounded-t-none cursor-default
-                 grayscale"
+                class="collapse bg-neutral rounded-t-none cursor-default grayscale"
               >
                 <input
                   class="hidden"
@@ -2110,9 +2080,7 @@ exports[`App matches snapshot 1`] = `
               href="/manage/26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
             >
               <div
-                class="card card-side bg-neutral text-neutral-content mx-auto
-                    relative 
-                    "
+                class="card card-side bg-neutral text-neutral-content mx-auto relative"
               >
                 <div
                   class="card-body text-center cursor-default"
@@ -2148,8 +2116,7 @@ exports[`App matches snapshot 1`] = `
                 </button>
               </div>
               <div
-                class="collapse bg-neutral rounded-t-none cursor-default
-                 "
+                class="collapse bg-neutral rounded-t-none cursor-default"
               >
                 <input
                   class="hidden"
@@ -2379,9 +2346,7 @@ exports[`App matches snapshot 1`] = `
               >
                 <a>
                   <div
-                    class="card card-side bg-neutral text-neutral-content mx-auto
-                    relative 
-                    "
+                    class="card card-side bg-neutral text-neutral-content mx-auto relative"
                   >
                     <figure
                       class="h-24 w-20 min-h-20 min-w-20"
@@ -2426,8 +2391,7 @@ exports[`App matches snapshot 1`] = `
                     </button>
                   </div>
                   <div
-                    class="collapse bg-neutral rounded-t-none cursor-default
-                 "
+                    class="collapse bg-neutral rounded-t-none cursor-default"
                   >
                     <input
                       class="hidden"
@@ -2495,9 +2459,7 @@ exports[`App matches snapshot 1`] = `
               >
                 <a>
                   <div
-                    class="card card-side bg-neutral text-neutral-content mx-auto
-                    relative 
-                    "
+                    class="card card-side bg-neutral text-neutral-content mx-auto relative"
                   >
                     <figure
                       class="h-24 w-20 min-h-20 min-w-20"
@@ -2542,8 +2504,7 @@ exports[`App matches snapshot 1`] = `
                     </button>
                   </div>
                   <div
-                    class="collapse bg-neutral rounded-t-none cursor-default
-                 "
+                    class="collapse bg-neutral rounded-t-none cursor-default"
                   >
                     <input
                       class="hidden"
@@ -2641,9 +2602,7 @@ exports[`App matches snapshot 1`] = `
               >
                 <a>
                   <div
-                    class="card card-side bg-neutral text-neutral-content mx-auto
-                    relative 
-                    "
+                    class="card card-side bg-neutral text-neutral-content mx-auto relative"
                   >
                     <div
                       class="card-body text-center cursor-default"
@@ -2696,8 +2655,7 @@ exports[`App matches snapshot 1`] = `
                     </button>
                   </div>
                   <div
-                    class="collapse bg-neutral rounded-t-none cursor-default
-                 "
+                    class="collapse bg-neutral rounded-t-none cursor-default"
                   >
                     <input
                       class="hidden"
@@ -2769,9 +2727,7 @@ exports[`App matches snapshot 1`] = `
               >
                 <a>
                   <div
-                    class="card card-side bg-neutral text-neutral-content mx-auto
-                    relative 
-                    grayscale"
+                    class="card card-side bg-neutral text-neutral-content mx-auto relative grayscale"
                   >
                     <figure
                       class="h-24 w-20 min-h-20 min-w-20"
@@ -2833,8 +2789,7 @@ exports[`App matches snapshot 1`] = `
                     </button>
                   </div>
                   <div
-                    class="collapse bg-neutral rounded-t-none cursor-default
-                 grayscale"
+                    class="collapse bg-neutral rounded-t-none cursor-default grayscale"
                   >
                     <input
                       class="hidden"
@@ -2904,9 +2859,7 @@ exports[`App matches snapshot 1`] = `
               >
                 <a>
                   <div
-                    class="card card-side bg-neutral text-neutral-content mx-auto
-                    relative 
-                    "
+                    class="card card-side bg-neutral text-neutral-content mx-auto relative"
                   >
                     <div
                       class="card-body text-center cursor-default"
@@ -2942,8 +2895,7 @@ exports[`App matches snapshot 1`] = `
                     </button>
                   </div>
                   <div
-                    class="collapse bg-neutral rounded-t-none cursor-default
-                 "
+                    class="collapse bg-neutral rounded-t-none cursor-default"
                   >
                     <input
                       class="hidden"

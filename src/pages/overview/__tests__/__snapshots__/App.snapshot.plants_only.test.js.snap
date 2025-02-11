@@ -237,9 +237,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                 href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
               >
                 <div
-                  class="card card-side bg-neutral text-neutral-content mx-auto
-                    relative 
-                    "
+                  class="card card-side bg-neutral text-neutral-content mx-auto relative"
                 >
                   <figure
                     class="h-24 w-20 min-h-20 min-w-20"
@@ -301,8 +299,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                   </button>
                 </div>
                 <div
-                  class="collapse bg-neutral rounded-t-none cursor-default
-                 "
+                  class="collapse bg-neutral rounded-t-none cursor-default"
                 >
                   <input
                     class="hidden"
@@ -411,7 +408,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                 <button
                   aria-controls="headlessui-tabs-panel-:r4:"
                   aria-selected="false"
-                  class="tab-option "
+                  class="tab-option"
                   data-headlessui-state=""
                   id="headlessui-tabs-tab-:r1:"
                   role="tab"
@@ -423,7 +420,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                 <button
                   aria-controls="headlessui-tabs-panel-:r5:"
                   aria-selected="false"
-                  class="tab-option "
+                  class="tab-option"
                   data-headlessui-state=""
                   id="headlessui-tabs-tab-:r2:"
                   role="tab"
@@ -769,9 +766,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
               href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             >
               <div
-                class="card card-side bg-neutral text-neutral-content mx-auto
-                    relative 
-                    "
+                class="card card-side bg-neutral text-neutral-content mx-auto relative"
               >
                 <figure
                   class="h-24 w-20 min-h-20 min-w-20"
@@ -833,8 +828,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                 </button>
               </div>
               <div
-                class="collapse bg-neutral rounded-t-none cursor-default
-                 "
+                class="collapse bg-neutral rounded-t-none cursor-default"
               >
                 <input
                   class="hidden"
@@ -943,7 +937,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
               <button
                 aria-controls="headlessui-tabs-panel-:r4:"
                 aria-selected="false"
-                class="tab-option "
+                class="tab-option"
                 data-headlessui-state=""
                 id="headlessui-tabs-tab-:r1:"
                 role="tab"
@@ -955,7 +949,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
               <button
                 aria-controls="headlessui-tabs-panel-:r5:"
                 aria-selected="false"
-                class="tab-option "
+                class="tab-option"
                 data-headlessui-state=""
                 id="headlessui-tabs-tab-:r2:"
                 role="tab"

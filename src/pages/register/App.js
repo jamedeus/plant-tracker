@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import clsx from 'clsx';
 import { Tab } from '@headlessui/react';
 import Navbar from 'src/components/Navbar';
 import { useTheme } from 'src/context/ThemeContext';
@@ -87,18 +88,16 @@ function App() {
             <div className="flex flex-col mx-8 md:w-1/2 md:mx-auto">
                 <Tab.Group onChange={(index) => setPlantForm(index)}>
                     <Tab.List className="tab-group">
-                        <Tab className={({ selected }) =>
-                            `tab-option ${
-                                selected ? 'tab-option-selected' : ''
-                            }`
-                        }>
+                        <Tab className={({ selected }) => clsx(
+                            'tab-option',
+                            selected && 'tab-option-selected'
+                        )}>
                             Plant
                         </Tab>
-                        <Tab className={({ selected }) =>
-                            `tab-option ${
-                                selected ? 'tab-option-selected' : ''
-                            }`
-                        }>
+                        <Tab className={({ selected }) => clsx(
+                            'tab-option',
+                            selected && 'tab-option-selected'
+                        )}>
                             Group
                         </Tab>
                     </Tab.List>

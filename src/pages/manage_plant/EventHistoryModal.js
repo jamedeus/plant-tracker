@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
 import { Tab } from '@headlessui/react';
 import { DateTime } from 'luxon';
 import { sendPostRequest } from 'src/util';
@@ -180,24 +181,28 @@ const EventHistoryModal = ({ plant, setPlant }) => {
         <Modal dialogRef={eventHistoryModalRef} title={"Event History"}>
             <Tab.Group>
                 <Tab.List className="tab-group mt-2">
-                    <Tab className={({ selected }) => `tab-option ${
-                        selected ? 'tab-option-selected' : ''}`
-                    }>
+                    <Tab className={({ selected }) => clsx(
+                        'tab-option',
+                        selected && 'tab-option-selected'
+                    )}>
                         Water
                     </Tab>
-                    <Tab className={({ selected }) => `tab-option ${
-                        selected ? 'tab-option-selected' : ''}`
-                    }>
+                    <Tab className={({ selected }) => clsx(
+                        'tab-option',
+                        selected && 'tab-option-selected'
+                    )}>
                         Fertilize
                     </Tab>
-                    <Tab className={({ selected }) => `tab-option ${
-                        selected ? 'tab-option-selected' : ''}`
-                    }>
+                    <Tab className={({ selected }) => clsx(
+                        'tab-option',
+                        selected && 'tab-option-selected'
+                    )}>
                         Prune
                     </Tab>
-                    <Tab className={({ selected }) => `tab-option ${
-                        selected ? 'tab-option-selected' : ''}`
-                    }>
+                    <Tab className={({ selected }) => clsx(
+                        'tab-option',
+                        selected && 'tab-option-selected'
+                    )}>
                         Repot
                     </Tab>
                 </Tab.List>

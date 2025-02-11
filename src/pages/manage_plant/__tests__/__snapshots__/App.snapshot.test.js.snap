@@ -1175,7 +1175,7 @@ exports[`App matches snapshot 1`] = `
               class="navbar-end w-auto"
             >
               <div
-                class="dropdown dropdown-end "
+                class="dropdown dropdown-end"
               >
                 <div
                   class="btn btn-ghost btn-circle"
@@ -1690,12 +1690,10 @@ exports[`App matches snapshot 1`] = `
                     value="2024-03-01T12:00:00"
                   />
                   <textarea
-                    class="textarea textarea-bordered w-full max-w-xs
-                                    mx-auto mt-8 mb-4 min-h-40
-                                    "
+                    class="textarea textarea-bordered w-full max-w-xs mx-auto mt-8 mb-4 min-h-40"
                   />
                   <span
-                    class="text-sm "
+                    class="text-sm"
                   >
                     0
                      / 500
@@ -2545,9 +2543,7 @@ exports[`App matches snapshot 1`] = `
               >
                 <a>
                   <div
-                    class="card bg-neutral text-neutral-content mx-auto w-full
-                    
-                    "
+                    class="card bg-neutral text-neutral-content mx-auto w-full"
                   >
                     <div
                       class="card-body text-center"
@@ -2585,8 +2581,7 @@ exports[`App matches snapshot 1`] = `
                     </button>
                   </div>
                   <div
-                    class="collapse bg-neutral rounded-t-none cursor-default
-                 "
+                    class="collapse bg-neutral rounded-t-none cursor-default"
                   >
                     <input
                       class="hidden"
@@ -2632,9 +2627,7 @@ exports[`App matches snapshot 1`] = `
               >
                 <a>
                   <div
-                    class="card bg-neutral text-neutral-content mx-auto w-full
-                    
-                    "
+                    class="card bg-neutral text-neutral-content mx-auto w-full"
                   >
                     <div
                       class="card-body text-center"
@@ -2672,8 +2665,7 @@ exports[`App matches snapshot 1`] = `
                     </button>
                   </div>
                   <div
-                    class="collapse bg-neutral rounded-t-none cursor-default
-                 "
+                    class="collapse bg-neutral rounded-t-none cursor-default"
                   >
                     <input
                       class="hidden"
@@ -3014,7 +3006,7 @@ exports[`App matches snapshot 1`] = `
               <button
                 aria-controls="headlessui-tabs-panel-:ri:"
                 aria-selected="false"
-                class="tab-option "
+                class="tab-option"
                 data-headlessui-state=""
                 id="headlessui-tabs-tab-:re:"
                 role="tab"
@@ -3026,7 +3018,7 @@ exports[`App matches snapshot 1`] = `
               <button
                 aria-controls="headlessui-tabs-panel-:rj:"
                 aria-selected="false"
-                class="tab-option "
+                class="tab-option"
                 data-headlessui-state=""
                 id="headlessui-tabs-tab-:rf:"
                 role="tab"
@@ -3038,7 +3030,7 @@ exports[`App matches snapshot 1`] = `
               <button
                 aria-controls="headlessui-tabs-panel-:rk:"
                 aria-selected="false"
-                class="tab-option "
+                class="tab-option"
                 data-headlessui-state=""
                 id="headlessui-tabs-tab-:rg:"
                 role="tab"
@@ -4413,7 +4405,7 @@ exports[`App matches snapshot 1`] = `
             class="navbar-end w-auto"
           >
             <div
-              class="dropdown dropdown-end "
+              class="dropdown dropdown-end"
             >
               <div
                 class="btn btn-ghost btn-circle"
@@ -4928,12 +4920,10 @@ exports[`App matches snapshot 1`] = `
                   value="2024-03-01T12:00:00"
                 />
                 <textarea
-                  class="textarea textarea-bordered w-full max-w-xs
-                                    mx-auto mt-8 mb-4 min-h-40
-                                    "
+                  class="textarea textarea-bordered w-full max-w-xs mx-auto mt-8 mb-4 min-h-40"
                 />
                 <span
-                  class="text-sm "
+                  class="text-sm"
                 >
                   0
                    / 500
@@ -5783,9 +5773,7 @@ exports[`App matches snapshot 1`] = `
             >
               <a>
                 <div
-                  class="card bg-neutral text-neutral-content mx-auto w-full
-                    
-                    "
+                  class="card bg-neutral text-neutral-content mx-auto w-full"
                 >
                   <div
                     class="card-body text-center"
@@ -5823,8 +5811,7 @@ exports[`App matches snapshot 1`] = `
                   </button>
                 </div>
                 <div
-                  class="collapse bg-neutral rounded-t-none cursor-default
-                 "
+                  class="collapse bg-neutral rounded-t-none cursor-default"
                 >
                   <input
                     class="hidden"
@@ -5870,9 +5857,7 @@ exports[`App matches snapshot 1`] = `
             >
               <a>
                 <div
-                  class="card bg-neutral text-neutral-content mx-auto w-full
-                    
-                    "
+                  class="card bg-neutral text-neutral-content mx-auto w-full"
                 >
                   <div
                     class="card-body text-center"
@@ -5910,8 +5895,7 @@ exports[`App matches snapshot 1`] = `
                   </button>
                 </div>
                 <div
-                  class="collapse bg-neutral rounded-t-none cursor-default
-                 "
+                  class="collapse bg-neutral rounded-t-none cursor-default"
                 >
                   <input
                     class="hidden"
@@ -6252,7 +6236,7 @@ exports[`App matches snapshot 1`] = `
             <button
               aria-controls="headlessui-tabs-panel-:ri:"
               aria-selected="false"
-              class="tab-option "
+              class="tab-option"
               data-headlessui-state=""
               id="headlessui-tabs-tab-:re:"
               role="tab"
@@ -6264,7 +6248,7 @@ exports[`App matches snapshot 1`] = `
             <button
               aria-controls="headlessui-tabs-panel-:rj:"
               aria-selected="false"
-              class="tab-option "
+              class="tab-option"
               data-headlessui-state=""
               id="headlessui-tabs-tab-:rf:"
               role="tab"
@@ -6276,7 +6260,7 @@ exports[`App matches snapshot 1`] = `
             <button
               aria-controls="headlessui-tabs-panel-:rk:"
               aria-selected="false"
-              class="tab-option "
+              class="tab-option"
               data-headlessui-state=""
               id="headlessui-tabs-tab-:rg:"
               role="tab"

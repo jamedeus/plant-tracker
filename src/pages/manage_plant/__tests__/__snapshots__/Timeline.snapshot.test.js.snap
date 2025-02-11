@@ -1441,7 +1441,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 "
+                    class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1"
                     data-icon="pen-to-square"
                     data-prefix="fas"
                     focusable="false"
@@ -1515,7 +1515,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 "
+                    class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1"
                     data-icon="pen-to-square"
                     data-prefix="fas"
                     focusable="false"
@@ -2868,12 +2868,10 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                   value="2024-03-01T12:00:00"
                 />
                 <textarea
-                  class="textarea textarea-bordered w-full max-w-xs
-                                    mx-auto mt-8 mb-4 min-h-40
-                                    "
+                  class="textarea textarea-bordered w-full max-w-xs mx-auto mt-8 mb-4 min-h-40"
                 />
                 <span
-                  class="text-sm "
+                  class="text-sm"
                 >
                   0
                    / 500
@@ -6952,7 +6950,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 "
+                  class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1"
                   data-icon="pen-to-square"
                   data-prefix="fas"
                   focusable="false"
@@ -7026,7 +7024,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 "
+                  class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1"
                   data-icon="pen-to-square"
                   data-prefix="fas"
                   focusable="false"
@@ -8379,12 +8377,10 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 value="2024-03-01T12:00:00"
               />
               <textarea
-                class="textarea textarea-bordered w-full max-w-xs
-                                    mx-auto mt-8 mb-4 min-h-40
-                                    "
+                class="textarea textarea-bordered w-full max-w-xs mx-auto mt-8 mb-4 min-h-40"
               />
               <span
-                class="text-sm "
+                class="text-sm"
               >
                 0
                  / 500
@@ -11273,7 +11269,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="navbar-end w-auto"
           >
             <div
-              class="dropdown dropdown-end "
+              class="dropdown dropdown-end"
             >
               <div
                 class="btn btn-ghost btn-circle"
@@ -13998,12 +13994,10 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                   value="2024-03-01T12:00:00"
                 />
                 <textarea
-                  class="textarea textarea-bordered w-full max-w-xs
-                                    mx-auto mt-8 mb-4 min-h-40
-                                    "
+                  class="textarea textarea-bordered w-full max-w-xs mx-auto mt-8 mb-4 min-h-40"
                 />
                 <span
-                  class="text-sm "
+                  class="text-sm"
                 >
                   0
                    / 500
@@ -16825,7 +16819,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="navbar-end w-auto"
         >
           <div
-            class="dropdown dropdown-end "
+            class="dropdown dropdown-end"
           >
             <div
               class="btn btn-ghost btn-circle"
@@ -19550,12 +19544,10 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                 value="2024-03-01T12:00:00"
               />
               <textarea
-                class="textarea textarea-bordered w-full max-w-xs
-                                    mx-auto mt-8 mb-4 min-h-40
-                                    "
+                class="textarea textarea-bordered w-full max-w-xs mx-auto mt-8 mb-4 min-h-40"
               />
               <span
-                class="text-sm "
+                class="text-sm"
               >
                 0
                  / 500

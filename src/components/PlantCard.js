@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDroplet } from '@fortawesome/free-solid-svg-icons';
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/16/solid';
@@ -22,10 +23,11 @@ const PlantCard = ({ display_name, uuid, species, description, pot_size, last_wa
     // Renders collapse with Plant details, opened with arrow button
     const DetailsSection = () => {
         return (
-            <div className={
-                `collapse bg-neutral rounded-t-none cursor-default
-                ${open ? "pt-4" : ""} ${archived ? 'grayscale' : ''}`
-            }>
+            <div className={clsx(
+                'collapse bg-neutral rounded-t-none cursor-default',
+                open && 'pt-4',
+                archived && 'grayscale'
+            )}>
                 <input
                     type="checkbox"
                     className="hidden"
@@ -98,13 +100,11 @@ const PlantCard = ({ display_name, uuid, species, description, pot_size, last_wa
             href={linkPage ? `/manage/${uuid}` : null}
             className={linkPage ? 'cursor-pointer' : null}
         >
-            <div
-                className={
-                    `card card-side bg-neutral text-neutral-content mx-auto
-                    relative ${open ? "rounded-b-none" : ""}
-                    ${archived ? 'grayscale' : ''}`
-                }
-            >
+            <div className={clsx(
+                'card card-side bg-neutral text-neutral-content mx-auto relative',
+                open && 'rounded-b-none',
+                archived && 'grayscale'
+            )}>
                 {thumbnail && <Thumbnail />}
 
                 <Body />

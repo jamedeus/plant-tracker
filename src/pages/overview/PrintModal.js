@@ -1,4 +1,5 @@
 import React, { useState, useRef, useImperativeHandle } from 'react';
+import clsx from 'clsx';
 import { Tab } from '@headlessui/react';
 import print from 'print-js';
 import Modal from 'src/components/Modal';
@@ -147,9 +148,10 @@ const PrintModal = React.forwardRef(function PrintModal(_, ref) {
                         <Tab.List className="tab-group">
                             {Object.keys(options).map((option) => (
                                 <Tab key={option} className={({ selected }) =>
-                                    `tab-option ${
-                                        selected ? 'tab-option-selected' : ''
-                                    }`
+                                    clsx(
+                                        'tab-option',
+                                        selected && 'tab-option-selected'
+                                    )
                                 }>
                                     {option}
                                 </Tab>

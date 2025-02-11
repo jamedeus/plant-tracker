@@ -1,4 +1,5 @@
 import React, { useState, useRef, useImperativeHandle } from 'react';
+import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 import DatetimeInput from 'src/components/DatetimeInput';
@@ -146,13 +147,18 @@ const NoteModal = React.forwardRef(function NoteModal({ plantID, notes, setNotes
                         : <DatetimeInput inputRef={timestampRef} />
                     }
                     <textarea
-                        className={`textarea textarea-bordered w-full max-w-xs
-                                    mx-auto mt-8 mb-4 min-h-40
-                                    ${charCount > 500 ? 'textarea-error' : ''}`}
+                        className={clsx(
+                            'textarea textarea-bordered w-full max-w-xs',
+                            'mx-auto mt-8 mb-4 min-h-40',
+                            charCount > 500 && 'textarea-error'
+                        )}
                         value={noteText}
                         onChange={e => updateNoteText(e.target.value)}
                     ></textarea>
-                    <span className={`text-sm ${charCount > 500 ? 'text-error' : ''}`}>
+                    <span className={clsx(
+                        'text-sm',
+                        charCount > 500 && 'text-error'
+                    )}>
                         {charCount} / 500
                     </span>
                 </div>

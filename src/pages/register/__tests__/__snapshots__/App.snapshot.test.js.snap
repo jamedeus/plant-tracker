@@ -133,7 +133,7 @@ exports[`App matches snapshot 1`] = `
             <button
               aria-controls="headlessui-tabs-panel-:r4:"
               aria-selected="false"
-              class="tab-option "
+              class="tab-option"
               data-headlessui-state=""
               id="headlessui-tabs-tab-:r1:"
               role="tab"
@@ -431,7 +431,7 @@ exports[`App matches snapshot 1`] = `
           <button
             aria-controls="headlessui-tabs-panel-:r4:"
             aria-selected="false"
-            class="tab-option "
+            class="tab-option"
             data-headlessui-state=""
             id="headlessui-tabs-tab-:r1:"
             role="tab"

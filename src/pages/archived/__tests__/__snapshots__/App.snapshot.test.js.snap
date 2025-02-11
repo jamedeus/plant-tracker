@@ -259,9 +259,7 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
                     href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                   >
                     <div
-                      class="card card-side bg-neutral text-neutral-content mx-auto
-                    relative 
-                    grayscale"
+                      class="card card-side bg-neutral text-neutral-content mx-auto relative grayscale"
                     >
                       <figure
                         class="h-24 w-20 min-h-20 min-w-20"
@@ -323,8 +321,7 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
                       </button>
                     </div>
                     <div
-                      class="collapse bg-neutral rounded-t-none cursor-default
-                 grayscale"
+                      class="collapse bg-neutral rounded-t-none cursor-default grayscale"
                     >
                       <input
                         class="hidden"
@@ -491,9 +488,7 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
                     href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                   >
                     <div
-                      class="card bg-neutral text-neutral-content mx-auto w-full
-                    
-                    grayscale"
+                      class="card bg-neutral text-neutral-content mx-auto w-full grayscale"
                     >
                       <div
                         class="card-body text-center"
@@ -531,8 +526,7 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
                       </button>
                     </div>
                     <div
-                      class="collapse bg-neutral rounded-t-none cursor-default
-                 grayscale"
+                      class="collapse bg-neutral rounded-t-none cursor-default grayscale"
                     >
                       <input
                         class="hidden"
@@ -877,9 +871,7 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
                   href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                 >
                   <div
-                    class="card card-side bg-neutral text-neutral-content mx-auto
-                    relative 
-                    grayscale"
+                    class="card card-side bg-neutral text-neutral-content mx-auto relative grayscale"
                   >
                     <figure
                       class="h-24 w-20 min-h-20 min-w-20"
@@ -941,8 +933,7 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
                     </button>
                   </div>
                   <div
-                    class="collapse bg-neutral rounded-t-none cursor-default
-                 grayscale"
+                    class="collapse bg-neutral rounded-t-none cursor-default grayscale"
                   >
                     <input
                       class="hidden"
@@ -1109,9 +1100,7 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
                   href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                 >
                   <div
-                    class="card bg-neutral text-neutral-content mx-auto w-full
-                    
-                    grayscale"
+                    class="card bg-neutral text-neutral-content mx-auto w-full grayscale"
                   >
                     <div
                       class="card-body text-center"
@@ -1149,8 +1138,7 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
                     </button>
                   </div>
                   <div
-                    class="collapse bg-neutral rounded-t-none cursor-default
-                 grayscale"
+                    class="collapse bg-neutral rounded-t-none cursor-default grayscale"
                   >
                     <input
                       class="hidden"

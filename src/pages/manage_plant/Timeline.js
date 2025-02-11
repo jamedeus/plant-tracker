@@ -1,5 +1,6 @@
 import React, { useRef, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
 import { DateTime } from 'luxon';
 import { Popover } from "react-tiny-popover";
 import { parseDomContext, capitalize, pastTense } from 'src/util';
@@ -276,11 +277,17 @@ const Timeline = ({ plantID, events, archived }) => {
             <div className="m-2 flex flex-row">
                 <FontAwesomeIcon
                     icon={faPenToSquare}
-                    className={`w-4 h-4 mr-2 mt-1 ${archived ? '' : 'cursor-pointer'}`}
+                    className={clsx(
+                        'w-4 h-4 mr-2 mt-1',
+                        archived || 'cursor-pointer'
+                    )}
                     onClick={!archived && editNote}
                 />
                 <div
-                    className={`cursor-pointer ${expanded ? '' : `line-clamp-1`}`}
+                    className={clsx(
+                        'cursor-pointer',
+                        expanded || 'line-clamp-1'
+                    )}
                     title={readableTimestamp}
                     onClick={() => setExpanded(!expanded)}
                 >
@@ -416,7 +423,10 @@ const Timeline = ({ plantID, events, archived }) => {
                 </div>
 
                 <div className="navbar-end w-auto">
-                    <div className={`dropdown dropdown-end ${archived ? 'invisible': ''}`}>
+                    <div className={clsx(
+                        'dropdown dropdown-end',
+                        archived && 'invisible'
+                    )}>
                         <MenuButton />
                         {!archived && (
                             <MenuOptions />
