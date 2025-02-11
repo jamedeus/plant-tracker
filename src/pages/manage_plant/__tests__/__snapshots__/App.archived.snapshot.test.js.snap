@@ -2288,6 +2288,153 @@ exports[`App matches snapshot 1`] = `
             <h1
               class="font-bold text-lg md:text-xl mb-4"
             >
+              Edit Details
+            </h1>
+            <form
+              id="plantDetails"
+            >
+              <label
+                class="form-control w-full"
+              >
+                <div
+                  class="label"
+                >
+                  <span
+                    class="label-text-alt"
+                  >
+                    Plant name
+                  </span>
+                </div>
+                <input
+                  class="input w-full input-bordered"
+                  name="name"
+                  type="text"
+                  value="Test Plant"
+                />
+              </label>
+              <label
+                class="form-control w-full relative"
+              >
+                <div
+                  class="label"
+                >
+                  <span
+                    class="label-text-alt"
+                  >
+                    Plant species
+                  </span>
+                </div>
+                <input
+                  aria-autocomplete="list"
+                  aria-expanded="false"
+                  autocomplete="off"
+                  class="input w-full input-bordered"
+                  data-headlessui-state=""
+                  id="headlessui-combobox-input-:r0:"
+                  name="species"
+                  role="combobox"
+                  type="text"
+                  value=""
+                />
+              </label>
+              <label
+                class="form-control w-full"
+              >
+                <div
+                  class="label"
+                >
+                  <span
+                    class="label-text-alt"
+                  >
+                    Pot size
+                  </span>
+                </div>
+                <input
+                  class="input w-full input-bordered"
+                  max="36"
+                  min="1"
+                  name="pot_size"
+                  type="number"
+                  value="4"
+                />
+              </label>
+              <label
+                class="form-control w-full"
+              >
+                <div
+                  class="label"
+                >
+                  <span
+                    class="label-text-alt"
+                  >
+                    Description
+                  </span>
+                </div>
+                <textarea
+                  class="textarea textarea-bordered"
+                  name="description"
+                >
+                  This is a plant with a long description
+                </textarea>
+              </label>
+            </form>
+            <div
+              class="modal-action mx-auto"
+            >
+              <form
+                method="dialog"
+              >
+                <button
+                  class="btn mr-2"
+                >
+                  Cancel
+                </button>
+                <button
+                  class="btn ml-2"
+                >
+                  Edit
+                </button>
+              </form>
+            </div>
+          </div>
+          <form
+            class="modal-backdrop"
+            method="dialog"
+          >
+            <button>
+              close
+            </button>
+          </form>
+        </dialog>
+        <dialog
+          class="modal"
+        >
+          <div
+            class="modal-box text-center flex flex-col pt-4 "
+          >
+            <form
+              method="dialog"
+            >
+              <button
+                class="btn-close absolute right-4 top-4"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="w-8 h-8"
+                  data-slot="icon"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+                  />
+                </svg>
+              </button>
+            </form>
+            <h1
+              class="font-bold text-lg md:text-xl mb-4"
+            >
               Add plant to group
             </h1>
             <div
@@ -2472,6 +2619,491 @@ exports[`App matches snapshot 1`] = `
                 </a>
               </div>
             </div>
+          </div>
+          <form
+            class="modal-backdrop"
+            method="dialog"
+          >
+            <button>
+              close
+            </button>
+          </form>
+        </dialog>
+        <dialog
+          class="modal"
+        >
+          <div
+            class="modal-box text-center flex flex-col pt-4 "
+          >
+            <form
+              method="dialog"
+            >
+              <button
+                class="btn-close absolute right-4 top-4"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="w-8 h-8"
+                  data-slot="icon"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+                  />
+                </svg>
+              </button>
+            </form>
+            <h1
+              class="font-bold text-lg md:text-xl mb-4"
+            >
+              Repot plant
+            </h1>
+            <div
+              class="mt-4"
+            >
+              <p>
+                Repot time
+              </p>
+              <input
+                class="input input-bordered mx-auto my-2"
+                step="1"
+                type="datetime-local"
+                value="2024-03-01T12:00:00"
+              />
+            </div>
+            <div
+              class="my-8"
+            >
+              <p
+                class="text-md"
+              >
+                New pot size
+              </p>
+              <div
+                class="flex flex-col"
+                id="headlessui-radiogroup-:r1:"
+                role="radiogroup"
+              >
+                <div
+                  class="flex justify-center mx-auto"
+                  role="none"
+                >
+                  <div
+                    aria-checked="false"
+                    class="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
+                    data-headlessui-state=""
+                    id="headlessui-radiogroup-option-:r2:"
+                    role="radio"
+                    tabindex="-1"
+                  >
+                    <span
+                      class="m-auto"
+                    >
+                      2
+                    </span>
+                  </div>
+                  <div
+                    aria-checked="false"
+                    class="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
+                    data-headlessui-state=""
+                    id="headlessui-radiogroup-option-:r3:"
+                    role="radio"
+                    tabindex="-1"
+                  >
+                    <span
+                      class="m-auto"
+                    >
+                      3
+                    </span>
+                  </div>
+                  <div
+                    aria-checked="false"
+                    class="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
+                    data-headlessui-state=""
+                    id="headlessui-radiogroup-option-:r4:"
+                    role="radio"
+                    tabindex="-1"
+                  >
+                    <span
+                      class="m-auto"
+                    >
+                      4
+                    </span>
+                  </div>
+                  <div
+                    aria-checked="true"
+                    class="pot-size w-10 h-10 md:w-12 md:h-12 pot-size-selected"
+                    data-headlessui-state="checked"
+                    id="headlessui-radiogroup-option-:r5:"
+                    role="radio"
+                    tabindex="0"
+                  >
+                    <span
+                      class="m-auto"
+                    >
+                      6
+                    </span>
+                  </div>
+                  <div
+                    aria-checked="false"
+                    class="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
+                    data-headlessui-state=""
+                    id="headlessui-radiogroup-option-:r6:"
+                    role="radio"
+                    tabindex="-1"
+                  >
+                    <span
+                      class="m-auto"
+                    >
+                      8
+                    </span>
+                  </div>
+                </div>
+                <div
+                  class="flex justify-center mx-auto"
+                  role="none"
+                >
+                  <div
+                    aria-checked="false"
+                    class="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
+                    data-headlessui-state=""
+                    id="headlessui-radiogroup-option-:r7:"
+                    role="radio"
+                    tabindex="-1"
+                  >
+                    <span
+                      class="m-auto"
+                    >
+                      10
+                    </span>
+                  </div>
+                  <div
+                    aria-checked="false"
+                    class="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
+                    data-headlessui-state=""
+                    id="headlessui-radiogroup-option-:r8:"
+                    role="radio"
+                    tabindex="-1"
+                  >
+                    <span
+                      class="m-auto"
+                    >
+                      12
+                    </span>
+                  </div>
+                  <div
+                    aria-checked="false"
+                    class="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
+                    data-headlessui-state=""
+                    id="headlessui-radiogroup-option-:r9:"
+                    role="radio"
+                    tabindex="-1"
+                  >
+                    <span
+                      class="m-auto"
+                    >
+                      14
+                    </span>
+                  </div>
+                  <div
+                    aria-checked="false"
+                    class="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
+                    data-headlessui-state=""
+                    id="headlessui-radiogroup-option-:ra:"
+                    role="radio"
+                    tabindex="-1"
+                  >
+                    <span
+                      class="m-auto"
+                    >
+                      18
+                    </span>
+                  </div>
+                  <div
+                    aria-checked="false"
+                    class="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
+                    data-headlessui-state=""
+                    id="headlessui-radiogroup-option-:rb:"
+                    role="radio"
+                    tabindex="-1"
+                  >
+                    <span
+                      class="m-auto"
+                    >
+                      21
+                    </span>
+                  </div>
+                </div>
+                <div
+                  class="flex justify-center mx-auto"
+                  role="none"
+                >
+                  <input
+                    aria-checked="false"
+                    class="pot-size w-32 bg-base-300"
+                    data-headlessui-state=""
+                    id="headlessui-radiogroup-option-:rc:"
+                    placeholder="custom"
+                    role="radio"
+                    tabindex="-1"
+                  />
+                </div>
+              </div>
+            </div>
+            <button
+              class="btn btn-success mx-auto"
+            >
+              Repot
+            </button>
+          </div>
+          <form
+            class="modal-backdrop"
+            method="dialog"
+          >
+            <button>
+              close
+            </button>
+          </form>
+        </dialog>
+        <dialog
+          class="modal"
+        >
+          <div
+            class="modal-box text-center flex flex-col pt-4 "
+          >
+            <form
+              method="dialog"
+            >
+              <button
+                class="btn-close absolute right-4 top-4"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="w-8 h-8"
+                  data-slot="icon"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+                  />
+                </svg>
+              </button>
+            </form>
+            <h1
+              class="font-bold text-lg md:text-xl mb-4"
+            >
+              Event History
+            </h1>
+            <div
+              aria-orientation="horizontal"
+              class="tab-group mt-2"
+              role="tablist"
+            >
+              <button
+                aria-controls="headlessui-tabs-panel-:rh:"
+                aria-selected="true"
+                class="tab-option tab-option-selected"
+                data-headlessui-state="selected"
+                id="headlessui-tabs-tab-:rd:"
+                role="tab"
+                tabindex="0"
+                type="button"
+              >
+                Water
+              </button>
+              <button
+                aria-controls="headlessui-tabs-panel-:ri:"
+                aria-selected="false"
+                class="tab-option "
+                data-headlessui-state=""
+                id="headlessui-tabs-tab-:re:"
+                role="tab"
+                tabindex="-1"
+                type="button"
+              >
+                Fertilize
+              </button>
+              <button
+                aria-controls="headlessui-tabs-panel-:rj:"
+                aria-selected="false"
+                class="tab-option "
+                data-headlessui-state=""
+                id="headlessui-tabs-tab-:rf:"
+                role="tab"
+                tabindex="-1"
+                type="button"
+              >
+                Prune
+              </button>
+              <button
+                aria-controls="headlessui-tabs-panel-:rk:"
+                aria-selected="false"
+                class="tab-option "
+                data-headlessui-state=""
+                id="headlessui-tabs-tab-:rg:"
+                role="tab"
+                tabindex="-1"
+                type="button"
+              >
+                Repot
+              </button>
+            </div>
+            <div
+              class="mt-8 mb-4"
+            >
+              <div
+                aria-labelledby="headlessui-tabs-tab-:rd:"
+                data-headlessui-state="selected"
+                id="headlessui-tabs-panel-:rh:"
+                role="tabpanel"
+                tabindex="0"
+              >
+                <div
+                  class="flex flex-col mx-auto"
+                >
+                  <div
+                    class="max-h-half-screen overflow-scroll px-4"
+                  >
+                    <label
+                      class="card card-compact max-w-80 mb-4 mx-auto
+                select-none bg-neutral text-neutral-content "
+                    >
+                      <input
+                        class="hidden"
+                        type="checkbox"
+                      />
+                      <div
+                        class="card-body text-center"
+                      >
+                        <p
+                          class="text-lg font-bold"
+                        >
+                          today
+                        </p>
+                        <p>
+                          7:45 AM March 01, 2024
+                        </p>
+                      </div>
+                    </label>
+                    <label
+                      class="card card-compact max-w-80 mb-4 mx-auto
+                select-none bg-neutral text-neutral-content "
+                    >
+                      <input
+                        class="hidden"
+                        type="checkbox"
+                      />
+                      <div
+                        class="card-body text-center"
+                      >
+                        <p
+                          class="text-lg font-bold"
+                        >
+                          yesterday
+                        </p>
+                        <p>
+                          2:20 AM February 29, 2024
+                        </p>
+                      </div>
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <span
+                aria-hidden="true"
+                aria-labelledby="headlessui-tabs-tab-:re:"
+                id="headlessui-tabs-panel-:ri:"
+                role="tabpanel"
+                style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px;"
+                tabindex="-1"
+              />
+              <span
+                aria-hidden="true"
+                aria-labelledby="headlessui-tabs-tab-:rf:"
+                id="headlessui-tabs-panel-:rj:"
+                role="tabpanel"
+                style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px;"
+                tabindex="-1"
+              />
+              <span
+                aria-hidden="true"
+                aria-labelledby="headlessui-tabs-tab-:rg:"
+                id="headlessui-tabs-panel-:rk:"
+                role="tabpanel"
+                style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px;"
+                tabindex="-1"
+              />
+            </div>
+            <div
+              class="flex mt-4"
+            >
+              <button
+                class="btn btn-error mx-auto"
+                disabled=""
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+          <form
+            class="modal-backdrop"
+            method="dialog"
+          >
+            <button>
+              close
+            </button>
+          </form>
+        </dialog>
+        <dialog
+          class="modal"
+        >
+          <div
+            class="modal-box text-center flex flex-col pt-4 "
+          >
+            <form
+              method="dialog"
+            >
+              <button
+                class="btn-close absolute right-4 top-4"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="w-8 h-8"
+                  data-slot="icon"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+                  />
+                </svg>
+              </button>
+            </form>
+            <h1
+              class="font-bold text-lg md:text-xl mb-4"
+            >
+              Change QR Code
+            </h1>
+            <div
+              class="min-h-36 flex flex-col justify-evenly mx-auto"
+            >
+              <p>
+                Get your new QR code ready, then click OK.
+              </p>
+              <p>
+                You will have 15 minutes to scan the new QR code.
+              </p>
+            </div>
+            <button
+              class="btn btn-success mx-auto mt-4"
+            >
+              OK
+            </button>
           </div>
           <form
             class="modal-backdrop"
@@ -4798,6 +5430,153 @@ exports[`App matches snapshot 1`] = `
           <h1
             class="font-bold text-lg md:text-xl mb-4"
           >
+            Edit Details
+          </h1>
+          <form
+            id="plantDetails"
+          >
+            <label
+              class="form-control w-full"
+            >
+              <div
+                class="label"
+              >
+                <span
+                  class="label-text-alt"
+                >
+                  Plant name
+                </span>
+              </div>
+              <input
+                class="input w-full input-bordered"
+                name="name"
+                type="text"
+                value="Test Plant"
+              />
+            </label>
+            <label
+              class="form-control w-full relative"
+            >
+              <div
+                class="label"
+              >
+                <span
+                  class="label-text-alt"
+                >
+                  Plant species
+                </span>
+              </div>
+              <input
+                aria-autocomplete="list"
+                aria-expanded="false"
+                autocomplete="off"
+                class="input w-full input-bordered"
+                data-headlessui-state=""
+                id="headlessui-combobox-input-:r0:"
+                name="species"
+                role="combobox"
+                type="text"
+                value=""
+              />
+            </label>
+            <label
+              class="form-control w-full"
+            >
+              <div
+                class="label"
+              >
+                <span
+                  class="label-text-alt"
+                >
+                  Pot size
+                </span>
+              </div>
+              <input
+                class="input w-full input-bordered"
+                max="36"
+                min="1"
+                name="pot_size"
+                type="number"
+                value="4"
+              />
+            </label>
+            <label
+              class="form-control w-full"
+            >
+              <div
+                class="label"
+              >
+                <span
+                  class="label-text-alt"
+                >
+                  Description
+                </span>
+              </div>
+              <textarea
+                class="textarea textarea-bordered"
+                name="description"
+              >
+                This is a plant with a long description
+              </textarea>
+            </label>
+          </form>
+          <div
+            class="modal-action mx-auto"
+          >
+            <form
+              method="dialog"
+            >
+              <button
+                class="btn mr-2"
+              >
+                Cancel
+              </button>
+              <button
+                class="btn ml-2"
+              >
+                Edit
+              </button>
+            </form>
+          </div>
+        </div>
+        <form
+          class="modal-backdrop"
+          method="dialog"
+        >
+          <button>
+            close
+          </button>
+        </form>
+      </dialog>
+      <dialog
+        class="modal"
+      >
+        <div
+          class="modal-box text-center flex flex-col pt-4 "
+        >
+          <form
+            method="dialog"
+          >
+            <button
+              class="btn-close absolute right-4 top-4"
+            >
+              <svg
+                aria-hidden="true"
+                class="w-8 h-8"
+                data-slot="icon"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+                />
+              </svg>
+            </button>
+          </form>
+          <h1
+            class="font-bold text-lg md:text-xl mb-4"
+          >
             Add plant to group
           </h1>
           <div
@@ -4982,6 +5761,491 @@ exports[`App matches snapshot 1`] = `
               </a>
             </div>
           </div>
+        </div>
+        <form
+          class="modal-backdrop"
+          method="dialog"
+        >
+          <button>
+            close
+          </button>
+        </form>
+      </dialog>
+      <dialog
+        class="modal"
+      >
+        <div
+          class="modal-box text-center flex flex-col pt-4 "
+        >
+          <form
+            method="dialog"
+          >
+            <button
+              class="btn-close absolute right-4 top-4"
+            >
+              <svg
+                aria-hidden="true"
+                class="w-8 h-8"
+                data-slot="icon"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+                />
+              </svg>
+            </button>
+          </form>
+          <h1
+            class="font-bold text-lg md:text-xl mb-4"
+          >
+            Repot plant
+          </h1>
+          <div
+            class="mt-4"
+          >
+            <p>
+              Repot time
+            </p>
+            <input
+              class="input input-bordered mx-auto my-2"
+              step="1"
+              type="datetime-local"
+              value="2024-03-01T12:00:00"
+            />
+          </div>
+          <div
+            class="my-8"
+          >
+            <p
+              class="text-md"
+            >
+              New pot size
+            </p>
+            <div
+              class="flex flex-col"
+              id="headlessui-radiogroup-:r1:"
+              role="radiogroup"
+            >
+              <div
+                class="flex justify-center mx-auto"
+                role="none"
+              >
+                <div
+                  aria-checked="false"
+                  class="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
+                  data-headlessui-state=""
+                  id="headlessui-radiogroup-option-:r2:"
+                  role="radio"
+                  tabindex="-1"
+                >
+                  <span
+                    class="m-auto"
+                  >
+                    2
+                  </span>
+                </div>
+                <div
+                  aria-checked="false"
+                  class="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
+                  data-headlessui-state=""
+                  id="headlessui-radiogroup-option-:r3:"
+                  role="radio"
+                  tabindex="-1"
+                >
+                  <span
+                    class="m-auto"
+                  >
+                    3
+                  </span>
+                </div>
+                <div
+                  aria-checked="false"
+                  class="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
+                  data-headlessui-state=""
+                  id="headlessui-radiogroup-option-:r4:"
+                  role="radio"
+                  tabindex="-1"
+                >
+                  <span
+                    class="m-auto"
+                  >
+                    4
+                  </span>
+                </div>
+                <div
+                  aria-checked="true"
+                  class="pot-size w-10 h-10 md:w-12 md:h-12 pot-size-selected"
+                  data-headlessui-state="checked"
+                  id="headlessui-radiogroup-option-:r5:"
+                  role="radio"
+                  tabindex="0"
+                >
+                  <span
+                    class="m-auto"
+                  >
+                    6
+                  </span>
+                </div>
+                <div
+                  aria-checked="false"
+                  class="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
+                  data-headlessui-state=""
+                  id="headlessui-radiogroup-option-:r6:"
+                  role="radio"
+                  tabindex="-1"
+                >
+                  <span
+                    class="m-auto"
+                  >
+                    8
+                  </span>
+                </div>
+              </div>
+              <div
+                class="flex justify-center mx-auto"
+                role="none"
+              >
+                <div
+                  aria-checked="false"
+                  class="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
+                  data-headlessui-state=""
+                  id="headlessui-radiogroup-option-:r7:"
+                  role="radio"
+                  tabindex="-1"
+                >
+                  <span
+                    class="m-auto"
+                  >
+                    10
+                  </span>
+                </div>
+                <div
+                  aria-checked="false"
+                  class="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
+                  data-headlessui-state=""
+                  id="headlessui-radiogroup-option-:r8:"
+                  role="radio"
+                  tabindex="-1"
+                >
+                  <span
+                    class="m-auto"
+                  >
+                    12
+                  </span>
+                </div>
+                <div
+                  aria-checked="false"
+                  class="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
+                  data-headlessui-state=""
+                  id="headlessui-radiogroup-option-:r9:"
+                  role="radio"
+                  tabindex="-1"
+                >
+                  <span
+                    class="m-auto"
+                  >
+                    14
+                  </span>
+                </div>
+                <div
+                  aria-checked="false"
+                  class="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
+                  data-headlessui-state=""
+                  id="headlessui-radiogroup-option-:ra:"
+                  role="radio"
+                  tabindex="-1"
+                >
+                  <span
+                    class="m-auto"
+                  >
+                    18
+                  </span>
+                </div>
+                <div
+                  aria-checked="false"
+                  class="pot-size w-10 h-10 md:w-12 md:h-12 bg-base-300"
+                  data-headlessui-state=""
+                  id="headlessui-radiogroup-option-:rb:"
+                  role="radio"
+                  tabindex="-1"
+                >
+                  <span
+                    class="m-auto"
+                  >
+                    21
+                  </span>
+                </div>
+              </div>
+              <div
+                class="flex justify-center mx-auto"
+                role="none"
+              >
+                <input
+                  aria-checked="false"
+                  class="pot-size w-32 bg-base-300"
+                  data-headlessui-state=""
+                  id="headlessui-radiogroup-option-:rc:"
+                  placeholder="custom"
+                  role="radio"
+                  tabindex="-1"
+                />
+              </div>
+            </div>
+          </div>
+          <button
+            class="btn btn-success mx-auto"
+          >
+            Repot
+          </button>
+        </div>
+        <form
+          class="modal-backdrop"
+          method="dialog"
+        >
+          <button>
+            close
+          </button>
+        </form>
+      </dialog>
+      <dialog
+        class="modal"
+      >
+        <div
+          class="modal-box text-center flex flex-col pt-4 "
+        >
+          <form
+            method="dialog"
+          >
+            <button
+              class="btn-close absolute right-4 top-4"
+            >
+              <svg
+                aria-hidden="true"
+                class="w-8 h-8"
+                data-slot="icon"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+                />
+              </svg>
+            </button>
+          </form>
+          <h1
+            class="font-bold text-lg md:text-xl mb-4"
+          >
+            Event History
+          </h1>
+          <div
+            aria-orientation="horizontal"
+            class="tab-group mt-2"
+            role="tablist"
+          >
+            <button
+              aria-controls="headlessui-tabs-panel-:rh:"
+              aria-selected="true"
+              class="tab-option tab-option-selected"
+              data-headlessui-state="selected"
+              id="headlessui-tabs-tab-:rd:"
+              role="tab"
+              tabindex="0"
+              type="button"
+            >
+              Water
+            </button>
+            <button
+              aria-controls="headlessui-tabs-panel-:ri:"
+              aria-selected="false"
+              class="tab-option "
+              data-headlessui-state=""
+              id="headlessui-tabs-tab-:re:"
+              role="tab"
+              tabindex="-1"
+              type="button"
+            >
+              Fertilize
+            </button>
+            <button
+              aria-controls="headlessui-tabs-panel-:rj:"
+              aria-selected="false"
+              class="tab-option "
+              data-headlessui-state=""
+              id="headlessui-tabs-tab-:rf:"
+              role="tab"
+              tabindex="-1"
+              type="button"
+            >
+              Prune
+            </button>
+            <button
+              aria-controls="headlessui-tabs-panel-:rk:"
+              aria-selected="false"
+              class="tab-option "
+              data-headlessui-state=""
+              id="headlessui-tabs-tab-:rg:"
+              role="tab"
+              tabindex="-1"
+              type="button"
+            >
+              Repot
+            </button>
+          </div>
+          <div
+            class="mt-8 mb-4"
+          >
+            <div
+              aria-labelledby="headlessui-tabs-tab-:rd:"
+              data-headlessui-state="selected"
+              id="headlessui-tabs-panel-:rh:"
+              role="tabpanel"
+              tabindex="0"
+            >
+              <div
+                class="flex flex-col mx-auto"
+              >
+                <div
+                  class="max-h-half-screen overflow-scroll px-4"
+                >
+                  <label
+                    class="card card-compact max-w-80 mb-4 mx-auto
+                select-none bg-neutral text-neutral-content "
+                  >
+                    <input
+                      class="hidden"
+                      type="checkbox"
+                    />
+                    <div
+                      class="card-body text-center"
+                    >
+                      <p
+                        class="text-lg font-bold"
+                      >
+                        today
+                      </p>
+                      <p>
+                        7:45 AM March 01, 2024
+                      </p>
+                    </div>
+                  </label>
+                  <label
+                    class="card card-compact max-w-80 mb-4 mx-auto
+                select-none bg-neutral text-neutral-content "
+                  >
+                    <input
+                      class="hidden"
+                      type="checkbox"
+                    />
+                    <div
+                      class="card-body text-center"
+                    >
+                      <p
+                        class="text-lg font-bold"
+                      >
+                        yesterday
+                      </p>
+                      <p>
+                        2:20 AM February 29, 2024
+                      </p>
+                    </div>
+                  </label>
+                </div>
+              </div>
+            </div>
+            <span
+              aria-hidden="true"
+              aria-labelledby="headlessui-tabs-tab-:re:"
+              id="headlessui-tabs-panel-:ri:"
+              role="tabpanel"
+              style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px;"
+              tabindex="-1"
+            />
+            <span
+              aria-hidden="true"
+              aria-labelledby="headlessui-tabs-tab-:rf:"
+              id="headlessui-tabs-panel-:rj:"
+              role="tabpanel"
+              style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px;"
+              tabindex="-1"
+            />
+            <span
+              aria-hidden="true"
+              aria-labelledby="headlessui-tabs-tab-:rg:"
+              id="headlessui-tabs-panel-:rk:"
+              role="tabpanel"
+              style="position: fixed; top: 1px; left: 1px; width: 1px; height: 0px; padding: 0px; margin: -1px; overflow: hidden; clip: rect(0px, 0px, 0px, 0px); white-space: nowrap; border-width: 0px;"
+              tabindex="-1"
+            />
+          </div>
+          <div
+            class="flex mt-4"
+          >
+            <button
+              class="btn btn-error mx-auto"
+              disabled=""
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+        <form
+          class="modal-backdrop"
+          method="dialog"
+        >
+          <button>
+            close
+          </button>
+        </form>
+      </dialog>
+      <dialog
+        class="modal"
+      >
+        <div
+          class="modal-box text-center flex flex-col pt-4 "
+        >
+          <form
+            method="dialog"
+          >
+            <button
+              class="btn-close absolute right-4 top-4"
+            >
+              <svg
+                aria-hidden="true"
+                class="w-8 h-8"
+                data-slot="icon"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+                />
+              </svg>
+            </button>
+          </form>
+          <h1
+            class="font-bold text-lg md:text-xl mb-4"
+          >
+            Change QR Code
+          </h1>
+          <div
+            class="min-h-36 flex flex-col justify-evenly mx-auto"
+          >
+            <p>
+              Get your new QR code ready, then click OK.
+            </p>
+            <p>
+              You will have 15 minutes to scan the new QR code.
+            </p>
+          </div>
+          <button
+            class="btn btn-success mx-auto mt-4"
+          >
+            OK
+          </button>
         </div>
         <form
           class="modal-backdrop"
