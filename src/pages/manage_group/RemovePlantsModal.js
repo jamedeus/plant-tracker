@@ -4,7 +4,7 @@ import EditableNodeList from 'src/components/EditableNodeList';
 import PlantCard from 'src/components/PlantCard';
 import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
-import { useErrorModal } from 'src/context/ErrorModalContext';
+import { showErrorModal } from 'src/components/ErrorModal';
 
 let removePlantsModalRef;
 
@@ -17,9 +17,6 @@ const RemovePlantsModal = ({ groupID, plantDetails, setPlantDetails }) => {
 
     // Ref to track selected items
     const selected = useRef([]);
-
-    // Get hook to show error modal
-    const { showErrorModal } = useErrorModal();
 
     // Handler for remove button in manage plants modal
     const removePlants = async () => {

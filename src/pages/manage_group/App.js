@@ -15,7 +15,7 @@ import GroupDetails from 'src/components/GroupDetails';
 import AddPlantsModal, { openAddPlantsModal } from './AddPlantsModal';
 import RemovePlantsModal, { openRemovePlantsModal } from './RemovePlantsModal';
 import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
-import { useErrorModal } from 'src/context/ErrorModalContext';
+import { showErrorModal } from 'src/components/ErrorModal';
 
 function App() {
     // Load context set by django template
@@ -70,9 +70,6 @@ function App() {
 
     // Create ref to access edit details form
     const editDetailsRef = useRef(null);
-
-    // Get hook to show error modal
-    const { showErrorModal } = useErrorModal();
 
     // Get toggle theme option from context
     const { ToggleThemeOption } = useTheme();

@@ -2,7 +2,7 @@ import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
-import { useErrorModal } from 'src/context/ErrorModalContext';
+import { showErrorModal } from 'src/components/ErrorModal';
 
 let changeQrModalRef;
 
@@ -12,9 +12,6 @@ export const openChangeQrModal = () => {
 
 const ChangeQrModal = ({ uuid }) => {
     changeQrModalRef = useRef(null);
-
-    // Get hook to show error modal
-    const { showErrorModal } = useErrorModal();
 
     const submit = async () => {
         const response = await sendPostRequest(

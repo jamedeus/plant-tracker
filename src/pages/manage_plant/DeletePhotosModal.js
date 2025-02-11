@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
 import { timestampToReadable } from 'src/timestampUtils';
-import { useErrorModal } from 'src/context/ErrorModalContext';
+import { showErrorModal } from 'src/components/ErrorModal';
 import {
     ChevronLeftIcon,
     ChevronRightIcon,
@@ -24,9 +24,6 @@ const DeletePhotosModal = ({ plantID, photoUrls, setPhotoUrls }) => {
 
     // Track photos to delete
     const [selectedPhotos, setSelectedPhotos ] = useState([]);
-
-    // Get hook to show error modal
-    const { showErrorModal } = useErrorModal();
 
     // Delete button handler
     const deleteSelected = async () => {

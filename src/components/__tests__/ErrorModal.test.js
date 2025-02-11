@@ -1,9 +1,8 @@
-import { useErrorModal, ErrorModalProvider } from 'src/context/ErrorModalContext';
+import { PageWrapper } from 'src/index';
+import { showErrorModal } from 'src/components/ErrorModal';
 
 describe('ErrorModal', () => {
     const TestComponent = () => {
-        const { showErrorModal } = useErrorModal();
-
         return (
             <button onClick={() => showErrorModal('Error message here')}>
                 Open Error Modal
@@ -15,9 +14,9 @@ describe('ErrorModal', () => {
         // Render component
         const user = userEvent.setup();
         const component = render(
-            <ErrorModalProvider>
+            <PageWrapper>
                 <TestComponent />
-            </ErrorModalProvider>
+            </PageWrapper>
         );
 
         // Confirm mock error text is not present

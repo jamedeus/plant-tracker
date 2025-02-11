@@ -2516,7 +2516,7 @@ exports[`App matches snapshot 1`] = `
           </h3>
           <div
             class="min-h-36 flex flex-col justify-center mx-auto
-                                 whitespace-pre-line"
+                             whitespace-pre-line"
           />
           <div
             class="modal-action mx-auto"
@@ -5026,7 +5026,7 @@ exports[`App matches snapshot 1`] = `
         </h3>
         <div
           class="min-h-36 flex flex-col justify-center mx-auto
-                                 whitespace-pre-line"
+                             whitespace-pre-line"
         />
         <div
           class="modal-action mx-auto"

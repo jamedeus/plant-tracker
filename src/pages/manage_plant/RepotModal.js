@@ -5,7 +5,7 @@ import Modal from 'src/components/Modal';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { localToUTC } from 'src/timestampUtils';
 import { sendPostRequest } from 'src/util';
-import { useErrorModal } from 'src/context/ErrorModalContext';
+import { showErrorModal } from 'src/components/ErrorModal';
 
 let repotModalRef;
 
@@ -22,9 +22,6 @@ const RepotModal = ({ plantID, currentPotSize, handleRepot }) => {
     // Refs to access custom pot size input, timestamp input
     const customPotRef = useRef(null);
     const repotTimeRef = useRef(null);
-
-    // Get hook to show error modal
-    const { showErrorModal } = useErrorModal();
 
     // Default to next size if currentPotSize set, otherwise default to 2in
     const [selected, setSelected] = useState((() => {

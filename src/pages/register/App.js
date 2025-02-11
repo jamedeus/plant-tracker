@@ -5,7 +5,7 @@ import { useTheme } from 'src/context/ThemeContext';
 import { sendPostRequest, parseDomContext } from 'src/util';
 import GroupDetailsForm from 'src/forms/GroupDetailsForm';
 import PlantDetailsForm from 'src/forms/PlantDetailsForm';
-import { useErrorModal } from 'src/context/ErrorModalContext';
+import { showErrorModal } from 'src/components/ErrorModal';
 
 function App() {
     // Load context set by django template
@@ -37,9 +37,6 @@ function App() {
 
     // Get toggle theme option from context
     const { ToggleThemeOption } = useTheme();
-
-    // Get hook to show error modal
-    const { showErrorModal } = useErrorModal();
 
     const plantDetailsRef = useRef(null);
     const groupDetailsRef = useRef(null);

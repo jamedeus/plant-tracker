@@ -17,7 +17,7 @@ import RepotModal from './RepotModal';
 import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
 import EventHistoryModal from './EventHistoryModal';
 import { openDefaultPhotoModal } from './DefaultPhotoModal';
-import { useErrorModal } from 'src/context/ErrorModalContext';
+import { showErrorModal } from 'src/components/ErrorModal';
 import Timeline from './Timeline';
 import { faPlus, faBan, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 
@@ -55,9 +55,6 @@ function App() {
             window.removeEventListener('pageshow', handleBackButton);
         };
     }, []);
-
-    // Get hook to show error modal
-    const { showErrorModal } = useErrorModal();
 
     // Create ref to access new event datetime input
     const eventTimeInput = useRef(null);

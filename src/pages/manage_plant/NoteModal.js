@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { showToast } from 'src/components/Toast';
-import { useErrorModal } from 'src/context/ErrorModalContext';
+import { showErrorModal } from 'src/components/ErrorModal';
 import { sendPostRequest } from 'src/util';
 import { localToUTC, timestampToReadable } from 'src/timestampUtils';
 import { DateTime } from 'luxon';
@@ -46,9 +46,6 @@ const NoteModal = React.forwardRef(function NoteModal({ plantID, notes, setNotes
             },
         };
     });
-
-    // Get hook to show error modal
-    const { showErrorModal } = useErrorModal();
 
     const handleSubmit = async () => {
         // Build payload, post to backend

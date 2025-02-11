@@ -4,7 +4,7 @@ import EditableNodeList from 'src/components/EditableNodeList';
 import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
 import PlantCard from 'src/components/PlantCard';
-import { useErrorModal } from 'src/context/ErrorModalContext';
+import { showErrorModal } from 'src/components/ErrorModal';
 
 let addPlantsModalRef;
 
@@ -17,9 +17,6 @@ const AddPlantsModal = ({ groupID, options, plantDetails, setPlantDetails }) => 
 
     // Ref to track selected items
     const selected = useRef([]);
-
-    // Get hook to show error modal
-    const { showErrorModal } = useErrorModal();
 
     // Handler for add button in manage plants modal
     const addPlants = async () => {

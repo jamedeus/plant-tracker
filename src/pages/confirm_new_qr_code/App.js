@@ -5,7 +5,7 @@ import Navbar from 'src/components/Navbar';
 import PlantDetails from 'src/components/PlantDetails.js';
 import GroupDetails from 'src/components/GroupDetails.js';
 import { useTheme } from 'src/context/ThemeContext';
-import { useErrorModal } from 'src/context/ErrorModalContext';
+import { showErrorModal } from 'src/components/ErrorModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
 
@@ -30,9 +30,6 @@ function App() {
             window.removeEventListener('pageshow', handleBackButton);
         };
     }, []);
-
-    // Get hook to show error modal
-    const { showErrorModal } = useErrorModal();
 
     const handleConfirm = async () => {
         const response = await sendPostRequest(

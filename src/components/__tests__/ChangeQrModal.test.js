@@ -1,6 +1,6 @@
 import React from 'react';
+import { PageWrapper } from 'src/index';
 import ChangeQrModal, { openChangeQrModal } from '../ChangeQrModal';
-import { ErrorModalProvider } from 'src/context/ErrorModalContext';
 import { postHeaders } from 'src/testUtils/headers';
 
 const TestComponent = () => {
@@ -23,9 +23,9 @@ describe('ChangeQrModal', () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
-            <ErrorModalProvider>
+            <PageWrapper>
                 <TestComponent />
-            </ErrorModalProvider>
+            </PageWrapper>
         );
     });
 

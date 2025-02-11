@@ -5,7 +5,7 @@ import { DateTime } from 'luxon';
 import { sendPostRequest } from 'src/util';
 import { timestampToRelativeDays } from 'src/timestampUtils';
 import Modal from 'src/components/Modal';
-import { useErrorModal } from 'src/context/ErrorModalContext';
+import { showErrorModal } from 'src/components/ErrorModal';
 
 let eventHistoryModalRef;
 
@@ -15,9 +15,6 @@ export const openEventHistoryModal = () => {
 
 const EventHistoryModal = ({ plant, setPlant }) => {
     eventHistoryModalRef = useRef(null);
-
-    // Get hook to show error modal
-    const { showErrorModal } = useErrorModal();
 
     // Create ref to store selected events in each column
     const selectedWaterRef = useRef([]);

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
 import { timestampToReadable } from 'src/timestampUtils';
-import { useErrorModal } from 'src/context/ErrorModalContext';
+import { showErrorModal } from 'src/components/ErrorModal';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/16/solid';
 
 let defaultPhotoModalRef;
@@ -14,9 +14,6 @@ export const openDefaultPhotoModal = () => {
 
 const DefaultPhotoModal = ({ plantID, photoUrls }) => {
     defaultPhotoModalRef = useRef(null);
-
-    // Get hook to show error modal
-    const { showErrorModal } = useErrorModal();
 
     const submit = async (selected) => {
         const payload = {

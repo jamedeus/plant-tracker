@@ -1,17 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { createRoot } from 'react-dom/client';
+import { ErrorModal } from 'src/components/ErrorModal';
 import { ThemeProvider } from 'src/context/ThemeContext';
-import { ErrorModalProvider } from 'src/context/ErrorModalContext';
 import 'src/main.css';
 
 // Keeps boilerplate code in one place for maintainability
 export const PageWrapper = ({ children }) => {
     return (
         <ThemeProvider>
-            <ErrorModalProvider>
-                { children }
-            </ErrorModalProvider>
+            { children }
+            <ErrorModal />
         </ThemeProvider>
     );
 };

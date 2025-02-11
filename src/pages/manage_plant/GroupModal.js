@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 import GroupCard from 'src/components/GroupCard';
 import { sendPostRequest } from 'src/util';
-import { useErrorModal } from 'src/context/ErrorModalContext';
+import { showErrorModal } from 'src/components/ErrorModal';
 
 let groupModalRef;
 
@@ -13,9 +13,6 @@ export const openGroupModal = () => {
 
 const GroupModal = ({ plantID, groupOptions, handleAddGroup }) => {
     groupModalRef = useRef(null);
-
-    // Get hook to show error modal
-    const { showErrorModal } = useErrorModal();
 
     // Handler for confirm button
     const addToGroup = async (groupID) => {
