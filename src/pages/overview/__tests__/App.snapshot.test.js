@@ -1,7 +1,7 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import { PageWrapper } from 'src/index';
 import App from '../App';
-import { mockContext, archivedMockContext } from './mockContext';
+import { mockContext } from './mockContext';
 
 describe('App', () => {
     it('matches snapshot when plants and groups exist', () => {
@@ -21,9 +21,15 @@ describe('App', () => {
 
 describe('App (archived page)', () => {
     it('matches snapshot when plants and groups exist', () => {
-        // Create mock state objects
-        createMockContext('plants', archivedMockContext.plants);
-        createMockContext('groups', archivedMockContext.groups);
+        // Create mock state objects (flip all archived bools to true)
+        createMockContext('plants', mockContext.plants.map(plant => {
+            plant.archived = true;
+            return plant;
+        }));
+        createMockContext('groups', mockContext.groups.map(group => {
+            group.archived = true;
+            return group;
+        }));
 
         // Mock window.location to simulate archived overview
         delete window.location;

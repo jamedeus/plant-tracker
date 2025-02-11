@@ -2,15 +2,21 @@ import createMockContext from 'src/testUtils/createMockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import { PageWrapper } from 'src/index';
 import App from '../App';
-import { archivedMockContext } from './mockContext';
+import { mockContext } from './mockContext';
 
 describe('App', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state objects
-        createMockContext('plants', archivedMockContext.plants);
-        createMockContext('groups', archivedMockContext.groups);
+        // Create mock state objects (flip all archived bools to true)
+        createMockContext('plants', mockContext.plants.map(plant => {
+            plant.archived = true;
+            return plant;
+        }));
+        createMockContext('groups', mockContext.groups.map(group => {
+            group.archived = true;
+            return group;
+        }));
 
         // Mock window.location to simulate archived overview
         delete window.location;
