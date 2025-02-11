@@ -28,6 +28,13 @@ function timestampIsToday(timestamp) {
     return timestampToUserTimezone(timestamp).toISODate() === today;
 }
 
+// Takes isoformat timestamp, returns true if timestamp is in last 60 seconds.
+//
+// Example: 2024-06-05T23:00:00 returns true until 2024-06-05T23:01:00
+function timestampIsLessThanOneMinuteOld(timestamp) {
+    return DateTime.now() - DateTime.fromISO(timestamp) <= 60000;
+}
+
 
 // The functions below convert ISO format timestamps into human-readable
 // relative time strings with various formats.
@@ -72,6 +79,7 @@ export {
     timestampToUserTimezone,
     timestampToReadable,
     timestampIsToday,
+    timestampIsLessThanOneMinuteOld,
     timestampToRelative,
     timestampToRelativeDays,
     timestampToRelativeCalendar

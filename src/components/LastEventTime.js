@@ -4,13 +4,16 @@ import {
     timestampIsToday,
     timestampToReadable,
     timestampToRelative,
-    timestampToRelativeCalendar
+    timestampToRelativeCalendar,
+    timestampIsLessThanOneMinuteOld
 } from 'src/timestampUtils';
 
 // Return relative sec/min/hours if timestamp on current date in user timezone.
 // Return number of days since timestamp if not on current date.
 const getDisplayTime = (timestamp) => {
-    if (timestampIsToday(timestamp)) {
+    if (timestampIsLessThanOneMinuteOld(timestamp)) {
+        return "just now";
+    } else if (timestampIsToday(timestamp)) {
         return timestampToRelative(timestamp);
     } else {
         return timestampToRelativeCalendar(timestamp);
