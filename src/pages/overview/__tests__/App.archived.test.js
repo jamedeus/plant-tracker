@@ -2,17 +2,19 @@ import createMockContext from 'src/testUtils/createMockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import { PageWrapper } from 'src/index';
 import App from '../App';
-import { mockContext } from './mockContext';
-
-jest.mock('print-js');
+import { archivedMockContext } from './mockContext';
 
 describe('App', () => {
     let app, user;
 
     beforeAll(() => {
         // Create mock state objects
-        createMockContext('plants', mockContext.plants);
-        createMockContext('groups', mockContext.groups);
+        createMockContext('plants', archivedMockContext.plants);
+        createMockContext('groups', archivedMockContext.groups);
+
+        // Mock window.location to simulate archived overview
+        delete window.location;
+        window.location = new URL('https://plants.lan/archived');
     });
 
     beforeEach(() => {
@@ -24,6 +26,7 @@ describe('App', () => {
             </PageWrapper>
         );
     });
+
     it('shows checkboxes and delete button when edit option clicked', async () => {
         // Confirm delete button and checkboxes are not visible
         expect(app.queryByText('Delete')).toBeNull();

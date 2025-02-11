@@ -17,6 +17,9 @@ function App() {
         return parseDomContext("groups");
     });
 
+    // Check URL to determine if viewing main overview or archive overview
+    const archivedOverview = window.location.pathname === '/archived';
+
     // Request new state from backend if user navigates to overview by pressing
     // back button (last watered/details may be outdated if coming from manage)
     useEffect(() => {
@@ -256,24 +259,47 @@ function App() {
         }
     };
 
+    // Top-left menu button contents for main overview page
+    const OverviewMenuOptions = () => {
+        return (
+            <>
+                <li><a onClick={toggleEditing}>
+                    Edit
+                </a></li>
+                <li><a onClick={() => printModalRef.current.open()}>
+                    Print QR Codes
+                </a></li>
+                <ToggleThemeOption />
+                <li><a href={"/archived"}>
+                    Archived plants
+                </a></li>
+            </>
+        );
+    };
+
+    // Top-left menu button contents for archived overview page
+    const ArchivedOverviewMenuOptions = () => {
+        return (
+            <>
+                <li><a onClick={toggleEditing}>
+                    Edit
+                </a></li>
+                <ToggleThemeOption />
+                <li><a href={"/"}>
+                    Main overview
+                </a></li>
+            </>
+        );
+    };
+
     return (
         <div className="container flex flex-col min-h-screen mx-auto pb-16">
             <Navbar
-                menuOptions={
-                    <>
-                        <li><a onClick={toggleEditing}>
-                            Edit
-                        </a></li>
-                        <li><a onClick={() => printModalRef.current.open()}>
-                            Print QR Codes
-                        </a></li>
-                        <ToggleThemeOption />
-                        <li><a href={"/archived"}>
-                            Archived plants
-                        </a></li>
-                    </>
+                menuOptions={archivedOverview ?
+                    <ArchivedOverviewMenuOptions /> :
+                    <OverviewMenuOptions />
                 }
-                title={"Plant Overview"}
+                title={archivedOverview ? "Archived" : "Plant Overview"}
                 titleOptions={<QuickNavigation />}
             />
 
@@ -283,9 +309,15 @@ function App() {
                 <button className="btn btn-neutral mr-4" onClick={() => setEditing(false)}>
                     Cancel
                 </button>
-                <button className="btn mx-4" onClick={handleArchive}>
-                    Archive
-                </button>
+                {archivedOverview ? (
+                    <button className="btn mx-4" disabled={true}>
+                        Un-archive
+                    </button>
+                ) : (
+                    <button className="btn mx-4" onClick={handleArchive}>
+                        Archive
+                    </button>
+                )}
                 <button className="btn btn-error ml-4" onClick={handleDelete}>
                     Delete
                 </button>

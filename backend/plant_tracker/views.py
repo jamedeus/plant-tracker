@@ -124,7 +124,7 @@ def archived_overview(request):
     return render_react_app(
         request,
         title='Archived',
-        bundle='archived',
+        bundle='overview',
         state=state
     )
 
