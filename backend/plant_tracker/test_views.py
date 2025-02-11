@@ -351,6 +351,79 @@ class OverviewTests(TestCase):
         self.assertTrue(Group.objects.all()[0].archived)
 
 
+class ArchivedOverviewTests(TestCase):
+    def setUp(self):
+        # Set default content_type for post requests (avoid long lines)
+        self.client = JSONClient()
+
+    def test_archived_overview_page_no_database_entries(self):
+        # Request overview, confirm uses correct JS bundle and title
+        response = self.client.get('/archived')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'plant_tracker/index.html')
+        self.assertEqual(response.context['js_bundle'], 'plant_tracker/overview.js')
+        self.assertEqual(response.context['title'], 'Archived')
+
+        # Confirm correct state object (no plants or groups in database)
+        self.assertEqual(
+            response.context['state'],
+            {'plants': [], 'groups': []}
+        )
+
+    def test_overview_page_with_database_entries(self):
+        # Create test group and 2 test plants (should NOT be in context)
+        Group.objects.create(uuid=uuid4())
+        Plant.objects.create(uuid=uuid4(), name='Test plant')
+        Plant.objects.create(uuid=uuid4(), species='fittonia')
+        # Create archived group and archived plant (SHOULD be in context)
+        plant = Plant.objects.create(uuid=uuid4(), name='Archived plant', archived=True)
+        group = Group.objects.create(uuid=uuid4(), name='Archived group', archived=True)
+
+        # Request archive overview, confirm uses correct JS bundle and title
+        response = self.client.get('/archived')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'plant_tracker/index.html')
+        self.assertEqual(response.context['js_bundle'], 'plant_tracker/overview.js')
+        self.assertEqual(response.context['title'], 'Archived')
+
+        # Confirm state object has details of all archived plants and groups,
+        # does not contain non-archived plant and group
+        state = response.context['state']
+        self.assertEqual(
+            state['plants'],
+            [
+                {
+                    'uuid': str(plant.uuid),
+                    'created': plant.created.isoformat(),
+                    'archived': True,
+                    'name': 'Archived plant',
+                    'display_name': 'Archived plant',
+                    'species': None,
+                    'thumbnail': None,
+                    'description': None,
+                    'pot_size': None,
+                    'last_watered': None,
+                    'last_fertilized': None
+                }
+            ]
+        )
+        self.assertEqual(
+            state['groups'],
+            [
+                {
+                    'uuid': str(group.uuid),
+                    'created': group.created.isoformat(),
+                    'archived': True,
+                    'name': 'Archived group',
+                    'display_name': 'Archived group',
+                    'location': None,
+                    'description': None,
+                    'plants': 0
+                }
+            ]
+        )
+
+
 class RegistrationTests(TestCase):
     def setUp(self):
         # Set default content_type for post requests (avoid long lines)
