@@ -22,6 +22,7 @@ PageWrapper.propTypes = {
 };
 
 // Used by each index.js in subdirs of src/pages/
+/* istanbul ignore next */
 const RenderApp = ({ App }) => {
     const container = document.getElementById('root');
     const root = createRoot(container);

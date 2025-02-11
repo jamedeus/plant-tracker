@@ -16,6 +16,7 @@ module.exports = {
         '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
     },
     coveragePathIgnorePatterns: [
+        'src/main.css',
         'src/calendar.css',
         'src/testUtils/',
         'mockContext.js'
