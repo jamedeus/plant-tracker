@@ -37,10 +37,12 @@ function App() {
         };
 
         // Add listener on mount, remove on unmount
-        window.addEventListener('pageshow', handleBackButton);
-        return () => {
-            window.removeEventListener('pageshow', handleBackButton);
-        };
+        if (!archivedOverview) {
+            window.addEventListener('pageshow', handleBackButton);
+            return () => {
+                window.removeEventListener('pageshow', handleBackButton);
+            };
+        }
     }, []);
 
     // Create ref for modal used to generate QR codes
