@@ -29,7 +29,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
         class="container flex flex-col min-h-screen mx-auto pb-16"
       >
         <div
-          class="navbar bg-base-100 mb-4 sticky top-0 z-[99] overflow-x-clip"
+          class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
         >
           <div
             class="navbar-start w-auto"
@@ -83,18 +83,22 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
             </div>
           </div>
           <div
-            class="navbar-center mx-auto"
+            class="navbar-center mx-auto shrink min-w-0"
           >
             <div
-              class="dropdown dropdown-center"
+              class="dropdown dropdown-center w-full"
             >
               <a
-                class="btn btn-ghost"
+                class="btn btn-ghost w-full px-0 text-nowrap"
                 role="button"
-                style="font-size: 8px;"
                 tabindex="0"
               >
-                Archived
+                <span
+                  class="px-4 leading-[2.75rem] truncate"
+                  style="font-size: 8px;"
+                >
+                  Archived
+                </span>
               </a>
               <div
                 class="dropdown-content z-[1] flex"
@@ -773,7 +777,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
       class="container flex flex-col min-h-screen mx-auto pb-16"
     >
       <div
-        class="navbar bg-base-100 mb-4 sticky top-0 z-[99] overflow-x-clip"
+        class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
       >
         <div
           class="navbar-start w-auto"
@@ -827,18 +831,22 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
           </div>
         </div>
         <div
-          class="navbar-center mx-auto"
+          class="navbar-center mx-auto shrink min-w-0"
         >
           <div
-            class="dropdown dropdown-center"
+            class="dropdown dropdown-center w-full"
           >
             <a
-              class="btn btn-ghost"
+              class="btn btn-ghost w-full px-0 text-nowrap"
               role="button"
-              style="font-size: 8px;"
               tabindex="0"
             >
-              Archived
+              <span
+                class="px-4 leading-[2.75rem] truncate"
+                style="font-size: 8px;"
+              >
+                Archived
+              </span>
             </a>
             <div
               class="dropdown-content z-[1] flex"
@@ -1584,7 +1592,7 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
         class="container flex flex-col min-h-screen mx-auto pb-16"
       >
         <div
-          class="navbar bg-base-100 mb-4 sticky top-0 z-[99] overflow-x-clip"
+          class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
         >
           <div
             class="navbar-start w-auto"
@@ -1643,18 +1651,22 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
             </div>
           </div>
           <div
-            class="navbar-center mx-auto"
+            class="navbar-center mx-auto shrink min-w-0"
           >
             <div
-              class="dropdown dropdown-center"
+              class="dropdown dropdown-center w-full"
             >
               <a
-                class="btn btn-ghost"
+                class="btn btn-ghost w-full px-0 text-nowrap"
                 role="button"
-                style="font-size: 8px;"
                 tabindex="0"
               >
-                Plant Overview
+                <span
+                  class="px-4 leading-[2.75rem] truncate"
+                  style="font-size: 8px;"
+                >
+                  Plant Overview
+                </span>
               </a>
               <div
                 class="dropdown-content z-[1] flex"
@@ -2333,7 +2345,7 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
       class="container flex flex-col min-h-screen mx-auto pb-16"
     >
       <div
-        class="navbar bg-base-100 mb-4 sticky top-0 z-[99] overflow-x-clip"
+        class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
       >
         <div
           class="navbar-start w-auto"
@@ -2392,18 +2404,22 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
           </div>
         </div>
         <div
-          class="navbar-center mx-auto"
+          class="navbar-center mx-auto shrink min-w-0"
         >
           <div
-            class="dropdown dropdown-center"
+            class="dropdown dropdown-center w-full"
           >
             <a
-              class="btn btn-ghost"
+              class="btn btn-ghost w-full px-0 text-nowrap"
               role="button"
-              style="font-size: 8px;"
               tabindex="0"
             >
-              Plant Overview
+              <span
+                class="px-4 leading-[2.75rem] truncate"
+                style="font-size: 8px;"
+              >
+                Plant Overview
+              </span>
             </a>
             <div
               class="dropdown-content z-[1] flex"

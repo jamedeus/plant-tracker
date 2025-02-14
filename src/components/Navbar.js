@@ -77,7 +77,7 @@ const Navbar = ({ menuOptions, title, titleOptions }) => {
     return (
         <div
             ref={navbarRef}
-            className="navbar bg-base-100 mb-4 sticky top-0 z-[99] overflow-x-clip"
+            className="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
         >
             <div className="navbar-start w-auto">
                 <div className="dropdown">
@@ -92,16 +92,20 @@ const Navbar = ({ menuOptions, title, titleOptions }) => {
                 </div>
             </div>
 
-            <div className="navbar-center mx-auto">
-                <div className="dropdown dropdown-center">
+            <div className="navbar-center mx-auto shrink min-w-0">
+                <div className="dropdown dropdown-center w-full">
                     <a
-                        ref={titleRef}
                         tabIndex={0}
                         role="button"
-                        className="btn btn-ghost"
-                        style={{ fontSize: `${titleFontSize}px` }}
-                    >
-                        {title}
+                        className="btn btn-ghost w-full px-0 text-nowrap"
+                        >
+                        <span
+                            ref={titleRef}
+                            className="px-4 leading-[2.75rem] truncate"
+                            style={{ fontSize: `${titleFontSize}px` }}
+                        >
+                            {title}
+                        </span>
                     </a>
                     <div tabIndex={0} className="dropdown-content z-[1] flex">
                         {titleOptions}

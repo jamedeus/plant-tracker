@@ -34,7 +34,7 @@ exports[`App matches snapshot 1`] = `
         class="container flex flex-col mx-auto mb-8"
       >
         <div
-          class="navbar bg-base-100 mb-4 sticky top-0 z-[99] overflow-x-clip"
+          class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
         >
           <div
             class="navbar-start w-auto"
@@ -98,18 +98,22 @@ exports[`App matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="navbar-center mx-auto"
+            class="navbar-center mx-auto shrink min-w-0"
           >
             <div
-              class="dropdown dropdown-center"
+              class="dropdown dropdown-center w-full"
             >
               <a
-                class="btn btn-ghost"
+                class="btn btn-ghost w-full px-0 text-nowrap"
                 role="button"
-                style="font-size: 8px;"
                 tabindex="0"
               >
-                Test Plant
+                <span
+                  class="px-4 leading-[2.75rem] truncate"
+                  style="font-size: 8px;"
+                >
+                  Test Plant
+                </span>
               </a>
               <div
                 class="dropdown-content z-[1] flex"
@@ -3264,7 +3268,7 @@ exports[`App matches snapshot 1`] = `
       class="container flex flex-col mx-auto mb-8"
     >
       <div
-        class="navbar bg-base-100 mb-4 sticky top-0 z-[99] overflow-x-clip"
+        class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
       >
         <div
           class="navbar-start w-auto"
@@ -3328,18 +3332,22 @@ exports[`App matches snapshot 1`] = `
           </div>
         </div>
         <div
-          class="navbar-center mx-auto"
+          class="navbar-center mx-auto shrink min-w-0"
         >
           <div
-            class="dropdown dropdown-center"
+            class="dropdown dropdown-center w-full"
           >
             <a
-              class="btn btn-ghost"
+              class="btn btn-ghost w-full px-0 text-nowrap"
               role="button"
-              style="font-size: 8px;"
               tabindex="0"
             >
-              Test Plant
+              <span
+                class="px-4 leading-[2.75rem] truncate"
+                style="font-size: 8px;"
+              >
+                Test Plant
+              </span>
             </a>
             <div
               class="dropdown-content z-[1] flex"
