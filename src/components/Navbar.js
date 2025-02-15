@@ -55,7 +55,7 @@ const Navbar = ({ menuOptions, title, titleOptions }) => {
                     titleRef.current.style.fontSize = `${newSize}px`;
                 }
                 // Reduce font size until title fits available space
-                while (titleRef.current.offsetWidth > maxWidth && newSize > 8) {
+                while (titleRef.current.offsetWidth > maxWidth && newSize > 14) {
                     newSize--;
                     titleRef.current.style.fontSize = `${newSize}px`;
                 }

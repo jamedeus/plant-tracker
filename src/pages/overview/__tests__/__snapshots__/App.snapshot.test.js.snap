@@ -95,7 +95,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
               >
                 <span
                   class="px-4 leading-[2.75rem] truncate"
-                  style="font-size: 8px;"
+                  style="font-size: 14px;"
                 >
                   Archived
                 </span>
@@ -843,7 +843,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
             >
               <span
                 class="px-4 leading-[2.75rem] truncate"
-                style="font-size: 8px;"
+                style="font-size: 14px;"
               >
                 Archived
               </span>
@@ -1663,7 +1663,7 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
               >
                 <span
                   class="px-4 leading-[2.75rem] truncate"
-                  style="font-size: 8px;"
+                  style="font-size: 14px;"
                 >
                   Plant Overview
                 </span>
@@ -2416,7 +2416,7 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
             >
               <span
                 class="px-4 leading-[2.75rem] truncate"
-                style="font-size: 8px;"
+                style="font-size: 14px;"
               >
                 Plant Overview
               </span>

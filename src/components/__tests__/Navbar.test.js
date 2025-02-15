@@ -33,22 +33,22 @@ describe('Navbar', () => {
             configurable: true,
         });
 
-        // Mock navbar width to 200, menu button width to 25
-        // getMaxWidth function should return 118 (200 - 25 * 2 - 32)
+        // Mock navbar width to 250, menu button width to 35
+        // getMaxWidth function should return 148 (250 - 35 * 2 - 32)
         // Initial fontSize is 32px so offsetWidth will be 320, so font size
-        // should decrement until reaching 11px (largest size that fits)
+        // should decrement until reaching 16px (largest size that fits)
         mockNavbarWidth = 200;
-        mockMenuButtonWidth = 25;
+        mockMenuButtonWidth = 35;
 
-        // Trigger resize event, confirm font size was set to 8px
+        // Trigger resize event, confirm font size was set to 14px
         act(() => {
             window.dispatchEvent(new Event('resize'));
         });
-        expect(titleElement.style.fontSize).toBe('11px');
+        expect(titleElement.style.fontSize).toBe('14px');
 
         // Mock navbar width to 400, menu button width to 50
         // getMaxWidth function should return 268 (400 - 50 * 2 - 32)
-        // Title font size is 11px so offsetWidth will be 110, so font size
+        // Title font size is 14px so offsetWidth will be 140, so font size
         // should increment until reaching 26px (highest without exceeding 268)
         mockNavbarWidth = 400;
         mockMenuButtonWidth = 50;

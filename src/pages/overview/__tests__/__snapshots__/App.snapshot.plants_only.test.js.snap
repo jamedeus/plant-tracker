@@ -90,7 +90,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
               >
                 <span
                   class="px-4 leading-[2.75rem] truncate"
-                  style="font-size: 8px;"
+                  style="font-size: 14px;"
                 >
                   Plant Overview
                 </span>
@@ -623,7 +623,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
             >
               <span
                 class="px-4 leading-[2.75rem] truncate"
-                style="font-size: 8px;"
+                style="font-size: 14px;"
               >
                 Plant Overview
               </span>
