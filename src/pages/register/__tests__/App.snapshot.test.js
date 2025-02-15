@@ -4,10 +4,6 @@ import App from '../App';
 import { mockContext } from './mockContext';
 
 describe('App', () => {
-    // Setup: Create mock state objects
-    beforeEach(() => {
-    });
-
     it('matches snapshot', () => {
         // Create mock state objects
         createMockContext('new_id', mockContext.new_id);
