@@ -6,7 +6,7 @@ const TestComponent = () => {
 
     return (
         <CollapseCol
-            title={'History'}
+            title='History'
             openRef={openRef}
             scroll={true}
         >

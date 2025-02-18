@@ -3,7 +3,7 @@ import Navbar from '../Navbar';
 describe('Navbar', () => {
     it('adjusts title font size when window is resized', () => {
         const { container, getByText } = render(
-            <Navbar title={'Test Page'} />
+            <Navbar title='Test Page' />
         );
 
         // Create variables to mock navbar and menu button widths
