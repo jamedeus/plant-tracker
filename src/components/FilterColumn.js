@@ -28,7 +28,7 @@ const getCurrentContents = (originalContents, ignoreKeys, query) => {
             && value.toString().toLowerCase().includes(lowercaseQuery);
         });
     });
-}
+};
 
 // Reducer used to set visible cards, sort key, and sort direction
 const reducer = (state, action) => {

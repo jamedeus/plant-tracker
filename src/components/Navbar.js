@@ -98,7 +98,7 @@ const Navbar = ({ menuOptions, title, titleOptions }) => {
                         tabIndex={0}
                         role="button"
                         className="btn btn-ghost w-full px-0 text-nowrap"
-                        >
+                    >
                         <span
                             ref={titleRef}
                             className="px-4 leading-[2.75rem] truncate"
