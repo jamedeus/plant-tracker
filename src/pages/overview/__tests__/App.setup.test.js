@@ -14,6 +14,8 @@ describe('App with empty database', () => {
     });
 
     beforeEach(() => {
+        // Clear sessionStorage (cached sortDirection, sortKey)
+        sessionStorage.clear();
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
