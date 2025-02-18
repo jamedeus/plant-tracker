@@ -235,7 +235,7 @@ const PrintModal = React.forwardRef(function PrintModal(_, ref) {
             return (
                 <Modal
                     dialogRef={printModalRef}
-                    title={"Fetching QR Codes"}
+                    title='Fetching QR Codes'
                     onClose={resetModal}
                 >
                     <LoadingAnimation />
@@ -245,7 +245,7 @@ const PrintModal = React.forwardRef(function PrintModal(_, ref) {
             return (
                 <Modal
                     dialogRef={printModalRef}
-                    title={"Select QR Code Size"}
+                    title='Select QR Code Size'
                 >
                     <QrCodeSizeSelect />
                 </Modal>
@@ -254,7 +254,7 @@ const PrintModal = React.forwardRef(function PrintModal(_, ref) {
             return (
                 <Modal
                     dialogRef={printModalRef}
-                    title={"Error"}
+                    title='Error'
                     onClose={resetModal}
                 >
                     <ErrorMessage />

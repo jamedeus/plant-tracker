@@ -48,8 +48,8 @@ const AddPlantsModal = ({ groupID, options, plantDetails, setPlantDetails }) => 
     return (
         <Modal
             dialogRef={addPlantsModalRef}
-            title={"Add Plants"}
-            className="max-w-[26rem]"
+            title='Add Plants'
+            className='max-w-[26rem]'
         >
             <div className="max-h-screen md:max-h-half-screen overflow-scroll pr-4 mt-4">
                 {plantOptions.length > 0 ? (

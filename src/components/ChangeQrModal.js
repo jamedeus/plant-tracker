@@ -27,7 +27,7 @@ const ChangeQrModal = ({ uuid }) => {
     };
 
     return (
-        <Modal dialogRef={changeQrModalRef} title={"Change QR Code"}>
+        <Modal dialogRef={changeQrModalRef} title='Change QR Code'>
             <div className="min-h-36 flex flex-col justify-evenly mx-auto">
                 <p>
                     Get your new QR code ready, then click OK.

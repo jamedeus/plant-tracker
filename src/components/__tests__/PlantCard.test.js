@@ -8,13 +8,13 @@ describe('PlantCard with water event', () => {
         user = userEvent.setup();
         component = render(
             <PlantCard
-                display_name={"Test Plant"}
-                uuid={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"}
-                species={"Calathea"}
-                description={"Mother plant"}
+                display_name='Test Plant'
+                uuid='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+                species='Calathea'
+                description='Mother plant'
                 pot_size={12}
-                last_watered={"2024-02-27T05:45:44+00:00"}
-                thumbnail={"/media/thumbnails/photo1_thumb.jpg"}
+                last_watered='2024-02-27T05:45:44+00:00'
+                thumbnail='/media/thumbnails/photo1_thumb.jpg'
             />
         );
     });
@@ -61,13 +61,13 @@ describe('PlantCard with no water event', () => {
     beforeEach(() => {
         component = render(
             <PlantCard
-                display_name={"Test Plant"}
-                uuid={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"}
-                species={"Calathea"}
-                description={"Mother plant"}
+                display_name='Test Plant'
+                uuid='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+                species='Calathea'
+                description='Mother plant'
                 pot_size={12}
                 last_watered={null}
-                thumbnail={"/media/thumbnails/photo1_thumb.jpg"}
+                thumbnail='/media/thumbnails/photo1_thumb.jpg'
             />
         );
     });
@@ -87,13 +87,13 @@ describe('PlantCard last watered time display', () => {
     const renderWithTimestamp = (timestamp) => {
         return render(
             <PlantCard
-                display_name={"Test Plant"}
-                uuid={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"}
-                species={"Calathea"}
-                description={"Mother plant"}
+                display_name='Test Plant'
+                uuid='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+                species='Calathea'
+                description='Mother plant'
                 pot_size={12}
                 last_watered={timestamp}
-                thumbnail={"/media/thumbnails/photo1_thumb.jpg"}
+                thumbnail='/media/thumbnails/photo1_thumb.jpg'
             />
         );
     };

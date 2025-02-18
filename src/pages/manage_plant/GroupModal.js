@@ -34,7 +34,7 @@ const GroupModal = ({ plantID, groupOptions, handleAddGroup }) => {
     };
 
     return (
-        <Modal dialogRef={groupModalRef} title={"Add plant to group"}>
+        <Modal dialogRef={groupModalRef} title='Add plant to group'>
             <div className="flex flex-col px-4 overflow-scroll">
                 {groupOptions.map(group => (
                     <div

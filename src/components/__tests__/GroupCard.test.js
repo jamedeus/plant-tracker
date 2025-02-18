@@ -8,11 +8,11 @@ describe('GroupCard', () => {
         user = userEvent.setup();
         component = render(
             <GroupCard
-                display_name={"Test Group"}
+                display_name='Test Group'
                 plants={2}
-                uuid={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"}
-                location={"Top shelf"}
-                description={"Brightest grow light"}
+                uuid='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+                location='Top shelf'
+                description='Brightest grow light'
             />
         );
     });

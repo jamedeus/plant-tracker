@@ -194,12 +194,12 @@ function App() {
                     <div className="flex gap-2 mx-auto mt-2">
                         <IconButton
                             onClick={handleRemoveGroup}
-                            title={"Remove plant from group"}
+                            title='Remove plant from group'
                             icon={faBan}
                         />
                         <IconButton
                             href={groupLink}
-                            title={"Go to group page"}
+                            title='Go to group page'
                             icon={faUpRightFromSquare}
                         />
                     </div>
@@ -213,7 +213,7 @@ function App() {
                 <div className="mx-auto mt-2">
                     <IconButton
                         onClick={openGroupModal}
-                        title={"Add plant to group"}
+                        title='Add plant to group'
                         icon={faPlus}
                     />
                 </div>

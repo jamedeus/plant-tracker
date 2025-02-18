@@ -4,8 +4,8 @@ describe('GroupDetails', () => {
     it('displays correct details', () => {
         const { getByText, queryByText } = render(
             <GroupDetails
-                location={"Middle shelf"}
-                description={"Used for propagation"}
+                location='Middle shelf'
+                description='Used for propagation'
             />
         );
         expect(getByText('Middle shelf')).toBeInTheDocument();
@@ -17,7 +17,7 @@ describe('GroupDetails', () => {
         const { getByText } = render(
             <GroupDetails
                 location={null}
-                description={"Used for propagation"}
+                description='Used for propagation'
             />
         );
         expect(getByText('Location:').parentElement.classList).toContain('hidden');
@@ -27,7 +27,7 @@ describe('GroupDetails', () => {
     it('hides description row if argument is null', () => {
         const { getByText } = render(
             <GroupDetails
-                location={"Middle shelf"}
+                location='Middle shelf'
                 description={null}
             />
         );

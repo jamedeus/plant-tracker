@@ -15,7 +15,7 @@ describe('Timeline', () => {
         const component = render(
             <PageWrapper>
                 <Timeline
-                    plantID={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"}
+                    plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
                     events={mockEvents}
                     archived={false}
                 />
@@ -29,7 +29,7 @@ describe('Timeline', () => {
         const component = render(
             <PageWrapper>
                 <Timeline
-                    plantID={"0640ec3b-1bed-4b15-a078-d6e7ec66be12"}
+                    plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
                     events={mockEvents}
                     archived={true}
                 />

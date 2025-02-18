@@ -178,7 +178,7 @@ const EventHistoryModal = ({ plant, setPlant }) => {
     };
 
     return (
-        <Modal dialogRef={eventHistoryModalRef} title={"Event History"}>
+        <Modal dialogRef={eventHistoryModalRef} title='Event History'>
             <Tab.Group>
                 <Tab.List className="tab-group mt-2">
                     <Tab className={({ selected }) => clsx(

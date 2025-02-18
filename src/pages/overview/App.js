@@ -283,7 +283,7 @@ function App() {
                     Print QR Codes
                 </a></li>
                 <ToggleThemeOption />
-                <li><a href={"/archived"}>
+                <li><a href='/archived'>
                     Archived plants
                 </a></li>
             </>
@@ -298,7 +298,7 @@ function App() {
                     Edit
                 </a></li>
                 <ToggleThemeOption />
-                <li><a href={"/"}>
+                <li><a href='/'>
                     Main overview
                 </a></li>
             </>

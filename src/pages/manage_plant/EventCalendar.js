@@ -60,7 +60,7 @@ const EventCalendar = ({ events }) => {
 
     return (
         <Calendar
-            calendarType={"gregory"}
+            calendarType='gregory'
             minDate={new Date('2001-01-01T00:00:00')}
             maxDate={new Date('2100-01-01T00:00:00')}
             prevLabel=<ChevronLeftIcon className="w-6 h-6 m-auto" />

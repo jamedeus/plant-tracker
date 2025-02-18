@@ -4,9 +4,9 @@ describe('PlantDetails', () => {
     it('displays correct details', () => {
         const { getByText, queryByText } = render(
             <PlantDetails
-                species={"Fittonia"}
+                species='Fittonia'
                 pot_size={4}
-                description={"Propagated in March 2023"}
+                description='Propagated in March 2023'
             />
         );
         expect(getByText('Fittonia')).toBeInTheDocument();
@@ -20,7 +20,7 @@ describe('PlantDetails', () => {
             <PlantDetails
                 species={null}
                 pot_size={4}
-                description={"Propagated in March 2023"}
+                description='Propagated in March 2023'
             />
         );
         expect(getByText('Species:').parentElement.classList).toContain('hidden');
@@ -30,9 +30,9 @@ describe('PlantDetails', () => {
     it('hides pot_size row if argument is null', () => {
         const { getByText } = render(
             <PlantDetails
-                species={"Fittonia"}
+                species='Fittonia'
                 pot_size={null}
-                description={"Propagated in March 2023"}
+                description='Propagated in March 2023'
             />
         );
         expect(getByText('Pot size:').parentElement.classList).toContain('hidden');
@@ -42,7 +42,7 @@ describe('PlantDetails', () => {
     it('hides description row if argument is null', () => {
         const { getByText } = render(
             <PlantDetails
-                species={"Fittonia"}
+                species='Fittonia'
                 pot_size={4}
                 description={null}
             />

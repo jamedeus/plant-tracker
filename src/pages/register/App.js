@@ -82,7 +82,7 @@ function App() {
                         <ToggleThemeOption />
                     </>
                 }
-                title={"Registration"}
+                title='Registration'
             />
 
             <div className="flex flex-col mx-8 md:w-1/2 md:mx-auto">
