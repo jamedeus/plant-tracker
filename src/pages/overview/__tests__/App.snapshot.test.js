@@ -24,48 +24,48 @@ describe('App', () => {
         );
         expect(component).toMatchSnapshot();
     });
-});
 
-it('matches snapshot when only plants exist', () => {
-    // Create mock state objects
-    createMockContext('plants', mockContext.plants);
-    createMockContext('groups', []);
+    it('matches snapshot when only plants exist', () => {
+        // Create mock state objects
+        createMockContext('plants', mockContext.plants);
+        createMockContext('groups', []);
 
-    // Render App, confirm matches snapshot
-    const component = render(
-        <PageWrapper>
-            <App />
-        </PageWrapper>
-    );
-    expect(component).toMatchSnapshot();
-});
+        // Render App, confirm matches snapshot
+        const component = render(
+            <PageWrapper>
+                <App />
+            </PageWrapper>
+        );
+        expect(component).toMatchSnapshot();
+    });
 
-it('matches snapshot when only groups exist', () => {
-    // Create mock state objects
-    createMockContext('plants', []);
-    createMockContext('groups', mockContext.groups);
+    it('matches snapshot when only groups exist', () => {
+        // Create mock state objects
+        createMockContext('plants', []);
+        createMockContext('groups', mockContext.groups);
 
-    // Render App, confirm matches snapshot
-    const component = render(
-        <PageWrapper>
-            <App />
-        </PageWrapper>
-    );
-    expect(component).toMatchSnapshot();
-});
+        // Render App, confirm matches snapshot
+        const component = render(
+            <PageWrapper>
+                <App />
+            </PageWrapper>
+        );
+        expect(component).toMatchSnapshot();
+    });
 
-it('matches snapshot when no models exist (setup)', () => {
-    // Create mock state objects
-    createMockContext('plants', []);
-    createMockContext('groups', []);
+    it('matches snapshot when no models exist (setup)', () => {
+        // Create mock state objects
+        createMockContext('plants', []);
+        createMockContext('groups', []);
 
-    // Render App, confirm matches snapshot
-    const component = render(
-        <PageWrapper>
-            <App />
-        </PageWrapper>
-    );
-    expect(component).toMatchSnapshot();
+        // Render App, confirm matches snapshot
+        const component = render(
+            <PageWrapper>
+                <App />
+            </PageWrapper>
+        );
+        expect(component).toMatchSnapshot();
+    });
 });
 
 describe('App (archived page)', () => {
