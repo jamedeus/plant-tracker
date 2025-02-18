@@ -171,6 +171,7 @@ function App() {
                     {key: 'last_watered', display: 'Watered'}
                 ]}
                 defaultSortKey={'created'}
+                storageKey='overviewPlantsColumn'
             />
         );
     };
@@ -194,6 +195,7 @@ function App() {
                     {key: 'location', display: 'Location'}
                 ]}
                 defaultSortKey={'created'}
+                storageKey='overviewGroupsColumn'
             />
         );
     };

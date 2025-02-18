@@ -201,6 +201,8 @@ FilterInput.propTypes = {
 // - sortByKeys: Array of objects with `key` and display attributes, populates
 //   sort dropdown options (key must match an attribute in contents objects).
 // - defaultSortKey: Key from contents objects used for default sort.
+// - storageKey: Key used to write sortDirection and sortKey to sessionStorage
+//   (avoids resetting user sort when navigating to page with back button).
 //
 const FilterColumn = ({
     title,
@@ -212,16 +214,21 @@ const FilterColumn = ({
     ignoreKeys=[],
     sortByKeys=[],
     defaultSortKey=null,
+    storageKey,
     children
 }) => {
+    // Load sortDirection and sortKey from sessionStorage (prevents resetting
+    // when navigating to page with back button or entering/exiting edit mode)
+    const persistedState = JSON.parse(sessionStorage.getItem(storageKey));
+
     // sortKey: contents object key used to sort items
     // sortDirection: alphabetical if true, reverse alphabetical if false
     // currentContents: array of contents objects matching current filter query
     // originalContents: full array of contents objects (ignores filter query)
     // ignoreKeys: array of contents object keys ignored by filter function
     const [state, dispatch] = useReducer(reducer, {
-        sortKey: defaultSortKey,
-        sortDirection: true,
+        sortKey: persistedState ? persistedState.sortKey : defaultSortKey,
+        sortDirection: persistedState ? persistedState.sortDirection : true,
         currentContents: contents,
         originalContents: contents,
         ignoreKeys: ignoreKeys
@@ -232,6 +239,16 @@ const FilterColumn = ({
     useEffect(() => {
         dispatch({type: 'set_contents', contents: contents});
     }, [contents]);
+
+    // Cache sortDirection and sortKey when changed
+    useEffect(() => {
+        if (storageKey) {
+            sessionStorage.setItem(storageKey, JSON.stringify({
+                sortKey: state.sortKey,
+                sortDirection: state.sortDirection
+            }));
+        }
+    }, [state.sortKey, state.sortDirection]);
 
     // Array.sort compare function used by sortByKey
     const compare = (a, b) => {
@@ -305,6 +322,7 @@ FilterColumn.propTypes = {
     ignoreKeys: PropTypes.array,
     sortByKeys: PropTypes.array,
     defaultSortKey: PropTypes.string,
+    storageKey: PropTypes.string,
     children: PropTypes.node
 };
 

@@ -234,7 +234,7 @@ describe('FilterColumn', () => {
     });
 });
 
-describe('FilterColumn optional args', () => {
+describe('FilterColumn  ', () => {
     // Define default arguments used/overridden in tests below
     let baseArgs;
     beforeEach(() => {
@@ -259,6 +259,8 @@ describe('FilterColumn optional args', () => {
             ],
             defaultSortKey: 'created'
         };
+        // Clear sessionStorage (cached sortDirection, sortKey)
+        sessionStorage.clear();
     });
 
     it('does not render dropdown when sortByKeys arg is empty', async () => {
@@ -328,5 +330,43 @@ describe('FilterColumn optional args', () => {
         // Confirm neither arrow icon is present anywhere in the component
         expect(component.container.querySelector('.fa-arrow-up-long')).toBeNull();
         expect(component.container.querySelector('.fa-arrow-down-long')).toBeNull();
+    });
+
+    it('caches sortDirection and sortKey to sessionStorage when changed', async () => {
+        // Render with optional storageKey param (persist sort direction and key)
+        const args = { ...baseArgs, storageKey: 'unittest' };
+        const user = userEvent.setup();
+        const component = render(
+            <FilterColumn {...args} />
+        );
+
+        // Click the Name option in sort dropdown, click again to reverse direction
+        await user.click(component.getByText('Name'));
+        await user.click(component.getByText('Name'));
+
+        // Confirm that sortDirection and sortKey were written to sessionStorage
+        const persistedState = JSON.parse(sessionStorage.getItem('unittest'));
+        expect(persistedState).toEqual({ sortKey: 'display_name', sortDirection: false });
+    });
+
+    it('restores sortDirection and sortKey from sessionStorage if set', () => {
+        // Simulate object created when user sorts by name + reverses direction
+        sessionStorage.setItem('unittest', JSON.stringify({
+            sortKey: 'display_name',
+            sortDirection: false
+        }));
+
+        // Render with storageKey param set to key created above
+        const args = { ...baseArgs, storageKey: 'unittest' };
+        const component = render(
+            <FilterColumn {...args} />
+        );
+
+        // Confirm cards were sorted reverse alphabetically by name
+        const titles = component.container.querySelectorAll('.card-title');
+        expect(titles[0].innerHTML).toBe("Unnamed plant 1");
+        expect(titles[1].innerHTML).toBe("Unnamed Fittonia");
+        expect(titles[2].innerHTML).toBe("mini palm tree");
+        expect(titles[3].innerHTML).toBe("Favorite plant");
     });
 });
