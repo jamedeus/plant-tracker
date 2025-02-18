@@ -303,6 +303,7 @@ function App() {
                     {key: 'last_watered', display: 'Watered'}
                 ]}
                 defaultSortKey={'created'}
+                storageKey={`group-${group.uuid}`}
             >
                 <PlantEventButtons
                     editing={selectingPlants}
