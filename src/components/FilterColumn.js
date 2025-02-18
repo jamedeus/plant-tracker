@@ -7,6 +7,29 @@ import { XMarkIcon, ArrowsUpDownIcon } from '@heroicons/react/16/solid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUpLong, faArrowDownLong } from '@fortawesome/free-solid-svg-icons';
 
+// Takes originalContents array, ignoreKeys array, and filter input query
+// Returns a subset of originalContents with all items that have one or more
+// parameter containing query (not including parameters in ignoreKeys)
+const getCurrentContents = (originalContents, ignoreKeys, query) => {
+    if (!query) {
+        return originalContents;
+    }
+
+    // Case-insensitive matching
+    const lowercaseQuery = query.toLowerCase();
+
+    // Iterate over keys of each item in originalContents, add item to return
+    // array once a single key is found that is not in state.ignoreKeys array
+    // and has a value that contains query
+    return originalContents.filter(item => {
+        return Object.entries(item).some(([key, value]) => {
+            return !ignoreKeys.includes(key)
+            && value !== null
+            && value.toString().toLowerCase().includes(lowercaseQuery);
+        });
+    });
+}
+
 // Reducer used to set visible cards, sort key, and sort direction
 const reducer = (state, action) => {
     switch(action.type) {
@@ -21,27 +44,22 @@ const reducer = (state, action) => {
             return {
                 ...state,
                 originalContents: action.contents,
-                currentContents: action.contents
+                currentContents: getCurrentContents(
+                    action.contents,
+                    state.ignoreKeys,
+                    state.query
+                )
             };
         }
         case('filter_contents'): {
-            // Case-insensitive matching
-            const lowercaseQuery = action.query.toLowerCase();
-
-            // Iterate over keys of each item in state.originalContents, add
-            // item to currentContents once a single key is found that is not
-            // in state.ignoreKeys array and has a value that contains query
-            const newContents = state.originalContents.filter(item => {
-                return Object.entries(item).some(([key, value]) => {
-                    return !state.ignoreKeys.includes(key)
-                    && value !== null
-                    && value.toString().toLowerCase().includes(lowercaseQuery);
-                });
-            });
-
             return {
                 ...state,
-                currentContents: newContents
+                currentContents: getCurrentContents(
+                    state.originalContents,
+                    state.ignoreKeys,
+                    action.query
+                ),
+                query: action.query
             };
         }
         /* istanbul ignore next */
@@ -55,7 +73,7 @@ const reducer = (state, action) => {
 // Renders filter text input and sort dropdown at top of FilterColumn
 const FilterInput = ({state, dispatch, sortByKeys}) => {
     // Filter input state
-    const [query, setQuery] = useState('');
+    const [query, setQuery] = useState(state.query);
 
     // Called when user types in filter input
     // Filters contents after 200ms delay, resets immediately if string empty
@@ -231,7 +249,8 @@ const FilterColumn = ({
         sortDirection: persistedState ? persistedState.sortDirection : true,
         currentContents: contents,
         originalContents: contents,
-        ignoreKeys: ignoreKeys
+        ignoreKeys: ignoreKeys,
+        query: persistedState ? persistedState.query : ''
     });
 
     // Update state.originalContents when upstream contents changes
@@ -245,10 +264,11 @@ const FilterColumn = ({
         if (storageKey) {
             sessionStorage.setItem(storageKey, JSON.stringify({
                 sortKey: state.sortKey,
-                sortDirection: state.sortDirection
+                sortDirection: state.sortDirection,
+                query: state.query
             }));
         }
-    }, [state.sortKey, state.sortDirection]);
+    }, [state.sortKey, state.sortDirection, state.query]);
 
     // Array.sort compare function used by sortByKey
     const compare = (a, b) => {

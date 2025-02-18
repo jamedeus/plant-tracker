@@ -346,14 +346,56 @@ describe('FilterColumn  ', () => {
 
         // Confirm that sortDirection and sortKey were written to sessionStorage
         const persistedState = JSON.parse(sessionStorage.getItem('unittest'));
-        expect(persistedState).toEqual({ sortKey: 'display_name', sortDirection: false });
+        expect(persistedState).toEqual({
+            sortKey: 'display_name',
+            sortDirection: false,
+            query: ''
+        });
+    });
+
+    it('caches query to sessionStorage when user types in the filter input', async () => {
+        // Render with optional storageKey param (persist sort direction and key)
+        const args = { ...baseArgs, storageKey: 'unittest' };
+        const user = userEvent.setup();
+        const component = render(
+            <FilterColumn {...args} />
+        );
+
+        // Type "plant" in filter input, wait for rerender (debounced)
+        const filterInput = component.getByRole('textbox');
+        await user.type(filterInput, 'plant');
+        await waitFor(() => {
+            expect(component.container.querySelectorAll('.card').length).toBe(2);
+        });
+
+        // Confirm that query was written to sessionStorage
+        let persistedState = JSON.parse(sessionStorage.getItem('unittest'));
+        expect(persistedState).toEqual({
+            sortKey: 'created',
+            sortDirection: true,
+            query: 'plant'
+        });
+
+        // Clear input, confirm query was updated in sessionStorage
+        await user.clear(filterInput);
+        await waitFor(() => {
+            expect(component.container.querySelectorAll('.card').length).toBe(4);
+        });
+        persistedState = JSON.parse(sessionStorage.getItem('unittest'));
+        expect(persistedState).toEqual({
+            sortKey: 'created',
+            sortDirection: true,
+            query: ''
+        });
+
     });
 
     it('restores sortDirection and sortKey from sessionStorage if set', () => {
         // Simulate object created when user sorts by name + reverses direction
         sessionStorage.setItem('unittest', JSON.stringify({
             sortKey: 'display_name',
-            sortDirection: false
+            sortDirection: false,
+            query: ''
         }));
 
         // Render with storageKey param set to key created above
