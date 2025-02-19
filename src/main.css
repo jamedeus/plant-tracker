@@ -124,6 +124,11 @@ html[data-theme="light"] .pot-size-selected::placeholder {
     @apply object-scale-down max-h-[80vh] max-w-[80vw] md:max-h-[50vh] md:max-w-[50vw];
 }
 
+/* Prevent navbar covering top of popover */
+#react-tiny-popover-container {
+    z-index: 99;
+}
+
 /* Make cursor-pointer override cursor style for all children */
 .cursor-pointer, .cursor-pointer * {
     cursor: pointer !important;
