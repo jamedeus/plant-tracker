@@ -10,6 +10,12 @@
     @apply p-4;
 }
 
+/* Allow overflow when collapse is open */
+/* Prevents FilterColumn sort dropdown getting cut off when only 1 item */
+.collapse:has(input[type="checkbox"]:checked) {
+    @apply overflow-visible;
+}
+
 .max-w-90 {
     max-width: 90%;
 }
