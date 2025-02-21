@@ -11,10 +11,30 @@ describe('App', () => {
         removeMockContext('groups');
     });
 
-    it('matches snapshot when plants and groups exist', () => {
+    it('matches snapshot when plants and groups exist (desktop layout)', () => {
         // Create mock state objects
         createMockContext('plants', mockContext.plants);
         createMockContext('groups', mockContext.groups);
+
+        // Set width greater than tailwind md breakpoint
+        window.innerWidth = 800;
+
+        // Render App, confirm matches snapshot
+        const component = render(
+            <PageWrapper>
+                <App />
+            </PageWrapper>
+        );
+        expect(component).toMatchSnapshot();
+    });
+
+    it('matches snapshot when plants and groups exist (mobile layout)', () => {
+        // Create mock state objects
+        createMockContext('plants', mockContext.plants);
+        createMockContext('groups', mockContext.groups);
+
+        // Set width less than tailwind md breakpoint
+        window.innerWidth = 600;
 
         // Render App, confirm matches snapshot
         const component = render(
