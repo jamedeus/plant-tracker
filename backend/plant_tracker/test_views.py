@@ -280,7 +280,7 @@ class OverviewTests(TestCase):
         # Mock excessively long URL_PREFIX, will not be possible to generate QR
         # codes with width less than max_width
         # pylint: disable-next=line-too-long
-        settings.URL_PREFIX = 'https://excessive.number.of.extremely.long.repeating.subdomains.excessive.number.of.extremely.long.repeating.subdomains.excessive.number.of.extremely.long.repeating.subdomains.excessive.number.of.extremely.long.repeating.subdomains.longdomainname.com/'  # noqa
+        settings.URL_PREFIX = 'https://excessive.number.of.extremely.long.repeating.subdomains.excessive.number.of.extremely.long.repeating.subdomains.excessive.number.of.extremely.long.repeating.subdomains.excessive.number.of.extremely.long.repeating.subdomains.excessive.number.of.extremely.long.repeating.subdomains.longdomainname.com/'  # noqa
 
         # Send request with qr_per_row = 25 (worst case), confirm correct error
         response = self.client.post('/get_qr_codes', {'qr_per_row': 25})

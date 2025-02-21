@@ -4,8 +4,6 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pyqrcode = "*"
-pypng = "*"
 piexif = "*"
 celery = "*"
 redis = "*"
@@ -13,6 +11,7 @@ django-redis = "*"
 pillow = "~=11.0"
 pillow-heif = "*"
 django = "*"
+segno = "*"
 
 [dev-packages]
 pylint-django = "*"

@@ -5,7 +5,7 @@ same URL prefix followed by a random UUID. Used by /get_qr_codes endpoint.
 import io
 from uuid import uuid4
 
-import pyqrcode
+import segno
 from PIL import Image
 
 # Dimensions of 8.5 x 11 sheet of paper at 300 dpi
@@ -15,14 +15,14 @@ page_width, page_height = 2400, 3200
 
 def generate_random_qr(url_prefix):
     '''Returns pyqrcode instance with url_prefix + random UUID'''
-    return pyqrcode.create(f"{url_prefix}{uuid4().hex}", error="H")
+    return segno.make(f"{url_prefix}{uuid4().hex}", error="H", micro=False)
 
 
 def get_qr_png(url_prefix, scale=5):
     '''Returns PIL.Image containing QR code with url_prefix + random UUID'''
     image = io.BytesIO()
     qr_data = generate_random_qr(url_prefix)
-    qr_data.png(image, scale=scale)
+    qr_data.save(image, scale=scale, border=3, kind='png')
     return Image.open(image)
 
 
@@ -37,8 +37,8 @@ def calculate_qr_width_and_scale(url_prefix, qr_per_row):
 
     # Generate test QR code (minimum size for URL), calculate scaling factor
     test_qr = generate_random_qr(url_prefix)
-    qr_scale = int(max_width / test_qr.get_png_size())
-    qr_width = test_qr.get_png_size(qr_scale)
+    qr_scale = int(max_width / test_qr.symbol_size(border=3)[0])
+    qr_width = test_qr.symbol_size(qr_scale, border=3)[0]
 
     # Prevent ZeroDivisionError when URL_PREFIX is extremely long
     # Happens when test_qr exceeds max_width, resulting in qr_scale of 0
