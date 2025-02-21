@@ -379,19 +379,34 @@ const Timeline = ({ plantID, events, archived }) => {
                     className={`dropdown-content z-[1] menu p-2 shadow
                                 bg-base-300 rounded-box w-40`}
                 >
-                    <li className="ml-auto"><a onClick={() => noteModalRef.current.open()}>
+                    <li><a
+                        className="flex justify-end"
+                        onClick={() => noteModalRef.current.open()}
+                    >
                         Add note
                     </a></li>
-                    <li className="ml-auto"><a onClick={openPhotoModal}>
+                    <li><a
+                        className="flex justify-end"
+                        onClick={openPhotoModal}
+                    >
                         Add photos
                     </a></li>
-                    <li className="ml-auto"><a onClick={openRepotModal}>
+                    <li><a
+                        className="flex justify-end"
+                        onClick={openRepotModal}
+                    >
                         Repot plant
                     </a></li>
-                    <li className="ml-auto"><a onClick={openDeletePhotosModal}>
+                    <li><a
+                        className="flex justify-end"
+                        onClick={openDeletePhotosModal}
+                    >
                         Delete photos
                     </a></li>
-                    <li className="ml-auto"><a onClick={openEventHistoryModal}>
+                    <li><a
+                        className="flex justify-end"
+                        onClick={openEventHistoryModal}
+                    >
                         Delete events
                     </a></li>
                 </ul>

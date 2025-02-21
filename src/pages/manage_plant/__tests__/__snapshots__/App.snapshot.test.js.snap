@@ -1207,38 +1207,38 @@ exports[`App matches snapshot 1`] = `
                                 bg-base-300 rounded-box w-40"
                   tabindex="0"
                 >
-                  <li
-                    class="ml-auto"
-                  >
-                    <a>
+                  <li>
+                    <a
+                      class="flex justify-end"
+                    >
                       Add note
                     </a>
                   </li>
-                  <li
-                    class="ml-auto"
-                  >
-                    <a>
+                  <li>
+                    <a
+                      class="flex justify-end"
+                    >
                       Add photos
                     </a>
                   </li>
-                  <li
-                    class="ml-auto"
-                  >
-                    <a>
+                  <li>
+                    <a
+                      class="flex justify-end"
+                    >
                       Repot plant
                     </a>
                   </li>
-                  <li
-                    class="ml-auto"
-                  >
-                    <a>
+                  <li>
+                    <a
+                      class="flex justify-end"
+                    >
                       Delete photos
                     </a>
                   </li>
-                  <li
-                    class="ml-auto"
-                  >
-                    <a>
+                  <li>
+                    <a
+                      class="flex justify-end"
+                    >
                       Delete events
                     </a>
                   </li>
@@ -4441,38 +4441,38 @@ exports[`App matches snapshot 1`] = `
                                 bg-base-300 rounded-box w-40"
                 tabindex="0"
               >
-                <li
-                  class="ml-auto"
-                >
-                  <a>
+                <li>
+                  <a
+                    class="flex justify-end"
+                  >
                     Add note
                   </a>
                 </li>
-                <li
-                  class="ml-auto"
-                >
-                  <a>
+                <li>
+                  <a
+                    class="flex justify-end"
+                  >
                     Add photos
                   </a>
                 </li>
-                <li
-                  class="ml-auto"
-                >
-                  <a>
+                <li>
+                  <a
+                    class="flex justify-end"
+                  >
                     Repot plant
                   </a>
                 </li>
-                <li
-                  class="ml-auto"
-                >
-                  <a>
+                <li>
+                  <a
+                    class="flex justify-end"
+                  >
                     Delete photos
                   </a>
                 </li>
-                <li
-                  class="ml-auto"
-                >
-                  <a>
+                <li>
+                  <a
+                    class="flex justify-end"
+                  >
                     Delete events
                   </a>
                 </li>
