@@ -33,6 +33,11 @@ const Navbar = ({ menuOptions, title, titleOptions }) => {
     // Create state for title font size (calculated from navbar width)
     const [titleFontSize, setTitleFontSize] = useState(32);
 
+    // Clicking title scrolls to top if titleOptions param not given
+    const jumpToTop = () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+    };
+
     useEffect(() => {
         // Takes navbar and dropdown button elements, returns max title width
         const getMaxWidth = (navbar, button) => {
@@ -92,7 +97,11 @@ const Navbar = ({ menuOptions, title, titleOptions }) => {
                 </div>
             </div>
 
-            <div className="navbar-center mx-auto shrink min-w-0">
+            <div
+                className="navbar-center mx-auto shrink min-w-0"
+                onClick={titleOptions ? null : jumpToTop}
+                title={titleOptions ? null : "Scroll to top"}
+            >
                 <div className="dropdown dropdown-center w-full">
                     <a
                         tabIndex={0}

@@ -21,6 +21,9 @@ describe('App', () => {
         // Mock window.location to simulate archived overview
         delete window.location;
         window.location = new URL('https://plants.lan/archived');
+
+        // Mock width to force mobile layout (renders title nav dropdown)
+        window.innerWidth = 750;
     });
 
     beforeEach(() => {

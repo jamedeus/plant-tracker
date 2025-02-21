@@ -74,6 +74,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
           </div>
           <div
             class="navbar-center mx-auto shrink min-w-0"
+            title="Scroll to top"
           >
             <div
               class="dropdown dropdown-center w-full"
@@ -93,28 +94,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
               <div
                 class="dropdown-content z-[1] flex"
                 tabindex="0"
-              >
-                <ul
-                  class="menu menu-md dropdown-content mt-3 z-[99]
-                                p-2 shadow bg-base-300 rounded-box w-24"
-                  tabindex="0"
-                >
-                  <li
-                    class="mx-auto"
-                  >
-                    <a>
-                      Plants
-                    </a>
-                  </li>
-                  <li
-                    class="mx-auto"
-                  >
-                    <a>
-                      Groups
-                    </a>
-                  </li>
-                </ul>
-              </div>
+              />
             </div>
           </div>
           <div
@@ -822,6 +802,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
         </div>
         <div
           class="navbar-center mx-auto shrink min-w-0"
+          title="Scroll to top"
         >
           <div
             class="dropdown dropdown-center w-full"
@@ -841,28 +822,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
             <div
               class="dropdown-content z-[1] flex"
               tabindex="0"
-            >
-              <ul
-                class="menu menu-md dropdown-content mt-3 z-[99]
-                                p-2 shadow bg-base-300 rounded-box w-24"
-                tabindex="0"
-              >
-                <li
-                  class="mx-auto"
-                >
-                  <a>
-                    Plants
-                  </a>
-                </li>
-                <li
-                  class="mx-auto"
-                >
-                  <a>
-                    Groups
-                  </a>
-                </li>
-              </ul>
-            </div>
+            />
           </div>
         </div>
         <div
@@ -1642,6 +1602,7 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
           </div>
           <div
             class="navbar-center mx-auto shrink min-w-0"
+            title="Scroll to top"
           >
             <div
               class="dropdown dropdown-center w-full"
@@ -1976,6 +1937,7 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
         </div>
         <div
           class="navbar-center mx-auto shrink min-w-0"
+          title="Scroll to top"
         >
           <div
             class="dropdown dropdown-center w-full"
@@ -2377,6 +2339,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
           </div>
           <div
             class="navbar-center mx-auto shrink min-w-0"
+            title="Scroll to top"
           >
             <div
               class="dropdown dropdown-center w-full"
@@ -2865,6 +2828,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
         </div>
         <div
           class="navbar-center mx-auto shrink min-w-0"
+          title="Scroll to top"
         >
           <div
             class="dropdown dropdown-center w-full"
@@ -3420,6 +3384,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
           </div>
           <div
             class="navbar-center mx-auto shrink min-w-0"
+            title="Scroll to top"
           >
             <div
               class="dropdown dropdown-center w-full"
@@ -3953,6 +3918,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
         </div>
         <div
           class="navbar-center mx-auto shrink min-w-0"
+          title="Scroll to top"
         >
           <div
             class="dropdown dropdown-center w-full"
@@ -4553,6 +4519,7 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
           </div>
           <div
             class="navbar-center mx-auto shrink min-w-0"
+            title="Scroll to top"
           >
             <div
               class="dropdown dropdown-center w-full"
@@ -4572,28 +4539,7 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
               <div
                 class="dropdown-content z-[1] flex"
                 tabindex="0"
-              >
-                <ul
-                  class="menu menu-md dropdown-content mt-3 z-[99]
-                                p-2 shadow bg-base-300 rounded-box w-24"
-                  tabindex="0"
-                >
-                  <li
-                    class="mx-auto"
-                  >
-                    <a>
-                      Plants
-                    </a>
-                  </li>
-                  <li
-                    class="mx-auto"
-                  >
-                    <a>
-                      Groups
-                    </a>
-                  </li>
-                </ul>
-              </div>
+              />
             </div>
           </div>
           <div
@@ -5306,6 +5252,7 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
         </div>
         <div
           class="navbar-center mx-auto shrink min-w-0"
+          title="Scroll to top"
         >
           <div
             class="dropdown dropdown-center w-full"
@@ -5325,28 +5272,7 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
             <div
               class="dropdown-content z-[1] flex"
               tabindex="0"
-            >
-              <ul
-                class="menu menu-md dropdown-content mt-3 z-[99]
-                                p-2 shadow bg-base-300 rounded-box w-24"
-                tabindex="0"
-              >
-                <li
-                  class="mx-auto"
-                >
-                  <a>
-                    Plants
-                  </a>
-                </li>
-                <li
-                  class="mx-auto"
-                >
-                  <a>
-                    Groups
-                  </a>
-                </li>
-              </ul>
-            </div>
+            />
           </div>
         </div>
         <div

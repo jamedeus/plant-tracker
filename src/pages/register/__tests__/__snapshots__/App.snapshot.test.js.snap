@@ -67,6 +67,7 @@ exports[`App matches snapshot 1`] = `
           </div>
           <div
             class="navbar-center mx-auto shrink min-w-0"
+            title="Scroll to top"
           >
             <div
               class="dropdown dropdown-center w-full"
@@ -369,6 +370,7 @@ exports[`App matches snapshot 1`] = `
         </div>
         <div
           class="navbar-center mx-auto shrink min-w-0"
+          title="Scroll to top"
         >
           <div
             class="dropdown dropdown-center w-full"

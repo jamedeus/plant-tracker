@@ -10,6 +10,7 @@ beforeAll(() => {
     HTMLDialogElement.prototype.showModal = jest.fn();
     HTMLDialogElement.prototype.close = jest.fn();
     window.HTMLElement.prototype.scrollIntoView = jest.fn();
+    window.scrollTo = jest.fn();
 
     // Make available in all tests
     global.render = render;

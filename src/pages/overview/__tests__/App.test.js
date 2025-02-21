@@ -13,6 +13,9 @@ describe('App', () => {
         // Create mock state objects
         createMockContext('plants', mockContext.plants);
         createMockContext('groups', mockContext.groups);
+
+        // Mock width to force mobile layout (renders title nav dropdown)
+        window.innerWidth = 750;
     });
 
     beforeEach(() => {
@@ -239,5 +242,19 @@ describe('App', () => {
         // Click Plants title dropdown, confirm scrollIntoView was called
         await user.click(app.getByText("Groups"));
         expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled();
+    });
+
+    it('removes title dropdown if window is resized to desktop breakpoint', async () => {
+        // Confirm "Plants" option in dropdown exists
+        expect(app.queryByText("Plants")).not.toBeNull();
+
+        // Simulate resizing window past tailwind md breakpoint
+        window.innerWidth = 800;
+        window.dispatchEvent(new Event('resize'));
+
+        // Confirm "Plants" option no longer exists
+        await waitFor(() => {
+            expect(app.queryByText("Plants")).toBeNull();
+        });
     });
 });

@@ -7,6 +7,7 @@ import { sendPostRequest, parseDomContext } from 'src/util';
 import FilterColumn from 'src/components/FilterColumn';
 import FloatingFooter from 'src/components/FloatingFooter';
 import PrintModal from './PrintModal';
+import { useIsBreakpointActive } from "src/useBreakpoint";
 
 function App() {
     // Load context set by django template
@@ -16,6 +17,12 @@ function App() {
     const [groups, setGroups] = useState(() => {
         return parseDomContext("groups");
     });
+
+    // True if desktop layout, false if mobile
+    const desktop = useIsBreakpointActive('md');
+    // True if mobile layout with stacked plant and group columns
+    // False if desktop layout (side by side columns) or only one column
+    const stackedColumns = !desktop && plants.length > 0 && groups.length > 0;
 
     // Check URL to determine if viewing main overview or archive overview
     const archivedOverview = window.location.pathname === '/archived';
@@ -234,42 +241,39 @@ function App() {
         }
     };
 
-    // Renders dropdown used to jump to plants or groups column if both present
+    // Dropdown with links to jump to plant or group columns
+    // Only rendered on mobile layout (both columns always visible on desktop)
     const QuickNavigation = () => {
-        if (plants.length > 0 && groups.length > 0) {
-            const jumpToPlants = () => {
-                plantsColRef.current.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start"
-                });
-                document.activeElement.blur();
-            };
+        const jumpToPlants = () => {
+            plantsColRef.current.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+            document.activeElement.blur();
+        };
 
-            const jumpToGroups = () => {
-                groupsColRef.current.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start"
-                });
-                document.activeElement.blur();
-            };
+        const jumpToGroups = () => {
+            groupsColRef.current.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+            document.activeElement.blur();
+        };
 
-            return (
-                <ul
-                    tabIndex={0}
-                    className={`menu menu-md dropdown-content mt-3 z-[99]
-                                p-2 shadow bg-base-300 rounded-box w-24`}
-                >
-                    <li className="mx-auto"><a onClick={jumpToPlants}>
-                        Plants
-                    </a></li>
-                    <li className="mx-auto"><a onClick={jumpToGroups}>
-                        Groups
-                    </a></li>
-                </ul>
-            );
-        } else {
-            return null;
-        }
+        return (
+            <ul
+                tabIndex={0}
+                className={`menu menu-md dropdown-content mt-3 z-[99]
+                            p-2 shadow bg-base-300 rounded-box w-24`}
+            >
+                <li className="mx-auto"><a onClick={jumpToPlants}>
+                    Plants
+                </a></li>
+                <li className="mx-auto"><a onClick={jumpToGroups}>
+                    Groups
+                </a></li>
+            </ul>
+        );
     };
 
     // Top-left menu button contents for main overview page
@@ -313,7 +317,7 @@ function App() {
                     <OverviewMenuOptions />
                 }
                 title={archivedOverview ? "Archived" : "Plant Overview"}
-                titleOptions={<QuickNavigation />}
+                titleOptions={stackedColumns ? <QuickNavigation /> : null}
             />
 
             <Layout />

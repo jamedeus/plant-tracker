@@ -59,4 +59,35 @@ describe('Navbar', () => {
         });
         expect(titleElement.style.fontSize).toBe('26px');
     });
+
+    it('scrolls to top when title is clicked if no titleOptions given', async () => {
+        const user = userEvent.setup();
+        const app = render(
+            <Navbar title='Test Page' />
+        );
+        await user.click(app.getByText("Test Page"));
+        expect(window.scrollTo).toHaveBeenCalled();
+    });
+
+    it('does not scroll to top when title is clicked if titleOptions were given', async () => {
+        const user = userEvent.setup();
+        const app = render(
+            <Navbar
+                title='Test Page'
+                titleOptions={
+                    <ul>
+                        <li><a>
+                            Option 1
+                        </a></li>
+                        <li><a>
+                            Option 2
+                        </a></li>
+                    </ul>
+                }
+            />
+        );
+        await user.click(app.getByText("Test Page"));
+        expect(window.scrollTo).not.toHaveBeenCalled();
+
+    });
 });
