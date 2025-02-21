@@ -207,13 +207,13 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                                 shadow bg-base-300 rounded-box w-min-content"
                           tabindex="0"
                         >
-                          <li
-                            class="ml-auto"
-                          >
-                            <a>
+                          <li>
+                            <a
+                              class="flex justify-end"
+                            >
                               <svg
                                 aria-hidden="true"
-                                class="svg-inline--fa fa-arrow-down-long "
+                                class="svg-inline--fa fa-arrow-down-long mr-2"
                                 data-icon="arrow-down-long"
                                 data-prefix="fas"
                                 focusable="false"
@@ -229,24 +229,24 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                               Added
                             </a>
                           </li>
-                          <li
-                            class="ml-auto"
-                          >
-                            <a>
+                          <li>
+                            <a
+                              class="flex justify-end"
+                            >
                               Name
                             </a>
                           </li>
-                          <li
-                            class="ml-auto"
-                          >
-                            <a>
+                          <li>
+                            <a
+                              class="flex justify-end"
+                            >
                               Species
                             </a>
                           </li>
-                          <li
-                            class="ml-auto"
-                          >
-                            <a>
+                          <li>
+                            <a
+                              class="flex justify-end"
+                            >
                               Watered
                             </a>
                           </li>
@@ -443,13 +443,13 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                                 shadow bg-base-300 rounded-box w-min-content"
                           tabindex="0"
                         >
-                          <li
-                            class="ml-auto"
-                          >
-                            <a>
+                          <li>
+                            <a
+                              class="flex justify-end"
+                            >
                               <svg
                                 aria-hidden="true"
-                                class="svg-inline--fa fa-arrow-down-long "
+                                class="svg-inline--fa fa-arrow-down-long mr-2"
                                 data-icon="arrow-down-long"
                                 data-prefix="fas"
                                 focusable="false"
@@ -465,17 +465,17 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                               Added
                             </a>
                           </li>
-                          <li
-                            class="ml-auto"
-                          >
-                            <a>
+                          <li>
+                            <a
+                              class="flex justify-end"
+                            >
                               Name
                             </a>
                           </li>
-                          <li
-                            class="ml-auto"
-                          >
-                            <a>
+                          <li>
+                            <a
+                              class="flex justify-end"
+                            >
                               Location
                             </a>
                           </li>
@@ -955,13 +955,13 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                                 shadow bg-base-300 rounded-box w-min-content"
                         tabindex="0"
                       >
-                        <li
-                          class="ml-auto"
-                        >
-                          <a>
+                        <li>
+                          <a
+                            class="flex justify-end"
+                          >
                             <svg
                               aria-hidden="true"
-                              class="svg-inline--fa fa-arrow-down-long "
+                              class="svg-inline--fa fa-arrow-down-long mr-2"
                               data-icon="arrow-down-long"
                               data-prefix="fas"
                               focusable="false"
@@ -977,24 +977,24 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                             Added
                           </a>
                         </li>
-                        <li
-                          class="ml-auto"
-                        >
-                          <a>
+                        <li>
+                          <a
+                            class="flex justify-end"
+                          >
                             Name
                           </a>
                         </li>
-                        <li
-                          class="ml-auto"
-                        >
-                          <a>
+                        <li>
+                          <a
+                            class="flex justify-end"
+                          >
                             Species
                           </a>
                         </li>
-                        <li
-                          class="ml-auto"
-                        >
-                          <a>
+                        <li>
+                          <a
+                            class="flex justify-end"
+                          >
                             Watered
                           </a>
                         </li>
@@ -1191,13 +1191,13 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                                 shadow bg-base-300 rounded-box w-min-content"
                         tabindex="0"
                       >
-                        <li
-                          class="ml-auto"
-                        >
-                          <a>
+                        <li>
+                          <a
+                            class="flex justify-end"
+                          >
                             <svg
                               aria-hidden="true"
-                              class="svg-inline--fa fa-arrow-down-long "
+                              class="svg-inline--fa fa-arrow-down-long mr-2"
                               data-icon="arrow-down-long"
                               data-prefix="fas"
                               focusable="false"
@@ -1213,17 +1213,17 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                             Added
                           </a>
                         </li>
-                        <li
-                          class="ml-auto"
-                        >
-                          <a>
+                        <li>
+                          <a
+                            class="flex justify-end"
+                          >
                             Name
                           </a>
                         </li>
-                        <li
-                          class="ml-auto"
-                        >
-                          <a>
+                        <li>
+                          <a
+                            class="flex justify-end"
+                          >
                             Location
                           </a>
                         </li>
@@ -2483,13 +2483,13 @@ exports[`App matches snapshot when only groups exist 1`] = `
                                 shadow bg-base-300 rounded-box w-min-content"
                       tabindex="0"
                     >
-                      <li
-                        class="ml-auto"
-                      >
-                        <a>
+                      <li>
+                        <a
+                          class="flex justify-end"
+                        >
                           <svg
                             aria-hidden="true"
-                            class="svg-inline--fa fa-arrow-down-long "
+                            class="svg-inline--fa fa-arrow-down-long mr-2"
                             data-icon="arrow-down-long"
                             data-prefix="fas"
                             focusable="false"
@@ -2505,17 +2505,17 @@ exports[`App matches snapshot when only groups exist 1`] = `
                           Added
                         </a>
                       </li>
-                      <li
-                        class="ml-auto"
-                      >
-                        <a>
+                      <li>
+                        <a
+                          class="flex justify-end"
+                        >
                           Name
                         </a>
                       </li>
-                      <li
-                        class="ml-auto"
-                      >
-                        <a>
+                      <li>
+                        <a
+                          class="flex justify-end"
+                        >
                           Location
                         </a>
                       </li>
@@ -2971,13 +2971,13 @@ exports[`App matches snapshot when only groups exist 1`] = `
                                 shadow bg-base-300 rounded-box w-min-content"
                     tabindex="0"
                   >
-                    <li
-                      class="ml-auto"
-                    >
-                      <a>
+                    <li>
+                      <a
+                        class="flex justify-end"
+                      >
                         <svg
                           aria-hidden="true"
-                          class="svg-inline--fa fa-arrow-down-long "
+                          class="svg-inline--fa fa-arrow-down-long mr-2"
                           data-icon="arrow-down-long"
                           data-prefix="fas"
                           focusable="false"
@@ -2993,17 +2993,17 @@ exports[`App matches snapshot when only groups exist 1`] = `
                         Added
                       </a>
                     </li>
-                    <li
-                      class="ml-auto"
-                    >
-                      <a>
+                    <li>
+                      <a
+                        class="flex justify-end"
+                      >
                         Name
                       </a>
                     </li>
-                    <li
-                      class="ml-auto"
-                    >
-                      <a>
+                    <li>
+                      <a
+                        class="flex justify-end"
+                      >
                         Location
                       </a>
                     </li>
@@ -3526,13 +3526,13 @@ exports[`App matches snapshot when only plants exist 1`] = `
                                 shadow bg-base-300 rounded-box w-min-content"
                       tabindex="0"
                     >
-                      <li
-                        class="ml-auto"
-                      >
-                        <a>
+                      <li>
+                        <a
+                          class="flex justify-end"
+                        >
                           <svg
                             aria-hidden="true"
-                            class="svg-inline--fa fa-arrow-down-long "
+                            class="svg-inline--fa fa-arrow-down-long mr-2"
                             data-icon="arrow-down-long"
                             data-prefix="fas"
                             focusable="false"
@@ -3548,24 +3548,24 @@ exports[`App matches snapshot when only plants exist 1`] = `
                           Added
                         </a>
                       </li>
-                      <li
-                        class="ml-auto"
-                      >
-                        <a>
+                      <li>
+                        <a
+                          class="flex justify-end"
+                        >
                           Name
                         </a>
                       </li>
-                      <li
-                        class="ml-auto"
-                      >
-                        <a>
+                      <li>
+                        <a
+                          class="flex justify-end"
+                        >
                           Species
                         </a>
                       </li>
-                      <li
-                        class="ml-auto"
-                      >
-                        <a>
+                      <li>
+                        <a
+                          class="flex justify-end"
+                        >
                           Watered
                         </a>
                       </li>
@@ -4059,13 +4059,13 @@ exports[`App matches snapshot when only plants exist 1`] = `
                                 shadow bg-base-300 rounded-box w-min-content"
                     tabindex="0"
                   >
-                    <li
-                      class="ml-auto"
-                    >
-                      <a>
+                    <li>
+                      <a
+                        class="flex justify-end"
+                      >
                         <svg
                           aria-hidden="true"
-                          class="svg-inline--fa fa-arrow-down-long "
+                          class="svg-inline--fa fa-arrow-down-long mr-2"
                           data-icon="arrow-down-long"
                           data-prefix="fas"
                           focusable="false"
@@ -4081,24 +4081,24 @@ exports[`App matches snapshot when only plants exist 1`] = `
                         Added
                       </a>
                     </li>
-                    <li
-                      class="ml-auto"
-                    >
-                      <a>
+                    <li>
+                      <a
+                        class="flex justify-end"
+                      >
                         Name
                       </a>
                     </li>
-                    <li
-                      class="ml-auto"
-                    >
-                      <a>
+                    <li>
+                      <a
+                        class="flex justify-end"
+                      >
                         Species
                       </a>
                     </li>
-                    <li
-                      class="ml-auto"
-                    >
-                      <a>
+                    <li>
+                      <a
+                        class="flex justify-end"
+                      >
                         Watered
                       </a>
                     </li>
@@ -4686,13 +4686,13 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
                                 shadow bg-base-300 rounded-box w-min-content"
                           tabindex="0"
                         >
-                          <li
-                            class="ml-auto"
-                          >
-                            <a>
+                          <li>
+                            <a
+                              class="flex justify-end"
+                            >
                               <svg
                                 aria-hidden="true"
-                                class="svg-inline--fa fa-arrow-down-long "
+                                class="svg-inline--fa fa-arrow-down-long mr-2"
                                 data-icon="arrow-down-long"
                                 data-prefix="fas"
                                 focusable="false"
@@ -4708,24 +4708,24 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
                               Added
                             </a>
                           </li>
-                          <li
-                            class="ml-auto"
-                          >
-                            <a>
+                          <li>
+                            <a
+                              class="flex justify-end"
+                            >
                               Name
                             </a>
                           </li>
-                          <li
-                            class="ml-auto"
-                          >
-                            <a>
+                          <li>
+                            <a
+                              class="flex justify-end"
+                            >
                               Species
                             </a>
                           </li>
-                          <li
-                            class="ml-auto"
-                          >
-                            <a>
+                          <li>
+                            <a
+                              class="flex justify-end"
+                            >
                               Watered
                             </a>
                           </li>
@@ -4922,13 +4922,13 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
                                 shadow bg-base-300 rounded-box w-min-content"
                           tabindex="0"
                         >
-                          <li
-                            class="ml-auto"
-                          >
-                            <a>
+                          <li>
+                            <a
+                              class="flex justify-end"
+                            >
                               <svg
                                 aria-hidden="true"
-                                class="svg-inline--fa fa-arrow-down-long "
+                                class="svg-inline--fa fa-arrow-down-long mr-2"
                                 data-icon="arrow-down-long"
                                 data-prefix="fas"
                                 focusable="false"
@@ -4944,17 +4944,17 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
                               Added
                             </a>
                           </li>
-                          <li
-                            class="ml-auto"
-                          >
-                            <a>
+                          <li>
+                            <a
+                              class="flex justify-end"
+                            >
                               Name
                             </a>
                           </li>
-                          <li
-                            class="ml-auto"
-                          >
-                            <a>
+                          <li>
+                            <a
+                              class="flex justify-end"
+                            >
                               Location
                             </a>
                           </li>
@@ -5439,13 +5439,13 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
                                 shadow bg-base-300 rounded-box w-min-content"
                         tabindex="0"
                       >
-                        <li
-                          class="ml-auto"
-                        >
-                          <a>
+                        <li>
+                          <a
+                            class="flex justify-end"
+                          >
                             <svg
                               aria-hidden="true"
-                              class="svg-inline--fa fa-arrow-down-long "
+                              class="svg-inline--fa fa-arrow-down-long mr-2"
                               data-icon="arrow-down-long"
                               data-prefix="fas"
                               focusable="false"
@@ -5461,24 +5461,24 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
                             Added
                           </a>
                         </li>
-                        <li
-                          class="ml-auto"
-                        >
-                          <a>
+                        <li>
+                          <a
+                            class="flex justify-end"
+                          >
                             Name
                           </a>
                         </li>
-                        <li
-                          class="ml-auto"
-                        >
-                          <a>
+                        <li>
+                          <a
+                            class="flex justify-end"
+                          >
                             Species
                           </a>
                         </li>
-                        <li
-                          class="ml-auto"
-                        >
-                          <a>
+                        <li>
+                          <a
+                            class="flex justify-end"
+                          >
                             Watered
                           </a>
                         </li>
@@ -5675,13 +5675,13 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
                                 shadow bg-base-300 rounded-box w-min-content"
                         tabindex="0"
                       >
-                        <li
-                          class="ml-auto"
-                        >
-                          <a>
+                        <li>
+                          <a
+                            class="flex justify-end"
+                          >
                             <svg
                               aria-hidden="true"
-                              class="svg-inline--fa fa-arrow-down-long "
+                              class="svg-inline--fa fa-arrow-down-long mr-2"
                               data-icon="arrow-down-long"
                               data-prefix="fas"
                               focusable="false"
@@ -5697,17 +5697,17 @@ exports[`App matches snapshot when plants and groups exist 1`] = `
                             Added
                           </a>
                         </li>
-                        <li
-                          class="ml-auto"
-                        >
-                          <a>
+                        <li>
+                          <a
+                            class="flex justify-end"
+                          >
                             Name
                           </a>
                         </li>
-                        <li
-                          class="ml-auto"
-                        >
-                          <a>
+                        <li>
+                          <a
+                            class="flex justify-end"
+                          >
                             Location
                           </a>
                         </li>

@@ -114,9 +114,9 @@ const FilterInput = ({state, dispatch, sortByKeys}) => {
     // Indicates sort direction on selected option
     const Arrow = () => {
         if (state.sortDirection) {
-            return <FontAwesomeIcon icon={faArrowDownLong} />;
+            return <FontAwesomeIcon icon={faArrowDownLong} className="mr-2" />;
         } else {
-            return <FontAwesomeIcon icon={faArrowUpLong} />;
+            return <FontAwesomeIcon icon={faArrowUpLong} className="mr-2" />;
         }
     };
 
@@ -125,7 +125,10 @@ const FilterInput = ({state, dispatch, sortByKeys}) => {
     const SortMenu = () => {
         const Option = ({keyName, displayString}) => {
             return (
-                <li className="ml-auto"><a onClick={() => setSort(keyName)}>
+                <li><a
+                    className="flex justify-end"
+                    onClick={() => setSort(keyName)}
+                >
                     {state.sortKey === keyName && <Arrow />}
                     {displayString}
                 </a></li>
