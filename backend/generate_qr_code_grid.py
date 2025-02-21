@@ -10,7 +10,7 @@ from PIL import Image
 
 # Dimensions of 8.5 x 11 sheet of paper at 300 dpi
 # Height reduced 100px to accommodate timestamp added by browser
-page_width, page_height = 2400, 3200
+PAGE_WIDTH, PAGE_HEIGHT = 2400, 3200
 
 
 def generate_random_qr(url_prefix):
@@ -33,7 +33,7 @@ def calculate_qr_width_and_scale(url_prefix, qr_per_row):
     '''
 
     # Get absolute max width for configured page dimensions
-    max_width = int(page_width / qr_per_row)
+    max_width = int(PAGE_WIDTH / qr_per_row)
 
     # Generate test QR code (minimum size for URL), calculate scaling factor
     test_qr = generate_random_qr(url_prefix)
@@ -61,8 +61,8 @@ def calculate_grid_margin_sizes(qr_width, qr_per_row, qr_per_col):
     margins_per_col = qr_per_col - 1
 
     # Get total vertical and horizontal extra space
-    row_margin_total = page_width - qr_width * qr_per_row
-    col_margin_total = page_height - qr_width * qr_per_col
+    row_margin_total = PAGE_WIDTH - qr_width * qr_per_row
+    col_margin_total = PAGE_HEIGHT - qr_width * qr_per_col
 
     # Divide extra space evenly into margins between QR codes
     row_margin_each = int(row_margin_total / margins_per_row)
@@ -86,7 +86,7 @@ def generate_layout(url_prefix, qr_per_row=8):
     qr_width, qr_scale = calculate_qr_width_and_scale(url_prefix, qr_per_row)
 
     # Calculate number of max-width QR codes per column
-    qr_per_col = int(page_height / qr_width)
+    qr_per_col = int(PAGE_HEIGHT / qr_width)
 
     # Get horizontal and vertical margin width (pixels)
     row_margin_each, col_margin_each = calculate_grid_margin_sizes(
@@ -96,7 +96,7 @@ def generate_layout(url_prefix, qr_per_row=8):
     )
 
     # Create blank page
-    page = Image.new('RGB', (page_width, page_height), 'white')
+    page = Image.new('RGB', (PAGE_WIDTH, PAGE_HEIGHT), 'white')
 
     # Generate evenly-spaced grid of random QR codes
     for row in range(qr_per_col):
