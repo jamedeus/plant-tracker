@@ -308,11 +308,9 @@ function App() {
     const groupsColRef = useRef(null);
 
     // Handler for edit option in top-left dropdown
-    // Toggle editing state, clear selected, remove focus (closes dropdown)
+    // Toggle editing state, remove focus (closes dropdown)
     const toggleEditing = () => {
         setEditing(!editing);
-        selectedPlants.current = [];
-        selectedGroups.current = [];
         document.activeElement.blur();
     };
 
