@@ -95,8 +95,8 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                 tabindex="0"
               >
                 <ul
-                  class="menu menu-md dropdown-content mt-3 z-[99]
-                            p-2 shadow bg-base-300 rounded-box w-24"
+                  class="menu menu-md dropdown-content mt-3 z-[99] p-2 shadow
+                        bg-base-300 rounded-box w-24"
                   tabindex="0"
                 >
                   <li
@@ -843,8 +843,8 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
               tabindex="0"
             >
               <ul
-                class="menu menu-md dropdown-content mt-3 z-[99]
-                            p-2 shadow bg-base-300 rounded-box w-24"
+                class="menu menu-md dropdown-content mt-3 z-[99] p-2 shadow
+                        bg-base-300 rounded-box w-24"
                 tabindex="0"
               >
                 <li
@@ -6113,8 +6113,8 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                 tabindex="0"
               >
                 <ul
-                  class="menu menu-md dropdown-content mt-3 z-[99]
-                            p-2 shadow bg-base-300 rounded-box w-24"
+                  class="menu menu-md dropdown-content mt-3 z-[99] p-2 shadow
+                        bg-base-300 rounded-box w-24"
                   tabindex="0"
                 >
                   <li
@@ -6866,8 +6866,8 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
               tabindex="0"
             >
               <ul
-                class="menu menu-md dropdown-content mt-3 z-[99]
-                            p-2 shadow bg-base-300 rounded-box w-24"
+                class="menu menu-md dropdown-content mt-3 z-[99] p-2 shadow
+                        bg-base-300 rounded-box w-24"
                 tabindex="0"
               >
                 <li

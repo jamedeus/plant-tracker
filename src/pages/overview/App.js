@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import Navbar from 'src/components/Navbar';
 import { useTheme } from 'src/context/ThemeContext';
 import GroupCard from 'src/components/GroupCard';
@@ -6,8 +7,248 @@ import PlantCard from 'src/components/PlantCard';
 import { sendPostRequest, parseDomContext } from 'src/util';
 import FilterColumn from 'src/components/FilterColumn';
 import FloatingFooter from 'src/components/FloatingFooter';
+import Setup from './Setup';
 import PrintModal from './PrintModal';
 import { useIsBreakpointActive } from "src/useBreakpoint";
+
+const PlantsCol = ({ plants, editing, selectedPlants }) => {
+    const openRef = useRef(true);
+
+    return (
+        <FilterColumn
+            title="Plants"
+            contents={plants}
+            CardComponent={PlantCard}
+            editing={editing}
+            selected={selectedPlants}
+            openRef={openRef}
+            ignoreKeys={[
+                'uuid',
+                'created',
+                'last_watered',
+                'last_fertilized',
+                'thumbnail'
+            ]}
+            sortByKeys={[
+                {key: 'created', display: 'Added'},
+                {key: 'display_name', display: 'Name'},
+                {key: 'species', display: 'Species'},
+                {key: 'last_watered', display: 'Watered'}
+            ]}
+            defaultSortKey='created'
+            storageKey='overviewPlantsColumn'
+        />
+    );
+};
+
+PlantsCol.propTypes = {
+    plants: PropTypes.array.isRequired,
+    editing: PropTypes.bool.isRequired,
+    selectedPlants: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.array }),
+    ]).isRequired
+}
+
+const GroupsCol = ({ groups, editing, selectedGroups }) => {
+    const openRef = useRef(true);
+
+    return (
+        <FilterColumn
+            title="Groups"
+            contents={groups}
+            CardComponent={GroupCard}
+            editing={editing}
+            selected={selectedGroups}
+            openRef={openRef}
+            ignoreKeys={[
+                'uuid',
+                'created'
+            ]}
+            sortByKeys={[
+                {key: 'created', display: 'Added'},
+                {key: 'name', display: 'Name'},
+                {key: 'location', display: 'Location'}
+            ]}
+            defaultSortKey='created'
+            storageKey='overviewGroupsColumn'
+        />
+    );
+};
+
+GroupsCol.propTypes = {
+    groups: PropTypes.array.isRequired,
+    editing: PropTypes.bool.isRequired,
+    selectedGroups: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.array }),
+    ]).isRequired
+}
+
+// Render correct components for current state objects
+const Layout = ({ plants, groups, selectedPlants, selectedGroups, editing, plantsColRef, groupsColRef, printModalRef }) => {
+
+    switch(true) {
+        // Render 2-column layout if both plants and groups exist
+        case(plants.length > 0 && groups.length > 0):
+            return (
+                <div className="grid grid-cols-1 md:grid-cols-2 mx-auto">
+                    <div
+                        className="md:mr-12 mb-8 md:mb-0 scroll-mt-20"
+                        ref={plantsColRef}
+                    >
+                        <PlantsCol
+                            plants={plants}
+                            editing={editing}
+                            selectedPlants={selectedPlants}
+                        />
+                    </div>
+
+                    <div
+                        className="md:ml-12 scroll-mt-20"
+                        ref={groupsColRef}
+                    >
+                        <GroupsCol
+                            groups={groups}
+                            editing={editing}
+                            selectedGroups={selectedGroups}
+                        />
+                    </div>
+                </div>
+            );
+        // Render centered plants column if only plants exist
+        case(plants.length > 0):
+            return <PlantsCol
+                plants={plants}
+                editing={editing}
+                selectedPlants={selectedPlants}
+            />;
+        // Render centered groups column if only groups exist
+        case(groups.length > 0):
+            return <GroupsCol
+                groups={groups}
+                editing={editing}
+                selectedGroups={selectedGroups}
+            />;
+        // Render setup instructions if database is empty
+        default:
+            return <Setup printModalRef={printModalRef} />;
+    }
+};
+
+Layout.propTypes = {
+    plants: PropTypes.array.isRequired,
+    groups: PropTypes.array.isRequired,
+    selectedPlants: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.array }),
+    ]).isRequired,
+    selectedGroups: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.array }),
+    ]).isRequired,
+    editing: PropTypes.bool.isRequired,
+    plantsColRef: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.array }),
+    ]).isRequired,
+    groupsColRef: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.array }),
+    ]).isRequired,
+    printModalRef: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.array }),
+    ]).isRequired
+}
+
+// Dropdown with links to jump to plant or group columns
+// Only rendered on mobile layout (both columns always visible on desktop)
+const QuickNavigation = ({ plantsColRef, groupsColRef }) => {
+    const jumpToPlants = () => {
+        plantsColRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+        document.activeElement.blur();
+    };
+
+    const jumpToGroups = () => {
+        groupsColRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+        document.activeElement.blur();
+    };
+
+    return (
+        <ul
+            tabIndex={0}
+            className={`menu menu-md dropdown-content mt-3 z-[99] p-2 shadow
+                        bg-base-300 rounded-box w-24`}
+        >
+            <li className="mx-auto"><a onClick={jumpToPlants}>
+                Plants
+            </a></li>
+            <li className="mx-auto"><a onClick={jumpToGroups}>
+                Groups
+            </a></li>
+        </ul>
+    );
+};
+
+QuickNavigation.propTypes = {
+    groupsColRef: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.array }),
+    ]).isRequired,
+    printModalRef: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.array }),
+    ]).isRequired
+}
+
+// Top-left menu button contents
+const MenuOptions = ({ archivedOverview, toggleEditing, openPrintModal }) => {
+    // Get toggle theme option from context
+    const { ToggleThemeOption } = useTheme();
+
+    switch(archivedOverview) {
+        case(true):
+            return (
+                <>
+                    <li><a onClick={toggleEditing}>
+                        Edit
+                    </a></li>
+                    <ToggleThemeOption />
+                    <li><a href='/'>
+                        Main overview
+                    </a></li>
+                </>
+            );
+        case(false):
+            return (
+                <>
+                    <li><a onClick={toggleEditing}>
+                        Edit
+                    </a></li>
+                    <li><a onClick={openPrintModal}>
+                        Print QR Codes
+                    </a></li>
+                    <ToggleThemeOption />
+                    <li><a href='/archived'>
+                        Archived plants
+                    </a></li>
+                </>
+            );
+    }
+};
+
+MenuOptions.propTypes = {
+    archivedOverview: PropTypes.bool.isRequired,
+    toggleEditing: PropTypes.func.isRequired,
+    openPrintModal: PropTypes.func.isRequired
+}
 
 function App() {
     // Load context set by django template
@@ -55,19 +296,12 @@ function App() {
     // Create ref for modal used to generate QR codes
     const printModalRef = useRef(null);
 
-    // Get toggle theme option from context
-    const { ToggleThemeOption } = useTheme();
-
     // State object to track edit mode (shows checkbox for each card when true)
     const [editing, setEditing] = useState(false);
 
     // Track which plant and group checkboxes the user has selected
     const selectedPlants = useRef([]);
     const selectedGroups = useRef([]);
-
-    // Track plant and group column open state between re-renders
-    const plantsOpenRef = useRef(true);
-    const groupsOpenRef = useRef(true);
 
     // Refs used to jump to top of plant and group columns
     const plantsColRef = useRef(null);
@@ -135,192 +369,33 @@ function App() {
         setEditing(false);
     };
 
-    // Rendered when both state objects are empty, shows setup instructions
-    const Setup = () => {
-        return (
-            <div className="flex flex-col mx-auto text-center my-auto px-8">
-                <p className="text-2xl">No plants found!</p>
-                <ul className="steps steps-vertical my-8">
-                    <li className="step">Print QR codes on sticker paper</li>
-                    <li className="step">Add a sticker to each plant pot</li>
-                    <li className="step">Scan codes to register plants!</li>
-                </ul>
-                <button
-                    className="btn btn-accent text-lg"
-                    onClick={() => printModalRef.current.open()}
-                >
-                    Print QR Codes
-                </button>
-            </div>
-        );
-    };
-
-    const PlantsCol = () => {
-        return (
-            <FilterColumn
-                title="Plants"
-                contents={plants}
-                CardComponent={PlantCard}
-                editing={editing}
-                selected={selectedPlants}
-                openRef={plantsOpenRef}
-                ignoreKeys={[
-                    'uuid',
-                    'created',
-                    'last_watered',
-                    'last_fertilized',
-                    'thumbnail'
-                ]}
-                sortByKeys={[
-                    {key: 'created', display: 'Added'},
-                    {key: 'display_name', display: 'Name'},
-                    {key: 'species', display: 'Species'},
-                    {key: 'last_watered', display: 'Watered'}
-                ]}
-                defaultSortKey='created'
-                storageKey='overviewPlantsColumn'
-            />
-        );
-    };
-
-    const GroupsCol = () => {
-        return (
-            <FilterColumn
-                title="Groups"
-                contents={groups}
-                CardComponent={GroupCard}
-                editing={editing}
-                selected={selectedGroups}
-                openRef={groupsOpenRef}
-                ignoreKeys={[
-                    'uuid',
-                    'created'
-                ]}
-                sortByKeys={[
-                    {key: 'created', display: 'Added'},
-                    {key: 'name', display: 'Name'},
-                    {key: 'location', display: 'Location'}
-                ]}
-                defaultSortKey='created'
-                storageKey='overviewGroupsColumn'
-            />
-        );
-    };
-
-    // Render correct components for current state objects
-    const Layout = () => {
-        switch(true) {
-            // Render 2-column layout if both plants and groups exist
-            case(plants.length > 0 && groups.length > 0):
-                return (
-                    <div className="grid grid-cols-1 md:grid-cols-2 mx-auto">
-                        <div
-                            className="md:mr-12 mb-8 md:mb-0 scroll-mt-20"
-                            ref={plantsColRef}
-                        >
-                            <PlantsCol />
-                        </div>
-
-                        <div
-                            className="md:ml-12 scroll-mt-20"
-                            ref={groupsColRef}
-                        >
-                            <GroupsCol />
-                        </div>
-                    </div>
-                );
-            // Render centered plants column if only plants exist
-            case(plants.length > 0):
-                return <PlantsCol />;
-            // Render centered groups column if only groups exist
-            case(groups.length > 0):
-                return <GroupsCol />;
-            // Render setup instructions if database is empty
-            default:
-                return <Setup />;
-        }
-    };
-
-    // Dropdown with links to jump to plant or group columns
-    // Only rendered on mobile layout (both columns always visible on desktop)
-    const QuickNavigation = () => {
-        const jumpToPlants = () => {
-            plantsColRef.current.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
-            document.activeElement.blur();
-        };
-
-        const jumpToGroups = () => {
-            groupsColRef.current.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
-            document.activeElement.blur();
-        };
-
-        return (
-            <ul
-                tabIndex={0}
-                className={`menu menu-md dropdown-content mt-3 z-[99]
-                            p-2 shadow bg-base-300 rounded-box w-24`}
-            >
-                <li className="mx-auto"><a onClick={jumpToPlants}>
-                    Plants
-                </a></li>
-                <li className="mx-auto"><a onClick={jumpToGroups}>
-                    Groups
-                </a></li>
-            </ul>
-        );
-    };
-
-    // Top-left menu button contents for main overview page
-    const OverviewMenuOptions = () => {
-        return (
-            <>
-                <li><a onClick={toggleEditing}>
-                    Edit
-                </a></li>
-                <li><a onClick={() => printModalRef.current.open()}>
-                    Print QR Codes
-                </a></li>
-                <ToggleThemeOption />
-                <li><a href='/archived'>
-                    Archived plants
-                </a></li>
-            </>
-        );
-    };
-
-    // Top-left menu button contents for archived overview page
-    const ArchivedOverviewMenuOptions = () => {
-        return (
-            <>
-                <li><a onClick={toggleEditing}>
-                    Edit
-                </a></li>
-                <ToggleThemeOption />
-                <li><a href='/'>
-                    Main overview
-                </a></li>
-            </>
-        );
-    };
-
     return (
         <div className="container flex flex-col min-h-screen mx-auto pb-16">
             <Navbar
-                menuOptions={archivedOverview ?
-                    <ArchivedOverviewMenuOptions /> :
-                    <OverviewMenuOptions />
-                }
+                menuOptions={<MenuOptions
+                    archivedOverview={archivedOverview}
+                    toggleEditing={toggleEditing}
+                    openPrintModal={() => printModalRef.current.open()}
+                />}
                 title={archivedOverview ? "Archived" : "Plant Overview"}
-                titleOptions={stackedColumns ? <QuickNavigation /> : null}
+                titleOptions={stackedColumns ? (
+                    <QuickNavigation
+                        plantsColRef={plantsColRef}
+                        groupsColRef={groupsColRef}
+                    />
+                ) : null}
             />
 
-            <Layout />
+            <Layout
+                plants={plants}
+                groups={groups}
+                selectedPlants={selectedPlants}
+                selectedGroups={selectedGroups}
+                editing={editing}
+                plantsColRef={plantsColRef}
+                groupsColRef={groupsColRef}
+                printModalRef={printModalRef}
+            />
 
             <FloatingFooter visible={editing}>
                 <button className="btn btn-neutral mr-4" onClick={() => setEditing(false)}>
