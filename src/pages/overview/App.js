@@ -49,7 +49,7 @@ PlantsCol.propTypes = {
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.array }),
     ]).isRequired
-}
+};
 
 const GroupsCol = ({ groups, editing, selectedGroups }) => {
     const openRef = useRef(true);
@@ -84,7 +84,7 @@ GroupsCol.propTypes = {
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.array }),
     ]).isRequired
-}
+};
 
 // Render correct components for current state objects
 const Layout = ({ plants, groups, selectedPlants, selectedGroups, editing, plantsColRef, groupsColRef, printModalRef }) => {
@@ -133,7 +133,7 @@ const Layout = ({ plants, groups, selectedPlants, selectedGroups, editing, plant
                 <Setup printModalRef={printModalRef} />
             )}
         </div>
-    )
+    );
 };
 
 Layout.propTypes = {
@@ -160,7 +160,7 @@ Layout.propTypes = {
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.array }),
     ]).isRequired
-}
+};
 
 // Dropdown with links to jump to plant or group columns
 // Only rendered on mobile layout (both columns always visible on desktop)
@@ -198,15 +198,15 @@ const QuickNavigation = ({ plantsColRef, groupsColRef }) => {
 };
 
 QuickNavigation.propTypes = {
-    groupsColRef: PropTypes.oneOfType([
+    plantsColRef: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.array }),
     ]).isRequired,
-    printModalRef: PropTypes.oneOfType([
+    groupsColRef: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.array }),
     ]).isRequired
-}
+};
 
 // Top-left menu button contents
 const MenuOptions = ({ archivedOverview, toggleEditing, openPrintModal }) => {
@@ -248,7 +248,7 @@ MenuOptions.propTypes = {
     archivedOverview: PropTypes.bool.isRequired,
     toggleEditing: PropTypes.func.isRequired,
     openPrintModal: PropTypes.func.isRequired
-}
+};
 
 function App() {
     // Load context set by django template

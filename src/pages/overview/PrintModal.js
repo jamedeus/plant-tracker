@@ -53,7 +53,6 @@ ErrorMessage.propTypes = {
     error: PropTypes.string.isRequired
 };
 
-
 const PrintModal = React.forwardRef(function PrintModal(_, ref) {
     // State controls modal contents, must be "options", "loading", or "error"
     const [modalContents, setModalContents] = useState("options");

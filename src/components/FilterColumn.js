@@ -129,7 +129,7 @@ const SortMenu = ({ sortByKeys, state, setSort }) => {
                                 {key.display}
                             </a>
                         </li>
-                    )
+                    );
                 })}
             </ul>
         </div>

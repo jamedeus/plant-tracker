@@ -19,7 +19,7 @@ const EditableNodeList = ({ editing, selected, children }) => {
     return (
         <>
             {children.map((node) => (
-                <div className="flex relative mb-4">
+                <div key={node.key} className="flex relative mb-4">
                     <label className="label cursor-pointer absolute flex h-full">
                         <input
                             type="checkbox"
