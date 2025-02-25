@@ -323,10 +323,10 @@ exports[`App matches snapshot 1`] = `
                     class="card card-side bg-neutral text-neutral-content mx-auto relative"
                   >
                     <div
-                      class="card-body text-center cursor-default"
+                      class="card-body cursor-default text-center"
                     >
                       <h2
-                        class="card-title mx-auto px-8 line-clamp-1"
+                        class="card-title mx-auto px-8 line-clamp-1 mx-auto px-8"
                       >
                         Test Plant
                       </h2>
@@ -460,10 +460,10 @@ exports[`App matches snapshot 1`] = `
                       />
                     </figure>
                     <div
-                      class="card-body my-auto text-start cursor-default"
+                      class="card-body cursor-default my-auto text-start"
                     >
                       <h2
-                        class="card-title line-clamp-1 pr-8"
+                        class="card-title mx-auto px-8 line-clamp-1 pr-8"
                       >
                         Unnamed Spider Plant
                       </h2>
@@ -586,10 +586,10 @@ exports[`App matches snapshot 1`] = `
                     class="card card-side bg-neutral text-neutral-content mx-auto relative"
                   >
                     <div
-                      class="card-body text-center cursor-default"
+                      class="card-body cursor-default text-center"
                     >
                       <h2
-                        class="card-title mx-auto px-8 line-clamp-1"
+                        class="card-title mx-auto px-8 line-clamp-1 mx-auto px-8"
                       >
                         Newest plant
                       </h2>
@@ -862,10 +862,10 @@ exports[`App matches snapshot 1`] = `
                         />
                       </figure>
                       <div
-                        class="card-body my-auto text-start cursor-default"
+                        class="card-body cursor-default my-auto text-start"
                       >
                         <h2
-                          class="card-title line-clamp-1 pr-8"
+                          class="card-title mx-auto px-8 line-clamp-1 pr-8"
                         >
                           Another test plant
                         </h2>
@@ -975,10 +975,10 @@ exports[`App matches snapshot 1`] = `
                         />
                       </figure>
                       <div
-                        class="card-body my-auto text-start cursor-default"
+                        class="card-body cursor-default my-auto text-start"
                       >
                         <h2
-                          class="card-title line-clamp-1 pr-8"
+                          class="card-title mx-auto px-8 line-clamp-1 pr-8"
                         >
                           Third test plant
                         </h2>
@@ -1109,10 +1109,10 @@ exports[`App matches snapshot 1`] = `
                       class="card card-side bg-neutral text-neutral-content mx-auto relative"
                     >
                       <div
-                        class="card-body text-center cursor-default"
+                        class="card-body cursor-default text-center"
                       >
                         <h2
-                          class="card-title mx-auto px-8 line-clamp-1"
+                          class="card-title mx-auto px-8 line-clamp-1 mx-auto px-8"
                         >
                           Test Plant
                         </h2>
@@ -1243,10 +1243,10 @@ exports[`App matches snapshot 1`] = `
                         />
                       </figure>
                       <div
-                        class="card-body my-auto text-start cursor-default"
+                        class="card-body cursor-default my-auto text-start"
                       >
                         <h2
-                          class="card-title line-clamp-1 pr-8"
+                          class="card-title mx-auto px-8 line-clamp-1 pr-8"
                         >
                           Unnamed Spider Plant
                         </h2>
@@ -1366,10 +1366,10 @@ exports[`App matches snapshot 1`] = `
                       class="card card-side bg-neutral text-neutral-content mx-auto relative"
                     >
                       <div
-                        class="card-body text-center cursor-default"
+                        class="card-body cursor-default text-center"
                       >
                         <h2
-                          class="card-title mx-auto px-8 line-clamp-1"
+                          class="card-title mx-auto px-8 line-clamp-1 mx-auto px-8"
                         >
                           Newest plant
                         </h2>
@@ -1897,10 +1897,10 @@ exports[`App matches snapshot 1`] = `
                   class="card card-side bg-neutral text-neutral-content mx-auto relative"
                 >
                   <div
-                    class="card-body text-center cursor-default"
+                    class="card-body cursor-default text-center"
                   >
                     <h2
-                      class="card-title mx-auto px-8 line-clamp-1"
+                      class="card-title mx-auto px-8 line-clamp-1 mx-auto px-8"
                     >
                       Test Plant
                     </h2>
@@ -2034,10 +2034,10 @@ exports[`App matches snapshot 1`] = `
                     />
                   </figure>
                   <div
-                    class="card-body my-auto text-start cursor-default"
+                    class="card-body cursor-default my-auto text-start"
                   >
                     <h2
-                      class="card-title line-clamp-1 pr-8"
+                      class="card-title mx-auto px-8 line-clamp-1 pr-8"
                     >
                       Unnamed Spider Plant
                     </h2>
@@ -2160,10 +2160,10 @@ exports[`App matches snapshot 1`] = `
                   class="card card-side bg-neutral text-neutral-content mx-auto relative"
                 >
                   <div
-                    class="card-body text-center cursor-default"
+                    class="card-body cursor-default text-center"
                   >
                     <h2
-                      class="card-title mx-auto px-8 line-clamp-1"
+                      class="card-title mx-auto px-8 line-clamp-1 mx-auto px-8"
                     >
                       Newest plant
                     </h2>
@@ -2436,10 +2436,10 @@ exports[`App matches snapshot 1`] = `
                       />
                     </figure>
                     <div
-                      class="card-body my-auto text-start cursor-default"
+                      class="card-body cursor-default my-auto text-start"
                     >
                       <h2
-                        class="card-title line-clamp-1 pr-8"
+                        class="card-title mx-auto px-8 line-clamp-1 pr-8"
                       >
                         Another test plant
                       </h2>
@@ -2549,10 +2549,10 @@ exports[`App matches snapshot 1`] = `
                       />
                     </figure>
                     <div
-                      class="card-body my-auto text-start cursor-default"
+                      class="card-body cursor-default my-auto text-start"
                     >
                       <h2
-                        class="card-title line-clamp-1 pr-8"
+                        class="card-title mx-auto px-8 line-clamp-1 pr-8"
                       >
                         Third test plant
                       </h2>
@@ -2683,10 +2683,10 @@ exports[`App matches snapshot 1`] = `
                     class="card card-side bg-neutral text-neutral-content mx-auto relative"
                   >
                     <div
-                      class="card-body text-center cursor-default"
+                      class="card-body cursor-default text-center"
                     >
                       <h2
-                        class="card-title mx-auto px-8 line-clamp-1"
+                        class="card-title mx-auto px-8 line-clamp-1 mx-auto px-8"
                       >
                         Test Plant
                       </h2>
@@ -2817,10 +2817,10 @@ exports[`App matches snapshot 1`] = `
                       />
                     </figure>
                     <div
-                      class="card-body my-auto text-start cursor-default"
+                      class="card-body cursor-default my-auto text-start"
                     >
                       <h2
-                        class="card-title line-clamp-1 pr-8"
+                        class="card-title mx-auto px-8 line-clamp-1 pr-8"
                       >
                         Unnamed Spider Plant
                       </h2>
@@ -2940,10 +2940,10 @@ exports[`App matches snapshot 1`] = `
                     class="card card-side bg-neutral text-neutral-content mx-auto relative"
                   >
                     <div
-                      class="card-body text-center cursor-default"
+                      class="card-body cursor-default text-center"
                     >
                       <h2
-                        class="card-title mx-auto px-8 line-clamp-1"
+                        class="card-title mx-auto px-8 line-clamp-1 mx-auto px-8"
                       >
                         Newest plant
                       </h2>

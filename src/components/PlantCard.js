@@ -20,81 +20,6 @@ const PlantCard = ({ display_name, uuid, species, description, pot_size, last_wa
         e.stopPropagation();
     };
 
-    // Renders collapse with Plant details, opened with arrow button
-    const DetailsSection = () => {
-        return (
-            <div className={clsx(
-                'collapse bg-neutral rounded-t-none cursor-default',
-                open && 'pt-4',
-                archived && 'grayscale'
-            )}>
-                <input
-                    type="checkbox"
-                    className="hidden"
-                    onChange={toggle}
-                    defaultChecked={open}
-                />
-                <div className="collapse-content">
-                    <PlantDetails
-                        species={species}
-                        pot_size={pot_size}
-                        description={description}
-                    />
-                </div>
-            </div>
-        );
-    };
-
-    const Thumbnail = () => {
-        return (
-            <figure className="h-24 w-20 min-h-20 min-w-20">
-                <img
-                    loading="lazy"
-                    src={thumbnail} className="w-full h-full object-cover"
-                />
-            </figure>
-        );
-    };
-
-    const LastWatered = () => {
-        if (last_watered) {
-            return (
-                <span title={timestampToReadable(last_watered)}>
-                    <FontAwesomeIcon
-                        icon={faDroplet}
-                        className="mr-2 text-info"
-                    />
-                    {capitalize(timestampToRelativeCalendar(last_watered, true))}
-                </span>
-            );
-        } else {
-            return <span>Never watered</span>;
-        }
-    };
-
-    const Body = () => {
-        switch(thumbnail) {
-            case(null):
-                return (
-                    <div className="card-body text-center cursor-default">
-                        <h2 className="card-title mx-auto px-8 line-clamp-1">
-                            {display_name}
-                        </h2>
-                        <LastWatered />
-                    </div>
-                );
-            default:
-                return (
-                    <div className="card-body my-auto text-start cursor-default">
-                        <h2 className="card-title line-clamp-1 pr-8">
-                            {display_name}
-                        </h2>
-                        <LastWatered />
-                    </div>
-                );
-        }
-    };
-
     return (
         <a
             href={linkPage ? `/manage/${uuid}` : null}
@@ -105,10 +30,43 @@ const PlantCard = ({ display_name, uuid, species, description, pot_size, last_wa
                 open && 'rounded-b-none',
                 archived && 'grayscale'
             )}>
-                {thumbnail && <Thumbnail />}
+                {thumbnail && (
+                    <figure className="h-24 w-20 min-h-20 min-w-20">
+                        <img
+                            loading="lazy"
+                            src={thumbnail}
+                            className="w-full h-full object-cover"
+                        />
+                    </figure>
+                )}
 
-                <Body />
+                {/* Card body */}
+                <div className={clsx(
+                    'card-body cursor-default',
+                    thumbnail ? 'my-auto text-start' : 'text-center'
+                )}>
+                    <h2 className={clsx(
+                        'card-title mx-auto px-8 line-clamp-1',
+                        thumbnail ? 'pr-8' : 'mx-auto px-8'
+                    )}>
+                        {display_name}
+                    </h2>
+                    {last_watered ? (
+                        <span title={timestampToReadable(last_watered)}>
+                            <FontAwesomeIcon
+                                icon={faDroplet}
+                                className="mr-2 text-info"
+                            />
+                            {capitalize(
+                                timestampToRelativeCalendar(last_watered, true)
+                            )}
+                        </span>
+                    ) : (
+                        <span>Never watered</span>
+                    )}
+                </div>
 
+                {/* Button opens/closes collapse with details */}
                 <button
                     tabIndex={0}
                     role="button"
@@ -121,7 +79,26 @@ const PlantCard = ({ display_name, uuid, species, description, pot_size, last_wa
                     }
                 </button>
             </div>
-            <DetailsSection />
+            {/* Plant details collapse, closed until button clicked */}
+            <div className={clsx(
+                'collapse bg-neutral rounded-t-none cursor-default',
+                open && 'pt-4',
+                archived && 'grayscale'
+            )}>
+                <input
+                    type="checkbox"
+                    className="hidden"
+                    onChange={toggle}
+                    checked={open}
+                />
+                <div className="collapse-content">
+                    <PlantDetails
+                        species={species}
+                        pot_size={pot_size}
+                        description={description}
+                    />
+                </div>
+            </div>
         </a>
     );
 };
