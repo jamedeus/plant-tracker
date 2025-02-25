@@ -1,13 +1,65 @@
 import React, { useState, useRef, useImperativeHandle } from 'react';
+import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { Tab } from '@headlessui/react';
 import print from 'print-js';
 import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
 
+// QR code size options + description text shown when selected
+const sizeOptions = {
+    small: {
+        qr_per_row: 8,
+        size: "About ¾ inch wide",
+        per_sheet: "96"
+    },
+    medium: {
+        qr_per_row: 6,
+        size: "About 1 inch wide",
+        per_sheet: "48"
+    },
+    large: {
+        qr_per_row: 4,
+        size: "About 1 ½ inches wide",
+        per_sheet: "20"
+    }
+};
+
+// Takes error state, renders more descriptive error message
+const ErrorMessage = ({ error }) => {
+    switch(error) {
+        case("unset"):
+            return (
+                <>
+                    <p>The URL_PREFIX environment variable is not set</p>
+                    <p>Check docker config</p>
+                </>
+            );
+        case("long"):
+            return (
+                <>
+                    <p>Unable to generate QR codes</p>
+                    <p>Try setting a shorter URL_PREFIX in docker config</p>
+                </>
+            );
+        default:
+            return (
+                <p>An unknown error occurred</p>
+            );
+    }
+};
+
+ErrorMessage.propTypes = {
+    error: PropTypes.string.isRequired
+};
+
+
 const PrintModal = React.forwardRef(function PrintModal(_, ref) {
     // State controls modal contents, must be "options", "loading", or "error"
     const [modalContents, setModalContents] = useState("options");
+
+    // Selected size option, default to small
+    const [qrSize, setQrSize] = useState(sizeOptions.small);
 
     // State controls ErrorMessage text, must be "unset", "long", or "unknown"
     const [error, setError] = useState("");
@@ -98,6 +150,11 @@ const PrintModal = React.forwardRef(function PrintModal(_, ref) {
         printModalRef.current.close();
     };
 
+    const generate = () => {
+        cancelPrinting.current = false;
+        fetchQrCodes(qrSize.qr_per_row);
+    };
+
     // Takes status code from failed API call, shows correct error in modal
     const handleError = (statusCode) => {
         // Set state that controls error text based on status code
@@ -113,123 +170,6 @@ const PrintModal = React.forwardRef(function PrintModal(_, ref) {
         setModalContents("error");
     };
 
-    const QrCodeSizeSelect = () => {
-        const options = {
-            small: {
-                qr_per_row: 8,
-                size: "About ¾ inch wide",
-                per_sheet: "96"
-            },
-            medium: {
-                qr_per_row: 6,
-                size: "About 1 inch wide",
-                per_sheet: "48"
-            },
-            large: {
-                qr_per_row: 4,
-                size: "About 1 ½ inches wide",
-                per_sheet: "20"
-            }
-        };
-
-        let [qrSize, setQrSize] = useState(options.small);
-
-        const generate = () => {
-            cancelPrinting.current = false;
-            fetchQrCodes(qrSize.qr_per_row);
-        };
-
-        return (
-            <>
-                <div className="h-36 mt-2 flex flex-col justify-center">
-                    <Tab.Group onChange={(index) => {
-                        setQrSize(Object.values(options)[index]);
-                    }}>
-                        <Tab.List className="tab-group">
-                            {Object.keys(options).map((option) => (
-                                <Tab key={option} className={({ selected }) =>
-                                    clsx(
-                                        'tab-option',
-                                        selected && 'tab-option-selected'
-                                    )
-                                }>
-                                    {option}
-                                </Tab>
-                            ))}
-                        </Tab.List>
-                        <Tab.Panels className="mt-4">
-                            {Object.values(options).map((option, idx) => (
-                                <Tab.Panel key={idx}>
-                                    <span className="text-center">
-                                        {option.size}<br/>
-                                        {option.per_sheet} QR codes per sheet
-                                    </span>
-                                </Tab.Panel>
-                            ))}
-                        </Tab.Panels>
-                    </Tab.Group>
-                </div>
-
-                <div className="modal-action mx-auto">
-                    <button className="btn btn-accent" onClick={generate}>
-                        Generate
-                    </button>
-                </div>
-            </>
-        );
-    };
-
-    const LoadingAnimation = () => {
-        return (
-            <>
-                <div className="h-36 mt-2 flex flex-col justify-center mx-auto">
-                    <span className="loading loading-spinner loading-lg"></span>
-                </div>
-                <div className="modal-action mx-auto">
-                    <button className="btn" onClick={cancel}>Cancel</button>
-                </div>
-            </>
-        );
-    };
-
-    const ErrorMessage = () => {
-        const UnsetUrlPrefix = (
-            <>
-                <p>The URL_PREFIX environment variable is not set</p>
-                <p>Check docker config</p>
-            </>
-        );
-
-        const LongUrlPrefix = (
-            <>
-                <p>Unable to generate QR codes</p>
-                <p>Try setting a shorter URL_PREFIX in docker config</p>
-            </>
-        );
-
-        return (
-            <>
-                <div className="h-36 mt-2 flex flex-col justify-center mx-auto">
-                    {(() => {
-                        switch(error) {
-                            case("unset"):
-                                return UnsetUrlPrefix;
-                            case("long"):
-                                return LongUrlPrefix;
-                            default:
-                                return (
-                                    <p>An unknown error occurred</p>
-                                );
-                        }
-                    })()}
-                </div>
-                <div className="modal-action mx-auto">
-                    <button className="btn" onClick={cancel}>OK</button>
-                </div>
-            </>
-        );
-    };
-
     switch(modalContents) {
         case("loading"):
             return (
@@ -238,7 +178,12 @@ const PrintModal = React.forwardRef(function PrintModal(_, ref) {
                     title='Fetching QR Codes'
                     onClose={resetModal}
                 >
-                    <LoadingAnimation />
+                    <div className="h-36 mt-2 flex flex-col justify-center mx-auto">
+                        <span className="loading loading-spinner loading-lg"></span>
+                    </div>
+                    <div className="modal-action mx-auto">
+                        <button className="btn" onClick={cancel}>Cancel</button>
+                    </div>
                 </Modal>
             );
         case("options"):
@@ -247,7 +192,40 @@ const PrintModal = React.forwardRef(function PrintModal(_, ref) {
                     dialogRef={printModalRef}
                     title='Select QR Code Size'
                 >
-                    <QrCodeSizeSelect />
+                    <div className="h-36 mt-2 flex flex-col justify-center">
+                        <Tab.Group onChange={(index) => {
+                            setQrSize(Object.values(sizeOptions)[index]);
+                        }}>
+                            <Tab.List className="tab-group">
+                                {Object.keys(sizeOptions).map((option) => (
+                                    <Tab key={option} className={({ selected }) =>
+                                        clsx(
+                                            'tab-option',
+                                            selected && 'tab-option-selected'
+                                        )
+                                    }>
+                                        {option}
+                                    </Tab>
+                                ))}
+                            </Tab.List>
+                            <Tab.Panels className="mt-4">
+                                {Object.values(sizeOptions).map((option, idx) => (
+                                    <Tab.Panel key={idx}>
+                                        <span className="text-center">
+                                            {option.size}<br/>
+                                            {option.per_sheet} QR codes per sheet
+                                        </span>
+                                    </Tab.Panel>
+                                ))}
+                            </Tab.Panels>
+                        </Tab.Group>
+                    </div>
+
+                    <div className="modal-action mx-auto">
+                        <button className="btn btn-accent" onClick={generate}>
+                            Generate
+                        </button>
+                    </div>
                 </Modal>
             );
         default:
@@ -257,7 +235,12 @@ const PrintModal = React.forwardRef(function PrintModal(_, ref) {
                     title='Error'
                     onClose={resetModal}
                 >
-                    <ErrorMessage />
+                    <div className="h-36 mt-2 flex flex-col justify-center mx-auto">
+                        <ErrorMessage error={error} />
+                    </div>
+                    <div className="modal-action mx-auto">
+                        <button className="btn" onClick={cancel}>OK</button>
+                    </div>
                 </Modal>
             );
     }
