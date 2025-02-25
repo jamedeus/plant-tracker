@@ -143,10 +143,10 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
           </div>
         </div>
         <div
-          class="grid grid-cols-1 md:grid-cols-2 mx-auto"
+          class="grid grid-cols-1 mx-auto md:grid-cols-2"
         >
           <div
-            class="md:mr-12 mb-8 md:mb-0 scroll-mt-20"
+            class="scroll-mt-20 md:mr-12 mb-8 md:mb-0"
           >
             <div
               class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
@@ -382,7 +382,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
             </div>
           </div>
           <div
-            class="md:ml-12 scroll-mt-20"
+            class="scroll-mt-20 md:ml-12"
           >
             <div
               class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
@@ -891,10 +891,10 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
         </div>
       </div>
       <div
-        class="grid grid-cols-1 md:grid-cols-2 mx-auto"
+        class="grid grid-cols-1 mx-auto md:grid-cols-2"
       >
         <div
-          class="md:mr-12 mb-8 md:mb-0 scroll-mt-20"
+          class="scroll-mt-20 md:mr-12 mb-8 md:mb-0"
         >
           <div
             class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
@@ -1130,7 +1130,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
           </div>
         </div>
         <div
-          class="md:ml-12 scroll-mt-20"
+          class="scroll-mt-20 md:ml-12"
         >
           <div
             class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
@@ -1691,37 +1691,41 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
           </div>
         </div>
         <div
-          class="flex flex-col mx-auto text-center my-auto px-8"
+          class="grid grid-cols-1 mx-auto"
         >
-          <p
-            class="text-2xl"
+          <div
+            class="flex flex-col mx-auto text-center my-auto px-8"
           >
-            No plants found!
-          </p>
-          <ul
-            class="steps steps-vertical my-8"
-          >
-            <li
-              class="step"
+            <p
+              class="text-2xl"
             >
-              Print QR codes on sticker paper
-            </li>
-            <li
-              class="step"
+              No plants found!
+            </p>
+            <ul
+              class="steps steps-vertical my-8"
             >
-              Add a sticker to each plant pot
-            </li>
-            <li
-              class="step"
+              <li
+                class="step"
+              >
+                Print QR codes on sticker paper
+              </li>
+              <li
+                class="step"
+              >
+                Add a sticker to each plant pot
+              </li>
+              <li
+                class="step"
+              >
+                Scan codes to register plants!
+              </li>
+            </ul>
+            <button
+              class="btn btn-accent text-lg"
             >
-              Scan codes to register plants!
-            </li>
-          </ul>
-          <button
-            class="btn btn-accent text-lg"
-          >
-            Print QR Codes
-          </button>
+              Print QR Codes
+            </button>
+          </div>
         </div>
         <dialog
           class="modal"
@@ -2026,37 +2030,41 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
         </div>
       </div>
       <div
-        class="flex flex-col mx-auto text-center my-auto px-8"
+        class="grid grid-cols-1 mx-auto"
       >
-        <p
-          class="text-2xl"
+        <div
+          class="flex flex-col mx-auto text-center my-auto px-8"
         >
-          No plants found!
-        </p>
-        <ul
-          class="steps steps-vertical my-8"
-        >
-          <li
-            class="step"
+          <p
+            class="text-2xl"
           >
-            Print QR codes on sticker paper
-          </li>
-          <li
-            class="step"
+            No plants found!
+          </p>
+          <ul
+            class="steps steps-vertical my-8"
           >
-            Add a sticker to each plant pot
-          </li>
-          <li
-            class="step"
+            <li
+              class="step"
+            >
+              Print QR codes on sticker paper
+            </li>
+            <li
+              class="step"
+            >
+              Add a sticker to each plant pot
+            </li>
+            <li
+              class="step"
+            >
+              Scan codes to register plants!
+            </li>
+          </ul>
+          <button
+            class="btn btn-accent text-lg"
           >
-            Scan codes to register plants!
-          </li>
-        </ul>
-        <button
-          class="btn btn-accent text-lg"
-        >
-          Print QR Codes
-        </button>
+            Print QR Codes
+          </button>
+        </div>
       </div>
       <dialog
         class="modal"
@@ -2428,189 +2436,197 @@ exports[`App matches snapshot when only groups exist 1`] = `
           </div>
         </div>
         <div
-          class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+          class="grid grid-cols-1 mx-auto"
         >
-          <input
-            checked=""
-            type="checkbox"
-          />
           <div
-            class="collapse-title text-xl font-medium text-center"
-          >
-            Groups (1)
-          </div>
-          <div
-            class="collapse-content min-w-0"
+            class="scroll-mt-20"
           >
             <div
-              class="flex px-4 mb-4"
+              class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
             >
+              <input
+                checked=""
+                type="checkbox"
+              />
               <div
-                class="relative w-full"
+                class="collapse-title text-xl font-medium text-center"
               >
-                <input
-                  class="input input-bordered w-full text-center
-                                indent-[3.625rem] pr-[4.5rem]"
-                  placeholder="filter"
-                  type="text"
-                  value=""
-                />
+                Groups (1)
+              </div>
+              <div
+                class="collapse-content min-w-0"
+              >
                 <div
-                  class="absolute flex top-2 right-2"
+                  class="flex px-4 mb-4"
                 >
                   <div
-                    class="dropdown dropdown-end"
+                    class="relative w-full"
                   >
+                    <input
+                      class="input input-bordered w-full text-center
+                                indent-[3.625rem] pr-[4.5rem]"
+                      placeholder="filter"
+                      type="text"
+                      value=""
+                    />
                     <div
-                      class="btn-close h-8 w-8 no-animation"
-                      role="button"
-                      tabindex="0"
+                      class="absolute flex top-2 right-2"
                     >
-                      <svg
-                        aria-hidden="true"
-                        class="w-5 h-5 m-auto"
-                        data-slot="icon"
-                        fill="currentColor"
-                        viewBox="0 0 16 16"
-                        xmlns="http://www.w3.org/2000/svg"
+                      <div
+                        class="dropdown dropdown-end"
                       >
-                        <path
-                          clip-rule="evenodd"
-                          d="M13.78 10.47a.75.75 0 0 1 0 1.06l-2.25 2.25a.75.75 0 0 1-1.06 0l-2.25-2.25a.75.75 0 1 1 1.06-1.06l.97.97V5.75a.75.75 0 0 1 1.5 0v5.69l.97-.97a.75.75 0 0 1 1.06 0ZM2.22 5.53a.75.75 0 0 1 0-1.06l2.25-2.25a.75.75 0 0 1 1.06 0l2.25 2.25a.75.75 0 0 1-1.06 1.06l-.97-.97v5.69a.75.75 0 0 1-1.5 0V4.56l-.97.97a.75.75 0 0 1-1.06 0Z"
-                          fill-rule="evenodd"
-                        />
-                      </svg>
-                    </div>
-                    <ul
-                      class="menu menu-md dropdown-content mt-2 z-[99] p-2
-                                shadow bg-base-300 rounded-box w-min-content"
-                      tabindex="0"
-                    >
-                      <li>
-                        <a
-                          class="flex justify-end"
+                        <div
+                          class="btn-close h-8 w-8 no-animation"
+                          role="button"
+                          tabindex="0"
                         >
                           <svg
                             aria-hidden="true"
-                            class="svg-inline--fa fa-arrow-down-long mr-2"
-                            data-icon="arrow-down-long"
-                            data-prefix="fas"
-                            focusable="false"
-                            role="img"
-                            viewBox="0 0 384 512"
+                            class="w-5 h-5 m-auto"
+                            data-slot="icon"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
                             xmlns="http://www.w3.org/2000/svg"
                           >
                             <path
-                              d="M169.4 502.6c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 402.7 224 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 370.7L86.6 329.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128z"
-                              fill="currentColor"
+                              clip-rule="evenodd"
+                              d="M13.78 10.47a.75.75 0 0 1 0 1.06l-2.25 2.25a.75.75 0 0 1-1.06 0l-2.25-2.25a.75.75 0 1 1 1.06-1.06l.97.97V5.75a.75.75 0 0 1 1.5 0v5.69l.97-.97a.75.75 0 0 1 1.06 0ZM2.22 5.53a.75.75 0 0 1 0-1.06l2.25-2.25a.75.75 0 0 1 1.06 0l2.25 2.25a.75.75 0 0 1-1.06 1.06l-.97-.97v5.69a.75.75 0 0 1-1.5 0V4.56l-.97.97a.75.75 0 0 1-1.06 0Z"
+                              fill-rule="evenodd"
                             />
                           </svg>
-                          Added
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          class="flex justify-end"
+                        </div>
+                        <ul
+                          class="menu menu-md dropdown-content mt-2 z-[99] p-2
+                                shadow bg-base-300 rounded-box w-min-content"
+                          tabindex="0"
                         >
-                          Name
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          class="flex justify-end"
-                        >
-                          Location
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div
-              class="mb-4"
-            >
-              <a
-                class="cursor-pointer"
-                href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
-              >
-                <div
-                  class="card bg-neutral text-neutral-content mx-auto w-full"
-                >
-                  <div
-                    class="card-body text-center"
-                  >
-                    <h2
-                      class="card-title mx-auto"
-                    >
-                      Test group
-                    </h2>
-                    <p>
-                      Contains 
-                      4
-                       plants
-                    </p>
-                  </div>
-                  <button
-                    class="btn-close absolute right-2 top-8 z-40"
-                    role="button"
-                    tabindex="0"
-                  >
-                    <svg
-                      aria-hidden="true"
-                      class="w-8 h-8"
-                      data-slot="icon"
-                      fill="currentColor"
-                      viewBox="0 0 16 16"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        clip-rule="evenodd"
-                        d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                        fill-rule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                </div>
-                <div
-                  class="collapse bg-neutral rounded-t-none cursor-default"
-                >
-                  <input
-                    class="hidden"
-                    type="checkbox"
-                  />
-                  <div
-                    class="collapse-content"
-                  >
-                    <p
-                      class="flex"
-                    >
-                      <span
-                        class="font-semibold"
-                      >
-                        Location:
-                      </span>
-                      <span
-                        class="ml-auto text-right"
-                      >
-                        Middle shelf
-                      </span>
-                    </p>
-                    <div
-                      class="hidden"
-                    >
-                      <p
-                        class="font-semibold mt-3"
-                      >
-                        Description:
-                      </p>
-                      <p
-                        class="text-sm line-clamp-6"
-                      />
+                          <li>
+                            <a
+                              class="flex justify-end"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="svg-inline--fa fa-arrow-down-long mr-2"
+                                data-icon="arrow-down-long"
+                                data-prefix="fas"
+                                focusable="false"
+                                role="img"
+                                viewBox="0 0 384 512"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M169.4 502.6c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 402.7 224 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 370.7L86.6 329.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                              Added
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              class="flex justify-end"
+                            >
+                              Name
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              class="flex justify-end"
+                            >
+                              Location
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </a>
+                <div
+                  class="mb-4"
+                >
+                  <a
+                    class="cursor-pointer"
+                    href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                  >
+                    <div
+                      class="card bg-neutral text-neutral-content mx-auto w-full"
+                    >
+                      <div
+                        class="card-body text-center"
+                      >
+                        <h2
+                          class="card-title mx-auto"
+                        >
+                          Test group
+                        </h2>
+                        <p>
+                          Contains 
+                          4
+                           plants
+                        </p>
+                      </div>
+                      <button
+                        class="btn-close absolute right-2 top-8 z-40"
+                        role="button"
+                        tabindex="0"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="w-8 h-8"
+                          data-slot="icon"
+                          fill="currentColor"
+                          viewBox="0 0 16 16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            clip-rule="evenodd"
+                            d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                            fill-rule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                    <div
+                      class="collapse bg-neutral rounded-t-none cursor-default"
+                    >
+                      <input
+                        class="hidden"
+                        type="checkbox"
+                      />
+                      <div
+                        class="collapse-content"
+                      >
+                        <p
+                          class="flex"
+                        >
+                          <span
+                            class="font-semibold"
+                          >
+                            Location:
+                          </span>
+                          <span
+                            class="ml-auto text-right"
+                          >
+                            Middle shelf
+                          </span>
+                        </p>
+                        <div
+                          class="hidden"
+                        >
+                          <p
+                            class="font-semibold mt-3"
+                          >
+                            Description:
+                          </p>
+                          <p
+                            class="text-sm line-clamp-6"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -2917,189 +2933,197 @@ exports[`App matches snapshot when only groups exist 1`] = `
         </div>
       </div>
       <div
-        class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+        class="grid grid-cols-1 mx-auto"
       >
-        <input
-          checked=""
-          type="checkbox"
-        />
         <div
-          class="collapse-title text-xl font-medium text-center"
-        >
-          Groups (1)
-        </div>
-        <div
-          class="collapse-content min-w-0"
+          class="scroll-mt-20"
         >
           <div
-            class="flex px-4 mb-4"
+            class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
           >
+            <input
+              checked=""
+              type="checkbox"
+            />
             <div
-              class="relative w-full"
+              class="collapse-title text-xl font-medium text-center"
             >
-              <input
-                class="input input-bordered w-full text-center
-                                indent-[3.625rem] pr-[4.5rem]"
-                placeholder="filter"
-                type="text"
-                value=""
-              />
+              Groups (1)
+            </div>
+            <div
+              class="collapse-content min-w-0"
+            >
               <div
-                class="absolute flex top-2 right-2"
+                class="flex px-4 mb-4"
               >
                 <div
-                  class="dropdown dropdown-end"
+                  class="relative w-full"
                 >
+                  <input
+                    class="input input-bordered w-full text-center
+                                indent-[3.625rem] pr-[4.5rem]"
+                    placeholder="filter"
+                    type="text"
+                    value=""
+                  />
                   <div
-                    class="btn-close h-8 w-8 no-animation"
-                    role="button"
-                    tabindex="0"
+                    class="absolute flex top-2 right-2"
                   >
-                    <svg
-                      aria-hidden="true"
-                      class="w-5 h-5 m-auto"
-                      data-slot="icon"
-                      fill="currentColor"
-                      viewBox="0 0 16 16"
-                      xmlns="http://www.w3.org/2000/svg"
+                    <div
+                      class="dropdown dropdown-end"
                     >
-                      <path
-                        clip-rule="evenodd"
-                        d="M13.78 10.47a.75.75 0 0 1 0 1.06l-2.25 2.25a.75.75 0 0 1-1.06 0l-2.25-2.25a.75.75 0 1 1 1.06-1.06l.97.97V5.75a.75.75 0 0 1 1.5 0v5.69l.97-.97a.75.75 0 0 1 1.06 0ZM2.22 5.53a.75.75 0 0 1 0-1.06l2.25-2.25a.75.75 0 0 1 1.06 0l2.25 2.25a.75.75 0 0 1-1.06 1.06l-.97-.97v5.69a.75.75 0 0 1-1.5 0V4.56l-.97.97a.75.75 0 0 1-1.06 0Z"
-                        fill-rule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                  <ul
-                    class="menu menu-md dropdown-content mt-2 z-[99] p-2
-                                shadow bg-base-300 rounded-box w-min-content"
-                    tabindex="0"
-                  >
-                    <li>
-                      <a
-                        class="flex justify-end"
+                      <div
+                        class="btn-close h-8 w-8 no-animation"
+                        role="button"
+                        tabindex="0"
                       >
                         <svg
                           aria-hidden="true"
-                          class="svg-inline--fa fa-arrow-down-long mr-2"
-                          data-icon="arrow-down-long"
-                          data-prefix="fas"
-                          focusable="false"
-                          role="img"
-                          viewBox="0 0 384 512"
+                          class="w-5 h-5 m-auto"
+                          data-slot="icon"
+                          fill="currentColor"
+                          viewBox="0 0 16 16"
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
-                            d="M169.4 502.6c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 402.7 224 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 370.7L86.6 329.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128z"
-                            fill="currentColor"
+                            clip-rule="evenodd"
+                            d="M13.78 10.47a.75.75 0 0 1 0 1.06l-2.25 2.25a.75.75 0 0 1-1.06 0l-2.25-2.25a.75.75 0 1 1 1.06-1.06l.97.97V5.75a.75.75 0 0 1 1.5 0v5.69l.97-.97a.75.75 0 0 1 1.06 0ZM2.22 5.53a.75.75 0 0 1 0-1.06l2.25-2.25a.75.75 0 0 1 1.06 0l2.25 2.25a.75.75 0 0 1-1.06 1.06l-.97-.97v5.69a.75.75 0 0 1-1.5 0V4.56l-.97.97a.75.75 0 0 1-1.06 0Z"
+                            fill-rule="evenodd"
                           />
                         </svg>
-                        Added
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        class="flex justify-end"
+                      </div>
+                      <ul
+                        class="menu menu-md dropdown-content mt-2 z-[99] p-2
+                                shadow bg-base-300 rounded-box w-min-content"
+                        tabindex="0"
                       >
-                        Name
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        class="flex justify-end"
-                      >
-                        Location
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="mb-4"
-          >
-            <a
-              class="cursor-pointer"
-              href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
-            >
-              <div
-                class="card bg-neutral text-neutral-content mx-auto w-full"
-              >
-                <div
-                  class="card-body text-center"
-                >
-                  <h2
-                    class="card-title mx-auto"
-                  >
-                    Test group
-                  </h2>
-                  <p>
-                    Contains 
-                    4
-                     plants
-                  </p>
-                </div>
-                <button
-                  class="btn-close absolute right-2 top-8 z-40"
-                  role="button"
-                  tabindex="0"
-                >
-                  <svg
-                    aria-hidden="true"
-                    class="w-8 h-8"
-                    data-slot="icon"
-                    fill="currentColor"
-                    viewBox="0 0 16 16"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      clip-rule="evenodd"
-                      d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                      fill-rule="evenodd"
-                    />
-                  </svg>
-                </button>
-              </div>
-              <div
-                class="collapse bg-neutral rounded-t-none cursor-default"
-              >
-                <input
-                  class="hidden"
-                  type="checkbox"
-                />
-                <div
-                  class="collapse-content"
-                >
-                  <p
-                    class="flex"
-                  >
-                    <span
-                      class="font-semibold"
-                    >
-                      Location:
-                    </span>
-                    <span
-                      class="ml-auto text-right"
-                    >
-                      Middle shelf
-                    </span>
-                  </p>
-                  <div
-                    class="hidden"
-                  >
-                    <p
-                      class="font-semibold mt-3"
-                    >
-                      Description:
-                    </p>
-                    <p
-                      class="text-sm line-clamp-6"
-                    />
+                        <li>
+                          <a
+                            class="flex justify-end"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="svg-inline--fa fa-arrow-down-long mr-2"
+                              data-icon="arrow-down-long"
+                              data-prefix="fas"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 384 512"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M169.4 502.6c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 402.7 224 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 370.7L86.6 329.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                            Added
+                          </a>
+                        </li>
+                        <li>
+                          <a
+                            class="flex justify-end"
+                          >
+                            Name
+                          </a>
+                        </li>
+                        <li>
+                          <a
+                            class="flex justify-end"
+                          >
+                            Location
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
                   </div>
                 </div>
               </div>
-            </a>
+              <div
+                class="mb-4"
+              >
+                <a
+                  class="cursor-pointer"
+                  href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                >
+                  <div
+                    class="card bg-neutral text-neutral-content mx-auto w-full"
+                  >
+                    <div
+                      class="card-body text-center"
+                    >
+                      <h2
+                        class="card-title mx-auto"
+                      >
+                        Test group
+                      </h2>
+                      <p>
+                        Contains 
+                        4
+                         plants
+                      </p>
+                    </div>
+                    <button
+                      class="btn-close absolute right-2 top-8 z-40"
+                      role="button"
+                      tabindex="0"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="w-8 h-8"
+                        data-slot="icon"
+                        fill="currentColor"
+                        viewBox="0 0 16 16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          clip-rule="evenodd"
+                          d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                          fill-rule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                  <div
+                    class="collapse bg-neutral rounded-t-none cursor-default"
+                  >
+                    <input
+                      class="hidden"
+                      type="checkbox"
+                    />
+                    <div
+                      class="collapse-content"
+                    >
+                      <p
+                        class="flex"
+                      >
+                        <span
+                          class="font-semibold"
+                        >
+                          Location:
+                        </span>
+                        <span
+                          class="ml-auto text-right"
+                        >
+                          Middle shelf
+                        </span>
+                      </p>
+                      <div
+                        class="hidden"
+                      >
+                        <p
+                          class="font-semibold mt-3"
+                        >
+                          Description:
+                        </p>
+                        <p
+                          class="text-sm line-clamp-6"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -3473,72 +3497,152 @@ exports[`App matches snapshot when only plants exist 1`] = `
           </div>
         </div>
         <div
-          class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+          class="grid grid-cols-1 mx-auto"
         >
-          <input
-            checked=""
-            type="checkbox"
-          />
           <div
-            class="collapse-title text-xl font-medium text-center"
-          >
-            Plants (1)
-          </div>
-          <div
-            class="collapse-content min-w-0"
+            class="scroll-mt-20"
           >
             <div
-              class="flex px-4 mb-4"
+              class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
             >
+              <input
+                checked=""
+                type="checkbox"
+              />
               <div
-                class="relative w-full"
+                class="collapse-title text-xl font-medium text-center"
               >
-                <input
-                  class="input input-bordered w-full text-center
-                                indent-[3.625rem] pr-[4.5rem]"
-                  placeholder="filter"
-                  type="text"
-                  value=""
-                />
+                Plants (1)
+              </div>
+              <div
+                class="collapse-content min-w-0"
+              >
                 <div
-                  class="absolute flex top-2 right-2"
+                  class="flex px-4 mb-4"
                 >
                   <div
-                    class="dropdown dropdown-end"
+                    class="relative w-full"
                   >
+                    <input
+                      class="input input-bordered w-full text-center
+                                indent-[3.625rem] pr-[4.5rem]"
+                      placeholder="filter"
+                      type="text"
+                      value=""
+                    />
                     <div
-                      class="btn-close h-8 w-8 no-animation"
-                      role="button"
-                      tabindex="0"
+                      class="absolute flex top-2 right-2"
                     >
-                      <svg
-                        aria-hidden="true"
-                        class="w-5 h-5 m-auto"
-                        data-slot="icon"
-                        fill="currentColor"
-                        viewBox="0 0 16 16"
-                        xmlns="http://www.w3.org/2000/svg"
+                      <div
+                        class="dropdown dropdown-end"
                       >
-                        <path
-                          clip-rule="evenodd"
-                          d="M13.78 10.47a.75.75 0 0 1 0 1.06l-2.25 2.25a.75.75 0 0 1-1.06 0l-2.25-2.25a.75.75 0 1 1 1.06-1.06l.97.97V5.75a.75.75 0 0 1 1.5 0v5.69l.97-.97a.75.75 0 0 1 1.06 0ZM2.22 5.53a.75.75 0 0 1 0-1.06l2.25-2.25a.75.75 0 0 1 1.06 0l2.25 2.25a.75.75 0 0 1-1.06 1.06l-.97-.97v5.69a.75.75 0 0 1-1.5 0V4.56l-.97.97a.75.75 0 0 1-1.06 0Z"
-                          fill-rule="evenodd"
-                        />
-                      </svg>
-                    </div>
-                    <ul
-                      class="menu menu-md dropdown-content mt-2 z-[99] p-2
-                                shadow bg-base-300 rounded-box w-min-content"
-                      tabindex="0"
-                    >
-                      <li>
-                        <a
-                          class="flex justify-end"
+                        <div
+                          class="btn-close h-8 w-8 no-animation"
+                          role="button"
+                          tabindex="0"
                         >
                           <svg
                             aria-hidden="true"
-                            class="svg-inline--fa fa-arrow-down-long mr-2"
-                            data-icon="arrow-down-long"
+                            class="w-5 h-5 m-auto"
+                            data-slot="icon"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              clip-rule="evenodd"
+                              d="M13.78 10.47a.75.75 0 0 1 0 1.06l-2.25 2.25a.75.75 0 0 1-1.06 0l-2.25-2.25a.75.75 0 1 1 1.06-1.06l.97.97V5.75a.75.75 0 0 1 1.5 0v5.69l.97-.97a.75.75 0 0 1 1.06 0ZM2.22 5.53a.75.75 0 0 1 0-1.06l2.25-2.25a.75.75 0 0 1 1.06 0l2.25 2.25a.75.75 0 0 1-1.06 1.06l-.97-.97v5.69a.75.75 0 0 1-1.5 0V4.56l-.97.97a.75.75 0 0 1-1.06 0Z"
+                              fill-rule="evenodd"
+                            />
+                          </svg>
+                        </div>
+                        <ul
+                          class="menu menu-md dropdown-content mt-2 z-[99] p-2
+                                shadow bg-base-300 rounded-box w-min-content"
+                          tabindex="0"
+                        >
+                          <li>
+                            <a
+                              class="flex justify-end"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="svg-inline--fa fa-arrow-down-long mr-2"
+                                data-icon="arrow-down-long"
+                                data-prefix="fas"
+                                focusable="false"
+                                role="img"
+                                viewBox="0 0 384 512"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M169.4 502.6c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 402.7 224 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 370.7L86.6 329.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                              Added
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              class="flex justify-end"
+                            >
+                              Name
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              class="flex justify-end"
+                            >
+                              Species
+                            </a>
+                          </li>
+                          <li>
+                            <a
+                              class="flex justify-end"
+                            >
+                              Watered
+                            </a>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="mb-4"
+                >
+                  <a
+                    class="cursor-pointer"
+                    href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                  >
+                    <div
+                      class="card card-side bg-neutral text-neutral-content mx-auto relative"
+                    >
+                      <figure
+                        class="h-24 w-20 min-h-20 min-w-20"
+                      >
+                        <img
+                          class="w-full h-full object-cover"
+                          loading="lazy"
+                          src="/media/thumbnails/photo_thumb.jpg"
+                        />
+                      </figure>
+                      <div
+                        class="card-body my-auto text-start cursor-default"
+                      >
+                        <h2
+                          class="card-title line-clamp-1 pr-8"
+                        >
+                          Test Plant
+                        </h2>
+                        <span
+                          title="06:44 PM - February 25, 2024"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="svg-inline--fa fa-droplet mr-2 text-info"
+                            data-icon="droplet"
                             data-prefix="fas"
                             focusable="false"
                             role="img"
@@ -3546,161 +3650,89 @@ exports[`App matches snapshot when only plants exist 1`] = `
                             xmlns="http://www.w3.org/2000/svg"
                           >
                             <path
-                              d="M169.4 502.6c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 402.7 224 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 370.7L86.6 329.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128z"
+                              d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
                               fill="currentColor"
                             />
                           </svg>
-                          Added
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          class="flex justify-end"
+                          5 days ago
+                        </span>
+                      </div>
+                      <button
+                        class="btn-close absolute right-2 top-8 z-40"
+                        role="button"
+                        tabindex="0"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="w-8 h-8"
+                          data-slot="icon"
+                          fill="currentColor"
+                          viewBox="0 0 16 16"
+                          xmlns="http://www.w3.org/2000/svg"
                         >
-                          Name
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          class="flex justify-end"
+                          <path
+                            clip-rule="evenodd"
+                            d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                            fill-rule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                    <div
+                      class="collapse bg-neutral rounded-t-none cursor-default"
+                    >
+                      <input
+                        class="hidden"
+                        type="checkbox"
+                      />
+                      <div
+                        class="collapse-content"
+                      >
+                        <p
+                          class="flex"
                         >
-                          Species
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          class="flex justify-end"
+                          <span
+                            class="font-semibold"
+                          >
+                            Species:
+                          </span>
+                          <span
+                            class="ml-auto text-right"
+                          >
+                            Calathea
+                          </span>
+                        </p>
+                        <p
+                          class="flex"
                         >
-                          Watered
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
+                          <span
+                            class="font-semibold"
+                          >
+                            Pot size:
+                          </span>
+                          <span
+                            class="ml-auto text-right"
+                          >
+                            4
+                          </span>
+                        </p>
+                        <div
+                          class="hidden"
+                        >
+                          <p
+                            class="font-semibold mt-3"
+                          >
+                            Description:
+                          </p>
+                          <p
+                            class="text-sm line-clamp-6"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </a>
                 </div>
               </div>
-            </div>
-            <div
-              class="mb-4"
-            >
-              <a
-                class="cursor-pointer"
-                href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-              >
-                <div
-                  class="card card-side bg-neutral text-neutral-content mx-auto relative"
-                >
-                  <figure
-                    class="h-24 w-20 min-h-20 min-w-20"
-                  >
-                    <img
-                      class="w-full h-full object-cover"
-                      loading="lazy"
-                      src="/media/thumbnails/photo_thumb.jpg"
-                    />
-                  </figure>
-                  <div
-                    class="card-body my-auto text-start cursor-default"
-                  >
-                    <h2
-                      class="card-title line-clamp-1 pr-8"
-                    >
-                      Test Plant
-                    </h2>
-                    <span
-                      title="06:44 PM - February 25, 2024"
-                    >
-                      <svg
-                        aria-hidden="true"
-                        class="svg-inline--fa fa-droplet mr-2 text-info"
-                        data-icon="droplet"
-                        data-prefix="fas"
-                        focusable="false"
-                        role="img"
-                        viewBox="0 0 384 512"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                      5 days ago
-                    </span>
-                  </div>
-                  <button
-                    class="btn-close absolute right-2 top-8 z-40"
-                    role="button"
-                    tabindex="0"
-                  >
-                    <svg
-                      aria-hidden="true"
-                      class="w-8 h-8"
-                      data-slot="icon"
-                      fill="currentColor"
-                      viewBox="0 0 16 16"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        clip-rule="evenodd"
-                        d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                        fill-rule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                </div>
-                <div
-                  class="collapse bg-neutral rounded-t-none cursor-default"
-                >
-                  <input
-                    class="hidden"
-                    type="checkbox"
-                  />
-                  <div
-                    class="collapse-content"
-                  >
-                    <p
-                      class="flex"
-                    >
-                      <span
-                        class="font-semibold"
-                      >
-                        Species:
-                      </span>
-                      <span
-                        class="ml-auto text-right"
-                      >
-                        Calathea
-                      </span>
-                    </p>
-                    <p
-                      class="flex"
-                    >
-                      <span
-                        class="font-semibold"
-                      >
-                        Pot size:
-                      </span>
-                      <span
-                        class="ml-auto text-right"
-                      >
-                        4
-                      </span>
-                    </p>
-                    <div
-                      class="hidden"
-                    >
-                      <p
-                        class="font-semibold mt-3"
-                      >
-                        Description:
-                      </p>
-                      <p
-                        class="text-sm line-clamp-6"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </a>
             </div>
           </div>
         </div>
@@ -4007,72 +4039,152 @@ exports[`App matches snapshot when only plants exist 1`] = `
         </div>
       </div>
       <div
-        class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+        class="grid grid-cols-1 mx-auto"
       >
-        <input
-          checked=""
-          type="checkbox"
-        />
         <div
-          class="collapse-title text-xl font-medium text-center"
-        >
-          Plants (1)
-        </div>
-        <div
-          class="collapse-content min-w-0"
+          class="scroll-mt-20"
         >
           <div
-            class="flex px-4 mb-4"
+            class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
           >
+            <input
+              checked=""
+              type="checkbox"
+            />
             <div
-              class="relative w-full"
+              class="collapse-title text-xl font-medium text-center"
             >
-              <input
-                class="input input-bordered w-full text-center
-                                indent-[3.625rem] pr-[4.5rem]"
-                placeholder="filter"
-                type="text"
-                value=""
-              />
+              Plants (1)
+            </div>
+            <div
+              class="collapse-content min-w-0"
+            >
               <div
-                class="absolute flex top-2 right-2"
+                class="flex px-4 mb-4"
               >
                 <div
-                  class="dropdown dropdown-end"
+                  class="relative w-full"
                 >
+                  <input
+                    class="input input-bordered w-full text-center
+                                indent-[3.625rem] pr-[4.5rem]"
+                    placeholder="filter"
+                    type="text"
+                    value=""
+                  />
                   <div
-                    class="btn-close h-8 w-8 no-animation"
-                    role="button"
-                    tabindex="0"
+                    class="absolute flex top-2 right-2"
                   >
-                    <svg
-                      aria-hidden="true"
-                      class="w-5 h-5 m-auto"
-                      data-slot="icon"
-                      fill="currentColor"
-                      viewBox="0 0 16 16"
-                      xmlns="http://www.w3.org/2000/svg"
+                    <div
+                      class="dropdown dropdown-end"
                     >
-                      <path
-                        clip-rule="evenodd"
-                        d="M13.78 10.47a.75.75 0 0 1 0 1.06l-2.25 2.25a.75.75 0 0 1-1.06 0l-2.25-2.25a.75.75 0 1 1 1.06-1.06l.97.97V5.75a.75.75 0 0 1 1.5 0v5.69l.97-.97a.75.75 0 0 1 1.06 0ZM2.22 5.53a.75.75 0 0 1 0-1.06l2.25-2.25a.75.75 0 0 1 1.06 0l2.25 2.25a.75.75 0 0 1-1.06 1.06l-.97-.97v5.69a.75.75 0 0 1-1.5 0V4.56l-.97.97a.75.75 0 0 1-1.06 0Z"
-                        fill-rule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                  <ul
-                    class="menu menu-md dropdown-content mt-2 z-[99] p-2
-                                shadow bg-base-300 rounded-box w-min-content"
-                    tabindex="0"
-                  >
-                    <li>
-                      <a
-                        class="flex justify-end"
+                      <div
+                        class="btn-close h-8 w-8 no-animation"
+                        role="button"
+                        tabindex="0"
                       >
                         <svg
                           aria-hidden="true"
-                          class="svg-inline--fa fa-arrow-down-long mr-2"
-                          data-icon="arrow-down-long"
+                          class="w-5 h-5 m-auto"
+                          data-slot="icon"
+                          fill="currentColor"
+                          viewBox="0 0 16 16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            clip-rule="evenodd"
+                            d="M13.78 10.47a.75.75 0 0 1 0 1.06l-2.25 2.25a.75.75 0 0 1-1.06 0l-2.25-2.25a.75.75 0 1 1 1.06-1.06l.97.97V5.75a.75.75 0 0 1 1.5 0v5.69l.97-.97a.75.75 0 0 1 1.06 0ZM2.22 5.53a.75.75 0 0 1 0-1.06l2.25-2.25a.75.75 0 0 1 1.06 0l2.25 2.25a.75.75 0 0 1-1.06 1.06l-.97-.97v5.69a.75.75 0 0 1-1.5 0V4.56l-.97.97a.75.75 0 0 1-1.06 0Z"
+                            fill-rule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                      <ul
+                        class="menu menu-md dropdown-content mt-2 z-[99] p-2
+                                shadow bg-base-300 rounded-box w-min-content"
+                        tabindex="0"
+                      >
+                        <li>
+                          <a
+                            class="flex justify-end"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="svg-inline--fa fa-arrow-down-long mr-2"
+                              data-icon="arrow-down-long"
+                              data-prefix="fas"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 384 512"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M169.4 502.6c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 402.7 224 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 370.7L86.6 329.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                            Added
+                          </a>
+                        </li>
+                        <li>
+                          <a
+                            class="flex justify-end"
+                          >
+                            Name
+                          </a>
+                        </li>
+                        <li>
+                          <a
+                            class="flex justify-end"
+                          >
+                            Species
+                          </a>
+                        </li>
+                        <li>
+                          <a
+                            class="flex justify-end"
+                          >
+                            Watered
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="mb-4"
+              >
+                <a
+                  class="cursor-pointer"
+                  href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                >
+                  <div
+                    class="card card-side bg-neutral text-neutral-content mx-auto relative"
+                  >
+                    <figure
+                      class="h-24 w-20 min-h-20 min-w-20"
+                    >
+                      <img
+                        class="w-full h-full object-cover"
+                        loading="lazy"
+                        src="/media/thumbnails/photo_thumb.jpg"
+                      />
+                    </figure>
+                    <div
+                      class="card-body my-auto text-start cursor-default"
+                    >
+                      <h2
+                        class="card-title line-clamp-1 pr-8"
+                      >
+                        Test Plant
+                      </h2>
+                      <span
+                        title="06:44 PM - February 25, 2024"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="svg-inline--fa fa-droplet mr-2 text-info"
+                          data-icon="droplet"
                           data-prefix="fas"
                           focusable="false"
                           role="img"
@@ -4080,161 +4192,89 @@ exports[`App matches snapshot when only plants exist 1`] = `
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
-                            d="M169.4 502.6c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 402.7 224 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 370.7L86.6 329.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128z"
+                            d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
                             fill="currentColor"
                           />
                         </svg>
-                        Added
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        class="flex justify-end"
+                        5 days ago
+                      </span>
+                    </div>
+                    <button
+                      class="btn-close absolute right-2 top-8 z-40"
+                      role="button"
+                      tabindex="0"
+                    >
+                      <svg
+                        aria-hidden="true"
+                        class="w-8 h-8"
+                        data-slot="icon"
+                        fill="currentColor"
+                        viewBox="0 0 16 16"
+                        xmlns="http://www.w3.org/2000/svg"
                       >
-                        Name
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        class="flex justify-end"
+                        <path
+                          clip-rule="evenodd"
+                          d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                          fill-rule="evenodd"
+                        />
+                      </svg>
+                    </button>
+                  </div>
+                  <div
+                    class="collapse bg-neutral rounded-t-none cursor-default"
+                  >
+                    <input
+                      class="hidden"
+                      type="checkbox"
+                    />
+                    <div
+                      class="collapse-content"
+                    >
+                      <p
+                        class="flex"
                       >
-                        Species
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        class="flex justify-end"
+                        <span
+                          class="font-semibold"
+                        >
+                          Species:
+                        </span>
+                        <span
+                          class="ml-auto text-right"
+                        >
+                          Calathea
+                        </span>
+                      </p>
+                      <p
+                        class="flex"
                       >
-                        Watered
-                      </a>
-                    </li>
-                  </ul>
-                </div>
+                        <span
+                          class="font-semibold"
+                        >
+                          Pot size:
+                        </span>
+                        <span
+                          class="ml-auto text-right"
+                        >
+                          4
+                        </span>
+                      </p>
+                      <div
+                        class="hidden"
+                      >
+                        <p
+                          class="font-semibold mt-3"
+                        >
+                          Description:
+                        </p>
+                        <p
+                          class="text-sm line-clamp-6"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </a>
               </div>
             </div>
-          </div>
-          <div
-            class="mb-4"
-          >
-            <a
-              class="cursor-pointer"
-              href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-            >
-              <div
-                class="card card-side bg-neutral text-neutral-content mx-auto relative"
-              >
-                <figure
-                  class="h-24 w-20 min-h-20 min-w-20"
-                >
-                  <img
-                    class="w-full h-full object-cover"
-                    loading="lazy"
-                    src="/media/thumbnails/photo_thumb.jpg"
-                  />
-                </figure>
-                <div
-                  class="card-body my-auto text-start cursor-default"
-                >
-                  <h2
-                    class="card-title line-clamp-1 pr-8"
-                  >
-                    Test Plant
-                  </h2>
-                  <span
-                    title="06:44 PM - February 25, 2024"
-                  >
-                    <svg
-                      aria-hidden="true"
-                      class="svg-inline--fa fa-droplet mr-2 text-info"
-                      data-icon="droplet"
-                      data-prefix="fas"
-                      focusable="false"
-                      role="img"
-                      viewBox="0 0 384 512"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                        fill="currentColor"
-                      />
-                    </svg>
-                    5 days ago
-                  </span>
-                </div>
-                <button
-                  class="btn-close absolute right-2 top-8 z-40"
-                  role="button"
-                  tabindex="0"
-                >
-                  <svg
-                    aria-hidden="true"
-                    class="w-8 h-8"
-                    data-slot="icon"
-                    fill="currentColor"
-                    viewBox="0 0 16 16"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      clip-rule="evenodd"
-                      d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                      fill-rule="evenodd"
-                    />
-                  </svg>
-                </button>
-              </div>
-              <div
-                class="collapse bg-neutral rounded-t-none cursor-default"
-              >
-                <input
-                  class="hidden"
-                  type="checkbox"
-                />
-                <div
-                  class="collapse-content"
-                >
-                  <p
-                    class="flex"
-                  >
-                    <span
-                      class="font-semibold"
-                    >
-                      Species:
-                    </span>
-                    <span
-                      class="ml-auto text-right"
-                    >
-                      Calathea
-                    </span>
-                  </p>
-                  <p
-                    class="flex"
-                  >
-                    <span
-                      class="font-semibold"
-                    >
-                      Pot size:
-                    </span>
-                    <span
-                      class="ml-auto text-right"
-                    >
-                      4
-                    </span>
-                  </p>
-                  <div
-                    class="hidden"
-                  >
-                    <p
-                      class="font-semibold mt-3"
-                    >
-                      Description:
-                    </p>
-                    <p
-                      class="text-sm line-clamp-6"
-                    />
-                  </div>
-                </div>
-              </div>
-            </a>
           </div>
         </div>
       </div>
@@ -4608,10 +4648,10 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
           </div>
         </div>
         <div
-          class="grid grid-cols-1 md:grid-cols-2 mx-auto"
+          class="grid grid-cols-1 mx-auto md:grid-cols-2"
         >
           <div
-            class="md:mr-12 mb-8 md:mb-0 scroll-mt-20"
+            class="scroll-mt-20 md:mr-12 mb-8 md:mb-0"
           >
             <div
               class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
@@ -4847,7 +4887,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
             </div>
           </div>
           <div
-            class="md:ml-12 scroll-mt-20"
+            class="scroll-mt-20 md:ml-12"
           >
             <div
               class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
@@ -5341,10 +5381,10 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
         </div>
       </div>
       <div
-        class="grid grid-cols-1 md:grid-cols-2 mx-auto"
+        class="grid grid-cols-1 mx-auto md:grid-cols-2"
       >
         <div
-          class="md:mr-12 mb-8 md:mb-0 scroll-mt-20"
+          class="scroll-mt-20 md:mr-12 mb-8 md:mb-0"
         >
           <div
             class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
@@ -5580,7 +5620,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
           </div>
         </div>
         <div
-          class="md:ml-12 scroll-mt-20"
+          class="scroll-mt-20 md:ml-12"
         >
           <div
             class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
@@ -6161,10 +6201,10 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
           </div>
         </div>
         <div
-          class="grid grid-cols-1 md:grid-cols-2 mx-auto"
+          class="grid grid-cols-1 mx-auto md:grid-cols-2"
         >
           <div
-            class="md:mr-12 mb-8 md:mb-0 scroll-mt-20"
+            class="scroll-mt-20 md:mr-12 mb-8 md:mb-0"
           >
             <div
               class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
@@ -6400,7 +6440,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
             </div>
           </div>
           <div
-            class="md:ml-12 scroll-mt-20"
+            class="scroll-mt-20 md:ml-12"
           >
             <div
               class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
@@ -6914,10 +6954,10 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
         </div>
       </div>
       <div
-        class="grid grid-cols-1 md:grid-cols-2 mx-auto"
+        class="grid grid-cols-1 mx-auto md:grid-cols-2"
       >
         <div
-          class="md:mr-12 mb-8 md:mb-0 scroll-mt-20"
+          class="scroll-mt-20 md:mr-12 mb-8 md:mb-0"
         >
           <div
             class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
@@ -7153,7 +7193,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
           </div>
         </div>
         <div
-          class="md:ml-12 scroll-mt-20"
+          class="scroll-mt-20 md:ml-12"
         >
           <div
             class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"

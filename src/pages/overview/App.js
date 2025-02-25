@@ -10,6 +10,7 @@ import FloatingFooter from 'src/components/FloatingFooter';
 import Setup from './Setup';
 import PrintModal from './PrintModal';
 import { useIsBreakpointActive } from "src/useBreakpoint";
+import clsx from 'clsx';
 
 const PlantsCol = ({ plants, editing, selectedPlants }) => {
     const openRef = useRef(true);
@@ -87,53 +88,52 @@ GroupsCol.propTypes = {
 
 // Render correct components for current state objects
 const Layout = ({ plants, groups, selectedPlants, selectedGroups, editing, plantsColRef, groupsColRef, printModalRef }) => {
+    // Determines if 2-column layout or single centered column
+    const twoColumns = plants.length > 0 && groups.length > 0;
 
-    switch(true) {
-        // Render 2-column layout if both plants and groups exist
-        case(plants.length > 0 && groups.length > 0):
-            return (
-                <div className="grid grid-cols-1 md:grid-cols-2 mx-auto">
-                    <div
-                        className="md:mr-12 mb-8 md:mb-0 scroll-mt-20"
-                        ref={plantsColRef}
-                    >
-                        <PlantsCol
-                            plants={plants}
-                            editing={editing}
-                            selectedPlants={selectedPlants}
-                        />
-                    </div>
-
-                    <div
-                        className="md:ml-12 scroll-mt-20"
-                        ref={groupsColRef}
-                    >
-                        <GroupsCol
-                            groups={groups}
-                            editing={editing}
-                            selectedGroups={selectedGroups}
-                        />
-                    </div>
+    return (
+        <div className={clsx(
+            'grid grid-cols-1 mx-auto',
+            twoColumns && 'md:grid-cols-2'
+        )}>
+            {/* Render plants column if 1 or more plants exist */}
+            {plants.length > 0 && (
+                <div
+                    className={clsx(
+                        'scroll-mt-20',
+                        twoColumns && 'md:mr-12 mb-8 md:mb-0'
+                    )}
+                    ref={plantsColRef}
+                >
+                    <PlantsCol
+                        plants={plants}
+                        editing={editing}
+                        selectedPlants={selectedPlants}
+                    />
                 </div>
-            );
-        // Render centered plants column if only plants exist
-        case(plants.length > 0):
-            return <PlantsCol
-                plants={plants}
-                editing={editing}
-                selectedPlants={selectedPlants}
-            />;
-        // Render centered groups column if only groups exist
-        case(groups.length > 0):
-            return <GroupsCol
-                groups={groups}
-                editing={editing}
-                selectedGroups={selectedGroups}
-            />;
-        // Render setup instructions if database is empty
-        default:
-            return <Setup printModalRef={printModalRef} />;
-    }
+            )}
+            {/* Render groups column if 1 or more groups exist */}
+            {groups.length > 0 && (
+                <div
+                    className={clsx(
+                        'scroll-mt-20',
+                        twoColumns && 'md:ml-12'
+                    )}
+                    ref={groupsColRef}
+                >
+                    <GroupsCol
+                        groups={groups}
+                        editing={editing}
+                        selectedGroups={selectedGroups}
+                    />
+                </div>
+            )}
+            {/* Render setup instructions if database is empty */}
+            {plants.length === 0 && groups.length === 0 && (
+                <Setup printModalRef={printModalRef} />
+            )}
+        </div>
+    )
 };
 
 Layout.propTypes = {
