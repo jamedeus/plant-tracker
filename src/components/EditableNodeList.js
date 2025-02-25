@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
 
 // Takes editing (bool), selected (ref containing array), and node list
 // Returns node list with wrapper div around each node
@@ -15,46 +16,26 @@ const EditableNodeList = ({ editing, selected, children }) => {
         }
     };
 
-    // Takes node and editing state bool, returns node in bottom-padded div
-    // Wrapper adds checkbox next to node if editing bool is true
-    const NodeWrapper = ({ node, editing }) => {
-        switch(editing) {
-            case(true):
-                return (
-                    <div className="flex mb-4">
-                        <label className="label cursor-pointer">
-                            <input
-                                type="checkbox"
-                                className="radio checked:bg-blue-500"
-                                defaultChecked={selected.current.includes(node.key)}
-                                onChange={() => selectNode(node.key)}
-                            />
-                        </label>
-                        <div className="ml-2 w-full overflow-hidden">
-                            {node}
-                        </div>
-                    </div>
-                );
-            case(false):
-                return (
-                    <div className="mb-4">
-                        {node}
-                    </div>
-                );
-        }
-    };
-
-    NodeWrapper.propTypes = {
-        node: PropTypes.node.isRequired,
-        editing: PropTypes.bool.isRequired
-    };
-
     return (
         <>
-            {children.map((node) => {
-                // eslint-disable-next-line react/prop-types
-                return <NodeWrapper key={node.key} node={node} editing={editing} />;
-            })}
+            {children.map((node) => (
+                <div className="flex relative mb-4">
+                    <label className="label cursor-pointer absolute flex h-full">
+                        <input
+                            type="checkbox"
+                            className="radio checked:bg-blue-500 my-auto"
+                            defaultChecked={selected.current.includes(node.key)}
+                            onChange={() => selectNode(node.key)}
+                        />
+                    </label>
+                    <div className={clsx(
+                        'w-full overflow-hidden transition-all duration-300',
+                        editing ? 'ml-[2.5rem]' : 'ml-0'
+                    )}>
+                        {node}
+                    </div>
+                </div>
+            ))}
         </>
     );
 };

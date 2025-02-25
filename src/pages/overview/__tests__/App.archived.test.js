@@ -41,7 +41,9 @@ describe('App', () => {
     it('shows checkboxes and delete button when edit option clicked', async () => {
         // Confirm delete button and checkboxes are not visible
         expect(app.queryByText('Delete')).toBeNull();
-        expect(app.container.querySelectorAll('.radio').length).toBe(0);
+        // Checkboxes are rendered underneath card with position: absolute, so
+        // they are not visible until margin-left is added to the card wrapper
+        expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(0);
 
         // Confirm plant and group cards have href to manage page
         expect(
@@ -54,7 +56,7 @@ describe('App', () => {
         // Click Edit option, confirm buttons and checkboxes appear
         await user.click(app.getByText("Edit"));
         expect(app.getByText('Delete').nodeName).toBe('BUTTON');
-        expect(app.container.querySelectorAll('.radio').length).not.toBe(0);
+        expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).not.toBe(0);
 
         // Confirm cards no longer have href
         expect(
@@ -68,7 +70,7 @@ describe('App', () => {
         const buttonDiv = app.container.querySelector('.sticky.bottom-4');
         await user.click(within(buttonDiv).getByText('Cancel'));
         expect(app.queryByText('Delete')).toBeNull();
-        expect(app.container.querySelectorAll('.radio').length).toBe(0);
+        expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(0);
     });
 
     it('sends correct payload when plants are deleted', async () => {

@@ -255,127 +255,139 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                   </div>
                 </div>
                 <div
-                  class="mb-4"
+                  class="flex relative mb-4"
                 >
-                  <a
-                    class="cursor-pointer"
-                    href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                  <label
+                    class="label cursor-pointer absolute flex h-full"
                   >
-                    <div
-                      class="card card-side bg-neutral text-neutral-content mx-auto relative grayscale"
+                    <input
+                      class="radio checked:bg-blue-500 my-auto"
+                      type="checkbox"
+                    />
+                  </label>
+                  <div
+                    class="w-full overflow-hidden transition-all duration-300 ml-0"
+                  >
+                    <a
+                      class="cursor-pointer"
+                      href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     >
-                      <figure
-                        class="h-24 w-20 min-h-20 min-w-20"
-                      >
-                        <img
-                          class="w-full h-full object-cover"
-                          loading="lazy"
-                          src="/media/thumbnails/photo_thumb.jpg"
-                        />
-                      </figure>
                       <div
-                        class="card-body my-auto text-start cursor-default"
+                        class="card card-side bg-neutral text-neutral-content mx-auto relative grayscale"
                       >
-                        <h2
-                          class="card-title line-clamp-1 pr-8"
+                        <figure
+                          class="h-24 w-20 min-h-20 min-w-20"
                         >
-                          Test Plant
-                        </h2>
-                        <span
-                          title="06:44 PM - February 25, 2024"
+                          <img
+                            class="w-full h-full object-cover"
+                            loading="lazy"
+                            src="/media/thumbnails/photo_thumb.jpg"
+                          />
+                        </figure>
+                        <div
+                          class="card-body my-auto text-start cursor-default"
+                        >
+                          <h2
+                            class="card-title line-clamp-1 pr-8"
+                          >
+                            Test Plant
+                          </h2>
+                          <span
+                            title="06:44 PM - February 25, 2024"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="svg-inline--fa fa-droplet mr-2 text-info"
+                              data-icon="droplet"
+                              data-prefix="fas"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 384 512"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                            5 days ago
+                          </span>
+                        </div>
+                        <button
+                          class="btn-close absolute right-2 top-8 z-40"
+                          role="button"
+                          tabindex="0"
                         >
                           <svg
                             aria-hidden="true"
-                            class="svg-inline--fa fa-droplet mr-2 text-info"
-                            data-icon="droplet"
-                            data-prefix="fas"
-                            focusable="false"
-                            role="img"
-                            viewBox="0 0 384 512"
+                            class="w-8 h-8"
+                            data-slot="icon"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
                             xmlns="http://www.w3.org/2000/svg"
                           >
                             <path
-                              d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                              fill="currentColor"
+                              clip-rule="evenodd"
+                              d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                              fill-rule="evenodd"
                             />
                           </svg>
-                          5 days ago
-                        </span>
+                        </button>
                       </div>
-                      <button
-                        class="btn-close absolute right-2 top-8 z-40"
-                        role="button"
-                        tabindex="0"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="w-8 h-8"
-                          data-slot="icon"
-                          fill="currentColor"
-                          viewBox="0 0 16 16"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            clip-rule="evenodd"
-                            d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                            fill-rule="evenodd"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                    <div
-                      class="collapse bg-neutral rounded-t-none cursor-default grayscale"
-                    >
-                      <input
-                        class="hidden"
-                        type="checkbox"
-                      />
                       <div
-                        class="collapse-content"
+                        class="collapse bg-neutral rounded-t-none cursor-default grayscale"
                       >
-                        <p
-                          class="flex"
-                        >
-                          <span
-                            class="font-semibold"
-                          >
-                            Species:
-                          </span>
-                          <span
-                            class="ml-auto text-right"
-                          >
-                            Calathea
-                          </span>
-                        </p>
-                        <p
-                          class="flex"
-                        >
-                          <span
-                            class="font-semibold"
-                          >
-                            Pot size:
-                          </span>
-                          <span
-                            class="ml-auto text-right"
-                          >
-                            4
-                          </span>
-                        </p>
-                        <div
+                        <input
                           class="hidden"
+                          type="checkbox"
+                        />
+                        <div
+                          class="collapse-content"
                         >
                           <p
-                            class="font-semibold mt-3"
+                            class="flex"
                           >
-                            Description:
+                            <span
+                              class="font-semibold"
+                            >
+                              Species:
+                            </span>
+                            <span
+                              class="ml-auto text-right"
+                            >
+                              Calathea
+                            </span>
                           </p>
                           <p
-                            class="text-sm line-clamp-6"
-                          />
+                            class="flex"
+                          >
+                            <span
+                              class="font-semibold"
+                            >
+                              Pot size:
+                            </span>
+                            <span
+                              class="ml-auto text-right"
+                            >
+                              4
+                            </span>
+                          </p>
+                          <div
+                            class="hidden"
+                          >
+                            <p
+                              class="font-semibold mt-3"
+                            >
+                              Description:
+                            </p>
+                            <p
+                              class="text-sm line-clamp-6"
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </a>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -483,89 +495,101 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                   </div>
                 </div>
                 <div
-                  class="mb-4"
+                  class="flex relative mb-4"
                 >
-                  <a
-                    class="cursor-pointer"
-                    href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                  <label
+                    class="label cursor-pointer absolute flex h-full"
                   >
-                    <div
-                      class="card bg-neutral text-neutral-content mx-auto w-full grayscale"
+                    <input
+                      class="radio checked:bg-blue-500 my-auto"
+                      type="checkbox"
+                    />
+                  </label>
+                  <div
+                    class="w-full overflow-hidden transition-all duration-300 ml-0"
+                  >
+                    <a
+                      class="cursor-pointer"
+                      href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     >
                       <div
-                        class="card-body text-center"
+                        class="card bg-neutral text-neutral-content mx-auto w-full grayscale"
                       >
-                        <h2
-                          class="card-title mx-auto"
-                        >
-                          Test group
-                        </h2>
-                        <p>
-                          Contains 
-                          4
-                           plants
-                        </p>
-                      </div>
-                      <button
-                        class="btn-close absolute right-2 top-8 z-40"
-                        role="button"
-                        tabindex="0"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="w-8 h-8"
-                          data-slot="icon"
-                          fill="currentColor"
-                          viewBox="0 0 16 16"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            clip-rule="evenodd"
-                            d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                            fill-rule="evenodd"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                    <div
-                      class="collapse bg-neutral rounded-t-none cursor-default grayscale"
-                    >
-                      <input
-                        class="hidden"
-                        type="checkbox"
-                      />
-                      <div
-                        class="collapse-content"
-                      >
-                        <p
-                          class="flex"
-                        >
-                          <span
-                            class="font-semibold"
-                          >
-                            Location:
-                          </span>
-                          <span
-                            class="ml-auto text-right"
-                          >
-                            Middle shelf
-                          </span>
-                        </p>
                         <div
+                          class="card-body text-center"
+                        >
+                          <h2
+                            class="card-title mx-auto"
+                          >
+                            Test group
+                          </h2>
+                          <p>
+                            Contains 
+                            4
+                             plants
+                          </p>
+                        </div>
+                        <button
+                          class="btn-close absolute right-2 top-8 z-40"
+                          role="button"
+                          tabindex="0"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="w-8 h-8"
+                            data-slot="icon"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              clip-rule="evenodd"
+                              d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                              fill-rule="evenodd"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                      <div
+                        class="collapse bg-neutral rounded-t-none cursor-default grayscale"
+                      >
+                        <input
                           class="hidden"
+                          type="checkbox"
+                        />
+                        <div
+                          class="collapse-content"
                         >
                           <p
-                            class="font-semibold mt-3"
+                            class="flex"
                           >
-                            Description:
+                            <span
+                              class="font-semibold"
+                            >
+                              Location:
+                            </span>
+                            <span
+                              class="ml-auto text-right"
+                            >
+                              Middle shelf
+                            </span>
                           </p>
-                          <p
-                            class="text-sm line-clamp-6"
-                          />
+                          <div
+                            class="hidden"
+                          >
+                            <p
+                              class="font-semibold mt-3"
+                            >
+                              Description:
+                            </p>
+                            <p
+                              class="text-sm line-clamp-6"
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </a>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -1001,127 +1025,139 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                 </div>
               </div>
               <div
-                class="mb-4"
+                class="flex relative mb-4"
               >
-                <a
-                  class="cursor-pointer"
-                  href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                <label
+                  class="label cursor-pointer absolute flex h-full"
                 >
-                  <div
-                    class="card card-side bg-neutral text-neutral-content mx-auto relative grayscale"
+                  <input
+                    class="radio checked:bg-blue-500 my-auto"
+                    type="checkbox"
+                  />
+                </label>
+                <div
+                  class="w-full overflow-hidden transition-all duration-300 ml-0"
+                >
+                  <a
+                    class="cursor-pointer"
+                    href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                   >
-                    <figure
-                      class="h-24 w-20 min-h-20 min-w-20"
-                    >
-                      <img
-                        class="w-full h-full object-cover"
-                        loading="lazy"
-                        src="/media/thumbnails/photo_thumb.jpg"
-                      />
-                    </figure>
                     <div
-                      class="card-body my-auto text-start cursor-default"
+                      class="card card-side bg-neutral text-neutral-content mx-auto relative grayscale"
                     >
-                      <h2
-                        class="card-title line-clamp-1 pr-8"
+                      <figure
+                        class="h-24 w-20 min-h-20 min-w-20"
                       >
-                        Test Plant
-                      </h2>
-                      <span
-                        title="06:44 PM - February 25, 2024"
+                        <img
+                          class="w-full h-full object-cover"
+                          loading="lazy"
+                          src="/media/thumbnails/photo_thumb.jpg"
+                        />
+                      </figure>
+                      <div
+                        class="card-body my-auto text-start cursor-default"
+                      >
+                        <h2
+                          class="card-title line-clamp-1 pr-8"
+                        >
+                          Test Plant
+                        </h2>
+                        <span
+                          title="06:44 PM - February 25, 2024"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="svg-inline--fa fa-droplet mr-2 text-info"
+                            data-icon="droplet"
+                            data-prefix="fas"
+                            focusable="false"
+                            role="img"
+                            viewBox="0 0 384 512"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                              fill="currentColor"
+                            />
+                          </svg>
+                          5 days ago
+                        </span>
+                      </div>
+                      <button
+                        class="btn-close absolute right-2 top-8 z-40"
+                        role="button"
+                        tabindex="0"
                       >
                         <svg
                           aria-hidden="true"
-                          class="svg-inline--fa fa-droplet mr-2 text-info"
-                          data-icon="droplet"
-                          data-prefix="fas"
-                          focusable="false"
-                          role="img"
-                          viewBox="0 0 384 512"
+                          class="w-8 h-8"
+                          data-slot="icon"
+                          fill="currentColor"
+                          viewBox="0 0 16 16"
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
-                            d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                            fill="currentColor"
+                            clip-rule="evenodd"
+                            d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                            fill-rule="evenodd"
                           />
                         </svg>
-                        5 days ago
-                      </span>
+                      </button>
                     </div>
-                    <button
-                      class="btn-close absolute right-2 top-8 z-40"
-                      role="button"
-                      tabindex="0"
-                    >
-                      <svg
-                        aria-hidden="true"
-                        class="w-8 h-8"
-                        data-slot="icon"
-                        fill="currentColor"
-                        viewBox="0 0 16 16"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          clip-rule="evenodd"
-                          d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                          fill-rule="evenodd"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                  <div
-                    class="collapse bg-neutral rounded-t-none cursor-default grayscale"
-                  >
-                    <input
-                      class="hidden"
-                      type="checkbox"
-                    />
                     <div
-                      class="collapse-content"
+                      class="collapse bg-neutral rounded-t-none cursor-default grayscale"
                     >
-                      <p
-                        class="flex"
-                      >
-                        <span
-                          class="font-semibold"
-                        >
-                          Species:
-                        </span>
-                        <span
-                          class="ml-auto text-right"
-                        >
-                          Calathea
-                        </span>
-                      </p>
-                      <p
-                        class="flex"
-                      >
-                        <span
-                          class="font-semibold"
-                        >
-                          Pot size:
-                        </span>
-                        <span
-                          class="ml-auto text-right"
-                        >
-                          4
-                        </span>
-                      </p>
-                      <div
+                      <input
                         class="hidden"
+                        type="checkbox"
+                      />
+                      <div
+                        class="collapse-content"
                       >
                         <p
-                          class="font-semibold mt-3"
+                          class="flex"
                         >
-                          Description:
+                          <span
+                            class="font-semibold"
+                          >
+                            Species:
+                          </span>
+                          <span
+                            class="ml-auto text-right"
+                          >
+                            Calathea
+                          </span>
                         </p>
                         <p
-                          class="text-sm line-clamp-6"
-                        />
+                          class="flex"
+                        >
+                          <span
+                            class="font-semibold"
+                          >
+                            Pot size:
+                          </span>
+                          <span
+                            class="ml-auto text-right"
+                          >
+                            4
+                          </span>
+                        </p>
+                        <div
+                          class="hidden"
+                        >
+                          <p
+                            class="font-semibold mt-3"
+                          >
+                            Description:
+                          </p>
+                          <p
+                            class="text-sm line-clamp-6"
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </a>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -1229,89 +1265,101 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                 </div>
               </div>
               <div
-                class="mb-4"
+                class="flex relative mb-4"
               >
-                <a
-                  class="cursor-pointer"
-                  href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                <label
+                  class="label cursor-pointer absolute flex h-full"
                 >
-                  <div
-                    class="card bg-neutral text-neutral-content mx-auto w-full grayscale"
+                  <input
+                    class="radio checked:bg-blue-500 my-auto"
+                    type="checkbox"
+                  />
+                </label>
+                <div
+                  class="w-full overflow-hidden transition-all duration-300 ml-0"
+                >
+                  <a
+                    class="cursor-pointer"
+                    href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                   >
                     <div
-                      class="card-body text-center"
+                      class="card bg-neutral text-neutral-content mx-auto w-full grayscale"
                     >
-                      <h2
-                        class="card-title mx-auto"
-                      >
-                        Test group
-                      </h2>
-                      <p>
-                        Contains 
-                        4
-                         plants
-                      </p>
-                    </div>
-                    <button
-                      class="btn-close absolute right-2 top-8 z-40"
-                      role="button"
-                      tabindex="0"
-                    >
-                      <svg
-                        aria-hidden="true"
-                        class="w-8 h-8"
-                        data-slot="icon"
-                        fill="currentColor"
-                        viewBox="0 0 16 16"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          clip-rule="evenodd"
-                          d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                          fill-rule="evenodd"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                  <div
-                    class="collapse bg-neutral rounded-t-none cursor-default grayscale"
-                  >
-                    <input
-                      class="hidden"
-                      type="checkbox"
-                    />
-                    <div
-                      class="collapse-content"
-                    >
-                      <p
-                        class="flex"
-                      >
-                        <span
-                          class="font-semibold"
-                        >
-                          Location:
-                        </span>
-                        <span
-                          class="ml-auto text-right"
-                        >
-                          Middle shelf
-                        </span>
-                      </p>
                       <div
+                        class="card-body text-center"
+                      >
+                        <h2
+                          class="card-title mx-auto"
+                        >
+                          Test group
+                        </h2>
+                        <p>
+                          Contains 
+                          4
+                           plants
+                        </p>
+                      </div>
+                      <button
+                        class="btn-close absolute right-2 top-8 z-40"
+                        role="button"
+                        tabindex="0"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="w-8 h-8"
+                          data-slot="icon"
+                          fill="currentColor"
+                          viewBox="0 0 16 16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            clip-rule="evenodd"
+                            d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                            fill-rule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                    <div
+                      class="collapse bg-neutral rounded-t-none cursor-default grayscale"
+                    >
+                      <input
                         class="hidden"
+                        type="checkbox"
+                      />
+                      <div
+                        class="collapse-content"
                       >
                         <p
-                          class="font-semibold mt-3"
+                          class="flex"
                         >
-                          Description:
+                          <span
+                            class="font-semibold"
+                          >
+                            Location:
+                          </span>
+                          <span
+                            class="ml-auto text-right"
+                          >
+                            Middle shelf
+                          </span>
                         </p>
-                        <p
-                          class="text-sm line-clamp-6"
-                        />
+                        <div
+                          class="hidden"
+                        >
+                          <p
+                            class="font-semibold mt-3"
+                          >
+                            Description:
+                          </p>
+                          <p
+                            class="text-sm line-clamp-6"
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </a>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -2537,89 +2585,101 @@ exports[`App matches snapshot when only groups exist 1`] = `
                   </div>
                 </div>
                 <div
-                  class="mb-4"
+                  class="flex relative mb-4"
                 >
-                  <a
-                    class="cursor-pointer"
-                    href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                  <label
+                    class="label cursor-pointer absolute flex h-full"
                   >
-                    <div
-                      class="card bg-neutral text-neutral-content mx-auto w-full"
+                    <input
+                      class="radio checked:bg-blue-500 my-auto"
+                      type="checkbox"
+                    />
+                  </label>
+                  <div
+                    class="w-full overflow-hidden transition-all duration-300 ml-0"
+                  >
+                    <a
+                      class="cursor-pointer"
+                      href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     >
                       <div
-                        class="card-body text-center"
+                        class="card bg-neutral text-neutral-content mx-auto w-full"
                       >
-                        <h2
-                          class="card-title mx-auto"
-                        >
-                          Test group
-                        </h2>
-                        <p>
-                          Contains 
-                          4
-                           plants
-                        </p>
-                      </div>
-                      <button
-                        class="btn-close absolute right-2 top-8 z-40"
-                        role="button"
-                        tabindex="0"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="w-8 h-8"
-                          data-slot="icon"
-                          fill="currentColor"
-                          viewBox="0 0 16 16"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            clip-rule="evenodd"
-                            d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                            fill-rule="evenodd"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                    <div
-                      class="collapse bg-neutral rounded-t-none cursor-default"
-                    >
-                      <input
-                        class="hidden"
-                        type="checkbox"
-                      />
-                      <div
-                        class="collapse-content"
-                      >
-                        <p
-                          class="flex"
-                        >
-                          <span
-                            class="font-semibold"
-                          >
-                            Location:
-                          </span>
-                          <span
-                            class="ml-auto text-right"
-                          >
-                            Middle shelf
-                          </span>
-                        </p>
                         <div
+                          class="card-body text-center"
+                        >
+                          <h2
+                            class="card-title mx-auto"
+                          >
+                            Test group
+                          </h2>
+                          <p>
+                            Contains 
+                            4
+                             plants
+                          </p>
+                        </div>
+                        <button
+                          class="btn-close absolute right-2 top-8 z-40"
+                          role="button"
+                          tabindex="0"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="w-8 h-8"
+                            data-slot="icon"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              clip-rule="evenodd"
+                              d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                              fill-rule="evenodd"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                      <div
+                        class="collapse bg-neutral rounded-t-none cursor-default"
+                      >
+                        <input
                           class="hidden"
+                          type="checkbox"
+                        />
+                        <div
+                          class="collapse-content"
                         >
                           <p
-                            class="font-semibold mt-3"
+                            class="flex"
                           >
-                            Description:
+                            <span
+                              class="font-semibold"
+                            >
+                              Location:
+                            </span>
+                            <span
+                              class="ml-auto text-right"
+                            >
+                              Middle shelf
+                            </span>
                           </p>
-                          <p
-                            class="text-sm line-clamp-6"
-                          />
+                          <div
+                            class="hidden"
+                          >
+                            <p
+                              class="font-semibold mt-3"
+                            >
+                              Description:
+                            </p>
+                            <p
+                              class="text-sm line-clamp-6"
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </a>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -3033,89 +3093,101 @@ exports[`App matches snapshot when only groups exist 1`] = `
                 </div>
               </div>
               <div
-                class="mb-4"
+                class="flex relative mb-4"
               >
-                <a
-                  class="cursor-pointer"
-                  href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                <label
+                  class="label cursor-pointer absolute flex h-full"
                 >
-                  <div
-                    class="card bg-neutral text-neutral-content mx-auto w-full"
+                  <input
+                    class="radio checked:bg-blue-500 my-auto"
+                    type="checkbox"
+                  />
+                </label>
+                <div
+                  class="w-full overflow-hidden transition-all duration-300 ml-0"
+                >
+                  <a
+                    class="cursor-pointer"
+                    href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                   >
                     <div
-                      class="card-body text-center"
+                      class="card bg-neutral text-neutral-content mx-auto w-full"
                     >
-                      <h2
-                        class="card-title mx-auto"
-                      >
-                        Test group
-                      </h2>
-                      <p>
-                        Contains 
-                        4
-                         plants
-                      </p>
-                    </div>
-                    <button
-                      class="btn-close absolute right-2 top-8 z-40"
-                      role="button"
-                      tabindex="0"
-                    >
-                      <svg
-                        aria-hidden="true"
-                        class="w-8 h-8"
-                        data-slot="icon"
-                        fill="currentColor"
-                        viewBox="0 0 16 16"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          clip-rule="evenodd"
-                          d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                          fill-rule="evenodd"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                  <div
-                    class="collapse bg-neutral rounded-t-none cursor-default"
-                  >
-                    <input
-                      class="hidden"
-                      type="checkbox"
-                    />
-                    <div
-                      class="collapse-content"
-                    >
-                      <p
-                        class="flex"
-                      >
-                        <span
-                          class="font-semibold"
-                        >
-                          Location:
-                        </span>
-                        <span
-                          class="ml-auto text-right"
-                        >
-                          Middle shelf
-                        </span>
-                      </p>
                       <div
+                        class="card-body text-center"
+                      >
+                        <h2
+                          class="card-title mx-auto"
+                        >
+                          Test group
+                        </h2>
+                        <p>
+                          Contains 
+                          4
+                           plants
+                        </p>
+                      </div>
+                      <button
+                        class="btn-close absolute right-2 top-8 z-40"
+                        role="button"
+                        tabindex="0"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="w-8 h-8"
+                          data-slot="icon"
+                          fill="currentColor"
+                          viewBox="0 0 16 16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            clip-rule="evenodd"
+                            d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                            fill-rule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                    <div
+                      class="collapse bg-neutral rounded-t-none cursor-default"
+                    >
+                      <input
                         class="hidden"
+                        type="checkbox"
+                      />
+                      <div
+                        class="collapse-content"
                       >
                         <p
-                          class="font-semibold mt-3"
+                          class="flex"
                         >
-                          Description:
+                          <span
+                            class="font-semibold"
+                          >
+                            Location:
+                          </span>
+                          <span
+                            class="ml-auto text-right"
+                          >
+                            Middle shelf
+                          </span>
                         </p>
-                        <p
-                          class="text-sm line-clamp-6"
-                        />
+                        <div
+                          class="hidden"
+                        >
+                          <p
+                            class="font-semibold mt-3"
+                          >
+                            Description:
+                          </p>
+                          <p
+                            class="text-sm line-clamp-6"
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </a>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -3603,127 +3675,139 @@ exports[`App matches snapshot when only plants exist 1`] = `
                   </div>
                 </div>
                 <div
-                  class="mb-4"
+                  class="flex relative mb-4"
                 >
-                  <a
-                    class="cursor-pointer"
-                    href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                  <label
+                    class="label cursor-pointer absolute flex h-full"
                   >
-                    <div
-                      class="card card-side bg-neutral text-neutral-content mx-auto relative"
+                    <input
+                      class="radio checked:bg-blue-500 my-auto"
+                      type="checkbox"
+                    />
+                  </label>
+                  <div
+                    class="w-full overflow-hidden transition-all duration-300 ml-0"
+                  >
+                    <a
+                      class="cursor-pointer"
+                      href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     >
-                      <figure
-                        class="h-24 w-20 min-h-20 min-w-20"
-                      >
-                        <img
-                          class="w-full h-full object-cover"
-                          loading="lazy"
-                          src="/media/thumbnails/photo_thumb.jpg"
-                        />
-                      </figure>
                       <div
-                        class="card-body my-auto text-start cursor-default"
+                        class="card card-side bg-neutral text-neutral-content mx-auto relative"
                       >
-                        <h2
-                          class="card-title line-clamp-1 pr-8"
+                        <figure
+                          class="h-24 w-20 min-h-20 min-w-20"
                         >
-                          Test Plant
-                        </h2>
-                        <span
-                          title="06:44 PM - February 25, 2024"
+                          <img
+                            class="w-full h-full object-cover"
+                            loading="lazy"
+                            src="/media/thumbnails/photo_thumb.jpg"
+                          />
+                        </figure>
+                        <div
+                          class="card-body my-auto text-start cursor-default"
+                        >
+                          <h2
+                            class="card-title line-clamp-1 pr-8"
+                          >
+                            Test Plant
+                          </h2>
+                          <span
+                            title="06:44 PM - February 25, 2024"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="svg-inline--fa fa-droplet mr-2 text-info"
+                              data-icon="droplet"
+                              data-prefix="fas"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 384 512"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                            5 days ago
+                          </span>
+                        </div>
+                        <button
+                          class="btn-close absolute right-2 top-8 z-40"
+                          role="button"
+                          tabindex="0"
                         >
                           <svg
                             aria-hidden="true"
-                            class="svg-inline--fa fa-droplet mr-2 text-info"
-                            data-icon="droplet"
-                            data-prefix="fas"
-                            focusable="false"
-                            role="img"
-                            viewBox="0 0 384 512"
+                            class="w-8 h-8"
+                            data-slot="icon"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
                             xmlns="http://www.w3.org/2000/svg"
                           >
                             <path
-                              d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                              fill="currentColor"
+                              clip-rule="evenodd"
+                              d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                              fill-rule="evenodd"
                             />
                           </svg>
-                          5 days ago
-                        </span>
+                        </button>
                       </div>
-                      <button
-                        class="btn-close absolute right-2 top-8 z-40"
-                        role="button"
-                        tabindex="0"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="w-8 h-8"
-                          data-slot="icon"
-                          fill="currentColor"
-                          viewBox="0 0 16 16"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            clip-rule="evenodd"
-                            d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                            fill-rule="evenodd"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                    <div
-                      class="collapse bg-neutral rounded-t-none cursor-default"
-                    >
-                      <input
-                        class="hidden"
-                        type="checkbox"
-                      />
                       <div
-                        class="collapse-content"
+                        class="collapse bg-neutral rounded-t-none cursor-default"
                       >
-                        <p
-                          class="flex"
-                        >
-                          <span
-                            class="font-semibold"
-                          >
-                            Species:
-                          </span>
-                          <span
-                            class="ml-auto text-right"
-                          >
-                            Calathea
-                          </span>
-                        </p>
-                        <p
-                          class="flex"
-                        >
-                          <span
-                            class="font-semibold"
-                          >
-                            Pot size:
-                          </span>
-                          <span
-                            class="ml-auto text-right"
-                          >
-                            4
-                          </span>
-                        </p>
-                        <div
+                        <input
                           class="hidden"
+                          type="checkbox"
+                        />
+                        <div
+                          class="collapse-content"
                         >
                           <p
-                            class="font-semibold mt-3"
+                            class="flex"
                           >
-                            Description:
+                            <span
+                              class="font-semibold"
+                            >
+                              Species:
+                            </span>
+                            <span
+                              class="ml-auto text-right"
+                            >
+                              Calathea
+                            </span>
                           </p>
                           <p
-                            class="text-sm line-clamp-6"
-                          />
+                            class="flex"
+                          >
+                            <span
+                              class="font-semibold"
+                            >
+                              Pot size:
+                            </span>
+                            <span
+                              class="ml-auto text-right"
+                            >
+                              4
+                            </span>
+                          </p>
+                          <div
+                            class="hidden"
+                          >
+                            <p
+                              class="font-semibold mt-3"
+                            >
+                              Description:
+                            </p>
+                            <p
+                              class="text-sm line-clamp-6"
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </a>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -4144,127 +4228,139 @@ exports[`App matches snapshot when only plants exist 1`] = `
                 </div>
               </div>
               <div
-                class="mb-4"
+                class="flex relative mb-4"
               >
-                <a
-                  class="cursor-pointer"
-                  href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                <label
+                  class="label cursor-pointer absolute flex h-full"
                 >
-                  <div
-                    class="card card-side bg-neutral text-neutral-content mx-auto relative"
+                  <input
+                    class="radio checked:bg-blue-500 my-auto"
+                    type="checkbox"
+                  />
+                </label>
+                <div
+                  class="w-full overflow-hidden transition-all duration-300 ml-0"
+                >
+                  <a
+                    class="cursor-pointer"
+                    href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                   >
-                    <figure
-                      class="h-24 w-20 min-h-20 min-w-20"
-                    >
-                      <img
-                        class="w-full h-full object-cover"
-                        loading="lazy"
-                        src="/media/thumbnails/photo_thumb.jpg"
-                      />
-                    </figure>
                     <div
-                      class="card-body my-auto text-start cursor-default"
+                      class="card card-side bg-neutral text-neutral-content mx-auto relative"
                     >
-                      <h2
-                        class="card-title line-clamp-1 pr-8"
+                      <figure
+                        class="h-24 w-20 min-h-20 min-w-20"
                       >
-                        Test Plant
-                      </h2>
-                      <span
-                        title="06:44 PM - February 25, 2024"
+                        <img
+                          class="w-full h-full object-cover"
+                          loading="lazy"
+                          src="/media/thumbnails/photo_thumb.jpg"
+                        />
+                      </figure>
+                      <div
+                        class="card-body my-auto text-start cursor-default"
+                      >
+                        <h2
+                          class="card-title line-clamp-1 pr-8"
+                        >
+                          Test Plant
+                        </h2>
+                        <span
+                          title="06:44 PM - February 25, 2024"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="svg-inline--fa fa-droplet mr-2 text-info"
+                            data-icon="droplet"
+                            data-prefix="fas"
+                            focusable="false"
+                            role="img"
+                            viewBox="0 0 384 512"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                              fill="currentColor"
+                            />
+                          </svg>
+                          5 days ago
+                        </span>
+                      </div>
+                      <button
+                        class="btn-close absolute right-2 top-8 z-40"
+                        role="button"
+                        tabindex="0"
                       >
                         <svg
                           aria-hidden="true"
-                          class="svg-inline--fa fa-droplet mr-2 text-info"
-                          data-icon="droplet"
-                          data-prefix="fas"
-                          focusable="false"
-                          role="img"
-                          viewBox="0 0 384 512"
+                          class="w-8 h-8"
+                          data-slot="icon"
+                          fill="currentColor"
+                          viewBox="0 0 16 16"
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
-                            d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                            fill="currentColor"
+                            clip-rule="evenodd"
+                            d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                            fill-rule="evenodd"
                           />
                         </svg>
-                        5 days ago
-                      </span>
+                      </button>
                     </div>
-                    <button
-                      class="btn-close absolute right-2 top-8 z-40"
-                      role="button"
-                      tabindex="0"
-                    >
-                      <svg
-                        aria-hidden="true"
-                        class="w-8 h-8"
-                        data-slot="icon"
-                        fill="currentColor"
-                        viewBox="0 0 16 16"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          clip-rule="evenodd"
-                          d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                          fill-rule="evenodd"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                  <div
-                    class="collapse bg-neutral rounded-t-none cursor-default"
-                  >
-                    <input
-                      class="hidden"
-                      type="checkbox"
-                    />
                     <div
-                      class="collapse-content"
+                      class="collapse bg-neutral rounded-t-none cursor-default"
                     >
-                      <p
-                        class="flex"
-                      >
-                        <span
-                          class="font-semibold"
-                        >
-                          Species:
-                        </span>
-                        <span
-                          class="ml-auto text-right"
-                        >
-                          Calathea
-                        </span>
-                      </p>
-                      <p
-                        class="flex"
-                      >
-                        <span
-                          class="font-semibold"
-                        >
-                          Pot size:
-                        </span>
-                        <span
-                          class="ml-auto text-right"
-                        >
-                          4
-                        </span>
-                      </p>
-                      <div
+                      <input
                         class="hidden"
+                        type="checkbox"
+                      />
+                      <div
+                        class="collapse-content"
                       >
                         <p
-                          class="font-semibold mt-3"
+                          class="flex"
                         >
-                          Description:
+                          <span
+                            class="font-semibold"
+                          >
+                            Species:
+                          </span>
+                          <span
+                            class="ml-auto text-right"
+                          >
+                            Calathea
+                          </span>
                         </p>
                         <p
-                          class="text-sm line-clamp-6"
-                        />
+                          class="flex"
+                        >
+                          <span
+                            class="font-semibold"
+                          >
+                            Pot size:
+                          </span>
+                          <span
+                            class="ml-auto text-right"
+                          >
+                            4
+                          </span>
+                        </p>
+                        <div
+                          class="hidden"
+                        >
+                          <p
+                            class="font-semibold mt-3"
+                          >
+                            Description:
+                          </p>
+                          <p
+                            class="text-sm line-clamp-6"
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </a>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -4752,127 +4848,139 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                   </div>
                 </div>
                 <div
-                  class="mb-4"
+                  class="flex relative mb-4"
                 >
-                  <a
-                    class="cursor-pointer"
-                    href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                  <label
+                    class="label cursor-pointer absolute flex h-full"
                   >
-                    <div
-                      class="card card-side bg-neutral text-neutral-content mx-auto relative"
+                    <input
+                      class="radio checked:bg-blue-500 my-auto"
+                      type="checkbox"
+                    />
+                  </label>
+                  <div
+                    class="w-full overflow-hidden transition-all duration-300 ml-0"
+                  >
+                    <a
+                      class="cursor-pointer"
+                      href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     >
-                      <figure
-                        class="h-24 w-20 min-h-20 min-w-20"
-                      >
-                        <img
-                          class="w-full h-full object-cover"
-                          loading="lazy"
-                          src="/media/thumbnails/photo_thumb.jpg"
-                        />
-                      </figure>
                       <div
-                        class="card-body my-auto text-start cursor-default"
+                        class="card card-side bg-neutral text-neutral-content mx-auto relative"
                       >
-                        <h2
-                          class="card-title line-clamp-1 pr-8"
+                        <figure
+                          class="h-24 w-20 min-h-20 min-w-20"
                         >
-                          Test Plant
-                        </h2>
-                        <span
-                          title="06:44 PM - February 25, 2024"
+                          <img
+                            class="w-full h-full object-cover"
+                            loading="lazy"
+                            src="/media/thumbnails/photo_thumb.jpg"
+                          />
+                        </figure>
+                        <div
+                          class="card-body my-auto text-start cursor-default"
+                        >
+                          <h2
+                            class="card-title line-clamp-1 pr-8"
+                          >
+                            Test Plant
+                          </h2>
+                          <span
+                            title="06:44 PM - February 25, 2024"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="svg-inline--fa fa-droplet mr-2 text-info"
+                              data-icon="droplet"
+                              data-prefix="fas"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 384 512"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                            5 days ago
+                          </span>
+                        </div>
+                        <button
+                          class="btn-close absolute right-2 top-8 z-40"
+                          role="button"
+                          tabindex="0"
                         >
                           <svg
                             aria-hidden="true"
-                            class="svg-inline--fa fa-droplet mr-2 text-info"
-                            data-icon="droplet"
-                            data-prefix="fas"
-                            focusable="false"
-                            role="img"
-                            viewBox="0 0 384 512"
+                            class="w-8 h-8"
+                            data-slot="icon"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
                             xmlns="http://www.w3.org/2000/svg"
                           >
                             <path
-                              d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                              fill="currentColor"
+                              clip-rule="evenodd"
+                              d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                              fill-rule="evenodd"
                             />
                           </svg>
-                          5 days ago
-                        </span>
+                        </button>
                       </div>
-                      <button
-                        class="btn-close absolute right-2 top-8 z-40"
-                        role="button"
-                        tabindex="0"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="w-8 h-8"
-                          data-slot="icon"
-                          fill="currentColor"
-                          viewBox="0 0 16 16"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            clip-rule="evenodd"
-                            d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                            fill-rule="evenodd"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                    <div
-                      class="collapse bg-neutral rounded-t-none cursor-default"
-                    >
-                      <input
-                        class="hidden"
-                        type="checkbox"
-                      />
                       <div
-                        class="collapse-content"
+                        class="collapse bg-neutral rounded-t-none cursor-default"
                       >
-                        <p
-                          class="flex"
-                        >
-                          <span
-                            class="font-semibold"
-                          >
-                            Species:
-                          </span>
-                          <span
-                            class="ml-auto text-right"
-                          >
-                            Calathea
-                          </span>
-                        </p>
-                        <p
-                          class="flex"
-                        >
-                          <span
-                            class="font-semibold"
-                          >
-                            Pot size:
-                          </span>
-                          <span
-                            class="ml-auto text-right"
-                          >
-                            4
-                          </span>
-                        </p>
-                        <div
+                        <input
                           class="hidden"
+                          type="checkbox"
+                        />
+                        <div
+                          class="collapse-content"
                         >
                           <p
-                            class="font-semibold mt-3"
+                            class="flex"
                           >
-                            Description:
+                            <span
+                              class="font-semibold"
+                            >
+                              Species:
+                            </span>
+                            <span
+                              class="ml-auto text-right"
+                            >
+                              Calathea
+                            </span>
                           </p>
                           <p
-                            class="text-sm line-clamp-6"
-                          />
+                            class="flex"
+                          >
+                            <span
+                              class="font-semibold"
+                            >
+                              Pot size:
+                            </span>
+                            <span
+                              class="ml-auto text-right"
+                            >
+                              4
+                            </span>
+                          </p>
+                          <div
+                            class="hidden"
+                          >
+                            <p
+                              class="font-semibold mt-3"
+                            >
+                              Description:
+                            </p>
+                            <p
+                              class="text-sm line-clamp-6"
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </a>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -4980,89 +5088,101 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                   </div>
                 </div>
                 <div
-                  class="mb-4"
+                  class="flex relative mb-4"
                 >
-                  <a
-                    class="cursor-pointer"
-                    href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                  <label
+                    class="label cursor-pointer absolute flex h-full"
                   >
-                    <div
-                      class="card bg-neutral text-neutral-content mx-auto w-full"
+                    <input
+                      class="radio checked:bg-blue-500 my-auto"
+                      type="checkbox"
+                    />
+                  </label>
+                  <div
+                    class="w-full overflow-hidden transition-all duration-300 ml-0"
+                  >
+                    <a
+                      class="cursor-pointer"
+                      href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     >
                       <div
-                        class="card-body text-center"
+                        class="card bg-neutral text-neutral-content mx-auto w-full"
                       >
-                        <h2
-                          class="card-title mx-auto"
-                        >
-                          Test group
-                        </h2>
-                        <p>
-                          Contains 
-                          4
-                           plants
-                        </p>
-                      </div>
-                      <button
-                        class="btn-close absolute right-2 top-8 z-40"
-                        role="button"
-                        tabindex="0"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="w-8 h-8"
-                          data-slot="icon"
-                          fill="currentColor"
-                          viewBox="0 0 16 16"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            clip-rule="evenodd"
-                            d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                            fill-rule="evenodd"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                    <div
-                      class="collapse bg-neutral rounded-t-none cursor-default"
-                    >
-                      <input
-                        class="hidden"
-                        type="checkbox"
-                      />
-                      <div
-                        class="collapse-content"
-                      >
-                        <p
-                          class="flex"
-                        >
-                          <span
-                            class="font-semibold"
-                          >
-                            Location:
-                          </span>
-                          <span
-                            class="ml-auto text-right"
-                          >
-                            Middle shelf
-                          </span>
-                        </p>
                         <div
+                          class="card-body text-center"
+                        >
+                          <h2
+                            class="card-title mx-auto"
+                          >
+                            Test group
+                          </h2>
+                          <p>
+                            Contains 
+                            4
+                             plants
+                          </p>
+                        </div>
+                        <button
+                          class="btn-close absolute right-2 top-8 z-40"
+                          role="button"
+                          tabindex="0"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="w-8 h-8"
+                            data-slot="icon"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              clip-rule="evenodd"
+                              d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                              fill-rule="evenodd"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                      <div
+                        class="collapse bg-neutral rounded-t-none cursor-default"
+                      >
+                        <input
                           class="hidden"
+                          type="checkbox"
+                        />
+                        <div
+                          class="collapse-content"
                         >
                           <p
-                            class="font-semibold mt-3"
+                            class="flex"
                           >
-                            Description:
+                            <span
+                              class="font-semibold"
+                            >
+                              Location:
+                            </span>
+                            <span
+                              class="ml-auto text-right"
+                            >
+                              Middle shelf
+                            </span>
                           </p>
-                          <p
-                            class="text-sm line-clamp-6"
-                          />
+                          <div
+                            class="hidden"
+                          >
+                            <p
+                              class="font-semibold mt-3"
+                            >
+                              Description:
+                            </p>
+                            <p
+                              class="text-sm line-clamp-6"
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </a>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -5483,127 +5603,139 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                 </div>
               </div>
               <div
-                class="mb-4"
+                class="flex relative mb-4"
               >
-                <a
-                  class="cursor-pointer"
-                  href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                <label
+                  class="label cursor-pointer absolute flex h-full"
                 >
-                  <div
-                    class="card card-side bg-neutral text-neutral-content mx-auto relative"
+                  <input
+                    class="radio checked:bg-blue-500 my-auto"
+                    type="checkbox"
+                  />
+                </label>
+                <div
+                  class="w-full overflow-hidden transition-all duration-300 ml-0"
+                >
+                  <a
+                    class="cursor-pointer"
+                    href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                   >
-                    <figure
-                      class="h-24 w-20 min-h-20 min-w-20"
-                    >
-                      <img
-                        class="w-full h-full object-cover"
-                        loading="lazy"
-                        src="/media/thumbnails/photo_thumb.jpg"
-                      />
-                    </figure>
                     <div
-                      class="card-body my-auto text-start cursor-default"
+                      class="card card-side bg-neutral text-neutral-content mx-auto relative"
                     >
-                      <h2
-                        class="card-title line-clamp-1 pr-8"
+                      <figure
+                        class="h-24 w-20 min-h-20 min-w-20"
                       >
-                        Test Plant
-                      </h2>
-                      <span
-                        title="06:44 PM - February 25, 2024"
+                        <img
+                          class="w-full h-full object-cover"
+                          loading="lazy"
+                          src="/media/thumbnails/photo_thumb.jpg"
+                        />
+                      </figure>
+                      <div
+                        class="card-body my-auto text-start cursor-default"
+                      >
+                        <h2
+                          class="card-title line-clamp-1 pr-8"
+                        >
+                          Test Plant
+                        </h2>
+                        <span
+                          title="06:44 PM - February 25, 2024"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="svg-inline--fa fa-droplet mr-2 text-info"
+                            data-icon="droplet"
+                            data-prefix="fas"
+                            focusable="false"
+                            role="img"
+                            viewBox="0 0 384 512"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                              fill="currentColor"
+                            />
+                          </svg>
+                          5 days ago
+                        </span>
+                      </div>
+                      <button
+                        class="btn-close absolute right-2 top-8 z-40"
+                        role="button"
+                        tabindex="0"
                       >
                         <svg
                           aria-hidden="true"
-                          class="svg-inline--fa fa-droplet mr-2 text-info"
-                          data-icon="droplet"
-                          data-prefix="fas"
-                          focusable="false"
-                          role="img"
-                          viewBox="0 0 384 512"
+                          class="w-8 h-8"
+                          data-slot="icon"
+                          fill="currentColor"
+                          viewBox="0 0 16 16"
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
-                            d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                            fill="currentColor"
+                            clip-rule="evenodd"
+                            d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                            fill-rule="evenodd"
                           />
                         </svg>
-                        5 days ago
-                      </span>
+                      </button>
                     </div>
-                    <button
-                      class="btn-close absolute right-2 top-8 z-40"
-                      role="button"
-                      tabindex="0"
-                    >
-                      <svg
-                        aria-hidden="true"
-                        class="w-8 h-8"
-                        data-slot="icon"
-                        fill="currentColor"
-                        viewBox="0 0 16 16"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          clip-rule="evenodd"
-                          d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                          fill-rule="evenodd"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                  <div
-                    class="collapse bg-neutral rounded-t-none cursor-default"
-                  >
-                    <input
-                      class="hidden"
-                      type="checkbox"
-                    />
                     <div
-                      class="collapse-content"
+                      class="collapse bg-neutral rounded-t-none cursor-default"
                     >
-                      <p
-                        class="flex"
-                      >
-                        <span
-                          class="font-semibold"
-                        >
-                          Species:
-                        </span>
-                        <span
-                          class="ml-auto text-right"
-                        >
-                          Calathea
-                        </span>
-                      </p>
-                      <p
-                        class="flex"
-                      >
-                        <span
-                          class="font-semibold"
-                        >
-                          Pot size:
-                        </span>
-                        <span
-                          class="ml-auto text-right"
-                        >
-                          4
-                        </span>
-                      </p>
-                      <div
+                      <input
                         class="hidden"
+                        type="checkbox"
+                      />
+                      <div
+                        class="collapse-content"
                       >
                         <p
-                          class="font-semibold mt-3"
+                          class="flex"
                         >
-                          Description:
+                          <span
+                            class="font-semibold"
+                          >
+                            Species:
+                          </span>
+                          <span
+                            class="ml-auto text-right"
+                          >
+                            Calathea
+                          </span>
                         </p>
                         <p
-                          class="text-sm line-clamp-6"
-                        />
+                          class="flex"
+                        >
+                          <span
+                            class="font-semibold"
+                          >
+                            Pot size:
+                          </span>
+                          <span
+                            class="ml-auto text-right"
+                          >
+                            4
+                          </span>
+                        </p>
+                        <div
+                          class="hidden"
+                        >
+                          <p
+                            class="font-semibold mt-3"
+                          >
+                            Description:
+                          </p>
+                          <p
+                            class="text-sm line-clamp-6"
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </a>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -5711,89 +5843,101 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                 </div>
               </div>
               <div
-                class="mb-4"
+                class="flex relative mb-4"
               >
-                <a
-                  class="cursor-pointer"
-                  href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                <label
+                  class="label cursor-pointer absolute flex h-full"
                 >
-                  <div
-                    class="card bg-neutral text-neutral-content mx-auto w-full"
+                  <input
+                    class="radio checked:bg-blue-500 my-auto"
+                    type="checkbox"
+                  />
+                </label>
+                <div
+                  class="w-full overflow-hidden transition-all duration-300 ml-0"
+                >
+                  <a
+                    class="cursor-pointer"
+                    href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                   >
                     <div
-                      class="card-body text-center"
+                      class="card bg-neutral text-neutral-content mx-auto w-full"
                     >
-                      <h2
-                        class="card-title mx-auto"
-                      >
-                        Test group
-                      </h2>
-                      <p>
-                        Contains 
-                        4
-                         plants
-                      </p>
-                    </div>
-                    <button
-                      class="btn-close absolute right-2 top-8 z-40"
-                      role="button"
-                      tabindex="0"
-                    >
-                      <svg
-                        aria-hidden="true"
-                        class="w-8 h-8"
-                        data-slot="icon"
-                        fill="currentColor"
-                        viewBox="0 0 16 16"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          clip-rule="evenodd"
-                          d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                          fill-rule="evenodd"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                  <div
-                    class="collapse bg-neutral rounded-t-none cursor-default"
-                  >
-                    <input
-                      class="hidden"
-                      type="checkbox"
-                    />
-                    <div
-                      class="collapse-content"
-                    >
-                      <p
-                        class="flex"
-                      >
-                        <span
-                          class="font-semibold"
-                        >
-                          Location:
-                        </span>
-                        <span
-                          class="ml-auto text-right"
-                        >
-                          Middle shelf
-                        </span>
-                      </p>
                       <div
+                        class="card-body text-center"
+                      >
+                        <h2
+                          class="card-title mx-auto"
+                        >
+                          Test group
+                        </h2>
+                        <p>
+                          Contains 
+                          4
+                           plants
+                        </p>
+                      </div>
+                      <button
+                        class="btn-close absolute right-2 top-8 z-40"
+                        role="button"
+                        tabindex="0"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="w-8 h-8"
+                          data-slot="icon"
+                          fill="currentColor"
+                          viewBox="0 0 16 16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            clip-rule="evenodd"
+                            d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                            fill-rule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                    <div
+                      class="collapse bg-neutral rounded-t-none cursor-default"
+                    >
+                      <input
                         class="hidden"
+                        type="checkbox"
+                      />
+                      <div
+                        class="collapse-content"
                       >
                         <p
-                          class="font-semibold mt-3"
+                          class="flex"
                         >
-                          Description:
+                          <span
+                            class="font-semibold"
+                          >
+                            Location:
+                          </span>
+                          <span
+                            class="ml-auto text-right"
+                          >
+                            Middle shelf
+                          </span>
                         </p>
-                        <p
-                          class="text-sm line-clamp-6"
-                        />
+                        <div
+                          class="hidden"
+                        >
+                          <p
+                            class="font-semibold mt-3"
+                          >
+                            Description:
+                          </p>
+                          <p
+                            class="text-sm line-clamp-6"
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </a>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -6301,127 +6445,139 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                   </div>
                 </div>
                 <div
-                  class="mb-4"
+                  class="flex relative mb-4"
                 >
-                  <a
-                    class="cursor-pointer"
-                    href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                  <label
+                    class="label cursor-pointer absolute flex h-full"
                   >
-                    <div
-                      class="card card-side bg-neutral text-neutral-content mx-auto relative"
+                    <input
+                      class="radio checked:bg-blue-500 my-auto"
+                      type="checkbox"
+                    />
+                  </label>
+                  <div
+                    class="w-full overflow-hidden transition-all duration-300 ml-0"
+                  >
+                    <a
+                      class="cursor-pointer"
+                      href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     >
-                      <figure
-                        class="h-24 w-20 min-h-20 min-w-20"
-                      >
-                        <img
-                          class="w-full h-full object-cover"
-                          loading="lazy"
-                          src="/media/thumbnails/photo_thumb.jpg"
-                        />
-                      </figure>
                       <div
-                        class="card-body my-auto text-start cursor-default"
+                        class="card card-side bg-neutral text-neutral-content mx-auto relative"
                       >
-                        <h2
-                          class="card-title line-clamp-1 pr-8"
+                        <figure
+                          class="h-24 w-20 min-h-20 min-w-20"
                         >
-                          Test Plant
-                        </h2>
-                        <span
-                          title="06:44 PM - February 25, 2024"
+                          <img
+                            class="w-full h-full object-cover"
+                            loading="lazy"
+                            src="/media/thumbnails/photo_thumb.jpg"
+                          />
+                        </figure>
+                        <div
+                          class="card-body my-auto text-start cursor-default"
+                        >
+                          <h2
+                            class="card-title line-clamp-1 pr-8"
+                          >
+                            Test Plant
+                          </h2>
+                          <span
+                            title="06:44 PM - February 25, 2024"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="svg-inline--fa fa-droplet mr-2 text-info"
+                              data-icon="droplet"
+                              data-prefix="fas"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 384 512"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                            5 days ago
+                          </span>
+                        </div>
+                        <button
+                          class="btn-close absolute right-2 top-8 z-40"
+                          role="button"
+                          tabindex="0"
                         >
                           <svg
                             aria-hidden="true"
-                            class="svg-inline--fa fa-droplet mr-2 text-info"
-                            data-icon="droplet"
-                            data-prefix="fas"
-                            focusable="false"
-                            role="img"
-                            viewBox="0 0 384 512"
+                            class="w-8 h-8"
+                            data-slot="icon"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
                             xmlns="http://www.w3.org/2000/svg"
                           >
                             <path
-                              d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                              fill="currentColor"
+                              clip-rule="evenodd"
+                              d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                              fill-rule="evenodd"
                             />
                           </svg>
-                          5 days ago
-                        </span>
+                        </button>
                       </div>
-                      <button
-                        class="btn-close absolute right-2 top-8 z-40"
-                        role="button"
-                        tabindex="0"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="w-8 h-8"
-                          data-slot="icon"
-                          fill="currentColor"
-                          viewBox="0 0 16 16"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            clip-rule="evenodd"
-                            d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                            fill-rule="evenodd"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                    <div
-                      class="collapse bg-neutral rounded-t-none cursor-default"
-                    >
-                      <input
-                        class="hidden"
-                        type="checkbox"
-                      />
                       <div
-                        class="collapse-content"
+                        class="collapse bg-neutral rounded-t-none cursor-default"
                       >
-                        <p
-                          class="flex"
-                        >
-                          <span
-                            class="font-semibold"
-                          >
-                            Species:
-                          </span>
-                          <span
-                            class="ml-auto text-right"
-                          >
-                            Calathea
-                          </span>
-                        </p>
-                        <p
-                          class="flex"
-                        >
-                          <span
-                            class="font-semibold"
-                          >
-                            Pot size:
-                          </span>
-                          <span
-                            class="ml-auto text-right"
-                          >
-                            4
-                          </span>
-                        </p>
-                        <div
+                        <input
                           class="hidden"
+                          type="checkbox"
+                        />
+                        <div
+                          class="collapse-content"
                         >
                           <p
-                            class="font-semibold mt-3"
+                            class="flex"
                           >
-                            Description:
+                            <span
+                              class="font-semibold"
+                            >
+                              Species:
+                            </span>
+                            <span
+                              class="ml-auto text-right"
+                            >
+                              Calathea
+                            </span>
                           </p>
                           <p
-                            class="text-sm line-clamp-6"
-                          />
+                            class="flex"
+                          >
+                            <span
+                              class="font-semibold"
+                            >
+                              Pot size:
+                            </span>
+                            <span
+                              class="ml-auto text-right"
+                            >
+                              4
+                            </span>
+                          </p>
+                          <div
+                            class="hidden"
+                          >
+                            <p
+                              class="font-semibold mt-3"
+                            >
+                              Description:
+                            </p>
+                            <p
+                              class="text-sm line-clamp-6"
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </a>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -6529,89 +6685,101 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                   </div>
                 </div>
                 <div
-                  class="mb-4"
+                  class="flex relative mb-4"
                 >
-                  <a
-                    class="cursor-pointer"
-                    href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                  <label
+                    class="label cursor-pointer absolute flex h-full"
                   >
-                    <div
-                      class="card bg-neutral text-neutral-content mx-auto w-full"
+                    <input
+                      class="radio checked:bg-blue-500 my-auto"
+                      type="checkbox"
+                    />
+                  </label>
+                  <div
+                    class="w-full overflow-hidden transition-all duration-300 ml-0"
+                  >
+                    <a
+                      class="cursor-pointer"
+                      href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     >
                       <div
-                        class="card-body text-center"
+                        class="card bg-neutral text-neutral-content mx-auto w-full"
                       >
-                        <h2
-                          class="card-title mx-auto"
-                        >
-                          Test group
-                        </h2>
-                        <p>
-                          Contains 
-                          4
-                           plants
-                        </p>
-                      </div>
-                      <button
-                        class="btn-close absolute right-2 top-8 z-40"
-                        role="button"
-                        tabindex="0"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="w-8 h-8"
-                          data-slot="icon"
-                          fill="currentColor"
-                          viewBox="0 0 16 16"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            clip-rule="evenodd"
-                            d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                            fill-rule="evenodd"
-                          />
-                        </svg>
-                      </button>
-                    </div>
-                    <div
-                      class="collapse bg-neutral rounded-t-none cursor-default"
-                    >
-                      <input
-                        class="hidden"
-                        type="checkbox"
-                      />
-                      <div
-                        class="collapse-content"
-                      >
-                        <p
-                          class="flex"
-                        >
-                          <span
-                            class="font-semibold"
-                          >
-                            Location:
-                          </span>
-                          <span
-                            class="ml-auto text-right"
-                          >
-                            Middle shelf
-                          </span>
-                        </p>
                         <div
+                          class="card-body text-center"
+                        >
+                          <h2
+                            class="card-title mx-auto"
+                          >
+                            Test group
+                          </h2>
+                          <p>
+                            Contains 
+                            4
+                             plants
+                          </p>
+                        </div>
+                        <button
+                          class="btn-close absolute right-2 top-8 z-40"
+                          role="button"
+                          tabindex="0"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="w-8 h-8"
+                            data-slot="icon"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              clip-rule="evenodd"
+                              d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                              fill-rule="evenodd"
+                            />
+                          </svg>
+                        </button>
+                      </div>
+                      <div
+                        class="collapse bg-neutral rounded-t-none cursor-default"
+                      >
+                        <input
                           class="hidden"
+                          type="checkbox"
+                        />
+                        <div
+                          class="collapse-content"
                         >
                           <p
-                            class="font-semibold mt-3"
+                            class="flex"
                           >
-                            Description:
+                            <span
+                              class="font-semibold"
+                            >
+                              Location:
+                            </span>
+                            <span
+                              class="ml-auto text-right"
+                            >
+                              Middle shelf
+                            </span>
                           </p>
-                          <p
-                            class="text-sm line-clamp-6"
-                          />
+                          <div
+                            class="hidden"
+                          >
+                            <p
+                              class="font-semibold mt-3"
+                            >
+                              Description:
+                            </p>
+                            <p
+                              class="text-sm line-clamp-6"
+                            />
+                          </div>
                         </div>
                       </div>
-                    </div>
-                  </a>
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
@@ -7052,127 +7220,139 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                 </div>
               </div>
               <div
-                class="mb-4"
+                class="flex relative mb-4"
               >
-                <a
-                  class="cursor-pointer"
-                  href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                <label
+                  class="label cursor-pointer absolute flex h-full"
                 >
-                  <div
-                    class="card card-side bg-neutral text-neutral-content mx-auto relative"
+                  <input
+                    class="radio checked:bg-blue-500 my-auto"
+                    type="checkbox"
+                  />
+                </label>
+                <div
+                  class="w-full overflow-hidden transition-all duration-300 ml-0"
+                >
+                  <a
+                    class="cursor-pointer"
+                    href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                   >
-                    <figure
-                      class="h-24 w-20 min-h-20 min-w-20"
-                    >
-                      <img
-                        class="w-full h-full object-cover"
-                        loading="lazy"
-                        src="/media/thumbnails/photo_thumb.jpg"
-                      />
-                    </figure>
                     <div
-                      class="card-body my-auto text-start cursor-default"
+                      class="card card-side bg-neutral text-neutral-content mx-auto relative"
                     >
-                      <h2
-                        class="card-title line-clamp-1 pr-8"
+                      <figure
+                        class="h-24 w-20 min-h-20 min-w-20"
                       >
-                        Test Plant
-                      </h2>
-                      <span
-                        title="06:44 PM - February 25, 2024"
+                        <img
+                          class="w-full h-full object-cover"
+                          loading="lazy"
+                          src="/media/thumbnails/photo_thumb.jpg"
+                        />
+                      </figure>
+                      <div
+                        class="card-body my-auto text-start cursor-default"
+                      >
+                        <h2
+                          class="card-title line-clamp-1 pr-8"
+                        >
+                          Test Plant
+                        </h2>
+                        <span
+                          title="06:44 PM - February 25, 2024"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="svg-inline--fa fa-droplet mr-2 text-info"
+                            data-icon="droplet"
+                            data-prefix="fas"
+                            focusable="false"
+                            role="img"
+                            viewBox="0 0 384 512"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                              fill="currentColor"
+                            />
+                          </svg>
+                          5 days ago
+                        </span>
+                      </div>
+                      <button
+                        class="btn-close absolute right-2 top-8 z-40"
+                        role="button"
+                        tabindex="0"
                       >
                         <svg
                           aria-hidden="true"
-                          class="svg-inline--fa fa-droplet mr-2 text-info"
-                          data-icon="droplet"
-                          data-prefix="fas"
-                          focusable="false"
-                          role="img"
-                          viewBox="0 0 384 512"
+                          class="w-8 h-8"
+                          data-slot="icon"
+                          fill="currentColor"
+                          viewBox="0 0 16 16"
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
-                            d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                            fill="currentColor"
+                            clip-rule="evenodd"
+                            d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                            fill-rule="evenodd"
                           />
                         </svg>
-                        5 days ago
-                      </span>
+                      </button>
                     </div>
-                    <button
-                      class="btn-close absolute right-2 top-8 z-40"
-                      role="button"
-                      tabindex="0"
-                    >
-                      <svg
-                        aria-hidden="true"
-                        class="w-8 h-8"
-                        data-slot="icon"
-                        fill="currentColor"
-                        viewBox="0 0 16 16"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          clip-rule="evenodd"
-                          d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                          fill-rule="evenodd"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                  <div
-                    class="collapse bg-neutral rounded-t-none cursor-default"
-                  >
-                    <input
-                      class="hidden"
-                      type="checkbox"
-                    />
                     <div
-                      class="collapse-content"
+                      class="collapse bg-neutral rounded-t-none cursor-default"
                     >
-                      <p
-                        class="flex"
-                      >
-                        <span
-                          class="font-semibold"
-                        >
-                          Species:
-                        </span>
-                        <span
-                          class="ml-auto text-right"
-                        >
-                          Calathea
-                        </span>
-                      </p>
-                      <p
-                        class="flex"
-                      >
-                        <span
-                          class="font-semibold"
-                        >
-                          Pot size:
-                        </span>
-                        <span
-                          class="ml-auto text-right"
-                        >
-                          4
-                        </span>
-                      </p>
-                      <div
+                      <input
                         class="hidden"
+                        type="checkbox"
+                      />
+                      <div
+                        class="collapse-content"
                       >
                         <p
-                          class="font-semibold mt-3"
+                          class="flex"
                         >
-                          Description:
+                          <span
+                            class="font-semibold"
+                          >
+                            Species:
+                          </span>
+                          <span
+                            class="ml-auto text-right"
+                          >
+                            Calathea
+                          </span>
                         </p>
                         <p
-                          class="text-sm line-clamp-6"
-                        />
+                          class="flex"
+                        >
+                          <span
+                            class="font-semibold"
+                          >
+                            Pot size:
+                          </span>
+                          <span
+                            class="ml-auto text-right"
+                          >
+                            4
+                          </span>
+                        </p>
+                        <div
+                          class="hidden"
+                        >
+                          <p
+                            class="font-semibold mt-3"
+                          >
+                            Description:
+                          </p>
+                          <p
+                            class="text-sm line-clamp-6"
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </a>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -7280,89 +7460,101 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                 </div>
               </div>
               <div
-                class="mb-4"
+                class="flex relative mb-4"
               >
-                <a
-                  class="cursor-pointer"
-                  href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                <label
+                  class="label cursor-pointer absolute flex h-full"
                 >
-                  <div
-                    class="card bg-neutral text-neutral-content mx-auto w-full"
+                  <input
+                    class="radio checked:bg-blue-500 my-auto"
+                    type="checkbox"
+                  />
+                </label>
+                <div
+                  class="w-full overflow-hidden transition-all duration-300 ml-0"
+                >
+                  <a
+                    class="cursor-pointer"
+                    href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                   >
                     <div
-                      class="card-body text-center"
+                      class="card bg-neutral text-neutral-content mx-auto w-full"
                     >
-                      <h2
-                        class="card-title mx-auto"
-                      >
-                        Test group
-                      </h2>
-                      <p>
-                        Contains 
-                        4
-                         plants
-                      </p>
-                    </div>
-                    <button
-                      class="btn-close absolute right-2 top-8 z-40"
-                      role="button"
-                      tabindex="0"
-                    >
-                      <svg
-                        aria-hidden="true"
-                        class="w-8 h-8"
-                        data-slot="icon"
-                        fill="currentColor"
-                        viewBox="0 0 16 16"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
-                        <path
-                          clip-rule="evenodd"
-                          d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                          fill-rule="evenodd"
-                        />
-                      </svg>
-                    </button>
-                  </div>
-                  <div
-                    class="collapse bg-neutral rounded-t-none cursor-default"
-                  >
-                    <input
-                      class="hidden"
-                      type="checkbox"
-                    />
-                    <div
-                      class="collapse-content"
-                    >
-                      <p
-                        class="flex"
-                      >
-                        <span
-                          class="font-semibold"
-                        >
-                          Location:
-                        </span>
-                        <span
-                          class="ml-auto text-right"
-                        >
-                          Middle shelf
-                        </span>
-                      </p>
                       <div
+                        class="card-body text-center"
+                      >
+                        <h2
+                          class="card-title mx-auto"
+                        >
+                          Test group
+                        </h2>
+                        <p>
+                          Contains 
+                          4
+                           plants
+                        </p>
+                      </div>
+                      <button
+                        class="btn-close absolute right-2 top-8 z-40"
+                        role="button"
+                        tabindex="0"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="w-8 h-8"
+                          data-slot="icon"
+                          fill="currentColor"
+                          viewBox="0 0 16 16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            clip-rule="evenodd"
+                            d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                            fill-rule="evenodd"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                    <div
+                      class="collapse bg-neutral rounded-t-none cursor-default"
+                    >
+                      <input
                         class="hidden"
+                        type="checkbox"
+                      />
+                      <div
+                        class="collapse-content"
                       >
                         <p
-                          class="font-semibold mt-3"
+                          class="flex"
                         >
-                          Description:
+                          <span
+                            class="font-semibold"
+                          >
+                            Location:
+                          </span>
+                          <span
+                            class="ml-auto text-right"
+                          >
+                            Middle shelf
+                          </span>
                         </p>
-                        <p
-                          class="text-sm line-clamp-6"
-                        />
+                        <div
+                          class="hidden"
+                        >
+                          <p
+                            class="font-semibold mt-3"
+                          >
+                            Description:
+                          </p>
+                          <p
+                            class="text-sm line-clamp-6"
+                          />
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </a>
+                  </a>
+                </div>
               </div>
             </div>
           </div>

@@ -130,19 +130,17 @@ describe('App', () => {
         expect(within(plantsCol).queryByText('Cancel')).toBeNull();
 
         // Confirm timestamp input and checkboxes next to plants are not visible
-        expect(within(plantsCol).getAllByRole('checkbox')
-            .filter(button => button.classList.contains('radio')).length
-        ).toBe(0);
         expect(app.queryByTestId('addEventTimeInput')).toBeNull();
+        // Checkboxes are rendered underneath card with position: absolute, so
+        // they are not visible until margin-left is added to the card wrapper
+        expect(plantsCol.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(0);
 
         // Click Manage button, confirm buttons, checkboxes, and input appear
         await user.click(app.getByText("Manage"));
         expect(within(plantsCol).getByText('Water').nodeName).toBe('BUTTON');
         expect(within(plantsCol).getByText('Fertilize').nodeName).toBe('BUTTON');
         expect(within(plantsCol).getByText('Cancel').nodeName).toBe('BUTTON');
-        expect(within(plantsCol).getAllByRole('checkbox')
-            .filter(button => button.classList.contains('radio')).length
-        ).toBe(3);
+        expect(plantsCol.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(3);
         expect(app.queryByTestId('addEventTimeInput')).not.toBeNull();
 
         // Click cancel button, confirm elements disappear
@@ -150,9 +148,7 @@ describe('App', () => {
         expect(within(plantsCol).queryByText('Water')).toBeNull();
         expect(within(plantsCol).queryByText('Fertilize')).toBeNull();
         expect(within(plantsCol).queryByText('Cancel')).toBeNull();
-        expect(within(plantsCol).getAllByRole('checkbox')
-            .filter(button => button.classList.contains('radio')).length
-        ).toBe(0);
+        expect(plantsCol.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(0);
         expect(app.queryByTestId('addEventTimeInput')).toBeNull();
     });
 
