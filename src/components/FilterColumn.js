@@ -6,6 +6,7 @@ import EditableNodeList from 'src/components/EditableNodeList';
 import { XMarkIcon, ArrowsUpDownIcon } from '@heroicons/react/16/solid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUpLong, faArrowDownLong } from '@fortawesome/free-solid-svg-icons';
+import clsx from 'clsx';
 
 // Takes originalContents array, ignoreKeys array, and filter input query
 // Returns a subset of originalContents with all items that have one or more
@@ -69,9 +70,80 @@ const reducer = (state, action) => {
     }
 };
 
+// Button to clear FilterInput, appears when user types query
+const ClearButton = ({ onClick }) => {
+    return (
+        <button
+            className="btn-close h-8 w-8 no-animation"
+            onClick={onClick}
+        >
+            <XMarkIcon className="w-7 h-7 m-auto" />
+        </button>
+    );
+};
+
+ClearButton.propTypes = {
+    onClick: PropTypes.func.isRequired
+};
+
+// Indicates sort direction on selected option
+const OptionArrow = ({ down }) => {
+    if (down) {
+        return <FontAwesomeIcon icon={faArrowDownLong} className="mr-2" />;
+    } else {
+        return <FontAwesomeIcon icon={faArrowUpLong} className="mr-2" />;
+    }
+};
+
+OptionArrow.propTypes = {
+    down: PropTypes.bool.isRequired
+};
+
+// Dropdown button rendered next to filter input, used to sort column
+// Only rendered if sortByKeys array is not empty
+const SortMenu = ({ sortByKeys, state, setSort }) => {
+    return (
+        <div className="dropdown dropdown-end">
+            <div
+                role="button"
+                tabIndex="0"
+                className="btn-close h-8 w-8 no-animation"
+            >
+                <ArrowsUpDownIcon className="w-5 h-5 m-auto" />
+            </div>
+            <ul
+                tabIndex={0}
+                className={`menu menu-md dropdown-content mt-2 z-[99] p-2
+                            shadow bg-base-300 rounded-box w-min-content`}
+            >
+                {sortByKeys.map((key) => {
+                    return (
+                        <li key={key.key}>
+                            <a
+                                className="flex justify-end"
+                                onClick={() => setSort(key.key)}
+                            >
+                                {state.sortKey === key.key && (
+                                    <OptionArrow down={state.sortDirection} />
+                                )}
+                                {key.display}
+                            </a>
+                        </li>
+                    )
+                })}
+            </ul>
+        </div>
+    );
+};
+
+SortMenu.propTypes = {
+    sortByKeys: PropTypes.array.isRequired,
+    state: PropTypes.object.isRequired,
+    setSort: PropTypes.func.isRequired
+};
 
 // Renders filter text input and sort dropdown at top of FilterColumn
-const FilterInput = ({state, dispatch, sortByKeys}) => {
+const FilterInput = ({ state, dispatch, sortByKeys }) => {
     // Filter input state
     const [query, setQuery] = useState(state.query);
 
@@ -111,89 +183,30 @@ const FilterInput = ({state, dispatch, sortByKeys}) => {
         document.activeElement.blur();
     };
 
-    // Indicates sort direction on selected option
-    const Arrow = () => {
-        if (state.sortDirection) {
-            return <FontAwesomeIcon icon={faArrowDownLong} className="mr-2" />;
-        } else {
-            return <FontAwesomeIcon icon={faArrowUpLong} className="mr-2" />;
-        }
-    };
-
-    // Dropdown button rendered next to filter input, used to sort column
-    // Only rendered if sortByKeys array is not empty
-    const SortMenu = () => {
-        const Option = ({keyName, displayString}) => {
-            return (
-                <li><a
-                    className="flex justify-end"
-                    onClick={() => setSort(keyName)}
-                >
-                    {state.sortKey === keyName && <Arrow />}
-                    {displayString}
-                </a></li>
-            );
-        };
-
-        Option.propTypes = {
-            keyName: PropTypes.string.isRequired,
-            displayString: PropTypes.string.isRequired
-        };
-
-        return (
-            <div className="dropdown dropdown-end">
-                <div
-                    role="button"
-                    tabIndex="0"
-                    className="btn-close h-8 w-8 no-animation"
-                >
-                    <ArrowsUpDownIcon className="w-5 h-5 m-auto" />
-                </div>
-                <ul
-                    tabIndex={0}
-                    className={`menu menu-md dropdown-content mt-2 z-[99] p-2
-                                shadow bg-base-300 rounded-box w-min-content`}
-                >
-                    {sortByKeys.map((key) => {
-                        return <Option
-                            key={key.key}
-                            keyName={key.key}
-                            displayString={key.display}
-                        />;
-                    })}
-                </ul>
-            </div>
-        );
-    };
-
-    // Button to clear input, appears when user types query
-    const ClearButton = () => {
-        return (
-            <button
-                className="btn-close h-8 w-8 no-animation"
-                onClick={() => handleInput('')}
-            >
-                <XMarkIcon className="w-7 h-7 m-auto" />
-            </button>
-        );
-    };
-
     return (
         <div className="flex px-4 mb-4">
             <div className="relative w-full">
                 <input
                     type="text"
-                    className={`input input-bordered w-full text-center
-                                ${sortByKeys.length
-                                    ? 'indent-[3.625rem] pr-[4.5rem]'
-                                    : 'indent-[1.625rem] pr-10'}`}
+                    className={clsx(
+                        'input input-bordered w-full text-center',
+                        sortByKeys.length
+                            ? 'indent-[3.625rem] pr-[4.5rem]'
+                            : 'indent-[1.625rem] pr-10'
+                    )}
                     value={query}
                     onChange={e => handleInput(e.target.value)}
                     placeholder="filter"
                 />
                 <div className="absolute flex top-2 right-2">
-                    {query && <ClearButton />}
-                    {sortByKeys.length && <SortMenu />}
+                    {query && <ClearButton onClick={() => handleInput('')} />}
+                    {sortByKeys.length && (
+                        <SortMenu
+                            sortByKeys={sortByKeys}
+                            state={state}
+                            setSort={setSort}
+                        />
+                    )}
                 </div>
             </div>
         </div>
