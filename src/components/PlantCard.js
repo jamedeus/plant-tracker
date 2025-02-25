@@ -46,7 +46,7 @@ const PlantCard = ({ display_name, uuid, species, description, pot_size, last_wa
                     thumbnail ? 'my-auto text-start' : 'text-center'
                 )}>
                     <h2 className={clsx(
-                        'card-title mx-auto px-8 line-clamp-1',
+                        'card-title line-clamp-1',
                         thumbnail ? 'pr-8' : 'mx-auto px-8'
                     )}>
                         {display_name}

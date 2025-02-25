@@ -288,7 +288,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                           class="card-body cursor-default my-auto text-start"
                         >
                           <h2
-                            class="card-title mx-auto px-8 line-clamp-1 pr-8"
+                            class="card-title line-clamp-1 pr-8"
                           >
                             Test Plant
                           </h2>
@@ -1058,7 +1058,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                         class="card-body cursor-default my-auto text-start"
                       >
                         <h2
-                          class="card-title mx-auto px-8 line-clamp-1 pr-8"
+                          class="card-title line-clamp-1 pr-8"
                         >
                           Test Plant
                         </h2>
@@ -3708,7 +3708,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                           class="card-body cursor-default my-auto text-start"
                         >
                           <h2
-                            class="card-title mx-auto px-8 line-clamp-1 pr-8"
+                            class="card-title line-clamp-1 pr-8"
                           >
                             Test Plant
                           </h2>
@@ -4261,7 +4261,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                         class="card-body cursor-default my-auto text-start"
                       >
                         <h2
-                          class="card-title mx-auto px-8 line-clamp-1 pr-8"
+                          class="card-title line-clamp-1 pr-8"
                         >
                           Test Plant
                         </h2>
@@ -4881,7 +4881,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                           class="card-body cursor-default my-auto text-start"
                         >
                           <h2
-                            class="card-title mx-auto px-8 line-clamp-1 pr-8"
+                            class="card-title line-clamp-1 pr-8"
                           >
                             Test Plant
                           </h2>
@@ -5636,7 +5636,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                         class="card-body cursor-default my-auto text-start"
                       >
                         <h2
-                          class="card-title mx-auto px-8 line-clamp-1 pr-8"
+                          class="card-title line-clamp-1 pr-8"
                         >
                           Test Plant
                         </h2>
@@ -6478,7 +6478,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                           class="card-body cursor-default my-auto text-start"
                         >
                           <h2
-                            class="card-title mx-auto px-8 line-clamp-1 pr-8"
+                            class="card-title line-clamp-1 pr-8"
                           >
                             Test Plant
                           </h2>
@@ -7253,7 +7253,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                         class="card-body cursor-default my-auto text-start"
                       >
                         <h2
-                          class="card-title mx-auto px-8 line-clamp-1 pr-8"
+                          class="card-title line-clamp-1 pr-8"
                         >
                           Test Plant
                         </h2>
