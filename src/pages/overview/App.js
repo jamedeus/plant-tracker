@@ -86,101 +86,9 @@ GroupsCol.propTypes = {
     ]).isRequired
 }
 
-// Render correct components for current state objects
-const Layout = ({ plants, groups, selectedPlants, selectedGroups, editing, plantsColRef, groupsColRef, printModalRef }) => {
-    // Determines if 2-column layout or single centered column
-    const twoColumns = plants.length > 0 && groups.length > 0;
-
-    return (
-        <div className={clsx(
-            'grid grid-cols-1 mx-auto',
-            twoColumns && 'md:grid-cols-2'
-        )}>
-            {/* Render plants column if 1 or more plants exist */}
-            {plants.length > 0 && (
-                <div
-                    className={clsx(
-                        'scroll-mt-20',
-                        twoColumns && 'md:mr-12 mb-8 md:mb-0'
-                    )}
-                    ref={plantsColRef}
-                >
-                    <PlantsCol
-                        plants={plants}
-                        editing={editing}
-                        selectedPlants={selectedPlants}
-                    />
-                </div>
-            )}
-            {/* Render groups column if 1 or more groups exist */}
-            {groups.length > 0 && (
-                <div
-                    className={clsx(
-                        'scroll-mt-20',
-                        twoColumns && 'md:ml-12'
-                    )}
-                    ref={groupsColRef}
-                >
-                    <GroupsCol
-                        groups={groups}
-                        editing={editing}
-                        selectedGroups={selectedGroups}
-                    />
-                </div>
-            )}
-            {/* Render setup instructions if database is empty */}
-            {plants.length === 0 && groups.length === 0 && (
-                <Setup printModalRef={printModalRef} />
-            )}
-        </div>
-    )
-};
-
-Layout.propTypes = {
-    plants: PropTypes.array.isRequired,
-    groups: PropTypes.array.isRequired,
-    selectedPlants: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.array }),
-    ]).isRequired,
-    selectedGroups: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.array }),
-    ]).isRequired,
-    editing: PropTypes.bool.isRequired,
-    plantsColRef: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.array }),
-    ]).isRequired,
-    groupsColRef: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.array }),
-    ]).isRequired,
-    printModalRef: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.array }),
-    ]).isRequired
-}
-
 // Dropdown with links to jump to plant or group columns
 // Only rendered on mobile layout (both columns always visible on desktop)
-const QuickNavigation = ({ plantsColRef, groupsColRef }) => {
-    const jumpToPlants = () => {
-        plantsColRef.current.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
-        document.activeElement.blur();
-    };
-
-    const jumpToGroups = () => {
-        groupsColRef.current.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
-        document.activeElement.blur();
-    };
-
+const QuickNavigation = ({ jumpToPlants, jumpToGroups }) => {
     return (
         <ul
             tabIndex={0}
@@ -198,14 +106,8 @@ const QuickNavigation = ({ plantsColRef, groupsColRef }) => {
 };
 
 QuickNavigation.propTypes = {
-    groupsColRef: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.array }),
-    ]).isRequired,
-    printModalRef: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.array }),
-    ]).isRequired
+    jumpToPlants: PropTypes.func.isRequired,
+    jumpToGroups: PropTypes.func.isRequired
 }
 
 // Top-left menu button contents
@@ -259,6 +161,9 @@ function App() {
         return parseDomContext("groups");
     });
 
+    // Determines if 2-column layout or single centered column
+    const twoColumns = plants.length > 0 && groups.length > 0;
+
     // True if desktop layout, false if mobile
     const desktop = useIsBreakpointActive('md');
     // True if mobile layout with stacked plant and group columns
@@ -306,6 +211,22 @@ function App() {
     // Refs used to jump to top of plant and group columns
     const plantsColRef = useRef(null);
     const groupsColRef = useRef(null);
+
+    const jumpToPlants = () => {
+        plantsColRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+        document.activeElement.blur();
+    };
+
+    const jumpToGroups = () => {
+        groupsColRef.current.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+        document.activeElement.blur();
+    };
 
     // Handler for edit option in top-left dropdown
     // Toggle editing state, clear selected, remove focus (closes dropdown)
@@ -380,22 +301,54 @@ function App() {
                 title={archivedOverview ? "Archived" : "Plant Overview"}
                 titleOptions={stackedColumns ? (
                     <QuickNavigation
-                        plantsColRef={plantsColRef}
-                        groupsColRef={groupsColRef}
+                        jumpToPlants={jumpToPlants}
+                        jumpToGroups={jumpToGroups}
                     />
                 ) : null}
             />
 
-            <Layout
-                plants={plants}
-                groups={groups}
-                selectedPlants={selectedPlants}
-                selectedGroups={selectedGroups}
-                editing={editing}
-                plantsColRef={plantsColRef}
-                groupsColRef={groupsColRef}
-                printModalRef={printModalRef}
-            />
+            {/* Main layout - 2 columns on desktop, stacked on mobile */}
+            <div className={clsx(
+                'grid grid-cols-1 mx-auto',
+                twoColumns && 'md:grid-cols-2'
+            )}>
+                {/* Render plants column if 1 or more plants exist */}
+                {plants.length > 0 && (
+                    <div
+                        className={clsx(
+                            'scroll-mt-20',
+                            twoColumns && 'md:mr-12 mb-8 md:mb-0'
+                        )}
+                        ref={plantsColRef}
+                    >
+                        <PlantsCol
+                            plants={plants}
+                            editing={editing}
+                            selectedPlants={selectedPlants}
+                        />
+                    </div>
+                )}
+                {/* Render groups column if 1 or more groups exist */}
+                {groups.length > 0 && (
+                    <div
+                        className={clsx(
+                            'scroll-mt-20',
+                            twoColumns && 'md:ml-12'
+                        )}
+                        ref={groupsColRef}
+                    >
+                        <GroupsCol
+                            groups={groups}
+                            editing={editing}
+                            selectedGroups={selectedGroups}
+                        />
+                    </div>
+                )}
+                {/* Render setup instructions if database is empty */}
+                {plants.length === 0 && groups.length === 0 && (
+                    <Setup printModalRef={printModalRef} />
+                )}
+            </div>
 
             <FloatingFooter visible={editing}>
                 <button className="btn btn-neutral mr-4" onClick={() => setEditing(false)}>
