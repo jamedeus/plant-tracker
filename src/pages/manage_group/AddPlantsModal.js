@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import EditableNodeList from 'src/components/EditableNodeList';
 import Modal from 'src/components/Modal';
@@ -12,7 +12,7 @@ export const openAddPlantsModal = () => {
     addPlantsModalRef.current.showModal();
 };
 
-const AddPlantsModal = ({ groupID, options, plantDetails, setPlantDetails }) => {
+const AddPlantsModal = memo(function AddPlantsModal({ groupID, options, plantDetails, setPlantDetails }) {
     addPlantsModalRef = useRef(null);
 
     // Ref to track selected items
@@ -82,7 +82,7 @@ const AddPlantsModal = ({ groupID, options, plantDetails, setPlantDetails }) => 
             </div>
         </Modal>
     );
-};
+});
 
 AddPlantsModal.propTypes = {
     groupID: PropTypes.string.isRequired,

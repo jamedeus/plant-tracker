@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import EditableNodeList from 'src/components/EditableNodeList';
 import PlantCard from 'src/components/PlantCard';
@@ -12,7 +12,7 @@ export const openRemovePlantsModal = () => {
     removePlantsModalRef.current.showModal();
 };
 
-const RemovePlantsModal = ({ groupID, plantDetails, setPlantDetails }) => {
+const RemovePlantsModal = memo(function RemovePlantsModal({ groupID, plantDetails, setPlantDetails }) {
     removePlantsModalRef = useRef(null);
 
     // Ref to track selected items
@@ -77,7 +77,7 @@ const RemovePlantsModal = ({ groupID, plantDetails, setPlantDetails }) => {
             </div>
         </Modal>
     );
-};
+});
 
 RemovePlantsModal.propTypes = {
     groupID: PropTypes.string.isRequired,
