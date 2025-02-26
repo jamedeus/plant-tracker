@@ -509,56 +509,56 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                     class="w-full overflow-hidden transition-all duration-300 ml-0"
                   >
                     <a
-                      class="cursor-pointer"
+                      class="collapse bg-neutral grayscale cursor-pointer collapse-close"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     >
                       <div
-                        class="card bg-neutral text-neutral-content mx-auto w-full grayscale"
+                        class="collapse-title !p-0 min-w-0 min-h-0"
                       >
                         <div
-                          class="card-body text-center"
+                          class="card text-neutral-content relative"
                         >
-                          <h2
-                            class="card-title mx-auto"
+                          <div
+                            class="card-body cursor-default text-center"
                           >
-                            Test group
-                          </h2>
-                          <p>
-                            Contains 
-                            4
-                             plants
-                          </p>
+                            <h2
+                              class="card-title mx-auto"
+                            >
+                              Test group
+                            </h2>
+                            <p>
+                              Contains 
+                              4
+                               plants
+                            </p>
+                          </div>
+                          <button
+                            class="btn-close absolute right-2 top-8 z-40"
+                            role="button"
+                            tabindex="0"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="w-8 h-8"
+                              data-slot="icon"
+                              fill="currentColor"
+                              viewBox="0 0 16 16"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                clip-rule="evenodd"
+                                d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                                fill-rule="evenodd"
+                              />
+                            </svg>
+                          </button>
                         </div>
-                        <button
-                          class="btn-close absolute right-2 top-8 z-40"
-                          role="button"
-                          tabindex="0"
-                        >
-                          <svg
-                            aria-hidden="true"
-                            class="w-8 h-8"
-                            data-slot="icon"
-                            fill="currentColor"
-                            viewBox="0 0 16 16"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              clip-rule="evenodd"
-                              d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                              fill-rule="evenodd"
-                            />
-                          </svg>
-                        </button>
                       </div>
                       <div
-                        class="collapse bg-neutral rounded-t-none cursor-default grayscale"
+                        class="collapse-content"
                       >
-                        <input
-                          class="hidden"
-                          type="checkbox"
-                        />
                         <div
-                          class="collapse-content"
+                          class="pt-4"
                         >
                           <p
                             class="flex"
@@ -1279,56 +1279,56 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                   class="w-full overflow-hidden transition-all duration-300 ml-0"
                 >
                   <a
-                    class="cursor-pointer"
+                    class="collapse bg-neutral grayscale cursor-pointer collapse-close"
                     href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                   >
                     <div
-                      class="card bg-neutral text-neutral-content mx-auto w-full grayscale"
+                      class="collapse-title !p-0 min-w-0 min-h-0"
                     >
                       <div
-                        class="card-body text-center"
+                        class="card text-neutral-content relative"
                       >
-                        <h2
-                          class="card-title mx-auto"
+                        <div
+                          class="card-body cursor-default text-center"
                         >
-                          Test group
-                        </h2>
-                        <p>
-                          Contains 
-                          4
-                           plants
-                        </p>
+                          <h2
+                            class="card-title mx-auto"
+                          >
+                            Test group
+                          </h2>
+                          <p>
+                            Contains 
+                            4
+                             plants
+                          </p>
+                        </div>
+                        <button
+                          class="btn-close absolute right-2 top-8 z-40"
+                          role="button"
+                          tabindex="0"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="w-8 h-8"
+                            data-slot="icon"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              clip-rule="evenodd"
+                              d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                              fill-rule="evenodd"
+                            />
+                          </svg>
+                        </button>
                       </div>
-                      <button
-                        class="btn-close absolute right-2 top-8 z-40"
-                        role="button"
-                        tabindex="0"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="w-8 h-8"
-                          data-slot="icon"
-                          fill="currentColor"
-                          viewBox="0 0 16 16"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            clip-rule="evenodd"
-                            d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                            fill-rule="evenodd"
-                          />
-                        </svg>
-                      </button>
                     </div>
                     <div
-                      class="collapse bg-neutral rounded-t-none cursor-default grayscale"
+                      class="collapse-content"
                     >
-                      <input
-                        class="hidden"
-                        type="checkbox"
-                      />
                       <div
-                        class="collapse-content"
+                        class="pt-4"
                       >
                         <p
                           class="flex"
@@ -2599,56 +2599,56 @@ exports[`App matches snapshot when only groups exist 1`] = `
                     class="w-full overflow-hidden transition-all duration-300 ml-0"
                   >
                     <a
-                      class="cursor-pointer"
+                      class="collapse bg-neutral cursor-pointer collapse-close"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     >
                       <div
-                        class="card bg-neutral text-neutral-content mx-auto w-full"
+                        class="collapse-title !p-0 min-w-0 min-h-0"
                       >
                         <div
-                          class="card-body text-center"
+                          class="card text-neutral-content relative"
                         >
-                          <h2
-                            class="card-title mx-auto"
+                          <div
+                            class="card-body cursor-default text-center"
                           >
-                            Test group
-                          </h2>
-                          <p>
-                            Contains 
-                            4
-                             plants
-                          </p>
+                            <h2
+                              class="card-title mx-auto"
+                            >
+                              Test group
+                            </h2>
+                            <p>
+                              Contains 
+                              4
+                               plants
+                            </p>
+                          </div>
+                          <button
+                            class="btn-close absolute right-2 top-8 z-40"
+                            role="button"
+                            tabindex="0"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="w-8 h-8"
+                              data-slot="icon"
+                              fill="currentColor"
+                              viewBox="0 0 16 16"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                clip-rule="evenodd"
+                                d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                                fill-rule="evenodd"
+                              />
+                            </svg>
+                          </button>
                         </div>
-                        <button
-                          class="btn-close absolute right-2 top-8 z-40"
-                          role="button"
-                          tabindex="0"
-                        >
-                          <svg
-                            aria-hidden="true"
-                            class="w-8 h-8"
-                            data-slot="icon"
-                            fill="currentColor"
-                            viewBox="0 0 16 16"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              clip-rule="evenodd"
-                              d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                              fill-rule="evenodd"
-                            />
-                          </svg>
-                        </button>
                       </div>
                       <div
-                        class="collapse bg-neutral rounded-t-none cursor-default"
+                        class="collapse-content"
                       >
-                        <input
-                          class="hidden"
-                          type="checkbox"
-                        />
                         <div
-                          class="collapse-content"
+                          class="pt-4"
                         >
                           <p
                             class="flex"
@@ -3107,56 +3107,56 @@ exports[`App matches snapshot when only groups exist 1`] = `
                   class="w-full overflow-hidden transition-all duration-300 ml-0"
                 >
                   <a
-                    class="cursor-pointer"
+                    class="collapse bg-neutral cursor-pointer collapse-close"
                     href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                   >
                     <div
-                      class="card bg-neutral text-neutral-content mx-auto w-full"
+                      class="collapse-title !p-0 min-w-0 min-h-0"
                     >
                       <div
-                        class="card-body text-center"
+                        class="card text-neutral-content relative"
                       >
-                        <h2
-                          class="card-title mx-auto"
+                        <div
+                          class="card-body cursor-default text-center"
                         >
-                          Test group
-                        </h2>
-                        <p>
-                          Contains 
-                          4
-                           plants
-                        </p>
+                          <h2
+                            class="card-title mx-auto"
+                          >
+                            Test group
+                          </h2>
+                          <p>
+                            Contains 
+                            4
+                             plants
+                          </p>
+                        </div>
+                        <button
+                          class="btn-close absolute right-2 top-8 z-40"
+                          role="button"
+                          tabindex="0"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="w-8 h-8"
+                            data-slot="icon"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              clip-rule="evenodd"
+                              d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                              fill-rule="evenodd"
+                            />
+                          </svg>
+                        </button>
                       </div>
-                      <button
-                        class="btn-close absolute right-2 top-8 z-40"
-                        role="button"
-                        tabindex="0"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="w-8 h-8"
-                          data-slot="icon"
-                          fill="currentColor"
-                          viewBox="0 0 16 16"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            clip-rule="evenodd"
-                            d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                            fill-rule="evenodd"
-                          />
-                        </svg>
-                      </button>
                     </div>
                     <div
-                      class="collapse bg-neutral rounded-t-none cursor-default"
+                      class="collapse-content"
                     >
-                      <input
-                        class="hidden"
-                        type="checkbox"
-                      />
                       <div
-                        class="collapse-content"
+                        class="pt-4"
                       >
                         <p
                           class="flex"
@@ -5102,56 +5102,56 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                     class="w-full overflow-hidden transition-all duration-300 ml-0"
                   >
                     <a
-                      class="cursor-pointer"
+                      class="collapse bg-neutral cursor-pointer collapse-close"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     >
                       <div
-                        class="card bg-neutral text-neutral-content mx-auto w-full"
+                        class="collapse-title !p-0 min-w-0 min-h-0"
                       >
                         <div
-                          class="card-body text-center"
+                          class="card text-neutral-content relative"
                         >
-                          <h2
-                            class="card-title mx-auto"
+                          <div
+                            class="card-body cursor-default text-center"
                           >
-                            Test group
-                          </h2>
-                          <p>
-                            Contains 
-                            4
-                             plants
-                          </p>
+                            <h2
+                              class="card-title mx-auto"
+                            >
+                              Test group
+                            </h2>
+                            <p>
+                              Contains 
+                              4
+                               plants
+                            </p>
+                          </div>
+                          <button
+                            class="btn-close absolute right-2 top-8 z-40"
+                            role="button"
+                            tabindex="0"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="w-8 h-8"
+                              data-slot="icon"
+                              fill="currentColor"
+                              viewBox="0 0 16 16"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                clip-rule="evenodd"
+                                d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                                fill-rule="evenodd"
+                              />
+                            </svg>
+                          </button>
                         </div>
-                        <button
-                          class="btn-close absolute right-2 top-8 z-40"
-                          role="button"
-                          tabindex="0"
-                        >
-                          <svg
-                            aria-hidden="true"
-                            class="w-8 h-8"
-                            data-slot="icon"
-                            fill="currentColor"
-                            viewBox="0 0 16 16"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              clip-rule="evenodd"
-                              d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                              fill-rule="evenodd"
-                            />
-                          </svg>
-                        </button>
                       </div>
                       <div
-                        class="collapse bg-neutral rounded-t-none cursor-default"
+                        class="collapse-content"
                       >
-                        <input
-                          class="hidden"
-                          type="checkbox"
-                        />
                         <div
-                          class="collapse-content"
+                          class="pt-4"
                         >
                           <p
                             class="flex"
@@ -5857,56 +5857,56 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                   class="w-full overflow-hidden transition-all duration-300 ml-0"
                 >
                   <a
-                    class="cursor-pointer"
+                    class="collapse bg-neutral cursor-pointer collapse-close"
                     href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                   >
                     <div
-                      class="card bg-neutral text-neutral-content mx-auto w-full"
+                      class="collapse-title !p-0 min-w-0 min-h-0"
                     >
                       <div
-                        class="card-body text-center"
+                        class="card text-neutral-content relative"
                       >
-                        <h2
-                          class="card-title mx-auto"
+                        <div
+                          class="card-body cursor-default text-center"
                         >
-                          Test group
-                        </h2>
-                        <p>
-                          Contains 
-                          4
-                           plants
-                        </p>
+                          <h2
+                            class="card-title mx-auto"
+                          >
+                            Test group
+                          </h2>
+                          <p>
+                            Contains 
+                            4
+                             plants
+                          </p>
+                        </div>
+                        <button
+                          class="btn-close absolute right-2 top-8 z-40"
+                          role="button"
+                          tabindex="0"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="w-8 h-8"
+                            data-slot="icon"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              clip-rule="evenodd"
+                              d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                              fill-rule="evenodd"
+                            />
+                          </svg>
+                        </button>
                       </div>
-                      <button
-                        class="btn-close absolute right-2 top-8 z-40"
-                        role="button"
-                        tabindex="0"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="w-8 h-8"
-                          data-slot="icon"
-                          fill="currentColor"
-                          viewBox="0 0 16 16"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            clip-rule="evenodd"
-                            d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                            fill-rule="evenodd"
-                          />
-                        </svg>
-                      </button>
                     </div>
                     <div
-                      class="collapse bg-neutral rounded-t-none cursor-default"
+                      class="collapse-content"
                     >
-                      <input
-                        class="hidden"
-                        type="checkbox"
-                      />
                       <div
-                        class="collapse-content"
+                        class="pt-4"
                       >
                         <p
                           class="flex"
@@ -6699,56 +6699,56 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                     class="w-full overflow-hidden transition-all duration-300 ml-0"
                   >
                     <a
-                      class="cursor-pointer"
+                      class="collapse bg-neutral cursor-pointer collapse-close"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     >
                       <div
-                        class="card bg-neutral text-neutral-content mx-auto w-full"
+                        class="collapse-title !p-0 min-w-0 min-h-0"
                       >
                         <div
-                          class="card-body text-center"
+                          class="card text-neutral-content relative"
                         >
-                          <h2
-                            class="card-title mx-auto"
+                          <div
+                            class="card-body cursor-default text-center"
                           >
-                            Test group
-                          </h2>
-                          <p>
-                            Contains 
-                            4
-                             plants
-                          </p>
+                            <h2
+                              class="card-title mx-auto"
+                            >
+                              Test group
+                            </h2>
+                            <p>
+                              Contains 
+                              4
+                               plants
+                            </p>
+                          </div>
+                          <button
+                            class="btn-close absolute right-2 top-8 z-40"
+                            role="button"
+                            tabindex="0"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="w-8 h-8"
+                              data-slot="icon"
+                              fill="currentColor"
+                              viewBox="0 0 16 16"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                clip-rule="evenodd"
+                                d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                                fill-rule="evenodd"
+                              />
+                            </svg>
+                          </button>
                         </div>
-                        <button
-                          class="btn-close absolute right-2 top-8 z-40"
-                          role="button"
-                          tabindex="0"
-                        >
-                          <svg
-                            aria-hidden="true"
-                            class="w-8 h-8"
-                            data-slot="icon"
-                            fill="currentColor"
-                            viewBox="0 0 16 16"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              clip-rule="evenodd"
-                              d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                              fill-rule="evenodd"
-                            />
-                          </svg>
-                        </button>
                       </div>
                       <div
-                        class="collapse bg-neutral rounded-t-none cursor-default"
+                        class="collapse-content"
                       >
-                        <input
-                          class="hidden"
-                          type="checkbox"
-                        />
                         <div
-                          class="collapse-content"
+                          class="pt-4"
                         >
                           <p
                             class="flex"
@@ -7474,56 +7474,56 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                   class="w-full overflow-hidden transition-all duration-300 ml-0"
                 >
                   <a
-                    class="cursor-pointer"
+                    class="collapse bg-neutral cursor-pointer collapse-close"
                     href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                   >
                     <div
-                      class="card bg-neutral text-neutral-content mx-auto w-full"
+                      class="collapse-title !p-0 min-w-0 min-h-0"
                     >
                       <div
-                        class="card-body text-center"
+                        class="card text-neutral-content relative"
                       >
-                        <h2
-                          class="card-title mx-auto"
+                        <div
+                          class="card-body cursor-default text-center"
                         >
-                          Test group
-                        </h2>
-                        <p>
-                          Contains 
-                          4
-                           plants
-                        </p>
+                          <h2
+                            class="card-title mx-auto"
+                          >
+                            Test group
+                          </h2>
+                          <p>
+                            Contains 
+                            4
+                             plants
+                          </p>
+                        </div>
+                        <button
+                          class="btn-close absolute right-2 top-8 z-40"
+                          role="button"
+                          tabindex="0"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="w-8 h-8"
+                            data-slot="icon"
+                            fill="currentColor"
+                            viewBox="0 0 16 16"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              clip-rule="evenodd"
+                              d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                              fill-rule="evenodd"
+                            />
+                          </svg>
+                        </button>
                       </div>
-                      <button
-                        class="btn-close absolute right-2 top-8 z-40"
-                        role="button"
-                        tabindex="0"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="w-8 h-8"
-                          data-slot="icon"
-                          fill="currentColor"
-                          viewBox="0 0 16 16"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            clip-rule="evenodd"
-                            d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                            fill-rule="evenodd"
-                          />
-                        </svg>
-                      </button>
                     </div>
                     <div
-                      class="collapse bg-neutral rounded-t-none cursor-default"
+                      class="collapse-content"
                     >
-                      <input
-                        class="hidden"
-                        type="checkbox"
-                      />
                       <div
-                        class="collapse-content"
+                        class="pt-4"
                       >
                         <p
                           class="flex"

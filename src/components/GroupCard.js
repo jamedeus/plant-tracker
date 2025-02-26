@@ -16,58 +16,47 @@ const GroupCard = ({ display_name, plants, uuid, location, description, linkPage
         e.stopPropagation();
     };
 
-    // Renders collapse with Group details, opened with arrow button
-    const DetailsSection = () => {
-        return (
-            <div className={clsx(
-                'collapse bg-neutral rounded-t-none cursor-default',
-                open && 'pt-4',
-                archived && 'grayscale'
-            )}>
-                <input
-                    type="checkbox"
-                    className="hidden"
-                    onChange={toggle}
-                    defaultChecked={open}
-                />
-                <div className="collapse-content">
+    return (
+        <a
+            href={linkPage ? `/manage/${uuid}` : null}
+            className={clsx(
+                'collapse bg-neutral',
+                archived && 'grayscale',
+                linkPage && 'cursor-pointer',
+                open ? 'collapse-open' : 'collapse-close'
+            )}
+        >
+            <div className='collapse-title !p-0 min-w-0 min-h-0'>
+                <div className='card text-neutral-content relative'>
+                    {/* Card body */}
+                    <div className='card-body cursor-default text-center'>
+                        <h2 className='card-title mx-auto'>{display_name}</h2>
+                        <p>Contains {plants} plants</p>
+                    </div>
+
+                    {/* Button opens/closes collapse with details */}
+                    <button
+                        tabIndex={0}
+                        role="button"
+                        className="btn-close absolute right-2 top-8 z-40"
+                        onClick={(e) => toggle(e)}
+                    >
+                        {open
+                            ? <ChevronUpIcon className="w-8 h-8" />
+                            : <ChevronDownIcon className="w-8 h-8" />
+                        }
+                    </button>
+                </div>
+            </div>
+            {/* Group details collapse, closed until button clicked */}
+            <div className="collapse-content">
+                <div className="pt-4">
                     <GroupDetails
                         location={location}
                         description={description}
                     />
                 </div>
             </div>
-        );
-    };
-
-    return (
-        <a
-            href={linkPage ? `/manage/${uuid}` : null}
-            className={linkPage ? 'cursor-pointer' : null}
-        >
-            <div className={clsx(
-                'card bg-neutral text-neutral-content mx-auto w-full',
-                open && 'rounded-b-none',
-                archived && 'grayscale'
-            )}>
-                <div className="card-body text-center">
-                    <h2 className="card-title mx-auto">{display_name}</h2>
-                    <p>Contains {plants} plants</p>
-                </div>
-
-                <button
-                    tabIndex={0}
-                    role="button"
-                    className="btn-close absolute right-2 top-8 z-40"
-                    onClick={(e) => toggle(e)}
-                >
-                    {open
-                        ? <ChevronUpIcon className="w-8 h-8" />
-                        : <ChevronDownIcon className="w-8 h-8" />
-                    }
-                </button>
-            </div>
-            <DetailsSection />
         </a>
     );
 };

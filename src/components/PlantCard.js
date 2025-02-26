@@ -38,7 +38,7 @@ const PlantCard = ({ display_name, uuid, species, description, pot_size, last_wa
                                 loading="lazy"
                                 src={thumbnail}
                                 className="w-full h-full object-cover"
-                                />
+                            />
                         </figure>
                     )}
 
@@ -58,7 +58,7 @@ const PlantCard = ({ display_name, uuid, species, description, pot_size, last_wa
                                 <FontAwesomeIcon
                                     icon={faDroplet}
                                     className="mr-2 text-info"
-                                    />
+                                />
                                 {capitalize(
                                     timestampToRelativeCalendar(last_watered, true)
                                 )}
@@ -74,7 +74,7 @@ const PlantCard = ({ display_name, uuid, species, description, pot_size, last_wa
                         role="button"
                         className="btn-close absolute right-2 top-8 z-40"
                         onClick={(e) => toggle(e)}
-                        >
+                    >
                         {open
                             ? <ChevronUpIcon className="w-8 h-8" />
                             : <ChevronDownIcon className="w-8 h-8" />
@@ -89,7 +89,7 @@ const PlantCard = ({ display_name, uuid, species, description, pot_size, last_wa
                         species={species}
                         pot_size={pot_size}
                         description={description}
-                        />
+                    />
                 </div>
             </div>
         </a>
