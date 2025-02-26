@@ -47,10 +47,10 @@ describe('App', () => {
 
         // Confirm plant and group cards have href to manage page
         expect(
-            app.getByText('Test Plant').parentElement.parentElement.parentElement
+            app.getByText('Test Plant').closest('a')
         ).toHaveAttribute('href', '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12');
         expect(
-            app.getByText('Test group').parentElement.parentElement.parentElement
+            app.getByText('Test group').closest('a')
         ).toHaveAttribute('href', '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14');
 
         // Click Edit option, confirm buttons and checkboxes appear
@@ -60,10 +60,10 @@ describe('App', () => {
 
         // Confirm cards no longer have href
         expect(
-            app.getByText('Test Plant').parentElement.parentElement.parentElement
+            app.getByText('Test Plant').closest('a')
         ).not.toHaveAttribute('href');
         expect(
-            app.getByText('Test group').parentElement.parentElement.parentElement
+            app.getByText('Test group').closest('a')
         ).not.toHaveAttribute('href');
 
         // Click cancel button, confirm buttons and checkboxes disappear
