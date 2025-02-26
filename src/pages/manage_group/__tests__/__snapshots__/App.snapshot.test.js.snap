@@ -334,6 +334,7 @@ exports[`App matches snapshot 1`] = `
                           Test Plant
                         </h2>
                         <span
+                          class="line-clamp-1"
                           title="04:45 AM - February 29, 2024"
                         >
                           <svg
@@ -471,6 +472,7 @@ exports[`App matches snapshot 1`] = `
                           Unnamed Spider Plant
                         </h2>
                         <span
+                          class="line-clamp-1"
                           title="04:45 AM - February 29, 2024"
                         >
                           <svg
@@ -1126,6 +1128,7 @@ exports[`App matches snapshot 1`] = `
                             Test Plant
                           </h2>
                           <span
+                            class="line-clamp-1"
                             title="04:45 AM - February 29, 2024"
                           >
                             <svg
@@ -1262,6 +1265,7 @@ exports[`App matches snapshot 1`] = `
                             Unnamed Spider Plant
                           </h2>
                           <span
+                            class="line-clamp-1"
                             title="04:45 AM - February 29, 2024"
                           >
                             <svg
@@ -1918,6 +1922,7 @@ exports[`App matches snapshot 1`] = `
                         Test Plant
                       </h2>
                       <span
+                        class="line-clamp-1"
                         title="04:45 AM - February 29, 2024"
                       >
                         <svg
@@ -2055,6 +2060,7 @@ exports[`App matches snapshot 1`] = `
                         Unnamed Spider Plant
                       </h2>
                       <span
+                        class="line-clamp-1"
                         title="04:45 AM - February 29, 2024"
                       >
                         <svg
@@ -2710,6 +2716,7 @@ exports[`App matches snapshot 1`] = `
                           Test Plant
                         </h2>
                         <span
+                          class="line-clamp-1"
                           title="04:45 AM - February 29, 2024"
                         >
                           <svg
@@ -2846,6 +2853,7 @@ exports[`App matches snapshot 1`] = `
                           Unnamed Spider Plant
                         </h2>
                         <span
+                          class="line-clamp-1"
                           title="04:45 AM - February 29, 2024"
                         >
                           <svg

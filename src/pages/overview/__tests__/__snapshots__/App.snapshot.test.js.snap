@@ -296,6 +296,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                               Test Plant
                             </h2>
                             <span
+                              class="line-clamp-1"
                               title="06:44 PM - February 25, 2024"
                             >
                               <svg
@@ -1066,6 +1067,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                             Test Plant
                           </h2>
                           <span
+                            class="line-clamp-1"
                             title="06:44 PM - February 25, 2024"
                           >
                             <svg
@@ -3716,6 +3718,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                               Test Plant
                             </h2>
                             <span
+                              class="line-clamp-1"
                               title="06:44 PM - February 25, 2024"
                             >
                               <svg
@@ -4269,6 +4272,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                             Test Plant
                           </h2>
                           <span
+                            class="line-clamp-1"
                             title="06:44 PM - February 25, 2024"
                           >
                             <svg
@@ -4889,6 +4893,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                               Test Plant
                             </h2>
                             <span
+                              class="line-clamp-1"
                               title="06:44 PM - February 25, 2024"
                             >
                               <svg
@@ -5644,6 +5649,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                             Test Plant
                           </h2>
                           <span
+                            class="line-clamp-1"
                             title="06:44 PM - February 25, 2024"
                           >
                             <svg
@@ -6486,6 +6492,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                               Test Plant
                             </h2>
                             <span
+                              class="line-clamp-1"
                               title="06:44 PM - February 25, 2024"
                             >
                               <svg
@@ -7261,6 +7268,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                             Test Plant
                           </h2>
                           <span
+                            class="line-clamp-1"
                             title="06:44 PM - February 25, 2024"
                           >
                             <svg

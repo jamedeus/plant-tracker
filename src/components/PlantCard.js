@@ -54,7 +54,10 @@ const PlantCard = ({ display_name, uuid, species, description, pot_size, last_wa
                             {display_name}
                         </h2>
                         {last_watered ? (
-                            <span title={timestampToReadable(last_watered)}>
+                            <span
+                                title={timestampToReadable(last_watered)}
+                                className='line-clamp-1'
+                            >
                                 <FontAwesomeIcon
                                     icon={faDroplet}
                                     className="mr-2 text-info"
