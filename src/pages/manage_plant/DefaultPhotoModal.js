@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
@@ -12,7 +12,7 @@ export const openDefaultPhotoModal = () => {
     defaultPhotoModalRef.current.showModal();
 };
 
-const DefaultPhotoModal = ({ plantID, photoUrls }) => {
+const DefaultPhotoModal = memo(function DefaultPhotoModal({ plantID, photoUrls }) {
     defaultPhotoModalRef = useRef(null);
 
     const submit = async (selected) => {
@@ -109,7 +109,7 @@ const DefaultPhotoModal = ({ plantID, photoUrls }) => {
             </div>
         </Modal>
     );
-};
+});
 
 DefaultPhotoModal.propTypes = {
     plantID: PropTypes.string.isRequired,

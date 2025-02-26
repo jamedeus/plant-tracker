@@ -1,4 +1,4 @@
-import React, { useRef, useState, Fragment } from 'react';
+import React, { useRef, useState, Fragment, memo } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
@@ -16,7 +16,7 @@ export const openDeletePhotosModal = () => {
     deletePhotosModalRef.current.showModal();
 };
 
-const DeletePhotosModal = ({ plantID, photoUrls, setPhotoUrls }) => {
+const DeletePhotosModal = memo(function DeletePhotosModal({ plantID, photoUrls, setPhotoUrls }) {
     deletePhotosModalRef = useRef(null);
 
     // Controls confirm delete screen visibility
@@ -246,7 +246,7 @@ const DeletePhotosModal = ({ plantID, photoUrls, setPhotoUrls }) => {
             </div>
         </Modal>
     );
-};
+});
 
 DeletePhotosModal.propTypes = {
     plantID: PropTypes.string.isRequired,
