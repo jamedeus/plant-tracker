@@ -17,6 +17,71 @@ import RemovePlantsModal, { openRemovePlantsModal } from './RemovePlantsModal';
 import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
 import { showErrorModal } from 'src/components/ErrorModal';
 
+// Buttons used to add events to all selected plants
+const PlantEventButtons = ({ editing, setEditing, handleWater, handleFertilize }) => {
+    const addEventTimeInput = useRef(null);
+
+    // Handler for water button
+    const water = async () => {
+        handleWater(localToUTC(addEventTimeInput.current.value));
+    };
+
+    // Handler for fertilize button
+    const fertilize = async () => {
+        handleFertilize(localToUTC(addEventTimeInput.current.value));
+    };
+
+    if (editing) {
+        return (
+            <>
+                <div
+                    className="flex mx-auto mb-4"
+                    data-testid="addEventTimeInput"
+                >
+                    <DatetimeInput inputRef={addEventTimeInput} />
+                </div>
+                <div className="flex">
+                    <button
+                        className="btn btn-outline mx-auto"
+                        onClick={() => setEditing(false)}
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        className="btn btn-outline btn-info mx-auto"
+                        onClick={water}
+                    >
+                        Water
+                    </button>
+                    <button
+                        className="btn btn-outline btn-success mx-auto"
+                        onClick={fertilize}
+                    >
+                        Fertilize
+                    </button>
+                </div>
+            </>
+        );
+    } else {
+        return (
+            <div className="flex">
+                <button
+                    className="btn btn-outline mx-auto"
+                    onClick={() => setEditing(true)}>
+                    Manage
+                </button>
+            </div>
+        );
+    }
+};
+
+PlantEventButtons.propTypes = {
+    editing: PropTypes.bool.isRequired,
+    setEditing: PropTypes.func.isRequired,
+    handleWater: PropTypes.func.isRequired,
+    handleFertilize: PropTypes.func.isRequired
+};
+
 function App() {
     // Load context set by django template
     const [group, setGroup] = useState(() => {
@@ -92,6 +157,13 @@ function App() {
         }
     };
 
+    // Takes array of plant UUIDs, removes archived plants and returns
+    const removeArchivedPlants = (selected) => {
+        return selected.filter(uuid => !plantDetails.find(
+            plant => plant.uuid === uuid
+        ).archived);
+    };
+
     // Handler for "Water All" and "Fertilize All" buttons
     const addEventAll = async (eventType) => {
         const timestamp = localToUTC(addEventAllTimeInput.current.value);
@@ -99,9 +171,25 @@ function App() {
         // timestamp to backend endpoint
         await bulkAddPlantEvents(
             eventType,
-            plantDetails.filter(plant => !plant.archived).map(plant => plant.uuid),
+            removeArchivedPlants(plantDetails.map(plant => plant.uuid)),
             timestamp
         );
+    };
+
+    // Handler for water button under plant cards
+    const waterSelected = async (timestamp) => {
+        // Prevent watering archived plants
+        const selected = removeArchivedPlants(selectedPlants.current);
+        await bulkAddPlantEvents('water', selected, timestamp);
+        setSelectingPlants(false);
+    };
+
+    // Handler for fertilize button under plant cards
+    const fertilizeSelected = async (timestamp) => {
+        // Prevent fertilizing archived plants
+        const selected = removeArchivedPlants(selectedPlants.current);
+        await bulkAddPlantEvents('fertilize', selected, timestamp);
+        setSelectingPlants(false);
     };
 
     // Creates event with specified type and timestamp for every plant in
@@ -154,85 +242,6 @@ function App() {
         } else {
             return oldTime;
         }
-    };
-
-    // Buttons used to add bulk events to plants in group
-    const PlantEventButtons = ({editing, setEditing}) => {
-        const addEventTimeInput = useRef(null);
-
-        // Takes array of plant UUIDs, removes archived plants and returns
-        const removeArchivedPlants = (selected) => {
-            return selected.filter(uuid => !plantDetails.find(
-                plant => plant.uuid === uuid
-            ).archived);
-        };
-
-        // Handler for water button (only used in this case scope)
-        const water = async () => {
-            const timestamp = localToUTC(addEventTimeInput.current.value);
-            // Prevent watering archived plants
-            const selected = removeArchivedPlants(selectedPlants.current);
-            await bulkAddPlantEvents('water', selected, timestamp);
-            setEditing(false);
-        };
-
-        // Handler for fertilize button (only used in this case scope)
-        const fertilize = async () => {
-            const timestamp = localToUTC(addEventTimeInput.current.value);
-            // Prevent fertilizing archived plants
-            const selected = removeArchivedPlants(selectedPlants.current);
-            await bulkAddPlantEvents('fertilize', selected, timestamp);
-            setEditing(false);
-        };
-
-        switch(editing) {
-            case(true):
-                return (
-                    <>
-                        <div
-                            className="flex mx-auto mb-4"
-                            data-testid="addEventTimeInput"
-                        >
-                            <DatetimeInput inputRef={addEventTimeInput} />
-                        </div>
-                        <div className="flex">
-                            <button
-                                className="btn btn-outline mx-auto"
-                                onClick={() => setEditing(false)}
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                className="btn btn-outline btn-info mx-auto"
-                                onClick={water}
-                            >
-                                Water
-                            </button>
-                            <button
-                                className="btn btn-outline btn-success mx-auto"
-                                onClick={fertilize}
-                            >
-                                Fertilize
-                            </button>
-                        </div>
-                    </>
-                );
-            case(false):
-                return (
-                    <div className="flex">
-                        <button
-                            className="btn btn-outline mx-auto"
-                            onClick={() => setEditing(true)}>
-                            Manage
-                        </button>
-                    </div>
-                );
-        }
-    };
-
-    PlantEventButtons.propTypes = {
-        editing: PropTypes.bool.isRequired,
-        setEditing: PropTypes.func.isRequired
     };
 
     return (
@@ -308,6 +317,8 @@ function App() {
                 <PlantEventButtons
                     editing={selectingPlants}
                     setEditing={setSelectingPlants}
+                    handleWater={waterSelected}
+                    handleFertilize={fertilizeSelected}
                 />
             </FilterColumn>
 
