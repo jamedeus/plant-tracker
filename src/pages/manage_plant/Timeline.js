@@ -25,6 +25,254 @@ import {
     faPenToSquare
 } from '@fortawesome/free-solid-svg-icons';
 
+// Takes ISO timestamp string, returns "x days ago"
+const getRelativeTimeString = (timestamp) => {
+    const relative = timestampToRelativeDays(timestamp);
+
+    // Remove " ago" if > 1000 days old (breaks flex layout)
+    const days = relative.split(' ')[0];
+    if (days.length > 3) {
+        return relative.replace(' ago', '');
+    } else {
+        return relative;
+    }
+};
+
+const TimelineDate = ({ timestamp }) => {
+    return (
+        <div className="flex flex-col h-full whitespace-nowrap text-end md:ml-4">
+            <span className="text-sm md:text-lg my-auto md:mt-auto md:mb-0">
+                {getRelativeTimeString(timestamp)}
+            </span>
+            <span className="hidden md:block text-sm mb-auto">
+                {DateTime.fromISO(timestamp).toFormat('MMM dd, yyyy')}
+            </span>
+        </div>
+    );
+};
+
+TimelineDate.propTypes = {
+    timestamp: PropTypes.string.isRequired
+};
+
+const eventIconMap = {
+    'water': (
+        <FontAwesomeIcon icon={faDroplet} className="mr-2 text-info" />
+    ),
+    'fertilize': (
+        <FontAwesomeIcon icon={faSeedling} className="mr-2 text-success" />
+    ),
+    'prune': (
+        <FontAwesomeIcon icon={faScissors} className="mr-2 text-prune" />
+    ),
+    'repot': (
+        <FontAwesomeIcon icon={faMound} className="mr-2 text-repot" />
+    ),
+};
+
+const EventMarker = ({ eventType }) => {
+    return (
+        <span className="m-2 whitespace-nowrap text-sm md:text-base">
+            {eventIconMap[eventType]}
+            {pastTense(capitalize(eventType))}
+        </span>
+    );
+};
+
+EventMarker.propTypes = {
+    eventType: PropTypes.string.isRequired
+};
+
+const TimelineContent = ({ events, notes, photos, archived, noteModalRef }) => {
+    return (
+        <div className="flex flex-col bg-neutral rounded-xl p-2 md:p-4">
+            <div className="flex flex-row flex-wrap">
+                {events.map((e) => {
+                    return <EventMarker key={e} eventType={e} />;
+                })}
+            </div>
+            <div className="flex flex-row flex-wrap">
+                {photos.map((photo) => {
+                    return (
+                        <PhotoThumbnail
+                            key={photo.key}
+                            thumbnailUrl={photo.thumbnail}
+                            photoUrl={photo.image}
+                            timestamp={photo.created}
+                        />
+                    );
+                })}
+            </div>
+            <div className="flex flex-col">
+                {notes.map((note) => {
+                    return (
+                        <NoteCollapse
+                            key={note.timestamp}
+                            note={note}
+                            archived={archived}
+                            noteModalRef={noteModalRef}
+                        />
+                    );
+                })}
+            </div>
+        </div>
+    );
+};
+
+TimelineContent.propTypes = {
+    events: PropTypes.array.isRequired,
+    notes: PropTypes.array.isRequired,
+    photos: PropTypes.array.isRequired,
+    archived: PropTypes.bool.isRequired
+};
+
+// Photo thumbnail that opens larger popover when clicked
+const PhotoThumbnail = ({ thumbnailUrl, photoUrl, timestamp }) => {
+    const [popoverOpen, setPopoverOpen] = useState(false);
+
+    return (
+        <Popover
+            isOpen={popoverOpen}
+            positions={["top", "bottom", "left", "right"]}
+            align="center"
+            padding={8}
+            reposition={true}
+            onClickOutside={() => setPopoverOpen(false)}
+            content={
+                <div className="popover-content popover-enter">
+                    <a href={photoUrl}>
+                        <img
+                            loading="lazy"
+                            className="rounded-lg popover-image mx-4"
+                            src={thumbnailUrl}
+                        />
+                    </a>
+                </div>
+            }
+        >
+            <div
+                onClick={() => setPopoverOpen(!popoverOpen)}
+                title={timestampToReadable(timestamp)}
+            >
+                <img
+                    loading="lazy"
+                    className={`rounded-lg m-2 object-cover w-[4.9rem]
+                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]`}
+                    src={thumbnailUrl}
+                />
+            </div>
+        </Popover>
+    );
+};
+
+PhotoThumbnail.propTypes = {
+    thumbnailUrl: PropTypes.string.isRequired,
+    photoUrl: PropTypes.string.isRequired,
+    timestamp: PropTypes.string.isRequired
+};
+
+const NoteCollapse = ({ note, archived, noteModalRef }) => {
+    const [expanded, setExpanded] = useState(false);
+
+    const readableTimestamp = timestampToReadable(note.timestamp);
+
+    const editNote = () => {
+        noteModalRef.current.open(note);
+    };
+
+    return (
+        <div className="m-2 flex flex-row">
+            <FontAwesomeIcon
+                icon={faPenToSquare}
+                className={clsx(
+                    'w-4 h-4 mr-2 mt-1',
+                    archived || 'cursor-pointer'
+                )}
+                onClick={archived ? null : editNote}
+            />
+            <div
+                className={clsx(
+                    'cursor-pointer',
+                    expanded || 'line-clamp-1'
+                )}
+                title={readableTimestamp}
+                onClick={() => setExpanded(!expanded)}
+            >
+                <span
+                    className="text-sm md:text-base mr-2 after:content-['\200B']"
+                >
+                    {note.text}
+                </span>
+                <span className='text-xs'>
+                    {readableTimestamp.split('-')[0].trim()}
+                </span>
+            </div>
+        </div>
+    );
+};
+
+NoteCollapse.propTypes = {
+    note: PropTypes.shape({
+        text: PropTypes.string.isRequired,
+        timestamp: PropTypes.string.isRequired
+    }).isRequired,
+    archived: PropTypes.bool.isRequired
+};
+
+// Takes year-month string (ie 2024-03)
+const MonthDivider = ({ yearMonth, sectionRefs }) => {
+    return (
+        <div
+            className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+            ref={el => sectionRefs.current[yearMonth] = el}
+        >
+            {DateTime.fromFormat(yearMonth, 'yyyy-MM').toFormat('MMMM yyyy')}
+        </div>
+    );
+};
+
+MonthDivider.propTypes = {
+    yearMonth: PropTypes.string.isRequired
+};
+
+// Takes year-month string (ie 2024-03) and array containing object for
+// each day within month with events/photos. Returns divider with year and
+// month text followed by pairs of divs for each day (populates grid).
+const MonthSection = ({ yearMonth, days, archived, sectionRefs, noteModalRef }) => {
+    return (
+        <>
+            <MonthDivider yearMonth={yearMonth} sectionRefs={sectionRefs} />
+            {days.map((day) => {
+                return (
+                    <Fragment key={day.timestamp}>
+                        <div
+                            className="scroll-mt-20"
+                            data-date={day.timestamp}
+                        >
+                            <TimelineDate timestamp={day.timestamp} />
+                        </div>
+                        <div>
+                            <TimelineContent
+                                events={day.events}
+                                notes={day.notes}
+                                photos={day.photos}
+                                archived={archived}
+                                noteModalRef={noteModalRef}
+                            />
+                        </div>
+                    </Fragment>
+                );
+            })}
+        </>
+    );
+};
+
+MonthSection.propTypes = {
+    yearMonth: PropTypes.string.isRequired,
+    days: PropTypes.array.isRequired,
+    archived: PropTypes.bool.isRequired
+};
+
 const Timeline = ({ plantID, events, archived }) => {
     // Load context set by django template
     const [notes, setNotes] = useState(() => {
@@ -120,247 +368,6 @@ const Timeline = ({ plantID, events, archived }) => {
 
     // Create ref used to open/close NoteModal
     const noteModalRef = useRef(null);
-
-    // Takes ISO timestamp string, returns "x days ago"
-    const getRelativeTimeString = (timestamp) => {
-        const relative = timestampToRelativeDays(timestamp);
-
-        // Remove " ago" if > 1000 days old (breaks flex layout)
-        const days = relative.split(' ')[0];
-        if (days.length > 3) {
-            return relative.replace(' ago', '');
-        } else {
-            return relative;
-        }
-    };
-
-    const TimelineDate = ({ timestamp }) => {
-        return (
-            <div className="flex flex-col h-full whitespace-nowrap text-end md:ml-4">
-                <span className="text-sm md:text-lg my-auto md:mt-auto md:mb-0">
-                    {getRelativeTimeString(timestamp)}
-                </span>
-                <span className="hidden md:block text-sm mb-auto">
-                    {DateTime.fromISO(timestamp).toFormat('MMM dd, yyyy')}
-                </span>
-            </div>
-        );
-    };
-
-    TimelineDate.propTypes = {
-        timestamp: PropTypes.string.isRequired
-    };
-
-    const TimelineContent = ({ events, notes, photos}) => {
-        return (
-            <div className="flex flex-col bg-neutral rounded-xl p-2 md:p-4">
-                <div className="flex flex-row flex-wrap">
-                    {events.map((e) => {
-                        return <EventMarker key={e} eventType={e} />;
-                    })}
-                </div>
-                <div className="flex flex-row flex-wrap">
-                    {photos.map((photo) => {
-                        return (
-                            <PhotoThumbnail
-                                key={photo.key}
-                                thumbnailUrl={photo.thumbnail}
-                                photoUrl={photo.image}
-                                timestamp={photo.created}
-                            />
-                        );
-                    })}
-                </div>
-                <div className="flex flex-col">
-                    {notes.map((note) => {
-                        return (
-                            <NoteCollapse
-                                key={note.timestamp}
-                                note={note}
-                            />
-                        );
-                    })}
-                </div>
-            </div>
-        );
-    };
-
-    TimelineContent.propTypes = {
-        events: PropTypes.array.isRequired,
-        notes: PropTypes.array.isRequired,
-        photos: PropTypes.array.isRequired
-    };
-
-    const eventIconMap = {
-        'water': (
-            <FontAwesomeIcon icon={faDroplet} className="mr-2 text-info" />
-        ),
-        'fertilize': (
-            <FontAwesomeIcon icon={faSeedling} className="mr-2 text-success" />
-        ),
-        'prune': (
-            <FontAwesomeIcon icon={faScissors} className="mr-2 text-prune" />
-        ),
-        'repot': (
-            <FontAwesomeIcon icon={faMound} className="mr-2 text-repot" />
-        ),
-    };
-
-    const EventMarker = ({ eventType }) => {
-        return (
-            <span className="m-2 whitespace-nowrap text-sm md:text-base">
-                {eventIconMap[eventType]}
-                {pastTense(capitalize(eventType))}
-            </span>
-        );
-    };
-
-    EventMarker.propTypes = {
-        eventType: PropTypes.string.isRequired
-    };
-
-    // Photo thumbnail that opens larger popover when clicked
-    const PhotoThumbnail = ({ thumbnailUrl, photoUrl, timestamp }) => {
-        const [popoverOpen, setPopoverOpen] = useState(false);
-
-        return (
-            <Popover
-                isOpen={popoverOpen}
-                positions={["top", "bottom", "left", "right"]}
-                align="center"
-                padding={8}
-                reposition={true}
-                onClickOutside={() => setPopoverOpen(false)}
-                content={
-                    <div className="popover-content popover-enter">
-                        <a href={photoUrl}>
-                            <img
-                                loading="lazy"
-                                className="rounded-lg popover-image mx-4"
-                                src={thumbnailUrl}
-                            />
-                        </a>
-                    </div>
-                }
-            >
-                <div
-                    onClick={() => setPopoverOpen(!popoverOpen)}
-                    title={timestampToReadable(timestamp)}
-                >
-                    <img
-                        loading="lazy"
-                        className={`rounded-lg m-2 object-cover w-[4.9rem]
-                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]`}
-                        src={thumbnailUrl}
-                    />
-                </div>
-            </Popover>
-        );
-    };
-
-    PhotoThumbnail.propTypes = {
-        thumbnailUrl: PropTypes.string.isRequired,
-        photoUrl: PropTypes.string.isRequired,
-        timestamp: PropTypes.string.isRequired
-    };
-
-    const NoteCollapse = ({ note }) => {
-        const [expanded, setExpanded] = useState(false);
-
-        const readableTimestamp = timestampToReadable(note.timestamp);
-
-        const editNote = () => {
-            noteModalRef.current.open(note);
-        };
-
-        return (
-            <div className="m-2 flex flex-row">
-                <FontAwesomeIcon
-                    icon={faPenToSquare}
-                    className={clsx(
-                        'w-4 h-4 mr-2 mt-1',
-                        archived || 'cursor-pointer'
-                    )}
-                    onClick={archived ? null : editNote}
-                />
-                <div
-                    className={clsx(
-                        'cursor-pointer',
-                        expanded || 'line-clamp-1'
-                    )}
-                    title={readableTimestamp}
-                    onClick={() => setExpanded(!expanded)}
-                >
-                    <span
-                        className="text-sm md:text-base mr-2 after:content-['\200B']"
-                    >
-                        {note.text}
-                    </span>
-                    <span className='text-xs'>
-                        {readableTimestamp.split('-')[0].trim()}
-                    </span>
-                </div>
-            </div>
-        );
-    };
-
-    NoteCollapse.propTypes = {
-        note: PropTypes.shape({
-            text: PropTypes.string.isRequired,
-            timestamp: PropTypes.string.isRequired
-        }).isRequired
-    };
-
-    // Takes year-month string (ie 2024-03)
-    const MonthDivider = ({ yearMonth }) => {
-        return (
-            <div
-                className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
-                ref={el => sectionRefs.current[yearMonth] = el}
-            >
-                {DateTime.fromFormat(yearMonth, 'yyyy-MM').toFormat('MMMM yyyy')}
-            </div>
-        );
-    };
-
-    MonthDivider.propTypes = {
-        yearMonth: PropTypes.string.isRequired
-    };
-
-    // Takes year-month string (ie 2024-03) and array containing object for
-    // each day within month with events/photos. Returns divider with year and
-    // month text followed by pairs of divs for each day (populates grid).
-    const MonthSection = ({ yearMonth, days }) => {
-        return (
-            <>
-                <MonthDivider yearMonth={yearMonth} />
-                {days.map((day) => {
-                    return (
-                        <Fragment key={day.timestamp}>
-                            <div
-                                className="scroll-mt-20"
-                                data-date={day.timestamp}
-                            >
-                                <TimelineDate timestamp={day.timestamp} />
-                            </div>
-                            <div>
-                                <TimelineContent
-                                    events={day.events}
-                                    notes={day.notes}
-                                    photos={day.photos}
-                                />
-                            </div>
-                        </Fragment>
-                    );
-                })}
-            </>
-        );
-    };
-
-    MonthSection.propTypes = {
-        yearMonth: PropTypes.string.isRequired,
-        days: PropTypes.array.isRequired
-    };
 
     // History title with dropdown menu (hover) to jump to month/year sections
     const Title = () => {
@@ -543,6 +550,9 @@ const Timeline = ({ plantID, events, archived }) => {
                             <MonthSection
                                 yearMonth={yearMonth}
                                 days={sortedEvents[yearMonth]}
+                                archived={archived}
+                                sectionRefs={sectionRefs}
+                                noteModalRef={noteModalRef}
                             />
                         </Fragment>
                     ))}

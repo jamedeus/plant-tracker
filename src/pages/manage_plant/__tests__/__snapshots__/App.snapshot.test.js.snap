@@ -1288,7 +1288,7 @@ exports[`App matches snapshot 1`] = `
                   >
                     <img
                       class="rounded-lg m-2 object-cover w-[4.9rem]
-                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                       loading="lazy"
                       src="/media/thumbnails/photo3_thumb.jpg"
                     />
@@ -1333,7 +1333,7 @@ exports[`App matches snapshot 1`] = `
                   >
                     <img
                       class="rounded-lg m-2 object-cover w-[4.9rem]
-                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                       loading="lazy"
                       src="/media/thumbnails/photo2_thumb.jpg"
                     />
@@ -1378,7 +1378,7 @@ exports[`App matches snapshot 1`] = `
                   >
                     <img
                       class="rounded-lg m-2 object-cover w-[4.9rem]
-                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                       loading="lazy"
                       src="/media/thumbnails/photo1_thumb.jpg"
                     />
@@ -4526,7 +4526,7 @@ exports[`App matches snapshot 1`] = `
                 >
                   <img
                     class="rounded-lg m-2 object-cover w-[4.9rem]
-                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/photo3_thumb.jpg"
                   />
@@ -4571,7 +4571,7 @@ exports[`App matches snapshot 1`] = `
                 >
                   <img
                     class="rounded-lg m-2 object-cover w-[4.9rem]
-                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/photo2_thumb.jpg"
                   />
@@ -4616,7 +4616,7 @@ exports[`App matches snapshot 1`] = `
                 >
                   <img
                     class="rounded-lg m-2 object-cover w-[4.9rem]
-                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/photo1_thumb.jpg"
                   />
@@ -7746,7 +7746,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   >
                     <img
                       class="rounded-lg m-2 object-cover w-[4.9rem]
-                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                       loading="lazy"
                       src="/media/thumbnails/photo3_thumb.jpg"
                     />
@@ -7791,7 +7791,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   >
                     <img
                       class="rounded-lg m-2 object-cover w-[4.9rem]
-                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                       loading="lazy"
                       src="/media/thumbnails/photo2_thumb.jpg"
                     />
@@ -7836,7 +7836,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   >
                     <img
                       class="rounded-lg m-2 object-cover w-[4.9rem]
-                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                       loading="lazy"
                       src="/media/thumbnails/photo1_thumb.jpg"
                     />
@@ -10884,7 +10884,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 >
                   <img
                     class="rounded-lg m-2 object-cover w-[4.9rem]
-                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/photo3_thumb.jpg"
                   />
@@ -10929,7 +10929,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 >
                   <img
                     class="rounded-lg m-2 object-cover w-[4.9rem]
-                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/photo2_thumb.jpg"
                   />
@@ -10974,7 +10974,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 >
                   <img
                     class="rounded-lg m-2 object-cover w-[4.9rem]
-                                    h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/photo1_thumb.jpg"
                   />
