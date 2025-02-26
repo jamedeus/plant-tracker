@@ -94,7 +94,7 @@ exports[`App matches snapshot when changing group QR code 1`] = `
               >
                 <div
                   class="card card-compact w-72 p-2 mt-2 mx-auto
-                    shadow bg-neutral text-neutral-content"
+                        shadow bg-neutral text-neutral-content"
                 >
                   <div
                     class="card-body"
@@ -340,7 +340,7 @@ exports[`App matches snapshot when changing group QR code 1`] = `
             >
               <div
                 class="card card-compact w-72 p-2 mt-2 mx-auto
-                    shadow bg-neutral text-neutral-content"
+                        shadow bg-neutral text-neutral-content"
               >
                 <div
                   class="card-body"
@@ -658,7 +658,7 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
               >
                 <div
                   class="card card-compact w-72 p-2 mt-2 mx-auto
-                    shadow bg-neutral text-neutral-content"
+                        shadow bg-neutral text-neutral-content"
                 >
                   <div
                     class="card-body"
@@ -928,7 +928,7 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
             >
               <div
                 class="card card-compact w-72 p-2 mt-2 mx-auto
-                    shadow bg-neutral text-neutral-content"
+                        shadow bg-neutral text-neutral-content"
               >
                 <div
                   class="card-body"
