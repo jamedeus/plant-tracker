@@ -82,6 +82,30 @@ PlantEventButtons.propTypes = {
     handleFertilize: PropTypes.func.isRequired
 };
 
+// Top-left menu button contents
+const MenuOptions = () => {
+    // Get toggle theme option from context
+    const { ToggleThemeOption } = useTheme();
+
+    return (
+        <>
+            <li><a onClick={() => window.location.href = "/"}>
+                Overview
+            </a></li>
+            <li><a onClick={openAddPlantsModal}>
+                Add plants
+            </a></li>
+            <li><a onClick={openRemovePlantsModal}>
+                Remove plants
+            </a></li>
+            <li><a onClick={openChangeQrModal}>
+                Change QR code
+            </a></li>
+            <ToggleThemeOption />
+        </>
+    );
+};
+
 function App() {
     // Load context set by django template
     const [group, setGroup] = useState(() => {
@@ -135,9 +159,6 @@ function App() {
 
     // Create ref to access edit details form
     const editDetailsRef = useRef(null);
-
-    // Get toggle theme option from context
-    const { ToggleThemeOption } = useTheme();
 
     const submitEditModal = async () => {
         const payload = Object.fromEntries(
@@ -247,23 +268,7 @@ function App() {
     return (
         <div className="container flex flex-col mx-auto mb-8">
             <Navbar
-                menuOptions={
-                    <>
-                        <li><a onClick={() => window.location.href = "/"}>
-                            Overview
-                        </a></li>
-                        <li><a onClick={openAddPlantsModal}>
-                            Add plants
-                        </a></li>
-                        <li><a onClick={openRemovePlantsModal}>
-                            Remove plants
-                        </a></li>
-                        <li><a onClick={openChangeQrModal}>
-                            Change QR code
-                        </a></li>
-                        <ToggleThemeOption />
-                    </>
-                }
+                menuOptions={<MenuOptions />}
                 title={group.display_name}
                 titleOptions={
                     <DetailsCard>
