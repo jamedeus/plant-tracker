@@ -210,10 +210,4 @@ describe('PhotoModal', () => {
         // Confirm file input was cleared
         expect(fileInput.files.length).toBe(0);
     });
-
-    it('opens modal when openPhotoModal called', async () => {
-        // Click button, confirm HTMLDialogElement method was called
-        await user.click(app.getByText('Open photo modal'));
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
-    });
 });

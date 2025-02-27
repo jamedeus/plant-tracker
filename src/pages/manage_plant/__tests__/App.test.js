@@ -352,4 +352,28 @@ describe('App', () => {
         // Confirm did not call fetch
         expect(global.fetch).not.toHaveBeenCalled();
     });
+
+    it('opens DefaultPhotoModal when dropdown option clicked', async () => {
+        // Confirm modal is not open
+        expect(app.container.querySelector('#slide0')).toBeNull();
+
+        // Click button, confirm HTMLDialogElement method was called
+        await user.click(app.getByText('Set default photo'));
+        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
+        await waitFor(() => {
+            expect(app.container.querySelector('#slide0')).not.toBeNull();
+        });
+    });
+
+    it('opens ChangeQrModal when dropdown option clicked', async () => {
+        // Confirm modal is not open
+        expect(app.queryByText('You will have 15 minutes to scan the new QR code.')).toBeNull();
+
+        // Click button, confirm HTMLDialogElement method was called
+        await user.click(app.getByText('Change QR code'));
+        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
+        await waitFor(() => {
+            expect(app.queryByText('You will have 15 minutes to scan the new QR code.')).not.toBeNull();
+        });
+    });
 });

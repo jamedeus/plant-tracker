@@ -33,10 +33,12 @@ describe('App', () => {
     it('opens modal when Print QR Codes dropdown option clicked', async () => {
         // Confirm modal has not been opened
         expect(HTMLDialogElement.prototype.showModal).not.toHaveBeenCalled();
+        expect(app.queryByText('96 QR codes per sheet')).toBeNull();
 
         // Click Print QR Codes dropdown option, confirm modal opened
         await user.click(app.getByText("Print QR Codes"));
         expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
+        expect(app.queryByText(/QR codes per sheet/)).not.toBeNull();
     });
 
     it('shows checkboxes and delete button when edit option clicked', async () => {

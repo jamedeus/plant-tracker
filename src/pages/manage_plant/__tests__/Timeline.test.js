@@ -80,6 +80,30 @@ describe('Timeline', () => {
         )).toBeNull();
     });
 
+    it('opens PhotoModal when dropdown option clicked', async () => {
+        // Confirm modal is not open
+        expect(app.queryByTestId('photo-input')).toBeNull();
+
+        // Click button, confirm HTMLDialogElement method was called
+        await user.click(app.getByText('Add photos'));
+        // expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
+        await waitFor(() => {
+            expect(app.queryByTestId('photo-input')).not.toBeNull();
+        });
+    });
+
+    it('opens DeletePhotosModal when dropdown option clicked', async () => {
+        // Confirm modal is not open
+        expect(app.container.querySelector('#photo0')).toBeNull();
+
+        // Click button, confirm HTMLDialogElement method was called
+        await user.click(app.getByText('Delete photos'));
+        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
+        await waitFor(() => {
+            expect(app.container.querySelector('#photo0')).not.toBeNull();
+        });
+    });
+
     it('expands/collapses note text when clicked', async () => {
         // Get reference to note div, confirm is collapsed (default)
         const note = within(app.container.querySelector('.grid')).queryByText(
@@ -97,9 +121,13 @@ describe('Timeline', () => {
     });
 
     it('opens note modal when add note dropdown option is clicked', async () => {
+        // Confirm note modal is not visible
+        expect(app.queryByText('0 / 500')).toBeNull()
+
         // Click dropdown option, confirm HTMLDialogElement method was called
         await user.click(app.getByText('Add note'));
         expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
+        expect(app.getByText('0 / 500')).not.toBeNull()
     });
 
     it('renders new notes in the timeline', async () => {

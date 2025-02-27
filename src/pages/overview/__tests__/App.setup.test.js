@@ -28,9 +28,11 @@ describe('App with empty database', () => {
     it('opens modal when Print QR Codes button clicked', async () => {
         // Confirm modal has not been opened
         expect(HTMLDialogElement.prototype.showModal).not.toHaveBeenCalled();
+        expect(app.queryByText('96 QR codes per sheet')).toBeNull();
 
         // Click Print QR Codes button, confirm modal opened
         await user.click(app.getByRole("button", {name: "Print QR Codes"}));
         expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
+        expect(app.queryByText(/QR codes per sheet/)).not.toBeNull();
     });
 });

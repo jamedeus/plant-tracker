@@ -2,6 +2,7 @@ import React from 'react';
 import { PageWrapper } from 'src/index';
 import ChangeQrModal, { openChangeQrModal } from '../ChangeQrModal';
 import { postHeaders } from 'src/testUtils/headers';
+import { waitFor } from '@testing-library/react';
 
 const TestComponent = () => {
     return (
@@ -77,11 +78,5 @@ describe('ChangeQrModal', () => {
         // Confirm modal appeared with arbitrary error text
         expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
         expect(app.queryByText(/failed to cache UUID/)).not.toBeNull();
-    });
-
-    it('opens modal when openChangeQrModal called', async () => {
-        // Click button, confirm HTMLDialogElement method was called
-        await user.click(app.getByText('Open Change QR Modal'));
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
     });
 });

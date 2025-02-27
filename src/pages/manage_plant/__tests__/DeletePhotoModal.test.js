@@ -38,12 +38,6 @@ describe('DeletePhotosModal', () => {
         await user.click(component.getByText('Open delete photos modal'));
     });
 
-    it('opens modal when openDeletePhotosModal called', async () => {
-        // Click button, confirm HTMLDialogElement method was called
-        await user.click(component.getByText('Open delete photos modal'));
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
-    });
-
     it('disables delete button until at least one photo selected', async() => {
         // Delete button should be disabled
         expect(component.getAllByText('Delete')[0]).toBeDisabled();

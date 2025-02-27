@@ -78,10 +78,4 @@ describe('DefaultPhotoModal', () => {
         // Confirm modal appeared with arbitrary error text
         expect(app.queryByText(/unable to find photo/)).not.toBeNull();
     });
-
-    it('opens modal when openPhotoModal called', async () => {
-        // Click button, confirm HTMLDialogElement method was called
-        await user.click(app.getByText('Open photo modal'));
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
-    });
 });
