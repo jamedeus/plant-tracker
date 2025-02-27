@@ -37,6 +37,9 @@ describe('App', () => {
         // Confirm arbitrary error does not appear on page
         expect(app.queryByText(/failed to edit plant details/)).toBeNull();
 
+        // Open edit modal
+        await user.click(app.getByText("Edit"));
+
         // Click submit button inside edit modal
         const modal = app.getByText("Edit Details").parentElement;
         await user.click(within(modal).getByText("Edit"));
@@ -96,6 +99,7 @@ describe('App', () => {
         expect(app.queryByText(/failed to repot plant/)).toBeNull();
 
         // Simulate user submitting repot modal
+        await user.click(app.getAllByText('Repot plant')[0]);
         const repotModal = app.getAllByText(/Repot plant/)[1].parentElement;
         const submit = repotModal.querySelector('.btn-success');
         await user.click(submit);
@@ -105,6 +109,22 @@ describe('App', () => {
     });
 
     it('shows error modal if error received while adding to group', async() => {
+        // Mock "Remove from group" response (must remove before add button appears)
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                "action": "remove_plant_from_group",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
+
+        // Click "Remove from group" button in details dropdown
+        await user.click(app.getByTitle(/Remove plant from group/));
+        // Confirm "Add to group" button appeared in details dropdown
+        const addButton = app.getByTitle("Add plant to group");
+        expect(addButton).not.toBeNull();
+
         // Mock fetch function to return arbitrary error
         global.fetch = jest.fn(() => Promise.resolve({
             ok: false,
@@ -115,6 +135,9 @@ describe('App', () => {
 
         // Confirm arbitrary error does not appear on page
         expect(app.queryByText(/failed to add plant to group/)).toBeNull();
+
+        // Open AddToGroupModal
+        await user.click(addButton);
 
         // Simulate user selecting group
         const addToGroupModal = app.getByText("Add plant to group").parentElement;

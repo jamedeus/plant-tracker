@@ -1,9 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { XMarkIcon } from '@heroicons/react/16/solid';
 
 // Reusable modal component, can be closed with button or by clicking outside
 const Modal = ({ dialogRef, title, children, className='', onClose }) => {
+    // Don't render children until modal has been opened, keep rendered after
+    const [hasBeenOpened, setHasBeenOpened] = React.useState(false);
+
+    React.useEffect(() => {
+        const dialog = dialogRef.current;
+        if (!dialog) return;
+
+        // Set state the first time modal is opened
+        const observer = new MutationObserver(() => {
+            const open = dialog.hasAttribute("open");
+            if (open && !hasBeenOpened) {
+                setHasBeenOpened(true);
+            }
+        });
+
+        observer.observe(dialog, { attributes: true });
+
+        return () => observer.disconnect();
+    }, [dialogRef, hasBeenOpened]);
+
     return (
         <dialog className="modal" ref={dialogRef} onClose={onClose}>
             <div className={`modal-box text-center flex flex-col pt-4 ${className}`}>
@@ -19,7 +39,7 @@ const Modal = ({ dialogRef, title, children, className='', onClose }) => {
                     </h1>
                 )}
 
-                {children}
+                {hasBeenOpened && children}
             </div>
             <form method="dialog" className="modal-backdrop">
                 <button>close</button>

@@ -235,24 +235,6 @@ exports[`App matches snapshot when changing group QR code 1`] = `
               </svg>
             </button>
           </form>
-          <h3
-            class="font-bold text-lg mb-6"
-          >
-            Error
-          </h3>
-          <div
-            class="min-h-36 flex flex-col justify-center mx-auto
-                             whitespace-pre-line"
-          />
-          <div
-            class="modal-action mx-auto"
-          >
-            <button
-              class="btn"
-            >
-              OK
-            </button>
-          </div>
         </div>
         <form
           class="modal-backdrop"
@@ -481,24 +463,6 @@ exports[`App matches snapshot when changing group QR code 1`] = `
             </svg>
           </button>
         </form>
-        <h3
-          class="font-bold text-lg mb-6"
-        >
-          Error
-        </h3>
-        <div
-          class="min-h-36 flex flex-col justify-center mx-auto
-                             whitespace-pre-line"
-        />
-        <div
-          class="modal-action mx-auto"
-        >
-          <button
-            class="btn"
-          >
-            OK
-          </button>
-        </div>
       </div>
       <form
         class="modal-backdrop"
@@ -823,24 +787,6 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
               </svg>
             </button>
           </form>
-          <h3
-            class="font-bold text-lg mb-6"
-          >
-            Error
-          </h3>
-          <div
-            class="min-h-36 flex flex-col justify-center mx-auto
-                             whitespace-pre-line"
-          />
-          <div
-            class="modal-action mx-auto"
-          >
-            <button
-              class="btn"
-            >
-              OK
-            </button>
-          </div>
         </div>
         <form
           class="modal-backdrop"
@@ -1093,24 +1039,6 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
             </svg>
           </button>
         </form>
-        <h3
-          class="font-bold text-lg mb-6"
-        >
-          Error
-        </h3>
-        <div
-          class="min-h-36 flex flex-col justify-center mx-auto
-                             whitespace-pre-line"
-        />
-        <div
-          class="modal-action mx-auto"
-        >
-          <button
-            class="btn"
-          >
-            OK
-          </button>
-        </div>
       </div>
       <form
         class="modal-backdrop"

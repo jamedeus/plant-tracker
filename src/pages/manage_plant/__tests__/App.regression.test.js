@@ -90,6 +90,9 @@ describe('App', () => {
         const calendar = app.getByText('March 2024').parentNode.parentNode.parentNode;
         expect(calendar.querySelector('.dot-repot')).toBeNull();
 
+        // Open Repot Modal
+        await user.click(app.getAllByText(/Repot plant/)[0]);
+
         // Click Repot Modal submit button
         const repotModal = app.getAllByText(/Repot plant/)[1].parentNode;
         const submit = repotModal.querySelector('.btn-success');
@@ -129,6 +132,9 @@ describe('App', () => {
         // Create 2 mock files
         const file1 = new File(['file1'], 'file1.jpg', { type: 'image/jpeg' });
         const file2 = new File(['file2'], 'file2.jpg', { type: 'image/jpeg' });
+
+        // Open photo modal
+        await user.click(app.getByText('Add photos'));
 
         // Simulate user clicking input and selecting mock files
         const fileInput = app.getByTestId('photo-input');

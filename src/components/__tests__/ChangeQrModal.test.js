@@ -19,7 +19,7 @@ const TestComponent = () => {
 describe('ChangeQrModal', () => {
     let app, user;
 
-    beforeEach(() => {
+    beforeEach(async () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
@@ -27,6 +27,9 @@ describe('ChangeQrModal', () => {
                 <TestComponent />
             </PageWrapper>
         );
+
+        // Open modal
+        await user.click(app.getByText("Open Change QR Modal"));
     });
 
     it('sends correct payload when OK button is clicked', async () => {

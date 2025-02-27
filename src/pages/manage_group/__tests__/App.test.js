@@ -38,6 +38,9 @@ describe('App', () => {
             })
         }));
 
+        // Open edit modal
+        await user.click(app.getByText("Edit"));
+
         // Click submit button inside edit modal
         const modal = app.getByText("Edit Details").parentElement;
         await user.click(within(modal).getByText("Edit"));

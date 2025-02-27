@@ -34,7 +34,7 @@ const TestComponent = ({ context }) => {
 describe('EventHistoryModal', () => {
     let component, user;
 
-    beforeEach(() => {
+    beforeEach(async () => {
         // Deep copy context to prevent changes carrying over to next test
         const context = JSON.parse(JSON.stringify(mockContext));
 
@@ -45,6 +45,9 @@ describe('EventHistoryModal', () => {
                 <TestComponent context={context} />
             </PageWrapper>
         );
+
+        // Open modal
+        await user.click(component.getByText('Open event history modal'));
     });
 
     it('opens modal when openDeletePhotosModal called', async () => {

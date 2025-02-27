@@ -24,7 +24,7 @@ const TestComponent = () => {
 describe('DefaultPhotoModal', () => {
     let app, user;
 
-    beforeEach(() => {
+    beforeEach(async () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
@@ -32,6 +32,9 @@ describe('DefaultPhotoModal', () => {
                 <TestComponent />
             </PageWrapper>
         );
+
+        // Open modal
+        await user.click(app.getByText('Open photo modal'));
     });
 
     it('sends correct payload when default photo is selected', async () => {

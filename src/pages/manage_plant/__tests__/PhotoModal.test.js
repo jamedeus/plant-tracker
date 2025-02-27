@@ -25,7 +25,7 @@ const TestComponent = () => {
 describe('PhotoModal', () => {
     let app, user;
 
-    beforeEach(() => {
+    beforeEach(async () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
@@ -33,6 +33,9 @@ describe('PhotoModal', () => {
                 <TestComponent />
             </PageWrapper>
         );
+
+        // Open modal
+        await user.click(app.getByText('Open photo modal'));
     });
 
     it('sends correct payload when photos are uploaded', async () => {

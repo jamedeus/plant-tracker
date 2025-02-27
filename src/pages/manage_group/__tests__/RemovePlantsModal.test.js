@@ -1,5 +1,5 @@
 import { PageWrapper } from 'src/index';
-import RemovePlantsModal from '../RemovePlantsModal';
+import RemovePlantsModal, { openRemovePlantsModal } from '../RemovePlantsModal';
 import { mockContext } from './mockContext';
 
 describe('RemovePlantsModal', () => {
@@ -16,11 +16,14 @@ describe('RemovePlantsModal', () => {
         );
 
         // Confirm an option was rendered for each plant in plantDetails
-        const titles = component.container.querySelectorAll('.card-title');
-        expect(titles.length).toBe(3);
-        expect(titles[0].innerHTML).toBe("Test Plant");
-        expect(titles[1].innerHTML).toBe("Unnamed Spider Plant");
-        expect(titles[2].innerHTML).toBe("Newest plant");
+        openRemovePlantsModal();
+        await waitFor(() => {
+            const titles = component.container.querySelectorAll('.card-title');
+            expect(titles.length).toBe(3);
+            expect(titles[0].innerHTML).toBe("Test Plant");
+            expect(titles[1].innerHTML).toBe("Unnamed Spider Plant");
+            expect(titles[2].innerHTML).toBe("Newest plant");
+        });
     });
 
     it('renders expected text when no plant options', async () => {
@@ -36,8 +39,11 @@ describe('RemovePlantsModal', () => {
         );
 
         // Confirm no cards, confirm expected text
-        const titles = component.container.querySelectorAll('.card-title');
-        expect(titles.length).toBe(0);
-        expect(component.queryByText('No plants')).not.toBeNull();
+        openRemovePlantsModal();
+        await waitFor(() => {
+            const titles = component.container.querySelectorAll('.card-title');
+            expect(titles.length).toBe(0);
+            expect(component.queryByText('No plants')).not.toBeNull();
+        });
     });
 });

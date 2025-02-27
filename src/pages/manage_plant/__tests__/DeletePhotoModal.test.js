@@ -25,7 +25,7 @@ const TestComponent = () => {
 describe('DeletePhotosModal', () => {
     let component, user;
 
-    beforeEach(() => {
+    beforeEach(async () => {
         // Render component + create userEvent instance to use in tests
         user = userEvent.setup();
         component = render(
@@ -33,6 +33,9 @@ describe('DeletePhotosModal', () => {
                 <TestComponent />
             </PageWrapper>
         );
+
+        // Open modal
+        await user.click(component.getByText('Open delete photos modal'));
     });
 
     it('opens modal when openDeletePhotosModal called', async () => {

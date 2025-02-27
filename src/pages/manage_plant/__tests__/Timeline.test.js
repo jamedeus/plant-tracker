@@ -123,6 +123,9 @@ describe('Timeline', () => {
             'Started flowering'
         )).toBeNull();
 
+        // Open Note Modal
+        await user.click(app.getByText('Add note'));
+
         // Simulate user typing new note and clicking save
         await user.type(
             app.container.querySelector('.textarea'),
@@ -164,7 +167,7 @@ describe('Timeline', () => {
         // Simulate user clicking icon next to note, adding text, clicking save
         const editButton = within(timeline).getByText(
             'One of the older leaves is starting to turn yellow'
-        ).parentElement.children[0];
+        ).parentElement.parentElement.children[0];
         await user.click(editButton);
         await user.type(
             app.container.querySelector('.textarea'),

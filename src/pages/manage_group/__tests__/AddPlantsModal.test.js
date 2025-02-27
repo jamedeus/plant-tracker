@@ -1,5 +1,5 @@
 import { PageWrapper } from 'src/index';
-import AddPlantsModal from '../AddPlantsModal';
+import AddPlantsModal, { openAddPlantsModal } from '../AddPlantsModal';
 import { mockContext } from './mockContext';
 
 describe('AddPlantsModal', () => {
@@ -18,10 +18,13 @@ describe('AddPlantsModal', () => {
 
         // Confirm a card was rendered for each plant in options (all plants in
         // database) that isn't already in details (all plants in group)
-        const titles = component.container.querySelectorAll('.card-title');
-        expect(titles.length).toBe(2);
-        expect(titles[0].innerHTML).toBe("Another test plant");
-        expect(titles[1].innerHTML).toBe("Third test plant");
+        openAddPlantsModal();
+        await waitFor(() => {
+            const titles = component.container.querySelectorAll('.card-title');
+            expect(titles.length).toBe(2);
+            expect(titles[0].innerHTML).toBe("Another test plant");
+            expect(titles[1].innerHTML).toBe("Third test plant");
+        });
     });
 
     it('renders expected text when no plant options', async () => {
@@ -38,8 +41,11 @@ describe('AddPlantsModal', () => {
         );
 
         // Confirm no cards, confirm expected text
-        const titles = component.container.querySelectorAll('.card-title');
-        expect(titles.length).toBe(0);
-        expect(component.queryByText('No plants')).not.toBeNull();
+        openAddPlantsModal();
+        await waitFor(() => {
+            const titles = component.container.querySelectorAll('.card-title');
+            expect(titles.length).toBe(0);
+            expect(component.queryByText('No plants')).not.toBeNull();
+        });
     });
 });

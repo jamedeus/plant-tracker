@@ -6,8 +6,12 @@ import 'src/testUtils/dateMock';
 
 beforeAll(() => {
     // Mock methods not implemented in jsdom
-    HTMLDialogElement.prototype.show = jest.fn();
-    HTMLDialogElement.prototype.showModal = jest.fn();
+    HTMLDialogElement.prototype.show = jest.fn(function () {
+        this.setAttribute("open", "");
+    });
+    HTMLDialogElement.prototype.showModal = jest.fn(function () {
+        this.setAttribute("open", "");
+    });
     HTMLDialogElement.prototype.close = jest.fn();
     window.HTMLElement.prototype.scrollIntoView = jest.fn();
     window.scrollTo = jest.fn();
