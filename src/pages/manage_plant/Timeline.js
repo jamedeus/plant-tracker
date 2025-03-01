@@ -1,4 +1,4 @@
-import React, { useRef, useState, Fragment } from 'react';
+import React, { useRef, useState, Fragment, memo } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { DateTime } from 'luxon';
@@ -38,7 +38,7 @@ const getRelativeTimeString = (timestamp) => {
     }
 };
 
-const TimelineDate = ({ timestamp }) => {
+const TimelineDate = memo(({ timestamp }) => {
     return (
         <div className="flex flex-col h-full whitespace-nowrap text-end md:ml-4">
             <span className="text-sm md:text-lg my-auto md:mt-auto md:mb-0">
@@ -49,7 +49,7 @@ const TimelineDate = ({ timestamp }) => {
             </span>
         </div>
     );
-};
+});
 
 TimelineDate.propTypes = {
     timestamp: PropTypes.string.isRequired
@@ -70,20 +70,20 @@ const eventIconMap = {
     ),
 };
 
-const EventMarker = ({ eventType }) => {
+const EventMarker = memo(({ eventType }) => {
     return (
         <span className="m-2 whitespace-nowrap text-sm md:text-base">
             {eventIconMap[eventType]}
             {pastTense(capitalize(eventType))}
         </span>
     );
-};
+});
 
 EventMarker.propTypes = {
     eventType: PropTypes.string.isRequired
 };
 
-const TimelineContent = ({ events, notes, photos, archived, noteModalRef }) => {
+const TimelineContent = memo(({ events, notes, photos, archived, noteModalRef }) => {
     return (
         <div className="flex flex-col bg-neutral rounded-xl p-2 md:p-4">
             <div className="flex flex-row flex-wrap">
@@ -117,7 +117,7 @@ const TimelineContent = ({ events, notes, photos, archived, noteModalRef }) => {
             </div>
         </div>
     );
-};
+});
 
 TimelineContent.propTypes = {
     events: PropTypes.array.isRequired,
@@ -127,7 +127,7 @@ TimelineContent.propTypes = {
 };
 
 // Photo thumbnail that opens larger popover when clicked
-const PhotoThumbnail = ({ thumbnailUrl, photoUrl, timestamp }) => {
+const PhotoThumbnail = memo(({ thumbnailUrl, photoUrl, timestamp }) => {
     const [popoverOpen, setPopoverOpen] = useState(false);
 
     return (
@@ -163,7 +163,7 @@ const PhotoThumbnail = ({ thumbnailUrl, photoUrl, timestamp }) => {
             </div>
         </Popover>
     );
-};
+});
 
 PhotoThumbnail.propTypes = {
     thumbnailUrl: PropTypes.string.isRequired,
@@ -171,7 +171,7 @@ PhotoThumbnail.propTypes = {
     timestamp: PropTypes.string.isRequired
 };
 
-const NoteCollapse = ({ note, archived, noteModalRef }) => {
+const NoteCollapse = memo(({ note, archived, noteModalRef }) => {
     const [expanded, setExpanded] = useState(false);
 
     const readableTimestamp = timestampToReadable(note.timestamp);
@@ -209,7 +209,7 @@ const NoteCollapse = ({ note, archived, noteModalRef }) => {
             </div>
         </div>
     );
-};
+});
 
 NoteCollapse.propTypes = {
     note: PropTypes.shape({
@@ -220,7 +220,7 @@ NoteCollapse.propTypes = {
 };
 
 // Takes year-month string (ie 2024-03)
-const MonthDivider = ({ yearMonth, sectionRefs }) => {
+const MonthDivider = memo(({ yearMonth, sectionRefs }) => {
     return (
         <div
             className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
@@ -229,7 +229,7 @@ const MonthDivider = ({ yearMonth, sectionRefs }) => {
             {DateTime.fromFormat(yearMonth, 'yyyy-MM').toFormat('MMMM yyyy')}
         </div>
     );
-};
+});
 
 MonthDivider.propTypes = {
     yearMonth: PropTypes.string.isRequired
@@ -238,7 +238,7 @@ MonthDivider.propTypes = {
 // Takes year-month string (ie 2024-03) and array containing object for
 // each day within month with events/photos. Returns divider with year and
 // month text followed by pairs of divs for each day (populates grid).
-const MonthSection = ({ yearMonth, days, archived, sectionRefs, noteModalRef }) => {
+const MonthSection = memo(({ yearMonth, days, archived, sectionRefs, noteModalRef }) => {
     return (
         <>
             <MonthDivider yearMonth={yearMonth} sectionRefs={sectionRefs} />
@@ -265,7 +265,7 @@ const MonthSection = ({ yearMonth, days, archived, sectionRefs, noteModalRef }) 
             })}
         </>
     );
-};
+});
 
 MonthSection.propTypes = {
     yearMonth: PropTypes.string.isRequired,
