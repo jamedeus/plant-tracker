@@ -181,7 +181,10 @@ const NoteCollapse = memo(({ note, archived, noteModalRef }) => {
     };
 
     return (
-        <div className="m-2 flex flex-row">
+        <div className={clsx(
+            "m-2 flex flex-row transition-all duration-300 overflow-hidden",
+            expanded ? 'max-h-96' : 'max-h-6'
+        )}>
             <FontAwesomeIcon
                 icon={faPenToSquare}
                 className={clsx(
@@ -191,10 +194,7 @@ const NoteCollapse = memo(({ note, archived, noteModalRef }) => {
                 onClick={archived ? null : editNote}
             />
             <div
-                className={clsx(
-                    'cursor-pointer',
-                    expanded || 'line-clamp-1'
-                )}
+                className='cursor-pointer text-ellipsis'
                 title={readableTimestamp}
                 onClick={() => setExpanded(!expanded)}
             >

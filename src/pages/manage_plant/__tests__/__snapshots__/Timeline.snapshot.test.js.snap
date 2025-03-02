@@ -1437,7 +1437,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 class="flex flex-col"
               >
                 <div
-                  class="m-2 flex flex-row"
+                  class="m-2 flex flex-row transition-all duration-300 overflow-hidden max-h-6"
                 >
                   <svg
                     aria-hidden="true"
@@ -1455,7 +1455,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                     />
                   </svg>
                   <div
-                    class="cursor-pointer line-clamp-1"
+                    class="cursor-pointer text-ellipsis"
                     title="07:45 AM - March 1, 2024"
                   >
                     <span
@@ -1511,7 +1511,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 class="flex flex-col"
               >
                 <div
-                  class="m-2 flex flex-row"
+                  class="m-2 flex flex-row transition-all duration-300 overflow-hidden max-h-6"
                 >
                   <svg
                     aria-hidden="true"
@@ -1529,7 +1529,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                     />
                   </svg>
                   <div
-                    class="cursor-pointer line-clamp-1"
+                    class="cursor-pointer text-ellipsis"
                     title="04:44 AM - February 26, 2024"
                   >
                     <span
@@ -4445,7 +4445,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
               class="flex flex-col"
             >
               <div
-                class="m-2 flex flex-row"
+                class="m-2 flex flex-row transition-all duration-300 overflow-hidden max-h-6"
               >
                 <svg
                   aria-hidden="true"
@@ -4463,7 +4463,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                   />
                 </svg>
                 <div
-                  class="cursor-pointer line-clamp-1"
+                  class="cursor-pointer text-ellipsis"
                   title="07:45 AM - March 1, 2024"
                 >
                   <span
@@ -4519,7 +4519,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
               class="flex flex-col"
             >
               <div
-                class="m-2 flex flex-row"
+                class="m-2 flex flex-row transition-all duration-300 overflow-hidden max-h-6"
               >
                 <svg
                   aria-hidden="true"
@@ -4537,7 +4537,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                   />
                 </svg>
                 <div
-                  class="cursor-pointer line-clamp-1"
+                  class="cursor-pointer text-ellipsis"
                   title="04:44 AM - February 26, 2024"
                 >
                   <span
@@ -7561,7 +7561,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                 class="flex flex-col"
               >
                 <div
-                  class="m-2 flex flex-row"
+                  class="m-2 flex flex-row transition-all duration-300 overflow-hidden max-h-6"
                 >
                   <svg
                     aria-hidden="true"
@@ -7579,7 +7579,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                     />
                   </svg>
                   <div
-                    class="cursor-pointer line-clamp-1"
+                    class="cursor-pointer text-ellipsis"
                     title="07:45 AM - March 1, 2024"
                   >
                     <span
@@ -7635,7 +7635,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                 class="flex flex-col"
               >
                 <div
-                  class="m-2 flex flex-row"
+                  class="m-2 flex flex-row transition-all duration-300 overflow-hidden max-h-6"
                 >
                   <svg
                     aria-hidden="true"
@@ -7653,7 +7653,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                     />
                   </svg>
                   <div
-                    class="cursor-pointer line-clamp-1"
+                    class="cursor-pointer text-ellipsis"
                     title="04:44 AM - February 26, 2024"
                   >
                     <span
@@ -10610,7 +10610,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
               class="flex flex-col"
             >
               <div
-                class="m-2 flex flex-row"
+                class="m-2 flex flex-row transition-all duration-300 overflow-hidden max-h-6"
               >
                 <svg
                   aria-hidden="true"
@@ -10628,7 +10628,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                   />
                 </svg>
                 <div
-                  class="cursor-pointer line-clamp-1"
+                  class="cursor-pointer text-ellipsis"
                   title="07:45 AM - March 1, 2024"
                 >
                   <span
@@ -10684,7 +10684,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
               class="flex flex-col"
             >
               <div
-                class="m-2 flex flex-row"
+                class="m-2 flex flex-row transition-all duration-300 overflow-hidden max-h-6"
               >
                 <svg
                   aria-hidden="true"
@@ -10702,7 +10702,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                   />
                 </svg>
                 <div
-                  class="cursor-pointer line-clamp-1"
+                  class="cursor-pointer text-ellipsis"
                   title="04:44 AM - February 26, 2024"
                 >
                   <span
