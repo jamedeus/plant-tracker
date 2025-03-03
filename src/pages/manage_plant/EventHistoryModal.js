@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback, memo } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { Tab } from '@headlessui/react';
@@ -14,6 +14,88 @@ export const openEventHistoryModal = () => {
     eventHistoryModalRef.current.showModal();
 };
 
+// Displays timestamp and relative time of a single event
+// When clicked color changes and timestamp is passed to onSelect callback
+const EventCard = memo(({ timestamp, selected, onSelect }) => {
+    const [cardClass, setCardClass] = useState(
+        selected ? 'ring-2 ring-error ring-inset' : ''
+    );
+
+    const toggle = (event) => {
+        if (event.target.checked) {
+            setCardClass('ring-2 ring-error ring-inset');
+        } else {
+            setCardClass('');
+        }
+        onSelect(timestamp);
+    };
+
+    return (
+        <label className={`card card-compact max-w-80 mb-4 mx-auto
+            select-none bg-neutral text-neutral-content ${cardClass}`}
+        >
+            <input
+                type="checkbox"
+                className="hidden"
+                defaultChecked={selected}
+                onChange={toggle}
+            />
+            <div className="card-body text-center">
+                <p className="text-lg font-bold">
+                    {timestampToRelativeDays(timestamp)}
+                </p>
+                <p>
+                    {DateTime.fromISO(
+                        timestamp
+                    ).toFormat("h:mm\u202Fa MMMM dd, yyyy")}
+                </p>
+            </div>
+        </label>
+    );
+});
+
+EventCard.propTypes = {
+    timestamp: PropTypes.string.isRequired,
+    selected: PropTypes.bool.isRequired,
+    onSelect: PropTypes.func.isRequired
+};
+
+// Takes plant.events subkey + ref containing array (track selected events)
+// Renders column of EventCard instances (appends to selected when clicked)
+const EventsCol = ({ events, selectedRef, handleSelect }) => {
+    const onSelect = useCallback((timestamp) => {
+        handleSelect(timestamp, selectedRef);
+    }, [handleSelect, selectedRef]);
+
+    return (
+        <div className="flex flex-col mx-auto">
+            <div className="max-h-half-screen overflow-scroll px-4">
+                {events.length > 0 ? (
+                    events.map((timestamp) => (
+                        <EventCard
+                            key={timestamp}
+                            timestamp={timestamp}
+                            selected={selectedRef.current.includes(timestamp)}
+                            onSelect={onSelect}
+                        />
+                    ))
+                ) : (
+                    <p className="my-8">No events</p>
+                )}
+            </div>
+        </div>
+    );
+};
+
+EventsCol.propTypes = {
+    events: PropTypes.array.isRequired,
+    selectedRef: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.array }),
+    ]).isRequired,
+    handleSelect: PropTypes.func.isRequired
+};
+
 const EventHistoryModal = ({ plant, setPlant }) => {
     eventHistoryModalRef = useRef(null);
 
@@ -27,7 +109,7 @@ const EventHistoryModal = ({ plant, setPlant }) => {
     const [deleteDisabled, setDeleteDisabled] = useState(true);
 
     // Enable delete button if at least 1 event selected, disable if 0 selected
-    const updateDeleteDisabled = () => {
+    const updateDeleteDisabled = useCallback(() => {
         if (
             selectedWaterRef.current.length > 0
             || selectedFertilizeRef.current.length > 0
@@ -38,7 +120,21 @@ const EventHistoryModal = ({ plant, setPlant }) => {
         } else {
             setDeleteDisabled(true);
         }
-    };
+    }, [
+        selectedWaterRef,
+        selectedFertilizeRef,
+        selectedPruneRef,
+        selectedRepotRef
+    ]);
+
+    const handleSelect = useCallback((key, selectedRef) => {
+        if (selectedRef.current.includes(key)) {
+            selectedRef.current = selectedRef.current.filter(item => item !== key);
+        } else {
+            selectedRef.current.push(key);
+        }
+        updateDeleteDisabled();
+    }, [updateDeleteDisabled]);
 
     // Takes timestamp and eventType, removes timestamp from plant.events state
     const removeEvent = (timestamp, eventType) => {
@@ -91,92 +187,6 @@ const EventHistoryModal = ({ plant, setPlant }) => {
         }
     };
 
-    // Displays timestamp and relative time of a single event
-    // When clicked color changes and timestamp is passed to onSelect callback
-    const EventCard = ({ timestamp, selected, onSelect }) => {
-        const [cardClass, setCardClass] = useState(
-            selected ? 'ring-2 ring-error ring-inset' : ''
-        );
-
-        const toggle = (event) => {
-            if (event.target.checked) {
-                setCardClass('ring-2 ring-error ring-inset');
-            } else {
-                setCardClass('');
-            }
-            onSelect(timestamp);
-        };
-
-        return (
-            <label className={`card card-compact max-w-80 mb-4 mx-auto
-                select-none bg-neutral text-neutral-content ${cardClass}`}
-            >
-                <input
-                    type="checkbox"
-                    className="hidden"
-                    defaultChecked={selected}
-                    onChange={toggle}
-                />
-                <div className="card-body text-center">
-                    <p className="text-lg font-bold">
-                        {timestampToRelativeDays(timestamp)}
-                    </p>
-                    <p>
-                        {DateTime.fromISO(
-                            timestamp
-                        ).toFormat("h:mm\u202Fa MMMM dd, yyyy")}
-                    </p>
-                </div>
-            </label>
-        );
-    };
-
-    EventCard.propTypes = {
-        timestamp: PropTypes.string.isRequired,
-        selected: PropTypes.bool.isRequired,
-        onSelect: PropTypes.func.isRequired
-    };
-
-    // Takes plant.events subkey + ref containing array (track selected events)
-    // Renders column of EventCard instances (appends to selected when clicked)
-    const EventsCol = ({ events, selectedRef }) => {
-        const selectEvent = (key) => {
-            if (selectedRef.current.includes(key)) {
-                selectedRef.current = selectedRef.current.filter(item => item !== key);
-            } else {
-                selectedRef.current.push(key);
-            }
-            updateDeleteDisabled();
-        };
-
-        return (
-            <div className="flex flex-col mx-auto">
-                <div className="max-h-half-screen overflow-scroll px-4">
-                    {events.length > 0 ? (
-                        events.map((timestamp) => (
-                            <EventCard
-                                key={timestamp}
-                                timestamp={timestamp}
-                                selected={selectedRef.current.includes(timestamp)}
-                                onSelect={selectEvent}
-                            />
-                        ))
-                    ) : (
-                        <p className="my-8">No events</p>
-                    )}
-                </div>
-            </div>
-        );
-    };
-
-    EventsCol.propTypes = {
-        events: PropTypes.array.isRequired,
-        selectedRef: PropTypes.oneOfType([
-            PropTypes.func,
-            PropTypes.shape({ current: PropTypes.array }),
-        ]).isRequired
-    };
-
     return (
         <Modal dialogRef={eventHistoryModalRef} title='Event History'>
             <Tab.Group>
@@ -212,24 +222,28 @@ const EventHistoryModal = ({ plant, setPlant }) => {
                         <EventsCol
                             events={plant.events.water}
                             selectedRef={selectedWaterRef}
+                            handleSelect={handleSelect}
                         />
                     </Tab.Panel>
                     <Tab.Panel>
                         <EventsCol
                             events={plant.events.fertilize}
                             selectedRef={selectedFertilizeRef}
+                            handleSelect={handleSelect}
                         />
                     </Tab.Panel>
                     <Tab.Panel>
                         <EventsCol
                             events={plant.events.prune}
                             selectedRef={selectedPruneRef}
+                            handleSelect={handleSelect}
                         />
                     </Tab.Panel>
                     <Tab.Panel>
                         <EventsCol
                             events={plant.events.repot}
                             selectedRef={selectedRepotRef}
+                            handleSelect={handleSelect}
                         />
                     </Tab.Panel>
                 </Tab.Panels>
