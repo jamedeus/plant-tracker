@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { localToUTC } from 'src/timestampUtils';
 import { sendPostRequest, parseDomContext } from 'src/util';
 import EditModal from 'src/components/EditModal';
@@ -20,6 +21,54 @@ import { openDefaultPhotoModal } from './DefaultPhotoModal';
 import { showErrorModal } from 'src/components/ErrorModal';
 import Timeline from './Timeline';
 import { faPlus, faBan, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+
+const EventButtons = ({ plant, addEvent }) => {
+    // Create ref to access new event datetime input
+    const eventTimeInput = useRef(null);
+
+    return (
+        <div className="flex flex-col text-center">
+            <span className="text-lg">
+                <LastEventTime
+                    text="watered"
+                    timestamp={plant.events.water[0]}
+                />
+            </span>
+            <span className="text-lg">
+                <LastEventTime
+                    text="fertilized"
+                    timestamp={plant.events.fertilize[0]}
+                />
+            </span>
+            <DatetimeInput inputRef={eventTimeInput} />
+            <div className="flex mx-auto">
+                <button
+                    className="btn btn-info m-2"
+                    onClick={() => addEvent('water', eventTimeInput.current.value)}
+                >
+                    Water
+                </button>
+                <button
+                    className="btn btn-success m-2"
+                    onClick={() => addEvent('fertilize', eventTimeInput.current.value)}
+                >
+                    Fertilize
+                </button>
+                <button
+                    className="btn btn-prune m-2"
+                    onClick={() => addEvent('prune', eventTimeInput.current.value)}
+                >
+                    Prune
+                </button>
+            </div>
+        </div>
+    );
+};
+
+EventButtons.propTypes = {
+    plant: PropTypes.object.isRequired,
+    addEvent: PropTypes.func.isRequired
+};
 
 function App() {
     // Load context set by django template
@@ -55,9 +104,6 @@ function App() {
             window.removeEventListener('pageshow', handleBackButton);
         };
     }, []);
-
-    // Create ref to access new event datetime input
-    const eventTimeInput = useRef(null);
 
     // Create ref to access edit details form
     const editDetailsRef = useRef(null);
@@ -118,11 +164,11 @@ function App() {
 
     // Handler for water and fertilize buttons
     // Takes event type, creates event in database, adds timestamp to state
-    const addEvent = async (eventType) => {
+    const addEvent = async (eventType, timestamp) => {
         const payload = {
             plant_id: plant.uuid,
             event_type: eventType,
-            timestamp: localToUTC(eventTimeInput.current.value)
+            timestamp: localToUTC(timestamp)
         };
         const response = await sendPostRequest('/add_plant_event', payload);
         if (response.ok) {
@@ -254,46 +300,10 @@ function App() {
                     Plant Archived
                 </div>
             ) : (
-                <div className="flex flex-col text-center">
-                    <span className="text-lg">
-                        <LastEventTime
-                            text="watered"
-                            timestamp={plant.events.water[0]}
-                        />
-                    </span>
-                    <span className="text-lg">
-                        <LastEventTime
-                            text="fertilized"
-                            timestamp={plant.events.fertilize[0]}
-                        />
-                    </span>
-                    <DatetimeInput inputRef={eventTimeInput} />
-                    <div className="flex mx-auto">
-                        <button
-                            className="btn btn-info m-2"
-                            onClick={() => addEvent('water')}
-                        >
-                            Water
-                        </button>
-                        <button
-                            className="btn btn-success m-2"
-                            onClick={() => addEvent('fertilize')}
-                        >
-                            Fertilize
-                        </button>
-                        <button
-                            className="btn btn-prune m-2"
-                            onClick={() => addEvent('prune')}
-                        >
-                            Prune
-                        </button>
-                    </div>
-                </div>
+                <EventButtons plant={plant} addEvent={addEvent} />
             )}
 
-            <div className="mx-auto my-8">
-                <EventCalendar events={plant.events} />
-            </div>
+            <EventCalendar events={plant.events} />
 
             <Timeline
                 plantID={plant.uuid}
