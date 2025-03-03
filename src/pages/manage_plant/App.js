@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback, memo } from 'react';
 import PropTypes from 'prop-types';
 import { localToUTC } from 'src/timestampUtils';
 import { sendPostRequest, parseDomContext } from 'src/util';
@@ -70,6 +70,105 @@ EventButtons.propTypes = {
     addEvent: PropTypes.func.isRequired
 };
 
+const DropdownOptions = memo(function DropdownOptions({ archived, groupId }) {
+    // Get toggle theme option from context
+    const { ToggleThemeOption } = useTheme();
+
+    return (
+        <>
+            <li><a onClick={() => window.location.href = "/"}>
+                Overview
+            </a></li>
+            {!archived && (
+                <>
+                    {groupId &&
+                        <li><a href={"/manage/" + groupId}>
+                            Go to group
+                        </a></li>
+                    }
+                    <li><a onClick={openDefaultPhotoModal}>
+                        Set default photo
+                    </a></li>
+                    <li><a onClick={openChangeQrModal}>
+                        Change QR code
+                    </a></li>
+                </>
+            )}
+            <ToggleThemeOption />
+        </>
+    );
+});
+
+DropdownOptions.propTypes = {
+    archived: PropTypes.bool.isRequired,
+    groupId: PropTypes.string
+};
+
+// Contents of dropdown shown when name plant clicked in header
+const DetailsDropdown = memo(function DetailsDropdown({
+    species,
+    potSize,
+    description,
+    handleRemoveGroup,
+    group
+}) {
+    return (
+        <DetailsCard>
+            <div className="flex flex-col">
+                <div className="divider font-bold mt-0">Group</div>
+                {/* Group details if in group, add group button if not */}
+                {group ? (
+                    <div className="flex flex-col text-center">
+                        <a
+                            className="font-bold text-lg"
+                            href={`/manage/${group.uuid}`}
+                        >
+                            { group.name }
+                        </a>
+                        <div className="flex gap-2 mx-auto mt-2">
+                            <IconButton
+                                onClick={handleRemoveGroup}
+                                title='Remove plant from group'
+                                icon={faBan}
+                            />
+                            <IconButton
+                                href={`/manage/${group.uuid}`}
+                                title='Go to group page'
+                                icon={faUpRightFromSquare}
+                            />
+                        </div>
+                    </div>
+                ) : (
+                    <div className="mx-auto mt-2">
+                        <IconButton
+                            onClick={openGroupModal}
+                            title='Add plant to group'
+                            icon={faPlus}
+                        />
+                    </div>
+                )}
+            </div>
+            <div className="divider font-bold">Details</div>
+            <PlantDetails
+                species={species}
+                pot_size={potSize}
+                description={description}
+            />
+        </DetailsCard>
+    );
+});
+
+DetailsDropdown.propTypes = {
+    species: PropTypes.string,
+    potSize: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.number
+    ]),
+    description: PropTypes.string,
+    handleRemoveGroup: PropTypes.func.isRequired,
+    group: PropTypes.object
+};
+
 function App() {
     // Load context set by django template
     const [plant, setPlant] = useState(() => {
@@ -131,7 +230,7 @@ function App() {
     };
 
     // Makes remove_plant_from_group API call, updates state if successful
-    const handleRemoveGroup = async () => {
+    const handleRemoveGroup = useCallback(async () => {
         const response = await sendPostRequest(
             '/remove_plant_from_group',
             {plant_id: plant.uuid}
@@ -143,7 +242,7 @@ function App() {
             const error = await response.json();
             showErrorModal(JSON.stringify(error));
         }
-    };
+    }, []);
 
     const submitEditModal = async () => {
         const payload = Object.fromEntries(
@@ -193,104 +292,24 @@ function App() {
         }
     };
 
-    const DropdownOptions = () => {
-        // Get toggle theme option from context
-        const { ToggleThemeOption } = useTheme();
-
-        const Group = () => {
-            return (
-                <li><a href={"/manage/" + plant.group.uuid}>
-                    Go to group
-                </a></li>
-            );
-        };
-
-        return (
-            <>
-                <li><a onClick={() => window.location.href = "/"}>
-                    Overview
-                </a></li>
-                {!plant.archived && (
-                    <>
-                        {plant.group && <Group />}
-                        <li><a onClick={openDefaultPhotoModal}>
-                            Set default photo
-                        </a></li>
-                        <li><a onClick={openChangeQrModal}>
-                            Change QR code
-                        </a></li>
-                    </>
-                )}
-                <ToggleThemeOption />
-            </>
-        );
-    };
-
-    // Contents of dropdown shown when name plant clicked in header
-    const DetailsDropdown = () => {
-        // Rendered when plant is in a group
-        const Group = () => {
-            const groupLink = `/manage/${plant.group.uuid}`;
-
-            return (
-                <div className="flex flex-col text-center">
-                    <a className="font-bold text-lg" href={groupLink}>
-                        { plant.group.name }
-                    </a>
-                    <div className="flex gap-2 mx-auto mt-2">
-                        <IconButton
-                            onClick={handleRemoveGroup}
-                            title='Remove plant from group'
-                            icon={faBan}
-                        />
-                        <IconButton
-                            href={groupLink}
-                            title='Go to group page'
-                            icon={faUpRightFromSquare}
-                        />
-                    </div>
-                </div>
-            );
-        };
-
-        // Rendered when plant is not in a group
-        const AddGroup = () => {
-            return (
-                <div className="mx-auto mt-2">
-                    <IconButton
-                        onClick={openGroupModal}
-                        title='Add plant to group'
-                        icon={faPlus}
-                    />
-                </div>
-            );
-        };
-
-        return (
-            <DetailsCard>
-                <div className="flex flex-col">
-                    <div className="divider font-bold mt-0">Group</div>
-                    {plant.group ? <Group /> : <AddGroup />}
-                </div>
-                <div className="divider font-bold">Details</div>
-                <PlantDetails
-                    species={plant.species}
-                    pot_size={plant.pot_size}
-                    description={plant.description}
-                />
-            </DetailsCard>
-        );
-    };
-
     return (
         <div className="container flex flex-col mx-auto mb-8">
             <Navbar
                 menuOptions={
-                    <DropdownOptions />
+                    <DropdownOptions
+                        archived={plant.archived}
+                        groupId={plant.group && plant.group.uuid}
+                    />
                 }
                 title={plant.display_name}
                 titleOptions={
-                    <DetailsDropdown />
+                    <DetailsDropdown
+                        species={plant.species}
+                        potSize={plant.pot_size}
+                        description={plant.description}
+                        handleRemoveGroup={handleRemoveGroup}
+                        group={plant.group}
+                    />
                 }
             />
 
