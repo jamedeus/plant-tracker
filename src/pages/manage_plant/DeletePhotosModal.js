@@ -9,11 +9,91 @@ import {
     ChevronRightIcon,
     XMarkIcon
 } from '@heroicons/react/16/solid';
+import clsx from 'clsx';
 
 let deletePhotosModalRef;
 
 export const openDeletePhotosModal = () => {
     deletePhotosModalRef.current.showModal();
+};
+
+// Renders single photo slide with next, prev, and select buttons
+const PhotoSlide = memo(function PhotoSlide({ photo, index, nextPhotoLink, prevPhotoLink, selected, toggle }) {
+    return (
+        <div id={`photo${index}`} className="carousel-item relative w-full mx-1">
+            <div className="flex flex-col mx-auto">
+                <h1 className="mt-auto mb-1 md:text-lg">
+                    {timestampToReadable(photo.created)}
+                </h1>
+                <img
+                    loading="lazy"
+                    src={photo.thumbnail}
+                    className="rounded-xl overflow-hidden mx-auto mb-auto"
+                />
+                <div className={`absolute flex justify-between transform
+                                -translate-y-1/2 left-5 right-5 top-1/2`}
+                >
+                    <a href={prevPhotoLink} className="btn btn-circle no-animation">
+                        <ChevronLeftIcon className="w-6 h-6" />
+                    </a>
+                    <a href={nextPhotoLink} className="btn btn-circle no-animation">
+                        <ChevronRightIcon className="w-6 h-6" />
+                    </a>
+                </div>
+                {/* Select button floats over photo */}
+                <div className="absolute bottom-5 -translate-x-1/2 left-1/2">
+                    <button
+                        className={clsx(
+                            'btn rounded-full',
+                            selected && 'btn-error'
+                        )}
+                        onClick={() => toggle(photo)}
+                    >
+                        Select
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+});
+
+PhotoSlide.propTypes = {
+    photo: PropTypes.object.isRequired,
+    index: PropTypes.number.isRequired,
+    nextPhotoLink: PropTypes.string.isRequired,
+    prevPhotoLink: PropTypes.string.isRequired,
+    selected: PropTypes.bool.isRequired,
+    toggle: PropTypes.func.isRequired
+};
+
+// Rendered on confirm delete screen, allows user to unselect photos
+const ConfirmDeleteRow = memo(function ConfirmDeleteRow({ photo, unselectPhoto }) {
+    return (
+        <Fragment>
+            <div className="my-auto">
+                <button
+                    className="btn-close"
+                    onClick={() => unselectPhoto(photo)}
+                >
+                    <XMarkIcon className="w-8 h-8" />
+                </button>
+            </div>
+            <div className="m-auto">
+                <img
+                    src={photo.thumbnail}
+                    className="rounded-lg max-h-20 md:max-h-32"
+                />
+            </div>
+        </Fragment>
+    );
+});
+
+ConfirmDeleteRow.propTypes = {
+    photo: PropTypes.shape({
+        thumbnail: PropTypes.string.isRequired,
+        key: PropTypes.number.isRequired
+    }).isRequired,
+    unselectPhoto: PropTypes.func.isRequired
 };
 
 const DeletePhotosModal = memo(function DeletePhotosModal({ plantID, photoUrls, setPhotoUrls }) {
@@ -24,6 +104,20 @@ const DeletePhotosModal = memo(function DeletePhotosModal({ plantID, photoUrls, 
 
     // Track photos to delete
     const [selectedPhotos, setSelectedPhotos ] = useState([]);
+
+    // Select button handler
+    const toggleSelected = (photo) => {
+        if (selectedPhotos.includes(photo)) {
+            setSelectedPhotos(selectedPhotos.filter(item => item !== photo));
+        } else {
+            setSelectedPhotos([...selectedPhotos, photo]);
+        }
+    };
+
+    // Remove selected photo button handler on confirmation page
+    const unselectPhoto = (photo) => {
+        setSelectedPhotos(selectedPhotos.filter(item => item !== photo));
+    };
 
     // Delete button handler
     const deleteSelected = async () => {
@@ -73,109 +167,6 @@ const DeletePhotosModal = memo(function DeletePhotosModal({ plantID, photoUrls, 
         }
     };
 
-    const SelectButton = ({ photo, selected }) => {
-        const [btnClass, setBtnClass] = useState(selected ? 'btn-error' : '');
-
-        const toggle = (event) => {
-            if (event.target.checked) {
-                setBtnClass('btn-error');
-                setSelectedPhotos([...selectedPhotos, photo]);
-            } else {
-                setBtnClass('');
-                setSelectedPhotos(selectedPhotos.filter(item => item !== photo));
-            }
-        };
-
-        return (
-            <label className={`btn ${btnClass} rounded-full`}>
-                <input
-                    type="checkbox"
-                    className="hidden"
-                    onChange={toggle}
-                    defaultChecked={selected}
-                />
-                Select
-            </label>
-        );
-    };
-
-    SelectButton.propTypes = {
-        photo: PropTypes.object.isRequired,
-        selected: PropTypes.bool.isRequired
-    };
-
-    // Renders single photo slide with next, prev, and select buttons
-    const PhotoSlide = ({ photo, index }) => {
-        return (
-            <div id={`photo${index}`} className="carousel-item relative w-full mx-1">
-                <div className="flex flex-col mx-auto">
-                    <h1 className="mt-auto mb-1 md:text-lg">
-                        {timestampToReadable(photo.created)}
-                    </h1>
-                    <img
-                        loading="lazy"
-                        src={photo.thumbnail}
-                        className="rounded-xl overflow-hidden mx-auto mb-auto"
-                    />
-                    <div className={`absolute flex justify-between transform
-                                    -translate-y-1/2 left-5 right-5 top-1/2`}
-                    >
-                        <a href={prevPhotoLink(index)} className="btn btn-circle no-animation">
-                            <ChevronLeftIcon className="w-6 h-6" />
-                        </a>
-                        <a href={nextPhotoLink(index)} className="btn btn-circle no-animation">
-                            <ChevronRightIcon className="w-6 h-6" />
-                        </a>
-                    </div>
-                    <div className="absolute flex bottom-5 -translate-x-1/2 left-1/2">
-                        <SelectButton
-                            photo={photo}
-                            selected={selectedPhotos.includes(photo)}
-                        />
-                    </div>
-                </div>
-            </div>
-        );
-    };
-
-    PhotoSlide.propTypes = {
-        photo: PropTypes.object.isRequired,
-        index: PropTypes.number.isRequired
-    };
-
-    // Rendered on confirm delete screen, allows user to unselect photos
-    const ConfirmDeleteRow = ({ photo }) => {
-        const unselect = () => {
-            setSelectedPhotos(selectedPhotos.filter(item => item !== photo));
-        };
-
-        return (
-            <Fragment>
-                <div className="my-auto">
-                    <button
-                        className="btn-close"
-                        onClick={unselect}
-                    >
-                        <XMarkIcon className="w-8 h-8" />
-                    </button>
-                </div>
-                <div className="m-auto">
-                    <img
-                        src={photo.thumbnail}
-                        className="rounded-lg max-h-20 md:max-h-32"
-                    />
-                </div>
-            </Fragment>
-        );
-    };
-
-    ConfirmDeleteRow.propTypes = {
-        photo: PropTypes.shape({
-            thumbnail: PropTypes.string.isRequired,
-            key: PropTypes.number.isRequired
-        }).isRequired
-    };
-
     return (
         <Modal dialogRef={deletePhotosModalRef}>
             <div className={
@@ -191,6 +182,10 @@ const DeletePhotosModal = memo(function DeletePhotosModal({ plantID, photoUrls, 
                                 key={index}
                                 photo={photo}
                                 index={index}
+                                nextPhotoLink={nextPhotoLink(index)}
+                                prevPhotoLink={prevPhotoLink(index)}
+                                selected={selectedPhotos.includes(photo)}
+                                toggle={toggleSelected}
                             />
                         ))}
                     </div>
@@ -225,7 +220,11 @@ const DeletePhotosModal = memo(function DeletePhotosModal({ plantID, photoUrls, 
                 >
                     {selectedPhotos.map(photo => (
                         // eslint-disable-next-line react/prop-types
-                        <ConfirmDeleteRow key={photo.key} photo={photo} />
+                        <ConfirmDeleteRow
+                            key={photo.key}
+                            photo={photo}
+                            unselectPhoto={unselectPhoto}
+                        />
                     ))}
                 </div>
 
