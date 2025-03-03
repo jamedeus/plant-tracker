@@ -22,7 +22,7 @@ import { showErrorModal } from 'src/components/ErrorModal';
 import Timeline from './Timeline';
 import { faPlus, faBan, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 
-const EventButtons = ({ plant, addEvent }) => {
+const EventButtons = ({ events, addEvent }) => {
     // Create ref to access new event datetime input
     const eventTimeInput = useRef(null);
 
@@ -31,13 +31,13 @@ const EventButtons = ({ plant, addEvent }) => {
             <span className="text-lg">
                 <LastEventTime
                     text="watered"
-                    timestamp={plant.events.water[0]}
+                    timestamp={events.water[0]}
                 />
             </span>
             <span className="text-lg">
                 <LastEventTime
                     text="fertilized"
-                    timestamp={plant.events.fertilize[0]}
+                    timestamp={events.fertilize[0]}
                 />
             </span>
             <DatetimeInput inputRef={eventTimeInput} />
@@ -66,7 +66,7 @@ const EventButtons = ({ plant, addEvent }) => {
 };
 
 EventButtons.propTypes = {
-    plant: PropTypes.object.isRequired,
+    events: PropTypes.object.isRequired,
     addEvent: PropTypes.func.isRequired
 };
 
@@ -172,7 +172,10 @@ DetailsDropdown.propTypes = {
 function App() {
     // Load context set by django template
     const [plant, setPlant] = useState(() => {
-        return parseDomContext("plant");
+        return parseDomContext("plant_details");
+    });
+    const [events, setEvents] = useState(() => {
+        return parseDomContext("events");
     });
     const [groupOptions, setGroupOptions] = useState(() => {
         return parseDomContext("group_options");
@@ -188,7 +191,8 @@ function App() {
                     const data = await response.json();
                     // Only update plant and groupOptions (photos and notes can only be
                     // added on this page, outdated species_options won't cause issues)
-                    setPlant(data['plant']);
+                    setPlant(data['plant_details']);
+                    setEvents(data['events']);
                     setGroupOptions(data['group_options']);
                 } else {
                     // Reload page if failed to get new state (plant deleted)
@@ -210,10 +214,11 @@ function App() {
     // Called after successful repot_plant API call, takes RepotEvent params
     const handleRepot = (newPotSize, repotTimestamp) => {
         // Update state with new pot_size and event timestamp
-        let newPlant = {...plant, pot_size: newPotSize};
-        newPlant.events['repot'].push(repotTimestamp);
-        newPlant.events['repot'].sort().reverse();
-        setPlant(newPlant);
+        setPlant({...plant, pot_size: newPotSize});
+        let newEvents = {...events };
+        newEvents['repot'].push(repotTimestamp);
+        newEvents['repot'].sort().reverse();
+        setEvents(newEvents);
 
         // Open modal with instructions to change QR code
         openChangeQrModal();
@@ -272,10 +277,10 @@ function App() {
         const response = await sendPostRequest('/add_plant_event', payload);
         if (response.ok) {
             // Add new event to correct history column, sort chronologically
-            let oldPlant = {...plant};
-            oldPlant.events[eventType].push(payload.timestamp);
-            oldPlant.events[eventType].sort().reverse();
-            setPlant(oldPlant);
+            let oldEvents = {...events};
+            oldEvents[eventType].push(payload.timestamp);
+            oldEvents[eventType].sort().reverse();
+            setEvents(oldEvents);
         } else {
             // Duplicate event timestamp: show error toast for 5 seconds
             if (response.status === 409) {
@@ -319,14 +324,14 @@ function App() {
                     Plant Archived
                 </div>
             ) : (
-                <EventButtons plant={plant} addEvent={addEvent} />
+                <EventButtons events={events} addEvent={addEvent} />
             )}
 
-            <EventCalendar events={plant.events} />
+            <EventCalendar events={events} />
 
             <Timeline
                 plantID={plant.uuid}
-                events={plant.events}
+                events={events}
                 archived={plant.archived}
             />
 
@@ -353,8 +358,9 @@ function App() {
             />
 
             <EventHistoryModal
-                plant={plant}
-                setPlant={setPlant}
+                plantID={plant.uuid}
+                events={events}
+                setEvents={setEvents}
             />
 
             <ChangeQrModal

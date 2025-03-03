@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import { DateTime } from 'luxon';
 import Calendar from 'react-calendar';
 import 'src/calendar.css';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/16/solid';
 
-const EventCalendar = ({ events }) => {
+const EventCalendar = memo(function EventCalendar({ events }) {
     // Convert to object with date string keys, array of event types as value
     const formattedEvents = Object.entries(events).reduce(
         (acc, [eventType, eventDates]) => {
@@ -73,7 +73,7 @@ const EventCalendar = ({ events }) => {
             />
         </div>
     );
-};
+});
 
 EventCalendar.propTypes = {
     events: PropTypes.object.isRequired

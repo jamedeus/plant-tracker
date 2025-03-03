@@ -8,7 +8,8 @@ describe('App', () => {
 
     beforeAll(() => {
         // Create mock state objects
-        createMockContext('plant', mockContext.plant);
+        createMockContext('plant_details', mockContext.plant_details);
+        createMockContext('events', mockContext.events);
         createMockContext('notes', mockContext.notes);
         createMockContext('group_options', mockContext.group_options);
         createMockContext('species_options', mockContext.species_options);

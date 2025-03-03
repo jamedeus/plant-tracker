@@ -60,7 +60,7 @@ EventCard.propTypes = {
     onSelect: PropTypes.func.isRequired
 };
 
-// Takes plant.events subkey + ref containing array (track selected events)
+// Takes events state + ref containing array (track selected events)
 // Renders column of EventCard instances (appends to selected when clicked)
 const EventsCol = ({ events, selectedRef, handleSelect }) => {
     const onSelect = useCallback((timestamp) => {
@@ -96,7 +96,7 @@ EventsCol.propTypes = {
     handleSelect: PropTypes.func.isRequired
 };
 
-const EventHistoryModal = ({ plant, setPlant }) => {
+const EventHistoryModal = ({ plantID, events, setEvents }) => {
     eventHistoryModalRef = useRef(null);
 
     // Create ref to store selected events in each column
@@ -136,21 +136,21 @@ const EventHistoryModal = ({ plant, setPlant }) => {
         updateDeleteDisabled();
     }, [updateDeleteDisabled]);
 
-    // Takes timestamp and eventType, removes timestamp from plant.events state
+    // Takes timestamp and eventType, removes timestamp from events state
     const removeEvent = (timestamp, eventType) => {
-        let oldPlant = {...plant};
-        oldPlant.events[eventType].splice(
-            oldPlant.events[eventType].indexOf(timestamp),
+        let oldEvents = {...events};
+        oldEvents[eventType].splice(
+            oldEvents[eventType].indexOf(timestamp),
             1
         );
-        setPlant(oldPlant);
+        setEvents(oldEvents);
     };
 
     // Handler for modal delete button, posts all selected event types and
     // timestamps to backend, removes events from state if successfully deleted
     const deleteAllSelected = async () => {
         const payload = {
-            plant_id: plant.uuid,
+            plant_id: plantID,
             events: []
         };
 
@@ -220,28 +220,28 @@ const EventHistoryModal = ({ plant, setPlant }) => {
                 <Tab.Panels className="mt-8 mb-4">
                     <Tab.Panel>
                         <EventsCol
-                            events={plant.events.water}
+                            events={events.water}
                             selectedRef={selectedWaterRef}
                             handleSelect={handleSelect}
                         />
                     </Tab.Panel>
                     <Tab.Panel>
                         <EventsCol
-                            events={plant.events.fertilize}
+                            events={events.fertilize}
                             selectedRef={selectedFertilizeRef}
                             handleSelect={handleSelect}
                         />
                     </Tab.Panel>
                     <Tab.Panel>
                         <EventsCol
-                            events={plant.events.prune}
+                            events={events.prune}
                             selectedRef={selectedPruneRef}
                             handleSelect={handleSelect}
                         />
                     </Tab.Panel>
                     <Tab.Panel>
                         <EventsCol
-                            events={plant.events.repot}
+                            events={events.repot}
                             selectedRef={selectedRepotRef}
                             handleSelect={handleSelect}
                         />
@@ -262,8 +262,9 @@ const EventHistoryModal = ({ plant, setPlant }) => {
 };
 
 EventHistoryModal.propTypes = {
-    plant: PropTypes.object.isRequired,
-    setPlant: PropTypes.func.isRequired
+    plantID: PropTypes.string.isRequired,
+    events: PropTypes.object.isRequired,
+    setEvents: PropTypes.func.isRequired
 };
 
 export default EventHistoryModal;

@@ -8,21 +8,22 @@ import { mockContext } from './mockContext';
 const TestComponent = ({ context }) => {
     // Add prune and repot events to mock context
     const state = {
-        ...context.plant,
+        ...context,
         events: {
-            ...context.plant.events,
+            ...context.events,
             prune: ["2024-01-01T15:45:44+00:00"],
             repot: ["2024-01-01T15:45:44+00:00"],
         }
     };
-    const [plant, setPlant] = useState(state);
+    const [events, setEvents] = useState(state.events);
 
     // Render app
     return (
         <>
             <EventHistoryModal
-                plant={plant}
-                setPlant={setPlant}
+                plantID={context.plant_details.uuid}
+                events={events}
+                setEvents={setEvents}
             />
             <button onClick={openEventHistoryModal}>
                 Open event history modal

@@ -1,6 +1,6 @@
 // Simulated django context, parsed into state object
 export const mockContext = {
-    "plant": {
+    "plant_details": {
         "name": "Test Plant",
         "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
         "created": "2023-12-26T01:25:12+00:00",
@@ -11,22 +11,22 @@ export const mockContext = {
         "last_watered": "2024-03-01T05:45:44+00:00",
         "last_fertilized": "2024-03-01T05:45:44+00:00",
         "display_name": "Test Plant",
-        "events": {
-            "water": [
-                "2024-03-01T15:45:44+00:00",
-                "2024-02-29T10:20:15+00:00",
-            ],
-            "fertilize": [
-                "2024-03-01T15:45:44+00:00",
-                "2024-02-26T12:44:12+00:00",
-            ],
-            "prune": [],
-            "repot": [],
-        },
         "group": {
             "name": "Test group",
             "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
         }
+    },
+    "events": {
+        "water": [
+            "2024-03-01T15:45:44+00:00",
+            "2024-02-29T10:20:15+00:00",
+        ],
+        "fertilize": [
+            "2024-03-01T15:45:44+00:00",
+            "2024-02-26T12:44:12+00:00",
+        ],
+        "prune": [],
+        "repot": [],
     },
     "notes": [
         {
@@ -88,7 +88,7 @@ export const mockContext = {
 };
 
 export const mockContextNoEvents = {
-    "plant": {
+    "plant_details": {
         "name": "Test Plant",
         "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
         "created": "2023-12-26T01:25:12+00:00",
@@ -99,16 +99,16 @@ export const mockContextNoEvents = {
         "last_watered": "2024-03-01T05:45:44+00:00",
         "last_fertilized": "2024-03-01T05:45:44+00:00",
         "display_name": "Test Plant",
-        "events": {
-            "water": [],
-            "fertilize": [],
-            "prune": [],
-            "repot": [],
-        },
         "group": {
             "name": "Test group",
             "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
         }
+    },
+    "events": {
+        "water": [],
+        "fertilize": [],
+        "prune": [],
+        "repot": [],
     },
     "notes": [],
     "group_options": [

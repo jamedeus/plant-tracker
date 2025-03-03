@@ -271,7 +271,7 @@ MonthSection.propTypes = {
     archived: PropTypes.bool.isRequired
 };
 
-const Timeline = ({ plantID, events, archived }) => {
+const Timeline = memo(function Timeline({ plantID, events, archived }) {
     // Load context set by django template
     const [notes, setNotes] = useState(() => {
         return parseDomContext("notes");
@@ -586,7 +586,7 @@ const Timeline = ({ plantID, events, archived }) => {
             />
         </div>
     );
-};
+});
 
 Timeline.propTypes = {
     plantID: PropTypes.string.isRequired,

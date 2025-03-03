@@ -7,7 +7,8 @@ import { mockContext } from './mockContext';
 describe('App', () => {
     // Delete mock contexts after each test (isolation)
     afterEach(() => {
-        removeMockContext('plant');
+        removeMockContext('plant_details');
+        removeMockContext('events');
         removeMockContext('notes');
         removeMockContext('group_options');
         removeMockContext('species_options');
@@ -16,7 +17,8 @@ describe('App', () => {
 
     it('matches snapshot', () => {
         // Create mock state objects
-        createMockContext('plant', mockContext.plant);
+        createMockContext('plant_details', mockContext.plant_details);
+        createMockContext('events', mockContext.events);
         createMockContext('notes', mockContext.notes);
         createMockContext('group_options', mockContext.group_options);
         createMockContext('species_options', mockContext.species_options);
@@ -32,11 +34,12 @@ describe('App', () => {
     });
 
     it('matches snapshot when plant is archived', () => {
-        // Set plant.archived to true
-        const plant = { ...mockContext.plant, archived: true };
+        // Set plant_details.archived to true
+        const plant_details = { ...mockContext.plant_details, archived: true };
 
         // Create mock state objects
-        createMockContext('plant', plant);
+        createMockContext('plant_details', plant_details);
+        createMockContext('events', mockContext.events);
         createMockContext('notes', mockContext.notes);
         createMockContext('group_options', mockContext.group_options);
         createMockContext('species_options', mockContext.species_options);

@@ -9,7 +9,8 @@ describe('App', () => {
 
     beforeAll(() => {
         // Create mock state objects
-        createMockContext('plant', mockContext.plant);
+        createMockContext('plant_details', mockContext.plant_details);
+        createMockContext('events', mockContext.events);
         createMockContext('notes', mockContext.notes);
         createMockContext('group_options', mockContext.group_options);
         createMockContext('species_options', mockContext.species_options);
@@ -299,7 +300,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "plant": mockContext.plant,
+                "plant_details": mockContext.plant_details,
+                "events": mockContext.events,
                 "notes": mockContext.notes,
                 "group_options": mockContext.group_options,
                 "species_options": mockContext.species_options,
