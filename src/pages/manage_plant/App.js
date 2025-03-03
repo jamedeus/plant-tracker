@@ -70,7 +70,7 @@ EventButtons.propTypes = {
     addEvent: PropTypes.func.isRequired
 };
 
-const DropdownOptions = memo(function DropdownOptions({ archived, groupId }) {
+const DropdownOptions = memo(function DropdownOptions({ plant }) {
     // Get toggle theme option from context
     const { ToggleThemeOption } = useTheme();
 
@@ -79,10 +79,10 @@ const DropdownOptions = memo(function DropdownOptions({ archived, groupId }) {
             <li><a onClick={() => window.location.href = "/"}>
                 Overview
             </a></li>
-            {!archived && (
+            {!plant.archived && (
                 <>
-                    {groupId &&
-                        <li><a href={"/manage/" + groupId}>
+                    {plant.group &&
+                        <li><a href={"/manage/" + plant.group.uuid}>
                             Go to group
                         </a></li>
                     }
@@ -100,30 +100,23 @@ const DropdownOptions = memo(function DropdownOptions({ archived, groupId }) {
 });
 
 DropdownOptions.propTypes = {
-    archived: PropTypes.bool.isRequired,
-    groupId: PropTypes.string
+    plant: PropTypes.object.isRequired
 };
 
 // Contents of dropdown shown when name plant clicked in header
-const DetailsDropdown = memo(function DetailsDropdown({
-    species,
-    potSize,
-    description,
-    handleRemoveGroup,
-    group
-}) {
+const DetailsDropdown = memo(function DetailsDropdown({ plant, handleRemoveGroup }) {
     return (
         <DetailsCard>
             <div className="flex flex-col">
                 <div className="divider font-bold mt-0">Group</div>
                 {/* Group details if in group, add group button if not */}
-                {group ? (
+                {plant.group ? (
                     <div className="flex flex-col text-center">
                         <a
                             className="font-bold text-lg"
-                            href={`/manage/${group.uuid}`}
+                            href={`/manage/${plant.group.uuid}`}
                         >
-                            { group.name }
+                            { plant.group.name }
                         </a>
                         <div className="flex gap-2 mx-auto mt-2">
                             <IconButton
@@ -132,7 +125,7 @@ const DetailsDropdown = memo(function DetailsDropdown({
                                 icon={faBan}
                             />
                             <IconButton
-                                href={`/manage/${group.uuid}`}
+                                href={`/manage/${plant.group.uuid}`}
                                 title='Go to group page'
                                 icon={faUpRightFromSquare}
                             />
@@ -150,23 +143,17 @@ const DetailsDropdown = memo(function DetailsDropdown({
             </div>
             <div className="divider font-bold">Details</div>
             <PlantDetails
-                species={species}
-                pot_size={potSize}
-                description={description}
+                species={plant.species}
+                pot_size={plant.pot_size}
+                description={plant.description}
             />
         </DetailsCard>
     );
 });
 
 DetailsDropdown.propTypes = {
-    species: PropTypes.string,
-    potSize: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number
-    ]),
-    description: PropTypes.string,
-    handleRemoveGroup: PropTypes.func.isRequired,
-    group: PropTypes.object
+    plant: PropTypes.object.isRequired,
+    handleRemoveGroup: PropTypes.func.isRequired
 };
 
 function App() {
@@ -301,19 +288,13 @@ function App() {
         <div className="container flex flex-col mx-auto mb-8">
             <Navbar
                 menuOptions={
-                    <DropdownOptions
-                        archived={plant.archived}
-                        groupId={plant.group && plant.group.uuid}
-                    />
+                    <DropdownOptions plant={plant} />
                 }
                 title={plant.display_name}
                 titleOptions={
                     <DetailsDropdown
-                        species={plant.species}
-                        potSize={plant.pot_size}
-                        description={plant.description}
+                        plant={plant}
                         handleRemoveGroup={handleRemoveGroup}
-                        group={plant.group}
                     />
                 }
             />
