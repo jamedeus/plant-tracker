@@ -513,7 +513,7 @@ class CachedStateRegressionTests(TestCase):
         state = response.context['state']
 
         # Confirm display_name in context is "Unnamed plant 2"
-        self.assertEqual(state['plant']['display_name'], 'Unnamed plant 2')
+        self.assertEqual(state['plant_details']['display_name'], 'Unnamed plant 2')
 
         # Give first plant a name
         plant1.name = 'My plant'
@@ -524,7 +524,7 @@ class CachedStateRegressionTests(TestCase):
 
         # Confirm display_name in context updated to "Unnamed plant 1"
         self.assertEqual(
-            response.context['state']['plant']['display_name'],
+            response.context['state']['plant_details']['display_name'],
             'Unnamed plant 1'
         )
 
@@ -545,7 +545,7 @@ class CachedStateRegressionTests(TestCase):
         # Request manage_plant page, confirm group name is "Unnamed group 1"
         response = self.client.get(f'/manage/{plant.uuid}')
         state = response.context['state']
-        self.assertEqual(state['plant']['group']['name'], 'Unnamed group 1')
+        self.assertEqual(state['plant_details']['group']['name'], 'Unnamed group 1')
 
         # Give group a name
         group.name = 'Living room'
@@ -554,7 +554,7 @@ class CachedStateRegressionTests(TestCase):
         # Request manage_plant page again, confirm group name was updated
         response = self.client.get(f'/manage/{plant.uuid}')
         state = response.context['state']
-        self.assertEqual(state['plant']['group']['name'], 'Living room')
+        self.assertEqual(state['plant_details']['group']['name'], 'Living room')
 
     def test_plant_options_cache_contains_outdated_plant_thumbnail_url(self):
         '''Issue: the plant_options object that populates manage_group add

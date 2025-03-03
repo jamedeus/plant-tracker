@@ -597,7 +597,7 @@ class ManagePageTests(TestCase):
         # Confirm expected state object
         state = response.context['state']
         self.assertEqual(
-            state['plant'],
+            state['plant_details'],
             {
                 'uuid': str(self.plant1.uuid),
                 'created': self.plant1.created.isoformat(),
@@ -610,13 +610,16 @@ class ManagePageTests(TestCase):
                 'description': None,
                 'last_watered': None,
                 'last_fertilized': None,
-                'events': {
-                    'water': [],
-                    'fertilize': [],
-                    'prune': [],
-                    'repot': []
-                },
                 'group': None,
+            }
+        )
+        self.assertEqual(
+            state['events'],
+            {
+                'water': [],
+                'fertilize': [],
+                'prune': [],
+                'repot': []
             }
         )
 
@@ -663,7 +666,7 @@ class ManagePageTests(TestCase):
 
         # Confirm plant.thumbnail contains URL of most recent photo
         self.assertEqual(
-            response.context['state']['plant']['thumbnail'],
+            response.context['state']['plant_details']['thumbnail'],
             '/media/thumbnails/photo2_thumb.jpg'
         )
 
@@ -730,7 +733,7 @@ class ManagePageTests(TestCase):
 
         # Confirm group key in plant state state contains group details
         self.assertEqual(
-            response.context['state']['plant']['group'],
+            response.context['state']['plant_details']['group'],
             {
                 'name': self.group1.get_display_name(),
                 'uuid': str(self.group1.uuid)
@@ -745,7 +748,7 @@ class ManagePageTests(TestCase):
         # Request manage page, confirm display_name matches name attribute
         response = self.client.get(f'/manage/{self.plant1.uuid}')
         self.assertEqual(
-            response.context['state']['plant']['display_name'],
+            response.context['state']['plant_details']['display_name'],
             'Favorite Plant'
         )
 
@@ -781,7 +784,7 @@ class ManagePageTests(TestCase):
         self.assertEqual(
             response.json(),
             {
-                'plant': {
+                'plant_details': {
                     'uuid': str(self.plant1.uuid),
                     'created': self.plant1.created.isoformat(),
                     'archived': False,
@@ -793,13 +796,13 @@ class ManagePageTests(TestCase):
                     'description': None,
                     'last_watered': None,
                     'last_fertilized': None,
-                    'events': {
-                        'water': [],
-                        'fertilize': [],
-                        'prune': [],
-                        'repot': []
-                    },
                     'group': None,
+                },
+                'events': {
+                    'water': [],
+                    'fertilize': [],
+                    'prune': [],
+                    'repot': []
                 },
                 'notes': [],
                 'photo_urls': [],

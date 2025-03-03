@@ -135,12 +135,12 @@ def build_manage_plant_state(uuid):
     plant = Plant.objects.get(uuid=uuid)
 
     state = {
-        'plant': plant.get_details(),
+        'plant_details': plant.get_details(),
         'photo_urls': plant.get_photo_urls()
     }
 
     # Add all water and fertilize timestamps
-    state['plant']['events'] = {
+    state['events'] = {
         'water': plant.get_water_timestamps(),
         'fertilize': plant.get_fertilize_timestamps(),
         'prune': plant.get_prune_timestamps(),
@@ -155,12 +155,12 @@ def build_manage_plant_state(uuid):
 
     # Add group details if plant is in a group
     if plant.group:
-        state['plant']['group'] = {
+        state['plant_details']['group'] = {
             'name': plant.group.get_display_name(),
             'uuid': str(plant.group.uuid)
         }
     else:
-        state['plant']['group'] = None
+        state['plant_details']['group'] = None
 
     # Cache state indefinitely (updates automatically when database changes)
     cache.set(f'{uuid}_state', state, None)
@@ -183,12 +183,12 @@ def get_manage_plant_state(plant):
     # Overwrite cached display_name if plant has no name (sequential names like)
     # "Unnamed plant 3" may be outdated if other unnamed plants were named)
     if not plant.name:
-        state['plant']['display_name'] = plant.get_display_name()
+        state['plant_details']['display_name'] = plant.get_display_name()
 
     # Overwrite cached group name if plant is in a group (may be outdated if
     # group was renamed since cache saved)
     if plant.group:
-        state['plant']['group']['name'] = plant.group.get_display_name()
+        state['plant_details']['group']['name'] = plant.group.get_display_name()
 
     # Add species and group options (cached separately)
     state['group_options'] = get_group_options()
