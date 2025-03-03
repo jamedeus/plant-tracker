@@ -1,8 +1,8 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 
 // Button with icon, used for dropdown and hidden placeholder on right side
-const DropdownButton = () => {
+const DropdownButton = memo(function DropdownButton() {
     return (
         <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
             <svg
@@ -21,7 +21,7 @@ const DropdownButton = () => {
             </svg>
         </div>
     );
-};
+});
 
 // Renders navbar with dropdown on left and dynamically-sized title in center
 // Optional titleOptions param will be shown in dropdown when title is clicked
