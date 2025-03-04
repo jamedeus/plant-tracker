@@ -24,7 +24,7 @@ const Row = memo(function Row({ filename, removeFile }) {
                 </button>
             </td>
             <td className="text-lg leading-8 w-full text-center">
-                <p className="w-full truncate">{filename}</p>
+                <p className="w-full line-clamp-1">{filename}</p>
             </td>
         </tr>
     );
@@ -150,8 +150,8 @@ const PhotoModal = ({ plantID, photoUrls, setPhotoUrls }) => {
             title={`${uploading ? "Uploading..." : "Upload Photos"}`}
         >
             {/* Photo select/unselect input, shown until user clicks submit */}
-            <div className={`${uploading ? "hidden" : "flex flex-col"}`}>
-                <div className="min-h-36 flex flex-col justify-center mx-auto mt-2">
+            <div className={uploading ? "hidden" : "flex flex-col"}>
+                <div className="min-h-36 flex flex-col justify-center mx-auto mt-2 max-w-full">
                     <input
                         ref={inputRef}
                         type="file"
