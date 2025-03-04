@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/16/solid';
 import GroupDetails from 'src/components/GroupDetails';
 
-const GroupCard = ({ display_name, plants, uuid, location, description, linkPage=true, archived=false }) => {
+const GroupCard = memo(function GroupCard({ display_name, plants, uuid, location, description, linkPage=true, archived=false }) {
     // Track details collapse open state
     const [open, setOpen] = useState(false);
 
@@ -59,7 +59,7 @@ const GroupCard = ({ display_name, plants, uuid, location, description, linkPage
             </div>
         </a>
     );
-};
+});
 
 GroupCard.propTypes = {
     display_name: PropTypes.string.isRequired,

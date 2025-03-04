@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, memo } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,7 +8,7 @@ import PlantDetails from 'src/components/PlantDetails';
 import { capitalize } from 'src/util';
 import { timestampToRelativeCalendar, timestampToReadable} from 'src/timestampUtils';
 
-const PlantCard = ({ display_name, uuid, species, description, pot_size, last_watered, thumbnail, linkPage=true, archived=false }) => {
+const PlantCard = memo(function PlantCard({ display_name, uuid, species, description, pot_size, last_watered, thumbnail, linkPage=true, archived=false }) {
     // Track details collapse open state
     const [open, setOpen] = useState(false);
 
@@ -97,7 +97,7 @@ const PlantCard = ({ display_name, uuid, species, description, pot_size, last_wa
             </div>
         </a>
     );
-};
+});
 
 PlantCard.propTypes = {
     display_name: PropTypes.string.isRequired,
