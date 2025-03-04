@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import { Tab } from '@headlessui/react';
 import print from 'print-js';
 import Modal from 'src/components/Modal';
+import LoadingAnimation from 'src/components/LoadingAnimation';
 import { sendPostRequest } from 'src/util';
 
 // QR code size options + description text shown when selected
@@ -177,9 +178,7 @@ const PrintModal = React.forwardRef(function PrintModal(_, ref) {
                     title='Fetching QR Codes'
                     onClose={resetModal}
                 >
-                    <div className="h-36 mt-2 flex flex-col justify-center mx-auto">
-                        <span className="loading loading-spinner loading-lg"></span>
-                    </div>
+                    <LoadingAnimation className="mt-2" />
                     <div className="modal-action mx-auto">
                         <button className="btn" onClick={cancel}>Cancel</button>
                     </div>

@@ -2,6 +2,7 @@ import React, { useState, useRef, useCallback, memo } from 'react';
 import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
 import Modal from 'src/components/Modal';
+import LoadingAnimation from 'src/components/LoadingAnimation';
 import { XMarkIcon } from '@heroicons/react/16/solid';
 import { showErrorModal } from 'src/components/ErrorModal';
 
@@ -189,9 +190,7 @@ const PhotoModal = ({ plantID, photoUrls, setPhotoUrls }) => {
 
             {/* Loading animation shown after user clicks submit */}
             <div className={uploading ? "flex flex-col" : "hidden"}>
-                <div className="h-36 flex flex-col justify-center mx-auto">
-                    <span className="loading loading-spinner loading-lg"></span>
-                </div>
+                <LoadingAnimation />
             </div>
         </Modal>
     );
