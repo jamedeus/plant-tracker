@@ -1,4 +1,4 @@
-import React, { useState, useRef, useImperativeHandle } from 'react';
+import React, { useState, useRef, useImperativeHandle, memo } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
@@ -8,6 +8,21 @@ import { showErrorModal } from 'src/components/ErrorModal';
 import { sendPostRequest } from 'src/util';
 import { localToUTC, timestampToReadable } from 'src/timestampUtils';
 import { DateTime } from 'luxon';
+
+// Rendered instead of timestamp input when editing note (can't change time)
+const ExistingNoteTimestamp = memo(function ExistingNoteTimestamp({ noteTime }) {
+    const [time, date] = timestampToReadable(noteTime).split('-');
+    return (
+        <>
+            <p>{date}</p>
+            <p className="text-sm">{time}</p>
+        </>
+    );
+});
+
+ExistingNoteTimestamp.propTypes = {
+    noteTime: PropTypes.string.isRequired
+};
 
 const NoteModal = React.forwardRef(function NoteModal({ plantID, notes, setNotes }, ref) {
     // States for text and timestamp inputs
@@ -127,23 +142,12 @@ const NoteModal = React.forwardRef(function NoteModal({ plantID, notes, setNotes
         }
     };
 
-    // Rendered instead of timestamp input when editing note (can't change time)
-    const ExistingNoteTimestamp = () => {
-        const [time, date] = timestampToReadable(noteTime).split('-');
-        return (
-            <>
-                <p>{date}</p>
-                <p className="text-sm">{time}</p>
-            </>
-        );
-    };
-
     return (
         <Modal dialogRef={noteModalRef} title={editingNote ? "Edit Note" : "Add Note"}>
             <div className="flex flex-col">
                 <div className="min-h-36 flex flex-col justify-center mt-2">
                     {editingNote
-                        ? <ExistingNoteTimestamp />
+                        ? <ExistingNoteTimestamp noteTime={noteTime} />
                         : <DatetimeInput inputRef={timestampRef} />
                     }
                     <textarea
