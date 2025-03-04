@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback, memo } from 'react';
 import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
 import Modal from 'src/components/Modal';
@@ -9,6 +9,30 @@ let photoModalRef;
 
 export const openPhotoModal = () => {
     photoModalRef.current.showModal();
+};
+
+// Table row with delete button next to filename
+const Row = memo(function Row({ filename, removeFile }) {
+    return (
+        <tr className="flex max-w-96">
+            <td className="my-auto">
+                <button
+                    className="btn-close"
+                    onClick={() => removeFile(filename)}
+                >
+                    <XMarkIcon className="w-8 h-8" />
+                </button>
+            </td>
+            <td className="text-lg leading-8 w-full text-center">
+                <p className="w-full truncate">{filename}</p>
+            </td>
+        </tr>
+    );
+});
+
+Row.propTypes = {
+    filename: PropTypes.string.isRequired,
+    removeFile: PropTypes.func.isRequired
 };
 
 const PhotoModal = ({ plantID, photoUrls, setPhotoUrls }) => {
@@ -101,61 +125,24 @@ const PhotoModal = ({ plantID, photoUrls, setPhotoUrls }) => {
         }
     };
 
-    // Displays selected files under input
-    const SelectedFiles = () => {
-        // Handler for delete button shown next to each selected file
-        const removeFile = (filename) => {
-            // Remove deleted file from state
-            setSelectedFiles(selectedFiles.filter(file => file.name !== filename));
+    // Handler for delete button shown next to each selected file
+    const removeFile = useCallback((filename) => {
+        // Remove deleted file from state
+        setSelectedFiles((prevSelectedFiles) => {
+            return prevSelectedFiles.filter(file => file.name !== filename);
+        });
 
-            // Copy input FileList into array, remove deleted file
-            const inputFiles = Array.from(inputRef.current.files);
-            const newFiles = inputFiles.filter(file => file.name !== filename);
+        // Copy input FileList into array, remove deleted file
+        const inputFiles = Array.from(inputRef.current.files);
+        const newFiles = inputFiles.filter(file => file.name !== filename);
 
-            // Add remaining files to DataTransfer, overwrite input FileList
-            const data = new DataTransfer();
-            for (let file of newFiles) {
-                data.items.add(file);
-            }
-            inputRef.current.files = data.files;
-        };
-
-        // Table row with delete button next to filename
-        const Row = ({ filename }) => {
-            return (
-                <tr className="flex max-w-96">
-                    <td className="my-auto">
-                        <button
-                            className="btn-close"
-                            onClick={() => removeFile(filename)}
-                        >
-                            <XMarkIcon className="w-8 h-8" />
-                        </button>
-                    </td>
-                    <td className="text-lg leading-8 w-full text-center">
-                        <p className="w-full truncate">{filename}</p>
-                    </td>
-                </tr>
-            );
-        };
-
-        Row.propTypes = {
-            filename: PropTypes.string.isRequired
-        };
-
-        // Return table with 1 row for each selected file
-        return (
-            <div className="max-h-half-screen overflow-y-scroll overflow-x-hidden">
-                <table className="table mt-2">
-                    <tbody>
-                        {selectedFiles.map(file => {
-                            return <Row key={file.name} filename={file.name} />;
-                        })}
-                    </tbody>
-                </table>
-            </div>
-        );
-    };
+        // Add remaining files to DataTransfer, overwrite input FileList
+        const data = new DataTransfer();
+        for (let file of newFiles) {
+            data.items.add(file);
+        }
+        inputRef.current.files = data.files;
+    }, []);
 
     return (
         <Modal
@@ -174,7 +161,19 @@ const PhotoModal = ({ plantID, photoUrls, setPhotoUrls }) => {
                         onChange={handleSelect}
                         data-testid="photo-input"
                     />
-                    <SelectedFiles />
+                    <div className="max-h-half-screen overflow-y-scroll overflow-x-hidden">
+                        <table className="table mt-2">
+                            <tbody>
+                                {selectedFiles.map(file => (
+                                    <Row
+                                        key={file.name}
+                                        filename={file.name}
+                                        removeFile={removeFile}
+                                    />
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <div className="modal-action mx-auto">
