@@ -1,4 +1,4 @@
-import React, { useState, useRef, Fragment } from 'react';
+import React, { useState, useRef, Fragment, memo } from 'react';
 import PropTypes from 'prop-types';
 import { RadioGroup } from '@headlessui/react';
 import Modal from 'src/components/Modal';
@@ -12,6 +12,26 @@ let repotModalRef;
 
 export const openRepotModal = () => {
     repotModalRef.current.showModal();
+};
+
+// Takes integer pot size, renders round div with number centered
+const PotSizeOption = memo(function PotSizeOption({ option }) {
+    return (
+        <RadioGroup.Option value={option} as={Fragment}>
+            {({ checked }) => (
+                <div className={clsx(
+                    'pot-size w-10 h-10 md:w-12 md:h-12',
+                    checked ? 'pot-size-selected' : 'bg-base-300'
+                )}>
+                    <span className="m-auto">{option}</span>
+                </div>
+            )}
+        </RadioGroup.Option>
+    );
+});
+
+PotSizeOption.propTypes = {
+    option: PropTypes.number.isRequired
 };
 
 const RepotModal = ({ plantID, currentPotSize, handleRepot }) => {
@@ -32,26 +52,6 @@ const RepotModal = ({ plantID, currentPotSize, handleRepot }) => {
             return 2;
         }
     })());
-
-    // Takes integer pot size, renders round div with number centered
-    const PotSizeOption = ({ option }) => {
-        return (
-            <RadioGroup.Option value={option} as={Fragment}>
-                {({ checked }) => (
-                    <div className={clsx(
-                        'pot-size w-10 h-10 md:w-12 md:h-12',
-                        checked ? 'pot-size-selected' : 'bg-base-300'
-                    )}>
-                        <span className="m-auto">{option}</span>
-                    </div>
-                )}
-            </RadioGroup.Option>
-        );
-    };
-
-    PotSizeOption.propTypes = {
-        option: PropTypes.number.isRequired
-    };
 
     const isInt = (value) => {
         return !isNaN(value) &&
