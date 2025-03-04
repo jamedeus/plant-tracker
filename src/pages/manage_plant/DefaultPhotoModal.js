@@ -96,17 +96,15 @@ const DefaultPhotoModal = memo(function DefaultPhotoModal({ plantID, photoUrls }
     return (
         <Modal dialogRef={defaultPhotoModalRef} title='Select Default Photo'>
             <div className="carousel w-full h-min">
-                {photoUrls.map((photo, index) => {
-                    return (
-                        <PhotoSlide
-                            key={index}
-                            index={index}
-                            photoUrl={photo.thumbnail}
-                            photoKey={photo.key}
-                            timestamp={photo.created}
-                        />
-                    );
-                })}
+                {photoUrls.map((photo, index) => (
+                    <PhotoSlide
+                        key={index}
+                        index={index}
+                        photoUrl={photo.thumbnail}
+                        photoKey={photo.key}
+                        timestamp={photo.created}
+                    />
+                ))}
             </div>
         </Modal>
     );

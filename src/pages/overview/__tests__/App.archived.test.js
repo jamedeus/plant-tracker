@@ -9,14 +9,12 @@ describe('App', () => {
 
     beforeAll(() => {
         // Create mock state objects (flip all archived bools to true)
-        createMockContext('plants', mockContext.plants.map(plant => {
-            plant.archived = true;
-            return plant;
-        }));
-        createMockContext('groups', mockContext.groups.map(group => {
-            group.archived = true;
-            return group;
-        }));
+        createMockContext('plants', mockContext.plants.map(plant => (
+            { ...plant, archived: true }
+        )));
+        createMockContext('groups', mockContext.groups.map(group => (
+            { ...group, archived: true }
+        )));
 
         // Mock window.location to simulate archived overview
         delete window.location;

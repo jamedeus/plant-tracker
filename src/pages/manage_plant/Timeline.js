@@ -87,33 +87,29 @@ const TimelineContent = memo(({ events, notes, photos, archived, noteModalRef })
     return (
         <div className="flex flex-col bg-neutral rounded-xl p-2 md:p-4">
             <div className="flex flex-row flex-wrap">
-                {events.map((e) => {
-                    return <EventMarker key={e} eventType={e} />;
-                })}
+                {events.map((e) => (
+                    <EventMarker key={e} eventType={e} />
+                ))}
             </div>
             <div className="flex flex-row flex-wrap">
-                {photos.map((photo) => {
-                    return (
-                        <PhotoThumbnail
-                            key={photo.key}
-                            thumbnailUrl={photo.thumbnail}
-                            photoUrl={photo.image}
-                            timestamp={photo.created}
-                        />
-                    );
-                })}
+                {photos.map((photo) => (
+                    <PhotoThumbnail
+                        key={photo.key}
+                        thumbnailUrl={photo.thumbnail}
+                        photoUrl={photo.image}
+                        timestamp={photo.created}
+                    />
+                ))}
             </div>
             <div className="flex flex-col">
-                {notes.map((note) => {
-                    return (
-                        <NoteCollapse
-                            key={note.timestamp}
-                            note={note}
-                            archived={archived}
-                            noteModalRef={noteModalRef}
-                        />
-                    );
-                })}
+                {notes.map((note) => (
+                    <NoteCollapse
+                        key={note.timestamp}
+                        note={note}
+                        archived={archived}
+                        noteModalRef={noteModalRef}
+                    />
+                ))}
             </div>
         </div>
     );
@@ -240,27 +236,25 @@ const MonthSection = memo(({ yearMonth, days, archived, sectionRefs, noteModalRe
     return (
         <>
             <MonthDivider yearMonth={yearMonth} sectionRefs={sectionRefs} />
-            {days.map((day) => {
-                return (
-                    <Fragment key={day.timestamp}>
-                        <div
-                            className="scroll-mt-20"
-                            data-date={day.timestamp}
-                        >
-                            <TimelineDate timestamp={day.timestamp} />
-                        </div>
-                        <div>
-                            <TimelineContent
-                                events={day.events}
-                                notes={day.notes}
-                                photos={day.photos}
-                                archived={archived}
-                                noteModalRef={noteModalRef}
-                            />
-                        </div>
-                    </Fragment>
-                );
-            })}
+            {days.map((day) => (
+                <Fragment key={day.timestamp}>
+                    <div
+                        className="scroll-mt-20"
+                        data-date={day.timestamp}
+                    >
+                        <TimelineDate timestamp={day.timestamp} />
+                    </div>
+                    <div>
+                        <TimelineContent
+                            events={day.events}
+                            notes={day.notes}
+                            photos={day.photos}
+                            archived={archived}
+                            noteModalRef={noteModalRef}
+                        />
+                    </div>
+                </Fragment>
+            ))}
         </>
     );
 });
@@ -460,15 +454,13 @@ const Timeline = memo(function Timeline({ plantID, events, archived }) {
     const QuickNavigation = ({ navigationOptions }) => {
         return (
             <>
-                {Object.keys(navigationOptions).reverse().map(year => {
-                    return (
-                        <QuickNavigationYear
-                            key={year}
-                            year={year}
-                            months={navigationOptions[year]}
-                        />
-                    );
-                })}
+                {Object.keys(navigationOptions).reverse().map(year => (
+                    <QuickNavigationYear
+                        key={year}
+                        year={year}
+                        months={navigationOptions[year]}
+                    />
+                ))}
             </>
         );
     };
@@ -516,15 +508,13 @@ const Timeline = memo(function Timeline({ plantID, events, archived }) {
                 >
                     <summary>{year}</summary>
                     <ul>
-                        {months.map(month => {
-                            return (
-                                <li key={month}>
-                                    <a onClick={() => JumpTo(`${year}-${month}`)}>
-                                        {monthNumToName(month)}
-                                    </a>
-                                </li>
-                            );
-                        })}
+                        {months.map(month => (
+                            <li key={month}>
+                                <a onClick={() => JumpTo(`${year}-${month}`)}>
+                                    {monthNumToName(month)}
+                                </a>
+                            </li>
+                        ))}
                     </ul>
                 </details>
             </li>

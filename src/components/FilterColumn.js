@@ -116,21 +116,19 @@ const SortMenu = ({ sortByKeys, state, setSort }) => {
                 className={`menu menu-md dropdown-content mt-2 z-[99] p-2
                             shadow bg-base-300 rounded-box w-min-content`}
             >
-                {sortByKeys.map((key) => {
-                    return (
-                        <li key={key.key}>
-                            <a
-                                className="flex justify-end"
-                                onClick={() => setSort(key.key)}
-                            >
-                                {state.sortKey === key.key && (
-                                    <OptionArrow down={state.sortDirection} />
-                                )}
-                                {key.display}
-                            </a>
-                        </li>
-                    );
-                })}
+                {sortByKeys.map((key) => (
+                    <li key={key.key}>
+                        <a
+                            className="flex justify-end"
+                            onClick={() => setSort(key.key)}
+                        >
+                            {state.sortKey === key.key && (
+                                <OptionArrow down={state.sortDirection} />
+                            )}
+                            {key.display}
+                        </a>
+                    </li>
+                ))}
             </ul>
         </div>
     );
@@ -328,18 +326,16 @@ const FilterColumn = ({
                 dispatch={dispatch}
             />
             <EditableNodeList editing={editing} selected={selected}>
-                {sortByKey(state.currentContents, state.sortKey).map((item) => {
+                {sortByKey(state.currentContents, state.sortKey).map((item) => (
                     // Render cardComponent by expanding params of each item
                     // Must have UUID param to use as react key
                     // Disable page links in edit mode
-                    return (
-                        <CardComponent
-                            key={item.uuid}
-                            {...item}
-                            linkPage={!editing}
-                        />
-                    );
-                })}
+                    <CardComponent
+                        key={item.uuid}
+                        {...item}
+                        linkPage={!editing}
+                    />
+                ))}
             </EditableNodeList>
             {children}
         </CollapseCol>
