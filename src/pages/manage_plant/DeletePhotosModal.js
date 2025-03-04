@@ -1,4 +1,4 @@
-import React, { useRef, useState, Fragment, memo } from 'react';
+import React, { useRef, useState, useCallback, Fragment, memo } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
@@ -106,13 +106,15 @@ const DeletePhotosModal = memo(function DeletePhotosModal({ plantID, photoUrls, 
     const [selectedPhotos, setSelectedPhotos ] = useState([]);
 
     // Select button handler
-    const toggleSelected = (photo) => {
-        if (selectedPhotos.includes(photo)) {
-            setSelectedPhotos(selectedPhotos.filter(item => item !== photo));
-        } else {
-            setSelectedPhotos([...selectedPhotos, photo]);
-        }
-    };
+    const toggleSelected = useCallback((photo) => {
+        setSelectedPhotos((prevSelectedPhotos) => {
+            if (prevSelectedPhotos.includes(photo)) {
+                return prevSelectedPhotos.filter(item => item !== photo);
+            } else {
+                return [...prevSelectedPhotos, photo];
+            }
+        });
+    }, []);
 
     // Remove selected photo button handler on confirmation page
     const unselectPhoto = (photo) => {
