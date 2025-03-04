@@ -31,9 +31,11 @@ const EventCard = memo(({ timestamp, selected, onSelect }) => {
     };
 
     return (
-        <label className={`card card-compact max-w-80 mb-4 mx-auto
-            select-none bg-neutral text-neutral-content ${cardClass}`}
-        >
+        <label className={clsx(
+            'card card-compact max-w-80 mb-4 mx-auto select-none bg-neutral',
+            'text-neutral-content',
+            cardClass && cardClass
+        )}>
             <input
                 type="checkbox"
                 className="hidden"

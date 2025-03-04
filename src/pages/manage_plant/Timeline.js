@@ -538,11 +538,11 @@ const Timeline = memo(function Timeline({ plantID, events, archived }) {
 
     return (
         <div className={`flex flex-col mt-2 mx-4 md:mx-auto p-4 md:p-8 pt-0 md:pt-0
-                        md:w-full md:max-w-screen-md bg-base-200 rounded-2xl`}
+                         md:w-full md:max-w-screen-md bg-base-200 rounded-2xl`}
         >
             <Title />
             {Object.keys(sortedEvents).length > 0 ? (
-                <div className="grid grid-cols-2 grid-cols-[min-content_1fr] gap-4 md:gap-8">
+                <div className="grid grid-cols-[min-content_1fr] gap-4 md:gap-8">
                     {Object.keys(sortedEvents).map(yearMonth => (
                         <Fragment key={yearMonth}>
                             <MonthSection

@@ -55,7 +55,8 @@ const DefaultPhotoModal = memo(function DefaultPhotoModal({ plantID, photoUrls }
     const PhotoSlide = ({ index, photoUrl, photoKey, timestamp }) => {
         return (
             <div
-                id={`slide${index}`} className="carousel-item relative w-full mx-1"
+                id={`slide${index}`}
+                className="carousel-item relative w-full mx-1"
                 title={timestampToReadable(timestamp)}
             >
                 <img
@@ -64,7 +65,7 @@ const DefaultPhotoModal = memo(function DefaultPhotoModal({ plantID, photoUrls }
                     className="w-full rounded-xl object-scale-down my-auto"
                 />
                 <div className={`absolute flex justify-between transform
-                                -translate-y-1/2 left-5 right-5 top-1/2`}
+                                 -translate-y-1/2 left-5 right-5 top-1/2`}
                 >
                     <a href={prevPhotoLink(index)} className="btn btn-circle">
                         <ChevronLeftIcon className="w-6 h-6" />

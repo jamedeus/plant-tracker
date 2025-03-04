@@ -126,7 +126,7 @@ exports[`App matches snapshot 1`] = `
               >
                 <div
                   class="card card-compact w-72 p-2 mt-2 mx-auto
-                        shadow bg-neutral text-neutral-content"
+                         shadow bg-neutral text-neutral-content"
                 >
                   <div
                     class="card-body"
@@ -1110,7 +1110,7 @@ exports[`App matches snapshot 1`] = `
         </div>
         <div
           class="flex flex-col mt-2 mx-4 md:mx-auto p-4 md:p-8 pt-0 md:pt-0
-                        md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
+                         md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
         >
           <div
             class="navbar bg-base-200 rounded-2xl"
@@ -1252,7 +1252,7 @@ exports[`App matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="grid grid-cols-2 grid-cols-[min-content_1fr] gap-4 md:gap-8"
+            class="grid grid-cols-[min-content_1fr] gap-4 md:gap-8"
           >
             <div
               class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
@@ -2151,7 +2151,7 @@ exports[`App matches snapshot 1`] = `
             >
               <div
                 class="card card-compact w-72 p-2 mt-2 mx-auto
-                        shadow bg-neutral text-neutral-content"
+                         shadow bg-neutral text-neutral-content"
               >
                 <div
                   class="card-body"
@@ -3135,7 +3135,7 @@ exports[`App matches snapshot 1`] = `
       </div>
       <div
         class="flex flex-col mt-2 mx-4 md:mx-auto p-4 md:p-8 pt-0 md:pt-0
-                        md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
+                         md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
       >
         <div
           class="navbar bg-base-200 rounded-2xl"
@@ -3277,7 +3277,7 @@ exports[`App matches snapshot 1`] = `
           </div>
         </div>
         <div
-          class="grid grid-cols-2 grid-cols-[min-content_1fr] gap-4 md:gap-8"
+          class="grid grid-cols-[min-content_1fr] gap-4 md:gap-8"
         >
           <div
             class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
@@ -4246,7 +4246,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               >
                 <div
                   class="card card-compact w-72 p-2 mt-2 mx-auto
-                        shadow bg-neutral text-neutral-content"
+                         shadow bg-neutral text-neutral-content"
                 >
                   <div
                     class="card-body"
@@ -5188,7 +5188,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
         </div>
         <div
           class="flex flex-col mt-2 mx-4 md:mx-auto p-4 md:p-8 pt-0 md:pt-0
-                        md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
+                         md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
         >
           <div
             class="navbar bg-base-200 rounded-2xl"
@@ -5289,7 +5289,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
             </div>
           </div>
           <div
-            class="grid grid-cols-2 grid-cols-[min-content_1fr] gap-4 md:gap-8"
+            class="grid grid-cols-[min-content_1fr] gap-4 md:gap-8"
           >
             <div
               class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
@@ -6171,7 +6171,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
             >
               <div
                 class="card card-compact w-72 p-2 mt-2 mx-auto
-                        shadow bg-neutral text-neutral-content"
+                         shadow bg-neutral text-neutral-content"
               >
                 <div
                   class="card-body"
@@ -7113,7 +7113,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
       </div>
       <div
         class="flex flex-col mt-2 mx-4 md:mx-auto p-4 md:p-8 pt-0 md:pt-0
-                        md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
+                         md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
       >
         <div
           class="navbar bg-base-200 rounded-2xl"
@@ -7214,7 +7214,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
           </div>
         </div>
         <div
-          class="grid grid-cols-2 grid-cols-[min-content_1fr] gap-4 md:gap-8"
+          class="grid grid-cols-[min-content_1fr] gap-4 md:gap-8"
         >
           <div
             class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"

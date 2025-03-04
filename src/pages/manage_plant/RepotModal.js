@@ -6,6 +6,7 @@ import DatetimeInput from 'src/components/DatetimeInput';
 import { localToUTC } from 'src/timestampUtils';
 import { sendPostRequest } from 'src/util';
 import { showErrorModal } from 'src/components/ErrorModal';
+import clsx from 'clsx';
 
 let repotModalRef;
 
@@ -37,11 +38,10 @@ const RepotModal = ({ plantID, currentPotSize, handleRepot }) => {
         return (
             <RadioGroup.Option value={option} as={Fragment}>
                 {({ checked }) => (
-                    <div
-                        className={`pot-size w-10 h-10 md:w-12 md:h-12 ${
-                            checked ? 'pot-size-selected' : 'bg-base-300'
-                        }`}
-                    >
+                    <div className={clsx(
+                        'pot-size w-10 h-10 md:w-12 md:h-12',
+                        checked ? 'pot-size-selected' : 'bg-base-300'
+                    )}>
                         <span className="m-auto">{option}</span>
                     </div>
                 )}
@@ -115,9 +115,10 @@ const RepotModal = ({ plantID, currentPotSize, handleRepot }) => {
                             {({ checked }) => (
                                 <input
                                     ref={customPotRef}
-                                    className={`pot-size w-32 ${checked ?
-                                        'pot-size-selected' : 'bg-base-300'
-                                    }`}
+                                    className={clsx(
+                                        'pot-size w-32',
+                                        checked ? 'pot-size-selected' : 'bg-base-300'
+                                    )}
                                     placeholder="custom"
                                 />
                             )}

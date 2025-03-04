@@ -212,13 +212,13 @@ const DeletePhotosModal = memo(function DeletePhotosModal({ plantID, photoUrls, 
                 </div>
             </div>
 
-            <div className={`${confirmDelete ? "flex flex-col" : "hidden"}`}>
+            <div className={confirmDelete ? "flex flex-col" : "hidden"}>
                 <h1 className="font-bold text-lg md:text-xl mb-4">
                     Confirm Delete
                 </h1>
 
-                <div className={`grid grid-cols-2 grid-cols-[min-content_1fr]
-                    mx-auto px-8 gap-4 max-h-half-screen overflow-scroll`}
+                <div className={`grid grid-cols-[min-content_1fr] mx-auto px-8
+                                 gap-4 max-h-half-screen overflow-scroll`}
                 >
                     {selectedPhotos.map(photo => (
                         // eslint-disable-next-line react/prop-types

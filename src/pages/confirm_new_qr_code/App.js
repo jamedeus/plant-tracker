@@ -98,7 +98,8 @@ function App() {
                 title={instance.display_name}
                 titleOptions={
                     <div className={`card card-compact w-72 p-2 mt-2 mx-auto
-                        shadow bg-neutral text-neutral-content`}>
+                                     shadow bg-neutral text-neutral-content`}
+                    >
                         <div className="card-body">
                             <Details type={type} instance={instance} />
                         </div>
