@@ -317,6 +317,8 @@ function App() {
         setPlants(plants.filter(
             plant => !selectedPlants.current.includes(plant.uuid))
         );
+        // Clear selection
+        selectedPlants.current = [];
 
         // Send delete request for each selected group, remove uuid from state
         selectedGroups.current.forEach(async group_id => {
@@ -325,6 +327,8 @@ function App() {
         setGroups(groups.filter(
             group => !selectedGroups.current.includes(group.uuid))
         );
+        // Clear selection
+        selectedGroups.current = [];
 
         // Reset editing state
         setEditing(false);
@@ -345,6 +349,8 @@ function App() {
         setPlants(plants.filter(
             plant => !selectedPlants.current.includes(plant.uuid))
         );
+        // Clear selection
+        selectedPlants.current = [];
 
         // Send archive request for each selected group, remove uuid from state
         selectedGroups.current.forEach(async group_id => {
@@ -356,6 +362,8 @@ function App() {
         setGroups(groups.filter(
             group => !selectedGroups.current.includes(group.uuid))
         );
+        // Clear selection
+        selectedGroups.current = [];
 
         // Reset editing state
         setEditing(false);
