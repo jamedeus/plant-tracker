@@ -34,6 +34,8 @@ const RemovePlantsModal = memo(function RemovePlantsModal({ groupID, plantDetail
             setPlantDetails(plantDetails.filter(
                 plant => !data.removed.includes(plant.uuid)
             ));
+            // Clear selection
+            selected.current = [];
         } else {
             const error = await response.json();
             showErrorModal(JSON.stringify(error));

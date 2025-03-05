@@ -32,6 +32,8 @@ const AddPlantsModal = memo(function AddPlantsModal({ groupID, options, plantDet
             // Add objects in response to plantDetails state
             const data = await response.json();
             setPlantDetails([...plantDetails, ...data.added]);
+            // Clear selection
+            selected.current = [];
         } else {
             const error = await response.json();
             showErrorModal(JSON.stringify(error));

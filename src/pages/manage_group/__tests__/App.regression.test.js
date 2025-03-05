@@ -160,4 +160,105 @@ describe('App', () => {
             headers: postHeaders
         });
     });
+
+    // Original bug: The AddPlantsModal selected ref was not cleared after
+    // adding plants. If plant1 was added, then the modal was opened again and
+    // plant2 was added a duplicate card for plant1 would also be added.
+    it('does not add duplicates when AddPlantsModal used twice', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "added": [
+                    mockContext.options[1]
+                ],
+                "failed": []
+            })
+        }));
+
+        // Click Add plants dropdown option
+        await user.click(app.getByText("Add plants"));
+
+        // Get reference to modal, select first plant option, click add button
+        const addPlantsModal = app.getByText("Add Plants").parentElement;
+        await user.click(addPlantsModal.querySelectorAll('.radio')[0]);
+        await user.click(addPlantsModal.querySelector('.btn-success'));
+
+        // Confirm payload contains UUID of first plant
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plants_to_group', {
+            method: 'POST',
+            body: JSON.stringify({
+                "group_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                "plants": [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be16"
+                ]
+            }),
+            headers: postHeaders
+        });
+
+        // Reopen modal again, click add button again
+        await user.click(app.getByText("Add plants"));
+        await user.click(addPlantsModal.querySelector('.btn-success'));
+
+        // Confirm payload contains no UUIDs (selected ref cleared)
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plants_to_group', {
+            method: 'POST',
+            body: JSON.stringify({
+                "group_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                "plants": []
+            }),
+            headers: postHeaders
+        });
+    });
+
+    // Original bug: The RemovePlantsModal selected ref was not cleared after
+    // removing plants. If plant1 was removed, then the modal was opened again
+    // and plant2 was removed the second payload would still include plant1
+    it('does not remove plant twice when RemovePlantsModal used twice', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "removed": [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                ],
+                "failed": []
+            })
+        }));
+
+        // Click Remove plants dropdown option
+        await user.click(app.getByText("Remove plants"));
+
+        // Get reference to modal, select first plant option, click Remove button
+        const removePlantsModal = app.getByText("Remove Plants").parentElement;
+        await user.click(removePlantsModal.querySelectorAll('.radio')[0]);
+        await user.click(removePlantsModal.querySelector('.btn-error'));
+
+        // Confirm correct data posted to /bulk_remove_plants_from_group endpoint
+        // Should only contain UUID of first plant
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_remove_plants_from_group', {
+            method: 'POST',
+            body: JSON.stringify({
+                "group_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                "plants": [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                ]
+            }),
+            headers: postHeaders
+        });
+
+        // Reopen modal again, click add button again
+        await user.click(app.getByText("Remove plants"));
+        await user.click(removePlantsModal.querySelector('.btn-error'));
+
+        // Confirm payload contains no UUIDs (selected ref cleared)
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_remove_plants_from_group', {
+            method: 'POST',
+            body: JSON.stringify({
+                "group_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                "plants": []
+            }),
+            headers: postHeaders
+        });
+    });
 });

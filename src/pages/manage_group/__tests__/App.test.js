@@ -297,12 +297,12 @@ describe('App', () => {
         await user.click(app.getByText("Remove plants"));
 
         // Get reference to modal, confirm contains 3 plant options
-        const addPlantsModal = app.getByText("Remove Plants").parentElement;
-        expect(addPlantsModal.children[2].children.length).toBe(3);
+        const removePlantsModal = app.getByText("Remove Plants").parentElement;
+        expect(removePlantsModal.children[2].children.length).toBe(3);
 
         // Select the first plant option, click Remove button
-        await user.click(addPlantsModal.querySelectorAll('.radio')[0]);
-        await user.click(addPlantsModal.querySelector('.btn-error'));
+        await user.click(removePlantsModal.querySelectorAll('.radio')[0]);
+        await user.click(removePlantsModal.querySelector('.btn-error'));
 
         // Confirm correct data posted to /bulk_remove_plants_from_group endpoint
         // Should only contain UUID of first plant
