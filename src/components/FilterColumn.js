@@ -256,10 +256,15 @@ const FilterColumn = ({
     // currentContents: array of contents objects matching current filter query
     // originalContents: full array of contents objects (ignores filter query)
     // ignoreKeys: array of contents object keys ignored by filter function
+    // query: string entered in filter input (only show items containing query)
     const [state, dispatch] = useReducer(reducer, {
         sortKey: persistedState ? persistedState.sortKey : defaultSortKey,
         sortDirection: persistedState ? persistedState.sortDirection : true,
-        currentContents: contents,
+        currentContents: persistedState ? getCurrentContents(
+            contents,
+            ignoreKeys,
+            persistedState.query
+        ) : contents,
         originalContents: contents,
         ignoreKeys: ignoreKeys,
         query: persistedState ? persistedState.query : ''
