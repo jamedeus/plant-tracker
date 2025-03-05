@@ -161,7 +161,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                 Plants (1)
               </div>
               <div
-                class="collapse-content min-w-0"
+                class="collapse-content min-w-0 overflow-hidden"
               >
                 <div
                   class="flex px-4 mb-4"
@@ -409,7 +409,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                 Groups (1)
               </div>
               <div
-                class="collapse-content min-w-0"
+                class="collapse-content min-w-0 overflow-hidden"
               >
                 <div
                   class="flex px-4 mb-4"
@@ -823,7 +823,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
               Plants (1)
             </div>
             <div
-              class="collapse-content min-w-0"
+              class="collapse-content min-w-0 overflow-hidden"
             >
               <div
                 class="flex px-4 mb-4"
@@ -1071,7 +1071,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
               Groups (1)
             </div>
             <div
-              class="collapse-content min-w-0"
+              class="collapse-content min-w-0 overflow-hidden"
             >
               <div
                 class="flex px-4 mb-4"
@@ -2064,7 +2064,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                 Groups (1)
               </div>
               <div
-                class="collapse-content min-w-0"
+                class="collapse-content min-w-0 overflow-hidden"
               >
                 <div
                   class="flex px-4 mb-4"
@@ -2463,7 +2463,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
               Groups (1)
             </div>
             <div
-              class="collapse-content min-w-0"
+              class="collapse-content min-w-0 overflow-hidden"
             >
               <div
                 class="flex px-4 mb-4"
@@ -2929,7 +2929,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                 Plants (1)
               </div>
               <div
-                class="collapse-content min-w-0"
+                class="collapse-content min-w-0 overflow-hidden"
               >
                 <div
                   class="flex px-4 mb-4"
@@ -3374,7 +3374,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
               Plants (1)
             </div>
             <div
-              class="collapse-content min-w-0"
+              class="collapse-content min-w-0 overflow-hidden"
             >
               <div
                 class="flex px-4 mb-4"
@@ -3886,7 +3886,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                 Plants (1)
               </div>
               <div
-                class="collapse-content min-w-0"
+                class="collapse-content min-w-0 overflow-hidden"
               >
                 <div
                   class="flex px-4 mb-4"
@@ -4134,7 +4134,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                 Groups (1)
               </div>
               <div
-                class="collapse-content min-w-0"
+                class="collapse-content min-w-0 overflow-hidden"
               >
                 <div
                   class="flex px-4 mb-4"
@@ -4533,7 +4533,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
               Plants (1)
             </div>
             <div
-              class="collapse-content min-w-0"
+              class="collapse-content min-w-0 overflow-hidden"
             >
               <div
                 class="flex px-4 mb-4"
@@ -4781,7 +4781,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
               Groups (1)
             </div>
             <div
-              class="collapse-content min-w-0"
+              class="collapse-content min-w-0 overflow-hidden"
             >
               <div
                 class="flex px-4 mb-4"
@@ -5267,7 +5267,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                 Plants (1)
               </div>
               <div
-                class="collapse-content min-w-0"
+                class="collapse-content min-w-0 overflow-hidden"
               >
                 <div
                   class="flex px-4 mb-4"
@@ -5515,7 +5515,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                 Groups (1)
               </div>
               <div
-                class="collapse-content min-w-0"
+                class="collapse-content min-w-0 overflow-hidden"
               >
                 <div
                   class="flex px-4 mb-4"
@@ -5934,7 +5934,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
               Plants (1)
             </div>
             <div
-              class="collapse-content min-w-0"
+              class="collapse-content min-w-0 overflow-hidden"
             >
               <div
                 class="flex px-4 mb-4"
@@ -6182,7 +6182,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
               Groups (1)
             </div>
             <div
-              class="collapse-content min-w-0"
+              class="collapse-content min-w-0 overflow-hidden"
             >
               <div
                 class="flex px-4 mb-4"
