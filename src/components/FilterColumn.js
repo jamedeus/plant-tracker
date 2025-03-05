@@ -227,7 +227,6 @@ FilterInput.propTypes = {
 // - CardComponent: A JSX component rendered for each item in contents.
 // - editing: Bool that controls EditableNodeList checkbox visibility.
 // - selected: Ref containing array, receives selected EditableNodeList items.
-// - openRef: Ref containing bool, persists CollapseCol state after re-render.
 // - ignoreKeys: Array of strings matching attributes in contents objects that
 //   should be ignored when user types in filter input.
 // - sortByKeys: Array of objects with `key` and display attributes, populates
@@ -242,7 +241,6 @@ const FilterColumn = ({
     CardComponent,
     editing,
     selected,
-    openRef,
     ignoreKeys=[],
     sortByKeys=[],
     defaultSortKey=null,
@@ -318,7 +316,6 @@ const FilterColumn = ({
     return (
         <CollapseCol
             title={`${title} (${Object.keys(state.currentContents).length})`}
-            openRef={openRef}
         >
             <FilterInput
                 sortByKeys={sortByKeys}
@@ -350,7 +347,6 @@ FilterColumn.propTypes = {
     selected: PropTypes.shape({
         current: PropTypes.array
     }).isRequired,
-    openRef: PropTypes.object.isRequired,
     ignoreKeys: PropTypes.array,
     sortByKeys: PropTypes.array,
     defaultSortKey: PropTypes.string,

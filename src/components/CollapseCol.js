@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 // Renders DaisyUI collapse with centered title and vertical column of nodes
-const CollapseCol = ({ title, children, openRef, scroll=false }) => {
+const CollapseCol = ({ title, children, scroll=false }) => {
     // Track collapse open state
-    const [open, setOpen] = useState(openRef.current);
+    const [open, setOpen] = useState(true);
 
     const toggle = () => {
         setOpen(!open);
@@ -25,14 +25,11 @@ const CollapseCol = ({ title, children, openRef, scroll=false }) => {
                 }
             }, 150);
         }
-
-        // Keep upstream ref in sync (persist state between re-renders)
-        openRef.current = open;
     }, [open]);
 
     return (
         <div className="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full">
-            <input type="checkbox" onChange={toggle} defaultChecked={open} />
+            <input type="checkbox" onChange={toggle} defaultChecked={true} />
             <div className="collapse-title text-xl font-medium text-center">
                 {title}
             </div>
@@ -46,7 +43,6 @@ const CollapseCol = ({ title, children, openRef, scroll=false }) => {
 CollapseCol.propTypes = {
     title: PropTypes.string.isRequired,
     children: PropTypes.node,
-    openRef: PropTypes.object.isRequired,
     scroll: PropTypes.bool
 };
 

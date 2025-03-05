@@ -65,7 +65,6 @@ describe('FilterColumn', () => {
                 CardComponent={PlantCard}
                 editing={false}
                 selected={{current: []}}
-                openRef={{current: true}}
                 ignoreKeys={[
                     'uuid',
                     'created',
@@ -244,7 +243,6 @@ describe('FilterColumn  ', () => {
             CardComponent: PlantCard,
             editing: false,
             selected: {current: []},
-            openRef: {current: true},
             ignoreKeys: [
                 'uuid',
                 'last_watered',

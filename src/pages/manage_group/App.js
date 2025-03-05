@@ -151,9 +151,6 @@ function App() {
     // Track which plants are selected (after clicking manage button)
     const selectedPlants = useRef([]);
 
-    // Track plants column open/close state between re-renders
-    const plantsOpenRef = useRef(true);
-
     // Ref to access timestamp input used by water all/fertilize all
     const addEventAllTimeInput = useRef(null);
 
@@ -302,7 +299,6 @@ function App() {
                 CardComponent={PlantCard}
                 editing={selectingPlants}
                 selected={selectedPlants}
-                openRef={plantsOpenRef}
                 ignoreKeys={[
                     'uuid',
                     'created',

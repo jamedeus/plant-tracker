@@ -2,14 +2,8 @@ import { useRef } from 'react';
 import CollapseCol from '../CollapseCol';
 
 const TestComponent = () => {
-    const openRef = useRef(false);
-
     return (
-        <CollapseCol
-            title='History'
-            openRef={openRef}
-            scroll={true}
-        >
+        <CollapseCol title='History' scroll={true}>
             <div>
                 <p>Collapse Contents</p>
             </div>
@@ -28,16 +22,17 @@ describe('CollapseCol', () => {
         );
     });
 
-    it('opens when title is clicked', async () => {
-        // Get reference to hidden checkbox, confirm not checked
+    it('opens or closes when title is clicked', async () => {
+        // Get reference to hidden checkbox, confirm checked (collapse open)
         const checkbox = component.getByRole('checkbox');
-        expect(checkbox.checked).toBe(false);
-
-        // Click checkbox (title doesn't work in jsdom), confirm checked
-        await user.click(checkbox);
         expect(checkbox.checked).toBe(true);
 
-        // Wait for animation, confirm scrollIntoView was called
+        // Click checkbox (title doesn't work in jsdom), confirm not checked
+        await user.click(checkbox);
+        expect(checkbox.checked).toBe(false);
+
+        // Click again, wait for animation, confirm scrollIntoView was called
+        await user.click(checkbox);
         await waitFor(() => {
             expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled();
         });

@@ -13,8 +13,6 @@ import { useIsBreakpointActive } from "src/useBreakpoint";
 import clsx from 'clsx';
 
 const PlantsCol = ({ plants, editing, selectedPlants }) => {
-    const openRef = useRef(true);
-
     return (
         <FilterColumn
             title="Plants"
@@ -22,7 +20,6 @@ const PlantsCol = ({ plants, editing, selectedPlants }) => {
             CardComponent={PlantCard}
             editing={editing}
             selected={selectedPlants}
-            openRef={openRef}
             ignoreKeys={[
                 'uuid',
                 'created',
@@ -52,8 +49,6 @@ PlantsCol.propTypes = {
 };
 
 const GroupsCol = ({ groups, editing, selectedGroups }) => {
-    const openRef = useRef(true);
-
     return (
         <FilterColumn
             title="Groups"
@@ -61,7 +56,6 @@ const GroupsCol = ({ groups, editing, selectedGroups }) => {
             CardComponent={GroupCard}
             editing={editing}
             selected={selectedGroups}
-            openRef={openRef}
             ignoreKeys={[
                 'uuid',
                 'created'
