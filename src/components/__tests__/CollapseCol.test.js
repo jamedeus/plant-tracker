@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import CollapseCol from '../CollapseCol';
 
 const TestComponent = () => {

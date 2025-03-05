@@ -10,7 +10,7 @@ const LoadingAnimation = ({ className }) => {
         )}>
             <span className='loading loading-spinner loading-lg'></span>
         </div>
-    )
+    );
 };
 
 LoadingAnimation.propTypes = {

@@ -44,7 +44,7 @@ describe('PrintModal', () => {
         // Open modal
         printModalRef.current.open();
         await waitFor(() => {
-            expect(component.getByText("Generate")).not.toBeNull()
+            expect(component.getByText("Generate")).not.toBeNull();
         });
     });
 

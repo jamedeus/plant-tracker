@@ -347,7 +347,7 @@ const FilterColumn = ({
 FilterColumn.propTypes = {
     title: PropTypes.string.isRequired,
     contents: PropTypes.array.isRequired,
-    CardComponent: PropTypes.func.isRequired,
+    CardComponent: PropTypes.elementType.isRequired,
     editing: PropTypes.bool,
     selected: PropTypes.shape({
         current: PropTypes.array

@@ -2,7 +2,6 @@ import React from 'react';
 import { PageWrapper } from 'src/index';
 import ChangeQrModal, { openChangeQrModal } from '../ChangeQrModal';
 import { postHeaders } from 'src/testUtils/headers';
-import { waitFor } from '@testing-library/react';
 
 const TestComponent = () => {
     return (

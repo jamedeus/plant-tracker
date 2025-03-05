@@ -122,12 +122,12 @@ describe('Timeline', () => {
 
     it('opens note modal when add note dropdown option is clicked', async () => {
         // Confirm note modal is not visible
-        expect(app.queryByText('0 / 500')).toBeNull()
+        expect(app.queryByText('0 / 500')).toBeNull();
 
         // Click dropdown option, confirm HTMLDialogElement method was called
         await user.click(app.getByText('Add note'));
         expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
-        expect(app.getByText('0 / 500')).not.toBeNull()
+        expect(app.getByText('0 / 500')).not.toBeNull();
     });
 
     it('renders new notes in the timeline', async () => {

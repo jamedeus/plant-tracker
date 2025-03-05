@@ -38,7 +38,7 @@ const getRelativeTimeString = (timestamp) => {
     }
 };
 
-const TimelineDate = memo(({ timestamp }) => {
+const TimelineDate = memo(function TimelineDate({ timestamp }) {
     return (
         <div className="flex flex-col h-full whitespace-nowrap text-end md:ml-4">
             <span className="text-sm md:text-lg my-auto md:mt-auto md:mb-0">
@@ -70,7 +70,7 @@ const eventIconMap = {
     ),
 };
 
-const EventMarker = memo(({ eventType }) => {
+const EventMarker = memo(function EventMarker({ eventType }) {
     return (
         <span className="m-2 whitespace-nowrap text-sm md:text-base">
             {eventIconMap[eventType]}
@@ -83,7 +83,7 @@ EventMarker.propTypes = {
     eventType: PropTypes.string.isRequired
 };
 
-const TimelineContent = memo(({ events, notes, photos, archived, noteModalRef }) => {
+const TimelineContent = memo(function TimelineContent({ events, notes, photos, archived, noteModalRef }) {
     return (
         <div className="flex flex-col bg-neutral rounded-xl p-2 md:p-4">
             <div className="flex flex-row flex-wrap">
@@ -119,11 +119,15 @@ TimelineContent.propTypes = {
     events: PropTypes.array.isRequired,
     notes: PropTypes.array.isRequired,
     photos: PropTypes.array.isRequired,
-    archived: PropTypes.bool.isRequired
+    archived: PropTypes.bool.isRequired,
+    noteModalRef: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+    ]).isRequired
 };
 
 // Photo thumbnail that opens larger popover when clicked
-const PhotoThumbnail = memo(({ thumbnailUrl, photoUrl, timestamp }) => {
+const PhotoThumbnail = memo(function PhotoThumbnail({ thumbnailUrl, photoUrl, timestamp }) {
     const [popoverOpen, setPopoverOpen] = useState(false);
 
     return (
@@ -167,7 +171,7 @@ PhotoThumbnail.propTypes = {
     timestamp: PropTypes.string.isRequired
 };
 
-const NoteCollapse = memo(({ note, archived, noteModalRef }) => {
+const NoteCollapse = memo(function NoteCollapse({ note, archived, noteModalRef }) {
     const [expanded, setExpanded] = useState(false);
 
     const readableTimestamp = timestampToReadable(note.timestamp);
@@ -210,11 +214,15 @@ NoteCollapse.propTypes = {
         text: PropTypes.string.isRequired,
         timestamp: PropTypes.string.isRequired
     }).isRequired,
-    archived: PropTypes.bool.isRequired
+    archived: PropTypes.bool.isRequired,
+    noteModalRef: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+    ]).isRequired
 };
 
 // Takes year-month string (ie 2024-03)
-const MonthDivider = memo(({ yearMonth, sectionRefs }) => {
+const MonthDivider = memo(function MonthDivider({ yearMonth, sectionRefs }) {
     return (
         <div
             className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
@@ -226,13 +234,17 @@ const MonthDivider = memo(({ yearMonth, sectionRefs }) => {
 });
 
 MonthDivider.propTypes = {
-    yearMonth: PropTypes.string.isRequired
+    yearMonth: PropTypes.string.isRequired,
+    sectionRefs: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.instanceOf(Object) }),
+    ]).isRequired
 };
 
 // Takes year-month string (ie 2024-03) and array containing object for
 // each day within month with events/photos. Returns divider with year and
 // month text followed by pairs of divs for each day (populates grid).
-const MonthSection = memo(({ yearMonth, days, archived, sectionRefs, noteModalRef }) => {
+const MonthSection = memo(function MonthSection({ yearMonth, days, archived, sectionRefs, noteModalRef }) {
     return (
         <>
             <MonthDivider yearMonth={yearMonth} sectionRefs={sectionRefs} />
@@ -262,7 +274,15 @@ const MonthSection = memo(({ yearMonth, days, archived, sectionRefs, noteModalRe
 MonthSection.propTypes = {
     yearMonth: PropTypes.string.isRequired,
     days: PropTypes.array.isRequired,
-    archived: PropTypes.bool.isRequired
+    archived: PropTypes.bool.isRequired,
+    sectionRefs: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.instanceOf(Object) }),
+    ]).isRequired,
+    noteModalRef: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+    ]).isRequired
 };
 
 const Timeline = memo(function Timeline({ plantID, events, archived }) {

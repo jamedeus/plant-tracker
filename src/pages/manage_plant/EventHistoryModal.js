@@ -16,7 +16,7 @@ export const openEventHistoryModal = () => {
 
 // Displays timestamp and relative time of a single event
 // When clicked color changes and timestamp is passed to onSelect callback
-const EventCard = memo(({ timestamp, selected, onSelect }) => {
+const EventCard = memo(function EventCard({ timestamp, selected, onSelect }) {
     const [cardClass, setCardClass] = useState(
         selected ? 'ring-2 ring-error ring-inset' : ''
     );
