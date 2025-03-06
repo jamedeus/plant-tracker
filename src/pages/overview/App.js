@@ -81,7 +81,7 @@ GroupsCol.propTypes = {
 };
 
 // Render correct components for current state objects
-const Layout = ({ plants, groups, selectedPlants, selectedGroups, editing, plantsColRef, groupsColRef, printModalRef }) => {
+const Layout = ({ plants, groups, selectedPlants, selectedGroups, editing, plantsColRef, groupsColRef, openPrintModal }) => {
     // Determines if 2-column layout or single centered column
     const twoColumns = plants.length > 0 && groups.length > 0;
 
@@ -124,7 +124,7 @@ const Layout = ({ plants, groups, selectedPlants, selectedGroups, editing, plant
             )}
             {/* Render setup instructions if database is empty */}
             {plants.length === 0 && groups.length === 0 && (
-                <Setup printModalRef={printModalRef} />
+                <Setup openPrintModal={openPrintModal} />
             )}
         </div>
     );
@@ -144,16 +144,13 @@ Layout.propTypes = {
     editing: PropTypes.bool.isRequired,
     plantsColRef: PropTypes.oneOfType([
         PropTypes.func,
-        PropTypes.shape({ current: PropTypes.array }),
+        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
     ]).isRequired,
     groupsColRef: PropTypes.oneOfType([
         PropTypes.func,
-        PropTypes.shape({ current: PropTypes.array }),
+        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
     ]).isRequired,
-    printModalRef: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.array }),
-    ]).isRequired
+    openPrintModal: PropTypes.func.isRequired
 };
 
 // Dropdown with links to jump to plant or group columns
@@ -194,11 +191,11 @@ const QuickNavigation = ({ plantsColRef, groupsColRef }) => {
 QuickNavigation.propTypes = {
     plantsColRef: PropTypes.oneOfType([
         PropTypes.func,
-        PropTypes.shape({ current: PropTypes.array }),
+        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
     ]).isRequired,
     groupsColRef: PropTypes.oneOfType([
         PropTypes.func,
-        PropTypes.shape({ current: PropTypes.array }),
+        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
     ]).isRequired
 };
 
@@ -394,7 +391,7 @@ function App() {
                 editing={editing}
                 plantsColRef={plantsColRef}
                 groupsColRef={groupsColRef}
-                printModalRef={printModalRef}
+                openPrintModal={() => printModalRef.current.open()}
             />
 
             <FloatingFooter visible={editing}>

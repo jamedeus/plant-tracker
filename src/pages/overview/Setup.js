@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 // Rendered when both state objects are empty, shows setup instructions
-const Setup = ({ printModalRef }) => {
+const Setup = ({ openPrintModal }) => {
     return (
         <div className="flex flex-col mx-auto text-center my-auto px-8">
             <p className="text-2xl">No plants found!</p>
@@ -13,7 +13,7 @@ const Setup = ({ printModalRef }) => {
             </ul>
             <button
                 className="btn btn-accent text-lg"
-                onClick={() => printModalRef.current.open()}
+                onClick={openPrintModal}
             >
                 Print QR Codes
             </button>
@@ -22,10 +22,7 @@ const Setup = ({ printModalRef }) => {
 };
 
 Setup.propTypes = {
-    printModalRef: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.array }),
-    ]).isRequired
+    openPrintModal: PropTypes.func.isRequired
 };
 
 export default Setup;
