@@ -23,30 +23,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="navbar bg-base-200 rounded-2xl"
         >
           <div
-            class="navbar-start w-auto invisible"
-          >
-            <div
-              class="btn btn-ghost btn-circle"
-              role="button"
-              tabindex="0"
-            >
-              <svg
-                aria-hidden="true"
-                class="svg-inline--fa fa-ellipsis w-6 h-6"
-                data-icon="ellipsis"
-                data-prefix="fas"
-                focusable="false"
-                role="img"
-                viewBox="0 0 448 512"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z"
-                  fill="currentColor"
-                />
-              </svg>
-            </div>
-          </div>
+            class="navbar-start w-12"
+          />
           <div
             class="navbar-center mx-auto"
           >
@@ -62,7 +40,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
               </div>
               <ul
                 class="dropdown-content z-[1] menu p-2 shadow
-                                        bg-base-300 rounded-box w-44"
+                                    bg-base-300 rounded-box w-44"
                 tabindex="0"
               >
                 <li>
@@ -181,34 +159,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
           </div>
           <div
-            class="navbar-end w-auto"
-          >
-            <div
-              class="dropdown dropdown-end invisible"
-            >
-              <div
-                class="btn btn-ghost btn-circle"
-                role="button"
-                tabindex="0"
-              >
-                <svg
-                  aria-hidden="true"
-                  class="svg-inline--fa fa-ellipsis w-6 h-6"
-                  data-icon="ellipsis"
-                  data-prefix="fas"
-                  focusable="false"
-                  role="img"
-                  viewBox="0 0 448 512"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z"
-                    fill="currentColor"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
+            class="navbar-end w-12 dropdown dropdown-end"
+          />
         </div>
         <div
           class="grid grid-cols-[min-content_1fr] gap-4 md:gap-8"
@@ -3031,30 +2983,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         class="navbar bg-base-200 rounded-2xl"
       >
         <div
-          class="navbar-start w-auto invisible"
-        >
-          <div
-            class="btn btn-ghost btn-circle"
-            role="button"
-            tabindex="0"
-          >
-            <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-ellipsis w-6 h-6"
-              data-icon="ellipsis"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
-              viewBox="0 0 448 512"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z"
-                fill="currentColor"
-              />
-            </svg>
-          </div>
-        </div>
+          class="navbar-start w-12"
+        />
         <div
           class="navbar-center mx-auto"
         >
@@ -3070,7 +3000,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <ul
               class="dropdown-content z-[1] menu p-2 shadow
-                                        bg-base-300 rounded-box w-44"
+                                    bg-base-300 rounded-box w-44"
               tabindex="0"
             >
               <li>
@@ -3189,34 +3119,8 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
         </div>
         <div
-          class="navbar-end w-auto"
-        >
-          <div
-            class="dropdown dropdown-end invisible"
-          >
-            <div
-              class="btn btn-ghost btn-circle"
-              role="button"
-              tabindex="0"
-            >
-              <svg
-                aria-hidden="true"
-                class="svg-inline--fa fa-ellipsis w-6 h-6"
-                data-icon="ellipsis"
-                data-prefix="fas"
-                focusable="false"
-                role="img"
-                viewBox="0 0 448 512"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z"
-                  fill="currentColor"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
+          class="navbar-end w-12 dropdown dropdown-end"
+        />
       </div>
       <div
         class="grid grid-cols-[min-content_1fr] gap-4 md:gap-8"
@@ -6106,30 +6010,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="navbar bg-base-200 rounded-2xl"
         >
           <div
-            class="navbar-start w-auto invisible"
-          >
-            <div
-              class="btn btn-ghost btn-circle"
-              role="button"
-              tabindex="0"
-            >
-              <svg
-                aria-hidden="true"
-                class="svg-inline--fa fa-ellipsis w-6 h-6"
-                data-icon="ellipsis"
-                data-prefix="fas"
-                focusable="false"
-                role="img"
-                viewBox="0 0 448 512"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z"
-                  fill="currentColor"
-                />
-              </svg>
-            </div>
-          </div>
+            class="navbar-start w-12"
+          />
           <div
             class="navbar-center mx-auto"
           >
@@ -6145,7 +6027,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
               </div>
               <ul
                 class="dropdown-content z-[1] menu p-2 shadow
-                                        bg-base-300 rounded-box w-44"
+                                    bg-base-300 rounded-box w-44"
                 tabindex="0"
               >
                 <li>
@@ -6264,74 +6146,70 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
           </div>
           <div
-            class="navbar-end w-auto"
+            class="navbar-end w-12 dropdown dropdown-end"
           >
             <div
-              class="dropdown dropdown-end"
+              class="btn btn-ghost btn-circle"
+              role="button"
+              tabindex="0"
             >
-              <div
-                class="btn btn-ghost btn-circle"
-                role="button"
-                tabindex="0"
+              <svg
+                aria-hidden="true"
+                class="svg-inline--fa fa-ellipsis w-6 h-6"
+                data-icon="ellipsis"
+                data-prefix="fas"
+                focusable="false"
+                role="img"
+                viewBox="0 0 448 512"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <svg
-                  aria-hidden="true"
-                  class="svg-inline--fa fa-ellipsis w-6 h-6"
-                  data-icon="ellipsis"
-                  data-prefix="fas"
-                  focusable="false"
-                  role="img"
-                  viewBox="0 0 448 512"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z"
-                    fill="currentColor"
-                  />
-                </svg>
-              </div>
-              <ul
-                class="dropdown-content z-[1] menu p-2 shadow
-                                bg-base-300 rounded-box w-40"
-                tabindex="0"
-              >
-                <li>
-                  <a
-                    class="flex justify-end"
-                  >
-                    Add note
-                  </a>
-                </li>
-                <li>
-                  <a
-                    class="flex justify-end"
-                  >
-                    Add photos
-                  </a>
-                </li>
-                <li>
-                  <a
-                    class="flex justify-end"
-                  >
-                    Repot plant
-                  </a>
-                </li>
-                <li>
-                  <a
-                    class="flex justify-end"
-                  >
-                    Delete photos
-                  </a>
-                </li>
-                <li>
-                  <a
-                    class="flex justify-end"
-                  >
-                    Delete events
-                  </a>
-                </li>
-              </ul>
+                <path
+                  d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z"
+                  fill="currentColor"
+                />
+              </svg>
             </div>
+            <ul
+              class="dropdown-content z-[1] menu p-2 shadow
+                                        bg-base-300 rounded-box w-40"
+              tabindex="0"
+            >
+              <li>
+                <a
+                  class="flex justify-end"
+                >
+                  Add note
+                </a>
+              </li>
+              <li>
+                <a
+                  class="flex justify-end"
+                >
+                  Add photos
+                </a>
+              </li>
+              <li>
+                <a
+                  class="flex justify-end"
+                >
+                  Repot plant
+                </a>
+              </li>
+              <li>
+                <a
+                  class="flex justify-end"
+                >
+                  Delete photos
+                </a>
+              </li>
+              <li>
+                <a
+                  class="flex justify-end"
+                >
+                  Delete events
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
         <div
@@ -9155,30 +9033,8 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         class="navbar bg-base-200 rounded-2xl"
       >
         <div
-          class="navbar-start w-auto invisible"
-        >
-          <div
-            class="btn btn-ghost btn-circle"
-            role="button"
-            tabindex="0"
-          >
-            <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-ellipsis w-6 h-6"
-              data-icon="ellipsis"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
-              viewBox="0 0 448 512"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z"
-                fill="currentColor"
-              />
-            </svg>
-          </div>
-        </div>
+          class="navbar-start w-12"
+        />
         <div
           class="navbar-center mx-auto"
         >
@@ -9194,7 +9050,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <ul
               class="dropdown-content z-[1] menu p-2 shadow
-                                        bg-base-300 rounded-box w-44"
+                                    bg-base-300 rounded-box w-44"
               tabindex="0"
             >
               <li>
@@ -9313,74 +9169,70 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
         </div>
         <div
-          class="navbar-end w-auto"
+          class="navbar-end w-12 dropdown dropdown-end"
         >
           <div
-            class="dropdown dropdown-end"
+            class="btn btn-ghost btn-circle"
+            role="button"
+            tabindex="0"
           >
-            <div
-              class="btn btn-ghost btn-circle"
-              role="button"
-              tabindex="0"
+            <svg
+              aria-hidden="true"
+              class="svg-inline--fa fa-ellipsis w-6 h-6"
+              data-icon="ellipsis"
+              data-prefix="fas"
+              focusable="false"
+              role="img"
+              viewBox="0 0 448 512"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <svg
-                aria-hidden="true"
-                class="svg-inline--fa fa-ellipsis w-6 h-6"
-                data-icon="ellipsis"
-                data-prefix="fas"
-                focusable="false"
-                role="img"
-                viewBox="0 0 448 512"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z"
-                  fill="currentColor"
-                />
-              </svg>
-            </div>
-            <ul
-              class="dropdown-content z-[1] menu p-2 shadow
-                                bg-base-300 rounded-box w-40"
-              tabindex="0"
-            >
-              <li>
-                <a
-                  class="flex justify-end"
-                >
-                  Add note
-                </a>
-              </li>
-              <li>
-                <a
-                  class="flex justify-end"
-                >
-                  Add photos
-                </a>
-              </li>
-              <li>
-                <a
-                  class="flex justify-end"
-                >
-                  Repot plant
-                </a>
-              </li>
-              <li>
-                <a
-                  class="flex justify-end"
-                >
-                  Delete photos
-                </a>
-              </li>
-              <li>
-                <a
-                  class="flex justify-end"
-                >
-                  Delete events
-                </a>
-              </li>
-            </ul>
+              <path
+                d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z"
+                fill="currentColor"
+              />
+            </svg>
           </div>
+          <ul
+            class="dropdown-content z-[1] menu p-2 shadow
+                                        bg-base-300 rounded-box w-40"
+            tabindex="0"
+          >
+            <li>
+              <a
+                class="flex justify-end"
+              >
+                Add note
+              </a>
+            </li>
+            <li>
+              <a
+                class="flex justify-end"
+              >
+                Add photos
+              </a>
+            </li>
+            <li>
+              <a
+                class="flex justify-end"
+              >
+                Repot plant
+              </a>
+            </li>
+            <li>
+              <a
+                class="flex justify-end"
+              >
+                Delete photos
+              </a>
+            </li>
+            <li>
+              <a
+                class="flex justify-end"
+              >
+                Delete events
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
       <div

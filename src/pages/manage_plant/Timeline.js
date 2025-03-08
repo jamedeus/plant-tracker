@@ -285,6 +285,188 @@ MonthSection.propTypes = {
     ]).isRequired
 };
 
+// History title with dropdown menu (hover) to jump to month/year sections
+const Title = ({ archived, navigationOptions, sectionRefs, noteModalRef }) => {
+    return (
+        <div className="navbar bg-base-200 rounded-2xl">
+            <div className="navbar-start w-12">
+                {/* Spacer with same width as .navbar-end button */}
+            </div>
+            <div className="navbar-center mx-auto">
+                <div className="dropdown dropdown-center dropdown-hover mx-auto">
+                    <div
+                        tabIndex={0}
+                        role="button"
+                        className="btn btn-ghost text-xl font-bold m-1"
+                    >
+                        History
+                    </div>
+                    <ul
+                        tabIndex={0}
+                        className={`dropdown-content z-[1] menu p-2 shadow
+                                    bg-base-300 rounded-box w-44`}
+                    >
+                        <QuickNavigation
+                            navigationOptions={navigationOptions}
+                            sectionRefs={sectionRefs}
+                        />
+                    </ul>
+                </div>
+            </div>
+
+            <div className="navbar-end w-12 dropdown dropdown-end">
+                {!archived &&
+                    <>
+                        <div
+                            tabIndex={0}
+                            role="button"
+                            className="btn btn-ghost btn-circle"
+                        >
+                            <FontAwesomeIcon
+                                icon={faEllipsis}
+                                className="w-6 h-6"
+                            />
+                        </div>
+                        <ul
+                            tabIndex={0}
+                            className={`dropdown-content z-[1] menu p-2 shadow
+                                        bg-base-300 rounded-box w-40`}
+                        >
+                            <li><a
+                                className="flex justify-end"
+                                onClick={() => noteModalRef.current.open()}
+                            >
+                                Add note
+                            </a></li>
+                            <li><a
+                                className="flex justify-end"
+                                onClick={openPhotoModal}
+                            >
+                                Add photos
+                            </a></li>
+                            <li><a
+                                className="flex justify-end"
+                                onClick={openRepotModal}
+                            >
+                                Repot plant
+                            </a></li>
+                            <li><a
+                                className="flex justify-end"
+                                onClick={openDeletePhotosModal}
+                            >
+                                Delete photos
+                            </a></li>
+                            <li><a
+                                className="flex justify-end"
+                                onClick={openEventHistoryModal}
+                            >
+                                Delete events
+                            </a></li>
+                        </ul>
+                    </>
+                }
+            </div>
+        </div>
+    );
+};
+
+Title.propTypes = {
+    archived: PropTypes.bool.isRequired,
+    navigationOptions: PropTypes.object.isRequired,
+    sectionRefs: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.instanceOf(Object) }),
+    ]).isRequired,
+    noteModalRef: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+    ]).isRequired
+};
+
+const QuickNavigation = ({ navigationOptions, sectionRefs }) => {
+    return (
+        <>
+            {Object.keys(navigationOptions).reverse().map(year => (
+                <QuickNavigationYear
+                    key={year}
+                    year={year}
+                    months={navigationOptions[year]}
+                    sectionRefs={sectionRefs}
+                />
+            ))}
+        </>
+    );
+};
+
+QuickNavigation.propTypes = {
+    navigationOptions: PropTypes.object.isRequired,
+    sectionRefs: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.instanceOf(Object) }),
+    ]).isRequired
+};
+
+// Takes year (string) and array of months (numbers not string) with events
+// Returns dropdown item with year which expands on hover to show sub-menu
+// of clickable months that jump to the matching timeline section
+const QuickNavigationYear = ({ year, months, sectionRefs }) => {
+    // Create ref used to open sub-menu on hover
+    const detailsRef = useRef(null);
+
+    const open = () => {
+        detailsRef.current.open = true;
+    };
+
+    const close = () => {
+        detailsRef.current.open = false;
+    };
+
+    // Takes year-month string (ie 2024-03), scrolls to timeline section
+    const jumpTo = (yearMonth) => {
+        sectionRefs.current[yearMonth].scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+        // Close dropdown after click
+        document.activeElement.blur();
+    };
+
+    // Converts month number to name string (ie 04 -> April)
+    const monthNumToName = (month) => {
+        return DateTime.fromFormat(month, 'MM').toFormat('MMMM');
+    };
+
+    return (
+        <li>
+            <details
+                ref={detailsRef}
+                onMouseOver={open}
+                onMouseOut={close}
+            >
+                <summary>{year}</summary>
+                <ul>
+                    {months.map(month => (
+                        <li key={month}>
+                            <a onClick={() => jumpTo(`${year}-${month}`)}>
+                                {monthNumToName(month)}
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            </details>
+        </li>
+    );
+};
+
+QuickNavigationYear.propTypes = {
+    year: PropTypes.string.isRequired,
+    months: PropTypes.array.isRequired,
+    sectionRefs: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.instanceOf(Object) }),
+    ]).isRequired
+};
+
 const Timeline = memo(function Timeline({ plantID, events, archived }) {
     // Load context set by django template
     const [notes, setNotes] = useState(() => {
@@ -381,176 +563,16 @@ const Timeline = memo(function Timeline({ plantID, events, archived }) {
     // Create ref used to open/close NoteModal
     const noteModalRef = useRef(null);
 
-    // History title with dropdown menu (hover) to jump to month/year sections
-    const Title = () => {
-        const MenuButton = () => {
-            return (
-                <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
-                    <FontAwesomeIcon icon={faEllipsis} className="w-6 h-6" />
-                </div>
-            );
-        };
-
-        const MenuOptions = () => {
-            return (
-                <ul
-                    tabIndex={0}
-                    className={`dropdown-content z-[1] menu p-2 shadow
-                                bg-base-300 rounded-box w-40`}
-                >
-                    <li><a
-                        className="flex justify-end"
-                        onClick={() => noteModalRef.current.open()}
-                    >
-                        Add note
-                    </a></li>
-                    <li><a
-                        className="flex justify-end"
-                        onClick={openPhotoModal}
-                    >
-                        Add photos
-                    </a></li>
-                    <li><a
-                        className="flex justify-end"
-                        onClick={openRepotModal}
-                    >
-                        Repot plant
-                    </a></li>
-                    <li><a
-                        className="flex justify-end"
-                        onClick={openDeletePhotosModal}
-                    >
-                        Delete photos
-                    </a></li>
-                    <li><a
-                        className="flex justify-end"
-                        onClick={openEventHistoryModal}
-                    >
-                        Delete events
-                    </a></li>
-                </ul>
-            );
-        };
-
-        return (
-            <div className="navbar bg-base-200 rounded-2xl">
-                <div className="navbar-start w-auto invisible">
-                    <MenuButton />
-                </div>
-                <div className="navbar-center mx-auto">
-                    <div className="dropdown dropdown-center dropdown-hover mx-auto">
-                        <div
-                            tabIndex={0}
-                            role="button"
-                            className="btn btn-ghost text-xl font-bold m-1"
-                        >
-                            History
-                        </div>
-                        <ul
-                            tabIndex={0}
-                            className={`dropdown-content z-[1] menu p-2 shadow
-                                        bg-base-300 rounded-box w-44`}
-                        >
-                            <QuickNavigation navigationOptions={navigationOptions} />
-                        </ul>
-                    </div>
-                </div>
-
-                <div className="navbar-end w-auto">
-                    <div className={clsx(
-                        'dropdown dropdown-end',
-                        archived && 'invisible'
-                    )}>
-                        <MenuButton />
-                        {!archived && (
-                            <MenuOptions />
-                        )}
-                    </div>
-                </div>
-            </div>
-        );
-    };
-
-    const QuickNavigation = ({ navigationOptions }) => {
-        return (
-            <>
-                {Object.keys(navigationOptions).reverse().map(year => (
-                    <QuickNavigationYear
-                        key={year}
-                        year={year}
-                        months={navigationOptions[year]}
-                    />
-                ))}
-            </>
-        );
-    };
-
-    QuickNavigation.propTypes = {
-        navigationOptions: PropTypes.object.isRequired
-    };
-
-    // Takes year (string) and array of months (numbers not string) with events
-    // Returns dropdown item with year which expands on hover to show sub-menu
-    // of clickable months that jump to the matching timeline section
-    const QuickNavigationYear = ({year, months}) => {
-        // Create ref used to open sub-menu on hover
-        const detailsRef = useRef(null);
-
-        const open = () => {
-            detailsRef.current.open = true;
-        };
-
-        const close = () => {
-            detailsRef.current.open = false;
-        };
-
-        // Takes year-month string (ie 2024-03), scrolls to timeline section
-        const JumpTo = (yearMonth) => {
-            sectionRefs.current[yearMonth].scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
-            // Close dropdown after click
-            document.activeElement.blur();
-        };
-
-        // Converts month number to name string (ie 04 -> April)
-        const monthNumToName = (month) => {
-            return DateTime.fromFormat(month, 'MM').toFormat('MMMM');
-        };
-
-        return (
-            <li>
-                <details
-                    ref={detailsRef}
-                    onMouseOver={open}
-                    onMouseOut={close}
-                >
-                    <summary>{year}</summary>
-                    <ul>
-                        {months.map(month => (
-                            <li key={month}>
-                                <a onClick={() => JumpTo(`${year}-${month}`)}>
-                                    {monthNumToName(month)}
-                                </a>
-                            </li>
-                        ))}
-                    </ul>
-                </details>
-            </li>
-        );
-    };
-
-    QuickNavigationYear.propTypes = {
-        year: PropTypes.string.isRequired,
-        months: PropTypes.array.isRequired
-    };
-
     return (
         <div className={`flex flex-col mt-2 mx-4 md:mx-auto p-4 md:p-8 pt-0 md:pt-0
                          md:w-full md:max-w-screen-md bg-base-200 rounded-2xl`}
         >
-            <Title />
+            <Title
+                archived={archived}
+                navigationOptions={navigationOptions}
+                sectionRefs={sectionRefs}
+                noteModalRef={noteModalRef}
+            />
             {Object.keys(sortedEvents).length > 0 ? (
                 <div className="grid grid-cols-[min-content_1fr] gap-4 md:gap-8">
                     {Object.keys(sortedEvents).map(yearMonth => (
