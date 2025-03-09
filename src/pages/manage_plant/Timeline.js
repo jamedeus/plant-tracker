@@ -83,7 +83,7 @@ EventMarker.propTypes = {
     eventType: PropTypes.string.isRequired
 };
 
-const TimelineContent = memo(function TimelineContent({ events, notes, photos, archived, noteModalRef }) {
+const TimelineContent = memo(function TimelineContent({ events, notes, photos, editNote }) {
     return (
         <div className="flex flex-col bg-neutral rounded-xl p-2 md:p-4">
             <div className="flex flex-row flex-wrap">
@@ -106,8 +106,7 @@ const TimelineContent = memo(function TimelineContent({ events, notes, photos, a
                     <NoteCollapse
                         key={note.timestamp}
                         note={note}
-                        archived={archived}
-                        noteModalRef={noteModalRef}
+                        editNote={editNote ? (() => editNote(note)) : null}
                     />
                 ))}
             </div>
@@ -119,11 +118,7 @@ TimelineContent.propTypes = {
     events: PropTypes.array.isRequired,
     notes: PropTypes.array.isRequired,
     photos: PropTypes.array.isRequired,
-    archived: PropTypes.bool.isRequired,
-    noteModalRef: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-    ]).isRequired
+    editNote: PropTypes.func
 };
 
 // Photo thumbnail that opens larger popover when clicked
@@ -171,14 +166,10 @@ PhotoThumbnail.propTypes = {
     timestamp: PropTypes.string.isRequired
 };
 
-const NoteCollapse = memo(function NoteCollapse({ note, archived, noteModalRef }) {
+const NoteCollapse = memo(function NoteCollapse({ note, editNote }) {
     const [expanded, setExpanded] = useState(false);
 
     const readableTimestamp = timestampToReadable(note.timestamp);
-
-    const editNote = () => {
-        noteModalRef.current.open(note);
-    };
 
     return (
         <div className={clsx(
@@ -189,9 +180,9 @@ const NoteCollapse = memo(function NoteCollapse({ note, archived, noteModalRef }
                 icon={faPenToSquare}
                 className={clsx(
                     'w-4 h-4 mr-2 mt-1',
-                    archived || 'cursor-pointer'
+                    editNote && 'cursor-pointer'
                 )}
-                onClick={archived ? null : editNote}
+                onClick={editNote}
             />
             <div
                 className='cursor-pointer overflow-hidden'
@@ -214,11 +205,7 @@ NoteCollapse.propTypes = {
         text: PropTypes.string.isRequired,
         timestamp: PropTypes.string.isRequired
     }).isRequired,
-    archived: PropTypes.bool.isRequired,
-    noteModalRef: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-    ]).isRequired
+    editNote: PropTypes.func
 };
 
 // Takes year-month string (ie 2024-03)
@@ -244,7 +231,7 @@ MonthDivider.propTypes = {
 // Takes year-month string (ie 2024-03) and array containing object for
 // each day within month with events/photos. Returns divider with year and
 // month text followed by pairs of divs for each day (populates grid).
-const MonthSection = memo(function MonthSection({ yearMonth, days, archived, sectionRefs, noteModalRef }) {
+const MonthSection = memo(function MonthSection({ yearMonth, days, sectionRefs, editNote }) {
     return (
         <>
             <MonthDivider yearMonth={yearMonth} sectionRefs={sectionRefs} />
@@ -261,8 +248,7 @@ const MonthSection = memo(function MonthSection({ yearMonth, days, archived, sec
                             events={day.events}
                             notes={day.notes}
                             photos={day.photos}
-                            archived={archived}
-                            noteModalRef={noteModalRef}
+                            editNote={editNote}
                         />
                     </div>
                 </Fragment>
@@ -274,19 +260,15 @@ const MonthSection = memo(function MonthSection({ yearMonth, days, archived, sec
 MonthSection.propTypes = {
     yearMonth: PropTypes.string.isRequired,
     days: PropTypes.array.isRequired,
-    archived: PropTypes.bool.isRequired,
     sectionRefs: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.instanceOf(Object) }),
     ]).isRequired,
-    noteModalRef: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-    ]).isRequired
+    editNote: PropTypes.func
 };
 
 // History title with dropdown menu (hover) to jump to month/year sections
-const Title = ({ archived, navigationOptions, sectionRefs, noteModalRef }) => {
+const Title = ({ archived, quickNavigation, addNote }) => {
     return (
         <div className="navbar bg-base-200 rounded-2xl">
             <div className="navbar-start w-12">
@@ -306,10 +288,7 @@ const Title = ({ archived, navigationOptions, sectionRefs, noteModalRef }) => {
                         className={`dropdown-content z-[1] menu p-2 shadow
                                     bg-base-300 rounded-box w-44`}
                     >
-                        <QuickNavigation
-                            navigationOptions={navigationOptions}
-                            sectionRefs={sectionRefs}
-                        />
+                        {quickNavigation}
                     </ul>
                 </div>
             </div>
@@ -334,7 +313,7 @@ const Title = ({ archived, navigationOptions, sectionRefs, noteModalRef }) => {
                         >
                             <li><a
                                 className="flex justify-end"
-                                onClick={() => noteModalRef.current.open()}
+                                onClick={addNote}
                             >
                                 Add note
                             </a></li>
@@ -372,15 +351,8 @@ const Title = ({ archived, navigationOptions, sectionRefs, noteModalRef }) => {
 
 Title.propTypes = {
     archived: PropTypes.bool.isRequired,
-    navigationOptions: PropTypes.object.isRequired,
-    sectionRefs: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.instanceOf(Object) }),
-    ]).isRequired,
-    noteModalRef: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-    ]).isRequired
+    quickNavigation: PropTypes.element.isRequired,
+    addNote: PropTypes.func.isRequired
 };
 
 const QuickNavigation = ({ navigationOptions, sectionRefs }) => {
@@ -569,9 +541,13 @@ const Timeline = memo(function Timeline({ plantID, events, archived }) {
         >
             <Title
                 archived={archived}
-                navigationOptions={navigationOptions}
-                sectionRefs={sectionRefs}
-                noteModalRef={noteModalRef}
+                quickNavigation={
+                    <QuickNavigation
+                        navigationOptions={navigationOptions}
+                        sectionRefs={sectionRefs}
+                    />
+                }
+                addNote={() => noteModalRef.current.open()}
             />
             {Object.keys(sortedEvents).length > 0 ? (
                 <div className="grid grid-cols-[min-content_1fr] gap-4 md:gap-8">
@@ -580,9 +556,10 @@ const Timeline = memo(function Timeline({ plantID, events, archived }) {
                             <MonthSection
                                 yearMonth={yearMonth}
                                 days={sortedEvents[yearMonth]}
-                                archived={archived}
                                 sectionRefs={sectionRefs}
-                                noteModalRef={noteModalRef}
+                                editNote={archived ? null : (
+                                    (note) => noteModalRef.current.open(note)
+                                )}
                             />
                         </Fragment>
                     ))}
