@@ -1,6 +1,6 @@
 import React, { useRef, memo } from 'react';
 import PropTypes from 'prop-types';
-import PreloadableModal from 'src/components/PreloadableModal';
+import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
 import { timestampToReadable } from 'src/timestampUtils';
 import { showErrorModal } from 'src/components/ErrorModal';
@@ -100,7 +100,7 @@ const DefaultPhotoModal = memo(function DefaultPhotoModal({ plantID, photoUrls }
     };
 
     return (
-        <PreloadableModal ref={defaultPhotoModalRef} title='Select Default Photo'>
+        <Modal ref={defaultPhotoModalRef} title='Select Default Photo'>
             <div className="carousel w-full h-min">
                 {photoUrls.map((photo, index) => (
                     <PhotoSlide
@@ -112,7 +112,7 @@ const DefaultPhotoModal = memo(function DefaultPhotoModal({ plantID, photoUrls }
                     />
                 ))}
             </div>
-        </PreloadableModal>
+        </Modal>
     );
 });
 

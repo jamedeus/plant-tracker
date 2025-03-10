@@ -9,7 +9,7 @@ import { showErrorModal } from 'src/components/ErrorModal';
 let photoModalRef;
 
 export const openPhotoModal = () => {
-    photoModalRef.current.showModal();
+    photoModalRef.current.open();
 };
 
 // Table row with delete button next to filename
@@ -147,8 +147,8 @@ const PhotoModal = ({ plantID, photoUrls, setPhotoUrls }) => {
 
     return (
         <Modal
-            dialogRef={photoModalRef}
             title={uploading ? "Uploading..." : "Upload Photos"}
+            ref={photoModalRef}
         >
             {/* Photo select/unselect input, shown until user clicks submit */}
             <div className={uploading ? "hidden" : "flex flex-col"}>

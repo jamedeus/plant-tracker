@@ -17,7 +17,7 @@ export const ErrorModal = () => {
         } else {
             setMessage(error);
         }
-        modalRef.current.showModal();
+        modalRef.current.open();
     };
 
     closeErrorModal = () => {
@@ -25,7 +25,7 @@ export const ErrorModal = () => {
     };
 
     return (
-        <Modal dialogRef={modalRef}>
+        <Modal ref={modalRef}>
             <h3 className="font-bold text-lg mb-6">Error</h3>
             <div className={`min-h-36 flex flex-col justify-center mx-auto
                              whitespace-pre-line`}

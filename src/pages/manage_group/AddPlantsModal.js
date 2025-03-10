@@ -9,7 +9,7 @@ import { showErrorModal } from 'src/components/ErrorModal';
 let addPlantsModalRef;
 
 export const openAddPlantsModal = () => {
-    addPlantsModalRef.current.showModal();
+    addPlantsModalRef.current.open();
 };
 
 const AddPlantsModal = memo(function AddPlantsModal({ groupID, options, plantDetails, setPlantDetails }) {
@@ -49,8 +49,8 @@ const AddPlantsModal = memo(function AddPlantsModal({ groupID, options, plantDet
 
     return (
         <Modal
-            dialogRef={addPlantsModalRef}
             title='Add Plants'
+            ref={addPlantsModalRef}
             className='max-w-[26rem]'
         >
             <div className="max-h-screen md:max-h-half-screen overflow-scroll pr-4 mt-4">

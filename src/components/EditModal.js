@@ -5,7 +5,7 @@ import Modal from 'src/components/Modal';
 let editModalRef;
 
 export const openEditModal = () => {
-    editModalRef.current.showModal();
+    editModalRef.current.open();
 };
 
 // Takes modal title, submit handler, and details form
@@ -14,7 +14,7 @@ const EditModal = ({ title, onSubmit, children }) => {
     editModalRef = useRef(null);
 
     return (
-        <Modal dialogRef={editModalRef} title={title}>
+        <Modal title={title} ref={editModalRef}>
             {children}
 
             <div className="modal-action mx-auto">

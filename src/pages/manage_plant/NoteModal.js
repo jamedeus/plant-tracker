@@ -58,7 +58,7 @@ const NoteModal = React.forwardRef(function NoteModal({ plantID, notes, setNotes
                     setNoteTime(DateTime.now().toFormat("yyyy-MM-dd'T'HH:mm:ss"));
                     setEditingNote(false);
                 }
-                noteModalRef.current.showModal();
+                noteModalRef.current.open();
             },
         };
     });
@@ -143,7 +143,7 @@ const NoteModal = React.forwardRef(function NoteModal({ plantID, notes, setNotes
     };
 
     return (
-        <Modal dialogRef={noteModalRef} title={editingNote ? "Edit Note" : "Add Note"}>
+        <Modal title={editingNote ? "Edit Note" : "Add Note"} ref={noteModalRef}>
             <div className="flex flex-col">
                 <div className="min-h-36 flex flex-col justify-center mt-2">
                     {editingNote

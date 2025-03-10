@@ -1,13 +1,24 @@
-import React from 'react';
+import React, { useEffect, useImperativeHandle, forwardRef, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { XMarkIcon } from '@heroicons/react/16/solid';
 
-// Reusable modal component, can be closed with button or by clicking outside
-const Modal = ({ dialogRef, title, children, className='', onClose }) => {
+// Reusable modal component with forwardRef that allows rendering contents
+// before modal is opened, can be closed with button or by clicking outside
+const Modal = forwardRef(function Modal({ title, children, className='', onClose }, ref) {
     // Don't render children until modal has been opened, keep rendered after
     const [hasBeenOpened, setHasBeenOpened] = React.useState(false);
 
-    React.useEffect(() => {
+    const dialogRef = useRef(null);
+
+    // Allow parent component to pre-render modal contents before opening
+    useImperativeHandle(ref, () => ({
+        preload: () => setHasBeenOpened(true),
+        open: () => dialogRef.current.showModal(),
+        close: () => dialogRef.current.close()
+    }));
+
+    // Render contents when modal opened for first time
+    useEffect(() => {
         const dialog = dialogRef.current;
         if (!dialog) return;
 
@@ -46,13 +57,9 @@ const Modal = ({ dialogRef, title, children, className='', onClose }) => {
             </form>
         </dialog>
     );
-};
+});
 
 Modal.propTypes = {
-    dialogRef: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-    ]).isRequired,
     title: PropTypes.string,
     children: PropTypes.node.isRequired,
     className: PropTypes.string,

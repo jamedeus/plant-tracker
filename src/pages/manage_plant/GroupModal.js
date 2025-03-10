@@ -8,7 +8,7 @@ import { showErrorModal } from 'src/components/ErrorModal';
 let groupModalRef;
 
 export const openGroupModal = () => {
-    groupModalRef.current.showModal();
+    groupModalRef.current.open();
 };
 
 const GroupModal = ({ plantID, groupOptions, handleAddGroup }) => {
@@ -34,7 +34,7 @@ const GroupModal = ({ plantID, groupOptions, handleAddGroup }) => {
     };
 
     return (
-        <Modal dialogRef={groupModalRef} title='Add plant to group'>
+        <Modal title='Add plant to group' ref={groupModalRef}>
             <div className="flex flex-col px-4 overflow-scroll">
                 {groupOptions.map(group => (
                     <div

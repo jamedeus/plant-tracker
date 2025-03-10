@@ -11,7 +11,7 @@ import clsx from 'clsx';
 let repotModalRef;
 
 export const openRepotModal = () => {
-    repotModalRef.current.showModal();
+    repotModalRef.current.open();
 };
 
 // Takes integer pot size, renders round div with number centered
@@ -87,7 +87,7 @@ const RepotModal = ({ plantID, currentPotSize, handleRepot }) => {
     };
 
     return (
-        <Modal dialogRef={repotModalRef} title='Repot plant'>
+        <Modal title='Repot plant' ref={repotModalRef}>
             <div className="mt-4">
                 <p>Repot time</p>
                 <DatetimeInput inputRef={repotTimeRef} />

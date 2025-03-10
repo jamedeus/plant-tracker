@@ -11,7 +11,7 @@ import { showErrorModal } from 'src/components/ErrorModal';
 let eventHistoryModalRef;
 
 export const openEventHistoryModal = () => {
-    eventHistoryModalRef.current.showModal();
+    eventHistoryModalRef.current.open();
 };
 
 // Displays timestamp and relative time of a single event
@@ -190,7 +190,7 @@ const EventHistoryModal = ({ plantID, events, setEvents }) => {
     };
 
     return (
-        <Modal dialogRef={eventHistoryModalRef} title='Event History'>
+        <Modal title='Event History' ref={eventHistoryModalRef}>
             <Tab.Group>
                 <Tab.List className="tab-group mt-2">
                     <Tab className={({ selected }) => clsx(

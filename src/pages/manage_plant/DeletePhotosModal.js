@@ -1,6 +1,6 @@
 import React, { useRef, useState, useCallback, Fragment, memo } from 'react';
 import PropTypes from 'prop-types';
-import PreloadableModal from 'src/components/PreloadableModal';
+import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
 import { timestampToReadable } from 'src/timestampUtils';
 import { showErrorModal } from 'src/components/ErrorModal';
@@ -176,7 +176,7 @@ const DeletePhotosModal = memo(function DeletePhotosModal({ plantID, photoUrls, 
     };
 
     return (
-        <PreloadableModal ref={deletePhotosModalRef}>
+        <Modal ref={deletePhotosModalRef}>
             <div className={
                 `${confirmDelete ? "hidden" : "flex flex-col overflow-hidden"}`
             }>
@@ -251,7 +251,7 @@ const DeletePhotosModal = memo(function DeletePhotosModal({ plantID, photoUrls, 
                     </button>
                 </div>
             </div>
-        </PreloadableModal>
+        </Modal>
     );
 });
 

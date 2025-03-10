@@ -74,7 +74,7 @@ const PrintModal = React.forwardRef(function PrintModal(_, ref) {
     useImperativeHandle(ref, () => {
         return {
             open() {
-                printModalRef.current.showModal();
+                printModalRef.current.open();
             },
         };
     });
@@ -174,8 +174,8 @@ const PrintModal = React.forwardRef(function PrintModal(_, ref) {
         case("loading"):
             return (
                 <Modal
-                    dialogRef={printModalRef}
                     title='Fetching QR Codes'
+                    ref={printModalRef}
                     onClose={resetModal}
                 >
                     <LoadingAnimation className="mt-2" />
@@ -187,8 +187,8 @@ const PrintModal = React.forwardRef(function PrintModal(_, ref) {
         case("options"):
             return (
                 <Modal
-                    dialogRef={printModalRef}
                     title='Select QR Code Size'
+                    ref={printModalRef}
                 >
                     <div className="h-36 mt-2 flex flex-col justify-center">
                         <Tab.Group onChange={(index) => {
@@ -229,8 +229,8 @@ const PrintModal = React.forwardRef(function PrintModal(_, ref) {
         default:
             return (
                 <Modal
-                    dialogRef={printModalRef}
                     title='Error'
+                    ref={printModalRef}
                     onClose={resetModal}
                 >
                     <div className="h-36 mt-2 flex flex-col justify-center mx-auto">

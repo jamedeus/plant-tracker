@@ -7,7 +7,7 @@ import { showErrorModal } from 'src/components/ErrorModal';
 let changeQrModalRef;
 
 export const openChangeQrModal = () => {
-    changeQrModalRef.current.showModal();
+    changeQrModalRef.current.open();
 };
 
 const ChangeQrModal = ({ uuid }) => {
@@ -27,7 +27,7 @@ const ChangeQrModal = ({ uuid }) => {
     };
 
     return (
-        <Modal dialogRef={changeQrModalRef} title='Change QR Code'>
+        <Modal title='Change QR Code' ref={changeQrModalRef}>
             <div className="min-h-36 flex flex-col justify-evenly mx-auto">
                 <p>
                     Get your new QR code ready, then click OK.
