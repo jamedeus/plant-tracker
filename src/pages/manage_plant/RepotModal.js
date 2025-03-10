@@ -5,13 +5,13 @@ import Modal from 'src/components/Modal';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { localToUTC } from 'src/timestampUtils';
 import { sendPostRequest } from 'src/util';
-import { showErrorModal } from 'src/components/ErrorModal';
+import { openErrorModal } from 'src/components/ErrorModal';
 import clsx from 'clsx';
 
-let repotModalRef;
+let modalRef;
 
 export const openRepotModal = () => {
-    repotModalRef.current.open();
+    modalRef.current.open();
 };
 
 // Takes integer pot size, renders round div with number centered
@@ -35,7 +35,7 @@ PotSizeOption.propTypes = {
 };
 
 const RepotModal = ({ plantID, currentPotSize, handleRepot }) => {
-    repotModalRef = useRef(null);
+    modalRef = useRef(null);
 
     // Pot size options (inches)
     const potSizes = [2, 3, 4, 6, 8, 10, 12, 14, 18, 21];
@@ -79,15 +79,15 @@ const RepotModal = ({ plantID, currentPotSize, handleRepot }) => {
         if (response.ok) {
             // Update plant state pot_size, add repot event to history
             handleRepot(payload.new_pot_size, payload.timestamp);
-            repotModalRef.current.close();
+            modalRef.current.close();
         } else {
             const error = await response.json();
-            showErrorModal(JSON.stringify(error));
+            openErrorModal(JSON.stringify(error));
         }
     };
 
     return (
-        <Modal title='Repot plant' ref={repotModalRef}>
+        <Modal title='Repot plant' ref={modalRef}>
             <div className="mt-4">
                 <p>Repot time</p>
                 <DatetimeInput inputRef={repotTimeRef} />

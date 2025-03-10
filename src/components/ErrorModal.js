@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import Modal from 'src/components/Modal';
 
-export let showErrorModal;
+export let openErrorModal;
 
 export let closeErrorModal;
 
@@ -10,7 +10,7 @@ export const ErrorModal = () => {
     const modalRef = useRef();
 
     // Takes error message to show inside modal
-    showErrorModal = (error) => {
+    openErrorModal = (error) => {
         // Stringify if received raw JSON response
         if (typeof(error) === 'object') {
             setMessage(JSON.stringify(error));

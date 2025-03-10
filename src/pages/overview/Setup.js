@@ -1,5 +1,5 @@
 import React from 'react';
-import { showPrintModal } from './PrintModal';
+import { openPrintModal } from './PrintModal';
 
 // Rendered when both state objects are empty, shows setup instructions
 const Setup = () => {
@@ -13,7 +13,7 @@ const Setup = () => {
             </ul>
             <button
                 className="btn btn-accent text-lg"
-                onClick={showPrintModal}
+                onClick={openPrintModal}
             >
                 Print QR Codes
             </button>

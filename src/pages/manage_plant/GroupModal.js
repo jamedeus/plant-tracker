@@ -3,16 +3,16 @@ import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 import GroupCard from 'src/components/GroupCard';
 import { sendPostRequest } from 'src/util';
-import { showErrorModal } from 'src/components/ErrorModal';
+import { openErrorModal } from 'src/components/ErrorModal';
 
-let groupModalRef;
+let modalRef;
 
 export const openGroupModal = () => {
-    groupModalRef.current.open();
+    modalRef.current.open();
 };
 
 const GroupModal = ({ plantID, groupOptions, handleAddGroup }) => {
-    groupModalRef = useRef(null);
+    modalRef = useRef(null);
 
     // Handler for confirm button
     const addToGroup = async (groupID) => {
@@ -27,14 +27,14 @@ const GroupModal = ({ plantID, groupOptions, handleAddGroup }) => {
             handleAddGroup(data.group_name, data.group_uuid);
         } else {
             const error = await response.json();
-            showErrorModal(JSON.stringify(error));
+            openErrorModal(JSON.stringify(error));
         }
         // Close modal
-        groupModalRef.current.close();
+        modalRef.current.close();
     };
 
     return (
-        <Modal title='Add plant to group' ref={groupModalRef}>
+        <Modal title='Add plant to group' ref={modalRef}>
             <div className="flex flex-col px-4 overflow-scroll">
                 {groupOptions.map(group => (
                     <div

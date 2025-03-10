@@ -15,7 +15,7 @@ import GroupDetails from 'src/components/GroupDetails';
 import AddPlantsModal, { openAddPlantsModal } from './AddPlantsModal';
 import RemovePlantsModal, { openRemovePlantsModal } from './RemovePlantsModal';
 import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
-import { showErrorModal } from 'src/components/ErrorModal';
+import { openErrorModal } from 'src/components/ErrorModal';
 
 // Buttons used to add events to all selected plants
 const PlantEventButtons = ({ editing, setEditing, handleWater, handleFertilize }) => {
@@ -171,7 +171,7 @@ function App() {
             setGroup({...group, ...data});
         } else {
             const error = await response.json();
-            showErrorModal(JSON.stringify(error));
+            openErrorModal(JSON.stringify(error));
         }
     };
 
@@ -225,7 +225,7 @@ function App() {
             updatePlantTimestamps(data.plants, timestamp, eventType);
         } else {
             const error = await response.json();
-            showErrorModal(JSON.stringify(error));
+            openErrorModal(JSON.stringify(error));
         }
     };
 

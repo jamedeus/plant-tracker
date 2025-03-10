@@ -1,10 +1,10 @@
 import { PageWrapper } from 'src/index';
-import { showErrorModal } from 'src/components/ErrorModal';
+import { openErrorModal } from 'src/components/ErrorModal';
 
 describe('ErrorModal', () => {
     const TestComponent = () => {
         return (
-            <button onClick={() => showErrorModal('Error message here')}>
+            <button onClick={() => openErrorModal('Error message here')}>
                 Open Error Modal
             </button>
         );

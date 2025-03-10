@@ -6,7 +6,7 @@ import { useTheme } from 'src/context/ThemeContext';
 import { sendPostRequest, parseDomContext } from 'src/util';
 import GroupDetailsForm from 'src/forms/GroupDetailsForm';
 import PlantDetailsForm from 'src/forms/PlantDetailsForm';
-import { showErrorModal } from 'src/components/ErrorModal';
+import { openErrorModal } from 'src/components/ErrorModal';
 
 function App() {
     // Load context set by django template
@@ -63,13 +63,13 @@ function App() {
         // Show error modal if registration failed
         if (!response.ok) {
             const data = await response.json();
-            showErrorModal(data.error);
+            openErrorModal(data.error);
         // Redirect to manage page if successfully registered
         } else if (response.redirected) {
             window.location.href = response.url;
         } else {
             const responseData = await response.json();
-            showErrorModal(responseData);
+            openErrorModal(responseData);
         }
     };
 

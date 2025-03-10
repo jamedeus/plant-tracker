@@ -8,7 +8,7 @@ import { sendPostRequest, parseDomContext } from 'src/util';
 import FilterColumn from 'src/components/FilterColumn';
 import FloatingFooter from 'src/components/FloatingFooter';
 import Setup from './Setup';
-import PrintModal, { showPrintModal } from './PrintModal';
+import PrintModal, { openPrintModal } from './PrintModal';
 import { useIsBreakpointActive } from "src/useBreakpoint";
 import clsx from 'clsx';
 
@@ -222,7 +222,7 @@ const MenuOptions = ({ archivedOverview, toggleEditing }) => {
                     <li><a onClick={toggleEditing}>
                         Edit
                     </a></li>
-                    <li><a onClick={showPrintModal}>
+                    <li><a onClick={openPrintModal}>
                         Print QR Codes
                     </a></li>
                     <ToggleThemeOption />

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
 import { timestampToReadable } from 'src/timestampUtils';
-import { showErrorModal } from 'src/components/ErrorModal';
+import { openErrorModal } from 'src/components/ErrorModal';
 import {
     ChevronLeftIcon,
     ChevronRightIcon,
@@ -11,15 +11,15 @@ import {
 } from '@heroicons/react/16/solid';
 import clsx from 'clsx';
 
-let deletePhotosModalRef;
+let modalRef;
 
 export const openDeletePhotosModal = () => {
-    deletePhotosModalRef.current.open();
+    modalRef.current.open();
 };
 
 export const preloadDeletePhotosModal = () => {
     requestAnimationFrame(() => {
-        deletePhotosModalRef.current.preload();
+        modalRef.current.preload();
     });
 };
 
@@ -103,7 +103,7 @@ ConfirmDeleteRow.propTypes = {
 };
 
 const DeletePhotosModal = memo(function DeletePhotosModal({ plantID, photoUrls, setPhotoUrls }) {
-    deletePhotosModalRef = useRef(null);
+    modalRef = useRef(null);
 
     // Controls confirm delete screen visibility
     const [confirmDelete, setConfirmDelete] = useState(false);
@@ -145,11 +145,11 @@ const DeletePhotosModal = memo(function DeletePhotosModal({ plantID, photoUrls, 
 
             // Clear selected photos, close modal, reset confirm delete screen
             setSelectedPhotos([]);
-            deletePhotosModalRef.current.close();
+            modalRef.current.close();
             setConfirmDelete(false);
         } else {
             const error = await response.json();
-            showErrorModal(JSON.stringify(error));
+            openErrorModal(JSON.stringify(error));
         }
     };
 
@@ -176,7 +176,7 @@ const DeletePhotosModal = memo(function DeletePhotosModal({ plantID, photoUrls, 
     };
 
     return (
-        <Modal ref={deletePhotosModalRef}>
+        <Modal ref={modalRef}>
             <div className={
                 `${confirmDelete ? "hidden" : "flex flex-col overflow-hidden"}`
             }>
@@ -204,7 +204,7 @@ const DeletePhotosModal = memo(function DeletePhotosModal({ plantID, photoUrls, 
                 <div className="flex mt-6 mx-auto">
                     <button
                         className="btn mr-2"
-                        onClick={() => deletePhotosModalRef.current.close()}
+                        onClick={() => modalRef.current.close()}
                     >
                         Cancel
                     </button>

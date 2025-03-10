@@ -2,16 +2,16 @@ import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
-import { showErrorModal } from 'src/components/ErrorModal';
+import { openErrorModal } from 'src/components/ErrorModal';
 
-let changeQrModalRef;
+let modalRef;
 
 export const openChangeQrModal = () => {
-    changeQrModalRef.current.open();
+    modalRef.current.open();
 };
 
 const ChangeQrModal = ({ uuid }) => {
-    changeQrModalRef = useRef(null);
+    modalRef = useRef(null);
 
     const submit = async () => {
         const response = await sendPostRequest(
@@ -19,15 +19,15 @@ const ChangeQrModal = ({ uuid }) => {
             {uuid: uuid}
         );
         if (response.ok) {
-            changeQrModalRef.current.close();
+            modalRef.current.close();
         } else {
             const error = await response.json();
-            showErrorModal(JSON.stringify(error));
+            openErrorModal(JSON.stringify(error));
         }
     };
 
     return (
-        <Modal title='Change QR Code' ref={changeQrModalRef}>
+        <Modal title='Change QR Code' ref={modalRef}>
             <div className="min-h-36 flex flex-col justify-evenly mx-auto">
                 <p>
                     Get your new QR code ready, then click OK.

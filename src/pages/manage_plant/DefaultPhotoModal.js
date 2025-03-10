@@ -3,23 +3,23 @@ import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
 import { timestampToReadable } from 'src/timestampUtils';
-import { showErrorModal } from 'src/components/ErrorModal';
+import { openErrorModal } from 'src/components/ErrorModal';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/16/solid';
 
-let defaultPhotoModalRef;
+let modalRef;
 
 export const openDefaultPhotoModal = () => {
-    defaultPhotoModalRef.current.open();
+    modalRef.current.open();
 };
 
 export const preloadDefaultPhotoModal = () => {
     requestAnimationFrame(() => {
-        defaultPhotoModalRef.current.preload();
+        modalRef.current.preload();
     });
 };
 
 const DefaultPhotoModal = memo(function DefaultPhotoModal({ plantID, photoUrls }) {
-    defaultPhotoModalRef = useRef(null);
+    modalRef = useRef(null);
 
     const submit = async (selected) => {
         const payload = {
@@ -28,10 +28,10 @@ const DefaultPhotoModal = memo(function DefaultPhotoModal({ plantID, photoUrls }
         };
         const response = await sendPostRequest('/set_plant_default_photo', payload);
         if (response.ok) {
-            defaultPhotoModalRef.current.close();
+            modalRef.current.close();
         } else {
             const error = await response.json();
-            showErrorModal(error);
+            openErrorModal(error);
         }
     };
 
@@ -100,7 +100,7 @@ const DefaultPhotoModal = memo(function DefaultPhotoModal({ plantID, photoUrls }
     };
 
     return (
-        <Modal ref={defaultPhotoModalRef} title='Select Default Photo'>
+        <Modal ref={modalRef} title='Select Default Photo'>
             <div className="carousel w-full h-min">
                 {photoUrls.map((photo, index) => (
                     <PhotoSlide

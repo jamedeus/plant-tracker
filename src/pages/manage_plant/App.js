@@ -18,7 +18,7 @@ import RepotModal from './RepotModal';
 import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
 import EventHistoryModal from './EventHistoryModal';
 import { openDefaultPhotoModal, preloadDefaultPhotoModal } from './DefaultPhotoModal';
-import { showErrorModal } from 'src/components/ErrorModal';
+import { openErrorModal } from 'src/components/ErrorModal';
 import Timeline from './Timeline';
 import { faPlus, faBan, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 
@@ -232,7 +232,7 @@ function App() {
             setPlant({...plant, group: null});
         } else {
             const error = await response.json();
-            showErrorModal(JSON.stringify(error));
+            openErrorModal(JSON.stringify(error));
         }
     }, []);
 
@@ -249,7 +249,7 @@ function App() {
             setPlant({...plant, ...data});
         } else {
             const error = await response.json();
-            showErrorModal(JSON.stringify(error));
+            openErrorModal(JSON.stringify(error));
         }
     };
 
@@ -279,7 +279,7 @@ function App() {
             // Other error (unexpected): show in error modal
             } else {
                 const error = await response.json();
-                showErrorModal(JSON.stringify(error));
+                openErrorModal(JSON.stringify(error));
             }
         }
     };

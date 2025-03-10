@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { showToast } from 'src/components/Toast';
-import { showErrorModal } from 'src/components/ErrorModal';
+import { openErrorModal } from 'src/components/ErrorModal';
 import { sendPostRequest } from 'src/util';
 import { localToUTC, timestampToReadable } from 'src/timestampUtils';
 import { DateTime } from 'luxon';
@@ -91,7 +91,7 @@ const NoteModal = React.forwardRef(function NoteModal({ plantID, notes, setNotes
             // Other error (unexpected): show in error modal
             } else {
                 const error = await response.json();
-                showErrorModal(JSON.stringify(error));
+                openErrorModal(JSON.stringify(error));
             }
         }
     };
@@ -119,7 +119,7 @@ const NoteModal = React.forwardRef(function NoteModal({ plantID, notes, setNotes
         } else {
             // Show error in modal
             const error = await response.json();
-            showErrorModal(JSON.stringify(error));
+            openErrorModal(JSON.stringify(error));
         }
     };
 
@@ -138,7 +138,7 @@ const NoteModal = React.forwardRef(function NoteModal({ plantID, notes, setNotes
         } else {
             // Show error in modal
             const error = await response.json();
-            showErrorModal(JSON.stringify(error));
+            openErrorModal(JSON.stringify(error));
         }
     };
 

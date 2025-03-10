@@ -1,6 +1,6 @@
 import React from 'react';
 import { postHeaders } from 'src/testUtils/headers';
-import PrintModal, { showPrintModal } from '../PrintModal';
+import PrintModal, { openPrintModal } from '../PrintModal';
 import print from 'print-js';
 import { waitFor } from '@testing-library/react';
 
@@ -23,7 +23,7 @@ describe('PrintModal', () => {
         );
 
         // Open modal
-        showPrintModal();
+        openPrintModal();
         await waitFor(() => {
             expect(component.getByText("Generate")).not.toBeNull();
         });

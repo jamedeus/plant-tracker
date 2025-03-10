@@ -4,12 +4,12 @@ import Cookies from 'js-cookie';
 import Modal from 'src/components/Modal';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 import { XMarkIcon } from '@heroicons/react/16/solid';
-import { showErrorModal } from 'src/components/ErrorModal';
+import { openErrorModal } from 'src/components/ErrorModal';
 
-let photoModalRef;
+let modalRef;
 
 export const openPhotoModal = () => {
-    photoModalRef.current.open();
+    modalRef.current.open();
 };
 
 // Table row with delete button next to filename
@@ -37,7 +37,7 @@ Row.propTypes = {
 };
 
 const PhotoModal = ({ plantID, photoUrls, setPhotoUrls }) => {
-    photoModalRef = useRef(null);
+    modalRef = useRef(null);
     // File input ref, used to remove selected files when X buttons clicked
     const inputRef = useRef(null);
 
@@ -102,7 +102,7 @@ const PhotoModal = ({ plantID, photoUrls, setPhotoUrls }) => {
 
             // Close modal, wait for close animation to complete then stop
             // loading animation and remove selected files from input/state
-            photoModalRef.current.close();
+            modalRef.current.close();
             setTimeout(() => {
                 setUploading(false);
                 resetSelection();
@@ -112,16 +112,16 @@ const PhotoModal = ({ plantID, photoUrls, setPhotoUrls }) => {
             if (data.failed.length) {
                 const num = data.failed.length;
                 const list = data.failed.join('\n');
-                showErrorModal(`Failed to upload ${num} photos:\n${list}`);
+                openErrorModal(`Failed to upload ${num} photos:\n${list}`);
             }
         } else {
             setUploading(false);
             resetSelection();
             try {
                 const error = await response.json();
-                showErrorModal(JSON.stringify(error));
+                openErrorModal(JSON.stringify(error));
             } catch(err) {
-                showErrorModal('Unexpected response from backend');
+                openErrorModal('Unexpected response from backend');
             }
         }
     };
@@ -148,7 +148,7 @@ const PhotoModal = ({ plantID, photoUrls, setPhotoUrls }) => {
     return (
         <Modal
             title={uploading ? "Uploading..." : "Upload Photos"}
-            ref={photoModalRef}
+            ref={modalRef}
         >
             {/* Photo select/unselect input, shown until user clicks submit */}
             <div className={uploading ? "hidden" : "flex flex-col"}>

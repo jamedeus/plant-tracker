@@ -4,16 +4,16 @@ import EditableNodeList from 'src/components/EditableNodeList';
 import PlantCard from 'src/components/PlantCard';
 import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
-import { showErrorModal } from 'src/components/ErrorModal';
+import { openErrorModal } from 'src/components/ErrorModal';
 
-let removePlantsModalRef;
+let modalRef;
 
 export const openRemovePlantsModal = () => {
-    removePlantsModalRef.current.open();
+    modalRef.current.open();
 };
 
 const RemovePlantsModal = memo(function RemovePlantsModal({ groupID, plantDetails, setPlantDetails }) {
-    removePlantsModalRef = useRef(null);
+    modalRef = useRef(null);
 
     // Ref to track selected items
     const selected = useRef([]);
@@ -38,14 +38,14 @@ const RemovePlantsModal = memo(function RemovePlantsModal({ groupID, plantDetail
             selected.current = [];
         } else {
             const error = await response.json();
-            showErrorModal(JSON.stringify(error));
+            openErrorModal(JSON.stringify(error));
         }
     };
 
     return (
         <Modal
             title='Remove Plants'
-            ref={removePlantsModalRef}
+            ref={modalRef}
             className='max-w-[26rem]'
         >
             <div className="max-h-screen md:max-h-half-screen overflow-scroll pr-4 mt-4">

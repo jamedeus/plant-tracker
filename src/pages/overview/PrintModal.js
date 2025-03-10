@@ -9,7 +9,7 @@ import { sendPostRequest } from 'src/util';
 
 let modalRef;
 
-export const showPrintModal = () => {
+export const openPrintModal = () => {
     modalRef.current.open();
 };
 

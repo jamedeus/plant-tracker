@@ -6,12 +6,12 @@ import { DateTime } from 'luxon';
 import { sendPostRequest } from 'src/util';
 import { timestampToRelativeDays } from 'src/timestampUtils';
 import Modal from 'src/components/Modal';
-import { showErrorModal } from 'src/components/ErrorModal';
+import { openErrorModal } from 'src/components/ErrorModal';
 
-let eventHistoryModalRef;
+let modalRef;
 
 export const openEventHistoryModal = () => {
-    eventHistoryModalRef.current.open();
+    modalRef.current.open();
 };
 
 // Displays timestamp and relative time of a single event
@@ -99,7 +99,7 @@ EventsCol.propTypes = {
 };
 
 const EventHistoryModal = ({ plantID, events, setEvents }) => {
-    eventHistoryModalRef = useRef(null);
+    modalRef = useRef(null);
 
     // Create ref to store selected events in each column
     const selectedWaterRef = useRef([]);
@@ -182,15 +182,15 @@ const EventHistoryModal = ({ plantID, events, setEvents }) => {
             selectedFertilizeRef.current = [];
             selectedPruneRef.current = [];
             selectedRepotRef.current = [];
-            eventHistoryModalRef.current.close();
+            modalRef.current.close();
         } else {
             const error = await response.json();
-            showErrorModal(JSON.stringify(error));
+            openErrorModal(JSON.stringify(error));
         }
     };
 
     return (
-        <Modal title='Event History' ref={eventHistoryModalRef}>
+        <Modal title='Event History' ref={modalRef}>
             <Tab.Group>
                 <Tab.List className="tab-group mt-2">
                     <Tab className={({ selected }) => clsx(
