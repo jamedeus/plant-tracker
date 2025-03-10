@@ -26,7 +26,8 @@ const DropdownButton = memo(function DropdownButton() {
 // Renders navbar with dropdown on left and dynamically-sized title in center
 // Optional titleOptions param will be shown in dropdown when title is clicked
 // Both option params must be list of <li> elements
-const Navbar = ({ menuOptions, title, titleOptions }) => {
+// Optional onOpenMenu param is a function called when top-left dropdown opened
+const Navbar = ({ menuOptions, onOpenMenu, title, titleOptions }) => {
     // Create refs for navbar and title text (used to read widths)
     const navbarRef = useRef(null);
     const titleRef = useRef(null);
@@ -85,7 +86,7 @@ const Navbar = ({ menuOptions, title, titleOptions }) => {
             className="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
         >
             <div className="navbar-start w-auto">
-                <div className="dropdown">
+                <div className="dropdown" onFocus={onOpenMenu}>
                     <DropdownButton />
                     <ul
                         tabIndex={0}
@@ -131,6 +132,7 @@ const Navbar = ({ menuOptions, title, titleOptions }) => {
 
 Navbar.propTypes = {
     menuOptions: PropTypes.node,
+    onOpenMenu: PropTypes.func,
     title: PropTypes.string.isRequired,
     titleOptions: PropTypes.node
 };

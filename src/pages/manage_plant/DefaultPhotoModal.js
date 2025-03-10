@@ -1,6 +1,6 @@
 import React, { useRef, memo } from 'react';
 import PropTypes from 'prop-types';
-import Modal from 'src/components/Modal';
+import PreloadableModal from 'src/components/PreloadableModal';
 import { sendPostRequest } from 'src/util';
 import { timestampToReadable } from 'src/timestampUtils';
 import { showErrorModal } from 'src/components/ErrorModal';
@@ -9,7 +9,13 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/16/solid';
 let defaultPhotoModalRef;
 
 export const openDefaultPhotoModal = () => {
-    defaultPhotoModalRef.current.showModal();
+    defaultPhotoModalRef.current.open();
+};
+
+export const preloadDefaultPhotoModal = () => {
+    requestAnimationFrame(() => {
+        defaultPhotoModalRef.current.preload();
+    });
 };
 
 const DefaultPhotoModal = memo(function DefaultPhotoModal({ plantID, photoUrls }) {
@@ -94,7 +100,7 @@ const DefaultPhotoModal = memo(function DefaultPhotoModal({ plantID, photoUrls }
     };
 
     return (
-        <Modal dialogRef={defaultPhotoModalRef} title='Select Default Photo'>
+        <PreloadableModal ref={defaultPhotoModalRef} title='Select Default Photo'>
             <div className="carousel w-full h-min">
                 {photoUrls.map((photo, index) => (
                     <PhotoSlide
@@ -106,7 +112,7 @@ const DefaultPhotoModal = memo(function DefaultPhotoModal({ plantID, photoUrls }
                     />
                 ))}
             </div>
-        </Modal>
+        </PreloadableModal>
     );
 });
 

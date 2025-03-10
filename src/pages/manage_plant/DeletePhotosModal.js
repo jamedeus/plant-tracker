@@ -1,6 +1,6 @@
 import React, { useRef, useState, useCallback, Fragment, memo } from 'react';
 import PropTypes from 'prop-types';
-import Modal from 'src/components/Modal';
+import PreloadableModal from 'src/components/PreloadableModal';
 import { sendPostRequest } from 'src/util';
 import { timestampToReadable } from 'src/timestampUtils';
 import { showErrorModal } from 'src/components/ErrorModal';
@@ -14,7 +14,13 @@ import clsx from 'clsx';
 let deletePhotosModalRef;
 
 export const openDeletePhotosModal = () => {
-    deletePhotosModalRef.current.showModal();
+    deletePhotosModalRef.current.open();
+};
+
+export const preloadDeletePhotosModal = () => {
+    requestAnimationFrame(() => {
+        deletePhotosModalRef.current.preload();
+    });
 };
 
 // Renders single photo slide with next, prev, and select buttons
@@ -170,7 +176,7 @@ const DeletePhotosModal = memo(function DeletePhotosModal({ plantID, photoUrls, 
     };
 
     return (
-        <Modal dialogRef={deletePhotosModalRef}>
+        <PreloadableModal ref={deletePhotosModalRef}>
             <div className={
                 `${confirmDelete ? "hidden" : "flex flex-col overflow-hidden"}`
             }>
@@ -245,7 +251,7 @@ const DeletePhotosModal = memo(function DeletePhotosModal({ plantID, photoUrls, 
                     </button>
                 </div>
             </div>
-        </Modal>
+        </PreloadableModal>
     );
 });
 

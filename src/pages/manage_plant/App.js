@@ -17,7 +17,7 @@ import GroupModal, { openGroupModal } from './GroupModal';
 import RepotModal from './RepotModal';
 import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
 import EventHistoryModal from './EventHistoryModal';
-import { openDefaultPhotoModal } from './DefaultPhotoModal';
+import { openDefaultPhotoModal, preloadDefaultPhotoModal } from './DefaultPhotoModal';
 import { showErrorModal } from 'src/components/ErrorModal';
 import Timeline from './Timeline';
 import { faPlus, faBan, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
@@ -290,6 +290,7 @@ function App() {
                 menuOptions={
                     <DropdownOptions plant={plant} />
                 }
+                onOpenMenu={preloadDefaultPhotoModal}
                 title={plant.display_name}
                 titleOptions={
                     <DetailsDropdown

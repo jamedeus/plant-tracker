@@ -13,7 +13,7 @@ import NoteModal from './NoteModal';
 import DefaultPhotoModal from './DefaultPhotoModal';
 import { openRepotModal } from './RepotModal';
 import PhotoModal, { openPhotoModal } from './PhotoModal';
-import DeletePhotosModal, { openDeletePhotosModal } from './DeletePhotosModal';
+import DeletePhotosModal, { openDeletePhotosModal, preloadDeletePhotosModal } from './DeletePhotosModal';
 import { openEventHistoryModal } from './EventHistoryModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -293,7 +293,10 @@ const Title = ({ archived, quickNavigation, addNote }) => {
                 </div>
             </div>
 
-            <div className="navbar-end w-12 dropdown dropdown-end">
+            <div
+                className="navbar-end w-12 dropdown dropdown-end"
+                onFocus={preloadDeletePhotosModal}
+            >
                 {!archived &&
                     <>
                         <div
