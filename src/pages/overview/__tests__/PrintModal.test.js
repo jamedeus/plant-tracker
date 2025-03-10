@@ -1,29 +1,10 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { postHeaders } from 'src/testUtils/headers';
-import PrintModal from '../PrintModal';
+import PrintModal, { showPrintModal } from '../PrintModal';
 import print from 'print-js';
 import { waitFor } from '@testing-library/react';
 
 jest.mock('print-js');
-
-let printModalRef;
-
-const TestComponent = () => {
-    printModalRef = useRef(null);
-
-    // Simulate modal being closed (HTMLDialogElement not implemented in jsdom)
-    const closeModal = () => {
-        let event = new Event("close");
-        document.querySelector('dialog').dispatchEvent(event);
-    };
-
-    return (
-        <>
-            <PrintModal ref={printModalRef} />
-            <button onClick={closeModal}>Close Modal</button>
-        </>
-    );
-};
 
 describe('PrintModal', () => {
     let component, user;
@@ -38,11 +19,11 @@ describe('PrintModal', () => {
         // Render component + create userEvent instance to use in tests
         user = userEvent.setup();
         component = render(
-            <TestComponent />
+            <PrintModal />
         );
 
         // Open modal
-        printModalRef.current.open();
+        showPrintModal();
         await waitFor(() => {
             expect(component.getByText("Generate")).not.toBeNull();
         });
@@ -165,7 +146,8 @@ describe('PrintModal', () => {
         await user.click(component.getByText('Generate'));
 
         // Close modal before response received
-        await user.click(component.getByText('Close Modal'));
+        let event = new Event("close");
+        document.querySelector('dialog').dispatchEvent(event);
 
         // Resolve fetch promise with simulated API response
         resolveFetch({
@@ -249,7 +231,8 @@ describe('PrintModal', () => {
         expect(component.getByText('An unknown error occurred')).not.toBeNull();
 
         // Close modal, confirm error text no longer in document
-        await user.click(component.getByText('Close Modal'));
+        let event = new Event("close");
+        document.querySelector('dialog').dispatchEvent(event);
         await waitFor(() => {
             expect(component.queryByText('An unknown error occurred')).toBeNull();
         });

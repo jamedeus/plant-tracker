@@ -1,4 +1,4 @@
-import React, { useState, useRef, useImperativeHandle } from 'react';
+import React, { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { Tab } from '@headlessui/react';
@@ -6,6 +6,12 @@ import print from 'print-js';
 import Modal from 'src/components/Modal';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 import { sendPostRequest } from 'src/util';
+
+let modalRef;
+
+export const showPrintModal = () => {
+    modalRef.current.open();
+};
 
 // QR code size options + description text shown when selected
 const sizeOptions = {
@@ -54,7 +60,7 @@ ErrorMessage.propTypes = {
     error: PropTypes.string.isRequired
 };
 
-const PrintModal = React.forwardRef(function PrintModal(_, ref) {
+const PrintModal = () => {
     // State controls modal contents, must be "options", "loading", or "error"
     const [modalContents, setModalContents] = useState("options");
 
@@ -68,16 +74,7 @@ const PrintModal = React.forwardRef(function PrintModal(_, ref) {
     // Set to true when request starts, response only processed if still true
     const cancelPrinting = useRef(false);
 
-    const printModalRef = useRef(null);
-
-    // Make open method available in parent component
-    useImperativeHandle(ref, () => {
-        return {
-            open() {
-                printModalRef.current.open();
-            },
-        };
-    });
+    modalRef = useRef(null);
 
     // Cancel button handler, aborts printing and resets modal contents
     const cancel = () => {
@@ -147,7 +144,7 @@ const PrintModal = React.forwardRef(function PrintModal(_, ref) {
             header: null,
             footer: null
         });
-        printModalRef.current.close();
+        modalRef.current.close();
     };
 
     const generate = () => {
@@ -175,7 +172,7 @@ const PrintModal = React.forwardRef(function PrintModal(_, ref) {
             return (
                 <Modal
                     title='Fetching QR Codes'
-                    ref={printModalRef}
+                    ref={modalRef}
                     onClose={resetModal}
                 >
                     <LoadingAnimation className="mt-2" />
@@ -188,7 +185,7 @@ const PrintModal = React.forwardRef(function PrintModal(_, ref) {
             return (
                 <Modal
                     title='Select QR Code Size'
-                    ref={printModalRef}
+                    ref={modalRef}
                 >
                     <div className="h-36 mt-2 flex flex-col justify-center">
                         <Tab.Group onChange={(index) => {
@@ -230,7 +227,7 @@ const PrintModal = React.forwardRef(function PrintModal(_, ref) {
             return (
                 <Modal
                     title='Error'
-                    ref={printModalRef}
+                    ref={modalRef}
                     onClose={resetModal}
                 >
                     <div className="h-36 mt-2 flex flex-col justify-center mx-auto">
@@ -242,6 +239,6 @@ const PrintModal = React.forwardRef(function PrintModal(_, ref) {
                 </Modal>
             );
     }
-});
+};
 
 export default PrintModal;

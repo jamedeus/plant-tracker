@@ -1,8 +1,8 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { showPrintModal } from './PrintModal';
 
 // Rendered when both state objects are empty, shows setup instructions
-const Setup = ({ openPrintModal }) => {
+const Setup = () => {
     return (
         <div className="flex flex-col mx-auto text-center my-auto px-8">
             <p className="text-2xl">No plants found!</p>
@@ -13,16 +13,12 @@ const Setup = ({ openPrintModal }) => {
             </ul>
             <button
                 className="btn btn-accent text-lg"
-                onClick={openPrintModal}
+                onClick={showPrintModal}
             >
                 Print QR Codes
             </button>
         </div>
     );
-};
-
-Setup.propTypes = {
-    openPrintModal: PropTypes.func.isRequired
 };
 
 export default Setup;

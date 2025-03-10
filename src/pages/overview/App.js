@@ -8,7 +8,7 @@ import { sendPostRequest, parseDomContext } from 'src/util';
 import FilterColumn from 'src/components/FilterColumn';
 import FloatingFooter from 'src/components/FloatingFooter';
 import Setup from './Setup';
-import PrintModal from './PrintModal';
+import PrintModal, { showPrintModal } from './PrintModal';
 import { useIsBreakpointActive } from "src/useBreakpoint";
 import clsx from 'clsx';
 
@@ -81,7 +81,7 @@ GroupsCol.propTypes = {
 };
 
 // Render correct components for current state objects
-const Layout = ({ plants, groups, selectedPlants, selectedGroups, editing, plantsColRef, groupsColRef, openPrintModal }) => {
+const Layout = ({ plants, groups, selectedPlants, selectedGroups, editing, plantsColRef, groupsColRef }) => {
     // Determines if 2-column layout or single centered column
     const twoColumns = plants.length > 0 && groups.length > 0;
 
@@ -124,7 +124,7 @@ const Layout = ({ plants, groups, selectedPlants, selectedGroups, editing, plant
             )}
             {/* Render setup instructions if database is empty */}
             {plants.length === 0 && groups.length === 0 && (
-                <Setup openPrintModal={openPrintModal} />
+                <Setup />
             )}
         </div>
     );
@@ -149,8 +149,7 @@ Layout.propTypes = {
     groupsColRef: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-    ]).isRequired,
-    openPrintModal: PropTypes.func.isRequired
+    ]).isRequired
 };
 
 // Dropdown with links to jump to plant or group columns
@@ -200,7 +199,7 @@ QuickNavigation.propTypes = {
 };
 
 // Top-left menu button contents
-const MenuOptions = ({ archivedOverview, toggleEditing, openPrintModal }) => {
+const MenuOptions = ({ archivedOverview, toggleEditing }) => {
     // Get toggle theme option from context
     const { ToggleThemeOption } = useTheme();
 
@@ -223,7 +222,7 @@ const MenuOptions = ({ archivedOverview, toggleEditing, openPrintModal }) => {
                     <li><a onClick={toggleEditing}>
                         Edit
                     </a></li>
-                    <li><a onClick={openPrintModal}>
+                    <li><a onClick={showPrintModal}>
                         Print QR Codes
                     </a></li>
                     <ToggleThemeOption />
@@ -237,8 +236,7 @@ const MenuOptions = ({ archivedOverview, toggleEditing, openPrintModal }) => {
 
 MenuOptions.propTypes = {
     archivedOverview: PropTypes.bool.isRequired,
-    toggleEditing: PropTypes.func.isRequired,
-    openPrintModal: PropTypes.func.isRequired
+    toggleEditing: PropTypes.func.isRequired
 };
 
 function App() {
@@ -283,9 +281,6 @@ function App() {
             };
         }
     }, []);
-
-    // Create ref for modal used to generate QR codes
-    const printModalRef = useRef(null);
 
     // State object to track edit mode (shows checkbox for each card when true)
     const [editing, setEditing] = useState(false);
@@ -372,7 +367,6 @@ function App() {
                 menuOptions={<MenuOptions
                     archivedOverview={archivedOverview}
                     toggleEditing={toggleEditing}
-                    openPrintModal={() => printModalRef.current.open()}
                 />}
                 title={archivedOverview ? "Archived" : "Plant Overview"}
                 titleOptions={stackedColumns ? (
@@ -391,7 +385,6 @@ function App() {
                 editing={editing}
                 plantsColRef={plantsColRef}
                 groupsColRef={groupsColRef}
-                openPrintModal={() => printModalRef.current.open()}
             />
 
             <FloatingFooter visible={editing}>
@@ -412,7 +405,7 @@ function App() {
                 </button>
             </FloatingFooter>
 
-            <PrintModal ref={printModalRef} />
+            <PrintModal />
         </div>
     );
 }
