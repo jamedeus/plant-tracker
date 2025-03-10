@@ -1,11 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import createMockContext from 'src/testUtils/createMockContext';
-import NoteModal from '../NoteModal';
+import NoteModal, { openNoteModal } from '../NoteModal';
 import { PageWrapper } from 'src/index';
 import { postHeaders } from 'src/testUtils/headers';
 
 const TestComponent = () => {
-    const modalRef = useRef(null);
     const [notes, setNotes] = useState([
         {text: 'this is an existing note', timestamp: '2024-02-13T12:00:00'},
         {text: 'another existing note', timestamp: '2024-02-12T12:00:00'}
@@ -17,12 +16,11 @@ const TestComponent = () => {
                 plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
                 notes={notes}
                 setNotes={setNotes}
-                ref={modalRef}
             />
-            <button onClick={() => modalRef.current.open()}>
+            <button onClick={() => openNoteModal()}>
                 Add New Note
             </button>
-            <button onClick={() => modalRef.current.open(notes[0])}>
+            <button onClick={() => openNoteModal(notes[0])}>
                 Edit Existing Note
             </button>
         </>

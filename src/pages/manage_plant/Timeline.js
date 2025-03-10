@@ -9,7 +9,7 @@ import {
     timestampToRelativeDays,
     timestampToUserTimezone
 } from 'src/timestampUtils';
-import NoteModal from './NoteModal';
+import NoteModal, { openNoteModal } from './NoteModal';
 import DefaultPhotoModal from './DefaultPhotoModal';
 import { openRepotModal } from './RepotModal';
 import PhotoModal, { openPhotoModal } from './PhotoModal';
@@ -268,7 +268,7 @@ MonthSection.propTypes = {
 };
 
 // History title with dropdown menu (hover) to jump to month/year sections
-const Title = ({ archived, quickNavigation, addNote }) => {
+const Title = ({ archived, quickNavigation }) => {
     return (
         <div className="navbar bg-base-200 rounded-2xl">
             <div className="navbar-start w-12">
@@ -316,7 +316,7 @@ const Title = ({ archived, quickNavigation, addNote }) => {
                         >
                             <li><a
                                 className="flex justify-end"
-                                onClick={addNote}
+                                onClick={() => openNoteModal()}
                             >
                                 Add note
                             </a></li>
@@ -354,8 +354,7 @@ const Title = ({ archived, quickNavigation, addNote }) => {
 
 Title.propTypes = {
     archived: PropTypes.bool.isRequired,
-    quickNavigation: PropTypes.element.isRequired,
-    addNote: PropTypes.func.isRequired
+    quickNavigation: PropTypes.element.isRequired
 };
 
 const QuickNavigation = ({ navigationOptions, sectionRefs }) => {
@@ -535,9 +534,6 @@ const Timeline = memo(function Timeline({ plantID, events, archived }) {
     // elements as values (used form quick navigation scrolling)
     const sectionRefs = useRef({});
 
-    // Create ref used to open/close NoteModal
-    const noteModalRef = useRef(null);
-
     return (
         <div className={`flex flex-col mt-2 mx-4 md:mx-auto p-4 md:p-8 pt-0 md:pt-0
                          md:w-full md:max-w-screen-md bg-base-200 rounded-2xl`}
@@ -550,7 +546,6 @@ const Timeline = memo(function Timeline({ plantID, events, archived }) {
                         sectionRefs={sectionRefs}
                     />
                 }
-                addNote={() => noteModalRef.current.open()}
             />
             {Object.keys(sortedEvents).length > 0 ? (
                 <div className="grid grid-cols-[min-content_1fr] gap-4 md:gap-8">
@@ -561,7 +556,7 @@ const Timeline = memo(function Timeline({ plantID, events, archived }) {
                                 days={sortedEvents[yearMonth]}
                                 sectionRefs={sectionRefs}
                                 editNote={archived ? null : (
-                                    (note) => noteModalRef.current.open(note)
+                                    (note) => openNoteModal(note)
                                 )}
                             />
                         </Fragment>
@@ -577,7 +572,6 @@ const Timeline = memo(function Timeline({ plantID, events, archived }) {
                 plantID={plantID}
                 notes={notes}
                 setNotes={setNotes}
-                ref={noteModalRef}
             />
 
             <PhotoModal
