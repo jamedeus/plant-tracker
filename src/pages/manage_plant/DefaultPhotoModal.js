@@ -1,4 +1,4 @@
-import React, { useRef, memo } from 'react';
+import React, { useRef, useCallback, memo } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
@@ -28,10 +28,52 @@ export const closeDefaultPhotosModal = () => {
     setTimeout(unrenderDefaultPhotoModal, 300);
 };
 
+// Renders single photo slide with next, prev, and select buttons
+const PhotoSlide = memo(function PhotoSlide({ photo, nextPhotoLink, prevPhotoLink, submit }) {
+    return (
+        <div
+            id={`slide${photo.key}`}
+            className="carousel-item relative w-full mx-1"
+            title={timestampToReadable(photo.created)}
+        >
+            <img
+                loading="lazy"
+                src={photo.thumbnail}
+                className="w-full rounded-xl object-scale-down my-auto"
+            />
+            <div className={`absolute flex justify-between transform
+                             -translate-y-1/2 left-5 right-5 top-1/2`}
+            >
+                <a href={prevPhotoLink} className="btn btn-circle">
+                    <ChevronLeftIcon className="w-6 h-6" />
+                </a>
+                <a href={nextPhotoLink} className="btn btn-circle">
+                    <ChevronRightIcon className="w-6 h-6" />
+                </a>
+            </div>
+            <div className="absolute flex bottom-5 -translate-x-1/2 left-1/2">
+                <button
+                    className="btn rounded-full font-bold"
+                    onClick={() => submit(photo.key)}
+                >
+                    Select
+                </button>
+            </div>
+        </div>
+    );
+});
+
+PhotoSlide.propTypes = {
+    photo: PropTypes.object.isRequired,
+    nextPhotoLink: PropTypes.string.isRequired,
+    prevPhotoLink: PropTypes.string.isRequired,
+    submit: PropTypes.func.isRequired
+};
+
 const DefaultPhotoModal = memo(function DefaultPhotoModal({ plantID, photoUrls }) {
     modalRef = useRef(null);
 
-    const submit = async (selected) => {
+    const submit = useCallback(async (selected) => {
         const payload = {
             plant_id: plantID,
             photo_key: selected
@@ -43,16 +85,16 @@ const DefaultPhotoModal = memo(function DefaultPhotoModal({ plantID, photoUrls }
             const error = await response.json();
             openErrorModal(error);
         }
-    };
+    }, []);
 
     // Takes index of photo slide, returns link to next slide
     // If last slide return link to first (wrap when end reached)
     const nextPhotoLink = (index) => {
         switch(index) {
             case(photoUrls.length - 1):
-                return '#slide0';
+                return `#slide${photoUrls[0].key}`;
             default:
-                return `#slide${index + 1}`;
+                return `#slide${photoUrls[index + 1].key}`;
         }
     };
 
@@ -61,52 +103,10 @@ const DefaultPhotoModal = memo(function DefaultPhotoModal({ plantID, photoUrls }
     const prevPhotoLink = (index) => {
         switch(index) {
             case(0):
-                return `#slide${photoUrls.length - 1}`;
+                return `#slide${photoUrls[photoUrls.length - 1].key}`;
             default:
-                return `#slide${index - 1}`;
+                return `#slide${photoUrls[index - 1].key}`;
         }
-    };
-
-    // Renders single photo slide with next, prev, and select buttons
-    const PhotoSlide = ({ index, photoUrl, photoKey, timestamp }) => {
-        return (
-            <div
-                id={`slide${index}`}
-                className="carousel-item relative w-full mx-1"
-                title={timestampToReadable(timestamp)}
-            >
-                <img
-                    loading="lazy"
-                    src={photoUrl}
-                    className="w-full rounded-xl object-scale-down my-auto"
-                />
-                <div className={`absolute flex justify-between transform
-                                 -translate-y-1/2 left-5 right-5 top-1/2`}
-                >
-                    <a href={prevPhotoLink(index)} className="btn btn-circle">
-                        <ChevronLeftIcon className="w-6 h-6" />
-                    </a>
-                    <a href={nextPhotoLink(index)} className="btn btn-circle">
-                        <ChevronRightIcon className="w-6 h-6" />
-                    </a>
-                </div>
-                <div className="absolute flex bottom-5 -translate-x-1/2 left-1/2">
-                    <button
-                        className="btn rounded-full font-bold"
-                        onClick={() => submit(photoKey)}
-                    >
-                        Select
-                    </button>
-                </div>
-            </div>
-        );
-    };
-
-    PhotoSlide.propTypes = {
-        index: PropTypes.number.isRequired,
-        photoUrl: PropTypes.string.isRequired,
-        photoKey: PropTypes.number.isRequired,
-        timestamp: PropTypes.string.isRequired
     };
 
     return (
@@ -118,11 +118,11 @@ const DefaultPhotoModal = memo(function DefaultPhotoModal({ plantID, photoUrls }
             <div className="carousel w-full h-min">
                 {photoUrls.map((photo, index) => (
                     <PhotoSlide
-                        key={index}
-                        index={index}
-                        photoUrl={photo.thumbnail}
-                        photoKey={photo.key}
-                        timestamp={photo.created}
+                        key={photo.key}
+                        photo={photo}
+                        nextPhotoLink={nextPhotoLink(index)}
+                        prevPhotoLink={prevPhotoLink(index)}
+                        submit={submit}
                     />
                 ))}
             </div>

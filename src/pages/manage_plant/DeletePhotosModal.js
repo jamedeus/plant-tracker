@@ -34,9 +34,9 @@ export const closeDeletePhotosModal = () => {
 };
 
 // Renders single photo slide with next, prev, and select buttons
-const PhotoSlide = memo(function PhotoSlide({ photo, index, nextPhotoLink, prevPhotoLink, selected, toggle }) {
+const PhotoSlide = memo(function PhotoSlide({ photo, nextPhotoLink, prevPhotoLink, selected, toggle }) {
     return (
-        <div id={`photo${index}`} className="carousel-item relative w-full mx-1">
+        <div id={`photo${photo.key}`} className="carousel-item relative w-full mx-1">
             <div className="flex flex-col mx-auto">
                 <h1 className="mt-auto mb-1 md:text-lg">
                     {timestampToReadable(photo.created)}
@@ -75,7 +75,6 @@ const PhotoSlide = memo(function PhotoSlide({ photo, index, nextPhotoLink, prevP
 
 PhotoSlide.propTypes = {
     photo: PropTypes.object.isRequired,
-    index: PropTypes.number.isRequired,
     nextPhotoLink: PropTypes.string.isRequired,
     prevPhotoLink: PropTypes.string.isRequired,
     selected: PropTypes.bool.isRequired,
@@ -171,9 +170,9 @@ const DeletePhotosModal = memo(function DeletePhotosModal({ plantID, photoUrls, 
     const nextPhotoLink = (index) => {
         switch(index) {
             case(photoUrls.length - 1):
-                return '#photo0';
+                return `#photo${photoUrls[0].key}`;
             default:
-                return `#photo${index + 1}`;
+                return `#photo${photoUrls[index + 1].key}`;
         }
     };
 
@@ -182,9 +181,9 @@ const DeletePhotosModal = memo(function DeletePhotosModal({ plantID, photoUrls, 
     const prevPhotoLink = (index) => {
         switch(index) {
             case(0):
-                return `#photo${photoUrls.length - 1}`;
+                return `#photo${photoUrls[photoUrls.length - 1].key}`;
             default:
-                return `#photo${index - 1}`;
+                return `#photo${photoUrls[index - 1].key}`;
         }
     };
 
@@ -200,9 +199,8 @@ const DeletePhotosModal = memo(function DeletePhotosModal({ plantID, photoUrls, 
                     <div className="carousel w-full h-min">
                         {photoUrls.map((photo, index) => (
                             <PhotoSlide
-                                key={index}
+                                key={photo.key}
                                 photo={photo}
-                                index={index}
                                 nextPhotoLink={nextPhotoLink(index)}
                                 prevPhotoLink={prevPhotoLink(index)}
                                 selected={selectedPhotos.includes(photo)}

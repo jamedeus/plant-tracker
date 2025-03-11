@@ -37,7 +37,7 @@ describe('DeletePhotosModal', () => {
         // Open modal
         await user.click(component.getByText('Open delete photos modal'));
         await waitFor(() => {
-            expect(component.container.querySelector('#photo0')).not.toBeNull();
+            expect(component.container.querySelector('#photo1')).not.toBeNull();
         })
     });
 
@@ -60,7 +60,7 @@ describe('DeletePhotosModal', () => {
         expect(HTMLDialogElement.prototype.close).toHaveBeenCalled();
         // Confirm modal unrenders after close animation completes
         await waitFor(() => {
-            expect(component.container.querySelector('#photo0')).toBeNull();
+            expect(component.container.querySelector('#photo1')).toBeNull();
         });
     });
 

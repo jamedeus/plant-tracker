@@ -100,7 +100,7 @@ describe('Timeline', () => {
         await user.click(app.getByText('Delete photos'));
         expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
         await waitFor(() => {
-            expect(app.container.querySelector('#photo0')).not.toBeNull();
+            expect(app.container.querySelector('#photo24')).not.toBeNull();
         });
     });
 

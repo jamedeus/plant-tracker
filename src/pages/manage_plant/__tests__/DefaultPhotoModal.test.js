@@ -39,7 +39,7 @@ describe('DefaultPhotoModal', () => {
         // Open modal
         await user.click(app.getByText('Open photo modal'));
         await waitFor(() => {
-            expect(app.container.querySelector('#slide0')).not.toBeNull();
+            expect(app.container.querySelector('#slide1')).not.toBeNull();
         })
     });
 
@@ -91,7 +91,7 @@ describe('DefaultPhotoModal', () => {
         expect(HTMLDialogElement.prototype.close).toHaveBeenCalled();
         // Confirm modal unrenders after close animation completes
         await waitFor(() => {
-            expect(app.container.querySelector('#slide0')).toBeNull();
+            expect(app.container.querySelector('#slide1')).toBeNull();
         });
     });
 });

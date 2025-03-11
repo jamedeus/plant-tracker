@@ -357,13 +357,13 @@ describe('App', () => {
 
     it('opens DefaultPhotoModal when dropdown option clicked', async () => {
         // Confirm modal is not open
-        expect(app.container.querySelector('#slide0')).toBeNull();
+        expect(app.container.querySelector('#slide1')).toBeNull();
 
         // Click button, confirm HTMLDialogElement method was called
         await user.click(app.getByText('Set default photo'));
         expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
         await waitFor(() => {
-            expect(app.container.querySelector('#slide0')).not.toBeNull();
+            expect(app.container.querySelector('#slide1')).not.toBeNull();
         });
     });
 
