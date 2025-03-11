@@ -40,7 +40,7 @@ describe('DefaultPhotoModal', () => {
         await user.click(app.getByText('Open photo modal'));
         await waitFor(() => {
             expect(app.container.querySelector('#slide1')).not.toBeNull();
-        })
+        });
     });
 
     it('sends correct payload when default photo is selected', async () => {

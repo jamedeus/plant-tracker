@@ -38,7 +38,7 @@ describe('DeletePhotosModal', () => {
         await user.click(component.getByText('Open delete photos modal'));
         await waitFor(() => {
             expect(component.container.querySelector('#photo1')).not.toBeNull();
-        })
+        });
     });
 
     it('disables delete button until at least one photo selected', async() => {
