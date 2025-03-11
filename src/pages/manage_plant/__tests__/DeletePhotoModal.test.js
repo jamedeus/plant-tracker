@@ -58,10 +58,6 @@ describe('DeletePhotosModal', () => {
         // Click button, confirm HTMLDialogElement method was called
         await user.click(component.getAllByText('Cancel')[0]);
         expect(HTMLDialogElement.prototype.close).toHaveBeenCalled();
-        // Confirm modal unrenders after close animation completes
-        await waitFor(() => {
-            expect(component.container.querySelector('#photo1')).toBeNull();
-        });
     });
 
     it('shows confirmation screen before deleting photos', async () => {

@@ -89,9 +89,5 @@ describe('DefaultPhotoModal', () => {
         // Click button, confirm HTMLDialogElement method was called
         closeDefaultPhotosModal();
         expect(HTMLDialogElement.prototype.close).toHaveBeenCalled();
-        // Confirm modal unrenders after close animation completes
-        await waitFor(() => {
-            expect(app.container.querySelector('#slide1')).toBeNull();
-        });
     });
 });

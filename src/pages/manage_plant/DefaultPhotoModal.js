@@ -18,14 +18,8 @@ export const preloadDefaultPhotoModal = () => {
     });
 };
 
-export const unrenderDefaultPhotoModal = () => {
-    modalRef.current.unrender();
-};
-
 export const closeDefaultPhotosModal = () => {
     modalRef.current.close();
-    // Unrender when close animation completes
-    setTimeout(unrenderDefaultPhotoModal, 300);
 };
 
 // Renders single photo slide with next, prev, and select buttons
