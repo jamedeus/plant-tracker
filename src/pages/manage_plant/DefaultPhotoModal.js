@@ -18,6 +18,16 @@ export const preloadDefaultPhotoModal = () => {
     });
 };
 
+export const unrenderDefaultPhotoModal = () => {
+    modalRef.current.unrender();
+};
+
+export const closeDefaultPhotosModal = () => {
+    modalRef.current.close();
+    // Unrender when close animation completes
+    setTimeout(unrenderDefaultPhotoModal, 300);
+};
+
 const DefaultPhotoModal = memo(function DefaultPhotoModal({ plantID, photoUrls }) {
     modalRef = useRef(null);
 
@@ -28,7 +38,7 @@ const DefaultPhotoModal = memo(function DefaultPhotoModal({ plantID, photoUrls }
         };
         const response = await sendPostRequest('/set_plant_default_photo', payload);
         if (response.ok) {
-            modalRef.current.close();
+            closeDefaultPhotosModal();
         } else {
             const error = await response.json();
             openErrorModal(error);
@@ -100,7 +110,11 @@ const DefaultPhotoModal = memo(function DefaultPhotoModal({ plantID, photoUrls }
     };
 
     return (
-        <Modal ref={modalRef} title='Select Default Photo'>
+        <Modal
+            title='Select Default Photo'
+            ref={modalRef}
+            onClose={closeDefaultPhotosModal}
+        >
             <div className="carousel w-full h-min">
                 {photoUrls.map((photo, index) => (
                     <PhotoSlide

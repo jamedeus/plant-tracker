@@ -13,6 +13,7 @@ const Modal = forwardRef(function Modal({ title, children, className='', onClose
     // Allow parent component to pre-render modal contents before opening
     useImperativeHandle(ref, () => ({
         preload: () => setHasBeenOpened(true),
+        unrender: () => setHasBeenOpened(false),
         open: () => dialogRef.current.showModal(),
         close: () => dialogRef.current.close()
     }));

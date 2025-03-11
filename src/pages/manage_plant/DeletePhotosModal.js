@@ -23,6 +23,16 @@ export const preloadDeletePhotosModal = () => {
     });
 };
 
+export const unrenderDeletePhotosModal = () => {
+    modalRef.current.unrender();
+};
+
+export const closeDeletePhotosModal = () => {
+    modalRef.current.close();
+    // Unrender when close animation completes
+    setTimeout(unrenderDeletePhotosModal, 300);
+};
+
 // Renders single photo slide with next, prev, and select buttons
 const PhotoSlide = memo(function PhotoSlide({ photo, index, nextPhotoLink, prevPhotoLink, selected, toggle }) {
     return (
@@ -147,6 +157,9 @@ const DeletePhotosModal = memo(function DeletePhotosModal({ plantID, photoUrls, 
             setSelectedPhotos([]);
             modalRef.current.close();
             setConfirmDelete(false);
+            // Unrender contents to prevent expensive re-renders while closed
+            // (if user uploads photo all slides rerender since index changed)
+            unrenderDeletePhotosModal();
         } else {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
@@ -176,7 +189,7 @@ const DeletePhotosModal = memo(function DeletePhotosModal({ plantID, photoUrls, 
     };
 
     return (
-        <Modal ref={modalRef}>
+        <Modal ref={modalRef} onClose={closeDeletePhotosModal}>
             <div className={
                 `${confirmDelete ? "hidden" : "flex flex-col overflow-hidden"}`
             }>
@@ -204,7 +217,7 @@ const DeletePhotosModal = memo(function DeletePhotosModal({ plantID, photoUrls, 
                 <div className="flex mt-6 mx-auto">
                     <button
                         className="btn mr-2"
-                        onClick={() => modalRef.current.close()}
+                        onClick={closeDeletePhotosModal}
                     >
                         Cancel
                     </button>
