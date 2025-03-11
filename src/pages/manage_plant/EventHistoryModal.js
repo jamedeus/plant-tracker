@@ -71,7 +71,7 @@ const EventsCol = ({ events, selectedRef, handleSelect }) => {
 
     return (
         <div className="flex flex-col mx-auto">
-            <div className="max-h-half-screen overflow-scroll px-4">
+            <div className="max-h-half-screen overflow-y-scroll px-4">
                 {events.length > 0 ? (
                     events.map((timestamp) => (
                         <EventCard

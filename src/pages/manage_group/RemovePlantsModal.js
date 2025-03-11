@@ -48,7 +48,7 @@ const RemovePlantsModal = memo(function RemovePlantsModal({ groupID, plantDetail
             ref={modalRef}
             className='max-w-[26rem]'
         >
-            <div className="max-h-screen md:max-h-half-screen overflow-scroll pr-4 mt-4">
+            <div className="max-h-screen md:max-h-half-screen overflow-y-scroll pr-4 mt-4">
                 {plantDetails.length > 0 ? (
                     <EditableNodeList editing={true} selected={selected}>
                         {plantDetails.map((plant) => (

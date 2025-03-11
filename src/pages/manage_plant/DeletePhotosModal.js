@@ -226,7 +226,7 @@ const DeletePhotosModal = memo(function DeletePhotosModal({ plantID, photoUrls, 
                 </h1>
 
                 <div className={`grid grid-cols-[min-content_1fr] mx-auto px-8
-                                 gap-4 max-h-half-screen overflow-scroll`}
+                                 gap-4 max-h-half-screen overflow-y-scroll`}
                 >
                     {selectedPhotos.map(photo => (
                         // eslint-disable-next-line react/prop-types
