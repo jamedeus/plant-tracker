@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import DefaultPhotoModal, { openDefaultPhotoModal } from '../DefaultPhotoModal';
+import DefaultPhotoModal, {
+    openDefaultPhotoModal,
+    closeDefaultPhotosModal
+} from '../DefaultPhotoModal';
 import { mockContext } from './mockContext';
 import { PageWrapper } from 'src/index';
 import { postHeaders } from 'src/testUtils/headers';
@@ -35,6 +38,9 @@ describe('DefaultPhotoModal', () => {
 
         // Open modal
         await user.click(app.getByText('Open photo modal'));
+        await waitFor(() => {
+            expect(app.container.querySelector('#slide0')).not.toBeNull();
+        })
     });
 
     it('sends correct payload when default photo is selected', async () => {
@@ -77,5 +83,15 @@ describe('DefaultPhotoModal', () => {
 
         // Confirm modal appeared with arbitrary error text
         expect(app.queryByText(/unable to find photo/)).not.toBeNull();
+    });
+
+    it('closes modal when cancel button clicked', async () => {
+        // Click button, confirm HTMLDialogElement method was called
+        closeDefaultPhotosModal();
+        expect(HTMLDialogElement.prototype.close).toHaveBeenCalled();
+        // Confirm modal unrenders after close animation completes
+        await waitFor(() => {
+            expect(app.container.querySelector('#slide0')).toBeNull();
+        });
     });
 });

@@ -36,6 +36,9 @@ describe('DeletePhotosModal', () => {
 
         // Open modal
         await user.click(component.getByText('Open delete photos modal'));
+        await waitFor(() => {
+            expect(component.container.querySelector('#photo0')).not.toBeNull();
+        })
     });
 
     it('disables delete button until at least one photo selected', async() => {
@@ -55,6 +58,10 @@ describe('DeletePhotosModal', () => {
         // Click button, confirm HTMLDialogElement method was called
         await user.click(component.getAllByText('Cancel')[0]);
         expect(HTMLDialogElement.prototype.close).toHaveBeenCalled();
+        // Confirm modal unrenders after close animation completes
+        await waitFor(() => {
+            expect(component.container.querySelector('#photo0')).toBeNull();
+        });
     });
 
     it('shows confirmation screen before deleting photos', async () => {
