@@ -85,21 +85,24 @@ const Navbar = ({ menuOptions, onOpenMenu, title, titleOptions }) => {
             ref={navbarRef}
             className="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
         >
-            <div className="navbar-start w-auto">
-                <div className="dropdown" onFocus={onOpenMenu}>
-                    <DropdownButton />
-                    <ul
-                        tabIndex={0}
-                        className={`menu menu-md dropdown-content mt-3 z-[99]
-                                    p-2 shadow bg-base-300 rounded-box w-52`}
-                    >
-                        {menuOptions}
-                    </ul>
-                </div>
+            {/* Top left dropdown button */}
+            <div
+                className="dropdown justify-start min-w-12"
+                onFocus={onOpenMenu}
+            >
+                <DropdownButton />
+                <ul
+                    tabIndex={0}
+                    className={`menu menu-md dropdown-content mt-3 z-[99]
+                                p-2 shadow bg-base-300 rounded-box w-52`}
+                >
+                    {menuOptions}
+                </ul>
             </div>
 
+            {/* Title */}
             <div
-                className="navbar-center mx-auto shrink min-w-0"
+                className="mx-auto shrink min-w-0"
                 onClick={titleOptions ? null : jumpToTop}
                 title={titleOptions ? null : "Scroll to top"}
             >
@@ -123,9 +126,8 @@ const Navbar = ({ menuOptions, onOpenMenu, title, titleOptions }) => {
                 </div>
             </div>
 
-            <div className="navbar-end w-auto invisible">
-                <DropdownButton />
-            </div>
+            {/* Spacer to center title */}
+            <div className="justify-end min-w-12"></div>
         </div>
     );
 };

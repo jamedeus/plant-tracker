@@ -22,58 +22,54 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
           class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
         >
           <div
-            class="navbar-start w-auto"
+            class="dropdown justify-start min-w-12"
           >
             <div
-              class="dropdown"
+              class="btn btn-ghost btn-circle"
+              role="button"
+              tabindex="0"
             >
-              <div
-                class="btn btn-ghost btn-circle"
-                role="button"
-                tabindex="0"
+              <svg
+                class="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <svg
-                  class="h-5 w-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M4 6h16M4 12h16M4 18h7"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                  />
-                </svg>
-              </div>
-              <ul
-                class="menu menu-md dropdown-content mt-3 z-[99]
-                                    p-2 shadow bg-base-300 rounded-box w-52"
-                tabindex="0"
-              >
-                <li>
-                  <a>
-                    Edit
-                  </a>
-                </li>
-                <li>
-                  <a>
-                    Light mode
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/"
-                  >
-                    Main overview
-                  </a>
-                </li>
-              </ul>
+                <path
+                  d="M4 6h16M4 12h16M4 18h7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                />
+              </svg>
             </div>
+            <ul
+              class="menu menu-md dropdown-content mt-3 z-[99]
+                                p-2 shadow bg-base-300 rounded-box w-52"
+              tabindex="0"
+            >
+              <li>
+                <a>
+                  Edit
+                </a>
+              </li>
+              <li>
+                <a>
+                  Light mode
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/"
+                >
+                  Main overview
+                </a>
+              </li>
+            </ul>
           </div>
           <div
-            class="navbar-center mx-auto shrink min-w-0"
+            class="mx-auto shrink min-w-0"
           >
             <div
               class="dropdown dropdown-center w-full"
@@ -118,29 +114,8 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
             </div>
           </div>
           <div
-            class="navbar-end w-auto invisible"
-          >
-            <div
-              class="btn btn-ghost btn-circle"
-              role="button"
-              tabindex="0"
-            >
-              <svg
-                class="h-5 w-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 6h16M4 12h16M4 18h7"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                />
-              </svg>
-            </div>
-          </div>
+            class="justify-end min-w-12"
+          />
         </div>
         <div
           class="grid grid-cols-1 mx-auto md:grid-cols-2"
@@ -684,58 +659,54 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
         class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
       >
         <div
-          class="navbar-start w-auto"
+          class="dropdown justify-start min-w-12"
         >
           <div
-            class="dropdown"
+            class="btn btn-ghost btn-circle"
+            role="button"
+            tabindex="0"
           >
-            <div
-              class="btn btn-ghost btn-circle"
-              role="button"
-              tabindex="0"
+            <svg
+              class="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <svg
-                class="h-5 w-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 6h16M4 12h16M4 18h7"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                />
-              </svg>
-            </div>
-            <ul
-              class="menu menu-md dropdown-content mt-3 z-[99]
-                                    p-2 shadow bg-base-300 rounded-box w-52"
-              tabindex="0"
-            >
-              <li>
-                <a>
-                  Edit
-                </a>
-              </li>
-              <li>
-                <a>
-                  Light mode
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/"
-                >
-                  Main overview
-                </a>
-              </li>
-            </ul>
+              <path
+                d="M4 6h16M4 12h16M4 18h7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+              />
+            </svg>
           </div>
+          <ul
+            class="menu menu-md dropdown-content mt-3 z-[99]
+                                p-2 shadow bg-base-300 rounded-box w-52"
+            tabindex="0"
+          >
+            <li>
+              <a>
+                Edit
+              </a>
+            </li>
+            <li>
+              <a>
+                Light mode
+              </a>
+            </li>
+            <li>
+              <a
+                href="/"
+              >
+                Main overview
+              </a>
+            </li>
+          </ul>
         </div>
         <div
-          class="navbar-center mx-auto shrink min-w-0"
+          class="mx-auto shrink min-w-0"
         >
           <div
             class="dropdown dropdown-center w-full"
@@ -780,29 +751,8 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
           </div>
         </div>
         <div
-          class="navbar-end w-auto invisible"
-        >
-          <div
-            class="btn btn-ghost btn-circle"
-            role="button"
-            tabindex="0"
-          >
-            <svg
-              class="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M4 6h16M4 12h16M4 18h7"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-              />
-            </svg>
-          </div>
-        </div>
+          class="justify-end min-w-12"
+        />
       </div>
       <div
         class="grid grid-cols-1 mx-auto md:grid-cols-2"
@@ -1413,63 +1363,59 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
           class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
         >
           <div
-            class="navbar-start w-auto"
+            class="dropdown justify-start min-w-12"
           >
             <div
-              class="dropdown"
+              class="btn btn-ghost btn-circle"
+              role="button"
+              tabindex="0"
             >
-              <div
-                class="btn btn-ghost btn-circle"
-                role="button"
-                tabindex="0"
+              <svg
+                class="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <svg
-                  class="h-5 w-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M4 6h16M4 12h16M4 18h7"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                  />
-                </svg>
-              </div>
-              <ul
-                class="menu menu-md dropdown-content mt-3 z-[99]
-                                    p-2 shadow bg-base-300 rounded-box w-52"
-                tabindex="0"
-              >
-                <li>
-                  <a>
-                    Edit
-                  </a>
-                </li>
-                <li>
-                  <a>
-                    Print QR Codes
-                  </a>
-                </li>
-                <li>
-                  <a>
-                    Light mode
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/archived"
-                  >
-                    Archived plants
-                  </a>
-                </li>
-              </ul>
+                <path
+                  d="M4 6h16M4 12h16M4 18h7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                />
+              </svg>
             </div>
+            <ul
+              class="menu menu-md dropdown-content mt-3 z-[99]
+                                p-2 shadow bg-base-300 rounded-box w-52"
+              tabindex="0"
+            >
+              <li>
+                <a>
+                  Edit
+                </a>
+              </li>
+              <li>
+                <a>
+                  Print QR Codes
+                </a>
+              </li>
+              <li>
+                <a>
+                  Light mode
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/archived"
+                >
+                  Archived plants
+                </a>
+              </li>
+            </ul>
           </div>
           <div
-            class="navbar-center mx-auto shrink min-w-0"
+            class="mx-auto shrink min-w-0"
             title="Scroll to top"
           >
             <div
@@ -1494,29 +1440,8 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
             </div>
           </div>
           <div
-            class="navbar-end w-auto invisible"
-          >
-            <div
-              class="btn btn-ghost btn-circle"
-              role="button"
-              tabindex="0"
-            >
-              <svg
-                class="h-5 w-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 6h16M4 12h16M4 18h7"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                />
-              </svg>
-            </div>
-          </div>
+            class="justify-end min-w-12"
+          />
         </div>
         <div
           class="grid grid-cols-1 mx-auto"
@@ -1643,63 +1568,59 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
         class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
       >
         <div
-          class="navbar-start w-auto"
+          class="dropdown justify-start min-w-12"
         >
           <div
-            class="dropdown"
+            class="btn btn-ghost btn-circle"
+            role="button"
+            tabindex="0"
           >
-            <div
-              class="btn btn-ghost btn-circle"
-              role="button"
-              tabindex="0"
+            <svg
+              class="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <svg
-                class="h-5 w-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 6h16M4 12h16M4 18h7"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                />
-              </svg>
-            </div>
-            <ul
-              class="menu menu-md dropdown-content mt-3 z-[99]
-                                    p-2 shadow bg-base-300 rounded-box w-52"
-              tabindex="0"
-            >
-              <li>
-                <a>
-                  Edit
-                </a>
-              </li>
-              <li>
-                <a>
-                  Print QR Codes
-                </a>
-              </li>
-              <li>
-                <a>
-                  Light mode
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/archived"
-                >
-                  Archived plants
-                </a>
-              </li>
-            </ul>
+              <path
+                d="M4 6h16M4 12h16M4 18h7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+              />
+            </svg>
           </div>
+          <ul
+            class="menu menu-md dropdown-content mt-3 z-[99]
+                                p-2 shadow bg-base-300 rounded-box w-52"
+            tabindex="0"
+          >
+            <li>
+              <a>
+                Edit
+              </a>
+            </li>
+            <li>
+              <a>
+                Print QR Codes
+              </a>
+            </li>
+            <li>
+              <a>
+                Light mode
+              </a>
+            </li>
+            <li>
+              <a
+                href="/archived"
+              >
+                Archived plants
+              </a>
+            </li>
+          </ul>
         </div>
         <div
-          class="navbar-center mx-auto shrink min-w-0"
+          class="mx-auto shrink min-w-0"
           title="Scroll to top"
         >
           <div
@@ -1724,29 +1645,8 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
           </div>
         </div>
         <div
-          class="navbar-end w-auto invisible"
-        >
-          <div
-            class="btn btn-ghost btn-circle"
-            role="button"
-            tabindex="0"
-          >
-            <svg
-              class="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M4 6h16M4 12h16M4 18h7"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-              />
-            </svg>
-          </div>
-        </div>
+          class="justify-end min-w-12"
+        />
       </div>
       <div
         class="grid grid-cols-1 mx-auto"
@@ -1940,63 +1840,59 @@ exports[`App matches snapshot when only groups exist 1`] = `
           class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
         >
           <div
-            class="navbar-start w-auto"
+            class="dropdown justify-start min-w-12"
           >
             <div
-              class="dropdown"
+              class="btn btn-ghost btn-circle"
+              role="button"
+              tabindex="0"
             >
-              <div
-                class="btn btn-ghost btn-circle"
-                role="button"
-                tabindex="0"
+              <svg
+                class="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <svg
-                  class="h-5 w-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M4 6h16M4 12h16M4 18h7"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                  />
-                </svg>
-              </div>
-              <ul
-                class="menu menu-md dropdown-content mt-3 z-[99]
-                                    p-2 shadow bg-base-300 rounded-box w-52"
-                tabindex="0"
-              >
-                <li>
-                  <a>
-                    Edit
-                  </a>
-                </li>
-                <li>
-                  <a>
-                    Print QR Codes
-                  </a>
-                </li>
-                <li>
-                  <a>
-                    Light mode
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/archived"
-                  >
-                    Archived plants
-                  </a>
-                </li>
-              </ul>
+                <path
+                  d="M4 6h16M4 12h16M4 18h7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                />
+              </svg>
             </div>
+            <ul
+              class="menu menu-md dropdown-content mt-3 z-[99]
+                                p-2 shadow bg-base-300 rounded-box w-52"
+              tabindex="0"
+            >
+              <li>
+                <a>
+                  Edit
+                </a>
+              </li>
+              <li>
+                <a>
+                  Print QR Codes
+                </a>
+              </li>
+              <li>
+                <a>
+                  Light mode
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/archived"
+                >
+                  Archived plants
+                </a>
+              </li>
+            </ul>
           </div>
           <div
-            class="navbar-center mx-auto shrink min-w-0"
+            class="mx-auto shrink min-w-0"
             title="Scroll to top"
           >
             <div
@@ -2021,29 +1917,8 @@ exports[`App matches snapshot when only groups exist 1`] = `
             </div>
           </div>
           <div
-            class="navbar-end w-auto invisible"
-          >
-            <div
-              class="btn btn-ghost btn-circle"
-              role="button"
-              tabindex="0"
-            >
-              <svg
-                class="h-5 w-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 6h16M4 12h16M4 18h7"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                />
-              </svg>
-            </div>
-          </div>
+            class="justify-end min-w-12"
+          />
         </div>
         <div
           class="grid grid-cols-1 mx-auto"
@@ -2339,63 +2214,59 @@ exports[`App matches snapshot when only groups exist 1`] = `
         class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
       >
         <div
-          class="navbar-start w-auto"
+          class="dropdown justify-start min-w-12"
         >
           <div
-            class="dropdown"
+            class="btn btn-ghost btn-circle"
+            role="button"
+            tabindex="0"
           >
-            <div
-              class="btn btn-ghost btn-circle"
-              role="button"
-              tabindex="0"
+            <svg
+              class="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <svg
-                class="h-5 w-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 6h16M4 12h16M4 18h7"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                />
-              </svg>
-            </div>
-            <ul
-              class="menu menu-md dropdown-content mt-3 z-[99]
-                                    p-2 shadow bg-base-300 rounded-box w-52"
-              tabindex="0"
-            >
-              <li>
-                <a>
-                  Edit
-                </a>
-              </li>
-              <li>
-                <a>
-                  Print QR Codes
-                </a>
-              </li>
-              <li>
-                <a>
-                  Light mode
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/archived"
-                >
-                  Archived plants
-                </a>
-              </li>
-            </ul>
+              <path
+                d="M4 6h16M4 12h16M4 18h7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+              />
+            </svg>
           </div>
+          <ul
+            class="menu menu-md dropdown-content mt-3 z-[99]
+                                p-2 shadow bg-base-300 rounded-box w-52"
+            tabindex="0"
+          >
+            <li>
+              <a>
+                Edit
+              </a>
+            </li>
+            <li>
+              <a>
+                Print QR Codes
+              </a>
+            </li>
+            <li>
+              <a>
+                Light mode
+              </a>
+            </li>
+            <li>
+              <a
+                href="/archived"
+              >
+                Archived plants
+              </a>
+            </li>
+          </ul>
         </div>
         <div
-          class="navbar-center mx-auto shrink min-w-0"
+          class="mx-auto shrink min-w-0"
           title="Scroll to top"
         >
           <div
@@ -2420,29 +2291,8 @@ exports[`App matches snapshot when only groups exist 1`] = `
           </div>
         </div>
         <div
-          class="navbar-end w-auto invisible"
-        >
-          <div
-            class="btn btn-ghost btn-circle"
-            role="button"
-            tabindex="0"
-          >
-            <svg
-              class="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M4 6h16M4 12h16M4 18h7"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-              />
-            </svg>
-          </div>
-        </div>
+          class="justify-end min-w-12"
+        />
       </div>
       <div
         class="grid grid-cols-1 mx-auto"
@@ -2805,63 +2655,59 @@ exports[`App matches snapshot when only plants exist 1`] = `
           class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
         >
           <div
-            class="navbar-start w-auto"
+            class="dropdown justify-start min-w-12"
           >
             <div
-              class="dropdown"
+              class="btn btn-ghost btn-circle"
+              role="button"
+              tabindex="0"
             >
-              <div
-                class="btn btn-ghost btn-circle"
-                role="button"
-                tabindex="0"
+              <svg
+                class="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <svg
-                  class="h-5 w-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M4 6h16M4 12h16M4 18h7"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                  />
-                </svg>
-              </div>
-              <ul
-                class="menu menu-md dropdown-content mt-3 z-[99]
-                                    p-2 shadow bg-base-300 rounded-box w-52"
-                tabindex="0"
-              >
-                <li>
-                  <a>
-                    Edit
-                  </a>
-                </li>
-                <li>
-                  <a>
-                    Print QR Codes
-                  </a>
-                </li>
-                <li>
-                  <a>
-                    Light mode
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/archived"
-                  >
-                    Archived plants
-                  </a>
-                </li>
-              </ul>
+                <path
+                  d="M4 6h16M4 12h16M4 18h7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                />
+              </svg>
             </div>
+            <ul
+              class="menu menu-md dropdown-content mt-3 z-[99]
+                                p-2 shadow bg-base-300 rounded-box w-52"
+              tabindex="0"
+            >
+              <li>
+                <a>
+                  Edit
+                </a>
+              </li>
+              <li>
+                <a>
+                  Print QR Codes
+                </a>
+              </li>
+              <li>
+                <a>
+                  Light mode
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/archived"
+                >
+                  Archived plants
+                </a>
+              </li>
+            </ul>
           </div>
           <div
-            class="navbar-center mx-auto shrink min-w-0"
+            class="mx-auto shrink min-w-0"
             title="Scroll to top"
           >
             <div
@@ -2886,29 +2732,8 @@ exports[`App matches snapshot when only plants exist 1`] = `
             </div>
           </div>
           <div
-            class="navbar-end w-auto invisible"
-          >
-            <div
-              class="btn btn-ghost btn-circle"
-              role="button"
-              tabindex="0"
-            >
-              <svg
-                class="h-5 w-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 6h16M4 12h16M4 18h7"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                />
-              </svg>
-            </div>
-          </div>
+            class="justify-end min-w-12"
+          />
         </div>
         <div
           class="grid grid-cols-1 mx-auto"
@@ -3250,63 +3075,59 @@ exports[`App matches snapshot when only plants exist 1`] = `
         class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
       >
         <div
-          class="navbar-start w-auto"
+          class="dropdown justify-start min-w-12"
         >
           <div
-            class="dropdown"
+            class="btn btn-ghost btn-circle"
+            role="button"
+            tabindex="0"
           >
-            <div
-              class="btn btn-ghost btn-circle"
-              role="button"
-              tabindex="0"
+            <svg
+              class="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <svg
-                class="h-5 w-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 6h16M4 12h16M4 18h7"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                />
-              </svg>
-            </div>
-            <ul
-              class="menu menu-md dropdown-content mt-3 z-[99]
-                                    p-2 shadow bg-base-300 rounded-box w-52"
-              tabindex="0"
-            >
-              <li>
-                <a>
-                  Edit
-                </a>
-              </li>
-              <li>
-                <a>
-                  Print QR Codes
-                </a>
-              </li>
-              <li>
-                <a>
-                  Light mode
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/archived"
-                >
-                  Archived plants
-                </a>
-              </li>
-            </ul>
+              <path
+                d="M4 6h16M4 12h16M4 18h7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+              />
+            </svg>
           </div>
+          <ul
+            class="menu menu-md dropdown-content mt-3 z-[99]
+                                p-2 shadow bg-base-300 rounded-box w-52"
+            tabindex="0"
+          >
+            <li>
+              <a>
+                Edit
+              </a>
+            </li>
+            <li>
+              <a>
+                Print QR Codes
+              </a>
+            </li>
+            <li>
+              <a>
+                Light mode
+              </a>
+            </li>
+            <li>
+              <a
+                href="/archived"
+              >
+                Archived plants
+              </a>
+            </li>
+          </ul>
         </div>
         <div
-          class="navbar-center mx-auto shrink min-w-0"
+          class="mx-auto shrink min-w-0"
           title="Scroll to top"
         >
           <div
@@ -3331,29 +3152,8 @@ exports[`App matches snapshot when only plants exist 1`] = `
           </div>
         </div>
         <div
-          class="navbar-end w-auto invisible"
-        >
-          <div
-            class="btn btn-ghost btn-circle"
-            role="button"
-            tabindex="0"
-          >
-            <svg
-              class="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M4 6h16M4 12h16M4 18h7"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-              />
-            </svg>
-          </div>
-        </div>
+          class="justify-end min-w-12"
+        />
       </div>
       <div
         class="grid grid-cols-1 mx-auto"
@@ -3762,63 +3562,59 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
           class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
         >
           <div
-            class="navbar-start w-auto"
+            class="dropdown justify-start min-w-12"
           >
             <div
-              class="dropdown"
+              class="btn btn-ghost btn-circle"
+              role="button"
+              tabindex="0"
             >
-              <div
-                class="btn btn-ghost btn-circle"
-                role="button"
-                tabindex="0"
+              <svg
+                class="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <svg
-                  class="h-5 w-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M4 6h16M4 12h16M4 18h7"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                  />
-                </svg>
-              </div>
-              <ul
-                class="menu menu-md dropdown-content mt-3 z-[99]
-                                    p-2 shadow bg-base-300 rounded-box w-52"
-                tabindex="0"
-              >
-                <li>
-                  <a>
-                    Edit
-                  </a>
-                </li>
-                <li>
-                  <a>
-                    Print QR Codes
-                  </a>
-                </li>
-                <li>
-                  <a>
-                    Light mode
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/archived"
-                  >
-                    Archived plants
-                  </a>
-                </li>
-              </ul>
+                <path
+                  d="M4 6h16M4 12h16M4 18h7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                />
+              </svg>
             </div>
+            <ul
+              class="menu menu-md dropdown-content mt-3 z-[99]
+                                p-2 shadow bg-base-300 rounded-box w-52"
+              tabindex="0"
+            >
+              <li>
+                <a>
+                  Edit
+                </a>
+              </li>
+              <li>
+                <a>
+                  Print QR Codes
+                </a>
+              </li>
+              <li>
+                <a>
+                  Light mode
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/archived"
+                >
+                  Archived plants
+                </a>
+              </li>
+            </ul>
           </div>
           <div
-            class="navbar-center mx-auto shrink min-w-0"
+            class="mx-auto shrink min-w-0"
             title="Scroll to top"
           >
             <div
@@ -3843,29 +3639,8 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
             </div>
           </div>
           <div
-            class="navbar-end w-auto invisible"
-          >
-            <div
-              class="btn btn-ghost btn-circle"
-              role="button"
-              tabindex="0"
-            >
-              <svg
-                class="h-5 w-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 6h16M4 12h16M4 18h7"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                />
-              </svg>
-            </div>
-          </div>
+            class="justify-end min-w-12"
+          />
         </div>
         <div
           class="grid grid-cols-1 mx-auto md:grid-cols-2"
@@ -4409,63 +4184,59 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
         class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
       >
         <div
-          class="navbar-start w-auto"
+          class="dropdown justify-start min-w-12"
         >
           <div
-            class="dropdown"
+            class="btn btn-ghost btn-circle"
+            role="button"
+            tabindex="0"
           >
-            <div
-              class="btn btn-ghost btn-circle"
-              role="button"
-              tabindex="0"
+            <svg
+              class="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <svg
-                class="h-5 w-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 6h16M4 12h16M4 18h7"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                />
-              </svg>
-            </div>
-            <ul
-              class="menu menu-md dropdown-content mt-3 z-[99]
-                                    p-2 shadow bg-base-300 rounded-box w-52"
-              tabindex="0"
-            >
-              <li>
-                <a>
-                  Edit
-                </a>
-              </li>
-              <li>
-                <a>
-                  Print QR Codes
-                </a>
-              </li>
-              <li>
-                <a>
-                  Light mode
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/archived"
-                >
-                  Archived plants
-                </a>
-              </li>
-            </ul>
+              <path
+                d="M4 6h16M4 12h16M4 18h7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+              />
+            </svg>
           </div>
+          <ul
+            class="menu menu-md dropdown-content mt-3 z-[99]
+                                p-2 shadow bg-base-300 rounded-box w-52"
+            tabindex="0"
+          >
+            <li>
+              <a>
+                Edit
+              </a>
+            </li>
+            <li>
+              <a>
+                Print QR Codes
+              </a>
+            </li>
+            <li>
+              <a>
+                Light mode
+              </a>
+            </li>
+            <li>
+              <a
+                href="/archived"
+              >
+                Archived plants
+              </a>
+            </li>
+          </ul>
         </div>
         <div
-          class="navbar-center mx-auto shrink min-w-0"
+          class="mx-auto shrink min-w-0"
           title="Scroll to top"
         >
           <div
@@ -4490,29 +4261,8 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
           </div>
         </div>
         <div
-          class="navbar-end w-auto invisible"
-        >
-          <div
-            class="btn btn-ghost btn-circle"
-            role="button"
-            tabindex="0"
-          >
-            <svg
-              class="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M4 6h16M4 12h16M4 18h7"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-              />
-            </svg>
-          </div>
-        </div>
+          class="justify-end min-w-12"
+        />
       </div>
       <div
         class="grid grid-cols-1 mx-auto md:grid-cols-2"
@@ -5123,63 +4873,59 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
           class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
         >
           <div
-            class="navbar-start w-auto"
+            class="dropdown justify-start min-w-12"
           >
             <div
-              class="dropdown"
+              class="btn btn-ghost btn-circle"
+              role="button"
+              tabindex="0"
             >
-              <div
-                class="btn btn-ghost btn-circle"
-                role="button"
-                tabindex="0"
+              <svg
+                class="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <svg
-                  class="h-5 w-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M4 6h16M4 12h16M4 18h7"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                  />
-                </svg>
-              </div>
-              <ul
-                class="menu menu-md dropdown-content mt-3 z-[99]
-                                    p-2 shadow bg-base-300 rounded-box w-52"
-                tabindex="0"
-              >
-                <li>
-                  <a>
-                    Edit
-                  </a>
-                </li>
-                <li>
-                  <a>
-                    Print QR Codes
-                  </a>
-                </li>
-                <li>
-                  <a>
-                    Light mode
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/archived"
-                  >
-                    Archived plants
-                  </a>
-                </li>
-              </ul>
+                <path
+                  d="M4 6h16M4 12h16M4 18h7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                />
+              </svg>
             </div>
+            <ul
+              class="menu menu-md dropdown-content mt-3 z-[99]
+                                p-2 shadow bg-base-300 rounded-box w-52"
+              tabindex="0"
+            >
+              <li>
+                <a>
+                  Edit
+                </a>
+              </li>
+              <li>
+                <a>
+                  Print QR Codes
+                </a>
+              </li>
+              <li>
+                <a>
+                  Light mode
+                </a>
+              </li>
+              <li>
+                <a
+                  href="/archived"
+                >
+                  Archived plants
+                </a>
+              </li>
+            </ul>
           </div>
           <div
-            class="navbar-center mx-auto shrink min-w-0"
+            class="mx-auto shrink min-w-0"
           >
             <div
               class="dropdown dropdown-center w-full"
@@ -5224,29 +4970,8 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
             </div>
           </div>
           <div
-            class="navbar-end w-auto invisible"
-          >
-            <div
-              class="btn btn-ghost btn-circle"
-              role="button"
-              tabindex="0"
-            >
-              <svg
-                class="h-5 w-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 6h16M4 12h16M4 18h7"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                />
-              </svg>
-            </div>
-          </div>
+            class="justify-end min-w-12"
+          />
         </div>
         <div
           class="grid grid-cols-1 mx-auto md:grid-cols-2"
@@ -5790,63 +5515,59 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
         class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
       >
         <div
-          class="navbar-start w-auto"
+          class="dropdown justify-start min-w-12"
         >
           <div
-            class="dropdown"
+            class="btn btn-ghost btn-circle"
+            role="button"
+            tabindex="0"
           >
-            <div
-              class="btn btn-ghost btn-circle"
-              role="button"
-              tabindex="0"
+            <svg
+              class="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <svg
-                class="h-5 w-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 6h16M4 12h16M4 18h7"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                />
-              </svg>
-            </div>
-            <ul
-              class="menu menu-md dropdown-content mt-3 z-[99]
-                                    p-2 shadow bg-base-300 rounded-box w-52"
-              tabindex="0"
-            >
-              <li>
-                <a>
-                  Edit
-                </a>
-              </li>
-              <li>
-                <a>
-                  Print QR Codes
-                </a>
-              </li>
-              <li>
-                <a>
-                  Light mode
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/archived"
-                >
-                  Archived plants
-                </a>
-              </li>
-            </ul>
+              <path
+                d="M4 6h16M4 12h16M4 18h7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+              />
+            </svg>
           </div>
+          <ul
+            class="menu menu-md dropdown-content mt-3 z-[99]
+                                p-2 shadow bg-base-300 rounded-box w-52"
+            tabindex="0"
+          >
+            <li>
+              <a>
+                Edit
+              </a>
+            </li>
+            <li>
+              <a>
+                Print QR Codes
+              </a>
+            </li>
+            <li>
+              <a>
+                Light mode
+              </a>
+            </li>
+            <li>
+              <a
+                href="/archived"
+              >
+                Archived plants
+              </a>
+            </li>
+          </ul>
         </div>
         <div
-          class="navbar-center mx-auto shrink min-w-0"
+          class="mx-auto shrink min-w-0"
         >
           <div
             class="dropdown dropdown-center w-full"
@@ -5891,29 +5612,8 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
           </div>
         </div>
         <div
-          class="navbar-end w-auto invisible"
-        >
-          <div
-            class="btn btn-ghost btn-circle"
-            role="button"
-            tabindex="0"
-          >
-            <svg
-              class="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M4 6h16M4 12h16M4 18h7"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-              />
-            </svg>
-          </div>
-        </div>
+          class="justify-end min-w-12"
+        />
       </div>
       <div
         class="grid grid-cols-1 mx-auto md:grid-cols-2"
