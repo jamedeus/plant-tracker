@@ -109,18 +109,6 @@ exports[`App matches snapshot when changing group QR code 1`] = `
                         Nowhere
                       </span>
                     </p>
-                    <div
-                      class="hidden"
-                    >
-                      <p
-                        class="font-semibold mt-3"
-                      >
-                        Description:
-                      </p>
-                      <p
-                        class="text-sm line-clamp-6"
-                      />
-                    </div>
                   </div>
                 </div>
               </div>
@@ -312,18 +300,6 @@ exports[`App matches snapshot when changing group QR code 1`] = `
                       Nowhere
                     </span>
                   </p>
-                  <div
-                    class="hidden"
-                  >
-                    <p
-                      class="font-semibold mt-3"
-                    >
-                      Description:
-                    </p>
-                    <p
-                      class="text-sm line-clamp-6"
-                    />
-                  </div>
                 </div>
               </div>
             </div>

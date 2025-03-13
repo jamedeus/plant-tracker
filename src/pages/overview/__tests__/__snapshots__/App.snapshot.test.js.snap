@@ -348,18 +348,6 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                               4
                             </span>
                           </p>
-                          <div
-                            class="hidden"
-                          >
-                            <p
-                              class="font-semibold mt-3"
-                            >
-                              Description:
-                            </p>
-                            <p
-                              class="text-sm line-clamp-6"
-                            />
-                          </div>
                         </div>
                       </div>
                     </a>
@@ -550,18 +538,6 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                               Middle shelf
                             </span>
                           </p>
-                          <div
-                            class="hidden"
-                          >
-                            <p
-                              class="font-semibold mt-3"
-                            >
-                              Description:
-                            </p>
-                            <p
-                              class="text-sm line-clamp-6"
-                            />
-                          </div>
                         </div>
                       </div>
                     </a>
@@ -985,18 +961,6 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                             4
                           </span>
                         </p>
-                        <div
-                          class="hidden"
-                        >
-                          <p
-                            class="font-semibold mt-3"
-                          >
-                            Description:
-                          </p>
-                          <p
-                            class="text-sm line-clamp-6"
-                          />
-                        </div>
                       </div>
                     </div>
                   </a>
@@ -1187,18 +1151,6 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                             Middle shelf
                           </span>
                         </p>
-                        <div
-                          class="hidden"
-                        >
-                          <p
-                            class="font-semibold mt-3"
-                          >
-                            Description:
-                          </p>
-                          <p
-                            class="text-sm line-clamp-6"
-                          />
-                        </div>
                       </div>
                     </div>
                   </a>
@@ -2105,18 +2057,6 @@ exports[`App matches snapshot when only groups exist 1`] = `
                               Middle shelf
                             </span>
                           </p>
-                          <div
-                            class="hidden"
-                          >
-                            <p
-                              class="font-semibold mt-3"
-                            >
-                              Description:
-                            </p>
-                            <p
-                              class="text-sm line-clamp-6"
-                            />
-                          </div>
                         </div>
                       </div>
                     </a>
@@ -2479,18 +2419,6 @@ exports[`App matches snapshot when only groups exist 1`] = `
                             Middle shelf
                           </span>
                         </p>
-                        <div
-                          class="hidden"
-                        >
-                          <p
-                            class="font-semibold mt-3"
-                          >
-                            Description:
-                          </p>
-                          <p
-                            class="text-sm line-clamp-6"
-                          />
-                        </div>
                       </div>
                     </div>
                   </a>
@@ -2966,18 +2894,6 @@ exports[`App matches snapshot when only plants exist 1`] = `
                               4
                             </span>
                           </p>
-                          <div
-                            class="hidden"
-                          >
-                            <p
-                              class="font-semibold mt-3"
-                            >
-                              Description:
-                            </p>
-                            <p
-                              class="text-sm line-clamp-6"
-                            />
-                          </div>
                         </div>
                       </div>
                     </a>
@@ -3386,18 +3302,6 @@ exports[`App matches snapshot when only plants exist 1`] = `
                             4
                           </span>
                         </p>
-                        <div
-                          class="hidden"
-                        >
-                          <p
-                            class="font-semibold mt-3"
-                          >
-                            Description:
-                          </p>
-                          <p
-                            class="text-sm line-clamp-6"
-                          />
-                        </div>
                       </div>
                     </div>
                   </a>
@@ -3873,18 +3777,6 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                               4
                             </span>
                           </p>
-                          <div
-                            class="hidden"
-                          >
-                            <p
-                              class="font-semibold mt-3"
-                            >
-                              Description:
-                            </p>
-                            <p
-                              class="text-sm line-clamp-6"
-                            />
-                          </div>
                         </div>
                       </div>
                     </a>
@@ -4075,18 +3967,6 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                               Middle shelf
                             </span>
                           </p>
-                          <div
-                            class="hidden"
-                          >
-                            <p
-                              class="font-semibold mt-3"
-                            >
-                              Description:
-                            </p>
-                            <p
-                              class="text-sm line-clamp-6"
-                            />
-                          </div>
                         </div>
                       </div>
                     </a>
@@ -4495,18 +4375,6 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                             4
                           </span>
                         </p>
-                        <div
-                          class="hidden"
-                        >
-                          <p
-                            class="font-semibold mt-3"
-                          >
-                            Description:
-                          </p>
-                          <p
-                            class="text-sm line-clamp-6"
-                          />
-                        </div>
                       </div>
                     </div>
                   </a>
@@ -4697,18 +4565,6 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                             Middle shelf
                           </span>
                         </p>
-                        <div
-                          class="hidden"
-                        >
-                          <p
-                            class="font-semibold mt-3"
-                          >
-                            Description:
-                          </p>
-                          <p
-                            class="text-sm line-clamp-6"
-                          />
-                        </div>
                       </div>
                     </div>
                   </a>
@@ -5204,18 +5060,6 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                               4
                             </span>
                           </p>
-                          <div
-                            class="hidden"
-                          >
-                            <p
-                              class="font-semibold mt-3"
-                            >
-                              Description:
-                            </p>
-                            <p
-                              class="text-sm line-clamp-6"
-                            />
-                          </div>
                         </div>
                       </div>
                     </a>
@@ -5406,18 +5250,6 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                               Middle shelf
                             </span>
                           </p>
-                          <div
-                            class="hidden"
-                          >
-                            <p
-                              class="font-semibold mt-3"
-                            >
-                              Description:
-                            </p>
-                            <p
-                              class="text-sm line-clamp-6"
-                            />
-                          </div>
                         </div>
                       </div>
                     </a>
@@ -5846,18 +5678,6 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                             4
                           </span>
                         </p>
-                        <div
-                          class="hidden"
-                        >
-                          <p
-                            class="font-semibold mt-3"
-                          >
-                            Description:
-                          </p>
-                          <p
-                            class="text-sm line-clamp-6"
-                          />
-                        </div>
                       </div>
                     </div>
                   </a>
@@ -6048,18 +5868,6 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                             Middle shelf
                           </span>
                         </p>
-                        <div
-                          class="hidden"
-                        >
-                          <p
-                            class="font-semibold mt-3"
-                          >
-                            Description:
-                          </p>
-                          <p
-                            class="text-sm line-clamp-6"
-                          />
-                        </div>
                       </div>
                     </div>
                   </a>

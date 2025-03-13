@@ -13,26 +13,26 @@ describe('GroupDetails', () => {
         expect(queryByText('No details')).toBeNull();
     });
 
-    it('hides location row if argument is null', () => {
-        const { getByText } = render(
+    it('does not render location row if argument is null', () => {
+        const { queryByText } = render(
             <GroupDetails
                 location={null}
                 description='Used for propagation'
             />
         );
-        expect(getByText('Location:').parentElement.classList).toContain('hidden');
-        expect(getByText('Description:').parentElement.classList).not.toContain('hidden');
+        expect(queryByText('Location:')).toBeNull();
+        expect(queryByText('Description:')).toBeInTheDocument();
     });
 
-    it('hides description row if argument is null', () => {
-        const { getByText } = render(
+    it('does not render description row if argument is null', () => {
+        const { queryByText } = render(
             <GroupDetails
                 location='Middle shelf'
                 description={null}
             />
         );
-        expect(getByText('Location:').parentElement.classList).not.toContain('hidden');
-        expect(getByText('Description:').parentElement.classList).toContain('hidden');
+        expect(queryByText('Location:')).toBeInTheDocument();
+        expect(queryByText('Description:')).toBeNull();
     });
 
     it('displays "No details" when both arguments are null', () => {

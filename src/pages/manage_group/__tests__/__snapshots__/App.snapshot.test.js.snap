@@ -124,18 +124,6 @@ exports[`App matches snapshot 1`] = `
                         Middle shelf
                       </span>
                     </p>
-                    <div
-                      class="hidden"
-                    >
-                      <p
-                        class="font-semibold mt-3"
-                      >
-                        Description:
-                      </p>
-                      <p
-                        class="text-sm line-clamp-6"
-                      />
-                    </div>
                     <button
                       class="btn btn-sm mt-4"
                     >
@@ -524,18 +512,6 @@ exports[`App matches snapshot 1`] = `
                           2
                         </span>
                       </p>
-                      <div
-                        class="hidden"
-                      >
-                        <p
-                          class="font-semibold mt-3"
-                        >
-                          Description:
-                        </p>
-                        <p
-                          class="text-sm line-clamp-6"
-                        />
-                      </div>
                     </div>
                   </div>
                 </a>
@@ -619,30 +595,6 @@ exports[`App matches snapshot 1`] = `
                           null
                         </span>
                       </p>
-                      <p
-                        class="hidden"
-                      >
-                        <span
-                          class="font-semibold"
-                        >
-                          Pot size:
-                        </span>
-                        <span
-                          class="ml-auto text-right"
-                        />
-                      </p>
-                      <div
-                        class="hidden"
-                      >
-                        <p
-                          class="font-semibold mt-3"
-                        >
-                          Description:
-                        </p>
-                        <p
-                          class="text-sm line-clamp-6"
-                        />
-                      </div>
                     </div>
                   </div>
                 </a>
@@ -967,18 +919,6 @@ exports[`App matches snapshot 1`] = `
                       Middle shelf
                     </span>
                   </p>
-                  <div
-                    class="hidden"
-                  >
-                    <p
-                      class="font-semibold mt-3"
-                    >
-                      Description:
-                    </p>
-                    <p
-                      class="text-sm line-clamp-6"
-                    />
-                  </div>
                   <button
                     class="btn btn-sm mt-4"
                   >
@@ -1367,18 +1307,6 @@ exports[`App matches snapshot 1`] = `
                         2
                       </span>
                     </p>
-                    <div
-                      class="hidden"
-                    >
-                      <p
-                        class="font-semibold mt-3"
-                      >
-                        Description:
-                      </p>
-                      <p
-                        class="text-sm line-clamp-6"
-                      />
-                    </div>
                   </div>
                 </div>
               </a>
@@ -1462,30 +1390,6 @@ exports[`App matches snapshot 1`] = `
                         null
                       </span>
                     </p>
-                    <p
-                      class="hidden"
-                    >
-                      <span
-                        class="font-semibold"
-                      >
-                        Pot size:
-                      </span>
-                      <span
-                        class="ml-auto text-right"
-                      />
-                    </p>
-                    <div
-                      class="hidden"
-                    >
-                      <p
-                        class="font-semibold mt-3"
-                      >
-                        Description:
-                      </p>
-                      <p
-                        class="text-sm line-clamp-6"
-                      />
-                    </div>
                   </div>
                 </div>
               </a>

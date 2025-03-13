@@ -15,40 +15,40 @@ describe('PlantDetails', () => {
         expect(queryByText('No details')).toBeNull();
     });
 
-    it('hides species row if argument is null', () => {
-        const { getByText } = render(
+    it('does not render species row if argument is null', () => {
+        const { queryByText } = render(
             <PlantDetails
                 species={null}
                 pot_size={4}
                 description='Propagated in March 2023'
             />
         );
-        expect(getByText('Species:').parentElement.classList).toContain('hidden');
-        expect(getByText('Description:').parentElement.classList).not.toContain('hidden');
+        expect(queryByText('Species:')).toBeNull();
+        expect(queryByText('Description:')).toBeInTheDocument();
     });
 
-    it('hides pot_size row if argument is null', () => {
-        const { getByText } = render(
+    it('does not render pot_size row if argument is null', () => {
+        const { queryByText } = render(
             <PlantDetails
                 species='Fittonia'
                 pot_size={null}
                 description='Propagated in March 2023'
             />
         );
-        expect(getByText('Pot size:').parentElement.classList).toContain('hidden');
-        expect(getByText('Description:').parentElement.classList).not.toContain('hidden');
+        expect(queryByText('Pot size:')).toBeNull();
+        expect(queryByText('Description:')).toBeInTheDocument();
     });
 
-    it('hides description row if argument is null', () => {
-        const { getByText } = render(
+    it('does not render description row if argument is null', () => {
+        const { queryByText } = render(
             <PlantDetails
                 species='Fittonia'
                 pot_size={4}
                 description={null}
             />
         );
-        expect(getByText('Species:').parentElement.classList).not.toContain('hidden');
-        expect(getByText('Description:').parentElement.classList).toContain('hidden');
+        expect(queryByText('Species:')).toBeInTheDocument();
+        expect(queryByText('Description:')).toBeNull();
     });
 
     it('displays "No details" when both arguments are null', () => {
