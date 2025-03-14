@@ -33,7 +33,7 @@ const CollapseCol = ({ title, children, scroll=false }) => {
             <div className="collapse-title text-xl font-medium text-center">
                 {title}
             </div>
-            <div ref={scrollRef} className="collapse-content min-w-0 overflow-hidden">
+            <div ref={scrollRef} className="collapse-content min-w-0">
                 {children}
             </div>
         </div>

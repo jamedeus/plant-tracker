@@ -148,3 +148,9 @@ html[data-theme="light"] .pot-size-selected::placeholder {
 .textarea {
     @apply text-base;
 }
+
+/* Fix items inside collapse remaining visible when collapse is closed */
+/* Issue affects items with position: absolute (EditableNodeList checkboxes) */
+.collapse {
+    clip-path: inset(0 0 0 0);
+}

@@ -171,7 +171,7 @@ exports[`App matches snapshot 1`] = `
             Plants (3)
           </div>
           <div
-            class="collapse-content min-w-0 overflow-hidden"
+            class="collapse-content min-w-0"
           >
             <div
               class="flex px-4 mb-4"
@@ -966,7 +966,7 @@ exports[`App matches snapshot 1`] = `
           Plants (3)
         </div>
         <div
-          class="collapse-content min-w-0 overflow-hidden"
+          class="collapse-content min-w-0"
         >
           <div
             class="flex px-4 mb-4"
