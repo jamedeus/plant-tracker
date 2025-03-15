@@ -154,3 +154,8 @@ html[data-theme="light"] .pot-size-selected::placeholder {
 .collapse {
     clip-path: inset(0 0 0 0);
 }
+
+/* Fix modal filling full height on iOS safari when address bar visible */
+.modal-box {
+    max-height: calc(100dvh - 5em);
+}
