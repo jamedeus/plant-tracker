@@ -4,13 +4,12 @@ import { mockContext } from './mockContext';
 
 describe('RemovePlantsModal', () => {
     it('renders a card for each plant option', async () => {
-        // Render context with mock context
+        // Render modal with mock context
         const component = render(
             <PageWrapper>
                 <RemovePlantsModal
-                    groupID={mockContext.group.uuid}
                     plantDetails={mockContext.details}
-                    setPlantDetails={jest.fn()}
+                    removePlants={jest.fn()}
                 />
             </PageWrapper>
         );
@@ -31,9 +30,8 @@ describe('RemovePlantsModal', () => {
         const component = render(
             <PageWrapper>
                 <RemovePlantsModal
-                    groupID={mockContext.group.uuid}
                     plantDetails={[]}
-                    setPlantDetails={jest.fn()}
+                    removePlants={jest.fn()}
                 />
             </PageWrapper>
         );

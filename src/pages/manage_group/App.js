@@ -262,6 +262,61 @@ function App() {
         }
     };
 
+    // Returns array of plant objects with all plants that are not archived or
+    // already in group
+    const getAddPlantsModalOptions = () => {
+        const existing = plantDetails.map(plant => plant.uuid);
+        return options.filter(
+            plant => !existing.includes(plant.uuid) && !plant.archived
+        );
+    };
+
+    // Handler for add button in AddPlantsModal
+    const addPlants = async (selectedRef) => {
+        const payload = {
+            group_id: group.uuid,
+            plants: selectedRef.current
+        };
+        const response = await sendPostRequest(
+            '/bulk_add_plants_to_group',
+            payload
+        );
+        if (response.ok) {
+            // Add objects in response to plantDetails state
+            const data = await response.json();
+            setPlantDetails([...plantDetails, ...data.added]);
+            // Clear selection
+            selectedRef.current = [];
+        } else {
+            const error = await response.json();
+            openErrorModal(JSON.stringify(error));
+        }
+    };
+
+    // Handler for remove button in RemovePlantsModal
+    const removePlants = async (selectedRef) => {
+        const payload = {
+            group_id: group.uuid,
+            plants: selectedRef.current
+        };
+        const response = await sendPostRequest(
+            '/bulk_remove_plants_from_group',
+            payload
+        );
+        if (response.ok) {
+            // Remove UUIDs in response from plantDetails
+            const data = await response.json();
+            setPlantDetails(plantDetails.filter(
+                plant => !data.removed.includes(plant.uuid)
+            ));
+            // Clear selection
+            selectedRef.current = [];
+        } else {
+            const error = await response.json();
+            openErrorModal(JSON.stringify(error));
+        }
+    };
+
     return (
         <div className="container flex flex-col mx-auto mb-8">
             <Navbar
@@ -333,16 +388,13 @@ function App() {
             </EditModal>
 
             <AddPlantsModal
-                groupID={group.uuid}
-                options={options}
-                plantDetails={plantDetails}
-                setPlantDetails={setPlantDetails}
+                options={getAddPlantsModalOptions()}
+                addPlants={addPlants}
             />
 
             <RemovePlantsModal
-                groupID={group.uuid}
                 plantDetails={plantDetails}
-                setPlantDetails={setPlantDetails}
+                removePlants={removePlants}
             />
 
             <ChangeQrModal

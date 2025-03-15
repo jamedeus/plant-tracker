@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import EditableNodeList from 'src/components/EditableNodeList';
 import PlantCard from 'src/components/PlantCard';
 import Modal from 'src/components/Modal';
-import { sendPostRequest } from 'src/util';
-import { openErrorModal } from 'src/components/ErrorModal';
 
 let modalRef;
 
@@ -12,35 +10,11 @@ export const openRemovePlantsModal = () => {
     modalRef.current.open();
 };
 
-const RemovePlantsModal = memo(function RemovePlantsModal({ groupID, plantDetails, setPlantDetails }) {
+const RemovePlantsModal = memo(function RemovePlantsModal({ plantDetails, removePlants }) {
     modalRef = useRef(null);
 
     // Ref to track selected items
     const selected = useRef([]);
-
-    // Handler for remove button in manage plants modal
-    const removePlants = async () => {
-        const payload = {
-            group_id: groupID,
-            plants: selected.current
-        };
-        const response = await sendPostRequest(
-            '/bulk_remove_plants_from_group',
-            payload
-        );
-        if (response.ok) {
-            // Remove UUIDs in response from plantDetails
-            const data = await response.json();
-            setPlantDetails(plantDetails.filter(
-                plant => !data.removed.includes(plant.uuid)
-            ));
-            // Clear selection
-            selected.current = [];
-        } else {
-            const error = await response.json();
-            openErrorModal(JSON.stringify(error));
-        }
-    };
 
     return (
         <Modal
@@ -71,7 +45,7 @@ const RemovePlantsModal = memo(function RemovePlantsModal({ groupID, plantDetail
                     </button>
                     <button
                         className="btn btn-error ml-2"
-                        onClick={removePlants}
+                        onClick={() => removePlants(selected)}
                     >
                         Remove
                     </button>
@@ -82,9 +56,8 @@ const RemovePlantsModal = memo(function RemovePlantsModal({ groupID, plantDetail
 });
 
 RemovePlantsModal.propTypes = {
-    groupID: PropTypes.string.isRequired,
     plantDetails: PropTypes.array.isRequired,
-    setPlantDetails: PropTypes.func.isRequired
+    removePlants: PropTypes.func.isRequired
 };
 
 export default RemovePlantsModal;

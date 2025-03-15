@@ -4,14 +4,18 @@ import { mockContext } from './mockContext';
 
 describe('AddPlantsModal', () => {
     it('renders a card for each plant option', async () => {
-        // Render context with mock context
+        // Get output of getAddPlantsModalOptions (from App component)
+        const existing = mockContext.details.map(plant => plant.uuid);
+        const options = mockContext.options.filter(
+            plant => !existing.includes(plant.uuid) && !plant.archived
+        );
+
+        // Render modal with mock context
         const component = render(
             <PageWrapper>
                 <AddPlantsModal
-                    groupID={mockContext.group.uuid}
-                    options={mockContext.options}
-                    plantDetails={mockContext.details}
-                    setPlantDetails={jest.fn()}
+                    options={options}
+                    addPlants={jest.fn()}
                 />
             </PageWrapper>
         );
@@ -32,10 +36,8 @@ describe('AddPlantsModal', () => {
         const component = render(
             <PageWrapper>
                 <AddPlantsModal
-                    groupID={mockContext.group.uuid}
                     options={[]}
-                    plantDetails={mockContext.details}
-                    setPlantDetails={jest.fn()}
+                    addPlants={jest.fn()}
                 />
             </PageWrapper>
         );
