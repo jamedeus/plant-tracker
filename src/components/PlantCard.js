@@ -1,8 +1,7 @@
 import React, { useState, memo } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDroplet } from '@fortawesome/free-solid-svg-icons';
+import WaterIcon from 'src/components/WaterIcon';
 import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/16/solid';
 import PlantDetails from 'src/components/PlantDetails';
 import { capitalize } from 'src/util';
@@ -58,10 +57,7 @@ const PlantCard = memo(function PlantCard({ display_name, uuid, species, descrip
                                 title={timestampToReadable(last_watered)}
                                 className='line-clamp-1'
                             >
-                                <FontAwesomeIcon
-                                    icon={faDroplet}
-                                    className="mr-2 text-info"
-                                />
+                                <WaterIcon />
                                 {capitalize(
                                     timestampToRelativeCalendar(last_watered, true)
                                 )}

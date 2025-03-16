@@ -16,14 +16,12 @@ import PhotoModal, { openPhotoModal } from './PhotoModal';
 import DeletePhotosModal, { openDeletePhotosModal, preloadDeletePhotosModal } from './DeletePhotosModal';
 import { openEventHistoryModal } from './EventHistoryModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import {
-    faDroplet,
-    faSeedling,
-    faScissors,
-    faMound,
-    faEllipsis,
-    faPenToSquare
-} from '@fortawesome/free-solid-svg-icons';
+import { faEllipsis, faPenToSquare} from '@fortawesome/free-solid-svg-icons';
+import WaterIcon from 'src/components/WaterIcon';
+import FertilizeIcon from 'src/components/FertilizeIcon';
+import PruneIcon from 'src/components/PruneIcon';
+import RepotIcon from 'src/components/RepotIcon';
+
 
 // Takes ISO timestamp string, returns "x days ago"
 const getRelativeTimeString = (timestamp) => {
@@ -56,18 +54,10 @@ TimelineDate.propTypes = {
 };
 
 const eventIconMap = {
-    'water': (
-        <FontAwesomeIcon icon={faDroplet} className="mr-2 text-info" />
-    ),
-    'fertilize': (
-        <FontAwesomeIcon icon={faSeedling} className="mr-2 text-success" />
-    ),
-    'prune': (
-        <FontAwesomeIcon icon={faScissors} className="mr-2 text-prune" />
-    ),
-    'repot': (
-        <FontAwesomeIcon icon={faMound} className="mr-2 text-repot" />
-    ),
+    'water': <WaterIcon />,
+    'fertilize': <FertilizeIcon />,
+    'prune': <PruneIcon />,
+    'repot': <RepotIcon />,
 };
 
 const EventMarker = memo(function EventMarker({ eventType }) {
