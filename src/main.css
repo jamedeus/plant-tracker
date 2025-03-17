@@ -97,6 +97,11 @@ html[data-theme="light"] .pot-size-selected::placeholder {
     @apply left-1/2 transform -translate-x-1/2;
 }
 
+/* Wraps Navbar title dropdown contents (plant/group details) */
+.details-card {
+    @apply card card-compact w-72 p-2 mt-2 mx-auto shadow bg-neutral text-neutral-content;
+}
+
 .btn-prune {
     @apply bg-prune text-warning-content border border-transparent;
 }

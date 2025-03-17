@@ -27,9 +27,7 @@ const DropdownOptions = () => {
 // Navbar title dropdown contents
 const Details = memo(function Details({ type, instance }) {
     return (
-        <div className={`card card-compact w-72 p-2 mt-2 mx-auto shadow
-                         bg-neutral text-neutral-content`}
-        >
+        <div className="details-card">
             <div className="card-body">
                 {type === 'plant' ? (
                     <PlantDetails

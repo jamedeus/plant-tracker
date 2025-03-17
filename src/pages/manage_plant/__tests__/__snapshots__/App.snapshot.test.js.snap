@@ -121,8 +121,7 @@ exports[`App matches snapshot 1`] = `
                 tabindex="0"
               >
                 <div
-                  class="card card-compact w-72 p-2 mt-2 mx-auto
-                         shadow bg-neutral text-neutral-content"
+                  class="details-card"
                 >
                   <div
                     class="card-body"
@@ -2095,8 +2094,7 @@ exports[`App matches snapshot 1`] = `
               tabindex="0"
             >
               <div
-                class="card card-compact w-72 p-2 mt-2 mx-auto
-                         shadow bg-neutral text-neutral-content"
+                class="details-card"
               >
                 <div
                   class="card-body"
@@ -4139,8 +4137,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 tabindex="0"
               >
                 <div
-                  class="card card-compact w-72 p-2 mt-2 mx-auto
-                         shadow bg-neutral text-neutral-content"
+                  class="details-card"
                 >
                   <div
                     class="card-body"
@@ -5991,8 +5988,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               tabindex="0"
             >
               <div
-                class="card card-compact w-72 p-2 mt-2 mx-auto
-                         shadow bg-neutral text-neutral-content"
+                class="details-card"
               >
                 <div
                   class="card-body"
