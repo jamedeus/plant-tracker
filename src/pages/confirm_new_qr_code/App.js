@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import { sendPostRequest, parseDomContext } from 'src/util';
 import Navbar from 'src/components/Navbar';
@@ -25,29 +25,75 @@ const DropdownOptions = () => {
 };
 
 // Navbar title dropdown contents
-const Details = ({ type, instance }) => {
-    switch(type) {
-        case('plant'):
-            return (
-                <PlantDetails
-                    species={instance.species}
-                    pot_size={instance.pot_size}
-                    description={instance.description}
-                />
-            );
-        case('group'):
-            return (
-                <GroupDetails
-                    location={instance.location}
-                    description={instance.description}
-                />
-            );
-    }
-};
+const Details = memo(function Details({ type, instance }) {
+    return (
+        <div className={`card card-compact w-72 p-2 mt-2 mx-auto shadow
+                         bg-neutral text-neutral-content`}
+        >
+            <div className="card-body">
+                {type === 'plant' ? (
+                    <PlantDetails
+                        species={instance.species}
+                        pot_size={instance.pot_size}
+                        description={instance.description}
+                    />
+                ) : (
+                    <GroupDetails
+                        location={instance.location}
+                        description={instance.description}
+                    />
+                )}
+            </div>
+        </div>
+    );
+});
 
 Details.propTypes = {
     type: PropTypes.string.isRequired,
     instance: PropTypes.object.isRequired
+};
+
+const Layout = ({ type, thumbnailUrl, handleConfirm }) => {
+    return (
+        <div className="flex flex-col gap-8 text-center my-auto">
+            <p className="text-lg font-bold">
+                Is this the new QR code for your {type}?
+            </p>
+            {thumbnailUrl && (
+                <div className="mx-auto p-4 bg-base-200 rounded-3xl">
+                    <img
+                        className="max-h-[50vh] rounded-xl object-contain"
+                        src={thumbnailUrl}
+                    />
+                </div>
+            )}
+
+            {/* Confirm/cancel buttons */}
+            <div className="flex gap-4 mx-auto mb-8">
+                <button
+                    className="btn btn-error btn-square text-white"
+                    onClick={() => window.location.href = "/"}
+                >
+                    <FontAwesomeIcon className="h-6 w-6" icon={faXmark} />
+                </button>
+                <button
+                    className="btn btn-success btn-square text-white"
+                    onClick={handleConfirm}
+                >
+                    <FontAwesomeIcon className="h-6 w-6" icon={faCheck} />
+                </button>
+            </div>
+        </div>
+    );
+};
+
+Layout.propTypes = {
+    type: PropTypes.oneOf([
+        'plant',
+        'group'
+    ]).isRequired,
+    thumbnailUrl: PropTypes.string,
+    handleConfirm: PropTypes.func.isRequired
 };
 
 function App() {
@@ -97,45 +143,14 @@ function App() {
                 }
                 title={instance.display_name}
                 titleOptions={
-                    <div className={`card card-compact w-72 p-2 mt-2 mx-auto
-                                     shadow bg-neutral text-neutral-content`}
-                    >
-                        <div className="card-body">
-                            <Details type={type} instance={instance} />
-                        </div>
-                    </div>
+                    <Details type={type} instance={instance} />
                 }
             />
-
-            <div className="flex flex-col gap-8 text-center my-auto">
-                <p className="text-lg font-bold">
-                    Is this the new QR code for your {type}?
-                </p>
-                {instance.thumbnail && (
-                    <div className="mx-auto p-4 bg-base-200 rounded-3xl">
-                        <img
-                            className="max-h-[50vh] rounded-xl object-contain"
-                            src={instance.thumbnail}
-                        />
-                    </div>
-                )}
-
-                {/* Confirm/cancel buttons */}
-                <div className="flex gap-4 mx-auto mb-8">
-                    <button
-                        className="btn btn-error btn-square text-white"
-                        onClick={() => window.location.href = "/"}
-                    >
-                        <FontAwesomeIcon className="h-6 w-6" icon={faXmark} />
-                    </button>
-                    <button
-                        className="btn btn-success btn-square text-white"
-                        onClick={handleConfirm}
-                    >
-                        <FontAwesomeIcon className="h-6 w-6" icon={faCheck} />
-                    </button>
-                </div>
-            </div>
+            <Layout
+                type={type}
+                thumbnailUrl={instance.thumbnail}
+                handleConfirm={handleConfirm}
+            />
         </div>
     );
 }
