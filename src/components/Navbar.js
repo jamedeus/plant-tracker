@@ -91,11 +91,7 @@ const Navbar = ({ menuOptions, onOpenMenu, title, titleOptions }) => {
                 onFocus={onOpenMenu}
             >
                 <DropdownButton />
-                <ul
-                    tabIndex={0}
-                    className={`menu menu-md dropdown-content mt-3 z-[99]
-                                p-2 shadow bg-base-300 rounded-box w-52`}
-                >
+                <ul tabIndex={0} className="dropdown-options mt-3 w-52">
                     {menuOptions}
                 </ul>
             </div>

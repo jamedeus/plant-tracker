@@ -172,11 +172,7 @@ const QuickNavigation = ({ plantsColRef, groupsColRef }) => {
     };
 
     return (
-        <ul
-            tabIndex={0}
-            className={`menu menu-md dropdown-content mt-3 z-[99] p-2 shadow
-                        bg-base-300 rounded-box w-24`}
-        >
+        <ul tabIndex={0} className="dropdown-options mt-3 w-24">
             <li className="mx-auto"><a onClick={jumpToPlants}>
                 Plants
             </a></li>

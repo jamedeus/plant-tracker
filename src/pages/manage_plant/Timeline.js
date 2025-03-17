@@ -273,11 +273,7 @@ const Title = ({ archived, quickNavigation }) => {
                     >
                         History
                     </div>
-                    <ul
-                        tabIndex={0}
-                        className={`dropdown-content z-[1] menu p-2 shadow
-                                    bg-base-300 rounded-box w-44`}
-                    >
+                    <ul tabIndex={0} className="dropdown-options w-44">
                         {quickNavigation}
                     </ul>
                 </div>
@@ -299,11 +295,7 @@ const Title = ({ archived, quickNavigation }) => {
                                 className="w-6 h-6"
                             />
                         </div>
-                        <ul
-                            tabIndex={0}
-                            className={`dropdown-content z-[1] menu p-2 shadow
-                                        bg-base-300 rounded-box w-40`}
-                        >
+                        <ul tabIndex={0} className="dropdown-options w-40">
                             <li><a
                                 className="flex justify-end"
                                 onClick={() => openNoteModal()}

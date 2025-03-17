@@ -50,8 +50,7 @@ exports[`App matches snapshot 1`] = `
               </svg>
             </div>
             <ul
-              class="menu menu-md dropdown-content mt-3 z-[99]
-                                p-2 shadow bg-base-300 rounded-box w-52"
+              class="dropdown-options mt-3 w-52"
               tabindex="0"
             >
               <li>
@@ -211,8 +210,7 @@ exports[`App matches snapshot 1`] = `
                       </svg>
                     </div>
                     <ul
-                      class="menu menu-md dropdown-content mt-2 z-[99] p-2
-                            shadow bg-base-300 rounded-box w-min-content"
+                      class="dropdown-options mt-2 w-min-content"
                       tabindex="0"
                     >
                       <li>
@@ -844,8 +842,7 @@ exports[`App matches snapshot 1`] = `
             </svg>
           </div>
           <ul
-            class="menu menu-md dropdown-content mt-3 z-[99]
-                                p-2 shadow bg-base-300 rounded-box w-52"
+            class="dropdown-options mt-3 w-52"
             tabindex="0"
           >
             <li>
@@ -1005,8 +1002,7 @@ exports[`App matches snapshot 1`] = `
                     </svg>
                   </div>
                   <ul
-                    class="menu menu-md dropdown-content mt-2 z-[99] p-2
-                            shadow bg-base-300 rounded-box w-min-content"
+                    class="dropdown-options mt-2 w-min-content"
                     tabindex="0"
                   >
                     <li>

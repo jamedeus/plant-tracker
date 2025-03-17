@@ -39,8 +39,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 History
               </div>
               <ul
-                class="dropdown-content z-[1] menu p-2 shadow
-                                    bg-base-300 rounded-box w-44"
+                class="dropdown-options w-44"
                 tabindex="0"
               >
                 <li>
@@ -2999,8 +2998,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
               History
             </div>
             <ul
-              class="dropdown-content z-[1] menu p-2 shadow
-                                    bg-base-300 rounded-box w-44"
+              class="dropdown-options w-44"
               tabindex="0"
             >
               <li>
@@ -6026,8 +6024,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                 History
               </div>
               <ul
-                class="dropdown-content z-[1] menu p-2 shadow
-                                    bg-base-300 rounded-box w-44"
+                class="dropdown-options w-44"
                 tabindex="0"
               >
                 <li>
@@ -6170,8 +6167,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
               </svg>
             </div>
             <ul
-              class="dropdown-content z-[1] menu p-2 shadow
-                                        bg-base-300 rounded-box w-40"
+              class="dropdown-options w-40"
               tabindex="0"
             >
               <li>
@@ -9049,8 +9045,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
               History
             </div>
             <ul
-              class="dropdown-content z-[1] menu p-2 shadow
-                                    bg-base-300 rounded-box w-44"
+              class="dropdown-options w-44"
               tabindex="0"
             >
               <li>
@@ -9193,8 +9188,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </svg>
           </div>
           <ul
-            class="dropdown-content z-[1] menu p-2 shadow
-                                        bg-base-300 rounded-box w-40"
+            class="dropdown-options w-40"
             tabindex="0"
           >
             <li>
