@@ -378,4 +378,32 @@ describe('App', () => {
             expect(app.queryByText('You will have 15 minutes to scan the new QR code.')).not.toBeNull();
         });
     });
+
+    it('removes event markers from timeline when events are deleted', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "deleted": [
+                    {"type": "water", "timestamp": "2024-03-01T15:45:44+00:00"},
+                ],
+                "failed": []
+            })
+        }));
+
+        // Confirm 2 water event icons exist
+        expect(app.container.querySelectorAll('.fa-droplet').length).toBe(2);
+
+        // Open event history modal, get reference to modal
+        await user.click(app.getByText('Delete events'));
+        const modal = app.getByText('Event History').parentElement;
+
+        // Select both water events, click delete button
+        await user.click(within(modal).getByText(/today/));
+        await user.click(within(modal).getByText(/yesterday/));
+        await user.click(within(modal).getByText('Delete'));
+
+        // Confirm both water event icons disappeared
+        expect(app.container.querySelectorAll('.fa-droplet').length).toBe(0);
+    });
 });
