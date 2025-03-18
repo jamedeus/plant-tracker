@@ -20,7 +20,10 @@ const EditableNodeList = ({ editing, selected, children }) => {
         <>
             {children.map((node) => (
                 <div key={node.key} className="flex relative mb-4">
-                    <label className="label cursor-pointer absolute flex h-full">
+                    <label className={clsx(
+                        "label cursor-pointer absolute flex h-full",
+                        editing && "pr-[75%] z-10"
+                    )}>
                         <input
                             type="checkbox"
                             className="radio checked:bg-blue-500 my-auto"
