@@ -168,3 +168,7 @@ html[data-theme="light"] .pot-size-selected::placeholder {
 .modal-box {
     max-height: calc(100dvh - 5em);
 }
+
+.floating-footer {
+    @apply sticky bottom-4 mx-auto my-4 p-4 bg-gray-600/50 rounded-box shadow-inner z-50;
+}

@@ -1082,8 +1082,7 @@ exports[`App matches snapshot 1`] = `
           </div>
         </div>
         <div
-          class="flex flex-col mt-2 mx-4 md:mx-auto p-4 md:p-8 pt-0 md:pt-0
-                         md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
+          class="flex flex-col mt-2 mx-4 md:mx-auto p-4 md:p-8 pt-0 md:pt-0 md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
         >
           <div
             class="navbar bg-base-200 rounded-2xl"
@@ -1237,8 +1236,7 @@ exports[`App matches snapshot 1`] = `
                     title="02:52 AM - March 23, 2024"
                   >
                     <img
-                      class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                      class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                       loading="lazy"
                       src="/media/thumbnails/photo3_thumb.jpg"
                     />
@@ -1282,8 +1280,7 @@ exports[`App matches snapshot 1`] = `
                     title="02:52 AM - March 22, 2024"
                   >
                     <img
-                      class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                      class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                       loading="lazy"
                       src="/media/thumbnails/photo2_thumb.jpg"
                     />
@@ -1327,8 +1324,7 @@ exports[`App matches snapshot 1`] = `
                     title="02:52 AM - March 21, 2024"
                   >
                     <img
-                      class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                      class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                       loading="lazy"
                       src="/media/thumbnails/photo1_thumb.jpg"
                     />
@@ -3052,8 +3048,7 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        class="flex flex-col mt-2 mx-4 md:mx-auto p-4 md:p-8 pt-0 md:pt-0
-                         md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
+        class="flex flex-col mt-2 mx-4 md:mx-auto p-4 md:p-8 pt-0 md:pt-0 md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
       >
         <div
           class="navbar bg-base-200 rounded-2xl"
@@ -3207,8 +3202,7 @@ exports[`App matches snapshot 1`] = `
                   title="02:52 AM - March 23, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/photo3_thumb.jpg"
                   />
@@ -3252,8 +3246,7 @@ exports[`App matches snapshot 1`] = `
                   title="02:52 AM - March 22, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/photo2_thumb.jpg"
                   />
@@ -3297,8 +3290,7 @@ exports[`App matches snapshot 1`] = `
                   title="02:52 AM - March 21, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/photo1_thumb.jpg"
                   />
@@ -5050,8 +5042,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
           </div>
         </div>
         <div
-          class="flex flex-col mt-2 mx-4 md:mx-auto p-4 md:p-8 pt-0 md:pt-0
-                         md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
+          class="flex flex-col mt-2 mx-4 md:mx-auto p-4 md:p-8 pt-0 md:pt-0 md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
         >
           <div
             class="navbar bg-base-200 rounded-2xl"
@@ -5143,8 +5134,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                     title="02:52 AM - March 23, 2024"
                   >
                     <img
-                      class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                      class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                       loading="lazy"
                       src="/media/thumbnails/photo3_thumb.jpg"
                     />
@@ -5188,8 +5178,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                     title="02:52 AM - March 22, 2024"
                   >
                     <img
-                      class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                      class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                       loading="lazy"
                       src="/media/thumbnails/photo2_thumb.jpg"
                     />
@@ -5233,8 +5222,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                     title="02:52 AM - March 21, 2024"
                   >
                     <img
-                      class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                      class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                       loading="lazy"
                       src="/media/thumbnails/photo1_thumb.jpg"
                     />
@@ -6899,8 +6887,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
         </div>
       </div>
       <div
-        class="flex flex-col mt-2 mx-4 md:mx-auto p-4 md:p-8 pt-0 md:pt-0
-                         md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
+        class="flex flex-col mt-2 mx-4 md:mx-auto p-4 md:p-8 pt-0 md:pt-0 md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
       >
         <div
           class="navbar bg-base-200 rounded-2xl"
@@ -6992,8 +6979,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   title="02:52 AM - March 23, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/photo3_thumb.jpg"
                   />
@@ -7037,8 +7023,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   title="02:52 AM - March 22, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/photo2_thumb.jpg"
                   />
@@ -7082,8 +7067,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   title="02:52 AM - March 21, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/photo1_thumb.jpg"
                   />

@@ -141,8 +141,10 @@ const PhotoThumbnail = memo(function PhotoThumbnail({ thumbnailUrl, photoUrl, ti
             >
                 <img
                     loading="lazy"
-                    className={`rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]`}
+                    className={clsx(
+                        'rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem]',
+                        'md:w-[5.4rem] md:h-[5.4rem]'
+                    )}
                     src={thumbnailUrl}
                 />
             </div>
@@ -517,9 +519,10 @@ const Timeline = memo(function Timeline({ plantID, events, archived }) {
     const sectionRefs = useRef({});
 
     return (
-        <div className={`flex flex-col mt-2 mx-4 md:mx-auto p-4 md:p-8 pt-0 md:pt-0
-                         md:w-full md:max-w-screen-md bg-base-200 rounded-2xl`}
-        >
+        <div className={clsx(
+            'flex flex-col mt-2 mx-4 md:mx-auto p-4 md:p-8 pt-0 md:pt-0',
+            'md:w-full md:max-w-screen-md bg-base-200 rounded-2xl'
+        )}>
             <Title
                 archived={archived}
                 quickNavigation={

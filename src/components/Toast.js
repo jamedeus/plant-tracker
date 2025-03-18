@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import clsx from 'clsx';
 
 const colorMap = {
     red: 'alert-error',
@@ -49,10 +50,10 @@ export const Toast = () => {
     // Rendered when message state set
     return (message &&
         <div
-            className={
-                `toast toast-center transition-opacity duration-500 z-100
-                ${fade ? 'opacity-100' : 'opacity-0'}`
-            }
+            className={clsx(
+                'toast toast-center transition-opacity duration-500 z-100',
+                fade ? 'opacity-100' : 'opacity-0'
+            )}
             onClick={hideToast}
         >
             <div className={`alert ${colorMap[color]} gap-0`}>

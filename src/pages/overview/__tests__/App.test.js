@@ -70,7 +70,7 @@ describe('App', () => {
         ).not.toHaveAttribute('href');
 
         // Click cancel button, confirm buttons and checkboxes disappear
-        const buttonDiv = app.container.querySelector('.sticky.bottom-4');
+        const buttonDiv = app.container.querySelector('.floating-footer');
         await user.click(within(buttonDiv).getByText('Cancel'));
         expect(app.queryByText('Delete')).toBeNull();
         expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(0);

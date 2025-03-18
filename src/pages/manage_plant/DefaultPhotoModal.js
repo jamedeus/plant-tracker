@@ -5,6 +5,7 @@ import { sendPostRequest } from 'src/util';
 import { timestampToReadable } from 'src/timestampUtils';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/16/solid';
+import clsx from 'clsx';
 
 let modalRef;
 
@@ -35,9 +36,10 @@ const PhotoSlide = memo(function PhotoSlide({ photo, nextPhotoLink, prevPhotoLin
                 src={photo.thumbnail}
                 className="w-full rounded-xl object-scale-down my-auto"
             />
-            <div className={`absolute flex justify-between transform
-                             -translate-y-1/2 left-5 right-5 top-1/2`}
-            >
+            <div className={clsx(
+                'absolute flex justify-between transform -translate-y-1/2',
+                'left-5 right-5 top-1/2'
+            )}>
                 <a href={prevPhotoLink} className="btn btn-circle">
                     <ChevronLeftIcon className="w-6 h-6" />
                 </a>

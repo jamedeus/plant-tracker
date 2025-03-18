@@ -40,9 +40,10 @@ const PhotoSlide = memo(function PhotoSlide({ photo, nextPhotoLink, prevPhotoLin
                     src={photo.thumbnail}
                     className="rounded-xl overflow-hidden mx-auto mb-auto"
                 />
-                <div className={`absolute flex justify-between transform
-                                -translate-y-1/2 left-5 right-5 top-1/2`}
-                >
+                <div className={clsx(
+                    'absolute flex justify-between transform -translate-y-1/2',
+                    'left-5 right-5 top-1/2'
+                )}>
                     <a href={prevPhotoLink} className="btn btn-circle no-animation">
                         <ChevronLeftIcon className="w-6 h-6" />
                     </a>
@@ -225,9 +226,10 @@ const DeletePhotosModal = memo(function DeletePhotosModal({ plantID, photoUrls, 
                     Confirm Delete
                 </h1>
 
-                <div className={`grid grid-cols-[min-content_1fr] mx-auto px-8
-                                 gap-4 max-h-half-screen overflow-y-scroll`}
-                >
+                <div className={clsx(
+                    'grid grid-cols-[min-content_1fr] mx-auto px-8 gap-4',
+                    'max-h-half-screen overflow-y-scroll'
+                )}>
                     {selectedPhotos.map(photo => (
                         // eslint-disable-next-line react/prop-types
                         <ConfirmDeleteRow

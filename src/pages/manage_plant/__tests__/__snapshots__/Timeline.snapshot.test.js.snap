@@ -16,8 +16,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
     </div>
     <div>
       <div
-        class="flex flex-col mt-2 mx-4 md:mx-auto p-4 md:p-8 pt-0 md:pt-0
-                         md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
+        class="flex flex-col mt-2 mx-4 md:mx-auto p-4 md:p-8 pt-0 md:pt-0 md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
       >
         <div
           class="navbar bg-base-200 rounded-2xl"
@@ -768,8 +767,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                   title="07:28 AM - March 25, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_8103_thumb.jpg"
                   />
@@ -778,8 +776,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                   title="07:28 AM - March 25, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_8102_thumb.jpg"
                   />
@@ -788,8 +785,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                   title="07:28 AM - March 25, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_8101_thumb.jpg"
                   />
@@ -798,8 +794,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                   title="06:34 AM - March 25, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_8098_thumb.jpg"
                   />
@@ -808,8 +803,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                   title="06:34 AM - March 25, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_8097_thumb.jpg"
                   />
@@ -818,8 +812,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                   title="05:28 AM - March 25, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_8095_thumb.jpg"
                   />
@@ -828,8 +821,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                   title="05:28 AM - March 25, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_8094_thumb.jpg"
                   />
@@ -838,8 +830,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                   title="05:28 AM - March 25, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_8093_thumb.jpg"
                   />
@@ -848,8 +839,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                   title="05:28 AM - March 25, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_8092_thumb.jpg"
                   />
@@ -858,8 +848,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                   title="05:28 AM - March 25, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_8091_thumb.jpg"
                   />
@@ -868,8 +857,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                   title="05:27 AM - March 25, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_8090_thumb.jpg"
                   />
@@ -878,8 +866,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                   title="05:26 AM - March 25, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_8089_thumb.jpg"
                   />
@@ -1531,8 +1518,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                   title="01:21 PM - February 21, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_7598_thumb.jpg"
                   />
@@ -1872,8 +1858,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                   title="03:57 AM - November 21, 2023"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_5866_thumb.jpg"
                   />
@@ -2187,8 +2172,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                   title="05:59 PM - September 11, 2023"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_5040_thumb.jpg"
                   />
@@ -2237,8 +2221,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                   title="08:43 PM - August 23, 2023"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_4813_thumb.jpg"
                   />
@@ -2762,8 +2745,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                   title="11:00 AM - August 22, 2008"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_4811_thumb.jpeg"
                   />
@@ -2975,8 +2957,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
   </body>,
   "container": <div>
     <div
-      class="flex flex-col mt-2 mx-4 md:mx-auto p-4 md:p-8 pt-0 md:pt-0
-                         md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
+      class="flex flex-col mt-2 mx-4 md:mx-auto p-4 md:p-8 pt-0 md:pt-0 md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
     >
       <div
         class="navbar bg-base-200 rounded-2xl"
@@ -3727,8 +3708,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 title="07:28 AM - March 25, 2024"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_8103_thumb.jpg"
                 />
@@ -3737,8 +3717,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 title="07:28 AM - March 25, 2024"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_8102_thumb.jpg"
                 />
@@ -3747,8 +3726,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 title="07:28 AM - March 25, 2024"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_8101_thumb.jpg"
                 />
@@ -3757,8 +3735,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 title="06:34 AM - March 25, 2024"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_8098_thumb.jpg"
                 />
@@ -3767,8 +3744,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 title="06:34 AM - March 25, 2024"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_8097_thumb.jpg"
                 />
@@ -3777,8 +3753,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 title="05:28 AM - March 25, 2024"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_8095_thumb.jpg"
                 />
@@ -3787,8 +3762,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 title="05:28 AM - March 25, 2024"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_8094_thumb.jpg"
                 />
@@ -3797,8 +3771,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 title="05:28 AM - March 25, 2024"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_8093_thumb.jpg"
                 />
@@ -3807,8 +3780,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 title="05:28 AM - March 25, 2024"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_8092_thumb.jpg"
                 />
@@ -3817,8 +3789,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 title="05:28 AM - March 25, 2024"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_8091_thumb.jpg"
                 />
@@ -3827,8 +3798,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 title="05:27 AM - March 25, 2024"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_8090_thumb.jpg"
                 />
@@ -3837,8 +3807,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 title="05:26 AM - March 25, 2024"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_8089_thumb.jpg"
                 />
@@ -4490,8 +4459,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 title="01:21 PM - February 21, 2024"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_7598_thumb.jpg"
                 />
@@ -4831,8 +4799,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 title="03:57 AM - November 21, 2023"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_5866_thumb.jpg"
                 />
@@ -5146,8 +5113,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 title="05:59 PM - September 11, 2023"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_5040_thumb.jpg"
                 />
@@ -5196,8 +5162,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 title="08:43 PM - August 23, 2023"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_4813_thumb.jpg"
                 />
@@ -5721,8 +5686,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 title="11:00 AM - August 22, 2008"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_4811_thumb.jpeg"
                 />
@@ -6001,8 +5965,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
     </div>
     <div>
       <div
-        class="flex flex-col mt-2 mx-4 md:mx-auto p-4 md:p-8 pt-0 md:pt-0
-                         md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
+        class="flex flex-col mt-2 mx-4 md:mx-auto p-4 md:p-8 pt-0 md:pt-0 md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
       >
         <div
           class="navbar bg-base-200 rounded-2xl"
@@ -6815,8 +6778,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                   title="07:28 AM - March 25, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_8103_thumb.jpg"
                   />
@@ -6825,8 +6787,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                   title="07:28 AM - March 25, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_8102_thumb.jpg"
                   />
@@ -6835,8 +6796,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                   title="07:28 AM - March 25, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_8101_thumb.jpg"
                   />
@@ -6845,8 +6805,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                   title="06:34 AM - March 25, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_8098_thumb.jpg"
                   />
@@ -6855,8 +6814,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                   title="06:34 AM - March 25, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_8097_thumb.jpg"
                   />
@@ -6865,8 +6823,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                   title="05:28 AM - March 25, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_8095_thumb.jpg"
                   />
@@ -6875,8 +6832,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                   title="05:28 AM - March 25, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_8094_thumb.jpg"
                   />
@@ -6885,8 +6841,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                   title="05:28 AM - March 25, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_8093_thumb.jpg"
                   />
@@ -6895,8 +6850,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                   title="05:28 AM - March 25, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_8092_thumb.jpg"
                   />
@@ -6905,8 +6859,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                   title="05:28 AM - March 25, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_8091_thumb.jpg"
                   />
@@ -6915,8 +6868,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                   title="05:27 AM - March 25, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_8090_thumb.jpg"
                   />
@@ -6925,8 +6877,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                   title="05:26 AM - March 25, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_8089_thumb.jpg"
                   />
@@ -7578,8 +7529,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                   title="01:21 PM - February 21, 2024"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_7598_thumb.jpg"
                   />
@@ -7919,8 +7869,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                   title="03:57 AM - November 21, 2023"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_5866_thumb.jpg"
                   />
@@ -8234,8 +8183,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                   title="05:59 PM - September 11, 2023"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_5040_thumb.jpg"
                   />
@@ -8284,8 +8232,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                   title="08:43 PM - August 23, 2023"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_4813_thumb.jpg"
                   />
@@ -8809,8 +8756,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                   title="11:00 AM - August 22, 2008"
                 >
                   <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                     loading="lazy"
                     src="/media/thumbnails/IMG_4811_thumb.jpeg"
                   />
@@ -9022,8 +8968,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
   </body>,
   "container": <div>
     <div
-      class="flex flex-col mt-2 mx-4 md:mx-auto p-4 md:p-8 pt-0 md:pt-0
-                         md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
+      class="flex flex-col mt-2 mx-4 md:mx-auto p-4 md:p-8 pt-0 md:pt-0 md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
     >
       <div
         class="navbar bg-base-200 rounded-2xl"
@@ -9836,8 +9781,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                 title="07:28 AM - March 25, 2024"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_8103_thumb.jpg"
                 />
@@ -9846,8 +9790,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                 title="07:28 AM - March 25, 2024"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_8102_thumb.jpg"
                 />
@@ -9856,8 +9799,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                 title="07:28 AM - March 25, 2024"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_8101_thumb.jpg"
                 />
@@ -9866,8 +9808,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                 title="06:34 AM - March 25, 2024"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_8098_thumb.jpg"
                 />
@@ -9876,8 +9817,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                 title="06:34 AM - March 25, 2024"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_8097_thumb.jpg"
                 />
@@ -9886,8 +9826,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                 title="05:28 AM - March 25, 2024"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_8095_thumb.jpg"
                 />
@@ -9896,8 +9835,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                 title="05:28 AM - March 25, 2024"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_8094_thumb.jpg"
                 />
@@ -9906,8 +9844,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                 title="05:28 AM - March 25, 2024"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_8093_thumb.jpg"
                 />
@@ -9916,8 +9853,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                 title="05:28 AM - March 25, 2024"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_8092_thumb.jpg"
                 />
@@ -9926,8 +9862,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                 title="05:28 AM - March 25, 2024"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_8091_thumb.jpg"
                 />
@@ -9936,8 +9871,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                 title="05:27 AM - March 25, 2024"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_8090_thumb.jpg"
                 />
@@ -9946,8 +9880,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                 title="05:26 AM - March 25, 2024"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_8089_thumb.jpg"
                 />
@@ -10599,8 +10532,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                 title="01:21 PM - February 21, 2024"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_7598_thumb.jpg"
                 />
@@ -10940,8 +10872,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                 title="03:57 AM - November 21, 2023"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_5866_thumb.jpg"
                 />
@@ -11255,8 +11186,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                 title="05:59 PM - September 11, 2023"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_5040_thumb.jpg"
                 />
@@ -11305,8 +11235,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                 title="08:43 PM - August 23, 2023"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_4813_thumb.jpg"
                 />
@@ -11830,8 +11759,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                 title="11:00 AM - August 22, 2008"
               >
                 <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem]
-                                h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
                   loading="lazy"
                   src="/media/thumbnails/IMG_4811_thumb.jpeg"
                 />

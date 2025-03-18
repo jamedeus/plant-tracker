@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 import Modal from 'src/components/Modal';
+import clsx from 'clsx';
 
 export let openErrorModal;
 
@@ -27,9 +28,10 @@ export const ErrorModal = () => {
     return (
         <Modal ref={modalRef}>
             <h3 className="font-bold text-lg mb-6">Error</h3>
-            <div className={`min-h-36 flex flex-col justify-center mx-auto
-                             whitespace-pre-line`}
-            >
+            <div className={clsx(
+                'min-h-36 flex flex-col justify-center mx-auto',
+                'whitespace-pre-line'
+            )}>
                 {message}
             </div>
             <div className="modal-action mx-auto">
