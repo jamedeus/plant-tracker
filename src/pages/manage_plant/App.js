@@ -297,6 +297,16 @@ function App() {
         }
     };
 
+    // Takes timestamp and eventType, removes timestamp from events state
+    const removeEvent = (timestamp, eventType) => {
+        let oldEvents = {...events};
+        oldEvents[eventType].splice(
+            oldEvents[eventType].indexOf(timestamp),
+            1
+        );
+        setEvents(oldEvents);
+    };
+
     return (
         <div className="container flex flex-col mx-auto mb-8">
             <Navbar
@@ -354,7 +364,7 @@ function App() {
             <EventHistoryModal
                 plantID={plant.uuid}
                 events={events}
-                setEvents={setEvents}
+                removeEvent={removeEvent}
             />
 
             <ChangeQrModal

@@ -98,7 +98,7 @@ EventsCol.propTypes = {
     handleSelect: PropTypes.func.isRequired
 };
 
-const EventHistoryModal = ({ plantID, events, setEvents }) => {
+const EventHistoryModal = ({ plantID, events, removeEvent }) => {
     modalRef = useRef(null);
 
     // Create ref to store selected events in each column
@@ -137,16 +137,6 @@ const EventHistoryModal = ({ plantID, events, setEvents }) => {
         }
         updateDeleteDisabled();
     }, [updateDeleteDisabled]);
-
-    // Takes timestamp and eventType, removes timestamp from events state
-    const removeEvent = (timestamp, eventType) => {
-        let oldEvents = {...events};
-        oldEvents[eventType].splice(
-            oldEvents[eventType].indexOf(timestamp),
-            1
-        );
-        setEvents(oldEvents);
-    };
 
     // Handler for modal delete button, posts all selected event types and
     // timestamps to backend, removes events from state if successfully deleted
@@ -266,7 +256,7 @@ const EventHistoryModal = ({ plantID, events, setEvents }) => {
 EventHistoryModal.propTypes = {
     plantID: PropTypes.string.isRequired,
     events: PropTypes.object.isRequired,
-    setEvents: PropTypes.func.isRequired
+    removeEvent: PropTypes.func.isRequired
 };
 
 export default EventHistoryModal;

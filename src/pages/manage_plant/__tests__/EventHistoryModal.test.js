@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { postHeaders } from 'src/testUtils/headers';
 import EventHistoryModal, { openEventHistoryModal } from '../EventHistoryModal';
 import { PageWrapper } from 'src/index';
@@ -15,15 +14,14 @@ const TestComponent = ({ context }) => {
             repot: ["2024-01-01T15:45:44+00:00"],
         }
     };
-    const [events, setEvents] = useState(state.events);
 
     // Render app
     return (
         <>
             <EventHistoryModal
                 plantID={context.plant_details.uuid}
-                events={events}
-                setEvents={setEvents}
+                events={state.events}
+                removeEvent={jest.fn()}
             />
             <button onClick={openEventHistoryModal}>
                 Open event history modal
