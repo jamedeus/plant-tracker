@@ -1,4 +1,4 @@
-import React, { useRef, useState, Fragment, memo } from 'react';
+import React, { useRef, useState, useLayoutEffect, Fragment, memo } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { DateTime } from 'luxon';
@@ -160,14 +160,36 @@ PhotoThumbnail.propTypes = {
 
 const NoteCollapse = memo(function NoteCollapse({ note, editNote }) {
     const [expanded, setExpanded] = useState(false);
+    const [height, setHeight] = useState(null);
+    const [clamped, setClamped] = useState(true);
+
+    // Used to measure height of expanded note text
+    const textRef = useRef(null);
 
     const readableTimestamp = timestampToReadable(note.timestamp);
 
+    useLayoutEffect(() => {
+        if (textRef.current) {
+            if (expanded) {
+                // Transition height from 1 line to full expanded text height
+                setHeight(textRef.current.scrollHeight + "px");
+                // Remove line clamp immediately so expand animation can run
+                setClamped(false);
+            } else {
+                // Transition height down to 1 line (collapse)
+                setHeight(getComputedStyle(textRef.current).lineHeight);
+                // Wait until collapse animation completes before line clamping
+                const timer = setTimeout(() => setClamped(true), 300);
+                return () => clearTimeout(timer);
+            }
+        }
+    }, [expanded]);
+
     return (
-        <div className={clsx(
-            'm-2 flex flex-row transition-[max-height] duration-500 md:duration-300 ease-in-out',
-            expanded ? 'max-h-[600px] md:max-h-[200px]' : 'max-h-6'
-        )}>
+        <div
+            className='m-2 flex flex-row transition-[height] duration-300 ease-in-out'
+            style={{ height: height }}
+        >
             <FontAwesomeIcon
                 icon={faPenToSquare}
                 className={clsx(
@@ -177,8 +199,12 @@ const NoteCollapse = memo(function NoteCollapse({ note, editNote }) {
                 onClick={editNote}
             />
             <div
-                className='cursor-pointer overflow-hidden'
+                className={clsx(
+                    'cursor-pointer overflow-hidden',
+                    clamped && 'line-clamp-1'
+                )}
                 title={readableTimestamp}
+                ref={textRef}
                 onClick={() => setExpanded(!expanded)}
             >
                 <span className="text-sm md:text-base mr-2 after:content-['\200B']">

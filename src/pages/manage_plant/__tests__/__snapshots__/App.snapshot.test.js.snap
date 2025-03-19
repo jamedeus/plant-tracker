@@ -1409,7 +1409,7 @@ exports[`App matches snapshot 1`] = `
                   class="flex flex-col"
                 >
                   <div
-                    class="m-2 flex flex-row transition-[max-height] duration-500 md:duration-300 ease-in-out max-h-6"
+                    class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
                   >
                     <svg
                       aria-hidden="true"
@@ -1427,7 +1427,7 @@ exports[`App matches snapshot 1`] = `
                       />
                     </svg>
                     <div
-                      class="cursor-pointer overflow-hidden"
+                      class="cursor-pointer overflow-hidden line-clamp-1"
                       title="07:45 AM - March 1, 2024"
                     >
                       <span
@@ -1559,7 +1559,7 @@ exports[`App matches snapshot 1`] = `
                   class="flex flex-col"
                 >
                   <div
-                    class="m-2 flex flex-row transition-[max-height] duration-500 md:duration-300 ease-in-out max-h-6"
+                    class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
                   >
                     <svg
                       aria-hidden="true"
@@ -1577,7 +1577,7 @@ exports[`App matches snapshot 1`] = `
                       />
                     </svg>
                     <div
-                      class="cursor-pointer overflow-hidden"
+                      class="cursor-pointer overflow-hidden line-clamp-1"
                       title="04:44 AM - February 26, 2024"
                     >
                       <span
@@ -3375,7 +3375,7 @@ exports[`App matches snapshot 1`] = `
                 class="flex flex-col"
               >
                 <div
-                  class="m-2 flex flex-row transition-[max-height] duration-500 md:duration-300 ease-in-out max-h-6"
+                  class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
                 >
                   <svg
                     aria-hidden="true"
@@ -3393,7 +3393,7 @@ exports[`App matches snapshot 1`] = `
                     />
                   </svg>
                   <div
-                    class="cursor-pointer overflow-hidden"
+                    class="cursor-pointer overflow-hidden line-clamp-1"
                     title="07:45 AM - March 1, 2024"
                   >
                     <span
@@ -3525,7 +3525,7 @@ exports[`App matches snapshot 1`] = `
                 class="flex flex-col"
               >
                 <div
-                  class="m-2 flex flex-row transition-[max-height] duration-500 md:duration-300 ease-in-out max-h-6"
+                  class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
                 >
                   <svg
                     aria-hidden="true"
@@ -3543,7 +3543,7 @@ exports[`App matches snapshot 1`] = `
                     />
                   </svg>
                   <div
-                    class="cursor-pointer overflow-hidden"
+                    class="cursor-pointer overflow-hidden line-clamp-1"
                     title="04:44 AM - February 26, 2024"
                   >
                     <span
@@ -5307,7 +5307,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   class="flex flex-col"
                 >
                   <div
-                    class="m-2 flex flex-row transition-[max-height] duration-500 md:duration-300 ease-in-out max-h-6"
+                    class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
                   >
                     <svg
                       aria-hidden="true"
@@ -5325,7 +5325,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                       />
                     </svg>
                     <div
-                      class="cursor-pointer overflow-hidden"
+                      class="cursor-pointer overflow-hidden line-clamp-1"
                       title="07:45 AM - March 1, 2024"
                     >
                       <span
@@ -5457,7 +5457,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   class="flex flex-col"
                 >
                   <div
-                    class="m-2 flex flex-row transition-[max-height] duration-500 md:duration-300 ease-in-out max-h-6"
+                    class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
                   >
                     <svg
                       aria-hidden="true"
@@ -5475,7 +5475,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                       />
                     </svg>
                     <div
-                      class="cursor-pointer overflow-hidden"
+                      class="cursor-pointer overflow-hidden line-clamp-1"
                       title="04:44 AM - February 26, 2024"
                     >
                       <span
@@ -7152,7 +7152,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 class="flex flex-col"
               >
                 <div
-                  class="m-2 flex flex-row transition-[max-height] duration-500 md:duration-300 ease-in-out max-h-6"
+                  class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
                 >
                   <svg
                     aria-hidden="true"
@@ -7170,7 +7170,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                     />
                   </svg>
                   <div
-                    class="cursor-pointer overflow-hidden"
+                    class="cursor-pointer overflow-hidden line-clamp-1"
                     title="07:45 AM - March 1, 2024"
                   >
                     <span
@@ -7302,7 +7302,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 class="flex flex-col"
               >
                 <div
-                  class="m-2 flex flex-row transition-[max-height] duration-500 md:duration-300 ease-in-out max-h-6"
+                  class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
                 >
                   <svg
                     aria-hidden="true"
@@ -7320,7 +7320,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                     />
                   </svg>
                   <div
-                    class="cursor-pointer overflow-hidden"
+                    class="cursor-pointer overflow-hidden line-clamp-1"
                     title="04:44 AM - February 26, 2024"
                   >
                     <span

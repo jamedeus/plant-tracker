@@ -109,15 +109,17 @@ describe('Timeline', () => {
         const note = within(app.container.querySelector('.grid')).queryByText(
             'Fertilized with dilute 10-15-10 liquid fertilizer'
         );
-        expect(note.parentElement.parentElement.classList).toContain('max-h-6');
+        expect(note.parentElement.classList).toContain('line-clamp-1');
 
         // Click note, confirm expanded (line clamp class removed)
         await user.click(note);
-        expect(note.parentElement.parentElement.classList).not.toContain('max-h-6');
+        expect(note.parentElement.classList).not.toContain('line-clamp-1');
 
         // Click again, confirm collapsed (line clamp class added)
         await user.click(note);
-        expect(note.parentElement.parentElement.classList).toContain('max-h-6');
+        await waitFor(() => {
+            expect(note.parentElement.classList).toContain('line-clamp-1');
+        });
     });
 
     it('opens note modal when add note dropdown option is clicked', async () => {
