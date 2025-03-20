@@ -73,7 +73,7 @@ EventMarker.propTypes = {
     eventType: PropTypes.string.isRequired
 };
 
-const TimelineContent = memo(function TimelineContent({ events, notes, photos, editNote }) {
+const TimelineContent = memo(function TimelineContent({ events, notes, photos, archived }) {
     return (
         <div className="flex flex-col bg-neutral rounded-xl p-2 md:p-4">
             <div className="flex flex-row flex-wrap">
@@ -96,7 +96,7 @@ const TimelineContent = memo(function TimelineContent({ events, notes, photos, e
                     <NoteCollapse
                         key={note.timestamp}
                         note={note}
-                        editNote={editNote ? (() => editNote(note)) : null}
+                        archived={archived}
                     />
                 ))}
             </div>
@@ -108,7 +108,7 @@ TimelineContent.propTypes = {
     events: PropTypes.array.isRequired,
     notes: PropTypes.array.isRequired,
     photos: PropTypes.array.isRequired,
-    editNote: PropTypes.func
+    archived: PropTypes.bool.isRequired
 };
 
 // Photo thumbnail that opens larger popover when clicked
@@ -158,7 +158,7 @@ PhotoThumbnail.propTypes = {
     timestamp: PropTypes.string.isRequired
 };
 
-const NoteCollapse = memo(function NoteCollapse({ note, editNote }) {
+const NoteCollapse = memo(function NoteCollapse({ note, archived }) {
     const [expanded, setExpanded] = useState(false);
     const [height, setHeight] = useState('24px');
     const [clamped, setClamped] = useState(true);
@@ -194,9 +194,9 @@ const NoteCollapse = memo(function NoteCollapse({ note, editNote }) {
                 icon={faPenToSquare}
                 className={clsx(
                     'w-4 h-4 mr-2 mt-1',
-                    editNote && 'cursor-pointer'
+                    !archived && 'cursor-pointer'
                 )}
-                onClick={editNote}
+                onClick={archived ? null : () => openNoteModal(note)}
             />
             <div
                 className={clsx(
@@ -223,7 +223,7 @@ NoteCollapse.propTypes = {
         text: PropTypes.string.isRequired,
         timestamp: PropTypes.string.isRequired
     }).isRequired,
-    editNote: PropTypes.func
+    archived: PropTypes.bool.isRequired
 };
 
 // Takes year-month string (ie 2024-03)
@@ -249,7 +249,7 @@ MonthDivider.propTypes = {
 // Takes year-month string (ie 2024-03) and array containing object for
 // each day within month with events/photos. Returns divider with year and
 // month text followed by pairs of divs for each day (populates grid).
-const MonthSection = memo(function MonthSection({ yearMonth, days, sectionRefs, editNote }) {
+const MonthSection = memo(function MonthSection({ yearMonth, days, sectionRefs, archived }) {
     return (
         <>
             <MonthDivider yearMonth={yearMonth} sectionRefs={sectionRefs} />
@@ -266,7 +266,7 @@ const MonthSection = memo(function MonthSection({ yearMonth, days, sectionRefs, 
                             events={day.events}
                             notes={day.notes}
                             photos={day.photos}
-                            editNote={editNote}
+                            archived={archived}
                         />
                     </div>
                 </Fragment>
@@ -282,7 +282,7 @@ MonthSection.propTypes = {
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.instanceOf(Object) }),
     ]).isRequired,
-    editNote: PropTypes.func
+    archived: PropTypes.bool.isRequired
 };
 
 // History title with dropdown menu (hover) to jump to month/year sections
@@ -566,9 +566,7 @@ const Timeline = memo(function Timeline({ plantID, events, archived }) {
                                 yearMonth={yearMonth}
                                 days={sortedEvents[yearMonth]}
                                 sectionRefs={sectionRefs}
-                                editNote={archived ? null : (
-                                    (note) => openNoteModal(note)
-                                )}
+                                archived={archived}
                             />
                         </Fragment>
                     ))}
