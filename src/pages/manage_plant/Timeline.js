@@ -160,7 +160,7 @@ PhotoThumbnail.propTypes = {
 
 const NoteCollapse = memo(function NoteCollapse({ note, editNote }) {
     const [expanded, setExpanded] = useState(false);
-    const [height, setHeight] = useState(null);
+    const [height, setHeight] = useState('24px');
     const [clamped, setClamped] = useState(true);
 
     // Used to measure height of expanded note text

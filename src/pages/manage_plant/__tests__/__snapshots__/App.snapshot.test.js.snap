@@ -1410,6 +1410,7 @@ exports[`App matches snapshot 1`] = `
                 >
                   <div
                     class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                    style=""
                   >
                     <svg
                       aria-hidden="true"
@@ -1560,6 +1561,7 @@ exports[`App matches snapshot 1`] = `
                 >
                   <div
                     class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                    style=""
                   >
                     <svg
                       aria-hidden="true"
@@ -3376,6 +3378,7 @@ exports[`App matches snapshot 1`] = `
               >
                 <div
                   class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                  style=""
                 >
                   <svg
                     aria-hidden="true"
@@ -3526,6 +3529,7 @@ exports[`App matches snapshot 1`] = `
               >
                 <div
                   class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                  style=""
                 >
                   <svg
                     aria-hidden="true"
@@ -5308,6 +5312,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 >
                   <div
                     class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                    style=""
                   >
                     <svg
                       aria-hidden="true"
@@ -5458,6 +5463,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 >
                   <div
                     class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                    style=""
                   >
                     <svg
                       aria-hidden="true"
@@ -7153,6 +7159,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               >
                 <div
                   class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                  style=""
                 >
                   <svg
                     aria-hidden="true"
@@ -7303,6 +7310,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               >
                 <div
                   class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                  style=""
                 >
                   <svg
                     aria-hidden="true"

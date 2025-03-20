@@ -1376,6 +1376,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
               >
                 <div
                   class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                  style=""
                 >
                   <svg
                     aria-hidden="true"
@@ -1450,6 +1451,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
               >
                 <div
                   class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                  style=""
                 >
                   <svg
                     aria-hidden="true"
@@ -4317,6 +4319,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             >
               <div
                 class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                style=""
               >
                 <svg
                   aria-hidden="true"
@@ -4391,6 +4394,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             >
               <div
                 class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                style=""
               >
                 <svg
                   aria-hidden="true"
@@ -7387,6 +7391,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
               >
                 <div
                   class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                  style=""
                 >
                   <svg
                     aria-hidden="true"
@@ -7461,6 +7466,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
               >
                 <div
                   class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                  style=""
                 >
                   <svg
                     aria-hidden="true"
@@ -10390,6 +10396,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             >
               <div
                 class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                style=""
               >
                 <svg
                   aria-hidden="true"
@@ -10464,6 +10471,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             >
               <div
                 class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                style=""
               >
                 <svg
                   aria-hidden="true"
