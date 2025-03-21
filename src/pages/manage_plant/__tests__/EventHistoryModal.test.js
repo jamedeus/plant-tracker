@@ -141,7 +141,7 @@ describe('EventHistoryModal', () => {
         expect(component.queryByText(/February 29/)).toBeNull();
     });
 
-    it('shows error modal if error received while deleting event', async() => {
+    it('shows error modal if error received while deleting event', async () => {
         // Mock fetch function to return arbitrary error
         global.fetch = jest.fn(() => Promise.resolve({
             ok: false,
@@ -159,5 +159,30 @@ describe('EventHistoryModal', () => {
 
         // Confirm modal appeared with arbitrary error text
         expect(component.queryByText(/failed to delete event/)).not.toBeNull();
+    });
+
+    // Regression test, originally the delete button remained enabled after
+    // the modal was submitted, even though no events were selected
+    it('disables the delete button after deleting selected events', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "deleted": [
+                    {"type": "water", "timestamp": "2024-03-01T15:45:44+00:00"}
+                ],
+                "failed": []
+            })
+        }));
+
+        // Click first event in water column, confirm delete button enabled
+        await user.click(component.getByText(/today/));
+        expect(component.getByText('Delete')).not.toBeDisabled();
+
+        // Click delete button
+        await user.click(component.getByText('Delete'));
+
+        // Confirm delete button is now disabled
+        expect(component.getByText('Delete')).toBeDisabled();
     });
 });

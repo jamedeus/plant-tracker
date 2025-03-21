@@ -146,16 +146,16 @@ const EventHistoryModal = ({ plantID, events, removeEvent }) => {
             events: []
         };
 
-        selectedWaterRef.current.forEach(async timestamp => {
+        selectedWaterRef.current.forEach(timestamp => {
             payload.events.push({type: 'water', timestamp: timestamp});
         });
-        selectedFertilizeRef.current.forEach(async timestamp => {
+        selectedFertilizeRef.current.forEach(timestamp => {
             payload.events.push({type: 'fertilize', timestamp: timestamp});
         });
-        selectedPruneRef.current.forEach(async timestamp => {
+        selectedPruneRef.current.forEach(timestamp => {
             payload.events.push({type: 'prune', timestamp: timestamp});
         });
-        selectedRepotRef.current.forEach(async timestamp => {
+        selectedRepotRef.current.forEach(timestamp => {
             payload.events.push({type: 'repot', timestamp: timestamp});
         });
 
@@ -167,11 +167,12 @@ const EventHistoryModal = ({ plantID, events, removeEvent }) => {
                 removeEvent(event.timestamp, event.type);
             });
 
-            // Clear all refs, close modal
+            // Clear all refs, disable delete button, close modal
             selectedWaterRef.current = [];
             selectedFertilizeRef.current = [];
             selectedPruneRef.current = [];
             selectedRepotRef.current = [];
+            setDeleteDisabled(true);
             modalRef.current.close();
         } else {
             const error = await response.json();
