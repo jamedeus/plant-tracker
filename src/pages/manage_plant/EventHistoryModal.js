@@ -17,32 +17,21 @@ export const openEventHistoryModal = () => {
 // Displays timestamp and relative time of a single event
 // When clicked color changes and timestamp is passed to onSelect callback
 const EventCard = memo(function EventCard({ timestamp, selected, onSelect }) {
-    const [cardClass, setCardClass] = useState(
-        selected ? 'ring-2 ring-error ring-inset' : ''
-    );
-
-    const toggle = (event) => {
-        if (event.target.checked) {
-            setCardClass('ring-2 ring-error ring-inset');
-        } else {
-            setCardClass('');
-        }
-        onSelect(timestamp);
-    };
-
     return (
         <label className={clsx(
             'card card-compact max-w-80 mb-4 mx-auto select-none bg-neutral',
-            'text-neutral-content',
-            cardClass && cardClass
+            'text-neutral-content'
         )}>
             <input
                 type="checkbox"
-                className="hidden"
+                className="hidden peer"
                 defaultChecked={selected}
-                onChange={toggle}
+                onChange={() => onSelect(timestamp)}
             />
-            <div className="card-body text-center">
+            <div className={clsx(
+                "card-body text-center rounded-2xl",
+                "peer-checked:ring-2 ring-error ring-inset"
+            )}>
                 <p className="text-lg font-bold">
                     {timestampToRelativeDays(timestamp)}
                 </p>
