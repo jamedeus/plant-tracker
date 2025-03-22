@@ -230,17 +230,18 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                   <div
                     class="flex relative mb-4"
                   >
-                    <label
-                      class="label cursor-pointer absolute flex h-full"
+                    <div
+                      class="absolute flex h-full z-0"
                     >
                       <input
                         class="radio checked:bg-blue-500 my-auto"
+                        id="select-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                         type="checkbox"
                       />
-                    </label>
+                    </div>
                     <div
-                      class="w-full overflow-hidden transition-all duration-300 ml-0"
+                      class="w-full overflow-hidden transition-all duration-300 z-10 ml-0"
                     >
                       <a
                         class="collapse bg-neutral grayscale cursor-pointer collapse-close"
@@ -351,6 +352,10 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                         </div>
                       </a>
                     </div>
+                    <label
+                      class="cursor-pointer absolute h-full z-20"
+                      for="select-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                    />
                   </div>
                 </form>
               </div>
@@ -461,17 +466,18 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                   <div
                     class="flex relative mb-4"
                   >
-                    <label
-                      class="label cursor-pointer absolute flex h-full"
+                    <div
+                      class="absolute flex h-full z-0"
                     >
                       <input
                         class="radio checked:bg-blue-500 my-auto"
+                        id="select-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                         type="checkbox"
                       />
-                    </label>
+                    </div>
                     <div
-                      class="w-full overflow-hidden transition-all duration-300 ml-0"
+                      class="w-full overflow-hidden transition-all duration-300 z-10 ml-0"
                     >
                       <a
                         class="collapse bg-neutral grayscale cursor-pointer collapse-close"
@@ -543,6 +549,10 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                         </div>
                       </a>
                     </div>
+                    <label
+                      class="cursor-pointer absolute h-full z-20"
+                      for="select-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                    />
                   </div>
                 </form>
               </div>
@@ -845,17 +855,18 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                 <div
                   class="flex relative mb-4"
                 >
-                  <label
-                    class="label cursor-pointer absolute flex h-full"
+                  <div
+                    class="absolute flex h-full z-0"
                   >
                     <input
                       class="radio checked:bg-blue-500 my-auto"
+                      id="select-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       type="checkbox"
                     />
-                  </label>
+                  </div>
                   <div
-                    class="w-full overflow-hidden transition-all duration-300 ml-0"
+                    class="w-full overflow-hidden transition-all duration-300 z-10 ml-0"
                   >
                     <a
                       class="collapse bg-neutral grayscale cursor-pointer collapse-close"
@@ -966,6 +977,10 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                       </div>
                     </a>
                   </div>
+                  <label
+                    class="cursor-pointer absolute h-full z-20"
+                    for="select-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                  />
                 </div>
               </form>
             </div>
@@ -1076,17 +1091,18 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                 <div
                   class="flex relative mb-4"
                 >
-                  <label
-                    class="label cursor-pointer absolute flex h-full"
+                  <div
+                    class="absolute flex h-full z-0"
                   >
                     <input
                       class="radio checked:bg-blue-500 my-auto"
+                      id="select-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       type="checkbox"
                     />
-                  </label>
+                  </div>
                   <div
-                    class="w-full overflow-hidden transition-all duration-300 ml-0"
+                    class="w-full overflow-hidden transition-all duration-300 z-10 ml-0"
                   >
                     <a
                       class="collapse bg-neutral grayscale cursor-pointer collapse-close"
@@ -1158,6 +1174,10 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                       </div>
                     </a>
                   </div>
+                  <label
+                    class="cursor-pointer absolute h-full z-20"
+                    for="select-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                  />
                 </div>
               </form>
             </div>
@@ -1981,17 +2001,18 @@ exports[`App matches snapshot when only groups exist 1`] = `
                   <div
                     class="flex relative mb-4"
                   >
-                    <label
-                      class="label cursor-pointer absolute flex h-full"
+                    <div
+                      class="absolute flex h-full z-0"
                     >
                       <input
                         class="radio checked:bg-blue-500 my-auto"
+                        id="select-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                         type="checkbox"
                       />
-                    </label>
+                    </div>
                     <div
-                      class="w-full overflow-hidden transition-all duration-300 ml-0"
+                      class="w-full overflow-hidden transition-all duration-300 z-10 ml-0"
                     >
                       <a
                         class="collapse bg-neutral cursor-pointer collapse-close"
@@ -2063,6 +2084,10 @@ exports[`App matches snapshot when only groups exist 1`] = `
                         </div>
                       </a>
                     </div>
+                    <label
+                      class="cursor-pointer absolute h-full z-20"
+                      for="select-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                    />
                   </div>
                 </form>
               </div>
@@ -2344,17 +2369,18 @@ exports[`App matches snapshot when only groups exist 1`] = `
                 <div
                   class="flex relative mb-4"
                 >
-                  <label
-                    class="label cursor-pointer absolute flex h-full"
+                  <div
+                    class="absolute flex h-full z-0"
                   >
                     <input
                       class="radio checked:bg-blue-500 my-auto"
+                      id="select-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       type="checkbox"
                     />
-                  </label>
+                  </div>
                   <div
-                    class="w-full overflow-hidden transition-all duration-300 ml-0"
+                    class="w-full overflow-hidden transition-all duration-300 z-10 ml-0"
                   >
                     <a
                       class="collapse bg-neutral cursor-pointer collapse-close"
@@ -2426,6 +2452,10 @@ exports[`App matches snapshot when only groups exist 1`] = `
                       </div>
                     </a>
                   </div>
+                  <label
+                    class="cursor-pointer absolute h-full z-20"
+                    for="select-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                  />
                 </div>
               </form>
             </div>
@@ -2781,17 +2811,18 @@ exports[`App matches snapshot when only plants exist 1`] = `
                   <div
                     class="flex relative mb-4"
                   >
-                    <label
-                      class="label cursor-pointer absolute flex h-full"
+                    <div
+                      class="absolute flex h-full z-0"
                     >
                       <input
                         class="radio checked:bg-blue-500 my-auto"
+                        id="select-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                         type="checkbox"
                       />
-                    </label>
+                    </div>
                     <div
-                      class="w-full overflow-hidden transition-all duration-300 ml-0"
+                      class="w-full overflow-hidden transition-all duration-300 z-10 ml-0"
                     >
                       <a
                         class="collapse bg-neutral cursor-pointer collapse-close"
@@ -2902,6 +2933,10 @@ exports[`App matches snapshot when only plants exist 1`] = `
                         </div>
                       </a>
                     </div>
+                    <label
+                      class="cursor-pointer absolute h-full z-20"
+                      for="select-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                    />
                   </div>
                 </form>
               </div>
@@ -3190,17 +3225,18 @@ exports[`App matches snapshot when only plants exist 1`] = `
                 <div
                   class="flex relative mb-4"
                 >
-                  <label
-                    class="label cursor-pointer absolute flex h-full"
+                  <div
+                    class="absolute flex h-full z-0"
                   >
                     <input
                       class="radio checked:bg-blue-500 my-auto"
+                      id="select-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       type="checkbox"
                     />
-                  </label>
+                  </div>
                   <div
-                    class="w-full overflow-hidden transition-all duration-300 ml-0"
+                    class="w-full overflow-hidden transition-all duration-300 z-10 ml-0"
                   >
                     <a
                       class="collapse bg-neutral cursor-pointer collapse-close"
@@ -3311,6 +3347,10 @@ exports[`App matches snapshot when only plants exist 1`] = `
                       </div>
                     </a>
                   </div>
+                  <label
+                    class="cursor-pointer absolute h-full z-20"
+                    for="select-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                  />
                 </div>
               </form>
             </div>
@@ -3666,17 +3706,18 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                   <div
                     class="flex relative mb-4"
                   >
-                    <label
-                      class="label cursor-pointer absolute flex h-full"
+                    <div
+                      class="absolute flex h-full z-0"
                     >
                       <input
                         class="radio checked:bg-blue-500 my-auto"
+                        id="select-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                         type="checkbox"
                       />
-                    </label>
+                    </div>
                     <div
-                      class="w-full overflow-hidden transition-all duration-300 ml-0"
+                      class="w-full overflow-hidden transition-all duration-300 z-10 ml-0"
                     >
                       <a
                         class="collapse bg-neutral cursor-pointer collapse-close"
@@ -3787,6 +3828,10 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                         </div>
                       </a>
                     </div>
+                    <label
+                      class="cursor-pointer absolute h-full z-20"
+                      for="select-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                    />
                   </div>
                 </form>
               </div>
@@ -3897,17 +3942,18 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                   <div
                     class="flex relative mb-4"
                   >
-                    <label
-                      class="label cursor-pointer absolute flex h-full"
+                    <div
+                      class="absolute flex h-full z-0"
                     >
                       <input
                         class="radio checked:bg-blue-500 my-auto"
+                        id="select-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                         type="checkbox"
                       />
-                    </label>
+                    </div>
                     <div
-                      class="w-full overflow-hidden transition-all duration-300 ml-0"
+                      class="w-full overflow-hidden transition-all duration-300 z-10 ml-0"
                     >
                       <a
                         class="collapse bg-neutral cursor-pointer collapse-close"
@@ -3979,6 +4025,10 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                         </div>
                       </a>
                     </div>
+                    <label
+                      class="cursor-pointer absolute h-full z-20"
+                      for="select-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                    />
                   </div>
                 </form>
               </div>
@@ -4267,17 +4317,18 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                 <div
                   class="flex relative mb-4"
                 >
-                  <label
-                    class="label cursor-pointer absolute flex h-full"
+                  <div
+                    class="absolute flex h-full z-0"
                   >
                     <input
                       class="radio checked:bg-blue-500 my-auto"
+                      id="select-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       type="checkbox"
                     />
-                  </label>
+                  </div>
                   <div
-                    class="w-full overflow-hidden transition-all duration-300 ml-0"
+                    class="w-full overflow-hidden transition-all duration-300 z-10 ml-0"
                   >
                     <a
                       class="collapse bg-neutral cursor-pointer collapse-close"
@@ -4388,6 +4439,10 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                       </div>
                     </a>
                   </div>
+                  <label
+                    class="cursor-pointer absolute h-full z-20"
+                    for="select-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                  />
                 </div>
               </form>
             </div>
@@ -4498,17 +4553,18 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                 <div
                   class="flex relative mb-4"
                 >
-                  <label
-                    class="label cursor-pointer absolute flex h-full"
+                  <div
+                    class="absolute flex h-full z-0"
                   >
                     <input
                       class="radio checked:bg-blue-500 my-auto"
+                      id="select-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       type="checkbox"
                     />
-                  </label>
+                  </div>
                   <div
-                    class="w-full overflow-hidden transition-all duration-300 ml-0"
+                    class="w-full overflow-hidden transition-all duration-300 z-10 ml-0"
                   >
                     <a
                       class="collapse bg-neutral cursor-pointer collapse-close"
@@ -4580,6 +4636,10 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                       </div>
                     </a>
                   </div>
+                  <label
+                    class="cursor-pointer absolute h-full z-20"
+                    for="select-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                  />
                 </div>
               </form>
             </div>
@@ -4954,17 +5014,18 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                   <div
                     class="flex relative mb-4"
                   >
-                    <label
-                      class="label cursor-pointer absolute flex h-full"
+                    <div
+                      class="absolute flex h-full z-0"
                     >
                       <input
                         class="radio checked:bg-blue-500 my-auto"
+                        id="select-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                         type="checkbox"
                       />
-                    </label>
+                    </div>
                     <div
-                      class="w-full overflow-hidden transition-all duration-300 ml-0"
+                      class="w-full overflow-hidden transition-all duration-300 z-10 ml-0"
                     >
                       <a
                         class="collapse bg-neutral cursor-pointer collapse-close"
@@ -5075,6 +5136,10 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                         </div>
                       </a>
                     </div>
+                    <label
+                      class="cursor-pointer absolute h-full z-20"
+                      for="select-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                    />
                   </div>
                 </form>
               </div>
@@ -5185,17 +5250,18 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                   <div
                     class="flex relative mb-4"
                   >
-                    <label
-                      class="label cursor-pointer absolute flex h-full"
+                    <div
+                      class="absolute flex h-full z-0"
                     >
                       <input
                         class="radio checked:bg-blue-500 my-auto"
+                        id="select-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                         type="checkbox"
                       />
-                    </label>
+                    </div>
                     <div
-                      class="w-full overflow-hidden transition-all duration-300 ml-0"
+                      class="w-full overflow-hidden transition-all duration-300 z-10 ml-0"
                     >
                       <a
                         class="collapse bg-neutral cursor-pointer collapse-close"
@@ -5267,6 +5333,10 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                         </div>
                       </a>
                     </div>
+                    <label
+                      class="cursor-pointer absolute h-full z-20"
+                      for="select-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                    />
                   </div>
                 </form>
               </div>
@@ -5574,17 +5644,18 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                 <div
                   class="flex relative mb-4"
                 >
-                  <label
-                    class="label cursor-pointer absolute flex h-full"
+                  <div
+                    class="absolute flex h-full z-0"
                   >
                     <input
                       class="radio checked:bg-blue-500 my-auto"
+                      id="select-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       type="checkbox"
                     />
-                  </label>
+                  </div>
                   <div
-                    class="w-full overflow-hidden transition-all duration-300 ml-0"
+                    class="w-full overflow-hidden transition-all duration-300 z-10 ml-0"
                   >
                     <a
                       class="collapse bg-neutral cursor-pointer collapse-close"
@@ -5695,6 +5766,10 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                       </div>
                     </a>
                   </div>
+                  <label
+                    class="cursor-pointer absolute h-full z-20"
+                    for="select-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                  />
                 </div>
               </form>
             </div>
@@ -5805,17 +5880,18 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                 <div
                   class="flex relative mb-4"
                 >
-                  <label
-                    class="label cursor-pointer absolute flex h-full"
+                  <div
+                    class="absolute flex h-full z-0"
                   >
                     <input
                       class="radio checked:bg-blue-500 my-auto"
+                      id="select-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       type="checkbox"
                     />
-                  </label>
+                  </div>
                   <div
-                    class="w-full overflow-hidden transition-all duration-300 ml-0"
+                    class="w-full overflow-hidden transition-all duration-300 z-10 ml-0"
                   >
                     <a
                       class="collapse bg-neutral cursor-pointer collapse-close"
@@ -5887,6 +5963,10 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                       </div>
                     </a>
                   </div>
+                  <label
+                    class="cursor-pointer absolute h-full z-20"
+                    for="select-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                  />
                 </div>
               </form>
             </div>

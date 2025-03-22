@@ -10,22 +10,27 @@ const EditableNodeList = ({ editing, formRef, children }) => {
         <form ref={formRef}>
             {children.map((node) => (
                 <div key={node.key} className="flex relative mb-4">
-                    <label className={clsx(
-                        "label cursor-pointer absolute flex h-full",
-                        editing && "pr-[75%] z-10"
-                    )}>
+                    <div className="absolute flex h-full z-0">
                         <input
                             type="checkbox"
+                            id={`select-${node.key}`}
                             name={node.key}
                             className="radio checked:bg-blue-500 my-auto"
                         />
-                    </label>
+                    </div>
                     <div className={clsx(
-                        'w-full overflow-hidden transition-all duration-300',
+                        'w-full overflow-hidden transition-all duration-300 z-10',
                         editing ? 'ml-[2.5rem]' : 'ml-0'
                     )}>
                         {node}
                     </div>
+                    <label
+                        htmlFor={`select-${node.key}`}
+                        className={clsx(
+                            "cursor-pointer absolute h-full z-20",
+                            editing && "pr-[85%]"
+                        )}
+                    />
                 </div>
             ))}
         </form>
