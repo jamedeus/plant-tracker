@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { Tab } from '@headlessui/react';
@@ -60,7 +60,7 @@ ErrorMessage.propTypes = {
     error: PropTypes.string.isRequired
 };
 
-const PrintModal = () => {
+const PrintModal = memo(function PrintModal() {
     // State controls modal contents, must be "options", "loading", or "error"
     const [modalContents, setModalContents] = useState("options");
 
@@ -239,6 +239,6 @@ const PrintModal = () => {
                 </Modal>
             );
     }
-};
+});
 
 export default PrintModal;

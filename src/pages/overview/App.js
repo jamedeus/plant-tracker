@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback, memo } from 'react';
 import PropTypes from 'prop-types';
 import Navbar from 'src/components/Navbar';
 import { useTheme } from 'src/context/ThemeContext';
@@ -10,7 +10,7 @@ import Layout from './Layout';
 
 // Dropdown with links to jump to plant or group columns
 // Only rendered on mobile layout (both columns always visible on desktop)
-const QuickNavigation = ({ plantsColRef, groupsColRef }) => {
+const QuickNavigation = memo(function QuickNavigation({ plantsColRef, groupsColRef }) {
     const jumpToPlants = () => {
         plantsColRef.current.scrollIntoView({
             behavior: "smooth",
@@ -37,7 +37,7 @@ const QuickNavigation = ({ plantsColRef, groupsColRef }) => {
             </a></li>
         </ul>
     );
-};
+});
 
 QuickNavigation.propTypes = {
     plantsColRef: PropTypes.oneOfType([
@@ -51,7 +51,7 @@ QuickNavigation.propTypes = {
 };
 
 // Top-left menu button contents
-const MenuOptions = ({ archivedOverview, toggleEditing }) => {
+const MenuOptions = memo(function MenuOptions({ archivedOverview, toggleEditing }) {
     // Get toggle theme option from context
     const { ToggleThemeOption } = useTheme();
 
@@ -84,7 +84,7 @@ const MenuOptions = ({ archivedOverview, toggleEditing }) => {
                 </>
             );
     }
-};
+});
 
 MenuOptions.propTypes = {
     archivedOverview: PropTypes.bool.isRequired,
@@ -167,10 +167,10 @@ function App() {
 
     // Handler for edit option in top-left dropdown
     // Toggle editing state, remove focus (closes dropdown)
-    const toggleEditing = () => {
+    const toggleEditing = useCallback(() => {
         setEditing(!editing);
         document.activeElement.blur();
-    };
+    }, []);
 
     // Handler for delete button that appears while editing
     const handleDelete = () => {
