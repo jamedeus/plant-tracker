@@ -2,14 +2,14 @@ import PropTypes from 'prop-types';
 import PlantCard from 'src/components/PlantCard';
 import FilterColumn from 'src/components/FilterColumn';
 
-const PlantsCol = ({ plants, editing, selectedPlants }) => {
+const PlantsCol = ({ plants, editing, selectedPlantsRef }) => {
     return (
         <FilterColumn
             title="Plants"
             contents={plants}
             CardComponent={PlantCard}
             editing={editing}
-            selected={selectedPlants}
+            formRef={selectedPlantsRef}
             ignoreKeys={[
                 'uuid',
                 'created',
@@ -32,9 +32,9 @@ const PlantsCol = ({ plants, editing, selectedPlants }) => {
 PlantsCol.propTypes = {
     plants: PropTypes.array.isRequired,
     editing: PropTypes.bool.isRequired,
-    selectedPlants: PropTypes.oneOfType([
+    selectedPlantsRef: PropTypes.oneOfType([
         PropTypes.func,
-        PropTypes.shape({ current: PropTypes.array }),
+        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
     ]).isRequired
 };
 

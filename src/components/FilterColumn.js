@@ -236,7 +236,7 @@ const FilterColumn = ({
     contents,
     CardComponent,
     editing,
-    selected,
+    formRef,
     ignoreKeys=[],
     sortByKeys=[],
     defaultSortKey=null,
@@ -323,7 +323,7 @@ const FilterColumn = ({
                 state={state}
                 dispatch={dispatch}
             />
-            <EditableNodeList editing={editing} selected={selected}>
+            <EditableNodeList editing={editing} formRef={formRef}>
                 {sortByKey(state.currentContents, state.sortKey).map((item) => (
                     // Render cardComponent by expanding params of each item
                     // Must have UUID param to use as react key
@@ -345,9 +345,10 @@ FilterColumn.propTypes = {
     contents: PropTypes.array.isRequired,
     CardComponent: PropTypes.elementType.isRequired,
     editing: PropTypes.bool,
-    selected: PropTypes.shape({
-        current: PropTypes.array
-    }).isRequired,
+    formRef: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+    ]).isRequired,
     ignoreKeys: PropTypes.array,
     sortByKeys: PropTypes.array,
     defaultSortKey: PropTypes.string,

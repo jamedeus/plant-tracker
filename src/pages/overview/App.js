@@ -137,9 +137,29 @@ function App() {
     // State object to track edit mode (shows checkbox for each card when true)
     const [editing, setEditing] = useState(false);
 
-    // Track which plant and group checkboxes the user has selected
-    const selectedPlants = useRef([]);
-    const selectedGroups = useRef([]);
+    // FormRefs for PlantsCol and GroupsCol, used to read user selection
+    const selectedPlantsRef = useRef(null);
+    const selectedGroupsRef = useRef(null);
+
+    // Returns array of selected plant UUIDs parsed from PlantsCol form
+    const getSelectedPlants = () => {
+        if (selectedPlantsRef.current) {
+            const selected = new FormData(selectedPlantsRef.current);
+            return Array.from(selected.keys());
+        } else {
+            return [];
+        }
+    };
+
+    // Returns array of selected group UUIDs parsed from GroupsCol form
+    const getSelectedGroups = () => {
+        if (selectedGroupsRef.current) {
+            const selected = new FormData(selectedGroupsRef.current);
+            return Array.from(selected.keys());
+        } else {
+            return [];
+        }
+    };
 
     // Refs used to jump to top of plant and group columns
     const plantsColRef = useRef(null);
@@ -154,25 +174,23 @@ function App() {
 
     // Handler for delete button that appears while editing
     const handleDelete = () => {
+        const selectedPlants = getSelectedPlants();
         // Send delete request for each selected plant, remove uuid from state
-        selectedPlants.current.forEach(async plant_id => {
+        selectedPlants.forEach(async plant_id => {
             await sendPostRequest('/delete_plant', {plant_id: plant_id});
         });
         setPlants(plants.filter(
-            plant => !selectedPlants.current.includes(plant.uuid))
+            plant => !selectedPlants.includes(plant.uuid))
         );
-        // Clear selection
-        selectedPlants.current = [];
 
+        const selectedGroups = getSelectedGroups();
         // Send delete request for each selected group, remove uuid from state
-        selectedGroups.current.forEach(async group_id => {
+        selectedGroups.forEach(async group_id => {
             await sendPostRequest('/delete_group', {group_id: group_id});
         });
         setGroups(groups.filter(
-            group => !selectedGroups.current.includes(group.uuid))
+            group => !selectedGroups.includes(group.uuid))
         );
-        // Clear selection
-        selectedGroups.current = [];
 
         // Reset editing state
         setEditing(false);
@@ -183,31 +201,30 @@ function App() {
     // groups to backend then removes from frontend state.
     // Takes bool argument (true if archiving, false if un-archiving)
     const handleArchive = (archived) => {
+        const selectedPlants = getSelectedPlants();
         // Send archive request for each selected plant, remove uuid from state
-        selectedPlants.current.forEach(async plant_id => {
+        selectedPlants.forEach(async plant_id => {
             await sendPostRequest(
                 '/archive_plant',
                 {plant_id: plant_id, archived: archived}
             );
         });
         setPlants(plants.filter(
-            plant => !selectedPlants.current.includes(plant.uuid))
+            plant => !selectedPlants.includes(plant.uuid))
         );
-        // Clear selection
-        selectedPlants.current = [];
 
+
+        const selectedGroups = getSelectedGroups();
         // Send archive request for each selected group, remove uuid from state
-        selectedGroups.current.forEach(async group_id => {
+        selectedGroups.forEach(async group_id => {
             await sendPostRequest(
                 '/archive_group',
                 {group_id: group_id, archived: archived}
             );
         });
         setGroups(groups.filter(
-            group => !selectedGroups.current.includes(group.uuid))
+            group => !selectedGroups.includes(group.uuid))
         );
-        // Clear selection
-        selectedGroups.current = [];
 
         // Reset editing state
         setEditing(false);
@@ -232,8 +249,8 @@ function App() {
             <Layout
                 plants={plants}
                 groups={groups}
-                selectedPlants={selectedPlants}
-                selectedGroups={selectedGroups}
+                selectedPlantsRef={selectedPlantsRef}
+                selectedGroupsRef={selectedGroupsRef}
                 editing={editing}
                 plantsColRef={plantsColRef}
                 groupsColRef={groupsColRef}

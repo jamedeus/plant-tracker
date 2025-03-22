@@ -2,14 +2,14 @@ import PropTypes from 'prop-types';
 import GroupCard from 'src/components/GroupCard';
 import FilterColumn from 'src/components/FilterColumn';
 
-const GroupsCol = ({ groups, editing, selectedGroups }) => {
+const GroupsCol = ({ groups, editing, selectedGroupsRef }) => {
     return (
         <FilterColumn
             title="Groups"
             contents={groups}
             CardComponent={GroupCard}
             editing={editing}
-            selected={selectedGroups}
+            formRef={selectedGroupsRef}
             ignoreKeys={[
                 'uuid',
                 'created'
@@ -28,9 +28,9 @@ const GroupsCol = ({ groups, editing, selectedGroups }) => {
 GroupsCol.propTypes = {
     groups: PropTypes.array.isRequired,
     editing: PropTypes.bool.isRequired,
-    selectedGroups: PropTypes.oneOfType([
+    selectedGroupsRef: PropTypes.oneOfType([
         PropTypes.func,
-        PropTypes.shape({ current: PropTypes.array }),
+        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
     ]).isRequired
 };
 

@@ -13,8 +13,14 @@ export const openAddPlantsModal = () => {
 const AddPlantsModal = memo(function AddPlantsModal({ options, addPlants }) {
     modalRef = useRef(null);
 
-    // Ref to track selected items
-    const selected = useRef([]);
+    // Ref used to read selected items from EditableNodeList form
+    const formRef = useRef(null);
+
+    // Parses array of selected plant UUIDs, passes to addPlants callback
+    const submit = () => {
+        const selected = new FormData(formRef.current);
+        addPlants(Array.from(selected.keys()));
+    };
 
     return (
         <Modal
@@ -24,7 +30,7 @@ const AddPlantsModal = memo(function AddPlantsModal({ options, addPlants }) {
         >
             <div className="max-h-screen md:max-h-half-screen overflow-y-scroll pr-4 mt-4">
                 {options.length > 0 ? (
-                    <EditableNodeList editing={true} selected={selected}>
+                    <EditableNodeList editing={true} formRef={formRef}>
                         {options.map((plant) => (
                             <PlantCard
                                 key={plant.uuid}
@@ -45,7 +51,7 @@ const AddPlantsModal = memo(function AddPlantsModal({ options, addPlants }) {
                     </button>
                     <button
                         className="btn btn-success ml-2"
-                        onClick={() => addPlants(selected)}
+                        onClick={submit}
                     >
                         Add
                     </button>

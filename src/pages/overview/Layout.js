@@ -5,7 +5,7 @@ import GroupsCol from './GroupsCol';
 import clsx from 'clsx';
 
 // Render correct components for current state objects
-const Layout = ({ plants, groups, selectedPlants, selectedGroups, editing, plantsColRef, groupsColRef }) => {
+const Layout = ({ plants, groups, selectedPlantsRef, selectedGroupsRef, editing, plantsColRef, groupsColRef }) => {
     // Determines if 2-column layout or single centered column
     const twoColumns = plants.length > 0 && groups.length > 0;
 
@@ -26,7 +26,7 @@ const Layout = ({ plants, groups, selectedPlants, selectedGroups, editing, plant
                     <PlantsCol
                         plants={plants}
                         editing={editing}
-                        selectedPlants={selectedPlants}
+                        selectedPlantsRef={selectedPlantsRef}
                     />
                 </div>
             )}
@@ -42,7 +42,7 @@ const Layout = ({ plants, groups, selectedPlants, selectedGroups, editing, plant
                     <GroupsCol
                         groups={groups}
                         editing={editing}
-                        selectedGroups={selectedGroups}
+                        selectedGroupsRef={selectedGroupsRef}
                     />
                 </div>
             )}
@@ -57,13 +57,13 @@ const Layout = ({ plants, groups, selectedPlants, selectedGroups, editing, plant
 Layout.propTypes = {
     plants: PropTypes.array.isRequired,
     groups: PropTypes.array.isRequired,
-    selectedPlants: PropTypes.oneOfType([
+    selectedPlantsRef: PropTypes.oneOfType([
         PropTypes.func,
-        PropTypes.shape({ current: PropTypes.array }),
+        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
     ]).isRequired,
-    selectedGroups: PropTypes.oneOfType([
+    selectedGroupsRef: PropTypes.oneOfType([
         PropTypes.func,
-        PropTypes.shape({ current: PropTypes.array }),
+        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
     ]).isRequired,
     editing: PropTypes.bool.isRequired,
     plantsColRef: PropTypes.oneOfType([

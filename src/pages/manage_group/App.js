@@ -148,8 +148,14 @@ function App() {
     // Create state to track whether selecting plants from list
     const [selectingPlants, setSelectingPlants] = useState(false);
 
-    // Track which plants are selected (after clicking manage button)
-    const selectedPlants = useRef([]);
+    // FormRef for FilterColumn used to add events to subset of plants in group
+    const selectedPlantsRef = useRef(null);
+
+    // Returns array of selected plant UUIDs parsed from FilterColumn form
+    const getSelectedPlants = () => {
+        const selected = new FormData(selectedPlantsRef.current);
+        return Array.from(selected.keys());
+    };
 
     // Ref to access timestamp input used by water all/fertilize all
     const addEventAllTimeInput = useRef(null);
@@ -200,7 +206,8 @@ function App() {
     // Handler for water button under plant cards
     const waterSelected = async (timestamp) => {
         // Prevent watering archived plants
-        const selected = removeArchivedPlants(selectedPlants.current);
+        const selected = removeArchivedPlants(getSelectedPlants());
+        console.log(selected)
         await bulkAddPlantEvents('water', selected, timestamp);
         setSelectingPlants(false);
     };
@@ -208,7 +215,7 @@ function App() {
     // Handler for fertilize button under plant cards
     const fertilizeSelected = async (timestamp) => {
         // Prevent fertilizing archived plants
-        const selected = removeArchivedPlants(selectedPlants.current);
+        const selected = removeArchivedPlants(getSelectedPlants());
         await bulkAddPlantEvents('fertilize', selected, timestamp);
         setSelectingPlants(false);
     };
@@ -274,11 +281,11 @@ function App() {
         );
     };
 
-    // Handler for add button in AddPlantsModal
-    const addPlants = async (selectedRef) => {
+    // Handler for add button in AddPlantsModal, takes array of UUIDs
+    const addPlants = async (selected) => {
         const payload = {
             group_id: group.uuid,
-            plants: selectedRef.current
+            plants: selected
         };
         const response = await sendPostRequest(
             '/bulk_add_plants_to_group',
@@ -288,19 +295,17 @@ function App() {
             // Add objects in response to plantDetails state
             const data = await response.json();
             setPlantDetails([...plantDetails, ...data.added]);
-            // Clear selection
-            selectedRef.current = [];
         } else {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
         }
     };
 
-    // Handler for remove button in RemovePlantsModal
-    const removePlants = async (selectedRef) => {
+    // Handler for remove button in RemovePlantsModal, takes array of UUIDs
+    const removePlants = async (selected) => {
         const payload = {
             group_id: group.uuid,
-            plants: selectedRef.current
+            plants: selected
         };
         const response = await sendPostRequest(
             '/bulk_remove_plants_from_group',
@@ -312,14 +317,6 @@ function App() {
             setPlantDetails(plantDetails.filter(
                 plant => !data.removed.includes(plant.uuid)
             ));
-            // Clear selection
-            selectedRef.current = [];
-            // Remove plant UUIDs from FilterColumn selected ref used to create
-            // water/fertilize events (if user selected plant and didn't press
-            // event button it will still be in ref after removing from group)
-            selectedPlants.current = selectedPlants.current.filter(
-                uuid => !data.removed.includes(uuid)
-            );
         } else {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
@@ -362,7 +359,7 @@ function App() {
                 contents={plantDetails}
                 CardComponent={PlantCard}
                 editing={selectingPlants}
-                selected={selectedPlants}
+                formRef={selectedPlantsRef}
                 ignoreKeys={[
                     'uuid',
                     'created',

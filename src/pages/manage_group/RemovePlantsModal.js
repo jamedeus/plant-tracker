@@ -13,8 +13,14 @@ export const openRemovePlantsModal = () => {
 const RemovePlantsModal = memo(function RemovePlantsModal({ plantDetails, removePlants }) {
     modalRef = useRef(null);
 
-    // Ref to track selected items
-    const selected = useRef([]);
+    // Ref used to read selected items from EditableNodeList form
+    const formRef = useRef(null);
+
+    // Parses array of selected plant UUIDs, passes to removePlants callback
+    const submit = () => {
+        const selected = new FormData(formRef.current);
+        removePlants(Array.from(selected.keys()));
+    };
 
     return (
         <Modal
@@ -24,7 +30,7 @@ const RemovePlantsModal = memo(function RemovePlantsModal({ plantDetails, remove
         >
             <div className="max-h-screen md:max-h-half-screen overflow-y-scroll pr-4 mt-4">
                 {plantDetails.length > 0 ? (
-                    <EditableNodeList editing={true} selected={selected}>
+                    <EditableNodeList editing={true} formRef={formRef}>
                         {plantDetails.map((plant) => (
                             <PlantCard
                                 key={plant.uuid}
@@ -45,7 +51,7 @@ const RemovePlantsModal = memo(function RemovePlantsModal({ plantDetails, remove
                     </button>
                     <button
                         className="btn btn-error ml-2"
-                        onClick={() => removePlants(selected)}
+                        onClick={submit}
                     >
                         Remove
                     </button>

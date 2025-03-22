@@ -248,7 +248,7 @@ describe('App', () => {
 
         // Get reference to modal, confirm contains 2 plant options
         const addPlantsModal = app.getByText("Add Plants").parentElement;
-        expect(addPlantsModal.children[2].children.length).toBe(2);
+        expect(addPlantsModal.children[2].children[0].children.length).toBe(2);
 
         // Click the second option twice (unselect, should not be in payload)
         await user.click(addPlantsModal.querySelectorAll('.radio')[1]);
@@ -298,7 +298,7 @@ describe('App', () => {
 
         // Get reference to modal, confirm contains 3 plant options
         const removePlantsModal = app.getByText("Remove Plants").parentElement;
-        expect(removePlantsModal.children[2].children.length).toBe(3);
+        expect(removePlantsModal.children[2].children[0].children.length).toBe(3);
 
         // Select the first plant option, click Remove button
         await user.click(removePlantsModal.querySelectorAll('.radio')[0]);

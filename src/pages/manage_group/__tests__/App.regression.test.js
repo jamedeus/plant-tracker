@@ -307,8 +307,8 @@ describe('App', () => {
 
         // Click water button, confirm payload only includes the third plant
         // uuid (first plant was removed from group after selecting)
-        await user.click(
-            within(app.getByText("Plants (2)").parentElement
+        await user.click(within(
+            app.getByText("Plants (2)").parentElement
         ).getByText("Water"));
         expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plant_events', {
             method: 'POST',
