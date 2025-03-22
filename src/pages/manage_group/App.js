@@ -311,6 +311,12 @@ function App() {
             ));
             // Clear selection
             selectedRef.current = [];
+            // Remove plant UUIDs from FilterColumn selected ref used to create
+            // water/fertilize events (if user selected plant and didn't press
+            // event button it will still be in ref after removing from group)
+            selectedPlants.current = selectedPlants.current.filter(
+                uuid => !data.removed.includes(uuid)
+            );
         } else {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));

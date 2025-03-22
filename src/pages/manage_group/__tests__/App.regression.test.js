@@ -261,4 +261,65 @@ describe('App', () => {
             headers: postHeaders
         });
     });
+
+    // Original bug: If the user clicked manage, selected a plant, then opened
+    // RemovePlantsModal and removed the selected plant from group it's UUID
+    // would still be in the selectedPlants ref (tracks FilterColumn selection)
+    it('removes plant uuid from create events array if plant is removed from the group', async () => {
+        // Set simulated datetime
+        simulateUserDatetimeInput('2024-03-01T20:00:00.000Z');
+
+        // Click manage button to show checkboxes, water button
+        await user.click(app.getByText("Manage"));
+        // Select the first and third plants (not archived)
+        await user.click(app.container.querySelectorAll('.radio')[0]);
+        await user.click(app.container.querySelectorAll('.radio')[2]);
+
+        // Open Remove plants modal, select first plant option
+        await user.click(app.getByText("Remove plants"));
+        const removePlantsModal = app.getByText("Remove Plants").parentElement;
+        await user.click(removePlantsModal.querySelectorAll('.radio')[0]);
+
+        // Mock fetch function to return expected response, click remove button
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "removed": [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                ],
+                "failed": []
+            })
+        }));
+        await user.click(removePlantsModal.querySelector('.btn-error'));
+
+        // Mock fetch function to return expected response when third plant is
+        // watered (first and third were selected but then first was removed)
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "action": "water",
+                "plants": [
+                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+                ],
+                "failed": []
+            })
+        }));
+
+        // Click water button, confirm payload only includes the third plant
+        // uuid (first plant was removed from group after selecting)
+        await user.click(
+            within(app.getByText("Plants (2)").parentElement
+        ).getByText("Water"));
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plant_events', {
+            method: 'POST',
+            body: JSON.stringify({
+                "plants": [
+                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+                ],
+                "event_type": "water",
+                "timestamp": "2024-03-01T20:00:00.000Z"
+            }),
+            headers: postHeaders
+        });
+    });
 });
