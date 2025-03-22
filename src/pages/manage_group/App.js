@@ -177,9 +177,12 @@ function App() {
 
     // Takes array of plant UUIDs, removes archived plants and returns
     const removeArchivedPlants = (selected) => {
-        return selected.filter(uuid => !plantDetails.find(
-            plant => plant.uuid === uuid
-        ).archived);
+        return selected.filter(uuid => {
+            const plant = plantDetails.find(plant => plant.uuid === uuid);
+            if (plant && !plant.archived) {
+                return uuid;
+            }
+        });
     };
 
     // Handler for "Water All" and "Fertilize All" buttons
