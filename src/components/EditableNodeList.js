@@ -19,7 +19,7 @@ const EditableNodeList = ({ editing, formRef, children }) => {
                         />
                     </div>
                     <div className={clsx(
-                        'w-full overflow-hidden transition-all duration-300 z-10',
+                        'w-full overflow-hidden transition-all duration-300',
                         editing ? 'ml-[2.5rem]' : 'ml-0'
                     )}>
                         {node}
@@ -27,8 +27,8 @@ const EditableNodeList = ({ editing, formRef, children }) => {
                     <label
                         htmlFor={`select-${node.key}`}
                         className={clsx(
-                            "cursor-pointer absolute h-full z-20",
-                            editing && "pr-[85%]"
+                            "cursor-pointer absolute z-20",
+                            editing && "h-full w-full"
                         )}
                     />
                 </div>

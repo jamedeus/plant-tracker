@@ -276,7 +276,7 @@ exports[`App matches snapshot 1`] = `
                   />
                 </div>
                 <div
-                  class="w-full overflow-hidden transition-all duration-300 z-10 ml-0"
+                  class="w-full overflow-hidden transition-all duration-300 ml-0"
                 >
                   <a
                     class="collapse bg-neutral cursor-pointer collapse-close"
@@ -393,7 +393,7 @@ exports[`App matches snapshot 1`] = `
                   </a>
                 </div>
                 <label
-                  class="cursor-pointer absolute h-full z-20"
+                  class="cursor-pointer absolute z-20"
                   for="select-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                 />
               </div>
@@ -411,7 +411,7 @@ exports[`App matches snapshot 1`] = `
                   />
                 </div>
                 <div
-                  class="w-full overflow-hidden transition-all duration-300 z-10 ml-0"
+                  class="w-full overflow-hidden transition-all duration-300 ml-0"
                 >
                   <a
                     class="collapse bg-neutral grayscale cursor-pointer collapse-close"
@@ -523,7 +523,7 @@ exports[`App matches snapshot 1`] = `
                   </a>
                 </div>
                 <label
-                  class="cursor-pointer absolute h-full z-20"
+                  class="cursor-pointer absolute z-20"
                   for="select-19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
                 />
               </div>
@@ -541,7 +541,7 @@ exports[`App matches snapshot 1`] = `
                   />
                 </div>
                 <div
-                  class="w-full overflow-hidden transition-all duration-300 z-10 ml-0"
+                  class="w-full overflow-hidden transition-all duration-300 ml-0"
                 >
                   <a
                     class="collapse bg-neutral cursor-pointer collapse-close"
@@ -612,7 +612,7 @@ exports[`App matches snapshot 1`] = `
                   </a>
                 </div>
                 <label
-                  class="cursor-pointer absolute h-full z-20"
+                  class="cursor-pointer absolute z-20"
                   for="select-26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                 />
               </div>
@@ -1088,7 +1088,7 @@ exports[`App matches snapshot 1`] = `
                 />
               </div>
               <div
-                class="w-full overflow-hidden transition-all duration-300 z-10 ml-0"
+                class="w-full overflow-hidden transition-all duration-300 ml-0"
               >
                 <a
                   class="collapse bg-neutral cursor-pointer collapse-close"
@@ -1205,7 +1205,7 @@ exports[`App matches snapshot 1`] = `
                 </a>
               </div>
               <label
-                class="cursor-pointer absolute h-full z-20"
+                class="cursor-pointer absolute z-20"
                 for="select-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
               />
             </div>
@@ -1223,7 +1223,7 @@ exports[`App matches snapshot 1`] = `
                 />
               </div>
               <div
-                class="w-full overflow-hidden transition-all duration-300 z-10 ml-0"
+                class="w-full overflow-hidden transition-all duration-300 ml-0"
               >
                 <a
                   class="collapse bg-neutral grayscale cursor-pointer collapse-close"
@@ -1335,7 +1335,7 @@ exports[`App matches snapshot 1`] = `
                 </a>
               </div>
               <label
-                class="cursor-pointer absolute h-full z-20"
+                class="cursor-pointer absolute z-20"
                 for="select-19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
               />
             </div>
@@ -1353,7 +1353,7 @@ exports[`App matches snapshot 1`] = `
                 />
               </div>
               <div
-                class="w-full overflow-hidden transition-all duration-300 z-10 ml-0"
+                class="w-full overflow-hidden transition-all duration-300 ml-0"
               >
                 <a
                   class="collapse bg-neutral cursor-pointer collapse-close"
@@ -1424,7 +1424,7 @@ exports[`App matches snapshot 1`] = `
                 </a>
               </div>
               <label
-                class="cursor-pointer absolute h-full z-20"
+                class="cursor-pointer absolute z-20"
                 for="select-26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
               />
             </div>
