@@ -12,7 +12,7 @@
 
 /* Allow overflow when collapse is open */
 /* Prevents FilterColumn sort dropdown getting cut off when only 1 item */
-.collapse:has(input[type="checkbox"]:checked) {
+.collapse:has(> input[type="checkbox"]:checked) {
     @apply overflow-visible;
 }
 
@@ -156,12 +156,6 @@ html[data-theme="light"] .pot-size-selected::placeholder {
 /* Prevent iOS zooming in when textarea focused */
 .textarea {
     @apply text-base;
-}
-
-/* Fix items inside collapse remaining visible when collapse is closed */
-/* Issue affects items with position: absolute (EditableNodeList checkboxes) */
-.collapse {
-    clip-path: inset(0 0 0 0);
 }
 
 /* Fix modal filling full height on iOS safari when address bar visible */
