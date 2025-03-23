@@ -331,7 +331,7 @@ const FilterColumn = ({
                     <CardComponent
                         key={item.uuid}
                         {...item}
-                        linkPage={!editing}
+                        linkPage={true}
                     />
                 ))}
             </EditableNodeList>

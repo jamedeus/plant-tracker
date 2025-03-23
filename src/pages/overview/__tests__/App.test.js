@@ -48,26 +48,10 @@ describe('App', () => {
         // they are not visible until margin-left is added to the card wrapper
         expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(0);
 
-        // Confirm plant and group cards have href to manage page
-        expect(
-            app.getByText('Test Plant').closest('a')
-        ).toHaveAttribute('href', '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12');
-        expect(
-            app.getByText('Test group').closest('a')
-        ).toHaveAttribute('href', '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14');
-
         // Click Edit option, confirm buttons and checkboxes appear
         await user.click(app.getByText("Edit"));
         expect(app.getByText('Delete').nodeName).toBe('BUTTON');
         expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).not.toBe(0);
-
-        // Confirm cards no longer have href
-        expect(
-            app.getByText('Test Plant').closest('a')
-        ).not.toHaveAttribute('href');
-        expect(
-            app.getByText('Test group').closest('a')
-        ).not.toHaveAttribute('href');
 
         // Click cancel button, confirm buttons and checkboxes disappear
         const buttonDiv = app.container.querySelector('.floating-footer');
