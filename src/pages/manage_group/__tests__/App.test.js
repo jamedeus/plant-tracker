@@ -251,11 +251,11 @@ describe('App', () => {
         expect(addPlantsModal.children[2].children[0].children.length).toBe(2);
 
         // Click the second option twice (unselect, should not be in payload)
-        await user.click(addPlantsModal.querySelectorAll('.radio')[1]);
-        await user.click(addPlantsModal.querySelectorAll('.radio')[1]);
+        await user.click(addPlantsModal.querySelectorAll('label')[1]);
+        await user.click(addPlantsModal.querySelectorAll('label')[1]);
 
         // Select the first plant option, click Add button
-        await user.click(addPlantsModal.querySelectorAll('.radio')[0]);
+        await user.click(addPlantsModal.querySelectorAll('label')[0]);
         await user.click(addPlantsModal.querySelector('.btn-success'));
 
         // Confirm correct data posted to /bulk_add_plants_to_group endpoint
@@ -301,7 +301,7 @@ describe('App', () => {
         expect(removePlantsModal.children[2].children[0].children.length).toBe(3);
 
         // Select the first plant option, click Remove button
-        await user.click(removePlantsModal.querySelectorAll('.radio')[0]);
+        await user.click(removePlantsModal.querySelectorAll('label')[0]);
         await user.click(removePlantsModal.querySelector('.btn-error'));
 
         // Confirm correct data posted to /bulk_remove_plants_from_group endpoint

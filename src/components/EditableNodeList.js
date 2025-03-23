@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useId } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 
@@ -6,6 +6,10 @@ import clsx from 'clsx';
 // Returns node list wrapped in form with a hidden checkbox for each node
 // When editing is true nodes shrink to show hidden checkbox
 const EditableNodeList = ({ editing, formRef, children }) => {
+    // Get unique checkbox ID prefix (allows multiple EditableNodelist with
+    // overlapping contents on same page)
+    const prefix = useId();
+
     return (
         <form ref={formRef}>
             {children.map((node) => (
@@ -13,7 +17,7 @@ const EditableNodeList = ({ editing, formRef, children }) => {
                     <div className="absolute flex h-full z-0">
                         <input
                             type="checkbox"
-                            id={`select-${node.key}`}
+                            id={`${prefix}-${node.key}`}
                             name={node.key}
                             className="radio checked:bg-blue-500 my-auto"
                         />
@@ -25,7 +29,7 @@ const EditableNodeList = ({ editing, formRef, children }) => {
                         {node}
                     </div>
                     <label
-                        htmlFor={`select-${node.key}`}
+                        htmlFor={`${prefix}-${node.key}`}
                         className={clsx(
                             "cursor-pointer absolute z-20",
                             editing && "h-full w-full"
