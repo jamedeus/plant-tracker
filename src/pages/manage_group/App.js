@@ -5,13 +5,12 @@ import { sendPostRequest, parseDomContext, pastTense } from 'src/util';
 import EditModal from 'src/components/EditModal';
 import GroupDetailsForm from 'src/forms/GroupDetailsForm';
 import Navbar from 'src/components/Navbar';
-import PlantCard from 'src/components/PlantCard';
 import DatetimeInput from 'src/components/DatetimeInput';
-import FilterColumn from 'src/components/FilterColumn';
 import { showToast } from 'src/components/Toast';
 import { useTheme } from 'src/context/ThemeContext';
 import DetailsCard from 'src/components/DetailsCard';
 import GroupDetails from 'src/components/GroupDetails';
+import PlantsCol from 'src/components/PlantsCol';
 import AddPlantsModal, { openAddPlantsModal } from './AddPlantsModal';
 import RemovePlantsModal, { openRemovePlantsModal } from './RemovePlantsModal';
 import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
@@ -354,26 +353,10 @@ function App() {
                 </button>
             </div>
 
-            <FilterColumn
-                title="Plants"
-                contents={plantDetails}
-                CardComponent={PlantCard}
+            <PlantsCol
+                plants={plantDetails}
                 editing={selectingPlants}
                 formRef={selectedPlantsRef}
-                ignoreKeys={[
-                    'uuid',
-                    'created',
-                    'last_watered',
-                    'last_fertilized',
-                    'thumbnail'
-                ]}
-                sortByKeys={[
-                    {key: 'created', display: 'Added'},
-                    {key: 'display_name', display: 'Name'},
-                    {key: 'species', display: 'Species'},
-                    {key: 'last_watered', display: 'Watered'}
-                ]}
-                defaultSortKey='created'
                 storageKey={`group-${group.uuid}`}
             >
                 <PlantEventButtons
@@ -382,7 +365,7 @@ function App() {
                     handleWater={waterSelected}
                     handleFertilize={fertilizeSelected}
                 />
-            </FilterColumn>
+            </PlantsCol>
 
             <EditModal title="Edit Details" onSubmit={submitEditModal}>
                 <GroupDetailsForm

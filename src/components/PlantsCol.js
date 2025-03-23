@@ -1,0 +1,52 @@
+import PropTypes from 'prop-types';
+import PlantCard from 'src/components/PlantCard';
+import FilterColumn from 'src/components/FilterColumn';
+
+// Populates sort dropdown options
+const SORT_BY_KEYS = [
+    { key: 'created', display: 'Added'},
+    { key: 'display_name', display: 'Name' },
+    { key: 'species', display: 'Species' },
+    { key: 'last_watered', display: 'Watered' }
+];
+
+// Plant keys skipped when searching for strings matching filter input query
+const IGNORE_KEYS = [
+    'uuid',
+    'created',
+    'last_watered',
+    'last_fertilized',
+    'thumbnail'
+];
+
+// Renders FilterColumn with PlantCard for each item in plants param (array)
+const PlantsCol = ({ plants, editing, formRef, storageKey, children }) => {
+    return (
+        <FilterColumn
+            title="Plants"
+            contents={plants}
+            CardComponent={PlantCard}
+            editing={editing}
+            formRef={formRef}
+            ignoreKeys={IGNORE_KEYS}
+            sortByKeys={SORT_BY_KEYS}
+            defaultSortKey='created'
+            storageKey={storageKey}
+        >
+            {children}
+        </FilterColumn>
+    );
+};
+
+PlantsCol.propTypes = {
+    plants: PropTypes.array.isRequired,
+    editing: PropTypes.bool.isRequired,
+    formRef: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+    ]).isRequired,
+    storageKey: PropTypes.string,
+    children: PropTypes.node
+};
+
+export default PlantsCol;

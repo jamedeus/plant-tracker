@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import Setup from './Setup';
-import PlantsCol from './PlantsCol';
-import GroupsCol from './GroupsCol';
+import PlantsCol from 'src/components/PlantsCol';
+import GroupsCol from 'src/components/GroupsCol';
 import clsx from 'clsx';
 
 // Render correct components for current state objects
@@ -26,7 +26,8 @@ const Layout = ({ plants, groups, selectedPlantsRef, selectedGroupsRef, editing,
                     <PlantsCol
                         plants={plants}
                         editing={editing}
-                        selectedPlantsRef={selectedPlantsRef}
+                        formRef={selectedPlantsRef}
+                        storageKey='overviewPlantsColumn'
                     />
                 </div>
             )}
@@ -42,7 +43,8 @@ const Layout = ({ plants, groups, selectedPlantsRef, selectedGroupsRef, editing,
                     <GroupsCol
                         groups={groups}
                         editing={editing}
-                        selectedGroupsRef={selectedGroupsRef}
+                        formRef={selectedGroupsRef}
+                        storageKey='overviewGroupsColumn'
                     />
                 </div>
             )}

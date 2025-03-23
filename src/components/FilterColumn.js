@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer, memo } from 'react';
 import PropTypes from 'prop-types';
 import useDebounce from 'src/useDebounce';
 import CollapseCol from 'src/components/CollapseCol';
@@ -137,7 +137,7 @@ SortMenu.propTypes = {
 };
 
 // Renders filter text input and sort dropdown at top of FilterColumn
-const FilterInput = ({ state, dispatch, sortByKeys }) => {
+const FilterInput = memo(function FilterInput({ state, dispatch, sortByKeys }) {
     // Filter input state
     const [query, setQuery] = useState(state.query);
 
@@ -205,7 +205,7 @@ const FilterInput = ({ state, dispatch, sortByKeys }) => {
             </div>
         </div>
     );
-};
+});
 
 FilterInput.propTypes = {
     state: PropTypes.object.isRequired,
