@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
@@ -10,7 +10,7 @@ export const openChangeQrModal = () => {
     modalRef.current.open();
 };
 
-const ChangeQrModal = ({ uuid }) => {
+const ChangeQrModal = memo(function ChangeQrModal({ uuid }) {
     modalRef = useRef(null);
 
     const submit = async () => {
@@ -43,7 +43,7 @@ const ChangeQrModal = ({ uuid }) => {
             </button>
         </Modal>
     );
-};
+});
 
 ChangeQrModal.propTypes = {
     uuid: PropTypes.string.isRequired

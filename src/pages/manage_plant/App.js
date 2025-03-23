@@ -103,7 +103,7 @@ DropdownOptions.propTypes = {
     plant: PropTypes.object.isRequired
 };
 
-// Contents of dropdown shown when name plant clicked in header
+// Contents of dropdown shown when plant name clicked in header
 const DetailsDropdown = memo(function DetailsDropdown({ plant, handleRemoveGroup }) {
     return (
         <DetailsCard>

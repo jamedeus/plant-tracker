@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useMemo, memo } from 'react';
 import PropTypes from 'prop-types';
 import { localToUTC } from 'src/timestampUtils';
 import { sendPostRequest, parseDomContext, pastTense } from 'src/util';
@@ -82,7 +82,7 @@ PlantEventButtons.propTypes = {
 };
 
 // Top-left menu button contents
-const MenuOptions = () => {
+const MenuOptions = memo(function MenuOptions() {
     // Get toggle theme option from context
     const { ToggleThemeOption } = useTheme();
 
@@ -103,6 +103,23 @@ const MenuOptions = () => {
             <ToggleThemeOption />
         </>
     );
+});
+
+// Contents of dropdown shown when group name clicked in header
+const DetailsDropdown = memo(function DetailsDropdown({ location, description }) {
+    return (
+        <DetailsCard>
+            <GroupDetails
+                location={location}
+                description={description}
+            />
+        </DetailsCard>
+    );
+});
+
+DetailsDropdown.propTypes = {
+    location: PropTypes.string,
+    description: PropTypes.string
 };
 
 function App() {
@@ -118,6 +135,14 @@ function App() {
     const [options, setOptions] = useState(() => {
         return parseDomContext("options");
     });
+
+    // Array of plant objects that are not archived or already in group
+    const addPlantsModalOptions = useMemo(() => {
+        const existing = plantDetails.map(plant => plant.uuid);
+        return options.filter(
+            plant => !existing.includes(plant.uuid) && !plant.archived
+        );
+    }, [plantDetails, options]);
 
     // Request new state from backend if user navigates to page by pressing
     // back button (may be outdated if user clicked plant and made changes)
@@ -162,7 +187,7 @@ function App() {
     // Create ref to access edit details form
     const editDetailsRef = useRef(null);
 
-    const submitEditModal = async () => {
+    const submitEditModal = useCallback(async () => {
         const payload = Object.fromEntries(
             new FormData(editDetailsRef.current)
         );
@@ -173,12 +198,14 @@ function App() {
         if (response.ok) {
             // Update plant state with new values from response
             const data = await response.json();
-            setGroup({...group, ...data});
+            setGroup(prevGroup => {
+                return { ...prevGroup, ...data };
+            });
         } else {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
         }
-    };
+    }, []);
 
     // Takes array of plant UUIDs, removes archived plants and returns
     const removeArchivedPlants = (selected) => {
@@ -206,7 +233,6 @@ function App() {
     const waterSelected = async (timestamp) => {
         // Prevent watering archived plants
         const selected = removeArchivedPlants(getSelectedPlants());
-        console.log(selected)
         await bulkAddPlantEvents('water', selected, timestamp);
         setSelectingPlants(false);
     };
@@ -271,17 +297,8 @@ function App() {
         }
     };
 
-    // Returns array of plant objects with all plants that are not archived or
-    // already in group
-    const getAddPlantsModalOptions = () => {
-        const existing = plantDetails.map(plant => plant.uuid);
-        return options.filter(
-            plant => !existing.includes(plant.uuid) && !plant.archived
-        );
-    };
-
     // Handler for add button in AddPlantsModal, takes array of UUIDs
-    const addPlants = async (selected) => {
+    const addPlants = useCallback(async (selected) => {
         const payload = {
             group_id: group.uuid,
             plants: selected
@@ -298,10 +315,10 @@ function App() {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
         }
-    };
+    }, [plantDetails]);
 
     // Handler for remove button in RemovePlantsModal, takes array of UUIDs
-    const removePlants = async (selected) => {
+    const removePlants = useCallback(async (selected) => {
         const payload = {
             group_id: group.uuid,
             plants: selected
@@ -320,7 +337,7 @@ function App() {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
         }
-    };
+    }, [plantDetails]);
 
     return (
         <div className="container flex flex-col mx-auto mb-8">
@@ -328,12 +345,10 @@ function App() {
                 menuOptions={<MenuOptions />}
                 title={group.display_name}
                 titleOptions={
-                    <DetailsCard>
-                        <GroupDetails
-                            location={group.location}
-                            description={group.description}
-                        />
-                    </DetailsCard>
+                    <DetailsDropdown
+                        location={group.location}
+                        description={group.description}
+                    />
                 }
             />
 
@@ -368,16 +383,18 @@ function App() {
             </PlantsCol>
 
             <EditModal title="Edit Details" onSubmit={submitEditModal}>
-                <GroupDetailsForm
-                    formRef={editDetailsRef}
-                    name={group.name}
-                    location={group.location}
-                    description={group.description}
-                />
+                {useMemo(() => (
+                    <GroupDetailsForm
+                        formRef={editDetailsRef}
+                        name={group.name}
+                        location={group.location}
+                        description={group.description}
+                    />
+                ), [group])}
             </EditModal>
 
             <AddPlantsModal
-                options={getAddPlantsModalOptions()}
+                options={addPlantsModalOptions}
                 addPlants={addPlants}
             />
 
