@@ -173,7 +173,7 @@ describe('App', () => {
 
         // Click Manage button under plants, select first plant, click water
         await user.click(within(plantsCol).getByText("Manage"));
-        await user.click(app.container.querySelectorAll('.radio')[0]);
+        await user.click(plantsCol.querySelectorAll('label')[0]);
         await user.click(within(plantsCol).getByText("Water"));
 
         // Confirm correct data posted to /bulk_add_plant_events endpoint
@@ -209,7 +209,7 @@ describe('App', () => {
 
         // Click Manage button under plants, select third plant, click fertilize
         await user.click(within(plantsCol).getByText("Manage"));
-        await user.click(app.container.querySelectorAll('.radio')[2]);
+        await user.click(plantsCol.querySelectorAll('label')[2]);
         await user.click(within(plantsCol).getByText("Fertilize"));
 
         // Confirm correct data posted to /bulk_add_plant_events endpoint

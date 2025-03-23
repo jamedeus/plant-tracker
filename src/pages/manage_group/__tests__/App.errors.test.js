@@ -84,7 +84,7 @@ describe('App', () => {
 
         // Simulate user selecting first plant in modal and clicking add
         const addPlantsModal = app.getByText("Add Plants").parentElement;
-        await user.click(addPlantsModal.querySelectorAll('.radio')[0]);
+        await user.click(addPlantsModal.querySelectorAll('label')[0]);
         await user.click(addPlantsModal.querySelector('.btn-success'));
 
         // Confirm modal appeared with arbitrary error text
@@ -108,7 +108,7 @@ describe('App', () => {
 
         // Simulate user selecting first plant in modal and clicking remove
         const addPlantsModal = app.getByText("Remove Plants").parentElement;
-        await user.click(addPlantsModal.querySelectorAll('.radio')[0]);
+        await user.click(addPlantsModal.querySelectorAll('label')[0]);
         await user.click(addPlantsModal.querySelector('.btn-error'));
 
         // Confirm modal appeared with arbitrary error text

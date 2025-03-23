@@ -140,9 +140,9 @@ describe('App', () => {
 
         // Click Manage button under plants, select all plants, click water
         await user.click(within(plantsCol).getByText("Manage"));
-        await user.click(app.container.querySelectorAll('.radio')[0]);
-        await user.click(app.container.querySelectorAll('.radio')[1]);
-        await user.click(app.container.querySelectorAll('.radio')[2]);
+        await user.click(plantsCol.querySelectorAll('label')[0]);
+        await user.click(plantsCol.querySelectorAll('label')[1]);
+        await user.click(plantsCol.querySelectorAll('label')[2]);
         await user.click(within(plantsCol).getByText("Water"));
 
         // Confirm payload only contains UUIDs of the first and third plants
@@ -181,7 +181,7 @@ describe('App', () => {
 
         // Get reference to modal, select first plant option, click add button
         const addPlantsModal = app.getByText("Add Plants").parentElement;
-        await user.click(addPlantsModal.querySelectorAll('.radio')[0]);
+        await user.click(addPlantsModal.querySelectorAll('label')[0]);
         await user.click(addPlantsModal.querySelector('.btn-success'));
 
         // Confirm payload contains UUID of first plant
@@ -231,7 +231,7 @@ describe('App', () => {
 
         // Get reference to modal, select first plant option, click Remove button
         const removePlantsModal = app.getByText("Remove Plants").parentElement;
-        await user.click(removePlantsModal.querySelectorAll('.radio')[0]);
+        await user.click(removePlantsModal.querySelectorAll('label')[0]);
         await user.click(removePlantsModal.querySelector('.btn-error'));
 
         // Confirm correct data posted to /bulk_remove_plants_from_group endpoint
@@ -272,13 +272,14 @@ describe('App', () => {
         // Click manage button to show checkboxes, water button
         await user.click(app.getByText("Manage"));
         // Select the first and third plants (not archived)
-        await user.click(app.container.querySelectorAll('.radio')[0]);
-        await user.click(app.container.querySelectorAll('.radio')[2]);
+        const plantsCol = app.getByText("Plants (3)").parentElement;
+        await user.click(plantsCol.querySelectorAll('label')[0]);
+        await user.click(plantsCol.querySelectorAll('label')[2]);
 
         // Open Remove plants modal, select first plant option
         await user.click(app.getByText("Remove plants"));
         const removePlantsModal = app.getByText("Remove Plants").parentElement;
-        await user.click(removePlantsModal.querySelectorAll('.radio')[0]);
+        await user.click(removePlantsModal.querySelectorAll('label')[0]);
 
         // Mock fetch function to return expected response, click remove button
         global.fetch = jest.fn(() => Promise.resolve({

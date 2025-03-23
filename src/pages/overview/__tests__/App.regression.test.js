@@ -74,8 +74,8 @@ describe('App', () => {
 
         // Click edit option, click both checkboxes (first plant second grou)
         await user.click(app.getByText("Edit"));
-        await user.click(app.container.querySelectorAll('.radio')[0]);
-        await user.click(app.container.querySelectorAll('.radio')[1]);
+        await user.click(app.container.querySelectorAll('label')[0]);
+        await user.click(app.container.querySelectorAll('label')[1]);
 
         // Click delete button in floating div
         await user.click(app.getByText('Delete'));
@@ -123,8 +123,8 @@ describe('App', () => {
 
         // Click edit option, click both checkboxes (first plant second grou)
         await user.click(app.getByText("Edit"));
-        await user.click(app.container.querySelectorAll('.radio')[0]);
-        await user.click(app.container.querySelectorAll('.radio')[1]);
+        await user.click(app.container.querySelectorAll('label')[0]);
+        await user.click(app.container.querySelectorAll('label')[1]);
 
         // Click archive button in floating div
         await user.click(app.getByText('Archive'));
