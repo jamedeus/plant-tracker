@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback, memo } from 'react';
 import PropTypes from 'prop-types';
-import { localToUTC } from 'src/timestampUtils';
+import { localToUTC, timestampToUserTimezone } from 'src/timestampUtils';
 import { sendPostRequest, parseDomContext } from 'src/util';
 import EditModal from 'src/components/EditModal';
 import PlantDetailsForm from 'src/forms/PlantDetailsForm';
@@ -156,16 +156,52 @@ DetailsDropdown.propTypes = {
     handleRemoveGroup: PropTypes.func.isRequired
 };
 
+// Takes timestamp, returns ISO date string (no hours/minutes) in user's timezone
+const timestampToDateString = (timestamp) => {
+    return timestampToUserTimezone(timestamp).toISO().split('T')[0];
+};
+
+// Takes object with event type keys, array of timestamps as value.
+// Converts to object with date string keys, each containing an object with
+// "events", "notes", and "photos" keys used to populate timeline
+export const formatEvents = (events) => {
+    return Object.entries(events).reduce(
+        (acc, [eventType, eventDates]) => {
+            eventDates.forEach(date => {
+                const dateKey = timestampToDateString(date);
+                // Add new date key unless it already exists
+                if (!acc[dateKey]) {
+                    acc[dateKey] = {events: [], notes: [], photos: []};
+                }
+                // Add event to date key unless same type already exists
+                if (!acc[dateKey]['events'].includes(eventType)) {
+                    acc[dateKey]['events'].push(eventType);
+                }
+            });
+            return acc;
+        },
+        {}
+    );
+};
+
 function App() {
     // Load context set by django template
     const [plant, setPlant] = useState(() => {
         return parseDomContext("plant_details");
     });
+    // Object with "water", "fertilize", "prune", and "repot" keys each
+    // containing an array of all event timestamps in backend database.
     const [events, setEvents] = useState(() => {
         return parseDomContext("events");
     });
     const [groupOptions, setGroupOptions] = useState(() => {
         return parseDomContext("group_options");
+    });
+
+    // Convert to object with date strings as keys, object with events, notes,
+    // and photo keys as values. Used to populate timeline and calendar.
+    const [formattedEvents, setFormattedEvents] = useState(() => {
+        return formatEvents(events);
     });
 
     // Request new state from backend if user navigates to page by pressing
@@ -180,6 +216,7 @@ function App() {
                     // added on this page, outdated species_options won't cause issues)
                     setPlant(data['plant_details']);
                     setEvents(data['events']);
+                    setFormattedEvents(formatEvents(data['events']));
                     setGroupOptions(data['group_options']);
                 } else {
                     // Reload page if failed to get new state (plant deleted)
@@ -206,6 +243,7 @@ function App() {
         newEvents['repot'].push(repotTimestamp);
         newEvents['repot'].sort().reverse();
         setEvents(newEvents);
+        setFormattedEvents(formatEvents(newEvents));
 
         // Open modal with instructions to change QR code
         openChangeQrModal();
@@ -281,6 +319,7 @@ function App() {
             oldEvents[eventType].push(payload.timestamp);
             oldEvents[eventType].sort().reverse();
             setEvents(oldEvents);
+            setFormattedEvents(formatEvents(oldEvents));
         } else {
             // Duplicate event timestamp: show error toast for 5 seconds
             if (response.status === 409) {
@@ -305,6 +344,7 @@ function App() {
             1
         );
         setEvents(oldEvents);
+        setFormattedEvents(formatEvents(oldEvents));
     };
 
     return (
@@ -332,11 +372,11 @@ function App() {
                 <EventButtons events={events} addEvent={addEvent} />
             )}
 
-            <EventCalendar events={events} />
+            <EventCalendar formattedEvents={formattedEvents} />
 
             <Timeline
                 plantID={plant.uuid}
-                events={events}
+                formattedEvents={formattedEvents}
                 archived={plant.archived}
             />
 

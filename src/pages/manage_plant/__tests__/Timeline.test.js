@@ -1,5 +1,6 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import Timeline from '../Timeline';
+import { formatEvents } from '../App';
 import { PageWrapper } from 'src/index';
 import { mockContext, mockEvents, mockPhotoUrls } from './mockContext';
 
@@ -13,13 +14,15 @@ describe('Timeline', () => {
     });
 
     beforeEach(() => {
+        const formattedEvents = formatEvents(mockEvents);
+
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
             <PageWrapper>
                 <Timeline
                     plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-                    events={mockEvents}
+                    formattedEvents={formattedEvents}
                     archived={false}
                 />
             </PageWrapper>

@@ -5,29 +5,10 @@ import Calendar from 'react-calendar';
 import 'src/calendar.css';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/16/solid';
 
-const EventCalendar = memo(function EventCalendar({ events }) {
-    // Convert to object with date string keys, array of event types as value
-    const formattedEvents = Object.entries(events).reduce(
-        (acc, [eventType, eventDates]) => {
-            eventDates.forEach(date => {
-                const dateKey = new Date(date).toDateString();
-                // Add new date key unless it already exists
-                if (!acc[dateKey]) {
-                    acc[dateKey] = [];
-                }
-                // Add event to date key unless same type already exists
-                if (!acc[dateKey].includes(eventType)) {
-                    acc[dateKey].push(eventType);
-                }
-            });
-            return acc;
-        },
-        {}
-    );
-
+const EventCalendar = memo(function EventCalendar({ formattedEvents }) {
     // Takes date object, returns div with colored dots for each event on date
     const renderDots = (date) => {
-        const dateKey = date.toDateString();
+        const dateKey = date.toISOString().split('T')[0];
         const dateEvents = formattedEvents[dateKey];
         // If no events return empty div (consistent alignment)
         if (!dateEvents) {
@@ -39,7 +20,7 @@ const EventCalendar = memo(function EventCalendar({ events }) {
         // Return div containing 1 span for each event on day
         return (
             <div className="dots">
-                {dateEvents.map((eventType, index) => (
+                {dateEvents.events.map((eventType, index) => (
                     <span key={index} className={`dot dot-${eventType}`} />
                 ))}
             </div>
@@ -76,7 +57,7 @@ const EventCalendar = memo(function EventCalendar({ events }) {
 });
 
 EventCalendar.propTypes = {
-    events: PropTypes.object.isRequired
+    formattedEvents: PropTypes.object.isRequired
 };
 
 export default EventCalendar;

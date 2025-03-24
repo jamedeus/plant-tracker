@@ -1,4 +1,4 @@
-import React, { useRef, useState, useLayoutEffect, Fragment, memo } from 'react';
+import React, { useRef, useState, useEffect, useLayoutEffect, Fragment, memo } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { DateTime } from 'luxon';
@@ -451,7 +451,7 @@ QuickNavigationYear.propTypes = {
     ]).isRequired
 };
 
-const Timeline = memo(function Timeline({ plantID, events, archived }) {
+const Timeline = memo(function Timeline({ plantID, formattedEvents, archived }) {
     // Load context set by django template
     const [notes, setNotes] = useState(() => {
         return parseDomContext("notes");
@@ -465,69 +465,66 @@ const Timeline = memo(function Timeline({ plantID, events, archived }) {
         return timestampToUserTimezone(timestamp).toISO().split('T')[0];
     };
 
-    // Convert to object with date strings as keys, object with events and
-    // photos keys as values. Both keys in sub-object contain arrays.
-    const formattedEvents = Object.entries(events).reduce(
-        (acc, [eventType, eventDates]) => {
-            eventDates.forEach(date => {
-                const dateKey = timestampToDateString(date);
-                // Add new date key unless it already exists
-                if (!acc[dateKey]) {
-                    acc[dateKey] = {events: [], notes: [], photos: []};
-                }
-                // Add event to date key unless same type already exists
-                if (!acc[dateKey]['events'].includes(eventType)) {
-                    acc[dateKey]['events'].push(eventType);
-                }
-            });
-            return acc;
-        },
-        {}
-    );
+    // Merges items from notes and photoUrls states into formattedEvents param,
+    // then converts to object with YYYY-MM keys (populates MonthSection) each
+    // containing an array of objects with events, photos, and notes for a
+    // single day (populates TimelineContent component).
+    const buildSortedEvents = () => {
+        // Deep copy so that notes/photos don't duplicate each time this runs
+        const formattedEventsCopy = JSON.parse(JSON.stringify(formattedEvents));
 
-    // Add contents of photoUrls to photos key under correct date
-    photoUrls.forEach(photo => {
-        const dateKey = timestampToDateString(photo.created);
-        if (!formattedEvents[dateKey]) {
-            formattedEvents[dateKey] = {events: [], notes: [], photos: []};
-        }
-        formattedEvents[dateKey]['photos'].push(photo);
-    });
+        // Add contents of photoUrls to photos key under correct date
+        photoUrls.forEach(photo => {
+            const dateKey = timestampToDateString(photo.created);
+            if (!formattedEventsCopy[dateKey]) {
+                formattedEventsCopy[dateKey] = {events: [], notes: [], photos: []};
+            }
+            formattedEventsCopy[dateKey]['photos'].push(photo);
+        });
 
-    // Add note text to notes key under correct date
-    notes.forEach(note => {
-        const dateKey = timestampToDateString(note.timestamp);
-        if (!formattedEvents[dateKey]) {
-            formattedEvents[dateKey] = {events: [], notes: [], photos: []};
-        }
-        formattedEvents[dateKey]['notes'].push(note);
-    });
+        // Add note text to notes key under correct date
+        notes.forEach(note => {
+            const dateKey = timestampToDateString(note.timestamp);
+            if (!formattedEventsCopy[dateKey]) {
+                formattedEventsCopy[dateKey] = {events: [], notes: [], photos: []};
+            }
+            formattedEventsCopy[dateKey]['notes'].push(note);
+        });
 
-    // Iterate days chronologically and build object with 1 key per month
-    // containing array of day objects (timestamp, events, and photos keys).
-    //
-    // Month sections are iterated to populate timeline with divider inserted
-    // between each month, day objects populate a single row of the timeline.
-    const sortedEvents = {};
-    Object.keys(formattedEvents).sort().reverse().forEach(timestamp => {
-        // Slice YYYY-MM from timestamp, truncate day
-        const yearMonth = timestamp.slice(0, 7);
+        // Iterate days chronologically and build object with 1 key per month
+        // containing array of day objects (timestamp, events, and photos keys).
+        //
+        // Month sections are iterated to populate timeline with divider inserted
+        // between each month, day objects populate a single row of the timeline.
+        const sortedEvents = {};
+        Object.keys(formattedEventsCopy).sort().reverse().forEach(timestamp => {
+            // Slice YYYY-MM from timestamp, truncate day
+            const yearMonth = timestamp.slice(0, 7);
 
-        // Build object used to populate 1 day of timeline
-        const day = {
-            timestamp: timestamp,
-            events: formattedEvents[timestamp]['events'],
-            notes: formattedEvents[timestamp]['notes'],
-            photos: formattedEvents[timestamp]['photos']
-        };
+            // Build object used to populate 1 day of timeline
+            const day = {
+                timestamp: timestamp,
+                events: formattedEventsCopy[timestamp]['events'],
+                notes: formattedEventsCopy[timestamp]['notes'],
+                photos: formattedEventsCopy[timestamp]['photos']
+            };
 
-        // Add to correct yearMonth section (or create if first day in month)
-        if (!sortedEvents[yearMonth]) {
-            sortedEvents[yearMonth] = [day];
-        } else {
-            sortedEvents[yearMonth].push(day);
-        }
-    });
+            // Add to correct yearMonth section (or create if first day in month)
+            if (!sortedEvents[yearMonth]) {
+                sortedEvents[yearMonth] = [day];
+            } else {
+                sortedEvents[yearMonth].push(day);
+            }
+        });
+
+        return sortedEvents;
+    };
+
+    // State mapped to render timeline, rebuild when source objects change
+    const [sortedEvents, setSortedEvents] = useState({});
+    useEffect(() => {
+        setSortedEvents(buildSortedEvents());
+    }, [notes, photoUrls, formattedEvents]);
 
     // Build object used to populate quick navigation menu
     // Contains years as keys, list of month numbers as values
@@ -605,7 +602,7 @@ const Timeline = memo(function Timeline({ plantID, events, archived }) {
 
 Timeline.propTypes = {
     plantID: PropTypes.string.isRequired,
-    events: PropTypes.object.isRequired,
+    formattedEvents: PropTypes.object.isRequired,
     archived: PropTypes.bool.isRequired
 };
 
