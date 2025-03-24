@@ -246,26 +246,27 @@ MonthDivider.propTypes = {
     ]).isRequired
 };
 
-// Takes year-month string (ie 2024-03) and array containing object for
-// each day within month with events/photos. Returns divider with year and
-// month text followed by pairs of divs for each day (populates grid).
+// Takes year-month string (ie 2024-03) and object with yyyy-mm-dd keys keys
+// containing object for each day with events, notes, and photos keys. Returns
+// divider with year and month text followed by pairs of divs for each day
+// (populates grid).
 const MonthSection = memo(function MonthSection({ yearMonth, days, sectionRefs, archived }) {
     return (
         <>
             <MonthDivider yearMonth={yearMonth} sectionRefs={sectionRefs} />
-            {days.map((day) => (
-                <Fragment key={day.timestamp}>
+            {Object.entries(days).map(([timestamp, contents]) => (
+                <Fragment key={timestamp}>
                     <div
                         className="scroll-mt-20"
-                        data-date={day.timestamp}
+                        data-date={timestamp}
                     >
-                        <TimelineDate timestamp={day.timestamp} />
+                        <TimelineDate timestamp={timestamp} />
                     </div>
                     <div>
                         <TimelineContent
-                            events={day.events}
-                            notes={day.notes}
-                            photos={day.photos}
+                            events={contents.events}
+                            notes={contents.notes}
+                            photos={contents.photos}
                             archived={archived}
                         />
                     </div>
@@ -277,7 +278,7 @@ const MonthSection = memo(function MonthSection({ yearMonth, days, sectionRefs, 
 
 MonthSection.propTypes = {
     yearMonth: PropTypes.string.isRequired,
-    days: PropTypes.array.isRequired,
+    days: PropTypes.object.isRequired,
     sectionRefs: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.instanceOf(Object) }),
@@ -491,8 +492,9 @@ const Timeline = memo(function Timeline({ plantID, formattedEvents, archived }) 
             formattedEventsCopy[dateKey]['notes'].push(note);
         });
 
-        // Iterate days chronologically and build object with 1 key per month
-        // containing array of day objects (timestamp, events, and photos keys).
+        // Iterate days chronologically and build object with yyyy-mm keys.
+        // Each month key contains an object with yyyy-mm-dd keys and day
+        // object values (events, notes, and photos keys containing arrays).
         //
         // Month sections are iterated to populate timeline with divider inserted
         // between each month, day objects populate a single row of the timeline.
@@ -501,19 +503,16 @@ const Timeline = memo(function Timeline({ plantID, formattedEvents, archived }) 
             // Slice YYYY-MM from timestamp, truncate day
             const yearMonth = timestamp.slice(0, 7);
 
-            // Build object used to populate 1 day of timeline
-            const day = {
-                timestamp: timestamp,
+            // Ensure section for yearMonth exists
+            if (!sortedEvents[yearMonth]) {
+                sortedEvents[yearMonth] = {};
+            }
+
+            // Add day object to yearMonth section
+            sortedEvents[yearMonth][timestamp] = {
                 events: formattedEventsCopy[timestamp]['events'],
                 notes: formattedEventsCopy[timestamp]['notes'],
                 photos: formattedEventsCopy[timestamp]['photos']
-            };
-
-            // Add to correct yearMonth section (or create if first day in month)
-            if (!sortedEvents[yearMonth]) {
-                sortedEvents[yearMonth] = [day];
-            } else {
-                sortedEvents[yearMonth].push(day);
             }
         });
 
