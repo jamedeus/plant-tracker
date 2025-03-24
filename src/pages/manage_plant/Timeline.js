@@ -246,46 +246,6 @@ MonthDivider.propTypes = {
     ]).isRequired
 };
 
-// Takes year-month string (ie 2024-03) and object with yyyy-mm-dd keys keys
-// containing object for each day with events, notes, and photos keys. Returns
-// divider with year and month text followed by pairs of divs for each day
-// (populates grid).
-const MonthSection = memo(function MonthSection({ yearMonth, days, sectionRefs, archived }) {
-    return (
-        <>
-            <MonthDivider yearMonth={yearMonth} sectionRefs={sectionRefs} />
-            {Object.entries(days).map(([timestamp, contents]) => (
-                <Fragment key={timestamp}>
-                    <div
-                        className="scroll-mt-20"
-                        data-date={timestamp}
-                    >
-                        <TimelineDate timestamp={timestamp} />
-                    </div>
-                    <div>
-                        <TimelineContent
-                            events={contents.events}
-                            notes={contents.notes}
-                            photos={contents.photos}
-                            archived={archived}
-                        />
-                    </div>
-                </Fragment>
-            ))}
-        </>
-    );
-});
-
-MonthSection.propTypes = {
-    yearMonth: PropTypes.string.isRequired,
-    days: PropTypes.object.isRequired,
-    sectionRefs: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.instanceOf(Object) }),
-    ]).isRequired,
-    archived: PropTypes.bool.isRequired
-};
-
 // History title with dropdown menu (hover) to jump to month/year sections
 const Title = ({ archived, quickNavigation }) => {
     return (
@@ -466,79 +426,57 @@ const Timeline = memo(function Timeline({ plantID, formattedEvents, archived }) 
         return timestampToUserTimezone(timestamp).toISO().split('T')[0];
     };
 
-    // Merges items from notes and photoUrls states into formattedEvents param,
-    // then converts to object with YYYY-MM keys (populates MonthSection) each
-    // containing an array of objects with events, photos, and notes for a
-    // single day (populates TimelineContent component).
-    const buildSortedEvents = () => {
+    // Merges items from notes and photoUrls states into formattedEvents param
+    const buildTimelineDays = () => {
         // Deep copy so that notes/photos don't duplicate each time this runs
-        const formattedEventsCopy = JSON.parse(JSON.stringify(formattedEvents));
+        const timelineDays = JSON.parse(JSON.stringify(formattedEvents));
 
         // Add contents of photoUrls to photos key under correct date
         photoUrls.forEach(photo => {
             const dateKey = timestampToDateString(photo.created);
-            if (!formattedEventsCopy[dateKey]) {
-                formattedEventsCopy[dateKey] = {events: [], notes: [], photos: []};
+            if (!timelineDays[dateKey]) {
+                timelineDays[dateKey] = {events: [], notes: [], photos: []};
             }
-            formattedEventsCopy[dateKey]['photos'].push(photo);
+            timelineDays[dateKey]['photos'].push(photo);
         });
 
         // Add note text to notes key under correct date
         notes.forEach(note => {
             const dateKey = timestampToDateString(note.timestamp);
-            if (!formattedEventsCopy[dateKey]) {
-                formattedEventsCopy[dateKey] = {events: [], notes: [], photos: []};
+            if (!timelineDays[dateKey]) {
+                timelineDays[dateKey] = {events: [], notes: [], photos: []};
             }
-            formattedEventsCopy[dateKey]['notes'].push(note);
+            timelineDays[dateKey]['notes'].push(note);
         });
 
-        // Iterate days chronologically and build object with yyyy-mm keys.
-        // Each month key contains an object with yyyy-mm-dd keys and day
-        // object values (events, notes, and photos keys containing arrays).
-        //
-        // Month sections are iterated to populate timeline with divider inserted
-        // between each month, day objects populate a single row of the timeline.
-        const sortedEvents = {};
-        Object.keys(formattedEventsCopy).sort().reverse().forEach(timestamp => {
-            // Slice YYYY-MM from timestamp, truncate day
-            const yearMonth = timestamp.slice(0, 7);
-
-            // Ensure section for yearMonth exists
-            if (!sortedEvents[yearMonth]) {
-                sortedEvents[yearMonth] = {};
-            }
-
-            // Add day object to yearMonth section
-            sortedEvents[yearMonth][timestamp] = {
-                events: formattedEventsCopy[timestamp]['events'],
-                notes: formattedEventsCopy[timestamp]['notes'],
-                photos: formattedEventsCopy[timestamp]['photos']
-            }
-        });
-
-        return sortedEvents;
+        return timelineDays;
     };
 
     // State mapped to render timeline, rebuild when source objects change
-    const [sortedEvents, setSortedEvents] = useState({});
+    const [timelineDays, setTimelineDays] = useState({});
     useEffect(() => {
-        setSortedEvents(buildSortedEvents());
+        setTimelineDays(buildTimelineDays());
     }, [notes, photoUrls, formattedEvents]);
 
     // Build object used to populate quick navigation menu
     // Contains years as keys, list of month numbers as values
     const navigationOptions = {};
-    Object.keys(sortedEvents).forEach(yearMonth => {
-        const [year, month] = yearMonth.split('-');
+    Object.keys(timelineDays).forEach(dateString => {
+        const [year, month] = dateString.split('-');
         if (!navigationOptions[year]) {
             navigationOptions[year] = [];
         }
-        navigationOptions[year].push(month);
+        if (!navigationOptions[year].includes(month)) {
+            navigationOptions[year].push(month);
+        }
     });
 
     // Contains object with year-month strings (ie 2024-03) as keys, divider
     // elements as values (used form quick navigation scrolling)
     const sectionRefs = useRef({});
+
+    // Get array of yyyy-mm-dd keys sorted chronologically (recent first)
+    const dayKeys = Object.keys(timelineDays).sort().reverse();
 
     return (
         <div className={clsx(
@@ -554,18 +492,45 @@ const Timeline = memo(function Timeline({ plantID, formattedEvents, archived }) 
                     />
                 }
             />
-            {Object.keys(sortedEvents).length > 0 ? (
+            {dayKeys.length > 0 ? (
                 <div className="grid grid-cols-[min-content_1fr] gap-4 md:gap-8">
-                    {Object.keys(sortedEvents).map(yearMonth => (
-                        <Fragment key={yearMonth}>
-                            <MonthSection
-                                yearMonth={yearMonth}
-                                days={sortedEvents[yearMonth]}
-                                sectionRefs={sectionRefs}
-                                archived={archived}
-                            />
-                        </Fragment>
-                    ))}
+                    {dayKeys.map((timestamp, index) => {
+                        // Slice YYYY-MM from timestamp, truncate day
+                        const yearMonth = timestamp.slice(0, 7);
+
+                        // Get previous day yearMonth to check if month changed
+                        let prevYearMonth = null;
+                        if (index > 0) {
+                            const prevTimestamp = dayKeys[index - 1];
+                            prevYearMonth = prevTimestamp.slice(0, 7);
+                        }
+
+                        return (
+                            <Fragment key={timestamp}>
+                                {/* Render MonthDivider if month changed */}
+                                {yearMonth !== prevYearMonth && (
+                                    <MonthDivider
+                                        yearMonth={yearMonth}
+                                        sectionRefs={sectionRefs}
+                                    />
+                                )}
+                                <div
+                                    className="scroll-mt-20"
+                                    data-date={timestamp}
+                                >
+                                    <TimelineDate timestamp={timestamp} />
+                                </div>
+                                <div>
+                                    <TimelineContent
+                                        events={timelineDays[timestamp].events}
+                                        notes={timelineDays[timestamp].notes}
+                                        photos={timelineDays[timestamp].photos}
+                                        archived={archived}
+                                    />
+                                </div>
+                            </Fragment>
+                          );
+                    })}
                 </div>
             ) : (
                 <div className="text-center text-lg p-4">
