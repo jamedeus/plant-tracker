@@ -38,7 +38,10 @@ const getRelativeTimeString = (timestamp) => {
 
 const TimelineDate = memo(function TimelineDate({ timestamp }) {
     return (
-        <div className="flex flex-col h-full whitespace-nowrap text-end md:ml-4">
+        <div
+            className="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+            data-date={timestamp}
+        >
             <span className="text-sm md:text-lg my-auto md:mt-auto md:mb-0">
                 {getRelativeTimeString(timestamp)}
             </span>
@@ -514,20 +517,13 @@ const Timeline = memo(function Timeline({ plantID, formattedEvents, archived }) 
                                         sectionRefs={sectionRefs}
                                     />
                                 )}
-                                <div
-                                    className="scroll-mt-20"
-                                    data-date={timestamp}
-                                >
-                                    <TimelineDate timestamp={timestamp} />
-                                </div>
-                                <div>
-                                    <TimelineContent
-                                        events={timelineDays[timestamp].events}
-                                        notes={timelineDays[timestamp].notes}
-                                        photos={timelineDays[timestamp].photos}
-                                        archived={archived}
-                                    />
-                                </div>
+                                <TimelineDate timestamp={timestamp} />
+                                <TimelineContent
+                                    events={timelineDays[timestamp].events}
+                                    notes={timelineDays[timestamp].notes}
+                                    photos={timelineDays[timestamp].photos}
+                                    archived={archived}
+                                />
                             </Fragment>
                           );
                     })}
