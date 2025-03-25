@@ -459,7 +459,7 @@ const Timeline = memo(function Timeline({ plantID, formattedEvents, archived }) 
     const [timelineDays, setTimelineDays] = useState({});
     useEffect(() => {
         setTimelineDays(buildTimelineDays());
-    }, [notes, photoUrls]);
+    }, [photoUrls]);
 
     // Takes 2 arrays, returns True if contents are identical, otherwise False
     const compareEvents = (array1, array2) => {
@@ -510,6 +510,55 @@ const Timeline = memo(function Timeline({ plantID, formattedEvents, archived }) 
             return newTimelineDays;
         });
     }, [formattedEvents]);
+
+    // Update state incrementally when notes state is modified (only render day
+    // with new/edited/removed note)
+    useEffect(() => {
+        setTimelineDays(oldTimelineDays => {
+            const newTimelineDays = { ...oldTimelineDays };
+
+            // Copy new events from formattedEvents to timelineDays
+            notes.forEach(note => {
+                const dateKey = timestampToDateString(note.timestamp);
+                // Add new timestamp key
+                if (!newTimelineDays[dateKey]) {
+                    newTimelineDays[dateKey] = {
+                        events: [],
+                        notes: [note],
+                        photos: []
+                    };
+                // Add new/edited notes to existing timestamp key
+                } else if (!newTimelineDays[dateKey].notes.includes(note)) {
+                    newTimelineDays[dateKey] = {
+                        ...newTimelineDays[dateKey],
+                        notes: [ ...newTimelineDays[dateKey].notes, note ]
+                    }
+                }
+            });
+
+            // Remove notes that no longer exist in notes
+            Object.entries(newTimelineDays).forEach(([dateKey, contents]) => {
+                contents.notes.forEach(oldNote => {
+                    if (!notes.includes(oldNote)) {
+                        let newNotes = [ ...newTimelineDays[dateKey].notes ];
+                        newNotes.splice(
+                            newNotes.indexOf(oldNote),
+                            1
+                        );
+                        newTimelineDays[dateKey].notes = newNotes;
+                    }
+                });
+                // Remove whole day section if no notes, photos, or events
+                if (!newTimelineDays[dateKey].notes.length &&
+                    !newTimelineDays[dateKey].photos.length &&
+                    !newTimelineDays[dateKey].events.length
+                ) {
+                    delete newTimelineDays[dateKey];
+                }
+            });
+            return newTimelineDays;
+        });
+    }, [notes]);
 
     // Build object used to populate quick navigation menu
     // Contains years as keys, list of month numbers as values
