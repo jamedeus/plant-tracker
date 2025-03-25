@@ -36,7 +36,7 @@ const getRelativeTimeString = (timestamp) => {
     }
 };
 
-const TimelineDate = memo(function TimelineDate({ timestamp }) {
+const TimelineTimestamp = memo(function TimelineTimestamp({ timestamp }) {
     return (
         <div
             className="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
@@ -52,7 +52,7 @@ const TimelineDate = memo(function TimelineDate({ timestamp }) {
     );
 });
 
-TimelineDate.propTypes = {
+TimelineTimestamp.propTypes = {
     timestamp: PropTypes.string.isRequired
 };
 
@@ -76,38 +76,42 @@ EventMarker.propTypes = {
     eventType: PropTypes.string.isRequired
 };
 
-const TimelineContent = memo(function TimelineContent({ events, notes, photos, archived }) {
+const TimelineDay = memo(function TimelineDay({ timestamp, events, photos, notes, archived}) {
     return (
-        <div className="flex flex-col bg-neutral rounded-xl p-2 md:p-4">
-            <div className="flex flex-row flex-wrap">
-                {events.map((e) => (
-                    <EventMarker key={e} eventType={e} />
-                ))}
+        <>
+            <TimelineTimestamp timestamp={timestamp} />
+            <div className="flex flex-col bg-neutral rounded-xl p-2 md:p-4">
+                <div className="flex flex-row flex-wrap">
+                    {events.map((e) => (
+                        <EventMarker key={e} eventType={e} />
+                    ))}
+                </div>
+                <div className="flex flex-row flex-wrap">
+                    {photos.map((photo) => (
+                        <PhotoThumbnail
+                            key={photo.key}
+                            thumbnailUrl={photo.thumbnail}
+                            photoUrl={photo.image}
+                            timestamp={photo.created}
+                        />
+                    ))}
+                </div>
+                <div className="flex flex-col">
+                    {notes.map((note) => (
+                        <NoteCollapse
+                            key={note.timestamp}
+                            note={note}
+                            archived={archived}
+                        />
+                    ))}
+                </div>
             </div>
-            <div className="flex flex-row flex-wrap">
-                {photos.map((photo) => (
-                    <PhotoThumbnail
-                        key={photo.key}
-                        thumbnailUrl={photo.thumbnail}
-                        photoUrl={photo.image}
-                        timestamp={photo.created}
-                    />
-                ))}
-            </div>
-            <div className="flex flex-col">
-                {notes.map((note) => (
-                    <NoteCollapse
-                        key={note.timestamp}
-                        note={note}
-                        archived={archived}
-                    />
-                ))}
-            </div>
-        </div>
+        </>
     );
 });
 
-TimelineContent.propTypes = {
+TimelineDay.propTypes = {
+    timestamp: PropTypes.string.isRequired,
     events: PropTypes.array.isRequired,
     notes: PropTypes.array.isRequired,
     photos: PropTypes.array.isRequired,
@@ -665,8 +669,8 @@ const Timeline = memo(function Timeline({ plantID, formattedEvents, archived }) 
                                         sectionRefs={sectionRefs}
                                     />
                                 )}
-                                <TimelineDate timestamp={timestamp} />
-                                <TimelineContent
+                                <TimelineDay
+                                    timestamp={timestamp}
                                     events={timelineDays[timestamp].events}
                                     notes={timelineDays[timestamp].notes}
                                     photos={timelineDays[timestamp].photos}
