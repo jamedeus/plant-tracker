@@ -455,11 +455,11 @@ const Timeline = memo(function Timeline({ plantID, formattedEvents, archived }) 
         return timelineDays;
     };
 
-    // State mapped to render timeline, rebuild when source objects change
+    // Build state used to render timeline on load (updated by effects below)
     const [timelineDays, setTimelineDays] = useState({});
     useEffect(() => {
         setTimelineDays(buildTimelineDays());
-    }, [photoUrls]);
+    }, []);
 
     // Takes 2 arrays, returns True if contents are identical, otherwise False
     const compareEvents = (array1, array2) => {
@@ -559,6 +559,55 @@ const Timeline = memo(function Timeline({ plantID, formattedEvents, archived }) 
             return newTimelineDays;
         });
     }, [notes]);
+
+    // Update state incrementally when photoUrls state is modified (only render
+    // day with new/removed photos)
+    useEffect(() => {
+        setTimelineDays(oldTimelineDays => {
+            const newTimelineDays = { ...oldTimelineDays };
+
+            // Copy new events from formattedEvents to timelineDays
+            photoUrls.forEach(photo => {
+                const dateKey = timestampToDateString(photo.created);
+                // Add new timestamp key
+                if (!newTimelineDays[dateKey]) {
+                    newTimelineDays[dateKey] = {
+                        events: [],
+                        notes: [],
+                        photos: [photo]
+                    };
+                // Add new photos to existing timestamp key
+                } else if (!newTimelineDays[dateKey].photos.includes(photo)) {
+                    newTimelineDays[dateKey] = {
+                        ...newTimelineDays[dateKey],
+                        photos: [ ...newTimelineDays[dateKey].photos, photo ]
+                    }
+                }
+            });
+
+            // Remove photos that no longer exist in photos
+            Object.entries(newTimelineDays).forEach(([dateKey, contents]) => {
+                contents.photos.forEach(oldPhoto => {
+                    if (!photoUrls.includes(oldPhoto)) {
+                        let newPhotos = [ ...newTimelineDays[dateKey].photos ];
+                        newPhotos.splice(
+                            newPhotos.indexOf(oldPhoto),
+                            1
+                        );
+                        newTimelineDays[dateKey].photos = newPhotos;
+                    }
+                });
+                // Remove whole day section if no notes, photos, or events
+                if (!newTimelineDays[dateKey].notes.length &&
+                    !newTimelineDays[dateKey].photos.length &&
+                    !newTimelineDays[dateKey].events.length
+                ) {
+                    delete newTimelineDays[dateKey];
+                }
+            });
+            return newTimelineDays;
+        });
+    }, [photoUrls]);
 
     // Build object used to populate quick navigation menu
     // Contains years as keys, list of month numbers as values
