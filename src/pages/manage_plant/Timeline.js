@@ -492,7 +492,7 @@ const Timeline = memo(function Timeline({ plantID, formattedEvents, archived }) 
                     newTimelineDays[timestamp] = {
                         ...newTimelineDays[timestamp],
                         events: [ ...formattedEvents[timestamp].events ]
-                    }
+                    };
                 }
             });
 
@@ -536,7 +536,7 @@ const Timeline = memo(function Timeline({ plantID, formattedEvents, archived }) 
                     newTimelineDays[dateKey] = {
                         ...newTimelineDays[dateKey],
                         notes: [ ...newTimelineDays[dateKey].notes, note ]
-                    }
+                    };
                 }
             });
 
@@ -585,7 +585,7 @@ const Timeline = memo(function Timeline({ plantID, formattedEvents, archived }) 
                     newTimelineDays[dateKey] = {
                         ...newTimelineDays[dateKey],
                         photos: [ ...newTimelineDays[dateKey].photos, photo ]
-                    }
+                    };
                 }
             });
 
@@ -677,7 +677,7 @@ const Timeline = memo(function Timeline({ plantID, formattedEvents, archived }) 
                                     archived={archived}
                                 />
                             </Fragment>
-                          );
+                        );
                     })}
                 </div>
             ) : (
