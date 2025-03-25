@@ -459,7 +459,57 @@ const Timeline = memo(function Timeline({ plantID, formattedEvents, archived }) 
     const [timelineDays, setTimelineDays] = useState({});
     useEffect(() => {
         setTimelineDays(buildTimelineDays());
-    }, [notes, photoUrls, formattedEvents]);
+    }, [notes, photoUrls]);
+
+    // Takes 2 arrays, returns True if contents are identical, otherwise False
+    const compareEvents = (array1, array2) => {
+        return array1.length === array2.length &&
+            array1.every((value, index) => value === array2[index]);
+    };
+
+    // Update state incrementally when formattedEvents is modified (only render
+    // day with new/removed events)
+    useEffect(() => {
+        setTimelineDays(oldTimelineDays => {
+            const newTimelineDays = { ...oldTimelineDays };
+
+            // Copy new events from formattedEvents to timelineDays
+            Object.keys(formattedEvents).forEach(timestamp => {
+                // Add new timestamp key
+                if (!newTimelineDays[timestamp]) {
+                    newTimelineDays[timestamp] = {
+                        ...formattedEvents[timestamp]
+                    };
+                // Add new events to existing timestamp key
+                } else if (!compareEvents(
+                    newTimelineDays[timestamp].events,
+                    formattedEvents[timestamp].events
+                )) {
+                    newTimelineDays[timestamp] = {
+                        ...newTimelineDays[timestamp],
+                        events: [ ...formattedEvents[timestamp].events ]
+                    }
+                }
+            });
+
+            // Remove events that no longer exist in formattedEvents
+            Object.keys(newTimelineDays).forEach(timestamp => {
+                if (!Object.keys(formattedEvents).includes(timestamp)) {
+                    // Clear events array if not already empty
+                    if (newTimelineDays[timestamp].events.length) {
+                        newTimelineDays[timestamp].events = [];
+                    }
+                    // Remove whole day section if no notes or photos
+                    if (!newTimelineDays[timestamp].notes.length &&
+                        !newTimelineDays[timestamp].photos.length
+                    ) {
+                        delete newTimelineDays[timestamp];
+                    }
+                }
+            });
+            return newTimelineDays;
+        });
+    }, [formattedEvents]);
 
     // Build object used to populate quick navigation menu
     // Contains years as keys, list of month numbers as values
