@@ -108,7 +108,7 @@ ConfirmDeleteRow.propTypes = {
 };
 
 const DeletePhotosModal = memo(function DeletePhotosModal({ plantID }) {
-    const { photoUrls, setPhotoUrls } = useTimeline();
+    const { photoUrls, deletePhotos } = useTimeline();
 
     modalRef = useRef(null);
 
@@ -145,10 +145,7 @@ const DeletePhotosModal = memo(function DeletePhotosModal({ plantID }) {
         // If successful remove photos from history column
         if (response.ok) {
             const data = await response.json();
-            let oldPhotoUrls = [...photoUrls];
-            setPhotoUrls(oldPhotoUrls.filter(
-                photo => !data.deleted.includes(photo.key)
-            ));
+            deletePhotos(data.deleted);
 
             // Clear selected photos, close modal, reset confirm delete screen
             setSelectedPhotos([]);

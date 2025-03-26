@@ -38,7 +38,7 @@ Row.propTypes = {
 };
 
 const PhotoModal = ({ plantID }) => {
-    const { photoUrls, setPhotoUrls } = useTimeline();
+    const { addPhotos } = useTimeline();
 
     modalRef = useRef(null);
     // File input ref, used to remove selected files when X buttons clicked
@@ -63,16 +63,6 @@ const PhotoModal = ({ plantID }) => {
             const data = new DataTransfer();
             inputRef.current.files = data.files;
         }
-    };
-
-    // Takes photo URLs from API response when new photos are uploaded
-    const addPlantPhotoUrls = (newUrls) => {
-        // Add new URLs to photoUrl state, sort chronologically, re-render
-        const newPhotoUrls = photoUrls.concat(newUrls);
-        newPhotoUrls.sort((a, b) => {
-            return a.created.localeCompare(b.created);
-        }).reverse();
-        setPhotoUrls(newPhotoUrls);
     };
 
     const handleSubmit = async () => {
@@ -100,7 +90,7 @@ const PhotoModal = ({ plantID }) => {
             // Update state with new photo URLs from response
             const data = await response.json();
             if (data.urls.length) {
-                addPlantPhotoUrls(data.urls);
+                addPhotos(data.urls);
             }
 
             // Close modal, wait for close animation to complete then stop
