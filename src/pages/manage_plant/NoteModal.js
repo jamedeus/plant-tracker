@@ -7,6 +7,7 @@ import { showToast } from 'src/components/Toast';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { sendPostRequest } from 'src/util';
 import { localToUTC, timestampToReadable } from 'src/timestampUtils';
+import { useTimeline } from './TimelineContext';
 import { DateTime } from 'luxon';
 
 let modalRef;
@@ -28,7 +29,9 @@ ExistingNoteTimestamp.propTypes = {
     noteTime: PropTypes.string.isRequired
 };
 
-const NoteModal = ({ plantID, notes, setNotes }) => {
+const NoteModal = ({ plantID }) => {
+    const { notes, setNotes } = useTimeline();
+
     // States for text and timestamp inputs
     const [noteTime, setNoteTime] = useState('');
     const [noteText, setNoteText] = useState('');
@@ -200,9 +203,7 @@ const NoteModal = ({ plantID, notes, setNotes }) => {
 };
 
 NoteModal.propTypes = {
-    plantID: PropTypes.string.isRequired,
-    notes: PropTypes.array.isRequired,
-    setNotes: PropTypes.func.isRequired
+    plantID: PropTypes.string.isRequired
 };
 
 export default NoteModal;

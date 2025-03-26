@@ -5,6 +5,7 @@ import { sendPostRequest } from 'src/util';
 import { timestampToReadable } from 'src/timestampUtils';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/16/solid';
+import { useTimeline } from './TimelineContext';
 import clsx from 'clsx';
 
 let modalRef;
@@ -66,7 +67,9 @@ PhotoSlide.propTypes = {
     submit: PropTypes.func.isRequired
 };
 
-const DefaultPhotoModal = memo(function DefaultPhotoModal({ plantID, photoUrls }) {
+const DefaultPhotoModal = memo(function DefaultPhotoModal({ plantID }) {
+    const { photoUrls } = useTimeline();
+
     modalRef = useRef(null);
 
     const submit = useCallback(async (selected) => {
@@ -127,8 +130,7 @@ const DefaultPhotoModal = memo(function DefaultPhotoModal({ plantID, photoUrls }
 });
 
 DefaultPhotoModal.propTypes = {
-    plantID: PropTypes.string.isRequired,
-    photoUrls: PropTypes.array.isRequired
+    plantID: PropTypes.string.isRequired
 };
 
 export default DefaultPhotoModal;

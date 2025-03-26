@@ -23,7 +23,6 @@ describe('Timeline', () => {
                 <TimelineProvider formattedEvents={formattedEvents}>
                     <Timeline
                         plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-                        formattedEvents={formattedEvents}
                         archived={false}
                     />
                 </TimelineProvider>
@@ -39,7 +38,6 @@ describe('Timeline', () => {
                 <TimelineProvider formattedEvents={formattedEvents}>
                     <Timeline
                         plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-                        formattedEvents={formattedEvents}
                         archived={true}
                     />
                 </TimelineProvider>

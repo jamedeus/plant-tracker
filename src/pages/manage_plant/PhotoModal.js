@@ -5,6 +5,7 @@ import Modal from 'src/components/Modal';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 import { XMarkIcon } from '@heroicons/react/16/solid';
 import { openErrorModal } from 'src/components/ErrorModal';
+import { useTimeline } from './TimelineContext';
 
 let modalRef;
 
@@ -36,7 +37,9 @@ Row.propTypes = {
     removeFile: PropTypes.func.isRequired
 };
 
-const PhotoModal = ({ plantID, photoUrls, setPhotoUrls }) => {
+const PhotoModal = ({ plantID }) => {
+    const { photoUrls, setPhotoUrls } = useTimeline();
+
     modalRef = useRef(null);
     // File input ref, used to remove selected files when X buttons clicked
     const inputRef = useRef(null);
@@ -197,9 +200,7 @@ const PhotoModal = ({ plantID, photoUrls, setPhotoUrls }) => {
 };
 
 PhotoModal.propTypes = {
-    plantID: PropTypes.string.isRequired,
-    photoUrls: PropTypes.array.isRequired,
-    setPhotoUrls: PropTypes.func.isRequired
+    plantID: PropTypes.string.isRequired
 };
 
 export default PhotoModal;

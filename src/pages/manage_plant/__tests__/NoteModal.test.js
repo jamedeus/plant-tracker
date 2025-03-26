@@ -1,29 +1,26 @@
 import React, { useState } from 'react';
 import createMockContext from 'src/testUtils/createMockContext';
 import NoteModal, { openNoteModal } from '../NoteModal';
+import { TimelineProvider } from '../TimelineContext';
 import { PageWrapper } from 'src/index';
 import { postHeaders } from 'src/testUtils/headers';
 
-const TestComponent = () => {
-    const [notes, setNotes] = useState([
-        {text: 'this is an existing note', timestamp: '2024-02-13T12:00:00'},
-        {text: 'another existing note', timestamp: '2024-02-12T12:00:00'}
-    ]);
+const mockNotes = [
+    {text: 'this is an existing note', timestamp: '2024-02-13T12:00:00'},
+    {text: 'another existing note', timestamp: '2024-02-12T12:00:00'}
+]
 
+const TestComponent = () => {
     return (
-        <>
-            <NoteModal
-                plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-                notes={notes}
-                setNotes={setNotes}
-            />
+        <TimelineProvider formattedEvents={{}}>
+            <NoteModal plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12' />
             <button onClick={() => openNoteModal()}>
                 Add New Note
             </button>
-            <button onClick={() => openNoteModal(notes[0])}>
+            <button onClick={() => openNoteModal(mockNotes[0])}>
                 Edit Existing Note
             </button>
-        </>
+        </TimelineProvider>
     );
 };
 
@@ -31,8 +28,9 @@ describe('Add new note', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state object
-        createMockContext('notes', []);
+        // Create mock state objects (used by TimelineContext)
+        createMockContext('notes', mockNotes);
+        createMockContext('photo_urls', []);
     });
 
     beforeEach(async () => {
@@ -151,6 +149,7 @@ describe('Edit existing note', () => {
     beforeAll(() => {
         // Create mock state object
         createMockContext('notes', []);
+        createMockContext('photo_urls', []);
     });
 
     beforeEach(async () => {

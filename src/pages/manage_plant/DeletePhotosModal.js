@@ -4,6 +4,7 @@ import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
 import { timestampToReadable } from 'src/timestampUtils';
 import { openErrorModal } from 'src/components/ErrorModal';
+import { useTimeline } from './TimelineContext';
 import {
     ChevronLeftIcon,
     ChevronRightIcon,
@@ -106,7 +107,9 @@ ConfirmDeleteRow.propTypes = {
     unselectPhoto: PropTypes.func.isRequired
 };
 
-const DeletePhotosModal = memo(function DeletePhotosModal({ plantID, photoUrls, setPhotoUrls }) {
+const DeletePhotosModal = memo(function DeletePhotosModal({ plantID }) {
+    const { photoUrls, setPhotoUrls } = useTimeline();
+
     modalRef = useRef(null);
 
     // Controls confirm delete screen visibility
@@ -260,9 +263,7 @@ const DeletePhotosModal = memo(function DeletePhotosModal({ plantID, photoUrls, 
 });
 
 DeletePhotosModal.propTypes = {
-    plantID: PropTypes.string.isRequired,
-    photoUrls: PropTypes.array.isRequired,
-    setPhotoUrls: PropTypes.func.isRequired
+    plantID: PropTypes.string.isRequired
 };
 
 export default DeletePhotosModal;

@@ -1,29 +1,31 @@
 import { useState } from 'react';
+import createMockContext from 'src/testUtils/createMockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import DeletePhotosModal, { openDeletePhotosModal } from '../DeletePhotosModal';
+import { TimelineProvider } from '../TimelineContext';
 import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
 
 const TestComponent = () => {
-    const [photoUrls, setPhotoUrls] = useState(mockContext.photo_urls);
-
     // Render app
     return (
-        <>
-            <DeletePhotosModal
-                plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-                photoUrls={photoUrls}
-                setPhotoUrls={setPhotoUrls}
-            />
+        <TimelineProvider formattedEvents={{}}>
+            <DeletePhotosModal plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12' />
             <button onClick={openDeletePhotosModal}>
                 Open delete photos modal
             </button>
-        </>
+        </TimelineProvider>
     );
 };
 
 describe('DeletePhotosModal', () => {
     let component, user;
+
+    beforeAll(() => {
+        // Create mock state objects (used by TimelineContext)
+        createMockContext('notes', []);
+        createMockContext('photo_urls', mockContext.photo_urls);
+    });
 
     beforeEach(async () => {
         // Render component + create userEvent instance to use in tests

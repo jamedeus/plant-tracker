@@ -1,29 +1,30 @@
 import React, { useRef } from 'react';
+import createMockContext from 'src/testUtils/createMockContext';
 import { fireEvent } from '@testing-library/react';
 import PhotoModal, { openPhotoModal } from '../PhotoModal';
+import { TimelineProvider } from '../TimelineContext';
 import { PageWrapper } from 'src/index';
 
 const TestComponent = () => {
-    const photoModalRef = useRef(null);
-
     // Render app
     return (
-        <>
-            <PhotoModal
-                modalRef={photoModalRef}
-                plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-                photoUrls={[]}
-                setPhotoUrls={jest.fn()}
-            />
+        <TimelineProvider formattedEvents={{}}>
+            <PhotoModal plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12' />
             <button onClick={openPhotoModal}>
                 Open photo modal
             </button>
-        </>
+        </TimelineProvider>
     );
 };
 
 describe('PhotoModal', () => {
     let app, user;
+
+    beforeAll(() => {
+        // Create mock state objects (used by TimelineContext)
+        createMockContext('notes', []);
+        createMockContext('photo_urls', []);
+    });
 
     beforeEach(async () => {
         // Render app + create userEvent instance to use in tests
