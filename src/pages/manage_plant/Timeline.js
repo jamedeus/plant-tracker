@@ -94,7 +94,9 @@ const TimelineDay = memo(function TimelineDay({ timestamp, events, photos, notes
                     ))}
                 </div>
                 <div className="flex flex-col">
-                    {notes.map((note) => (
+                    {notes.sort((a, b) => {
+                        return a.timestamp.localeCompare(b.timestamp);
+                    }).map((note) => (
                         <NoteCollapse
                             key={note.timestamp}
                             note={note}
