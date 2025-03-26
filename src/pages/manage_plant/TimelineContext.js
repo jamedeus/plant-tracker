@@ -9,9 +9,6 @@ export const useTimeline = () => useContext(TimelineContext);
 
 export const TimelineProvider = ({ formattedEvents, children }) => {
     // Load context set by django template
-    const [notes, setNotes] = useState(() => {
-        return parseDomContext("notes");
-    });
     const [photoUrls, setPhotoUrls] = useState(() => {
         return parseDomContext("photo_urls");
     });
@@ -40,6 +37,7 @@ export const TimelineProvider = ({ formattedEvents, children }) => {
         });
 
         // Add note text to notes key under correct date
+        const notes = parseDomContext("notes");
         notes.forEach(note => {
             const dateKey = timestampToDateString(note.timestamp);
             if (!timelineDays[dateKey]) {
@@ -107,54 +105,62 @@ export const TimelineProvider = ({ formattedEvents, children }) => {
         });
     }, [formattedEvents]);
 
-    // Update state incrementally when notes state is modified (only render day
-    // with new/edited/removed note)
-    useEffect(() => {
+    const addNewNote = (note) => {
+        // YYYY-MM-DD in user timezone
+        const dateKey = timestampToDateString(note.timestamp);
+
         setTimelineDays(oldTimelineDays => {
             const newTimelineDays = { ...oldTimelineDays };
-
-            // Copy new events from formattedEvents to timelineDays
-            notes.forEach(note => {
-                const dateKey = timestampToDateString(note.timestamp);
-                // Add new timestamp key
-                if (!newTimelineDays[dateKey]) {
-                    newTimelineDays[dateKey] = {
-                        events: [],
-                        notes: [note],
-                        photos: []
-                    };
-                // Add new/edited notes to existing timestamp key
-                } else if (!newTimelineDays[dateKey].notes.includes(note)) {
-                    newTimelineDays[dateKey] = {
-                        ...newTimelineDays[dateKey],
-                        notes: [ ...newTimelineDays[dateKey].notes, note ]
-                    };
-                }
-            });
-
-            // Remove notes that no longer exist in notes
-            Object.entries(newTimelineDays).forEach(([dateKey, contents]) => {
-                contents.notes.forEach(oldNote => {
-                    if (!notes.includes(oldNote)) {
-                        let newNotes = [ ...newTimelineDays[dateKey].notes ];
-                        newNotes.splice(
-                            newNotes.indexOf(oldNote),
-                            1
-                        );
-                        newTimelineDays[dateKey].notes = newNotes;
-                    }
-                });
-                // Remove whole day section if no notes, photos, or events
-                if (!newTimelineDays[dateKey].notes.length &&
-                    !newTimelineDays[dateKey].photos.length &&
-                    !newTimelineDays[dateKey].events.length
-                ) {
-                    delete newTimelineDays[dateKey];
-                }
-            });
+            // Add new timestamp key if missing
+            if (!newTimelineDays[dateKey]) {
+                newTimelineDays[dateKey] = {
+                    events: [],
+                    notes: [note],
+                    photos: []
+                };
+            } else {
+                newTimelineDays[dateKey] = {
+                    ...newTimelineDays[dateKey],
+                    notes: [ ...newTimelineDays[dateKey].notes, note ]
+                };
+            }
             return newTimelineDays;
         });
-    }, [notes]);
+    };
+
+    // Takes note with same timestamp as existing note (timestamp cannot be
+    // changed once created), overwrites text in timelineDays state.
+    const editExistingNote = (note) => {
+        // YYYY-MM-DD in user timezone
+        const dateKey = timestampToDateString(note.timestamp);
+
+        const newNotes = timelineDays[dateKey].notes.map(oldNote => {
+            if (oldNote.timestamp === note.timestamp) {
+                return {timestamp: note.timestamp, text: note.text};
+            } else {
+                return oldNote;
+            }
+        });
+
+        setTimelineDays({ ...timelineDays,
+            [dateKey]: { ...timelineDays[dateKey],
+                notes: newNotes
+            }
+        });
+    };
+
+    const deleteNote = (noteTime) => {
+        // YYYY-MM-DD in user timezone
+        const dateKey = timestampToDateString(noteTime);
+
+        setTimelineDays({ ...timelineDays,
+            [dateKey]: { ...timelineDays[dateKey],
+                notes: timelineDays[dateKey].notes.filter(
+                    note => note.timestamp !== noteTime
+                )
+            }
+        });
+    };
 
     // Update state incrementally when photoUrls state is modified (only render
     // day with new/removed photos)
@@ -209,8 +215,9 @@ export const TimelineProvider = ({ formattedEvents, children }) => {
         <TimelineContext.Provider value={{
             timelineDays,
             sectionRefs,
-            notes,
-            setNotes,
+            addNewNote,
+            editExistingNote,
+            deleteNote,
             photoUrls,
             setPhotoUrls
         }}>

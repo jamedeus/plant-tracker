@@ -30,7 +30,7 @@ ExistingNoteTimestamp.propTypes = {
 };
 
 const NoteModal = ({ plantID }) => {
-    const { notes, setNotes } = useTimeline();
+    const { addNewNote, editExistingNote, deleteNote } = useTimeline();
 
     // States for text and timestamp inputs
     const [noteTime, setNoteTime] = useState('');
@@ -77,10 +77,10 @@ const NoteModal = ({ plantID }) => {
         if (response.ok) {
             // Update state with new note from response, close modal
             const data = await response.json();
-            setNotes([
-                ...notes,
-                {timestamp: data.timestamp, text: data.note_text}
-            ]);
+            addNewNote({
+                timestamp: data.timestamp,
+                text: data.note_text
+            });
             modalRef.current.close();
         } else {
             // Duplicate note timestamp: show error toast for 5 seconds
@@ -110,13 +110,10 @@ const NoteModal = ({ plantID }) => {
         if (response.ok) {
             // Update note state with params from response, close modal
             const data = await response.json();
-            setNotes(notes.map(note => {
-                if (note.timestamp === payload.timestamp) {
-                    return {timestamp: data.timestamp, text: data.note_text};
-                } else {
-                    return note;
-                }
-            }));
+            editExistingNote({
+                timestamp: data.timestamp,
+                text: data.note_text
+            });
             modalRef.current.close();
         } else {
             // Show error in modal
@@ -135,7 +132,7 @@ const NoteModal = ({ plantID }) => {
 
         if (response.ok) {
             // Remove note from state, close modal
-            setNotes(notes.filter(note => note.timestamp !== noteTime));
+            deleteNote(noteTime);
             modalRef.current.close();
         } else {
             // Show error in modal

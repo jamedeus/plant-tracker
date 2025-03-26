@@ -407,7 +407,7 @@ QuickNavigationYear.propTypes = {
 };
 
 const Timeline = memo(function Timeline({ plantID, archived }) {
-    const { timelineDays, notes, setNotes, photoUrls, setPhotoUrls } = useTimeline();
+    const { timelineDays } = useTimeline();
 
     // Build object used to populate quick navigation menu
     // Contains years as keys, list of month numbers as values
