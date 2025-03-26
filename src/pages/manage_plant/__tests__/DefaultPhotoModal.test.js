@@ -66,7 +66,7 @@ describe('DefaultPhotoModal', () => {
             method: 'POST',
             body: JSON.stringify({
                 plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                photo_key: 1,
+                photo_key: 3,
             }),
             headers: postHeaders
         });

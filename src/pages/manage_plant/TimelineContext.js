@@ -179,27 +179,18 @@ export const TimelineProvider = ({ formattedEvents, children }) => {
                 };
             } else {
                 // Add photo to photos array for correct day
-                const newPhotos = [
-                    ...newTimelineDays[dateKey].photos, photo
-                ];
-
-                // Add to full state sorted chronologically
                 newTimelineDays[dateKey] = {
                     ...newTimelineDays[dateKey],
-                    photos: newPhotos.sort((a, b) => {
-                        return a.created.localeCompare(b.created);
-                    }).reverse()
+                    photos: [
+                        ...newTimelineDays[dateKey].photos, photo
+                    ]
                 };
             }
         });
 
-        // Add new URLs to photoUrl state, sort chronologically (used by
-        // DeletePhotoModal and DefaultPhotoModal)
-        const newPhotoUrls = photoUrls.concat(photos);
-        newPhotoUrls.sort((a, b) => {
-            return a.created.localeCompare(b.created);
-        }).reverse();
-        setPhotoUrls(newPhotoUrls);
+        // Add new URLs to photoUrl state (used by DeletePhotoModal and
+        // DefaultPhotoModal)
+        setPhotoUrls(photoUrls.concat(photos));
 
         // State used by timeline (broken into days)
         setTimelineDays(newTimelineDays);

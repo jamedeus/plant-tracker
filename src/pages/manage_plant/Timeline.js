@@ -84,7 +84,9 @@ const TimelineDay = memo(function TimelineDay({ timestamp, events, photos, notes
                     ))}
                 </div>
                 <div className="flex flex-row flex-wrap">
-                    {photos.map((photo) => (
+                    {photos.sort((a, b) => {
+                        return a.created.localeCompare(b.created);
+                    }).reverse().map((photo) => (
                         <PhotoThumbnail
                             key={photo.key}
                             thumbnailUrl={photo.thumbnail}
