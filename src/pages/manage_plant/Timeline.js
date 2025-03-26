@@ -1,14 +1,10 @@
-import React, { useRef, useState, useEffect, useLayoutEffect, Fragment, memo } from 'react';
+import React, { useRef, useState, useLayoutEffect, Fragment, memo } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { DateTime } from 'luxon';
 import { Popover } from "react-tiny-popover";
-import { parseDomContext, capitalize, pastTense } from 'src/util';
-import {
-    timestampToReadable,
-    timestampToRelativeDays,
-    timestampToUserTimezone
-} from 'src/timestampUtils';
+import { capitalize, pastTense } from 'src/util';
+import { timestampToReadable, timestampToRelativeDays } from 'src/timestampUtils';
 import NoteModal, { openNoteModal } from './NoteModal';
 import DefaultPhotoModal from './DefaultPhotoModal';
 import { openRepotModal } from './RepotModal';
@@ -21,6 +17,7 @@ import WaterIcon from 'src/components/WaterIcon';
 import FertilizeIcon from 'src/components/FertilizeIcon';
 import PruneIcon from 'src/components/PruneIcon';
 import RepotIcon from 'src/components/RepotIcon';
+import { useTimeline } from './TimelineContext';
 
 
 // Takes ISO timestamp string, returns "x days ago"
@@ -234,7 +231,8 @@ NoteCollapse.propTypes = {
 };
 
 // Takes year-month string (ie 2024-03)
-const MonthDivider = memo(function MonthDivider({ yearMonth, sectionRefs }) {
+const MonthDivider = memo(function MonthDivider({ yearMonth }) {
+    const { sectionRefs } = useTimeline();
     return (
         <div
             className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
@@ -246,11 +244,7 @@ const MonthDivider = memo(function MonthDivider({ yearMonth, sectionRefs }) {
 });
 
 MonthDivider.propTypes = {
-    yearMonth: PropTypes.string.isRequired,
-    sectionRefs: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.instanceOf(Object) }),
-    ]).isRequired
+    yearMonth: PropTypes.string.isRequired
 };
 
 // History title with dropdown menu (hover) to jump to month/year sections
@@ -335,7 +329,7 @@ Title.propTypes = {
     quickNavigation: PropTypes.element.isRequired
 };
 
-const QuickNavigation = ({ navigationOptions, sectionRefs }) => {
+const QuickNavigation = ({ navigationOptions }) => {
     return (
         <>
             {Object.keys(navigationOptions).reverse().map(year => (
@@ -343,7 +337,6 @@ const QuickNavigation = ({ navigationOptions, sectionRefs }) => {
                     key={year}
                     year={year}
                     months={navigationOptions[year]}
-                    sectionRefs={sectionRefs}
                 />
             ))}
         </>
@@ -351,17 +344,15 @@ const QuickNavigation = ({ navigationOptions, sectionRefs }) => {
 };
 
 QuickNavigation.propTypes = {
-    navigationOptions: PropTypes.object.isRequired,
-    sectionRefs: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.instanceOf(Object) }),
-    ]).isRequired
+    navigationOptions: PropTypes.object.isRequired
 };
 
 // Takes year (string) and array of months (numbers not string) with events
 // Returns dropdown item with year which expands on hover to show sub-menu
 // of clickable months that jump to the matching timeline section
-const QuickNavigationYear = ({ year, months, sectionRefs }) => {
+const QuickNavigationYear = ({ year, months }) => {
+    const { sectionRefs } = useTimeline();
+
     // Create ref used to open sub-menu on hover
     const detailsRef = useRef(null);
 
@@ -412,206 +403,17 @@ const QuickNavigationYear = ({ year, months, sectionRefs }) => {
 
 QuickNavigationYear.propTypes = {
     year: PropTypes.string.isRequired,
-    months: PropTypes.array.isRequired,
-    sectionRefs: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.instanceOf(Object) }),
-    ]).isRequired
+    months: PropTypes.array.isRequired
 };
 
-const Timeline = memo(function Timeline({ plantID, formattedEvents, archived }) {
-    // Load context set by django template
-    const [notes, setNotes] = useState(() => {
-        return parseDomContext("notes");
-    });
-    const [photoUrls, setPhotoUrls] = useState(() => {
-        return parseDomContext("photo_urls");
-    });
-
-    // Takes timestamp, returns ISO date string (no hours/minutes) in user's timezone
-    const timestampToDateString = (timestamp) => {
-        return timestampToUserTimezone(timestamp).toISO().split('T')[0];
-    };
-
-    // Merges items from notes and photoUrls states into formattedEvents param
-    const buildTimelineDays = () => {
-        // Deep copy so that notes/photos don't duplicate each time this runs
-        const timelineDays = JSON.parse(JSON.stringify(formattedEvents));
-
-        // Add contents of photoUrls to photos key under correct date
-        photoUrls.forEach(photo => {
-            const dateKey = timestampToDateString(photo.created);
-            if (!timelineDays[dateKey]) {
-                timelineDays[dateKey] = {events: [], notes: [], photos: []};
-            }
-            timelineDays[dateKey]['photos'].push(photo);
-        });
-
-        // Add note text to notes key under correct date
-        notes.forEach(note => {
-            const dateKey = timestampToDateString(note.timestamp);
-            if (!timelineDays[dateKey]) {
-                timelineDays[dateKey] = {events: [], notes: [], photos: []};
-            }
-            timelineDays[dateKey]['notes'].push(note);
-        });
-
-        return timelineDays;
-    };
-
-    // Build state used to render timeline on load (updated by effects below)
-    const [timelineDays, setTimelineDays] = useState({});
-    useEffect(() => {
-        setTimelineDays(buildTimelineDays());
-    }, []);
-
-    // Takes 2 arrays, returns True if contents are identical, otherwise False
-    const compareEvents = (array1, array2) => {
-        return array1.length === array2.length &&
-            array1.every((value, index) => value === array2[index]);
-    };
-
-    // Update state incrementally when formattedEvents is modified (only render
-    // day with new/removed events)
-    useEffect(() => {
-        setTimelineDays(oldTimelineDays => {
-            const newTimelineDays = { ...oldTimelineDays };
-
-            // Copy new events from formattedEvents to timelineDays
-            Object.keys(formattedEvents).forEach(timestamp => {
-                // Add new timestamp key
-                if (!newTimelineDays[timestamp]) {
-                    newTimelineDays[timestamp] = {
-                        ...formattedEvents[timestamp]
-                    };
-                // Add new events to existing timestamp key
-                } else if (!compareEvents(
-                    newTimelineDays[timestamp].events,
-                    formattedEvents[timestamp].events
-                )) {
-                    newTimelineDays[timestamp] = {
-                        ...newTimelineDays[timestamp],
-                        events: [ ...formattedEvents[timestamp].events ]
-                    };
-                }
-            });
-
-            // Remove events that no longer exist in formattedEvents
-            Object.keys(newTimelineDays).forEach(timestamp => {
-                if (!Object.keys(formattedEvents).includes(timestamp)) {
-                    // Clear events array if not already empty
-                    if (newTimelineDays[timestamp].events.length) {
-                        newTimelineDays[timestamp].events = [];
-                    }
-                    // Remove whole day section if no notes or photos
-                    if (!newTimelineDays[timestamp].notes.length &&
-                        !newTimelineDays[timestamp].photos.length
-                    ) {
-                        delete newTimelineDays[timestamp];
-                    }
-                }
-            });
-            return newTimelineDays;
-        });
-    }, [formattedEvents]);
-
-    // Update state incrementally when notes state is modified (only render day
-    // with new/edited/removed note)
-    useEffect(() => {
-        setTimelineDays(oldTimelineDays => {
-            const newTimelineDays = { ...oldTimelineDays };
-
-            // Copy new events from formattedEvents to timelineDays
-            notes.forEach(note => {
-                const dateKey = timestampToDateString(note.timestamp);
-                // Add new timestamp key
-                if (!newTimelineDays[dateKey]) {
-                    newTimelineDays[dateKey] = {
-                        events: [],
-                        notes: [note],
-                        photos: []
-                    };
-                // Add new/edited notes to existing timestamp key
-                } else if (!newTimelineDays[dateKey].notes.includes(note)) {
-                    newTimelineDays[dateKey] = {
-                        ...newTimelineDays[dateKey],
-                        notes: [ ...newTimelineDays[dateKey].notes, note ]
-                    };
-                }
-            });
-
-            // Remove notes that no longer exist in notes
-            Object.entries(newTimelineDays).forEach(([dateKey, contents]) => {
-                contents.notes.forEach(oldNote => {
-                    if (!notes.includes(oldNote)) {
-                        let newNotes = [ ...newTimelineDays[dateKey].notes ];
-                        newNotes.splice(
-                            newNotes.indexOf(oldNote),
-                            1
-                        );
-                        newTimelineDays[dateKey].notes = newNotes;
-                    }
-                });
-                // Remove whole day section if no notes, photos, or events
-                if (!newTimelineDays[dateKey].notes.length &&
-                    !newTimelineDays[dateKey].photos.length &&
-                    !newTimelineDays[dateKey].events.length
-                ) {
-                    delete newTimelineDays[dateKey];
-                }
-            });
-            return newTimelineDays;
-        });
-    }, [notes]);
-
-    // Update state incrementally when photoUrls state is modified (only render
-    // day with new/removed photos)
-    useEffect(() => {
-        setTimelineDays(oldTimelineDays => {
-            const newTimelineDays = { ...oldTimelineDays };
-
-            // Copy new events from formattedEvents to timelineDays
-            photoUrls.forEach(photo => {
-                const dateKey = timestampToDateString(photo.created);
-                // Add new timestamp key
-                if (!newTimelineDays[dateKey]) {
-                    newTimelineDays[dateKey] = {
-                        events: [],
-                        notes: [],
-                        photos: [photo]
-                    };
-                // Add new photos to existing timestamp key
-                } else if (!newTimelineDays[dateKey].photos.includes(photo)) {
-                    newTimelineDays[dateKey] = {
-                        ...newTimelineDays[dateKey],
-                        photos: [ ...newTimelineDays[dateKey].photos, photo ]
-                    };
-                }
-            });
-
-            // Remove photos that no longer exist in photos
-            Object.entries(newTimelineDays).forEach(([dateKey, contents]) => {
-                contents.photos.forEach(oldPhoto => {
-                    if (!photoUrls.includes(oldPhoto)) {
-                        let newPhotos = [ ...newTimelineDays[dateKey].photos ];
-                        newPhotos.splice(
-                            newPhotos.indexOf(oldPhoto),
-                            1
-                        );
-                        newTimelineDays[dateKey].photos = newPhotos;
-                    }
-                });
-                // Remove whole day section if no notes, photos, or events
-                if (!newTimelineDays[dateKey].notes.length &&
-                    !newTimelineDays[dateKey].photos.length &&
-                    !newTimelineDays[dateKey].events.length
-                ) {
-                    delete newTimelineDays[dateKey];
-                }
-            });
-            return newTimelineDays;
-        });
-    }, [photoUrls]);
+const Timeline = memo(function Timeline({ plantID, archived }) {
+    const {
+        timelineDays,
+        notes,
+        setNotes,
+        photoUrls,
+        setPhotoUrls
+    } = useTimeline();
 
     // Build object used to populate quick navigation menu
     // Contains years as keys, list of month numbers as values
@@ -626,10 +428,6 @@ const Timeline = memo(function Timeline({ plantID, formattedEvents, archived }) 
         }
     });
 
-    // Contains object with year-month strings (ie 2024-03) as keys, divider
-    // elements as values (used form quick navigation scrolling)
-    const sectionRefs = useRef({});
-
     // Get array of yyyy-mm-dd keys sorted chronologically (recent first)
     const dayKeys = Object.keys(timelineDays).sort().reverse();
 
@@ -641,10 +439,7 @@ const Timeline = memo(function Timeline({ plantID, formattedEvents, archived }) 
             <Title
                 archived={archived}
                 quickNavigation={
-                    <QuickNavigation
-                        navigationOptions={navigationOptions}
-                        sectionRefs={sectionRefs}
-                    />
+                    <QuickNavigation navigationOptions={navigationOptions} />
                 }
             />
             {dayKeys.length > 0 ? (
@@ -664,10 +459,7 @@ const Timeline = memo(function Timeline({ plantID, formattedEvents, archived }) 
                             <Fragment key={timestamp}>
                                 {/* Render MonthDivider if month changed */}
                                 {yearMonth !== prevYearMonth && (
-                                    <MonthDivider
-                                        yearMonth={yearMonth}
-                                        sectionRefs={sectionRefs}
-                                    />
+                                    <MonthDivider yearMonth={yearMonth} />
                                 )}
                                 <TimelineDay
                                     timestamp={timestamp}
@@ -714,7 +506,6 @@ const Timeline = memo(function Timeline({ plantID, formattedEvents, archived }) 
 
 Timeline.propTypes = {
     plantID: PropTypes.string.isRequired,
-    formattedEvents: PropTypes.object.isRequired,
     archived: PropTypes.bool.isRequired
 };
 

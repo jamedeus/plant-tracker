@@ -1,5 +1,6 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import Timeline from '../Timeline';
+import { TimelineProvider } from '../TimelineContext';
 import { formatEvents } from '../App';
 import { PageWrapper } from 'src/index';
 import { mockContext, mockEvents, mockPhotoUrls } from './mockContext';
@@ -20,11 +21,13 @@ describe('Timeline', () => {
         user = userEvent.setup();
         app = render(
             <PageWrapper>
-                <Timeline
-                    plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-                    formattedEvents={formattedEvents}
-                    archived={false}
-                />
+                <TimelineProvider formattedEvents={formattedEvents}>
+                    <Timeline
+                        plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+                        formattedEvents={formattedEvents}
+                        archived={false}
+                    />
+                </TimelineProvider>
             </PageWrapper>
         );
     });

@@ -20,6 +20,7 @@ import EventHistoryModal from './EventHistoryModal';
 import { openDefaultPhotoModal, preloadDefaultPhotoModal } from './DefaultPhotoModal';
 import { openErrorModal } from 'src/components/ErrorModal';
 import Timeline from './Timeline';
+import { TimelineProvider } from './TimelineContext';
 import { faPlus, faBan, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 
 const EventButtons = ({ events, addEvent }) => {
@@ -374,11 +375,12 @@ function App() {
 
             <EventCalendar formattedEvents={formattedEvents} />
 
-            <Timeline
-                plantID={plant.uuid}
-                formattedEvents={formattedEvents}
-                archived={plant.archived}
-            />
+            <TimelineProvider formattedEvents={formattedEvents}>
+                <Timeline
+                    plantID={plant.uuid}
+                    archived={plant.archived}
+                />
+            </TimelineProvider>
 
             <EditModal title="Edit Details" onSubmit={submitEditModal}>
                 <PlantDetailsForm
