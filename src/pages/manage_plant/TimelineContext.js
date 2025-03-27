@@ -1,7 +1,13 @@
 import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { parseDomContext } from 'src/util';
-import { timestampToUserTimezone } from 'src/timestampUtils';
+import { timestampToDateString } from 'src/timestampUtils';
+
+// Takes 2 arrays, returns True if contents are identical, otherwise False
+const compareEvents = (array1, array2) => {
+    return array1.length === array2.length &&
+        array1.every((value, index) => value === array2[index]);
+};
 
 const TimelineContext = createContext();
 
@@ -13,10 +19,10 @@ export const TimelineProvider = ({ formattedEvents, children }) => {
         return parseDomContext("photo_urls");
     });
 
-    // Takes timestamp, returns ISO date string (no hours/minutes) in user's timezone
-    const timestampToDateString = (timestamp) => {
-        return timestampToUserTimezone(timestamp).toISO().split('T')[0];
-    };
+    // State used to render timeline (built by useEffect below)
+    // Contains YYYY-MM-DD keys each with an object used to render a single day
+    // of the timeline (contains events, notes, and photos keys)
+    const [timelineDays, setTimelineDays] = useState({});
 
     // Contains object with year-month strings (ie 2024-03) as keys, divider
     // elements as values (used form quick navigation scrolling)
@@ -49,17 +55,10 @@ export const TimelineProvider = ({ formattedEvents, children }) => {
         return timelineDays;
     };
 
-    // Build state used to render timeline on load (updated by effects below)
-    const [timelineDays, setTimelineDays] = useState({});
+    // Build state used to render timeline on load
     useEffect(() => {
         setTimelineDays(buildTimelineDays());
     }, []);
-
-    // Takes 2 arrays, returns True if contents are identical, otherwise False
-    const compareEvents = (array1, array2) => {
-        return array1.length === array2.length &&
-            array1.every((value, index) => value === array2[index]);
-    };
 
     // Update state incrementally when formattedEvents is modified (only render
     // day with new/removed events)

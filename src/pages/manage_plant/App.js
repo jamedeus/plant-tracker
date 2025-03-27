@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback, memo } from 'react';
 import PropTypes from 'prop-types';
-import { localToUTC, timestampToUserTimezone } from 'src/timestampUtils';
+import { localToUTC, timestampToDateString } from 'src/timestampUtils';
 import { sendPostRequest, parseDomContext } from 'src/util';
 import EditModal from 'src/components/EditModal';
 import PlantDetailsForm from 'src/forms/PlantDetailsForm';
@@ -155,11 +155,6 @@ const DetailsDropdown = memo(function DetailsDropdown({ plant, handleRemoveGroup
 DetailsDropdown.propTypes = {
     plant: PropTypes.object.isRequired,
     handleRemoveGroup: PropTypes.func.isRequired
-};
-
-// Takes timestamp, returns ISO date string (no hours/minutes) in user's timezone
-const timestampToDateString = (timestamp) => {
-    return timestampToUserTimezone(timestamp).toISO().split('T')[0];
 };
 
 // Takes object with event type keys, array of timestamps as value.

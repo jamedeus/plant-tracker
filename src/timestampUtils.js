@@ -74,6 +74,12 @@ function timestampToRelativeCalendar(timestamp) {
     }
 }
 
+// Takes timestamp, returns ISO date string (YYYY-MM-DD, no hours/minutes) in
+// user's timezone
+function timestampToDateString (timestamp) {
+    return timestampToUserTimezone(timestamp).toISO().split('T')[0];
+}
+
 export {
     localToUTC,
     timestampToUserTimezone,
@@ -82,5 +88,6 @@ export {
     timestampIsLessThanOneMinuteOld,
     timestampToRelative,
     timestampToRelativeDays,
-    timestampToRelativeCalendar
+    timestampToRelativeCalendar,
+    timestampToDateString
 };
