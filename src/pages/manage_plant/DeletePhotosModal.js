@@ -189,7 +189,7 @@ const DeletePhotosModal = memo(function DeletePhotosModal({ plantID }) {
                 </h1>
                 {photoUrls.length > 0 ? (
                     <div className="carousel w-full h-min">
-                        {photoUrls.sort((a, b) => {
+                        {[...photoUrls].sort((a, b) => {
                             return a.created.localeCompare(b.created);
                         }).reverse().map((photo, index) => (
                             <PhotoSlide

@@ -1,5 +1,7 @@
-import React, { createContext, useContext, useState, useEffect, useRef } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
+import { Provider, useSelector, useDispatch } from 'react-redux';
+import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { parseDomContext } from 'src/util';
 import { timestampToDateString } from 'src/timestampUtils';
 
@@ -9,240 +11,274 @@ const compareEvents = (array1, array2) => {
         array1.every((value, index) => value === array2[index]);
 };
 
-const TimelineContext = createContext();
-
-export const useTimeline = () => useContext(TimelineContext);
-
-export const TimelineProvider = ({ formattedEvents, children }) => {
-    // Load context set by django template
-    const [photoUrls, setPhotoUrls] = useState(() => {
-        return parseDomContext("photo_urls");
-    });
-
-    // State used to render timeline (built by useEffect below)
-    // Contains YYYY-MM-DD keys each with an object used to render a single day
-    // of the timeline (contains events, notes, and photos keys)
-    const [timelineDays, setTimelineDays] = useState({});
-
-    // Contains object with year-month strings (ie 2024-03) as keys, divider
-    // elements as values (used form quick navigation scrolling)
-    const sectionRefs = useRef({});
-
-    // Merges items from notes and photoUrls states into formattedEvents param
-    const buildTimelineDays = () => {
-        // Deep copy so that notes/photos don't duplicate each time this runs
-        const timelineDays = JSON.parse(JSON.stringify(formattedEvents));
-
-        // Add contents of photoUrls to photos key under correct date
-        photoUrls.forEach(photo => {
-            const dateKey = timestampToDateString(photo.created);
-            if (!timelineDays[dateKey]) {
-                timelineDays[dateKey] = {events: [], notes: [], photos: []};
-            }
-            timelineDays[dateKey]['photos'].push(photo);
-        });
-
-        // Add note text to notes key under correct date
-        const notes = parseDomContext("notes");
-        notes.forEach(note => {
-            const dateKey = timestampToDateString(note.timestamp);
-            if (!timelineDays[dateKey]) {
-                timelineDays[dateKey] = {events: [], notes: [], photos: []};
-            }
-            timelineDays[dateKey]['notes'].push(note);
-        });
-
-        return timelineDays;
-    };
-
-    // Build state used to render timeline on load
-    useEffect(() => {
-        setTimelineDays(buildTimelineDays());
-    }, []);
-
-    // Update state incrementally when formattedEvents is modified (only render
-    // day with new/removed events)
-    useEffect(() => {
-        setTimelineDays(oldTimelineDays => {
-            const newTimelineDays = { ...oldTimelineDays };
+// Centralized redux slice to store timelineDays and photoUrls "states" and all
+// callback functions that modify them
+const timelineSlice = createSlice({
+    name: 'timeline',
+    initialState: {
+        timelineDays: {},
+        photoUrls: []
+    },
+    reducers: {
+        // Takes formattedEvents, incrementally updates events in timelineDays
+        // Called by useEffect in TimelineProvider when formattedEvents changes
+        updateTimelineDays(state, action) {
+            const formattedEvents = action.payload;
 
             // Copy new events from formattedEvents to timelineDays
-            Object.keys(formattedEvents).forEach(timestamp => {
+            Object.keys(formattedEvents).forEach((timestamp) => {
                 // Add new timestamp key
-                if (!newTimelineDays[timestamp]) {
-                    newTimelineDays[timestamp] = {
+                if (!state.timelineDays[timestamp]) {
+                    state.timelineDays[timestamp] = {
                         ...formattedEvents[timestamp]
                     };
                 // Add new events to existing timestamp key
                 } else if (!compareEvents(
-                    newTimelineDays[timestamp].events,
+                    state.timelineDays[timestamp].events,
                     formattedEvents[timestamp].events
                 )) {
-                    newTimelineDays[timestamp] = {
-                        ...newTimelineDays[timestamp],
+                    state.timelineDays[timestamp] = {
+                        ...state.timelineDays[timestamp],
                         events: [ ...formattedEvents[timestamp].events ]
                     };
                 }
             });
 
-            // Remove events that no longer exist in formattedEvents
-            Object.keys(newTimelineDays).forEach(timestamp => {
+            // Remove events that no longer exist
+            Object.keys(state.timelineDays).forEach((timestamp) => {
                 if (!Object.keys(formattedEvents).includes(timestamp)) {
                     // Clear events array if not already empty
-                    if (newTimelineDays[timestamp].events.length) {
-                        newTimelineDays[timestamp].events = [];
+                    if (state.timelineDays[timestamp].events.length) {
+                        state.timelineDays[timestamp].events = [];
                     }
                     // Remove whole day section if no notes or photos
-                    if (!newTimelineDays[timestamp].notes.length &&
-                        !newTimelineDays[timestamp].photos.length
+                    if (!state.timelineDays[timestamp].notes.length &&
+                        !state.timelineDays[timestamp].photos.length
                     ) {
-                        delete newTimelineDays[timestamp];
+                        delete state.timelineDays[timestamp];
                     }
                 }
             });
-            return newTimelineDays;
-        });
-    }, [formattedEvents]);
+        },
 
-    // Takes object with timestamp and text keys, adds to timelineDays state
-    const addNewNote = (note) => {
-        // YYYY-MM-DD in user timezone
-        const dateKey = timestampToDateString(note.timestamp);
-
-        setTimelineDays(oldTimelineDays => {
-            const newTimelineDays = { ...oldTimelineDays };
+        // Takes object with timestamp and text keys, adds to timelineDays state
+        addNewNote(state, action) {
+            const note = action.payload;
+            const dateKey = timestampToDateString(note.timestamp);
             // Add new timestamp key if missing
-            if (!newTimelineDays[dateKey]) {
-                newTimelineDays[dateKey] = {
+            if (!state.timelineDays[dateKey]) {
+                state.timelineDays[dateKey] = {
                     events: [],
                     notes: [note],
                     photos: []
                 };
             } else {
-                newTimelineDays[dateKey] = {
-                    ...newTimelineDays[dateKey],
-                    notes: [ ...newTimelineDays[dateKey].notes, note ]
+                state.timelineDays[dateKey] = {
+                    ...state.timelineDays[dateKey],
+                    notes: [ ...state.timelineDays[dateKey].notes, note ]
                 };
             }
-            return newTimelineDays;
-        });
-    };
+        },
 
-    // Takes note with same timestamp as existing note (timestamp cannot be
-    // changed once created), overwrites text in timelineDays state.
-    const editExistingNote = (note) => {
-        // YYYY-MM-DD in user timezone
-        const dateKey = timestampToDateString(note.timestamp);
-
-        const newNotes = timelineDays[dateKey].notes.map(oldNote => {
-            if (oldNote.timestamp === note.timestamp) {
-                return {timestamp: note.timestamp, text: note.text};
-            } else {
-                return oldNote;
-            }
-        });
-
-        setTimelineDays({ ...timelineDays,
-            [dateKey]: { ...timelineDays[dateKey],
-                notes: newNotes
-            }
-        });
-    };
-
-    // Takes timestamp of deleted note, removes from timelineDays state
-    const deleteNote = (noteTime) => {
-        // YYYY-MM-DD in user timezone
-        const dateKey = timestampToDateString(noteTime);
-
-        setTimelineDays({ ...timelineDays,
-            [dateKey]: { ...timelineDays[dateKey],
-                notes: timelineDays[dateKey].notes.filter(
-                    note => note.timestamp !== noteTime
-                )
-            }
-        });
-    };
-
-    // Takes photo URLs from API response when new photos are uploaded
-    const addPhotos = (photos) => {
-        const newTimelineDays = { ...timelineDays };
-
-        photos.forEach(photo => {
-            const dateKey = timestampToDateString(photo.created);
-            // Add new timestamp key if missing
-            if (!newTimelineDays[dateKey]) {
-                newTimelineDays[dateKey] = {
-                    events: [],
-                    notes: [],
-                    photos: [photo]
-                };
-            } else {
-                // Add photo to photos array for correct day
-                newTimelineDays[dateKey] = {
-                    ...newTimelineDays[dateKey],
-                    photos: [
-                        ...newTimelineDays[dateKey].photos, photo
-                    ]
-                };
-            }
-        });
-
-        // Add new URLs to photoUrl state (used by DeletePhotoModal and
-        // DefaultPhotoModal)
-        setPhotoUrls(photoUrls.concat(photos));
-
-        // State used by timeline (broken into days)
-        setTimelineDays(newTimelineDays);
-    };
-
-    // Takes array of deleted photo keys, removes from photoUrls state and from
-    // photos key in correct day of timelineDays state
-    const deletePhotos = (deleted) => {
-        const newTimelineDays = { ...timelineDays };
-
-        const newPhotoUrls = photoUrls.filter(photo => {
-            if (deleted.includes(photo.key)) {
-                // Parse YYYY-MM-DD from deleted photo timestamp, find in
-                // timelineDays state and remove
-                const dateKey = timestampToDateString(photo.created);
-                newTimelineDays[dateKey].photos = newTimelineDays[dateKey].photos.filter(
-                    photo => !deleted.includes(photo.key)
-                );
-                // Remove timelineDays day if no content left
-                if (!newTimelineDays[dateKey].photos.length &&
-                    !newTimelineDays[dateKey].events.length &&
-                    !newTimelineDays[dateKey].notes.length
-                ) {
-                    delete newTimelineDays[dateKey];
+        // Takes note with same timestamp as existing note (timestamp cannot be
+        // changed once created), overwrites text in timelineDays state.
+        editExistingNote(state, action) {
+            const note = action.payload;
+            const dateKey = timestampToDateString(note.timestamp);
+            state.timelineDays[dateKey].notes = state.timelineDays[dateKey].notes.map(
+                oldNote => {
+                    if (oldNote.timestamp === note.timestamp) {
+                        return {timestamp: note.timestamp, text: note.text};
+                    }
+                    return oldNote;
                 }
-                // Return nothing (remove from photoUrls)
-            } else {
-                return photo;
+            );
+        },
+
+        // Takes timestamp of deleted note, removes from timelineDays state
+        deleteNote(state, action) {
+            const noteTime = action.payload;
+
+            // Parse YYYY-MM-DD from deleted note timestamp, find in
+            // timelineDays state and remove
+            const dateKey = timestampToDateString(noteTime);
+            state.timelineDays[dateKey].notes = state.timelineDays[dateKey].notes.filter(
+                note => note.timestamp !== noteTime
+            );
+            // Remove timelineDays day if no content left
+            if (!state.timelineDays[dateKey].notes.length &&
+                !state.timelineDays[dateKey].photos.length &&
+                !state.timelineDays[dateKey].events.length
+            ) {
+                delete state.timelineDays[dateKey];
             }
+        },
+
+        // Takes photo URLs from API response when new photos are uploaded
+        addPhotos(state, action) {
+            const photos = action.payload;
+
+            // Add new URLs to timelineDays state used to render timeline
+            photos.forEach((photo) => {
+                const dateKey = timestampToDateString(photo.created);
+                // Add new timestamp key if missing
+                if (!state.timelineDays[dateKey]) {
+                    state.timelineDays[dateKey] = {
+                        events: [],
+                        notes: [],
+                        photos: [photo]
+                    };
+                } else {
+                    // Add photo to photos array for correct day
+                    state.timelineDays[dateKey] = {
+                        ...state.timelineDays[dateKey],
+                        photos: [
+                            ...state.timelineDays[dateKey].photos, photo
+                        ]
+                    };
+                }
+            });
+
+            // Add new URLs to photoUrl state (used by DeletePhotoModal and
+            // DefaultPhotoModal)
+            state.photoUrls = [...state.photoUrls, ...photos];
+        },
+
+        // Takes array of deleted photo keys, removes from photoUrls state and
+        // from photos key in correct day of timelineDays state
+        deletePhotos(state, action) {
+            const deletedKeys = action.payload;
+            state.photoUrls = state.photoUrls.filter((photo) => {
+                if (deletedKeys.includes(photo.key)) {
+                    // Parse YYYY-MM-DD from deleted photo timestamp, find in
+                    // timelineDays state and remove
+                    const dateKey = timestampToDateString(photo.created);
+                    if (state.timelineDays[dateKey]) {
+                        state.timelineDays[dateKey].photos = state.timelineDays[dateKey].photos.filter(
+                            photo => !deletedKeys.includes(photo.key)
+                        );
+                    }
+                    // Remove timelineDays day if no content left
+                    if (
+                        state.timelineDays[dateKey] &&
+                        !state.timelineDays[dateKey].photos.length &&
+                        !state.timelineDays[dateKey].events.length &&
+                        !state.timelineDays[dateKey].notes.length
+                    ) {
+                        delete state.timelineDays[dateKey];
+                    }
+                    // Return false (remove from photoUrls)
+                    return false;
+                }
+                return true;
+            });
+        },
+
+        // Simulates old photoUrls useState hook, takes new photoUrls contents
+        setPhotoUrls(state, action) {
+            state.photoUrls = action.payload;
+        }
+    },
+});
+
+// Takes initial timelineDays state, creates redux store and returns
+function createTimelineStore(preloadedState) {
+    return configureStore({
+        reducer: timelineSlice.reducer,
+        preloadedState
+    });
+}
+
+// Simulate useContext provider so formattedEvents can be passed as prop and
+// used to build redux preloadedState
+export function TimelineProvider({ formattedEvents, children }) {
+    // Merges items from notes and photoUrls states into formattedEvents param
+    const buildTimelineDays = () => {
+        // Deep copy to avoid mutating upstream state
+        const timelineDays = JSON.parse(JSON.stringify(formattedEvents));
+
+        // Add contents of photoUrls to photos key under correct date
+        const photoUrls = parseDomContext('photo_urls') || [];
+        photoUrls.forEach((photo) => {
+            const dateKey = timestampToDateString(photo.created);
+            if (!timelineDays[dateKey]) {
+                timelineDays[dateKey] = {events: [], notes: [], photos: []};
+            }
+            timelineDays[dateKey].photos.push(photo);
         });
 
-        setPhotoUrls(newPhotoUrls);
-        setTimelineDays(newTimelineDays);
+        // Add note text to notes key under correct date
+        const notes = parseDomContext('notes') || [];
+        notes.forEach((note) => {
+            const dateKey = timestampToDateString(note.timestamp);
+            if (!timelineDays[dateKey]) {
+                timelineDays[dateKey] = {events: [], notes: [], photos: []};
+            }
+            timelineDays[dateKey].notes.push(note);
+        });
+
+        return {
+            // The slice expects certain keys:
+            timelineDays,
+            photoUrls
+        };
     };
+
+    // Create redux store with initial timelineDays state
+    const store = useMemo(() => createTimelineStore(
+        buildTimelineDays()
+    ), []);
+
+    // Update timelineDays state incrementally when formattedEvents is modified
+    // (only render day with new/removed events)
+    useEffect(() => {
+        store.dispatch((dispatch) => {
+            dispatch(
+                timelineSlice.actions.updateTimelineDays(formattedEvents)
+            );
+        });
+    }, [formattedEvents, store]);
 
     return (
-        <TimelineContext.Provider value={{
-            timelineDays,
-            sectionRefs,
-            addNewNote,
-            editExistingNote,
-            deleteNote,
-            photoUrls,
-            setPhotoUrls,
-            addPhotos,
-            deletePhotos
-        }}>
+        <Provider store={store}>
             {children}
-        </TimelineContext.Provider>
+        </Provider>
     );
-};
+}
 
 TimelineProvider.propTypes = {
     formattedEvents: PropTypes.object.isRequired,
     children: PropTypes.node
 };
+
+// Simulated useContext hook that exposes redux state and action creator
+// functions used to modify state
+export function useTimeline() {
+    // Export references to both states
+    const timelineDays = useSelector((state) => state.timelineDays);
+    const photoUrls = useSelector((state) => state.photoUrls);
+
+    const dispatch = useDispatch();
+
+    // Extract individual action creators from slice
+    const {
+        addNewNote,
+        editExistingNote,
+        deleteNote,
+        addPhotos,
+        deletePhotos,
+        setPhotoUrls
+    } = timelineSlice.actions;
+
+    // Expose states and action creators to components that call custom hook
+    return {
+        timelineDays,
+        photoUrls,
+        setPhotoUrls: (urls) => dispatch(setPhotoUrls(urls)),
+        addNewNote: (note) => dispatch(addNewNote(note)),
+        editExistingNote: (note) => dispatch(editExistingNote(note)),
+        deleteNote: (time) => dispatch(deleteNote(time)),
+        addPhotos: (photos) => dispatch(addPhotos(photos)),
+        deletePhotos: (deleted) => dispatch(deletePhotos(deleted))
+    };
+}
