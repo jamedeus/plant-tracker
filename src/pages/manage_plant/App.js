@@ -14,7 +14,11 @@ import PlantDetails from 'src/components/PlantDetails';
 import IconButton from 'src/components/IconButton';
 import EventCalendar from './EventCalendar';
 import GroupModal, { openGroupModal, closeGroupModal } from './GroupModal';
+import NoteModal from './NoteModal';
 import RepotModal from './RepotModal';
+import PhotoModal from './PhotoModal';
+import DefaultPhotoModal from './DefaultPhotoModal';
+import DeletePhotosModal from './DeletePhotosModal';
 import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
 import EventHistoryModal from './EventHistoryModal';
 import { openDefaultPhotoModal, preloadDefaultPhotoModal } from './DefaultPhotoModal';
@@ -371,10 +375,11 @@ function App() {
             <EventCalendar formattedEvents={formattedEvents} />
 
             <TimelineProvider formattedEvents={formattedEvents}>
-                <Timeline
-                    plantID={plant.uuid}
-                    archived={plant.archived}
-                />
+                <Timeline archived={plant.archived} />
+                <NoteModal plantID={plant.uuid} />
+                <PhotoModal plantID={plant.uuid} />
+                <DefaultPhotoModal plantID={plant.uuid} />
+                <DeletePhotosModal plantID={plant.uuid} />
             </TimelineProvider>
 
             <EditModal title="Edit Details" onSubmit={submitEditModal}>

@@ -4,13 +4,14 @@ import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
 import { timestampToReadable } from 'src/timestampUtils';
 import { openErrorModal } from 'src/components/ErrorModal';
-import { useTimeline } from './TimelineContext';
 import {
     ChevronLeftIcon,
     ChevronRightIcon,
     XMarkIcon
 } from '@heroicons/react/16/solid';
 import clsx from 'clsx';
+import { useSelector, useDispatch } from 'react-redux';
+import { deletePhotos } from './TimelineContext'
 
 let modalRef;
 
@@ -108,7 +109,8 @@ ConfirmDeleteRow.propTypes = {
 };
 
 const DeletePhotosModal = memo(function DeletePhotosModal({ plantID }) {
-    const { photoUrls, deletePhotos } = useTimeline();
+    const dispatch = useDispatch();
+    const photoUrls = useSelector((state) => state.photoUrls);
 
     modalRef = useRef(null);
 
@@ -145,7 +147,7 @@ const DeletePhotosModal = memo(function DeletePhotosModal({ plantID }) {
         // If successful remove photos from history column
         if (response.ok) {
             const data = await response.json();
-            deletePhotos(data.deleted);
+            dispatch(deletePhotos(data.deleted));
 
             // Clear selected photos, close modal, reset confirm delete screen
             setSelectedPhotos([]);

@@ -5,8 +5,8 @@ import { sendPostRequest } from 'src/util';
 import { timestampToReadable } from 'src/timestampUtils';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/16/solid';
-import { useTimeline } from './TimelineContext';
 import clsx from 'clsx';
+import { useSelector } from 'react-redux';
 
 let modalRef;
 
@@ -68,7 +68,7 @@ PhotoSlide.propTypes = {
 };
 
 const DefaultPhotoModal = memo(function DefaultPhotoModal({ plantID }) {
-    const { photoUrls } = useTimeline();
+    const photoUrls = useSelector((state) => state.photoUrls);
 
     modalRef = useRef(null);
 

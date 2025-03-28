@@ -379,6 +379,30 @@ describe('App', () => {
         });
     });
 
+    it('opens PhotoModal when dropdown option clicked', async () => {
+        // Confirm modal is not open
+        expect(app.queryByTestId('photo-input')).toBeNull();
+
+        // Click button, confirm HTMLDialogElement method was called
+        await user.click(app.getByText('Add photos'));
+        // expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
+        await waitFor(() => {
+            expect(app.queryByTestId('photo-input')).not.toBeNull();
+        });
+    });
+
+    it('opens DeletePhotosModal when dropdown option clicked', async () => {
+        // Confirm modal is not open
+        expect(app.container.querySelector('#photo3')).toBeNull();
+
+        // Click button, confirm HTMLDialogElement method was called
+        await user.click(app.getByText('Delete photos'));
+        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
+        await waitFor(() => {
+            expect(app.container.querySelector('#photo3')).not.toBeNull();
+        });
+    });
+
     it('removes event markers from timeline when events are deleted', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
@@ -405,5 +429,128 @@ describe('App', () => {
 
         // Confirm both water event icons disappeared
         expect(app.container.querySelectorAll('.fa-droplet').length).toBe(0);
+    });
+
+    it('opens note modal when add note dropdown option is clicked', async () => {
+        // Confirm note modal is not visible
+        expect(app.queryByText('0 / 500')).toBeNull();
+
+        // Click dropdown option, confirm HTMLDialogElement method was called
+        await user.click(app.getByText('Add note'));
+        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
+        expect(app.getByText('0 / 500')).not.toBeNull();
+    });
+
+    it('renders new notes in the timeline', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                "action": "add_note",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                "timestamp": "2024-03-01T12:00:00+00:00",
+                "note_text": "Started flowering"
+            })
+        }));
+
+        // Get reference to timeline div (excluding NoteModal)
+        const timeline = app.container.querySelector('.grid');
+
+        // Confirm timeline does not contain note text
+        expect(within(timeline).queryByText(
+            'Started flowering'
+        )).toBeNull();
+
+        // Open Note Modal
+        await user.click(app.getByText('Add note'));
+
+        // Simulate user typing new note and clicking save
+        await user.type(
+            app.container.querySelector('.textarea'),
+            '  Started flowering  '
+        );
+        await user.click(app.getByText('Save'));
+
+        // Confirm note text appeared on page
+        expect(within(timeline).queryByText(
+            'Started flowering'
+        )).not.toBeNull();
+    });
+
+    it('updates note text in timeline when note is edited', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                "action": "edit_note",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                "timestamp": "2024-02-26T12:44:12+00:00",
+                "note_text": "One of the older leaves is starting to turn yellow, pinched it off"
+            })
+        }));
+
+        // Get reference to timeline div (excluding NoteModal)
+        const timeline = app.container.querySelector('.grid');
+
+        // Confirm timeline contains note text from mockContext
+        expect(within(timeline).queryByText(
+            'One of the older leaves is starting to turn yellow'
+        )).not.toBeNull();
+        // Confirm timeline does not contain text we will add
+        expect(within(timeline).queryByText(
+            /pinched it off/
+        )).toBeNull();
+
+        // Simulate user clicking icon next to note, adding text, clicking save
+        const editButton = within(timeline).getByText(
+            'One of the older leaves is starting to turn yellow'
+        ).parentElement.parentElement.children[0];
+        await user.click(editButton);
+        await user.type(
+            app.container.querySelector('.textarea'),
+            ', pinched it off'
+        );
+        await user.click(app.getByText('Save'));
+
+        // Confirm new text was added to note
+        expect(within(timeline).queryByText(
+            'One of the older leaves is starting to turn yellow, pinched it off'
+        )).not.toBeNull();
+    });
+
+    it('removes notes from timeline when deleted', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                "deleted": "note",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
+
+        // Get reference to timeline div (excluding NoteModal)
+        const timeline = app.container.querySelector('.grid');
+
+        // Confirm timeline contains note text
+        expect(within(timeline).queryByText(
+            'Fertilized with dilute 10-15-10 liquid fertilizer'
+        )).not.toBeNull();
+
+        // Simulate user clicking icon next to note, then clicking delete
+        const editButton = within(timeline).getByText(
+            'Fertilized with dilute 10-15-10 liquid fertilizer'
+        ).parentElement.parentElement.children[0];
+        await user.click(editButton);
+        await user.click(
+            within(app.getByText('Edit Note').parentElement).getByText('Delete')
+        );
+
+        // Confirm timeline no longer contains note text
+        expect(within(timeline).queryByText(
+            'Fertilized with dilute 10-15-10 liquid fertilizer'
+        )).toBeNull();
     });
 });

@@ -176,4 +176,54 @@ describe('App', () => {
         await user.click(app.getByRole("button", {name: "Water"}));
         expect(app.container.querySelectorAll('.dot-water').length).toBe(1);
     });
+
+    // Original bug: Notes were rendered in database creation order, even if a
+    // newly created note had a timestamp earlier than existing notes
+    it('renders multiple notes on the same day in chronological order', async () => {
+        // Simulate a new note added on April 1 with text the "Later timestamp"
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                "action": "add_note",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                "timestamp": "2024-04-01T12:00:00+00:00",
+                "note_text": "Later timestamp"
+            })
+        }));
+
+        // Open Note Modal, enter text (doesn't matter, will render text from
+        // mock API response above), save first note
+        await user.click(app.getByText('Add note'));
+        await user.type(app.container.querySelector('.textarea'), '.');
+        await user.click(app.getByText('Save'));
+
+        // Simulate a second note with an earlier timestamp on the same day
+        // with the text "Earlier timestamp"
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                "action": "add_note",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                "timestamp": "2024-04-01T10:00:00+00:00",
+                "note_text": "Earlier timestamp"
+            })
+        }));
+
+        // Save second note (created later, but earlier timestamp)
+        await user.click(app.getByText('Add note'));
+        await user.type(app.container.querySelector('.textarea'), '.');
+        await user.click(app.getByText('Save'));
+
+        // Get div wrapping both notes, get first and second child
+        const notesSection = app.getByText('Later timestamp').parentElement.parentElement.parentElement;
+        const firstNote = notesSection.children[0];
+        const secondNote = notesSection.children[1];
+
+        // Confirm notes were rendered chronologically, even though the note
+        // with the earlier timestamp was added to the database second
+        expect(firstNote.textContent).toContain('Earlier timestamp');
+        expect(secondNote.textContent).toContain('Later timestamp');
+    });
 });

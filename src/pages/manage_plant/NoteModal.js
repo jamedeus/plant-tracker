@@ -7,8 +7,9 @@ import { showToast } from 'src/components/Toast';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { sendPostRequest } from 'src/util';
 import { localToUTC, timestampToReadable } from 'src/timestampUtils';
-import { useTimeline } from './TimelineContext';
 import { DateTime } from 'luxon';
+import { addNewNote, editExistingNote, deleteNote } from './TimelineContext';
+import { useDispatch } from 'react-redux';
 
 let modalRef;
 
@@ -29,8 +30,8 @@ ExistingNoteTimestamp.propTypes = {
     noteTime: PropTypes.string.isRequired
 };
 
-const NoteModal = ({ plantID }) => {
-    const { addNewNote, editExistingNote, deleteNote } = useTimeline();
+const NoteModal = memo(function NoteModal({ plantID }) {
+    const dispatch = useDispatch();
 
     // States for text and timestamp inputs
     const [noteTime, setNoteTime] = useState('');
@@ -77,10 +78,10 @@ const NoteModal = ({ plantID }) => {
         if (response.ok) {
             // Update state with new note from response, close modal
             const data = await response.json();
-            addNewNote({
+            dispatch(addNewNote({
                 timestamp: data.timestamp,
                 text: data.note_text
-            });
+            }));
             modalRef.current.close();
         } else {
             // Duplicate note timestamp: show error toast for 5 seconds
@@ -110,10 +111,10 @@ const NoteModal = ({ plantID }) => {
         if (response.ok) {
             // Update note state with params from response, close modal
             const data = await response.json();
-            editExistingNote({
+            dispatch(editExistingNote({
                 timestamp: data.timestamp,
                 text: data.note_text
-            });
+            }));
             modalRef.current.close();
         } else {
             // Show error in modal
@@ -132,7 +133,7 @@ const NoteModal = ({ plantID }) => {
 
         if (response.ok) {
             // Remove note from state, close modal
-            deleteNote(noteTime);
+            dispatch(deleteNote(noteTime));
             modalRef.current.close();
         } else {
             // Show error in modal
@@ -197,7 +198,7 @@ const NoteModal = ({ plantID }) => {
             </div>
         </Modal>
     );
-};
+});
 
 NoteModal.propTypes = {
     plantID: PropTypes.string.isRequired

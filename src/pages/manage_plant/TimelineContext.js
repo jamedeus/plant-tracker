@@ -251,34 +251,12 @@ TimelineProvider.propTypes = {
     children: PropTypes.node
 };
 
-// Simulated useContext hook that exposes redux state and action creator
-// functions used to modify state
-export function useTimeline() {
-    // Export references to both states
-    const timelineDays = useSelector((state) => state.timelineDays);
-    const photoUrls = useSelector((state) => state.photoUrls);
-
-    const dispatch = useDispatch();
-
-    // Extract individual action creators from slice
-    const {
-        addNewNote,
-        editExistingNote,
-        deleteNote,
-        addPhotos,
-        deletePhotos,
-        setPhotoUrls
-    } = timelineSlice.actions;
-
-    // Expose states and action creators to components that call custom hook
-    return {
-        timelineDays,
-        photoUrls,
-        setPhotoUrls: (urls) => dispatch(setPhotoUrls(urls)),
-        addNewNote: (note) => dispatch(addNewNote(note)),
-        editExistingNote: (note) => dispatch(editExistingNote(note)),
-        deleteNote: (time) => dispatch(deleteNote(time)),
-        addPhotos: (photos) => dispatch(addPhotos(photos)),
-        deletePhotos: (deleted) => dispatch(deletePhotos(deleted))
-    };
-}
+// Export individual action creators from slice
+export const {
+    addNewNote,
+    editExistingNote,
+    deleteNote,
+    addPhotos,
+    deletePhotos,
+    setPhotoUrls
+} = timelineSlice.actions;

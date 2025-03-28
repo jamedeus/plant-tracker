@@ -17,7 +17,7 @@ import WaterIcon from 'src/components/WaterIcon';
 import FertilizeIcon from 'src/components/FertilizeIcon';
 import PruneIcon from 'src/components/PruneIcon';
 import RepotIcon from 'src/components/RepotIcon';
-import { useTimeline } from './TimelineContext';
+import { useSelector } from 'react-redux';
 
 
 // Takes ISO timestamp string, returns "x days ago"
@@ -420,8 +420,8 @@ QuickNavigationYear.propTypes = {
     ]).isRequired
 };
 
-const Timeline = memo(function Timeline({ plantID, archived }) {
-    const { timelineDays } = useTimeline();
+const Timeline = memo(function Timeline({ archived }) {
+    const timelineDays = useSelector((state) => state.timelineDays);
 
     // Contains object with year-month strings (ie 2024-03) as keys, divider
     // elements as values (used form quick navigation scrolling)
@@ -495,17 +495,11 @@ const Timeline = memo(function Timeline({ plantID, archived }) {
                     <p>Events created with the buttons above will appear here</p>
                 </div>
             )}
-
-            <NoteModal plantID={plantID} />
-            <PhotoModal plantID={plantID} />
-            <DefaultPhotoModal plantID={plantID} />
-            <DeletePhotosModal plantID={plantID} />
         </div>
     );
 });
 
 Timeline.propTypes = {
-    plantID: PropTypes.string.isRequired,
     archived: PropTypes.bool.isRequired
 };
 
