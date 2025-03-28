@@ -115,9 +115,7 @@ const DefaultPhotoModal = memo(function DefaultPhotoModal({ plantID }) {
             onClose={closeDefaultPhotosModal}
         >
             <div className="carousel w-full h-min">
-                {[...photoUrls].sort((a, b) => {
-                    return a.created.localeCompare(b.created);
-                }).reverse().map((photo, index) => (
+                {photoUrls.map((photo, index) => (
                     <PhotoSlide
                         key={photo.key}
                         photo={photo}

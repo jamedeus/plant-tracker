@@ -141,7 +141,9 @@ const timelineSlice = createSlice({
 
             // Add new URLs to photoUrl state (used by DeletePhotoModal and
             // DefaultPhotoModal)
-            state.photoUrls = [...state.photoUrls, ...photos];
+            state.photoUrls = state.photoUrls.concat(photos).sort((a, b) => {
+                return a.created.localeCompare(b.created);
+            }).reverse();
         },
 
         // Takes array of deleted photo keys, removes from photoUrls state and
@@ -199,6 +201,9 @@ export function TimelineProvider({ formattedEvents, children }) {
 
         // Add contents of photoUrls to photos key under correct date
         const photoUrls = parseDomContext('photo_urls') || [];
+        photoUrls.sort((a, b) => {
+            return a.created.localeCompare(b.created);
+        }).reverse()
         photoUrls.forEach((photo) => {
             const dateKey = timestampToDateString(photo.created);
             if (!timelineDays[dateKey]) {
