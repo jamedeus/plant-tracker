@@ -255,7 +255,7 @@ MonthDivider.propTypes = {
 };
 
 // History title with dropdown menu (hover) to jump to month/year sections
-const Title = ({ archived, quickNavigation }) => {
+const Title = memo(function Title({ archived, navigationOptions, sectionRefs }) {
     return (
         <div className="navbar bg-base-200 rounded-2xl">
             <div className="navbar-start w-12">
@@ -271,7 +271,10 @@ const Title = ({ archived, quickNavigation }) => {
                         History
                     </div>
                     <ul tabIndex={0} className="dropdown-options w-44">
-                        {quickNavigation}
+                        <QuickNavigation
+                            navigationOptions={navigationOptions}
+                            sectionRefs={sectionRefs}
+                        />
                     </ul>
                 </div>
             </div>
@@ -329,11 +332,15 @@ const Title = ({ archived, quickNavigation }) => {
             </div>
         </div>
     );
-};
+});
 
 Title.propTypes = {
     archived: PropTypes.bool.isRequired,
-    quickNavigation: PropTypes.element.isRequired
+    navigationOptions: PropTypes.object.isRequired,
+    sectionRefs: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.instanceOf(Object) }),
+    ]).isRequired
 };
 
 const QuickNavigation = ({ navigationOptions, sectionRefs }) => {
@@ -422,23 +429,11 @@ QuickNavigationYear.propTypes = {
 
 const Timeline = memo(function Timeline({ archived }) {
     const timelineDays = useSelector((state) => state.timelineDays);
+    const navigationOptions = useSelector((state) => state.navigationOptions);
 
     // Contains object with year-month strings (ie 2024-03) as keys, divider
     // elements as values (used form quick navigation scrolling)
     const sectionRefs = useRef({});
-
-    // Build object used to populate quick navigation menu
-    // Contains years as keys, list of month numbers as values
-    const navigationOptions = {};
-    Object.keys(timelineDays).forEach(dateString => {
-        const [year, month] = dateString.split('-');
-        if (!navigationOptions[year]) {
-            navigationOptions[year] = [];
-        }
-        if (!navigationOptions[year].includes(month)) {
-            navigationOptions[year].push(month);
-        }
-    });
 
     // Get array of yyyy-mm-dd keys sorted chronologically (recent first)
     const dayKeys = Object.keys(timelineDays).sort().reverse();
@@ -450,12 +445,8 @@ const Timeline = memo(function Timeline({ archived }) {
         )}>
             <Title
                 archived={archived}
-                quickNavigation={
-                    <QuickNavigation
-                        navigationOptions={navigationOptions}
-                        sectionRefs={sectionRefs}
-                    />
-                }
+                navigationOptions={navigationOptions}
+                sectionRefs={sectionRefs}
             />
             {dayKeys.length > 0 ? (
                 <div className="grid grid-cols-[min-content_1fr] gap-4 md:gap-8">

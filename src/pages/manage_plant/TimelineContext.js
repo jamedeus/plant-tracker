@@ -11,13 +11,49 @@ const compareEvents = (array1, array2) => {
         array1.every((value, index) => value === array2[index]);
 };
 
+// Takes timelineSlice state and new YYYY-MM-DD timestamp
+// Adds month and year to navigationOptions if not already present
+function addNavigationOption(state, timestamp) {
+    const [year, month] = timestamp.split('-');
+    if (!state.navigationOptions[year]) {
+        state.navigationOptions[year] = [];
+    }
+    if (!state.navigationOptions[year].includes(month)) {
+        state.navigationOptions[year].push(month);
+        state.navigationOptions[year].sort().reverse();
+    }
+}
+
+// Takes timelineSlice state and removed YYYY-MM-DD timestamp
+// Removes month and year from navigationOptions if there are no days left in
+// timelineDays in the same month and year
+function removeNavigationOption(state, timestamp) {
+    const [year, month] = timestamp.split('-');
+    // Rmove month if no timelineDays have the same year and month
+    if (!Object.keys(state.timelineDays).filter(
+        datestring => datestring.startsWith(`${year}-${month}`)
+    ).length) {
+        state.navigationOptions[year].splice(
+            state.navigationOptions[year].indexOf(month),
+            1
+        );
+    }
+    // Remove year if no timelineDays have the same year
+    if (!Object.keys(state.timelineDays).filter(
+        datestring => datestring.startsWith(year)
+    ).length) {
+        delete state.navigationOptions[year];
+    }
+}
+
 // Centralized redux slice to store timelineDays and photoUrls "states" and all
 // callback functions that modify them
 const timelineSlice = createSlice({
     name: 'timeline',
     initialState: {
         timelineDays: {},
-        photoUrls: []
+        photoUrls: [],
+        navigationOptions: {}
     },
     reducers: {
         // Takes formattedEvents, incrementally updates events in timelineDays
@@ -32,6 +68,8 @@ const timelineSlice = createSlice({
                     state.timelineDays[timestamp] = {
                         ...formattedEvents[timestamp]
                     };
+                    // Add navigationOption if first timestamp in year + month
+                    addNavigationOption(state, timestamp);
                 // Add new events to existing timestamp key
                 } else if (!compareEvents(
                     state.timelineDays[timestamp].events,
@@ -56,6 +94,8 @@ const timelineSlice = createSlice({
                         !state.timelineDays[timestamp].photos.length
                     ) {
                         delete state.timelineDays[timestamp];
+                        // Remove navigationOption if no more content in month
+                        removeNavigationOption(state, timestamp);
                     }
                 }
             });
@@ -78,6 +118,8 @@ const timelineSlice = createSlice({
                     notes: [ ...state.timelineDays[dateKey].notes, note ]
                 };
             }
+            // Add navigationOption if first note in year + month
+            addNavigationOption(state, dateKey);
         },
 
         // Takes note with same timestamp as existing note (timestamp cannot be
@@ -111,6 +153,8 @@ const timelineSlice = createSlice({
                 !state.timelineDays[dateKey].events.length
             ) {
                 delete state.timelineDays[dateKey];
+                // Remove navigationOption if no more content in month
+                removeNavigationOption(state, dateKey);
             }
         },
 
@@ -128,6 +172,8 @@ const timelineSlice = createSlice({
                         notes: [],
                         photos: [photo]
                     };
+                    // Add navigationOption if first photo in year + month
+                    addNavigationOption(state, dateKey);
                 } else {
                     // Add photo to photos array for correct day
                     state.timelineDays[dateKey] = {
@@ -168,6 +214,8 @@ const timelineSlice = createSlice({
                         !state.timelineDays[dateKey].notes.length
                     ) {
                         delete state.timelineDays[dateKey];
+                        // Remove navigationOption if no more content in month
+                        removeNavigationOption(state, dateKey);
                     }
                     // Return false (remove from photoUrls)
                     return false;
@@ -180,7 +228,7 @@ const timelineSlice = createSlice({
         setPhotoUrls(state, action) {
             state.photoUrls = action.payload;
         }
-    },
+    }
 });
 
 // Takes initial timelineDays state, creates redux store and returns
@@ -222,10 +270,24 @@ export function TimelineProvider({ formattedEvents, children }) {
             timelineDays[dateKey].notes.push(note);
         });
 
+        // Build object used to populate quick navigation menu
+        // Contains years as keys, list of month numbers as values
+        const navigationOptions = {};
+        Object.keys(timelineDays).forEach(dateString => {
+            const [year, month] = dateString.split('-');
+            if (!navigationOptions[year]) {
+                navigationOptions[year] = [];
+            }
+            if (!navigationOptions[year].includes(month)) {
+                navigationOptions[year].push(month);
+            }
+        });
+
+        // Return object with keys expected by timelineSlice preloadedState
         return {
-            // The slice expects certain keys:
             timelineDays,
-            photoUrls
+            photoUrls,
+            navigationOptions
         };
     };
 
