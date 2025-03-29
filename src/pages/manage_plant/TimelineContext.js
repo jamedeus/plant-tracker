@@ -46,6 +46,21 @@ function removeNavigationOption(state, dateKey) {
     }
 }
 
+// Takes timelineSlice state and YYYY-MM-DD dateKey of a removed item
+// Checks if any content exists on the same date, removes dateKey from
+// timelineDays if not
+function removeDateKeyIfEmpty(state, dateKey) {
+    if (state.timelineDays[dateKey] &&
+        !state.timelineDays[dateKey].notes.length &&
+        !state.timelineDays[dateKey].photos.length &&
+        !state.timelineDays[dateKey].events.length
+    ) {
+        delete state.timelineDays[dateKey];
+        // Remove navigationOption if no more content in month
+        removeNavigationOption(state, dateKey);
+    }
+}
+
 // Centralized redux slice to store timelineDays and photoUrls "states" and all
 // callback functions that modify them
 const timelineSlice = createSlice({
@@ -92,13 +107,7 @@ const timelineSlice = createSlice({
                         state.timelineDays[dateKey].events = [];
                     }
                     // Remove whole day section if no notes or photos
-                    if (!state.timelineDays[dateKey].notes.length &&
-                        !state.timelineDays[dateKey].photos.length
-                    ) {
-                        delete state.timelineDays[dateKey];
-                        // Remove navigationOption if no more content in month
-                        removeNavigationOption(state, dateKey);
-                    }
+                    removeDateKeyIfEmpty(state, dateKey);
                 }
             });
         },
@@ -147,14 +156,7 @@ const timelineSlice = createSlice({
                 note => note.timestamp !== noteTime
             );
             // Remove timelineDays day if no content left
-            if (!state.timelineDays[dateKey].notes.length &&
-                !state.timelineDays[dateKey].photos.length &&
-                !state.timelineDays[dateKey].events.length
-            ) {
-                delete state.timelineDays[dateKey];
-                // Remove navigationOption if no more content in month
-                removeNavigationOption(state, dateKey);
-            }
+            removeDateKeyIfEmpty(state, dateKey);
         },
 
         // Takes photo URLs from API response when new photos are uploaded
@@ -201,16 +203,7 @@ const timelineSlice = createSlice({
                         );
                     }
                     // Remove timelineDays day if no content left
-                    if (
-                        state.timelineDays[dateKey] &&
-                        !state.timelineDays[dateKey].photos.length &&
-                        !state.timelineDays[dateKey].events.length &&
-                        !state.timelineDays[dateKey].notes.length
-                    ) {
-                        delete state.timelineDays[dateKey];
-                        // Remove navigationOption if no more content in month
-                        removeNavigationOption(state, dateKey);
-                    }
+                    removeDateKeyIfEmpty(state, dateKey);
                     // Return false (remove from photoUrls)
                     return false;
                 }
