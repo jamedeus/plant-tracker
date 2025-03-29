@@ -8,7 +8,7 @@ import { openErrorModal } from 'src/components/ErrorModal';
 import { sendPostRequest } from 'src/util';
 import { localToUTC, timestampToReadable } from 'src/timestampUtils';
 import { DateTime } from 'luxon';
-import { addNewNote, editExistingNote, deleteNote } from './TimelineContext';
+import { noteAdded, noteEdited, noteDeleted } from './TimelineContext';
 import { useDispatch } from 'react-redux';
 
 let modalRef;
@@ -78,7 +78,7 @@ const NoteModal = memo(function NoteModal({ plantID }) {
         if (response.ok) {
             // Update state with new note from response, close modal
             const data = await response.json();
-            dispatch(addNewNote({
+            dispatch(noteAdded({
                 timestamp: data.timestamp,
                 text: data.note_text
             }));
@@ -111,7 +111,7 @@ const NoteModal = memo(function NoteModal({ plantID }) {
         if (response.ok) {
             // Update note state with params from response, close modal
             const data = await response.json();
-            dispatch(editExistingNote({
+            dispatch(noteEdited({
                 timestamp: data.timestamp,
                 text: data.note_text
             }));
@@ -133,7 +133,7 @@ const NoteModal = memo(function NoteModal({ plantID }) {
 
         if (response.ok) {
             // Remove note from state, close modal
-            dispatch(deleteNote(noteTime));
+            dispatch(noteDeleted(noteTime));
             modalRef.current.close();
         } else {
             // Show error in modal

@@ -6,7 +6,7 @@ import LoadingAnimation from 'src/components/LoadingAnimation';
 import { XMarkIcon } from '@heroicons/react/16/solid';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { useDispatch } from 'react-redux';
-import { addPhotos } from './TimelineContext'
+import { photosAdded } from './TimelineContext'
 
 let modalRef;
 
@@ -91,7 +91,7 @@ const PhotoModal = memo(function PhotoModal({ plantID }) {
             // Update state with new photo URLs from response
             const data = await response.json();
             if (data.urls.length) {
-                dispatch(addPhotos(data.urls));
+                dispatch(photosAdded(data.urls));
             }
 
             // Close modal, wait for close animation to complete then stop

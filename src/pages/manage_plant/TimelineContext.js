@@ -58,7 +58,7 @@ const timelineSlice = createSlice({
     reducers: {
         // Takes formattedEvents, incrementally updates events in timelineDays
         // Called by useEffect in TimelineProvider when formattedEvents changes
-        updateTimelineDays(state, action) {
+        formattedEventsUpdated(state, action) {
             const formattedEvents = action.payload;
 
             // Copy new events from formattedEvents to timelineDays
@@ -102,7 +102,7 @@ const timelineSlice = createSlice({
         },
 
         // Takes object with timestamp and text keys, adds to timelineDays state
-        addNewNote(state, action) {
+        noteAdded(state, action) {
             const note = action.payload;
             const dateKey = timestampToDateString(note.timestamp);
             // Add new timestamp key if missing
@@ -124,7 +124,7 @@ const timelineSlice = createSlice({
 
         // Takes note with same timestamp as existing note (timestamp cannot be
         // changed once created), overwrites text in timelineDays state.
-        editExistingNote(state, action) {
+        noteEdited(state, action) {
             const note = action.payload;
             const dateKey = timestampToDateString(note.timestamp);
             state.timelineDays[dateKey].notes = state.timelineDays[dateKey].notes.map(
@@ -138,7 +138,7 @@ const timelineSlice = createSlice({
         },
 
         // Takes timestamp of deleted note, removes from timelineDays state
-        deleteNote(state, action) {
+        noteDeleted(state, action) {
             const noteTime = action.payload;
 
             // Parse YYYY-MM-DD from deleted note timestamp, find in
@@ -159,7 +159,7 @@ const timelineSlice = createSlice({
         },
 
         // Takes photo URLs from API response when new photos are uploaded
-        addPhotos(state, action) {
+        photosAdded(state, action) {
             const photos = action.payload;
 
             // Add new URLs to timelineDays state used to render timeline
@@ -194,7 +194,7 @@ const timelineSlice = createSlice({
 
         // Takes array of deleted photo keys, removes from photoUrls state and
         // from photos key in correct day of timelineDays state
-        deletePhotos(state, action) {
+        photosDeleted(state, action) {
             const deletedKeys = action.payload;
             state.photoUrls = state.photoUrls.filter((photo) => {
                 if (deletedKeys.includes(photo.key)) {
@@ -222,11 +222,6 @@ const timelineSlice = createSlice({
                 }
                 return true;
             });
-        },
-
-        // Simulates old photoUrls useState hook, takes new photoUrls contents
-        setPhotoUrls(state, action) {
-            state.photoUrls = action.payload;
         }
     }
 });
@@ -301,7 +296,7 @@ export function TimelineProvider({ formattedEvents, children }) {
     useEffect(() => {
         store.dispatch((dispatch) => {
             dispatch(
-                timelineSlice.actions.updateTimelineDays(formattedEvents)
+                timelineSlice.actions.formattedEventsUpdated(formattedEvents)
             );
         });
     }, [formattedEvents, store]);
@@ -320,10 +315,10 @@ TimelineProvider.propTypes = {
 
 // Export individual action creators from slice
 export const {
-    addNewNote,
-    editExistingNote,
-    deleteNote,
-    addPhotos,
-    deletePhotos,
+    noteAdded,
+    noteEdited,
+    noteDeleted,
+    photosAdded,
+    photosDeleted,
     setPhotoUrls
 } = timelineSlice.actions;

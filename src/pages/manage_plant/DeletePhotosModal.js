@@ -11,7 +11,7 @@ import {
 } from '@heroicons/react/16/solid';
 import clsx from 'clsx';
 import { useSelector, useDispatch } from 'react-redux';
-import { deletePhotos } from './TimelineContext'
+import { photosDeleted } from './TimelineContext'
 
 let modalRef;
 
@@ -147,7 +147,7 @@ const DeletePhotosModal = memo(function DeletePhotosModal({ plantID }) {
         // If successful remove photos from history column
         if (response.ok) {
             const data = await response.json();
-            dispatch(deletePhotos(data.deleted));
+            dispatch(photosDeleted(data.deleted));
 
             // Clear selected photos, close modal, reset confirm delete screen
             setSelectedPhotos([]);
