@@ -73,9 +73,19 @@ EventMarker.propTypes = {
     eventType: PropTypes.string.isRequired
 };
 
-const TimelineDay = memo(function TimelineDay({ timestamp, events, photos, notes, archived}) {
+// Takes YYYY-MM-DD timestamp, arrays of events/photos/notes, and archived bool
+// If optional sectionRefs object is passed a MonthDivider will be rendered
+// above the day section (passed for first day of each month)
+const TimelineDay = memo(function TimelineDay({ timestamp, events, photos, notes, archived, sectionRefs }) {
     return (
         <>
+            {/* Render MonthDivider if sectionRefs param was given */}
+            {sectionRefs && (
+                <MonthDivider
+                    timestamp={timestamp}
+                    sectionRefs={sectionRefs}
+                />
+            )}
             <TimelineTimestamp timestamp={timestamp} />
             <div className="flex flex-col bg-neutral rounded-xl p-2 md:p-4">
                 <div className="flex flex-row flex-wrap">
@@ -116,7 +126,11 @@ TimelineDay.propTypes = {
     events: PropTypes.array.isRequired,
     notes: PropTypes.array.isRequired,
     photos: PropTypes.array.isRequired,
-    archived: PropTypes.bool.isRequired
+    archived: PropTypes.bool.isRequired,
+    sectionRefs: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.instanceOf(Object) }),
+    ])
 };
 
 // Photo thumbnail that opens larger popover when clicked
@@ -234,8 +248,9 @@ NoteCollapse.propTypes = {
     archived: PropTypes.bool.isRequired
 };
 
-// Takes year-month string (ie 2024-03)
-const MonthDivider = memo(function MonthDivider({ yearMonth, sectionRefs }) {
+// Takes YYYY-MM-DD string
+const MonthDivider = memo(function MonthDivider({ timestamp, sectionRefs }) {
+    const yearMonth = timestamp.slice(0, 7);
     return (
         <div
             className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
@@ -247,7 +262,7 @@ const MonthDivider = memo(function MonthDivider({ yearMonth, sectionRefs }) {
 });
 
 MonthDivider.propTypes = {
-    yearMonth: PropTypes.string.isRequired,
+    timestamp: PropTypes.string.isRequired,
     sectionRefs: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.instanceOf(Object) }),
@@ -454,30 +469,25 @@ const Timeline = memo(function Timeline({ archived }) {
                         // Slice YYYY-MM from timestamp, truncate day
                         const yearMonth = timestamp.slice(0, 7);
 
-                        // Get previous day yearMonth to check if month changed
-                        let prevYearMonth = null;
+                        // Render month divider above day unless yearMonth of
+                        // the previous day is identical
+                        let monthDivider = true;
                         if (index > 0) {
                             const prevTimestamp = dayKeys[index - 1];
-                            prevYearMonth = prevTimestamp.slice(0, 7);
+                            const prevYearMonth = prevTimestamp.slice(0, 7);
+                            monthDivider = yearMonth !== prevYearMonth;
                         }
 
                         return (
-                            <Fragment key={timestamp}>
-                                {/* Render MonthDivider if month changed */}
-                                {yearMonth !== prevYearMonth && (
-                                    <MonthDivider
-                                        yearMonth={yearMonth}
-                                        sectionRefs={sectionRefs}
-                                    />
-                                )}
-                                <TimelineDay
-                                    timestamp={timestamp}
-                                    events={timelineDays[timestamp].events}
-                                    notes={timelineDays[timestamp].notes}
-                                    photos={timelineDays[timestamp].photos}
-                                    archived={archived}
-                                />
-                            </Fragment>
+                            <TimelineDay
+                                key={timestamp}
+                                timestamp={timestamp}
+                                events={timelineDays[timestamp].events}
+                                notes={timelineDays[timestamp].notes}
+                                photos={timelineDays[timestamp].photos}
+                                archived={archived}
+                                sectionRefs={monthDivider ? sectionRefs : null}
+                            />
                         );
                     })}
                 </div>
