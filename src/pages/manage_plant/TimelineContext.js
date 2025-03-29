@@ -66,7 +66,9 @@ const timelineSlice = createSlice({
                 // Add new timestamp key
                 if (!state.timelineDays[timestamp]) {
                     state.timelineDays[timestamp] = {
-                        ...formattedEvents[timestamp]
+                        events: [ ...formattedEvents[timestamp].events ],
+                        notes: [],
+                        photos: []
                     };
                     // Add navigationOption if first timestamp in year + month
                     addNavigationOption(state, timestamp);
@@ -113,10 +115,7 @@ const timelineSlice = createSlice({
                     photos: []
                 };
             } else {
-                state.timelineDays[dateKey] = {
-                    ...state.timelineDays[dateKey],
-                    notes: [ ...state.timelineDays[dateKey].notes, note ]
-                };
+                state.timelineDays[dateKey].notes.push(note);
             }
             // Add navigationOption if first note in year + month
             addNavigationOption(state, dateKey);
@@ -176,12 +175,7 @@ const timelineSlice = createSlice({
                     addNavigationOption(state, dateKey);
                 } else {
                     // Add photo to photos array for correct day
-                    state.timelineDays[dateKey] = {
-                        ...state.timelineDays[dateKey],
-                        photos: [
-                            ...state.timelineDays[dateKey].photos, photo
-                        ]
-                    };
+                    state.timelineDays[dateKey].photos.push(photo);
                 }
             });
 
