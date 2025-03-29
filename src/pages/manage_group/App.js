@@ -352,7 +352,7 @@ function App() {
                 description={group.description}
             />
         );
-    }, [group])
+    }, [group]);
 
     return (
         <div className="container flex flex-col mx-auto mb-8">

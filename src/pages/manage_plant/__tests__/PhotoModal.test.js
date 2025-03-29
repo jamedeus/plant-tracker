@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import createMockContext from 'src/testUtils/createMockContext';
 import { fireEvent } from '@testing-library/react';
 import PhotoModal, { openPhotoModal } from '../PhotoModal';

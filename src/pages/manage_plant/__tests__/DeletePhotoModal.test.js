@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import createMockContext from 'src/testUtils/createMockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import DeletePhotosModal, { openDeletePhotosModal } from '../DeletePhotosModal';

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import createMockContext from 'src/testUtils/createMockContext';
 import NoteModal, { openNoteModal } from '../NoteModal';
 import { TimelineProvider } from '../TimelineContext';
@@ -8,7 +8,7 @@ import { postHeaders } from 'src/testUtils/headers';
 const mockNotes = [
     {text: 'this is an existing note', timestamp: '2024-02-13T12:00:00'},
     {text: 'another existing note', timestamp: '2024-02-12T12:00:00'}
-]
+];
 
 const TestComponent = () => {
     return (

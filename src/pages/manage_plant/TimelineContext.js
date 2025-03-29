@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
-import { Provider, useSelector, useDispatch } from 'react-redux';
+import { Provider } from 'react-redux';
 import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { parseDomContext } from 'src/util';
 import { timestampToDateString } from 'src/timestampUtils';
@@ -240,7 +240,7 @@ export function TimelineProvider({ formattedEvents, children }) {
         const photoUrls = parseDomContext('photo_urls') || [];
         photoUrls.sort((a, b) => {
             return a.created.localeCompare(b.created);
-        }).reverse()
+        }).reverse();
         photoUrls.forEach((photo) => {
             const dateKey = timestampToDateString(photo.created);
             if (!timelineDays[dateKey]) {

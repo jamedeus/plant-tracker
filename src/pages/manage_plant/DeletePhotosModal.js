@@ -11,7 +11,7 @@ import {
 } from '@heroicons/react/16/solid';
 import clsx from 'clsx';
 import { useSelector, useDispatch } from 'react-redux';
-import { photosDeleted } from './TimelineContext'
+import { photosDeleted } from './TimelineContext';
 
 let modalRef;
 

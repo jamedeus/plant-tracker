@@ -6,7 +6,7 @@ import LoadingAnimation from 'src/components/LoadingAnimation';
 import { XMarkIcon } from '@heroicons/react/16/solid';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { useDispatch } from 'react-redux';
-import { photosAdded } from './TimelineContext'
+import { photosAdded } from './TimelineContext';
 
 let modalRef;
 

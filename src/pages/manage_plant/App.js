@@ -350,7 +350,7 @@ function App() {
 
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => {
-        return <DropdownOptions plant={plant} />
+        return <DropdownOptions plant={plant} />;
     }, [plant]);
 
     // Plant details card shown when title is clicked
@@ -361,7 +361,7 @@ function App() {
                 handleRemoveGroup={handleRemoveGroup}
             />
         );
-    }, [plant])
+    }, [plant]);
 
     return (
         <div className="container flex flex-col mx-auto mb-8">

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import Navbar from 'src/components/Navbar';
 import { useTheme } from 'src/context/ThemeContext';
@@ -247,7 +247,7 @@ function App() {
                 groupsColRef={groupsColRef}
             />
         );
-    }, [])
+    }, []);
 
     return (
         <div className="container flex flex-col min-h-screen mx-auto pb-16">

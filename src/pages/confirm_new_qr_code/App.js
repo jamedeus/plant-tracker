@@ -141,7 +141,7 @@ function App() {
     // Plant/group details card shown when title is clicked
     const DetailsDropdown = useMemo(() => {
         return <Details type={type} instance={instance} />;
-    }, [])
+    }, []);
 
     return (
         <div className="container flex flex-col mx-auto h-screen">
