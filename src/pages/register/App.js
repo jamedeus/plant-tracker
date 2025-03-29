@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, memo } from 'react';
+import React, { useState, useRef, useEffect, memo, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { Tab } from '@headlessui/react';
@@ -9,7 +9,7 @@ import GroupDetailsForm from 'src/forms/GroupDetailsForm';
 import PlantDetailsForm from 'src/forms/PlantDetailsForm';
 import { openErrorModal } from 'src/components/ErrorModal';
 
-const DropdownOptions = memo(function DropdownOptions() {
+const DropdownOptions = () => {
     // Get toggle theme option from context
     const { ToggleThemeOption } = useTheme();
 
@@ -21,7 +21,7 @@ const DropdownOptions = memo(function DropdownOptions() {
             <ToggleThemeOption />
         </>
     );
-});
+};
 
 const Form = memo(function Form({ setVisibleForm, plantFormRef, groupFormRef }) {
     return (
@@ -131,12 +131,15 @@ function App() {
         }
     };
 
+    // Top left corner dropdown options
+    const DropdownMenuOptions = useMemo(() => {
+        return <DropdownOptions />;
+    }, []);
+
     return (
         <div className="container flex flex-col mx-auto mb-8">
             <Navbar
-                menuOptions={
-                    <DropdownOptions />
-                }
+                menuOptions={DropdownMenuOptions}
                 title='Registration'
             />
 

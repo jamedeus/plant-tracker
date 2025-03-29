@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback, useMemo, memo } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { localToUTC } from 'src/timestampUtils';
 import { sendPostRequest, parseDomContext, pastTense } from 'src/util';
@@ -82,7 +82,7 @@ PlantEventButtons.propTypes = {
 };
 
 // Top-left menu button contents
-const MenuOptions = memo(function MenuOptions() {
+const MenuOptions = () => {
     // Get toggle theme option from context
     const { ToggleThemeOption } = useTheme();
 
@@ -103,10 +103,10 @@ const MenuOptions = memo(function MenuOptions() {
             <ToggleThemeOption />
         </>
     );
-});
+};
 
 // Contents of dropdown shown when group name clicked in header
-const DetailsDropdown = memo(function DetailsDropdown({ location, description }) {
+const DetailsDropdown = ({ location, description }) => {
     return (
         <DetailsCard>
             <GroupDetails
@@ -115,7 +115,7 @@ const DetailsDropdown = memo(function DetailsDropdown({ location, description })
             />
         </DetailsCard>
     );
-});
+};
 
 DetailsDropdown.propTypes = {
     location: PropTypes.string,
@@ -339,17 +339,27 @@ function App() {
         }
     }, [plantDetails]);
 
+    // Top left corner dropdown options
+    const DropdownMenuOptions = useMemo(() => {
+        return <MenuOptions />;
+    }, []);
+
+    // Group details card shown when title is clicked
+    const GroupDetailsDropdown = useMemo(() => {
+        return (
+            <DetailsDropdown
+                location={group.location}
+                description={group.description}
+            />
+        );
+    }, [group])
+
     return (
         <div className="container flex flex-col mx-auto mb-8">
             <Navbar
-                menuOptions={<MenuOptions />}
+                menuOptions={DropdownMenuOptions}
                 title={group.display_name}
-                titleOptions={
-                    <DetailsDropdown
-                        location={group.location}
-                        description={group.description}
-                    />
-                }
+                titleOptions={GroupDetailsDropdown}
             />
 
             <DatetimeInput inputRef={addEventAllTimeInput} />

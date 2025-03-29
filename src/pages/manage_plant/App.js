@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback, memo } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { localToUTC, timestampToDateString } from 'src/timestampUtils';
 import { sendPostRequest, parseDomContext } from 'src/util';
@@ -75,7 +75,7 @@ EventButtons.propTypes = {
     addEvent: PropTypes.func.isRequired
 };
 
-const DropdownOptions = memo(function DropdownOptions({ plant }) {
+const DropdownOptions = ({ plant }) => {
     // Get toggle theme option from context
     const { ToggleThemeOption } = useTheme();
 
@@ -102,14 +102,14 @@ const DropdownOptions = memo(function DropdownOptions({ plant }) {
             <ToggleThemeOption />
         </>
     );
-});
+};
 
 DropdownOptions.propTypes = {
     plant: PropTypes.object.isRequired
 };
 
 // Contents of dropdown shown when plant name clicked in header
-const DetailsDropdown = memo(function DetailsDropdown({ plant, handleRemoveGroup }) {
+const DetailsDropdown = ({ plant, handleRemoveGroup }) => {
     return (
         <DetailsCard>
             <div className="flex flex-col">
@@ -154,7 +154,7 @@ const DetailsDropdown = memo(function DetailsDropdown({ plant, handleRemoveGroup
             />
         </DetailsCard>
     );
-});
+};
 
 DetailsDropdown.propTypes = {
     plant: PropTypes.object.isRequired,
@@ -347,20 +347,28 @@ function App() {
         setFormattedEvents(formatEvents(oldEvents));
     };
 
+    // Top left corner dropdown options
+    const DropdownMenuOptions = useMemo(() => {
+        return <DropdownOptions plant={plant} />
+    }, [plant]);
+
+    // Plant details card shown when title is clicked
+    const PlantDetailsDropdown = useMemo(() => {
+        return (
+            <DetailsDropdown
+                plant={plant}
+                handleRemoveGroup={handleRemoveGroup}
+            />
+        );
+    }, [plant])
+
     return (
         <div className="container flex flex-col mx-auto mb-8">
             <Navbar
-                menuOptions={
-                    <DropdownOptions plant={plant} />
-                }
+                menuOptions={DropdownMenuOptions}
                 onOpenMenu={preloadDefaultPhotoModal}
                 title={plant.display_name}
-                titleOptions={
-                    <DetailsDropdown
-                        plant={plant}
-                        handleRemoveGroup={handleRemoveGroup}
-                    />
-                }
+                titleOptions={PlantDetailsDropdown}
             />
 
             {/* Don't render event buttons if plant is archived */}

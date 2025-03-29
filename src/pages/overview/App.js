@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback, memo } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import Navbar from 'src/components/Navbar';
 import { useTheme } from 'src/context/ThemeContext';
@@ -10,7 +10,7 @@ import Layout from './Layout';
 
 // Dropdown with links to jump to plant or group columns
 // Only rendered on mobile layout (both columns always visible on desktop)
-const QuickNavigation = memo(function QuickNavigation({ plantsColRef, groupsColRef }) {
+const QuickNavigation = ({ plantsColRef, groupsColRef }) => {
     const jumpToPlants = () => {
         plantsColRef.current.scrollIntoView({
             behavior: "smooth",
@@ -37,7 +37,7 @@ const QuickNavigation = memo(function QuickNavigation({ plantsColRef, groupsColR
             </a></li>
         </ul>
     );
-});
+};
 
 QuickNavigation.propTypes = {
     plantsColRef: PropTypes.oneOfType([
@@ -51,7 +51,7 @@ QuickNavigation.propTypes = {
 };
 
 // Top-left menu button contents
-const MenuOptions = memo(function MenuOptions({ archivedOverview, toggleEditing }) {
+const MenuOptions = ({ archivedOverview, toggleEditing }) => {
     // Get toggle theme option from context
     const { ToggleThemeOption } = useTheme();
 
@@ -84,7 +84,7 @@ const MenuOptions = memo(function MenuOptions({ archivedOverview, toggleEditing 
                 </>
             );
     }
-});
+};
 
 MenuOptions.propTypes = {
     archivedOverview: PropTypes.bool.isRequired,
@@ -165,13 +165,6 @@ function App() {
     const plantsColRef = useRef(null);
     const groupsColRef = useRef(null);
 
-    // Handler for edit option in top-left dropdown
-    // Toggle editing state, remove focus (closes dropdown)
-    const toggleEditing = useCallback(() => {
-        setEditing(!editing);
-        document.activeElement.blur();
-    }, []);
-
     // Handler for delete button that appears while editing
     const handleDelete = () => {
         const selectedPlants = getSelectedPlants();
@@ -230,20 +223,38 @@ function App() {
         setEditing(false);
     };
 
+    // Top left corner dropdown options
+    const DropdownMenuOptions = useMemo(() => {
+        // Toggle editing state, remove focus (closes dropdown)
+        const toggleEditing = () => {
+            setEditing(!editing);
+            document.activeElement.blur();
+        };
+
+        return (
+            <MenuOptions
+                archivedOverview={archivedOverview}
+                toggleEditing={toggleEditing}
+            />
+        );
+    }, [editing]);
+
+    // Quick navigation dropdown shown when title is clicked (mobile layout)
+    const TitleQuickNavigation = useMemo(() => {
+        return (
+            <QuickNavigation
+                plantsColRef={plantsColRef}
+                groupsColRef={groupsColRef}
+            />
+        );
+    }, [])
+
     return (
         <div className="container flex flex-col min-h-screen mx-auto pb-16">
             <Navbar
-                menuOptions={<MenuOptions
-                    archivedOverview={archivedOverview}
-                    toggleEditing={toggleEditing}
-                />}
+                menuOptions={DropdownMenuOptions}
                 title={archivedOverview ? "Archived" : "Plant Overview"}
-                titleOptions={stackedColumns ? (
-                    <QuickNavigation
-                        plantsColRef={plantsColRef}
-                        groupsColRef={groupsColRef}
-                    />
-                ) : null}
+                titleOptions={stackedColumns ? TitleQuickNavigation : null}
             />
 
             <Layout

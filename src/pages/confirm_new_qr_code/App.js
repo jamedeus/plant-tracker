@@ -1,4 +1,4 @@
-import React, { useEffect, memo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { sendPostRequest, parseDomContext } from 'src/util';
 import Navbar from 'src/components/Navbar';
@@ -25,7 +25,7 @@ const DropdownOptions = () => {
 };
 
 // Navbar title dropdown contents
-const Details = memo(function Details({ type, instance }) {
+const Details = ({ type, instance }) => {
     return (
         <div className="details-card">
             <div className="card-body">
@@ -44,7 +44,7 @@ const Details = memo(function Details({ type, instance }) {
             </div>
         </div>
     );
-});
+};
 
 Details.propTypes = {
     type: PropTypes.string.isRequired,
@@ -133,16 +133,22 @@ function App() {
         }
     };
 
+    // Top left corner dropdown options
+    const DropdownMenuOptions = useMemo(() => {
+        return <DropdownOptions />;
+    }, []);
+
+    // Plant/group details card shown when title is clicked
+    const DetailsDropdown = useMemo(() => {
+        return <Details type={type} instance={instance} />;
+    }, [])
+
     return (
         <div className="container flex flex-col mx-auto h-screen">
             <Navbar
-                menuOptions={
-                    <DropdownOptions />
-                }
+                menuOptions={DropdownMenuOptions}
                 title={instance.display_name}
-                titleOptions={
-                    <Details type={type} instance={instance} />
-                }
+                titleOptions={DetailsDropdown}
             />
             <Layout
                 type={type}

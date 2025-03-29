@@ -27,7 +27,7 @@ const DropdownButton = memo(function DropdownButton() {
 // Optional titleOptions param will be shown in dropdown when title is clicked
 // Both option params must be list of <li> elements
 // Optional onOpenMenu param is a function called when top-left dropdown opened
-const Navbar = ({ menuOptions, onOpenMenu, title, titleOptions }) => {
+const Navbar = memo(function Navbar({ menuOptions, onOpenMenu, title, titleOptions }) {
     // Create refs for navbar and title text (used to read widths)
     const navbarRef = useRef(null);
     const titleRef = useRef(null);
@@ -126,7 +126,7 @@ const Navbar = ({ menuOptions, onOpenMenu, title, titleOptions }) => {
             <div className="justify-end min-w-12"></div>
         </div>
     );
-};
+});
 
 Navbar.propTypes = {
     menuOptions: PropTypes.node,
