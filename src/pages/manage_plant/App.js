@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useMemo, memo } from 'react';
 import PropTypes from 'prop-types';
 import { localToUTC, timestampToDateString } from 'src/timestampUtils';
 import { sendPostRequest, parseDomContext } from 'src/util';
@@ -27,7 +27,7 @@ import Timeline from './Timeline';
 import { TimelineProvider } from './TimelineContext';
 import { faPlus, faBan, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 
-const EventButtons = ({ events, addEvent }) => {
+const EventButtons = memo(function EventButtons({ lastWatered, lastFertilized, addEvent }) {
     // Create ref to access new event datetime input
     const eventTimeInput = useRef(null);
 
@@ -36,13 +36,13 @@ const EventButtons = ({ events, addEvent }) => {
             <span className="text-lg">
                 <LastEventTime
                     text="watered"
-                    timestamp={events.water[0]}
+                    timestamp={lastWatered}
                 />
             </span>
             <span className="text-lg">
                 <LastEventTime
                     text="fertilized"
-                    timestamp={events.fertilize[0]}
+                    timestamp={lastFertilized}
                 />
             </span>
             <DatetimeInput inputRef={eventTimeInput} />
@@ -68,10 +68,11 @@ const EventButtons = ({ events, addEvent }) => {
             </div>
         </div>
     );
-};
+});
 
 EventButtons.propTypes = {
-    events: PropTypes.object.isRequired,
+    lastWatered: PropTypes.string.isRequired,
+    lastFertilized: PropTypes.string.isRequired,
     addEvent: PropTypes.func.isRequired
 };
 
@@ -306,7 +307,7 @@ function App() {
 
     // Handler for water and fertilize buttons
     // Takes event type, creates event in database, adds timestamp to state
-    const addEvent = async (eventType, timestamp) => {
+    const addEvent = useCallback(async (eventType, timestamp) => {
         const payload = {
             plant_id: plant.uuid,
             event_type: eventType,
@@ -334,7 +335,7 @@ function App() {
                 openErrorModal(JSON.stringify(error));
             }
         }
-    };
+    }, []);
 
     // Takes timestamp and eventType, removes timestamp from events state
     const removeEvent = (timestamp, eventType) => {
@@ -377,7 +378,11 @@ function App() {
                     Plant Archived
                 </div>
             ) : (
-                <EventButtons events={events} addEvent={addEvent} />
+                <EventButtons
+                    lastWatered={events.water[0]}
+                    lastFertilized={events.fertilize[0]}
+                    addEvent={addEvent}
+                />
             )}
 
             <EventCalendar formattedEvents={formattedEvents} />
