@@ -32,24 +32,24 @@ const getRelativeTimeString = (timestamp) => {
     }
 };
 
-const TimelineTimestamp = memo(function TimelineTimestamp({ timestamp }) {
+const TimelineTimestamp = memo(function TimelineTimestamp({ dateKey }) {
     return (
         <div
             className="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
-            data-date={timestamp}
+            data-date={dateKey}
         >
             <span className="text-sm md:text-lg my-auto md:mt-auto md:mb-0">
-                {getRelativeTimeString(timestamp)}
+                {getRelativeTimeString(dateKey)}
             </span>
             <span className="hidden md:block text-sm mb-auto">
-                {DateTime.fromISO(timestamp).toFormat('MMM dd, yyyy')}
+                {DateTime.fromISO(dateKey).toFormat('MMM dd, yyyy')}
             </span>
         </div>
     );
 });
 
 TimelineTimestamp.propTypes = {
-    timestamp: PropTypes.string.isRequired
+    dateKey: PropTypes.string.isRequired
 };
 
 const eventIconMap = {
@@ -72,20 +72,20 @@ EventMarker.propTypes = {
     eventType: PropTypes.string.isRequired
 };
 
-// Takes YYYY-MM-DD timestamp, arrays of events/photos/notes, and archived bool
+// Takes YYYY-MM-DD dateKey, arrays of events/photos/notes, and archived bool
 // If optional sectionRefs object is passed a MonthDivider will be rendered
 // above the day section (passed for first day of each month)
-const TimelineDay = memo(function TimelineDay({ timestamp, events, photos, notes, archived, sectionRefs }) {
+const TimelineDay = memo(function TimelineDay({ dateKey, events, photos, notes, archived, sectionRefs }) {
     return (
         <>
             {/* Render MonthDivider if sectionRefs param was given */}
             {sectionRefs && (
                 <MonthDivider
-                    timestamp={timestamp}
+                    dateKey={dateKey}
                     sectionRefs={sectionRefs}
                 />
             )}
-            <TimelineTimestamp timestamp={timestamp} />
+            <TimelineTimestamp dateKey={dateKey} />
             <div className="flex flex-col bg-neutral rounded-xl p-2 md:p-4">
                 <div className="flex flex-row flex-wrap">
                     {events.map((e) => (
@@ -121,7 +121,7 @@ const TimelineDay = memo(function TimelineDay({ timestamp, events, photos, notes
 });
 
 TimelineDay.propTypes = {
-    timestamp: PropTypes.string.isRequired,
+    dateKey: PropTypes.string.isRequired,
     events: PropTypes.array.isRequired,
     notes: PropTypes.array.isRequired,
     photos: PropTypes.array.isRequired,
@@ -248,8 +248,8 @@ NoteCollapse.propTypes = {
 };
 
 // Takes YYYY-MM-DD string
-const MonthDivider = memo(function MonthDivider({ timestamp, sectionRefs }) {
-    const yearMonth = timestamp.slice(0, 7);
+const MonthDivider = memo(function MonthDivider({ dateKey, sectionRefs }) {
+    const yearMonth = dateKey.slice(0, 7);
     return (
         <div
             className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
@@ -261,7 +261,7 @@ const MonthDivider = memo(function MonthDivider({ timestamp, sectionRefs }) {
 });
 
 MonthDivider.propTypes = {
-    timestamp: PropTypes.string.isRequired,
+    dateKey: PropTypes.string.isRequired,
     sectionRefs: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.instanceOf(Object) }),
@@ -464,26 +464,26 @@ const Timeline = memo(function Timeline({ archived }) {
             />
             {dayKeys.length > 0 ? (
                 <div className="grid grid-cols-[min-content_1fr] gap-4 md:gap-8">
-                    {dayKeys.map((timestamp, index) => {
-                        // Slice YYYY-MM from timestamp, truncate day
-                        const yearMonth = timestamp.slice(0, 7);
+                    {dayKeys.map((dateKey, index) => {
+                        // Slice YYYY-MM from dateKey, truncate day
+                        const yearMonth = dateKey.slice(0, 7);
 
                         // Render month divider above day unless yearMonth of
                         // the previous day is identical
                         let monthDivider = true;
                         if (index > 0) {
-                            const prevTimestamp = dayKeys[index - 1];
-                            const prevYearMonth = prevTimestamp.slice(0, 7);
+                            const prevDateKey = dayKeys[index - 1];
+                            const prevYearMonth = prevDateKey.slice(0, 7);
                             monthDivider = yearMonth !== prevYearMonth;
                         }
 
                         return (
                             <TimelineDay
-                                key={timestamp}
-                                timestamp={timestamp}
-                                events={timelineDays[timestamp].events}
-                                notes={timelineDays[timestamp].notes}
-                                photos={timelineDays[timestamp].photos}
+                                key={dateKey}
+                                dateKey={dateKey}
+                                events={timelineDays[dateKey].events}
+                                notes={timelineDays[dateKey].notes}
+                                photos={timelineDays[dateKey].photos}
                                 archived={archived}
                                 sectionRefs={monthDivider ? sectionRefs : null}
                             />

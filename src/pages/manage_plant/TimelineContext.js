@@ -11,10 +11,10 @@ const compareEvents = (array1, array2) => {
         array1.every((value, index) => value === array2[index]);
 };
 
-// Takes timelineSlice state and new YYYY-MM-DD timestamp
+// Takes timelineSlice state and new YYYY-MM-DD dateKey
 // Adds month and year to navigationOptions if not already present
-function addNavigationOption(state, timestamp) {
-    const [year, month] = timestamp.split('-');
+function addNavigationOption(state, dateKey) {
+    const [year, month] = dateKey.split('-');
     if (!state.navigationOptions[year]) {
         state.navigationOptions[year] = [];
     }
@@ -24,11 +24,11 @@ function addNavigationOption(state, timestamp) {
     }
 }
 
-// Takes timelineSlice state and removed YYYY-MM-DD timestamp
+// Takes timelineSlice state and removed YYYY-MM-DD dateKey
 // Removes month and year from navigationOptions if there are no days left in
 // timelineDays in the same month and year
-function removeNavigationOption(state, timestamp) {
-    const [year, month] = timestamp.split('-');
+function removeNavigationOption(state, dateKey) {
+    const [year, month] = dateKey.split('-');
     // Rmove month if no timelineDays have the same year and month
     if (!Object.keys(state.timelineDays).filter(
         datestring => datestring.startsWith(`${year}-${month}`)
@@ -62,42 +62,42 @@ const timelineSlice = createSlice({
             const formattedEvents = action.payload;
 
             // Copy new events from formattedEvents to timelineDays
-            Object.keys(formattedEvents).forEach((timestamp) => {
-                // Add new timestamp key
-                if (!state.timelineDays[timestamp]) {
-                    state.timelineDays[timestamp] = {
-                        events: [ ...formattedEvents[timestamp].events ],
+            Object.keys(formattedEvents).forEach((dateKey) => {
+                // Add new dateKey if missing
+                if (!state.timelineDays[dateKey]) {
+                    state.timelineDays[dateKey] = {
+                        events: [ ...formattedEvents[dateKey].events ],
                         notes: [],
                         photos: []
                     };
-                    // Add navigationOption if first timestamp in year + month
-                    addNavigationOption(state, timestamp);
-                // Add new events to existing timestamp key
+                    // Add navigationOption if first dateKey in year + month
+                    addNavigationOption(state, dateKey);
+                // Add new events to existing dateKey
                 } else if (!compareEvents(
-                    state.timelineDays[timestamp].events,
-                    formattedEvents[timestamp].events
+                    state.timelineDays[dateKey].events,
+                    formattedEvents[dateKey].events
                 )) {
-                    state.timelineDays[timestamp] = {
-                        ...state.timelineDays[timestamp],
-                        events: [ ...formattedEvents[timestamp].events ]
+                    state.timelineDays[dateKey] = {
+                        ...state.timelineDays[dateKey],
+                        events: [ ...formattedEvents[dateKey].events ]
                     };
                 }
             });
 
             // Remove events that no longer exist
-            Object.keys(state.timelineDays).forEach((timestamp) => {
-                if (!Object.keys(formattedEvents).includes(timestamp)) {
+            Object.keys(state.timelineDays).forEach((dateKey) => {
+                if (!Object.keys(formattedEvents).includes(dateKey)) {
                     // Clear events array if not already empty
-                    if (state.timelineDays[timestamp].events.length) {
-                        state.timelineDays[timestamp].events = [];
+                    if (state.timelineDays[dateKey].events.length) {
+                        state.timelineDays[dateKey].events = [];
                     }
                     // Remove whole day section if no notes or photos
-                    if (!state.timelineDays[timestamp].notes.length &&
-                        !state.timelineDays[timestamp].photos.length
+                    if (!state.timelineDays[dateKey].notes.length &&
+                        !state.timelineDays[dateKey].photos.length
                     ) {
-                        delete state.timelineDays[timestamp];
+                        delete state.timelineDays[dateKey];
                         // Remove navigationOption if no more content in month
-                        removeNavigationOption(state, timestamp);
+                        removeNavigationOption(state, dateKey);
                     }
                 }
             });
@@ -107,7 +107,7 @@ const timelineSlice = createSlice({
         noteAdded(state, action) {
             const note = action.payload;
             const dateKey = timestampToDateString(note.timestamp);
-            // Add new timestamp key if missing
+            // Add new dateKey if missing
             if (!state.timelineDays[dateKey]) {
                 state.timelineDays[dateKey] = {
                     events: [],
@@ -164,7 +164,7 @@ const timelineSlice = createSlice({
             // Add new URLs to timelineDays state used to render timeline
             photos.forEach((photo) => {
                 const dateKey = timestampToDateString(photo.created);
-                // Add new timestamp key if missing
+                // Add new dateKey if missing
                 if (!state.timelineDays[dateKey]) {
                     state.timelineDays[dateKey] = {
                         events: [],
