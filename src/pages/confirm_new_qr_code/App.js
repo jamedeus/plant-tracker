@@ -9,48 +9,6 @@ import { openErrorModal } from 'src/components/ErrorModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
 
-// Top left dropdown contents
-const DropdownOptions = () => {
-    // Get toggle theme option from context
-    const { ToggleThemeOption } = useTheme();
-
-    return (
-        <>
-            <li><a onClick={() => window.location.href = "/"}>
-                Overview
-            </a></li>
-            <ToggleThemeOption />
-        </>
-    );
-};
-
-// Navbar title dropdown contents
-const Details = ({ type, instance }) => {
-    return (
-        <div className="details-card">
-            <div className="card-body">
-                {type === 'plant' ? (
-                    <PlantDetails
-                        species={instance.species}
-                        pot_size={instance.pot_size}
-                        description={instance.description}
-                    />
-                ) : (
-                    <GroupDetails
-                        location={instance.location}
-                        description={instance.description}
-                    />
-                )}
-            </div>
-        </div>
-    );
-};
-
-Details.propTypes = {
-    type: PropTypes.string.isRequired,
-    instance: PropTypes.object.isRequired
-};
-
 const Layout = ({ type, thumbnailUrl, handleConfirm }) => {
     return (
         <div className="flex flex-col gap-8 text-center my-auto">
@@ -116,6 +74,9 @@ function App() {
         };
     }, []);
 
+    // Get toggle theme option from context
+    const { ToggleThemeOption } = useTheme();
+
     const handleConfirm = async () => {
         const response = await sendPostRequest(
             '/change_uuid',
@@ -135,12 +96,36 @@ function App() {
 
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => {
-        return <DropdownOptions />;
+        return (
+            <>
+                <li><a onClick={() => window.location.href = "/"}>
+                    Overview
+                </a></li>
+                <ToggleThemeOption />
+            </>
+        );
     }, []);
 
     // Plant/group details card shown when title is clicked
     const DetailsDropdown = useMemo(() => {
-        return <Details type={type} instance={instance} />;
+        return (
+            <div className="details-card">
+                <div className="card-body">
+                    {type === 'plant' ? (
+                        <PlantDetails
+                            species={instance.species}
+                            pot_size={instance.pot_size}
+                            description={instance.description}
+                        />
+                    ) : (
+                        <GroupDetails
+                            location={instance.location}
+                            description={instance.description}
+                        />
+                    )}
+                </div>
+            </div>
+        );
     }, []);
 
     return (

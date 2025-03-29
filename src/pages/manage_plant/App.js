@@ -76,92 +76,6 @@ EventButtons.propTypes = {
     addEvent: PropTypes.func.isRequired
 };
 
-const DropdownOptions = ({ plant }) => {
-    // Get toggle theme option from context
-    const { ToggleThemeOption } = useTheme();
-
-    return (
-        <>
-            <li><a onClick={() => window.location.href = "/"}>
-                Overview
-            </a></li>
-            {!plant.archived && (
-                <>
-                    {plant.group &&
-                        <li><a href={"/manage/" + plant.group.uuid}>
-                            Go to group
-                        </a></li>
-                    }
-                    <li><a onClick={openDefaultPhotoModal}>
-                        Set default photo
-                    </a></li>
-                    <li><a onClick={openChangeQrModal}>
-                        Change QR code
-                    </a></li>
-                </>
-            )}
-            <ToggleThemeOption />
-        </>
-    );
-};
-
-DropdownOptions.propTypes = {
-    plant: PropTypes.object.isRequired
-};
-
-// Contents of dropdown shown when plant name clicked in header
-const DetailsDropdown = ({ plant, handleRemoveGroup }) => {
-    return (
-        <DetailsCard>
-            <div className="flex flex-col">
-                <div className="divider font-bold mt-0">Group</div>
-                {/* Group details if in group, add group button if not */}
-                {plant.group ? (
-                    <div className="flex flex-col text-center">
-                        <a
-                            className="font-bold text-lg"
-                            href={`/manage/${plant.group.uuid}`}
-                        >
-                            { plant.group.name }
-                        </a>
-                        <div className="flex gap-2 mx-auto mt-2">
-                            <IconButton
-                                onClick={handleRemoveGroup}
-                                title='Remove plant from group'
-                                icon={faBan}
-                            />
-                            <IconButton
-                                href={`/manage/${plant.group.uuid}`}
-                                title='Go to group page'
-                                icon={faUpRightFromSquare}
-                            />
-                        </div>
-                    </div>
-                ) : (
-                    <div className="mx-auto mt-2">
-                        <IconButton
-                            onClick={openGroupModal}
-                            title='Add plant to group'
-                            icon={faPlus}
-                        />
-                    </div>
-                )}
-            </div>
-            <div className="divider font-bold">Details</div>
-            <PlantDetails
-                species={plant.species}
-                pot_size={plant.pot_size}
-                description={plant.description}
-            />
-        </DetailsCard>
-    );
-};
-
-DetailsDropdown.propTypes = {
-    plant: PropTypes.object.isRequired,
-    handleRemoveGroup: PropTypes.func.isRequired
-};
-
 // Takes object with event type keys, array of timestamps as value.
 // Converts to object with date string keys, each containing an object with
 // "events", "notes", and "photos" keys used to populate timeline
@@ -235,6 +149,9 @@ function App() {
 
     // Create ref to access edit details form
     const editDetailsRef = useRef(null);
+
+    // Get toggle theme option from context
+    const { ToggleThemeOption } = useTheme();
 
     // Called after successful repot_plant API call, takes RepotEvent params
     const handleRepot = (newPotSize, repotTimestamp) => {
@@ -350,16 +267,76 @@ function App() {
 
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => {
-        return <DropdownOptions plant={plant} />;
+        return (
+            <>
+                <li><a onClick={() => window.location.href = "/"}>
+                    Overview
+                </a></li>
+                {!plant.archived && (
+                    <>
+                        {plant.group &&
+                            <li><a href={"/manage/" + plant.group.uuid}>
+                                Go to group
+                            </a></li>
+                        }
+                        <li><a onClick={openDefaultPhotoModal}>
+                            Set default photo
+                        </a></li>
+                        <li><a onClick={openChangeQrModal}>
+                            Change QR code
+                        </a></li>
+                    </>
+                )}
+                <ToggleThemeOption />
+            </>
+        );
     }, [plant]);
 
     // Plant details card shown when title is clicked
     const PlantDetailsDropdown = useMemo(() => {
         return (
-            <DetailsDropdown
-                plant={plant}
-                handleRemoveGroup={handleRemoveGroup}
-            />
+            <DetailsCard>
+                <div className="flex flex-col">
+                    <div className="divider font-bold mt-0">Group</div>
+                    {/* Group details if in group, add group button if not */}
+                    {plant.group ? (
+                        <div className="flex flex-col text-center">
+                            <a
+                                className="font-bold text-lg"
+                                href={`/manage/${plant.group.uuid}`}
+                            >
+                                { plant.group.name }
+                            </a>
+                            <div className="flex gap-2 mx-auto mt-2">
+                                <IconButton
+                                    onClick={handleRemoveGroup}
+                                    title='Remove plant from group'
+                                    icon={faBan}
+                                />
+                                <IconButton
+                                    href={`/manage/${plant.group.uuid}`}
+                                    title='Go to group page'
+                                    icon={faUpRightFromSquare}
+                                />
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="mx-auto mt-2">
+                            <IconButton
+                                onClick={openGroupModal}
+                                title='Add plant to group'
+                                icon={faPlus}
+                            />
+                        </div>
+                    )}
+                </div>
+                <div className="divider font-bold">Details</div>
+                <PlantDetails
+                    species={plant.species}
+                    pot_size={plant.pot_size}
+                    description={plant.description}
+                />
+            </DetailsCard>
         );
     }, [plant]);
 

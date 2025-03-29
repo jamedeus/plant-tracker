@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
-import PropTypes from 'prop-types';
 import Navbar from 'src/components/Navbar';
 import { useTheme } from 'src/context/ThemeContext';
 import { sendPostRequest, parseDomContext } from 'src/util';
@@ -7,89 +6,6 @@ import FloatingFooter from 'src/components/FloatingFooter';
 import PrintModal, { openPrintModal } from './PrintModal';
 import { useIsBreakpointActive } from 'src/useBreakpoint';
 import Layout from './Layout';
-
-// Dropdown with links to jump to plant or group columns
-// Only rendered on mobile layout (both columns always visible on desktop)
-const QuickNavigation = ({ plantsColRef, groupsColRef }) => {
-    const jumpToPlants = () => {
-        plantsColRef.current.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
-        document.activeElement.blur();
-    };
-
-    const jumpToGroups = () => {
-        groupsColRef.current.scrollIntoView({
-            behavior: "smooth",
-            block: "start"
-        });
-        document.activeElement.blur();
-    };
-
-    return (
-        <ul tabIndex={0} className="dropdown-options mt-3 w-24">
-            <li className="mx-auto"><a onClick={jumpToPlants}>
-                Plants
-            </a></li>
-            <li className="mx-auto"><a onClick={jumpToGroups}>
-                Groups
-            </a></li>
-        </ul>
-    );
-};
-
-QuickNavigation.propTypes = {
-    plantsColRef: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-    ]).isRequired,
-    groupsColRef: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-    ]).isRequired
-};
-
-// Top-left menu button contents
-const MenuOptions = ({ archivedOverview, toggleEditing }) => {
-    // Get toggle theme option from context
-    const { ToggleThemeOption } = useTheme();
-
-    switch(archivedOverview) {
-        case(true):
-            return (
-                <>
-                    <li><a onClick={toggleEditing}>
-                        Edit
-                    </a></li>
-                    <ToggleThemeOption />
-                    <li><a href='/'>
-                        Main overview
-                    </a></li>
-                </>
-            );
-        case(false):
-            return (
-                <>
-                    <li><a onClick={toggleEditing}>
-                        Edit
-                    </a></li>
-                    <li><a onClick={openPrintModal}>
-                        Print QR Codes
-                    </a></li>
-                    <ToggleThemeOption />
-                    <li><a href='/archived'>
-                        Archived plants
-                    </a></li>
-                </>
-            );
-    }
-};
-
-MenuOptions.propTypes = {
-    archivedOverview: PropTypes.bool.isRequired,
-    toggleEditing: PropTypes.func.isRequired
-};
 
 function App() {
     // Load context set by django template
@@ -165,6 +81,9 @@ function App() {
     const plantsColRef = useRef(null);
     const groupsColRef = useRef(null);
 
+    // Get toggle theme option from context
+    const { ToggleThemeOption } = useTheme();
+
     // Handler for delete button that appears while editing
     const handleDelete = () => {
         const selectedPlants = getSelectedPlants();
@@ -231,21 +150,65 @@ function App() {
             document.activeElement.blur();
         };
 
-        return (
-            <MenuOptions
-                archivedOverview={archivedOverview}
-                toggleEditing={toggleEditing}
-            />
-        );
+        switch(archivedOverview) {
+            case(true):
+                return (
+                    <>
+                        <li><a onClick={toggleEditing}>
+                            Edit
+                        </a></li>
+                        <ToggleThemeOption />
+                        <li><a href='/'>
+                            Main overview
+                        </a></li>
+                    </>
+                );
+            case(false):
+                return (
+                    <>
+                        <li><a onClick={toggleEditing}>
+                            Edit
+                        </a></li>
+                        <li><a onClick={openPrintModal}>
+                            Print QR Codes
+                        </a></li>
+                        <ToggleThemeOption />
+                        <li><a href='/archived'>
+                            Archived plants
+                        </a></li>
+                    </>
+                );
+        }
     }, [editing]);
 
-    // Quick navigation dropdown shown when title is clicked (mobile layout)
+    // Dropdown with links to jump to plant or group columns
+    // Only rendered on mobile layout (both columns always visible on desktop)
     const TitleQuickNavigation = useMemo(() => {
+        const jumpToPlants = () => {
+            plantsColRef.current.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+            document.activeElement.blur();
+        };
+
+        const jumpToGroups = () => {
+            groupsColRef.current.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+            document.activeElement.blur();
+        };
+
         return (
-            <QuickNavigation
-                plantsColRef={plantsColRef}
-                groupsColRef={groupsColRef}
-            />
+            <ul tabIndex={0} className="dropdown-options mt-3 w-24">
+                <li className="mx-auto"><a onClick={jumpToPlants}>
+                    Plants
+                </a></li>
+                <li className="mx-auto"><a onClick={jumpToGroups}>
+                    Groups
+                </a></li>
+            </ul>
         );
     }, []);
 

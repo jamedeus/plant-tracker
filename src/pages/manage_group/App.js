@@ -81,47 +81,6 @@ PlantEventButtons.propTypes = {
     handleFertilize: PropTypes.func.isRequired
 };
 
-// Top-left menu button contents
-const MenuOptions = () => {
-    // Get toggle theme option from context
-    const { ToggleThemeOption } = useTheme();
-
-    return (
-        <>
-            <li><a onClick={() => window.location.href = "/"}>
-                Overview
-            </a></li>
-            <li><a onClick={openAddPlantsModal}>
-                Add plants
-            </a></li>
-            <li><a onClick={openRemovePlantsModal}>
-                Remove plants
-            </a></li>
-            <li><a onClick={openChangeQrModal}>
-                Change QR code
-            </a></li>
-            <ToggleThemeOption />
-        </>
-    );
-};
-
-// Contents of dropdown shown when group name clicked in header
-const DetailsDropdown = ({ location, description }) => {
-    return (
-        <DetailsCard>
-            <GroupDetails
-                location={location}
-                description={description}
-            />
-        </DetailsCard>
-    );
-};
-
-DetailsDropdown.propTypes = {
-    location: PropTypes.string,
-    description: PropTypes.string
-};
-
 function App() {
     // Load context set by django template
     const [group, setGroup] = useState(() => {
@@ -168,6 +127,9 @@ function App() {
             window.removeEventListener('pageshow', handleBackButton);
         };
     }, []);
+
+    // Get toggle theme option from context
+    const { ToggleThemeOption } = useTheme();
 
     // Create state to track whether selecting plants from list
     const [selectingPlants, setSelectingPlants] = useState(false);
@@ -341,16 +303,34 @@ function App() {
 
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => {
-        return <MenuOptions />;
+        return (
+            <>
+                <li><a onClick={() => window.location.href = "/"}>
+                    Overview
+                </a></li>
+                <li><a onClick={openAddPlantsModal}>
+                    Add plants
+                </a></li>
+                <li><a onClick={openRemovePlantsModal}>
+                    Remove plants
+                </a></li>
+                <li><a onClick={openChangeQrModal}>
+                    Change QR code
+                </a></li>
+                <ToggleThemeOption />
+            </>
+        );
     }, []);
 
     // Group details card shown when title is clicked
     const GroupDetailsDropdown = useMemo(() => {
         return (
-            <DetailsDropdown
-                location={group.location}
-                description={group.description}
-            />
+            <DetailsCard>
+                <GroupDetails
+                    location={group.location}
+                    description={group.description}
+                />
+            </DetailsCard>
         );
     }, [group]);
 

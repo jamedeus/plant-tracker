@@ -9,20 +9,6 @@ import GroupDetailsForm from 'src/forms/GroupDetailsForm';
 import PlantDetailsForm from 'src/forms/PlantDetailsForm';
 import { openErrorModal } from 'src/components/ErrorModal';
 
-const DropdownOptions = () => {
-    // Get toggle theme option from context
-    const { ToggleThemeOption } = useTheme();
-
-    return (
-        <>
-            <li><a onClick={() => window.location.href = "/"}>
-                Overview
-            </a></li>
-            <ToggleThemeOption />
-        </>
-    );
-};
-
 const Form = memo(function Form({ setVisibleForm, plantFormRef, groupFormRef }) {
     return (
         <Tab.Group onChange={(index) => setVisibleForm(index)}>
@@ -93,6 +79,9 @@ function App() {
         };
     }, []);
 
+    // Get toggle theme option from context
+    const { ToggleThemeOption } = useTheme();
+
     // Track visible form (changed by tabs, used to get correct endpoint)
     // Set to 0 for plant form, 1 for group form
     const [visibleForm, setVisibleForm] = useState(0);
@@ -133,7 +122,14 @@ function App() {
 
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => {
-        return <DropdownOptions />;
+        return (
+            <>
+                <li><a onClick={() => window.location.href = "/"}>
+                    Overview
+                </a></li>
+                <ToggleThemeOption />
+            </>
+        );
     }, []);
 
     return (
