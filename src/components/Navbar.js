@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, memo } from 'react';
+import React, { useState, useLayoutEffect, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 
 // Button with icon, used for dropdown and hidden placeholder on right side
@@ -39,7 +39,7 @@ const Navbar = memo(function Navbar({ menuOptions, onOpenMenu, title, titleOptio
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         // Takes navbar and dropdown button elements, returns max title width
         const getMaxWidth = (navbar, button) => {
             // Full width minus button, hidden button, and 2rem horizontal padding
