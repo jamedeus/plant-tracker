@@ -1,14 +1,11 @@
-import React, { useRef, useState, useCallback, Fragment, memo } from 'react';
+import React, { useRef, useState, useCallback, memo } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 import { sendPostRequest } from 'src/util';
 import { timestampToReadable } from 'src/timestampUtils';
 import { openErrorModal } from 'src/components/ErrorModal';
-import {
-    ChevronLeftIcon,
-    ChevronRightIcon,
-    XMarkIcon
-} from '@heroicons/react/16/solid';
+import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/16/solid';
+import CloseButtonIcon from 'src/components/CloseButtonIcon';
 import clsx from 'clsx';
 import { useSelector, useDispatch } from 'react-redux';
 import { photosDeleted } from './TimelineContext';
@@ -29,6 +26,14 @@ export const closeDeletePhotosModal = () => {
     modalRef.current.close();
 };
 
+const NextPhotoIcon = memo(function NextPhotoIcon() {
+    return <ChevronRightIcon className="w-6 h-6" />;
+});
+
+const PrevPhotoIcon = memo(function PrevPhotoIcon() {
+    return <ChevronLeftIcon className="w-6 h-6" />;
+});
+
 // Renders single photo slide with next, prev, and select buttons
 const PhotoSlide = memo(function PhotoSlide({ photo, nextPhotoLink, prevPhotoLink, selected, toggle }) {
     return (
@@ -46,11 +51,11 @@ const PhotoSlide = memo(function PhotoSlide({ photo, nextPhotoLink, prevPhotoLin
                     'absolute flex justify-between transform -translate-y-1/2',
                     'left-5 right-5 top-1/2'
                 )}>
-                    <a href={prevPhotoLink} className="btn btn-circle no-animation">
-                        <ChevronLeftIcon className="w-6 h-6" />
+                    <a href={prevPhotoLink} className="btn btn-circle">
+                        <PrevPhotoIcon />
                     </a>
-                    <a href={nextPhotoLink} className="btn btn-circle no-animation">
-                        <ChevronRightIcon className="w-6 h-6" />
+                    <a href={nextPhotoLink} className="btn btn-circle">
+                        <NextPhotoIcon />
                     </a>
                 </div>
                 {/* Select button floats over photo */}
@@ -81,13 +86,13 @@ PhotoSlide.propTypes = {
 // Rendered on confirm delete screen, allows user to unselect photos
 const ConfirmDeleteRow = memo(function ConfirmDeleteRow({ photo, unselectPhoto }) {
     return (
-        <Fragment>
+        <>
             <div className="my-auto">
                 <button
                     className="btn-close"
                     onClick={() => unselectPhoto(photo)}
                 >
-                    <XMarkIcon className="w-8 h-8" />
+                    <CloseButtonIcon />
                 </button>
             </div>
             <div className="m-auto">
@@ -96,7 +101,7 @@ const ConfirmDeleteRow = memo(function ConfirmDeleteRow({ photo, unselectPhoto }
                     className="rounded-lg max-h-20 md:max-h-32"
                 />
             </div>
-        </Fragment>
+        </>
     );
 });
 
@@ -132,9 +137,11 @@ const DeletePhotosModal = memo(function DeletePhotosModal({ plantID }) {
     }, []);
 
     // Remove selected photo button handler on confirmation page
-    const unselectPhoto = (photo) => {
-        setSelectedPhotos(selectedPhotos.filter(item => item !== photo));
-    };
+    const unselectPhoto = useCallback((photo) => {
+        setSelectedPhotos((prevSelectedPhotos) => {
+            return prevSelectedPhotos.filter(item => item !== photo);
+        });
+    }, []);
 
     // Delete button handler
     const deleteSelected = async () => {
@@ -233,7 +240,6 @@ const DeletePhotosModal = memo(function DeletePhotosModal({ plantID }) {
                     'max-h-half-screen overflow-y-scroll'
                 )}>
                     {selectedPhotos.map(photo => (
-                        // eslint-disable-next-line react/prop-types
                         <ConfirmDeleteRow
                             key={photo.key}
                             photo={photo}

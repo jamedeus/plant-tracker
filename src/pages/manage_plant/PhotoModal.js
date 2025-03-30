@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
 import Modal from 'src/components/Modal';
 import LoadingAnimation from 'src/components/LoadingAnimation';
-import { XMarkIcon } from '@heroicons/react/16/solid';
+import CloseButtonIcon from 'src/components/CloseButtonIcon';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { useDispatch } from 'react-redux';
 import { photosAdded } from './TimelineContext';
@@ -23,7 +23,7 @@ const Row = memo(function Row({ filename, removeFile }) {
                     className="btn-close"
                     onClick={() => removeFile(filename)}
                 >
-                    <XMarkIcon className="w-8 h-8" />
+                    <CloseButtonIcon />
                 </button>
             </td>
             <td className="text-lg leading-8 w-full text-center">

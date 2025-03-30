@@ -1,10 +1,6 @@
-import React, { useEffect, useImperativeHandle, forwardRef, useRef, memo } from 'react';
+import React, { useEffect, useImperativeHandle, forwardRef, useRef } from 'react';
 import PropTypes from 'prop-types';
-import { XMarkIcon } from '@heroicons/react/16/solid';
-
-const CloseButtonIcon = memo(function CloseButtonIcon() {
-    return <XMarkIcon className="w-8 h-8" />;
-});
+import CloseButtonIcon from 'src/components/CloseButtonIcon';
 
 // Reusable modal component with forwardRef that allows rendering contents
 // before modal is opened, can be closed with button or by clicking outside
