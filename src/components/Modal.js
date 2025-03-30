@@ -1,6 +1,10 @@
-import React, { useEffect, useImperativeHandle, forwardRef, useRef } from 'react';
+import React, { useEffect, useImperativeHandle, forwardRef, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import { XMarkIcon } from '@heroicons/react/16/solid';
+
+const CloseButtonIcon = memo(function CloseButtonIcon() {
+    return <XMarkIcon className="w-8 h-8" />;
+});
 
 // Reusable modal component with forwardRef that allows rendering contents
 // before modal is opened, can be closed with button or by clicking outside
@@ -41,7 +45,7 @@ const Modal = forwardRef(function Modal({ title, children, className='', onClose
             <div className={`modal-box text-center flex flex-col pt-4 ${className}`}>
                 <form method="dialog">
                     <button className="btn-close absolute right-4 top-4">
-                        <XMarkIcon className="w-8 h-8" />
+                        <CloseButtonIcon />
                     </button>
                 </form>
 
