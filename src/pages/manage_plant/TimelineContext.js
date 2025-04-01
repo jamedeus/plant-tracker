@@ -5,10 +5,27 @@ import { configureStore, createSlice } from '@reduxjs/toolkit';
 import { parseDomContext } from 'src/util';
 import { timestampToDateString } from 'src/timestampUtils';
 
-// Takes 2 arrays, returns True if contents are identical, otherwise False
-const compareEvents = (array1, array2) => {
-    return array1.length === array2.length &&
-        array1.every((value, index) => value === array2[index]);
+// Takes object with event type keys, array of timestamps as value.
+// Converts to object with date string keys, each containing an object with
+// "events", "notes", and "photos" keys used to populate timeline
+export const formatEvents = (events) => {
+    return Object.entries(events).reduce(
+        (acc, [eventType, eventDates]) => {
+            eventDates.forEach(date => {
+                const dateKey = timestampToDateString(date);
+                // Add new date key unless it already exists
+                if (!acc[dateKey]) {
+                    acc[dateKey] = {events: [], notes: [], photos: []};
+                }
+                // Add event to date key unless same type already exists
+                if (!acc[dateKey]['events'].includes(eventType)) {
+                    acc[dateKey]['events'].push(eventType);
+                }
+            });
+            return acc;
+        },
+        {}
+    );
 };
 
 // Takes timelineSlice state and new YYYY-MM-DD dateKey
@@ -66,50 +83,65 @@ function removeDateKeyIfEmpty(state, dateKey) {
 const timelineSlice = createSlice({
     name: 'timeline',
     initialState: {
+        events: {},
+        formattedEvents: {},
         timelineDays: {},
         photoUrls: [],
         navigationOptions: {}
     },
     reducers: {
-        // Takes formattedEvents, incrementally updates events in timelineDays
-        // Called by useEffect in TimelineProvider when formattedEvents changes
-        formattedEventsUpdated(state, action) {
-            const formattedEvents = action.payload;
+        // Takes object with timestamp and type keys, adds to events,
+        // formattedEvents, and timelineDays states
+        eventAdded(state, action) {
+            const newEvent = action.payload;
+            const dateKey = timestampToDateString(newEvent.timestamp);
+            state.events[newEvent.type].push(newEvent.timestamp);
+            state.events[newEvent.type].sort().reverse();
+            // Add new dateKey if missing
+            if (!state.formattedEvents[dateKey]) {
+                state.formattedEvents[dateKey] = {
+                    events: [ newEvent.type ],
+                    notes: [],
+                    photos: []
+                };
+                // Add navigationOption if first dateKey in year + month
+                addNavigationOption(state, dateKey);
+            // Add new events to existing dateKey
+            } else if (!state.formattedEvents[dateKey].events.includes(newEvent.type)) {
+                state.formattedEvents[dateKey].events.push(newEvent.type);
+            }
+            // Add new dateKey if missing
+            if (!state.timelineDays[dateKey]) {
+                state.timelineDays[dateKey] = {
+                    events: [ newEvent.type ],
+                    notes: [],
+                    photos: []
+                };
+                // Add navigationOption if first dateKey in year + month
+                addNavigationOption(state, dateKey);
+            // Add new events to existing dateKey
+            } else if (!state.timelineDays[dateKey].events.includes(newEvent.type)) {
+                state.timelineDays[dateKey].events.push(newEvent.type);
+            }
+        },
 
-            // Copy new events from formattedEvents to timelineDays
-            Object.keys(formattedEvents).forEach((dateKey) => {
-                // Add new dateKey if missing
-                if (!state.timelineDays[dateKey]) {
-                    state.timelineDays[dateKey] = {
-                        events: [ ...formattedEvents[dateKey].events ],
-                        notes: [],
-                        photos: []
-                    };
-                    // Add navigationOption if first dateKey in year + month
-                    addNavigationOption(state, dateKey);
-                // Add new events to existing dateKey
-                } else if (!compareEvents(
-                    state.timelineDays[dateKey].events,
-                    formattedEvents[dateKey].events
-                )) {
-                    state.timelineDays[dateKey] = {
-                        ...state.timelineDays[dateKey],
-                        events: [ ...formattedEvents[dateKey].events ]
-                    };
-                }
-            });
-
-            // Remove events that no longer exist
-            Object.keys(state.timelineDays).forEach((dateKey) => {
-                if (!Object.keys(formattedEvents).includes(dateKey)) {
-                    // Clear events array if not already empty
-                    if (state.timelineDays[dateKey].events.length) {
-                        state.timelineDays[dateKey].events = [];
-                    }
-                    // Remove whole day section if no notes or photos
-                    removeDateKeyIfEmpty(state, dateKey);
-                }
-            });
+        // Takes object with timestamp and type keys, removes from events,
+        // formattedEvents, and timelineDays states
+        eventDeleted(state, action) {
+            const deletedEvent = action.payload;
+            const dateKey = timestampToDateString(deletedEvent.timestamp);
+            state.events[deletedEvent.type].splice(
+                state.events[deletedEvent.type].indexOf(deletedEvent.timestamp),
+                1
+            );
+            state.formattedEvents[dateKey].events = state.formattedEvents[dateKey].events.filter(
+                event => event !== deletedEvent.type
+            );
+            state.timelineDays[dateKey].events = state.timelineDays[dateKey].events.filter(
+                event => event !== deletedEvent.type
+            );
+            // Remove timelineDays day if no content left
+            removeDateKeyIfEmpty(state, dateKey);
         },
 
         // Takes object with timestamp and text keys, adds to timelineDays state
@@ -223,9 +255,13 @@ function createTimelineStore(preloadedState) {
 
 // Simulate useContext provider so formattedEvents can be passed as prop and
 // used to build redux preloadedState
-export function TimelineProvider({ formattedEvents, children }) {
+export function TimelineProvider({ children }) {
     // Merges items from notes and photoUrls states into formattedEvents param
     const buildTimelineDays = () => {
+        const events = parseDomContext("events");
+
+        const formattedEvents = formatEvents(events);
+
         // Deep copy to avoid mutating upstream state
         const timelineDays = JSON.parse(JSON.stringify(formattedEvents));
 
@@ -267,6 +303,8 @@ export function TimelineProvider({ formattedEvents, children }) {
 
         // Return object with keys expected by timelineSlice preloadedState
         return {
+            events,
+            formattedEvents,
             timelineDays,
             photoUrls,
             navigationOptions
@@ -278,16 +316,6 @@ export function TimelineProvider({ formattedEvents, children }) {
         buildTimelineDays()
     ), []);
 
-    // Update timelineDays state incrementally when formattedEvents is modified
-    // (only render day with new/removed events)
-    useEffect(() => {
-        store.dispatch((dispatch) => {
-            dispatch(
-                timelineSlice.actions.formattedEventsUpdated(formattedEvents)
-            );
-        });
-    }, [formattedEvents, store]);
-
     return (
         <Provider store={store}>
             {children}
@@ -296,12 +324,13 @@ export function TimelineProvider({ formattedEvents, children }) {
 }
 
 TimelineProvider.propTypes = {
-    formattedEvents: PropTypes.object.isRequired,
     children: PropTypes.node
 };
 
 // Export individual action creators from slice
 export const {
+    eventAdded,
+    eventDeleted,
     noteAdded,
     noteEdited,
     noteDeleted,

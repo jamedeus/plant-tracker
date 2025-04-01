@@ -12,7 +12,7 @@ const mockNotes = [
 
 const TestComponent = () => {
     return (
-        <TimelineProvider formattedEvents={{}}>
+        <TimelineProvider>
             <NoteModal plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12' />
             <button onClick={() => openNoteModal()}>
                 Add New Note
@@ -29,6 +29,7 @@ describe('Add new note', () => {
 
     beforeAll(() => {
         // Create mock state objects (used by TimelineContext)
+        createMockContext('events', {});
         createMockContext('notes', mockNotes);
         createMockContext('photo_urls', []);
     });

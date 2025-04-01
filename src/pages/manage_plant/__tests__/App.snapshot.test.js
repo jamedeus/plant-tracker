@@ -1,6 +1,7 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import removeMockContext from 'src/testUtils/removeMockContext';
 import App from '../App';
+import { TimelineProvider } from '../TimelineContext';
 import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
 
@@ -27,7 +28,9 @@ describe('App', () => {
         // Render App, confirm matches snapshot
         const component = render(
             <PageWrapper>
-                <App />
+                <TimelineProvider>
+                    <App />
+                </TimelineProvider>
             </PageWrapper>
         );
         expect(component).toMatchSnapshot();
@@ -48,7 +51,9 @@ describe('App', () => {
         // Render App, confirm matches snapshot
         const component = render(
             <PageWrapper>
-                <App />
+                <TimelineProvider>
+                    <App />
+                </TimelineProvider>
             </PageWrapper>
         );
         expect(component).toMatchSnapshot();

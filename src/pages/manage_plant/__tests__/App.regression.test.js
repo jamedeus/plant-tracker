@@ -1,6 +1,7 @@
 import { fireEvent } from '@testing-library/react';
 import createMockContext from 'src/testUtils/createMockContext';
 import App from '../App';
+import { TimelineProvider } from '../TimelineContext';
 import { PageWrapper } from 'src/index';
 import { mockContextNoEvents } from './mockContext';
 
@@ -22,7 +23,9 @@ describe('App', () => {
         user = userEvent.setup();
         app = render(
             <PageWrapper>
-                <App />
+                <TimelineProvider>
+                    <App />
+                </TimelineProvider>
             </PageWrapper>
         );
     });

@@ -8,7 +8,7 @@ import { PageWrapper } from 'src/index';
 const TestComponent = () => {
     // Render app
     return (
-        <TimelineProvider formattedEvents={{}}>
+        <TimelineProvider>
             <PhotoModal plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12' />
             <button onClick={openPhotoModal}>
                 Open photo modal
@@ -22,6 +22,7 @@ describe('PhotoModal', () => {
 
     beforeAll(() => {
         // Create mock state objects (used by TimelineContext)
+        createMockContext('events', {});
         createMockContext('notes', []);
         createMockContext('photo_urls', []);
     });

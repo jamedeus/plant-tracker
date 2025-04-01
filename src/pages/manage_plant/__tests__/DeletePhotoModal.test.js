@@ -8,7 +8,7 @@ import { mockContext } from './mockContext';
 const TestComponent = () => {
     // Render app
     return (
-        <TimelineProvider formattedEvents={{}}>
+        <TimelineProvider>
             <DeletePhotosModal plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12' />
             <button onClick={openDeletePhotosModal}>
                 Open delete photos modal
@@ -22,6 +22,7 @@ describe('DeletePhotosModal', () => {
 
     beforeAll(() => {
         // Create mock state objects (used by TimelineContext)
+        createMockContext('events', {});
         createMockContext('notes', []);
         createMockContext('photo_urls', mockContext.photo_urls);
     });

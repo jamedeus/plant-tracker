@@ -1,6 +1,8 @@
+import createMockContext from 'src/testUtils/createMockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import EventHistoryModal, { openEventHistoryModal } from '../EventHistoryModal';
 import { PageWrapper } from 'src/index';
+import { TimelineProvider } from '../TimelineContext';
 import { mockContext } from './mockContext';
 
 /* eslint react/prop-types: 0 */
@@ -33,6 +35,13 @@ const TestComponent = ({ context }) => {
 describe('EventHistoryModal', () => {
     let component, user;
 
+    beforeAll(() => {
+        // Create mock state objects (used by TimelineContext)
+        createMockContext('events', {});
+        createMockContext('notes', []);
+        createMockContext('photo_urls', []);
+    });
+
     beforeEach(async () => {
         // Deep copy context to prevent changes carrying over to next test
         const context = JSON.parse(JSON.stringify(mockContext));
@@ -41,7 +50,9 @@ describe('EventHistoryModal', () => {
         user = userEvent.setup();
         component = render(
             <PageWrapper>
-                <TestComponent context={context} />
+                <TimelineProvider>
+                    <TestComponent context={context} />
+                </TimelineProvider>
             </PageWrapper>
         );
 

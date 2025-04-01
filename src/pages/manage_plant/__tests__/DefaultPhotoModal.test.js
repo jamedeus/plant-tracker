@@ -12,7 +12,7 @@ import { postHeaders } from 'src/testUtils/headers';
 const TestComponent = () => {
     // Render app
     return (
-        <TimelineProvider formattedEvents={{}}>
+        <TimelineProvider>
             <DefaultPhotoModal
                 plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
             />
@@ -28,6 +28,7 @@ describe('DefaultPhotoModal', () => {
 
     beforeAll(() => {
         // Create mock state objects (used by TimelineContext)
+        createMockContext('events', {});
         createMockContext('notes', []);
         createMockContext('photo_urls', mockContext.photo_urls);
     });
