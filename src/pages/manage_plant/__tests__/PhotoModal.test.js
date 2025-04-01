@@ -2,18 +2,18 @@ import React from 'react';
 import createMockContext from 'src/testUtils/createMockContext';
 import { fireEvent } from '@testing-library/react';
 import PhotoModal, { openPhotoModal } from '../PhotoModal';
-import { TimelineProvider } from '../TimelineContext';
+import { ReduxProvider } from '../store';
 import { PageWrapper } from 'src/index';
 
 const TestComponent = () => {
     // Render app
     return (
-        <TimelineProvider>
+        <ReduxProvider>
             <PhotoModal plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12' />
             <button onClick={openPhotoModal}>
                 Open photo modal
             </button>
-        </TimelineProvider>
+        </ReduxProvider>
     );
 };
 
@@ -21,7 +21,7 @@ describe('PhotoModal', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state objects (used by TimelineContext)
+        // Create mock state objects (used by ReduxProvider)
         createMockContext('events', {});
         createMockContext('notes', []);
         createMockContext('photo_urls', []);

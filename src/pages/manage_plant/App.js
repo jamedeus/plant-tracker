@@ -26,7 +26,7 @@ import { openErrorModal } from 'src/components/ErrorModal';
 import Timeline from './Timeline';
 import { faPlus, faBan, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { useSelector, useDispatch } from 'react-redux';
-import { eventAdded, backButtonPressed } from './TimelineContext';
+import { eventAdded, backButtonPressed } from './eventsSlice';
 
 const EventButtons = memo(function EventButtons({ plantID, lastWatered, lastFertilized }) {
     // Create ref to access new event datetime input
@@ -120,7 +120,7 @@ function App() {
 
     // Object with "water", "fertilize", "prune", and "repot" keys each
     // containing an array of all event timestamps in backend database.
-    const events = useSelector((state) => state.events);
+    const events = useSelector((state) => state.events.events);
 
     // Used to update redux store
     const dispatch = useDispatch();

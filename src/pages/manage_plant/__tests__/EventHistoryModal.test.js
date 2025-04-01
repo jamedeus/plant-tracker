@@ -2,7 +2,7 @@ import createMockContext from 'src/testUtils/createMockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import EventHistoryModal, { openEventHistoryModal } from '../EventHistoryModal';
 import { PageWrapper } from 'src/index';
-import { TimelineProvider } from '../TimelineContext';
+import { ReduxProvider } from '../store';
 import { mockContext } from './mockContext';
 
 describe('EventHistoryModal', () => {
@@ -16,7 +16,7 @@ describe('EventHistoryModal', () => {
             repot: ["2024-01-01T15:45:44+00:00"],
         };
 
-        // Create mock state objects (used by TimelineContext)
+        // Create mock state objects (used by ReduxProvider)
         createMockContext('events', mockEvents);
         createMockContext('notes', []);
         createMockContext('photo_urls', []);
@@ -27,7 +27,7 @@ describe('EventHistoryModal', () => {
         user = userEvent.setup();
         component = render(
             <PageWrapper>
-                <TimelineProvider>
+                <ReduxProvider>
                     <EventHistoryModal
                         plantID={mockContext.plant_details.uuid}
                         removeEvent={jest.fn()}
@@ -35,7 +35,7 @@ describe('EventHistoryModal', () => {
                     <button onClick={openEventHistoryModal}>
                         Open event history modal
                     </button>
-                </TimelineProvider>
+                </ReduxProvider>
             </PageWrapper>
         );
 

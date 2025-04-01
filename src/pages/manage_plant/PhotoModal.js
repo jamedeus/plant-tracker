@@ -6,7 +6,7 @@ import LoadingAnimation from 'src/components/LoadingAnimation';
 import CloseButtonIcon from 'src/components/CloseButtonIcon';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { useDispatch } from 'react-redux';
-import { photosAdded } from './TimelineContext';
+import { photosAdded } from './timelineSlice';
 
 let modalRef;
 

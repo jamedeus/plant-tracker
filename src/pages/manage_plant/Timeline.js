@@ -442,8 +442,8 @@ QuickNavigationYear.propTypes = {
 };
 
 const Timeline = memo(function Timeline({ archived }) {
-    const timelineDays = useSelector((state) => state.timelineDays);
-    const navigationOptions = useSelector((state) => state.navigationOptions);
+    const timelineDays = useSelector((state) => state.timeline.timelineDays);
+    const navigationOptions = useSelector((state) => state.timeline.navigationOptions);
 
     // Contains object with year-month strings (ie 2024-03) as keys, divider
     // elements as values (used form quick navigation scrolling)

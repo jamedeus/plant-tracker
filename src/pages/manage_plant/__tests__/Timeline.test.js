@@ -1,6 +1,6 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import Timeline from '../Timeline';
-import { TimelineProvider } from '../TimelineContext';
+import { ReduxProvider } from '../store';
 import { PageWrapper } from 'src/index';
 import { mockContext, mockEvents, mockPhotoUrls } from './mockContext';
 
@@ -19,9 +19,9 @@ describe('Timeline', () => {
         user = userEvent.setup();
         app = render(
             <PageWrapper>
-                <TimelineProvider>
+                <ReduxProvider>
                     <Timeline archived={false} />
-                </TimelineProvider>
+                </ReduxProvider>
             </PageWrapper>
         );
     });

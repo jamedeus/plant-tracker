@@ -1,19 +1,19 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import DeletePhotosModal, { openDeletePhotosModal } from '../DeletePhotosModal';
-import { TimelineProvider } from '../TimelineContext';
+import { ReduxProvider } from '../store';
 import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
 
 const TestComponent = () => {
     // Render app
     return (
-        <TimelineProvider>
+        <ReduxProvider>
             <DeletePhotosModal plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12' />
             <button onClick={openDeletePhotosModal}>
                 Open delete photos modal
             </button>
-        </TimelineProvider>
+        </ReduxProvider>
     );
 };
 
@@ -21,7 +21,7 @@ describe('DeletePhotosModal', () => {
     let component, user;
 
     beforeAll(() => {
-        // Create mock state objects (used by TimelineContext)
+        // Create mock state objects (used by ReduxProvider)
         createMockContext('events', {});
         createMockContext('notes', []);
         createMockContext('photo_urls', mockContext.photo_urls);

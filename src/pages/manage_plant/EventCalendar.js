@@ -8,7 +8,7 @@ import { useSelector } from 'react-redux';
 const EventCalendar = memo(function EventCalendar() {
     // Object with date strings as keys, object with events, notes, and photo
     // keys as values
-    const timelineDays = useSelector((state) => state.timelineDays);
+    const timelineDays = useSelector((state) => state.timeline.timelineDays);
 
     // Takes date object, returns div with colored dots for each event on date
     const renderDots = (date) => {

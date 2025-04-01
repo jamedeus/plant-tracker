@@ -1,12 +1,12 @@
 import MainApp from './App';
-import { TimelineProvider } from './TimelineContext';
+import { ReduxProvider } from './store';
 import RenderApp from 'src/index';
 
 const App = () => {
     return (
-        <TimelineProvider>
+        <ReduxProvider>
             <MainApp />
-        </TimelineProvider>
+        </ReduxProvider>
     )
 }
 

@@ -68,7 +68,7 @@ PhotoSlide.propTypes = {
 };
 
 const DefaultPhotoModal = memo(function DefaultPhotoModal({ plantID }) {
-    const photoUrls = useSelector((state) => state.photoUrls);
+    const photoUrls = useSelector((state) => state.timeline.photoUrls);
 
     modalRef = useRef(null);
 

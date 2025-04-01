@@ -8,7 +8,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/16/solid';
 import CloseButtonIcon from 'src/components/CloseButtonIcon';
 import clsx from 'clsx';
 import { useSelector, useDispatch } from 'react-redux';
-import { photosDeleted } from './TimelineContext';
+import { photosDeleted } from './timelineSlice';
 
 let modalRef;
 
@@ -115,7 +115,7 @@ ConfirmDeleteRow.propTypes = {
 
 const DeletePhotosModal = memo(function DeletePhotosModal({ plantID }) {
     const dispatch = useDispatch();
-    const photoUrls = useSelector((state) => state.photoUrls);
+    const photoUrls = useSelector((state) => state.timeline.photoUrls);
 
     modalRef = useRef(null);
 

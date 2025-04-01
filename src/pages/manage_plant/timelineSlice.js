@@ -1,9 +1,7 @@
-import React, { useEffect, useMemo } from 'react';
-import PropTypes from 'prop-types';
-import { Provider } from 'react-redux';
-import { configureStore, createSlice } from '@reduxjs/toolkit';
-import { parseDomContext } from 'src/util';
+import { createSlice } from '@reduxjs/toolkit';
 import { timestampToDateString } from 'src/timestampUtils';
+import { buildStateObjects } from './store';
+import { eventsSlice } from './eventsSlice';
 
 // Takes timelineSlice state and new YYYY-MM-DD dateKey
 // Adds month and year to navigationOptions if not already present
@@ -55,128 +53,16 @@ function removeDateKeyIfEmpty(state, dateKey) {
     }
 }
 
-// Takes object with event type keys, array of timestamps as value.
-// Converts to object with YYYY-MM-DD keys, each containing an object with
-// "events", "notes", and "photos" keys used to populate timeline.
-const formatEvents = (events) => {
-    return Object.entries(events).reduce(
-        (acc, [eventType, eventDates]) => {
-            eventDates.forEach(date => {
-                const dateKey = timestampToDateString(date);
-                // Add new date key unless it already exists
-                if (!acc[dateKey]) {
-                    acc[dateKey] = {events: [], notes: [], photos: []};
-                }
-                // Add event to date key unless same type already exists
-                if (!acc[dateKey]['events'].includes(eventType)) {
-                    acc[dateKey]['events'].push(eventType);
-                }
-            });
-            return acc;
-        },
-        {}
-    );
-};
-
-// Takes events, notes, and photo_urls context objects from django backend
-// Merges and returns 2 state objects:
-// - timelineDays: YYYY-MM-DD keys containing objects with events, notes, and
-//   photos keys (all arrays). Used by Timeline and EventCalendar components.
-// - navigationOptions: YYYY keys containing array of MM strings, populates
-//   quick navigation dropdown options at top of Timeline component
-const buildStateObjects = (events, notes, photoUrls) => {
-    // Convert to object with YYYY-MM-DD keys
-    const timelineDays = formatEvents(events);
-
-    // Add contents of photoUrls to photos key under correct date
-    photoUrls.sort((a, b) => {
-        return a.created.localeCompare(b.created);
-    }).reverse();
-    photoUrls.forEach((photo) => {
-        const dateKey = timestampToDateString(photo.created);
-        if (!timelineDays[dateKey]) {
-            timelineDays[dateKey] = {events: [], notes: [], photos: []};
-        }
-        timelineDays[dateKey].photos.push(photo);
-    });
-
-    // Add note text to notes key under correct date
-    notes.forEach((note) => {
-        const dateKey = timestampToDateString(note.timestamp);
-        if (!timelineDays[dateKey]) {
-            timelineDays[dateKey] = {events: [], notes: [], photos: []};
-        }
-        timelineDays[dateKey].notes.push(note);
-    });
-
-    // Build object used to populate quick navigation menu
-    // Contains years as keys, list of month numbers as values
-    const navigationOptions = {};
-    Object.keys(timelineDays).forEach(dateString => {
-        const [year, month] = dateString.split('-');
-        if (!navigationOptions[year]) {
-            navigationOptions[year] = [];
-        }
-        if (!navigationOptions[year].includes(month)) {
-            navigationOptions[year].push(month);
-        }
-    });
-
-    return {
-        timelineDays,
-        navigationOptions
-    };
-};
-
 // Centralized redux slice to store timelineDays and photoUrls "states" and all
 // callback functions that modify them
-const timelineSlice = createSlice({
+export const timelineSlice = createSlice({
     name: 'timeline',
     initialState: {
-        events: {},
         timelineDays: {},
         photoUrls: [],
         navigationOptions: {}
     },
     reducers: {
-        // Takes object with timestamp and type keys, adds to events and
-        // timelineDays states
-        eventAdded(state, action) {
-            const newEvent = action.payload;
-            const dateKey = timestampToDateString(newEvent.timestamp);
-            state.events[newEvent.type].push(newEvent.timestamp);
-            state.events[newEvent.type].sort().reverse();
-            // Add new dateKey if missing
-            if (!state.timelineDays[dateKey]) {
-                state.timelineDays[dateKey] = {
-                    events: [ newEvent.type ],
-                    notes: [],
-                    photos: []
-                };
-                // Add navigationOption if first dateKey in year + month
-                addNavigationOption(state, dateKey);
-            // Add new events to existing dateKey
-            } else if (!state.timelineDays[dateKey].events.includes(newEvent.type)) {
-                state.timelineDays[dateKey].events.push(newEvent.type);
-            }
-        },
-
-        // Takes object with timestamp and type keys, removes from events and
-        // timelineDays states
-        eventDeleted(state, action) {
-            const deletedEvent = action.payload;
-            const dateKey = timestampToDateString(deletedEvent.timestamp);
-            state.events[deletedEvent.type].splice(
-                state.events[deletedEvent.type].indexOf(deletedEvent.timestamp),
-                1
-            );
-            state.timelineDays[dateKey].events = state.timelineDays[dateKey].events.filter(
-                event => event !== deletedEvent.type
-            );
-            // Remove timelineDays day if no content left
-            removeDateKeyIfEmpty(state, dateKey);
-        },
-
         // Takes object with timestamp and text keys, adds to timelineDays state
         noteAdded(state, action) {
             const note = action.payload;
@@ -275,13 +161,36 @@ const timelineSlice = createSlice({
                 return true;
             });
         },
+    },
+    extraReducers: builder => {
+        builder.addCase(eventsSlice.actions.eventAdded, (state, action) => {
+            const newEvent = action.payload;
+            const dateKey = timestampToDateString(newEvent.timestamp);
+            // Add new dateKey if missing
+            if (!state.timelineDays[dateKey]) {
+                state.timelineDays[dateKey] = {
+                    events: [ newEvent.type ],
+                    notes: [],
+                    photos: []
+                };
+                // Add navigationOption if first dateKey in year + month
+                addNavigationOption(state, dateKey);
+            // Add new events to existing dateKey
+            } else if (!state.timelineDays[dateKey].events.includes(newEvent.type)) {
+                state.timelineDays[dateKey].events.push(newEvent.type);
+            }
 
-        // Takes response from /get_plant_state endpoint, rebuilds all state
-        // objects with new contents. Called when page navigated to using back
-        // button (update potentially outdated contents).
-        backButtonPressed(state, action) {
-            state.events = action.payload.events;
-
+        });
+        builder.addCase(eventsSlice.actions.eventDeleted, (state, action) => {
+            const deletedEvent = action.payload;
+            const dateKey = timestampToDateString(deletedEvent.timestamp);
+            state.timelineDays[dateKey].events = state.timelineDays[dateKey].events.filter(
+                event => event !== deletedEvent.type
+            );
+            // Remove timelineDays day if no content left
+            removeDateKeyIfEmpty(state, dateKey);
+        });
+        builder.addCase(eventsSlice.actions.backButtonPressed, (state, action) => {
             const {
                 timelineDays,
                 navigationOptions
@@ -292,62 +201,12 @@ const timelineSlice = createSlice({
             );
             state.timelineDays = timelineDays;
             state.navigationOptions = navigationOptions;
-        }
+        });
     }
 });
 
-// Takes initial timelineDays state, creates redux store and returns
-function createTimelineStore(preloadedState) {
-    return configureStore({
-        reducer: timelineSlice.reducer,
-        preloadedState
-    });
-}
-
-export function TimelineProvider({ children }) {
-    // Parses django context elements containing events, photoUrls, and notes
-    // Merges and returns values for all initialState keys in timelineSlice
-    const init = () => {
-        // Parse django context objects
-        const events = parseDomContext("events") || [];
-        const photoUrls = parseDomContext('photo_urls') || [];
-        const notes = parseDomContext('notes') || [];
-
-        // Build state objects
-        const {
-            timelineDays,
-            navigationOptions
-        } = buildStateObjects(events, notes, photoUrls);
-
-        // Return object with keys expected by timelineSlice preloadedState
-        return {
-            events,
-            timelineDays,
-            photoUrls,
-            navigationOptions
-        };
-    };
-
-    // Create redux store with initial state built from django context items
-    const store = useMemo(() => createTimelineStore(
-        init()
-    ), []);
-
-    return (
-        <Provider store={store}>
-            {children}
-        </Provider>
-    );
-}
-
-TimelineProvider.propTypes = {
-    children: PropTypes.node
-};
-
 // Export individual action creators from slice
 export const {
-    eventAdded,
-    eventDeleted,
     noteAdded,
     noteEdited,
     noteDeleted,

@@ -1,6 +1,6 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import Timeline from '../Timeline';
-import { TimelineProvider } from '../TimelineContext';
+import { ReduxProvider } from '../store';
 import { PageWrapper } from 'src/index';
 import { mockContext, mockEvents, mockPhotoUrls } from './mockContext';
 
@@ -16,12 +16,12 @@ describe('Timeline', () => {
         // Render Timeline with archived=false, confirm matches snapshot
         const component = render(
             <PageWrapper>
-                <TimelineProvider>
+                <ReduxProvider>
                     <Timeline
                         plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
                         archived={false}
                     />
-                </TimelineProvider>
+                </ReduxProvider>
             </PageWrapper>
         );
         expect(component).toMatchSnapshot();
@@ -31,12 +31,12 @@ describe('Timeline', () => {
         // Render Timeline with archived=true, confirm matches snapshot
         const component = render(
             <PageWrapper>
-                <TimelineProvider>
+                <ReduxProvider>
                     <Timeline
                         plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
                         archived={true}
                     />
-                </TimelineProvider>
+                </ReduxProvider>
             </PageWrapper>
         );
         expect(component).toMatchSnapshot();

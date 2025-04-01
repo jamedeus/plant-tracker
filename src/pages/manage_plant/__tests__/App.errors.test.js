@@ -1,6 +1,6 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import App from '../App';
-import { TimelineProvider } from '../TimelineContext';
+import { ReduxProvider } from '../store';
 import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
 
@@ -22,9 +22,9 @@ describe('App', () => {
         user = userEvent.setup();
         app = render(
             <PageWrapper>
-                <TimelineProvider>
+                <ReduxProvider>
                     <App />
-                </TimelineProvider>
+                </ReduxProvider>
             </PageWrapper>
         );
     });

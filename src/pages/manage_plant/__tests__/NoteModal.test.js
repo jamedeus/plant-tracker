@@ -1,7 +1,7 @@
 import React from 'react';
 import createMockContext from 'src/testUtils/createMockContext';
 import NoteModal, { openNoteModal } from '../NoteModal';
-import { TimelineProvider } from '../TimelineContext';
+import { ReduxProvider } from '../store';
 import { PageWrapper } from 'src/index';
 import { postHeaders } from 'src/testUtils/headers';
 
@@ -12,7 +12,7 @@ const mockNotes = [
 
 const TestComponent = () => {
     return (
-        <TimelineProvider>
+        <ReduxProvider>
             <NoteModal plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12' />
             <button onClick={() => openNoteModal()}>
                 Add New Note
@@ -20,7 +20,7 @@ const TestComponent = () => {
             <button onClick={() => openNoteModal(mockNotes[0])}>
                 Edit Existing Note
             </button>
-        </TimelineProvider>
+        </ReduxProvider>
     );
 };
 
@@ -28,7 +28,7 @@ describe('Add new note', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state objects (used by TimelineContext)
+        // Create mock state objects (used by ReduxProvider)
         createMockContext('events', {});
         createMockContext('notes', mockNotes);
         createMockContext('photo_urls', []);

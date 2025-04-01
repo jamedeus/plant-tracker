@@ -4,7 +4,7 @@ import DefaultPhotoModal, {
     openDefaultPhotoModal,
     closeDefaultPhotosModal
 } from '../DefaultPhotoModal';
-import { TimelineProvider } from '../TimelineContext';
+import { ReduxProvider } from '../store';
 import { mockContext } from './mockContext';
 import { PageWrapper } from 'src/index';
 import { postHeaders } from 'src/testUtils/headers';
@@ -12,14 +12,14 @@ import { postHeaders } from 'src/testUtils/headers';
 const TestComponent = () => {
     // Render app
     return (
-        <TimelineProvider>
+        <ReduxProvider>
             <DefaultPhotoModal
                 plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
             />
             <button onClick={openDefaultPhotoModal}>
                 Open photo modal
             </button>
-        </TimelineProvider>
+        </ReduxProvider>
     );
 };
 
@@ -27,7 +27,7 @@ describe('DefaultPhotoModal', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state objects (used by TimelineContext)
+        // Create mock state objects (used by ReduxProvider)
         createMockContext('events', {});
         createMockContext('notes', []);
         createMockContext('photo_urls', mockContext.photo_urls);
