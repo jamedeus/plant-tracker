@@ -1,17 +1,13 @@
-import React, { useRef, useEffect, useCallback, useMemo, memo } from 'react';
-import PropTypes from 'prop-types';
-import { localToUTC } from 'src/timestampUtils';
+import React, { useRef, useEffect, useCallback, useMemo } from 'react';
 import { sendPostRequest } from 'src/util';
 import EditModal from 'src/components/EditModal';
 import PlantDetailsForm from 'src/forms/PlantDetailsForm';
 import Navbar from 'src/components/Navbar';
-import DatetimeInput from 'src/components/DatetimeInput';
-import { showToast } from 'src/components/Toast';
 import { useTheme } from 'src/context/ThemeContext';
 import DetailsCard from 'src/components/DetailsCard';
-import LastEventTime from 'src/components/LastEventTime';
 import PlantDetails from 'src/components/PlantDetails';
 import IconButton from 'src/components/IconButton';
+import EventButtons from './EventButtons';
 import EventCalendar from './EventCalendar';
 import GroupModal, { openGroupModal } from './GroupModal';
 import NoteModal from './NoteModal';
@@ -27,100 +23,14 @@ import Timeline from './Timeline';
 import { faPlus, faBan, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import {
-    eventAdded,
     plantDetailsUpdated,
     plantRemovedFromGroup,
     backButtonPressed
 } from './plantSlice';
 
-const EventButtons = memo(function EventButtons({ plantID, lastWatered, lastFertilized }) {
-    // Create ref to access new event datetime input
-    const eventTimeInput = useRef(null);
-
-    // Used to update redux store
-    const dispatch = useDispatch();
-
-    const addEvent = async (eventType, timestamp) => {
-        const payload = {
-            plant_id: plantID,
-            event_type: eventType,
-            timestamp: localToUTC(timestamp)
-        };
-        const response = await sendPostRequest('/add_plant_event', payload);
-        if (response.ok) {
-            // Add new event to redux store (updates calendar, timeline, etc)
-            dispatch(eventAdded({
-                timestamp: payload.timestamp,
-                type: eventType
-            }));
-        } else {
-            // Duplicate event timestamp: show error toast for 5 seconds
-            if (response.status === 409) {
-                showToast(
-                    `Error: ${eventType} event with same timestamp already exists`,
-                    'red',
-                    5000
-                );
-            // Other error (unexpected): show in error modal
-            } else {
-                const error = await response.json();
-                openErrorModal(JSON.stringify(error));
-            }
-        }
-    };
-
-    return (
-        <div className="flex flex-col text-center">
-            <span className="text-lg">
-                <LastEventTime
-                    text="watered"
-                    timestamp={lastWatered}
-                />
-            </span>
-            <span className="text-lg">
-                <LastEventTime
-                    text="fertilized"
-                    timestamp={lastFertilized}
-                />
-            </span>
-            <DatetimeInput inputRef={eventTimeInput} />
-            <div className="flex mx-auto">
-                <button
-                    className="btn btn-info m-2"
-                    onClick={() => addEvent('water', eventTimeInput.current.value)}
-                >
-                    Water
-                </button>
-                <button
-                    className="btn btn-success m-2"
-                    onClick={() => addEvent('fertilize', eventTimeInput.current.value)}
-                >
-                    Fertilize
-                </button>
-                <button
-                    className="btn btn-prune m-2"
-                    onClick={() => addEvent('prune', eventTimeInput.current.value)}
-                >
-                    Prune
-                </button>
-            </div>
-        </div>
-    );
-});
-
-EventButtons.propTypes = {
-    plantID: PropTypes.string.isRequired,
-    lastWatered: PropTypes.string.isRequired,
-    lastFertilized: PropTypes.string.isRequired
-};
-
 function App() {
-    // Get redux states (parsed from context set by django template)
+    // Get redux state (parsed from context set by django template)
     const plantDetails = useSelector((state) => state.plant.plantDetails);
-
-    // Object with "water", "fertilize", "prune", and "repot" keys each
-    // containing an array of all event timestamps in backend database.
-    const events = useSelector((state) => state.plant.events);
 
     // Used to update redux store
     const dispatch = useDispatch();
@@ -281,11 +191,7 @@ function App() {
                     Plant Archived
                 </div>
             ) : (
-                <EventButtons
-                    plantID={plantDetails.uuid}
-                    lastWatered={events.water[0]}
-                    lastFertilized={events.fertilize[0]}
-                />
+                <EventButtons />
             )}
 
             <EventCalendar />
