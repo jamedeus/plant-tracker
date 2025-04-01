@@ -2,9 +2,11 @@ import { createSlice } from '@reduxjs/toolkit';
 
 // Centralized redux slice to store timelineDays and photoUrls "states" and all
 // callback functions that modify them
-export const eventsSlice = createSlice({
+export const plantSlice = createSlice({
     name: 'events',
     initialState: {
+        plantDetails: {},
+        groupOptions: [],
         events: {
             water: [],
             fertilize: [],
@@ -31,11 +33,27 @@ export const eventsSlice = createSlice({
             );
         },
 
+        // Takes new plantDetails object
+        plantDetailsUpdated(state, action) {
+            state.plantDetails = action.payload;
+        },
+
+        // Takes object with name and uuid keys
+        plantAddedToGroup(state, action) {
+            state.plantDetails.group = action.payload;
+        },
+
+        plantRemovedFromGroup(state, action) {
+            state.plantDetails.group = null;
+        },
+
         // Takes response from /get_plant_state endpoint, rebuilds all state
         // objects with new contents. Called when page navigated to using back
         // button (update potentially outdated contents).
         backButtonPressed(state, action) {
             state.events = action.payload.events;
+            state.plantDetails = action.payload.plant_details;
+            state.groupOptions = action.payload.group_options;
         }
     }
 });
@@ -44,5 +62,8 @@ export const eventsSlice = createSlice({
 export const {
     eventAdded,
     eventDeleted,
+    plantDetailsUpdated,
+    plantAddedToGroup,
+    plantRemovedFromGroup,
     backButtonPressed
-} = eventsSlice.actions;
+} = plantSlice.actions;

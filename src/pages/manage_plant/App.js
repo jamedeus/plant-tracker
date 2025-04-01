@@ -1,7 +1,7 @@
-import React, { useState, useRef, useEffect, useCallback, useMemo, memo } from 'react';
+import React, { useRef, useEffect, useCallback, useMemo, memo } from 'react';
 import PropTypes from 'prop-types';
 import { localToUTC } from 'src/timestampUtils';
-import { sendPostRequest, parseDomContext } from 'src/util';
+import { sendPostRequest } from 'src/util';
 import EditModal from 'src/components/EditModal';
 import PlantDetailsForm from 'src/forms/PlantDetailsForm';
 import Navbar from 'src/components/Navbar';
@@ -26,7 +26,13 @@ import { openErrorModal } from 'src/components/ErrorModal';
 import Timeline from './Timeline';
 import { faPlus, faBan, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { useSelector, useDispatch } from 'react-redux';
-import { eventAdded, backButtonPressed } from './eventsSlice';
+import {
+    eventAdded,
+    plantDetailsUpdated,
+    plantAddedToGroup,
+    plantRemovedFromGroup,
+    backButtonPressed
+} from './plantSlice';
 
 const EventButtons = memo(function EventButtons({ plantID, lastWatered, lastFertilized }) {
     // Create ref to access new event datetime input
@@ -110,17 +116,13 @@ EventButtons.propTypes = {
 };
 
 function App() {
-    // Load context set by django template
-    const [plant, setPlant] = useState(() => {
-        return parseDomContext("plant_details");
-    });
-    const [groupOptions, setGroupOptions] = useState(() => {
-        return parseDomContext("group_options");
-    });
+    // Get redux states (parsed from context set by django template)
+    const plantDetails = useSelector((state) => state.plant.plantDetails);
+    const groupOptions = useSelector((state) => state.plant.groupOptions);
 
     // Object with "water", "fertilize", "prune", and "repot" keys each
     // containing an array of all event timestamps in backend database.
-    const events = useSelector((state) => state.events.events);
+    const events = useSelector((state) => state.plant.events);
 
     // Used to update redux store
     const dispatch = useDispatch();
@@ -130,14 +132,12 @@ function App() {
     useEffect(() => {
         const handleBackButton = async (event) => {
             if (event.persisted) {
-                const response = await fetch(`/get_plant_state/${plant.uuid}`);
+                const response = await fetch(`/get_plant_state/${plantDetails.uuid}`);
                 if (response.ok) {
                     const data = await response.json();
                     // Update plant details, events, notes, photoUrls, and
                     // groupOptions (outdated species_options won't cause issues)
-                    setPlant(data['plant_details']);
                     dispatch(backButtonPressed(data));
-                    setGroupOptions(data['group_options']);
                 } else {
                     // Reload page if failed to get new state (plant deleted)
                     window.location.reload();
@@ -161,7 +161,10 @@ function App() {
     // Called after successful repot_plant API call, takes RepotEvent params
     const handleRepot = (newPotSize, repotTimestamp) => {
         // Update state with new pot_size and event timestamp
-        setPlant({...plant, pot_size: newPotSize});
+        dispatch(plantDetailsUpdated({
+            ...plantDetails,
+            pot_size: newPotSize
+        }));
         dispatch(eventAdded({timestamp: repotTimestamp, type: 'repot'}));
 
         // Open modal with instructions to change QR code
@@ -171,19 +174,17 @@ function App() {
     // GroupModal submit handler
     const handleAddGroup = async (groupID) => {
         const payload = {
-            plant_id: plant.uuid,
+            plant_id: plantDetails.uuid,
             group_id: groupID
         };
         const response = await sendPostRequest('/add_plant_to_group', payload);
         if (response.ok) {
             // Update plant state with group name and UUID from response
             const data = await response.json();
-            setPlant({...plant,
-                group: {
-                    name: data.group_name,
-                    uuid: data.group_uuid
-                }
-            });
+            dispatch(plantAddedToGroup({
+                name: data.group_name,
+                uuid: data.group_uuid
+            }));
         } else {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
@@ -195,11 +196,11 @@ function App() {
     const handleRemoveGroup = useCallback(async () => {
         const response = await sendPostRequest(
             '/remove_plant_from_group',
-            {plant_id: plant.uuid}
+            {plant_id: plantDetails.uuid}
         );
         if (response.ok) {
             // Remove group details from plant state
-            setPlant({...plant, group: null});
+            dispatch(plantRemovedFromGroup());
         } else {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
@@ -210,13 +211,16 @@ function App() {
         const payload = Object.fromEntries(
             new FormData(editDetailsRef.current)
         );
-        payload["plant_id"] = plant.uuid;
+        payload["plant_id"] = plantDetails.uuid;
 
         const response = await sendPostRequest('/edit_plant', payload);
         if (response.ok) {
             // Update plant state with new values from response
             const data = await response.json();
-            setPlant({...plant, ...data});
+            dispatch(plantDetailsUpdated({
+                ...plantDetails,
+                ...data
+            }));
         } else {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
@@ -230,10 +234,10 @@ function App() {
                 <li><a onClick={() => window.location.href = "/"}>
                     Overview
                 </a></li>
-                {!plant.archived && (
+                {!plantDetails.archived && (
                     <>
-                        {plant.group &&
-                            <li><a href={"/manage/" + plant.group.uuid}>
+                        {plantDetails.group &&
+                            <li><a href={"/manage/" + plantDetails.group.uuid}>
                                 Go to group
                             </a></li>
                         }
@@ -248,7 +252,7 @@ function App() {
                 <ToggleThemeOption />
             </>
         );
-    }, [plant]);
+    }, [plantDetails]);
 
     // Plant details card shown when title is clicked
     const PlantDetailsDropdown = useMemo(() => {
@@ -257,13 +261,13 @@ function App() {
                 <div className="flex flex-col">
                     <div className="divider font-bold mt-0">Group</div>
                     {/* Group details if in group, add group button if not */}
-                    {plant.group ? (
+                    {plantDetails.group ? (
                         <div className="flex flex-col text-center">
                             <a
                                 className="font-bold text-lg"
-                                href={`/manage/${plant.group.uuid}`}
+                                href={`/manage/${plantDetails.group.uuid}`}
                             >
-                                { plant.group.name }
+                                { plantDetails.group.name }
                             </a>
                             <div className="flex gap-2 mx-auto mt-2">
                                 <IconButton
@@ -272,7 +276,7 @@ function App() {
                                     icon={faBan}
                                 />
                                 <IconButton
-                                    href={`/manage/${plant.group.uuid}`}
+                                    href={`/manage/${plantDetails.group.uuid}`}
                                     title='Go to group page'
                                     icon={faUpRightFromSquare}
                                 />
@@ -290,31 +294,31 @@ function App() {
                 </div>
                 <div className="divider font-bold">Details</div>
                 <PlantDetails
-                    species={plant.species}
-                    pot_size={plant.pot_size}
-                    description={plant.description}
+                    species={plantDetails.species}
+                    pot_size={plantDetails.pot_size}
+                    description={plantDetails.description}
                 />
             </DetailsCard>
         );
-    }, [plant]);
+    }, [plantDetails]);
 
     return (
         <div className="container flex flex-col mx-auto mb-8">
             <Navbar
                 menuOptions={DropdownMenuOptions}
                 onOpenMenu={preloadDefaultPhotoModal}
-                title={plant.display_name}
+                title={plantDetails.display_name}
                 titleOptions={PlantDetailsDropdown}
             />
 
             {/* Don't render event buttons if plant is archived */}
-            {plant.archived ? (
+            {plantDetails.archived ? (
                 <div className="text-center text-xl">
                     Plant Archived
                 </div>
             ) : (
                 <EventButtons
-                    plantID={plant.uuid}
+                    plantID={plantDetails.uuid}
                     lastWatered={events.water[0]}
                     lastFertilized={events.fertilize[0]}
                 />
@@ -322,19 +326,19 @@ function App() {
 
             <EventCalendar />
 
-            <Timeline archived={plant.archived} />
-            <NoteModal plantID={plant.uuid} />
-            <PhotoModal plantID={plant.uuid} />
-            <DefaultPhotoModal plantID={plant.uuid} />
-            <DeletePhotosModal plantID={plant.uuid} />
+            <Timeline archived={plantDetails.archived} />
+            <NoteModal plantID={plantDetails.uuid} />
+            <PhotoModal plantID={plantDetails.uuid} />
+            <DefaultPhotoModal plantID={plantDetails.uuid} />
+            <DeletePhotosModal plantID={plantDetails.uuid} />
 
             <EditModal title="Edit Details" onSubmit={submitEditModal}>
                 <PlantDetailsForm
                     formRef={editDetailsRef}
-                    name={plant.name}
-                    species={plant.species}
-                    pot_size={plant.pot_size}
-                    description={plant.description}
+                    name={plantDetails.name}
+                    species={plantDetails.species}
+                    pot_size={plantDetails.pot_size}
+                    description={plantDetails.description}
                 />
             </EditModal>
 
@@ -344,16 +348,14 @@ function App() {
             />
 
             <RepotModal
-                plantID={plant.uuid}
-                currentPotSize={plant.pot_size}
+                plantID={plantDetails.uuid}
+                currentPotSize={plantDetails.pot_size}
                 handleRepot={handleRepot}
             />
 
-            <EventHistoryModal plantID={plant.uuid} />
+            <EventHistoryModal plantID={plantDetails.uuid} />
 
-            <ChangeQrModal
-                uuid={plant.uuid}
-            />
+            <ChangeQrModal uuid={plantDetails.uuid} />
         </div>
     );
 }

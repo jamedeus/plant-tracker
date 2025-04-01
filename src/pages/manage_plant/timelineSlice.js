@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { timestampToDateString } from 'src/timestampUtils';
 import { buildStateObjects } from './store';
-import { eventsSlice } from './eventsSlice';
+import { plantSlice } from './plantSlice';
 
 // Correct order for event markers within a single timeline day (readability)
 const EVENTS_ORDER = ['water', 'fertilize', 'prune', 'repot'];
@@ -166,7 +166,7 @@ export const timelineSlice = createSlice({
         },
     },
     extraReducers: builder => {
-        builder.addCase(eventsSlice.actions.eventAdded, (state, action) => {
+        builder.addCase(plantSlice.actions.eventAdded, (state, action) => {
             const newEvent = action.payload;
             const dateKey = timestampToDateString(newEvent.timestamp);
             // Add new dateKey if missing
@@ -188,7 +188,7 @@ export const timelineSlice = createSlice({
             }
 
         });
-        builder.addCase(eventsSlice.actions.eventDeleted, (state, action) => {
+        builder.addCase(plantSlice.actions.eventDeleted, (state, action) => {
             const deletedEvent = action.payload;
             const dateKey = timestampToDateString(deletedEvent.timestamp);
             state.timelineDays[dateKey].events = state.timelineDays[dateKey].events.filter(
@@ -197,7 +197,7 @@ export const timelineSlice = createSlice({
             // Remove timelineDays day if no content left
             removeDateKeyIfEmpty(state, dateKey);
         });
-        builder.addCase(eventsSlice.actions.backButtonPressed, (state, action) => {
+        builder.addCase(plantSlice.actions.backButtonPressed, (state, action) => {
             const {
                 timelineDays,
                 navigationOptions

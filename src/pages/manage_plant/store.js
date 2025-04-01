@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { parseDomContext } from 'src/util';
 import { timestampToDateString } from 'src/timestampUtils';
-import { eventsSlice } from './eventsSlice';
+import { plantSlice } from './plantSlice';
 import { timelineSlice } from './timelineSlice';
 
 // Takes object with event type keys, array of timestamps as value.
@@ -84,7 +84,7 @@ export const buildStateObjects = (events, notes, photoUrls) => {
 function createReduxStore(preloadedState) {
     return configureStore({
         reducer: {
-            events: eventsSlice.reducer,
+            plant: plantSlice.reducer,
             timeline: timelineSlice.reducer
         },
         preloadedState
@@ -96,6 +96,8 @@ export function ReduxProvider({ children }) {
     // Merges and returns values for all initialState keys in timelineSlice
     const init = () => {
         // Parse django context objects
+        const plantDetails = parseDomContext("plant_details") || {};
+        const groupOptions = parseDomContext("group_options") || [];
         const events = parseDomContext("events") || {};
         const photoUrls = parseDomContext('photo_urls') || [];
         const notes = parseDomContext('notes') || [];
@@ -106,9 +108,11 @@ export function ReduxProvider({ children }) {
             navigationOptions
         } = buildStateObjects(events, notes, photoUrls);
 
-        // Return object with keys expected by timelineSlice preloadedState
+        // Return object with keys expected by plantSlice and timelineSlice
         return {
-            events: {
+            plant: {
+                plantDetails,
+                groupOptions,
                 events
             },
             timeline: {
