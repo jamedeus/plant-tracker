@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo, memo } from 'react';
 import PropTypes from 'prop-types';
-import { localToUTC, timestampToDateString } from 'src/timestampUtils';
+import { localToUTC } from 'src/timestampUtils';
 import { sendPostRequest, parseDomContext } from 'src/util';
 import EditModal from 'src/components/EditModal';
 import PlantDetailsForm from 'src/forms/PlantDetailsForm';
@@ -26,11 +26,43 @@ import { openErrorModal } from 'src/components/ErrorModal';
 import Timeline from './Timeline';
 import { faPlus, faBan, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { useSelector, useDispatch } from 'react-redux';
-import { eventAdded, eventDeleted, backButtonPressed } from './TimelineContext';
+import { eventAdded, backButtonPressed } from './TimelineContext';
 
-const EventButtons = memo(function EventButtons({ lastWatered, lastFertilized, addEvent }) {
+const EventButtons = memo(function EventButtons({ plantID, lastWatered, lastFertilized }) {
     // Create ref to access new event datetime input
     const eventTimeInput = useRef(null);
+
+    // Used to update redux store
+    const dispatch = useDispatch();
+
+    const addEvent = async (eventType, timestamp) => {
+        const payload = {
+            plant_id: plantID,
+            event_type: eventType,
+            timestamp: localToUTC(timestamp)
+        };
+        const response = await sendPostRequest('/add_plant_event', payload);
+        if (response.ok) {
+            // Add new event to redux store (updates calendar, timeline, etc)
+            dispatch(eventAdded({
+                timestamp: payload.timestamp,
+                type: eventType
+            }));
+        } else {
+            // Duplicate event timestamp: show error toast for 5 seconds
+            if (response.status === 409) {
+                showToast(
+                    `Error: ${eventType} event with same timestamp already exists`,
+                    'red',
+                    5000
+                );
+            // Other error (unexpected): show in error modal
+            } else {
+                const error = await response.json();
+                openErrorModal(JSON.stringify(error));
+            }
+        }
+    };
 
     return (
         <div className="flex flex-col text-center">
@@ -72,9 +104,9 @@ const EventButtons = memo(function EventButtons({ lastWatered, lastFertilized, a
 });
 
 EventButtons.propTypes = {
+    plantID: PropTypes.string.isRequired,
     lastWatered: PropTypes.string.isRequired,
-    lastFertilized: PropTypes.string.isRequired,
-    addEvent: PropTypes.func.isRequired
+    lastFertilized: PropTypes.string.isRequired
 };
 
 function App() {
@@ -89,10 +121,6 @@ function App() {
     // Object with "water", "fertilize", "prune", and "repot" keys each
     // containing an array of all event timestamps in backend database.
     const events = useSelector((state) => state.events);
-
-    // Object with date strings as keys, object with events, notes, and photo
-    // keys as values. Used to populate timeline and calendar.
-    const formattedEvents = useSelector((state) => state.formattedEvents);
 
     // Used to update redux store
     const dispatch = useDispatch();
@@ -195,39 +223,6 @@ function App() {
         }
     };
 
-    // Handler for water and fertilize buttons
-    // Takes event type, creates event in database, adds timestamp to state
-    const addEvent = useCallback(async (eventType, timestamp) => {
-        const payload = {
-            plant_id: plant.uuid,
-            event_type: eventType,
-            timestamp: localToUTC(timestamp)
-        };
-        const response = await sendPostRequest('/add_plant_event', payload);
-        if (response.ok) {
-            // Add new event to correct history column, sort chronologically
-            dispatch(eventAdded({timestamp: payload.timestamp, type: eventType}));
-        } else {
-            // Duplicate event timestamp: show error toast for 5 seconds
-            if (response.status === 409) {
-                showToast(
-                    `Error: ${eventType} event with same timestamp already exists`,
-                    'red',
-                    5000
-                );
-            // Other error (unexpected): show in error modal
-            } else {
-                const error = await response.json();
-                openErrorModal(JSON.stringify(error));
-            }
-        }
-    }, []);
-
-    // Takes timestamp and eventType, removes timestamp from events state
-    const removeEvent = (timestamp, eventType) => {
-        dispatch(eventDeleted({timestamp: timestamp, type: eventType}));
-    };
-
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => {
         return (
@@ -319,13 +314,13 @@ function App() {
                 </div>
             ) : (
                 <EventButtons
+                    plantID={plant.uuid}
                     lastWatered={events.water[0]}
                     lastFertilized={events.fertilize[0]}
-                    addEvent={addEvent}
                 />
             )}
 
-            <EventCalendar formattedEvents={formattedEvents} />
+            <EventCalendar />
 
             <Timeline archived={plant.archived} />
             <NoteModal plantID={plant.uuid} />
@@ -354,11 +349,7 @@ function App() {
                 handleRepot={handleRepot}
             />
 
-            <EventHistoryModal
-                plantID={plant.uuid}
-                events={events}
-                removeEvent={removeEvent}
-            />
+            <EventHistoryModal plantID={plant.uuid} />
 
             <ChangeQrModal
                 uuid={plant.uuid}

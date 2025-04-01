@@ -1,11 +1,15 @@
 import React, { memo } from 'react';
-import PropTypes from 'prop-types';
 import { DateTime } from 'luxon';
 import Calendar from 'react-calendar';
 import 'src/calendar.css';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/16/solid';
+import { useSelector } from 'react-redux';
 
-const EventCalendar = memo(function EventCalendar({ formattedEvents }) {
+const EventCalendar = memo(function EventCalendar() {
+    // Object with date strings as keys, object with events, notes, and photo
+    // keys as values
+    const formattedEvents = useSelector((state) => state.formattedEvents);
+
     // Takes date object, returns div with colored dots for each event on date
     const renderDots = (date) => {
         const dateKey = date.toISOString().split('T')[0];
@@ -55,9 +59,5 @@ const EventCalendar = memo(function EventCalendar({ formattedEvents }) {
         </div>
     );
 });
-
-EventCalendar.propTypes = {
-    formattedEvents: PropTypes.object.isRequired
-};
 
 export default EventCalendar;

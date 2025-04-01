@@ -5,53 +5,36 @@ import { PageWrapper } from 'src/index';
 import { TimelineProvider } from '../TimelineContext';
 import { mockContext } from './mockContext';
 
-/* eslint react/prop-types: 0 */
-const TestComponent = ({ context }) => {
-    // Add prune and repot events to mock context
-    const state = {
-        ...context,
-        events: {
-            ...context.events,
-            prune: ["2024-01-01T15:45:44+00:00"],
-            repot: ["2024-01-01T15:45:44+00:00"],
-        }
-    };
-
-    // Render app
-    return (
-        <>
-            <EventHistoryModal
-                plantID={context.plant_details.uuid}
-                events={state.events}
-                removeEvent={jest.fn()}
-            />
-            <button onClick={openEventHistoryModal}>
-                Open event history modal
-            </button>
-        </>
-    );
-};
-
 describe('EventHistoryModal', () => {
     let component, user;
 
     beforeAll(() => {
+        // Add prune and repot events to mock context
+        const mockEvents = {
+            ...mockContext.events,
+            prune: ["2024-01-01T15:45:44+00:00"],
+            repot: ["2024-01-01T15:45:44+00:00"],
+        };
+
         // Create mock state objects (used by TimelineContext)
-        createMockContext('events', {});
+        createMockContext('events', mockEvents);
         createMockContext('notes', []);
         createMockContext('photo_urls', []);
     });
 
     beforeEach(async () => {
-        // Deep copy context to prevent changes carrying over to next test
-        const context = JSON.parse(JSON.stringify(mockContext));
-
         // Render component + create userEvent instance to use in tests
         user = userEvent.setup();
         component = render(
             <PageWrapper>
                 <TimelineProvider>
-                    <TestComponent context={context} />
+                    <EventHistoryModal
+                        plantID={mockContext.plant_details.uuid}
+                        removeEvent={jest.fn()}
+                    />
+                    <button onClick={openEventHistoryModal}>
+                        Open event history modal
+                    </button>
                 </TimelineProvider>
             </PageWrapper>
         );

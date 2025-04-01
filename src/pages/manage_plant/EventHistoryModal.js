@@ -7,6 +7,8 @@ import { sendPostRequest } from 'src/util';
 import { timestampToRelativeDays } from 'src/timestampUtils';
 import Modal from 'src/components/Modal';
 import { openErrorModal } from 'src/components/ErrorModal';
+import { useSelector, useDispatch } from 'react-redux';
+import { eventDeleted } from './TimelineContext';
 
 let modalRef;
 
@@ -87,8 +89,13 @@ EventsCol.propTypes = {
     handleSelect: PropTypes.func.isRequired
 };
 
-const EventHistoryModal = ({ plantID, events, removeEvent }) => {
+const EventHistoryModal = ({ plantID }) => {
     modalRef = useRef(null);
+
+    // Object with "water", "fertilize", "prune", and "repot" keys each
+    // containing an array of all event timestamps in backend database.
+    const events = useSelector((state) => state.events);
+    const dispatch = useDispatch();
 
     // Create ref to store selected events in each column
     const selectedWaterRef = useRef([]);
@@ -153,7 +160,10 @@ const EventHistoryModal = ({ plantID, events, removeEvent }) => {
         // If successful remove event from history column
         if (response.ok) {
             payload.events.forEach(event => {
-                removeEvent(event.timestamp, event.type);
+                dispatch(eventDeleted({
+                    timestamp: event.timestamp,
+                    type: event.type
+                }));
             });
 
             // Clear all refs, disable delete button, close modal
@@ -244,9 +254,7 @@ const EventHistoryModal = ({ plantID, events, removeEvent }) => {
 };
 
 EventHistoryModal.propTypes = {
-    plantID: PropTypes.string.isRequired,
-    events: PropTypes.object.isRequired,
-    removeEvent: PropTypes.func.isRequired
+    plantID: PropTypes.string.isRequired
 };
 
 export default EventHistoryModal;
