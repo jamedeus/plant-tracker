@@ -8,7 +8,8 @@ import { sendPostRequest } from 'src/util';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { openChangeQrModal } from 'src/components/ChangeQrModal';
 import { useSelector, useDispatch } from 'react-redux';
-import { eventAdded, plantRepotted } from './plantSlice';
+import { eventAdded } from './timelineSlice';
+import { plantRepotted } from './plantSlice';
 import clsx from 'clsx';
 
 let modalRef;

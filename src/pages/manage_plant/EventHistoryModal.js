@@ -8,7 +8,7 @@ import { timestampToRelativeDays } from 'src/timestampUtils';
 import Modal from 'src/components/Modal';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { useSelector, useDispatch } from 'react-redux';
-import { eventDeleted } from './plantSlice';
+import { eventDeleted } from './timelineSlice';
 
 let modalRef;
 
@@ -96,7 +96,7 @@ const EventHistoryModal = () => {
 
     // Object with "water", "fertilize", "prune", and "repot" keys each
     // containing an array of all event timestamps in backend database.
-    const events = useSelector((state) => state.plant.events);
+    const events = useSelector((state) => state.timeline.eventsByType);
     const dispatch = useDispatch();
 
     // Create ref to store selected events in each column

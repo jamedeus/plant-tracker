@@ -3,36 +3,12 @@ import { createSlice } from '@reduxjs/toolkit';
 // Centralized redux slice to store timelineDays and photoUrls "states" and all
 // callback functions that modify them
 export const plantSlice = createSlice({
-    name: 'events',
+    name: 'plant',
     initialState: {
         plantDetails: {},
-        groupOptions: [],
-        events: {
-            water: [],
-            fertilize: [],
-            prune: [],
-            repot: []
-        }
+        groupOptions: []
     },
     reducers: {
-        // Takes object with timestamp and type keys, adds to events and
-        // timelineDays states
-        eventAdded(state, action) {
-            const newEvent = action.payload;
-            state.events[newEvent.type].push(newEvent.timestamp);
-            state.events[newEvent.type].sort().reverse();
-        },
-
-        // Takes object with timestamp and type keys, removes from events and
-        // timelineDays states
-        eventDeleted(state, action) {
-            const deletedEvent = action.payload;
-            state.events[deletedEvent.type].splice(
-                state.events[deletedEvent.type].indexOf(deletedEvent.timestamp),
-                1
-            );
-        },
-
         // Takes new plantDetails object
         plantDetailsUpdated(state, action) {
             state.plantDetails = action.payload;
@@ -57,7 +33,6 @@ export const plantSlice = createSlice({
         // objects with new contents. Called when page navigated to using back
         // button (update potentially outdated contents).
         backButtonPressed(state, action) {
-            state.events = action.payload.events;
             state.plantDetails = action.payload.plant_details;
             state.groupOptions = action.payload.group_options;
         }
@@ -66,8 +41,6 @@ export const plantSlice = createSlice({
 
 // Export individual action creators from slice
 export const {
-    eventAdded,
-    eventDeleted,
     plantDetailsUpdated,
     plantRepotted,
     plantAddedToGroup,

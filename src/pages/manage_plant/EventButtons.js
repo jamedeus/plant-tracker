@@ -6,13 +6,13 @@ import { showToast } from 'src/components/Toast';
 import LastEventTime from 'src/components/LastEventTime';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { useSelector, useDispatch } from 'react-redux';
-import { eventAdded } from './plantSlice';
+import { eventAdded } from './timelineSlice';
 
 const EventButtons = memo(function EventButtons() {
     // Get state from redux store
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
-    const lastWatered = useSelector((state) => state.plant.events.water[0]);
-    const lastFertilized = useSelector((state) => state.plant.events.fertilize[0]);
+    const lastWatered = useSelector((state) => state.timeline.eventsByType.water[0]);
+    const lastFertilized = useSelector((state) => state.timeline.eventsByType.fertilize[0]);
 
     // Create ref to access new event datetime input
     const eventTimeInput = useRef(null);

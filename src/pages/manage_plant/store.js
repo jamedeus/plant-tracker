@@ -104,7 +104,7 @@ export function ReduxProvider({ children }) {
         // Parse django context objects
         const plantDetails = parseDomContext("plant_details") || {};
         const groupOptions = parseDomContext("group_options") || [];
-        const events = parseDomContext("events") || {};
+        const eventsByType = parseDomContext("events") || {};
         const photoUrls = parseDomContext('photo_urls') || [];
         const notes = parseDomContext('notes') || [];
 
@@ -113,16 +113,16 @@ export function ReduxProvider({ children }) {
             calendarDays,
             timelineDays,
             navigationOptions
-        } = buildStateObjects(events, notes, photoUrls);
+        } = buildStateObjects(eventsByType, notes, photoUrls);
 
         // Return object with keys expected by plantSlice and timelineSlice
         return {
             plant: {
                 plantDetails,
-                groupOptions,
-                events
+                groupOptions
             },
             timeline: {
+                eventsByType,
                 calendarDays,
                 timelineDays,
                 photoUrls,
