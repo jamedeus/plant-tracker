@@ -1,6 +1,5 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import App from '../App';
-import { ReduxProvider } from '../store';
 import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
 
@@ -30,9 +29,7 @@ describe('App', () => {
         // Render app, confirm /get_plant_state was not called
         const { unmount }  = render(
             <PageWrapper>
-                <ReduxProvider>
-                    <App />
-                </ReduxProvider>
+                <App />
             </PageWrapper>
         );
         expect(global.fetch.mock.calls.filter(
@@ -54,9 +51,7 @@ describe('App', () => {
         unmount();
         render(
             <PageWrapper>
-                <ReduxProvider>
-                    <App />
-                </ReduxProvider>
+                <App />
             </PageWrapper>
         );
 

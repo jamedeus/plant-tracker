@@ -30,7 +30,7 @@ ExistingNoteTimestamp.propTypes = {
     noteTime: PropTypes.string.isRequired
 };
 
-const NoteModal = memo(function NoteModal() {
+const NoteModal = () => {
     const dispatch = useDispatch();
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
 
@@ -199,6 +199,6 @@ const NoteModal = memo(function NoteModal() {
             </div>
         </Modal>
     );
-});
+};
 
 export default NoteModal;

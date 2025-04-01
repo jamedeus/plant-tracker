@@ -38,7 +38,7 @@ Row.propTypes = {
     removeFile: PropTypes.func.isRequired
 };
 
-const PhotoModal = memo(function PhotoModal() {
+const PhotoModal = () => {
     const dispatch = useDispatch();
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
 
@@ -189,6 +189,6 @@ const PhotoModal = memo(function PhotoModal() {
             </div>
         </Modal>
     );
-});
+};
 
 export default PhotoModal;

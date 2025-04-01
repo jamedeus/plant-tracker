@@ -67,7 +67,7 @@ PhotoSlide.propTypes = {
     submit: PropTypes.func.isRequired
 };
 
-const DefaultPhotoModal = memo(function DefaultPhotoModal() {
+const DefaultPhotoModal = () => {
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
     const photoUrls = useSelector((state) => state.timeline.photoUrls);
 
@@ -128,6 +128,6 @@ const DefaultPhotoModal = memo(function DefaultPhotoModal() {
             </div>
         </Modal>
     );
-});
+};
 
 export default DefaultPhotoModal;

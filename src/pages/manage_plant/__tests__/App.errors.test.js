@@ -1,6 +1,5 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import App from '../App';
-import { ReduxProvider } from '../store';
 import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
 
@@ -22,9 +21,7 @@ describe('App', () => {
         user = userEvent.setup();
         app = render(
             <PageWrapper>
-                <ReduxProvider>
-                    <App />
-                </ReduxProvider>
+                <App />
             </PageWrapper>
         );
     });
