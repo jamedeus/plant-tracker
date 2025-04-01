@@ -6,6 +6,7 @@ import DatetimeInput from 'src/components/DatetimeInput';
 import { localToUTC } from 'src/timestampUtils';
 import { sendPostRequest } from 'src/util';
 import { openErrorModal } from 'src/components/ErrorModal';
+import { useSelector } from 'react-redux';
 import clsx from 'clsx';
 
 let modalRef;
@@ -34,8 +35,11 @@ PotSizeOption.propTypes = {
     option: PropTypes.number.isRequired
 };
 
-const RepotModal = ({ plantID, currentPotSize, handleRepot }) => {
+const RepotModal = ({ handleRepot }) => {
     modalRef = useRef(null);
+
+    const plantID = useSelector((state) => state.plant.plantDetails.uuid);
+    const currentPotSize = useSelector((state) => state.plant.plantDetails.pot_size);
 
     // Pot size options (inches)
     const potSizes = [2, 3, 4, 6, 8, 10, 12, 14, 18, 21];
@@ -135,11 +139,6 @@ const RepotModal = ({ plantID, currentPotSize, handleRepot }) => {
 };
 
 RepotModal.propTypes = {
-    plantID: PropTypes.string.isRequired,
-    currentPotSize: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number
-    ]),
     handleRepot: PropTypes.func.isRequired
 };
 

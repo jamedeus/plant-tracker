@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 import GroupCard from 'src/components/GroupCard';
@@ -13,8 +14,10 @@ export const closeGroupModal = () => {
     modalRef.current.close();
 };
 
-const GroupModal = ({ groupOptions, handleAddGroup }) => {
+const GroupModal = ({ handleAddGroup }) => {
     modalRef = useRef(null);
+
+    const groupOptions = useSelector((state) => state.plant.groupOptions);
 
     return (
         <Modal title='Add plant to group' ref={modalRef}>
@@ -34,7 +37,6 @@ const GroupModal = ({ groupOptions, handleAddGroup }) => {
 };
 
 GroupModal.propTypes = {
-    groupOptions: PropTypes.array.isRequired,
     handleAddGroup: PropTypes.func.isRequired
 };
 

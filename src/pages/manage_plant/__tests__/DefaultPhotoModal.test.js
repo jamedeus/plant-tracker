@@ -28,6 +28,7 @@ describe('DefaultPhotoModal', () => {
 
     beforeAll(() => {
         // Create mock state objects (used by ReduxProvider)
+        createMockContext('plant_details', mockContext.plant_details);
         createMockContext('events', {});
         createMockContext('notes', []);
         createMockContext('photo_urls', mockContext.photo_urls);

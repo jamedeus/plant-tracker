@@ -1,26 +1,32 @@
 import createMockContext from 'src/testUtils/createMockContext';
+import removeMockContext from 'src/testUtils/removeMockContext';
 import Timeline from '../Timeline';
 import { ReduxProvider } from '../store';
 import { PageWrapper } from 'src/index';
 import { mockContext, mockEvents, mockPhotoUrls } from './mockContext';
 
 describe('Timeline', () => {
+    // Delete mock context after each test (isolation)
+    afterEach(() => {
+        removeMockContext('plant_details');
+    });
+
     beforeAll(() => {
-        // Create mock state object
+        // Create mock state objects
         createMockContext('events', mockEvents);
         createMockContext('notes', mockContext.notes);
         createMockContext('photo_urls', mockPhotoUrls);
     });
 
     it('matches snapshot when plant is not archived', () => {
-        // Render Timeline with archived=false, confirm matches snapshot
+        // Create mock plant_details context with archived=false
+        createMockContext('plant_details', mockContext.plant_details);
+
+        // Render Timeline, confirm matches snapshot
         const component = render(
             <PageWrapper>
                 <ReduxProvider>
-                    <Timeline
-                        plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-                        archived={false}
-                    />
+                    <Timeline />
                 </ReduxProvider>
             </PageWrapper>
         );
@@ -28,7 +34,13 @@ describe('Timeline', () => {
     });
 
     it('matches snapshot when plant is archived', () => {
-        // Render Timeline with archived=true, confirm matches snapshot
+        // Create mock plant_details context with archived=true
+        createMockContext('plant_details', {
+            ...mockContext.plant_details,
+            archived: true
+        });
+
+        // Render Timeline, confirm matches snapshot
         const component = render(
             <PageWrapper>
                 <ReduxProvider>

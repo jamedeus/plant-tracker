@@ -72,10 +72,10 @@ EventMarker.propTypes = {
     eventType: PropTypes.string.isRequired
 };
 
-// Takes YYYY-MM-DD dateKey, arrays of events/photos/notes, and archived bool
+// Takes YYYY-MM-DD dateKey and arrays of events, photos, and notes
 // If optional sectionRefs object is passed a MonthDivider will be rendered
 // above the day section (passed for first day of each month)
-const TimelineDay = memo(function TimelineDay({ dateKey, events, photos, notes, archived, sectionRefs }) {
+const TimelineDay = memo(function TimelineDay({ dateKey, events, photos, notes, sectionRefs }) {
     return (
         <>
             {/* Render MonthDivider if sectionRefs param was given */}
@@ -111,7 +111,6 @@ const TimelineDay = memo(function TimelineDay({ dateKey, events, photos, notes, 
                         <NoteCollapse
                             key={note.timestamp}
                             note={note}
-                            archived={archived}
                         />
                     ))}
                 </div>
@@ -125,7 +124,6 @@ TimelineDay.propTypes = {
     events: PropTypes.array.isRequired,
     notes: PropTypes.array.isRequired,
     photos: PropTypes.array.isRequired,
-    archived: PropTypes.bool.isRequired,
     sectionRefs: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.instanceOf(Object) }),
@@ -179,10 +177,12 @@ PhotoThumbnail.propTypes = {
     timestamp: PropTypes.string.isRequired
 };
 
-const NoteCollapse = memo(function NoteCollapse({ note, archived }) {
+const NoteCollapse = memo(function NoteCollapse({ note }) {
     const [expanded, setExpanded] = useState(false);
     const [height, setHeight] = useState('24px');
     const [clamped, setClamped] = useState(true);
+
+    const archived = useSelector((state) => state.plant.plantDetails.archived);
 
     // Used to measure height of expanded note text
     const textRef = useRef(null);
@@ -243,8 +243,7 @@ NoteCollapse.propTypes = {
     note: PropTypes.shape({
         text: PropTypes.string.isRequired,
         timestamp: PropTypes.string.isRequired
-    }).isRequired,
-    archived: PropTypes.bool.isRequired
+    }).isRequired
 };
 
 // Takes YYYY-MM-DD string
@@ -269,7 +268,9 @@ MonthDivider.propTypes = {
 };
 
 // History title with dropdown menu (hover) to jump to month/year sections
-const Title = memo(function Title({ archived, navigationOptions, sectionRefs }) {
+const Title = memo(function Title({ navigationOptions, sectionRefs }) {
+    const archived = useSelector((state) => state.plant.plantDetails.archived);
+
     return (
         <div className="navbar bg-base-200 rounded-2xl">
             <div className="navbar-start w-12">
@@ -349,7 +350,6 @@ const Title = memo(function Title({ archived, navigationOptions, sectionRefs }) 
 });
 
 Title.propTypes = {
-    archived: PropTypes.bool.isRequired,
     navigationOptions: PropTypes.object.isRequired,
     sectionRefs: PropTypes.oneOfType([
         PropTypes.func,
@@ -441,7 +441,7 @@ QuickNavigationYear.propTypes = {
     ]).isRequired
 };
 
-const Timeline = memo(function Timeline({ archived }) {
+const Timeline = memo(function Timeline() {
     const timelineDays = useSelector((state) => state.timeline.timelineDays);
     const navigationOptions = useSelector((state) => state.timeline.navigationOptions);
 
@@ -458,7 +458,6 @@ const Timeline = memo(function Timeline({ archived }) {
             'md:w-full md:max-w-screen-md bg-base-200 rounded-2xl'
         )}>
             <Title
-                archived={archived}
                 navigationOptions={navigationOptions}
                 sectionRefs={sectionRefs}
             />
@@ -484,7 +483,6 @@ const Timeline = memo(function Timeline({ archived }) {
                                 events={timelineDays[dateKey].events}
                                 notes={timelineDays[dateKey].notes}
                                 photos={timelineDays[dateKey].photos}
-                                archived={archived}
                                 sectionRefs={monthDivider ? sectionRefs : null}
                             />
                         );
@@ -498,9 +496,5 @@ const Timeline = memo(function Timeline({ archived }) {
         </div>
     );
 });
-
-Timeline.propTypes = {
-    archived: PropTypes.bool.isRequired
-};
 
 export default Timeline;

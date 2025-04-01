@@ -67,7 +67,8 @@ PhotoSlide.propTypes = {
     submit: PropTypes.func.isRequired
 };
 
-const DefaultPhotoModal = memo(function DefaultPhotoModal({ plantID }) {
+const DefaultPhotoModal = memo(function DefaultPhotoModal() {
+    const plantID = useSelector((state) => state.plant.plantDetails.uuid);
     const photoUrls = useSelector((state) => state.timeline.photoUrls);
 
     modalRef = useRef(null);
@@ -128,9 +129,5 @@ const DefaultPhotoModal = memo(function DefaultPhotoModal({ plantID }) {
         </Modal>
     );
 });
-
-DefaultPhotoModal.propTypes = {
-    plantID: PropTypes.string.isRequired
-};
 
 export default DefaultPhotoModal;

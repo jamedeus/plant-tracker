@@ -118,7 +118,6 @@ EventButtons.propTypes = {
 function App() {
     // Get redux states (parsed from context set by django template)
     const plantDetails = useSelector((state) => state.plant.plantDetails);
-    const groupOptions = useSelector((state) => state.plant.groupOptions);
 
     // Object with "water", "fertilize", "prune", and "repot" keys each
     // containing an array of all event timestamps in backend database.
@@ -326,11 +325,11 @@ function App() {
 
             <EventCalendar />
 
-            <Timeline archived={plantDetails.archived} />
-            <NoteModal plantID={plantDetails.uuid} />
-            <PhotoModal plantID={plantDetails.uuid} />
-            <DefaultPhotoModal plantID={plantDetails.uuid} />
-            <DeletePhotosModal plantID={plantDetails.uuid} />
+            <Timeline />
+            <NoteModal />
+            <PhotoModal />
+            <DefaultPhotoModal />
+            <DeletePhotosModal />
 
             <EditModal title="Edit Details" onSubmit={submitEditModal}>
                 <PlantDetailsForm
@@ -342,18 +341,11 @@ function App() {
                 />
             </EditModal>
 
-            <GroupModal
-                groupOptions={groupOptions}
-                handleAddGroup={handleAddGroup}
-            />
+            <GroupModal handleAddGroup={handleAddGroup} />
 
-            <RepotModal
-                plantID={plantDetails.uuid}
-                currentPotSize={plantDetails.pot_size}
-                handleRepot={handleRepot}
-            />
+            <RepotModal handleRepot={handleRepot} />
 
-            <EventHistoryModal plantID={plantDetails.uuid} />
+            <EventHistoryModal />
 
             <ChangeQrModal uuid={plantDetails.uuid} />
         </div>

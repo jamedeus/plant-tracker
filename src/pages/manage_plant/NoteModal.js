@@ -9,7 +9,7 @@ import { sendPostRequest } from 'src/util';
 import { localToUTC, timestampToReadable } from 'src/timestampUtils';
 import { DateTime } from 'luxon';
 import { noteAdded, noteEdited, noteDeleted } from './timelineSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 let modalRef;
 
@@ -30,8 +30,9 @@ ExistingNoteTimestamp.propTypes = {
     noteTime: PropTypes.string.isRequired
 };
 
-const NoteModal = memo(function NoteModal({ plantID }) {
+const NoteModal = memo(function NoteModal() {
     const dispatch = useDispatch();
+    const plantID = useSelector((state) => state.plant.plantDetails.uuid);
 
     // States for text and timestamp inputs
     const [noteTime, setNoteTime] = useState('');
@@ -199,9 +200,5 @@ const NoteModal = memo(function NoteModal({ plantID }) {
         </Modal>
     );
 });
-
-NoteModal.propTypes = {
-    plantID: PropTypes.string.isRequired
-};
 
 export default NoteModal;

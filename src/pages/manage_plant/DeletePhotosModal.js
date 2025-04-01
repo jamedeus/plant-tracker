@@ -113,8 +113,9 @@ ConfirmDeleteRow.propTypes = {
     unselectPhoto: PropTypes.func.isRequired
 };
 
-const DeletePhotosModal = memo(function DeletePhotosModal({ plantID }) {
+const DeletePhotosModal = memo(function DeletePhotosModal() {
     const dispatch = useDispatch();
+    const plantID = useSelector((state) => state.plant.plantDetails.uuid);
     const photoUrls = useSelector((state) => state.timeline.photoUrls);
 
     modalRef = useRef(null);
@@ -266,9 +267,5 @@ const DeletePhotosModal = memo(function DeletePhotosModal({ plantID }) {
         </Modal>
     );
 });
-
-DeletePhotosModal.propTypes = {
-    plantID: PropTypes.string.isRequired
-};
 
 export default DeletePhotosModal;

@@ -89,8 +89,10 @@ EventsCol.propTypes = {
     handleSelect: PropTypes.func.isRequired
 };
 
-const EventHistoryModal = ({ plantID }) => {
+const EventHistoryModal = () => {
     modalRef = useRef(null);
+
+    const plantID = useSelector((state) => state.plant.plantDetails.uuid);
 
     // Object with "water", "fertilize", "prune", and "repot" keys each
     // containing an array of all event timestamps in backend database.
@@ -251,10 +253,6 @@ const EventHistoryModal = ({ plantID }) => {
             </div>
         </Modal>
     );
-};
-
-EventHistoryModal.propTypes = {
-    plantID: PropTypes.string.isRequired
 };
 
 export default EventHistoryModal;

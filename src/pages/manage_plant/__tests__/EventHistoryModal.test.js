@@ -17,6 +17,7 @@ describe('EventHistoryModal', () => {
         };
 
         // Create mock state objects (used by ReduxProvider)
+        createMockContext('plant_details', mockContext.plant_details);
         createMockContext('events', mockEvents);
         createMockContext('notes', []);
         createMockContext('photo_urls', []);
@@ -28,10 +29,7 @@ describe('EventHistoryModal', () => {
         component = render(
             <PageWrapper>
                 <ReduxProvider>
-                    <EventHistoryModal
-                        plantID={mockContext.plant_details.uuid}
-                        removeEvent={jest.fn()}
-                    />
+                    <EventHistoryModal />
                     <button onClick={openEventHistoryModal}>
                         Open event history modal
                     </button>

@@ -9,6 +9,7 @@ describe('Timeline', () => {
 
     beforeAll(() => {
         // Create mock state object
+        createMockContext('plant_details', mockContext.plant_details);
         createMockContext('events', mockEvents);
         createMockContext('notes', mockContext.notes);
         createMockContext('photo_urls', mockPhotoUrls);
@@ -20,7 +21,7 @@ describe('Timeline', () => {
         app = render(
             <PageWrapper>
                 <ReduxProvider>
-                    <Timeline archived={false} />
+                    <Timeline />
                 </ReduxProvider>
             </PageWrapper>
         );

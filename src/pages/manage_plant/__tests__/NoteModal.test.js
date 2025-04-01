@@ -4,6 +4,7 @@ import NoteModal, { openNoteModal } from '../NoteModal';
 import { ReduxProvider } from '../store';
 import { PageWrapper } from 'src/index';
 import { postHeaders } from 'src/testUtils/headers';
+import { mockContext } from './mockContext';
 
 const mockNotes = [
     {text: 'this is an existing note', timestamp: '2024-02-13T12:00:00'},
@@ -13,7 +14,7 @@ const mockNotes = [
 const TestComponent = () => {
     return (
         <ReduxProvider>
-            <NoteModal plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12' />
+            <NoteModal />
             <button onClick={() => openNoteModal()}>
                 Add New Note
             </button>
@@ -29,6 +30,7 @@ describe('Add new note', () => {
 
     beforeAll(() => {
         // Create mock state objects (used by ReduxProvider)
+        createMockContext('plant_details', mockContext.plant_details);
         createMockContext('events', {});
         createMockContext('notes', mockNotes);
         createMockContext('photo_urls', []);
@@ -149,6 +151,8 @@ describe('Edit existing note', () => {
 
     beforeAll(() => {
         // Create mock state object
+        createMockContext('plant_details', mockContext.plant_details);
+        createMockContext('events', {});
         createMockContext('notes', []);
         createMockContext('photo_urls', []);
     });

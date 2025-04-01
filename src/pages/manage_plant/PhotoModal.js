@@ -5,7 +5,7 @@ import Modal from 'src/components/Modal';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 import CloseButtonIcon from 'src/components/CloseButtonIcon';
 import { openErrorModal } from 'src/components/ErrorModal';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { photosAdded } from './timelineSlice';
 
 let modalRef;
@@ -38,8 +38,9 @@ Row.propTypes = {
     removeFile: PropTypes.func.isRequired
 };
 
-const PhotoModal = memo(function PhotoModal({ plantID }) {
+const PhotoModal = memo(function PhotoModal() {
     const dispatch = useDispatch();
+    const plantID = useSelector((state) => state.plant.plantDetails.uuid);
 
     modalRef = useRef(null);
     // File input ref, used to remove selected files when X buttons clicked
@@ -189,9 +190,5 @@ const PhotoModal = memo(function PhotoModal({ plantID }) {
         </Modal>
     );
 });
-
-PhotoModal.propTypes = {
-    plantID: PropTypes.string.isRequired
-};
 
 export default PhotoModal;
