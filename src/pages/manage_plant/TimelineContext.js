@@ -56,8 +56,8 @@ function removeDateKeyIfEmpty(state, dateKey) {
 }
 
 // Takes object with event type keys, array of timestamps as value.
-// Converts to object with date string keys, each containing an object with
-// "events", "notes", and "photos" keys used to populate timeline
+// Converts to object with YYYY-MM-DD keys, each containing an object with
+// "events", "notes", and "photos" keys used to populate timeline.
 const formatEvents = (events) => {
     return Object.entries(events).reduce(
         (acc, [eventType, eventDates]) => {
@@ -79,16 +79,14 @@ const formatEvents = (events) => {
 };
 
 // Takes events, notes, and photo_urls context objects from django backend
-// Merges and returns 3 state objects:
-// - formattedEvents: YYYY-MM-DD keys, used by EventCalendar component
-// - timelineDays: YYYY-MM-DD keys, used by Timeline component
+// Merges and returns 2 state objects:
+// - timelineDays: YYYY-MM-DD keys containing objects with events, notes, and
+//   photos keys (all arrays). Used by Timeline and EventCalendar components.
 // - navigationOptions: YYYY keys containing array of MM strings, populates
 //   quick navigation dropdown options at top of Timeline component
 const buildStateObjects = (events, notes, photoUrls) => {
-    const formattedEvents = formatEvents(events);
-
-    // Deep copy to avoid mutating upstream state
-    const timelineDays = JSON.parse(JSON.stringify(formattedEvents));
+    // Convert to object with YYYY-MM-DD keys
+    const timelineDays = formatEvents(events);
 
     // Add contents of photoUrls to photos key under correct date
     photoUrls.sort((a, b) => {
@@ -125,7 +123,6 @@ const buildStateObjects = (events, notes, photoUrls) => {
     });
 
     return {
-        formattedEvents,
         timelineDays,
         navigationOptions
     };
@@ -137,32 +134,18 @@ const timelineSlice = createSlice({
     name: 'timeline',
     initialState: {
         events: {},
-        formattedEvents: {},
         timelineDays: {},
         photoUrls: [],
         navigationOptions: {}
     },
     reducers: {
-        // Takes object with timestamp and type keys, adds to events,
-        // formattedEvents, and timelineDays states
+        // Takes object with timestamp and type keys, adds to events and
+        // timelineDays states
         eventAdded(state, action) {
             const newEvent = action.payload;
             const dateKey = timestampToDateString(newEvent.timestamp);
             state.events[newEvent.type].push(newEvent.timestamp);
             state.events[newEvent.type].sort().reverse();
-            // Add new dateKey if missing
-            if (!state.formattedEvents[dateKey]) {
-                state.formattedEvents[dateKey] = {
-                    events: [ newEvent.type ],
-                    notes: [],
-                    photos: []
-                };
-                // Add navigationOption if first dateKey in year + month
-                addNavigationOption(state, dateKey);
-            // Add new events to existing dateKey
-            } else if (!state.formattedEvents[dateKey].events.includes(newEvent.type)) {
-                state.formattedEvents[dateKey].events.push(newEvent.type);
-            }
             // Add new dateKey if missing
             if (!state.timelineDays[dateKey]) {
                 state.timelineDays[dateKey] = {
@@ -178,17 +161,14 @@ const timelineSlice = createSlice({
             }
         },
 
-        // Takes object with timestamp and type keys, removes from events,
-        // formattedEvents, and timelineDays states
+        // Takes object with timestamp and type keys, removes from events and
+        // timelineDays states
         eventDeleted(state, action) {
             const deletedEvent = action.payload;
             const dateKey = timestampToDateString(deletedEvent.timestamp);
             state.events[deletedEvent.type].splice(
                 state.events[deletedEvent.type].indexOf(deletedEvent.timestamp),
                 1
-            );
-            state.formattedEvents[dateKey].events = state.formattedEvents[dateKey].events.filter(
-                event => event !== deletedEvent.type
             );
             state.timelineDays[dateKey].events = state.timelineDays[dateKey].events.filter(
                 event => event !== deletedEvent.type
@@ -303,7 +283,6 @@ const timelineSlice = createSlice({
             state.events = action.payload.events;
 
             const {
-                formattedEvents,
                 timelineDays,
                 navigationOptions
             } = buildStateObjects(
@@ -311,7 +290,6 @@ const timelineSlice = createSlice({
                 action.payload.notes,
                 action.payload.photo_urls
             );
-            state.formattedEvents = formattedEvents;
             state.timelineDays = timelineDays;
             state.navigationOptions = navigationOptions;
         }
@@ -326,8 +304,6 @@ function createTimelineStore(preloadedState) {
     });
 }
 
-// Simulate useContext provider so formattedEvents can be passed as prop and
-// used to build redux preloadedState
 export function TimelineProvider({ children }) {
     // Parses django context elements containing events, photoUrls, and notes
     // Merges and returns values for all initialState keys in timelineSlice
@@ -339,7 +315,6 @@ export function TimelineProvider({ children }) {
 
         // Build state objects
         const {
-            formattedEvents,
             timelineDays,
             navigationOptions
         } = buildStateObjects(events, notes, photoUrls);
@@ -347,7 +322,6 @@ export function TimelineProvider({ children }) {
         // Return object with keys expected by timelineSlice preloadedState
         return {
             events,
-            formattedEvents,
             timelineDays,
             photoUrls,
             navigationOptions
