@@ -6,7 +6,9 @@ import DatetimeInput from 'src/components/DatetimeInput';
 import { localToUTC } from 'src/timestampUtils';
 import { sendPostRequest } from 'src/util';
 import { openErrorModal } from 'src/components/ErrorModal';
-import { useSelector } from 'react-redux';
+import { openChangeQrModal } from 'src/components/ChangeQrModal';
+import { useSelector, useDispatch } from 'react-redux';
+import { eventAdded, plantRepotted } from './plantSlice';
 import clsx from 'clsx';
 
 let modalRef;
@@ -35,9 +37,10 @@ PotSizeOption.propTypes = {
     option: PropTypes.number.isRequired
 };
 
-const RepotModal = ({ handleRepot }) => {
+const RepotModal = () => {
     modalRef = useRef(null);
 
+    const dispatch = useDispatch();
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
     const currentPotSize = useSelector((state) => state.plant.plantDetails.pot_size);
 
@@ -81,9 +84,12 @@ const RepotModal = ({ handleRepot }) => {
 
         const response = await sendPostRequest('/repot_plant', payload);
         if (response.ok) {
-            // Update plant state pot_size, add repot event to history
-            handleRepot(payload.new_pot_size, payload.timestamp);
+            // Update plantDetails state, add event to events state
+            dispatch(plantRepotted(payload.new_pot_size));
+            dispatch(eventAdded({timestamp: payload.timestamp, type: 'repot'}));
+            // Close repot modal, open modal with instructions to change QR code
             modalRef.current.close();
+            openChangeQrModal();
         } else {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
@@ -136,10 +142,6 @@ const RepotModal = ({ handleRepot }) => {
             </button>
         </Modal>
     );
-};
-
-RepotModal.propTypes = {
-    handleRepot: PropTypes.func.isRequired
 };
 
 export default RepotModal;

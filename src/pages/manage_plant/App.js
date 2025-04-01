@@ -13,7 +13,7 @@ import LastEventTime from 'src/components/LastEventTime';
 import PlantDetails from 'src/components/PlantDetails';
 import IconButton from 'src/components/IconButton';
 import EventCalendar from './EventCalendar';
-import GroupModal, { openGroupModal, closeGroupModal } from './GroupModal';
+import GroupModal, { openGroupModal } from './GroupModal';
 import NoteModal from './NoteModal';
 import RepotModal from './RepotModal';
 import PhotoModal from './PhotoModal';
@@ -29,7 +29,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import {
     eventAdded,
     plantDetailsUpdated,
-    plantAddedToGroup,
     plantRemovedFromGroup,
     backButtonPressed
 } from './plantSlice';
@@ -156,40 +155,6 @@ function App() {
 
     // Get toggle theme option from context
     const { ToggleThemeOption } = useTheme();
-
-    // Called after successful repot_plant API call, takes RepotEvent params
-    const handleRepot = (newPotSize, repotTimestamp) => {
-        // Update state with new pot_size and event timestamp
-        dispatch(plantDetailsUpdated({
-            ...plantDetails,
-            pot_size: newPotSize
-        }));
-        dispatch(eventAdded({timestamp: repotTimestamp, type: 'repot'}));
-
-        // Open modal with instructions to change QR code
-        openChangeQrModal();
-    };
-
-    // GroupModal submit handler
-    const handleAddGroup = async (groupID) => {
-        const payload = {
-            plant_id: plantDetails.uuid,
-            group_id: groupID
-        };
-        const response = await sendPostRequest('/add_plant_to_group', payload);
-        if (response.ok) {
-            // Update plant state with group name and UUID from response
-            const data = await response.json();
-            dispatch(plantAddedToGroup({
-                name: data.group_name,
-                uuid: data.group_uuid
-            }));
-        } else {
-            const error = await response.json();
-            openErrorModal(JSON.stringify(error));
-        }
-        closeGroupModal();
-    };
 
     // Makes remove_plant_from_group API call, updates state if successful
     const handleRemoveGroup = useCallback(async () => {
@@ -341,9 +306,9 @@ function App() {
                 />
             </EditModal>
 
-            <GroupModal handleAddGroup={handleAddGroup} />
+            <GroupModal />
 
-            <RepotModal handleRepot={handleRepot} />
+            <RepotModal />
 
             <EventHistoryModal />
 

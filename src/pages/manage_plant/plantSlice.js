@@ -38,6 +38,12 @@ export const plantSlice = createSlice({
             state.plantDetails = action.payload;
         },
 
+        // Takes new pot size
+        // Does NOT create event (call eventAdded separately)
+        plantRepotted(state, action) {
+            state.plantDetails.pot_size = action.payload;
+        },
+
         // Takes object with name and uuid keys
         plantAddedToGroup(state, action) {
             state.plantDetails.group = action.payload;
@@ -63,6 +69,7 @@ export const {
     eventAdded,
     eventDeleted,
     plantDetailsUpdated,
+    plantRepotted,
     plantAddedToGroup,
     plantRemovedFromGroup,
     backButtonPressed
