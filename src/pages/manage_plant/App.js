@@ -26,7 +26,7 @@ import { openErrorModal } from 'src/components/ErrorModal';
 import Timeline from './Timeline';
 import { faPlus, faBan, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { useSelector, useDispatch } from 'react-redux';
-import { eventAdded, eventDeleted } from './TimelineContext';
+import { eventAdded, eventDeleted, backButtonPressed } from './TimelineContext';
 
 const EventButtons = memo(function EventButtons({ lastWatered, lastFertilized, addEvent }) {
     // Create ref to access new event datetime input
@@ -99,31 +99,30 @@ function App() {
 
     // Request new state from backend if user navigates to page by pressing
     // back button (may be outdated if user clicked group and made changes)
-    // useEffect(() => {
-    //     const handleBackButton = async (event) => {
-    //         if (event.persisted) {
-    //             const response = await fetch(`/get_plant_state/${plant.uuid}`);
-    //             if (response.ok) {
-    //                 const data = await response.json();
-    //                 // Only update plant and groupOptions (photos and notes can only be
-    //                 // added on this page, outdated species_options won't cause issues)
-    //                 setPlant(data['plant_details']);
-    //                 setEvents(data['events']);
-    //                 setFormattedEvents(formatEvents(data['events']));
-    //                 setGroupOptions(data['group_options']);
-    //             } else {
-    //                 // Reload page if failed to get new state (plant deleted)
-    //                 window.location.reload();
-    //             }
-    //         }
-    //     };
+    useEffect(() => {
+        const handleBackButton = async (event) => {
+            if (event.persisted) {
+                const response = await fetch(`/get_plant_state/${plant.uuid}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    // Update plant details, events, notes, photoUrls, and
+                    // groupOptions (outdated species_options won't cause issues)
+                    setPlant(data['plant_details']);
+                    dispatch(backButtonPressed(data));
+                    setGroupOptions(data['group_options']);
+                } else {
+                    // Reload page if failed to get new state (plant deleted)
+                    window.location.reload();
+                }
+            }
+        };
 
-    //     // Add listener on mount, remove on unmount
-    //     window.addEventListener('pageshow', handleBackButton);
-    //     return () => {
-    //         window.removeEventListener('pageshow', handleBackButton);
-    //     };
-    // }, []);
+        // Add listener on mount, remove on unmount
+        window.addEventListener('pageshow', handleBackButton);
+        return () => {
+            window.removeEventListener('pageshow', handleBackButton);
+        };
+    }, []);
 
     // Create ref to access edit details form
     const editDetailsRef = useRef(null);

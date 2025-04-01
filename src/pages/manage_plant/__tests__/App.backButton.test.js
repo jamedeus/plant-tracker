@@ -1,5 +1,6 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import App from '../App';
+import { TimelineProvider } from '../TimelineContext';
 import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
 
@@ -29,7 +30,9 @@ describe('App', () => {
         // Render app, confirm /get_plant_state was not called
         const { unmount }  = render(
             <PageWrapper>
-                <App />
+                <TimelineProvider>
+                    <App />
+                </TimelineProvider>
             </PageWrapper>
         );
         expect(global.fetch.mock.calls.filter(
@@ -51,7 +54,9 @@ describe('App', () => {
         unmount();
         render(
             <PageWrapper>
-                <App />
+                <TimelineProvider>
+                    <App />
+                </TimelineProvider>
             </PageWrapper>
         );
 
