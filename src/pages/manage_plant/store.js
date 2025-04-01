@@ -32,13 +32,18 @@ const formatEvents = (events) => {
 
 // Takes events, notes, and photo_urls context objects from django backend
 // Merges and returns 2 state objects:
+// - calendarDays: YYYY-MM-DD keys containing objects with events, notes, and
+//   photos keys (all arrays, only events populated). Used by EventCalendar.
 // - timelineDays: YYYY-MM-DD keys containing objects with events, notes, and
-//   photos keys (all arrays). Used by Timeline and EventCalendar components.
+//   photos keys (all arrays, all populated). Used by Timeline component.
 // - navigationOptions: YYYY keys containing array of MM strings, populates
 //   quick navigation dropdown options at top of Timeline component
 export const buildStateObjects = (events, notes, photoUrls) => {
-    // Convert to object with YYYY-MM-DD keys
-    const timelineDays = formatEvents(events);
+    // Convert to object with YYYY-MM-DD keys (used by EventCalendar component)
+    const calendarDays = formatEvents(events);
+
+    // Create copy to add notes and photos to (used by Timeline component)
+    const timelineDays = { ...calendarDays };
 
     // Add contents of photoUrls to photos key under correct date
     photoUrls.sort((a, b) => {
@@ -75,6 +80,7 @@ export const buildStateObjects = (events, notes, photoUrls) => {
     });
 
     return {
+        calendarDays,
         timelineDays,
         navigationOptions
     };
@@ -104,6 +110,7 @@ export function ReduxProvider({ children }) {
 
         // Build state objects
         const {
+            calendarDays,
             timelineDays,
             navigationOptions
         } = buildStateObjects(events, notes, photoUrls);
@@ -116,6 +123,7 @@ export function ReduxProvider({ children }) {
                 events
             },
             timeline: {
+                calendarDays,
                 timelineDays,
                 photoUrls,
                 navigationOptions

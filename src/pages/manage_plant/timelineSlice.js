@@ -51,6 +51,7 @@ function removeDateKeyIfEmpty(state, dateKey) {
         !state.timelineDays[dateKey].events.length
     ) {
         delete state.timelineDays[dateKey];
+        delete state.calendarDays[dateKey];
         // Remove navigationOption if no more content in month
         removeNavigationOption(state, dateKey);
     }
@@ -61,6 +62,7 @@ function removeDateKeyIfEmpty(state, dateKey) {
 export const timelineSlice = createSlice({
     name: 'timeline',
     initialState: {
+        calendarDays: {},
         timelineDays: {},
         photoUrls: [],
         navigationOptions: {}
@@ -152,9 +154,10 @@ export const timelineSlice = createSlice({
                     // timelineDays state and remove
                     const dateKey = timestampToDateString(photo.created);
                     if (state.timelineDays[dateKey]) {
-                        state.timelineDays[dateKey].photos = state.timelineDays[dateKey].photos.filter(
-                            photo => !deletedKeys.includes(photo.key)
-                        );
+                        state.timelineDays[dateKey].photos =
+                            state.timelineDays[dateKey].photos.filter(
+                                photo => !deletedKeys.includes(photo.key)
+                            );
                     }
                     // Remove timelineDays day if no content left
                     removeDateKeyIfEmpty(state, dateKey);
@@ -169,36 +172,44 @@ export const timelineSlice = createSlice({
         builder.addCase(plantSlice.actions.eventAdded, (state, action) => {
             const newEvent = action.payload;
             const dateKey = timestampToDateString(newEvent.timestamp);
+
             // Add new dateKey if missing
             if (!state.timelineDays[dateKey]) {
-                state.timelineDays[dateKey] = {
+                const day = {
                     events: [ newEvent.type ],
                     notes: [],
                     photos: []
                 };
+                state.calendarDays[dateKey] = day;
+                state.timelineDays[dateKey] = day;
                 // Add navigationOption if first dateKey in year + month
                 addNavigationOption(state, dateKey);
             // Add new events to existing dateKey
             } else if (!state.timelineDays[dateKey].events.includes(newEvent.type)) {
-                state.timelineDays[dateKey].events.push(newEvent.type);
-                // Sort events into predictable order for readability
-                state.timelineDays[dateKey].events.sort(
+                const newEvents = [
+                    ...state.timelineDays[dateKey].events,
+                    newEvent.type
+                ].sort(
                     (a, b) => EVENTS_ORDER.indexOf(a) - EVENTS_ORDER.indexOf(b)
                 );
+                state.calendarDays[dateKey].events = newEvents;
+                state.timelineDays[dateKey].events = newEvents;
             }
-
         });
         builder.addCase(plantSlice.actions.eventDeleted, (state, action) => {
             const deletedEvent = action.payload;
             const dateKey = timestampToDateString(deletedEvent.timestamp);
-            state.timelineDays[dateKey].events = state.timelineDays[dateKey].events.filter(
+            const newEvents = state.timelineDays[dateKey].events.filter(
                 event => event !== deletedEvent.type
             );
-            // Remove timelineDays day if no content left
+            state.timelineDays[dateKey].events = newEvents;
+            state.calendarDays[dateKey].events = newEvents;
+            // Remove calendarDays and timelineDays day if no content left
             removeDateKeyIfEmpty(state, dateKey);
         });
         builder.addCase(plantSlice.actions.backButtonPressed, (state, action) => {
             const {
+                calendarDays,
                 timelineDays,
                 navigationOptions
             } = buildStateObjects(
@@ -206,6 +217,7 @@ export const timelineSlice = createSlice({
                 action.payload.notes,
                 action.payload.photo_urls
             );
+            state.calendarDays = calendarDays;
             state.timelineDays = timelineDays;
             state.navigationOptions = navigationOptions;
         });
