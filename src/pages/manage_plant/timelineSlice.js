@@ -3,6 +3,9 @@ import { timestampToDateString } from 'src/timestampUtils';
 import { buildStateObjects } from './store';
 import { eventsSlice } from './eventsSlice';
 
+// Correct order for event markers within a single timeline day (readability)
+const EVENTS_ORDER = ['water', 'fertilize', 'prune', 'repot'];
+
 // Takes timelineSlice state and new YYYY-MM-DD dateKey
 // Adds month and year to navigationOptions if not already present
 function addNavigationOption(state, dateKey) {
@@ -178,6 +181,10 @@ export const timelineSlice = createSlice({
             // Add new events to existing dateKey
             } else if (!state.timelineDays[dateKey].events.includes(newEvent.type)) {
                 state.timelineDays[dateKey].events.push(newEvent.type);
+                // Sort events into predictable order for readability
+                state.timelineDays[dateKey].events.sort(
+                    (a, b) => EVENTS_ORDER.indexOf(a) - EVENTS_ORDER.indexOf(b)
+                );
             }
 
         });

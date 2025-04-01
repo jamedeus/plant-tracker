@@ -229,4 +229,47 @@ describe('App', () => {
         expect(firstNote.textContent).toContain('Earlier timestamp');
         expect(secondNote.textContent).toContain('Later timestamp');
     });
+
+    // Original bug: If a fertilize event was created first, then a water event
+    // was created on the same day, the timeline would render the fertilize
+    // EventMarker before the water EventMakrer (should always be in the same
+    // order on every day of the timeline for readability).
+    it('renders EventMarkers in a predictable order', async () => {
+        // Simulate user creating prune event
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "action": "prune",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
+        await user.click(app.getByRole("button", {name: "Prune"}));
+
+        // Simulate user creating fertilize event
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "action": "fertilize",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
+        await user.click(app.getByRole("button", {name: "Fertilize"}));
+
+        // Simulate user creating water event
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "action": "water",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
+        await user.click(app.getByRole("button", {name: "Water"}));
+
+        // Get div containing both EventMarkers, confirm "Watered" is first
+        const today = app.getByText('today').parentElement.nextSibling;
+        const eventMarkers = today.children[0];
+        expect(eventMarkers.children[0].textContent).toContain('Watered');
+        expect(eventMarkers.children[1].textContent).toContain('Fertilized');
+        expect(eventMarkers.children[2].textContent).toContain('Pruned');
+    })
 });
