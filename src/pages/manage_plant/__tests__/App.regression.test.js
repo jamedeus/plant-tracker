@@ -268,5 +268,5 @@ describe('App', () => {
         expect(eventMarkers.children[0].textContent).toContain('Watered');
         expect(eventMarkers.children[1].textContent).toContain('Fertilized');
         expect(eventMarkers.children[2].textContent).toContain('Pruned');
-    })
+    });
 });

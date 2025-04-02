@@ -24,7 +24,7 @@ function addNavigationOption(state, dateKey) {
 // timelineDays in the same month and year
 function removeNavigationOption(state, dateKey) {
     const [year, month] = dateKey.split('-');
-    // Rmove month if no timelineDays have the same year and month
+    // Remove month if no timelineDays have the same year and month
     if (!Object.keys(state.timelineDays).filter(
         datestring => datestring.startsWith(`${year}-${month}`)
     ).length) {
@@ -57,8 +57,8 @@ function removeDateKeyIfEmpty(state, dateKey) {
     }
 }
 
-// Centralized redux slice to store timelineDays and photoUrls "states" and all
-// callback functions that modify them
+// Redux slice to store all state related to the Timeline component (events,
+// notes, photos) and callback functions that modify them
 export const timelineSlice = createSlice({
     name: 'timeline',
     initialState: {
@@ -74,8 +74,8 @@ export const timelineSlice = createSlice({
         navigationOptions: {}
     },
     reducers: {
-        // Takes object with timestamp and type keys, adds to events and
-        // timelineDays states
+        // Takes object with timestamp and type keys, adds to events,
+        // calendarDays, and timelineDays states
         eventAdded(state, action) {
             // Add new event to events state
             const newEvent = action.payload;
@@ -108,8 +108,8 @@ export const timelineSlice = createSlice({
             }
         },
 
-        // Takes object with timestamp and type keys, removes from events and
-        // timelineDays states
+        // Takes object with timestamp and type keys, removes from events,
+        // calendarDays, and timelineDays states
         eventDeleted(state, action) {
             // Remove event from events state
             const deletedEvent = action.payload;

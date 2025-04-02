@@ -86,7 +86,7 @@ export const buildStateObjects = (events, notes, photoUrls) => {
     };
 };
 
-// Takes initial timelineDays state, creates redux store and returns
+// Takes initial plantSlice and timelineSlice states, returns redux store
 function createReduxStore(preloadedState) {
     return configureStore({
         reducer: {

@@ -20,7 +20,7 @@ const App = () => {
             <DeletePhotosModal />
             <EventHistoryModal />
         </ReduxProvider>
-    )
-}
+    );
+};
 
 export default App;

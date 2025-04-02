@@ -15,8 +15,8 @@ export const backButtonPressed = createAsyncThunk(
     }
 );
 
-// Centralized redux slice to store timelineDays and photoUrls "states" and all
-// callback functions that modify them
+// Redux slice to store all state related to the plant's current status, except
+// events, notes, and photos (stored in timelineSlice)
 export const plantSlice = createSlice({
     name: 'plant',
     initialState: {
@@ -30,7 +30,7 @@ export const plantSlice = createSlice({
         },
 
         // Takes new pot size
-        // Does NOT create event (call eventAdded separately)
+        // Does NOT create event (dispatch timelineSlice.eventAdded separately)
         plantRepotted(state, action) {
             state.plantDetails.pot_size = action.payload;
         },
@@ -40,7 +40,7 @@ export const plantSlice = createSlice({
             state.plantDetails.group = action.payload;
         },
 
-        plantRemovedFromGroup(state, action) {
+        plantRemovedFromGroup(state) {
             state.plantDetails.group = null;
         }
     },
