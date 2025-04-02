@@ -130,7 +130,7 @@ const QuickNavigation = () => {
     );
 };
 
-// Takes year (string) and array of months (numbers not strings)
+// Takes year (YYYY string) and array of months (MM strings, not names or ints)
 // Renders dropdown item with year which expands to show sub-menu of month
 // links that scroll to the correct timeline section when clicked
 const QuickNavigationYear = ({ year, months }) => {
@@ -187,7 +187,7 @@ const QuickNavigationYear = ({ year, months }) => {
 
 QuickNavigationYear.propTypes = {
     year: PropTypes.string.isRequired,
-    months: PropTypes.array.isRequired
+    months: PropTypes.arrayOf(PropTypes.string).isRequired
 };
 
 // Takes YYYY-MM-DD string, renders relative timestamp div (left column).

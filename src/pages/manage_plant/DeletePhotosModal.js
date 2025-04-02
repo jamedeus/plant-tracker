@@ -76,7 +76,12 @@ const PhotoSlide = memo(function PhotoSlide({ photo, nextPhotoLink, prevPhotoLin
 });
 
 PhotoSlide.propTypes = {
-    photo: PropTypes.object.isRequired,
+    photo: PropTypes.shape({
+        key: PropTypes.number.isRequired,
+        created: PropTypes.string.isRequired,
+        thumbnail: PropTypes.string.isRequired,
+        image: PropTypes.string.isRequired
+    }).isRequired,
     nextPhotoLink: PropTypes.string.isRequired,
     prevPhotoLink: PropTypes.string.isRequired,
     selected: PropTypes.bool.isRequired,
@@ -107,8 +112,10 @@ const ConfirmDeleteRow = memo(function ConfirmDeleteRow({ photo, unselectPhoto }
 
 ConfirmDeleteRow.propTypes = {
     photo: PropTypes.shape({
+        key: PropTypes.number.isRequired,
+        created: PropTypes.string.isRequired,
         thumbnail: PropTypes.string.isRequired,
-        key: PropTypes.number.isRequired
+        image: PropTypes.string.isRequired
     }).isRequired,
     unselectPhoto: PropTypes.func.isRequired
 };

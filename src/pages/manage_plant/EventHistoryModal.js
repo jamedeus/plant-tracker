@@ -88,7 +88,7 @@ EventsCol.propTypes = {
         'fertilize',
         'prune',
         'repot'
-    ]),
+    ]).isRequired,
     selectedRef: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.array }),
