@@ -53,9 +53,11 @@ EventCard.propTypes = {
     onSelect: PropTypes.func.isRequired
 };
 
-// Takes events state + ref containing array (track selected events)
+// Takes event type, ref containing array, and handleSelect callback
 // Renders column of EventCard instances (appends to selected when clicked)
-const EventsCol = ({ events, selectedRef, handleSelect }) => {
+const EventsCol = ({ type, selectedRef, handleSelect }) => {
+    const events = useSelector((state) => state.timeline.eventsByType[type]);
+
     const onSelect = useCallback((timestamp) => {
         handleSelect(timestamp, selectedRef);
     }, [handleSelect, selectedRef]);
@@ -81,7 +83,12 @@ const EventsCol = ({ events, selectedRef, handleSelect }) => {
 };
 
 EventsCol.propTypes = {
-    events: PropTypes.array.isRequired,
+    type: PropTypes.oneOf([
+        'water',
+        'fertilize',
+        'prune',
+        'repot'
+    ]),
     selectedRef: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.array }),
@@ -93,10 +100,6 @@ const EventHistoryModal = () => {
     modalRef = useRef(null);
 
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
-
-    // Object with "water", "fertilize", "prune", and "repot" keys each
-    // containing an array of all event timestamps in backend database.
-    const events = useSelector((state) => state.timeline.eventsByType);
     const dispatch = useDispatch();
 
     // Create ref to store selected events in each column
@@ -214,28 +217,28 @@ const EventHistoryModal = () => {
                 <Tab.Panels className="mt-8 mb-4">
                     <Tab.Panel>
                         <EventsCol
-                            events={events.water}
+                            type={'water'}
                             selectedRef={selectedWaterRef}
                             handleSelect={handleSelect}
                         />
                     </Tab.Panel>
                     <Tab.Panel>
                         <EventsCol
-                            events={events.fertilize}
+                            type={'fertilize'}
                             selectedRef={selectedFertilizeRef}
                             handleSelect={handleSelect}
                         />
                     </Tab.Panel>
                     <Tab.Panel>
                         <EventsCol
-                            events={events.prune}
+                            type={'prune'}
                             selectedRef={selectedPruneRef}
                             handleSelect={handleSelect}
                         />
                     </Tab.Panel>
                     <Tab.Panel>
                         <EventsCol
-                            events={events.repot}
+                            type={'repot'}
                             selectedRef={selectedRepotRef}
                             handleSelect={handleSelect}
                         />
