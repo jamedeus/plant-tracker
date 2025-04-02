@@ -176,7 +176,14 @@ function Layout() {
             <Timeline />
 
             <EditModal title="Edit Details" onSubmit={submitEditModal}>
+                {/* Key forces form to remount when RepotModal is submitted -
+                    form is unmanaged so props only set default values, which
+                    do not change when plantDetails updates. If pot_size field
+                    does not update after repot the user could easily reset the
+                    new pot size without noticing.
+                */}
                 <PlantDetailsForm
+                    key={plantDetails.pot_size}
                     formRef={editDetailsRef}
                     name={plantDetails.name}
                     species={plantDetails.species}

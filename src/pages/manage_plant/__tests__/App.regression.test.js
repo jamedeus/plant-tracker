@@ -269,4 +269,34 @@ describe('App', () => {
         expect(eventMarkers.children[1].textContent).toContain('Fertilized');
         expect(eventMarkers.children[2].textContent).toContain('Pruned');
     });
+
+    // Original bug: When RepotModal was submitted the pre-filled pot size
+    // field in EditModal form did not update. If the user then opened the
+    // EditModal to change description and did not noticed the outdated pot
+    // size value they could easily reset back to the initial pot size.
+    it('updates pot size in EditModal form when plant is repotted', async () => {
+        // Open edit modal
+        await user.click(within(
+            app.container.querySelector('.dropdown-center')
+        ).getByText("Edit"));
+
+        // Confirm pot size field defaults to '4'
+        expect(app.getByLabelText('Pot size').value).toBe('4');
+
+        // Simulate user opening repot modal and clicking submit without
+        // changing pot size (defaults to 6, next size up)
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "action": "repot",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
+        await user.click(app.getAllByText(/Repot plant/)[0]);
+        const repotModal = app.getAllByText(/Repot plant/)[1].parentElement;
+        await user.click(repotModal.querySelector('.btn-success'));
+
+        // Confirm pot size field in EditModal changed to '6'
+        expect(app.getByLabelText('Pot size').value).toBe('6');
+    });
 });
