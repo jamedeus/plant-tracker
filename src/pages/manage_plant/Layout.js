@@ -71,10 +71,7 @@ function Layout() {
         if (response.ok) {
             // Update plant state with new values from response
             const data = await response.json();
-            dispatch(plantDetailsUpdated({
-                ...plantDetails,
-                ...data
-            }));
+            dispatch(plantDetailsUpdated(data));
         } else {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));

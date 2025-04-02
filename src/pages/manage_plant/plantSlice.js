@@ -24,9 +24,13 @@ export const plantSlice = createSlice({
         groupOptions: []
     },
     reducers: {
-        // Takes new plantDetails object
+        // Takes object with all plantDetails keys that changed, overwrites
+        // matching keys in plantDetails without modifying other keys
         plantDetailsUpdated(state, action) {
-            state.plantDetails = action.payload;
+            state.plantDetails = {
+                ...state.plantDetails,
+                ...action.payload
+            };
         },
 
         // Takes new pot size
