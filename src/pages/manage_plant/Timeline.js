@@ -32,7 +32,7 @@ const getRelativeTimeString = (timestamp) => {
 };
 
 // History title with dropdown menu to jump to a specific month in timeline
-const Title = memo(function Title({ sectionRefs }) {
+const Title = memo(function Title() {
     const archived = useSelector((state) => state.plant.plantDetails.archived);
 
     return (
@@ -50,7 +50,7 @@ const Title = memo(function Title({ sectionRefs }) {
                         History
                     </div>
                     <ul tabIndex={0} className="dropdown-options w-44">
-                        <QuickNavigation sectionRefs={sectionRefs} />
+                        <QuickNavigation />
                     </ul>
                 </div>
             </div>
@@ -110,16 +110,9 @@ const Title = memo(function Title({ sectionRefs }) {
     );
 });
 
-Title.propTypes = {
-    sectionRefs: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.instanceOf(Object) }),
-    ]).isRequired
-};
-
 // Dropdown menu with expandable section for each year in timeline containing
 // month links that scroll to the correct timeline section when clicked
-const QuickNavigation = ({ sectionRefs }) => {
+const QuickNavigation = () => {
     const navigationOptions = useSelector(
         (state) => state.timeline.navigationOptions
     );
@@ -131,24 +124,16 @@ const QuickNavigation = ({ sectionRefs }) => {
                     key={year}
                     year={year}
                     months={navigationOptions[year]}
-                    sectionRefs={sectionRefs}
                 />
             ))}
         </>
     );
 };
 
-QuickNavigation.propTypes = {
-    sectionRefs: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.instanceOf(Object) }),
-    ]).isRequired
-};
-
 // Takes year (string) and array of months (numbers not strings)
 // Renders dropdown item with year which expands to show sub-menu of month
 // links that scroll to the correct timeline section when clicked
-const QuickNavigationYear = ({ year, months, sectionRefs }) => {
+const QuickNavigationYear = ({ year, months }) => {
     // Create ref used to open sub-menu on hover
     const detailsRef = useRef(null);
 
@@ -162,7 +147,10 @@ const QuickNavigationYear = ({ year, months, sectionRefs }) => {
 
     // Takes year-month string (ie 2024-03), scrolls to timeline section
     const jumpTo = (yearMonth) => {
-        sectionRefs.current[yearMonth].scrollIntoView({
+        const timelineRow = document.querySelector(
+            `[data-timeline-divider="${yearMonth}"]`
+        );
+        timelineRow.scrollIntoView({
             behavior: "smooth",
             block: "start"
         });
@@ -199,15 +187,11 @@ const QuickNavigationYear = ({ year, months, sectionRefs }) => {
 
 QuickNavigationYear.propTypes = {
     year: PropTypes.string.isRequired,
-    months: PropTypes.array.isRequired,
-    sectionRefs: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.instanceOf(Object) }),
-    ]).isRequired
+    months: PropTypes.array.isRequired
 };
 
-// Takes YYYY-MM-DD string, renders relative timestamp div (left column)
-// Has dataset attribute used to scroll page when EventCalendar day clicked
+// Takes YYYY-MM-DD string, renders relative timestamp div (left column).
+// Has dataset attribute used to scroll page when EventCalendar day clicked.
 const TimelineTimestamp = memo(function TimelineTimestamp({ dateKey }) {
     return (
         <div
@@ -228,15 +212,15 @@ TimelineTimestamp.propTypes = {
     dateKey: PropTypes.string.isRequired
 };
 
-// Takes YYYY-MM-DD string and ref containing object containing refs
-// Renders horizontal divider with month name that spans both timeline columns
-// Adds self to sectionRefs so QuickNavigation can target divider
-const MonthDivider = memo(function MonthDivider({ dateKey, sectionRefs }) {
+// Takes YYYY-MM-DD string, renders horizontal divider with month name that
+// spans both timeline columns. Has dataset attribute used to scroll page when
+// QuickNavigation month is clicked.
+const MonthDivider = memo(function MonthDivider({ dateKey }) {
     const yearMonth = dateKey.slice(0, 7);
     return (
         <div
             className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
-            ref={el => sectionRefs.current[yearMonth] = el}
+            data-timeline-divider={yearMonth}
         >
             {DateTime.fromFormat(yearMonth, 'yyyy-MM').toFormat('MMMM yyyy')}
         </div>
@@ -244,11 +228,7 @@ const MonthDivider = memo(function MonthDivider({ dateKey, sectionRefs }) {
 });
 
 MonthDivider.propTypes = {
-    dateKey: PropTypes.string.isRequired,
-    sectionRefs: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.instanceOf(Object) }),
-    ]).isRequired
+    dateKey: PropTypes.string.isRequired
 };
 
 // Map event type strings to icon components
@@ -395,22 +375,17 @@ NoteCollapse.propTypes = {
 // Takes YYYY-MM-DD dateKey matching a key in timelineSlice.timelineDays state.
 // Renders single row of timeline with timestamp in left column and div with
 // all events, photos, and notes from that day in right column.
-// If optional sectionRefs object is passed a MonthDivider will be rendered
-// above the day section (passed for first day of each month).
-const TimelineDay = memo(function TimelineDay({ dateKey, sectionRefs }) {
+// If optional monthDivider bool is passed a MonthDivider will be rendered
+// above the row (passed for first day of each month).
+const TimelineDay = memo(function TimelineDay({ dateKey, monthDivider }) {
     const contents = useSelector(
         (state) => state.timeline.timelineDays[dateKey]
     );
 
     return (
         <>
-            {/* Render MonthDivider if sectionRefs param was given */}
-            {sectionRefs && (
-                <MonthDivider
-                    dateKey={dateKey}
-                    sectionRefs={sectionRefs}
-                />
-            )}
+            {/* Render MonthDivider if monthDivider param was given */}
+            {monthDivider && <MonthDivider dateKey={dateKey} />}
             <TimelineTimestamp dateKey={dateKey} />
             <div className="flex flex-col bg-neutral rounded-xl p-2 md:p-4">
                 <div className="flex flex-row flex-wrap">
@@ -447,18 +422,11 @@ const TimelineDay = memo(function TimelineDay({ dateKey, sectionRefs }) {
 
 TimelineDay.propTypes = {
     dateKey: PropTypes.string.isRequired,
-    sectionRefs: PropTypes.oneOfType([
-        PropTypes.func,
-        PropTypes.shape({ current: PropTypes.instanceOf(Object) })
-    ])
+    monthDivider: PropTypes.bool
 };
 
 const Timeline = memo(function Timeline() {
     const timelineDays = useSelector((state) => state.timeline.timelineDays);
-
-    // Contains object with year-month strings (ie 2024-03) as keys, divider
-    // elements as values (used form quick navigation scrolling)
-    const sectionRefs = useRef({});
 
     // Get array of yyyy-mm-dd keys sorted chronologically (recent first)
     const dayKeys = Object.keys(timelineDays).sort().reverse();
@@ -468,7 +436,7 @@ const Timeline = memo(function Timeline() {
             'flex flex-col mt-2 mx-4 md:mx-auto p-4 md:p-8 pt-0 md:pt-0',
             'md:w-full md:max-w-screen-md bg-base-200 rounded-2xl'
         )}>
-            <Title sectionRefs={sectionRefs} />
+            <Title />
             {dayKeys.length > 0 ? (
                 <div className="grid grid-cols-[min-content_1fr] gap-4 md:gap-8">
                     {dayKeys.map((dateKey, index) => {
@@ -488,7 +456,7 @@ const Timeline = memo(function Timeline() {
                             <TimelineDay
                                 key={dateKey}
                                 dateKey={dateKey}
-                                sectionRefs={monthDivider ? sectionRefs : null}
+                                monthDivider={monthDivider}
                             />
                         );
                     })}

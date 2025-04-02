@@ -1200,6 +1200,7 @@ exports[`App matches snapshot 1`] = `
           >
             <div
               class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+              data-timeline-divider="2024-03"
             >
               March 2024
             </div>
@@ -1424,6 +1425,7 @@ exports[`App matches snapshot 1`] = `
             </div>
             <div
               class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+              data-timeline-divider="2024-02"
             >
               February 2024
             </div>
@@ -3132,6 +3134,7 @@ exports[`App matches snapshot 1`] = `
         >
           <div
             class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+            data-timeline-divider="2024-03"
           >
             March 2024
           </div>
@@ -3356,6 +3359,7 @@ exports[`App matches snapshot 1`] = `
           </div>
           <div
             class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+            data-timeline-divider="2024-02"
           >
             February 2024
           </div>
@@ -5030,6 +5034,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
           >
             <div
               class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+              data-timeline-divider="2024-03"
             >
               March 2024
             </div>
@@ -5254,6 +5259,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+              data-timeline-divider="2024-02"
             >
               February 2024
             </div>
@@ -6841,6 +6847,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
         >
           <div
             class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+            data-timeline-divider="2024-03"
           >
             March 2024
           </div>
@@ -7065,6 +7072,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+            data-timeline-divider="2024-02"
           >
             February 2024
           </div>
