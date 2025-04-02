@@ -106,7 +106,7 @@ function Layout() {
                 <ToggleThemeOption />
             </>
         );
-    }, [plantDetails]);
+    }, [plantDetails, ToggleThemeOption]);
 
     // Plant details card shown when title is clicked
     const PlantDetailsDropdown = useMemo(() => {
