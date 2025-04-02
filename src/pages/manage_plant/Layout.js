@@ -29,36 +29,22 @@ function Layout() {
     // Used to update redux store
     const dispatch = useDispatch();
 
-    // Request new state from backend if user navigates to page by pressing
-    // back button (may be outdated if user clicked group and made changes)
-    useEffect(() => {
-        const handleBackButton = async (event) => {
-            if (event.persisted) {
-                const response = await fetch(`/get_plant_state/${plantDetails.uuid}`);
-                if (response.ok) {
-                    const data = await response.json();
-                    // Update plant details, events, notes, photoUrls, and
-                    // groupOptions (outdated species_options won't cause issues)
-                    dispatch(backButtonPressed(data));
-                } else {
-                    // Reload page if failed to get new state (plant deleted)
-                    window.location.reload();
-                }
-            }
-        };
-
-        // Add listener on mount, remove on unmount
-        window.addEventListener('pageshow', handleBackButton);
-        return () => {
-            window.removeEventListener('pageshow', handleBackButton);
-        };
-    }, []);
-
     // Create ref to access edit details form
     const editDetailsRef = useRef(null);
 
     // Get toggle theme option from context
     const { ToggleThemeOption } = useTheme();
+
+    // Update redux store with new state fetched from backend if user navigates
+    // to page by pressing back button (contents may be outdated)
+    useEffect(() => {
+        const handleBackButton = (event) => {
+            event.persisted && dispatch(backButtonPressed());
+        };
+        // Add listener on mount, remove on unmount
+        window.addEventListener('pageshow', handleBackButton);
+        return () => window.removeEventListener('pageshow', handleBackButton);
+    }, []);
 
     // Makes remove_plant_from_group API call, updates state if successful
     const handleRemoveGroup = useCallback(async () => {
