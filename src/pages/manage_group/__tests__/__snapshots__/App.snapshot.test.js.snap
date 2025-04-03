@@ -328,7 +328,7 @@ exports[`App matches snapshot 1`] = `
                           class="btn-close absolute right-2 top-8 z-40"
                           for=":r1:"
                           role="button"
-                          tabindex="0"
+                          tabindex="-1"
                         >
                           <svg
                             aria-hidden="true"
@@ -479,7 +479,7 @@ exports[`App matches snapshot 1`] = `
                           class="btn-close absolute right-2 top-8 z-40"
                           for=":r2:"
                           role="button"
-                          tabindex="0"
+                          tabindex="-1"
                         >
                           <svg
                             aria-hidden="true"
@@ -589,7 +589,7 @@ exports[`App matches snapshot 1`] = `
                           class="btn-close absolute right-2 top-8 z-40"
                           for=":r3:"
                           role="button"
-                          tabindex="0"
+                          tabindex="-1"
                         >
                           <svg
                             aria-hidden="true"
@@ -1161,7 +1161,7 @@ exports[`App matches snapshot 1`] = `
                         class="btn-close absolute right-2 top-8 z-40"
                         for=":r1:"
                         role="button"
-                        tabindex="0"
+                        tabindex="-1"
                       >
                         <svg
                           aria-hidden="true"
@@ -1312,7 +1312,7 @@ exports[`App matches snapshot 1`] = `
                         class="btn-close absolute right-2 top-8 z-40"
                         for=":r2:"
                         role="button"
-                        tabindex="0"
+                        tabindex="-1"
                       >
                         <svg
                           aria-hidden="true"
@@ -1422,7 +1422,7 @@ exports[`App matches snapshot 1`] = `
                         class="btn-close absolute right-2 top-8 z-40"
                         for=":r3:"
                         role="button"
-                        tabindex="0"
+                        tabindex="-1"
                       >
                         <svg
                           aria-hidden="true"

@@ -302,7 +302,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                               class="btn-close absolute right-2 top-8 z-40"
                               for=":rd:"
                               role="button"
-                              tabindex="0"
+                              tabindex="-1"
                             >
                               <svg
                                 aria-hidden="true"
@@ -520,7 +520,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                               class="btn-close absolute right-2 top-8 z-40"
                               for=":rf:"
                               role="button"
-                              tabindex="0"
+                              tabindex="-1"
                             >
                               <svg
                                 aria-hidden="true"
@@ -941,7 +941,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                             class="btn-close absolute right-2 top-8 z-40"
                             for=":rd:"
                             role="button"
-                            tabindex="0"
+                            tabindex="-1"
                           >
                             <svg
                               aria-hidden="true"
@@ -1159,7 +1159,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                             class="btn-close absolute right-2 top-8 z-40"
                             for=":rf:"
                             role="button"
-                            tabindex="0"
+                            tabindex="-1"
                           >
                             <svg
                               aria-hidden="true"
@@ -2076,7 +2076,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                               class="btn-close absolute right-2 top-8 z-40"
                               for=":rb:"
                               role="button"
-                              tabindex="0"
+                              tabindex="-1"
                             >
                               <svg
                                 aria-hidden="true"
@@ -2451,7 +2451,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                             class="btn-close absolute right-2 top-8 z-40"
                             for=":rb:"
                             role="button"
-                            tabindex="0"
+                            tabindex="-1"
                           >
                             <svg
                               aria-hidden="true"
@@ -2925,7 +2925,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                               class="btn-close absolute right-2 top-8 z-40"
                               for=":r9:"
                               role="button"
-                              tabindex="0"
+                              tabindex="-1"
                             >
                               <svg
                                 aria-hidden="true"
@@ -3346,7 +3346,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                             class="btn-close absolute right-2 top-8 z-40"
                             for=":r9:"
                             role="button"
-                            tabindex="0"
+                            tabindex="-1"
                           >
                             <svg
                               aria-hidden="true"
@@ -3834,7 +3834,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                               class="btn-close absolute right-2 top-8 z-40"
                               for=":r1:"
                               role="button"
-                              tabindex="0"
+                              tabindex="-1"
                             >
                               <svg
                                 aria-hidden="true"
@@ -4052,7 +4052,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                               class="btn-close absolute right-2 top-8 z-40"
                               for=":r3:"
                               role="button"
-                              tabindex="0"
+                              tabindex="-1"
                             >
                               <svg
                                 aria-hidden="true"
@@ -4459,7 +4459,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                             class="btn-close absolute right-2 top-8 z-40"
                             for=":r1:"
                             role="button"
-                            tabindex="0"
+                            tabindex="-1"
                           >
                             <svg
                               aria-hidden="true"
@@ -4677,7 +4677,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                             class="btn-close absolute right-2 top-8 z-40"
                             for=":r3:"
                             role="button"
-                            tabindex="0"
+                            tabindex="-1"
                           >
                             <svg
                               aria-hidden="true"
@@ -5170,7 +5170,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                               class="btn-close absolute right-2 top-8 z-40"
                               for=":r5:"
                               role="button"
-                              tabindex="0"
+                              tabindex="-1"
                             >
                               <svg
                                 aria-hidden="true"
@@ -5388,7 +5388,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                               class="btn-close absolute right-2 top-8 z-40"
                               for=":r7:"
                               role="button"
-                              tabindex="0"
+                              tabindex="-1"
                             >
                               <svg
                                 aria-hidden="true"
@@ -5814,7 +5814,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                             class="btn-close absolute right-2 top-8 z-40"
                             for=":r5:"
                             role="button"
-                            tabindex="0"
+                            tabindex="-1"
                           >
                             <svg
                               aria-hidden="true"
@@ -6032,7 +6032,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                             class="btn-close absolute right-2 top-8 z-40"
                             for=":r7:"
                             role="button"
-                            tabindex="0"
+                            tabindex="-1"
                           >
                             <svg
                               aria-hidden="true"

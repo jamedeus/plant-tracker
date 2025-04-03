@@ -63,7 +63,7 @@ const PlantCard = memo(function PlantCard({ display_name, uuid, species, descrip
 
                     {/* Button opens/closes collapse with details */}
                     <label
-                        tabIndex={0}
+                        tabIndex={-1}
                         role="button"
                         htmlFor={checkboxId}
                         className="btn-close absolute right-2 top-8 z-40"
