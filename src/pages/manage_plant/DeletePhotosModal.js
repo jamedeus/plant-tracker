@@ -164,10 +164,13 @@ const DeletePhotosModal = () => {
             const data = await response.json();
             dispatch(photosDeleted(data.deleted));
 
-            // Clear selected photos, close modal, reset confirm delete screen
-            setSelectedPhotos([]);
+            // Close modal, wait for close animation to complete, clear
+            // selected photos and reset confirm delete screen
             modalRef.current.close();
-            setConfirmDelete(false);
+            setTimeout(() => {
+                setSelectedPhotos([]);
+                setConfirmDelete(false);
+            }, 200);
         } else {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
