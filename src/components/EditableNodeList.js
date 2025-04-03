@@ -17,6 +17,7 @@ const EditableNodeList = ({ editing, formRef, children }) => {
                     <div className="absolute flex h-full z-0">
                         <input
                             type="checkbox"
+                            tabIndex={editing ? 0 : -1}
                             id={`${prefix}-${node.key}`}
                             name={node.key}
                             className="radio checked:bg-blue-500 my-auto"

@@ -237,6 +237,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                         class="radio checked:bg-blue-500 my-auto"
                         id=":rc:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                        tabindex="-1"
                         type="checkbox"
                       />
                     </div>
@@ -479,6 +480,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                         class="radio checked:bg-blue-500 my-auto"
                         id=":re:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                        tabindex="-1"
                         type="checkbox"
                       />
                     </div>
@@ -874,6 +876,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                       class="radio checked:bg-blue-500 my-auto"
                       id=":rc:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                      tabindex="-1"
                       type="checkbox"
                     />
                   </div>
@@ -1116,6 +1119,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                       class="radio checked:bg-blue-500 my-auto"
                       id=":re:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                      tabindex="-1"
                       type="checkbox"
                     />
                   </div>
@@ -2032,6 +2036,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                         class="radio checked:bg-blue-500 my-auto"
                         id=":ra:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                        tabindex="-1"
                         type="checkbox"
                       />
                     </div>
@@ -2406,6 +2411,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                       class="radio checked:bg-blue-500 my-auto"
                       id=":ra:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                      tabindex="-1"
                       type="checkbox"
                     />
                   </div>
@@ -2854,6 +2860,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                         class="radio checked:bg-blue-500 my-auto"
                         id=":r8:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                        tabindex="-1"
                         type="checkbox"
                       />
                     </div>
@@ -3274,6 +3281,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                       class="radio checked:bg-blue-500 my-auto"
                       id=":r8:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                      tabindex="-1"
                       type="checkbox"
                     />
                   </div>
@@ -3761,6 +3769,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                         class="radio checked:bg-blue-500 my-auto"
                         id=":r0:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                        tabindex="-1"
                         type="checkbox"
                       />
                     </div>
@@ -4003,6 +4012,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                         class="radio checked:bg-blue-500 my-auto"
                         id=":r2:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                        tabindex="-1"
                         type="checkbox"
                       />
                     </div>
@@ -4384,6 +4394,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                       class="radio checked:bg-blue-500 my-auto"
                       id=":r0:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                      tabindex="-1"
                       type="checkbox"
                     />
                   </div>
@@ -4626,6 +4637,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                       class="radio checked:bg-blue-500 my-auto"
                       id=":r2:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                      tabindex="-1"
                       type="checkbox"
                     />
                   </div>
@@ -5093,6 +5105,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                         class="radio checked:bg-blue-500 my-auto"
                         id=":r4:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                        tabindex="-1"
                         type="checkbox"
                       />
                     </div>
@@ -5335,6 +5348,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                         class="radio checked:bg-blue-500 my-auto"
                         id=":r6:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                        tabindex="-1"
                         type="checkbox"
                       />
                     </div>
@@ -5735,6 +5749,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                       class="radio checked:bg-blue-500 my-auto"
                       id=":r4:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                      tabindex="-1"
                       type="checkbox"
                     />
                   </div>
@@ -5977,6 +5992,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                       class="radio checked:bg-blue-500 my-auto"
                       id=":r6:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                      tabindex="-1"
                       type="checkbox"
                     />
                   </div>
