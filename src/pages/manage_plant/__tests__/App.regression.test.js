@@ -299,4 +299,120 @@ describe('App', () => {
         // Confirm pot size field in EditModal changed to '6'
         expect(app.getByLabelText('Pot size').value).toBe('6');
     });
+
+    // Original bug: timelineSlice.eventDeleted assumed there was only 1 event
+    // of each type per day. If there were multiple water events at different
+    // times on the same day and only 1 was deleted eventDeleted would remove
+    // the event type from dateKey, resulting in the calendar dot disappearing
+    // and the timeline EventMarker being removed.
+    it('does not remove event from timeline if another event with same type exists', async () => {
+        // Confirm no water events exist in calendar or timeline
+        expect(app.container.querySelectorAll('.dot-water').length).toBe(0);
+        expect(app.container.querySelectorAll('.fa-droplet').length).toBe(0);
+
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "action": "water",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
+
+        // Create 2 water events 1 second apart on the same day
+        const dateTimeInput = app.container.querySelector('input');
+        fireEvent.input(
+            dateTimeInput,
+            {target: {value: '2024-03-01T12:00:00'}}
+        );
+        await user.click(app.getByRole("button", {name: "Water"}));
+        fireEvent.input(
+            dateTimeInput,
+            {target: {value: '2024-03-01T12:00:01'}}
+        );
+        await user.click(app.getByRole("button", {name: "Water"}));
+
+        // Confirm dot appeared on calendar, EventMarker appeared in timeline
+        expect(app.container.querySelectorAll('.dot-water').length).toBe(1);
+        expect(app.container.querySelectorAll('.fa-droplet').length).toBe(1);
+
+        // Open event history modal, delete more recent event
+        await user.click(app.getByText('Delete events'));
+        const modal = app.getByText('Event History').parentElement;
+        await user.click(within(modal).getAllByText(/today/)[0]);
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "deleted": [
+                    {"type": "water", "timestamp": "2024-03-01T20:00:01+00:00"}
+                ],
+                "failed": []
+            })
+        }));
+        await user.click(within(modal).getByText('Delete'));
+
+        // Confirm dot and marker are still present (second event still exists)
+        expect(app.container.querySelectorAll('.dot-water').length).toBe(1);
+        expect(app.container.querySelectorAll('.fa-droplet').length).toBe(1);
+    });
+
+    // Original bug: while fixing the issue above (event removed from calendar/
+    // timeline even though another of same type exists) a bad fix was written
+    // which compared timelineDays dateKeys (YYYY-MM-DD in user timezone) with
+    // eventsByType timestamps (UTC). This could cause a TimelineDay to remain
+    // in the timeline after the last event was deleted if the timestamp of an
+    // event on the previous day had a UTC timestamp matching the dateKey (ie
+    // event created just before midnight, so UTC timestamp is early next day).
+    // This issue could be reintroduced fairly easily.
+    it('does not fail to remove timeline day when the UTC timestamp of an event on prev day matches target day', async () => {
+        // Confirm no water events exist in calendar or timeline
+        expect(app.container.querySelectorAll('.dot-water').length).toBe(0);
+        expect(app.container.querySelectorAll('.fa-droplet').length).toBe(0);
+
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "action": "water",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
+
+        // Create 2 water events at 10pm February 29 and 2am March 1 (different
+        // days in PST but same day in UTC)
+        const dateTimeInput = app.container.querySelector('input');
+        fireEvent.input(
+            dateTimeInput,
+            {target: {value: '2024-02-29T22:00:00'}}
+        );
+        await user.click(app.getByRole("button", {name: "Water"}));
+        fireEvent.input(
+            dateTimeInput,
+            {target: {value: '2024-03-01T02:00:00'}}
+        );
+        await user.click(app.getByRole("button", {name: "Water"}));
+
+        // Confirm 2 EventCalendar dots and 2 EventMarkers in timeline
+        expect(app.container.querySelectorAll('.dot-water').length).toBe(2);
+        expect(app.container.querySelectorAll('.fa-droplet').length).toBe(2);
+
+        // Open event history modal, delete March 1 event
+        await user.click(app.getByText('Delete events'));
+        const modal = app.getByText('Event History').parentElement;
+        await user.click(within(modal).getByText(/today/));
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "deleted": [
+                    {"type": "water", "timestamp": "2024-03-01T20:00:00+00:00"}
+                ],
+                "failed": []
+            })
+        }));
+        await user.click(within(modal).getByText('Delete'));
+
+        // Confirm March 1 TimelineDay was removed (only 1 dot and marker left)
+        expect(app.container.querySelectorAll('.dot-water').length).toBe(1);
+        expect(app.container.querySelectorAll('.fa-droplet').length).toBe(1);
+    });
 });

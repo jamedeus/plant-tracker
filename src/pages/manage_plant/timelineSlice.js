@@ -62,13 +62,16 @@ function removeDateKeyIfEmpty(state, dateKey) {
 export const timelineSlice = createSlice({
     name: 'timeline',
     initialState: {
+        // All arrays contain full ISO event timestamps in UTC
         eventsByType: {
             water: [],
             fertilize: [],
             prune: [],
             repot: []
         },
+        // Keys are YYYY-MM-DD in user's local timezone
         calendarDays: {},
+        // Keys are YYYY-MM-DD in user's local timezone
         timelineDays: {},
         photoUrls: [],
         navigationOptions: {}
@@ -118,15 +121,21 @@ export const timelineSlice = createSlice({
                 1
             );
 
-            // Remove from correct day in calendarDays and timelineDays
+            // If no other events with same type exist on same day, remove
+            // event from calendarDays and timelineDays
             const dateKey = timestampToDateString(deletedEvent.timestamp);
-            const newEvents = state.timelineDays[dateKey].events.filter(
-                event => event !== deletedEvent.type
-            );
-            state.timelineDays[dateKey].events = newEvents;
-            state.calendarDays[dateKey].events = newEvents;
-            // Remove calendarDays and timelineDays day if no content left
-            removeDateKeyIfEmpty(state, dateKey);
+            if (!state.eventsByType[deletedEvent.type].filter(
+                // eventsByType timestamps are UTC so can't just use startsWith
+                datestring => timestampToDateString(datestring) === dateKey
+            ).length) {
+                const newEvents = state.timelineDays[dateKey].events.filter(
+                    event => event !== deletedEvent.type
+                );
+                state.timelineDays[dateKey].events = newEvents;
+                state.calendarDays[dateKey].events = newEvents;
+                // Remove calendarDays and timelineDays day if no content left
+                removeDateKeyIfEmpty(state, dateKey);
+            }
         },
 
         // Takes object with timestamp and text keys, adds to timelineDays state
