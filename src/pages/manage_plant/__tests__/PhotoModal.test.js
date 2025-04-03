@@ -26,7 +26,7 @@ describe('PhotoModal', () => {
         createMockContext('plant_details', mockContext.plant_details);
         createMockContext('events', {});
         createMockContext('notes', []);
-        createMockContext('photo_urls', []);
+        createMockContext('photos', []);
     });
 
     beforeEach(async () => {

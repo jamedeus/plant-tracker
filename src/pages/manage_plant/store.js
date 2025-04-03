@@ -30,7 +30,7 @@ const formatEvents = (events) => {
     );
 };
 
-// Takes events, notes, and photo_urls context objects from django backend
+// Takes events, notes, and photos context objects from django backend
 // Merges and returns 2 state objects:
 // - calendarDays: YYYY-MM-DD keys containing objects with events, notes, and
 //   photos keys (all arrays, only events populated). Used by EventCalendar.
@@ -38,18 +38,18 @@ const formatEvents = (events) => {
 //   photos keys (all arrays, all populated). Used by Timeline component.
 // - navigationOptions: YYYY keys containing array of MM strings, populates
 //   quick navigation dropdown options at top of Timeline component
-export const buildStateObjects = (events, notes, photoUrls) => {
+export const buildStateObjects = (events, notes, photos) => {
     // Convert to object with YYYY-MM-DD keys (used by EventCalendar component)
     const calendarDays = formatEvents(events);
 
     // Create copy to add notes and photos to (used by Timeline component)
     const timelineDays = { ...calendarDays };
 
-    // Add contents of photoUrls to photos key under correct date
-    photoUrls.sort((a, b) => {
+    // Add objects from photos context to photos key under correct dateKey
+    photos.sort((a, b) => {
         return a.created.localeCompare(b.created);
     }).reverse();
-    photoUrls.forEach((photo) => {
+    photos.forEach((photo) => {
         const dateKey = timestampToDateString(photo.created);
         if (!timelineDays[dateKey]) {
             timelineDays[dateKey] = {events: [], notes: [], photos: []};
@@ -57,7 +57,7 @@ export const buildStateObjects = (events, notes, photoUrls) => {
         timelineDays[dateKey].photos.push(photo);
     });
 
-    // Add note text to notes key under correct date
+    // Add objects from notes context to notes key under correct dateKey
     notes.forEach((note) => {
         const dateKey = timestampToDateString(note.timestamp);
         if (!timelineDays[dateKey]) {
@@ -98,14 +98,14 @@ function createReduxStore(preloadedState) {
 }
 
 export function ReduxProvider({ children }) {
-    // Parses django context elements containing events, photoUrls, and notes
+    // Parses django context elements containing events, photos, and notes
     // Merges and returns values for all initialState keys in timelineSlice
     const init = () => {
         // Parse django context objects
         const plantDetails = parseDomContext("plant_details") || {};
         const groupOptions = parseDomContext("group_options") || [];
         const eventsByType = parseDomContext("events") || {};
-        const photoUrls = parseDomContext('photo_urls') || [];
+        const photos = parseDomContext('photos') || [];
         const notes = parseDomContext('notes') || [];
 
         // Build state objects
@@ -113,7 +113,7 @@ export function ReduxProvider({ children }) {
             calendarDays,
             timelineDays,
             navigationOptions
-        } = buildStateObjects(eventsByType, notes, photoUrls);
+        } = buildStateObjects(eventsByType, notes, photos);
 
         // Return object with keys expected by plantSlice and timelineSlice
         return {
@@ -125,7 +125,7 @@ export function ReduxProvider({ children }) {
                 eventsByType,
                 calendarDays,
                 timelineDays,
-                photoUrls,
+                photos,
                 navigationOptions
             }
         };

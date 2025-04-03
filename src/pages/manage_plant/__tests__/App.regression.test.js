@@ -14,7 +14,7 @@ describe('App', () => {
         createMockContext('notes', mockContextNoEvents.notes);
         createMockContext('group_options', mockContextNoEvents.group_options);
         createMockContext('species_options', mockContextNoEvents.species_options);
-        createMockContext('photo_urls', mockContextNoEvents.photo_urls);
+        createMockContext('photos', mockContextNoEvents.photos);
     });
 
     beforeEach(() => {

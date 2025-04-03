@@ -3,7 +3,7 @@ import removeMockContext from 'src/testUtils/removeMockContext';
 import Timeline from '../Timeline';
 import { ReduxProvider } from '../store';
 import { PageWrapper } from 'src/index';
-import { mockContext, mockEvents, mockPhotoUrls } from './mockContext';
+import { mockContext, mockEvents, mockphotos } from './mockContext';
 
 describe('Timeline', () => {
     // Delete mock context after each test (isolation)
@@ -15,7 +15,7 @@ describe('Timeline', () => {
         // Create mock state objects
         createMockContext('events', mockEvents);
         createMockContext('notes', mockContext.notes);
-        createMockContext('photo_urls', mockPhotoUrls);
+        createMockContext('photos', mockphotos);
     });
 
     it('matches snapshot when plant is not archived', () => {

@@ -179,7 +179,7 @@ class PlantModelTests(TestCase):
         self.assertEqual(unnamed[1].get_display_name(), 'Unnamed plant 2')
         self.assertEqual(unnamed[2].get_display_name(), 'Unnamed plant 3')
 
-    def test_get_photo_urls(self):
+    def test_get_photos(self):
         # Create 3 mock photos with non-chronological creation times
         Photo.objects.create(
             photo=create_mock_photo('2024:02:21 10:52:03', 'IMG1.jpg'),
@@ -195,11 +195,11 @@ class PlantModelTests(TestCase):
         )
 
         # Get object containing URLs
-        photo_urls = self.plant.get_photo_urls()
+        photos = self.plant.get_photos()
 
         # Confirm photos are sorted most recent to least recent
         self.assertEqual(
-            photo_urls,
+            photos,
             [
                 {
                     'created': '2024-03-22T10:52:03+00:00',

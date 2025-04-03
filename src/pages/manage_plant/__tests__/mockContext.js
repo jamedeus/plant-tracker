@@ -65,7 +65,7 @@ export const mockContext = {
         "Spider Plant",
         "Calathea"
     ],
-    "photo_urls": [
+    "photos": [
         {
             'created': '2024-03-21T10:52:03+00:00',
             'image': '/media/images/photo1.jpg',
@@ -138,7 +138,7 @@ export const mockContextNoEvents = {
         "Spider Plant",
         "Calathea"
     ],
-    "photo_urls": []
+    "photos": []
 };
 
 export const mockEvents = {
@@ -199,7 +199,7 @@ export const mockEvents = {
     ]
 };
 
-export const mockPhotoUrls = [
+export const mockphotos = [
     {
         "created": "2024-03-25T15:28:39+00:00",
         "image": "/media/images/IMG_8103.jpeg",

@@ -74,7 +74,7 @@ PhotoSlide.propTypes = {
 
 const DefaultPhotoModal = () => {
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
-    const photoUrls = useSelector((state) => state.timeline.photoUrls);
+    const photos = useSelector((state) => state.timeline.photos);
 
     modalRef = useRef(null);
 
@@ -96,10 +96,10 @@ const DefaultPhotoModal = () => {
     // If last slide return link to first (wrap when end reached)
     const nextPhotoLink = (index) => {
         switch(index) {
-            case(photoUrls.length - 1):
-                return `#slide${photoUrls[0].key}`;
+            case(photos.length - 1):
+                return `#slide${photos[0].key}`;
             default:
-                return `#slide${photoUrls[index + 1].key}`;
+                return `#slide${photos[index + 1].key}`;
         }
     };
 
@@ -108,9 +108,9 @@ const DefaultPhotoModal = () => {
     const prevPhotoLink = (index) => {
         switch(index) {
             case(0):
-                return `#slide${photoUrls[photoUrls.length - 1].key}`;
+                return `#slide${photos[photos.length - 1].key}`;
             default:
-                return `#slide${photoUrls[index - 1].key}`;
+                return `#slide${photos[index - 1].key}`;
         }
     };
 
@@ -121,7 +121,7 @@ const DefaultPhotoModal = () => {
             onClose={closeDefaultPhotosModal}
         >
             <div className="carousel w-full h-min">
-                {photoUrls.map((photo, index) => (
+                {photos.map((photo, index) => (
                     <PhotoSlide
                         key={photo.key}
                         photo={photo}

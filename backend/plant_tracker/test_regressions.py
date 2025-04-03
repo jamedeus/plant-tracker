@@ -271,13 +271,13 @@ class ViewRegressionTests(TestCase):
         )
 
         # Confirm both timestamp strings have timezone offset
-        photo_urls = response.json()["urls"]
+        photos = response.json()["urls"]
         self.assertRegex(
-            photo_urls[0]["created"],
+            photos[0]["created"],
             r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?\+\d{2}:\d{2}'
         )
         self.assertRegex(
-            photo_urls[1]["created"],
+            photos[1]["created"],
             r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?\+\d{2}:\d{2}'
         )
 

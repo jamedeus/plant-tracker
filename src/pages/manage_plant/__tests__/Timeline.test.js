@@ -2,7 +2,7 @@ import createMockContext from 'src/testUtils/createMockContext';
 import Timeline from '../Timeline';
 import { ReduxProvider } from '../store';
 import { PageWrapper } from 'src/index';
-import { mockContext, mockEvents, mockPhotoUrls } from './mockContext';
+import { mockContext, mockEvents, mockphotos } from './mockContext';
 
 describe('Timeline', () => {
     let app, user;
@@ -12,7 +12,7 @@ describe('Timeline', () => {
         createMockContext('plant_details', mockContext.plant_details);
         createMockContext('events', mockEvents);
         createMockContext('notes', mockContext.notes);
-        createMockContext('photo_urls', mockPhotoUrls);
+        createMockContext('photos', mockphotos);
     });
 
     beforeEach(() => {

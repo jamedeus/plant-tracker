@@ -136,7 +136,7 @@ def build_manage_plant_state(uuid):
 
     state = {
         'plant_details': plant.get_details(),
-        'photo_urls': plant.get_photo_urls()
+        'photos': plant.get_photos()
     }
 
     # Add all water and fertilize timestamps

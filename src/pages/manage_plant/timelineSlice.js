@@ -73,7 +73,7 @@ export const timelineSlice = createSlice({
         calendarDays: {},
         // Keys are YYYY-MM-DD in user's local timezone
         timelineDays: {},
-        photoUrls: [],
+        photos: [],
         navigationOptions: {}
     },
     reducers: {
@@ -209,16 +209,16 @@ export const timelineSlice = createSlice({
 
             // Add new URLs to photoUrl state (used by DeletePhotoModal and
             // DefaultPhotoModal)
-            state.photoUrls = state.photoUrls.concat(photos).sort((a, b) => {
+            state.photos = state.photos.concat(photos).sort((a, b) => {
                 return a.created.localeCompare(b.created);
             }).reverse();
         },
 
-        // Takes array of deleted photo keys, removes from photoUrls state and
+        // Takes array of deleted photo keys, removes from photos state and
         // from photos key in correct day of timelineDays state
         photosDeleted(state, action) {
             const deletedKeys = action.payload;
-            state.photoUrls = state.photoUrls.filter((photo) => {
+            state.photos = state.photos.filter((photo) => {
                 if (deletedKeys.includes(photo.key)) {
                     // Parse YYYY-MM-DD from deleted photo timestamp, find in
                     // timelineDays state and remove
@@ -231,7 +231,7 @@ export const timelineSlice = createSlice({
                     }
                     // Remove timelineDays day if no content left
                     removeDateKeyIfEmpty(state, dateKey);
-                    // Return false (remove from photoUrls)
+                    // Return false (remove from state.photos)
                     return false;
                 }
                 return true;
@@ -249,7 +249,7 @@ export const timelineSlice = createSlice({
             } = buildStateObjects(
                 action.payload.events,
                 action.payload.notes,
-                action.payload.photo_urls
+                action.payload.photos
             );
             state.eventsByType = action.payload.events;
             state.calendarDays = calendarDays;

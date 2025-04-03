@@ -12,7 +12,7 @@ describe('App', () => {
         removeMockContext('notes');
         removeMockContext('group_options');
         removeMockContext('species_options');
-        removeMockContext('photo_urls');
+        removeMockContext('photos');
     });
 
     it('matches snapshot', () => {
@@ -22,7 +22,7 @@ describe('App', () => {
         createMockContext('notes', mockContext.notes);
         createMockContext('group_options', mockContext.group_options);
         createMockContext('species_options', mockContext.species_options);
-        createMockContext('photo_urls', mockContext.photo_urls);
+        createMockContext('photos', mockContext.photos);
 
         // Render App, confirm matches snapshot
         const component = render(
@@ -43,7 +43,7 @@ describe('App', () => {
         createMockContext('notes', mockContext.notes);
         createMockContext('group_options', mockContext.group_options);
         createMockContext('species_options', mockContext.species_options);
-        createMockContext('photo_urls', mockContext.photo_urls);
+        createMockContext('photos', mockContext.photos);
 
         // Render App, confirm matches snapshot
         const component = render(

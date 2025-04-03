@@ -25,7 +25,7 @@ describe('DeletePhotosModal', () => {
         createMockContext('plant_details', mockContext.plant_details);
         createMockContext('events', {});
         createMockContext('notes', []);
-        createMockContext('photo_urls', mockContext.photo_urls);
+        createMockContext('photos', mockContext.photos);
     });
 
     beforeEach(async () => {

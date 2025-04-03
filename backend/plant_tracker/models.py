@@ -234,7 +234,7 @@ class Plant(models.Model):
         unnamed_plants = get_unnamed_plants()
         return f'Unnamed plant {unnamed_plants.index(self.id) + 1}'
 
-    def get_photo_urls(self):
+    def get_photos(self):
         '''Returns list of dicts containing photo and thumbnail URLs, creation
         timestamps, and database keys of each photo associated with this plant
         '''

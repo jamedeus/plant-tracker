@@ -20,7 +20,7 @@ describe('EventHistoryModal', () => {
         createMockContext('plant_details', mockContext.plant_details);
         createMockContext('events', mockEvents);
         createMockContext('notes', []);
-        createMockContext('photo_urls', []);
+        createMockContext('photos', []);
     });
 
     beforeEach(async () => {

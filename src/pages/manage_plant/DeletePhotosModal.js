@@ -123,7 +123,7 @@ ConfirmDeleteRow.propTypes = {
 const DeletePhotosModal = () => {
     const dispatch = useDispatch();
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
-    const photoUrls = useSelector((state) => state.timeline.photoUrls);
+    const photos = useSelector((state) => state.timeline.photos);
 
     modalRef = useRef(null);
 
@@ -178,10 +178,10 @@ const DeletePhotosModal = () => {
     // If last photo return link to first (wrap when end reached)
     const nextPhotoLink = (index) => {
         switch(index) {
-            case(photoUrls.length - 1):
-                return `#photo${photoUrls[0].key}`;
+            case(photos.length - 1):
+                return `#photo${photos[0].key}`;
             default:
-                return `#photo${photoUrls[index + 1].key}`;
+                return `#photo${photos[index + 1].key}`;
         }
     };
 
@@ -190,9 +190,9 @@ const DeletePhotosModal = () => {
     const prevPhotoLink = (index) => {
         switch(index) {
             case(0):
-                return `#photo${photoUrls[photoUrls.length - 1].key}`;
+                return `#photo${photos[photos.length - 1].key}`;
             default:
-                return `#photo${photoUrls[index - 1].key}`;
+                return `#photo${photos[index - 1].key}`;
         }
     };
 
@@ -204,9 +204,9 @@ const DeletePhotosModal = () => {
                 <h1 className="font-bold text-lg md:text-xl mb-4">
                     Delete Photos
                 </h1>
-                {photoUrls.length > 0 ? (
+                {photos.length > 0 ? (
                     <div className="carousel w-full h-min">
-                        {photoUrls.map((photo, index) => (
+                        {photos.map((photo, index) => (
                             <PhotoSlide
                                 key={photo.key}
                                 photo={photo}

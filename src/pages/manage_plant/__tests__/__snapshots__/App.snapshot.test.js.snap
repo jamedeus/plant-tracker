@@ -30,7 +30,7 @@ exports[`App matches snapshot 1`] = `
       ["Parlor Palm","Spider Plant","Calathea"]
     </div>
     <div
-      id="photo_urls"
+      id="photos"
     >
       [{"created":"2024-03-21T10:52:03+00:00","image":"/media/images/photo1.jpg","thumbnail":"/media/thumbnails/photo1_thumb.jpg","key":1},{"created":"2024-03-22T10:52:03+00:00","image":"/media/images/photo2.jpg","thumbnail":"/media/thumbnails/photo2_thumb.jpg","key":2},{"created":"2024-03-23T10:52:03+00:00","image":"/media/images/photo3.jpg","thumbnail":"/media/thumbnails/photo3_thumb.jpg","key":3}]
     </div>
@@ -3985,7 +3985,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
       ["Parlor Palm","Spider Plant","Calathea"]
     </div>
     <div
-      id="photo_urls"
+      id="photos"
     >
       [{"created":"2024-03-21T10:52:03+00:00","image":"/media/images/photo1.jpg","thumbnail":"/media/thumbnails/photo1_thumb.jpg","key":1},{"created":"2024-03-22T10:52:03+00:00","image":"/media/images/photo2.jpg","thumbnail":"/media/thumbnails/photo2_thumb.jpg","key":2},{"created":"2024-03-23T10:52:03+00:00","image":"/media/images/photo3.jpg","thumbnail":"/media/thumbnails/photo3_thumb.jpg","key":3}]
     </div>

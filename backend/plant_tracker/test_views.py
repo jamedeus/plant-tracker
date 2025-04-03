@@ -629,8 +629,8 @@ class ManagePageTests(TestCase):
         # Confirm species_options list is empty (test plants have no species)
         self.assertEqual(state['species_options'], [])
 
-        # Confirm photo_urls list is empty (test plant has no photos)
-        self.assertEqual(state['photo_urls'], [])
+        # Confirm photos list is empty (test plant has no photos)
+        self.assertEqual(state['photos'], [])
 
         # Confirm group_options key contains details of all existing groups
         self.assertEqual(
@@ -670,10 +670,10 @@ class ManagePageTests(TestCase):
             '/media/thumbnails/photo2_thumb.jpg'
         )
 
-        # Confirm photo_urls contains list of dicts with timestamps, database
+        # Confirm photos key contains list of dicts with timestamps, database
         # keys, thumbnail URLs, and full-res URLs of each photo
         self.assertEqual(
-            response.context['state']['photo_urls'],
+            response.context['state']['photos'],
             [
                 {
                     'created': '2024-03-22T10:52:03+00:00',
@@ -805,7 +805,7 @@ class ManagePageTests(TestCase):
                     'repot': []
                 },
                 'notes': [],
-                'photo_urls': [],
+                'photos': [],
                 'group_options': [
                     {
                         'name': None,

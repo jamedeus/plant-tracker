@@ -14,7 +14,7 @@ describe('App', () => {
         createMockContext('notes', mockContext.notes);
         createMockContext('group_options', mockContext.group_options);
         createMockContext('species_options', mockContext.species_options);
-        createMockContext('photo_urls', mockContext.photo_urls);
+        createMockContext('photos', mockContext.photos);
     });
 
     beforeEach(() => {
@@ -305,7 +305,7 @@ describe('App', () => {
                 "notes": mockContext.notes,
                 "group_options": mockContext.group_options,
                 "species_options": mockContext.species_options,
-                "photo_urls": mockContext.photo_urls
+                "photos": mockContext.photos
             })
         }));
 

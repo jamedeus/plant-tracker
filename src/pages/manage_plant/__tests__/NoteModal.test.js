@@ -33,7 +33,7 @@ describe('Add new note', () => {
         createMockContext('plant_details', mockContext.plant_details);
         createMockContext('events', {});
         createMockContext('notes', mockNotes);
-        createMockContext('photo_urls', []);
+        createMockContext('photos', []);
     });
 
     beforeEach(async () => {
@@ -154,7 +154,7 @@ describe('Edit existing note', () => {
         createMockContext('plant_details', mockContext.plant_details);
         createMockContext('events', {});
         createMockContext('notes', []);
-        createMockContext('photo_urls', []);
+        createMockContext('photos', []);
     });
 
     beforeEach(async () => {
