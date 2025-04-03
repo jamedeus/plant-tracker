@@ -1,25 +1,7 @@
+import { fireEvent } from '@testing-library/react';
 import createMockContext from 'src/testUtils/createMockContext';
 import { mockContext } from './mockContext';
-import { localToUTC } from 'src/timestampUtils';
 import { postHeaders } from 'src/testUtils/headers';
-
-// Mock localToUTC so the return value can be set to an arbitrary string
-jest.mock('src/timestampUtils', () => {
-    const module = jest.requireActual('src/timestampUtils');
-    return {
-        ...module,
-        localToUTC: jest.fn()
-    };
-});
-
-// Simulates user setting datetime-local input value
-// Since the input value is passed directly to localToUTC mocking the return
-// value bypasses the actual input, which can't be reliable set with fireEvent
-const simulateUserDatetimeInput = (timestamp) => {
-    localToUTC.mockReturnValueOnce(timestamp);
-};
-
-// Import App, will use mocked localToUTC
 import App from '../App';
 import { PageWrapper } from 'src/index';
 
@@ -72,7 +54,11 @@ describe('App', () => {
         expect(within(plantsCol).queryAllByText('Never watered').length).toBe(1);
 
         // Simulate user selecting 2 days ago in datetime input, click Water All
-        simulateUserDatetimeInput('2024-02-28T12:45:00.000Z');
+        const dateTimeInput = app.container.querySelector('input');
+        fireEvent.input(
+            dateTimeInput,
+            {target: {value: '2024-02-28T04:45:00'}}
+        );
         await user.click(app.getByText("Water All"));
 
         // Confirm last_watered for first 2 plants didn't change (new timestamp
@@ -81,7 +67,10 @@ describe('App', () => {
         expect(within(plantsCol).queryAllByText('2 days ago').length).toBe(1);
 
         // Simulate user selecting 15 min ago in datetime input, click Water All
-        simulateUserDatetimeInput('2024-03-01T19:45:00.000Z');
+        fireEvent.input(
+            dateTimeInput,
+            {target: {value: '2024-03-01T11:45:00'}}
+        );
         await user.click(app.getByText("Water All"));
 
         // Confirm all last_watered changed (new timestamp newer than existing)
@@ -131,9 +120,6 @@ describe('App', () => {
                 "failed": []
             })
         }));
-
-        // Set simulated datetime
-        simulateUserDatetimeInput('2024-03-01T20:00:00.000Z');
 
         // Get reference to plants column
         const plantsCol = app.getByText("Plants (3)").parentElement;
@@ -266,9 +252,6 @@ describe('App', () => {
     // RemovePlantsModal and removed the selected plant from group it's UUID
     // would still be in the selectedPlants ref (tracks FilterColumn selection)
     it('removes plant uuid from create events array if plant is removed from the group', async () => {
-        // Set simulated datetime
-        simulateUserDatetimeInput('2024-03-01T20:00:00.000Z');
-
         // Click manage button to show checkboxes, water button
         await user.click(app.getByText("Manage"));
         // Select the first and third plants (not archived)
