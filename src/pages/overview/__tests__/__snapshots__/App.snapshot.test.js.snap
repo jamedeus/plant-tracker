@@ -235,7 +235,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                     >
                       <input
                         class="radio checked:bg-blue-500 my-auto"
-                        id=":r6:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                        id=":rc:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                         type="checkbox"
                       />
@@ -244,9 +244,14 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                       class="w-full overflow-hidden transition-all duration-300 ml-0"
                     >
                       <a
-                        class="collapse bg-neutral grayscale cursor-pointer collapse-close"
+                        class="collapse card-collapse bg-neutral group grayscale cursor-pointer"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       >
+                        <input
+                          class="hidden pointer-events-none"
+                          id=":rd:"
+                          type="checkbox"
+                        />
                         <div
                           class="collapse-title !p-0 min-w-0 min-h-0"
                         >
@@ -292,14 +297,15 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                                 5 days ago
                               </span>
                             </div>
-                            <button
+                            <label
                               class="btn-close absolute right-2 top-8 z-40"
+                              for=":rd:"
                               role="button"
                               tabindex="0"
                             >
                               <svg
                                 aria-hidden="true"
-                                class="w-8 h-8"
+                                class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                                 data-slot="icon"
                                 fill="currentColor"
                                 viewBox="0 0 16 16"
@@ -311,7 +317,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                                   fill-rule="evenodd"
                                 />
                               </svg>
-                            </button>
+                            </label>
                           </div>
                         </div>
                         <div
@@ -354,7 +360,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                     </div>
                     <label
                       class="cursor-pointer absolute z-20"
-                      for=":r6:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                      for=":rc:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     />
                   </div>
                 </form>
@@ -471,7 +477,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                     >
                       <input
                         class="radio checked:bg-blue-500 my-auto"
-                        id=":r7:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                        id=":re:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                         type="checkbox"
                       />
@@ -480,9 +486,14 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                       class="w-full overflow-hidden transition-all duration-300 ml-0"
                     >
                       <a
-                        class="collapse bg-neutral grayscale cursor-pointer collapse-close"
+                        class="collapse card-collapse bg-neutral grayscale cursor-pointer"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       >
+                        <input
+                          class="hidden pointer-events-none"
+                          id=":rf:"
+                          type="checkbox"
+                        />
                         <div
                           class="collapse-title !p-0 min-w-0 min-h-0"
                         >
@@ -503,14 +514,15 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                                  plants
                               </p>
                             </div>
-                            <button
+                            <label
                               class="btn-close absolute right-2 top-8 z-40"
+                              for=":rf:"
                               role="button"
                               tabindex="0"
                             >
                               <svg
                                 aria-hidden="true"
-                                class="w-8 h-8"
+                                class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                                 data-slot="icon"
                                 fill="currentColor"
                                 viewBox="0 0 16 16"
@@ -522,7 +534,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                                   fill-rule="evenodd"
                                 />
                               </svg>
-                            </button>
+                            </label>
                           </div>
                         </div>
                         <div
@@ -551,7 +563,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                     </div>
                     <label
                       class="cursor-pointer absolute z-20"
-                      for=":r7:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                      for=":re:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     />
                   </div>
                 </form>
@@ -860,7 +872,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                   >
                     <input
                       class="radio checked:bg-blue-500 my-auto"
-                      id=":r6:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                      id=":rc:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       type="checkbox"
                     />
@@ -869,9 +881,14 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                     class="w-full overflow-hidden transition-all duration-300 ml-0"
                   >
                     <a
-                      class="collapse bg-neutral grayscale cursor-pointer collapse-close"
+                      class="collapse card-collapse bg-neutral group grayscale cursor-pointer"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     >
+                      <input
+                        class="hidden pointer-events-none"
+                        id=":rd:"
+                        type="checkbox"
+                      />
                       <div
                         class="collapse-title !p-0 min-w-0 min-h-0"
                       >
@@ -917,14 +934,15 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                               5 days ago
                             </span>
                           </div>
-                          <button
+                          <label
                             class="btn-close absolute right-2 top-8 z-40"
+                            for=":rd:"
                             role="button"
                             tabindex="0"
                           >
                             <svg
                               aria-hidden="true"
-                              class="w-8 h-8"
+                              class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                               data-slot="icon"
                               fill="currentColor"
                               viewBox="0 0 16 16"
@@ -936,7 +954,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                                 fill-rule="evenodd"
                               />
                             </svg>
-                          </button>
+                          </label>
                         </div>
                       </div>
                       <div
@@ -979,7 +997,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                   </div>
                   <label
                     class="cursor-pointer absolute z-20"
-                    for=":r6:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                    for=":rc:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                   />
                 </div>
               </form>
@@ -1096,7 +1114,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                   >
                     <input
                       class="radio checked:bg-blue-500 my-auto"
-                      id=":r7:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                      id=":re:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       type="checkbox"
                     />
@@ -1105,9 +1123,14 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                     class="w-full overflow-hidden transition-all duration-300 ml-0"
                   >
                     <a
-                      class="collapse bg-neutral grayscale cursor-pointer collapse-close"
+                      class="collapse card-collapse bg-neutral grayscale cursor-pointer"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     >
+                      <input
+                        class="hidden pointer-events-none"
+                        id=":rf:"
+                        type="checkbox"
+                      />
                       <div
                         class="collapse-title !p-0 min-w-0 min-h-0"
                       >
@@ -1128,14 +1151,15 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                                plants
                             </p>
                           </div>
-                          <button
+                          <label
                             class="btn-close absolute right-2 top-8 z-40"
+                            for=":rf:"
                             role="button"
                             tabindex="0"
                           >
                             <svg
                               aria-hidden="true"
-                              class="w-8 h-8"
+                              class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                               data-slot="icon"
                               fill="currentColor"
                               viewBox="0 0 16 16"
@@ -1147,7 +1171,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                                 fill-rule="evenodd"
                               />
                             </svg>
-                          </button>
+                          </label>
                         </div>
                       </div>
                       <div
@@ -1176,7 +1200,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                   </div>
                   <label
                     class="cursor-pointer absolute z-20"
-                    for=":r7:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                    for=":re:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                   />
                 </div>
               </form>
@@ -2006,7 +2030,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                     >
                       <input
                         class="radio checked:bg-blue-500 my-auto"
-                        id=":r5:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                        id=":ra:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                         type="checkbox"
                       />
@@ -2015,9 +2039,14 @@ exports[`App matches snapshot when only groups exist 1`] = `
                       class="w-full overflow-hidden transition-all duration-300 ml-0"
                     >
                       <a
-                        class="collapse bg-neutral cursor-pointer collapse-close"
+                        class="collapse card-collapse bg-neutral cursor-pointer"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       >
+                        <input
+                          class="hidden pointer-events-none"
+                          id=":rb:"
+                          type="checkbox"
+                        />
                         <div
                           class="collapse-title !p-0 min-w-0 min-h-0"
                         >
@@ -2038,14 +2067,15 @@ exports[`App matches snapshot when only groups exist 1`] = `
                                  plants
                               </p>
                             </div>
-                            <button
+                            <label
                               class="btn-close absolute right-2 top-8 z-40"
+                              for=":rb:"
                               role="button"
                               tabindex="0"
                             >
                               <svg
                                 aria-hidden="true"
-                                class="w-8 h-8"
+                                class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                                 data-slot="icon"
                                 fill="currentColor"
                                 viewBox="0 0 16 16"
@@ -2057,7 +2087,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                                   fill-rule="evenodd"
                                 />
                               </svg>
-                            </button>
+                            </label>
                           </div>
                         </div>
                         <div
@@ -2086,7 +2116,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                     </div>
                     <label
                       class="cursor-pointer absolute z-20"
-                      for=":r5:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                      for=":ra:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     />
                   </div>
                 </form>
@@ -2374,7 +2404,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                   >
                     <input
                       class="radio checked:bg-blue-500 my-auto"
-                      id=":r5:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                      id=":ra:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       type="checkbox"
                     />
@@ -2383,9 +2413,14 @@ exports[`App matches snapshot when only groups exist 1`] = `
                     class="w-full overflow-hidden transition-all duration-300 ml-0"
                   >
                     <a
-                      class="collapse bg-neutral cursor-pointer collapse-close"
+                      class="collapse card-collapse bg-neutral cursor-pointer"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     >
+                      <input
+                        class="hidden pointer-events-none"
+                        id=":rb:"
+                        type="checkbox"
+                      />
                       <div
                         class="collapse-title !p-0 min-w-0 min-h-0"
                       >
@@ -2406,14 +2441,15 @@ exports[`App matches snapshot when only groups exist 1`] = `
                                plants
                             </p>
                           </div>
-                          <button
+                          <label
                             class="btn-close absolute right-2 top-8 z-40"
+                            for=":rb:"
                             role="button"
                             tabindex="0"
                           >
                             <svg
                               aria-hidden="true"
-                              class="w-8 h-8"
+                              class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                               data-slot="icon"
                               fill="currentColor"
                               viewBox="0 0 16 16"
@@ -2425,7 +2461,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                                 fill-rule="evenodd"
                               />
                             </svg>
-                          </button>
+                          </label>
                         </div>
                       </div>
                       <div
@@ -2454,7 +2490,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                   </div>
                   <label
                     class="cursor-pointer absolute z-20"
-                    for=":r5:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                    for=":ra:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                   />
                 </div>
               </form>
@@ -2816,7 +2852,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                     >
                       <input
                         class="radio checked:bg-blue-500 my-auto"
-                        id=":r4:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                        id=":r8:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                         type="checkbox"
                       />
@@ -2825,9 +2861,14 @@ exports[`App matches snapshot when only plants exist 1`] = `
                       class="w-full overflow-hidden transition-all duration-300 ml-0"
                     >
                       <a
-                        class="collapse bg-neutral cursor-pointer collapse-close"
+                        class="collapse card-collapse bg-neutral group cursor-pointer"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       >
+                        <input
+                          class="hidden pointer-events-none"
+                          id=":r9:"
+                          type="checkbox"
+                        />
                         <div
                           class="collapse-title !p-0 min-w-0 min-h-0"
                         >
@@ -2873,14 +2914,15 @@ exports[`App matches snapshot when only plants exist 1`] = `
                                 5 days ago
                               </span>
                             </div>
-                            <button
+                            <label
                               class="btn-close absolute right-2 top-8 z-40"
+                              for=":r9:"
                               role="button"
                               tabindex="0"
                             >
                               <svg
                                 aria-hidden="true"
-                                class="w-8 h-8"
+                                class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                                 data-slot="icon"
                                 fill="currentColor"
                                 viewBox="0 0 16 16"
@@ -2892,7 +2934,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                                   fill-rule="evenodd"
                                 />
                               </svg>
-                            </button>
+                            </label>
                           </div>
                         </div>
                         <div
@@ -2935,7 +2977,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                     </div>
                     <label
                       class="cursor-pointer absolute z-20"
-                      for=":r4:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                      for=":r8:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     />
                   </div>
                 </form>
@@ -3230,7 +3272,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                   >
                     <input
                       class="radio checked:bg-blue-500 my-auto"
-                      id=":r4:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                      id=":r8:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       type="checkbox"
                     />
@@ -3239,9 +3281,14 @@ exports[`App matches snapshot when only plants exist 1`] = `
                     class="w-full overflow-hidden transition-all duration-300 ml-0"
                   >
                     <a
-                      class="collapse bg-neutral cursor-pointer collapse-close"
+                      class="collapse card-collapse bg-neutral group cursor-pointer"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     >
+                      <input
+                        class="hidden pointer-events-none"
+                        id=":r9:"
+                        type="checkbox"
+                      />
                       <div
                         class="collapse-title !p-0 min-w-0 min-h-0"
                       >
@@ -3287,14 +3334,15 @@ exports[`App matches snapshot when only plants exist 1`] = `
                               5 days ago
                             </span>
                           </div>
-                          <button
+                          <label
                             class="btn-close absolute right-2 top-8 z-40"
+                            for=":r9:"
                             role="button"
                             tabindex="0"
                           >
                             <svg
                               aria-hidden="true"
-                              class="w-8 h-8"
+                              class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                               data-slot="icon"
                               fill="currentColor"
                               viewBox="0 0 16 16"
@@ -3306,7 +3354,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                                 fill-rule="evenodd"
                               />
                             </svg>
-                          </button>
+                          </label>
                         </div>
                       </div>
                       <div
@@ -3349,7 +3397,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                   </div>
                   <label
                     class="cursor-pointer absolute z-20"
-                    for=":r4:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                    for=":r8:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                   />
                 </div>
               </form>
@@ -3720,9 +3768,14 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                       class="w-full overflow-hidden transition-all duration-300 ml-0"
                     >
                       <a
-                        class="collapse bg-neutral cursor-pointer collapse-close"
+                        class="collapse card-collapse bg-neutral group cursor-pointer"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       >
+                        <input
+                          class="hidden pointer-events-none"
+                          id=":r1:"
+                          type="checkbox"
+                        />
                         <div
                           class="collapse-title !p-0 min-w-0 min-h-0"
                         >
@@ -3768,14 +3821,15 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                                 5 days ago
                               </span>
                             </div>
-                            <button
+                            <label
                               class="btn-close absolute right-2 top-8 z-40"
+                              for=":r1:"
                               role="button"
                               tabindex="0"
                             >
                               <svg
                                 aria-hidden="true"
-                                class="w-8 h-8"
+                                class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                                 data-slot="icon"
                                 fill="currentColor"
                                 viewBox="0 0 16 16"
@@ -3787,7 +3841,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                                   fill-rule="evenodd"
                                 />
                               </svg>
-                            </button>
+                            </label>
                           </div>
                         </div>
                         <div
@@ -3947,7 +4001,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                     >
                       <input
                         class="radio checked:bg-blue-500 my-auto"
-                        id=":r1:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                        id=":r2:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                         type="checkbox"
                       />
@@ -3956,9 +4010,14 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                       class="w-full overflow-hidden transition-all duration-300 ml-0"
                     >
                       <a
-                        class="collapse bg-neutral cursor-pointer collapse-close"
+                        class="collapse card-collapse bg-neutral cursor-pointer"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       >
+                        <input
+                          class="hidden pointer-events-none"
+                          id=":r3:"
+                          type="checkbox"
+                        />
                         <div
                           class="collapse-title !p-0 min-w-0 min-h-0"
                         >
@@ -3979,14 +4038,15 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                                  plants
                               </p>
                             </div>
-                            <button
+                            <label
                               class="btn-close absolute right-2 top-8 z-40"
+                              for=":r3:"
                               role="button"
                               tabindex="0"
                             >
                               <svg
                                 aria-hidden="true"
-                                class="w-8 h-8"
+                                class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                                 data-slot="icon"
                                 fill="currentColor"
                                 viewBox="0 0 16 16"
@@ -3998,7 +4058,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                                   fill-rule="evenodd"
                                 />
                               </svg>
-                            </button>
+                            </label>
                           </div>
                         </div>
                         <div
@@ -4027,7 +4087,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                     </div>
                     <label
                       class="cursor-pointer absolute z-20"
-                      for=":r1:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                      for=":r2:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     />
                   </div>
                 </form>
@@ -4331,9 +4391,14 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                     class="w-full overflow-hidden transition-all duration-300 ml-0"
                   >
                     <a
-                      class="collapse bg-neutral cursor-pointer collapse-close"
+                      class="collapse card-collapse bg-neutral group cursor-pointer"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     >
+                      <input
+                        class="hidden pointer-events-none"
+                        id=":r1:"
+                        type="checkbox"
+                      />
                       <div
                         class="collapse-title !p-0 min-w-0 min-h-0"
                       >
@@ -4379,14 +4444,15 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                               5 days ago
                             </span>
                           </div>
-                          <button
+                          <label
                             class="btn-close absolute right-2 top-8 z-40"
+                            for=":r1:"
                             role="button"
                             tabindex="0"
                           >
                             <svg
                               aria-hidden="true"
-                              class="w-8 h-8"
+                              class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                               data-slot="icon"
                               fill="currentColor"
                               viewBox="0 0 16 16"
@@ -4398,7 +4464,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                                 fill-rule="evenodd"
                               />
                             </svg>
-                          </button>
+                          </label>
                         </div>
                       </div>
                       <div
@@ -4558,7 +4624,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                   >
                     <input
                       class="radio checked:bg-blue-500 my-auto"
-                      id=":r1:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                      id=":r2:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       type="checkbox"
                     />
@@ -4567,9 +4633,14 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                     class="w-full overflow-hidden transition-all duration-300 ml-0"
                   >
                     <a
-                      class="collapse bg-neutral cursor-pointer collapse-close"
+                      class="collapse card-collapse bg-neutral cursor-pointer"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     >
+                      <input
+                        class="hidden pointer-events-none"
+                        id=":r3:"
+                        type="checkbox"
+                      />
                       <div
                         class="collapse-title !p-0 min-w-0 min-h-0"
                       >
@@ -4590,14 +4661,15 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                                plants
                             </p>
                           </div>
-                          <button
+                          <label
                             class="btn-close absolute right-2 top-8 z-40"
+                            for=":r3:"
                             role="button"
                             tabindex="0"
                           >
                             <svg
                               aria-hidden="true"
-                              class="w-8 h-8"
+                              class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                               data-slot="icon"
                               fill="currentColor"
                               viewBox="0 0 16 16"
@@ -4609,7 +4681,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                                 fill-rule="evenodd"
                               />
                             </svg>
-                          </button>
+                          </label>
                         </div>
                       </div>
                       <div
@@ -4638,7 +4710,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                   </div>
                   <label
                     class="cursor-pointer absolute z-20"
-                    for=":r1:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                    for=":r2:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                   />
                 </div>
               </form>
@@ -5019,7 +5091,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                     >
                       <input
                         class="radio checked:bg-blue-500 my-auto"
-                        id=":r2:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                        id=":r4:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                         type="checkbox"
                       />
@@ -5028,9 +5100,14 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                       class="w-full overflow-hidden transition-all duration-300 ml-0"
                     >
                       <a
-                        class="collapse bg-neutral cursor-pointer collapse-close"
+                        class="collapse card-collapse bg-neutral group cursor-pointer"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       >
+                        <input
+                          class="hidden pointer-events-none"
+                          id=":r5:"
+                          type="checkbox"
+                        />
                         <div
                           class="collapse-title !p-0 min-w-0 min-h-0"
                         >
@@ -5076,14 +5153,15 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                                 5 days ago
                               </span>
                             </div>
-                            <button
+                            <label
                               class="btn-close absolute right-2 top-8 z-40"
+                              for=":r5:"
                               role="button"
                               tabindex="0"
                             >
                               <svg
                                 aria-hidden="true"
-                                class="w-8 h-8"
+                                class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                                 data-slot="icon"
                                 fill="currentColor"
                                 viewBox="0 0 16 16"
@@ -5095,7 +5173,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                                   fill-rule="evenodd"
                                 />
                               </svg>
-                            </button>
+                            </label>
                           </div>
                         </div>
                         <div
@@ -5138,7 +5216,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                     </div>
                     <label
                       class="cursor-pointer absolute z-20"
-                      for=":r2:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                      for=":r4:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     />
                   </div>
                 </form>
@@ -5255,7 +5333,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                     >
                       <input
                         class="radio checked:bg-blue-500 my-auto"
-                        id=":r3:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                        id=":r6:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                         type="checkbox"
                       />
@@ -5264,9 +5342,14 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                       class="w-full overflow-hidden transition-all duration-300 ml-0"
                     >
                       <a
-                        class="collapse bg-neutral cursor-pointer collapse-close"
+                        class="collapse card-collapse bg-neutral cursor-pointer"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       >
+                        <input
+                          class="hidden pointer-events-none"
+                          id=":r7:"
+                          type="checkbox"
+                        />
                         <div
                           class="collapse-title !p-0 min-w-0 min-h-0"
                         >
@@ -5287,14 +5370,15 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                                  plants
                               </p>
                             </div>
-                            <button
+                            <label
                               class="btn-close absolute right-2 top-8 z-40"
+                              for=":r7:"
                               role="button"
                               tabindex="0"
                             >
                               <svg
                                 aria-hidden="true"
-                                class="w-8 h-8"
+                                class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                                 data-slot="icon"
                                 fill="currentColor"
                                 viewBox="0 0 16 16"
@@ -5306,7 +5390,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                                   fill-rule="evenodd"
                                 />
                               </svg>
-                            </button>
+                            </label>
                           </div>
                         </div>
                         <div
@@ -5335,7 +5419,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                     </div>
                     <label
                       class="cursor-pointer absolute z-20"
-                      for=":r3:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                      for=":r6:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     />
                   </div>
                 </form>
@@ -5649,7 +5733,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                   >
                     <input
                       class="radio checked:bg-blue-500 my-auto"
-                      id=":r2:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                      id=":r4:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       type="checkbox"
                     />
@@ -5658,9 +5742,14 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                     class="w-full overflow-hidden transition-all duration-300 ml-0"
                   >
                     <a
-                      class="collapse bg-neutral cursor-pointer collapse-close"
+                      class="collapse card-collapse bg-neutral group cursor-pointer"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     >
+                      <input
+                        class="hidden pointer-events-none"
+                        id=":r5:"
+                        type="checkbox"
+                      />
                       <div
                         class="collapse-title !p-0 min-w-0 min-h-0"
                       >
@@ -5706,14 +5795,15 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                               5 days ago
                             </span>
                           </div>
-                          <button
+                          <label
                             class="btn-close absolute right-2 top-8 z-40"
+                            for=":r5:"
                             role="button"
                             tabindex="0"
                           >
                             <svg
                               aria-hidden="true"
-                              class="w-8 h-8"
+                              class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                               data-slot="icon"
                               fill="currentColor"
                               viewBox="0 0 16 16"
@@ -5725,7 +5815,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                                 fill-rule="evenodd"
                               />
                             </svg>
-                          </button>
+                          </label>
                         </div>
                       </div>
                       <div
@@ -5768,7 +5858,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                   </div>
                   <label
                     class="cursor-pointer absolute z-20"
-                    for=":r2:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                    for=":r4:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                   />
                 </div>
               </form>
@@ -5885,7 +5975,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                   >
                     <input
                       class="radio checked:bg-blue-500 my-auto"
-                      id=":r3:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                      id=":r6:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       type="checkbox"
                     />
@@ -5894,9 +5984,14 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                     class="w-full overflow-hidden transition-all duration-300 ml-0"
                   >
                     <a
-                      class="collapse bg-neutral cursor-pointer collapse-close"
+                      class="collapse card-collapse bg-neutral cursor-pointer"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     >
+                      <input
+                        class="hidden pointer-events-none"
+                        id=":r7:"
+                        type="checkbox"
+                      />
                       <div
                         class="collapse-title !p-0 min-w-0 min-h-0"
                       >
@@ -5917,14 +6012,15 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                                plants
                             </p>
                           </div>
-                          <button
+                          <label
                             class="btn-close absolute right-2 top-8 z-40"
+                            for=":r7:"
                             role="button"
                             tabindex="0"
                           >
                             <svg
                               aria-hidden="true"
-                              class="w-8 h-8"
+                              class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                               data-slot="icon"
                               fill="currentColor"
                               viewBox="0 0 16 16"
@@ -5936,7 +6032,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                                 fill-rule="evenodd"
                               />
                             </svg>
-                          </button>
+                          </label>
                         </div>
                       </div>
                       <div
@@ -5965,7 +6061,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                   </div>
                   <label
                     class="cursor-pointer absolute z-20"
-                    for=":r3:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                    for=":r6:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                   />
                 </div>
               </form>

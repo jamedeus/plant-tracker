@@ -1,34 +1,28 @@
-import React, { useState, memo } from 'react';
+import React, { useId, memo } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import WaterIcon from 'src/components/WaterIcon';
-import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/16/solid';
+import { ChevronDownIcon } from '@heroicons/react/16/solid';
 import PlantDetails from 'src/components/PlantDetails';
 import { capitalize } from 'src/util';
 import { timestampToRelativeCalendar, timestampToReadable} from 'src/timestampUtils';
 
 const PlantCard = memo(function PlantCard({ display_name, uuid, species, description, pot_size, last_watered, thumbnail, linkPage=true, archived=false }) {
-    // Track details collapse open state
-    const [open, setOpen] = useState(false);
-
-    // Button handler toggles collapse state, prevents click propagating
-    // to card (redirects to manage_plant page unless linkPage arg is false)
-    const toggle = (e) => {
-        setOpen(!open);
-        e.preventDefault();
-        e.stopPropagation();
-    };
+    // ID for hidden checkbox that controls details collapse open/close state
+    const checkboxId = useId();
 
     return (
         <a
             href={linkPage ? `/manage/${uuid}` : null}
             className={clsx(
-                'collapse bg-neutral',
+                'collapse card-collapse bg-neutral group',
                 archived && 'grayscale',
-                linkPage && 'cursor-pointer',
-                open ? 'collapse-open' : 'collapse-close'
+                linkPage && 'cursor-pointer'
             )}
         >
+            {/* Hidden checkbox controls open/close state */}
+            <input id={checkboxId} type="checkbox" className="hidden pointer-events-none" />
+
             <div className='collapse-title !p-0 min-w-0 min-h-0'>
                 <div className='card card-side text-neutral-content relative'>
                     {thumbnail && (
@@ -68,17 +62,18 @@ const PlantCard = memo(function PlantCard({ display_name, uuid, species, descrip
                     </div>
 
                     {/* Button opens/closes collapse with details */}
-                    <button
+                    <label
                         tabIndex={0}
                         role="button"
+                        htmlFor={checkboxId}
                         className="btn-close absolute right-2 top-8 z-40"
-                        onClick={(e) => toggle(e)}
+                        onClick={(e) => e.stopPropagation()}
                     >
-                        {open
-                            ? <ChevronUpIcon className="w-8 h-8" />
-                            : <ChevronDownIcon className="w-8 h-8" />
-                        }
-                    </button>
+                        <ChevronDownIcon className={clsx(
+                            "w-8 h-8 transition-transform duration-200",
+                            "rotate-0 group-has-[:checked]:rotate-180"
+                        )} />
+                    </label>
                 </div>
             </div>
             {/* Plant details collapse, closed until button clicked */}

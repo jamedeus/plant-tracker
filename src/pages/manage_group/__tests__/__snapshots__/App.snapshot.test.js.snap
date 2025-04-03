@@ -279,9 +279,14 @@ exports[`App matches snapshot 1`] = `
                   class="w-full overflow-hidden transition-all duration-300 ml-0"
                 >
                   <a
-                    class="collapse bg-neutral cursor-pointer collapse-close"
+                    class="collapse card-collapse bg-neutral group cursor-pointer"
                     href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                   >
+                    <input
+                      class="hidden pointer-events-none"
+                      id=":r1:"
+                      type="checkbox"
+                    />
                     <div
                       class="collapse-title !p-0 min-w-0 min-h-0"
                     >
@@ -318,14 +323,15 @@ exports[`App matches snapshot 1`] = `
                             Yesterday
                           </span>
                         </div>
-                        <button
+                        <label
                           class="btn-close absolute right-2 top-8 z-40"
+                          for=":r1:"
                           role="button"
                           tabindex="0"
                         >
                           <svg
                             aria-hidden="true"
-                            class="w-8 h-8"
+                            class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                             data-slot="icon"
                             fill="currentColor"
                             viewBox="0 0 16 16"
@@ -337,7 +343,7 @@ exports[`App matches snapshot 1`] = `
                               fill-rule="evenodd"
                             />
                           </svg>
-                        </button>
+                        </label>
                       </div>
                     </div>
                     <div
@@ -414,9 +420,14 @@ exports[`App matches snapshot 1`] = `
                   class="w-full overflow-hidden transition-all duration-300 ml-0"
                 >
                   <a
-                    class="collapse bg-neutral grayscale cursor-pointer collapse-close"
+                    class="collapse card-collapse bg-neutral group grayscale cursor-pointer"
                     href="/manage/19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
                   >
+                    <input
+                      class="hidden pointer-events-none"
+                      id=":r2:"
+                      type="checkbox"
+                    />
                     <div
                       class="collapse-title !p-0 min-w-0 min-h-0"
                     >
@@ -462,14 +473,15 @@ exports[`App matches snapshot 1`] = `
                             Yesterday
                           </span>
                         </div>
-                        <button
+                        <label
                           class="btn-close absolute right-2 top-8 z-40"
+                          for=":r2:"
                           role="button"
                           tabindex="0"
                         >
                           <svg
                             aria-hidden="true"
-                            class="w-8 h-8"
+                            class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                             data-slot="icon"
                             fill="currentColor"
                             viewBox="0 0 16 16"
@@ -481,7 +493,7 @@ exports[`App matches snapshot 1`] = `
                               fill-rule="evenodd"
                             />
                           </svg>
-                        </button>
+                        </label>
                       </div>
                     </div>
                     <div
@@ -544,9 +556,14 @@ exports[`App matches snapshot 1`] = `
                   class="w-full overflow-hidden transition-all duration-300 ml-0"
                 >
                   <a
-                    class="collapse bg-neutral cursor-pointer collapse-close"
+                    class="collapse card-collapse bg-neutral group cursor-pointer"
                     href="/manage/26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                   >
+                    <input
+                      class="hidden pointer-events-none"
+                      id=":r3:"
+                      type="checkbox"
+                    />
                     <div
                       class="collapse-title !p-0 min-w-0 min-h-0"
                     >
@@ -565,14 +582,15 @@ exports[`App matches snapshot 1`] = `
                             Never watered
                           </span>
                         </div>
-                        <button
+                        <label
                           class="btn-close absolute right-2 top-8 z-40"
+                          for=":r3:"
                           role="button"
                           tabindex="0"
                         >
                           <svg
                             aria-hidden="true"
-                            class="w-8 h-8"
+                            class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                             data-slot="icon"
                             fill="currentColor"
                             viewBox="0 0 16 16"
@@ -584,7 +602,7 @@ exports[`App matches snapshot 1`] = `
                               fill-rule="evenodd"
                             />
                           </svg>
-                        </button>
+                        </label>
                       </div>
                     </div>
                     <div
@@ -1091,9 +1109,14 @@ exports[`App matches snapshot 1`] = `
                 class="w-full overflow-hidden transition-all duration-300 ml-0"
               >
                 <a
-                  class="collapse bg-neutral cursor-pointer collapse-close"
+                  class="collapse card-collapse bg-neutral group cursor-pointer"
                   href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                 >
+                  <input
+                    class="hidden pointer-events-none"
+                    id=":r1:"
+                    type="checkbox"
+                  />
                   <div
                     class="collapse-title !p-0 min-w-0 min-h-0"
                   >
@@ -1130,14 +1153,15 @@ exports[`App matches snapshot 1`] = `
                           Yesterday
                         </span>
                       </div>
-                      <button
+                      <label
                         class="btn-close absolute right-2 top-8 z-40"
+                        for=":r1:"
                         role="button"
                         tabindex="0"
                       >
                         <svg
                           aria-hidden="true"
-                          class="w-8 h-8"
+                          class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                           data-slot="icon"
                           fill="currentColor"
                           viewBox="0 0 16 16"
@@ -1149,7 +1173,7 @@ exports[`App matches snapshot 1`] = `
                             fill-rule="evenodd"
                           />
                         </svg>
-                      </button>
+                      </label>
                     </div>
                   </div>
                   <div
@@ -1226,9 +1250,14 @@ exports[`App matches snapshot 1`] = `
                 class="w-full overflow-hidden transition-all duration-300 ml-0"
               >
                 <a
-                  class="collapse bg-neutral grayscale cursor-pointer collapse-close"
+                  class="collapse card-collapse bg-neutral group grayscale cursor-pointer"
                   href="/manage/19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
                 >
+                  <input
+                    class="hidden pointer-events-none"
+                    id=":r2:"
+                    type="checkbox"
+                  />
                   <div
                     class="collapse-title !p-0 min-w-0 min-h-0"
                   >
@@ -1274,14 +1303,15 @@ exports[`App matches snapshot 1`] = `
                           Yesterday
                         </span>
                       </div>
-                      <button
+                      <label
                         class="btn-close absolute right-2 top-8 z-40"
+                        for=":r2:"
                         role="button"
                         tabindex="0"
                       >
                         <svg
                           aria-hidden="true"
-                          class="w-8 h-8"
+                          class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                           data-slot="icon"
                           fill="currentColor"
                           viewBox="0 0 16 16"
@@ -1293,7 +1323,7 @@ exports[`App matches snapshot 1`] = `
                             fill-rule="evenodd"
                           />
                         </svg>
-                      </button>
+                      </label>
                     </div>
                   </div>
                   <div
@@ -1356,9 +1386,14 @@ exports[`App matches snapshot 1`] = `
                 class="w-full overflow-hidden transition-all duration-300 ml-0"
               >
                 <a
-                  class="collapse bg-neutral cursor-pointer collapse-close"
+                  class="collapse card-collapse bg-neutral group cursor-pointer"
                   href="/manage/26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                 >
+                  <input
+                    class="hidden pointer-events-none"
+                    id=":r3:"
+                    type="checkbox"
+                  />
                   <div
                     class="collapse-title !p-0 min-w-0 min-h-0"
                   >
@@ -1377,14 +1412,15 @@ exports[`App matches snapshot 1`] = `
                           Never watered
                         </span>
                       </div>
-                      <button
+                      <label
                         class="btn-close absolute right-2 top-8 z-40"
+                        for=":r3:"
                         role="button"
                         tabindex="0"
                       >
                         <svg
                           aria-hidden="true"
-                          class="w-8 h-8"
+                          class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                           data-slot="icon"
                           fill="currentColor"
                           viewBox="0 0 16 16"
@@ -1396,7 +1432,7 @@ exports[`App matches snapshot 1`] = `
                             fill-rule="evenodd"
                           />
                         </svg>
-                      </button>
+                      </label>
                     </div>
                   </div>
                   <div

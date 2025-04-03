@@ -16,6 +16,17 @@
     @apply overflow-visible;
 }
 
+/* Prevent PlantCard and GroupCard from expanding when focused */
+/* Causes card to start expanding while page loads when href is clicked */
+.card-collapse:focus:not(:has(> input[type="checkbox"]:checked)) {
+    grid-template-rows: auto 0fr;
+}
+.card-collapse:focus:not(:has(> input[type="checkbox"]:checked)) > .collapse-content {
+    visibility: hidden;
+    min-height: 0px;
+    padding-bottom: 0rem;
+}
+
 .max-w-90 {
     max-width: 90%;
 }
