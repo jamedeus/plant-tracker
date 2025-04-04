@@ -415,4 +415,52 @@ describe('App', () => {
         expect(app.container.querySelectorAll('.dot-water').length).toBe(1);
         expect(app.container.querySelectorAll('.fa-droplet').length).toBe(1);
     });
+
+    // Original bug: If a YYYY-MM-DD date contained photos and/or notes but no
+    // events a dateKey would exist in timelineDays but not calendarDays, since
+    // calendarDays only shows events. When an event was added on the same date
+    // timelineSlice.eventAdded would build a new events array and write it to
+    // calendarDays[dateKey].events, which did not exist (dateKey missing).
+    // This prevented the event from rendering to the timeline or calendar.
+    it('does not fail to add first event to day with existing photos/notes', async () => {
+        // Mock expected API response when 2 photos are uploaded
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                "uploaded": "2 photo(s)",
+                "failed": [],
+                "urls": [
+                    {
+                        "created": "2024-03-01T20:52:03+00:00",
+                        "url": "/media/images/photo1.jpg"
+                    },
+                    {
+                        "created": "2024-03-01T20:54:03+00:00",
+                        "url": "/media/images/photo2.jpg"
+                    }
+                ]
+            })
+        }));
+
+        // Simulate user opening photo modal, selecting 2 files, and submitting
+        await user.click(app.getByText('Add photos'));
+        const fileInput = app.getByTestId('photo-input');
+        fireEvent.change(fileInput, { target: { files: [
+            new File(['file1'], 'file1.jpg', { type: 'image/jpeg' }),
+            new File(['file2'], 'file2.jpg', { type: 'image/jpeg' })
+        ] } });
+        await user.click(app.getByText('Upload'));
+
+        // Confirm no water events exist in calendar or timeline
+        expect(app.container.querySelectorAll('.dot-water').length).toBe(0);
+        expect(app.container.querySelectorAll('.fa-droplet').length).toBe(0);
+
+        // Click water button (datetime input contains same day as photos)
+        await user.click(app.getByRole("button", {name: "Water"}));
+
+        // Confirm dot appeared on calendar, EventMarker appeared in timeline
+        expect(app.container.querySelectorAll('.dot-water').length).toBe(1);
+        expect(app.container.querySelectorAll('.fa-droplet').length).toBe(1);
+    });
 });

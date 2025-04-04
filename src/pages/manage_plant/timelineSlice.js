@@ -100,14 +100,18 @@ export const timelineSlice = createSlice({
 
             // Add new events to existing dateKey in calendarDays and timelineDays
             } else if (!state.timelineDays[dateKey].events.includes(newEvent.type)) {
-                const newEvents = [
-                    ...state.timelineDays[dateKey].events,
-                    newEvent.type
-                ].sort(
+                const newDay = {
+                    ...state.timelineDays[dateKey],
+                    events: [
+                        ...state.timelineDays[dateKey].events,
+                        newEvent.type
+                    ]
+                };
+                newDay.events.sort(
                     (a, b) => EVENTS_ORDER.indexOf(a) - EVENTS_ORDER.indexOf(b)
                 );
-                state.calendarDays[dateKey].events = newEvents;
-                state.timelineDays[dateKey].events = newEvents;
+                state.calendarDays[dateKey] = newDay;
+                state.timelineDays[dateKey] = newDay;
             }
         },
 
