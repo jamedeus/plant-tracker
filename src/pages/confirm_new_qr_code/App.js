@@ -104,7 +104,7 @@ function App() {
                 <ToggleThemeOption />
             </>
         );
-    }, []);
+    }, [ToggleThemeOption]);
 
     // Plant/group details card shown when title is clicked
     const DetailsDropdown = useMemo(() => {

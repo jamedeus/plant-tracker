@@ -320,7 +320,7 @@ function App() {
                 <ToggleThemeOption />
             </>
         );
-    }, []);
+    }, [ToggleThemeOption]);
 
     // Group details card shown when title is clicked
     const GroupDetailsDropdown = useMemo(() => {

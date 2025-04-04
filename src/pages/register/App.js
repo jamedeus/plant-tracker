@@ -130,7 +130,7 @@ function App() {
                 <ToggleThemeOption />
             </>
         );
-    }, []);
+    }, [ToggleThemeOption]);
 
     return (
         <div className="container flex flex-col mx-auto mb-8">

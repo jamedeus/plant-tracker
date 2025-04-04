@@ -179,7 +179,7 @@ function App() {
                     </>
                 );
         }
-    }, [editing]);
+    }, [editing, ToggleThemeOption]);
 
     // Dropdown with links to jump to plant or group columns
     // Only rendered on mobile layout (both columns always visible on desktop)
