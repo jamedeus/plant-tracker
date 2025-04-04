@@ -1,4 +1,5 @@
 import createMockContext from 'src/testUtils/createMockContext';
+import { fireEvent } from '@testing-library/react';
 import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
 import { PageWrapper } from 'src/index';
@@ -385,7 +386,7 @@ describe('App', () => {
 
         // Click button, confirm HTMLDialogElement method was called
         await user.click(app.getByText('Add photos'));
-        // expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
+        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
         await waitFor(() => {
             expect(app.queryByTestId('photo-input')).not.toBeNull();
         });
@@ -552,5 +553,94 @@ describe('App', () => {
         expect(within(timeline).queryByText(
             'Fertilized with dilute 10-15-10 liquid fertilizer'
         )).toBeNull();
+    });
+
+    it('renders new photos in the timeline', async () => {
+        // Mock expected API response when 2 photos are uploaded
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                "uploaded": "2 photo(s)",
+                "failed": [],
+                "urls": [
+                    {
+                        "created": "2024-06-21T20:52:03+00:00",
+                        "url": "/media/images/photo1.jpg"
+                    },
+                    {
+                        "created": "2024-06-21T20:54:03+00:00",
+                        "url": "/media/images/photo2.jpg"
+                    }
+                ]
+            })
+        }));
+
+        // Get reference to timeline div
+        const timeline = app.container.querySelector('.grid');
+
+        // Confirm mock photos don't exist in timeline
+        expect(within(timeline).queryByTitle('12:52 PM - June 21, 2024')).toBeNull();
+        expect(within(timeline).queryByTitle('12:54 PM - June 21, 2024')).toBeNull();
+
+        // Simulate user opening photo modal, selecting 2 files, and submitting
+        await user.click(app.getByText('Add photos'));
+        const fileInput = app.getByTestId('photo-input');
+        fireEvent.change(fileInput, { target: { files: [
+            new File(['file1'], 'file1.jpg', { type: 'image/jpeg' }),
+            new File(['file2'], 'file2.jpg', { type: 'image/jpeg' })
+        ] } });
+        await user.click(app.getByText('Upload'));
+
+        // Confirm both mock photos rendered to the timeline
+        expect(within(timeline).getByTitle('12:52 PM - June 21, 2024').children[0].tagName).toBe('IMG');
+        expect(within(timeline).getByTitle('12:54 PM - June 21, 2024').children[0].tagName).toBe('IMG');
+    });
+
+    it('updates timeline QuickNavigation options when sections are added/removed', async () => {
+        // Get QuickNavigation menu options, confirm 1 year option (2024)
+        const quickNav = app.getByText('History').nextSibling;
+        expect(quickNav.tagName).toBe('UL');
+        expect(quickNav.children.length).toBe(1);
+        expect(quickNav.children[0].textContent).toContain('2024');
+
+        // Simulate user creating a water event in 2025
+        const dateTimeInput = app.container.querySelector('input');
+        fireEvent.input(
+            dateTimeInput,
+            {target: {value: '2025-02-20T12:00:00'}}
+        );
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "action": "water",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
+        await user.click(app.getByRole("button", {name: "Water"}));
+
+        // Confirm 2025 menu option was added
+        expect(quickNav.children.length).toBe(2);
+        expect(quickNav.children[0].textContent).toContain('2025');
+        expect(quickNav.children[1].textContent).toContain('2024');
+
+        // Open event history modal, delete 2025 event
+        await user.click(app.getByText('Delete events'));
+        const modal = app.getByText('Event History').parentElement;
+        await user.click(within(modal).getByText(/2025/));
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "deleted": [
+                    {"type": "water", "timestamp": "2025-02-20T20:00:00+00:00"}
+                ],
+                "failed": []
+            })
+        }));
+        await user.click(within(modal).getByText('Delete'));
+
+        // Confirm 2025 menu option was removed
+        expect(quickNav.children.length).toBe(1);
+        expect(quickNav.children[0].textContent).toContain('2024');
     });
 });

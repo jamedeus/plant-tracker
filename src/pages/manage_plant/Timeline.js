@@ -316,6 +316,7 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
     const readableTimestamp = timestampToReadable(note.timestamp);
 
     useLayoutEffect(() => {
+        /* istanbul ignore else */
         if (textRef.current) {
             if (expanded) {
                 // Transition height from 1 line to full expanded text height

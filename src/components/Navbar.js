@@ -47,6 +47,7 @@ const Navbar = memo(function Navbar({ menuOptions, onOpenMenu, title, titleOptio
         };
 
         const adjustTitleFont = () => {
+            /* istanbul ignore else */
             if (navbarRef.current && titleRef.current) {
                 // Get maximum title width that won't overlap menu button
                 const maxWidth = getMaxWidth(

@@ -226,7 +226,7 @@ export const timelineSlice = createSlice({
                     state.timelineDays[dateKey].photos.splice(
                         state.timelineDays[dateKey].photos.indexOf(photo),
                         1
-                    )
+                    );
                     // Remove timelineDays day if no content left
                     removeDateKeyIfEmpty(state, dateKey);
                     // Return false (remove from state.photos)

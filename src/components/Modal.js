@@ -19,20 +19,20 @@ const Modal = forwardRef(function Modal({ title, children, className='', onClose
 
     // Render contents when modal opened for first time
     useEffect(() => {
-        const dialog = dialogRef.current;
-        if (!dialog) return;
+        /* istanbul ignore else */
+        if (dialogRef.current) {
+            // Set state the first time modal is opened
+            const observer = new MutationObserver(() => {
+                const open = dialogRef.current.hasAttribute("open");
+                if (open && !hasBeenOpened) {
+                    setHasBeenOpened(true);
+                }
+            });
 
-        // Set state the first time modal is opened
-        const observer = new MutationObserver(() => {
-            const open = dialog.hasAttribute("open");
-            if (open && !hasBeenOpened) {
-                setHasBeenOpened(true);
-            }
-        });
+            observer.observe(dialogRef.current, { attributes: true });
 
-        observer.observe(dialog, { attributes: true });
-
-        return () => observer.disconnect();
+            return () => observer.disconnect();
+        }
     }, [dialogRef, hasBeenOpened]);
 
     return (

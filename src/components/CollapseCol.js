@@ -17,6 +17,7 @@ const CollapseCol = ({ title, children, scroll=false }) => {
         if (scroll && open) {
             // Wait for open animation to complete (for iOS)
             setTimeout(() => {
+                /* istanbul ignore else */
                 if (scrollRef.current) {
                     scrollRef.current.scrollIntoView({
                         behavior: "smooth",
