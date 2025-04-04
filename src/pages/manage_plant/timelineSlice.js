@@ -223,12 +223,10 @@ export const timelineSlice = createSlice({
                     // Parse YYYY-MM-DD from deleted photo timestamp, find in
                     // timelineDays state and remove
                     const dateKey = timestampToDateString(photo.created);
-                    if (state.timelineDays[dateKey]) {
-                        state.timelineDays[dateKey].photos =
-                            state.timelineDays[dateKey].photos.filter(
-                                photo => !deletedKeys.includes(photo.key)
-                            );
-                    }
+                    state.timelineDays[dateKey].photos.splice(
+                        state.timelineDays[dateKey].photos.indexOf(photo),
+                        1
+                    )
                     // Remove timelineDays day if no content left
                     removeDateKeyIfEmpty(state, dateKey);
                     // Return false (remove from state.photos)
