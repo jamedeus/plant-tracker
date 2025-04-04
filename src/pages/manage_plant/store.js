@@ -102,11 +102,11 @@ export function ReduxProvider({ children }) {
     // Merges and returns values for all initialState keys in timelineSlice
     const init = () => {
         // Parse django context objects
-        const plantDetails = parseDomContext("plant_details") || {};
-        const groupOptions = parseDomContext("group_options") || [];
-        const eventsByType = parseDomContext("events") || {};
-        const photos = parseDomContext('photos') || [];
-        const notes = parseDomContext('notes') || [];
+        const plantDetails = parseDomContext("plant_details");
+        const groupOptions = parseDomContext("group_options");
+        const eventsByType = parseDomContext("events");
+        const photos = parseDomContext('photos');
+        const notes = parseDomContext('notes');
 
         // Build state objects
         const {
