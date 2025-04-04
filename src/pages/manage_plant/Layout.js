@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useCallback, useMemo } from 'react';
+import React, { useRef, useEffect, useMemo } from 'react';
 import { sendPostRequest } from 'src/util';
 import EditModal from 'src/components/EditModal';
 import PlantDetailsForm from 'src/forms/PlantDetailsForm';
@@ -44,21 +44,6 @@ function Layout() {
         // Add listener on mount, remove on unmount
         window.addEventListener('pageshow', handleBackButton);
         return () => window.removeEventListener('pageshow', handleBackButton);
-    }, []);
-
-    // Makes remove_plant_from_group API call, updates state if successful
-    const handleRemoveGroup = useCallback(async () => {
-        const response = await sendPostRequest(
-            '/remove_plant_from_group',
-            {plant_id: plantDetails.uuid}
-        );
-        if (response.ok) {
-            // Remove group details from plant state
-            dispatch(plantRemovedFromGroup());
-        } else {
-            const error = await response.json();
-            openErrorModal(JSON.stringify(error));
-        }
     }, []);
 
     const submitEditModal = async () => {
@@ -107,6 +92,21 @@ function Layout() {
 
     // Plant details card shown when title is clicked
     const PlantDetailsDropdown = useMemo(() => {
+        // Makes remove_plant_from_group API call, updates state if successful
+        const handleRemoveGroup = async () => {
+            const response = await sendPostRequest(
+                '/remove_plant_from_group',
+                {plant_id: plantDetails.uuid}
+            );
+            if (response.ok) {
+                // Remove group details from plant state
+                dispatch(plantRemovedFromGroup());
+            } else {
+                const error = await response.json();
+                openErrorModal(JSON.stringify(error));
+            }
+        };
+
         return (
             <DetailsCard>
                 <div className="flex flex-col">
