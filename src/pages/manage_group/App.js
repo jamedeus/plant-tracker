@@ -321,6 +321,15 @@ function App() {
         );
     }, [group]);
 
+    const EditModalForm = useMemo(() => (
+        <GroupDetailsForm
+            formRef={editDetailsRef}
+            name={group.name}
+            location={group.location}
+            description={group.description}
+        />
+    ), [group]);
+
     return (
         <div className="container flex flex-col mx-auto mb-8">
             <Navbar
@@ -359,14 +368,7 @@ function App() {
             </PlantsCol>
 
             <EditModal title="Edit Details" onSubmit={submitEditModal}>
-                {useMemo(() => (
-                    <GroupDetailsForm
-                        formRef={editDetailsRef}
-                        name={group.name}
-                        location={group.location}
-                        description={group.description}
-                    />
-                ), [group])}
+                {EditModalForm}
             </EditModal>
 
             <AddPlantsModal
