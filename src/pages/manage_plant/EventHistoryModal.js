@@ -31,8 +31,8 @@ const EventCard = memo(function EventCard({ timestamp, selected, onSelect }) {
                 onChange={() => onSelect(timestamp)}
             />
             <div className={clsx(
-                "card-body text-center rounded-2xl",
-                "peer-checked:ring-2 ring-error ring-inset"
+                "card-body text-center rounded-2xl transition-all",
+                "duration-[200ms] peer-checked:ring-2 ring-error ring-inset"
             )}>
                 <p className="text-lg font-bold">
                     {timestampToRelativeDays(timestamp)}
