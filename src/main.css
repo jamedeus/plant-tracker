@@ -175,5 +175,15 @@ html[data-theme="light"] .pot-size-selected::placeholder {
 }
 
 .floating-footer {
-    @apply sticky bottom-4 mx-auto my-4 p-4 bg-gray-600/50 rounded-box shadow-inner z-50;
+    @apply fixed bottom-0 left-1/2 -translate-x-1/2 z-50;
+    @apply flex flex-row my-4 p-4 bg-gray-600/50 rounded-box shadow-inner;
+    @apply transition-all duration-300 flex flex-row;
+}
+
+.floating-footer-hidden {
+    @apply translate-y-24 scale-90;
+}
+
+.floating-footer-visible {
+    @apply translate-y-0 scale-100;
 }

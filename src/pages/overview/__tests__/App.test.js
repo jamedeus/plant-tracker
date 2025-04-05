@@ -42,21 +42,22 @@ describe('App', () => {
     });
 
     it('shows checkboxes and delete button when edit option clicked', async () => {
-        // Confirm delete button and checkboxes are not visible
-        expect(app.queryByText('Delete')).toBeNull();
+        // Get reference to footer, confirm hidden (default)
+        const floatingFooter = app.getByTestId('floating-footer');
+        expect(floatingFooter.classList).toContain('floating-footer-hidden');
         // Checkboxes are rendered underneath card with position: absolute, so
         // they are not visible until margin-left is added to the card wrapper
         expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(0);
 
         // Click Edit option, confirm buttons and checkboxes appear
         await user.click(app.getByText("Edit"));
-        expect(app.getByText('Delete').nodeName).toBe('BUTTON');
+        expect(floatingFooter.classList).toContain('floating-footer-visible');
         expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).not.toBe(0);
 
         // Click cancel button, confirm buttons and checkboxes disappear
         const buttonDiv = app.container.querySelector('.floating-footer');
         await user.click(within(buttonDiv).getByText('Cancel'));
-        expect(app.queryByText('Delete')).toBeNull();
+        expect(floatingFooter.classList).toContain('floating-footer-hidden');
         expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(0);
     });
 

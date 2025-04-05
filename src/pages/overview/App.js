@@ -213,7 +213,7 @@ function App() {
     }, []);
 
     return (
-        <div className="container flex flex-col min-h-screen mx-auto pb-16">
+        <div className="container flex flex-col min-h-screen mx-auto pb-28">
             <Navbar
                 menuOptions={DropdownMenuOptions}
                 title={archivedOverview ? "Archived" : "Plant Overview"}
