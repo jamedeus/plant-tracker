@@ -17,18 +17,8 @@ import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
 import { openErrorModal } from 'src/components/ErrorModal';
 
 // Buttons used to add events to all selected plants
-const PlantEventButtons = ({ editing, setEditing, handleWater, handleFertilize }) => {
+const PlantEventButtons = ({ editing, setEditing, addEventSelected }) => {
     const addEventTimeInput = useRef(null);
-
-    // Handler for water button
-    const water = async () => {
-        handleWater(localToUTC(addEventTimeInput.current.value));
-    };
-
-    // Handler for fertilize button
-    const fertilize = async () => {
-        handleFertilize(localToUTC(addEventTimeInput.current.value));
-    };
 
     if (editing) {
         return (
@@ -48,13 +38,19 @@ const PlantEventButtons = ({ editing, setEditing, handleWater, handleFertilize }
                     </button>
                     <button
                         className="btn btn-outline btn-info mx-auto"
-                        onClick={water}
+                        onClick={() => addEventSelected(
+                            'water',
+                            localToUTC(addEventTimeInput.current.value)
+                        )}
                     >
                         Water
                     </button>
                     <button
                         className="btn btn-outline btn-success mx-auto"
-                        onClick={fertilize}
+                        onClick={() => addEventSelected(
+                            'fertilize',
+                            localToUTC(addEventTimeInput.current.value)
+                        )}
                     >
                         Fertilize
                     </button>
@@ -77,8 +73,7 @@ const PlantEventButtons = ({ editing, setEditing, handleWater, handleFertilize }
 PlantEventButtons.propTypes = {
     editing: PropTypes.bool.isRequired,
     setEditing: PropTypes.func.isRequired,
-    handleWater: PropTypes.func.isRequired,
-    handleFertilize: PropTypes.func.isRequired
+    addEventSelected: PropTypes.func.isRequired
 };
 
 function App() {
@@ -191,19 +186,11 @@ function App() {
         );
     };
 
-    // Handler for water button under plant cards
-    const waterSelected = async (timestamp) => {
-        // Prevent watering archived plants
+    // Handler for water and fertilize buttons under plant cards
+    const addEventSelected = async (eventType, timestamp) => {
+        // Prevent adding event to archived plants
         const selected = removeArchivedPlants(getSelectedPlants());
-        await bulkAddPlantEvents('water', selected, timestamp);
-        setSelectingPlants(false);
-    };
-
-    // Handler for fertilize button under plant cards
-    const fertilizeSelected = async (timestamp) => {
-        // Prevent fertilizing archived plants
-        const selected = removeArchivedPlants(getSelectedPlants());
-        await bulkAddPlantEvents('fertilize', selected, timestamp);
+        await bulkAddPlantEvents(eventType, selected, timestamp);
         setSelectingPlants(false);
     };
 
@@ -367,8 +354,7 @@ function App() {
                 <PlantEventButtons
                     editing={selectingPlants}
                     setEditing={setSelectingPlants}
-                    handleWater={waterSelected}
-                    handleFertilize={fertilizeSelected}
+                    addEventSelected={addEventSelected}
                 />
             </PlantsCol>
 
