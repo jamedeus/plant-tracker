@@ -27,111 +27,7 @@ exports[`App matches snapshot when changing group QR code 1`] = `
           class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
         >
           <div
-            class="navbar-start w-auto"
-          >
-            <div
-              class="dropdown"
-            >
-              <div
-                class="btn btn-ghost btn-circle"
-                role="button"
-                tabindex="0"
-              >
-                <svg
-                  class="h-5 w-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M4 6h16M4 12h16M4 18h7"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                  />
-                </svg>
-              </div>
-              <ul
-                class="menu menu-md dropdown-content mt-3 z-[99]
-                                    p-2 shadow bg-base-300 rounded-box w-52"
-                tabindex="0"
-              >
-                <li>
-                  <a>
-                    Overview
-                  </a>
-                </li>
-                <li>
-                  <a>
-                    Light mode
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div
-            class="navbar-center mx-auto shrink min-w-0"
-          >
-            <div
-              class="dropdown dropdown-center w-full"
-            >
-              <a
-                class="btn btn-ghost w-full px-0 text-nowrap"
-                role="button"
-                tabindex="0"
-              >
-                <span
-                  class="px-4 leading-[2.75rem] truncate"
-                  style="font-size: 14px;"
-                >
-                  Test Group
-                </span>
-              </a>
-              <div
-                class="dropdown-content z-[1] flex"
-                tabindex="0"
-              >
-                <div
-                  class="card card-compact w-72 p-2 mt-2 mx-auto
-                    shadow bg-neutral text-neutral-content"
-                >
-                  <div
-                    class="card-body"
-                  >
-                    <p
-                      class="flex"
-                    >
-                      <span
-                        class="font-semibold"
-                      >
-                        Location:
-                      </span>
-                      <span
-                        class="ml-auto text-right"
-                      >
-                        Nowhere
-                      </span>
-                    </p>
-                    <div
-                      class="hidden"
-                    >
-                      <p
-                        class="font-semibold mt-3"
-                      >
-                        Description:
-                      </p>
-                      <p
-                        class="text-sm line-clamp-6"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div
-            class="navbar-end w-auto invisible"
+            class="dropdown justify-start min-w-12"
           >
             <div
               class="btn btn-ghost btn-circle"
@@ -153,7 +49,72 @@ exports[`App matches snapshot when changing group QR code 1`] = `
                 />
               </svg>
             </div>
+            <ul
+              class="dropdown-options mt-3 w-52"
+              tabindex="0"
+            >
+              <li>
+                <a>
+                  Overview
+                </a>
+              </li>
+              <li>
+                <a>
+                  Light mode
+                </a>
+              </li>
+            </ul>
           </div>
+          <div
+            class="mx-auto shrink min-w-0"
+          >
+            <div
+              class="dropdown dropdown-center w-full"
+            >
+              <a
+                class="btn btn-ghost w-full px-0 text-nowrap"
+                role="button"
+                tabindex="0"
+              >
+                <span
+                  class="px-4 leading-[2.75rem] truncate"
+                  style="font-size: 14px;"
+                >
+                  Test Group
+                </span>
+              </a>
+              <div
+                class="dropdown-content z-[1] flex"
+                tabindex="0"
+              >
+                <div
+                  class="details-card"
+                >
+                  <div
+                    class="card-body"
+                  >
+                    <p
+                      class="flex"
+                    >
+                      <span
+                        class="font-semibold"
+                      >
+                        Location:
+                      </span>
+                      <span
+                        class="ml-auto text-right"
+                      >
+                        Nowhere
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="justify-end min-w-12"
+          />
         </div>
         <div
           class="flex flex-col gap-8 text-center my-auto"
@@ -235,24 +196,6 @@ exports[`App matches snapshot when changing group QR code 1`] = `
               </svg>
             </button>
           </form>
-          <h3
-            class="font-bold text-lg mb-6"
-          >
-            Error
-          </h3>
-          <div
-            class="min-h-36 flex flex-col justify-center mx-auto
-                             whitespace-pre-line"
-          />
-          <div
-            class="modal-action mx-auto"
-          >
-            <button
-              class="btn"
-            >
-              OK
-            </button>
-          </div>
         </div>
         <form
           class="modal-backdrop"
@@ -273,111 +216,7 @@ exports[`App matches snapshot when changing group QR code 1`] = `
         class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
       >
         <div
-          class="navbar-start w-auto"
-        >
-          <div
-            class="dropdown"
-          >
-            <div
-              class="btn btn-ghost btn-circle"
-              role="button"
-              tabindex="0"
-            >
-              <svg
-                class="h-5 w-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 6h16M4 12h16M4 18h7"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                />
-              </svg>
-            </div>
-            <ul
-              class="menu menu-md dropdown-content mt-3 z-[99]
-                                    p-2 shadow bg-base-300 rounded-box w-52"
-              tabindex="0"
-            >
-              <li>
-                <a>
-                  Overview
-                </a>
-              </li>
-              <li>
-                <a>
-                  Light mode
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div
-          class="navbar-center mx-auto shrink min-w-0"
-        >
-          <div
-            class="dropdown dropdown-center w-full"
-          >
-            <a
-              class="btn btn-ghost w-full px-0 text-nowrap"
-              role="button"
-              tabindex="0"
-            >
-              <span
-                class="px-4 leading-[2.75rem] truncate"
-                style="font-size: 14px;"
-              >
-                Test Group
-              </span>
-            </a>
-            <div
-              class="dropdown-content z-[1] flex"
-              tabindex="0"
-            >
-              <div
-                class="card card-compact w-72 p-2 mt-2 mx-auto
-                    shadow bg-neutral text-neutral-content"
-              >
-                <div
-                  class="card-body"
-                >
-                  <p
-                    class="flex"
-                  >
-                    <span
-                      class="font-semibold"
-                    >
-                      Location:
-                    </span>
-                    <span
-                      class="ml-auto text-right"
-                    >
-                      Nowhere
-                    </span>
-                  </p>
-                  <div
-                    class="hidden"
-                  >
-                    <p
-                      class="font-semibold mt-3"
-                    >
-                      Description:
-                    </p>
-                    <p
-                      class="text-sm line-clamp-6"
-                    />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          class="navbar-end w-auto invisible"
+          class="dropdown justify-start min-w-12"
         >
           <div
             class="btn btn-ghost btn-circle"
@@ -399,7 +238,72 @@ exports[`App matches snapshot when changing group QR code 1`] = `
               />
             </svg>
           </div>
+          <ul
+            class="dropdown-options mt-3 w-52"
+            tabindex="0"
+          >
+            <li>
+              <a>
+                Overview
+              </a>
+            </li>
+            <li>
+              <a>
+                Light mode
+              </a>
+            </li>
+          </ul>
         </div>
+        <div
+          class="mx-auto shrink min-w-0"
+        >
+          <div
+            class="dropdown dropdown-center w-full"
+          >
+            <a
+              class="btn btn-ghost w-full px-0 text-nowrap"
+              role="button"
+              tabindex="0"
+            >
+              <span
+                class="px-4 leading-[2.75rem] truncate"
+                style="font-size: 14px;"
+              >
+                Test Group
+              </span>
+            </a>
+            <div
+              class="dropdown-content z-[1] flex"
+              tabindex="0"
+            >
+              <div
+                class="details-card"
+              >
+                <div
+                  class="card-body"
+                >
+                  <p
+                    class="flex"
+                  >
+                    <span
+                      class="font-semibold"
+                    >
+                      Location:
+                    </span>
+                    <span
+                      class="ml-auto text-right"
+                    >
+                      Nowhere
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="justify-end min-w-12"
+        />
       </div>
       <div
         class="flex flex-col gap-8 text-center my-auto"
@@ -481,24 +385,6 @@ exports[`App matches snapshot when changing group QR code 1`] = `
             </svg>
           </button>
         </form>
-        <h3
-          class="font-bold text-lg mb-6"
-        >
-          Error
-        </h3>
-        <div
-          class="min-h-36 flex flex-col justify-center mx-auto
-                             whitespace-pre-line"
-        />
-        <div
-          class="modal-action mx-auto"
-        >
-          <button
-            class="btn"
-          >
-            OK
-          </button>
-        </div>
       </div>
       <form
         class="modal-backdrop"
@@ -591,51 +477,46 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
           class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
         >
           <div
-            class="navbar-start w-auto"
+            class="dropdown justify-start min-w-12"
           >
             <div
-              class="dropdown"
+              class="btn btn-ghost btn-circle"
+              role="button"
+              tabindex="0"
             >
-              <div
-                class="btn btn-ghost btn-circle"
-                role="button"
-                tabindex="0"
+              <svg
+                class="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
               >
-                <svg
-                  class="h-5 w-5"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M4 6h16M4 12h16M4 18h7"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                  />
-                </svg>
-              </div>
-              <ul
-                class="menu menu-md dropdown-content mt-3 z-[99]
-                                    p-2 shadow bg-base-300 rounded-box w-52"
-                tabindex="0"
-              >
-                <li>
-                  <a>
-                    Overview
-                  </a>
-                </li>
-                <li>
-                  <a>
-                    Light mode
-                  </a>
-                </li>
-              </ul>
+                <path
+                  d="M4 6h16M4 12h16M4 18h7"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                />
+              </svg>
             </div>
+            <ul
+              class="dropdown-options mt-3 w-52"
+              tabindex="0"
+            >
+              <li>
+                <a>
+                  Overview
+                </a>
+              </li>
+              <li>
+                <a>
+                  Light mode
+                </a>
+              </li>
+            </ul>
           </div>
           <div
-            class="navbar-center mx-auto shrink min-w-0"
+            class="mx-auto shrink min-w-0"
           >
             <div
               class="dropdown dropdown-center w-full"
@@ -657,8 +538,7 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
                 tabindex="0"
               >
                 <div
-                  class="card card-compact w-72 p-2 mt-2 mx-auto
-                    shadow bg-neutral text-neutral-content"
+                  class="details-card"
                 >
                   <div
                     class="card-body"
@@ -711,29 +591,8 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
             </div>
           </div>
           <div
-            class="navbar-end w-auto invisible"
-          >
-            <div
-              class="btn btn-ghost btn-circle"
-              role="button"
-              tabindex="0"
-            >
-              <svg
-                class="h-5 w-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 6h16M4 12h16M4 18h7"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                />
-              </svg>
-            </div>
-          </div>
+            class="justify-end min-w-12"
+          />
         </div>
         <div
           class="flex flex-col gap-8 text-center my-auto"
@@ -823,24 +682,6 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
               </svg>
             </button>
           </form>
-          <h3
-            class="font-bold text-lg mb-6"
-          >
-            Error
-          </h3>
-          <div
-            class="min-h-36 flex flex-col justify-center mx-auto
-                             whitespace-pre-line"
-          />
-          <div
-            class="modal-action mx-auto"
-          >
-            <button
-              class="btn"
-            >
-              OK
-            </button>
-          </div>
         </div>
         <form
           class="modal-backdrop"
@@ -861,51 +702,46 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
         class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
       >
         <div
-          class="navbar-start w-auto"
+          class="dropdown justify-start min-w-12"
         >
           <div
-            class="dropdown"
+            class="btn btn-ghost btn-circle"
+            role="button"
+            tabindex="0"
           >
-            <div
-              class="btn btn-ghost btn-circle"
-              role="button"
-              tabindex="0"
+            <svg
+              class="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
             >
-              <svg
-                class="h-5 w-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 6h16M4 12h16M4 18h7"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                />
-              </svg>
-            </div>
-            <ul
-              class="menu menu-md dropdown-content mt-3 z-[99]
-                                    p-2 shadow bg-base-300 rounded-box w-52"
-              tabindex="0"
-            >
-              <li>
-                <a>
-                  Overview
-                </a>
-              </li>
-              <li>
-                <a>
-                  Light mode
-                </a>
-              </li>
-            </ul>
+              <path
+                d="M4 6h16M4 12h16M4 18h7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+              />
+            </svg>
           </div>
+          <ul
+            class="dropdown-options mt-3 w-52"
+            tabindex="0"
+          >
+            <li>
+              <a>
+                Overview
+              </a>
+            </li>
+            <li>
+              <a>
+                Light mode
+              </a>
+            </li>
+          </ul>
         </div>
         <div
-          class="navbar-center mx-auto shrink min-w-0"
+          class="mx-auto shrink min-w-0"
         >
           <div
             class="dropdown dropdown-center w-full"
@@ -927,8 +763,7 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
               tabindex="0"
             >
               <div
-                class="card card-compact w-72 p-2 mt-2 mx-auto
-                    shadow bg-neutral text-neutral-content"
+                class="details-card"
               >
                 <div
                   class="card-body"
@@ -981,29 +816,8 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
           </div>
         </div>
         <div
-          class="navbar-end w-auto invisible"
-        >
-          <div
-            class="btn btn-ghost btn-circle"
-            role="button"
-            tabindex="0"
-          >
-            <svg
-              class="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M4 6h16M4 12h16M4 18h7"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-              />
-            </svg>
-          </div>
-        </div>
+          class="justify-end min-w-12"
+        />
       </div>
       <div
         class="flex flex-col gap-8 text-center my-auto"
@@ -1093,24 +907,6 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
             </svg>
           </button>
         </form>
-        <h3
-          class="font-bold text-lg mb-6"
-        >
-          Error
-        </h3>
-        <div
-          class="min-h-36 flex flex-col justify-center mx-auto
-                             whitespace-pre-line"
-        />
-        <div
-          class="modal-action mx-auto"
-        >
-          <button
-            class="btn"
-          >
-            OK
-          </button>
-        </div>
       </div>
       <form
         class="modal-backdrop"

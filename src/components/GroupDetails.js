@@ -8,14 +8,18 @@ const GroupDetails = ({ location, description }) => {
     } else {
         return (
             <>
-                <p className={location ? 'flex' : 'hidden'}>
-                    <span className="font-semibold">Location:</span>
-                    <span className="ml-auto text-right">{location}</span>
-                </p>
-                <div className={description ? 'text-center' : 'hidden'}>
-                    <p className="font-semibold mt-3">Description:</p>
-                    <p className="text-sm line-clamp-6">{description}</p>
-                </div>
+                {location &&
+                    <p className='flex'>
+                        <span className="font-semibold">Location:</span>
+                        <span className="ml-auto text-right">{location}</span>
+                    </p>
+                }
+                {description &&
+                    <div className='text-center'>
+                        <p className="font-semibold mt-3">Description:</p>
+                        <p className="text-sm line-clamp-6">{description}</p>
+                    </div>
+                }
             </>
         );
     }

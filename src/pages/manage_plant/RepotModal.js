@@ -1,20 +1,49 @@
-import React, { useState, useRef, Fragment } from 'react';
+import React, { useState, useRef, Fragment, memo } from 'react';
 import PropTypes from 'prop-types';
 import { RadioGroup } from '@headlessui/react';
 import Modal from 'src/components/Modal';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { localToUTC } from 'src/timestampUtils';
 import { sendPostRequest } from 'src/util';
-import { showErrorModal } from 'src/components/ErrorModal';
+import { openErrorModal } from 'src/components/ErrorModal';
+import { openChangeQrModal } from 'src/components/ChangeQrModal';
+import { useSelector, useDispatch } from 'react-redux';
+import { eventAdded } from './timelineSlice';
+import { plantRepotted } from './plantSlice';
+import clsx from 'clsx';
 
-let repotModalRef;
+let modalRef;
 
 export const openRepotModal = () => {
-    repotModalRef.current.showModal();
+    modalRef.current.open();
 };
 
-const RepotModal = ({ plantID, currentPotSize, handleRepot }) => {
-    repotModalRef = useRef(null);
+// Takes integer pot size, renders round div with number centered
+const PotSizeOption = memo(function PotSizeOption({ option }) {
+    return (
+        <RadioGroup.Option value={option} as={Fragment}>
+            {({ checked }) => (
+                <div className={clsx(
+                    'pot-size w-10 h-10 md:w-12 md:h-12',
+                    checked ? 'pot-size-selected' : 'bg-base-300'
+                )}>
+                    <span className="m-auto">{option}</span>
+                </div>
+            )}
+        </RadioGroup.Option>
+    );
+});
+
+PotSizeOption.propTypes = {
+    option: PropTypes.number.isRequired
+};
+
+const RepotModal = () => {
+    modalRef = useRef(null);
+
+    const dispatch = useDispatch();
+    const plantID = useSelector((state) => state.plant.plantDetails.uuid);
+    const currentPotSize = useSelector((state) => state.plant.plantDetails.pot_size);
 
     // Pot size options (inches)
     const potSizes = [2, 3, 4, 6, 8, 10, 12, 14, 18, 21];
@@ -31,27 +60,6 @@ const RepotModal = ({ plantID, currentPotSize, handleRepot }) => {
             return 2;
         }
     })());
-
-    // Takes integer pot size, renders round div with number centered
-    const PotSizeOption = ({ option }) => {
-        return (
-            <RadioGroup.Option value={option} as={Fragment}>
-                {({ checked }) => (
-                    <div
-                        className={`pot-size w-10 h-10 md:w-12 md:h-12 ${
-                            checked ? 'pot-size-selected' : 'bg-base-300'
-                        }`}
-                    >
-                        <span className="m-auto">{option}</span>
-                    </div>
-                )}
-            </RadioGroup.Option>
-        );
-    };
-
-    PotSizeOption.propTypes = {
-        option: PropTypes.number.isRequired
-    };
 
     const isInt = (value) => {
         return !isNaN(value) &&
@@ -77,17 +85,20 @@ const RepotModal = ({ plantID, currentPotSize, handleRepot }) => {
 
         const response = await sendPostRequest('/repot_plant', payload);
         if (response.ok) {
-            // Update plant state pot_size, add repot event to history
-            handleRepot(payload.new_pot_size, payload.timestamp);
-            repotModalRef.current.close();
+            // Update plantDetails state, add event to events state
+            dispatch(plantRepotted(payload.new_pot_size));
+            dispatch(eventAdded({timestamp: payload.timestamp, type: 'repot'}));
+            // Close repot modal, open modal with instructions to change QR code
+            modalRef.current.close();
+            openChangeQrModal();
         } else {
             const error = await response.json();
-            showErrorModal(JSON.stringify(error));
+            openErrorModal(JSON.stringify(error));
         }
     };
 
     return (
-        <Modal dialogRef={repotModalRef} title='Repot plant'>
+        <Modal title='Repot plant' ref={modalRef}>
             <div className="mt-4">
                 <p>Repot time</p>
                 <DatetimeInput inputRef={repotTimeRef} />
@@ -115,9 +126,10 @@ const RepotModal = ({ plantID, currentPotSize, handleRepot }) => {
                             {({ checked }) => (
                                 <input
                                     ref={customPotRef}
-                                    className={`pot-size w-32 ${checked ?
-                                        'pot-size-selected' : 'bg-base-300'
-                                    }`}
+                                    className={clsx(
+                                        'pot-size w-32',
+                                        checked ? 'pot-size-selected' : 'bg-base-300'
+                                    )}
                                     placeholder="custom"
                                 />
                             )}
@@ -131,15 +143,6 @@ const RepotModal = ({ plantID, currentPotSize, handleRepot }) => {
             </button>
         </Modal>
     );
-};
-
-RepotModal.propTypes = {
-    plantID: PropTypes.string.isRequired,
-    currentPotSize: PropTypes.oneOfType([
-        PropTypes.string,
-        PropTypes.number
-    ]),
-    handleRepot: PropTypes.func.isRequired
 };
 
 export default RepotModal;

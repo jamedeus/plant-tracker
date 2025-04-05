@@ -1,31 +1,34 @@
-import { useState } from 'react';
+import createMockContext from 'src/testUtils/createMockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import DeletePhotosModal, { openDeletePhotosModal } from '../DeletePhotosModal';
+import { ReduxProvider } from '../store';
 import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
 
 const TestComponent = () => {
-    const [photoUrls, setPhotoUrls] = useState(mockContext.photo_urls);
-
     // Render app
     return (
-        <>
-            <DeletePhotosModal
-                plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-                photoUrls={photoUrls}
-                setPhotoUrls={setPhotoUrls}
-            />
+        <ReduxProvider>
+            <DeletePhotosModal plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12' />
             <button onClick={openDeletePhotosModal}>
                 Open delete photos modal
             </button>
-        </>
+        </ReduxProvider>
     );
 };
 
 describe('DeletePhotosModal', () => {
     let component, user;
 
-    beforeEach(() => {
+    beforeAll(() => {
+        // Create mock state objects (used by ReduxProvider)
+        createMockContext('plant_details', mockContext.plant_details);
+        createMockContext('events', {});
+        createMockContext('notes', []);
+        createMockContext('photos', mockContext.photos);
+    });
+
+    beforeEach(async () => {
         // Render component + create userEvent instance to use in tests
         user = userEvent.setup();
         component = render(
@@ -33,12 +36,12 @@ describe('DeletePhotosModal', () => {
                 <TestComponent />
             </PageWrapper>
         );
-    });
 
-    it('opens modal when openDeletePhotosModal called', async () => {
-        // Click button, confirm HTMLDialogElement method was called
+        // Open modal
         await user.click(component.getByText('Open delete photos modal'));
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
+        await waitFor(() => {
+            expect(component.container.querySelector('#photo1')).not.toBeNull();
+        });
     });
 
     it('disables delete button until at least one photo selected', async() => {
@@ -112,7 +115,7 @@ describe('DeletePhotosModal', () => {
             method: 'POST',
             body: JSON.stringify({
                 "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                "delete_photos": [1]
+                "delete_photos": [3]
             }),
             headers: postHeaders
         });

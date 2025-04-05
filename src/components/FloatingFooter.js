@@ -1,15 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
 
 const FloatingFooter = ({ visible, children }) => {
-    if (visible) {
-        return (
-            <div className={`sticky bottom-4 mx-auto my-4 p-4 bg-gray-600/50
-                            rounded-box shadow shadow-inner z-50`}>
-                {children}
-            </div>
-        );
-    }
+    return (
+        <div
+            className={clsx(
+                'floating-footer',
+                visible ? 'floating-footer-visible' : 'floating-footer-hidden'
+            )}
+            data-testid='floating-footer'
+        >
+            {children}
+        </div>
+    );
 };
 
 FloatingFooter.propTypes = {

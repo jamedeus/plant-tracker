@@ -26,17 +26,17 @@ describe('PlantCard with water event', () => {
         expect(component.queryByText('Mother plant')).toBeInTheDocument();
     });
 
-    it('flips chevron icon when details collapse is opened', async () => {
-        // Confirm that ChevronDownIcon is present, ChevronUpIcon is not
-        const icon = component.container.querySelectorAll('svg')[1];
-        expect(icon.innerHTML.includes('M4.22')).toBe(true);
-        expect(icon.innerHTML.includes('M11.78')).toBe(false);
+    it('expands/collapses details when arrow button is clicked', async () => {
+        // Confirm that hidden checkbox that controls collapse is not checked
+        expect(component.container.querySelector('input').checked).toBe(false);
 
-        // Click button, confirm that icon changes to ChevronUpIcon
+        // Click button, confirm checkbox is now checked
         await user.click(component.container.querySelector('.btn-close'));
-        const newIcon = component.container.querySelectorAll('svg')[1];
-        expect(newIcon.innerHTML.includes('M4.22')).toBe(false);
-        expect(newIcon.innerHTML.includes('M11.78')).toBe(true);
+        expect(component.container.querySelector('input').checked).toBe(true);
+
+        // Click button again, confirm checkbox is no longer checked
+        await user.click(component.container.querySelector('.btn-close'));
+        expect(component.container.querySelector('input').checked).toBe(false);
     });
 
     it('redirects to manage plant page when clicked', async () => {

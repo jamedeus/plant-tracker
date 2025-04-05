@@ -1,18 +1,48 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useCallback, memo } from 'react';
 import PropTypes from 'prop-types';
 import Cookies from 'js-cookie';
 import Modal from 'src/components/Modal';
-import { XMarkIcon } from '@heroicons/react/16/solid';
-import { showErrorModal } from 'src/components/ErrorModal';
+import LoadingAnimation from 'src/components/LoadingAnimation';
+import CloseButtonIcon from 'src/components/CloseButtonIcon';
+import { openErrorModal } from 'src/components/ErrorModal';
+import { useDispatch, useSelector } from 'react-redux';
+import { photosAdded } from './timelineSlice';
 
-let photoModalRef;
+let modalRef;
 
 export const openPhotoModal = () => {
-    photoModalRef.current.showModal();
+    modalRef.current.open();
 };
 
-const PhotoModal = ({ plantID, photoUrls, setPhotoUrls }) => {
-    photoModalRef = useRef(null);
+// Table row with delete button next to filename
+const Row = memo(function Row({ filename, removeFile }) {
+    return (
+        <tr className="flex max-w-96">
+            <td className="my-auto">
+                <button
+                    className="btn-close"
+                    onClick={() => removeFile(filename)}
+                >
+                    <CloseButtonIcon />
+                </button>
+            </td>
+            <td className="text-lg leading-8 w-full text-center">
+                <p className="w-full line-clamp-1">{filename}</p>
+            </td>
+        </tr>
+    );
+});
+
+Row.propTypes = {
+    filename: PropTypes.string.isRequired,
+    removeFile: PropTypes.func.isRequired
+};
+
+const PhotoModal = () => {
+    const dispatch = useDispatch();
+    const plantID = useSelector((state) => state.plant.plantDetails.uuid);
+
+    modalRef = useRef(null);
     // File input ref, used to remove selected files when X buttons clicked
     const inputRef = useRef(null);
 
@@ -35,16 +65,6 @@ const PhotoModal = ({ plantID, photoUrls, setPhotoUrls }) => {
             const data = new DataTransfer();
             inputRef.current.files = data.files;
         }
-    };
-
-    // Takes photo URLs from API response when new photos are uploaded
-    const addPlantPhotoUrls = (newUrls) => {
-        // Add new URLs to photoUrl state, sort chronologically, re-render
-        const newPhotoUrls = photoUrls.concat(newUrls);
-        newPhotoUrls.sort((a, b) => {
-            return a.created.localeCompare(b.created);
-        }).reverse();
-        setPhotoUrls(newPhotoUrls);
     };
 
     const handleSubmit = async () => {
@@ -72,12 +92,12 @@ const PhotoModal = ({ plantID, photoUrls, setPhotoUrls }) => {
             // Update state with new photo URLs from response
             const data = await response.json();
             if (data.urls.length) {
-                addPlantPhotoUrls(data.urls);
+                dispatch(photosAdded(data.urls));
             }
 
             // Close modal, wait for close animation to complete then stop
             // loading animation and remove selected files from input/state
-            photoModalRef.current.close();
+            modalRef.current.close();
             setTimeout(() => {
                 setUploading(false);
                 resetSelection();
@@ -87,84 +107,47 @@ const PhotoModal = ({ plantID, photoUrls, setPhotoUrls }) => {
             if (data.failed.length) {
                 const num = data.failed.length;
                 const list = data.failed.join('\n');
-                showErrorModal(`Failed to upload ${num} photos:\n${list}`);
+                openErrorModal(`Failed to upload ${num} photos:\n${list}`);
             }
         } else {
             setUploading(false);
             resetSelection();
             try {
                 const error = await response.json();
-                showErrorModal(JSON.stringify(error));
+                openErrorModal(JSON.stringify(error));
             } catch(err) {
-                showErrorModal('Unexpected response from backend');
+                openErrorModal('Unexpected response from backend');
             }
         }
     };
 
-    // Displays selected files under input
-    const SelectedFiles = () => {
-        // Handler for delete button shown next to each selected file
-        const removeFile = (filename) => {
-            // Remove deleted file from state
-            setSelectedFiles(selectedFiles.filter(file => file.name !== filename));
+    // Handler for delete button shown next to each selected file
+    const removeFile = useCallback((filename) => {
+        // Remove deleted file from state
+        setSelectedFiles((prevSelectedFiles) => {
+            return prevSelectedFiles.filter(file => file.name !== filename);
+        });
 
-            // Copy input FileList into array, remove deleted file
-            const inputFiles = Array.from(inputRef.current.files);
-            const newFiles = inputFiles.filter(file => file.name !== filename);
+        // Copy input FileList into array, remove deleted file
+        const inputFiles = Array.from(inputRef.current.files);
+        const newFiles = inputFiles.filter(file => file.name !== filename);
 
-            // Add remaining files to DataTransfer, overwrite input FileList
-            const data = new DataTransfer();
-            for (let file of newFiles) {
-                data.items.add(file);
-            }
-            inputRef.current.files = data.files;
-        };
-
-        // Table row with delete button next to filename
-        const Row = ({ filename }) => {
-            return (
-                <tr className="flex max-w-96">
-                    <td className="my-auto">
-                        <button
-                            className="btn-close"
-                            onClick={() => removeFile(filename)}
-                        >
-                            <XMarkIcon className="w-8 h-8" />
-                        </button>
-                    </td>
-                    <td className="text-lg leading-8 w-full text-center">
-                        <p className="w-full truncate">{filename}</p>
-                    </td>
-                </tr>
-            );
-        };
-
-        Row.propTypes = {
-            filename: PropTypes.string.isRequired
-        };
-
-        // Return table with 1 row for each selected file
-        return (
-            <div className="max-h-half-screen overflow-y-scroll overflow-x-hidden">
-                <table className="table mt-2">
-                    <tbody>
-                        {selectedFiles.map(file => {
-                            return <Row key={file.name} filename={file.name} />;
-                        })}
-                    </tbody>
-                </table>
-            </div>
-        );
-    };
+        // Add remaining files to DataTransfer, overwrite input FileList
+        const data = new DataTransfer();
+        for (let file of newFiles) {
+            data.items.add(file);
+        }
+        inputRef.current.files = data.files;
+    }, []);
 
     return (
         <Modal
-            dialogRef={photoModalRef}
-            title={`${uploading ? "Uploading..." : "Upload Photos"}`}
+            title={uploading ? "Uploading..." : "Upload Photos"}
+            ref={modalRef}
         >
             {/* Photo select/unselect input, shown until user clicks submit */}
-            <div className={`${uploading ? "hidden" : "flex flex-col"}`}>
-                <div className="min-h-36 flex flex-col justify-center mx-auto mt-2">
+            <div className={uploading ? "hidden" : "flex flex-col"}>
+                <div className="min-h-36 flex flex-col justify-center mx-auto mt-2 max-w-full">
                     <input
                         ref={inputRef}
                         type="file"
@@ -174,7 +157,19 @@ const PhotoModal = ({ plantID, photoUrls, setPhotoUrls }) => {
                         onChange={handleSelect}
                         data-testid="photo-input"
                     />
-                    <SelectedFiles />
+                    <div className="max-h-half-screen overflow-y-scroll overflow-x-hidden">
+                        <table className="table mt-2">
+                            <tbody>
+                                {selectedFiles.map(file => (
+                                    <Row
+                                        key={file.name}
+                                        filename={file.name}
+                                        removeFile={removeFile}
+                                    />
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <div className="modal-action mx-auto">
@@ -189,19 +184,11 @@ const PhotoModal = ({ plantID, photoUrls, setPhotoUrls }) => {
             </div>
 
             {/* Loading animation shown after user clicks submit */}
-            <div className={`${uploading ? "flex flex-col" : "hidden"}`}>
-                <div className="h-36 flex flex-col justify-center mx-auto">
-                    <span className="loading loading-spinner loading-lg"></span>
-                </div>
+            <div className={uploading ? "flex flex-col" : "hidden"}>
+                <LoadingAnimation />
             </div>
         </Modal>
     );
-};
-
-PhotoModal.propTypes = {
-    plantID: PropTypes.string.isRequired,
-    photoUrls: PropTypes.array.isRequired,
-    setPhotoUrls: PropTypes.func.isRequired
 };
 
 export default PhotoModal;

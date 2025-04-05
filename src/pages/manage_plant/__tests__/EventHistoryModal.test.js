@@ -1,50 +1,44 @@
-import { useState } from 'react';
+import createMockContext from 'src/testUtils/createMockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import EventHistoryModal, { openEventHistoryModal } from '../EventHistoryModal';
 import { PageWrapper } from 'src/index';
+import { ReduxProvider } from '../store';
 import { mockContext } from './mockContext';
-
-/* eslint react/prop-types: 0 */
-const TestComponent = ({ context }) => {
-    // Add prune and repot events to mock context
-    const state = {
-        ...context.plant,
-        events: {
-            ...context.plant.events,
-            prune: ["2024-01-01T15:45:44+00:00"],
-            repot: ["2024-01-01T15:45:44+00:00"],
-        }
-    };
-    const [plant, setPlant] = useState(state);
-
-    // Render app
-    return (
-        <>
-            <EventHistoryModal
-                plant={plant}
-                setPlant={setPlant}
-            />
-            <button onClick={openEventHistoryModal}>
-                Open event history modal
-            </button>
-        </>
-    );
-};
 
 describe('EventHistoryModal', () => {
     let component, user;
 
-    beforeEach(() => {
-        // Deep copy context to prevent changes carrying over to next test
-        const context = JSON.parse(JSON.stringify(mockContext));
+    beforeAll(() => {
+        // Add prune and repot events to mock context
+        const mockEvents = {
+            ...mockContext.events,
+            prune: ["2024-01-01T15:45:44+00:00"],
+            repot: ["2024-01-01T15:45:44+00:00"],
+        };
 
+        // Create mock state objects (used by ReduxProvider)
+        createMockContext('plant_details', mockContext.plant_details);
+        createMockContext('events', mockEvents);
+        createMockContext('notes', []);
+        createMockContext('photos', []);
+    });
+
+    beforeEach(async () => {
         // Render component + create userEvent instance to use in tests
         user = userEvent.setup();
         component = render(
             <PageWrapper>
-                <TestComponent context={context} />
+                <ReduxProvider>
+                    <EventHistoryModal />
+                    <button onClick={openEventHistoryModal}>
+                        Open event history modal
+                    </button>
+                </ReduxProvider>
             </PageWrapper>
         );
+
+        // Open modal
+        await user.click(component.getByText('Open event history modal'));
     });
 
     it('opens modal when openDeletePhotosModal called', async () => {
@@ -139,7 +133,7 @@ describe('EventHistoryModal', () => {
         expect(component.queryByText(/February 29/)).toBeNull();
     });
 
-    it('shows error modal if error received while deleting event', async() => {
+    it('shows error modal if error received while deleting event', async () => {
         // Mock fetch function to return arbitrary error
         global.fetch = jest.fn(() => Promise.resolve({
             ok: false,
@@ -157,5 +151,30 @@ describe('EventHistoryModal', () => {
 
         // Confirm modal appeared with arbitrary error text
         expect(component.queryByText(/failed to delete event/)).not.toBeNull();
+    });
+
+    // Regression test, originally the delete button remained enabled after
+    // the modal was submitted, even though no events were selected
+    it('disables the delete button after deleting selected events', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "deleted": [
+                    {"type": "water", "timestamp": "2024-03-01T15:45:44+00:00"}
+                ],
+                "failed": []
+            })
+        }));
+
+        // Click first event in water column, confirm delete button enabled
+        await user.click(component.getByText(/today/));
+        expect(component.getByText('Delete')).not.toBeDisabled();
+
+        // Click delete button
+        await user.click(component.getByText('Delete'));
+
+        // Confirm delete button is now disabled
+        expect(component.getByText('Delete')).toBeDisabled();
     });
 });

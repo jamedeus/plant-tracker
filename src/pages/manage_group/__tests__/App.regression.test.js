@@ -1,25 +1,7 @@
+import { fireEvent } from '@testing-library/react';
 import createMockContext from 'src/testUtils/createMockContext';
 import { mockContext } from './mockContext';
-import { localToUTC } from 'src/timestampUtils';
 import { postHeaders } from 'src/testUtils/headers';
-
-// Mock localToUTC so the return value can be set to an arbitrary string
-jest.mock('src/timestampUtils', () => {
-    const module = jest.requireActual('src/timestampUtils');
-    return {
-        ...module,
-        localToUTC: jest.fn()
-    };
-});
-
-// Simulates user setting datetime-local input value
-// Since the input value is passed directly to localToUTC mocking the return
-// value bypasses the actual input, which can't be reliable set with fireEvent
-const simulateUserDatetimeInput = (timestamp) => {
-    localToUTC.mockReturnValueOnce(timestamp);
-};
-
-// Import App, will use mocked localToUTC
 import App from '../App';
 import { PageWrapper } from 'src/index';
 
@@ -72,7 +54,11 @@ describe('App', () => {
         expect(within(plantsCol).queryAllByText('Never watered').length).toBe(1);
 
         // Simulate user selecting 2 days ago in datetime input, click Water All
-        simulateUserDatetimeInput('2024-02-28T12:45:00.000Z');
+        const dateTimeInput = app.container.querySelector('input');
+        fireEvent.input(
+            dateTimeInput,
+            {target: {value: '2024-02-28T04:45:00'}}
+        );
         await user.click(app.getByText("Water All"));
 
         // Confirm last_watered for first 2 plants didn't change (new timestamp
@@ -81,7 +67,10 @@ describe('App', () => {
         expect(within(plantsCol).queryAllByText('2 days ago').length).toBe(1);
 
         // Simulate user selecting 15 min ago in datetime input, click Water All
-        simulateUserDatetimeInput('2024-03-01T19:45:00.000Z');
+        fireEvent.input(
+            dateTimeInput,
+            {target: {value: '2024-03-01T11:45:00'}}
+        );
         await user.click(app.getByText("Water All"));
 
         // Confirm all last_watered changed (new timestamp newer than existing)
@@ -132,17 +121,14 @@ describe('App', () => {
             })
         }));
 
-        // Set simulated datetime
-        simulateUserDatetimeInput('2024-03-01T20:00:00.000Z');
-
         // Get reference to plants column
         const plantsCol = app.getByText("Plants (3)").parentElement;
 
         // Click Manage button under plants, select all plants, click water
         await user.click(within(plantsCol).getByText("Manage"));
-        await user.click(app.container.querySelectorAll('.radio')[0]);
-        await user.click(app.container.querySelectorAll('.radio')[1]);
-        await user.click(app.container.querySelectorAll('.radio')[2]);
+        await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[1]);
+        await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[2]);
         await user.click(within(plantsCol).getByText("Water"));
 
         // Confirm payload only contains UUIDs of the first and third plants
@@ -152,6 +138,166 @@ describe('App', () => {
             body: JSON.stringify({
                 "plants": [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+                ],
+                "event_type": "water",
+                "timestamp": "2024-03-01T20:00:00.000Z"
+            }),
+            headers: postHeaders
+        });
+    });
+
+    // Original bug: The AddPlantsModal selected ref was not cleared after
+    // adding plants. If plant1 was added, then the modal was opened again and
+    // plant2 was added a duplicate card for plant1 would also be added.
+    it('does not add duplicates when AddPlantsModal used twice', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "added": [
+                    mockContext.options[1]
+                ],
+                "failed": []
+            })
+        }));
+
+        // Click Add plants dropdown option
+        await user.click(app.getByText("Add plants"));
+
+        // Get reference to modal, select first plant option, click add button
+        const addPlantsModal = app.getByText("Add Plants").parentElement;
+        await user.click(addPlantsModal.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(addPlantsModal.querySelector('.btn-success'));
+
+        // Confirm payload contains UUID of first plant
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plants_to_group', {
+            method: 'POST',
+            body: JSON.stringify({
+                "group_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                "plants": [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be16"
+                ]
+            }),
+            headers: postHeaders
+        });
+
+        // Reopen modal again, click add button again
+        await user.click(app.getByText("Add plants"));
+        await user.click(addPlantsModal.querySelector('.btn-success'));
+
+        // Confirm payload contains no UUIDs (selected ref cleared)
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plants_to_group', {
+            method: 'POST',
+            body: JSON.stringify({
+                "group_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                "plants": []
+            }),
+            headers: postHeaders
+        });
+    });
+
+    // Original bug: The RemovePlantsModal selected ref was not cleared after
+    // removing plants. If plant1 was removed, then the modal was opened again
+    // and plant2 was removed the second payload would still include plant1
+    it('does not remove plant twice when RemovePlantsModal used twice', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "removed": [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                ],
+                "failed": []
+            })
+        }));
+
+        // Click Remove plants dropdown option
+        await user.click(app.getByText("Remove plants"));
+
+        // Get reference to modal, select first plant option, click Remove button
+        const removePlantsModal = app.getByText("Remove Plants").parentElement;
+        await user.click(removePlantsModal.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(removePlantsModal.querySelector('.btn-error'));
+
+        // Confirm correct data posted to /bulk_remove_plants_from_group endpoint
+        // Should only contain UUID of first plant
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_remove_plants_from_group', {
+            method: 'POST',
+            body: JSON.stringify({
+                "group_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                "plants": [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                ]
+            }),
+            headers: postHeaders
+        });
+
+        // Reopen modal again, click add button again
+        await user.click(app.getByText("Remove plants"));
+        await user.click(removePlantsModal.querySelector('.btn-error'));
+
+        // Confirm payload contains no UUIDs (selected ref cleared)
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_remove_plants_from_group', {
+            method: 'POST',
+            body: JSON.stringify({
+                "group_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                "plants": []
+            }),
+            headers: postHeaders
+        });
+    });
+
+    // Original bug: If the user clicked manage, selected a plant, then opened
+    // RemovePlantsModal and removed the selected plant from group it's UUID
+    // would still be in the selectedPlants ref (tracks FilterColumn selection)
+    it('removes plant uuid from create events array if plant is removed from the group', async () => {
+        // Click manage button to show checkboxes, water button
+        await user.click(app.getByText("Manage"));
+        // Select the first and third plants (not archived)
+        const plantsCol = app.getByText("Plants (3)").parentElement;
+        await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[2]);
+
+        // Open Remove plants modal, select first plant option
+        await user.click(app.getByText("Remove plants"));
+        const removePlantsModal = app.getByText("Remove Plants").parentElement;
+        await user.click(removePlantsModal.querySelectorAll('label.cursor-pointer')[0]);
+
+        // Mock fetch function to return expected response, click remove button
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "removed": [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                ],
+                "failed": []
+            })
+        }));
+        await user.click(removePlantsModal.querySelector('.btn-error'));
+
+        // Mock fetch function to return expected response when third plant is
+        // watered (first and third were selected but then first was removed)
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "action": "water",
+                "plants": [
+                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+                ],
+                "failed": []
+            })
+        }));
+
+        // Click water button, confirm payload only includes the third plant
+        // uuid (first plant was removed from group after selecting)
+        await user.click(within(
+            app.getByText("Plants (2)").parentElement
+        ).getByText("Water"));
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plant_events', {
+            method: 'POST',
+            body: JSON.stringify({
+                "plants": [
                     "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                 ],
                 "event_type": "water",

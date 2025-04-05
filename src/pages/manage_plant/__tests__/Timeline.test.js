@@ -1,15 +1,18 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import Timeline from '../Timeline';
+import { ReduxProvider } from '../store';
 import { PageWrapper } from 'src/index';
-import { mockContext, mockEvents, mockPhotoUrls } from './mockContext';
+import { mockContext, mockEvents, mockphotos } from './mockContext';
 
 describe('Timeline', () => {
     let app, user;
 
     beforeAll(() => {
         // Create mock state object
+        createMockContext('plant_details', mockContext.plant_details);
+        createMockContext('events', mockEvents);
         createMockContext('notes', mockContext.notes);
-        createMockContext('photo_urls', mockPhotoUrls);
+        createMockContext('photos', mockphotos);
     });
 
     beforeEach(() => {
@@ -17,11 +20,9 @@ describe('Timeline', () => {
         user = userEvent.setup();
         app = render(
             <PageWrapper>
-                <Timeline
-                    plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-                    events={mockEvents}
-                    archived={false}
-                />
+                <ReduxProvider>
+                    <Timeline />
+                </ReduxProvider>
             </PageWrapper>
         );
     });
@@ -93,122 +94,8 @@ describe('Timeline', () => {
 
         // Click again, confirm collapsed (line clamp class added)
         await user.click(note);
-        expect(note.parentElement.classList).toContain('line-clamp-1');
-    });
-
-    it('opens note modal when add note dropdown option is clicked', async () => {
-        // Click dropdown option, confirm HTMLDialogElement method was called
-        await user.click(app.getByText('Add note'));
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
-    });
-
-    it('renders new notes in the timeline', async () => {
-        // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                "action": "add_note",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                "timestamp": "2024-03-01T12:00:00+00:00",
-                "note_text": "Started flowering"
-            })
-        }));
-
-        // Get reference to timeline div (excluding NoteModal)
-        const timeline = app.container.querySelector('.grid');
-
-        // Confirm timeline does not contain note text
-        expect(within(timeline).queryByText(
-            'Started flowering'
-        )).toBeNull();
-
-        // Simulate user typing new note and clicking save
-        await user.type(
-            app.container.querySelector('.textarea'),
-            '  Started flowering  '
-        );
-        await user.click(app.getByText('Save'));
-
-        // Confirm note text appeared on page
-        expect(within(timeline).queryByText(
-            'Started flowering'
-        )).not.toBeNull();
-    });
-
-    it('updates note text in timeline when note is edited', async () => {
-        // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                "action": "edit_note",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                "timestamp": "2024-03-01T12:00:00+00:00",
-                "note_text": "One of the older leaves is starting to turn yellow, pinched it off"
-            })
-        }));
-
-        // Get reference to timeline div (excluding NoteModal)
-        const timeline = app.container.querySelector('.grid');
-
-        // Confirm timeline contains note text from mockContext
-        expect(within(timeline).queryByText(
-            'One of the older leaves is starting to turn yellow'
-        )).not.toBeNull();
-        // Confirm timeline does not contain text we will add
-        expect(within(timeline).queryByText(
-            /pinched it off/
-        )).toBeNull();
-
-        // Simulate user clicking icon next to note, adding text, clicking save
-        const editButton = within(timeline).getByText(
-            'One of the older leaves is starting to turn yellow'
-        ).parentElement.children[0];
-        await user.click(editButton);
-        await user.type(
-            app.container.querySelector('.textarea'),
-            ', pinched it off'
-        );
-        await user.click(app.getByText('Save'));
-
-        // Confirm new text was added to note
-        expect(within(timeline).queryByText(
-            'One of the older leaves is starting to turn yellow, pinched it off'
-        )).not.toBeNull();
-    });
-
-    it('removes notes from timeline when deleted', async () => {
-        // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            status: 200,
-            json: () => Promise.resolve({
-                "deleted": "note",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-            })
-        }));
-
-        // Get reference to timeline div (excluding NoteModal)
-        const timeline = app.container.querySelector('.grid');
-
-        // Confirm timeline contains note text
-        expect(within(timeline).queryByText(
-            'Fertilized with dilute 10-15-10 liquid fertilizer'
-        )).not.toBeNull();
-
-        // Simulate user clicking icon next to note, then clicking delete
-        const editButton = within(timeline).getByText(
-            'Fertilized with dilute 10-15-10 liquid fertilizer'
-        ).parentElement.parentElement.children[0];
-        await user.click(editButton);
-        await user.click(
-            within(app.getByText('Edit Note').parentElement).getByText('Delete')
-        );
-
-        // Confirm timeline no longer contains note text
-        expect(within(timeline).queryByText(
-            'Fertilized with dilute 10-15-10 liquid fertilizer'
-        )).toBeNull();
+        await waitFor(() => {
+            expect(note.parentElement.classList).toContain('line-clamp-1');
+        });
     });
 });

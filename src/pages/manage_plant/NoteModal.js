@@ -1,15 +1,39 @@
-import React, { useState, useRef, useImperativeHandle } from 'react';
+import React, { useState, useRef, memo } from 'react';
 import clsx from 'clsx';
 import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { showToast } from 'src/components/Toast';
-import { showErrorModal } from 'src/components/ErrorModal';
+import { openErrorModal } from 'src/components/ErrorModal';
 import { sendPostRequest } from 'src/util';
 import { localToUTC, timestampToReadable } from 'src/timestampUtils';
 import { DateTime } from 'luxon';
+import { noteAdded, noteEdited, noteDeleted } from './timelineSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
-const NoteModal = React.forwardRef(function NoteModal({ plantID, notes, setNotes }, ref) {
+let modalRef;
+
+export let openNoteModal;
+
+// Rendered instead of timestamp input when editing note (can't change time)
+const ExistingNoteTimestamp = memo(function ExistingNoteTimestamp({ noteTime }) {
+    const [time, date] = timestampToReadable(noteTime).split('-');
+    return (
+        <>
+            <p>{date}</p>
+            <p className="text-sm">{time}</p>
+        </>
+    );
+});
+
+ExistingNoteTimestamp.propTypes = {
+    noteTime: PropTypes.string.isRequired
+};
+
+const NoteModal = () => {
+    const dispatch = useDispatch();
+    const plantID = useSelector((state) => state.plant.plantDetails.uuid);
+
     // States for text and timestamp inputs
     const [noteTime, setNoteTime] = useState('');
     const [noteText, setNoteText] = useState('');
@@ -22,7 +46,7 @@ const NoteModal = React.forwardRef(function NoteModal({ plantID, notes, setNotes
     const timestampRef = useRef(null);
 
     // Create ref for Modal component (used to show/hide)
-    const noteModalRef = useRef(null);
+    modalRef = useRef(null);
 
     // Textarea listener
     const updateNoteText = (text) => {
@@ -30,23 +54,18 @@ const NoteModal = React.forwardRef(function NoteModal({ plantID, notes, setNotes
         setCharCount(text.length);
     };
 
-    // Make open method available in parent component
-    useImperativeHandle(ref, () => {
-        return {
-            open(note) {
-                if (note) {
-                    updateNoteText(note.text);
-                    setNoteTime(note.timestamp);
-                    setEditingNote(true);
-                } else {
-                    updateNoteText('');
-                    setNoteTime(DateTime.now().toFormat("yyyy-MM-dd'T'HH:mm:ss"));
-                    setEditingNote(false);
-                }
-                noteModalRef.current.showModal();
-            },
-        };
-    });
+    openNoteModal = (note) => {
+        if (note) {
+            updateNoteText(note.text);
+            setNoteTime(note.timestamp);
+            setEditingNote(true);
+        } else {
+            updateNoteText('');
+            setNoteTime(DateTime.now().toFormat("yyyy-MM-dd'T'HH:mm:ss"));
+            setEditingNote(false);
+        }
+        modalRef.current.open();
+    };
 
     const handleSubmit = async () => {
         // Build payload, post to backend
@@ -60,11 +79,11 @@ const NoteModal = React.forwardRef(function NoteModal({ plantID, notes, setNotes
         if (response.ok) {
             // Update state with new note from response, close modal
             const data = await response.json();
-            setNotes([
-                ...notes,
-                {timestamp: data.timestamp, text: data.note_text}
-            ]);
-            noteModalRef.current.close();
+            dispatch(noteAdded({
+                timestamp: data.timestamp,
+                text: data.note_text
+            }));
+            modalRef.current.close();
         } else {
             // Duplicate note timestamp: show error toast for 5 seconds
             if (response.status === 409) {
@@ -76,7 +95,7 @@ const NoteModal = React.forwardRef(function NoteModal({ plantID, notes, setNotes
             // Other error (unexpected): show in error modal
             } else {
                 const error = await response.json();
-                showErrorModal(JSON.stringify(error));
+                openErrorModal(JSON.stringify(error));
             }
         }
     };
@@ -93,18 +112,15 @@ const NoteModal = React.forwardRef(function NoteModal({ plantID, notes, setNotes
         if (response.ok) {
             // Update note state with params from response, close modal
             const data = await response.json();
-            setNotes(notes.map(note => {
-                if (note.timestamp === payload.timestamp) {
-                    return {timestamp: data.timestamp, text: data.note_text};
-                } else {
-                    return note;
-                }
+            dispatch(noteEdited({
+                timestamp: data.timestamp,
+                text: data.note_text
             }));
-            noteModalRef.current.close();
+            modalRef.current.close();
         } else {
             // Show error in modal
             const error = await response.json();
-            showErrorModal(JSON.stringify(error));
+            openErrorModal(JSON.stringify(error));
         }
     };
 
@@ -118,32 +134,21 @@ const NoteModal = React.forwardRef(function NoteModal({ plantID, notes, setNotes
 
         if (response.ok) {
             // Remove note from state, close modal
-            setNotes(notes.filter(note => note.timestamp !== noteTime));
-            noteModalRef.current.close();
+            dispatch(noteDeleted(noteTime));
+            modalRef.current.close();
         } else {
             // Show error in modal
             const error = await response.json();
-            showErrorModal(JSON.stringify(error));
+            openErrorModal(JSON.stringify(error));
         }
     };
 
-    // Rendered instead of timestamp input when editing note (can't change time)
-    const ExistingNoteTimestamp = () => {
-        const [time, date] = timestampToReadable(noteTime).split('-');
-        return (
-            <>
-                <p>{date}</p>
-                <p className="text-sm">{time}</p>
-            </>
-        );
-    };
-
     return (
-        <Modal dialogRef={noteModalRef} title={editingNote ? "Edit Note" : "Add Note"}>
+        <Modal title={editingNote ? "Edit Note" : "Add Note"} ref={modalRef}>
             <div className="flex flex-col">
                 <div className="min-h-36 flex flex-col justify-center mt-2">
                     {editingNote
-                        ? <ExistingNoteTimestamp />
+                        ? <ExistingNoteTimestamp noteTime={noteTime} />
                         : <DatetimeInput inputRef={timestampRef} />
                     }
                     <textarea
@@ -194,12 +199,6 @@ const NoteModal = React.forwardRef(function NoteModal({ plantID, notes, setNotes
             </div>
         </Modal>
     );
-});
-
-NoteModal.propTypes = {
-    plantID: PropTypes.string.isRequired,
-    notes: PropTypes.array.isRequired,
-    setNotes: PropTypes.func.isRequired
 };
 
 export default NoteModal;

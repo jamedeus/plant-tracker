@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer, memo } from 'react';
 import PropTypes from 'prop-types';
 import useDebounce from 'src/useDebounce';
 import CollapseCol from 'src/components/CollapseCol';
@@ -6,6 +6,7 @@ import EditableNodeList from 'src/components/EditableNodeList';
 import { XMarkIcon, ArrowsUpDownIcon } from '@heroicons/react/16/solid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUpLong, faArrowDownLong } from '@fortawesome/free-solid-svg-icons';
+import clsx from 'clsx';
 
 // Takes originalContents array, ignoreKeys array, and filter input query
 // Returns a subset of originalContents with all items that have one or more
@@ -69,9 +70,74 @@ const reducer = (state, action) => {
     }
 };
 
+// Button to clear FilterInput, appears when user types query
+const ClearButton = ({ onClick }) => {
+    return (
+        <button
+            className="btn-close h-8 w-8 no-animation"
+            onClick={onClick}
+        >
+            <XMarkIcon className="w-7 h-7 m-auto" />
+        </button>
+    );
+};
+
+ClearButton.propTypes = {
+    onClick: PropTypes.func.isRequired
+};
+
+// Indicates sort direction on selected option
+const OptionArrow = ({ down }) => {
+    if (down) {
+        return <FontAwesomeIcon icon={faArrowDownLong} className="mr-2" />;
+    } else {
+        return <FontAwesomeIcon icon={faArrowUpLong} className="mr-2" />;
+    }
+};
+
+OptionArrow.propTypes = {
+    down: PropTypes.bool.isRequired
+};
+
+// Dropdown button rendered next to filter input, used to sort column
+// Only rendered if sortByKeys array is not empty
+const SortMenu = ({ sortByKeys, state, setSort }) => {
+    return (
+        <div className="dropdown dropdown-end">
+            <div
+                role="button"
+                tabIndex="0"
+                className="btn-close h-8 w-8 no-animation"
+            >
+                <ArrowsUpDownIcon className="w-5 h-5 m-auto" />
+            </div>
+            <ul tabIndex={0} className="dropdown-options mt-2 w-min-content">
+                {sortByKeys.map((key) => (
+                    <li key={key.key}>
+                        <a
+                            className="flex justify-end"
+                            onClick={() => setSort(key.key)}
+                        >
+                            {state.sortKey === key.key && (
+                                <OptionArrow down={state.sortDirection} />
+                            )}
+                            {key.display}
+                        </a>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+};
+
+SortMenu.propTypes = {
+    sortByKeys: PropTypes.array.isRequired,
+    state: PropTypes.object.isRequired,
+    setSort: PropTypes.func.isRequired
+};
 
 // Renders filter text input and sort dropdown at top of FilterColumn
-const FilterInput = ({state, dispatch, sortByKeys}) => {
+const FilterInput = memo(function FilterInput({ state, dispatch, sortByKeys }) {
     // Filter input state
     const [query, setQuery] = useState(state.query);
 
@@ -111,94 +177,35 @@ const FilterInput = ({state, dispatch, sortByKeys}) => {
         document.activeElement.blur();
     };
 
-    // Indicates sort direction on selected option
-    const Arrow = () => {
-        if (state.sortDirection) {
-            return <FontAwesomeIcon icon={faArrowDownLong} className="mr-2" />;
-        } else {
-            return <FontAwesomeIcon icon={faArrowUpLong} className="mr-2" />;
-        }
-    };
-
-    // Dropdown button rendered next to filter input, used to sort column
-    // Only rendered if sortByKeys array is not empty
-    const SortMenu = () => {
-        const Option = ({keyName, displayString}) => {
-            return (
-                <li><a
-                    className="flex justify-end"
-                    onClick={() => setSort(keyName)}
-                >
-                    {state.sortKey === keyName && <Arrow />}
-                    {displayString}
-                </a></li>
-            );
-        };
-
-        Option.propTypes = {
-            keyName: PropTypes.string.isRequired,
-            displayString: PropTypes.string.isRequired
-        };
-
-        return (
-            <div className="dropdown dropdown-end">
-                <div
-                    role="button"
-                    tabIndex="0"
-                    className="btn-close h-8 w-8 no-animation"
-                >
-                    <ArrowsUpDownIcon className="w-5 h-5 m-auto" />
-                </div>
-                <ul
-                    tabIndex={0}
-                    className={`menu menu-md dropdown-content mt-2 z-[99] p-2
-                                shadow bg-base-300 rounded-box w-min-content`}
-                >
-                    {sortByKeys.map((key) => {
-                        return <Option
-                            key={key.key}
-                            keyName={key.key}
-                            displayString={key.display}
-                        />;
-                    })}
-                </ul>
-            </div>
-        );
-    };
-
-    // Button to clear input, appears when user types query
-    const ClearButton = () => {
-        return (
-            <button
-                className="btn-close h-8 w-8 no-animation"
-                onClick={() => handleInput('')}
-            >
-                <XMarkIcon className="w-7 h-7 m-auto" />
-            </button>
-        );
-    };
-
     return (
         <div className="flex px-4 mb-4">
             <div className="relative w-full">
                 <input
                     type="text"
-                    className={`input input-bordered w-full text-center
-                                ${sortByKeys.length
-                                    ? 'indent-[3.625rem] pr-[4.5rem]'
-                                    : 'indent-[1.625rem] pr-10'}`}
+                    className={clsx(
+                        'input input-bordered w-full text-center',
+                        sortByKeys.length
+                            ? 'indent-[3.625rem] pr-[4.5rem]'
+                            : 'indent-[1.625rem] pr-10'
+                    )}
                     value={query}
                     onChange={e => handleInput(e.target.value)}
                     placeholder="filter"
                 />
                 <div className="absolute flex top-2 right-2">
-                    {query && <ClearButton />}
-                    {sortByKeys.length && <SortMenu />}
+                    {query && <ClearButton onClick={() => handleInput('')} />}
+                    {sortByKeys.length && (
+                        <SortMenu
+                            sortByKeys={sortByKeys}
+                            state={state}
+                            setSort={setSort}
+                        />
+                    )}
                 </div>
             </div>
         </div>
     );
-};
+});
 
 FilterInput.propTypes = {
     state: PropTypes.object.isRequired,
@@ -216,7 +223,6 @@ FilterInput.propTypes = {
 // - CardComponent: A JSX component rendered for each item in contents.
 // - editing: Bool that controls EditableNodeList checkbox visibility.
 // - selected: Ref containing array, receives selected EditableNodeList items.
-// - openRef: Ref containing bool, persists CollapseCol state after re-render.
 // - ignoreKeys: Array of strings matching attributes in contents objects that
 //   should be ignored when user types in filter input.
 // - sortByKeys: Array of objects with `key` and display attributes, populates
@@ -230,8 +236,7 @@ const FilterColumn = ({
     contents,
     CardComponent,
     editing,
-    selected,
-    openRef,
+    formRef,
     ignoreKeys=[],
     sortByKeys=[],
     defaultSortKey=null,
@@ -247,10 +252,15 @@ const FilterColumn = ({
     // currentContents: array of contents objects matching current filter query
     // originalContents: full array of contents objects (ignores filter query)
     // ignoreKeys: array of contents object keys ignored by filter function
+    // query: string entered in filter input (only show items containing query)
     const [state, dispatch] = useReducer(reducer, {
         sortKey: persistedState ? persistedState.sortKey : defaultSortKey,
         sortDirection: persistedState ? persistedState.sortDirection : true,
-        currentContents: contents,
+        currentContents: persistedState ? getCurrentContents(
+            contents,
+            ignoreKeys,
+            persistedState.query
+        ) : contents,
         originalContents: contents,
         ignoreKeys: ignoreKeys,
         query: persistedState ? persistedState.query : ''
@@ -307,26 +317,23 @@ const FilterColumn = ({
     return (
         <CollapseCol
             title={`${title} (${Object.keys(state.currentContents).length})`}
-            openRef={openRef}
         >
             <FilterInput
                 sortByKeys={sortByKeys}
                 state={state}
                 dispatch={dispatch}
             />
-            <EditableNodeList editing={editing} selected={selected}>
-                {sortByKey(state.currentContents, state.sortKey).map((item) => {
+            <EditableNodeList editing={editing} formRef={formRef}>
+                {sortByKey(state.currentContents, state.sortKey).map((item) => (
                     // Render cardComponent by expanding params of each item
                     // Must have UUID param to use as react key
                     // Disable page links in edit mode
-                    return (
-                        <CardComponent
-                            key={item.uuid}
-                            {...item}
-                            linkPage={!editing}
-                        />
-                    );
-                })}
+                    <CardComponent
+                        key={item.uuid}
+                        {...item}
+                        linkPage={true}
+                    />
+                ))}
             </EditableNodeList>
             {children}
         </CollapseCol>
@@ -336,12 +343,12 @@ const FilterColumn = ({
 FilterColumn.propTypes = {
     title: PropTypes.string.isRequired,
     contents: PropTypes.array.isRequired,
-    CardComponent: PropTypes.func.isRequired,
+    CardComponent: PropTypes.elementType.isRequired,
     editing: PropTypes.bool,
-    selected: PropTypes.shape({
-        current: PropTypes.array
-    }).isRequired,
-    openRef: PropTypes.object.isRequired,
+    formRef: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+    ]).isRequired,
     ignoreKeys: PropTypes.array,
     sortByKeys: PropTypes.array,
     defaultSortKey: PropTypes.string,

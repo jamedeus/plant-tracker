@@ -65,7 +65,6 @@ describe('FilterColumn', () => {
                 CardComponent={PlantCard}
                 editing={false}
                 selected={{current: []}}
-                openRef={{current: true}}
                 ignoreKeys={[
                     'uuid',
                     'created',
@@ -89,7 +88,7 @@ describe('FilterColumn', () => {
         expect(component.container.querySelectorAll('.card').length).toBe(4);
 
         // Confirm the sort dropdown contains the options set in sortByKeys arg
-        const menu = component.container.querySelector('.dropdown-content');
+        const menu = component.container.querySelector('.dropdown-options');
         expect(menu.children[0].children[0].innerHTML).toContain('Added');
         expect(menu.children[1].children[0].innerHTML).toBe('Name');
         expect(menu.children[2].children[0].innerHTML).toBe('Species');
@@ -244,7 +243,6 @@ describe('FilterColumn  ', () => {
             CardComponent: PlantCard,
             editing: false,
             selected: {current: []},
-            openRef: {current: true},
             ignoreKeys: [
                 'uuid',
                 'last_watered',

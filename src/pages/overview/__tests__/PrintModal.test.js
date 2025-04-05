@@ -1,26 +1,10 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { postHeaders } from 'src/testUtils/headers';
-import PrintModal from '../PrintModal';
+import PrintModal, { openPrintModal } from '../PrintModal';
 import print from 'print-js';
+import { waitFor } from '@testing-library/react';
 
 jest.mock('print-js');
-
-const TestComponent = () => {
-    const printModalRef = useRef(null);
-
-    // Simulate modal being closed (HTMLDialogElement not implemented in jsdom)
-    const closeModal = () => {
-        let event = new Event("close");
-        document.querySelector('dialog').dispatchEvent(event);
-    };
-
-    return (
-        <>
-            <PrintModal ref={printModalRef} />;
-            <button onClick={closeModal}>Close Modal</button>
-        </>
-    );
-};
 
 describe('PrintModal', () => {
     let component, user;
@@ -31,12 +15,18 @@ describe('PrintModal', () => {
         URL.createObjectURL = jest.fn(() => 'url');
     });
 
-    beforeEach(() => {
+    beforeEach(async () => {
         // Render component + create userEvent instance to use in tests
         user = userEvent.setup();
         component = render(
-            <TestComponent />
+            <PrintModal />
         );
+
+        // Open modal
+        openPrintModal();
+        await waitFor(() => {
+            expect(component.getByText("Generate")).not.toBeNull();
+        });
     });
 
     it('makes request and opens print dialog when small QR codes requested', async () => {
@@ -47,11 +37,6 @@ describe('PrintModal', () => {
                 "qr_codes": "base64data"
             })
         }));
-
-        // Mock modal open property to true so request doesn't abort
-        Object.defineProperty(HTMLDialogElement.prototype, 'open', {
-            get: jest.fn(() => true)
-        });
 
         // Click generate button with default size selected (small, 8 codes per row)
         await user.click(component.getByText("Generate"));
@@ -79,11 +64,6 @@ describe('PrintModal', () => {
             })
         }));
 
-        // Mock modal open property to true so request doesn't abort
-        Object.defineProperty(HTMLDialogElement.prototype, 'open', {
-            get: jest.fn(() => true)
-        });
-
         // Select medium size option, click generate button
         await user.click(component.getByText("medium"));
         await user.click(component.getByText("Generate"));
@@ -110,11 +90,6 @@ describe('PrintModal', () => {
                 "qr_codes": "base64data"
             })
         }));
-
-        // Mock modal open property to true so request doesn't abort
-        Object.defineProperty(HTMLDialogElement.prototype, 'open', {
-            get: jest.fn(() => true)
-        });
 
         // Select large size option, click generate button
         await user.click(component.getByText("large"));
@@ -171,7 +146,8 @@ describe('PrintModal', () => {
         await user.click(component.getByText('Generate'));
 
         // Close modal before response received
-        await user.click(component.getByText('Close Modal'));
+        let event = new Event("close");
+        document.querySelector('dialog').dispatchEvent(event);
 
         // Resolve fetch promise with simulated API response
         resolveFetch({
@@ -255,7 +231,8 @@ describe('PrintModal', () => {
         expect(component.getByText('An unknown error occurred')).not.toBeNull();
 
         // Close modal, confirm error text no longer in document
-        await user.click(component.getByText('Close Modal'));
+        let event = new Event("close");
+        document.querySelector('dialog').dispatchEvent(event);
         await waitFor(() => {
             expect(component.queryByText('An unknown error occurred')).toBeNull();
         });

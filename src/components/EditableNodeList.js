@@ -1,69 +1,53 @@
-import React from 'react';
+import React, { useId } from 'react';
 import PropTypes from 'prop-types';
+import clsx from 'clsx';
 
-// Takes editing (bool), selected (ref containing array), and node list
-// Returns node list with wrapper div around each node
-// When editing is true wrapper renders checkbox next to each node
-// Checkboxes add/remove node's key to/from selected array when clicked
-const EditableNodeList = ({ editing, selected, children }) => {
-    // Checkbox handler adds key to selected if not present, removes if present
-    const selectNode = (key) => {
-        if (selected.current.includes(key)) {
-            selected.current = selected.current.filter(item => item !== key);
-        } else {
-            selected.current.push(key);
-        }
-    };
-
-    // Takes node and editing state bool, returns node in bottom-padded div
-    // Wrapper adds checkbox next to node if editing bool is true
-    const NodeWrapper = ({ node, editing }) => {
-        switch(editing) {
-            case(true):
-                return (
-                    <div className="flex mb-4">
-                        <label className="label cursor-pointer">
-                            <input
-                                type="checkbox"
-                                className="radio checked:bg-blue-500"
-                                defaultChecked={selected.current.includes(node.key)}
-                                onChange={() => selectNode(node.key)}
-                            />
-                        </label>
-                        <div className="ml-2 w-full overflow-hidden">
-                            {node}
-                        </div>
-                    </div>
-                );
-            case(false):
-                return (
-                    <div className="mb-4">
-                        {node}
-                    </div>
-                );
-        }
-    };
-
-    NodeWrapper.propTypes = {
-        node: PropTypes.node.isRequired,
-        editing: PropTypes.bool.isRequired
-    };
+// Takes editing (bool), formRef (used to parse FormData), and node list
+// Returns node list wrapped in form with a hidden checkbox for each node
+// When editing is true nodes shrink to show hidden checkbox
+const EditableNodeList = ({ editing, formRef, children }) => {
+    // Get unique checkbox ID prefix (allows multiple EditableNodelist with
+    // overlapping contents on same page)
+    const prefix = useId();
 
     return (
-        <>
-            {children.map((node) => {
-                // eslint-disable-next-line react/prop-types
-                return <NodeWrapper key={node.key} node={node} editing={editing} />;
-            })}
-        </>
+        <form ref={formRef}>
+            {children.map((node) => (
+                <div key={node.key} className="flex relative mb-4">
+                    <div className="absolute flex h-full z-0">
+                        <input
+                            type="checkbox"
+                            tabIndex={editing ? 0 : -1}
+                            id={`${prefix}-${node.key}`}
+                            name={node.key}
+                            className="radio checked:bg-blue-500 my-auto"
+                        />
+                    </div>
+                    <div className={clsx(
+                        'w-full overflow-hidden transition-all duration-300',
+                        editing ? 'ml-[2.5rem]' : 'ml-0'
+                    )}>
+                        {node}
+                    </div>
+                    <label
+                        htmlFor={`${prefix}-${node.key}`}
+                        className={clsx(
+                            "cursor-pointer absolute z-20",
+                            editing && "h-full w-full"
+                        )}
+                    />
+                </div>
+            ))}
+        </form>
     );
 };
 
 EditableNodeList.propTypes = {
     editing: PropTypes.bool.isRequired,
-    selected: PropTypes.shape({
-        current: PropTypes.array
-    }).isRequired,
+    formRef: PropTypes.oneOfType([
+        PropTypes.func,
+        PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
+    ]).isRequired,
     children: PropTypes.node
 };
 

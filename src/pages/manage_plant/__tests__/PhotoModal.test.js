@@ -1,31 +1,35 @@
-import React, { useRef } from 'react';
+import React from 'react';
+import createMockContext from 'src/testUtils/createMockContext';
 import { fireEvent } from '@testing-library/react';
 import PhotoModal, { openPhotoModal } from '../PhotoModal';
+import { ReduxProvider } from '../store';
 import { PageWrapper } from 'src/index';
+import { mockContext } from './mockContext';
 
 const TestComponent = () => {
-    const photoModalRef = useRef(null);
-
     // Render app
     return (
-        <>
-            <PhotoModal
-                modalRef={photoModalRef}
-                plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-                photoUrls={[]}
-                setPhotoUrls={jest.fn()}
-            />
+        <ReduxProvider>
+            <PhotoModal />
             <button onClick={openPhotoModal}>
                 Open photo modal
             </button>
-        </>
+        </ReduxProvider>
     );
 };
 
 describe('PhotoModal', () => {
     let app, user;
 
-    beforeEach(() => {
+    beforeAll(() => {
+        // Create mock state objects (used by ReduxProvider)
+        createMockContext('plant_details', mockContext.plant_details);
+        createMockContext('events', {});
+        createMockContext('notes', []);
+        createMockContext('photos', []);
+    });
+
+    beforeEach(async () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
@@ -33,6 +37,9 @@ describe('PhotoModal', () => {
                 <TestComponent />
             </PageWrapper>
         );
+
+        // Open modal
+        await user.click(app.getByText('Open photo modal'));
     });
 
     it('sends correct payload when photos are uploaded', async () => {
@@ -206,11 +213,5 @@ describe('PhotoModal', () => {
         expect(app.queryByText('Unexpected response from backend')).not.toBeNull();
         // Confirm file input was cleared
         expect(fileInput.files.length).toBe(0);
-    });
-
-    it('opens modal when openPhotoModal called', async () => {
-        // Click button, confirm HTMLDialogElement method was called
-        await user.click(app.getByText('Open photo modal'));
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
     });
 });

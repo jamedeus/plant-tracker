@@ -2,19 +2,19 @@ import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 
-let editModalRef;
+let modalRef;
 
 export const openEditModal = () => {
-    editModalRef.current.showModal();
+    modalRef.current.open();
 };
 
 // Takes modal title, submit handler, and details form
 // Modal has centered title, can be closed with button, esc, or outside click
 const EditModal = ({ title, onSubmit, children }) => {
-    editModalRef = useRef(null);
+    modalRef = useRef(null);
 
     return (
-        <Modal dialogRef={editModalRef} title={title}>
+        <Modal title={title} ref={modalRef}>
             {children}
 
             <div className="modal-action mx-auto">

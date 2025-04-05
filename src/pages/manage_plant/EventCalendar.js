@@ -1,34 +1,18 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { memo } from 'react';
 import { DateTime } from 'luxon';
 import Calendar from 'react-calendar';
 import 'src/calendar.css';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/16/solid';
+import { useSelector } from 'react-redux';
 
-const EventCalendar = ({ events }) => {
-    // Convert to object with date string keys, array of event types as value
-    const formattedEvents = Object.entries(events).reduce(
-        (acc, [eventType, eventDates]) => {
-            eventDates.forEach(date => {
-                const dateKey = new Date(date).toDateString();
-                // Add new date key unless it already exists
-                if (!acc[dateKey]) {
-                    acc[dateKey] = [];
-                }
-                // Add event to date key unless same type already exists
-                if (!acc[dateKey].includes(eventType)) {
-                    acc[dateKey].push(eventType);
-                }
-            });
-            return acc;
-        },
-        {}
-    );
+const EventCalendar = memo(function EventCalendar() {
+    // Object with date strings as keys, array of event types as value
+    const calendarDays = useSelector((state) => state.timeline.calendarDays);
 
     // Takes date object, returns div with colored dots for each event on date
     const renderDots = (date) => {
-        const dateKey = date.toDateString();
-        const dateEvents = formattedEvents[dateKey];
+        const dateKey = date.toISOString().split('T')[0];
+        const dateEvents = calendarDays[dateKey];
         // If no events return empty div (consistent alignment)
         if (!dateEvents) {
             return (
@@ -59,22 +43,20 @@ const EventCalendar = ({ events }) => {
     };
 
     return (
-        <Calendar
-            calendarType='gregory'
-            minDate={new Date('2001-01-01T00:00:00')}
-            maxDate={new Date('2100-01-01T00:00:00')}
-            prevLabel=<ChevronLeftIcon className="w-6 h-6 m-auto" />
-            nextLabel=<ChevronRightIcon className="w-6 h-6 m-auto" />
-            tileContent={
-                ({ date, view }) => view === 'month' && renderDots(date)
-            }
-            onClickDay={handleClickDay}
-        />
+        <div className="mx-auto my-8">
+            <Calendar
+                calendarType='gregory'
+                minDate={new Date('2001-01-01T00:00:00')}
+                maxDate={new Date('2100-01-01T00:00:00')}
+                prevLabel=<ChevronLeftIcon className="w-6 h-6 m-auto" />
+                nextLabel=<ChevronRightIcon className="w-6 h-6 m-auto" />
+                tileContent={
+                    ({ date, view }) => view === 'month' && renderDots(date)
+                }
+                onClickDay={handleClickDay}
+            />
+        </div>
     );
-};
-
-EventCalendar.propTypes = {
-    events: PropTypes.object.isRequired
-};
+});
 
 export default EventCalendar;

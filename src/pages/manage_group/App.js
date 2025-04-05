@@ -1,21 +1,79 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { localToUTC } from 'src/timestampUtils';
 import { sendPostRequest, parseDomContext, pastTense } from 'src/util';
-import EditModal from 'src/components/EditModal';
-import GroupDetailsForm from 'src/forms/GroupDetailsForm';
 import Navbar from 'src/components/Navbar';
-import PlantCard from 'src/components/PlantCard';
 import DatetimeInput from 'src/components/DatetimeInput';
-import FilterColumn from 'src/components/FilterColumn';
 import { showToast } from 'src/components/Toast';
 import { useTheme } from 'src/context/ThemeContext';
 import DetailsCard from 'src/components/DetailsCard';
 import GroupDetails from 'src/components/GroupDetails';
+import PlantsCol from 'src/components/PlantsCol';
+import EditGroupModal from './EditGroupModal';
 import AddPlantsModal, { openAddPlantsModal } from './AddPlantsModal';
 import RemovePlantsModal, { openRemovePlantsModal } from './RemovePlantsModal';
 import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
-import { showErrorModal } from 'src/components/ErrorModal';
+import { openErrorModal } from 'src/components/ErrorModal';
+
+// Buttons used to add events to all selected plants
+const PlantEventButtons = ({ editing, setEditing, addEventSelected }) => {
+    const addEventTimeInput = useRef(null);
+
+    if (editing) {
+        return (
+            <>
+                <div
+                    className="flex mx-auto mb-4"
+                    data-testid="addEventTimeInput"
+                >
+                    <DatetimeInput inputRef={addEventTimeInput} />
+                </div>
+                <div className="flex">
+                    <button
+                        className="btn btn-outline mx-auto"
+                        onClick={() => setEditing(false)}
+                    >
+                        Cancel
+                    </button>
+                    <button
+                        className="btn btn-outline btn-info mx-auto"
+                        onClick={() => addEventSelected(
+                            'water',
+                            localToUTC(addEventTimeInput.current.value)
+                        )}
+                    >
+                        Water
+                    </button>
+                    <button
+                        className="btn btn-outline btn-success mx-auto"
+                        onClick={() => addEventSelected(
+                            'fertilize',
+                            localToUTC(addEventTimeInput.current.value)
+                        )}
+                    >
+                        Fertilize
+                    </button>
+                </div>
+            </>
+        );
+    } else {
+        return (
+            <div className="flex">
+                <button
+                    className="btn btn-outline mx-auto"
+                    onClick={() => setEditing(true)}>
+                    Manage
+                </button>
+            </div>
+        );
+    }
+};
+
+PlantEventButtons.propTypes = {
+    editing: PropTypes.bool.isRequired,
+    setEditing: PropTypes.func.isRequired,
+    addEventSelected: PropTypes.func.isRequired
+};
 
 function App() {
     // Load context set by django template
@@ -30,6 +88,14 @@ function App() {
     const [options, setOptions] = useState(() => {
         return parseDomContext("options");
     });
+
+    // Array of plant objects that are not archived or already in group
+    const addPlantsModalOptions = useMemo(() => {
+        const existing = plantDetails.map(plant => plant.uuid);
+        return options.filter(
+            plant => !existing.includes(plant.uuid) && !plant.archived
+        );
+    }, [plantDetails, options]);
 
     // Request new state from backend if user navigates to page by pressing
     // back button (may be outdated if user clicked plant and made changes)
@@ -56,40 +122,32 @@ function App() {
         };
     }, []);
 
+    // Get toggle theme option from context
+    const { ToggleThemeOption } = useTheme();
+
     // Create state to track whether selecting plants from list
     const [selectingPlants, setSelectingPlants] = useState(false);
 
-    // Track which plants are selected (after clicking manage button)
-    const selectedPlants = useRef([]);
+    // FormRef for FilterColumn used to add events to subset of plants in group
+    const selectedPlantsRef = useRef(null);
 
-    // Track plants column open/close state between re-renders
-    const plantsOpenRef = useRef(true);
+    // Returns array of selected plant UUIDs parsed from FilterColumn form
+    const getSelectedPlants = () => {
+        const selected = new FormData(selectedPlantsRef.current);
+        return Array.from(selected.keys());
+    };
 
     // Ref to access timestamp input used by water all/fertilize all
     const addEventAllTimeInput = useRef(null);
 
-    // Create ref to access edit details form
-    const editDetailsRef = useRef(null);
-
-    // Get toggle theme option from context
-    const { ToggleThemeOption } = useTheme();
-
-    const submitEditModal = async () => {
-        const payload = Object.fromEntries(
-            new FormData(editDetailsRef.current)
-        );
-        payload["group_id"] = group.uuid;
-        console.log(payload);
-
-        const response = await sendPostRequest('/edit_group', payload);
-        if (response.ok) {
-            // Update plant state with new values from response
-            const data = await response.json();
-            setGroup({...group, ...data});
-        } else {
-            const error = await response.json();
-            showErrorModal(JSON.stringify(error));
-        }
+    // Takes array of plant UUIDs, removes archived plants and returns
+    const removeArchivedPlants = (selected) => {
+        return selected.filter(uuid => {
+            const plant = plantDetails.find(plant => plant.uuid === uuid);
+            if (plant && !plant.archived) {
+                return uuid;
+            }
+        });
     };
 
     // Handler for "Water All" and "Fertilize All" buttons
@@ -99,9 +157,17 @@ function App() {
         // timestamp to backend endpoint
         await bulkAddPlantEvents(
             eventType,
-            plantDetails.filter(plant => !plant.archived).map(plant => plant.uuid),
+            removeArchivedPlants(plantDetails.map(plant => plant.uuid)),
             timestamp
         );
+    };
+
+    // Handler for water and fertilize buttons under plant cards
+    const addEventSelected = async (eventType, timestamp) => {
+        // Prevent adding event to archived plants
+        const selected = removeArchivedPlants(getSelectedPlants());
+        await bulkAddPlantEvents(eventType, selected, timestamp);
+        setSelectingPlants(false);
     };
 
     // Creates event with specified type and timestamp for every plant in
@@ -112,14 +178,17 @@ function App() {
             event_type: eventType,
             timestamp: timestamp
         };
-        const response = await sendPostRequest('/bulk_add_plant_events', payload);
+        const response = await sendPostRequest(
+            '/bulk_add_plant_events',
+            payload
+        );
         if (response.ok) {
             showToast(`All plants ${pastTense(eventType)}!`, 'blue', 5000);
             const data = await response.json();
             updatePlantTimestamps(data.plants, timestamp, eventType);
         } else {
             const error = await response.json();
-            showErrorModal(JSON.stringify(error));
+            openErrorModal(JSON.stringify(error));
         }
     };
 
@@ -156,114 +225,83 @@ function App() {
         }
     };
 
-    // Buttons used to add bulk events to plants in group
-    const PlantEventButtons = ({editing, setEditing}) => {
-        const addEventTimeInput = useRef(null);
-
-        // Takes array of plant UUIDs, removes archived plants and returns
-        const removeArchivedPlants = (selected) => {
-            return selected.filter(uuid => !plantDetails.find(
-                plant => plant.uuid === uuid
-            ).archived);
+    // Handler for add button in AddPlantsModal, takes array of UUIDs
+    const addPlants = useCallback(async (selected) => {
+        const payload = {
+            group_id: group.uuid,
+            plants: selected
         };
-
-        // Handler for water button (only used in this case scope)
-        const water = async () => {
-            const timestamp = localToUTC(addEventTimeInput.current.value);
-            // Prevent watering archived plants
-            const selected = removeArchivedPlants(selectedPlants.current);
-            await bulkAddPlantEvents('water', selected, timestamp);
-            setEditing(false);
-        };
-
-        // Handler for fertilize button (only used in this case scope)
-        const fertilize = async () => {
-            const timestamp = localToUTC(addEventTimeInput.current.value);
-            // Prevent fertilizing archived plants
-            const selected = removeArchivedPlants(selectedPlants.current);
-            await bulkAddPlantEvents('fertilize', selected, timestamp);
-            setEditing(false);
-        };
-
-        switch(editing) {
-            case(true):
-                return (
-                    <>
-                        <div
-                            className="flex mx-auto mb-4"
-                            data-testid="addEventTimeInput"
-                        >
-                            <DatetimeInput inputRef={addEventTimeInput} />
-                        </div>
-                        <div className="flex">
-                            <button
-                                className="btn btn-outline mx-auto"
-                                onClick={() => setEditing(false)}
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                className="btn btn-outline btn-info mx-auto"
-                                onClick={water}
-                            >
-                                Water
-                            </button>
-                            <button
-                                className="btn btn-outline btn-success mx-auto"
-                                onClick={fertilize}
-                            >
-                                Fertilize
-                            </button>
-                        </div>
-                    </>
-                );
-            case(false):
-                return (
-                    <div className="flex">
-                        <button
-                            className="btn btn-outline mx-auto"
-                            onClick={() => setEditing(true)}>
-                            Manage
-                        </button>
-                    </div>
-                );
+        const response = await sendPostRequest(
+            '/bulk_add_plants_to_group',
+            payload
+        );
+        if (response.ok) {
+            // Add objects in response to plantDetails state
+            const data = await response.json();
+            setPlantDetails([...plantDetails, ...data.added]);
+        } else {
+            const error = await response.json();
+            openErrorModal(JSON.stringify(error));
         }
-    };
+    }, [plantDetails]);
 
-    PlantEventButtons.propTypes = {
-        editing: PropTypes.bool.isRequired,
-        setEditing: PropTypes.func.isRequired
-    };
+    // Handler for remove button in RemovePlantsModal, takes array of UUIDs
+    const removePlants = useCallback(async (selected) => {
+        const payload = {
+            group_id: group.uuid,
+            plants: selected
+        };
+        const response = await sendPostRequest(
+            '/bulk_remove_plants_from_group',
+            payload
+        );
+        if (response.ok) {
+            // Remove UUIDs in response from plantDetails
+            const data = await response.json();
+            setPlantDetails(plantDetails.filter(
+                plant => !data.removed.includes(plant.uuid)
+            ));
+        } else {
+            const error = await response.json();
+            openErrorModal(JSON.stringify(error));
+        }
+    }, [plantDetails]);
+
+    // Top left corner dropdown options
+    const DropdownMenuOptions = useMemo(() => (
+        <>
+            <li><a onClick={() => window.location.href = "/"}>
+                Overview
+            </a></li>
+            <li><a onClick={openAddPlantsModal}>
+                Add plants
+            </a></li>
+            <li><a onClick={openRemovePlantsModal}>
+                Remove plants
+            </a></li>
+            <li><a onClick={openChangeQrModal}>
+                Change QR code
+            </a></li>
+            <ToggleThemeOption />
+        </>
+    ), [ToggleThemeOption]);
+
+    // Group details card shown when title is clicked
+    const GroupDetailsDropdown = useMemo(() => (
+        <DetailsCard>
+            <GroupDetails
+                location={group.location}
+                description={group.description}
+            />
+        </DetailsCard>
+    ), [group]);
 
     return (
         <div className="container flex flex-col mx-auto mb-8">
             <Navbar
-                menuOptions={
-                    <>
-                        <li><a onClick={() => window.location.href = "/"}>
-                            Overview
-                        </a></li>
-                        <li><a onClick={openAddPlantsModal}>
-                            Add plants
-                        </a></li>
-                        <li><a onClick={openRemovePlantsModal}>
-                            Remove plants
-                        </a></li>
-                        <li><a onClick={openChangeQrModal}>
-                            Change QR code
-                        </a></li>
-                        <ToggleThemeOption />
-                    </>
-                }
+                menuOptions={DropdownMenuOptions}
                 title={group.display_name}
-                titleOptions={
-                    <DetailsCard>
-                        <GroupDetails
-                            location={group.location}
-                            description={group.description}
-                        />
-                    </DetailsCard>
-                }
+                titleOptions={GroupDetailsDropdown}
             />
 
             <DatetimeInput inputRef={addEventAllTimeInput} />
@@ -282,55 +320,29 @@ function App() {
                 </button>
             </div>
 
-            <FilterColumn
-                title="Plants"
-                contents={plantDetails}
-                CardComponent={PlantCard}
+            <PlantsCol
+                plants={plantDetails}
                 editing={selectingPlants}
-                selected={selectedPlants}
-                openRef={plantsOpenRef}
-                ignoreKeys={[
-                    'uuid',
-                    'created',
-                    'last_watered',
-                    'last_fertilized',
-                    'thumbnail'
-                ]}
-                sortByKeys={[
-                    {key: 'created', display: 'Added'},
-                    {key: 'display_name', display: 'Name'},
-                    {key: 'species', display: 'Species'},
-                    {key: 'last_watered', display: 'Watered'}
-                ]}
-                defaultSortKey='created'
+                formRef={selectedPlantsRef}
                 storageKey={`group-${group.uuid}`}
             >
                 <PlantEventButtons
                     editing={selectingPlants}
                     setEditing={setSelectingPlants}
+                    addEventSelected={addEventSelected}
                 />
-            </FilterColumn>
+            </PlantsCol>
 
-            <EditModal title="Edit Details" onSubmit={submitEditModal}>
-                <GroupDetailsForm
-                    formRef={editDetailsRef}
-                    name={group.name}
-                    location={group.location}
-                    description={group.description}
-                />
-            </EditModal>
+            <EditGroupModal group={group} setGroup={setGroup} />
 
             <AddPlantsModal
-                groupID={group.uuid}
-                options={options}
-                plantDetails={plantDetails}
-                setPlantDetails={setPlantDetails}
+                options={addPlantsModalOptions}
+                addPlants={addPlants}
             />
 
             <RemovePlantsModal
-                groupID={group.uuid}
                 plantDetails={plantDetails}
-                setPlantDetails={setPlantDetails}
+                removePlants={removePlants}
             />
 
             <ChangeQrModal

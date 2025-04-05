@@ -22,17 +22,17 @@ describe('GroupCard', () => {
         expect(component.getByText('Contains 2 plants')).toBeInTheDocument();
     });
 
-    it('flips chevron icon when details collapse is opened', async () => {
-        // Confirm that ChevronDownIcon is present, ChevronUpIcon is not
-        const icon = component.container.querySelector('svg');
-        expect(icon.innerHTML.includes('M4.22')).toBe(true);
-        expect(icon.innerHTML.includes('M11.78')).toBe(false);
+    it('expands/collapses details when arrow button is clicked', async () => {
+        // Confirm that hidden checkbox that controls collapse is not checked
+        expect(component.container.querySelector('input').checked).toBe(false);
 
-        // Click button, confirm that icon changes to ChevronUpIcon
+        // Click button, confirm checkbox is now checked
         await user.click(component.container.querySelector('.btn-close'));
-        const newIcon = component.container.querySelector('svg');
-        expect(newIcon.innerHTML.includes('M4.22')).toBe(false);
-        expect(newIcon.innerHTML.includes('M11.78')).toBe(true);
+        expect(component.container.querySelector('input').checked).toBe(true);
+
+        // Click button again, confirm checkbox is no longer checked
+        await user.click(component.container.querySelector('.btn-close'));
+        expect(component.container.querySelector('input').checked).toBe(false);
     });
 
     it('redirects to manage group page when clicked', async () => {

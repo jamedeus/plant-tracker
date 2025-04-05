@@ -1,40 +1,98 @@
-import React, { useState } from 'react';
+import React, { useId, memo } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDroplet } from '@fortawesome/free-solid-svg-icons';
-import { ChevronUpIcon, ChevronDownIcon } from '@heroicons/react/16/solid';
+import WaterIcon from 'src/components/WaterIcon';
+import { ChevronDownIcon } from '@heroicons/react/16/solid';
 import PlantDetails from 'src/components/PlantDetails';
 import { capitalize } from 'src/util';
 import { timestampToRelativeCalendar, timestampToReadable} from 'src/timestampUtils';
 
-const PlantCard = ({ display_name, uuid, species, description, pot_size, last_watered, thumbnail, linkPage=true, archived=false }) => {
-    // Track details collapse open state
-    const [open, setOpen] = useState(false);
+const PlantCard = memo(function PlantCard({
+    display_name,
+    uuid,
+    species,
+    description,
+    pot_size,
+    last_watered,
+    thumbnail,
+    linkPage=true,
+    archived=false
+}) {
+    // ID for hidden checkbox that controls details collapse open/close state
+    const checkboxId = useId();
 
-    // Button handler toggles collapse state, prevents click propagating
-    // to card (redirects to manage_plant page unless linkPage arg is false)
-    const toggle = (e) => {
-        setOpen(!open);
-        e.preventDefault();
-        e.stopPropagation();
-    };
+    return (
+        <a
+            href={linkPage ? `/manage/${uuid}` : null}
+            className={clsx(
+                'collapse card-collapse bg-neutral group',
+                archived && 'grayscale',
+                linkPage && 'cursor-pointer'
+            )}
+        >
+            {/* Hidden checkbox controls open/close state */}
+            <input
+                id={checkboxId}
+                type="checkbox"
+                className="hidden pointer-events-none"
+            />
 
-    // Renders collapse with Plant details, opened with arrow button
-    const DetailsSection = () => {
-        return (
-            <div className={clsx(
-                'collapse bg-neutral rounded-t-none cursor-default',
-                open && 'pt-4',
-                archived && 'grayscale'
-            )}>
-                <input
-                    type="checkbox"
-                    className="hidden"
-                    onChange={toggle}
-                    defaultChecked={open}
-                />
-                <div className="collapse-content">
+            <div className='collapse-title !p-0 min-w-0 min-h-0'>
+                <div className='card card-side text-neutral-content relative'>
+                    {thumbnail && (
+                        <figure className="h-24 w-20 min-h-20 min-w-20 rounded-b-none">
+                            <img
+                                loading="lazy"
+                                src={thumbnail}
+                                className="w-full h-full object-cover"
+                            />
+                        </figure>
+                    )}
+
+                    {/* Card body */}
+                    <div className={clsx(
+                        'card-body cursor-default',
+                        thumbnail ? 'my-auto text-start' : 'text-center'
+                    )}>
+                        <h2 className={clsx(
+                            'card-title line-clamp-1',
+                            thumbnail ? 'pr-8' : 'mx-auto px-8'
+                        )}>
+                            {display_name}
+                        </h2>
+                        {last_watered ? (
+                            <span
+                                title={timestampToReadable(last_watered)}
+                                className='line-clamp-1'
+                            >
+                                <WaterIcon />
+                                {capitalize(
+                                    timestampToRelativeCalendar(last_watered, true)
+                                )}
+                            </span>
+                        ) : (
+                            <span>Never watered</span>
+                        )}
+                    </div>
+
+                    {/* Button opens/closes collapse with details */}
+                    <label
+                        tabIndex={-1}
+                        role="button"
+                        htmlFor={checkboxId}
+                        className="btn-close absolute right-2 top-8 z-40"
+                        onClick={(e) => e.stopPropagation()}
+                    >
+                        <ChevronDownIcon className={clsx(
+                            "w-8 h-8 transition-transform duration-200",
+                            "rotate-0 group-has-[:checked]:rotate-180"
+                        )} />
+                    </label>
+                </div>
+            </div>
+            {/* Plant details collapse, closed until button clicked */}
+            <div className="collapse-content">
+                <div className="pt-4">
                     <PlantDetails
                         species={species}
                         pot_size={pot_size}
@@ -42,89 +100,9 @@ const PlantCard = ({ display_name, uuid, species, description, pot_size, last_wa
                     />
                 </div>
             </div>
-        );
-    };
-
-    const Thumbnail = () => {
-        return (
-            <figure className="h-24 w-20 min-h-20 min-w-20">
-                <img
-                    loading="lazy"
-                    src={thumbnail} className="w-full h-full object-cover"
-                />
-            </figure>
-        );
-    };
-
-    const LastWatered = () => {
-        if (last_watered) {
-            return (
-                <span title={timestampToReadable(last_watered)}>
-                    <FontAwesomeIcon
-                        icon={faDroplet}
-                        className="mr-2 text-info"
-                    />
-                    {capitalize(timestampToRelativeCalendar(last_watered, true))}
-                </span>
-            );
-        } else {
-            return <span>Never watered</span>;
-        }
-    };
-
-    const Body = () => {
-        switch(thumbnail) {
-            case(null):
-                return (
-                    <div className="card-body text-center cursor-default">
-                        <h2 className="card-title mx-auto px-8 line-clamp-1">
-                            {display_name}
-                        </h2>
-                        <LastWatered />
-                    </div>
-                );
-            default:
-                return (
-                    <div className="card-body my-auto text-start cursor-default">
-                        <h2 className="card-title line-clamp-1 pr-8">
-                            {display_name}
-                        </h2>
-                        <LastWatered />
-                    </div>
-                );
-        }
-    };
-
-    return (
-        <a
-            href={linkPage ? `/manage/${uuid}` : null}
-            className={linkPage ? 'cursor-pointer' : null}
-        >
-            <div className={clsx(
-                'card card-side bg-neutral text-neutral-content mx-auto relative',
-                open && 'rounded-b-none',
-                archived && 'grayscale'
-            )}>
-                {thumbnail && <Thumbnail />}
-
-                <Body />
-
-                <button
-                    tabIndex={0}
-                    role="button"
-                    className="btn-close absolute right-2 top-8 z-40"
-                    onClick={(e) => toggle(e)}
-                >
-                    {open
-                        ? <ChevronUpIcon className="w-8 h-8" />
-                        : <ChevronDownIcon className="w-8 h-8" />
-                    }
-                </button>
-            </div>
-            <DetailsSection />
         </a>
     );
-};
+});
 
 PlantCard.propTypes = {
     display_name: PropTypes.string.isRequired,

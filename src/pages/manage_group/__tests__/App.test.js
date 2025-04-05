@@ -38,6 +38,9 @@ describe('App', () => {
             })
         }));
 
+        // Open edit modal
+        await user.click(app.getByText("Edit"));
+
         // Click submit button inside edit modal
         const modal = app.getByText("Edit Details").parentElement;
         await user.click(within(modal).getByText("Edit"));
@@ -130,19 +133,17 @@ describe('App', () => {
         expect(within(plantsCol).queryByText('Cancel')).toBeNull();
 
         // Confirm timestamp input and checkboxes next to plants are not visible
-        expect(within(plantsCol).getAllByRole('checkbox')
-            .filter(button => button.classList.contains('radio')).length
-        ).toBe(0);
         expect(app.queryByTestId('addEventTimeInput')).toBeNull();
+        // Checkboxes are rendered underneath card with position: absolute, so
+        // they are not visible until margin-left is added to the card wrapper
+        expect(plantsCol.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(0);
 
         // Click Manage button, confirm buttons, checkboxes, and input appear
         await user.click(app.getByText("Manage"));
         expect(within(plantsCol).getByText('Water').nodeName).toBe('BUTTON');
         expect(within(plantsCol).getByText('Fertilize').nodeName).toBe('BUTTON');
         expect(within(plantsCol).getByText('Cancel').nodeName).toBe('BUTTON');
-        expect(within(plantsCol).getAllByRole('checkbox')
-            .filter(button => button.classList.contains('radio')).length
-        ).toBe(3);
+        expect(plantsCol.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(3);
         expect(app.queryByTestId('addEventTimeInput')).not.toBeNull();
 
         // Click cancel button, confirm elements disappear
@@ -150,9 +151,7 @@ describe('App', () => {
         expect(within(plantsCol).queryByText('Water')).toBeNull();
         expect(within(plantsCol).queryByText('Fertilize')).toBeNull();
         expect(within(plantsCol).queryByText('Cancel')).toBeNull();
-        expect(within(plantsCol).getAllByRole('checkbox')
-            .filter(button => button.classList.contains('radio')).length
-        ).toBe(0);
+        expect(plantsCol.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(0);
         expect(app.queryByTestId('addEventTimeInput')).toBeNull();
     });
 
@@ -174,7 +173,7 @@ describe('App', () => {
 
         // Click Manage button under plants, select first plant, click water
         await user.click(within(plantsCol).getByText("Manage"));
-        await user.click(app.container.querySelectorAll('.radio')[0]);
+        await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[0]);
         await user.click(within(plantsCol).getByText("Water"));
 
         // Confirm correct data posted to /bulk_add_plant_events endpoint
@@ -210,7 +209,7 @@ describe('App', () => {
 
         // Click Manage button under plants, select third plant, click fertilize
         await user.click(within(plantsCol).getByText("Manage"));
-        await user.click(app.container.querySelectorAll('.radio')[2]);
+        await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[2]);
         await user.click(within(plantsCol).getByText("Fertilize"));
 
         // Confirm correct data posted to /bulk_add_plant_events endpoint
@@ -249,14 +248,14 @@ describe('App', () => {
 
         // Get reference to modal, confirm contains 2 plant options
         const addPlantsModal = app.getByText("Add Plants").parentElement;
-        expect(addPlantsModal.children[2].children.length).toBe(2);
+        expect(addPlantsModal.children[2].children[0].children.length).toBe(2);
 
         // Click the second option twice (unselect, should not be in payload)
-        await user.click(addPlantsModal.querySelectorAll('.radio')[1]);
-        await user.click(addPlantsModal.querySelectorAll('.radio')[1]);
+        await user.click(addPlantsModal.querySelectorAll('label.cursor-pointer')[1]);
+        await user.click(addPlantsModal.querySelectorAll('label.cursor-pointer')[1]);
 
         // Select the first plant option, click Add button
-        await user.click(addPlantsModal.querySelectorAll('.radio')[0]);
+        await user.click(addPlantsModal.querySelectorAll('label.cursor-pointer')[0]);
         await user.click(addPlantsModal.querySelector('.btn-success'));
 
         // Confirm correct data posted to /bulk_add_plants_to_group endpoint
@@ -298,12 +297,12 @@ describe('App', () => {
         await user.click(app.getByText("Remove plants"));
 
         // Get reference to modal, confirm contains 3 plant options
-        const addPlantsModal = app.getByText("Remove Plants").parentElement;
-        expect(addPlantsModal.children[2].children.length).toBe(3);
+        const removePlantsModal = app.getByText("Remove Plants").parentElement;
+        expect(removePlantsModal.children[2].children[0].children.length).toBe(3);
 
         // Select the first plant option, click Remove button
-        await user.click(addPlantsModal.querySelectorAll('.radio')[0]);
-        await user.click(addPlantsModal.querySelector('.btn-error'));
+        await user.click(removePlantsModal.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(removePlantsModal.querySelector('.btn-error'));
 
         // Confirm correct data posted to /bulk_remove_plants_from_group endpoint
         // Should only contain UUID of first plant

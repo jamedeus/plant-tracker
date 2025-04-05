@@ -1,4 +1,5 @@
 import createMockContext from 'src/testUtils/createMockContext';
+import { fireEvent } from '@testing-library/react';
 import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
 import { PageWrapper } from 'src/index';
@@ -9,11 +10,12 @@ describe('App', () => {
 
     beforeAll(() => {
         // Create mock state objects
-        createMockContext('plant', mockContext.plant);
+        createMockContext('plant_details', mockContext.plant_details);
+        createMockContext('events', mockContext.events);
         createMockContext('notes', mockContext.notes);
         createMockContext('group_options', mockContext.group_options);
         createMockContext('species_options', mockContext.species_options);
-        createMockContext('photo_urls', mockContext.photo_urls);
+        createMockContext('photos', mockContext.photos);
     });
 
     beforeEach(() => {
@@ -299,11 +301,12 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "plant": mockContext.plant,
+                "plant_details": mockContext.plant_details,
+                "events": mockContext.events,
                 "notes": mockContext.notes,
                 "group_options": mockContext.group_options,
                 "species_options": mockContext.species_options,
-                "photo_urls": mockContext.photo_urls
+                "photos": mockContext.photos
             })
         }));
 
@@ -351,5 +354,293 @@ describe('App', () => {
 
         // Confirm did not call fetch
         expect(global.fetch).not.toHaveBeenCalled();
+    });
+
+    it('opens DefaultPhotoModal when dropdown option clicked', async () => {
+        // Confirm modal is not open
+        expect(app.container.querySelector('#slide1')).toBeNull();
+
+        // Click button, confirm HTMLDialogElement method was called
+        await user.click(app.getByText('Set default photo'));
+        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
+        await waitFor(() => {
+            expect(app.container.querySelector('#slide1')).not.toBeNull();
+        });
+    });
+
+    it('opens ChangeQrModal when dropdown option clicked', async () => {
+        // Confirm modal is not open
+        expect(app.queryByText('You will have 15 minutes to scan the new QR code.')).toBeNull();
+
+        // Click button, confirm HTMLDialogElement method was called
+        await user.click(app.getByText('Change QR code'));
+        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
+        await waitFor(() => {
+            expect(app.queryByText('You will have 15 minutes to scan the new QR code.')).not.toBeNull();
+        });
+    });
+
+    it('opens PhotoModal when dropdown option clicked', async () => {
+        // Confirm modal is not open
+        expect(app.queryByTestId('photo-input')).toBeNull();
+
+        // Click button, confirm HTMLDialogElement method was called
+        await user.click(app.getByText('Add photos'));
+        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
+        await waitFor(() => {
+            expect(app.queryByTestId('photo-input')).not.toBeNull();
+        });
+    });
+
+    it('opens DeletePhotosModal when dropdown option clicked', async () => {
+        // Confirm modal is not open
+        expect(app.container.querySelector('#photo3')).toBeNull();
+
+        // Click button, confirm HTMLDialogElement method was called
+        await user.click(app.getByText('Delete photos'));
+        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
+        await waitFor(() => {
+            expect(app.container.querySelector('#photo3')).not.toBeNull();
+        });
+    });
+
+    it('removes event markers from timeline when events are deleted', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "deleted": [
+                    {"type": "water", "timestamp": "2024-03-01T15:45:44+00:00"},
+                ],
+                "failed": []
+            })
+        }));
+
+        // Confirm 2 water event icons exist
+        expect(app.container.querySelectorAll('.fa-droplet').length).toBe(2);
+
+        // Open event history modal, get reference to modal
+        await user.click(app.getByText('Delete events'));
+        const modal = app.getByText('Event History').parentElement;
+
+        // Select both water events, click delete button
+        await user.click(within(modal).getByText(/today/));
+        await user.click(within(modal).getByText(/yesterday/));
+        await user.click(within(modal).getByText('Delete'));
+
+        // Confirm both water event icons disappeared
+        expect(app.container.querySelectorAll('.fa-droplet').length).toBe(0);
+    });
+
+    it('opens note modal when add note dropdown option is clicked', async () => {
+        // Confirm note modal is not visible
+        expect(app.queryByText('0 / 500')).toBeNull();
+
+        // Click dropdown option, confirm HTMLDialogElement method was called
+        await user.click(app.getByText('Add note'));
+        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
+        expect(app.getByText('0 / 500')).not.toBeNull();
+    });
+
+    it('renders new notes in the timeline', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                "action": "add_note",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                "timestamp": "2024-03-01T12:00:00+00:00",
+                "note_text": "Started flowering"
+            })
+        }));
+
+        // Get reference to timeline div (excluding NoteModal)
+        const timeline = app.container.querySelector('.grid');
+
+        // Confirm timeline does not contain note text
+        expect(within(timeline).queryByText(
+            'Started flowering'
+        )).toBeNull();
+
+        // Open Note Modal
+        await user.click(app.getByText('Add note'));
+
+        // Simulate user typing new note and clicking save
+        await user.type(
+            app.container.querySelector('.textarea'),
+            '  Started flowering  '
+        );
+        await user.click(app.getByText('Save'));
+
+        // Confirm note text appeared on page
+        expect(within(timeline).queryByText(
+            'Started flowering'
+        )).not.toBeNull();
+    });
+
+    it('updates note text in timeline when note is edited', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                "action": "edit_note",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                "timestamp": "2024-02-26T12:44:12+00:00",
+                "note_text": "One of the older leaves is starting to turn yellow, pinched it off"
+            })
+        }));
+
+        // Get reference to timeline div (excluding NoteModal)
+        const timeline = app.container.querySelector('.grid');
+
+        // Confirm timeline contains note text from mockContext
+        expect(within(timeline).queryByText(
+            'One of the older leaves is starting to turn yellow'
+        )).not.toBeNull();
+        // Confirm timeline does not contain text we will add
+        expect(within(timeline).queryByText(
+            /pinched it off/
+        )).toBeNull();
+
+        // Simulate user clicking icon next to note, adding text, clicking save
+        const editButton = within(timeline).getByText(
+            'One of the older leaves is starting to turn yellow'
+        ).parentElement.parentElement.children[0];
+        await user.click(editButton);
+        await user.type(
+            app.container.querySelector('.textarea'),
+            ', pinched it off'
+        );
+        await user.click(app.getByText('Save'));
+
+        // Confirm new text was added to note
+        expect(within(timeline).queryByText(
+            'One of the older leaves is starting to turn yellow, pinched it off'
+        )).not.toBeNull();
+    });
+
+    it('removes notes from timeline when deleted', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                "deleted": "note",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
+
+        // Get reference to timeline div (excluding NoteModal)
+        const timeline = app.container.querySelector('.grid');
+
+        // Confirm timeline contains note text
+        expect(within(timeline).queryByText(
+            'Fertilized with dilute 10-15-10 liquid fertilizer'
+        )).not.toBeNull();
+
+        // Simulate user clicking icon next to note, then clicking delete
+        const editButton = within(timeline).getByText(
+            'Fertilized with dilute 10-15-10 liquid fertilizer'
+        ).parentElement.parentElement.children[0];
+        await user.click(editButton);
+        await user.click(
+            within(app.getByText('Edit Note').parentElement).getByText('Delete')
+        );
+
+        // Confirm timeline no longer contains note text
+        expect(within(timeline).queryByText(
+            'Fertilized with dilute 10-15-10 liquid fertilizer'
+        )).toBeNull();
+    });
+
+    it('renders new photos in the timeline', async () => {
+        // Mock expected API response when 2 photos are uploaded
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                "uploaded": "2 photo(s)",
+                "failed": [],
+                "urls": [
+                    {
+                        "created": "2024-06-21T20:52:03+00:00",
+                        "url": "/media/images/photo1.jpg"
+                    },
+                    {
+                        "created": "2024-06-21T20:54:03+00:00",
+                        "url": "/media/images/photo2.jpg"
+                    }
+                ]
+            })
+        }));
+
+        // Get reference to timeline div
+        const timeline = app.container.querySelector('.grid');
+
+        // Confirm mock photos don't exist in timeline
+        expect(within(timeline).queryByTitle('12:52 PM - June 21, 2024')).toBeNull();
+        expect(within(timeline).queryByTitle('12:54 PM - June 21, 2024')).toBeNull();
+
+        // Simulate user opening photo modal, selecting 2 files, and submitting
+        await user.click(app.getByText('Add photos'));
+        const fileInput = app.getByTestId('photo-input');
+        fireEvent.change(fileInput, { target: { files: [
+            new File(['file1'], 'file1.jpg', { type: 'image/jpeg' }),
+            new File(['file2'], 'file2.jpg', { type: 'image/jpeg' })
+        ] } });
+        await user.click(app.getByText('Upload'));
+
+        // Confirm both mock photos rendered to the timeline
+        expect(within(timeline).getByTitle('12:52 PM - June 21, 2024').children[0].tagName).toBe('IMG');
+        expect(within(timeline).getByTitle('12:54 PM - June 21, 2024').children[0].tagName).toBe('IMG');
+    });
+
+    it('updates timeline QuickNavigation options when sections are added/removed', async () => {
+        // Get QuickNavigation menu options, confirm 1 year option (2024)
+        const quickNav = app.getByText('History').nextSibling;
+        expect(quickNav.tagName).toBe('UL');
+        expect(quickNav.children.length).toBe(1);
+        expect(quickNav.children[0].textContent).toContain('2024');
+
+        // Simulate user creating a water event in 2025
+        const dateTimeInput = app.container.querySelector('input');
+        fireEvent.input(
+            dateTimeInput,
+            {target: {value: '2025-02-20T12:00:00'}}
+        );
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "action": "water",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
+        await user.click(app.getByRole("button", {name: "Water"}));
+
+        // Confirm 2025 menu option was added
+        expect(quickNav.children.length).toBe(2);
+        expect(quickNav.children[0].textContent).toContain('2025');
+        expect(quickNav.children[1].textContent).toContain('2024');
+
+        // Open event history modal, delete 2025 event
+        await user.click(app.getByText('Delete events'));
+        const modal = app.getByText('Event History').parentElement;
+        await user.click(within(modal).getByText(/2025/));
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "deleted": [
+                    {"type": "water", "timestamp": "2025-02-20T20:00:00+00:00"}
+                ],
+                "failed": []
+            })
+        }));
+        await user.click(within(modal).getByText('Delete'));
+
+        // Confirm 2025 menu option was removed
+        expect(quickNav.children.length).toBe(1);
+        expect(quickNav.children[0].textContent).toContain('2024');
     });
 });

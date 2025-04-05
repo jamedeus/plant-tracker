@@ -12,8 +12,19 @@
 
 /* Allow overflow when collapse is open */
 /* Prevents FilterColumn sort dropdown getting cut off when only 1 item */
-.collapse:has(input[type="checkbox"]:checked) {
+.collapse:has(> input[type="checkbox"]:checked) {
     @apply overflow-visible;
+}
+
+/* Prevent PlantCard and GroupCard from expanding when focused */
+/* Causes card to start expanding while page loads when href is clicked */
+.card-collapse:focus:not(:has(> input[type="checkbox"]:checked)) {
+    grid-template-rows: auto 0fr;
+}
+.card-collapse:focus:not(:has(> input[type="checkbox"]:checked)) > .collapse-content {
+    visibility: hidden;
+    min-height: 0px;
+    padding-bottom: 0rem;
 }
 
 .max-w-90 {
@@ -97,6 +108,15 @@ html[data-theme="light"] .pot-size-selected::placeholder {
     @apply left-1/2 transform -translate-x-1/2;
 }
 
+.dropdown-options {
+    @apply menu menu-md dropdown-content z-[99] p-2 shadow bg-base-300 rounded-box;
+}
+
+/* Wraps Navbar title dropdown contents (plant/group details) */
+.details-card {
+    @apply card card-compact w-72 p-2 mt-2 mx-auto shadow bg-neutral text-neutral-content;
+}
+
 .btn-prune {
     @apply bg-prune text-warning-content border border-transparent;
 }
@@ -147,4 +167,23 @@ html[data-theme="light"] .pot-size-selected::placeholder {
 /* Prevent iOS zooming in when textarea focused */
 .textarea {
     @apply text-base;
+}
+
+/* Fix modal filling full height on iOS safari when address bar visible */
+.modal-box {
+    max-height: calc(100dvh - 5em);
+}
+
+.floating-footer {
+    @apply fixed bottom-0 left-1/2 -translate-x-1/2 z-50;
+    @apply flex flex-row my-4 p-4 bg-gray-600/50 rounded-box shadow-inner;
+    @apply transition-all duration-300 flex flex-row;
+}
+
+.floating-footer-hidden {
+    @apply translate-y-24 scale-90;
+}
+
+.floating-footer-visible {
+    @apply translate-y-0 scale-100;
 }

@@ -37,6 +37,9 @@ describe('App', () => {
         // Confirm arbitrary error does not appear on page
         expect(app.queryByText(/failed to edit group details/)).toBeNull();
 
+        // Open edit modal
+        await user.click(app.getByText("Edit"));
+
         // Click submit button inside edit modal
         const modal = app.getByText("Edit Details").parentElement;
         await user.click(within(modal).getByText("Edit"));
@@ -76,9 +79,12 @@ describe('App', () => {
         // Confirm arbitrary error does not appear on page
         expect(app.queryByText(/failed to add plants to group/)).toBeNull();
 
+        // Open AddPlantsModal modal
+        await user.click(app.getByText("Add plants"));
+
         // Simulate user selecting first plant in modal and clicking add
         const addPlantsModal = app.getByText("Add Plants").parentElement;
-        await user.click(addPlantsModal.querySelectorAll('.radio')[0]);
+        await user.click(addPlantsModal.querySelectorAll('label.cursor-pointer')[0]);
         await user.click(addPlantsModal.querySelector('.btn-success'));
 
         // Confirm modal appeared with arbitrary error text
@@ -97,9 +103,12 @@ describe('App', () => {
         // Confirm arbitrary error does not appear on page
         expect(app.queryByText(/failed to remove plants from group/)).toBeNull();
 
+        // Open RemovePlantsModal modal
+        await user.click(app.getByText("Remove plants"));
+
         // Simulate user selecting first plant in modal and clicking remove
         const addPlantsModal = app.getByText("Remove Plants").parentElement;
-        await user.click(addPlantsModal.querySelectorAll('.radio')[0]);
+        await user.click(addPlantsModal.querySelectorAll('label.cursor-pointer')[0]);
         await user.click(addPlantsModal.querySelector('.btn-error'));
 
         // Confirm modal appeared with arbitrary error text

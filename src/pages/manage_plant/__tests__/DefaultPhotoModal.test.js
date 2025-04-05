@@ -1,30 +1,40 @@
-import React, { useState } from 'react';
-import DefaultPhotoModal, { openDefaultPhotoModal } from '../DefaultPhotoModal';
+import React from 'react';
+import createMockContext from 'src/testUtils/createMockContext';
+import DefaultPhotoModal, {
+    openDefaultPhotoModal,
+    closeDefaultPhotosModal
+} from '../DefaultPhotoModal';
+import { ReduxProvider } from '../store';
 import { mockContext } from './mockContext';
 import { PageWrapper } from 'src/index';
 import { postHeaders } from 'src/testUtils/headers';
 
 const TestComponent = () => {
-    const [photoUrls] = useState(mockContext.photo_urls);
-
     // Render app
     return (
-        <>
+        <ReduxProvider>
             <DefaultPhotoModal
                 plantID='0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-                photoUrls={photoUrls}
             />
             <button onClick={openDefaultPhotoModal}>
                 Open photo modal
             </button>
-        </>
+        </ReduxProvider>
     );
 };
 
 describe('DefaultPhotoModal', () => {
     let app, user;
 
-    beforeEach(() => {
+    beforeAll(() => {
+        // Create mock state objects (used by ReduxProvider)
+        createMockContext('plant_details', mockContext.plant_details);
+        createMockContext('events', {});
+        createMockContext('notes', []);
+        createMockContext('photos', mockContext.photos);
+    });
+
+    beforeEach(async () => {
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
@@ -32,6 +42,12 @@ describe('DefaultPhotoModal', () => {
                 <TestComponent />
             </PageWrapper>
         );
+
+        // Open modal
+        await user.click(app.getByText('Open photo modal'));
+        await waitFor(() => {
+            expect(app.container.querySelector('#slide1')).not.toBeNull();
+        });
     });
 
     it('sends correct payload when default photo is selected', async () => {
@@ -52,7 +68,7 @@ describe('DefaultPhotoModal', () => {
             method: 'POST',
             body: JSON.stringify({
                 plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                photo_key: 1,
+                photo_key: 3,
             }),
             headers: postHeaders
         });
@@ -76,9 +92,9 @@ describe('DefaultPhotoModal', () => {
         expect(app.queryByText(/unable to find photo/)).not.toBeNull();
     });
 
-    it('opens modal when openPhotoModal called', async () => {
+    it('closes modal when cancel button clicked', async () => {
         // Click button, confirm HTMLDialogElement method was called
-        await user.click(app.getByText('Open photo modal'));
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
+        closeDefaultPhotosModal();
+        expect(HTMLDialogElement.prototype.close).toHaveBeenCalled();
     });
 });

@@ -33,43 +33,32 @@ describe('App', () => {
     it('opens modal when Print QR Codes dropdown option clicked', async () => {
         // Confirm modal has not been opened
         expect(HTMLDialogElement.prototype.showModal).not.toHaveBeenCalled();
+        expect(app.queryByText('96 QR codes per sheet')).toBeNull();
 
         // Click Print QR Codes dropdown option, confirm modal opened
         await user.click(app.getByText("Print QR Codes"));
         expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
+        expect(app.queryByText(/QR codes per sheet/)).not.toBeNull();
     });
 
     it('shows checkboxes and delete button when edit option clicked', async () => {
-        // Confirm delete button and checkboxes are not visible
-        expect(app.queryByText('Delete')).toBeNull();
-        expect(app.container.querySelectorAll('.radio').length).toBe(0);
-
-        // Confirm plant and group cards have href to manage page
-        expect(
-            app.getByText('Test Plant').parentElement.parentElement.parentElement
-        ).toHaveAttribute('href', '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12');
-        expect(
-            app.getByText('Test group').parentElement.parentElement.parentElement
-        ).toHaveAttribute('href', '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14');
+        // Get reference to footer, confirm hidden (default)
+        const floatingFooter = app.getByTestId('floating-footer');
+        expect(floatingFooter.classList).toContain('floating-footer-hidden');
+        // Checkboxes are rendered underneath card with position: absolute, so
+        // they are not visible until margin-left is added to the card wrapper
+        expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(0);
 
         // Click Edit option, confirm buttons and checkboxes appear
         await user.click(app.getByText("Edit"));
-        expect(app.getByText('Delete').nodeName).toBe('BUTTON');
-        expect(app.container.querySelectorAll('.radio').length).not.toBe(0);
-
-        // Confirm cards no longer have href
-        expect(
-            app.getByText('Test Plant').parentElement.parentElement.parentElement
-        ).not.toHaveAttribute('href');
-        expect(
-            app.getByText('Test group').parentElement.parentElement.parentElement
-        ).not.toHaveAttribute('href');
+        expect(floatingFooter.classList).toContain('floating-footer-visible');
+        expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).not.toBe(0);
 
         // Click cancel button, confirm buttons and checkboxes disappear
-        const buttonDiv = app.container.querySelector('.sticky.bottom-4');
+        const buttonDiv = app.container.querySelector('.floating-footer');
         await user.click(within(buttonDiv).getByText('Cancel'));
-        expect(app.queryByText('Delete')).toBeNull();
-        expect(app.container.querySelectorAll('.radio').length).toBe(0);
+        expect(floatingFooter.classList).toContain('floating-footer-hidden');
+        expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(0);
     });
 
     it('sends correct payload when plants are deleted', async () => {
@@ -83,7 +72,7 @@ describe('App', () => {
 
         // Click edit option, click first checkbox (plant)
         await user.click(app.getByText("Edit"));
-        await user.click(app.container.querySelectorAll('.radio')[0]);
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
 
         // Click delete button in floating div
         await user.click(app.getByText('Delete'));
@@ -109,7 +98,7 @@ describe('App', () => {
 
         // Click edit option, click first checkbox (plant)
         await user.click(app.getByText("Edit"));
-        await user.click(app.container.querySelectorAll('.radio')[0]);
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
 
         // Click archive button in floating div
         await user.click(app.getByText('Archive'));
@@ -136,7 +125,7 @@ describe('App', () => {
 
         // Click edit option, click second checkbox (group)
         await user.click(app.getByText("Edit"));
-        await user.click(app.container.querySelectorAll('.radio')[1]);
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[1]);
 
         // Click delete button in floating div
         await user.click(app.getByText('Delete'));
@@ -162,7 +151,7 @@ describe('App', () => {
 
         // Click edit option, click second checkbox (group)
         await user.click(app.getByText("Edit"));
-        await user.click(app.container.querySelectorAll('.radio')[1]);
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[1]);
 
         // Click archive button in floating div
         await user.click(app.getByText('Archive'));

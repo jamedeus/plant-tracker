@@ -1,13 +1,11 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import Navbar from 'src/components/Navbar';
 import { useTheme } from 'src/context/ThemeContext';
-import GroupCard from 'src/components/GroupCard';
-import PlantCard from 'src/components/PlantCard';
 import { sendPostRequest, parseDomContext } from 'src/util';
-import FilterColumn from 'src/components/FilterColumn';
 import FloatingFooter from 'src/components/FloatingFooter';
-import PrintModal from './PrintModal';
-import { useIsBreakpointActive } from "src/useBreakpoint";
+import PrintModal, { openPrintModal } from './PrintModal';
+import { useIsBreakpointActive } from 'src/useBreakpoint';
+import Layout from './Layout';
 
 function App() {
     // Load context set by django template
@@ -38,7 +36,7 @@ function App() {
                     setPlants(data['plants']);
                     setGroups(data['groups']);
                 } else {
-                    alert('Failed to fetch current state, page may be outdated');
+                    alert('Failed to fetch new data, page may be outdated');
                 }
             }
         };
@@ -52,52 +50,58 @@ function App() {
         }
     }, []);
 
-    // Create ref for modal used to generate QR codes
-    const printModalRef = useRef(null);
-
-    // Get toggle theme option from context
-    const { ToggleThemeOption } = useTheme();
-
     // State object to track edit mode (shows checkbox for each card when true)
     const [editing, setEditing] = useState(false);
 
-    // Track which plant and group checkboxes the user has selected
-    const selectedPlants = useRef([]);
-    const selectedGroups = useRef([]);
+    // FormRefs for PlantsCol and GroupsCol, used to read user selection
+    const selectedPlantsRef = useRef(null);
+    const selectedGroupsRef = useRef(null);
 
-    // Track plant and group column open state between re-renders
-    const plantsOpenRef = useRef(true);
-    const groupsOpenRef = useRef(true);
+    // Returns array of selected plant UUIDs parsed from PlantsCol form
+    const getSelectedPlants = () => {
+        if (selectedPlantsRef.current) {
+            const selected = new FormData(selectedPlantsRef.current);
+            return Array.from(selected.keys());
+        } else {
+            return [];
+        }
+    };
+
+    // Returns array of selected group UUIDs parsed from GroupsCol form
+    const getSelectedGroups = () => {
+        if (selectedGroupsRef.current) {
+            const selected = new FormData(selectedGroupsRef.current);
+            return Array.from(selected.keys());
+        } else {
+            return [];
+        }
+    };
 
     // Refs used to jump to top of plant and group columns
     const plantsColRef = useRef(null);
     const groupsColRef = useRef(null);
 
-    // Handler for edit option in top-left dropdown
-    // Toggle editing state, clear selected, remove focus (closes dropdown)
-    const toggleEditing = () => {
-        setEditing(!editing);
-        selectedPlants.current = [];
-        selectedGroups.current = [];
-        document.activeElement.blur();
-    };
+    // Get toggle theme option from context
+    const { ToggleThemeOption } = useTheme();
 
     // Handler for delete button that appears while editing
     const handleDelete = () => {
+        const selectedPlants = getSelectedPlants();
         // Send delete request for each selected plant, remove uuid from state
-        selectedPlants.current.forEach(async plant_id => {
+        selectedPlants.forEach(async plant_id => {
             await sendPostRequest('/delete_plant', {plant_id: plant_id});
         });
         setPlants(plants.filter(
-            plant => !selectedPlants.current.includes(plant.uuid))
+            plant => !selectedPlants.includes(plant.uuid))
         );
 
+        const selectedGroups = getSelectedGroups();
         // Send delete request for each selected group, remove uuid from state
-        selectedGroups.current.forEach(async group_id => {
+        selectedGroups.forEach(async group_id => {
             await sendPostRequest('/delete_group', {group_id: group_id});
         });
         setGroups(groups.filter(
-            group => !selectedGroups.current.includes(group.uuid))
+            group => !selectedGroups.includes(group.uuid))
         );
 
         // Reset editing state
@@ -109,141 +113,77 @@ function App() {
     // groups to backend then removes from frontend state.
     // Takes bool argument (true if archiving, false if un-archiving)
     const handleArchive = (archived) => {
+        const selectedPlants = getSelectedPlants();
         // Send archive request for each selected plant, remove uuid from state
-        selectedPlants.current.forEach(async plant_id => {
+        selectedPlants.forEach(async plant_id => {
             await sendPostRequest(
                 '/archive_plant',
                 {plant_id: plant_id, archived: archived}
             );
         });
         setPlants(plants.filter(
-            plant => !selectedPlants.current.includes(plant.uuid))
+            plant => !selectedPlants.includes(plant.uuid))
         );
 
+
+        const selectedGroups = getSelectedGroups();
         // Send archive request for each selected group, remove uuid from state
-        selectedGroups.current.forEach(async group_id => {
+        selectedGroups.forEach(async group_id => {
             await sendPostRequest(
                 '/archive_group',
                 {group_id: group_id, archived: archived}
             );
         });
         setGroups(groups.filter(
-            group => !selectedGroups.current.includes(group.uuid))
+            group => !selectedGroups.includes(group.uuid))
         );
 
         // Reset editing state
         setEditing(false);
     };
 
-    // Rendered when both state objects are empty, shows setup instructions
-    const Setup = () => {
-        return (
-            <div className="flex flex-col mx-auto text-center my-auto px-8">
-                <p className="text-2xl">No plants found!</p>
-                <ul className="steps steps-vertical my-8">
-                    <li className="step">Print QR codes on sticker paper</li>
-                    <li className="step">Add a sticker to each plant pot</li>
-                    <li className="step">Scan codes to register plants!</li>
-                </ul>
-                <button
-                    className="btn btn-accent text-lg"
-                    onClick={() => printModalRef.current.open()}
-                >
-                    Print QR Codes
-                </button>
-            </div>
-        );
-    };
+    // Top left corner dropdown options
+    const DropdownMenuOptions = useMemo(() => {
+        // Toggle editing state, remove focus (closes dropdown)
+        const toggleEditing = () => {
+            setEditing(!editing);
+            document.activeElement.blur();
+        };
 
-    const PlantsCol = () => {
-        return (
-            <FilterColumn
-                title="Plants"
-                contents={plants}
-                CardComponent={PlantCard}
-                editing={editing}
-                selected={selectedPlants}
-                openRef={plantsOpenRef}
-                ignoreKeys={[
-                    'uuid',
-                    'created',
-                    'last_watered',
-                    'last_fertilized',
-                    'thumbnail'
-                ]}
-                sortByKeys={[
-                    {key: 'created', display: 'Added'},
-                    {key: 'display_name', display: 'Name'},
-                    {key: 'species', display: 'Species'},
-                    {key: 'last_watered', display: 'Watered'}
-                ]}
-                defaultSortKey='created'
-                storageKey='overviewPlantsColumn'
-            />
-        );
-    };
-
-    const GroupsCol = () => {
-        return (
-            <FilterColumn
-                title="Groups"
-                contents={groups}
-                CardComponent={GroupCard}
-                editing={editing}
-                selected={selectedGroups}
-                openRef={groupsOpenRef}
-                ignoreKeys={[
-                    'uuid',
-                    'created'
-                ]}
-                sortByKeys={[
-                    {key: 'created', display: 'Added'},
-                    {key: 'name', display: 'Name'},
-                    {key: 'location', display: 'Location'}
-                ]}
-                defaultSortKey='created'
-                storageKey='overviewGroupsColumn'
-            />
-        );
-    };
-
-    // Render correct components for current state objects
-    const Layout = () => {
-        switch(true) {
-            // Render 2-column layout if both plants and groups exist
-            case(plants.length > 0 && groups.length > 0):
+        switch(archivedOverview) {
+            case(true):
                 return (
-                    <div className="grid grid-cols-1 md:grid-cols-2 mx-auto">
-                        <div
-                            className="md:mr-12 mb-8 md:mb-0 scroll-mt-20"
-                            ref={plantsColRef}
-                        >
-                            <PlantsCol />
-                        </div>
-
-                        <div
-                            className="md:ml-12 scroll-mt-20"
-                            ref={groupsColRef}
-                        >
-                            <GroupsCol />
-                        </div>
-                    </div>
+                    <>
+                        <li><a onClick={toggleEditing}>
+                            Edit
+                        </a></li>
+                        <ToggleThemeOption />
+                        <li><a href='/'>
+                            Main overview
+                        </a></li>
+                    </>
                 );
-            // Render centered plants column if only plants exist
-            case(plants.length > 0):
-                return <PlantsCol />;
-            // Render centered groups column if only groups exist
-            case(groups.length > 0):
-                return <GroupsCol />;
-            // Render setup instructions if database is empty
-            default:
-                return <Setup />;
+            case(false):
+                return (
+                    <>
+                        <li><a onClick={toggleEditing}>
+                            Edit
+                        </a></li>
+                        <li><a onClick={openPrintModal}>
+                            Print QR Codes
+                        </a></li>
+                        <ToggleThemeOption />
+                        <li><a href='/archived'>
+                            Archived plants
+                        </a></li>
+                    </>
+                );
         }
-    };
+    }, [editing, ToggleThemeOption]);
 
     // Dropdown with links to jump to plant or group columns
     // Only rendered on mobile layout (both columns always visible on desktop)
-    const QuickNavigation = () => {
+    const TitleQuickNavigation = useMemo(() => {
         const jumpToPlants = () => {
             plantsColRef.current.scrollIntoView({
                 behavior: "smooth",
@@ -261,11 +201,7 @@ function App() {
         };
 
         return (
-            <ul
-                tabIndex={0}
-                className={`menu menu-md dropdown-content mt-3 z-[99]
-                            p-2 shadow bg-base-300 rounded-box w-24`}
-            >
+            <ul tabIndex={0} className="dropdown-options mt-3 w-24">
                 <li className="mx-auto"><a onClick={jumpToPlants}>
                     Plants
                 </a></li>
@@ -274,73 +210,57 @@ function App() {
                 </a></li>
             </ul>
         );
-    };
-
-    // Top-left menu button contents for main overview page
-    const OverviewMenuOptions = () => {
-        return (
-            <>
-                <li><a onClick={toggleEditing}>
-                    Edit
-                </a></li>
-                <li><a onClick={() => printModalRef.current.open()}>
-                    Print QR Codes
-                </a></li>
-                <ToggleThemeOption />
-                <li><a href='/archived'>
-                    Archived plants
-                </a></li>
-            </>
-        );
-    };
-
-    // Top-left menu button contents for archived overview page
-    const ArchivedOverviewMenuOptions = () => {
-        return (
-            <>
-                <li><a onClick={toggleEditing}>
-                    Edit
-                </a></li>
-                <ToggleThemeOption />
-                <li><a href='/'>
-                    Main overview
-                </a></li>
-            </>
-        );
-    };
+    }, []);
 
     return (
-        <div className="container flex flex-col min-h-screen mx-auto pb-16">
+        <div className="container flex flex-col min-h-screen mx-auto pb-28">
             <Navbar
-                menuOptions={archivedOverview ?
-                    <ArchivedOverviewMenuOptions /> :
-                    <OverviewMenuOptions />
-                }
+                menuOptions={DropdownMenuOptions}
                 title={archivedOverview ? "Archived" : "Plant Overview"}
-                titleOptions={stackedColumns ? <QuickNavigation /> : null}
+                titleOptions={stackedColumns ? TitleQuickNavigation : null}
             />
 
-            <Layout />
+            <Layout
+                plants={plants}
+                groups={groups}
+                selectedPlantsRef={selectedPlantsRef}
+                selectedGroupsRef={selectedGroupsRef}
+                editing={editing}
+                plantsColRef={plantsColRef}
+                groupsColRef={groupsColRef}
+            />
 
             <FloatingFooter visible={editing}>
-                <button className="btn btn-neutral mr-4" onClick={() => setEditing(false)}>
+                <button
+                    className="btn btn-neutral mr-4"
+                    onClick={() => setEditing(false)}
+                >
                     Cancel
                 </button>
                 {archivedOverview ? (
-                    <button className="btn mx-4" onClick={() => handleArchive(false)}>
+                    <button
+                        className="btn mx-4"
+                        onClick={() => handleArchive(false)}
+                    >
                         Un-archive
                     </button>
                 ) : (
-                    <button className="btn mx-4" onClick={() => handleArchive(true)}>
+                    <button
+                        className="btn mx-4"
+                        onClick={() => handleArchive(true)}
+                    >
                         Archive
                     </button>
                 )}
-                <button className="btn btn-error ml-4" onClick={handleDelete}>
+                <button
+                    className="btn btn-error ml-4"
+                    onClick={handleDelete}
+                >
                     Delete
                 </button>
             </FloatingFooter>
 
-            <PrintModal ref={printModalRef} />
+            <PrintModal />
         </div>
     );
 }

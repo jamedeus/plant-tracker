@@ -1,54 +1,36 @@
-import React, { useRef } from 'react';
+import React, { useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import EditableNodeList from 'src/components/EditableNodeList';
 import PlantCard from 'src/components/PlantCard';
 import Modal from 'src/components/Modal';
-import { sendPostRequest } from 'src/util';
-import { showErrorModal } from 'src/components/ErrorModal';
 
-let removePlantsModalRef;
+let modalRef;
 
 export const openRemovePlantsModal = () => {
-    removePlantsModalRef.current.showModal();
+    modalRef.current.open();
 };
 
-const RemovePlantsModal = ({ groupID, plantDetails, setPlantDetails }) => {
-    removePlantsModalRef = useRef(null);
+const RemovePlantsModal = memo(function RemovePlantsModal({ plantDetails, removePlants }) {
+    modalRef = useRef(null);
 
-    // Ref to track selected items
-    const selected = useRef([]);
+    // Ref used to read selected items from EditableNodeList form
+    const formRef = useRef(null);
 
-    // Handler for remove button in manage plants modal
-    const removePlants = async () => {
-        const payload = {
-            group_id: groupID,
-            plants: selected.current
-        };
-        const response = await sendPostRequest(
-            '/bulk_remove_plants_from_group',
-            payload
-        );
-        if (response.ok) {
-            // Remove UUIDs in response from plantDetails
-            const data = await response.json();
-            setPlantDetails(plantDetails.filter(
-                plant => !data.removed.includes(plant.uuid)
-            ));
-        } else {
-            const error = await response.json();
-            showErrorModal(JSON.stringify(error));
-        }
+    // Parses array of selected plant UUIDs, passes to removePlants callback
+    const submit = () => {
+        const selected = new FormData(formRef.current);
+        removePlants(Array.from(selected.keys()));
     };
 
     return (
         <Modal
-            dialogRef={removePlantsModalRef}
             title='Remove Plants'
+            ref={modalRef}
             className='max-w-[26rem]'
         >
-            <div className="max-h-screen md:max-h-half-screen overflow-scroll pr-4 mt-4">
+            <div className="max-h-screen md:max-h-half-screen overflow-y-scroll pr-4 mt-4">
                 {plantDetails.length > 0 ? (
-                    <EditableNodeList editing={true} selected={selected}>
+                    <EditableNodeList editing={true} formRef={formRef}>
                         {plantDetails.map((plant) => (
                             <PlantCard
                                 key={plant.uuid}
@@ -69,7 +51,7 @@ const RemovePlantsModal = ({ groupID, plantDetails, setPlantDetails }) => {
                     </button>
                     <button
                         className="btn btn-error ml-2"
-                        onClick={removePlants}
+                        onClick={submit}
                     >
                         Remove
                     </button>
@@ -77,12 +59,11 @@ const RemovePlantsModal = ({ groupID, plantDetails, setPlantDetails }) => {
             </div>
         </Modal>
     );
-};
+});
 
 RemovePlantsModal.propTypes = {
-    groupID: PropTypes.string.isRequired,
     plantDetails: PropTypes.array.isRequired,
-    setPlantDetails: PropTypes.func.isRequired
+    removePlants: PropTypes.func.isRequired
 };
 
 export default RemovePlantsModal;
