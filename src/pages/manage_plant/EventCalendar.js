@@ -6,8 +6,7 @@ import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/16/solid';
 import { useSelector } from 'react-redux';
 
 const EventCalendar = memo(function EventCalendar() {
-    // Object with date strings as keys, object with events, notes, and photo
-    // keys as values
+    // Object with date strings as keys, array of event types as value
     const calendarDays = useSelector((state) => state.timeline.calendarDays);
 
     // Takes date object, returns div with colored dots for each event on date
@@ -24,7 +23,7 @@ const EventCalendar = memo(function EventCalendar() {
         // Return div containing 1 span for each event on day
         return (
             <div className="dots">
-                {dateEvents.events.map((eventType, index) => (
+                {dateEvents.map((eventType, index) => (
                     <span key={index} className={`dot dot-${eventType}`} />
                 ))}
             </div>

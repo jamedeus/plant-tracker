@@ -70,10 +70,21 @@ export const timelineSlice = createSlice({
             repot: []
         },
         // Keys are YYYY-MM-DD in user's local timezone
+        // Values are array of event types (eg ['water', 'fertilize'])
         calendarDays: {},
         // Keys are YYYY-MM-DD in user's local timezone
+        // Values are objects with 3 keys:
+        //   events      (array of strings)
+        //   notes       (array of objects with text and timestamp keys)
+        //   photos      (array of objects with same keys as photos state)
         timelineDays: {},
+        // Array of objects each representing 1 photo, keys:
+        //   created     (full ISO timestamp in UTC)
+        //   image       (full resolution URL)
+        //   thumbnail   (thumbnail image URL)
+        //   key         (backend database key used to delete photo)
         photos: [],
+        // Keys are year strings (YYYY), values are array of month strings (MM)
         navigationOptions: {}
     },
     reducers: {
@@ -93,25 +104,21 @@ export const timelineSlice = createSlice({
                     notes: [],
                     photos: []
                 };
-                state.calendarDays[dateKey] = day;
+                state.calendarDays[dateKey] = day.events;
                 state.timelineDays[dateKey] = day;
                 // Add navigationOption if first dateKey in year + month
                 addNavigationOption(state, dateKey);
 
             // Add new events to existing dateKey in calendarDays and timelineDays
             } else if (!state.timelineDays[dateKey].events.includes(newEvent.type)) {
-                const newDay = {
-                    ...state.timelineDays[dateKey],
-                    events: [
-                        ...state.timelineDays[dateKey].events,
-                        newEvent.type
-                    ]
-                };
-                newDay.events.sort(
+                const newEvents = [
+                    ...state.timelineDays[dateKey].events,
+                    newEvent.type
+                ].sort(
                     (a, b) => EVENTS_ORDER.indexOf(a) - EVENTS_ORDER.indexOf(b)
                 );
-                state.calendarDays[dateKey] = newDay;
-                state.timelineDays[dateKey] = newDay;
+                state.calendarDays[dateKey] = newEvents;
+                state.timelineDays[dateKey].events = newEvents;
             }
         },
 
@@ -136,7 +143,7 @@ export const timelineSlice = createSlice({
                     event => event !== deletedEvent.type
                 );
                 state.timelineDays[dateKey].events = newEvents;
-                state.calendarDays[dateKey].events = newEvents;
+                state.calendarDays[dateKey] = newEvents;
                 // Remove calendarDays and timelineDays day if no content left
                 removeDateKeyIfEmpty(state, dateKey);
             }

@@ -31,19 +31,16 @@ const formatEvents = (events) => {
 };
 
 // Takes events, notes, and photos context objects from django backend
-// Merges and returns 2 state objects:
-// - calendarDays: YYYY-MM-DD keys containing objects with events, notes, and
-//   photos keys (all arrays, only events populated). Used by EventCalendar.
+// Merges and returns 3 state objects:
+// - calendarDays: YYYY-MM-DD keys containing arrays of event type strings.
+//   Used by EventCalendar component.
 // - timelineDays: YYYY-MM-DD keys containing objects with events, notes, and
 //   photos keys (all arrays, all populated). Used by Timeline component.
 // - navigationOptions: YYYY keys containing array of MM strings, populates
-//   quick navigation dropdown options at top of Timeline component
+//   QuickNavigation options in dropdown at top of Timeline component.
 export const buildStateObjects = (events, notes, photos) => {
-    // Convert to object with YYYY-MM-DD keys (used by EventCalendar component)
-    const calendarDays = formatEvents(events);
-
-    // Create copy to add notes and photos to (used by Timeline component)
-    const timelineDays = { ...calendarDays };
+    // Convert to object with YYYY-MM-DD keys (used by Timeline component)
+    const timelineDays = formatEvents(events);
 
     // Add objects from photos context to photos key under correct dateKey
     photos.sort((a, b) => {
@@ -78,6 +75,14 @@ export const buildStateObjects = (events, notes, photos) => {
             navigationOptions[year].push(month);
         }
     });
+
+    // Build calendarDays object (only contains events, used by EventCalendar)
+    const calendarDays = {}
+    Object.keys(timelineDays).forEach(dateKey => {
+        if (timelineDays[dateKey].events.length) {
+            calendarDays[dateKey] = timelineDays[dateKey].events
+        }
+    })
 
     return {
         calendarDays,
