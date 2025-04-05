@@ -30,16 +30,11 @@ const formatEvents = (events) => {
     );
 };
 
-// Takes events, notes, and photos context objects from django backend
-// Merges and returns 3 state objects:
-// - calendarDays: YYYY-MM-DD keys containing arrays of event type strings.
-//   Used by EventCalendar component.
-// - timelineDays: YYYY-MM-DD keys containing objects with events, notes, and
-//   photos keys (all arrays, all populated). Used by Timeline component.
-// - navigationOptions: YYYY keys containing array of MM strings, populates
-//   QuickNavigation options in dropdown at top of Timeline component.
-export const buildStateObjects = (events, notes, photos) => {
-    // Convert to object with YYYY-MM-DD keys (used by Timeline component)
+// Takes events, notes, and photos context objects from django backend, returns
+// timelineDays state used by Timeline component (YYYY-MM-DD keys containing
+// objects with events, notes, and photos keys).
+export const buildTimelineDays = (events, notes, photos) => {
+    // Convert to object with YYYY-MM-DD keys
     const timelineDays = formatEvents(events);
 
     // Add objects from photos context to photos key under correct dateKey
@@ -63,8 +58,24 @@ export const buildStateObjects = (events, notes, photos) => {
         timelineDays[dateKey].notes.push(note);
     });
 
-    // Build object used to populate quick navigation menu
-    // Contains years as keys, list of month numbers as values
+    return timelineDays;
+};
+
+// Takes timelineDays state, flattens and returns calendarDays state used by
+// EventCalendar component (YYYY-MM-DD keys containing array of event strings).
+export const buildCalendarDays = (timelineDays) => {
+    const calendarDays = {}
+    Object.keys(timelineDays).forEach(dateKey => {
+        if (timelineDays[dateKey].events.length) {
+            calendarDays[dateKey] = timelineDays[dateKey].events
+        }
+    })
+    return calendarDays;
+};
+
+// Takes timelineDays state, returns navigationOptions state used to populate
+// timeline QuickNavigation options (YYYY keys containing array of MM strings).
+export const buildNavigationOptions = (timelineDays) => {
     const navigationOptions = {};
     Object.keys(timelineDays).forEach(dateString => {
         const [year, month] = dateString.split('-');
@@ -75,20 +86,7 @@ export const buildStateObjects = (events, notes, photos) => {
             navigationOptions[year].push(month);
         }
     });
-
-    // Build calendarDays object (only contains events, used by EventCalendar)
-    const calendarDays = {}
-    Object.keys(timelineDays).forEach(dateKey => {
-        if (timelineDays[dateKey].events.length) {
-            calendarDays[dateKey] = timelineDays[dateKey].events
-        }
-    })
-
-    return {
-        calendarDays,
-        timelineDays,
-        navigationOptions
-    };
+    return navigationOptions;
 };
 
 // Takes initial plantSlice and timelineSlice states, returns redux store
@@ -114,11 +112,9 @@ export function ReduxProvider({ children }) {
         const notes = parseDomContext('notes');
 
         // Build state objects
-        const {
-            calendarDays,
-            timelineDays,
-            navigationOptions
-        } = buildStateObjects(eventsByType, notes, photos);
+        const timelineDays = buildTimelineDays(eventsByType, notes, photos);
+        const calendarDays = buildCalendarDays(timelineDays);
+        const navigationOptions = buildNavigationOptions(timelineDays);
 
         // Return object with keys expected by plantSlice and timelineSlice
         return {

@@ -1,7 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { timestampToDateString } from 'src/timestampUtils';
-import { buildStateObjects } from './store';
 import { backButtonPressed } from './plantSlice';
+import {
+    buildTimelineDays,
+    buildCalendarDays,
+    buildNavigationOptions
+} from './store';
 
 // Correct order for event markers within a single timeline day (readability)
 const EVENTS_ORDER = ['water', 'fertilize', 'prune', 'repot'];
@@ -251,19 +255,15 @@ export const timelineSlice = createSlice({
         // Rebuild all states when user navigates to the page with back button
         // (fetches new state from backend to replace outdated contents)
         builder.addCase(backButtonPressed.fulfilled, (state, action) => {
-            const {
-                calendarDays,
-                timelineDays,
-                navigationOptions
-            } = buildStateObjects(
+            const newTimelineDays = buildTimelineDays(
                 action.payload.events,
                 action.payload.notes,
                 action.payload.photos
             );
             state.eventsByType = action.payload.events;
-            state.calendarDays = calendarDays;
-            state.timelineDays = timelineDays;
-            state.navigationOptions = navigationOptions;
+            state.timelineDays = newTimelineDays;
+            state.calendarDays = buildCalendarDays(newTimelineDays);
+            state.navigationOptions = buildNavigationOptions(newTimelineDays);
         });
     }
 });
