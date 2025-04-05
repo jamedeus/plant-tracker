@@ -35,7 +35,13 @@ const PrevPhotoIcon = memo(function PrevPhotoIcon() {
 });
 
 // Renders single photo slide with next, prev, and select buttons
-const PhotoSlide = memo(function PhotoSlide({ photo, nextPhotoLink, prevPhotoLink, selected, toggle }) {
+const PhotoSlide = memo(function PhotoSlide({
+    photo,
+    nextPhotoLink,
+    prevPhotoLink,
+    selected,
+    toggle
+}) {
     return (
         <div id={`photo${photo.key}`} className="carousel-item relative w-full mx-1">
             <div className="flex flex-col mx-auto">

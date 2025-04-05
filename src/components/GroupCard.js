@@ -4,7 +4,15 @@ import clsx from 'clsx';
 import { ChevronDownIcon } from '@heroicons/react/16/solid';
 import GroupDetails from 'src/components/GroupDetails';
 
-const GroupCard = memo(function GroupCard({ display_name, plants, uuid, location, description, linkPage=true, archived=false }) {
+const GroupCard = memo(function GroupCard({
+    display_name,
+    plants,
+    uuid,
+    location,
+    description,
+    linkPage=true,
+    archived=false
+}) {
     // ID for hidden checkbox that controls details collapse open/close state
     const checkboxId = useId();
 
@@ -18,7 +26,11 @@ const GroupCard = memo(function GroupCard({ display_name, plants, uuid, location
             )}
         >
             {/* Hidden checkbox controls open/close state */}
-            <input id={checkboxId} type="checkbox" className="hidden pointer-events-none" />
+            <input
+                id={checkboxId}
+                type="checkbox"
+                className="hidden pointer-events-none"
+            />
 
             <div className='collapse-title !p-0 min-w-0 min-h-0'>
                 <div className='card text-neutral-content relative'>

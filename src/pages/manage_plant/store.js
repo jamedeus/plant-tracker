@@ -64,12 +64,12 @@ export const buildTimelineDays = (events, notes, photos) => {
 // Takes timelineDays state, flattens and returns calendarDays state used by
 // EventCalendar component (YYYY-MM-DD keys containing array of event strings).
 export const buildCalendarDays = (timelineDays) => {
-    const calendarDays = {}
+    const calendarDays = {};
     Object.keys(timelineDays).forEach(dateKey => {
         if (timelineDays[dateKey].events.length) {
-            calendarDays[dateKey] = timelineDays[dateKey].events
+            calendarDays[dateKey] = timelineDays[dateKey].events;
         }
-    })
+    });
     return calendarDays;
 };
 

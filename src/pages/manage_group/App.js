@@ -178,7 +178,10 @@ function App() {
             event_type: eventType,
             timestamp: timestamp
         };
-        const response = await sendPostRequest('/bulk_add_plant_events', payload);
+        const response = await sendPostRequest(
+            '/bulk_add_plant_events',
+            payload
+        );
         if (response.ok) {
             showToast(`All plants ${pastTense(eventType)}!`, 'blue', 5000);
             const data = await response.json();

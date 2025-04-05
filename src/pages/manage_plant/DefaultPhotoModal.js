@@ -25,7 +25,12 @@ export const closeDefaultPhotosModal = () => {
 };
 
 // Renders single photo slide with next, prev, and select buttons
-const PhotoSlide = memo(function PhotoSlide({ photo, nextPhotoLink, prevPhotoLink, submit }) {
+const PhotoSlide = memo(function PhotoSlide({
+    photo,
+    nextPhotoLink,
+    prevPhotoLink,
+    submit
+}) {
     return (
         <div
             id={`slide${photo.key}`}
@@ -83,7 +88,10 @@ const DefaultPhotoModal = () => {
             plant_id: plantID,
             photo_key: selected
         };
-        const response = await sendPostRequest('/set_plant_default_photo', payload);
+        const response = await sendPostRequest(
+            '/set_plant_default_photo',
+            payload
+        );
         if (response.ok) {
             closeDefaultPhotosModal();
         } else {

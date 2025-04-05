@@ -5,7 +5,15 @@ import GroupsCol from 'src/components/GroupsCol';
 import clsx from 'clsx';
 
 // Render correct components for current state objects
-const Layout = ({ plants, groups, selectedPlantsRef, selectedGroupsRef, editing, plantsColRef, groupsColRef }) => {
+const Layout = ({
+    plants,
+    groups,
+    selectedPlantsRef,
+    selectedGroupsRef,
+    editing,
+    plantsColRef,
+    groupsColRef
+}) => {
     // Determines if 2-column layout or single centered column
     const twoColumns = plants.length > 0 && groups.length > 0;
 

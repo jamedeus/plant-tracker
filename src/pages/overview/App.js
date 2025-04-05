@@ -36,7 +36,7 @@ function App() {
                     setPlants(data['plants']);
                     setGroups(data['groups']);
                 } else {
-                    alert('Failed to fetch current state, page may be outdated');
+                    alert('Failed to fetch new data, page may be outdated');
                 }
             }
         };
@@ -231,19 +231,31 @@ function App() {
             />
 
             <FloatingFooter visible={editing}>
-                <button className="btn btn-neutral mr-4" onClick={() => setEditing(false)}>
+                <button
+                    className="btn btn-neutral mr-4"
+                    onClick={() => setEditing(false)}
+                >
                     Cancel
                 </button>
                 {archivedOverview ? (
-                    <button className="btn mx-4" onClick={() => handleArchive(false)}>
+                    <button
+                        className="btn mx-4"
+                        onClick={() => handleArchive(false)}
+                    >
                         Un-archive
                     </button>
                 ) : (
-                    <button className="btn mx-4" onClick={() => handleArchive(true)}>
+                    <button
+                        className="btn mx-4"
+                        onClick={() => handleArchive(true)}
+                    >
                         Archive
                     </button>
                 )}
-                <button className="btn btn-error ml-4" onClick={handleDelete}>
+                <button
+                    className="btn btn-error ml-4"
+                    onClick={handleDelete}
+                >
                     Delete
                 </button>
             </FloatingFooter>
