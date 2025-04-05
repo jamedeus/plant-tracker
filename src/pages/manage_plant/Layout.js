@@ -1,7 +1,5 @@
-import React, { useRef, useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { sendPostRequest } from 'src/util';
-import EditModal from 'src/components/EditModal';
-import PlantDetailsForm from 'src/forms/PlantDetailsForm';
 import Navbar from 'src/components/Navbar';
 import { useTheme } from 'src/context/ThemeContext';
 import DetailsCard from 'src/components/DetailsCard';
@@ -16,11 +14,7 @@ import { openErrorModal } from 'src/components/ErrorModal';
 import Timeline from './Timeline';
 import { faPlus, faBan, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { useSelector, useDispatch } from 'react-redux';
-import {
-    plantDetailsUpdated,
-    plantRemovedFromGroup,
-    backButtonPressed
-} from './plantSlice';
+import { plantRemovedFromGroup, backButtonPressed } from './plantSlice';
 
 function Layout() {
     // Get redux state (parsed from context set by django template)
@@ -28,9 +22,6 @@ function Layout() {
 
     // Used to update redux store
     const dispatch = useDispatch();
-
-    // Create ref to access edit details form
-    const editDetailsRef = useRef(null);
 
     // Get toggle theme option from context
     const { ToggleThemeOption } = useTheme();
@@ -45,23 +36,6 @@ function Layout() {
         window.addEventListener('pageshow', handleBackButton);
         return () => window.removeEventListener('pageshow', handleBackButton);
     }, []);
-
-    const submitEditModal = async () => {
-        const payload = Object.fromEntries(
-            new FormData(editDetailsRef.current)
-        );
-        payload["plant_id"] = plantDetails.uuid;
-
-        const response = await sendPostRequest('/edit_plant', payload);
-        if (response.ok) {
-            // Update plant state with new values from response
-            const data = await response.json();
-            dispatch(plantDetailsUpdated(data));
-        } else {
-            const error = await response.json();
-            openErrorModal(JSON.stringify(error));
-        }
-    };
 
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => (
@@ -172,23 +146,6 @@ function Layout() {
             <EventCalendar />
 
             <Timeline />
-
-            <EditModal title="Edit Details" onSubmit={submitEditModal}>
-                {/* Key forces form to remount when RepotModal is submitted -
-                    form is unmanaged so props only set default values, which
-                    do not change when plantDetails updates. If pot_size field
-                    does not update after repot the user could easily reset the
-                    new pot size without noticing.
-                */}
-                <PlantDetailsForm
-                    key={plantDetails.pot_size}
-                    formRef={editDetailsRef}
-                    name={plantDetails.name}
-                    species={plantDetails.species}
-                    pot_size={plantDetails.pot_size}
-                    description={plantDetails.description}
-                />
-            </EditModal>
 
             <ChangeQrModal uuid={plantDetails.uuid} />
         </div>

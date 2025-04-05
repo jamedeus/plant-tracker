@@ -1,4 +1,4 @@
-import React, { useRef, memo } from 'react';
+import React, { useRef } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 
@@ -10,7 +10,7 @@ export const openEditModal = () => {
 
 // Takes modal title, submit handler, and details form
 // Modal has centered title, can be closed with button, esc, or outside click
-const EditModal = memo(function EditModal({ title, onSubmit, children }) {
+const EditModal = ({ title, onSubmit, children }) => {
     modalRef = useRef(null);
 
     return (
@@ -29,7 +29,7 @@ const EditModal = memo(function EditModal({ title, onSubmit, children }) {
             </div>
         </Modal>
     );
-});
+};
 
 EditModal.propTypes = {
     title: PropTypes.string.isRequired,

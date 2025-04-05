@@ -2,8 +2,6 @@ import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import PropTypes from 'prop-types';
 import { localToUTC } from 'src/timestampUtils';
 import { sendPostRequest, parseDomContext, pastTense } from 'src/util';
-import EditModal from 'src/components/EditModal';
-import GroupDetailsForm from 'src/forms/GroupDetailsForm';
 import Navbar from 'src/components/Navbar';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { showToast } from 'src/components/Toast';
@@ -11,6 +9,7 @@ import { useTheme } from 'src/context/ThemeContext';
 import DetailsCard from 'src/components/DetailsCard';
 import GroupDetails from 'src/components/GroupDetails';
 import PlantsCol from 'src/components/PlantsCol';
+import EditGroupModal from './EditGroupModal';
 import AddPlantsModal, { openAddPlantsModal } from './AddPlantsModal';
 import RemovePlantsModal, { openRemovePlantsModal } from './RemovePlantsModal';
 import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
@@ -140,29 +139,6 @@ function App() {
 
     // Ref to access timestamp input used by water all/fertilize all
     const addEventAllTimeInput = useRef(null);
-
-    // Create ref to access edit details form
-    const editDetailsRef = useRef(null);
-
-    const submitEditModal = useCallback(async () => {
-        const payload = Object.fromEntries(
-            new FormData(editDetailsRef.current)
-        );
-        payload["group_id"] = group.uuid;
-        console.log(payload);
-
-        const response = await sendPostRequest('/edit_group', payload);
-        if (response.ok) {
-            // Update plant state with new values from response
-            const data = await response.json();
-            setGroup(prevGroup => {
-                return { ...prevGroup, ...data };
-            });
-        } else {
-            const error = await response.json();
-            openErrorModal(JSON.stringify(error));
-        }
-    }, []);
 
     // Takes array of plant UUIDs, removes archived plants and returns
     const removeArchivedPlants = (selected) => {
@@ -317,15 +293,6 @@ function App() {
         </DetailsCard>
     ), [group]);
 
-    const EditModalForm = useMemo(() => (
-        <GroupDetailsForm
-            formRef={editDetailsRef}
-            name={group.name}
-            location={group.location}
-            description={group.description}
-        />
-    ), [group]);
-
     return (
         <div className="container flex flex-col mx-auto mb-8">
             <Navbar
@@ -363,9 +330,7 @@ function App() {
                 />
             </PlantsCol>
 
-            <EditModal title="Edit Details" onSubmit={submitEditModal}>
-                {EditModalForm}
-            </EditModal>
+            <EditGroupModal group={group} setGroup={setGroup} />
 
             <AddPlantsModal
                 options={addPlantsModalOptions}
