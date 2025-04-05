@@ -95,38 +95,34 @@ function App() {
     };
 
     // Top left corner dropdown options
-    const DropdownMenuOptions = useMemo(() => {
-        return (
-            <>
-                <li><a onClick={() => window.location.href = "/"}>
-                    Overview
-                </a></li>
-                <ToggleThemeOption />
-            </>
-        );
-    }, [ToggleThemeOption]);
+    const DropdownMenuOptions = useMemo(() => (
+        <>
+            <li><a onClick={() => window.location.href = "/"}>
+                Overview
+            </a></li>
+            <ToggleThemeOption />
+        </>
+    ), [ToggleThemeOption]);
 
     // Plant/group details card shown when title is clicked
-    const DetailsDropdown = useMemo(() => {
-        return (
-            <div className="details-card">
-                <div className="card-body">
-                    {type === 'plant' ? (
-                        <PlantDetails
-                            species={instance.species}
-                            pot_size={instance.pot_size}
-                            description={instance.description}
-                        />
-                    ) : (
-                        <GroupDetails
-                            location={instance.location}
-                            description={instance.description}
-                        />
-                    )}
-                </div>
+    const DetailsDropdown = useMemo(() => (
+        <div className="details-card">
+            <div className="card-body">
+                {type === 'plant' ? (
+                    <PlantDetails
+                        species={instance.species}
+                        pot_size={instance.pot_size}
+                        description={instance.description}
+                    />
+                ) : (
+                    <GroupDetails
+                        location={instance.location}
+                        description={instance.description}
+                    />
+                )}
             </div>
-        );
-    }, []);
+        </div>
+    ), []);
 
     return (
         <div className="container flex flex-col mx-auto h-screen">

@@ -289,37 +289,33 @@ function App() {
     }, [plantDetails]);
 
     // Top left corner dropdown options
-    const DropdownMenuOptions = useMemo(() => {
-        return (
-            <>
-                <li><a onClick={() => window.location.href = "/"}>
-                    Overview
-                </a></li>
-                <li><a onClick={openAddPlantsModal}>
-                    Add plants
-                </a></li>
-                <li><a onClick={openRemovePlantsModal}>
-                    Remove plants
-                </a></li>
-                <li><a onClick={openChangeQrModal}>
-                    Change QR code
-                </a></li>
-                <ToggleThemeOption />
-            </>
-        );
-    }, [ToggleThemeOption]);
+    const DropdownMenuOptions = useMemo(() => (
+        <>
+            <li><a onClick={() => window.location.href = "/"}>
+                Overview
+            </a></li>
+            <li><a onClick={openAddPlantsModal}>
+                Add plants
+            </a></li>
+            <li><a onClick={openRemovePlantsModal}>
+                Remove plants
+            </a></li>
+            <li><a onClick={openChangeQrModal}>
+                Change QR code
+            </a></li>
+            <ToggleThemeOption />
+        </>
+    ), [ToggleThemeOption]);
 
     // Group details card shown when title is clicked
-    const GroupDetailsDropdown = useMemo(() => {
-        return (
-            <DetailsCard>
-                <GroupDetails
-                    location={group.location}
-                    description={group.description}
-                />
-            </DetailsCard>
-        );
-    }, [group]);
+    const GroupDetailsDropdown = useMemo(() => (
+        <DetailsCard>
+            <GroupDetails
+                location={group.location}
+                description={group.description}
+            />
+        </DetailsCard>
+    ), [group]);
 
     const EditModalForm = useMemo(() => (
         <GroupDetailsForm

@@ -64,31 +64,29 @@ function Layout() {
     };
 
     // Top left corner dropdown options
-    const DropdownMenuOptions = useMemo(() => {
-        return (
-            <>
-                <li><a onClick={() => window.location.href = "/"}>
-                    Overview
-                </a></li>
-                {!plantDetails.archived && (
-                    <>
-                        {plantDetails.group &&
-                            <li><a href={"/manage/" + plantDetails.group.uuid}>
-                                Go to group
-                            </a></li>
-                        }
-                        <li><a onClick={openDefaultPhotoModal}>
-                            Set default photo
+    const DropdownMenuOptions = useMemo(() => (
+        <>
+            <li><a onClick={() => window.location.href = "/"}>
+                Overview
+            </a></li>
+            {!plantDetails.archived && (
+                <>
+                    {plantDetails.group &&
+                        <li><a href={"/manage/" + plantDetails.group.uuid}>
+                            Go to group
                         </a></li>
-                        <li><a onClick={openChangeQrModal}>
-                            Change QR code
-                        </a></li>
-                    </>
-                )}
-                <ToggleThemeOption />
-            </>
-        );
-    }, [plantDetails, ToggleThemeOption]);
+                    }
+                    <li><a onClick={openDefaultPhotoModal}>
+                        Set default photo
+                    </a></li>
+                    <li><a onClick={openChangeQrModal}>
+                        Change QR code
+                    </a></li>
+                </>
+            )}
+            <ToggleThemeOption />
+        </>
+    ), [plantDetails, ToggleThemeOption]);
 
     // Plant details card shown when title is clicked
     const PlantDetailsDropdown = useMemo(() => {

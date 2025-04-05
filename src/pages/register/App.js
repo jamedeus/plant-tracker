@@ -121,16 +121,14 @@ function App() {
     };
 
     // Top left corner dropdown options
-    const DropdownMenuOptions = useMemo(() => {
-        return (
-            <>
-                <li><a onClick={() => window.location.href = "/"}>
-                    Overview
-                </a></li>
-                <ToggleThemeOption />
-            </>
-        );
-    }, [ToggleThemeOption]);
+    const DropdownMenuOptions = useMemo(() => (
+        <>
+            <li><a onClick={() => window.location.href = "/"}>
+                Overview
+            </a></li>
+            <ToggleThemeOption />
+        </>
+    ), [ToggleThemeOption]);
 
     return (
         <div className="container flex flex-col mx-auto mb-8">
