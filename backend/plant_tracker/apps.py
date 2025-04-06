@@ -1,6 +1,8 @@
 import os
 import sys
+from django.conf import settings
 from django.apps import AppConfig
+from django.contrib.auth import get_user_model
 
 
 class PlantTrackerConfig(AppConfig):
@@ -21,3 +23,12 @@ class PlantTrackerConfig(AppConfig):
 
         from .tasks import update_all_cached_states
         update_all_cached_states.delay()
+
+        # If SINGLE_USER_MODE enabled make sure default user exists
+        if settings.SINGLE_USER_MODE:
+            User = get_user_model()
+            if not User.objects.filter(username=settings.DEFAULT_USERNAME).exists():
+                User.objects.create_user(
+                    username=settings.DEFAULT_USERNAME,
+                    password='root'
+                )

@@ -10,7 +10,9 @@ import json
 from functools import wraps
 from datetime import datetime
 
+from django.conf import settings
 from django.http import JsonResponse
+from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 
 from .models import Group, Plant, WaterEvent, FertilizeEvent, PruneEvent, RepotEvent
@@ -53,6 +55,28 @@ def get_plant_or_group_by_uuid(uuid):
     if not instance:
         instance = get_group_by_uuid(uuid)
     return instance
+
+
+def get_default_user():
+    '''Returns default user (owns all models when SINGLE_USER_MODE enabled)'''
+    User = get_user_model()
+    return User.objects.get(username=settings.DEFAULT_USERNAME)
+
+
+def get_user_token(func):
+    '''Passes User model object to wrapped function as user kwarg.
+    If SINGLE_USER_MODE enabled returns default user without checking request.
+    If user accounts enabled reads user from requests, throws error if not logged in.
+    '''
+    @wraps(func)
+    def wrapper(request, **kwargs):
+        # Return default user without checking auth if SINGLE_USER_MODE enabled
+        if settings.SINGLE_USER_MODE:
+            return func(request, user=get_default_user(), **kwargs)
+        if not request.user.is_authenticated:
+            return JsonResponse({'error': 'user must be logged in'}, status=403)
+        return func(request, user=request.user, **kwargs)
+    return wrapper
 
 
 def requires_json_post(required_keys=None):

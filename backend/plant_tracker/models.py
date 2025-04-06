@@ -96,6 +96,14 @@ class Group(models.Model):
     Provides methods to water or fertilize all plants within group
     '''
 
+    # User who registered the group
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        blank=False,
+        null=False
+    )
+
     # UUID of QR code attached to group
     uuid = models.UUIDField(unique=True)
 
@@ -180,6 +188,14 @@ class Plant(models.Model):
     Stores optional description params added during registration
     Receives database relation to all WaterEvents and FertilizeEvents
     '''
+
+    # User who registered the plant
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        blank=False,
+        null=False
+    )
 
     # UUID of QR code attached to plant
     uuid = models.UUIDField(unique=True)
