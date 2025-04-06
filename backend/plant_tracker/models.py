@@ -203,7 +203,7 @@ class Plant(models.Model):
     )
 
     # Optional relation to manage multiple plants in the same group
-    group = models.ForeignKey(Group, on_delete=models.CASCADE, blank=True, null=True)
+    group = models.ForeignKey(Group, on_delete=models.SET_NULL, blank=True, null=True)
 
     # Optional relation to set photo used for overview page thumbnail
     # If not set the most recent photo of this plant will be used

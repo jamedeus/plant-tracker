@@ -123,6 +123,33 @@ class ModelRegressionTests(TestCase):
         with self.assertRaises(IntegrityError):
             Group.objects.create(uuid=plant.uuid)
 
+    def test_deleting_group_should_not_delete_plants_in_group(self):
+        '''Issue: The Plant model's group ForeignKey originally had on_delete
+        set to cascade, causing all Plant entries associated with a group to be
+        deleted when the Group was deleted.
+
+        Deleting a group now sets the group key for all Plants previously in
+        the group to null.
+        '''
+
+        # Create a Group entry and Plant entry with ForeignKey to group
+        group = Group.objects.create(uuid=uuid4())
+        plant = Plant.objects.create(uuid=uuid4(), group=group)
+
+        # Confirm 1 of each model exist, plant has correct relation to Group
+        self.assertEqual(len(Group.objects.all()), 1)
+        self.assertEqual(len(Plant.objects.all()), 1)
+        self.assertIs(plant.group, group)
+
+        # Delete group, confirm group deleted but plant still exists
+        group.delete()
+        self.assertEqual(len(Group.objects.all()), 0)
+        self.assertEqual(len(Plant.objects.all()), 1)
+
+        # Confirm Plant.group is now null
+        plant.refresh_from_db()
+        self.assertIsNone(plant.group)
+
 
 class ViewRegressionTests(TestCase):
     def tearDown(self):
