@@ -8,6 +8,7 @@ const isProduction = process.env.NODE_ENV == 'production';
 
 const config = {
     entry: {
+        login: './src/pages/login/index.js',
         overview: './src/pages/overview/index.js',
         register: './src/pages/register/index.js',
         manage_plant: './src/pages/manage_plant/index.js',

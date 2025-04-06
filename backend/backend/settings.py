@@ -42,6 +42,8 @@ for i in ALLOWED_HOSTS:
 # Get URL prefix used to generate QR code stickers from env var
 URL_PREFIX = validate_url_prefix(os.environ.get('URL_PREFIX'))
 
+# Redirect to overview page after successful login
+LOGIN_REDIRECT_URL="/"
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

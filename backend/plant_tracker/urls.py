@@ -1,6 +1,7 @@
 '''Map API endpoints to backend functions'''
 
-from django.urls import path
+from django.urls import path, include
+from django.contrib.auth import views as auth_views
 
 from . import views
 
@@ -9,6 +10,13 @@ app_name = "api"
 # pylint: disable=line-too-long
 urlpatterns = [
     path('', views.overview, name='overview'),
+    path(
+        "accounts/login/",
+        auth_views.LoginView.as_view(
+            template_name="plant_tracker/index.html",
+            extra_context={"js_bundle": "plant_tracker/login.js"}
+        ),
+    ),
     path('archived', views.archived_overview, name='archived'),
     path('get_overview_state', views.get_overview_page_state, name='get_overview_state'),
     path('get_qr_codes', views.get_qr_codes, name='get_qr_codes'),
