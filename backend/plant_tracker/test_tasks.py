@@ -125,13 +125,13 @@ class HelperFunctionTests(TestCase):
 
         # Clear entire cache, confirm no cached states
         cache.clear()
-        self.assertIsNone(cache.get('overview_state'))
+        self.assertIsNone(cache.get(f'overview_state_{get_default_user().pk}'))
         for i in range(0, 5):
             self.assertIsNone(cache.get(f'{Plant.objects.all()[i].uuid}_state'))
 
         # Call method, confirm all states were cached
         update_all_cached_states()
-        self.assertTrue(isinstance(cache.get('overview_state'), dict))
+        self.assertTrue(isinstance(cache.get(f'overview_state_{get_default_user().pk}'), dict))
         for i in range(0, 5):
             self.assertTrue(
                 isinstance(cache.get(f'{Plant.objects.all()[i].uuid}_state'), dict)
@@ -147,27 +147,27 @@ class TaskTests(TestCase):
 
     def test_update_cached_overview_state(self):
         # Confirm overview_state cache is not set
-        self.assertIsNone(cache.get('overview_state'))
+        self.assertIsNone(cache.get(f'overview_state_{get_default_user().pk}'))
 
         # Run task immediately
-        update_cached_overview_state.delay()
+        update_cached_overview_state.delay(get_default_user().pk)
 
         # Confirm overview state was generated and cached
-        self.assertTrue(isinstance(cache.get('overview_state'), dict))
+        self.assertTrue(isinstance(cache.get(f'overview_state_{get_default_user().pk}'), dict))
 
     def test_schedule_cached_overview_state_update(self):
         # Mock existing cached overview state (should be replaced)
-        cache.set('overview_state', 'mock_state')
+        cache.set(f'overview_state_{get_default_user().pk}', 'mock_state')
 
         # Call function to schedule rebuild task (runs immediately in tests)
-        schedule_cached_overview_state_update()
+        schedule_cached_overview_state_update(get_default_user())
 
         # Confirm ID of rebuild task was cached
-        self.assertIsNotNone(cache.get('rebuild_overview_state_task_id'))
+        self.assertIsNotNone(cache.get(f'rebuild_overview_state_{get_default_user().pk}_task_id'))
 
         # Confirm existing cached state was replaced (not just cleared)
-        self.assertIsNotNone(cache.get('overview_state'))
-        self.assertTrue(isinstance(cache.get('overview_state'), dict))
+        self.assertIsNotNone(cache.get(f'overview_state_{get_default_user().pk}'))
+        self.assertTrue(isinstance(cache.get(f'overview_state_{get_default_user().pk}'), dict))
 
     def test_update_cached_manage_plant_state(self):
         # Create test Plant, confirm state is automatically generated + cached
@@ -198,8 +198,8 @@ class TaskTests(TestCase):
         self.assertIsNotNone(cache.get(f'rebuild_{plant.uuid}_state_task_id'))
 
         # Confirm existing cached state was replaced (not just cleared)
-        self.assertIsNotNone(cache.get('overview_state'))
-        self.assertTrue(isinstance(cache.get('overview_state'), dict))
+        self.assertIsNotNone(cache.get(f'overview_state_{get_default_user().pk}'))
+        self.assertTrue(isinstance(cache.get(f'overview_state_{get_default_user().pk}'), dict))
 
 
 class HookTests(TestCase):
@@ -217,14 +217,14 @@ class HookTests(TestCase):
 
     def test_overview_state_updates_when_plant_created_changed_or_deleted(self):
         # Confirm no cached overview state
-        self.assertIsNone(cache.get('overview_state'))
+        self.assertIsNone(cache.get(f'overview_state_{get_default_user().pk}'))
 
         # Save Plant model entry
         plant = Plant.objects.create(uuid=self.uuid, user=get_default_user())
 
         # Confirm overview_state was generated and cached
         self.assertEqual(
-            cache.get('overview_state'),
+            cache.get(f'overview_state_{get_default_user().pk}'),
             {
                 "plants": [
                     {
@@ -253,7 +253,7 @@ class HookTests(TestCase):
 
         # Confirm cached state was updated automatically
         self.assertEqual(
-            cache.get('overview_state'),
+            cache.get(f'overview_state_{get_default_user().pk}'),
             {
                 "plants": [
                     {
@@ -277,7 +277,7 @@ class HookTests(TestCase):
         # Delete Plant entry, confirm cached state was updated
         plant.delete()
         self.assertEqual(
-            cache.get('overview_state'),
+            cache.get(f'overview_state_{get_default_user().pk}'),
             {
                 "plants": [],
                 "groups": []
@@ -286,14 +286,14 @@ class HookTests(TestCase):
 
     def test_overview_state_updates_when_group_created_changed_or_deleted(self):
         # Confirm no cached overview state
-        self.assertIsNone(cache.get('overview_state'))
+        self.assertIsNone(cache.get(f'overview_state_{get_default_user().pk}'))
 
         # Save Group model entry
         group = Group.objects.create(uuid=self.uuid, user=get_default_user())
 
         # Confirm overview_state was generated and cached
         self.assertEqual(
-            cache.get('overview_state'),
+            cache.get(f'overview_state_{get_default_user().pk}'),
             {
                 "plants": [],
                 "groups": [
@@ -318,7 +318,7 @@ class HookTests(TestCase):
 
         # Confirm cached state was updated automatically
         self.assertEqual(
-            cache.get('overview_state'),
+            cache.get(f'overview_state_{get_default_user().pk}'),
             {
                 "plants": [],
                 "groups": [
@@ -339,7 +339,7 @@ class HookTests(TestCase):
         # Delete Group entry, confirm cached state was updated
         group.delete()
         self.assertEqual(
-            cache.get('overview_state'),
+            cache.get(f'overview_state_{get_default_user().pk}'),
             {
                 "plants": [],
                 "groups": []
@@ -351,7 +351,7 @@ class HookTests(TestCase):
         plant = Plant.objects.create(uuid=self.uuid, user=get_default_user())
 
         # Confirm state was generated, confirm Plant has no water events
-        cached_state = cache.get('overview_state')
+        cached_state = cache.get(f'overview_state_{get_default_user().pk}')
         self.assertIsNotNone(cached_state)
         self.assertIsNone(cached_state["plants"][0]["last_watered"])
 
@@ -363,7 +363,7 @@ class HookTests(TestCase):
         })
 
         # Confirm last_watered in cached state matches timestamp
-        cached_state = cache.get('overview_state')
+        cached_state = cache.get(f'overview_state_{get_default_user().pk}')
         self.assertEqual(
             cached_state["plants"][0]["last_watered"],
             '2024-02-06T03:06:26+00:00'
@@ -377,7 +377,7 @@ class HookTests(TestCase):
         })
 
         # Confirm last_watered in cached state reverted to None
-        cached_state = cache.get('overview_state')
+        cached_state = cache.get(f'overview_state_{get_default_user().pk}')
         self.assertIsNone(cached_state["plants"][0]["last_watered"])
 
     def test_overview_state_updates_when_plant_events_bulk_created_or_bulk_deleted(self):
@@ -386,7 +386,7 @@ class HookTests(TestCase):
         plant2 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
 
         # Confirm state was generated, confirm Plants have no water events
-        cached_state = cache.get('overview_state')
+        cached_state = cache.get(f'overview_state_{get_default_user().pk}')
         self.assertIsNotNone(cached_state)
         self.assertIsNone(cached_state["plants"][0]["last_watered"])
         self.assertIsNone(cached_state["plants"][1]["last_watered"])
@@ -402,7 +402,7 @@ class HookTests(TestCase):
         })
 
         # Confirm last_watered in cached state matches timestamp for both plants
-        cached_state = cache.get('overview_state')
+        cached_state = cache.get(f'overview_state_{get_default_user().pk}')
         self.assertEqual(
             cached_state["plants"][0]["last_watered"],
             '2024-02-06T03:06:26+00:00'
@@ -421,7 +421,7 @@ class HookTests(TestCase):
         })
 
         # Confirm last_watered in cached state is None for first plant, but not second
-        cached_state = cache.get('overview_state')
+        cached_state = cache.get(f'overview_state_{get_default_user().pk}')
         self.assertIsNone(cached_state["plants"][0]["last_watered"])
         self.assertEqual(
             cached_state["plants"][1]["last_watered"],
@@ -433,7 +433,7 @@ class HookTests(TestCase):
         plant = Plant.objects.create(uuid=self.uuid, user=get_default_user())
 
         # Confirm state was generated, confirm Plant has no photo thumbnail
-        cached_state = cache.get('overview_state')
+        cached_state = cache.get(f'overview_state_{get_default_user().pk}')
         self.assertIsNotNone(cached_state)
         self.assertIsNone(cached_state["plants"][0]["thumbnail"])
 
@@ -444,7 +444,7 @@ class HookTests(TestCase):
         )
 
         # Confirm thumbnail in cached state now matches new photo
-        cached_state = cache.get('overview_state')
+        cached_state = cache.get(f'overview_state_{get_default_user().pk}')
         self.assertEqual(
             cached_state["plants"][0]["thumbnail"],
             f"/media/{photo.thumbnail.name}"
@@ -452,7 +452,7 @@ class HookTests(TestCase):
 
         # Delete mock photo, confirm thumbnail in cached state reverted to None
         photo.delete()
-        cached_state = cache.get('overview_state')
+        cached_state = cache.get(f'overview_state_{get_default_user().pk}')
         self.assertIsNone(cached_state["plants"][0]["thumbnail"])
 
     def test_overview_state_updates_when_plant_default_photo_set(self):
@@ -460,7 +460,7 @@ class HookTests(TestCase):
         plant = Plant.objects.create(uuid=self.uuid, user=get_default_user())
 
         # Confirm state was generated, confirm Plant has no photo thumbnail
-        cached_state = cache.get('overview_state')
+        cached_state = cache.get(f'overview_state_{get_default_user().pk}')
         self.assertIsNotNone(cached_state)
         self.assertIsNone(cached_state["plants"][0]["thumbnail"])
 
@@ -477,7 +477,7 @@ class HookTests(TestCase):
         })
 
         # Confirm thumbnail in cached state now matches first photo
-        cached_state = cache.get('overview_state')
+        cached_state = cache.get(f'overview_state_{get_default_user().pk}')
         self.assertEqual(
             cached_state["plants"][0]["thumbnail"],
             f"/media/{Photo.objects.all()[0].thumbnail.name}"
@@ -493,7 +493,7 @@ class HookTests(TestCase):
         plant = Plant.objects.create(uuid=self.uuid, user=get_default_user())
 
         # Confirm overview state IS updated when the first photo is added
-        cache.delete('overview_state')
+        cache.delete(f'overview_state_{get_default_user().pk}')
         response = self.client.post(
             '/add_plant_photos',
             data={
@@ -502,13 +502,13 @@ class HookTests(TestCase):
             },
             content_type=MULTIPART_CONTENT
         )
-        self.assertIsNotNone(cache.get('overview_state'))
+        self.assertIsNotNone(cache.get(f'overview_state_{get_default_user().pk}'))
 
         # Save new photo primary key (used to delete later)
         photo1_pk = response.json()['urls'][0]['key']
 
         # Confirm overview state NOT updated when photo with older timestamp added
-        cache.delete('overview_state')
+        cache.delete(f'overview_state_{get_default_user().pk}')
         response = self.client.post(
             '/add_plant_photos',
             data={
@@ -517,26 +517,26 @@ class HookTests(TestCase):
             },
             content_type=MULTIPART_CONTENT
         )
-        self.assertIsNone(cache.get('overview_state'))
+        self.assertIsNone(cache.get(f'overview_state_{get_default_user().pk}'))
 
         # Save new photo primary key (used to delete later)
         photo2_pk = response.json()['urls'][0]['key']
 
         # Confirm overview state NOT updated when photo with older timestamp deleted
-        cache.delete('overview_state')
+        cache.delete(f'overview_state_{get_default_user().pk}')
         self.client.post('/delete_plant_photos', {
             'plant_id': str(plant.uuid),
             'delete_photos': [photo2_pk]
         })
-        self.assertIsNone(cache.get('overview_state'))
+        self.assertIsNone(cache.get(f'overview_state_{get_default_user().pk}'))
 
         # Confirm overview state IS updated when most recent photo is deleted
-        cache.delete('overview_state')
+        cache.delete(f'overview_state_{get_default_user().pk}')
         self.client.post('/delete_plant_photos', {
             'plant_id': str(plant.uuid),
             'delete_photos': [photo1_pk]
         })
-        self.assertIsNotNone(cache.get('overview_state'))
+        self.assertIsNotNone(cache.get(f'overview_state_{get_default_user().pk}'))
 
     def test_manage_plant_state_updates_when_plant_saved(self):
         # Confirm no cached manage_plant state for plant UUID

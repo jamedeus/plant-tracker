@@ -91,35 +91,44 @@ def get_qr_codes(data):
         )
 
 
-def overview(request):
-    '''Renders the overview page (shows existing plants/groups, or setup if none)'''
+@get_user_token
+def overview(request, user):
+    '''Renders the overview page for the requesting user (shows their existing
+    plants/groups, or setup if none).
+    '''
     return render_react_app(
         request,
         title='Overview',
         bundle='overview',
-        state=get_overview_state()
+        state=get_overview_state(user)
     )
 
 
-def get_overview_page_state(request):
-    '''Returns current state for the overview page, used to refresh contents'''
+@get_user_token
+def get_overview_page_state(_, user):
+    '''Returns current overview page state for the requesting user, used to
+    refresh contents when returning to over view with back button.
+    '''
     return JsonResponse(
-        get_overview_state(),
+        get_overview_state(user),
         status=200
     )
 
 
-def archived_overview(request):
-    '''Renders overview page showing only archived plants and groups'''
+@get_user_token
+def archived_overview(request, user):
+    '''Renders overview page for the requesting user showing only their
+    archived plants and groups.
+    '''
     state = {
         'plants': [],
         'groups': []
     }
 
-    for plant in Plant.objects.filter(archived=True):
+    for plant in Plant.objects.filter(archived=True, user=user):
         state['plants'].append(plant.get_details())
 
-    for group in Group.objects.filter(archived=True):
+    for group in Group.objects.filter(archived=True, user=user):
         state['groups'].append(group.get_details())
 
     return render_react_app(
@@ -440,11 +449,12 @@ def archive_group(group, data, **kwargs):
     return JsonResponse({"updated": group.uuid}, status=200)
 
 
+@get_user_token
 @requires_json_post(["plant_id", "event_type", "timestamp"])
 @get_plant_from_post_body
 @get_timestamp_from_post_body
 @get_event_type_from_post_body
-def add_plant_event(plant, timestamp, event_type, **kwargs):
+def add_plant_event(user, plant, timestamp, event_type, **kwargs):
     '''Creates new Event entry with requested type for specified Plant entry
     Requires JSON POST with plant_id (uuid), event_type, and timestamp keys
     '''
@@ -452,7 +462,7 @@ def add_plant_event(plant, timestamp, event_type, **kwargs):
         events_map[event_type].objects.create(plant=plant, timestamp=timestamp)
 
         # Create task to update cached overview state (last_watered outdated)
-        schedule_cached_overview_state_update()
+        schedule_cached_overview_state_update(user)
 
         return JsonResponse(
             {"action": event_type, "plant": plant.uuid},
@@ -465,10 +475,11 @@ def add_plant_event(plant, timestamp, event_type, **kwargs):
         )
 
 
+@get_user_token
 @requires_json_post(["plants", "event_type", "timestamp"])
 @get_timestamp_from_post_body
 @get_event_type_from_post_body
-def bulk_add_plant_events(timestamp, event_type, data):
+def bulk_add_plant_events(user, timestamp, event_type, data):
     '''Creates new Event entry with requested type for each Plant specified in body
     Requires JSON POST with plants (list of UUIDs), event_type, and timestamp keys
     '''
@@ -486,7 +497,7 @@ def bulk_add_plant_events(timestamp, event_type, data):
             failed.append(plant_id)
 
     # Create task to update cached overview state (last_watered outdated)
-    schedule_cached_overview_state_update()
+    schedule_cached_overview_state_update(user)
 
     return JsonResponse(
         {"action": event_type, "plants": added, "failed": failed},
@@ -494,11 +505,12 @@ def bulk_add_plant_events(timestamp, event_type, data):
     )
 
 
+@get_user_token
 @requires_json_post(["plant_id", "event_type", "timestamp"])
 @get_plant_from_post_body
 @get_timestamp_from_post_body
 @get_event_type_from_post_body
-def delete_plant_event(plant, timestamp, event_type, **kwargs):
+def delete_plant_event(user, plant, timestamp, event_type, **kwargs):
     '''Deletes the Event matching the plant, type, and timestamp specified in body
     Requires JSON POST with plant_id (uuid), event_type, and timestamp keys
     '''
@@ -507,16 +519,17 @@ def delete_plant_event(plant, timestamp, event_type, **kwargs):
         event.delete()
 
         # Create task to update cached overview state (last_watered outdated)
-        schedule_cached_overview_state_update()
+        schedule_cached_overview_state_update(user)
 
         return JsonResponse({"deleted": event_type, "plant": plant.uuid}, status=200)
     except events_map[event_type].DoesNotExist:
         return JsonResponse({"error": "event not found"}, status=404)
 
 
+@get_user_token
 @requires_json_post(["plant_id", "events"])
 @get_plant_from_post_body
-def bulk_delete_plant_events(plant, data):
+def bulk_delete_plant_events(user, plant, data):
     '''Deletes a list of events (any type) associated with a single plant
     Requires JSON POST with plant_id (uuid) and events (list of dicts) keys
     The events list must contain dicts with timestamp and type keys
@@ -537,7 +550,7 @@ def bulk_delete_plant_events(plant, data):
             failed.append(event)
 
     # Create task to update cached overview state (last_watered outdated)
-    schedule_cached_overview_state_update()
+    schedule_cached_overview_state_update(user)
 
     return JsonResponse({"deleted": deleted, "failed": failed}, status=200)
 

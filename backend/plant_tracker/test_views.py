@@ -194,7 +194,7 @@ class OverviewTests(TestCase):
 
     def test_overview_page_cached_state(self):
         # Cache arbitrary string as overview_state
-        cache.set('overview_state', 'cached')
+        cache.set(f'overview_state_{get_default_user().pk}', 'cached')
 
         # Mock build_overview_state to return a different string
         with patch('plant_tracker.tasks.build_overview_state', return_value='built'):
@@ -203,7 +203,7 @@ class OverviewTests(TestCase):
             self.assertEqual(response.context['state'], 'cached')
 
         # Delete cached overview__state
-        cache.delete('overview_state')
+        cache.delete(f'overview_state_{get_default_user().pk}')
 
         # Mock build_overview_state to return a different string
         with patch('plant_tracker.tasks.build_overview_state', return_value='built'):

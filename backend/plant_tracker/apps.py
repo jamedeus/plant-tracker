@@ -13,16 +13,16 @@ class PlantTrackerConfig(AppConfig):
         '''Rebuild all cached state objects when the server starts
         Prevents serving outdated cached state if database was modified offline
         '''
-        if 'test' in sys.argv or 'pylint' in str(sys.argv):
-            # Skip cache updates when running unit tests or pylint
-            return
-        if not os.environ.get('RUN_MAIN'):
-            # Prevent running when celery starts, running twice when dev server
-            # starts (dev server starts second process to detect file changes)
-            return
+        # if 'test' in sys.argv or 'pylint' in str(sys.argv):
+        #     # Skip cache updates when running unit tests or pylint
+        #     return
+        # if not os.environ.get('RUN_MAIN'):
+        #     # Prevent running when celery starts, running twice when dev server
+        #     # starts (dev server starts second process to detect file changes)
+        #     return
 
-        from .tasks import update_all_cached_states
-        update_all_cached_states.delay()
+        # from .tasks import update_all_cached_states
+        # update_all_cached_states.delay()
 
         # If SINGLE_USER_MODE enabled make sure default user exists
         if settings.SINGLE_USER_MODE:

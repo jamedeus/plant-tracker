@@ -14,6 +14,7 @@ the user logs events on the frontend.
 from celery import shared_task
 from django.core.cache import cache
 from django.dispatch import receiver
+from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save, post_delete
 
 from backend.celery import app
@@ -67,52 +68,57 @@ def schedule_cached_state_update(cache_name, callback_task, callback_kwargs=None
     cache.set(f'rebuild_{cache_name}_task_id', result.id, delay)
 
 
-def build_overview_state():
-    '''Builds state parsed by overview react app and returns'''
+def build_overview_state(user):
+    '''Takes user, builds state parsed by overview react app and returns.
+    Contains all non-archived plants and groups owned by user.
+    '''
     state = {
         'plants': [],
         'groups': []
     }
 
-    for plant in Plant.objects.filter(archived=False):
+    for plant in Plant.objects.filter(archived=False, user=user):
         state['plants'].append(plant.get_details())
 
-    for group in Group.objects.filter(archived=False):
+    for group in Group.objects.filter(archived=False, user=user):
         state['groups'].append(group.get_details())
 
     # Cache state indefinitely (updates automatically when database changes)
-    cache.set('overview_state', state, None)
+    cache.set(f'overview_state_{user.pk}', state, None)
 
     # Revoke queued update tasks (prevent rebuilding again after manual call)
-    revoke_queued_task('rebuild_overview_state_task_id')
+    revoke_queued_task(f'rebuild_overview_state_{user.pk}_task_id')
 
     return state
 
 
-def get_overview_state():
-    '''Returns the state object parsed by the overview page react app.
+def get_overview_state(user):
+    '''Takes user, returns state object parsed by the overview page react app.
     Loads state from cache if present, builds from database if not found.
     '''
-    state = cache.get('overview_state')
+    state = cache.get(f'overview_state_{user.pk}')
     if state is None:
-        state = build_overview_state()
+        state = build_overview_state(user)
     return state
 
 
 @shared_task()
-def update_cached_overview_state():
-    '''Builds and caches overview state'''
-    build_overview_state()
-    print('Rebuilt overview state')
+def update_cached_overview_state(user_pk):
+    '''Takes user primary key, builds and caches overview state'''
+    user = get_user_model().objects.get(pk=user_pk)
+    build_overview_state(user)
+    print(f'Rebuilt overview state for {user_pk}')
 
 
-def schedule_cached_overview_state_update():
-    '''Clears cached overview state immediately and schedules task to update
-    it in 30 seconds (timer resets if called again within 30 seconds).
+def schedule_cached_overview_state_update(user):
+    '''Takes user, clears cached state for their overview page immediately and
+    schedules task to update it in 30 seconds (timer resets if called again
+    within 30 seconds).
     '''
     schedule_cached_state_update(
-        cache_name='overview_state',
+        cache_name=f'overview_state_{user.pk}',
         callback_task=update_cached_overview_state,
+        callback_kwargs={'user_pk': user.pk},
         delay=30
     )
 
@@ -121,11 +127,11 @@ def schedule_cached_overview_state_update():
 @receiver(post_save, sender=Group)
 @receiver(post_delete, sender=Plant)
 @receiver(post_delete, sender=Group)
-def update_cached_overview_state_hook(**kwargs):
-    '''Schedules task to update cached overview state when Plant or Group model
-    is saved or deleted.
+def update_cached_overview_state_hook(instance, **kwargs):
+    '''Schedules task to update cached overview state for a specific user when
+    one of their Plant or Group models is saved or deleted.
     '''
-    schedule_cached_overview_state_update()
+    schedule_cached_overview_state_update(instance.user)
 
 
 def build_manage_plant_state(uuid):
