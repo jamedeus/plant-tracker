@@ -67,6 +67,7 @@ def get_user_token(func):
     '''Passes User model object to wrapped function as user kwarg.
     If SINGLE_USER_MODE enabled returns default user without checking request.
     If user accounts enabled reads user from requests, throws error if not logged in.
+    Must call before requires_json_post (uses requests object).
     '''
     @wraps(func)
     def wrapper(request, **kwargs):

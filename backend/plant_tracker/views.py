@@ -25,6 +25,7 @@ from .models import (
 )
 from .view_decorators import (
     events_map,
+    get_user_token,
     get_plant_by_uuid,
     get_group_by_uuid,
     get_plant_or_group_by_uuid,
@@ -271,9 +272,10 @@ def render_registration_page(request, uuid):
     )
 
 
+@get_user_token
 @requires_json_post(["name", "species", "pot_size", "description", "uuid"])
 @clean_payload_data
-def register_plant(data):
+def register_plant(user, data):
     '''Creates a Plant database entry with params from POST body
     Requires JSON POST with parameters from plant registration forms
     '''
@@ -281,7 +283,7 @@ def register_plant(data):
         # transaction.atomic cleans up after IntegrityError if uuid not unique
         with transaction.atomic():
             # Instantiate model with payload keys as kwargs
-            Plant.objects.create(**data)
+            Plant.objects.create(user=user, **data)
 
         # Redirect to manage page
         return HttpResponseRedirect(f'/manage/{data["uuid"]}')
@@ -293,9 +295,10 @@ def register_plant(data):
         )
 
 
+@get_user_token
 @requires_json_post(["name", "location", "description", "uuid"])
 @clean_payload_data
-def register_group(data):
+def register_group(user, data):
     '''Creates a Group database entry with params from POST body
     Requires JSON POST with parameters from group registration form
     '''
@@ -303,7 +306,7 @@ def register_group(data):
         # transaction.atomic cleans up after IntegrityError if uuid not unique
         with transaction.atomic():
             # Instantiate model with payload keys as kwargs
-            Group.objects.create(**data)
+            Group.objects.create(user=user, **data)
 
         # Redirect to manage page
         return HttpResponseRedirect(f'/manage/{data["uuid"]}')

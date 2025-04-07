@@ -518,6 +518,8 @@ class RegistrationTests(TestCase):
         self.assertEqual(plant.species, 'Giant Sequoia')
         self.assertEqual(plant.description, '300 feet and a few thousand years old')
         self.assertEqual(plant.pot_size, 4)
+        # Confirm plant is owned by default user
+        self.assertEqual(plant.user, get_default_user())
 
     def test_register_group_endpoint(self):
         # Confirm no plants or groups in database
@@ -546,6 +548,8 @@ class RegistrationTests(TestCase):
         self.assertEqual(group.name, 'test group')
         self.assertEqual(group.location, 'top shelf')
         self.assertEqual(group.description, 'This group is used for propagation')
+        # Confirm group is owned by default user
+        self.assertEqual(group.user, get_default_user())
 
     def test_registration_page(self):
         # Request management page with uuid that doesn't exist in database
