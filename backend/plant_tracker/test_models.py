@@ -10,6 +10,7 @@ from django.test import TestCase
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 
+from .view_decorators import get_default_user
 from .models import (
     Group,
     Plant,
@@ -44,7 +45,7 @@ def tearDownModule():
 class PlantModelTests(TestCase):
     def setUp(self):
         # Create blank test model to use in tests
-        self.plant = Plant.objects.create(uuid=uuid4())
+        self.plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         # Create test datetime object for creating events
         self.timestamp = timezone.now()
 
@@ -172,7 +173,7 @@ class PlantModelTests(TestCase):
         # Create 3 unnamed plants
         unnamed = []
         for _ in range(0, 3):
-            unnamed.append(Plant.objects.create(uuid=uuid4()))
+            unnamed.append(Plant.objects.create(uuid=uuid4(), user=get_default_user()))
 
         # Confirm Unnamed plants have correct sequential display_names
         self.assertEqual(unnamed[0].get_display_name(), 'Unnamed plant 1')
@@ -244,7 +245,7 @@ class PlantModelTests(TestCase):
 
     def test_set_invalid_default_photo(self):
         # Create second plant entry + photo associated with second plant
-        wrong_plant = Plant.objects.create(uuid=uuid4())
+        wrong_plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         wrong_plant_photo = Photo.objects.create(
             photo=create_mock_photo('2024:02:21 10:52:03', 'IMG1.jpg'),
             plant=wrong_plant
@@ -260,12 +261,12 @@ class PlantModelTests(TestCase):
 class GroupModelTests(TestCase):
     def setUp(self):
         # Create test group
-        self.test_group = Group.objects.create(uuid=uuid4())
+        self.test_group = Group.objects.create(uuid=uuid4(), user=get_default_user())
 
         # Create 2 plants with relations to Group and 1 without
-        self.plant1 = Plant.objects.create(uuid=uuid4(), name="plant1", group=self.test_group)
-        self.plant2 = Plant.objects.create(uuid=uuid4(), name="plant2", group=self.test_group)
-        self.plant3 = Plant.objects.create(uuid=uuid4(), name="plant3")
+        self.plant1 = Plant.objects.create(uuid=uuid4(), name="plant1", group=self.test_group, user=get_default_user())
+        self.plant2 = Plant.objects.create(uuid=uuid4(), name="plant2", group=self.test_group, user=get_default_user())
+        self.plant3 = Plant.objects.create(uuid=uuid4(), name="plant3", user=get_default_user())
 
     def test_str_method(self):
         # Should return "Unnamed group <num> (UUID)" when no params are set
@@ -332,7 +333,7 @@ class GroupModelTests(TestCase):
         # Create 3 unnamed groups
         unnamed = []
         for _ in range(0, 3):
-            unnamed.append(Group.objects.create(uuid=uuid4()))
+            unnamed.append(Group.objects.create(uuid=uuid4(), user=get_default_user()))
 
         # Confirm Unnamed groups have correct sequential display_names
         self.assertEqual(unnamed[0].get_display_name(), 'Unnamed group 1')
@@ -349,7 +350,7 @@ class GroupModelTests(TestCase):
 
 class PhotoModelTests(TestCase):
     def setUp(self):
-        self.plant = Plant.objects.create(uuid=uuid4())
+        self.plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         self.timestamp = timezone.now()
 
         self.photo = Photo.objects.create(
@@ -433,7 +434,7 @@ class PhotoModelTests(TestCase):
 
 class EventModelTests(TestCase):
     def setUp(self):
-        self.plant = Plant.objects.create(uuid=uuid4())
+        self.plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         self.timestamp = timezone.now()
 
     def test_str_method(self):

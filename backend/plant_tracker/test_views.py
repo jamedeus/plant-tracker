@@ -14,10 +14,12 @@ from django.conf import settings
 from django.test import TestCase
 from django.utils import timezone
 from django.core.cache import cache
+from django.contrib.auth import get_user_model
 from django.test.client import RequestFactory, MULTIPART_CONTENT
 from PIL import UnidentifiedImageError
 
 from .views import render_react_app
+from .view_decorators import get_default_user
 from .models import (
     Group,
     Plant,
@@ -126,12 +128,12 @@ class OverviewTests(TestCase):
 
     def test_overview_page_with_database_entries(self):
         # Create test group and 2 test plants
-        group = Group.objects.create(uuid=uuid4())
-        plant1 = Plant.objects.create(uuid=uuid4(), name='Test plant')
-        plant2 = Plant.objects.create(uuid=uuid4(), species='fittonia', group=group)
+        group = Group.objects.create(uuid=uuid4(), user=get_default_user())
+        plant1 = Plant.objects.create(uuid=uuid4(), name='Test plant', user=get_default_user())
+        plant2 = Plant.objects.create(uuid=uuid4(), species='fittonia', user=get_default_user(), group=group)
         # Create archived group and archived plant (should not be in context)
-        Plant.objects.create(uuid=uuid4(), name='Archived plant', archived=True)
-        Group.objects.create(uuid=uuid4(), name='Archived group', archived=True)
+        Plant.objects.create(uuid=uuid4(), name='Archived plant', user=get_default_user(), archived=True)
+        Group.objects.create(uuid=uuid4(), name='Archived group', user=get_default_user(), archived=True)
 
         # Request overview, confirm uses correct JS bundle and title
         response = self.client.get('/')
@@ -293,7 +295,7 @@ class OverviewTests(TestCase):
     def test_delete_plant(self):
         # Create test plant, confirm exists in database
         test_id = uuid4()
-        Plant.objects.create(uuid=test_id, name='test plant')
+        Plant.objects.create(uuid=test_id, name='test plant', user=get_default_user())
         self.assertEqual(len(Plant.objects.all()), 1)
 
         # Call delete endpoint, confirm response, confirm removed from database
@@ -310,7 +312,7 @@ class OverviewTests(TestCase):
     def test_archive_plant(self):
         # Create test plant, confirm exists in database, is not archived
         test_id = uuid4()
-        Plant.objects.create(uuid=test_id, name='test plant')
+        Plant.objects.create(uuid=test_id, name='test plant', user=get_default_user())
         self.assertEqual(len(Plant.objects.all()), 1)
         self.assertFalse(Plant.objects.all()[0].archived)
 
@@ -335,7 +337,7 @@ class OverviewTests(TestCase):
     def test_archive_plant_error(self):
         # Create test plant, confirm exists in database, is not archived
         test_id = uuid4()
-        Plant.objects.create(uuid=test_id, name='test plant')
+        Plant.objects.create(uuid=test_id, name='test plant', user=get_default_user())
         self.assertEqual(len(Plant.objects.all()), 1)
         self.assertFalse(Plant.objects.all()[0].archived)
 
@@ -352,7 +354,7 @@ class OverviewTests(TestCase):
     def test_delete_group(self):
         # Create test group, confirm exists in database
         test_id = uuid4()
-        Group.objects.create(uuid=test_id, name='test group')
+        Group.objects.create(uuid=test_id, name='test group', user=get_default_user())
         self.assertEqual(len(Group.objects.all()), 1)
 
         # Call delete endpoint, confirm response, confirm removed from database
@@ -369,7 +371,7 @@ class OverviewTests(TestCase):
     def test_archive_group(self):
         # Create test group, confirm exists in database, is not archived
         test_id = uuid4()
-        Group.objects.create(uuid=test_id, name='test group')
+        Group.objects.create(uuid=test_id, name='test group', user=get_default_user())
         self.assertEqual(len(Group.objects.all()), 1)
         self.assertFalse(Group.objects.all()[0].archived)
 
@@ -394,7 +396,7 @@ class OverviewTests(TestCase):
     def test_archive_group_error(self):
         # Create test plant, confirm exists in database, is not archived
         test_id = uuid4()
-        Group.objects.create(uuid=test_id, name='test group')
+        Group.objects.create(uuid=test_id, name='test group', user=get_default_user())
         self.assertEqual(len(Group.objects.all()), 1)
         self.assertFalse(Group.objects.all()[0].archived)
 
@@ -430,12 +432,12 @@ class ArchivedOverviewTests(TestCase):
 
     def test_overview_page_with_database_entries(self):
         # Create test group and 2 test plants (should NOT be in context)
-        Group.objects.create(uuid=uuid4())
-        Plant.objects.create(uuid=uuid4(), name='Test plant')
-        Plant.objects.create(uuid=uuid4(), species='fittonia')
+        Group.objects.create(uuid=uuid4(), user=get_default_user())
+        Plant.objects.create(uuid=uuid4(), name='Test plant', user=get_default_user())
+        Plant.objects.create(uuid=uuid4(), species='fittonia', user=get_default_user())
         # Create archived group and archived plant (SHOULD be in context)
-        plant = Plant.objects.create(uuid=uuid4(), name='Archived plant', archived=True)
-        group = Group.objects.create(uuid=uuid4(), name='Archived group', archived=True)
+        plant = Plant.objects.create(uuid=uuid4(), name='Archived plant', user=get_default_user(), archived=True)
+        group = Group.objects.create(uuid=uuid4(), name='Archived group', user=get_default_user(), archived=True)
 
         # Request archive overview, confirm uses correct JS bundle and title
         response = self.client.get('/archived')
@@ -564,8 +566,8 @@ class RegistrationTests(TestCase):
         self.assertEqual(response.context['state']['species_options'], [])
 
         # Create 2 test plants with species set
-        Plant.objects.create(uuid=uuid4(), species='Calathea')
-        Plant.objects.create(uuid=uuid4(), species='Fittonia')
+        Plant.objects.create(uuid=uuid4(), species='Calathea', user=get_default_user())
+        Plant.objects.create(uuid=uuid4(), species='Fittonia', user=get_default_user())
 
         # Reguest page again, confirm species_options contains both species
         response = self.client.get(f'/manage/{uuid4()}')
@@ -580,9 +582,9 @@ class ManagePageTests(TestCase):
         self.client = JSONClient()
 
         # Create test plants and groups
-        self.plant1 = Plant.objects.create(uuid=uuid4())
-        self.plant2 = Plant.objects.create(uuid=uuid4())
-        self.group1 = Group.objects.create(uuid=uuid4())
+        self.plant1 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        self.plant2 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        self.group1 = Group.objects.create(uuid=uuid4(), user=get_default_user())
 
     def test_manage_plant(self):
         # Request management page for test plant, confirm status
@@ -1003,8 +1005,8 @@ class ManagePlantEndpointTests(TestCase):
         self.client = JSONClient()
 
         # Create test plant and group
-        self.plant = Plant.objects.create(uuid=uuid4())
-        self.group = Group.objects.create(uuid=uuid4())
+        self.plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        self.group = Group.objects.create(uuid=uuid4(), user=get_default_user())
 
     def _refresh_test_models(self):
         self.plant.refresh_from_db()
@@ -1148,9 +1150,9 @@ class ManageGroupEndpointTests(TestCase):
         self.client = JSONClient()
 
         # Create test plants and groups
-        self.plant1 = Plant.objects.create(uuid=uuid4())
-        self.plant2 = Plant.objects.create(uuid=uuid4())
-        self.group1 = Group.objects.create(uuid=uuid4())
+        self.plant1 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        self.plant2 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        self.group1 = Group.objects.create(uuid=uuid4(), user=get_default_user())
 
         # Create fake UUID that doesn't exist in database
         self.fake_id = uuid4()
@@ -1275,9 +1277,9 @@ class ChangeQrCodeTests(TestCase):
         self.client = JSONClient()
 
         # Create test plants and groups
-        self.plant1 = Plant.objects.create(uuid=uuid4())
-        self.plant2 = Plant.objects.create(uuid=uuid4())
-        self.group1 = Group.objects.create(uuid=uuid4())
+        self.plant1 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        self.plant2 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        self.group1 = Group.objects.create(uuid=uuid4(), user=get_default_user())
 
         # Create fake UUID that doesn't exist in database
         self.fake_id = uuid4()
@@ -1507,8 +1509,8 @@ class PlantEventEndpointTests(TestCase):
         self.client = JSONClient()
 
         # Create test plants
-        self.plant1 = Plant.objects.create(uuid=uuid4())
-        self.plant2 = Plant.objects.create(uuid=uuid4())
+        self.plant1 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        self.plant2 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
 
         # Create fake UUID that doesn't exist in database
         self.fake_id = uuid4()
@@ -1803,7 +1805,7 @@ class NoteEventEndpointTests(TestCase):
         self.client = JSONClient()
 
         # Create test plant
-        self.plant = Plant.objects.create(uuid=uuid4())
+        self.plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
 
     def test_add_note_event(self):
         # Confirm test plant has no note events
@@ -1974,7 +1976,7 @@ class PlantPhotoEndpointTests(TestCase):
         self.client = JSONClient()
 
         # Create test plant
-        self.plant = Plant.objects.create(uuid=uuid4())
+        self.plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
 
     def tearDown(self):
         # Delete mock photos between tests to prevent duplicate names (django
@@ -2157,7 +2159,7 @@ class PlantPhotoEndpointTests(TestCase):
 
     def test_set_photo_of_wrong_plant_as_default_photo(self):
         # Create second plant entry + photo associated with second plant
-        wrong_plant = Plant.objects.create(uuid=uuid4())
+        wrong_plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         wrong_plant_photo = Photo.objects.create(
             photo=create_mock_photo('2024:02:21 10:52:03', 'IMG1.jpg'),
             plant=wrong_plant

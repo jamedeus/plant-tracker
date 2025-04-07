@@ -21,6 +21,7 @@ from .models import (
     RepotEvent
 )
 from .view_decorators import (
+    get_default_user,
     get_plant_from_post_body,
     get_group_from_post_body,
     get_timestamp_from_post_body,
@@ -57,8 +58,8 @@ class ModelRegressionTests(TestCase):
         '''
 
         # Create test plant and group, confirm 1 entry each
-        plant = Plant.objects.create(uuid=uuid4())
-        group = Group.objects.create(uuid=uuid4())
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        group = Group.objects.create(uuid=uuid4(), user=get_default_user())
         self.assertEqual(len(Plant.objects.all()), 1)
         self.assertEqual(len(Group.objects.all()), 1)
 
@@ -79,7 +80,7 @@ class ModelRegressionTests(TestCase):
         '''
 
         # Create Photo using mock image with no exif data
-        plant = Plant.objects.create(uuid=uuid4())
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         photo = Photo.objects.create(
             photo=create_mock_photo(name='photo1.jpg'),
             plant=plant
@@ -100,11 +101,11 @@ class ModelRegressionTests(TestCase):
         '''
 
         # Instantiate Group model
-        group = Group.objects.create(uuid=uuid4())
+        group = Group.objects.create(uuid=uuid4(), user=get_default_user())
 
         # Attempt to instantiate Plant with same UUID, should raise exception
         with self.assertRaises(IntegrityError):
-            Plant.objects.create(uuid=group.uuid)
+            Plant.objects.create(uuid=group.uuid, user=get_default_user())
 
     def test_should_not_allow_creating_group_with_same_uuid_as_plant(self):
         '''Issue: The unique constraint on the Group.uuid field only applies to
@@ -117,11 +118,11 @@ class ModelRegressionTests(TestCase):
         '''
 
         # Instantiate Plant model
-        plant = Plant.objects.create(uuid=uuid4())
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
 
         # Attempt to instantiate Group with same UUID, should raise exception
         with self.assertRaises(IntegrityError):
-            Group.objects.create(uuid=plant.uuid)
+            Group.objects.create(uuid=plant.uuid, user=get_default_user())
 
     def test_deleting_group_should_not_delete_plants_in_group(self):
         '''Issue: The Plant model's group ForeignKey originally had on_delete
@@ -133,8 +134,8 @@ class ModelRegressionTests(TestCase):
         '''
 
         # Create a Group entry and Plant entry with ForeignKey to group
-        group = Group.objects.create(uuid=uuid4())
-        plant = Plant.objects.create(uuid=uuid4(), group=group)
+        group = Group.objects.create(uuid=uuid4(), user=get_default_user())
+        plant = Plant.objects.create(uuid=uuid4(), group=group, user=get_default_user())
 
         # Confirm 1 of each model exist, plant has correct relation to Group
         self.assertEqual(len(Group.objects.all()), 1)
@@ -164,9 +165,9 @@ class ViewRegressionTests(TestCase):
         '''
 
         # Create 3 test plants, create WaterEvent for second plant
-        plant1 = Plant.objects.create(uuid=uuid4())
-        plant2 = Plant.objects.create(uuid=uuid4())
-        plant3 = Plant.objects.create(uuid=uuid4())
+        plant1 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        plant2 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        plant3 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         timestamp = timezone.now()
         WaterEvent.objects.create(plant=plant2, timestamp=timestamp)
 
@@ -212,7 +213,7 @@ class ViewRegressionTests(TestCase):
         '''
 
         # Create test plant with 1 RepotEvent
-        plant = Plant.objects.create(uuid=uuid4())
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         timestamp = timezone.now()
         RepotEvent.objects.create(plant=plant, timestamp=timestamp)
         self.assertEqual(len(plant.repotevent_set.all()), 1)
@@ -241,7 +242,7 @@ class ViewRegressionTests(TestCase):
         '''
 
         # Create 2 mock photos with identical creation times
-        plant = Plant.objects.create(uuid=uuid4())
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         photo1 = Photo.objects.create(
             photo=create_mock_photo('2024:03:21 10:52:03'),
             plant=plant
@@ -275,7 +276,7 @@ class ViewRegressionTests(TestCase):
         The add_plant_photos response now uses the same format as manage_plant.
         '''
 
-        test_plant = Plant.objects.create(uuid=uuid4())
+        test_plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
 
         # Create photos with and without exif creation times
         with_exif = create_mock_photo(
@@ -321,7 +322,7 @@ class ViewRegressionTests(TestCase):
         '''
 
         # Create test plant, post UUID to /change_qr_code, confirm cache set
-        plant = Plant.objects.create(uuid=uuid4())
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         JSONClient().post('/change_qr_code', {'uuid': str(plant.uuid)})
         self.assertEqual(cache.get('old_uuid'), str(plant.uuid))
 
@@ -353,7 +354,7 @@ class ViewRegressionTests(TestCase):
         '''
 
         # Create test plant
-        plant = Plant.objects.create(uuid=uuid4())
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
 
         # Post details with blank pot_size to /edit_plant endpoint
         response = JSONClient().post('/edit_plant', {
@@ -472,8 +473,8 @@ class ViewRegressionTests(TestCase):
         '''
 
         # Create plant and group
-        plant = Plant.objects.create(uuid=uuid4())
-        group = Group.objects.create(uuid=uuid4())
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        group = Group.objects.create(uuid=uuid4(), user=get_default_user())
         self.assertEqual(len(Plant.objects.all()), 1)
         self.assertEqual(len(Group.objects.all()), 1)
 
@@ -532,8 +533,8 @@ class CachedStateRegressionTests(TestCase):
         '''
 
         # Create 2 unnamed plants
-        plant1 = Plant.objects.create(uuid=uuid4(), name=None)
-        plant2 = Plant.objects.create(uuid=uuid4(), name=None)
+        plant1 = Plant.objects.create(uuid=uuid4(), name=None, user=get_default_user())
+        plant2 = Plant.objects.create(uuid=uuid4(), name=None, user=get_default_user())
 
         # Request manage_plant page for second plant
         response = self.client.get(f'/manage/{plant2.uuid}')
@@ -566,8 +567,8 @@ class CachedStateRegressionTests(TestCase):
         '''
 
         # Create unnamed group containing 1 plant
-        group = Group.objects.create(uuid=uuid4())
-        plant = Plant.objects.create(uuid=uuid4(), group=group)
+        group = Group.objects.create(uuid=uuid4(), user=get_default_user())
+        plant = Plant.objects.create(uuid=uuid4(), group=group, user=get_default_user())
 
         # Request manage_plant page, confirm group name is "Unnamed group 1"
         response = self.client.get(f'/manage/{plant.uuid}')
@@ -596,8 +597,8 @@ class CachedStateRegressionTests(TestCase):
         '''
 
         # Create test group, create test plant (not in group) with 1 photo
-        group = Group.objects.create(uuid=uuid4())
-        plant = Plant.objects.create(uuid=uuid4())
+        group = Group.objects.create(uuid=uuid4(), user=get_default_user())
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         photo1 = Photo.objects.create(
             photo=create_mock_photo(
                 creation_time='2024:02:21 10:52:03',
@@ -657,9 +658,9 @@ class CachedStateRegressionTests(TestCase):
         '''
 
         # Create group, plant that is in group, plant that is not in group
-        group = Group.objects.create(uuid=uuid4())
-        plant1 = Plant.objects.create(uuid=uuid4(), group=group)
-        plant2 = Plant.objects.create(uuid=uuid4())
+        group = Group.objects.create(uuid=uuid4(), user=get_default_user())
+        plant1 = Plant.objects.create(uuid=uuid4(), group=group, user=get_default_user())
+        plant2 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         # Trigger group_options cache update (normally called from endpoint)
         group.save()
 
@@ -709,8 +710,8 @@ class CachedStateRegressionTests(TestCase):
 
 class ViewDecoratorRegressionTests(TestCase):
     def setUp(self):
-        self.plant = Plant.objects.create(uuid=uuid4())
-        self.group = Group.objects.create(uuid=uuid4())
+        self.plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        self.group = Group.objects.create(uuid=uuid4(), user=get_default_user())
 
     def test_get_plant_from_post_body_traps_wrapped_function_exceptions(self):
         '''Issue: get_plant_from_post_body called the wrapped function inside a

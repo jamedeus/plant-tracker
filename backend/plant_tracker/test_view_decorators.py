@@ -10,6 +10,7 @@ from django.test.client import RequestFactory
 from .models import Plant
 from .view_decorators import (
     requires_json_post,
+    get_default_user,
     get_plant_from_post_body,
     get_group_from_post_body,
     get_qr_instance_from_post_body,
@@ -22,7 +23,7 @@ from .unit_test_helpers import JSONClient
 class ViewDecoratorErrorTests(TestCase):
     def setUp(self):
         # Create test plant to use in tests
-        self.test_plant = Plant.objects.create(uuid=uuid4())
+        self.test_plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
 
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
