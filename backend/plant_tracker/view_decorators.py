@@ -11,7 +11,7 @@ from functools import wraps
 from datetime import datetime
 
 from django.conf import settings
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 
@@ -75,7 +75,8 @@ def get_user_token(func):
         if settings.SINGLE_USER_MODE:
             return func(request, user=get_default_user(), **kwargs)
         if not request.user.is_authenticated:
-            return JsonResponse({'error': 'user must be logged in'}, status=403)
+            # Redirect to login page if not signed in
+            return HttpResponseRedirect('/accounts/login')
         return func(request, user=request.user, **kwargs)
     return wrapper
 

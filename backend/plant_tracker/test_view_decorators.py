@@ -3,8 +3,10 @@
 import json
 from uuid import uuid4
 
+from django.conf import settings
 from django.test import TestCase
 from django.http import HttpResponse
+from django.contrib.auth.models import User
 from django.test.client import RequestFactory
 
 from .models import Plant
@@ -18,6 +20,47 @@ from .view_decorators import (
     get_event_type_from_post_body
 )
 from .unit_test_helpers import JSONClient
+
+
+class AuthenticationTests(TestCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.test_user = User.objects.create_user(username='unittest', password='12345')
+
+        # Set default content_type for post requests (avoid long lines)
+        cls.client = JSONClient()
+
+    def tearDown(self):
+        # Ensure user logged out between tests
+        self.client.logout()
+
+        # Revert back to SINGLE_USER_MODE
+        settings.SINGLE_USER_MODE = True
+
+    def test_overview_page(self):
+        # Request overview while signed out, confirm page loads
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'plant_tracker/index.html')
+        self.assertEqual(response.context['title'], 'Overview')
+
+        # Disable SINGLE_USER_MODE (require authentication)
+        settings.SINGLE_USER_MODE = False
+
+        # Request overview page, confirm redirected to login page
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/accounts/login')
+
+        # Sign user in
+        self.client.login(username='unittest', password='12345')
+
+        # Request overview while signed in, confirm page loads
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'plant_tracker/index.html')
+        self.assertEqual(response.context['title'], 'Overview')
 
 
 class ViewDecoratorErrorTests(TestCase):
