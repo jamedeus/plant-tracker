@@ -5,6 +5,11 @@ import App from '../App';
 import { mockContext } from './mockContext';
 
 describe('App', () => {
+    beforeAll(() => {
+        // Mock page title (set by django template in prod)
+        document.title = 'Plant Overview'
+    });
+
     // Delete mock contexts after each test (isolation)
     afterEach(() => {
         removeMockContext('plants');
@@ -89,6 +94,11 @@ describe('App', () => {
 });
 
 describe('App (archived page)', () => {
+    beforeAll(() => {
+        // Mock page title (set by django template in prod)
+        document.title = 'Archived'
+    });
+
     it('matches snapshot when plants and groups exist', () => {
         // Create mock state objects (flip all archived bools to true)
         createMockContext('plants', mockContext.plants.map(plant => {

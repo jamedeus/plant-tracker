@@ -96,9 +96,16 @@ def overview(request, user):
     '''Renders the overview page for the requesting user (shows their existing
     plants/groups, or setup if none).
     '''
+
+    # Set generic page title in SINGLE_USER_MODE or if user has no first name
+    if settings.SINGLE_USER_MODE or not user.first_name:
+        title='Plant Overview'
+    else:
+        title=f"{user.first_name}'s Plants"
+
     return render_react_app(
         request,
-        title='Overview',
+        title=title,
         bundle='overview',
         state=get_overview_state(user)
     )

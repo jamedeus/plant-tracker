@@ -25,6 +25,9 @@ function App() {
     // Check URL to determine if viewing main overview or archive overview
     const archivedOverview = window.location.pathname === '/archived';
 
+    // Get page title (used in navbar header)
+    const pageTitle = useMemo(() => document.title);
+
     // Request new state from backend if user navigates to overview by pressing
     // back button (last watered/details may be outdated if coming from manage)
     useEffect(() => {
@@ -216,7 +219,7 @@ function App() {
         <div className="container flex flex-col min-h-screen mx-auto pb-28">
             <Navbar
                 menuOptions={DropdownMenuOptions}
-                title={archivedOverview ? "Archived" : "Plant Overview"}
+                title={pageTitle}
                 titleOptions={stackedColumns ? TitleQuickNavigation : null}
             />
 

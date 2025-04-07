@@ -118,7 +118,7 @@ class OverviewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
         self.assertEqual(response.context['js_bundle'], 'plant_tracker/overview.js')
-        self.assertEqual(response.context['title'], 'Overview')
+        self.assertEqual(response.context['title'], 'Plant Overview')
 
         # Confirm correct state object (no plants or groups in database)
         self.assertEqual(
@@ -140,7 +140,7 @@ class OverviewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
         self.assertEqual(response.context['js_bundle'], 'plant_tracker/overview.js')
-        self.assertEqual(response.context['title'], 'Overview')
+        self.assertEqual(response.context['title'], 'Plant Overview')
 
         # Confirm state object has details of all non-archived plants and groups,
         # does not contain archived plant and group

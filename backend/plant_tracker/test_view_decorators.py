@@ -26,7 +26,12 @@ class AuthenticationTests(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.test_user = User.objects.create_user(username='unittest', password='12345')
+        cls.test_user = User.objects.create_user(
+            username='unittest',
+            password='12345',
+            first_name='Bob',
+            last_name='Smith'
+        )
 
         # Set default content_type for post requests (avoid long lines)
         cls.client = JSONClient()
@@ -43,7 +48,7 @@ class AuthenticationTests(TestCase):
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['title'], 'Overview')
+        self.assertEqual(response.context['title'], 'Plant Overview')
 
         # Disable SINGLE_USER_MODE (require authentication)
         settings.SINGLE_USER_MODE = False
@@ -60,7 +65,8 @@ class AuthenticationTests(TestCase):
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['title'], 'Overview')
+        # Confirm title includes user's first name
+        self.assertEqual(response.context['title'], "Bob's Plants")
 
 
 class ViewDecoratorErrorTests(TestCase):
