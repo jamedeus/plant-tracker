@@ -197,7 +197,7 @@ def get_manage_plant_state(plant):
         state['plant_details']['group']['name'] = plant.group.get_display_name()
 
     # Add species and group options (cached separately)
-    state['group_options'] = get_group_options()
+    state['group_options'] = get_group_options(plant.user)
     state['species_options'] = get_plant_species_options()
 
     return state
@@ -252,51 +252,55 @@ def delete_cached_manage_plant_state_hook(instance, **kwargs):
 
 
 @shared_task()
-def update_cached_plant_options():
-    '''Builds and caches plant options for manage_group add plants modal'''
-    get_plant_options()
+def update_cached_plant_options(user_pk):
+    '''Takes user primary key, builds and caches plant options for manage_group
+    add plants modal'''
+    get_plant_options(get_user_model().objects.get(pk=user_pk))
     print('Rebuilt plant_options (manage_group add plants modal)')
 
 
-def schedule_cached_plant_options_update():
-    '''Clears cached plant_options immediately and schedules task to update it
-    in 30 seconds (timer resets if called again within 30 seconds)'''
+def schedule_cached_plant_options_update(user):
+    '''Takes user, clears cached plant_options immediately and schedules task
+    to update it in 30 seconds (timer resets if called again within 30 seconds)'''
     schedule_cached_state_update(
-        cache_name='plant_options',
+        cache_name=f'plant_options_{user.pk}',
         callback_task=update_cached_plant_options,
+        callback_kwargs={'user_pk': user.pk},
         delay=30
     )
 
 
 @receiver(post_save, sender=Plant)
 @receiver(post_delete, sender=Plant)
-def update_cached_plant_options_hook(**kwargs):
+def update_cached_plant_options_hook(instance, **kwargs):
     '''Schedules task to update cached plant_options when Plant is saved/deleted'''
-    schedule_cached_plant_options_update()
+    schedule_cached_plant_options_update(instance.user)
 
 
 @shared_task()
-def update_cached_group_options():
-    '''Builds and caches group options for manage_plant add group modal'''
-    get_group_options()
+def update_cached_group_options(user_pk):
+    '''Takes user primary key, builds and caches group options for manage_plant
+    add group modal'''
+    get_group_options(get_user_model().objects.get(pk=user_pk))
     print('Rebuilt group_options (manage_plant add group modal)')
 
 
-def schedule_cached_group_options_update():
-    '''Clears cached group_options immediately and schedules task to update it
-    in 30 seconds (timer resets if called again within 30 seconds)'''
+def schedule_cached_group_options_update(user):
+    '''Takes user, clears cached group_options immediately and schedules task
+    to update it in 30 seconds (timer resets if called again within 30 seconds)'''
     schedule_cached_state_update(
-        cache_name='group_options',
+        cache_name=f'group_options_{user.pk}',
         callback_task=update_cached_group_options,
+        callback_kwargs={'user_pk': user.pk},
         delay=30
     )
 
 
 @receiver(post_save, sender=Group)
 @receiver(post_delete, sender=Group)
-def update_cached_group_options_hook(**kwargs):
+def update_cached_group_options_hook(instance, **kwargs):
     '''Schedules task to update cached group_options when Group is saved/deleted'''
-    schedule_cached_group_options_update()
+    schedule_cached_group_options_update(instance.user)
 
 
 @shared_task()

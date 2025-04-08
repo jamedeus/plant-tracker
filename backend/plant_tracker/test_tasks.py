@@ -763,53 +763,53 @@ class HookTests(TestCase):
         self.assertIsNone(cache.get(f'{plant.uuid}_state'))
 
     def test_plant_options_list_updates_when_plant_created_modified_or_deleted(self):
-        # Confirm no cached plant_options list
-        self.assertIsNone(cache.get('plant_options'))
+        # Confirm no cached plant_options list for default user
+        self.assertIsNone(cache.get(f'plant_options_{get_default_user().pk}'))
 
         # Create Plant model entry
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
 
         # Confirm plant_options was generated and cached
-        self.assertIsNotNone(cache.get('plant_options'))
+        self.assertIsNotNone(cache.get(f'plant_options_{get_default_user().pk}'))
 
         # Clear cache, change plant details
-        cache.delete('plant_options')
+        cache.delete(f'plant_options_{get_default_user().pk}')
         plant.name = 'New Plant'
         plant.species = 'Cilantro'
         plant.save()
 
         # Confirm plant_options was generated and cached
-        self.assertIsNotNone(cache.get('plant_options'))
+        self.assertIsNotNone(cache.get(f'plant_options_{get_default_user().pk}'))
 
         # Delete cache, delete plant model entry
-        cache.delete('plant_options')
+        cache.delete(f'plant_options_{get_default_user().pk}')
         plant.delete()
 
         # Confirm plant_options was generated and cached
-        self.assertIsNotNone(cache.get('plant_options'))
+        self.assertIsNotNone(cache.get(f'plant_options_{get_default_user().pk}'))
 
     def test_group_options_list_updates_when_group_created_modified_or_deleted(self):
-        # Confirm no cached group_options list
-        self.assertIsNone(cache.get('group_options'))
+        # Confirm no cached group_options list for default user
+        self.assertIsNone(cache.get(f'group_options_{get_default_user().pk}'))
 
         # Create Group model entry
         group = Group.objects.create(uuid=uuid4(), user=get_default_user())
 
         # Confirm group_options was generated and cached
-        self.assertIsNotNone(cache.get('group_options'))
+        self.assertIsNotNone(cache.get(f'group_options_{get_default_user().pk}'))
 
         # Clear cache, change group details
-        cache.delete('group_options')
+        cache.delete(f'group_options_{get_default_user().pk}')
         group.name = 'New Group'
         group.location = 'Roof'
         group.save()
 
         # Confirm group_options was generated and cached
-        self.assertIsNotNone(cache.get('group_options'))
+        self.assertIsNotNone(cache.get(f'group_options_{get_default_user().pk}'))
 
         # Delete cache, delete group model entry
-        cache.delete('group_options')
+        cache.delete(f'group_options_{get_default_user().pk}')
         group.delete()
 
         # Confirm group_options was generated and cached
-        self.assertIsNotNone(cache.get('group_options'))
+        self.assertIsNotNone(cache.get(f'group_options_{get_default_user().pk}'))

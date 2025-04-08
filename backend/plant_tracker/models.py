@@ -54,15 +54,15 @@ def get_unnamed_groups():
     return unnamed_groups
 
 
-def get_plant_options():
-    '''Returns a list of dicts with attributes of all existing plants.
+def get_plant_options(user):
+    '''Takes user, returns list of dicts with details for all plants owned by user.
     List is cached until Plant model changes (detected by hooks in tasks.py).
     Used to populate options in add plants modal on manage_group page.
     '''
-    plant_options = cache.get('plant_options')
+    plant_options = cache.get(f'plant_options_{user.pk}')
     if not plant_options:
-        plant_options = [plant.get_details() for plant in Plant.objects.all()]
-        cache.set('plant_options', plant_options, None)
+        plant_options = [plant.get_details() for plant in Plant.objects.filter(user=user)]
+        cache.set(f'plant_options_{user.pk}', plant_options, None)
     return plant_options
 
 
@@ -79,15 +79,15 @@ def get_plant_species_options():
     return species_options
 
 
-def get_group_options():
-    '''Returns a list of dicts with attributes of all existing groups.
+def get_group_options(user):
+    '''Takes user, returns list of dicts with details for all groups owner by user.
     List is cached until Group model changes (detected by hooks in tasks.py).
     Used to populate options in add group modal on manage_plant page.
     '''
-    group_options = cache.get('group_options')
+    group_options = cache.get(f'group_options_{user.pk}')
     if not group_options:
-        group_options = [group.get_details() for group in Group.objects.all()]
-        cache.set('group_options', group_options, None)
+        group_options = [group.get_details() for group in Group.objects.filter(user=user)]
+        cache.set(f'group_options_{user.pk}', group_options, None)
     return group_options
 
 

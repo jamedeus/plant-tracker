@@ -620,7 +620,7 @@ class CachedStateRegressionTests(TestCase):
         )
 
         # Confirm plant_options object is cached when manage_group loaded
-        self.assertIsNotNone(cache.get('plant_options'))
+        self.assertIsNotNone(cache.get(f'plant_options_{get_default_user().pk}'))
 
         # Create a second Photo with more recent timestamp
         photo2 = Photo.objects.create(
