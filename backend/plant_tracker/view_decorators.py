@@ -112,6 +112,7 @@ def requires_json_post(required_keys=None):
 
 def get_plant_from_post_body(func):
     '''Decorator looks up plant by UUID, throws error if not found
+    If called after get_user_token throws error if Plant is not owned be user
     Must call after requires_json_post (expects dict with plant_id key as first arg)
     Passes Plant instance and data dict to wrapped function as plant and data kwargs
     '''
@@ -131,12 +132,18 @@ def get_plant_from_post_body(func):
                 {"error": "plant_id key is not a valid UUID"},
                 status=400
             )
+        if 'user' in kwargs and plant.user != kwargs['user']:
+            return JsonResponse(
+                {"error": "plant is owned by a different user"},
+                status=403
+            )
         return func(plant=plant, data=data, **kwargs)
     return wrapper
 
 
 def get_group_from_post_body(func):
     '''Decorator looks up group by UUID, throws error if not found
+    If called after get_user_token throws error if Group is not owned be user
     Must call after requires_json_post (expects dict with group_id key as first arg)
     Passes Group instance and data dict to wrapped function as group and data kwargs
     '''
@@ -155,6 +162,11 @@ def get_group_from_post_body(func):
             return JsonResponse(
                 {"error": "group_id key is not a valid UUID"},
                 status=400
+            )
+        if 'user' in kwargs and group.user != kwargs['user']:
+            return JsonResponse(
+                {"error": "group is owned by a different user"},
+                status=403
             )
         return func(group=group, data=data, **kwargs)
     return wrapper

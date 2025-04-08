@@ -9,7 +9,7 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.test.client import RequestFactory
 
-from .models import Plant
+from .models import Plant, Group
 from .view_decorators import (
     requires_json_post,
     get_default_user,
@@ -33,8 +33,9 @@ class AuthenticationTests(TestCase):
             last_name='Smith'
         )
 
+    def setUp(self):
         # Set default content_type for post requests (avoid long lines)
-        cls.client = JSONClient()
+        self.client = JSONClient()
 
     def tearDown(self):
         # Ensure user logged out between tests
@@ -67,6 +68,161 @@ class AuthenticationTests(TestCase):
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
         # Confirm title includes user's first name
         self.assertEqual(response.context['title'], "Bob's Plants")
+
+    def test_endpoints_reject_requests_from_user_who_does_not_own_plant(self):
+        # Create plant and group owned by test user (SINGLE_USER_MODE is
+        # enabled, so requests will come from default user which doesn't own)
+        plant = Plant.objects.create(uuid=uuid4(), user=self.test_user)
+        group = Group.objects.create(uuid=uuid4(), user=self.test_user)
+
+        # Confirm /edit_plant returns 403
+        response = self.client.post('/edit_plant', {
+            'plant_id': plant.uuid,
+            'name': 'test plant    ',
+            'species': '   Giant Sequoia',
+            'description': '300 feet and a few thousand years old',
+            'pot_size': '4'
+        })
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.json(), {"error": "plant is owned by a different user"})
+
+        # Confirm /edit_group returns 403
+        response = self.client.post('/edit_group', {
+            'group_id': group.uuid,
+            'name': 'test group    ',
+            'location': '    middle shelf',
+            'description': 'This group is used for propagation'
+        })
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.json(), {"error": "group is owned by a different user"})
+
+        # Confirm /delete_plant returns 403
+        response = self.client.post('/delete_plant', {'plant_id': str(plant.uuid)})
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.json(), {"error": "plant is owned by a different user"})
+
+        # Confirm /archive_plant returns 403
+        response = self.client.post('/archive_plant', {'plant_id': str(plant.uuid), 'archived': True})
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.json(), {"error": "plant is owned by a different user"})
+
+        # Confirm /delete_group returns 403
+        response = self.client.post('/delete_group', {'group_id': str(group.uuid)})
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.json(), {"error": "group is owned by a different user"})
+
+        # Confirm /archive_group returns 403
+        response = self.client.post('/archive_group', {'group_id': str(group.uuid), 'archived': True})
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.json(), {"error": "group is owned by a different user"})
+
+        # Confirm /add_plant_event returns 403
+        response = self.client.post('/add_plant_event', {
+            'plant_id': plant.uuid,
+            'event_type': 'water',
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        })
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.json(), {"error": "plant is owned by a different user"})
+
+        # Confirm /delete_plant_event returns 403
+        response = self.client.post('/delete_plant_event', {
+            'plant_id': plant.uuid,
+            'event_type': 'water',
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        })
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.json(), {"error": "plant is owned by a different user"})
+
+        # Confirm /bulk_delete_plant_events returns 403
+        response = self.client.post('/bulk_delete_plant_events', {
+            'plant_id': plant.uuid,
+            'events': [{'type': 'water', 'timestamp': '2024-02-06T03:06:26.000Z'}]
+        })
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.json(), {"error": "plant is owned by a different user"})
+
+        # Confirm /add_plant_note returns 403
+        response = self.client.post('/add_plant_note', {
+            'plant_id': plant.uuid,
+            'timestamp': '2024-02-06T03:06:26.000Z',
+            'note_text': '  plant is looking healthier than last week  '
+        })
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.json(), {"error": "plant is owned by a different user"})
+
+        # Confirm /edit_plant_note returns 403
+        response = self.client.post('/edit_plant_note', {
+            'plant_id': plant.uuid,
+            'timestamp': '2024-02-06T03:06:26.000Z',
+            'note_text': '   This is the text I forgot to add   '
+        })
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.json(), {"error": "plant is owned by a different user"})
+
+        # Confirm /delete_plant_note returns 403
+        response = self.client.post('/delete_plant_note', {
+            'plant_id': plant.uuid,
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        })
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.json(), {"error": "plant is owned by a different user"})
+
+        # Confirm /add_plant_to_group returns 403
+        response = self.client.post('/add_plant_to_group', {
+            'plant_id': plant.uuid,
+            'group_id': group.uuid
+        })
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.json(), {"error": "plant is owned by a different user"})
+
+        # Confirm /remove_plant_from_group returns 403
+        response = self.client.post('/remove_plant_from_group', {
+            'plant_id': plant.uuid
+        })
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.json(), {"error": "plant is owned by a different user"})
+
+        # Confirm /bulk_add_plants_to_group returns 403
+        response = self.client.post('/bulk_add_plants_to_group', {
+            'group_id': group.uuid,
+            'plants': [plant.uuid]
+        })
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.json(), {"error": "group is owned by a different user"})
+
+        # Confirm /bulk_remove_plants_from_group returns 403
+        response = self.client.post('/bulk_remove_plants_from_group', {
+            'group_id': group.uuid,
+            'plants': [plant.uuid]
+        })
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.json(), {"error": "group is owned by a different user"})
+
+        # Confirm /repot_plant returns 403
+        response = self.client.post('/repot_plant', {
+            'plant_id': plant.uuid,
+            'timestamp': '2024-02-06T03:06:26.000Z',
+            'new_pot_size': 6
+        })
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.json(), {"error": "plant is owned by a different user"})
+
+        # Confirm /delete_plant_photos returns 403
+        response = self.client.post('/delete_plant_photos', {
+            'plant_id': str(plant.uuid),
+            'delete_photos': [1]
+        })
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.json(), {"error": "plant is owned by a different user"})
+
+        # Confirm /set_plant_default_photo returns 403
+        response = self.client.post('/set_plant_default_photo', {
+            'plant_id': str(plant.uuid),
+            'photo_key': 1
+        })
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.json(), {"error": "plant is owned by a different user"})
 
 
 class ViewDecoratorErrorTests(TestCase):

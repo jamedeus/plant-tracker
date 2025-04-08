@@ -365,10 +365,11 @@ def change_uuid(instance, data):
         return JsonResponse({"error": "new_id key is not a valid UUID"}, status=400)
 
 
+@get_user_token
 @requires_json_post(["plant_id", "name", "species", "description", "pot_size"])
 @get_plant_from_post_body
 @clean_payload_data
-def edit_plant_details(plant, data):
+def edit_plant_details(plant, data, **kwargs):
     '''Updates description attributes of existing Plant entry
     Requires JSON POST with plant_id (uuid), name, species, description, and pot_size keys
     '''
@@ -387,10 +388,11 @@ def edit_plant_details(plant, data):
     return JsonResponse(data, status=200)
 
 
+@get_user_token
 @requires_json_post(["group_id", "name", "location", "description"])
 @get_group_from_post_body
 @clean_payload_data
-def edit_group_details(group, data):
+def edit_group_details(group, data, **kwargs):
     '''Updates description attributes of existing Group entry
     Requires JSON POST with group_id (uuid), name, and location keys
     '''
@@ -408,6 +410,7 @@ def edit_group_details(group, data):
     return JsonResponse(data, status=200)
 
 
+@get_user_token
 @requires_json_post(["plant_id"])
 @get_plant_from_post_body
 def delete_plant(plant, **kwargs):
@@ -418,6 +421,7 @@ def delete_plant(plant, **kwargs):
     return JsonResponse({"deleted": plant.uuid}, status=200)
 
 
+@get_user_token
 @requires_json_post(["plant_id", "archived"])
 @get_plant_from_post_body
 def archive_plant(plant, data, **kwargs):
@@ -432,6 +436,7 @@ def archive_plant(plant, data, **kwargs):
     return JsonResponse({"updated": plant.uuid}, status=200)
 
 
+@get_user_token
 @requires_json_post(["group_id"])
 @get_group_from_post_body
 def delete_group(group, **kwargs):
@@ -442,6 +447,7 @@ def delete_group(group, **kwargs):
     return JsonResponse({"deleted": group.uuid}, status=200)
 
 
+@get_user_token
 @requires_json_post(["group_id", "archived"])
 @get_group_from_post_body
 def archive_group(group, data, **kwargs):
@@ -562,11 +568,12 @@ def bulk_delete_plant_events(user, plant, data):
     return JsonResponse({"deleted": deleted, "failed": failed}, status=200)
 
 
+@get_user_token
 @requires_json_post(["plant_id", "timestamp", "note_text"])
 @clean_payload_data
 @get_plant_from_post_body
 @get_timestamp_from_post_body
-def add_plant_note(plant, timestamp, data):
+def add_plant_note(plant, timestamp, data, **kwargs):
     '''Creates new NoteEvent with user-entered text for specified Plant entry
     Requires JSON POST with plant_id (uuid), timestamp, and note_text keys
     '''
@@ -599,11 +606,12 @@ def add_plant_note(plant, timestamp, data):
         )
 
 
+@get_user_token
 @requires_json_post(["plant_id", "timestamp", "note_text"])
 @clean_payload_data
 @get_plant_from_post_body
 @get_timestamp_from_post_body
-def edit_plant_note(plant, timestamp, data):
+def edit_plant_note(plant, timestamp, data, **kwargs):
     '''Overwrites text of an existing NoteEvent with the specified timestamp
     Requires JSON POST with plant_id (uuid), timestamp, and note_text keys
     '''
@@ -631,6 +639,7 @@ def edit_plant_note(plant, timestamp, data):
         )
 
 
+@get_user_token
 @requires_json_post(["plant_id", "timestamp"])
 @get_plant_from_post_body
 @get_timestamp_from_post_body
@@ -646,6 +655,7 @@ def delete_plant_note(plant, timestamp, **kwargs):
         return JsonResponse({"error": "note not found"}, status=404)
 
 
+@get_user_token
 @requires_json_post(["plant_id", "group_id"])
 @get_plant_from_post_body
 @get_group_from_post_body
@@ -670,6 +680,7 @@ def add_plant_to_group(plant, group, **kwargs):
     )
 
 
+@get_user_token
 @requires_json_post(["plant_id"])
 @get_plant_from_post_body
 def remove_plant_from_group(plant, **kwargs):
@@ -688,9 +699,10 @@ def remove_plant_from_group(plant, **kwargs):
     )
 
 
+@get_user_token
 @requires_json_post(["group_id", "plants"])
 @get_group_from_post_body
-def bulk_add_plants_to_group(group, data):
+def bulk_add_plants_to_group(group, data, **kwargs):
     '''Adds a list of Plants to specified Group (creates database relation for each)
     Requires JSON POST with group_id (uuid) and plants (list of UUIDs) keys
     '''
@@ -711,6 +723,7 @@ def bulk_add_plants_to_group(group, data):
     return JsonResponse({"added": added, "failed": failed}, status=200)
 
 
+@get_user_token
 @requires_json_post(["group_id", "plants"])
 @get_group_from_post_body
 def bulk_remove_plants_from_group(data, **kwargs):
@@ -734,10 +747,11 @@ def bulk_remove_plants_from_group(data, **kwargs):
     return JsonResponse({"removed": added, "failed": failed}, status=200)
 
 
+@get_user_token
 @requires_json_post(["plant_id", "new_pot_size", "timestamp"])
 @get_plant_from_post_body
 @get_timestamp_from_post_body
-def repot_plant(plant, timestamp, data):
+def repot_plant(plant, timestamp, data, **kwargs):
     '''Creates a RepotEvent for specified Plant with optional new_pot_size
     Requires JSON POST with plant_id, new_pot_size, and timestamp keys
     '''
@@ -808,9 +822,10 @@ def add_plant_photos(request):
     )
 
 
+@get_user_token
 @requires_json_post(["plant_id", "delete_photos"])
 @get_plant_from_post_body
-def delete_plant_photos(plant, data):
+def delete_plant_photos(plant, data, **kwargs):
     '''Deletes a list of Photos associated with a specific Plant
     Requires JSON POST with plant_id (uuid) and delete_photos (list of db keys)
     '''
@@ -827,9 +842,10 @@ def delete_plant_photos(plant, data):
     return JsonResponse({"deleted": deleted, "failed": failed}, status=200)
 
 
+@get_user_token
 @requires_json_post(["plant_id", "photo_key"])
 @get_plant_from_post_body
-def set_plant_default_photo(plant, data):
+def set_plant_default_photo(plant, data, **kwargs):
     '''Sets the photo used for overview page thumbnail
     Requires JSON POST with plant_id (uuid) and photo_key (db primary key)
     '''
