@@ -7,7 +7,7 @@ from django.conf import settings
 from django.test import TestCase
 from django.http import HttpResponse
 from django.contrib.auth.models import User
-from django.test.client import RequestFactory
+from django.test.client import RequestFactory, MULTIPART_CONTENT
 
 from .models import Plant, Group
 from .view_decorators import (
@@ -19,7 +19,7 @@ from .view_decorators import (
     get_timestamp_from_post_body,
     get_event_type_from_post_body
 )
-from .unit_test_helpers import JSONClient
+from .unit_test_helpers import JSONClient, create_mock_photo
 
 
 class AuthenticationTests(TestCase):
@@ -205,6 +205,18 @@ class AuthenticationTests(TestCase):
             'timestamp': '2024-02-06T03:06:26.000Z',
             'new_pot_size': 6
         })
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.json(), {"error": "plant is owned by a different user"})
+
+        # Confirm /add_plant_photos returns 403
+        response = self.client.post(
+            '/add_plant_photos',
+            data={
+                'plant_id': str(plant.uuid),
+                'photo_0': create_mock_photo('2024:03:22 10:52:03')
+            },
+            content_type=MULTIPART_CONTENT
+        )
         self.assertEqual(response.status_code, 403)
         self.assertEqual(response.json(), {"error": "plant is owned by a different user"})
 

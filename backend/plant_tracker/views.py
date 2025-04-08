@@ -779,7 +779,8 @@ def repot_plant(plant, timestamp, data, **kwargs):
         )
 
 
-def add_plant_photos(request):
+@get_user_token
+def add_plant_photos(request, user):
     '''Creates Photo model for each image in request body
     Requires FormData with plant_id key (UUID) and one or more images
     '''
@@ -789,6 +790,12 @@ def add_plant_photos(request):
     plant = get_plant_by_uuid(request.POST.get("plant_id"))
     if not plant:
         return JsonResponse({'error': 'unable to find plant'}, status=404)
+
+    if user != plant.user:
+        return JsonResponse(
+            {"error": "plant is owned by a different user"},
+            status=403
+        )
 
     if len(request.FILES) == 0:
         return JsonResponse({'error': 'no photos were sent'}, status=404)
