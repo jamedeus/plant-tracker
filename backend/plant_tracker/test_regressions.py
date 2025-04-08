@@ -6,10 +6,11 @@ from types import NoneType
 from datetime import datetime
 
 from django.conf import settings
-from django.test import TestCase
 from django.utils import timezone
 from django.core.cache import cache
 from django.db import IntegrityError
+from django.test import TestCase, Client
+from django.contrib.auth.models import User
 from django.test.client import MULTIPART_CONTENT
 from django.core.exceptions import ValidationError
 
@@ -49,6 +50,10 @@ def tearDownModule():
 
 
 class ModelRegressionTests(TestCase):
+    def tearDown(self):
+        # Revert back to SINGLE_USER_MODE
+        settings.SINGLE_USER_MODE = True
+
     def test_changing_uuid_should_not_create_duplicate(self):
         '''Issue: UUID was originally used as primary_key with editable=True.
         When UUID was changed (assign new QR code) the primary_key no longer
@@ -150,6 +155,33 @@ class ModelRegressionTests(TestCase):
         # Confirm Plant.group is now null
         plant.refresh_from_db()
         self.assertIsNone(plant.group)
+
+    def test_unnamed_plant_and_group_index_should_not_include_other_users_instances(self):
+        '''Issue: The "Unnamed plant #" and "Unnamed group #" were determined
+        using all unnamed plants/groups in the database, not just plants/groups
+        owned by the requesting user. This could cause a user's first unnamed
+        plant to be called "Unnamed plant 7" or some other confusing number.
+        '''
+
+        # Disable SINGLE_USER_MODE
+        settings.SINGLE_USER_MODE = False
+
+        # Create 2 test users with 1 unnamed plant each
+        user1 = User.objects.create_user(username='user1', password='123')
+        user2 = User.objects.create_user(username='user2', password='123')
+        plant1 = Plant.objects.create(uuid=uuid4(), user=user1)
+        plant2 = Plant.objects.create(uuid=uuid4(), user=user2)
+
+        # Sign in as user2, request manage_plant page
+        client = Client()
+        client.login(username='user2', password='123')
+        response = client.get(f'/manage/{plant2.uuid}')
+
+        # Confirm plant name is "Unnamed plant 1", not 2
+        self.assertEqual(
+            response.context['state']['plant_details']['display_name'],
+            'Unnamed plant 1'
+        )
 
 
 class ViewRegressionTests(TestCase):
