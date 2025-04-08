@@ -334,6 +334,7 @@ def register_group(user, data):
         )
 
 
+@get_user_token
 @requires_json_post(["uuid"])
 @get_qr_instance_from_post_body
 def change_qr_code(instance, **kwargs):
@@ -349,9 +350,10 @@ def change_qr_code(instance, **kwargs):
     )
 
 
+@get_user_token
 @requires_json_post(["uuid", "new_id"])
 @get_qr_instance_from_post_body
-def change_uuid(instance, data):
+def change_uuid(instance, data, **kwargs):
     '''Changes UUID of an existing Plant or Group, called from confirmation
     page served when new QR code scanned (after calling /change_qr_code)
     Requires JSON POST with uuid (uuid) and new_id (uuid) keys

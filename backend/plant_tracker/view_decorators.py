@@ -174,6 +174,7 @@ def get_group_from_post_body(func):
 
 def get_qr_instance_from_post_body(func):
     '''Decorator looks up plant or group by UUID, throws error if neither found
+    If called after get_user_token throws error if instance is not owned be user
     Must call after requires_json_post (expects dict with uuid key as first arg)
     Passes instance and data dict to wrapped function as instance and data kwargs
     '''
@@ -195,6 +196,11 @@ def get_qr_instance_from_post_body(func):
             return JsonResponse(
                 {"error": "uuid key is not a valid UUID"},
                 status=400
+            )
+        if 'user' in kwargs and instance.user != kwargs['user']:
+            return JsonResponse(
+                {"error": "instance is owned by a different user"},
+                status=403
             )
         return func(instance=instance, data=data, **kwargs)
     return wrapper

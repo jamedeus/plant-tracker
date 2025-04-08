@@ -5,6 +5,7 @@ from uuid import uuid4
 
 from django.conf import settings
 from django.test import TestCase
+from django.core.cache import cache
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.test.client import RequestFactory, MULTIPART_CONTENT
@@ -74,6 +75,20 @@ class AuthenticationTests(TestCase):
         # enabled, so requests will come from default user which doesn't own)
         plant = Plant.objects.create(uuid=uuid4(), user=self.test_user)
         group = Group.objects.create(uuid=uuid4(), user=self.test_user)
+
+        # Confirm /change_qr_code returns 403, does not cache UUID
+        response = self.client.post('/change_qr_code', {'uuid': str(plant.uuid)})
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.json(), {"error": "instance is owned by a different user"})
+        self.assertIsNone(cache.get('old_uuid'))
+
+        # Confirm /change_uuid returns 403
+        response = self.client.post('/change_uuid', {
+            'uuid': str(plant.uuid),
+            'new_id': str(uuid4())
+        })
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(response.json(), {"error": "instance is owned by a different user"})
 
         # Confirm /edit_plant returns 403
         response = self.client.post('/edit_plant', {
