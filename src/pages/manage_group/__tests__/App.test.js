@@ -227,6 +227,20 @@ describe('App', () => {
         });
     });
 
+    it('shows toast if event buttons clicked with no plants selected', async () => {
+        // Confirm toast warning message is not on page
+        expect(app.queryByText('No plants selected!')).toBeNull();
+
+        // Click Manage button, click water without selecting anything
+        const plantsCol = app.getByText("Plants (3)").parentElement;
+        await user.click(within(plantsCol).getByText("Manage"));
+        await user.click(within(plantsCol).getByText("Water"));
+
+        // Confirm toast appeared, no request was made
+        expect(app.getByText('No plants selected!')).not.toBeNull();
+        expect(global.fetch).not.toHaveBeenCalled();
+    });
+
     it('sends correct payload when Add Plants modal is submitted', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({

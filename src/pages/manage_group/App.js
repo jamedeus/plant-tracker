@@ -166,8 +166,12 @@ function App() {
     const addEventSelected = async (eventType, timestamp) => {
         // Prevent adding event to archived plants
         const selected = removeArchivedPlants(getSelectedPlants());
-        await bulkAddPlantEvents(eventType, selected, timestamp);
-        setSelectingPlants(false);
+        if (selected.length) {
+            await bulkAddPlantEvents(eventType, selected, timestamp);
+            setSelectingPlants(false);
+        } else {
+            showToast('No plants selected!', 'yellow', 3000);
+        }
     };
 
     // Creates event with specified type and timestamp for every plant in

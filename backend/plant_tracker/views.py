@@ -500,7 +500,8 @@ def bulk_add_plant_events(user, timestamp, event_type, data):
     failed = []
     for plant_id in data["plants"]:
         plant = get_plant_by_uuid(plant_id)
-        if plant:
+        # Make sure plant exists and is owned by user
+        if plant and plant.user == user:
             try:
                 events_map[event_type].objects.create(plant=plant, timestamp=timestamp)
                 added.append(plant_id)
@@ -512,9 +513,10 @@ def bulk_add_plant_events(user, timestamp, event_type, data):
     # Create task to update cached overview state (last_watered outdated)
     schedule_cached_overview_state_update(user)
 
+    # Return 200 if at least 1 succeeded, otherwise return error
     return JsonResponse(
         {"action": event_type, "plants": added, "failed": failed},
-        status=200
+        status=200 if len(added) else 400
     )
 
 

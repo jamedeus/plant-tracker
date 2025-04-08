@@ -125,6 +125,20 @@ class AuthenticationTests(TestCase):
         self.assertEqual(response.status_code, 403)
         self.assertEqual(response.json(), {"error": "plant is owned by a different user"})
 
+        # Confirm /bulk_add_plant_events returns 400 (does not indicate failure
+        # reason but this is only to prevent malicious API calls, should not be
+        # possible to make this request from the frontend)
+        response = self.client.post('/bulk_add_plant_events', {
+            'plants': [str(plant.uuid)],
+            'event_type': 'water',
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        })
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.json(),
+            {"action":"water","plants":[],"failed":[str(plant.uuid)]}
+        )
+
         # Confirm /delete_plant_event returns 403
         response = self.client.post('/delete_plant_event', {
             'plant_id': plant.uuid,
