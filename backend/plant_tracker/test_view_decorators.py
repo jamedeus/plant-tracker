@@ -106,7 +106,7 @@ class AuthenticationTests(TestCase):
         response = self.client.post('/change_qr_code', {'uuid': str(plant.uuid)})
         self.assertEqual(response.status_code, 403)
         self.assertEqual(response.json(), {"error": "instance is owned by a different user"})
-        self.assertIsNone(cache.get('old_uuid'))
+        self.assertIsNone(cache.get(f'old_uuid_{get_default_user().pk}'))
 
         # Confirm /change_uuid returns 403
         response = self.client.post('/change_uuid', {

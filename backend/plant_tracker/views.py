@@ -168,9 +168,9 @@ def manage(request, uuid, user):
         return render_manage_group_page(request, group, user)
 
     # Query old_uuid cache, render confirmation page if found
-    old_uuid = cache.get('old_uuid')
+    old_uuid = cache.get(f'old_uuid_{user.pk}')
     if old_uuid:
-        return render_confirm_new_qr_code_page(request, uuid, old_uuid)
+        return render_confirm_new_qr_code_page(request, uuid, old_uuid, user)
 
     # Render register page if UUID is new and old_uuid cache was not found
     return render_registration_page(request, uuid)
@@ -265,7 +265,7 @@ def get_group_state(request, uuid):
         return JsonResponse({'Error': 'Requires group UUID'}, status=400)
 
 
-def render_confirm_new_qr_code_page(request, uuid, old_uuid):
+def render_confirm_new_qr_code_page(request, uuid, old_uuid, user):
     '''Renders confirmation page used to change a plant or group QR code
     Called by /manage endpoint if UUID does not exist in database and the
     old_uuid cache is set (see /change_qr_code endpoint)
@@ -277,7 +277,7 @@ def render_confirm_new_qr_code_page(request, uuid, old_uuid):
     # If UUID no longer exists in database (plant/group deleted) clear cache
     # and redirect to registration page
     if instance is None:
-        cache.delete('old_uuid')
+        cache.delete(f'old_uuid_{user.pk}')
         return render_registration_page(request, uuid)
 
     state = {
@@ -362,13 +362,13 @@ def register_group(user, data):
 @get_user_token
 @requires_json_post(["uuid"])
 @get_qr_instance_from_post_body
-def change_qr_code(instance, **kwargs):
-    '''Caches plant or group UUID from POST body for 15 minutes, if a new QR
-    code is scanned before timeout /manage endpoint will return a confirmation
-    page with a button that calls /change_uuid to overwrite UUID
+def change_qr_code(instance, user, **kwargs):
+    '''Caches plant or group UUID from POST body for 15 minutes, if the same
+    user scans a new QR before timeout /manage endpoint will return a
+    confirmation page with a button that calls /change_uuid to overwrite UUID.
     Requires JSON POST with uuid (uuid) key
     '''
-    cache.set('old_uuid', str(instance.uuid), 900)
+    cache.set(f'old_uuid_{user.pk}', str(instance.uuid), 900)
     return JsonResponse(
         {"success": "scan new QR code within 15 minutes to confirm"},
         status=200
@@ -378,7 +378,7 @@ def change_qr_code(instance, **kwargs):
 @get_user_token
 @requires_json_post(["uuid", "new_id"])
 @get_qr_instance_from_post_body
-def change_uuid(instance, data, **kwargs):
+def change_uuid(instance, data, user, **kwargs):
     '''Changes UUID of an existing Plant or Group, called from confirmation
     page served when new QR code scanned (after calling /change_qr_code)
     Requires JSON POST with uuid (uuid) and new_id (uuid) keys
@@ -386,7 +386,7 @@ def change_uuid(instance, data, **kwargs):
     try:
         instance.uuid = data["new_id"]
         instance.save()
-        cache.delete('old_uuid')
+        cache.delete(f'old_uuid_{user.pk}')
         return JsonResponse({"new_uuid": str(instance.uuid)}, status=200)
     except ValidationError:
         return JsonResponse({"error": "new_id key is not a valid UUID"}, status=400)

@@ -155,7 +155,7 @@ class ModelRegressionTests(TestCase):
 class ViewRegressionTests(TestCase):
     def tearDown(self):
         # Clear cache after each test (prevent leftover after failed test)
-        cache.delete('old_uuid')
+        cache.delete(f'old_uuid_{get_default_user().pk}')
 
     def test_water_group_fails_due_to_duplicate_timestamp(self):
         '''Issue: The bulk_add_plant_events endpoint did not trap errors when
@@ -324,7 +324,10 @@ class ViewRegressionTests(TestCase):
         # Create test plant, post UUID to /change_qr_code, confirm cache set
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         JSONClient().post('/change_qr_code', {'uuid': str(plant.uuid)})
-        self.assertEqual(cache.get('old_uuid'), str(plant.uuid))
+        self.assertEqual(
+            cache.get(f'old_uuid_{get_default_user().pk}'),
+            str(plant.uuid)
+        )
 
         # Delete plant from database
         plant.delete()
@@ -341,7 +344,7 @@ class ViewRegressionTests(TestCase):
         )
 
         # Confirm cache was cleared
-        self.assertIsNone(cache.get('old_uuid'))
+        self.assertIsNone(cache.get(f'old_uuid_{get_default_user().pk}'))
 
     def test_edit_plant_details_crashes_when_pot_size_is_null(self):
         '''Issue: The /edit_plant endpoint returns a modified version of the

@@ -1290,7 +1290,7 @@ class ChangeQrCodeTests(TestCase):
 
     def tearDown(self):
         # Clear cache after each test
-        cache.delete('old_uuid')
+        cache.delete(f'old_uuid_{get_default_user().pk}')
 
     def _refresh_test_models(self):
         self.plant1.refresh_from_db()
@@ -1299,7 +1299,7 @@ class ChangeQrCodeTests(TestCase):
 
     def test_change_qr_code_endpoint(self):
         # Confirm cache key is empty
-        self.assertIsNone(cache.get('old_uuid'))
+        self.assertIsNone(cache.get(f'old_uuid_{get_default_user().pk}'))
 
         # Post UUID to change_qr_code endpoint, confirm response
         response = self.client.post('/change_qr_code', {
@@ -1312,12 +1312,18 @@ class ChangeQrCodeTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
         # Confirm cache key contains UUID
-        self.assertEqual(cache.get('old_uuid'), str(self.plant1.uuid))
+        self.assertEqual(
+            cache.get(f'old_uuid_{get_default_user().pk}'),
+            str(self.plant1.uuid)
+        )
 
     def test_change_uuid_endpoint_plant(self):
         # Simulate cached UUID from change_qr_code request
-        cache.set('old_uuid', str(self.plant1.uuid))
-        self.assertEqual(cache.get('old_uuid'), str(self.plant1.uuid))
+        cache.set(f'old_uuid_{get_default_user().pk}', str(self.plant1.uuid))
+        self.assertEqual(
+            cache.get(f'old_uuid_{get_default_user().pk}'),
+            str(self.plant1.uuid)
+        )
 
         # Post new UUID to change_uuid endpoint, confirm response
         response = self.client.post('/change_uuid', {
@@ -1333,12 +1339,15 @@ class ChangeQrCodeTests(TestCase):
         # Confirm plant UUID changed + cache cleared
         self._refresh_test_models()
         self.assertEqual(str(self.plant1.uuid), str(self.fake_id))
-        self.assertIsNone(cache.get('old_uuid'))
+        self.assertIsNone(cache.get(f'old_uuid_{get_default_user().pk}'))
 
     def test_change_uuid_endpoint_group(self):
         # Simulate cached UUID from change_qr_code request
-        cache.set('old_uuid', str(self.group1.uuid))
-        self.assertEqual(cache.get('old_uuid'), str(self.group1.uuid))
+        cache.set(f'old_uuid_{get_default_user().pk}', str(self.group1.uuid))
+        self.assertEqual(
+            cache.get(f'old_uuid_{get_default_user().pk}'),
+            str(self.group1.uuid)
+        )
 
         # Post new UUID to change_uuid endpoint, confirm response
         response = self.client.post('/change_uuid', {
@@ -1354,7 +1363,7 @@ class ChangeQrCodeTests(TestCase):
         # Confirm plant UUID changed + cache cleared
         self._refresh_test_models()
         self.assertEqual(str(self.group1.uuid), str(self.fake_id))
-        self.assertIsNone(cache.get('old_uuid'))
+        self.assertIsNone(cache.get(f'old_uuid_{get_default_user().pk}'))
 
     def test_change_uuid_invalid(self):
         # post invalid UUID to change_uuid endpoint, confirm error
@@ -1370,8 +1379,11 @@ class ChangeQrCodeTests(TestCase):
 
     def test_confirmation_page_plant(self):
         # Simulate cached UUID from change_qr_code request
-        cache.set('old_uuid', str(self.plant1.uuid))
-        self.assertEqual(cache.get('old_uuid'), str(self.plant1.uuid))
+        cache.set(f'old_uuid_{get_default_user().pk}', str(self.plant1.uuid))
+        self.assertEqual(
+            cache.get(f'old_uuid_{get_default_user().pk}'),
+            str(self.plant1.uuid)
+        )
 
         # Request management page with new UUID (simulate user scanning new QR)
         response = self.client.get(f'/manage/{self.fake_id}')
@@ -1409,8 +1421,11 @@ class ChangeQrCodeTests(TestCase):
 
     def test_confirmation_page_group(self):
         # Simulate cached UUID from change_qr_code request
-        cache.set('old_uuid', str(self.group1.uuid))
-        self.assertEqual(cache.get('old_uuid'), str(self.group1.uuid))
+        cache.set(f'old_uuid_{get_default_user().pk}', str(self.group1.uuid))
+        self.assertEqual(
+            cache.get(f'old_uuid_{get_default_user().pk}'),
+            str(self.group1.uuid)
+        )
 
         # Request management page with new UUID (simulate user scanning new QR)
         response = self.client.get(f'/manage/{self.fake_id}')
@@ -1450,8 +1465,11 @@ class ChangeQrCodeTests(TestCase):
         '''
 
         # Simulate cached UUID from change_qr_code request
-        cache.set('old_uuid', str(self.plant1.uuid))
-        self.assertEqual(cache.get('old_uuid'), str(self.plant1.uuid))
+        cache.set(f'old_uuid_{get_default_user().pk}', str(self.plant1.uuid))
+        self.assertEqual(
+            cache.get(f'old_uuid_{get_default_user().pk}'),
+            str(self.plant1.uuid)
+        )
 
         # Request management page with new UUID (should return confirmation page)
         response = self.client.get(f'/manage/{self.fake_id}')
@@ -1488,8 +1506,8 @@ class ChangeQrCodeTests(TestCase):
         # will clear entire cache immediately when Plant.delete hook is
         # triggered. In production this wouldn't happen for 30 seconds.)
         self.plant1.delete()
-        cache.set('old_uuid', str(self.plant1.uuid))
-        self.assertIsNotNone(cache.get('old_uuid'))
+        cache.set(f'old_uuid_{get_default_user().pk}', str(self.plant1.uuid))
+        self.assertIsNotNone(cache.get(f'old_uuid_{get_default_user().pk}'))
 
         # Request management page with new UUID (simulate user scanning new QR)
         response = self.client.get(f'/manage/{self.fake_id}')
@@ -1504,7 +1522,7 @@ class ChangeQrCodeTests(TestCase):
         self.assertEqual(response.context['title'], 'Register New Plant')
 
         # Confirm old_id cache was cleared
-        self.assertIsNone(cache.get('old_uuid'))
+        self.assertIsNone(cache.get(f'old_uuid_{get_default_user().pk}'))
 
 
 class PlantEventEndpointTests(TestCase):
