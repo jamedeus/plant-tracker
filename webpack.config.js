@@ -13,6 +13,7 @@ const config = {
         register: './src/pages/register/index.js',
         manage_plant: './src/pages/manage_plant/index.js',
         manage_group: './src/pages/manage_group/index.js',
+        permission_denied: './src/pages/permission_denied/index.js',
         confirm_new_qr_code: './src/pages/confirm_new_qr_code/index.js',
     },
     output: {

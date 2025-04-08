@@ -70,6 +70,32 @@ class AuthenticationTests(TestCase):
         # Confirm title includes user's first name
         self.assertEqual(response.context['title'], "Bob's Plants")
 
+    def test_manage_plant_page(self):
+        # Create plant owned by test user
+        plant = Plant.objects.create(uuid=uuid4(), user=self.test_user)
+
+        # Request management page without signing in (will come from default
+        # user since SINGLE_USER_MODE is enabled)
+        response = self.client.get(f'/manage/{plant.uuid}')
+
+        # Confirm rendered permission denied page, not manage plant
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['js_bundle'], 'plant_tracker/permission_denied.js')
+        self.assertEqual(response.context['title'], 'Permission Denied')
+
+    def test_manage_group_page(self):
+        # Create group owned by test user
+        group = Group.objects.create(uuid=uuid4(), user=self.test_user)
+
+        # Request management page without signing in (will come from default
+        # user since SINGLE_USER_MODE is enabled)
+        response = self.client.get(f'/manage/{group.uuid}')
+
+        # Confirm rendered permission denied page, not manage group
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['js_bundle'], 'plant_tracker/permission_denied.js')
+        self.assertEqual(response.context['title'], 'Permission Denied')
+
     def test_endpoints_reject_requests_from_user_who_does_not_own_plant(self):
         # Create plant and group owned by test user (SINGLE_USER_MODE is
         # enabled, so requests will come from default user which doesn't own)

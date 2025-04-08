@@ -146,7 +146,8 @@ def archived_overview(request, user):
     )
 
 
-def manage(request, uuid):
+@get_user_token
+def manage(request, uuid, user):
     '''Renders the correct page when a QR code is scanned:
       - manage_plant: rendered if QR code UUID matches an existing Plant entry
       - manage_group: rendered if QR code UUID matches an existing Group entry
@@ -159,12 +160,12 @@ def manage(request, uuid):
     # Look up UUID in plant table, render manage_plant page if found
     plant = get_plant_by_uuid(uuid)
     if plant:
-        return render_manage_plant_page(request, plant)
+        return render_manage_plant_page(request, plant, user)
 
     # Loop up UUID in group table, render manage_group page if found
     group = get_group_by_uuid(uuid)
     if group:
-        return render_manage_group_page(request, group)
+        return render_manage_group_page(request, group, user)
 
     # Query old_uuid cache, render confirmation page if found
     old_uuid = cache.get('old_uuid')
@@ -175,10 +176,22 @@ def manage(request, uuid):
     return render_registration_page(request, uuid)
 
 
-def render_manage_plant_page(request, plant):
+def render_manage_plant_page(request, plant, user):
     '''Renders management page for an existing plant
     Called by /manage endpoint if UUID is found in database plant table
     '''
+
+    # Render permission denied page if requesting user does not own plant
+    if plant.user != user:
+        return render_react_app(
+            request,
+            title='Permission Denied',
+            bundle='permission_denied',
+            state={
+                'error': 'You do not have permission to view this plant'
+            }
+        )
+
     return render_react_app(
         request,
         title='Manage Plant',
@@ -212,10 +225,22 @@ def build_manage_group_state(group):
     }
 
 
-def render_manage_group_page(request, group):
+def render_manage_group_page(request, group, user):
     '''Renders management page for an existing group
     Called by /manage endpoint if UUID is found in database group table
     '''
+
+    # Render permission denied page if requesting user does not own group
+    if group.user != user:
+        return render_react_app(
+            request,
+            title='Permission Denied',
+            bundle='permission_denied',
+            state={
+                'error': 'You do not have permission to view this group'
+            }
+        )
+
     return render_react_app(
         request,
         title='Manage Group',
