@@ -119,23 +119,26 @@ class HelperFunctionTests(TestCase):
             mock_cache_set.assert_called_once_with(f'rebuild_{uuid}_state_task_id', 'mock_task_id', 30)
 
     def test_update_all_cached_states(self):
-        # Create 5 Plant entries
-        for i in range(0, 5):
-            Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        # Replace all cache keys with dummy strings
+        default_user = get_default_user()
+        cache.set(f'overview_state_{default_user.pk}', 'foo')
+        cache.set(f'plant_options_{default_user.pk}', 'foo')
+        cache.set(f'group_options_{default_user.pk}', 'foo')
 
-        # Clear entire cache, confirm no cached states
-        cache.clear()
-        self.assertIsNone(cache.get(f'overview_state_{get_default_user().pk}'))
+        # Create 5 Plant entries, cache dummy string for each
         for i in range(0, 5):
-            self.assertIsNone(cache.get(f'{Plant.objects.all()[i].uuid}_state'))
+            plant = Plant.objects.create(uuid=uuid4(), user=default_user)
+            cache.set(f'{plant.uuid}_state', 'foo')
 
-        # Call method, confirm all states were cached
+        # Call update_all_cached_states method
         update_all_cached_states()
-        self.assertTrue(isinstance(cache.get(f'overview_state_{get_default_user().pk}'), dict))
-        for i in range(0, 5):
-            self.assertTrue(
-                isinstance(cache.get(f'{Plant.objects.all()[i].uuid}_state'), dict)
-            )
+
+        # Confirm all cached states were rebuilt (no longer dummy strings)
+        self.assertIsInstance(cache.get(f'overview_state_{default_user.pk}'), dict)
+        self.assertIsInstance(cache.get(f'plant_options_{default_user.pk}'), list)
+        self.assertIsInstance(cache.get(f'group_options_{default_user.pk}'), list)
+        for plant in Plant.objects.filter(user=default_user):
+            self.assertIsInstance(cache.get(f'{plant.uuid}_state'), dict)
 
 
 class TaskTests(TestCase):

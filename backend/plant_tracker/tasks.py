@@ -257,7 +257,7 @@ def update_cached_plant_options(user_pk):
     add plants modal'''
     cache.delete(f'plant_options_{user_pk}')
     get_plant_options(get_user_model().objects.get(pk=user_pk))
-    print('Rebuilt plant_options (manage_group add plants modal)')
+    print(f'Rebuilt plant_options for {user_pk} (manage_group add plants modal)')
 
 
 def schedule_cached_plant_options_update(user):
@@ -284,7 +284,7 @@ def update_cached_group_options(user_pk):
     add group modal'''
     cache.delete(f'group_options_{user_pk}')
     get_group_options(get_user_model().objects.get(pk=user_pk))
-    print('Rebuilt group_options (manage_plant add group modal)')
+    print(f'Rebuilt group_options for {user_pk} (manage_plant add group modal)')
 
 
 def schedule_cached_group_options_update(user):
@@ -307,11 +307,22 @@ def update_cached_group_options_hook(instance, **kwargs):
 
 @shared_task()
 def update_all_cached_states():
-    '''Updates cached overview state and all cached manage_plant states
-    Called when server starts to prevent serving outdated states
+    '''Updates all cached overview, plant_options, and group_options states
+    that have keys in redis store. Updates and caches manage_plant state for
+    all plants in database regardless of whether they have existing keys.
+    Called when server starts to prevent serving outdated states.
     '''
-    update_cached_overview_state.delay()
-    update_cached_plant_options.delay()
-    update_cached_group_options.delay()
+
+    # Build states for all plants in database
     for plant in Plant.objects.all():
         update_cached_manage_plant_state.delay(plant.uuid)
+
+    # Iterate existing keys, parse user primary key from cache name and pass
+    # to correct function to rebuild
+    for key in cache.keys('*'):
+        if key.startswith('overview_state_'):
+            update_cached_overview_state.delay(key.split('_')[-1])
+        elif key.startswith('plant_options_'):
+            update_cached_plant_options.delay(key.split('_')[-1])
+        elif key.startswith('group_options_'):
+            update_cached_group_options.delay(key.split('_')[-1])
