@@ -21,6 +21,7 @@ anybadge = "*"
 coverage = "*"
 ipython = "*"
 pylint = "*"
+fakeredis = "*"
 
 [requires]
 python_version = "3.13"
