@@ -255,6 +255,7 @@ def delete_cached_manage_plant_state_hook(instance, **kwargs):
 def update_cached_plant_options(user_pk):
     '''Takes user primary key, builds and caches plant options for manage_group
     add plants modal'''
+    cache.delete(f'plant_options_{user_pk}')
     get_plant_options(get_user_model().objects.get(pk=user_pk))
     print('Rebuilt plant_options (manage_group add plants modal)')
 
@@ -281,6 +282,7 @@ def update_cached_plant_options_hook(instance, **kwargs):
 def update_cached_group_options(user_pk):
     '''Takes user primary key, builds and caches group options for manage_plant
     add group modal'''
+    cache.delete(f'group_options_{user_pk}')
     get_group_options(get_user_model().objects.get(pk=user_pk))
     print('Rebuilt group_options (manage_plant add group modal)')
 

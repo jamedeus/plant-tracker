@@ -14,6 +14,10 @@ from django.contrib.auth.models import User
 from django.test.client import MULTIPART_CONTENT
 from django.core.exceptions import ValidationError
 
+from .tasks import (
+    update_cached_plant_options,
+    update_cached_group_options
+)
 from .models import (
     Group,
     Plant,
@@ -741,6 +745,42 @@ class CachedStateRegressionTests(TestCase):
         # Confirm group option in manage_plant state now says 1 plant in group
         response = self.client.get(f'/manage/{plant1.uuid}')
         self.assertEqual(response.context['state']['group_options'][0]['plants'], 1)
+
+    def test_update_cached_plant_options_fails_to_replace_cached_state(self):
+        '''Issue: update_cached_plant_options rebuilt + cached state by calling
+        models.get_plant_options, but this function only builds state if the
+        expected cache key does not exist - otherwise it returns whatever is
+        already cached. If the cache was not deleted before calling the
+        function nothing would happen, unlike the other update_cached_*
+        functions which always build the state.
+        '''
+
+        # Set dummy plant_options cache
+        user_pk = get_default_user().pk
+        cache.set(f'plant_options_{user_pk}', 'foo')
+
+        # Call function, confirm dummy string was overwritten
+        update_cached_plant_options(user_pk)
+        self.assertNotEqual(cache.get(f'plant_options_{user_pk}'), 'foo')
+        self.assertIsInstance(cache.get(f'plant_options_{user_pk}'), list)
+
+    def test_update_cached_group_options_fails_to_replace_cached_state(self):
+        '''Issue: update_cached_group_options rebuilt + cached state by calling
+        models.get_group_options, but this function only builds state if the
+        expected cache key does not exist - otherwise it returns whatever is
+        already cached. If the cache was not deleted before calling the
+        function nothing would happen, unlike the other update_cached_*
+        functions which always build the state.
+        '''
+
+        # Set dummy group_options cache
+        user_pk = get_default_user().pk
+        cache.set(f'group_options_{user_pk}', 'foo')
+
+        # Call function, confirm dummy string was overwritten
+        update_cached_group_options(user_pk)
+        self.assertNotEqual(cache.get(f'group_options_{user_pk}'), 'foo')
+        self.assertIsInstance(cache.get(f'group_options_{user_pk}'), list)
 
 
 class ViewDecoratorRegressionTests(TestCase):
