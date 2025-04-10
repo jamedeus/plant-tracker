@@ -40,7 +40,7 @@ const AddPlantsModal = memo(function AddPlantsModal({ options, addPlants }) {
                         ))}
                     </EditableNodeList>
                 ) : (
-                    <p className="my-4">No plants</p>
+                    <p className="my-4 pl-4">No plants</p>
                 )}
             </div>
 
