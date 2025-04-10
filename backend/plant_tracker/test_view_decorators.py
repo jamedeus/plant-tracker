@@ -168,6 +168,64 @@ class AuthenticationTests(TestCase):
         # Confirm no user created in database
         self.assertEqual(len(User.objects.all()), 2)
 
+    def test_change_password_page(self):
+        settings.SINGLE_USER_MODE = False
+
+        # Log in with test user
+        self.client.login(username='unittest', password='12345')
+
+        # Request change password page, confirm uses correct JS bundle and title
+        response = self.client.get('/accounts/change_password/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'plant_tracker/index.html')
+        self.assertEqual(response.context['js_bundle'], 'plant_tracker/change_password.js')
+        self.assertEqual(response.context['title'], 'Change Password')
+
+    def test_change_password_page_not_logged_in(self):
+        settings.SINGLE_USER_MODE = False
+
+        # Request change password page without signing in first
+        self.assertFalse(auth.get_user(self.client).is_authenticated)
+        response = self.client.get('/accounts/change_password/')
+        # Confirm redirected to login page
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/accounts/login/')
+
+    def test_password_change_endpoint(self):
+        settings.SINGLE_USER_MODE = False
+
+        # Log in with test user
+        self.client.login(username='unittest', password='12345')
+
+        # Post old and new passwords to endpoint
+        response = self.client.post('/accounts/change_password/submit/',
+            urlencode({
+                'old_password': '12345',
+                'new_password1': 'more secure password',
+                'new_password2': 'more secure password',
+            }),
+            content_type="application/x-www-form-urlencoded"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"success": "password_changed"})
+
+    def test_password_change_endpoint_errors(self):
+        settings.SINGLE_USER_MODE = False
+
+        # Log in with test user
+        self.client.login(username='unittest', password='12345')
+
+        # Post old and new passwords that do not match to endpoint
+        response = self.client.post('/accounts/change_password/submit/',
+            urlencode({
+                'old_password': '12345',
+                'new_password1': 'more secure password',
+                'new_password2': 'nore secure password',
+            }),
+            content_type="application/x-www-form-urlencoded"
+        )
+        self.assertEqual(response.status_code, 400)
+
     def test_overview_page(self):
         # Request overview while signed out, confirm page loads
         response = self.client.get('/')
