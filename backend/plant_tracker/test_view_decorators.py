@@ -58,7 +58,7 @@ class AuthenticationTests(TestCase):
         # Request overview page, confirm redirected to login page
         response = self.client.get('/')
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, '/accounts/login')
+        self.assertEqual(response.url, '/accounts/login/')
 
         # Sign user in
         self.client.login(username='unittest', password='12345')
