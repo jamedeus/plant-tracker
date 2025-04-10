@@ -124,6 +124,24 @@ describe('App', () => {
         });
     });
 
+    // Note: this response can only be received if SINGLE_USER_MODE is disabled
+    it('redirects to login page if events added while user not signed in', async () => {
+        // Mock fetch function to simulate user with an expired session
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            status: 401,
+            json: () => Promise.resolve({
+                "error": "authentication required"
+            })
+        }));
+
+        // Click Water All button
+        await user.click(app.getByRole("button", {name: "Water All"}));
+
+        // Confirm redirected
+        expect(window.location.href).toBe('/accounts/login/');
+    });
+
     it('shows checkboxes and event buttons when Manage button is clicked', async () => {
         // Get reference to plants column
         const plantsCol = app.getByText("Plants (3)").parentElement;

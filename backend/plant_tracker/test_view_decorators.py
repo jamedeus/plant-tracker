@@ -291,6 +291,198 @@ class AuthenticationTests(TestCase):
         self.assertEqual(response.status_code, 403)
         self.assertEqual(response.json(), {"error": "plant is owned by a different user"})
 
+    def test_endpoints_redirect_to_login_if_user_not_signed_in(self):
+        # Create plant and group owned by test user
+        plant = Plant.objects.create(uuid=uuid4(), user=self.test_user)
+        group = Group.objects.create(uuid=uuid4(), user=self.test_user)
+
+        # Disable SINGLE_USER_MODE (require authentication)
+        settings.SINGLE_USER_MODE = False
+
+        # Confirm /change_qr_code returns 401, does not cache UUID
+        response = self.client.post('/change_qr_code', {'uuid': str(plant.uuid)})
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json(), {"error": "authentication required"})
+        self.assertIsNone(cache.get(f'old_uuid_{get_default_user().pk}'))
+
+        # Confirm /change_uuid returns 401
+        response = self.client.post('/change_uuid', {
+            'uuid': str(plant.uuid),
+            'new_id': str(uuid4())
+        })
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json(), {"error": "authentication required"})
+
+        # Confirm /edit_plant returns 401
+        response = self.client.post('/edit_plant', {
+            'plant_id': plant.uuid,
+            'name': 'test plant    ',
+            'species': '   Giant Sequoia',
+            'description': '300 feet and a few thousand years old',
+            'pot_size': '4'
+        })
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json(), {"error": "authentication required"})
+
+        # Confirm /edit_group returns 401
+        response = self.client.post('/edit_group', {
+            'group_id': group.uuid,
+            'name': 'test group    ',
+            'location': '    middle shelf',
+            'description': 'This group is used for propagation'
+        })
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json(), {"error": "authentication required"})
+
+        # Confirm /delete_plant returns 401
+        response = self.client.post('/delete_plant', {'plant_id': str(plant.uuid)})
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json(), {"error": "authentication required"})
+
+        # Confirm /archive_plant returns 401
+        response = self.client.post('/archive_plant', {'plant_id': str(plant.uuid), 'archived': True})
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json(), {"error": "authentication required"})
+
+        # Confirm /delete_group returns 401
+        response = self.client.post('/delete_group', {'group_id': str(group.uuid)})
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json(), {"error": "authentication required"})
+
+        # Confirm /archive_group returns 401
+        response = self.client.post('/archive_group', {'group_id': str(group.uuid), 'archived': True})
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json(), {"error": "authentication required"})
+
+        # Confirm /add_plant_event returns 401
+        response = self.client.post('/add_plant_event', {
+            'plant_id': plant.uuid,
+            'event_type': 'water',
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        })
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json(), {"error": "authentication required"})
+
+        # Confirm /bulk_add_plant_events returns 401
+        response = self.client.post('/bulk_add_plant_events', {
+            'plants': [str(plant.uuid)],
+            'event_type': 'water',
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        })
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json(), {"error": "authentication required"})
+
+        # Confirm /delete_plant_event returns 401
+        response = self.client.post('/delete_plant_event', {
+            'plant_id': plant.uuid,
+            'event_type': 'water',
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        })
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json(), {"error": "authentication required"})
+
+        # Confirm /bulk_delete_plant_events returns 401
+        response = self.client.post('/bulk_delete_plant_events', {
+            'plant_id': plant.uuid,
+            'events': [{'type': 'water', 'timestamp': '2024-02-06T03:06:26.000Z'}]
+        })
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json(), {"error": "authentication required"})
+
+        # Confirm /add_plant_note returns 401
+        response = self.client.post('/add_plant_note', {
+            'plant_id': plant.uuid,
+            'timestamp': '2024-02-06T03:06:26.000Z',
+            'note_text': '  plant is looking healthier than last week  '
+        })
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json(), {"error": "authentication required"})
+
+        # Confirm /edit_plant_note returns 401
+        response = self.client.post('/edit_plant_note', {
+            'plant_id': plant.uuid,
+            'timestamp': '2024-02-06T03:06:26.000Z',
+            'note_text': '   This is the text I forgot to add   '
+        })
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json(), {"error": "authentication required"})
+
+        # Confirm /delete_plant_note returns 401
+        response = self.client.post('/delete_plant_note', {
+            'plant_id': plant.uuid,
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        })
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json(), {"error": "authentication required"})
+
+        # Confirm /add_plant_to_group returns 401
+        response = self.client.post('/add_plant_to_group', {
+            'plant_id': plant.uuid,
+            'group_id': group.uuid
+        })
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json(), {"error": "authentication required"})
+
+        # Confirm /remove_plant_from_group returns 401
+        response = self.client.post('/remove_plant_from_group', {
+            'plant_id': plant.uuid
+        })
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json(), {"error": "authentication required"})
+
+        # Confirm /bulk_add_plants_to_group returns 401
+        response = self.client.post('/bulk_add_plants_to_group', {
+            'group_id': group.uuid,
+            'plants': [plant.uuid]
+        })
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json(), {"error": "authentication required"})
+
+        # Confirm /bulk_remove_plants_from_group returns 401
+        response = self.client.post('/bulk_remove_plants_from_group', {
+            'group_id': group.uuid,
+            'plants': [plant.uuid]
+        })
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json(), {"error": "authentication required"})
+
+        # Confirm /repot_plant returns 401
+        response = self.client.post('/repot_plant', {
+            'plant_id': plant.uuid,
+            'timestamp': '2024-02-06T03:06:26.000Z',
+            'new_pot_size': 6
+        })
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json(), {"error": "authentication required"})
+
+        # Confirm /add_plant_photos returns 401
+        response = self.client.post(
+            '/add_plant_photos',
+            data={
+                'plant_id': str(plant.uuid),
+                'photo_0': create_mock_photo('2024:03:22 10:52:03')
+            },
+            content_type=MULTIPART_CONTENT
+        )
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json(), {"error": "authentication required"})
+
+        # Confirm /delete_plant_photos returns 401
+        response = self.client.post('/delete_plant_photos', {
+            'plant_id': str(plant.uuid),
+            'delete_photos': [1]
+        })
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json(), {"error": "authentication required"})
+
+        # Confirm /set_plant_default_photo returns 401
+        response = self.client.post('/set_plant_default_photo', {
+            'plant_id': str(plant.uuid),
+            'photo_key': 1
+        })
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(response.json(), {"error": "authentication required"})
+
 
 class ViewDecoratorErrorTests(TestCase):
     def setUp(self):

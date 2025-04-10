@@ -214,4 +214,25 @@ describe('PhotoModal', () => {
         // Confirm file input was cleared
         expect(fileInput.files.length).toBe(0);
     });
+
+    // Note: this response can only be received if SINGLE_USER_MODE is disabled
+    it('redirects to login page if user is not signed in', async () => {
+        // Mock fetch function to simulate user with an expired session
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            status: 401,
+            json: () => Promise.resolve({
+                "error": "authentication required"
+            })
+        }));
+
+        // Simulate user selecting a file and clicking upload
+        const file1 = new File(['file1'], 'file1.jpg', { type: 'image/jpeg' });
+        const fileInput = app.getByTestId('photo-input');
+        fireEvent.change(fileInput, { target: { files: [file1] } });
+        await user.click(app.getByText('Upload'));
+
+        // Confirm redirected
+        expect(window.location.href).toBe('/accounts/login/');
+    });
 });

@@ -161,6 +161,30 @@ describe('App', () => {
         expect(app.getByText(/Unexpected, should return redirect or error/)).toBeInTheDocument();
     });
 
+    // Note: this response can only be received if SINGLE_USER_MODE is disabled
+    it('redirects to login page if user is not signed in', async () => {
+        // Mock fetch function to simulate user with an expired session
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            status: 401,
+            json: () => Promise.resolve({
+                "error": "authentication required"
+            })
+        }));
+
+        // Fill in form fields
+        await user.type(app.getByLabelText('Plant name'), 'Test plant');
+        await user.type(app.getByLabelText('Plant species'), 'Fittonia');
+        await user.type(app.getByLabelText('Description'), 'Clay pot');
+        await user.type(app.getByLabelText('Pot size'), '6');
+
+        // Click Save button
+        await user.click(app.getByText('Save'));
+
+        // Confirm redirected
+        expect(window.location.href).toBe('/accounts/login/');
+    });
+
     it('refreshes when user navigates to register page with back button', async () => {
         // Simulate user navigating to register page with back button
         const pageshowEvent = new Event('pageshow');

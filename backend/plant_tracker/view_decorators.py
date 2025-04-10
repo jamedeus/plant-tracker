@@ -76,7 +76,10 @@ def get_user_token(func):
             return func(request, user=get_default_user(), **kwargs)
         if not request.user.is_authenticated:
             # Redirect to login page if not signed in
-            return HttpResponseRedirect('/accounts/login/')
+            if request.method != "POST":
+                return HttpResponseRedirect('/accounts/login/')
+            # Frontend sendPostRequest redirects to login if it receives 401
+            return JsonResponse({'error': 'authentication required'}, status=401)
         return func(request, user=request.user, **kwargs)
     return wrapper
 
