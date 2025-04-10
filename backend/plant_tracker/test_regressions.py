@@ -201,9 +201,10 @@ class ViewRegressionTests(TestCase):
         '''
 
         # Create 3 test plants, create WaterEvent for second plant
-        plant1 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-        plant2 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-        plant3 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        default_user = get_default_user()
+        plant1 = Plant.objects.create(uuid=uuid4(), user=default_user)
+        plant2 = Plant.objects.create(uuid=uuid4(), user=default_user)
+        plant3 = Plant.objects.create(uuid=uuid4(), user=default_user)
         timestamp = timezone.now()
         WaterEvent.objects.create(plant=plant2, timestamp=timestamp)
 
@@ -636,8 +637,9 @@ class CachedStateRegressionTests(TestCase):
         '''
 
         # Create test group, create test plant (not in group) with 1 photo
-        group = Group.objects.create(uuid=uuid4(), user=get_default_user())
-        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        default_user = get_default_user()
+        group = Group.objects.create(uuid=uuid4(), user=default_user)
+        plant = Plant.objects.create(uuid=uuid4(), user=default_user)
         photo1 = Photo.objects.create(
             photo=create_mock_photo(
                 creation_time='2024:02:21 10:52:03',
@@ -656,7 +658,7 @@ class CachedStateRegressionTests(TestCase):
         )
 
         # Confirm plant_options object is cached when manage_group loaded
-        self.assertIsNotNone(cache.get(f'plant_options_{get_default_user().pk}'))
+        self.assertIsNotNone(cache.get(f'plant_options_{default_user.pk}'))
 
         # Create a second Photo with more recent timestamp
         photo2 = Photo.objects.create(
@@ -697,9 +699,10 @@ class CachedStateRegressionTests(TestCase):
         '''
 
         # Create group, plant that is in group, plant that is not in group
-        group = Group.objects.create(uuid=uuid4(), user=get_default_user())
-        plant1 = Plant.objects.create(uuid=uuid4(), group=group, user=get_default_user())
-        plant2 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        default_user = get_default_user()
+        group = Group.objects.create(uuid=uuid4(), user=default_user)
+        plant1 = Plant.objects.create(uuid=uuid4(), group=group, user=default_user)
+        plant2 = Plant.objects.create(uuid=uuid4(), user=default_user)
         # Trigger group_options cache update (normally called from endpoint)
         group.save()
 

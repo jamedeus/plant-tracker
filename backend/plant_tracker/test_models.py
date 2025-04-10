@@ -261,12 +261,13 @@ class PlantModelTests(TestCase):
 class GroupModelTests(TestCase):
     def setUp(self):
         # Create test group
-        self.test_group = Group.objects.create(uuid=uuid4(), user=get_default_user())
+        default_user = get_default_user()
+        self.test_group = Group.objects.create(uuid=uuid4(), user=default_user)
 
         # Create 2 plants with relations to Group and 1 without
-        self.plant1 = Plant.objects.create(uuid=uuid4(), name="plant1", group=self.test_group, user=get_default_user())
-        self.plant2 = Plant.objects.create(uuid=uuid4(), name="plant2", group=self.test_group, user=get_default_user())
-        self.plant3 = Plant.objects.create(uuid=uuid4(), name="plant3", user=get_default_user())
+        self.plant1 = Plant.objects.create(uuid=uuid4(), name="plant1", group=self.test_group, user=default_user)
+        self.plant2 = Plant.objects.create(uuid=uuid4(), name="plant2", group=self.test_group, user=default_user)
+        self.plant3 = Plant.objects.create(uuid=uuid4(), name="plant3", user=default_user)
 
     def test_str_method(self):
         # Should return "Unnamed group <num> (UUID)" when no params are set
