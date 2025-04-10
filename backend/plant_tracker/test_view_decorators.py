@@ -133,7 +133,28 @@ class AuthenticationTests(TestCase):
 
         # Confirm expected response
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json(), {"error": "failed to create account"})
+        self.assertEqual(response.json(), {"error": "missing required field"})
+
+        # Confirm no user created in database
+        self.assertEqual(len(User.objects.all()), 2)
+
+    def test_create_user_endpoint_duplicate_username(self):
+        # Confirm 2 users in database (test user created in setUpClass + default)
+        self.assertEqual(len(User.objects.all()), 2)
+
+        # Post credentials with same username as existing test user
+        # /accounts/create_user/ endpoint
+        response = self.client.post('/accounts/create_user/', {
+            'username': 'unittest',
+            'password': '12345',
+            'email': 'myfirstemail@hotmail.com',
+            'first_name': '',
+            'last_name': ''
+        })
+
+        # Confirm expected response
+        self.assertEqual(response.status_code, 409)
+        self.assertEqual(response.json(), {"error": "username already exists"})
 
         # Confirm no user created in database
         self.assertEqual(len(User.objects.all()), 2)

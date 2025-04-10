@@ -1,7 +1,7 @@
 import json
 from django.contrib.auth import views
-from django.db.utils import IntegrityError
 from django.contrib.auth.models import User
+from django.db import transaction, IntegrityError
 from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth import login, logout, authenticate
 
@@ -30,6 +30,7 @@ def logout_view(request):
 
 def registration_page(request):
     '''Renders the user account registration page'''
+
     return render_react_app(
         request,
         title='Register Account',
@@ -45,13 +46,15 @@ def create_user(request, data):
     last_name keys.
     '''
     try:
-        User.objects.create_user(
-            username=data["username"],
-            password=data["password"],
-            email=data["email"],
-            first_name=data["first_name"],
-            last_name=data["last_name"],
-        )
+        # transaction.atomic cleans up after IntegrityError if username not unique
+        with transaction.atomic():
+            User.objects.create_user(
+                username=data["username"],
+                password=data["password"],
+                email=data["email"],
+                first_name=data["first_name"],
+                last_name=data["last_name"],
+            )
         user = authenticate(
             request,
             username=data["username"],
@@ -61,5 +64,7 @@ def create_user(request, data):
             login(request, user)
             return JsonResponse({"success": "account created"})
         return JsonResponse({"error": "failed to create account"}, status=400)
-    except (ValueError, IntegrityError):
-        return JsonResponse({"error": "failed to create account"}, status=400)
+    except ValueError:
+        return JsonResponse({"error": "missing required field"}, status=400)
+    except IntegrityError:
+        return JsonResponse({"error": "username already exists"}, status=409)
