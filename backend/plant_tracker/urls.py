@@ -1,9 +1,8 @@
 '''Map API endpoints to backend functions'''
 
 from django.urls import path, include
-from django.contrib.auth import views as auth_views
 
-from . import views
+from . import views, auth_views
 
 app_name = "api"
 

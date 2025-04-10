@@ -1,13 +1,37 @@
-import React, { useState, useMemo } from 'react';
-import Navbar from 'src/components/Navbar';
+import React, { useState, useMemo, useRef } from 'react';
 import { useTheme } from 'src/context/ThemeContext';
+import Navbar from 'src/components/Navbar';
 import Cookies from 'js-cookie';
+import clsx from 'clsx';
 
 function App() {
     const { ToggleThemeOption } = useTheme();
 
+    const formRef = useRef(null);
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [showError, setShowError] = useState(false);
+
+    const submit = async (e) => {
+        e.preventDefault();
+        // Post FormData to backend
+        const formData = new FormData(formRef.current);
+        const response = await fetch('/accounts/login/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json, text/plain, */*',
+                "X-CSRFToken": Cookies.get('csrftoken')
+            }
+        });
+        // Redirect to overview if logged in successfully
+        if (response.ok) {
+            window.location.href = '/';
+        // Show error text if login failed
+        } else {
+            setShowError(true);
+        }
+    };
 
     const DropdownMenuOptions = useMemo(() => (
         <>
@@ -25,16 +49,7 @@ function App() {
                 title="Login"
             />
 
-            <form
-                method="post"
-                action="/accounts/login/"
-                className="flex flex-col gap-4 mt-[15vh]"
-            >
-                <input
-                    type="hidden"
-                    name="csrfmiddlewaretoken"
-                    value={Cookies.get("csrftoken")}
-                />
+            <form ref={formRef} className="flex flex-col gap-4 mt-[15vh]">
                 <label className="form-control w-full">
                     <div className="label">
                         <span className="label-text">Username</span>
@@ -42,8 +57,12 @@ function App() {
                     <input
                         name="username"
                         type="text"
-                        className="input w-full input-bordered"
+                        className={clsx(
+                            "input w-full input-bordered",
+                            showError && "input-error"
+                        )}
                         value={username}
+                        onInput={() => setShowError(false)}
                         onChange={e => setUsername(e.target.value)}
                     />
                 </label>
@@ -54,17 +73,29 @@ function App() {
                     <input
                         name="password"
                         type="password"
-                        className="input w-full input-bordered"
+                        className={clsx(
+                            "input w-full input-bordered",
+                            showError && "input-error"
+                        )}
                         value={password}
+                        onInput={() => setShowError(false)}
                         onChange={e => setPassword(e.target.value)}
                     />
                 </label>
 
                 <button
                     className="btn btn-success mt-6"
+                    onClick={(e) => submit(e)}
+                    disabled={username.length < 1 || password.length < 1}
                 >
                     Login
                 </button>
+
+                {showError && (
+                    <span className="text-error text-center">
+                        Invalid username or password
+                    </span>
+                )}
             </form>
         </div>
     );

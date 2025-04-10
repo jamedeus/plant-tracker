@@ -2,6 +2,7 @@
 
 import json
 from uuid import uuid4
+from urllib.parse import urlencode
 
 from django.conf import settings
 from django.test import TestCase
@@ -44,6 +45,36 @@ class AuthenticationTests(TestCase):
 
         # Revert back to SINGLE_USER_MODE
         settings.SINGLE_USER_MODE = True
+
+    def test_login_with_valid_credentials(self):
+        # POST valid credentials to login endpoint
+        response = self.client.post(
+            "/accounts/login/",
+            urlencode({"username": "unittest", "password": "12345"}),
+            content_type="application/x-www-form-urlencoded"
+        )
+
+        # Confirm returns JSON response with status 200 (not 302)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"success": "logged in"})
+
+    def test_login_with_invalid_credentials(self):
+        # POST invalid credentials to login endpoint
+        response = self.client.post(
+            "/accounts/login/",
+            urlencode({"username": "unittest", "password": "wrong"}),
+            content_type="application/x-www-form-urlencoded"
+        )
+
+        # Confirm returns JSON response with status 400 (not 302)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {
+            "errors": {
+                "__all__": [
+                    "Please enter a correct username and password. Note that both fields may be case-sensitive."
+                ]
+            }
+        })
 
     def test_overview_page(self):
         # Request overview while signed out, confirm page loads
