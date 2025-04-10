@@ -64,7 +64,7 @@ def render_react_app(request, title, bundle, state, log_state=True):
 
 
 @requires_json_post(["qr_per_row"])
-def get_qr_codes(data):
+def get_qr_codes(data, **kwargs):
     '''Returns printer-sized grid of QR code links as base64-encoded PNG
     QR codes point to manage endpoint, can be used for plants or groups
     '''
@@ -316,7 +316,7 @@ def render_registration_page(request, uuid):
 @get_user_token
 @requires_json_post(["name", "species", "pot_size", "description", "uuid"])
 @clean_payload_data
-def register_plant(user, data):
+def register_plant(user, data, **kwargs):
     '''Creates a Plant database entry with params from POST body
     Requires JSON POST with parameters from plant registration forms
     '''
@@ -339,7 +339,7 @@ def register_plant(user, data):
 @get_user_token
 @requires_json_post(["name", "location", "description", "uuid"])
 @clean_payload_data
-def register_group(user, data):
+def register_group(user, data, **kwargs):
     '''Creates a Group database entry with params from POST body
     Requires JSON POST with parameters from group registration form
     '''
@@ -519,7 +519,7 @@ def add_plant_event(user, plant, timestamp, event_type, **kwargs):
 @requires_json_post(["plants", "event_type", "timestamp"])
 @get_timestamp_from_post_body
 @get_event_type_from_post_body
-def bulk_add_plant_events(user, timestamp, event_type, data):
+def bulk_add_plant_events(user, timestamp, event_type, data, **kwargs):
     '''Creates new Event entry with requested type for each Plant specified in body
     Requires JSON POST with plants (list of UUIDs), event_type, and timestamp keys
     '''
@@ -571,7 +571,7 @@ def delete_plant_event(user, plant, timestamp, event_type, **kwargs):
 @get_user_token
 @requires_json_post(["plant_id", "events"])
 @get_plant_from_post_body
-def bulk_delete_plant_events(user, plant, data):
+def bulk_delete_plant_events(user, plant, data, **kwargs):
     '''Deletes a list of events (any type) associated with a single plant
     Requires JSON POST with plant_id (uuid) and events (list of dicts) keys
     The events list must contain dicts with timestamp and type keys

@@ -108,7 +108,7 @@ def requires_json_post(required_keys=None):
                         )
             except json.decoder.JSONDecodeError:
                 return JsonResponse({'error': 'request body must be JSON'}, status=405)
-            return func(data=data, **kwargs)
+            return func(request=request, data=data, **kwargs)
         return wrapper
     return decorator
 
