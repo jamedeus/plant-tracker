@@ -17,6 +17,8 @@ urlpatterns = [
         ),
     ),
     path("accounts/logout/", auth_views.logout_view, name="logout"),
+    path("accounts/register/", auth_views.registration_page, name="register_account"),
+    path("accounts/create_user/", auth_views.create_user, name="create_user"),
     path('archived', views.archived_overview, name='archived'),
     path('get_overview_state', views.get_overview_page_state, name='get_overview_state'),
     path('get_qr_codes', views.get_qr_codes, name='get_qr_codes'),

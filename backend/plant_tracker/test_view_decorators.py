@@ -90,6 +90,54 @@ class AuthenticationTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, '/accounts/login/')
 
+    def test_register_account_page(self):
+        # Request registration page, confirm uses correct JS bundle and title
+        response = self.client.get('/accounts/register/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'plant_tracker/index.html')
+        self.assertEqual(response.context['js_bundle'], 'plant_tracker/register_user.js')
+        self.assertEqual(response.context['title'], 'Register Account')
+
+    def test_create_user_endpoint(self):
+        # Confirm 2 users in database (test user created in setUpClass + default)
+        self.assertEqual(len(User.objects.all()), 2)
+
+        # Post new account credentials to /accounts/create_user/ endpoint
+        response = self.client.post('/accounts/create_user/', {
+            'username': 'newuser',
+            'password': '12345',
+            'email': 'myfirstemail@hotmail.com',
+            'first_name': '',
+            'last_name': ''
+        })
+
+        # Confirm expected response
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"success": "account created"})
+
+        # Confirm user created in database
+        self.assertEqual(len(User.objects.all()), 3)
+
+    def test_create_user_endpoint_missing_fields(self):
+        # Confirm 2 users in database (test user created in setUpClass + default)
+        self.assertEqual(len(User.objects.all()), 2)
+
+        # Post empty payload to /accounts/create_user/ endpoint
+        response = self.client.post('/accounts/create_user/', {
+            'username': '',
+            'password': '',
+            'email': '',
+            'first_name': '',
+            'last_name': ''
+        })
+
+        # Confirm expected response
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {"error": "failed to create account"})
+
+        # Confirm no user created in database
+        self.assertEqual(len(User.objects.all()), 2)
+
     def test_overview_page(self):
         # Request overview while signed out, confirm page loads
         response = self.client.get('/')
