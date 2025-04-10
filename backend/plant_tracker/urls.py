@@ -16,6 +16,7 @@ urlpatterns = [
             extra_context={"js_bundle": "plant_tracker/login.js"}
         ),
     ),
+    path("accounts/logout/", auth_views.logout_view, name="logout"),
     path('archived', views.archived_overview, name='archived'),
     path('get_overview_state', views.get_overview_page_state, name='get_overview_state'),
     path('get_qr_codes', views.get_qr_codes, name='get_qr_codes'),

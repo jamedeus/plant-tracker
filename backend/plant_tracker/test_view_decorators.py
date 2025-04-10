@@ -4,6 +4,7 @@ import json
 from uuid import uuid4
 from urllib.parse import urlencode
 
+from django.contrib import auth
 from django.conf import settings
 from django.test import TestCase
 from django.core.cache import cache
@@ -75,6 +76,19 @@ class AuthenticationTests(TestCase):
                 ]
             }
         })
+
+    def test_logout(self):
+        # Log in with test user, confirm authenticated
+        self.client.login(username='unittest', password='12345')
+        self.assertTrue(auth.get_user(self.client).is_authenticated)
+
+        # Request logout endpoint, confirm no longer authenticated
+        response = self.client.get('/accounts/logout/')
+        self.assertFalse(auth.get_user(self.client).is_authenticated)
+
+        # Confirm redirected to login page
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/accounts/login/')
 
     def test_overview_page(self):
         # Request overview while signed out, confirm page loads
