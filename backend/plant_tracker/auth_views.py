@@ -12,6 +12,9 @@ from .view_decorators import requires_json_post
 class LoginView(views.LoginView):
     '''LoginView subclass that returns JSON responses instead of redirects.'''
 
+    # Prevent loading login page if already logged in (redirect to overview)
+    redirect_authenticated_user = True
+
     def form_valid(self, form):
         '''Returns JSON success message instead of redirect.'''
         super().form_valid(form)
@@ -30,6 +33,10 @@ def logout_view(request):
 
 def registration_page(request):
     '''Renders the user account registration page'''
+
+    # Redirect users that are already logged in to overview
+    if request.user.is_authenticated:
+        return HttpResponseRedirect('/')
 
     return render_react_app(
         request,

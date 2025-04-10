@@ -98,6 +98,15 @@ class AuthenticationTests(TestCase):
         self.assertEqual(response.context['js_bundle'], 'plant_tracker/register_user.js')
         self.assertEqual(response.context['title'], 'Register Account')
 
+    def test_register_account_page_already_signed_in(self):
+        # Log in with test user
+        self.client.login(username='unittest', password='12345')
+
+        # Request registration page, confirm redirected to overview
+        response = self.client.get('/accounts/register/')
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/')
+
     def test_create_user_endpoint(self):
         # Confirm 2 users in database (test user created in setUpClass + default)
         self.assertEqual(len(User.objects.all()), 2)
