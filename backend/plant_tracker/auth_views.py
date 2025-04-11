@@ -23,7 +23,10 @@ class LoginView(views.LoginView):
 
     # Override default django form with boilerplate template + react bundle
     template_name = "plant_tracker/index.html"
-    extra_context = {"js_bundle": "plant_tracker/login.js"}
+    extra_context = {
+        "title": "Login",
+        "js_bundle": "plant_tracker/login.js"
+    }
 
     def dispatch(self, request, *args, **kwargs):
         '''Returns login page unless SINGLE_USER_MODE is enabled.'''
