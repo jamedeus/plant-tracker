@@ -24,9 +24,16 @@ function App() {
                 "X-CSRFToken": Cookies.get('csrftoken')
             }
         });
-        // Redirect to overview if logged in successfully
+        // Redirect if logged in successfully
         if (response.ok) {
-            window.location.href = '/';
+            // Redirect to url in querystring if present
+            const params = new URL(window.location.href).searchParams;
+            if (params.get('next')) {
+                window.location.href = params.get('next');
+            // Redirect to overview if no querystring
+            } else {
+                window.location.href = '/';
+            }
         // Show error text if login failed
         } else {
             setShowError(true);

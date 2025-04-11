@@ -67,8 +67,8 @@ def get_default_user():
 def get_user_token(func):
     '''Passes User model object to wrapped function as user kwarg.
     If SINGLE_USER_MODE enabled returns default user without checking request.
-    If user accounts enabled reads user from requests, throws error if not logged in.
-    Must call before requires_json_post (uses requests object).
+    If user accounts enabled reads user from requests. If not logged in returns
+    401 error for POST, redirect to login page for GET.
     '''
     @wraps(func)
     def wrapper(request, **kwargs):
@@ -78,7 +78,7 @@ def get_user_token(func):
         if not request.user.is_authenticated:
             # Redirect to login page if not signed in
             if request.method != "POST":
-                return HttpResponseRedirect('/accounts/login/')
+                return HttpResponseRedirect(f'/accounts/login/?next={request.path}')
             # Frontend sendPostRequest redirects to login if it receives 401
             return JsonResponse({'error': 'authentication required'}, status=401)
         return func(request, user=request.user, **kwargs)

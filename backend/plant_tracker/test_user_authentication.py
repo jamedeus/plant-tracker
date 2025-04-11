@@ -94,9 +94,9 @@ class AuthenticationPageTests(TestCase):
         self.assertFalse(auth.get_user(self.client).is_authenticated)
         response = self.client.get('/accounts/profile/')
 
-        # Confirm redirected to login
+        # Confirm redirected to login page with requested URL in querystring
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, '/accounts/login/')
+        self.assertEqual(response.url, '/accounts/login/?next=/accounts/profile/')
 
 
 class AuthenticationEndpointTests(TestCase):
@@ -522,9 +522,9 @@ class MultiUserModeTests(TestCase):
         self.assertFalse(auth.get_user(self.client).is_authenticated)
         response = self.client.get('/')
 
-        # Confirm redirected to login page
+        # Confirm redirected to login page with requested URL in querystring
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, '/accounts/login/')
+        self.assertEqual(response.url, '/accounts/login/?next=/')
 
     def test_manage_plant_page_signed_in(self):
         # Create plant owned by test user
@@ -548,9 +548,9 @@ class MultiUserModeTests(TestCase):
         self.assertFalse(auth.get_user(self.client).is_authenticated)
         response = self.client.get(f'/manage/{plant.uuid}')
 
-        # Confirm redirected to login page
+        # Confirm redirected to login page with requested URL in querystring
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, '/accounts/login/')
+        self.assertEqual(response.url, f'/accounts/login/?next=/manage/{plant.uuid}')
 
     def test_manage_group_page_signed_in(self):
         # Create group owned by test user
@@ -574,9 +574,9 @@ class MultiUserModeTests(TestCase):
         self.assertFalse(auth.get_user(self.client).is_authenticated)
         response = self.client.get(f'/manage/{group.uuid}')
 
-        # Confirm redirected to login page
+        # Confirm redirected to login page with requested URL in querystring
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, '/accounts/login/')
+        self.assertEqual(response.url, f'/accounts/login/?next=/manage/{group.uuid}')
 
     def test_endpoints_require_authenticated_user(self):
         # Create plant and group owned by test user
