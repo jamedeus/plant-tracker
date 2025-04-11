@@ -15,6 +15,7 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 
+from .render_react_app import render_react_app
 from .models import Group, Plant, WaterEvent, FertilizeEvent, PruneEvent, RepotEvent
 
 
@@ -259,4 +260,23 @@ def clean_payload_data(func):
         data = {key: (value.strip() if value != '' else None)
                 for key, value in data.items()}
         return func(data=data, **kwargs)
+    return wrapper
+
+
+def disable_in_single_user_mode(func):
+    '''Decorator returns permission denied page if SINGLE_USER_MODE enabled.
+    Used to prevent access to login/registration/account related pages while
+    user accounts are disabled.
+    '''
+    def wrapper(request, *args, **kwargs):
+        if settings.SINGLE_USER_MODE:
+            return render_react_app(
+                request,
+                title='Permission Denied',
+                bundle='permission_denied',
+                state={
+                    'error': 'User accounts are disabled'
+                }
+            )
+        return func(request, *args, **kwargs)
     return wrapper

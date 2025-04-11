@@ -5,15 +5,14 @@ import base64
 from io import BytesIO
 
 from django.conf import settings
-from django.shortcuts import render
 from django.core.cache import cache
 from django.db import transaction, IntegrityError
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponseRedirect
-from django.views.decorators.csrf import ensure_csrf_cookie
 from PIL import UnidentifiedImageError
 
 from generate_qr_code_grid import generate_layout
+from .render_react_app import render_react_app
 from .models import (
     Group,
     Plant,
@@ -43,24 +42,6 @@ from .tasks import (
     get_manage_plant_state,
     schedule_cached_group_options_update
 )
-
-
-@ensure_csrf_cookie
-def render_react_app(request, title, bundle, state, log_state=True):
-    '''Helper function to render react app in boilerplate HTML template
-    Takes request object, page title, react bundle name, and react state object
-    Context object is printed to console unless optional log_state arg is False
-    '''
-    context = {
-        'title': title,
-        'js_bundle': f'plant_tracker/{bundle}.js',
-        'state': state
-    }
-
-    if log_state:
-        print(json.dumps(context, indent=4))
-
-    return render(request, 'plant_tracker/index.html', context)
 
 
 @requires_json_post(["qr_per_row"])

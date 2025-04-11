@@ -48,6 +48,8 @@ class AuthenticationTests(TestCase):
         settings.SINGLE_USER_MODE = True
 
     def test_login_with_valid_credentials(self):
+        settings.SINGLE_USER_MODE = False
+
         # POST valid credentials to login endpoint
         response = self.client.post(
             "/accounts/login/",
@@ -60,6 +62,8 @@ class AuthenticationTests(TestCase):
         self.assertEqual(response.json(), {"success": "logged in"})
 
     def test_login_with_invalid_credentials(self):
+        settings.SINGLE_USER_MODE = False
+
         # POST invalid credentials to login endpoint
         response = self.client.post(
             "/accounts/login/",
@@ -77,7 +81,32 @@ class AuthenticationTests(TestCase):
             }
         })
 
+    def test_login_page_single_user_mode(self):
+        # Request login page while SINGLE_USER_MODE is enabled
+        response = self.client.get('/accounts/login/')
+
+        # Confirm returns permission denied page
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'plant_tracker/index.html')
+        self.assertEqual(response.context['js_bundle'], 'plant_tracker/permission_denied.js')
+        self.assertEqual(response.context['title'], 'Permission Denied')
+        self.assertEqual(response.context['state'], {'error': 'User accounts are disabled'})
+
+    def test_login_endpoint_single_user_mode(self):
+        # POST credentials to login endpoint while SINGLE_USER_MODE is enabled
+        response = self.client.post(
+            "/accounts/login/",
+            urlencode({"username": "unittest", "password": "12345"}),
+            content_type="application/x-www-form-urlencoded"
+        )
+
+        # Confirm returns expected error
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {"error": "user accounts are disabled"})
+
     def test_logout(self):
+        settings.SINGLE_USER_MODE = False
+
         # Log in with test user, confirm authenticated
         self.client.login(username='unittest', password='12345')
         self.assertTrue(auth.get_user(self.client).is_authenticated)
@@ -90,7 +119,20 @@ class AuthenticationTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, '/accounts/login/')
 
+    def test_logout_single_user_mode(self):
+        # Request logout endpoint while SINGLE_USER_MODE is enabled
+        response = self.client.get('/accounts/logout/')
+
+        # Confirm returns permission denied page
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'plant_tracker/index.html')
+        self.assertEqual(response.context['js_bundle'], 'plant_tracker/permission_denied.js')
+        self.assertEqual(response.context['title'], 'Permission Denied')
+        self.assertEqual(response.context['state'], {'error': 'User accounts are disabled'})
+
     def test_register_account_page(self):
+        settings.SINGLE_USER_MODE = False
+
         # Request registration page, confirm uses correct JS bundle and title
         response = self.client.get('/accounts/register/')
         self.assertEqual(response.status_code, 200)
@@ -98,7 +140,20 @@ class AuthenticationTests(TestCase):
         self.assertEqual(response.context['js_bundle'], 'plant_tracker/register_user.js')
         self.assertEqual(response.context['title'], 'Register Account')
 
+    def test_register_account_page_single_user_mode(self):
+        # Request registration page while SINGLE_USER_MODE is enabled
+        response = self.client.get('/accounts/register/')
+
+        # Confirm returns permission denied page
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'plant_tracker/index.html')
+        self.assertEqual(response.context['js_bundle'], 'plant_tracker/permission_denied.js')
+        self.assertEqual(response.context['title'], 'Permission Denied')
+        self.assertEqual(response.context['state'], {'error': 'User accounts are disabled'})
+
     def test_register_account_page_already_signed_in(self):
+        settings.SINGLE_USER_MODE = False
+
         # Log in with test user
         self.client.login(username='unittest', password='12345')
 
@@ -108,6 +163,8 @@ class AuthenticationTests(TestCase):
         self.assertEqual(response.url, '/')
 
     def test_create_user_endpoint(self):
+        settings.SINGLE_USER_MODE = False
+
         # Confirm 2 users in database (test user created in setUpClass + default)
         self.assertEqual(len(User.objects.all()), 2)
 
@@ -128,6 +185,8 @@ class AuthenticationTests(TestCase):
         self.assertEqual(len(User.objects.all()), 3)
 
     def test_create_user_endpoint_missing_fields(self):
+        settings.SINGLE_USER_MODE = False
+
         # Confirm 2 users in database (test user created in setUpClass + default)
         self.assertEqual(len(User.objects.all()), 2)
 
@@ -148,6 +207,8 @@ class AuthenticationTests(TestCase):
         self.assertEqual(len(User.objects.all()), 2)
 
     def test_create_user_endpoint_duplicate_username(self):
+        settings.SINGLE_USER_MODE = False
+
         # Confirm 2 users in database (test user created in setUpClass + default)
         self.assertEqual(len(User.objects.all()), 2)
 
@@ -167,6 +228,23 @@ class AuthenticationTests(TestCase):
 
         # Confirm no user created in database
         self.assertEqual(len(User.objects.all()), 2)
+
+    def test_create_user_endpoint_single_user_mode(self):
+        # Post new account credentials while SINGLE_USER_MODE is enabled
+        response = self.client.post('/accounts/create_user/', {
+            'username': 'newuser',
+            'password': '12345',
+            'email': 'myfirstemail@hotmail.com',
+            'first_name': '',
+            'last_name': ''
+        })
+
+        # Confirm returns permission denied page
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'plant_tracker/index.html')
+        self.assertEqual(response.context['js_bundle'], 'plant_tracker/permission_denied.js')
+        self.assertEqual(response.context['title'], 'Permission Denied')
+        self.assertEqual(response.context['state'], {'error': 'User accounts are disabled'})
 
     def test_password_change_endpoint(self):
         settings.SINGLE_USER_MODE = False
@@ -203,6 +281,22 @@ class AuthenticationTests(TestCase):
         )
         self.assertEqual(response.status_code, 400)
 
+    def test_password_change_endpoint_single_user_mode(self):
+        # Post new password while SINGLE_USER_MODE is enabled
+        self.client.login(username='unittest', password='12345')
+        response = self.client.post('/accounts/change_password/',
+            urlencode({
+                'old_password': '12345',
+                'new_password1': 'more secure password',
+                'new_password2': 'nore secure password',
+            }),
+            content_type="application/x-www-form-urlencoded"
+        )
+
+        # Confirm returns expected error
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {"error": "user accounts are disabled"})
+
     def test_user_profile_page(self):
         settings.SINGLE_USER_MODE = False
 
@@ -231,6 +325,17 @@ class AuthenticationTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, '/accounts/login/')
 
+    def test_user_profile_page_single_user_mode(self):
+        # Request profle page while SINGLE_USER_MODE is enabled
+        response = self.client.get('/accounts/profile/')
+
+        # Confirm returns permission denied page
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'plant_tracker/index.html')
+        self.assertEqual(response.context['js_bundle'], 'plant_tracker/permission_denied.js')
+        self.assertEqual(response.context['title'], 'Permission Denied')
+        self.assertEqual(response.context['state'], {'error': 'User accounts are disabled'})
+
     def test_edit_user_details_endpoint(self):
         settings.SINGLE_USER_MODE = False
 
@@ -256,6 +361,22 @@ class AuthenticationTests(TestCase):
         self.assertEqual(self.test_user.first_name, 'Anthony')
         self.assertEqual(self.test_user.last_name, 'Weiner')
         self.assertEqual(self.test_user.email, 'carlosdanger@hotmail.com')
+
+    def test_edit_user_details_endpoint_single_user_mode(self):
+        # Log in with test user while SINGLE_USER_MODE is enabled
+        self.client.login(username='unittest', password='12345')
+        response = self.client.post('/accounts/edit_user_details/', {
+            'first_name': 'Anthony',
+            'last_name': 'Weiner',
+            'email': 'carlosdanger@hotmail.com'
+        })
+
+        # Confirm returns permission denied page
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'plant_tracker/index.html')
+        self.assertEqual(response.context['js_bundle'], 'plant_tracker/permission_denied.js')
+        self.assertEqual(response.context['title'], 'Permission Denied')
+        self.assertEqual(response.context['state'], {'error': 'User accounts are disabled'})
 
     def test_overview_page(self):
         # Request overview while signed out, confirm page loads

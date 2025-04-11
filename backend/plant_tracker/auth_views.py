@@ -1,4 +1,6 @@
 import json
+
+from django.conf import settings
 from django.contrib.auth import views
 from django.contrib.auth.models import User
 from django.db import transaction, IntegrityError
@@ -6,7 +8,11 @@ from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth import login, logout, authenticate
 
 from .views import render_react_app
-from .view_decorators import get_user_token, requires_json_post
+from .view_decorators import (
+    get_user_token,
+    requires_json_post,
+    disable_in_single_user_mode
+)
 
 
 class LoginView(views.LoginView):
@@ -19,6 +25,24 @@ class LoginView(views.LoginView):
     template_name = "plant_tracker/index.html"
     extra_context = {"js_bundle": "plant_tracker/login.js"}
 
+    def dispatch(self, request, *args, **kwargs):
+        '''Returns login page unless SINGLE_USER_MODE is enabled.'''
+        if settings.SINGLE_USER_MODE:
+            # User requesting login page
+            if request.method == "GET":
+                return render_react_app(
+                    request,
+                    title='Permission Denied',
+                    bundle='permission_denied',
+                    state={'error': 'User accounts are disabled'}
+                )
+            # User submitting credentials from login page form
+            return JsonResponse(
+                {"error": "user accounts are disabled"},
+                status=400
+            )
+        return super().dispatch(request, *args, **kwargs)
+
     def form_valid(self, form):
         '''Returns JSON success message instead of redirect.'''
         super().form_valid(form)
@@ -29,12 +53,14 @@ class LoginView(views.LoginView):
         return JsonResponse({"errors": form.errors}, status=400)
 
 
+@disable_in_single_user_mode
 def logout_view(request):
     '''Logs the user out and redirects to login page'''
     logout(request)
     return HttpResponseRedirect("/accounts/login/")
 
 
+@disable_in_single_user_mode
 def registration_page(request):
     '''Renders the user account registration page'''
 
@@ -55,6 +81,15 @@ class PasswordChangeView(views.PasswordChangeView):
 
     success_url = "/"
 
+    def dispatch(self, *args, **kwargs):
+        '''Changes password unless SINGLE_USER_MODE is enabled.'''
+        if settings.SINGLE_USER_MODE:
+            return JsonResponse(
+                {"error": "user accounts are disabled"},
+                status=400
+            )
+        return super().dispatch(*args, **kwargs)
+
     def form_valid(self, form):
         '''Returns JSON success message instead of redirect.'''
         super().form_valid(form)
@@ -65,6 +100,7 @@ class PasswordChangeView(views.PasswordChangeView):
         return JsonResponse({"errors": form.errors}, status=400)
 
 
+@disable_in_single_user_mode
 @requires_json_post(["username", "password", "email", "first_name", "last_name"])
 def create_user(request, data):
     '''Creates a new user account and returns a response with session cookie.
@@ -97,6 +133,7 @@ def create_user(request, data):
 
 
 @get_user_token
+@disable_in_single_user_mode
 def user_profile_page(request, user):
     '''Renders the user profile page'''
 
@@ -117,6 +154,7 @@ def user_profile_page(request, user):
 
 
 @get_user_token
+@disable_in_single_user_mode
 @requires_json_post(["email", "first_name", "last_name"])
 def edit_user_details(data, user, **kwargs):
     '''Updates details of an existing user account.
