@@ -11,8 +11,8 @@ from functools import wraps
 from datetime import datetime
 
 from django.conf import settings
-from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth import get_user_model
+from django.http import JsonResponse, HttpResponseRedirect
 from django.core.exceptions import ValidationError
 
 from .render_react_app import render_react_app
@@ -60,8 +60,7 @@ def get_plant_or_group_by_uuid(uuid):
 
 def get_default_user():
     '''Returns default user (owns all models when SINGLE_USER_MODE enabled)'''
-    User = get_user_model()
-    return User.objects.get(username=settings.DEFAULT_USERNAME)
+    return get_user_model().objects.get(username=settings.DEFAULT_USERNAME)
 
 
 def get_user_token(func):

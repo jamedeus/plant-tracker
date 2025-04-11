@@ -10,7 +10,7 @@ from django.utils import timezone
 from django.core.cache import cache
 from django.db import IntegrityError
 from django.test import TestCase, Client
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.test.client import MULTIPART_CONTENT
 from django.core.exceptions import ValidationError
 
@@ -171,9 +171,10 @@ class ModelRegressionTests(TestCase):
         settings.SINGLE_USER_MODE = False
 
         # Create 2 test users with 1 unnamed plant each
-        user1 = User.objects.create_user(username='user1', password='123')
-        user2 = User.objects.create_user(username='user2', password='123')
-        plant1 = Plant.objects.create(uuid=uuid4(), user=user1)
+        user_model = get_user_model()
+        user1 = user_model.objects.create_user(username='user1', password='123')
+        user2 = user_model.objects.create_user(username='user2', password='123')
+        Plant.objects.create(uuid=uuid4(), user=user1)
         plant2 = Plant.objects.create(uuid=uuid4(), user=user2)
 
         # Sign in as user2, request manage_plant page

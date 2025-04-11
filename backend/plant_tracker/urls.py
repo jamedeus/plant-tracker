@@ -1,6 +1,6 @@
 '''Map API endpoints to backend functions'''
 
-from django.urls import path, include
+from django.urls import path
 
 from . import views, auth_views
 

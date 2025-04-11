@@ -1,8 +1,8 @@
-import json
+'''Django API endpoint functions for user authentication and account management'''
 
 from django.conf import settings
 from django.contrib.auth import views
-from django.contrib.auth.models import User
+from django.contrib.auth import get_user_model
 from django.db import transaction, IntegrityError
 from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth import login, logout, authenticate
@@ -13,6 +13,8 @@ from .view_decorators import (
     requires_json_post,
     disable_in_single_user_mode
 )
+
+user_model = get_user_model()
 
 
 class LoginView(views.LoginView):
@@ -97,7 +99,7 @@ def create_user(request, data):
     try:
         # transaction.atomic cleans up after IntegrityError if username not unique
         with transaction.atomic():
-            User.objects.create_user(
+            user_model.objects.create_user(
                 username=data["username"],
                 password=data["password"],
                 email=data["email"],

@@ -14,7 +14,6 @@ from django.conf import settings
 from django.test import TestCase
 from django.utils import timezone
 from django.core.cache import cache
-from django.contrib.auth import get_user_model
 from django.test.client import RequestFactory, MULTIPART_CONTENT
 from PIL import UnidentifiedImageError
 
@@ -129,12 +128,34 @@ class OverviewTests(TestCase):
     def test_overview_page_with_database_entries(self):
         # Create test group and 2 test plants
         default_user = get_default_user()
-        group = Group.objects.create(uuid=uuid4(), user=default_user)
-        plant1 = Plant.objects.create(uuid=uuid4(), name='Test plant', user=default_user)
-        plant2 = Plant.objects.create(uuid=uuid4(), species='fittonia', user=default_user, group=group)
+        group = Group.objects.create(
+            uuid=uuid4(),
+            user=default_user
+        )
+        plant1 = Plant.objects.create(
+            uuid=uuid4(),
+            name='Test plant',
+            user=default_user
+        )
+        plant2 = Plant.objects.create(
+            uuid=uuid4(),
+            species='fittonia',
+            user=default_user, group=group
+        )
+
         # Create archived group and archived plant (should not be in context)
-        Plant.objects.create(uuid=uuid4(), name='Archived plant', user=default_user, archived=True)
-        Group.objects.create(uuid=uuid4(), name='Archived group', user=default_user, archived=True)
+        Plant.objects.create(
+            uuid=uuid4(),
+            name='Archived plant',
+            user=default_user,
+            archived=True
+        )
+        Group.objects.create(
+            uuid=uuid4(),
+            name='Archived group',
+            user=default_user,
+            archived=True
+        )
 
         # Request overview, confirm uses correct JS bundle and title
         response = self.client.get('/')
@@ -437,9 +458,20 @@ class ArchivedOverviewTests(TestCase):
         Group.objects.create(uuid=uuid4(), user=default_user)
         Plant.objects.create(uuid=uuid4(), name='Test plant', user=default_user)
         Plant.objects.create(uuid=uuid4(), species='fittonia', user=default_user)
+
         # Create archived group and archived plant (SHOULD be in context)
-        plant = Plant.objects.create(uuid=uuid4(), name='Archived plant', user=default_user, archived=True)
-        group = Group.objects.create(uuid=uuid4(), name='Archived group', user=default_user, archived=True)
+        plant = Plant.objects.create(
+            uuid=uuid4(),
+            name='Archived plant',
+            user=default_user,
+            archived=True
+        )
+        group = Group.objects.create(
+            uuid=uuid4(),
+            name='Archived group',
+            user=default_user,
+            archived=True
+        )
 
         # Request archive overview, confirm uses correct JS bundle and title
         response = self.client.get('/archived')

@@ -126,7 +126,7 @@ class HelperFunctionTests(TestCase):
         cache.set(f'group_options_{default_user.pk}', 'foo')
 
         # Create 5 Plant entries, cache dummy string for each
-        for i in range(0, 5):
+        for _ in range(0, 5):
             plant = Plant.objects.create(uuid=uuid4(), user=default_user)
             cache.set(f'{plant.uuid}_state', 'foo')
 

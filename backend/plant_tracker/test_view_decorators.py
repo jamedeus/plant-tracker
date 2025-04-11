@@ -2,17 +2,12 @@
 
 import json
 from uuid import uuid4
-from urllib.parse import urlencode
 
-from django.contrib import auth
-from django.conf import settings
 from django.test import TestCase
-from django.core.cache import cache
 from django.http import HttpResponse
-from django.contrib.auth.models import User
-from django.test.client import RequestFactory, MULTIPART_CONTENT
+from django.test.client import RequestFactory
 
-from .models import Plant, Group
+from .models import Plant
 from .view_decorators import (
     requires_json_post,
     get_default_user,
@@ -22,7 +17,7 @@ from .view_decorators import (
     get_timestamp_from_post_body,
     get_event_type_from_post_body
 )
-from .unit_test_helpers import JSONClient, create_mock_photo
+from .unit_test_helpers import JSONClient
 
 
 class ViewDecoratorErrorTests(TestCase):

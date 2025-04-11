@@ -1,3 +1,5 @@
+'''Mock client used to run unit tests without a redis server'''
+
 import fakeredis
 from django_redis.client import DefaultClient
 
@@ -15,5 +17,4 @@ class FakeRedisClient(DefaultClient):
 
         if show_index:
             return self._client, 0
-        else:
-            return self._client
+        return self._client
