@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect, useRef, memo } from 'react';
+import PropTypes from 'prop-types';
 import { useTheme } from 'src/context/ThemeContext';
 import { parseDomContext, sendPostRequest } from 'src/util';
 import { timestampToRelative, timestampToReadable } from 'src/timestampUtils';
@@ -225,6 +226,12 @@ const Section = ({ title, open=false, children }) => {
             </div>
         </div>
     );
+};
+
+Section.propTypes = {
+    title: PropTypes.string.isRequired,
+    open: PropTypes.bool,
+    children: PropTypes.node.isRequired
 };
 
 function App() {

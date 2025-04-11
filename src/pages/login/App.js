@@ -106,7 +106,7 @@ const RegisterForm = () => {
         const response = await sendPostRequest(
             '/accounts/create_user/',
             Object.fromEntries(formData)
-        )
+        );
         // Redirect to overview if logged in successfully
         if (response.ok) {
             window.location.href = '/';
