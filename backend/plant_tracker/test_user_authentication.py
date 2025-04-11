@@ -55,23 +55,6 @@ class AuthenticationPageTests(TestCase):
         self.assertEqual(response.context['js_bundle'], 'plant_tracker/login.js')
         self.assertEqual(response.context['title'], 'Login')
 
-    def test_register_account_page(self):
-        # Request registration page, confirm uses correct JS bundle and title
-        response = self.client.get('/accounts/register/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['js_bundle'], 'plant_tracker/register_user.js')
-        self.assertEqual(response.context['title'], 'Register Account')
-
-    def test_register_account_page_already_signed_in(self):
-        # Log in with test user
-        self.client.login(username='unittest', password='12345')
-
-        # Request registration page, confirm redirected to overview
-        response = self.client.get('/accounts/register/')
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, '/')
-
     def test_user_profile_page(self):
         # Log in with test user
         self.client.login(username='unittest', password='12345')
@@ -322,17 +305,6 @@ class SingleUserModeTests(TestCase):
     def test_logout(self):
         # Request logout endpoint while SINGLE_USER_MODE is enabled
         response = self.client.get('/accounts/logout/')
-
-        # Confirm returns permission denied page
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['js_bundle'], 'plant_tracker/permission_denied.js')
-        self.assertEqual(response.context['title'], 'Permission Denied')
-        self.assertEqual(response.context['state'], {'error': 'User accounts are disabled'})
-
-    def test_register_account_page(self):
-        # Request registration page while SINGLE_USER_MODE is enabled
-        response = self.client.get('/accounts/register/')
 
         # Confirm returns permission denied page
         self.assertEqual(response.status_code, 200)

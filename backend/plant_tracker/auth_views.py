@@ -63,22 +63,6 @@ def logout_view(request):
     return HttpResponseRedirect("/accounts/login/")
 
 
-@disable_in_single_user_mode
-def registration_page(request):
-    '''Renders the user account registration page'''
-
-    # Redirect users that are already logged in to overview
-    if request.user.is_authenticated:
-        return HttpResponseRedirect('/')
-
-    return render_react_app(
-        request,
-        title='Register Account',
-        bundle='register_user',
-        state={}
-    )
-
-
 class PasswordChangeView(views.PasswordChangeView):
     '''PasswordChangeView subclass that returns JSON responses instead of redirects.'''
 
