@@ -4,10 +4,11 @@ from django.conf import settings
 from django.contrib.auth import views
 from django.contrib.auth import get_user_model
 from django.db import transaction, IntegrityError
+from django.utils.decorators import method_decorator
 from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth import login, logout, authenticate
 
-from .views import render_react_app, render_permission_denied_page
+from .views import render_react_app
 from .view_decorators import (
     get_user_token,
     requires_json_post,
@@ -30,20 +31,9 @@ class LoginView(views.LoginView):
         "js_bundle": "plant_tracker/login.js"
     }
 
+    @method_decorator(disable_in_single_user_mode)
     def dispatch(self, request, *args, **kwargs):
         '''Returns login page unless SINGLE_USER_MODE is enabled.'''
-        if settings.SINGLE_USER_MODE:
-            # User requesting login page
-            if request.method == "GET":
-                return render_permission_denied_page(
-                    request,
-                    'User accounts are disabled'
-                )
-            # User submitting credentials from login page form
-            return JsonResponse(
-                {"error": "user accounts are disabled"},
-                status=400
-            )
         return super().dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):

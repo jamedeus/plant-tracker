@@ -263,15 +263,21 @@ def clean_payload_data(func):
 
 
 def disable_in_single_user_mode(func):
-    '''Decorator returns permission denied page if SINGLE_USER_MODE enabled.
-    Used to prevent access to login/registration/account related pages while
-    user accounts are disabled.
+    '''Decorator prevents accessing view while SINGLE_USER_MODE is enabled.
+    Returns permission denied page for GET requests, JSON error for others.
     '''
     def wrapper(request, *args, **kwargs):
         if settings.SINGLE_USER_MODE:
-            return render_permission_denied_page(
-                request,
-                'User accounts are disabled'
+            # User requesting disabled page: render permission denied
+            if request.method == "GET":
+                return render_permission_denied_page(
+                    request,
+                    'User accounts are disabled'
+                )
+            # User POSTing to disabled endpoint: return error response
+            return JsonResponse(
+                {"error": "user accounts are disabled"},
+                status=400
             )
         return func(request, *args, **kwargs)
     return wrapper

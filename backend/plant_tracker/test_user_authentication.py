@@ -280,7 +280,7 @@ class SingleUserModeTests(TestCase):
 
     # pylint: disable-next=invalid-name
     def assertReceivedPermissionDeniedPage(self, response):
-        '''Takes response object, confirm received status 200 with boilerplate
+        '''Takes response object, confirms received status 200 with boilerplate
         index.html, permission_denied.js, and page title "Permission Denied".
         '''
         self.assertEqual(response.status_code, 200)
@@ -289,6 +289,17 @@ class SingleUserModeTests(TestCase):
         self.assertEqual(
             response.context['js_bundle'],
             'plant_tracker/permission_denied.js'
+        )
+
+    # pylint: disable-next=invalid-name
+    def assertReceivedUserAccountsDisabledError(self, response):
+        '''Takes response object, confirms received JSON response with status
+        400 and payload {"error": "user accounts are disabled"}.
+        '''
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.json(),
+            {"error": "user accounts are disabled"}
         )
 
     def test_login_page(self):
@@ -304,15 +315,13 @@ class SingleUserModeTests(TestCase):
 
     def test_login_endpoint(self):
         # POST credentials to login endpoint while SINGLE_USER_MODE is enabled
-        response = self.client.post(
-            "/accounts/login/",
-            urlencode({"username": "unittest", "password": "12345"}),
-            content_type="application/x-www-form-urlencoded"
+        self.assertReceivedUserAccountsDisabledError(
+            self.client.post(
+                "/accounts/login/",
+                urlencode({"username": "unittest", "password": "12345"}),
+                content_type="application/x-www-form-urlencoded"
+            )
         )
-
-        # Confirm returns expected error
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json(), {"error": "user accounts are disabled"})
 
     def test_logout(self):
         # Request logout endpoint while SINGLE_USER_MODE is enabled
@@ -327,35 +336,28 @@ class SingleUserModeTests(TestCase):
 
     def test_create_user_endpoint(self):
         # Post new account credentials while SINGLE_USER_MODE is enabled
-        response = self.client.post('/accounts/create_user/', {
-            'username': 'newuser',
-            'password': '12345',
-            'email': 'myfirstemail@hotmail.com',
-            'first_name': '',
-            'last_name': ''
-        })
-
-        # Confirm returns permission denied page
-        self.assertReceivedPermissionDeniedPage(response)
-        self.assertEqual(
-            response.context['state'],
-            {'error': 'User accounts are disabled'}
+        self.assertReceivedUserAccountsDisabledError(
+            self.client.post('/accounts/create_user/', {
+                'username': 'newuser',
+                'password': '12345',
+                'email': 'myfirstemail@hotmail.com',
+                'first_name': '',
+                'last_name': ''
+            })
         )
 
     def test_password_change_endpoint(self):
         # Post new password while SINGLE_USER_MODE is enabled
-        response = self.client.post('/accounts/change_password/',
-            urlencode({
-                'old_password': '12345',
-                'new_password1': 'more secure password',
-                'new_password2': 'nore secure password',
-            }),
-            content_type="application/x-www-form-urlencoded"
+        self.assertReceivedUserAccountsDisabledError(
+            self.client.post('/accounts/change_password/',
+                urlencode({
+                    'old_password': '12345',
+                    'new_password1': 'more secure password',
+                    'new_password2': 'nore secure password',
+                }),
+                content_type="application/x-www-form-urlencoded"
+            )
         )
-
-        # Confirm returns expected error
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json(), {"error": "user accounts are disabled"})
 
     def test_user_profile_page(self):
         # Request profle page while SINGLE_USER_MODE is enabled
@@ -370,17 +372,12 @@ class SingleUserModeTests(TestCase):
 
     def test_edit_user_details_endpoint(self):
         # Submit new user details while SINGLE_USER_MODE is enabled
-        response = self.client.post('/accounts/edit_user_details/', {
-            'first_name': 'Anthony',
-            'last_name': 'Weiner',
-            'email': 'carlosdanger@hotmail.com'
-        })
-
-        # Confirm returns permission denied page
-        self.assertReceivedPermissionDeniedPage(response)
-        self.assertEqual(
-            response.context['state'],
-            {'error': 'User accounts are disabled'}
+        self.assertReceivedUserAccountsDisabledError(
+            self.client.post('/accounts/edit_user_details/', {
+                'first_name': 'Anthony',
+                'last_name': 'Weiner',
+                'email': 'carlosdanger@hotmail.com'
+            })
         )
 
     def test_overview_page(self):
