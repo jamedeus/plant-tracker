@@ -61,18 +61,6 @@ class PasswordChangeView(views.PasswordChangeView):
         return JsonResponse({"errors": form.errors}, status=400)
 
 
-@get_user_token
-def change_password_page(request, **kwargs):
-    '''Renders the change password page'''
-
-    return render_react_app(
-        request,
-        title='Change Password',
-        bundle='change_password',
-        state={}
-    )
-
-
 @requires_json_post(["username", "password", "email", "first_name", "last_name"])
 def create_user(request, data):
     '''Creates a new user account and returns a response with session cookie.

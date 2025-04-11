@@ -7,7 +7,7 @@ import { mockContext } from './mockContext';
 describe('App', () => {
     beforeAll(() => {
         // Mock page title (set by django template in prod)
-        document.title = 'Plant Overview'
+        document.title = 'Plant Overview';
     });
 
     // Delete mock contexts after each test (isolation)
@@ -96,7 +96,7 @@ describe('App', () => {
 describe('App (archived page)', () => {
     beforeAll(() => {
         // Mock page title (set by django template in prod)
-        document.title = 'Archived'
+        document.title = 'Archived';
     });
 
     it('matches snapshot when plants and groups exist', () => {

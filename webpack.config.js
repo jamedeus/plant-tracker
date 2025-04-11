@@ -11,7 +11,6 @@ const config = {
         login: './src/pages/login/index.js',
         user_profile: './src/pages/user_profile/index.js',
         register_user: './src/pages/register_user/index.js',
-        change_password: './src/pages/change_password/index.js',
         overview: './src/pages/overview/index.js',
         register: './src/pages/register/index.js',
         manage_plant: './src/pages/manage_plant/index.js',
