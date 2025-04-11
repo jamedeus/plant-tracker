@@ -47,8 +47,10 @@ const UserDetails = memo(function UserDetails() {
 
     return (
         <div className="flex flex-col gap-4">
-            <div className="grid grid-cols-2 gap-4">
-                <div className="my-auto">First Name:</div>
+            <div className="grid grid-cols-[min-content_1fr] gap-4">
+                <div className="my-auto text-nowrap">
+                    First Name:
+                </div>
                 <input
                     name="first_name"
                     type="text"
@@ -56,7 +58,9 @@ const UserDetails = memo(function UserDetails() {
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                 />
-                <div className="my-auto">Last Name:</div>
+                <div className="my-auto text-nowrap">
+                    Last Name:
+                </div>
                 <input
                     name="last_name"
                     type="text"
@@ -64,7 +68,9 @@ const UserDetails = memo(function UserDetails() {
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                 />
-                <div className="my-auto">Email:</div>
+                <div className="my-auto text-nowrap">
+                    Email:
+                </div>
                 <input
                     name="email"
                     type="text"
@@ -73,12 +79,16 @@ const UserDetails = memo(function UserDetails() {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                 />
-                <div className="my-auto">Date joined:</div>
-                <div className="flex flex-col text-center">
-                    <span>
+                <div className="my-auto text-nowrap">
+                    Joined:
+                </div>
+                <div className="text-center">
+                    <span className="text-nowrap">
                         {timestampToReadable(userDetails.date_joined).split('-')[1]}
                     </span>
-                    <span>
+                    {/* Space allows line wrapping on very small screens */}
+                    <span> </span>
+                    <span className="text-nowrap">
                         ({timestampToRelative(userDetails.date_joined)})
                     </span>
                 </div>
