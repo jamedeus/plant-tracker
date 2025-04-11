@@ -226,6 +226,60 @@ class AuthenticationTests(TestCase):
         )
         self.assertEqual(response.status_code, 400)
 
+    def test_user_profile_page(self):
+        settings.SINGLE_USER_MODE = False
+
+        # Log in with test user
+        self.client.login(username='unittest', password='12345')
+
+        # Request profle page, confirm uses correct JS bundle and title
+        response = self.client.get('/accounts/profile/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'plant_tracker/index.html')
+        self.assertEqual(response.context['js_bundle'], 'plant_tracker/user_profile.js')
+        self.assertEqual(response.context['title'], 'User Profile')
+
+        # Confirm context contains current user account details
+        details_context = response.context['state']['user_details']
+        self.assertEqual(details_context['first_name'], 'Bob')
+        self.assertEqual(details_context['last_name'], 'Smith')
+        self.assertEqual(details_context['email'], '')
+
+    def test_user_profile_page_not_logged_in(self):
+        settings.SINGLE_USER_MODE = False
+
+        # Request user profile page without signing in, confirm redirected to login
+        self.assertFalse(auth.get_user(self.client).is_authenticated)
+        response = self.client.get('/accounts/profile/')
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/accounts/login/')
+
+    def test_edit_user_details_endpoint(self):
+        settings.SINGLE_USER_MODE = False
+
+        # Confirm initial test user details
+        self.assertEqual(self.test_user.first_name, 'Bob')
+        self.assertEqual(self.test_user.last_name, 'Smith')
+        self.assertEqual(self.test_user.email, '')
+
+        # Log in with test user, post new account details to backend
+        self.client.login(username='unittest', password='12345')
+        response = self.client.post('/accounts/edit_user_details/', {
+            'first_name': 'Anthony',
+            'last_name': 'Weiner',
+            'email': 'carlosdanger@hotmail.com'
+        })
+
+        # Confirm expected response
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"success": "details updated"})
+
+        # Confirm test user details were updated
+        self.test_user.refresh_from_db()
+        self.assertEqual(self.test_user.first_name, 'Anthony')
+        self.assertEqual(self.test_user.last_name, 'Weiner')
+        self.assertEqual(self.test_user.email, 'carlosdanger@hotmail.com')
+
     def test_overview_page(self):
         # Request overview while signed out, confirm page loads
         response = self.client.get('/')

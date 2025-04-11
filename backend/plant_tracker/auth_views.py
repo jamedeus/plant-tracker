@@ -102,3 +102,36 @@ def create_user(request, data):
         return JsonResponse({"error": "missing required field"}, status=400)
     except IntegrityError:
         return JsonResponse({"error": "username already exists"}, status=409)
+
+
+@get_user_token
+def user_profile_page(request, user):
+    '''Renders the user profile page'''
+
+    return render_react_app(
+        request,
+        title='User Profile',
+        bundle='user_profile',
+        state={
+            'user_details': {
+                'username': user.username,
+                'email': user.email,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'date_joined': user.date_joined.isoformat()
+            }
+        }
+    )
+
+
+@get_user_token
+@requires_json_post(["email", "first_name", "last_name"])
+def edit_user_details(data, user, **kwargs):
+    '''Updates details of an existing user account.
+    Requires JSON POST with email, first_name, and last_name keys.
+    '''
+    user.email = data["email"]
+    user.first_name = data["first_name"]
+    user.last_name = data["last_name"]
+    user.save()
+    return JsonResponse({"success": "details updated"})
