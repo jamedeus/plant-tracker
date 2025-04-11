@@ -7,7 +7,7 @@ from django.db import transaction, IntegrityError
 from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth import login, logout, authenticate
 
-from .views import render_react_app
+from .views import render_react_app, render_permission_denied_page
 from .view_decorators import (
     get_user_token,
     requires_json_post,
@@ -35,11 +35,9 @@ class LoginView(views.LoginView):
         if settings.SINGLE_USER_MODE:
             # User requesting login page
             if request.method == "GET":
-                return render_react_app(
+                return render_permission_denied_page(
                     request,
-                    title='Permission Denied',
-                    bundle='permission_denied',
-                    state={'error': 'User accounts are disabled'}
+                    'User accounts are disabled'
                 )
             # User submitting credentials from login page form
             return JsonResponse(

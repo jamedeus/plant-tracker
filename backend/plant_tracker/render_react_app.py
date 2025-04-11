@@ -22,3 +22,15 @@ def render_react_app(request, title, bundle, state, log_state=True):
         print(json.dumps(context, indent=4))
 
     return render(request, 'plant_tracker/index.html', context)
+
+
+def render_permission_denied_page(request, error_string):
+    '''Helper function to render permission denied page with custom error.
+    Takes request object and error string to display to user.
+    '''
+    return render_react_app(
+        request,
+        title='Permission Denied',
+        bundle='permission_denied',
+        state={'error': error_string}
+    )

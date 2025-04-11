@@ -15,7 +15,7 @@ from django.contrib.auth import get_user_model
 from django.http import JsonResponse, HttpResponseRedirect
 from django.core.exceptions import ValidationError
 
-from .render_react_app import render_react_app
+from .render_react_app import render_permission_denied_page
 from .models import Group, Plant, WaterEvent, FertilizeEvent, PruneEvent, RepotEvent
 
 
@@ -269,13 +269,9 @@ def disable_in_single_user_mode(func):
     '''
     def wrapper(request, *args, **kwargs):
         if settings.SINGLE_USER_MODE:
-            return render_react_app(
+            return render_permission_denied_page(
                 request,
-                title='Permission Denied',
-                bundle='permission_denied',
-                state={
-                    'error': 'User accounts are disabled'
-                }
+                'User accounts are disabled'
             )
         return func(request, *args, **kwargs)
     return wrapper

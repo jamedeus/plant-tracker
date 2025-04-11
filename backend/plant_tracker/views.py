@@ -12,7 +12,7 @@ from django.http import JsonResponse, HttpResponseRedirect
 from PIL import UnidentifiedImageError
 
 from generate_qr_code_grid import generate_layout
-from .render_react_app import render_react_app
+from .render_react_app import render_react_app, render_permission_denied_page
 from .models import (
     Group,
     Plant,
@@ -164,13 +164,9 @@ def render_manage_plant_page(request, plant, user):
 
     # Render permission denied page if requesting user does not own plant
     if plant.user != user:
-        return render_react_app(
+        return render_permission_denied_page(
             request,
-            title='Permission Denied',
-            bundle='permission_denied',
-            state={
-                'error': 'You do not have permission to view this plant'
-            }
+            'You do not have permission to view this plant'
         )
 
     return render_react_app(
@@ -213,13 +209,9 @@ def render_manage_group_page(request, group, user):
 
     # Render permission denied page if requesting user does not own group
     if group.user != user:
-        return render_react_app(
+        return render_permission_denied_page(
             request,
-            title='Permission Denied',
-            bundle='permission_denied',
-            state={
-                'error': 'You do not have permission to view this group'
-            }
+            'You do not have permission to view this group'
         )
 
     return render_react_app(
