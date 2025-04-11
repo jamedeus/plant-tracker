@@ -235,7 +235,7 @@ function App() {
                 menuOptions={DropdownMenuOptions}
                 title="User Profile"
             />
-            <div className="flex flex-col max-w-96 gap-4 px-4 md:mt-16">
+            <div className="flex flex-col w-96 max-w-[100vw] gap-4 px-4 md:mt-16">
                 <Section title="Details" open={true}>
                     <UserDetails />
                 </Section>

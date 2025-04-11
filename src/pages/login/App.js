@@ -40,7 +40,7 @@ const LoginForm = () => {
     };
 
     return (
-        <form ref={formRef} className="flex flex-col gap-4 mt-[15vh]">
+        <form ref={formRef} className="flex flex-col gap-4 mt-8">
             <label className="form-control w-full">
                 <div className="label">
                     <span className="label-text">Username</span>
@@ -117,7 +117,7 @@ const RegisterForm = () => {
     };
 
     return (
-        <form ref={formRef} className="flex flex-col gap-4 mt-[15vh]">
+        <form ref={formRef} className="flex flex-col gap-4">
             <label className="form-control w-full">
                 <div className="label">
                     <span className="label-text">Email</span>
@@ -229,11 +229,13 @@ function App() {
                 title={showLoginForm ? "Login" : "Create Account"}
             />
 
-            {showLoginForm ? <LoginForm /> : <RegisterForm />}
+            <div className="flex flex-col w-96 max-w-[100vw] gap-4 px-4 md:mt-16">
+                {showLoginForm ? <LoginForm /> : <RegisterForm />}
+            </div>
 
             <span
                 className={clsx(
-                    "text-center text-base-content mt-8",
+                    "text-center text-base-content mt-8 pb-8",
                     "transition-all hover:text-white"
                 )}
                 onClick={toggleForm}
