@@ -105,6 +105,13 @@ function App() {
                     </span>
                 )}
             </form>
+
+            <a
+                href="/accounts/register/"
+                className="text-center transition-all text-base-content hover:text-white mt-8"
+            >
+                Create account
+            </a>
         </div>
     );
 }

@@ -132,6 +132,13 @@ function App() {
                     </span>
                 )}
             </form>
+
+            <a
+                href="/accounts/login/"
+                className="text-center transition-all text-base-content hover:text-white mt-8"
+            >
+                Already have an account?
+            </a>
         </div>
     );
 }
