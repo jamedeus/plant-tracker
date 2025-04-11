@@ -214,12 +214,7 @@ function App() {
     const toggleForm = () => setShowLoginForm(!showLoginForm);
 
     const DropdownMenuOptions = useMemo(() => (
-        <>
-            <li><a onClick={() => window.location.href = "/"}>
-                Overview
-            </a></li>
-            <ToggleThemeOption />
-        </>
+        <ToggleThemeOption />
     ), [ToggleThemeOption]);
 
     return (
