@@ -15,6 +15,10 @@ class LoginView(views.LoginView):
     # Prevent loading login page if already logged in (redirect to overview)
     redirect_authenticated_user = True
 
+    # Override default django form with boilerplate template + react bundle
+    template_name = "plant_tracker/index.html"
+    extra_context = {"js_bundle": "plant_tracker/login.js"}
+
     def form_valid(self, form):
         '''Returns JSON success message instead of redirect.'''
         super().form_valid(form)

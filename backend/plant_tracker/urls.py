@@ -9,13 +9,7 @@ app_name = "api"
 # pylint: disable=line-too-long
 urlpatterns = [
     path('', views.overview, name='overview'),
-    path(
-        "accounts/login/",
-        auth_views.LoginView.as_view(
-            template_name="plant_tracker/index.html",
-            extra_context={"js_bundle": "plant_tracker/login.js"}
-        ),
-    ),
+    path("accounts/login/", auth_views.LoginView.as_view(), name="login"),
     path("accounts/logout/", auth_views.logout_view, name="logout"),
     path("accounts/register/", auth_views.registration_page, name="register_account"),
     path("accounts/profile/", auth_views.user_profile_page, name="user_profile_page"),
