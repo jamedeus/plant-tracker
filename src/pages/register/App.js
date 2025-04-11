@@ -123,6 +123,9 @@ function App() {
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => (
         <>
+            <li><a onClick={() => window.location.href = "/accounts/profile/"}>
+                User profile
+            </a></li>
             <li><a onClick={() => window.location.href = "/"}>
                 Overview
             </a></li>

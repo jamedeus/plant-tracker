@@ -277,6 +277,9 @@ function App() {
             <li><a onClick={() => window.location.href = "/"}>
                 Overview
             </a></li>
+            <li><a onClick={() => window.location.href = "/accounts/profile/"}>
+                User profile
+            </a></li>
             <li><a onClick={openAddPlantsModal}>
                 Add plants
             </a></li>

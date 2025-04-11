@@ -314,6 +314,12 @@ describe('App', () => {
         expect(window.location.href).toBe('/');
     });
 
+    it('redirects to user profile when dropdown option is clicked', async () => {
+        // Click User profile dropdown option, confirm redirected
+        await user.click(app.getByText('User profile'));
+        expect(window.location.href).toBe('/accounts/profile/');
+    });
+
     it('fetches new state when user navigates to page with back button', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({

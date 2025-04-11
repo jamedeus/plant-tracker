@@ -60,6 +60,11 @@ exports[`App matches snapshot 1`] = `
               </li>
               <li>
                 <a>
+                  User profile
+                </a>
+              </li>
+              <li>
+                <a>
                   Add plants
                 </a>
               </li>
@@ -889,6 +894,11 @@ exports[`App matches snapshot 1`] = `
             <li>
               <a>
                 Overview
+              </a>
+            </li>
+            <li>
+              <a>
+                User profile
               </a>
             </li>
             <li>

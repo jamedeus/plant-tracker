@@ -50,6 +50,11 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
             >
               <li>
                 <a>
+                  User profile
+                </a>
+              </li>
+              <li>
+                <a>
                   Edit
                 </a>
               </li>
@@ -707,6 +712,11 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
             class="dropdown-options mt-3 w-52"
             tabindex="0"
           >
+            <li>
+              <a>
+                User profile
+              </a>
+            </li>
             <li>
               <a>
                 Edit
@@ -1435,6 +1445,11 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
             >
               <li>
                 <a>
+                  User profile
+                </a>
+              </li>
+              <li>
+                <a>
                   Edit
                 </a>
               </li>
@@ -1657,6 +1672,11 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
             class="dropdown-options mt-3 w-52"
             tabindex="0"
           >
+            <li>
+              <a>
+                User profile
+              </a>
+            </li>
             <li>
               <a>
                 Edit
@@ -1948,6 +1968,11 @@ exports[`App matches snapshot when only groups exist 1`] = `
               class="dropdown-options mt-3 w-52"
               tabindex="0"
             >
+              <li>
+                <a>
+                  User profile
+                </a>
+              </li>
               <li>
                 <a>
                   Edit
@@ -2343,6 +2368,11 @@ exports[`App matches snapshot when only groups exist 1`] = `
             class="dropdown-options mt-3 w-52"
             tabindex="0"
           >
+            <li>
+              <a>
+                User profile
+              </a>
+            </li>
             <li>
               <a>
                 Edit
@@ -2807,6 +2837,11 @@ exports[`App matches snapshot when only plants exist 1`] = `
             >
               <li>
                 <a>
+                  User profile
+                </a>
+              </li>
+              <li>
+                <a>
                   Edit
                 </a>
               </li>
@@ -3246,6 +3281,11 @@ exports[`App matches snapshot when only plants exist 1`] = `
             class="dropdown-options mt-3 w-52"
             tabindex="0"
           >
+            <li>
+              <a>
+                User profile
+              </a>
+            </li>
             <li>
               <a>
                 Edit
@@ -3754,6 +3794,11 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
               class="dropdown-options mt-3 w-52"
               tabindex="0"
             >
+              <li>
+                <a>
+                  User profile
+                </a>
+              </li>
               <li>
                 <a>
                   Edit
@@ -4399,6 +4444,11 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
             class="dropdown-options mt-3 w-52"
             tabindex="0"
           >
+            <li>
+              <a>
+                User profile
+              </a>
+            </li>
             <li>
               <a>
                 Edit
@@ -5113,6 +5163,11 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
             >
               <li>
                 <a>
+                  User profile
+                </a>
+              </li>
+              <li>
+                <a>
                   Edit
                 </a>
               </li>
@@ -5775,6 +5830,11 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
             class="dropdown-options mt-3 w-52"
             tabindex="0"
           >
+            <li>
+              <a>
+                User profile
+              </a>
+            </li>
             <li>
               <a>
                 Edit

@@ -55,6 +55,11 @@ exports[`App matches snapshot when changing group QR code 1`] = `
             >
               <li>
                 <a>
+                  User profile
+                </a>
+              </li>
+              <li>
+                <a>
                   Overview
                 </a>
               </li>
@@ -242,6 +247,11 @@ exports[`App matches snapshot when changing group QR code 1`] = `
             class="dropdown-options mt-3 w-52"
             tabindex="0"
           >
+            <li>
+              <a>
+                User profile
+              </a>
+            </li>
             <li>
               <a>
                 Overview
@@ -505,6 +515,11 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
             >
               <li>
                 <a>
+                  User profile
+                </a>
+              </li>
+              <li>
+                <a>
                   Overview
                 </a>
               </li>
@@ -728,6 +743,11 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
             class="dropdown-options mt-3 w-52"
             tabindex="0"
           >
+            <li>
+              <a>
+                User profile
+              </a>
+            </li>
             <li>
               <a>
                 Overview

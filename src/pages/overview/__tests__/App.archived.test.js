@@ -36,6 +36,12 @@ describe('App', () => {
         );
     });
 
+    // it('redirects to user profile when dropdown option is clicked', async () => {
+    //     // Click User profile dropdown option, confirm redirected
+    //     await user.click(app.getByText('User profile'));
+    //     expect(window.location.href).toBe('/accounts/profile/');
+    // });
+
     it('shows checkboxes and delete button when edit option clicked', async () => {
         // Get reference to footer, confirm hidden (default)
         const floatingFooter = app.getByTestId('floating-footer');

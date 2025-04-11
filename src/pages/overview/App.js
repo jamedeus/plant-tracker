@@ -157,6 +157,11 @@ function App() {
             case(true):
                 return (
                     <>
+                        <li><a onClick={
+                            () => window.location.href = "/accounts/profile/"
+                        }>
+                            User profile
+                        </a></li>
                         <li><a onClick={toggleEditing}>
                             Edit
                         </a></li>
@@ -169,6 +174,11 @@ function App() {
             case(false):
                 return (
                     <>
+                        <li><a onClick={
+                            () => window.location.href = "/accounts/profile/"
+                        }>
+                            User profile
+                        </a></li>
                         <li><a onClick={toggleEditing}>
                             Edit
                         </a></li>

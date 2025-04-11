@@ -30,6 +30,12 @@ describe('App', () => {
         );
     });
 
+    it('redirects to user profile when dropdown option is clicked', async () => {
+        // Click User profile dropdown option, confirm redirected
+        await user.click(app.getByText('User profile'));
+        expect(window.location.href).toBe('/accounts/profile/');
+    });
+
     it('opens modal when Print QR Codes dropdown option clicked', async () => {
         // Confirm modal has not been opened
         expect(HTMLDialogElement.prototype.showModal).not.toHaveBeenCalled();

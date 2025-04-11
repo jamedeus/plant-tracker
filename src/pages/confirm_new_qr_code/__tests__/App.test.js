@@ -99,6 +99,12 @@ describe('App', () => {
         expect(window.location.href).toBe('/');
     });
 
+    it('redirects to user profile when dropdown option is clicked', async () => {
+        // Click User profile dropdown option, confirm redirected
+        await user.click(app.getByText('User profile'));
+        expect(window.location.href).toBe('/accounts/profile/');
+    });
+
     it('refreshes when user navigates to confirm page with back button', async () => {
         // Simulate user navigating to confirm_new_qr_code page with back button
         const pageshowEvent = new Event('pageshow');
