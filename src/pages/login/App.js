@@ -57,6 +57,7 @@ function App() {
                     <input
                         name="username"
                         type="text"
+                        autoCapitalize="off"
                         className={clsx(
                             "input w-full input-bordered",
                             showError && "input-error"

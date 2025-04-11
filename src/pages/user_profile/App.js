@@ -68,6 +68,7 @@ const UserDetails = memo(function UserDetails() {
                 <input
                     name="email"
                     type="text"
+                    autoCapitalize="off"
                     className="input w-full input-bordered"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
