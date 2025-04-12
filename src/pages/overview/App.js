@@ -153,42 +153,49 @@ function App() {
             document.activeElement.blur();
         };
 
+        // Only add edit option if at least 1 plant or group
+        const showEditOption = plants.length > 0 || groups.length > 0;
+
         switch(archivedOverview) {
             case(true):
                 return (
                     <>
+                        <li><a href='/'>
+                            Main overview
+                        </a></li>
                         <li><a onClick={
                             () => window.location.href = "/accounts/profile/"
                         }>
                             User profile
                         </a></li>
-                        <li><a onClick={toggleEditing}>
-                            Edit
-                        </a></li>
+                        {showEditOption && (
+                            <li><a onClick={toggleEditing}>
+                                Edit
+                            </a></li>
+                        )}
                         <ToggleThemeOption />
-                        <li><a href='/'>
-                            Main overview
-                        </a></li>
                     </>
                 );
             case(false):
                 return (
                     <>
+                        <li><a href='/archived'>
+                            Archived plants
+                        </a></li>
                         <li><a onClick={
                             () => window.location.href = "/accounts/profile/"
                         }>
                             User profile
                         </a></li>
-                        <li><a onClick={toggleEditing}>
-                            Edit
-                        </a></li>
+                        {showEditOption && (
+                            <li><a onClick={toggleEditing}>
+                                Edit
+                            </a></li>
+                        )}
                         <li><a onClick={openPrintModal}>
                             Print QR Codes
                         </a></li>
                         <ToggleThemeOption />
-                        <li><a href='/archived'>
-                            Archived plants
-                        </a></li>
                     </>
                 );
         }

@@ -175,6 +175,68 @@ describe('App', () => {
         });
     });
 
+    it('removes edit option from dropdown if all plants and groups are deleted', async () => {
+        // Mock fetch to simulate successful delete call
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "deleted": "uuid"
+            })
+        }));
+
+        // Confirm edit option exists
+        expect(app.queryByText('Edit')).not.toBeNull();
+
+        // Click edit option, delete all plants
+        await user.click(app.getByText("Edit"));
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[1]);
+        await user.click(app.getByText('Delete'));
+
+        // Confirm edit option still exists
+        expect(app.queryByText('Edit')).not.toBeNull();
+
+        // Click edit option again, delete all groups
+        await user.click(app.getByText("Edit"));
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[1]);
+        await user.click(app.getByText('Delete'));
+
+        // Confirm edit option no longer exists
+        expect(app.queryByText('Edit')).toBeNull();
+    });
+
+    it('removes edit option from dropdown if all plants and groups are archived', async () => {
+        // Mock fetch to simulate successful archive call
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "updated": "uuid"
+            })
+        }));
+
+        // Confirm edit option exists
+        expect(app.queryByText('Edit')).not.toBeNull();
+
+        // Click edit option, archive all groups
+        await user.click(app.getByText("Edit"));
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[2]);
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[3]);
+        await user.click(app.getByText('Archive'));
+
+        // Confirm edit option still exists
+        expect(app.queryByText('Edit')).not.toBeNull();
+
+        // Click edit option again, archive all plants
+        await user.click(app.getByText("Edit"));
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[1]);
+        await user.click(app.getByText('Archive'));
+
+        // Confirm edit option no longer exists
+        expect(app.queryByText('Edit')).toBeNull();
+    });
+
     it('fetches new state when user navigates to overview with back button', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
