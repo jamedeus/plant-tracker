@@ -153,7 +153,7 @@ class AuthenticationEndpointTests(TestCase):
         # Post new account credentials to create_user endpoint
         response = self.client.post('/accounts/create_user/', {
             'username': 'newuser',
-            'password': '12345',
+            'password': 'acceptablepasswordlength',
             'email': 'myfirstemail@hotmail.com',
             'first_name': '',
             'last_name': ''
@@ -170,10 +170,10 @@ class AuthenticationEndpointTests(TestCase):
         # Confirm 2 users in database (default + test user from setUpClass)
         self.assertEqual(len(user_model.objects.all()), 2)
 
-        # Post empty payload to create_user endpoint
+        # Post payload with no username to create_user endpoint
         response = self.client.post('/accounts/create_user/', {
             'username': '',
-            'password': '',
+            'password': 'acceptablepasswordlength',
             'email': '',
             'first_name': '',
             'last_name': ''
@@ -181,7 +181,7 @@ class AuthenticationEndpointTests(TestCase):
 
         # Confirm expected response
         self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json(), {"error": "missing required field"})
+        self.assertEqual(response.json(), {"error": ["missing required field"]})
 
         # Confirm no user created in database
         self.assertEqual(len(user_model.objects.all()), 2)
@@ -193,7 +193,7 @@ class AuthenticationEndpointTests(TestCase):
         # Post same username as existing test user to create_user endpoint
         response = self.client.post('/accounts/create_user/', {
             'username': 'unittest',
-            'password': '12345',
+            'password': 'acceptablepasswordlength',
             'email': 'myfirstemail@hotmail.com',
             'first_name': '',
             'last_name': ''
@@ -201,7 +201,33 @@ class AuthenticationEndpointTests(TestCase):
 
         # Confirm expected response
         self.assertEqual(response.status_code, 409)
-        self.assertEqual(response.json(), {"error": "username already exists"})
+        self.assertEqual(
+            response.json(),
+            {"error": ["username already exists"]}
+        )
+
+        # Confirm no user created in database
+        self.assertEqual(len(user_model.objects.all()), 2)
+
+    def test_create_user_endpoint_common_password(self):
+        # Confirm 2 users in database (default + test user from setUpClass)
+        self.assertEqual(len(user_model.objects.all()), 2)
+
+        # Post password that is on the banned common passwords list
+        response = self.client.post('/accounts/create_user/', {
+            'username': 'newuser',
+            'password': 'password',
+            'email': 'myfirstemail@hotmail.com',
+            'first_name': '',
+            'last_name': ''
+        })
+
+        # Confirm expected response
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.json(),
+            {"error": ["This password is too common."]}
+        )
 
         # Confirm no user created in database
         self.assertEqual(len(user_model.objects.all()), 2)
@@ -339,7 +365,7 @@ class SingleUserModeTests(TestCase):
         self.assertReceivedUserAccountsDisabledError(
             self.client.post('/accounts/create_user/', {
                 'username': 'newuser',
-                'password': '12345',
+                'password': 'acceptablepasswordlength',
                 'email': 'myfirstemail@hotmail.com',
                 'first_name': '',
                 'last_name': ''

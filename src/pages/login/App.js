@@ -98,6 +98,14 @@ const RegisterForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showError, setShowError] = useState(false);
+    const [showUsernameError, setShowUsernameError] = useState(false);
+    const [showPasswordError, setShowPasswordError] = useState(false);
+
+    const clearErrors = () => {
+        setShowError(false);
+        setShowUsernameError(false);
+        setShowPasswordError(false);
+    };
 
     const submit = async (e) => {
         e.preventDefault();
@@ -110,9 +118,17 @@ const RegisterForm = () => {
         // Redirect to overview if logged in successfully
         if (response.ok) {
             window.location.href = '/';
-        // Show error text if login failed
+        // Show error text if account creation failed
         } else {
-            setShowError(true);
+            const data = await response.json();
+            const error = data.error[0];
+            if (error === 'username already exists') {
+                setShowUsernameError(error);
+            } else if (error.startsWith('This password')) {
+                setShowPasswordError(error);
+            } else {
+                setShowError(error);
+            }
         }
     };
 
@@ -145,13 +161,18 @@ const RegisterForm = () => {
                     autoCapitalize="off"
                     className={clsx(
                         "input w-full input-bordered",
-                        showError && "input-error"
+                        (showError || showUsernameError) && "input-error"
                     )}
                     value={username}
-                    onInput={() => setShowError(false)}
+                    onInput={clearErrors}
                     onChange={e => setUsername(e.target.value)}
                 />
             </label>
+            {showUsernameError && (
+                <span className="text-error text-center">
+                    {showUsernameError}
+                </span>
+            )}
             <label className="form-control w-full relative">
                 <div className="label">
                     <span className="label-text">Password</span>
@@ -161,13 +182,18 @@ const RegisterForm = () => {
                     type="password"
                     className={clsx(
                         "input w-full input-bordered",
-                        showError && "input-error"
+                        (showError || showPasswordError) && "input-error"
                     )}
                     value={password}
-                    onInput={() => setShowError(false)}
+                    onInput={clearErrors}
                     onChange={e => setPassword(e.target.value)}
                 />
             </label>
+            {showPasswordError && (
+                <span className="text-error text-center">
+                    {showPasswordError}
+                </span>
+            )}
             <label className="form-control w-full">
                 <div className="label">
                     <span className="label-text">First name</span>
@@ -199,7 +225,7 @@ const RegisterForm = () => {
 
             {showError && (
                 <span className="text-error text-center">
-                    Invalid username or password
+                    {showError}
                 </span>
             )}
         </form>

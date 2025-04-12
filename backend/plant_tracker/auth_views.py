@@ -4,9 +4,11 @@ from django.conf import settings
 from django.contrib.auth import views
 from django.contrib.auth import get_user_model
 from django.db import transaction, IntegrityError
+from django.core.exceptions import ValidationError
 from django.utils.decorators import method_decorator
 from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth import login, logout, authenticate
+from django.contrib.auth.password_validation import validate_password
 
 from .views import render_react_app
 from .view_decorators import (
@@ -84,6 +86,13 @@ def create_user(request, data):
     Requires JSON POST with username, password, email, first_name, and
     last_name keys.
     '''
+
+    # Enforce password rules (length, common passwords, etc)
+    try:
+        validate_password(data["password"], None)
+    except ValidationError as e:
+        return JsonResponse({"error": e.messages}, status=400)
+
     try:
         # transaction.atomic cleans up after IntegrityError if username not unique
         with transaction.atomic():
@@ -102,11 +111,11 @@ def create_user(request, data):
         if user is not None:
             login(request, user)
             return JsonResponse({"success": "account created"})
-        return JsonResponse({"error": "failed to create account"}, status=400)
+        return JsonResponse({"error": ["failed to create account"]}, status=400)
     except ValueError:
-        return JsonResponse({"error": "missing required field"}, status=400)
+        return JsonResponse({"error": ["missing required field"]}, status=400)
     except IntegrityError:
-        return JsonResponse({"error": "username already exists"}, status=409)
+        return JsonResponse({"error": ["username already exists"]}, status=409)
 
 
 @get_user_token
