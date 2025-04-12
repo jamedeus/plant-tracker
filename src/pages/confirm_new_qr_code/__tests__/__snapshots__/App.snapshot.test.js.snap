@@ -55,12 +55,12 @@ exports[`App matches snapshot when changing group QR code 1`] = `
             >
               <li>
                 <a>
-                  User profile
+                  Overview
                 </a>
               </li>
               <li>
                 <a>
-                  Overview
+                  User profile
                 </a>
               </li>
               <li>
@@ -249,12 +249,12 @@ exports[`App matches snapshot when changing group QR code 1`] = `
           >
             <li>
               <a>
-                User profile
+                Overview
               </a>
             </li>
             <li>
               <a>
-                Overview
+                User profile
               </a>
             </li>
             <li>
@@ -515,12 +515,12 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
             >
               <li>
                 <a>
-                  User profile
+                  Overview
                 </a>
               </li>
               <li>
                 <a>
-                  Overview
+                  User profile
                 </a>
               </li>
               <li>
@@ -745,12 +745,12 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
           >
             <li>
               <a>
-                User profile
+                Overview
               </a>
             </li>
             <li>
               <a>
-                Overview
+                User profile
               </a>
             </li>
             <li>

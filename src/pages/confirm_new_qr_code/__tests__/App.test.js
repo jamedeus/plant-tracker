@@ -87,22 +87,10 @@ describe('App', () => {
         expect(window.location.href).toBe('/accounts/login/');
     });
 
-    it('redirects to overview when dropdown option is clicked', async () => {
-        // Click overview dropdown option, confirm redirected
-        await user.click(app.getByText('Overview'));
-        expect(window.location.href).toBe('/');
-    });
-
     it('redirects to overview when cancel button is clicked', async () => {
         // Click cancel button, confirm redirected
         await user.click(app.container.querySelector('.btn-error'));
         expect(window.location.href).toBe('/');
-    });
-
-    it('redirects to user profile when dropdown option is clicked', async () => {
-        // Click User profile dropdown option, confirm redirected
-        await user.click(app.getByText('User profile'));
-        expect(window.location.href).toBe('/accounts/profile/');
     });
 
     it('refreshes when user navigates to confirm page with back button', async () => {

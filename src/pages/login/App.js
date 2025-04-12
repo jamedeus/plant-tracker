@@ -1,4 +1,4 @@
-import React, { useState, useMemo, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { useTheme } from 'src/context/ThemeContext';
 import Navbar from 'src/components/Navbar';
 import { sendPostRequest } from 'src/util';
@@ -213,14 +213,10 @@ function App() {
 
     const toggleForm = () => setShowLoginForm(!showLoginForm);
 
-    const DropdownMenuOptions = useMemo(() => (
-        <ToggleThemeOption />
-    ), [ToggleThemeOption]);
-
     return (
         <div className="container flex flex-col h-screen mx-auto items-center">
             <Navbar
-                menuOptions={DropdownMenuOptions}
+                menuOptions={<ToggleThemeOption />}
                 title={showLoginForm ? "Login" : "Create Account"}
             />
 

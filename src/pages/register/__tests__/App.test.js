@@ -137,18 +137,6 @@ describe('App', () => {
         expect(app.getByText('Failed to register plant')).toBeInTheDocument();
     });
 
-    it('redirects to overview when dropdown option is clicked', async () => {
-        // Click overview dropdown option, confirm redirected
-        await user.click(app.getByText('Overview'));
-        expect(window.location.href).toBe('/');
-    });
-
-    it('redirects to user profile when dropdown option is clicked', async () => {
-        // Click User profile dropdown option, confirm redirected
-        await user.click(app.getByText('User profile'));
-        expect(window.location.href).toBe('/accounts/profile/');
-    });
-
     it('shows unexpected API response in error modal', async () => {
         // Mock fetch function to return unexpected response (not error or redirect)
         global.fetch = jest.fn(() => Promise.resolve({

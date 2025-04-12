@@ -1,28 +1,15 @@
 import React, { useMemo } from 'react';
 import Navbar from 'src/components/Navbar';
+import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
 import { parseDomContext } from 'src/util';
-import { useTheme } from 'src/context/ThemeContext';
 
 function App() {
-    const { ToggleThemeOption } = useTheme();
     const errorMessage = useMemo(() => parseDomContext('error'));
-
-    const DropdownMenuOptions = useMemo(() => (
-        <>
-            <li><a onClick={() => window.location.href = "/accounts/profile/"}>
-                User profile
-            </a></li>
-            <li><a onClick={() => window.location.href = "/"}>
-                Overview
-            </a></li>
-            <ToggleThemeOption />
-        </>
-    ), [ToggleThemeOption]);
 
     return (
         <div className="container flex flex-col h-screen mx-auto items-center gap-16">
             <Navbar
-                menuOptions={DropdownMenuOptions}
+                menuOptions={<NavbarDropdownOptions />}
                 title="Permission Denied"
             />
 

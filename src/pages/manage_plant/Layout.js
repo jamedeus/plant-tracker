@@ -1,7 +1,7 @@
 import React, { useEffect, useMemo } from 'react';
 import { sendPostRequest } from 'src/util';
 import Navbar from 'src/components/Navbar';
-import { useTheme } from 'src/context/ThemeContext';
+import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
 import DetailsCard from 'src/components/DetailsCard';
 import PlantDetails from 'src/components/PlantDetails';
 import IconButton from 'src/components/IconButton';
@@ -23,9 +23,6 @@ function Layout() {
     // Used to update redux store
     const dispatch = useDispatch();
 
-    // Get toggle theme option from context
-    const { ToggleThemeOption } = useTheme();
-
     // Update redux store with new state fetched from backend if user navigates
     // to page by pressing back button (contents may be outdated)
     useEffect(() => {
@@ -39,13 +36,7 @@ function Layout() {
 
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => (
-        <>
-            <li><a onClick={() => window.location.href = "/"}>
-                Overview
-            </a></li>
-            <li><a onClick={() => window.location.href = "/accounts/profile/"}>
-                User profile
-            </a></li>
+        <NavbarDropdownOptions>
             {!plantDetails.archived && (
                 <>
                     {plantDetails.group &&
@@ -61,9 +52,8 @@ function Layout() {
                     </a></li>
                 </>
             )}
-            <ToggleThemeOption />
-        </>
-    ), [plantDetails, ToggleThemeOption]);
+        </NavbarDropdownOptions>
+    ), [plantDetails]);
 
     // Plant details card shown when title is clicked
     const PlantDetailsDropdown = useMemo(() => {
