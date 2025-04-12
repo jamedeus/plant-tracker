@@ -118,7 +118,7 @@ const RegisterForm = () => {
         // Redirect to overview if logged in successfully
         if (response.ok) {
             window.location.href = '/';
-        // Show error text if account creation failed
+        // Show correct error if account creation failed
         } else {
             const data = await response.json();
             const error = data.error[0];
