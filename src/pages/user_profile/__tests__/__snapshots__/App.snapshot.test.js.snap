@@ -116,6 +116,7 @@ exports[`App matches snapshot 1`] = `
                   </div>
                   <input
                     class="input w-full input-bordered"
+                    data-testid="first_name_input"
                     name="first_name"
                     type="text"
                     value="Carlos"
@@ -127,6 +128,7 @@ exports[`App matches snapshot 1`] = `
                   </div>
                   <input
                     class="input w-full input-bordered"
+                    data-testid="last_name_input"
                     name="last_name"
                     type="text"
                     value="Danger"
@@ -139,6 +141,7 @@ exports[`App matches snapshot 1`] = `
                   <input
                     autocapitalize="off"
                     class="input w-full input-bordered"
+                    data-testid="email_input"
                     name="email"
                     type="text"
                     value="totally.not.anthony.weiner@gmail.com"
@@ -413,6 +416,7 @@ exports[`App matches snapshot 1`] = `
                 </div>
                 <input
                   class="input w-full input-bordered"
+                  data-testid="first_name_input"
                   name="first_name"
                   type="text"
                   value="Carlos"
@@ -424,6 +428,7 @@ exports[`App matches snapshot 1`] = `
                 </div>
                 <input
                   class="input w-full input-bordered"
+                  data-testid="last_name_input"
                   name="last_name"
                   type="text"
                   value="Danger"
@@ -436,6 +441,7 @@ exports[`App matches snapshot 1`] = `
                 <input
                   autocapitalize="off"
                   class="input w-full input-bordered"
+                  data-testid="email_input"
                   name="email"
                   type="text"
                   value="totally.not.anthony.weiner@gmail.com"

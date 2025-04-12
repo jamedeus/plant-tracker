@@ -58,6 +58,7 @@ const UserDetails = memo(function UserDetails() {
                     className="input w-full input-bordered"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
+                    data-testid="first_name_input"
                 />
                 <div className="my-auto text-nowrap">
                     Last Name:
@@ -68,6 +69,7 @@ const UserDetails = memo(function UserDetails() {
                     className="input w-full input-bordered"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
+                    data-testid="last_name_input"
                 />
                 <div className="my-auto text-nowrap">
                     Email:
@@ -79,6 +81,7 @@ const UserDetails = memo(function UserDetails() {
                     className="input w-full input-bordered"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    data-testid="email_input"
                 />
                 <div className="my-auto text-nowrap">
                     Joined:
@@ -129,10 +132,8 @@ const ChangePassword = memo(function ChangePassword() {
                 new_password2: newPassword2,
             }),
         });
-        // Redirect to overview if logged in successfully
         if (response.ok) {
-            window.location.href = '/';
-        // Show correct error message if login failed
+            showToast('Password changed!', 'green', 2000);
         } else {
             const errors = await response.json();
             if (errors.errors.old_password) {
