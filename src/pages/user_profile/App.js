@@ -164,7 +164,7 @@ const ChangePassword = memo(function ChangePassword() {
                 />
             </label>
             {oldPasswordIncorrect && (
-                <span className="text-error">
+                <span className="text-error text-center">
                     Old password incorrect
                 </span>
             )}
@@ -200,7 +200,7 @@ const ChangePassword = memo(function ChangePassword() {
                 />
             </label>
             {newPasswordError && (
-                <span className="text-error">
+                <span className="text-error text-center">
                     {newPasswordError}
                 </span>
             )}
