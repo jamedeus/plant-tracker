@@ -30,8 +30,8 @@ describe('App', () => {
     // Original bug: Plant and Group filter inputs included results where the
     // UUID, last_watered timestamp, or thumbnail URL matched the user's query.
     it('does not match match UUIDs, timestamps, or URLs when filtering', async () => {
-        const plantColumn = app.getByText('Plants (1)').parentElement;
-        const groupColumn = app.getByText('Groups (1)').parentElement;
+        const plantColumn = app.getByText('Plants (2)').parentElement;
+        const groupColumn = app.getByText('Groups (2)').parentElement;
         const plantFilterInput = within(plantColumn).getByRole('textbox');
         const groupFilterInput = within(groupColumn).getByRole('textbox');
 
@@ -72,10 +72,12 @@ describe('App', () => {
             })
         }));
 
-        // Click edit option, click both checkboxes (first plant second grou)
+        // Click edit option, select first plant and first group checkboxes
         await user.click(app.getByText("Edit"));
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[1]);
+        const plantsCol = app.getByText('Plants (2)').parentElement;
+        await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[0]);
+        const groupsCol = app.getByText('Groups (2)').parentElement;
+        await user.click(groupsCol.querySelectorAll('label.cursor-pointer')[0]);
 
         // Click delete button in floating div
         await user.click(app.getByText('Delete'));
@@ -121,10 +123,12 @@ describe('App', () => {
             })
         }));
 
-        // Click edit option, click both checkboxes (first plant second grou)
+        // Click edit option, select first plant and first group checkboxes
         await user.click(app.getByText("Edit"));
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[1]);
+        const plantsCol = app.getByText('Plants (2)').parentElement;
+        await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[0]);
+        const groupsCol = app.getByText('Groups (2)').parentElement;
+        await user.click(groupsCol.querySelectorAll('label.cursor-pointer')[0]);
 
         // Click archive button in floating div
         await user.click(app.getByText('Archive'));

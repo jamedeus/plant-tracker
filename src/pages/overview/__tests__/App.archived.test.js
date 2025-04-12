@@ -131,9 +131,10 @@ describe('App', () => {
             })
         }));
 
-        // Click edit option, click second checkbox (group)
+        // Click edit option, select first group checkbox
         await user.click(app.getByText("Edit"));
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[1]);
+        const groupsCol = app.getByText('Groups (2)').parentElement;
+        await user.click(groupsCol.querySelectorAll('label.cursor-pointer')[0]);
 
         // Click delete button in floating div
         await user.click(app.getByText('Delete'));
@@ -169,9 +170,10 @@ describe('App', () => {
             })
         }));
 
-        // Click edit option, click second checkbox (group)
+        // Click edit option, select first group checkbox
         await user.click(app.getByText("Edit"));
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[1]);
+        const groupsCol = app.getByText('Groups (2)').parentElement;
+        await user.click(groupsCol.querySelectorAll('label.cursor-pointer')[0]);
 
         // Click archive button in floating div
         await user.click(app.getByText('Un-archive'));
