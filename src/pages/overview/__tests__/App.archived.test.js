@@ -17,8 +17,15 @@ describe('App', () => {
         )));
 
         // Mock window.location to simulate archived overview
-        delete window.location;
-        window.location = new URL('https://plants.lan/archived');
+        Object.defineProperty(window, 'location', {
+            configurable: true,
+            value: {
+                ...window.location,
+                href: 'https://plants.lan/',
+                pathname: '/archived',
+                assign: jest.fn()
+            }
+        });
 
         // Mock width to force mobile layout (renders title nav dropdown)
         window.innerWidth = 750;
@@ -36,11 +43,11 @@ describe('App', () => {
         );
     });
 
-    // it('redirects to user profile when dropdown option is clicked', async () => {
-    //     // Click User profile dropdown option, confirm redirected
-    //     await user.click(app.getByText('User profile'));
-    //     expect(window.location.href).toBe('/accounts/profile/');
-    // });
+    it('redirects to user profile when dropdown option is clicked', async () => {
+        // Click User profile dropdown option, confirm redirected
+        await user.click(app.getByText('User profile'));
+        expect(window.location.href).toBe('/accounts/profile/');
+    });
 
     it('shows checkboxes and delete button when edit option clicked', async () => {
         // Get reference to footer, confirm hidden (default)

@@ -111,8 +111,15 @@ describe('App (archived page)', () => {
         }));
 
         // Mock window.location to simulate archived overview
-        delete window.location;
-        window.location = new URL('https://plants.lan/archived');
+        Object.defineProperty(window, 'location', {
+            configurable: true,
+            value: {
+                ...window.location,
+                href: 'https://plants.lan/',
+                pathname: '/archived',
+                assign: jest.fn()
+            }
+        });
 
         // Render App, confirm matches snapshot
         const component = render(
