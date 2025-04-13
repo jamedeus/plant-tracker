@@ -117,8 +117,11 @@ function App() {
     // Handler for archive button (main overview) and un-archive button
     // (archive overview) that appear while editing. POSTS selected plants and
     // groups to backend then removes from frontend state.
-    // Takes bool argument (true if archiving, false if un-archiving)
-    const handleArchive = (archived) => {
+    const handleArchive = () => {
+        // Main overview: set payload arg to true (archive plants)
+        // Archived overview: set payload arg to false (un-archive plants)
+        const archived = !archivedOverview;
+
         const selectedPlants = getSelectedPlants();
         // Send archive request for each selected plant, remove uuid from state
         selectedPlants.forEach(async plant_id => {
@@ -272,21 +275,13 @@ function App() {
                 >
                     Cancel
                 </button>
-                {archivedOverview ? (
-                    <button
-                        className="btn mx-4"
-                        onClick={() => handleArchive(false)}
-                    >
-                        Un-archive
-                    </button>
-                ) : (
-                    <button
-                        className="btn mx-4"
-                        onClick={() => handleArchive(true)}
-                    >
-                        Archive
-                    </button>
-                )}
+
+                <button
+                    className="btn mx-4"
+                    onClick={() => handleArchive()}
+                >
+                    {archivedOverview ? "Un-archive" : "Archive"}
+                </button>
                 <button
                     className="btn btn-error ml-4"
                     onClick={handleDelete}
