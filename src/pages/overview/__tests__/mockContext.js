@@ -47,5 +47,6 @@ export const mockContext = {
             "plants": 6,
             "archived": false
         }
-    ]
+    ],
+    "show_archive": true
 };

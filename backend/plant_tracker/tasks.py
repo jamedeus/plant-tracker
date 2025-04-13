@@ -72,9 +72,16 @@ def build_overview_state(user):
     '''Takes user, builds state parsed by overview react app and returns.
     Contains all non-archived plants and groups owned by user.
     '''
+
+    # Only show link to archived overview if at least 1 archived plant or group
+    has_archived_plants = bool(Plant.objects.filter(archived=True, user=user))
+    has_archived_groups = bool(Group.objects.filter(archived=True, user=user))
+    show_archive = has_archived_plants or has_archived_groups
+
     state = {
         'plants': [],
-        'groups': []
+        'groups': [],
+        'show_archive': show_archive
     }
 
     for plant in Plant.objects.filter(archived=False, user=user):

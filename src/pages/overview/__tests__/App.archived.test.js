@@ -108,7 +108,7 @@ describe('App', () => {
         await user.click(app.getByText("Edit"));
         await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
 
-        // Click archive button in floating div
+        // Click un-archive button in floating div
         await user.click(app.getByText('Un-archive'));
 
         // Confirm correct data posted to /delete_plant endpoint
@@ -175,7 +175,7 @@ describe('App', () => {
         const groupsCol = app.getByText('Groups (2)').parentElement;
         await user.click(groupsCol.querySelectorAll('label.cursor-pointer')[0]);
 
-        // Click archive button in floating div
+        // Click un-archive button in floating div
         await user.click(app.getByText('Un-archive'));
 
         // Confirm correct data posted to /delete_group endpoint
@@ -187,6 +187,29 @@ describe('App', () => {
             }),
             headers: postHeaders
         });
+    });
+
+    it('redirects to overview when last plant/group is un-archived', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "updated": "uuid"
+            })
+        }));
+
+        // Click edit option, click all checkboxes (2 plants 2 groups)
+        await user.click(app.getByText("Edit"));
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[1]);
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[2]);
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[3]);
+
+        // Click un-archive button in floating div
+        await user.click(app.getByText('Un-archive'));
+
+        // Confirm redirected to overview
+        expect(window.location.href).toBe('/');
     });
 
     // Regression test: When overview and archived overview were merged the

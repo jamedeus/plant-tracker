@@ -11,6 +11,7 @@ describe('App with empty database', () => {
         // Create mock state objects
         createMockContext('plants', []);
         createMockContext('groups', []);
+        createMockContext('show_archived', false);
     });
 
     beforeEach(() => {

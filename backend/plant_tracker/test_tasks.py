@@ -248,7 +248,8 @@ class HookTests(TestCase):
                         "thumbnail": None
                     }
                 ],
-                "groups": []
+                "groups": [],
+                "show_archive": False
             }
         )
 
@@ -277,7 +278,8 @@ class HookTests(TestCase):
                         "thumbnail": None
                     }
                 ],
-                "groups": []
+                "groups": [],
+                "show_archive": False
             }
         )
 
@@ -287,7 +289,8 @@ class HookTests(TestCase):
             cache.get(f'overview_state_{user_id}'),
             {
                 "plants": [],
-                "groups": []
+                "groups": [],
+                "show_archive": False
             }
         )
 
@@ -315,7 +318,8 @@ class HookTests(TestCase):
                         "description": None,
                         "plants": 0
                     }
-                ]
+                ],
+                "show_archive": False
             }
         )
 
@@ -340,7 +344,8 @@ class HookTests(TestCase):
                         "description": None,
                         "plants": 0
                     }
-                ]
+                ],
+                "show_archive": False
             }
         )
 
@@ -350,7 +355,8 @@ class HookTests(TestCase):
             cache.get(f'overview_state_{user_id}'),
             {
                 "plants": [],
-                "groups": []
+                "groups": [],
+                "show_archive": False
             }
         )
 

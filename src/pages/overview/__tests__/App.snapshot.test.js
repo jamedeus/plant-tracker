@@ -14,12 +14,14 @@ describe('App', () => {
     afterEach(() => {
         removeMockContext('plants');
         removeMockContext('groups');
+        removeMockContext('show_archive');
     });
 
     it('matches snapshot when plants and groups exist (desktop layout)', () => {
         // Create mock state objects with a single plant and group
         createMockContext('plants', [mockContext.plants[0]]);
         createMockContext('groups', [mockContext.groups[0]]);
+        createMockContext('show_archive', mockContext.show_archive);
 
         // Set width greater than tailwind md breakpoint
         window.innerWidth = 800;
@@ -37,6 +39,7 @@ describe('App', () => {
         // Create mock state objects with a single plant and group
         createMockContext('plants', [mockContext.plants[0]]);
         createMockContext('groups', [mockContext.groups[0]]);
+        createMockContext('show_archive', mockContext.show_archive);
 
         // Set width less than tailwind md breakpoint
         window.innerWidth = 600;
@@ -54,6 +57,7 @@ describe('App', () => {
         // Create mock state objects with a single plant
         createMockContext('plants', [mockContext.plants[0]]);
         createMockContext('groups', []);
+        createMockContext('show_archive', mockContext.show_archive);
 
         // Render App, confirm matches snapshot
         const component = render(
@@ -68,6 +72,7 @@ describe('App', () => {
         // Create mock state objects with a single group
         createMockContext('plants', []);
         createMockContext('groups', [mockContext.groups[0]]);
+        createMockContext('show_archive', mockContext.show_archive);
 
         // Render App, confirm matches snapshot
         const component = render(
@@ -82,6 +87,7 @@ describe('App', () => {
         // Create mock state objects
         createMockContext('plants', []);
         createMockContext('groups', []);
+        createMockContext('show_archive', false);
 
         // Render App, confirm matches snapshot
         const component = render(

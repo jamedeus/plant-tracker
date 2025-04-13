@@ -15,6 +15,9 @@ function App() {
     const [groups, setGroups] = useState(() => {
         return parseDomContext("groups");
     });
+    const [showArchive, setShowArchive] = useState(() => {
+        return parseDomContext("show_archive");
+    });
 
     // True if desktop layout, false if mobile
     const desktop = useIsBreakpointActive('md');
@@ -124,9 +127,10 @@ function App() {
                 {plant_id: plant_id, archived: archived}
             );
         });
-        setPlants(plants.filter(
-            plant => !selectedPlants.includes(plant.uuid))
+        const newPlants = plants.filter(
+            plant => !selectedPlants.includes(plant.uuid)
         );
+        setPlants(newPlants);
 
 
         const selectedGroups = getSelectedGroups();
@@ -137,9 +141,18 @@ function App() {
                 {group_id: group_id, archived: archived}
             );
         });
-        setGroups(groups.filter(
-            group => !selectedGroups.includes(group.uuid))
+        const newGroups = groups.filter(
+            group => !selectedGroups.includes(group.uuid)
         );
+        setGroups(newGroups);
+
+        // Ensure archive link visible in dropdown menu
+        setShowArchive(archived);
+
+        // Archived overview: redirect to overview if no plants or groups left
+        if (archivedOverview && !newPlants.length && !newGroups.length) {
+            window.location.href = "/";
+        }
 
         // Reset editing state
         setEditing(false);
@@ -179,9 +192,11 @@ function App() {
             case(false):
                 return (
                     <>
-                        <li><a href='/archived'>
-                            Archived plants
-                        </a></li>
+                        {showArchive && (
+                            <li><a href='/archived'>
+                                Archived plants
+                            </a></li>
+                        )}
                         <li><a onClick={
                             () => window.location.href = "/accounts/profile/"
                         }>

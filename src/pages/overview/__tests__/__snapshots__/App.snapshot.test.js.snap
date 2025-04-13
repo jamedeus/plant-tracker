@@ -1409,6 +1409,11 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
     >
       []
     </div>
+    <div
+      id="show_archive"
+    >
+      false
+    </div>
     <div>
       <div
         class="container flex flex-col min-h-screen mx-auto pb-28"
@@ -1443,13 +1448,6 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
               class="dropdown-options mt-3 w-52"
               tabindex="0"
             >
-              <li>
-                <a
-                  href="/archived"
-                >
-                  Archived plants
-                </a>
-              </li>
               <li>
                 <a>
                   User profile
@@ -1667,13 +1665,6 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
             class="dropdown-options mt-3 w-52"
             tabindex="0"
           >
-            <li>
-              <a
-                href="/archived"
-              >
-                Archived plants
-              </a>
-            </li>
             <li>
               <a>
                 User profile
@@ -1923,6 +1914,11 @@ exports[`App matches snapshot when only groups exist 1`] = `
       id="groups"
     >
       [{"uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be14","created":"2023-12-26T01:25:12+00:00","name":"Test group","display_name":"Test group","location":"Middle shelf","plants":4,"archived":false}]
+    </div>
+    <div
+      id="show_archive"
+    >
+      true
     </div>
     <div>
       <div
@@ -2790,6 +2786,11 @@ exports[`App matches snapshot when only plants exist 1`] = `
       id="groups"
     >
       []
+    </div>
+    <div
+      id="show_archive"
+    >
+      true
     </div>
     <div>
       <div
@@ -3749,6 +3750,11 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
       id="groups"
     >
       [{"uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be14","created":"2023-12-26T01:25:12+00:00","name":"Test group","display_name":"Test group","location":"Middle shelf","plants":4,"archived":false}]
+    </div>
+    <div
+      id="show_archive"
+    >
+      true
     </div>
     <div>
       <div
@@ -5116,6 +5122,11 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
       id="groups"
     >
       [{"uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be14","created":"2023-12-26T01:25:12+00:00","name":"Test group","display_name":"Test group","location":"Middle shelf","plants":4,"archived":false}]
+    </div>
+    <div
+      id="show_archive"
+    >
+      true
     </div>
     <div>
       <div

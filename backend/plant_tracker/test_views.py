@@ -122,7 +122,11 @@ class OverviewTests(TestCase):
         # Confirm correct state object (no plants or groups in database)
         self.assertEqual(
             response.context['state'],
-            {'plants': [], 'groups': []}
+            {
+                'plants': [],
+                'groups': [],
+                'show_archive': False
+            }
         )
 
     def test_overview_page_with_database_entries(self):
@@ -240,7 +244,11 @@ class OverviewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
-            {'plants': [], 'groups': []}
+            {
+                'plants': [],
+                'groups': [],
+                'show_archive': False
+            }
         )
 
     def test_get_qr_codes(self):

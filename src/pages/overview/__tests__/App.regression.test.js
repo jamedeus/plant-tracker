@@ -13,6 +13,7 @@ describe('App', () => {
         // Create mock state objects
         createMockContext('plants', mockContext.plants);
         createMockContext('groups', mockContext.groups);
+        createMockContext('show_archive', mockContext.show_archive);
     });
 
     beforeEach(() => {
