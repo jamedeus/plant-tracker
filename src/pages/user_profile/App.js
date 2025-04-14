@@ -98,7 +98,7 @@ const UserDetails = memo(function UserDetails() {
                 </div>
             </div>
             <button
-                className="btn btn-info mt-4"
+                className="btn btn-success mt-4"
                 disabled={submitButtonDisabled}
                 onClick={submit}
             >
@@ -146,7 +146,7 @@ const ChangePassword = memo(function ChangePassword() {
     };
 
     return (
-        <form ref={formRef} className="flex flex-col gap-4">
+        <form ref={formRef} className="flex flex-col gap-2">
             <label className="form-control w-full">
                 <div className="label">
                     <span className="label-text">Old password</span>
@@ -207,9 +207,10 @@ const ChangePassword = memo(function ChangePassword() {
 
             <button
                 className="btn btn-success mt-6"
+                disabled={!oldPassword || !newPassword1 || !newPassword2}
                 onClick={(e) => submit(e)}
             >
-                Change password
+                Change Password
             </button>
         </form>
     );
@@ -253,7 +254,7 @@ function App() {
                 menuOptions={DropdownMenuOptions}
                 title="User Profile"
             />
-            <div className="flex flex-col w-96 max-w-[100vw] gap-4 px-4 md:mt-16">
+            <div className="flex flex-col w-96 max-w-[100vw] gap-4 md:gap-6 px-4 md:mt-16">
                 <Section title="Details" open={true}>
                     <UserDetails />
                 </Section>
@@ -261,7 +262,7 @@ function App() {
                     <ChangePassword />
                 </Section>
                 <a
-                    className="btn btn-outline btn-error"
+                    className="btn btn-outline btn-error mx-4"
                     href="/accounts/logout/"
                 >
                     Log Out

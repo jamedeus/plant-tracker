@@ -104,8 +104,8 @@ describe('App', () => {
         await user.type(app.getByLabelText('New password'), 'thispasswordisbetter');
         await user.type(app.getByLabelText('Confirm new password'), 'thispasswordisbetter');
 
-        // Click Change password button
-        await user.click(app.getByRole("button", {name: "Change password"}));
+        // Click Change Password button
+        await user.click(app.getByRole("button", {name: "Change Password"}));
 
         // Confirm correct data posted to /delete_plant endpoint
         expect(global.fetch).toHaveBeenCalled();
@@ -140,7 +140,7 @@ describe('App', () => {
         await user.type(app.getByLabelText('Old password'), 'hunter2');
         await user.type(app.getByLabelText('New password'), 'thispasswordisbetter');
         await user.type(app.getByLabelText('Confirm new password'), 'thispasswordisbetter');
-        await user.click(app.getByRole("button", {name: "Change password"}));
+        await user.click(app.getByRole("button", {name: "Change Password"}));
 
         // Confirm error text appeared, only old password field has red highlight
         expect(app.queryByText('Old password incorrect')).not.toBeNull();
@@ -168,7 +168,7 @@ describe('App', () => {
         await user.type(app.getByLabelText('Old password'), 'hunter2');
         await user.type(app.getByLabelText('New password'), 'thispasswordisbetter');
         await user.type(app.getByLabelText('Confirm new password'), 'thispasswordisbette');
-        await user.click(app.getByRole("button", {name: "Change password"}));
+        await user.click(app.getByRole("button", {name: "Change Password"}));
 
         // Confirm error text appeared, only new password fields have red highlight
         expect(app.queryByText("The two password fields didn’t match.")).not.toBeNull();
