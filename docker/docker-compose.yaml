@@ -24,6 +24,8 @@ services:
       - ALLOWED_HOSTS=plants.lan,localhost
       # Domain for QR code URLS, use one of the ALLOWED_HOSTS
       - URL_PREFIX=plants.lan
+      # Optional: Disables user accounts and authentication if True
+      - SINGLE_USER_MODE=False
       # Optional: Persistent key between sessions
       # If blank a new key will be generated each time
       - SECRET_KEY="xxxxxxxxxxxxxxxxxxxxxx"

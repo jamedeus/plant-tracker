@@ -45,9 +45,13 @@ URL_PREFIX = validate_url_prefix(os.environ.get('URL_PREFIX'))
 # Redirect to overview page after successful login
 LOGIN_REDIRECT_URL="/"
 
-# If True no authentication is required, all plants are owned by DEFAULT_USERNAME
-# If False authentication is required, separate accounts see separate plants
-SINGLE_USER_MODE=True
+# Read SINGLE_USER_MODE from env var, or default to False if not present
+# If True authentication is disabled, all plants are owned by DEFAULT_USERNAME
+# If False authentication is required, separate accounts own separate plants
+try:
+    SINGLE_USER_MODE = os.environ.get('SINGLE_USER_MODE').lower() == 'true'
+except AttributeError:
+    SINGLE_USER_MODE=False
 DEFAULT_USERNAME='DEFAULT'
 
 # SECURITY WARNING: don't run with debug turned on in production!
