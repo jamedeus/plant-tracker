@@ -151,7 +151,10 @@ const ChangePassword = memo(function ChangePassword() {
 
     return (
         <form ref={formRef} className="flex flex-col gap-2">
-            <label className="form-control w-full">
+            <label
+                className="form-control w-full"
+                title="Must be at least 8 characters, can't be all numbers"
+            >
                 <div className="label">
                     <span className="label-text">Old password</span>
                 </div>
@@ -172,7 +175,10 @@ const ChangePassword = memo(function ChangePassword() {
                     Old password incorrect
                 </span>
             )}
-            <label className="form-control w-full relative">
+            <label
+                className="form-control w-full"
+                title="Must be at least 8 characters, can't be all numbers"
+            >
                 <div className="label">
                     <span className="label-text">New password</span>
                 </div>
@@ -187,7 +193,10 @@ const ChangePassword = memo(function ChangePassword() {
                     onChange={(e) => setNewPassword1(e.target.value)}
                 />
             </label>
-            <label className="form-control w-full">
+            <label
+                className="form-control w-full"
+                title="Must be at least 8 characters, can't be all numbers"
+            >
                 <div className="label">
                     <span className="label-text">Confirm new password</span>
                 </div>

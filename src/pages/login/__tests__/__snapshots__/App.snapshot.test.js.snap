@@ -82,6 +82,7 @@ exports[`App matches snapshot 1`] = `
           >
             <label
               class="form-control w-full"
+              title="Username or email address"
             >
               <div
                 class="label"
@@ -102,6 +103,7 @@ exports[`App matches snapshot 1`] = `
             </label>
             <label
               class="form-control w-full relative"
+              title="Must be at least 8 characters, can't be all numbers"
             >
               <div
                 class="label"
@@ -249,6 +251,7 @@ exports[`App matches snapshot 1`] = `
         >
           <label
             class="form-control w-full"
+            title="Username or email address"
           >
             <div
               class="label"
@@ -269,6 +272,7 @@ exports[`App matches snapshot 1`] = `
           </label>
           <label
             class="form-control w-full relative"
+            title="Must be at least 8 characters, can't be all numbers"
           >
             <div
               class="label"

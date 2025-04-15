@@ -141,11 +141,11 @@ describe('App', () => {
         await user.click(app.getByText('Create account'));
 
         // Simulate user filling out form
-        await user.type(app.getByLabelText('Username'), 'carlosdanger');
-        await user.type(app.getByLabelText('Password'), 'defnotanthonyweiner');
+        await user.type(app.getByLabelText('Username *'), 'carlosdanger');
+        await user.type(app.getByLabelText('Password *'), 'defnotanthonyweiner');
         await user.type(app.getByLabelText('First name'), 'Carlos');
         await user.type(app.getByLabelText('Last name'), 'Danger');
-        await user.type(app.getByLabelText('Email'), 'carlosdanger@gmail.com');
+        await user.type(app.getByLabelText('Email *'), 'carlosdanger@gmail.com');
 
         // Click create account button
         await user.click(app.getByRole("button", {name: "Create account"}));
@@ -182,20 +182,20 @@ describe('App', () => {
         expect(app.queryByText('username already exists')).toBeNull();
 
         // Simulate user filling out form
-        await user.type(app.getByLabelText('Username'), 'carlosdanger');
-        await user.type(app.getByLabelText('Password'), 'defnotanthonyweiner');
+        await user.type(app.getByLabelText('Username *'), 'carlosdanger');
+        await user.type(app.getByLabelText('Password *'), 'defnotanthonyweiner');
         await user.type(app.getByLabelText('First name'), 'Carlos');
         await user.type(app.getByLabelText('Last name'), 'Danger');
-        await user.type(app.getByLabelText('Email'), 'carlosdanger@gmail.com');
+        await user.type(app.getByLabelText('Email *'), 'carlosdanger@gmail.com');
 
         // Click create account button
         await user.click(app.getByRole("button", {name: "Create account"}));
 
         // Confirm error string appeared, only username field has red highlight
         expect(app.queryByText('username already exists')).not.toBeNull();
-        expect(app.getByLabelText('Email').classList).not.toContain('input-error');
-        expect(app.getByLabelText('Username').classList).toContain('input-error');
-        expect(app.getByLabelText('Password').classList).not.toContain('input-error');
+        expect(app.getByLabelText('Email *').classList).not.toContain('input-error');
+        expect(app.getByLabelText('Username *').classList).toContain('input-error');
+        expect(app.getByLabelText('Password *').classList).not.toContain('input-error');
     });
 
     it('shows error text under email when backend rejects email', async () => {
@@ -213,20 +213,20 @@ describe('App', () => {
         expect(app.queryByText('email already exists')).toBeNull();
 
         // Simulate user filling out form
-        await user.type(app.getByLabelText('Username'), 'carlosdanger');
-        await user.type(app.getByLabelText('Password'), 'defnotanthonyweiner');
+        await user.type(app.getByLabelText('Username *'), 'carlosdanger');
+        await user.type(app.getByLabelText('Password *'), 'defnotanthonyweiner');
         await user.type(app.getByLabelText('First name'), 'Carlos');
         await user.type(app.getByLabelText('Last name'), 'Danger');
-        await user.type(app.getByLabelText('Email'), 'carlosdanger@gmail.com');
+        await user.type(app.getByLabelText('Email *'), 'carlosdanger@gmail.com');
 
         // Click create account button
         await user.click(app.getByRole("button", {name: "Create account"}));
 
         // Confirm error string appeared, only email field has red highlight
         expect(app.queryByText('email already exists')).not.toBeNull();
-        expect(app.getByLabelText('Email').classList).toContain('input-error');
-        expect(app.getByLabelText('Username').classList).not.toContain('input-error');
-        expect(app.getByLabelText('Password').classList).not.toContain('input-error');
+        expect(app.getByLabelText('Email *').classList).toContain('input-error');
+        expect(app.getByLabelText('Username *').classList).not.toContain('input-error');
+        expect(app.getByLabelText('Password *').classList).not.toContain('input-error');
     });
 
     it('shows error text under password when backend rejects password', async () => {
@@ -244,20 +244,20 @@ describe('App', () => {
         expect(app.queryByText('This password is too common.')).toBeNull();
 
         // Simulate user filling out form
-        await user.type(app.getByLabelText('Username'), 'carlosdanger');
-        await user.type(app.getByLabelText('Password'), 'defnotanthonyweiner');
+        await user.type(app.getByLabelText('Username *'), 'carlosdanger');
+        await user.type(app.getByLabelText('Password *'), 'defnotanthonyweiner');
         await user.type(app.getByLabelText('First name'), 'Carlos');
         await user.type(app.getByLabelText('Last name'), 'Danger');
-        await user.type(app.getByLabelText('Email'), 'carlosdanger@gmail.com');
+        await user.type(app.getByLabelText('Email *'), 'carlosdanger@gmail.com');
 
         // Click create account button
         await user.click(app.getByRole("button", {name: "Create account"}));
 
         // Confirm error string appeared, only password field has red highlight
         expect(app.queryByText('This password is too common.')).not.toBeNull();
-        expect(app.getByLabelText('Email').classList).not.toContain('input-error');
-        expect(app.getByLabelText('Username').classList).not.toContain('input-error');
-        expect(app.getByLabelText('Password').classList).toContain('input-error');
+        expect(app.getByLabelText('Email *').classList).not.toContain('input-error');
+        expect(app.getByLabelText('Username *').classList).not.toContain('input-error');
+        expect(app.getByLabelText('Password *').classList).toContain('input-error');
     });
 
     it('highlights all required fields when a generic error is received', async () => {
@@ -275,19 +275,19 @@ describe('App', () => {
         expect(app.queryByText('failed to create account')).toBeNull();
 
         // Simulate user filling out form
-        await user.type(app.getByLabelText('Username'), 'carlosdanger');
-        await user.type(app.getByLabelText('Password'), 'defnotanthonyweiner');
+        await user.type(app.getByLabelText('Username *'), 'carlosdanger');
+        await user.type(app.getByLabelText('Password *'), 'defnotanthonyweiner');
         await user.type(app.getByLabelText('First name'), 'Carlos');
         await user.type(app.getByLabelText('Last name'), 'Danger');
-        await user.type(app.getByLabelText('Email'), 'carlosdanger@gmail.com');
+        await user.type(app.getByLabelText('Email *'), 'carlosdanger@gmail.com');
 
         // Click create account button
         await user.click(app.getByRole("button", {name: "Create account"}));
 
         // Confirm error string appeared, all fields have red highlight
         expect(app.queryByText('failed to create account')).not.toBeNull();
-        expect(app.getByLabelText('Email').classList).toContain('input-error');
-        expect(app.getByLabelText('Username').classList).toContain('input-error');
-        expect(app.getByLabelText('Password').classList).toContain('input-error');
+        expect(app.getByLabelText('Email *').classList).toContain('input-error');
+        expect(app.getByLabelText('Username *').classList).toContain('input-error');
+        expect(app.getByLabelText('Password *').classList).toContain('input-error');
     });
 });

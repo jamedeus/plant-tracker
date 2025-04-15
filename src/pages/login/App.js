@@ -45,7 +45,10 @@ const LoginForm = () => {
 
     return (
         <form ref={formRef} className="flex flex-col gap-4 mt-8">
-            <label className="form-control w-full">
+            <label
+                className="form-control w-full"
+                title="Username or email address"
+            >
                 <div className="label">
                     <span className="label-text">Username</span>
                 </div>
@@ -62,7 +65,10 @@ const LoginForm = () => {
                     onChange={e => setUsername(e.target.value)}
                 />
             </label>
-            <label className="form-control w-full relative">
+            <label
+                className="form-control w-full relative"
+                title="Must be at least 8 characters, can't be all numbers"
+            >
                 <div className="label">
                     <span className="label-text">Password</span>
                 </div>
@@ -148,7 +154,7 @@ const RegisterForm = () => {
         <form ref={formRef} className="flex flex-col gap-4">
             <label className="form-control w-full">
                 <div className="label">
-                    <span className="label-text">Email</span>
+                    <span className="label-text">Email *</span>
                 </div>
                 <input
                     name="email"
@@ -168,9 +174,12 @@ const RegisterForm = () => {
                     {showEmailError}
                 </span>
             )}
-            <label className="form-control w-full">
+            <label
+                className="form-control w-full"
+                title="Must be at least 3 characters"
+            >
                 <div className="label">
-                    <span className="label-text">Username</span>
+                    <span className="label-text">Username *</span>
                 </div>
                 <input
                     name="username"
@@ -190,9 +199,12 @@ const RegisterForm = () => {
                     {showUsernameError}
                 </span>
             )}
-            <label className="form-control w-full relative">
+            <label
+                className="form-control w-full relative"
+                title="Must be at least 8 characters, can't be all numbers"
+            >
                 <div className="label">
-                    <span className="label-text">Password</span>
+                    <span className="label-text">Password *</span>
                 </div>
                 <input
                     name="password"
@@ -231,6 +243,10 @@ const RegisterForm = () => {
                     className="input w-full input-bordered"
                 />
             </label>
+
+            <span className="text-center text-sm">
+                * required fields
+            </span>
 
             <button
                 className="btn btn-success mt-6"
