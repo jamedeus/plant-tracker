@@ -125,7 +125,7 @@ const RegisterForm = () => {
             const error = data.error[0];
             if (error === 'username already exists') {
                 setShowUsernameError(error);
-            } else if (error === 'email already exists') {
+            } else if (error.includes('email')) {
                 setShowEmailError(error)
             } else if (error.startsWith('This password')) {
                 setShowPasswordError(error);
@@ -226,7 +226,7 @@ const RegisterForm = () => {
             <button
                 className="btn btn-success mt-6"
                 onClick={(e) => submit(e)}
-                disabled={username.length < 1 || password.length < 1}
+                disabled={username.length < 1 || password.length < 1 || email.length < 1}
             >
                 Create account
             </button>

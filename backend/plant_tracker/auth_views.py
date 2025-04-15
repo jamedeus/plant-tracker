@@ -144,6 +144,12 @@ def create_user(request, data):
     except ValidationError as e:
         return JsonResponse({"error": e.messages}, status=400)
 
+    # Don't accept invalid email address
+    try:
+        validate_email(data["email"])
+    except ValidationError as e:
+        return JsonResponse({"error": e.messages}, status=400)
+
     try:
         # transaction.atomic cleans up after IntegrityError if username not unique
         with transaction.atomic():
