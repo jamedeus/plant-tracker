@@ -165,8 +165,11 @@ def create_user(request, data):
         return JsonResponse({"error": ["failed to create account"]}, status=400)
     except ValueError:
         return JsonResponse({"error": ["missing required field"]}, status=400)
-    except IntegrityError:
-        return JsonResponse({"error": ["username already exists"]}, status=409)
+    except IntegrityError as e:
+        if str(e).endswith('email'):
+            return JsonResponse({"error": ["email already exists"]}, status=409)
+        else:
+            return JsonResponse({"error": ["username already exists"]}, status=409)
 
 
 @get_user_token

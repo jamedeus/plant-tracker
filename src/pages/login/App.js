@@ -98,6 +98,7 @@ const RegisterForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showError, setShowError] = useState(false);
+    const [showEmailError, setShowEmailError] = useState(false);
     const [showUsernameError, setShowUsernameError] = useState(false);
     const [showPasswordError, setShowPasswordError] = useState(false);
 
@@ -124,6 +125,8 @@ const RegisterForm = () => {
             const error = data.error[0];
             if (error === 'username already exists') {
                 setShowUsernameError(error);
+            } else if (error === 'email already exists') {
+                setShowEmailError(error)
             } else if (error.startsWith('This password')) {
                 setShowPasswordError(error);
             } else {
@@ -144,13 +147,18 @@ const RegisterForm = () => {
                     autoCapitalize="off"
                     className={clsx(
                         "input w-full input-bordered",
-                        showError && "input-error"
+                        (showError || showEmailError) && "input-error"
                     )}
                     value={email}
                     onInput={() => setShowError(false)}
                     onChange={e => setEmail(e.target.value)}
                 />
             </label>
+            {showEmailError && (
+                <span className="text-error text-center">
+                    {showEmailError}
+                </span>
+            )}
             <label className="form-control w-full">
                 <div className="label">
                     <span className="label-text">Username</span>

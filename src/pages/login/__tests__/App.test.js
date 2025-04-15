@@ -198,6 +198,37 @@ describe('App', () => {
         expect(app.getByLabelText('Password').classList).not.toContain('input-error');
     });
 
+    it('shows error text under email when backend rejects email', async () => {
+        // Mock fetch function to return expected error
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            status: 409,
+            json: () => Promise.resolve({error: ["email already exists"]})
+        }));
+
+        // Click "Create account" link under login form
+        await user.click(app.getByText('Create account'));
+
+        // Confirm error string is not rendered
+        expect(app.queryByText('email already exists')).toBeNull();
+
+        // Simulate user filling out form
+        await user.type(app.getByLabelText('Username'), 'carlosdanger');
+        await user.type(app.getByLabelText('Password'), 'defnotanthonyweiner');
+        await user.type(app.getByLabelText('First name'), 'Carlos');
+        await user.type(app.getByLabelText('Last name'), 'Danger');
+        await user.type(app.getByLabelText('Email'), 'carlosdanger@gmail.com');
+
+        // Click create account button
+        await user.click(app.getByRole("button", {name: "Create account"}));
+
+        // Confirm error string appeared, only email field has red highlight
+        expect(app.queryByText('email already exists')).not.toBeNull();
+        expect(app.getByLabelText('Email').classList).toContain('input-error');
+        expect(app.getByLabelText('Username').classList).not.toContain('input-error');
+        expect(app.getByLabelText('Password').classList).not.toContain('input-error');
+    });
+
     it('shows error text under password when backend rejects password', async () => {
         // Mock fetch function to return expected error
         global.fetch = jest.fn(() => Promise.resolve({

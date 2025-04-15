@@ -241,6 +241,29 @@ class AuthenticationEndpointTests(TestCase):
         # Confirm no user created in database
         self.assertEqual(len(user_model.objects.all()), 2)
 
+    def test_create_user_endpoint_duplicate_email(self):
+        # Confirm 2 users in database (default + test user from setUpClass)
+        self.assertEqual(len(user_model.objects.all()), 2)
+
+        # Post same email as existing test user to create_user endpoint
+        response = self.client.post('/accounts/create_user/', {
+            'username': 'newuser',
+            'password': 'acceptablepasswordlength',
+            'email': 'bob.smith@hotmail.com',
+            'first_name': '',
+            'last_name': ''
+        })
+
+        # Confirm expected response
+        self.assertEqual(response.status_code, 409)
+        self.assertEqual(
+            response.json(),
+            {"error": ["email already exists"]}
+        )
+
+        # Confirm no user created in database
+        self.assertEqual(len(user_model.objects.all()), 2)
+
     def test_create_user_endpoint_common_password(self):
         # Confirm 2 users in database (default + test user from setUpClass)
         self.assertEqual(len(user_model.objects.all()), 2)
