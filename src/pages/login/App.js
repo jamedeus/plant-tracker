@@ -126,7 +126,7 @@ const RegisterForm = () => {
             if (error === 'username already exists') {
                 setShowUsernameError(error);
             } else if (error.includes('email')) {
-                setShowEmailError(error)
+                setShowEmailError(error);
             } else if (error.startsWith('This password')) {
                 setShowPasswordError(error);
             } else {

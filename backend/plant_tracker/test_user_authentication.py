@@ -1,4 +1,4 @@
-# pylint: disable=missing-docstring
+# pylint: disable=missing-docstring,too-many-lines
 
 from uuid import uuid4
 from urllib.parse import urlencode

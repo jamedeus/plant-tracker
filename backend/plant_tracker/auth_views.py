@@ -139,13 +139,9 @@ def create_user(request, data):
     '''
 
     # Enforce password rules (length, common passwords, etc)
+    # Don't accept invalid email address syntax
     try:
         validate_password(data["password"], None)
-    except ValidationError as e:
-        return JsonResponse({"error": e.messages}, status=400)
-
-    # Don't accept invalid email address
-    try:
         validate_email(data["email"])
     except ValidationError as e:
         return JsonResponse({"error": e.messages}, status=400)
@@ -172,10 +168,8 @@ def create_user(request, data):
     except ValueError:
         return JsonResponse({"error": ["missing required field"]}, status=400)
     except IntegrityError as e:
-        if str(e).endswith('email'):
-            return JsonResponse({"error": ["email already exists"]}, status=409)
-        else:
-            return JsonResponse({"error": ["username already exists"]}, status=409)
+        duplicate = 'email' if str(e).endswith('email') else 'username'
+        return JsonResponse({"error": [f"{duplicate} already exists"]}, status=409)
 
 
 @get_user_token
