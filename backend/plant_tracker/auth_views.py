@@ -10,6 +10,7 @@ from django.utils.decorators import method_decorator
 from django.contrib.auth.forms import AuthenticationForm
 from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth import login, logout, authenticate
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.debug import sensitive_variables
 from django.contrib.auth.password_validation import validate_password
 
@@ -84,6 +85,7 @@ class LoginView(views.LoginView):
         "js_bundle": "plant_tracker/login.js"
     }
 
+    @method_decorator(ensure_csrf_cookie)
     @method_decorator(disable_in_single_user_mode)
     def dispatch(self, request, *args, **kwargs):
         '''Returns login page unless SINGLE_USER_MODE is enabled.'''
