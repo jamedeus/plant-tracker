@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { useTheme } from 'src/context/ThemeContext';
 import Navbar from 'src/components/Navbar';
 import { sendPostRequest } from 'src/util';
+import { EMAIL_REGEX } from 'src/regex';
 import Cookies from 'js-cookie';
 import clsx from 'clsx';
 
@@ -10,6 +11,9 @@ const LoginForm = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [showError, setShowError] = useState(false);
+
+    // Disable login button until fields reach minimum length
+    const formValid = username.length >= 3 && password.length >= 8;
 
     const submit = async (e) => {
         e.preventDefault();
@@ -78,7 +82,7 @@ const LoginForm = () => {
             <button
                 className="btn btn-success mt-6"
                 onClick={(e) => submit(e)}
-                disabled={username.length < 1 || password.length < 1}
+                disabled={!formValid}
             >
                 Login
             </button>
@@ -101,6 +105,11 @@ const RegisterForm = () => {
     const [showEmailError, setShowEmailError] = useState(false);
     const [showUsernameError, setShowUsernameError] = useState(false);
     const [showPasswordError, setShowPasswordError] = useState(false);
+
+    // Disable submit button until fields reach minimum length and email valid
+    const formValid = username.length >= 3 &&
+                      password.length >= 8 &&
+                      EMAIL_REGEX.test(email);
 
     const clearErrors = () => {
         setShowError(false);
@@ -143,7 +152,7 @@ const RegisterForm = () => {
                 </div>
                 <input
                     name="email"
-                    type="text"
+                    type="email"
                     autoCapitalize="off"
                     className={clsx(
                         "input w-full input-bordered",
@@ -226,7 +235,7 @@ const RegisterForm = () => {
             <button
                 className="btn btn-success mt-6"
                 onClick={(e) => submit(e)}
-                disabled={username.length < 1 || password.length < 1 || email.length < 1}
+                disabled={!formValid}
             >
                 Create account
             </button>

@@ -100,7 +100,7 @@ describe('App', () => {
         expect(app.queryByText('Password changed!')).toBeNull();
 
         // Simulate user entering old password and new password twice
-        await user.type(app.getByLabelText('Old password'), 'hunter2');
+        await user.type(app.getByLabelText('Old password'), 'password123');
         await user.type(app.getByLabelText('New password'), 'thispasswordisbetter');
         await user.type(app.getByLabelText('Confirm new password'), 'thispasswordisbetter');
 
@@ -113,7 +113,7 @@ describe('App', () => {
         expect(url).toBe('/accounts/change_password/');
         expect(fetchOptions.method).toBe('POST');
         expect(fetchOptions.body).toBeInstanceOf(URLSearchParams);
-        expect(fetchOptions.body.get('old_password')).toBe('hunter2');
+        expect(fetchOptions.body.get('old_password')).toBe('password123');
         expect(fetchOptions.body.get('new_password1')).toBe('thispasswordisbetter');
         expect(fetchOptions.body.get('new_password2')).toBe('thispasswordisbetter');
 
@@ -137,7 +137,7 @@ describe('App', () => {
         expect(app.queryByText('Old password incorrect')).toBeNull();
 
         // Simulate user filling out form and clicking Change password button
-        await user.type(app.getByLabelText('Old password'), 'hunter2');
+        await user.type(app.getByLabelText('Old password'), 'password123');
         await user.type(app.getByLabelText('New password'), 'thispasswordisbetter');
         await user.type(app.getByLabelText('Confirm new password'), 'thispasswordisbetter');
         await user.click(app.getByRole("button", {name: "Change Password"}));
@@ -165,9 +165,10 @@ describe('App', () => {
         expect(app.queryByText("The two password fields didn’t match.")).toBeNull();
 
         // Simulate user filling out form and clicking Change password button
-        await user.type(app.getByLabelText('Old password'), 'hunter2');
+        // (passwords have to match in test so submit button will be enabled)
+        await user.type(app.getByLabelText('Old password'), 'password123');
         await user.type(app.getByLabelText('New password'), 'thispasswordisbetter');
-        await user.type(app.getByLabelText('Confirm new password'), 'thispasswordisbette');
+        await user.type(app.getByLabelText('Confirm new password'), 'thispasswordisbetter');
         await user.click(app.getByRole("button", {name: "Change Password"}));
 
         // Confirm error text appeared, only new password fields have red highlight

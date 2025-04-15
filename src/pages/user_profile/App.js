@@ -1,6 +1,7 @@
-import React, { useState, useMemo, useEffect, useRef, memo } from 'react';
+import React, { useState, useMemo, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from 'src/context/ThemeContext';
+import { EMAIL_REGEX } from 'src/regex';
 import { parseDomContext, sendPostRequest } from 'src/util';
 import { timestampToRelative, timestampToReadable } from 'src/timestampUtils';
 import Navbar from 'src/components/Navbar';
@@ -17,16 +18,12 @@ const UserDetails = memo(function UserDetails() {
     const [firstName, setFirstName] = useState(userDetails.first_name);
     const [lastName, setLastName] = useState(userDetails.last_name);
     const [email, setEmail] = useState(userDetails.email);
-    const [submitButtonDisabled, setSubmitButtonDisabled] = useState(true);
 
     // Enable submit button when 1 or more field has changed
-    useEffect(() => {
-        setSubmitButtonDisabled(
-            firstName === userDetails.first_name &&
-            lastName === userDetails.last_name &&
-            email === userDetails.email
-        );
-    }, [userDetails, firstName, lastName, email]);
+    const submitButtonDisabled = firstName === userDetails.first_name &&
+                                 lastName === userDetails.last_name &&
+                                 email === userDetails.email ||
+                                 !EMAIL_REGEX.test(email);
 
     const submit = async () => {
         const payload = {
@@ -115,6 +112,13 @@ const ChangePassword = memo(function ChangePassword() {
     const [newPassword2, setNewPassword2] = useState('');
     const [oldPasswordIncorrect, setOldPasswordIncorrect] = useState(false);
     const [newPasswordError, setNewPasswordError] = useState(false);
+
+    // Enable submit button when all fields reach minimum password length and
+    // both new password fields match
+    const submitButtonDisabled = oldPassword.length < 8 ||
+                                 newPassword1.length < 8 ||
+                                 newPassword2.length < 8 ||
+                                 newPassword1 != newPassword2;
 
     const submit = async (e) => {
         e.preventDefault();
@@ -207,7 +211,7 @@ const ChangePassword = memo(function ChangePassword() {
 
             <button
                 className="btn btn-success mt-6"
-                disabled={!oldPassword || !newPassword1 || !newPassword2}
+                disabled={submitButtonDisabled}
                 onClick={(e) => submit(e)}
             >
                 Change Password
