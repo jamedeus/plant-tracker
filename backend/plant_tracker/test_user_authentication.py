@@ -373,6 +373,22 @@ class AuthenticationEndpointTests(TestCase):
         self.assertEqual(self.test_user.last_name, 'Weiner')
         self.assertEqual(self.test_user.email, 'carlosdanger@hotmail.com')
 
+    def test_edit_user_details_endpoint_errors(self):
+        # Log in with test user, post new account details with invalid email
+        self.client.login(username='unittest', password='12345')
+        response = self.client.post('/accounts/edit_user_details/', {
+            'first_name': 'Anthony',
+            'last_name': 'Weiner',
+            'email': 'carlosdanger'
+        })
+
+        # Confirm expected error response
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.json(),
+            {"error": ["Enter a valid email address."]}
+        )
+
 
 class SingleUserModeTests(TestCase):
     def setUp(self):

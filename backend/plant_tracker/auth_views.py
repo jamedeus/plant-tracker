@@ -200,6 +200,13 @@ def edit_user_details(data, user, **kwargs):
     '''Updates details of an existing user account.
     Requires JSON POST with email, first_name, and last_name keys.
     '''
+
+    # Don't accept invalid email address syntax
+    try:
+        validate_email(data["email"])
+    except ValidationError as e:
+        return JsonResponse({"error": e.messages}, status=400)
+
     user.email = data["email"]
     user.first_name = data["first_name"]
     user.last_name = data["last_name"]
