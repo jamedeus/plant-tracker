@@ -55,6 +55,7 @@ const LoginForm = () => {
                 <input
                     name="username"
                     type="text"
+                    autoFocus
                     autoCapitalize="off"
                     className={clsx(
                         "input w-full input-bordered",
@@ -159,6 +160,7 @@ const RegisterForm = () => {
                 <input
                     name="email"
                     type="email"
+                    autoFocus
                     autoCapitalize="off"
                     className={clsx(
                         "input w-full input-bordered",
