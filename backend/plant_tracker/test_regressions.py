@@ -172,8 +172,16 @@ class ModelRegressionTests(TestCase):
 
         # Create 2 test users with 1 unnamed plant each
         user_model = get_user_model()
-        user1 = user_model.objects.create_user(username='user1', password='123')
-        user2 = user_model.objects.create_user(username='user2', password='123')
+        user1 = user_model.objects.create_user(
+            username='user1',
+            password='123',
+            email='user1@gmail.com'
+        )
+        user2 = user_model.objects.create_user(
+            username='user2',
+            password='123',
+            email='user2@gmail.com'
+        )
         Plant.objects.create(uuid=uuid4(), user=user1)
         plant2 = Plant.objects.create(uuid=uuid4(), user=user2)
 

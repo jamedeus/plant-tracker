@@ -67,6 +67,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Enforce unique constraint on user email field
+    "unique_user_email"
 ]
 
 MIDDLEWARE = [
@@ -151,6 +153,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Allow logging in with username or email
+AUTHENTICATION_BACKENDS = [
+    "unique_user_email.backend.EmailBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/

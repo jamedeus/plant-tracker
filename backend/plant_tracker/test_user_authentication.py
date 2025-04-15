@@ -25,7 +25,8 @@ class AuthenticationPageTests(TestCase):
             username='unittest',
             password='12345',
             first_name='Bob',
-            last_name='Smith'
+            last_name='Smith',
+            email='bob.smith@hotmail.com'
         )
 
     def setUp(self):
@@ -68,7 +69,7 @@ class AuthenticationPageTests(TestCase):
         details_context = response.context['state']['user_details']
         self.assertEqual(details_context['first_name'], 'Bob')
         self.assertEqual(details_context['last_name'], 'Smith')
-        self.assertEqual(details_context['email'], '')
+        self.assertEqual(details_context['email'], 'bob.smith@hotmail.com')
 
     def test_user_profile_page_not_signed_in(self):
         # Request user profile page without signing in
@@ -88,7 +89,8 @@ class AuthenticationEndpointTests(TestCase):
             username='unittest',
             password='12345',
             first_name='Bob',
-            last_name='Smith'
+            last_name='Smith',
+            email='bob.smith@hotmail.com'
         )
 
     def setUp(self):
@@ -114,6 +116,18 @@ class AuthenticationEndpointTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {"success": "logged in"})
 
+    def test_login_with_valid_email_address(self):
+        # POST valid credentials with email in username field to login endpoint
+        response = self.client.post(
+            "/accounts/login/",
+            urlencode({"username": "bob.smith@hotmail.com", "password": "12345"}),
+            content_type="application/x-www-form-urlencoded"
+        )
+
+        # Confirm returns JSON response with status 200 (not 302)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"success": "logged in"})
+
     def test_login_with_invalid_credentials(self):
         # POST invalid credentials to login endpoint
         response = self.client.post(
@@ -129,6 +143,24 @@ class AuthenticationEndpointTests(TestCase):
                 "__all__": [
                     # pylint: disable-next=line-too-long
                     "Please enter a correct username and password. Note that both fields may be case-sensitive."
+                ]
+            }
+        })
+
+    def test_login_with_missing_parameters(self):
+        # POST invalid credentials with no password to login endpoint
+        response = self.client.post(
+            "/accounts/login/",
+            urlencode({"username": "unittest", "password": ""}),
+            content_type="application/x-www-form-urlencoded"
+        )
+
+        # Confirm returns JSON response with status 400 (not 302)
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {
+            "errors": {
+                "password": [
+                    "This field is required."
                 ]
             }
         })
@@ -275,7 +307,7 @@ class AuthenticationEndpointTests(TestCase):
         # Confirm initial test user details
         self.assertEqual(self.test_user.first_name, 'Bob')
         self.assertEqual(self.test_user.last_name, 'Smith')
-        self.assertEqual(self.test_user.email, '')
+        self.assertEqual(self.test_user.email, 'bob.smith@hotmail.com')
 
         # Log in with test user, post new account details to backend
         self.client.login(username='unittest', password='12345')
@@ -410,7 +442,8 @@ class SingleUserModeTests(TestCase):
         # Create second user (in addition to default user)
         test_user = user_model.objects.create_user(
             username='test',
-            password='123'
+            password='123',
+            email='test@aol.com'
         )
 
         # Create 1 plant owned by default user, 1 plant owned by test user
@@ -463,7 +496,11 @@ class SingleUserModeTests(TestCase):
 
     def test_manage_plant_page_user_does_not_own_plant(self):
         # Create second user (in addition to default user) + plant for user
-        test_user = user_model.objects.create_user(username='test', password='123')
+        test_user = user_model.objects.create_user(
+            username='test',
+            password='123',
+            email='test@aol.com'
+        )
         plant = Plant.objects.create(uuid=uuid4(), user=test_user)
 
         # Request manage page (comes from default user since SINGLE_USER_MODE enabled)
@@ -494,7 +531,11 @@ class SingleUserModeTests(TestCase):
 
     def test_manage_group_page_user_does_not_own_group(self):
         # Create second user (in addition to default user) + group for user
-        test_user = user_model.objects.create_user(username='test', password='123')
+        test_user = user_model.objects.create_user(
+            username='test',
+            password='123',
+            email='test@aol.com'
+        )
         group = Group.objects.create(uuid=uuid4(), user=test_user)
 
         # Request manage page (comes from default user since SINGLE_USER_MODE enabled)
@@ -516,7 +557,8 @@ class MultiUserModeTests(TestCase):
             username='unittest',
             password='12345',
             first_name='Bob',
-            last_name='Smith'
+            last_name='Smith',
+            email='bob.smith@hotmail.com'
         )
 
     def setUp(self):

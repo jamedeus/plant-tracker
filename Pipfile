@@ -12,6 +12,7 @@ pillow = "~=11.0"
 pillow-heif = "*"
 django = "*"
 segno = "*"
+django-unique-user-email = "*"
 
 [dev-packages]
 pylint-django = "*"

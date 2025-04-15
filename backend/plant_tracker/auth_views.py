@@ -3,11 +3,14 @@
 from django.conf import settings
 from django.contrib.auth import views
 from django.contrib.auth import get_user_model
+from django.core.validators import validate_email
 from django.db import transaction, IntegrityError
 from django.core.exceptions import ValidationError
 from django.utils.decorators import method_decorator
+from django.contrib.auth.forms import AuthenticationForm
 from django.http import JsonResponse, HttpResponseRedirect
 from django.contrib.auth import login, logout, authenticate
+from django.views.decorators.debug import sensitive_variables
 from django.contrib.auth.password_validation import validate_password
 
 from .views import render_react_app
@@ -20,11 +23,59 @@ from .view_decorators import (
 user_model = get_user_model()
 
 
+class EmailOrUsernameAuthenticationForm(AuthenticationForm):
+    '''AuthenticationForm subclass that accepts email address or username.'''
+
+    def get_credentials(self, username, password):
+        '''Takes username and password, returns kwargs for authenticate func.
+        If username matches email regex returns as the email kwarg, otherwise
+        returns as the username kwarg.
+        '''
+        if self.is_email(username):
+            return {
+                "email": username,
+                "password": password
+            }
+        return {
+            "username": username,
+            "password": password
+        }
+
+    def is_email(self, username):
+        '''Returns True if arg matches email regex, otherwise returns False.'''
+        try:
+            validate_email(username)
+            return True
+        except ValidationError:
+            return False
+
+    @sensitive_variables()
+    def clean(self):
+        '''Identical to AuthenticationForm.clean but accepts user email address
+        or username in username field.
+        '''
+        username = self.cleaned_data.get("username")
+        password = self.cleaned_data.get("password")
+
+        if username is not None and password:
+            # Convert username to correct kwarg (username or email)
+            credentials = self.get_credentials(username, password)
+            # Authenticate user, return error if failed or login not allowed
+            self.user_cache = authenticate(self.request, **credentials)
+            if self.user_cache is None:
+                raise self.get_invalid_login_error()
+            self.confirm_login_allowed(self.user_cache)
+        return self.cleaned_data
+
+
 class LoginView(views.LoginView):
     '''LoginView subclass that returns JSON responses instead of redirects.'''
 
     # Prevent loading login page if already logged in (redirect to overview)
     redirect_authenticated_user = True
+
+    # Allow logging in with email address instead of username
+    form_class = EmailOrUsernameAuthenticationForm
 
     # Override default django form with boilerplate template + react bundle
     template_name = "plant_tracker/index.html"
