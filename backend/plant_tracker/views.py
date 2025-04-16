@@ -465,6 +465,54 @@ def archive_group(group, data, **kwargs):
 
 
 @get_user_token
+@requires_json_post(["uuids"])
+def bulk_delete_plants_and_groups(user, data, **kwargs):
+    '''Deletes a list of plants and groups owned by the requesting user.
+    Requires JSON POST with uuids key (list of plant or group uuids).
+    '''
+    deleted = []
+    failed = []
+    for uuid in data["uuids"]:
+        instance = get_plant_or_group_by_uuid(uuid)
+        # Make sure plant exists and is owned by user
+        if instance and instance.user == user:
+            instance.delete()
+            deleted.append(uuid)
+        else:
+            failed.append(uuid)
+
+    return JsonResponse(
+        {"deleted": deleted, "failed": failed},
+        status=200 if deleted else 400
+    )
+
+
+@get_user_token
+@requires_json_post(["uuids", "archived"])
+def bulk_archive_plants_and_groups(user, data, **kwargs):
+    '''Sets the archived attribute for a list of plants and groups owned by the
+    requesting user.
+    Requires JSON POST with uuids (list of uuids) and archived (bool) keys.
+    '''
+    archived = []
+    failed = []
+    for uuid in data["uuids"]:
+        instance = get_plant_or_group_by_uuid(uuid)
+        # Make sure instance exists and is owned by user
+        if instance and instance.user == user:
+            instance.archived = data["archived"]
+            instance.save()
+            archived.append(uuid)
+        else:
+            failed.append(uuid)
+
+    return JsonResponse(
+        {"archived": archived, "failed": failed},
+        status=200 if archived else 400
+    )
+
+
+@get_user_token
 @requires_json_post(["plant_id", "event_type", "timestamp"])
 @get_plant_from_post_body
 @get_timestamp_from_post_body

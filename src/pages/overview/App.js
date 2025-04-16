@@ -4,6 +4,7 @@ import { useTheme } from 'src/context/ThemeContext';
 import { sendPostRequest, parseDomContext } from 'src/util';
 import FloatingFooter from 'src/components/FloatingFooter';
 import PrintModal, { openPrintModal } from './PrintModal';
+import { openErrorModal } from 'src/components/ErrorModal';
 import { useIsBreakpointActive } from 'src/useBreakpoint';
 import Layout from './Layout';
 
@@ -91,24 +92,35 @@ function App() {
     const { ToggleThemeOption } = useTheme();
 
     // Handler for delete button that appears while editing
-    const handleDelete = () => {
+    const handleDelete = async () => {
+        // Get combined array of selected plant and group uuids
         const selectedPlants = getSelectedPlants();
-        // Send delete request for each selected plant, remove uuid from state
-        selectedPlants.forEach(async plant_id => {
-            await sendPostRequest('/delete_plant', {plant_id: plant_id});
-        });
-        setPlants(plants.filter(
-            plant => !selectedPlants.includes(plant.uuid))
-        );
-
         const selectedGroups = getSelectedGroups();
-        // Send delete request for each selected group, remove uuid from state
-        selectedGroups.forEach(async group_id => {
-            await sendPostRequest('/delete_group', {group_id: group_id});
-        });
-        setGroups(groups.filter(
-            group => !selectedGroups.includes(group.uuid))
+        const selectedUuids = selectedPlants.concat(selectedGroups);
+
+        // Don't send empty request if nothing selected
+        if (!selectedUuids.length) {
+            return;
+        }
+
+        // Send /bulk_delete_plants_and_groups request with all selected UUIDs
+        const response = await sendPostRequest(
+            '/bulk_delete_plants_and_groups',
+            {uuids: selectedPlants.concat(selectedGroups)}
         );
+        // Remove deleted UUIDs from state
+        if (response.ok) {
+            const data = await response.json();
+            setPlants(plants.filter(
+                plant => !data['deleted'].includes(plant.uuid))
+            );
+            setGroups(groups.filter(
+                group => !data['deleted'].includes(group.uuid))
+            );
+        } else {
+            const data = await response.json();
+            openErrorModal(JSON.stringify(data.failed));
+        }
 
         // Reset editing state
         setEditing(false);
@@ -117,44 +129,51 @@ function App() {
     // Handler for archive button (main overview) and un-archive button
     // (archive overview) that appear while editing. POSTS selected plants and
     // groups to backend then removes from frontend state.
-    const handleArchive = () => {
+    const handleArchive = async () => {
         // Main overview: set payload arg to true (archive plants)
         // Archived overview: set payload arg to false (un-archive plants)
         const archived = !archivedOverview;
 
+        // Get combined array of selected plant and group uuids
         const selectedPlants = getSelectedPlants();
-        // Send archive request for each selected plant, remove uuid from state
-        selectedPlants.forEach(async plant_id => {
-            await sendPostRequest(
-                '/archive_plant',
-                {plant_id: plant_id, archived: archived}
-            );
-        });
-        const newPlants = plants.filter(
-            plant => !selectedPlants.includes(plant.uuid)
-        );
-        setPlants(newPlants);
-
-
         const selectedGroups = getSelectedGroups();
-        // Send archive request for each selected group, remove uuid from state
-        selectedGroups.forEach(async group_id => {
-            await sendPostRequest(
-                '/archive_group',
-                {group_id: group_id, archived: archived}
-            );
-        });
-        const newGroups = groups.filter(
-            group => !selectedGroups.includes(group.uuid)
+        const selectedUuids = selectedPlants.concat(selectedGroups);
+
+        // Don't send empty request if nothing selected
+        if (!selectedUuids.length) {
+            return;
+        }
+
+        // Send /bulk_archive_plants_and_groups request with all selected UUIDs
+        const response = await sendPostRequest(
+            '/bulk_archive_plants_and_groups',
+            {
+                uuids: selectedUuids,
+                archived: archived
+            }
         );
-        setGroups(newGroups);
+        // Remove deleted UUIDs from state
+        if (response.ok) {
+            const data = await response.json();
+            const newPlants = plants.filter(
+                plant => !data['archived'].includes(plant.uuid)
+            );
+            setPlants(newPlants);
+            const newGroups = groups.filter(
+                group => !data['archived'].includes(group.uuid)
+            );
+            setGroups(newGroups);
 
-        // Ensure archive link visible in dropdown menu
-        setShowArchive(archived);
+            // Ensure archive link visible in dropdown menu
+            setShowArchive(archived);
 
-        // Archived overview: redirect to overview if no plants or groups left
-        if (archivedOverview && !newPlants.length && !newGroups.length) {
-            window.location.href = "/";
+            // Archived overview: redirect to overview if no plants or groups left
+            if (archivedOverview && !newPlants.length && !newGroups.length) {
+                window.location.href = "/";
+            }
+        } else {
+            const data = await response.json();
+            openErrorModal(JSON.stringify(data.failed));
         }
 
         // Reset editing state

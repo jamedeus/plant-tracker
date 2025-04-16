@@ -74,7 +74,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "deleted": "uuid"
+                "deleted": ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"],
+                "failed": []
             })
         }));
 
@@ -85,11 +86,11 @@ describe('App', () => {
         // Click delete button in floating div
         await user.click(app.getByText('Delete'));
 
-        // Confirm correct data posted to /delete_plant endpoint
-        expect(global.fetch).toHaveBeenCalledWith('/delete_plant', {
+        // Confirm correct data posted to /bulk_delete_plants_and_groups endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_delete_plants_and_groups', {
             method: 'POST',
             body: JSON.stringify({
-                "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                "uuids": ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"]
             }),
             headers: postHeaders
         });
@@ -100,7 +101,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "updated": "uuid"
+                "archived": ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"],
+                "failed": []
             })
         }));
 
@@ -111,11 +113,11 @@ describe('App', () => {
         // Click un-archive button in floating div
         await user.click(app.getByText('Un-archive'));
 
-        // Confirm correct data posted to /archive_plant endpoint
-        expect(global.fetch).toHaveBeenCalledWith('/archive_plant', {
+        // Confirm correct data posted to /bulk_archive_plants_and_groups endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_archive_plants_and_groups', {
             method: 'POST',
             body: JSON.stringify({
-                plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                uuids: ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"],
                 archived: false
             }),
             headers: postHeaders
@@ -127,7 +129,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "deleted": "uuid"
+                "deleted": ["0640ec3b-1bed-4b15-a078-d6e7ec66be14"],
+                "failed": []
             })
         }));
 
@@ -139,11 +142,11 @@ describe('App', () => {
         // Click delete button in floating div
         await user.click(app.getByText('Delete'));
 
-        // Confirm correct data posted to /delete_group endpoint
-        expect(global.fetch).toHaveBeenCalledWith('/delete_group', {
+        // Confirm correct data posted to /bulk_delete_plants_and_groups endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_delete_plants_and_groups', {
             method: 'POST',
             body: JSON.stringify({
-                "group_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                "uuids": ["0640ec3b-1bed-4b15-a078-d6e7ec66be14"]
             }),
             headers: postHeaders
         });
@@ -166,7 +169,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "updated": "uuid"
+                "archived": ["0640ec3b-1bed-4b15-a078-d6e7ec66be14"],
+                "failed": []
             })
         }));
 
@@ -178,11 +182,11 @@ describe('App', () => {
         // Click un-archive button in floating div
         await user.click(app.getByText('Un-archive'));
 
-        // Confirm correct data posted to /archive_group endpoint
-        expect(global.fetch).toHaveBeenCalledWith('/archive_group', {
+        // Confirm correct data posted to /bulk_archive_plants_and_groups endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_archive_plants_and_groups', {
             method: 'POST',
             body: JSON.stringify({
-                group_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                uuids: ["0640ec3b-1bed-4b15-a078-d6e7ec66be14"],
                 archived: false
             }),
             headers: postHeaders
@@ -190,11 +194,17 @@ describe('App', () => {
     });
 
     it('redirects to overview when last plant/group is un-archived', async () => {
-        // Mock fetch function to return expected response
+        // Mock fetch to simulate successfully un-archiving all plants and groups
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "updated": "uuid"
+                "archived": [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                    "0640ec3b-1bed-fb15-a078-d6e7ec66be12",
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                    "0640ec3b-1bed-4ba5-a078-d6e7ec66be14"
+                ],
+                "failed": []
             })
         }));
 
