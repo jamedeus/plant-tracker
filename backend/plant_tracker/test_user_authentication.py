@@ -207,8 +207,10 @@ class AuthenticationEndpointTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {"success": "account created"})
 
-        # Confirm user created in database
+        # Confirm user created in database, did not store password as cleartext
         self.assertEqual(len(user_model.objects.all()), 3)
+        user = user_model.objects.get(username='newuser')
+        self.assertNotEqual(user.password, 'acceptablepasswordlength')
 
     def test_create_user_endpoint_missing_fields(self):
         # Confirm 2 users in database (default + test user from setUpClass)
@@ -339,6 +341,10 @@ class AuthenticationEndpointTests(TestCase):
         # Confirm success response
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), {"success": "password_changed"})
+
+        # Confirm did not store password as cleartext
+        user = user_model.objects.get(username='unittest')
+        self.assertNotEqual(user.password, 'more secure password')
 
     def test_password_change_endpoint_errors(self):
         # Log in with test user
