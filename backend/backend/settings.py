@@ -42,6 +42,17 @@ for i in ALLOWED_HOSTS:
 # Get URL prefix used to generate QR code stickers from env var
 URL_PREFIX = validate_url_prefix(os.environ.get('URL_PREFIX'))
 
+# Redirect to overview page after successful login
+LOGIN_REDIRECT_URL="/"
+
+# Read SINGLE_USER_MODE from env var, or default to False if not present
+# If True authentication is disabled, all plants are owned by DEFAULT_USERNAME
+# If False authentication is required, separate accounts own separate plants
+try:
+    SINGLE_USER_MODE = os.environ.get('SINGLE_USER_MODE').lower() == 'true'
+except AttributeError:
+    SINGLE_USER_MODE=False
+DEFAULT_USERNAME='DEFAULT'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -56,6 +67,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    # Enforce unique constraint on user email field
+    "unique_user_email"
 ]
 
 MIDDLEWARE = [
@@ -140,6 +153,11 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# Allow logging in with username or email
+AUTHENTICATION_BACKENDS = [
+    "unique_user_email.backend.EmailBackend",
+    "django.contrib.auth.backends.ModelBackend",
+]
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/

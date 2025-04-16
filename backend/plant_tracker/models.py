@@ -24,45 +24,47 @@ TIME_FORMAT = '%Y:%m:%d %H:%M:%S'
 register_heif_opener()
 
 
-def get_unnamed_plants():
-    '''Returns list of primary_key ints for all Plants with no name or species
-    List is cached for up to 10 minutes, or until Plant model changed
+def get_unnamed_plants(user):
+    '''Takes user, returns list of primary_keys for all Plants owned by user
+    with no name or species (cached 10 minutes or until plant model changed).
     Uses list instead of QuerySet to avoid serialization overhead
     '''
-    unnamed_plants = cache.get('unnamed_plants')
+    unnamed_plants = cache.get(f'unnamed_plants_{user.pk}')
     if not unnamed_plants:
         unnamed_plants = list(Plant.objects.filter(
             name__isnull=True,
-            species__isnull=True
+            species__isnull=True,
+            user=user
         ).values_list('id', flat=True))
-        cache.set('unnamed_plants', unnamed_plants, 600)
+        cache.set(f'unnamed_plants_{user.pk}', unnamed_plants, 600)
     return unnamed_plants
 
 
-def get_unnamed_groups():
-    '''Returns list of primary_key ints for all Groups with no name or location
-    List is cached for up to 10 minutes, or until Group model changed
+def get_unnamed_groups(user):
+    '''Takes user, returns list of primary_keys for all Groups owned by user
+    with no name or location (cached 10 minutes or until group model changed).
     Uses list instead of QuerySet to avoid serialization overhead
     '''
-    unnamed_groups = cache.get('unnamed_groups')
+    unnamed_groups = cache.get(f'unnamed_groups_{user.pk}')
     if not unnamed_groups:
         unnamed_groups = list(Group.objects.filter(
             name__isnull=True,
-            location__isnull=True
+            location__isnull=True,
+            user=user
         ).values_list('id', flat=True))
-        cache.set('unnamed_groups', unnamed_groups, 600)
+        cache.set(f'unnamed_groups_{user.pk}', unnamed_groups, 600)
     return unnamed_groups
 
 
-def get_plant_options():
-    '''Returns a list of dicts with attributes of all existing plants.
+def get_plant_options(user):
+    '''Takes user, returns list of dicts with details for all plants owned by user.
     List is cached until Plant model changes (detected by hooks in tasks.py).
     Used to populate options in add plants modal on manage_group page.
     '''
-    plant_options = cache.get('plant_options')
+    plant_options = cache.get(f'plant_options_{user.pk}')
     if not plant_options:
-        plant_options = [plant.get_details() for plant in Plant.objects.all()]
-        cache.set('plant_options', plant_options, None)
+        plant_options = [plant.get_details() for plant in Plant.objects.filter(user=user)]
+        cache.set(f'plant_options_{user.pk}', plant_options, None)
     return plant_options
 
 
@@ -79,15 +81,15 @@ def get_plant_species_options():
     return species_options
 
 
-def get_group_options():
-    '''Returns a list of dicts with attributes of all existing groups.
+def get_group_options(user):
+    '''Takes user, returns list of dicts with details for all groups owner by user.
     List is cached until Group model changes (detected by hooks in tasks.py).
     Used to populate options in add group modal on manage_plant page.
     '''
-    group_options = cache.get('group_options')
+    group_options = cache.get(f'group_options_{user.pk}')
     if not group_options:
-        group_options = [group.get_details() for group in Group.objects.all()]
-        cache.set('group_options', group_options, None)
+        group_options = [group.get_details() for group in Group.objects.filter(user=user)]
+        cache.set(f'group_options_{user.pk}', group_options, None)
     return group_options
 
 
@@ -95,6 +97,14 @@ class Group(models.Model):
     '''Tracks a group containing multiple plants, created by scanning QR code
     Provides methods to water or fertilize all plants within group
     '''
+
+    # User who registered the group
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        blank=False,
+        null=False
+    )
 
     # UUID of QR code attached to group
     uuid = models.UUIDField(unique=True)
@@ -121,7 +131,7 @@ class Group(models.Model):
             return f'{self.location} group'
 
         # If no name or location return string with unnamed group index
-        unnamed_groups = get_unnamed_groups()
+        unnamed_groups = get_unnamed_groups(self.user)
         return f'Unnamed group {unnamed_groups.index(self.id) + 1}'
 
     def water_all(self, timestamp):
@@ -166,13 +176,13 @@ class Group(models.Model):
 
 @receiver(post_save, sender=Group)
 @receiver(post_delete, sender=Group)
-def clear_cached_group_lists(**kwargs):
+def clear_cached_group_lists(instance, **kwargs):
     '''Clear cached unnamed_groups list when a Group is saved or deleted (will
     be generated and cached next time needed).
 
     The group_options list is updated automatically by hook in tasks.py.
     '''
-    cache.delete('unnamed_groups')
+    cache.delete(f'unnamed_groups_{instance.user.pk}')
 
 
 class Plant(models.Model):
@@ -180,6 +190,14 @@ class Plant(models.Model):
     Stores optional description params added during registration
     Receives database relation to all WaterEvents and FertilizeEvents
     '''
+
+    # User who registered the plant
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        blank=False,
+        null=False
+    )
 
     # UUID of QR code attached to plant
     uuid = models.UUIDField(unique=True)
@@ -231,7 +249,7 @@ class Plant(models.Model):
             return f'Unnamed {self.species}'
 
         # If no name or species return string with unnamed plant index
-        unnamed_plants = get_unnamed_plants()
+        unnamed_plants = get_unnamed_plants(self.user)
         return f'Unnamed plant {unnamed_plants.index(self.id) + 1}'
 
     def get_photos(self):
@@ -371,13 +389,13 @@ class Plant(models.Model):
 
 @receiver(post_save, sender=Plant)
 @receiver(post_delete, sender=Plant)
-def clear_cached_plant_lists(**kwargs):
+def clear_cached_plant_lists(instance, **kwargs):
     '''Clear cached unnamed_plant and species_options lists when a Plant is
     saved or deleted (will be generated and cached next time needed)
 
     The plant_options list is updated automatically by hook in tasks.py.
     '''
-    cache.delete('unnamed_plants')
+    cache.delete(f'unnamed_plants_{instance.user.pk}')
     cache.delete('species_options')
 
 

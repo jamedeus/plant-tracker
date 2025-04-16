@@ -55,6 +55,11 @@ const GroupModal = () => {
                         />
                     </div>
                 ))}
+                {!groupOptions.length && (
+                    <span className="my-16">
+                        No groups
+                    </span>
+                )}
             </div>
         </Modal>
     );

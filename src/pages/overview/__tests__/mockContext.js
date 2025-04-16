@@ -13,6 +13,19 @@ export const mockContext = {
             "last_fertilized": "2024-02-26T02:44:12+00:00",
             "thumbnail": "/media/thumbnails/photo_thumb.jpg",
             "archived": false
+        },
+        {
+            "name": "Second Test Plant",
+            "display_name": "Second Test Plant",
+            "uuid": "0640ec3b-1bed-fb15-a078-d6e7ec66be12",
+            "created": "2023-12-28T01:25:12+00:00",
+            "species": "Fittonia",
+            "description": "",
+            "pot_size": 2,
+            "last_watered": "2024-02-27T02:44:12+00:00",
+            "last_fertilized": "2024-02-27T02:44:12+00:00",
+            "thumbnail": "/media/thumbnails/photo2_thumb.jpg",
+            "archived": false
         }
     ],
     "groups": [
@@ -24,6 +37,16 @@ export const mockContext = {
             "location": "Middle shelf",
             "plants": 4,
             "archived": false
+        },
+        {
+            "uuid": "0640ec3b-1bed-4ba5-a078-d6e7ec66be14",
+            "created": "2023-12-28T01:25:12+00:00",
+            "name": "Second Test group",
+            "display_name": "Second Test group",
+            "location": "",
+            "plants": 6,
+            "archived": false
         }
-    ]
+    ],
+    "show_archive": true
 };

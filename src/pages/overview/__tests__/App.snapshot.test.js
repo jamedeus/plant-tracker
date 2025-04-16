@@ -5,16 +5,23 @@ import App from '../App';
 import { mockContext } from './mockContext';
 
 describe('App', () => {
+    beforeAll(() => {
+        // Mock page title (set by django template in prod)
+        document.title = 'Plant Overview';
+    });
+
     // Delete mock contexts after each test (isolation)
     afterEach(() => {
         removeMockContext('plants');
         removeMockContext('groups');
+        removeMockContext('show_archive');
     });
 
     it('matches snapshot when plants and groups exist (desktop layout)', () => {
-        // Create mock state objects
-        createMockContext('plants', mockContext.plants);
-        createMockContext('groups', mockContext.groups);
+        // Create mock state objects with a single plant and group
+        createMockContext('plants', [mockContext.plants[0]]);
+        createMockContext('groups', [mockContext.groups[0]]);
+        createMockContext('show_archive', mockContext.show_archive);
 
         // Set width greater than tailwind md breakpoint
         window.innerWidth = 800;
@@ -29,9 +36,10 @@ describe('App', () => {
     });
 
     it('matches snapshot when plants and groups exist (mobile layout)', () => {
-        // Create mock state objects
-        createMockContext('plants', mockContext.plants);
-        createMockContext('groups', mockContext.groups);
+        // Create mock state objects with a single plant and group
+        createMockContext('plants', [mockContext.plants[0]]);
+        createMockContext('groups', [mockContext.groups[0]]);
+        createMockContext('show_archive', mockContext.show_archive);
 
         // Set width less than tailwind md breakpoint
         window.innerWidth = 600;
@@ -46,9 +54,10 @@ describe('App', () => {
     });
 
     it('matches snapshot when only plants exist', () => {
-        // Create mock state objects
-        createMockContext('plants', mockContext.plants);
+        // Create mock state objects with a single plant
+        createMockContext('plants', [mockContext.plants[0]]);
         createMockContext('groups', []);
+        createMockContext('show_archive', mockContext.show_archive);
 
         // Render App, confirm matches snapshot
         const component = render(
@@ -60,9 +69,10 @@ describe('App', () => {
     });
 
     it('matches snapshot when only groups exist', () => {
-        // Create mock state objects
+        // Create mock state objects with a single group
         createMockContext('plants', []);
-        createMockContext('groups', mockContext.groups);
+        createMockContext('groups', [mockContext.groups[0]]);
+        createMockContext('show_archive', mockContext.show_archive);
 
         // Render App, confirm matches snapshot
         const component = render(
@@ -77,6 +87,7 @@ describe('App', () => {
         // Create mock state objects
         createMockContext('plants', []);
         createMockContext('groups', []);
+        createMockContext('show_archive', false);
 
         // Render App, confirm matches snapshot
         const component = render(
@@ -89,20 +100,33 @@ describe('App', () => {
 });
 
 describe('App (archived page)', () => {
+    beforeAll(() => {
+        // Mock page title (set by django template in prod)
+        document.title = 'Archived';
+    });
+
     it('matches snapshot when plants and groups exist', () => {
-        // Create mock state objects (flip all archived bools to true)
-        createMockContext('plants', mockContext.plants.map(plant => {
-            plant.archived = true;
-            return plant;
-        }));
-        createMockContext('groups', mockContext.groups.map(group => {
-            group.archived = true;
-            return group;
-        }));
+        // Create mock state objects with a single plant and group (flip
+        // archived bools to true)
+        createMockContext('plants', [{
+            ...mockContext.plants[0],
+            archived: true
+        }]);
+        createMockContext('groups', [{
+            ...mockContext.groups[0],
+            archived: true
+        }]);
 
         // Mock window.location to simulate archived overview
-        delete window.location;
-        window.location = new URL('https://plants.lan/archived');
+        Object.defineProperty(window, 'location', {
+            configurable: true,
+            value: {
+                ...window.location,
+                href: 'https://plants.lan/',
+                pathname: '/archived',
+                assign: jest.fn()
+            }
+        });
 
         // Render App, confirm matches snapshot
         const component = render(

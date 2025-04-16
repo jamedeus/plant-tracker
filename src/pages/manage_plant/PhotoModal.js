@@ -112,6 +112,11 @@ const PhotoModal = () => {
         } else {
             setUploading(false);
             resetSelection();
+            // Redirect to login page if  user not signed in/session expired
+            if (response.status === 401) {
+                window.location.href = '/accounts/login/';
+            }
+            // Show other errors in modal
             try {
                 const error = await response.json();
                 openErrorModal(JSON.stringify(error));

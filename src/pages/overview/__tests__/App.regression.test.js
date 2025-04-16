@@ -13,6 +13,7 @@ describe('App', () => {
         // Create mock state objects
         createMockContext('plants', mockContext.plants);
         createMockContext('groups', mockContext.groups);
+        createMockContext('show_archive', mockContext.show_archive);
     });
 
     beforeEach(() => {
@@ -30,8 +31,8 @@ describe('App', () => {
     // Original bug: Plant and Group filter inputs included results where the
     // UUID, last_watered timestamp, or thumbnail URL matched the user's query.
     it('does not match match UUIDs, timestamps, or URLs when filtering', async () => {
-        const plantColumn = app.getByText('Plants (1)').parentElement;
-        const groupColumn = app.getByText('Groups (1)').parentElement;
+        const plantColumn = app.getByText('Plants (2)').parentElement;
+        const groupColumn = app.getByText('Groups (2)').parentElement;
         const plantFilterInput = within(plantColumn).getByRole('textbox');
         const groupFilterInput = within(groupColumn).getByRole('textbox');
 
@@ -68,30 +69,32 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "deleted": "uuid"
+                "deleted": [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                ],
+                "failed": []
             })
         }));
 
-        // Click edit option, click both checkboxes (first plant second grou)
+        // Click edit option, select first plant and first group checkboxes
         await user.click(app.getByText("Edit"));
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[1]);
+        const plantsCol = app.getByText('Plants (2)').parentElement;
+        await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[0]);
+        const groupsCol = app.getByText('Groups (2)').parentElement;
+        await user.click(groupsCol.querySelectorAll('label.cursor-pointer')[0]);
 
         // Click delete button in floating div
         await user.click(app.getByText('Delete'));
 
-        // Confirm UUIDs posted to /delete_plant and /delete_group endpoints
-        expect(global.fetch).toHaveBeenCalledWith('/delete_plant', {
+        // Confirm correct data posted to /bulk_delete_plants_and_groups endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_delete_plants_and_groups', {
             method: 'POST',
             body: JSON.stringify({
-                "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-            }),
-            headers: postHeaders
-        });
-        expect(global.fetch).toHaveBeenCalledWith('/delete_group', {
-            method: 'POST',
-            body: JSON.stringify({
-                "group_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                "uuids": [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                ]
             }),
             headers: postHeaders
         });
@@ -117,31 +120,32 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "updated": "uuid"
+                "archived": [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                ],
+                "failed": []
             })
         }));
 
-        // Click edit option, click both checkboxes (first plant second grou)
+        // Click edit option, select first plant and first group checkboxes
         await user.click(app.getByText("Edit"));
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[1]);
+        const plantsCol = app.getByText('Plants (2)').parentElement;
+        await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[0]);
+        const groupsCol = app.getByText('Groups (2)').parentElement;
+        await user.click(groupsCol.querySelectorAll('label.cursor-pointer')[0]);
 
         // Click archive button in floating div
         await user.click(app.getByText('Archive'));
 
-        // Confirm UUIDs posted to /archive_plant and /archive_group endpoints
-        expect(global.fetch).toHaveBeenCalledWith('/archive_plant', {
+        // Confirm correct data posted to /bulk_delete_plants_and_groups endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_archive_plants_and_groups', {
             method: 'POST',
             body: JSON.stringify({
-                "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                archived: true
-            }),
-            headers: postHeaders
-        });
-        expect(global.fetch).toHaveBeenCalledWith('/archive_group', {
-            method: 'POST',
-            body: JSON.stringify({
-                "group_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                "uuids": [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                ],
                 archived: true
             }),
             headers: postHeaders

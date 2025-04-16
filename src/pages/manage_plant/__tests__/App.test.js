@@ -153,6 +153,24 @@ describe('App', () => {
         await user.click(app.getByRole("button", {name: "Water"}));
     });
 
+    // Note: this response can only be received if SINGLE_USER_MODE is disabled
+    it('redirects to login page if events added while user not signed in', async () => {
+        // Mock fetch function to simulate user with an expired session
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            status: 401,
+            json: () => Promise.resolve({
+                "error": "authentication required"
+            })
+        }));
+
+        // Click water button
+        await user.click(app.getByRole("button", {name: "Water"}));
+
+        // Confirm redirected
+        expect(window.location.href).toBe('/accounts/login/');
+    });
+
     it('sends correct payload when "Remove from group" clicked', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
@@ -288,12 +306,6 @@ describe('App', () => {
         await user.click(within(calendar).getByText("March 2024"));
         expect(calendar.querySelector('.react-calendar__month-view')).toBeNull();
         expect(calendar.querySelector('.react-calendar__year-view')).not.toBeNull();
-    });
-
-    it('redirects to overview when dropdown option is clicked', async () => {
-        // Click overview dropdown option, confirm redirected
-        await user.click(app.getByText('Overview'));
-        expect(window.location.href).toBe('/');
     });
 
     it('fetches new state when user navigates to page with back button', async () => {

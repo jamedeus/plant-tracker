@@ -124,6 +124,24 @@ describe('App', () => {
         });
     });
 
+    // Note: this response can only be received if SINGLE_USER_MODE is disabled
+    it('redirects to login page if events added while user not signed in', async () => {
+        // Mock fetch function to simulate user with an expired session
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            status: 401,
+            json: () => Promise.resolve({
+                "error": "authentication required"
+            })
+        }));
+
+        // Click Water All button
+        await user.click(app.getByRole("button", {name: "Water All"}));
+
+        // Confirm redirected
+        expect(window.location.href).toBe('/accounts/login/');
+    });
+
     it('shows checkboxes and event buttons when Manage button is clicked', async () => {
         // Get reference to plants column
         const plantsCol = app.getByText("Plants (3)").parentElement;
@@ -227,6 +245,20 @@ describe('App', () => {
         });
     });
 
+    it('shows toast if event buttons clicked with no plants selected', async () => {
+        // Confirm toast warning message is not on page
+        expect(app.queryByText('No plants selected!')).toBeNull();
+
+        // Click Manage button, click water without selecting anything
+        const plantsCol = app.getByText("Plants (3)").parentElement;
+        await user.click(within(plantsCol).getByText("Manage"));
+        await user.click(within(plantsCol).getByText("Water"));
+
+        // Confirm toast appeared, no request was made
+        expect(app.getByText('No plants selected!')).not.toBeNull();
+        expect(global.fetch).not.toHaveBeenCalled();
+    });
+
     it('sends correct payload when Add Plants modal is submitted', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
@@ -322,12 +354,6 @@ describe('App', () => {
         expect(titles.length).toBe(2);
         expect(titles[0].innerHTML).toBe('Unnamed Spider Plant');
         expect(titles[1].innerHTML).toBe('Newest plant');
-    });
-
-    it('redirects to overview when dropdown option is clicked', async () => {
-        // Click overview dropdown option, confirm redirected
-        await user.click(app.getByText('Overview'));
-        expect(window.location.href).toBe('/');
     });
 
     it('fetches new state when user navigates to page with back button', async () => {

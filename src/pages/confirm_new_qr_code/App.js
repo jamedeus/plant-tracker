@@ -2,9 +2,9 @@ import React, { useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { sendPostRequest, parseDomContext } from 'src/util';
 import Navbar from 'src/components/Navbar';
+import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
 import PlantDetails from 'src/components/PlantDetails.js';
 import GroupDetails from 'src/components/GroupDetails.js';
-import { useTheme } from 'src/context/ThemeContext';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
@@ -74,9 +74,6 @@ function App() {
         };
     }, []);
 
-    // Get toggle theme option from context
-    const { ToggleThemeOption } = useTheme();
-
     const handleConfirm = async () => {
         const response = await sendPostRequest(
             '/change_uuid',
@@ -93,16 +90,6 @@ function App() {
             openErrorModal(JSON.stringify(error));
         }
     };
-
-    // Top left corner dropdown options
-    const DropdownMenuOptions = useMemo(() => (
-        <>
-            <li><a onClick={() => window.location.href = "/"}>
-                Overview
-            </a></li>
-            <ToggleThemeOption />
-        </>
-    ), [ToggleThemeOption]);
 
     // Plant/group details card shown when title is clicked
     const DetailsDropdown = useMemo(() => (
@@ -127,7 +114,7 @@ function App() {
     return (
         <div className="container flex flex-col mx-auto h-screen">
             <Navbar
-                menuOptions={DropdownMenuOptions}
+                menuOptions={<NavbarDropdownOptions />}
                 title={instance.display_name}
                 titleOptions={DetailsDropdown}
             />

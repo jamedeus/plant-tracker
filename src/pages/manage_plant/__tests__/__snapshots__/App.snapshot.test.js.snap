@@ -74,6 +74,11 @@ exports[`App matches snapshot 1`] = `
                 </a>
               </li>
               <li>
+                <a>
+                  User profile
+                </a>
+              </li>
+              <li>
                 <a
                   href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                 >
@@ -2005,6 +2010,11 @@ exports[`App matches snapshot 1`] = `
             <li>
               <a>
                 Overview
+              </a>
+            </li>
+            <li>
+              <a>
+                User profile
               </a>
             </li>
             <li>
@@ -4030,6 +4040,11 @@ exports[`App matches snapshot when plant is archived 1`] = `
               </li>
               <li>
                 <a>
+                  User profile
+                </a>
+              </li>
+              <li>
+                <a>
                   Light mode
                 </a>
               </li>
@@ -5839,6 +5854,11 @@ exports[`App matches snapshot when plant is archived 1`] = `
             <li>
               <a>
                 Overview
+              </a>
+            </li>
+            <li>
+              <a>
+                User profile
               </a>
             </li>
             <li>

@@ -18,6 +18,7 @@ from django.test.client import RequestFactory, MULTIPART_CONTENT
 from PIL import UnidentifiedImageError
 
 from .views import render_react_app
+from .view_decorators import get_default_user
 from .models import (
     Group,
     Plant,
@@ -116,29 +117,56 @@ class OverviewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
         self.assertEqual(response.context['js_bundle'], 'plant_tracker/overview.js')
-        self.assertEqual(response.context['title'], 'Overview')
+        self.assertEqual(response.context['title'], 'Plant Overview')
 
         # Confirm correct state object (no plants or groups in database)
         self.assertEqual(
             response.context['state'],
-            {'plants': [], 'groups': []}
+            {
+                'plants': [],
+                'groups': [],
+                'show_archive': False
+            }
         )
 
     def test_overview_page_with_database_entries(self):
         # Create test group and 2 test plants
-        group = Group.objects.create(uuid=uuid4())
-        plant1 = Plant.objects.create(uuid=uuid4(), name='Test plant')
-        plant2 = Plant.objects.create(uuid=uuid4(), species='fittonia', group=group)
+        default_user = get_default_user()
+        group = Group.objects.create(
+            uuid=uuid4(),
+            user=default_user
+        )
+        plant1 = Plant.objects.create(
+            uuid=uuid4(),
+            name='Test plant',
+            user=default_user
+        )
+        plant2 = Plant.objects.create(
+            uuid=uuid4(),
+            species='fittonia',
+            user=default_user, group=group
+        )
+
         # Create archived group and archived plant (should not be in context)
-        Plant.objects.create(uuid=uuid4(), name='Archived plant', archived=True)
-        Group.objects.create(uuid=uuid4(), name='Archived group', archived=True)
+        Plant.objects.create(
+            uuid=uuid4(),
+            name='Archived plant',
+            user=default_user,
+            archived=True
+        )
+        Group.objects.create(
+            uuid=uuid4(),
+            name='Archived group',
+            user=default_user,
+            archived=True
+        )
 
         # Request overview, confirm uses correct JS bundle and title
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
         self.assertEqual(response.context['js_bundle'], 'plant_tracker/overview.js')
-        self.assertEqual(response.context['title'], 'Overview')
+        self.assertEqual(response.context['title'], 'Plant Overview')
 
         # Confirm state object has details of all non-archived plants and groups,
         # does not contain archived plant and group
@@ -192,7 +220,7 @@ class OverviewTests(TestCase):
 
     def test_overview_page_cached_state(self):
         # Cache arbitrary string as overview_state
-        cache.set('overview_state', 'cached')
+        cache.set(f'overview_state_{get_default_user().pk}', 'cached')
 
         # Mock build_overview_state to return a different string
         with patch('plant_tracker.tasks.build_overview_state', return_value='built'):
@@ -201,7 +229,7 @@ class OverviewTests(TestCase):
             self.assertEqual(response.context['state'], 'cached')
 
         # Delete cached overview__state
-        cache.delete('overview_state')
+        cache.delete(f'overview_state_{get_default_user().pk}')
 
         # Mock build_overview_state to return a different string
         with patch('plant_tracker.tasks.build_overview_state', return_value='built'):
@@ -216,7 +244,11 @@ class OverviewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
-            {'plants': [], 'groups': []}
+            {
+                'plants': [],
+                'groups': [],
+                'show_archive': False
+            }
         )
 
     def test_get_qr_codes(self):
@@ -293,7 +325,7 @@ class OverviewTests(TestCase):
     def test_delete_plant(self):
         # Create test plant, confirm exists in database
         test_id = uuid4()
-        Plant.objects.create(uuid=test_id, name='test plant')
+        Plant.objects.create(uuid=test_id, name='test plant', user=get_default_user())
         self.assertEqual(len(Plant.objects.all()), 1)
 
         # Call delete endpoint, confirm response, confirm removed from database
@@ -310,7 +342,7 @@ class OverviewTests(TestCase):
     def test_archive_plant(self):
         # Create test plant, confirm exists in database, is not archived
         test_id = uuid4()
-        Plant.objects.create(uuid=test_id, name='test plant')
+        Plant.objects.create(uuid=test_id, name='test plant', user=get_default_user())
         self.assertEqual(len(Plant.objects.all()), 1)
         self.assertFalse(Plant.objects.all()[0].archived)
 
@@ -335,7 +367,7 @@ class OverviewTests(TestCase):
     def test_archive_plant_error(self):
         # Create test plant, confirm exists in database, is not archived
         test_id = uuid4()
-        Plant.objects.create(uuid=test_id, name='test plant')
+        Plant.objects.create(uuid=test_id, name='test plant', user=get_default_user())
         self.assertEqual(len(Plant.objects.all()), 1)
         self.assertFalse(Plant.objects.all()[0].archived)
 
@@ -352,7 +384,7 @@ class OverviewTests(TestCase):
     def test_delete_group(self):
         # Create test group, confirm exists in database
         test_id = uuid4()
-        Group.objects.create(uuid=test_id, name='test group')
+        Group.objects.create(uuid=test_id, name='test group', user=get_default_user())
         self.assertEqual(len(Group.objects.all()), 1)
 
         # Call delete endpoint, confirm response, confirm removed from database
@@ -369,7 +401,7 @@ class OverviewTests(TestCase):
     def test_archive_group(self):
         # Create test group, confirm exists in database, is not archived
         test_id = uuid4()
-        Group.objects.create(uuid=test_id, name='test group')
+        Group.objects.create(uuid=test_id, name='test group', user=get_default_user())
         self.assertEqual(len(Group.objects.all()), 1)
         self.assertFalse(Group.objects.all()[0].archived)
 
@@ -394,7 +426,7 @@ class OverviewTests(TestCase):
     def test_archive_group_error(self):
         # Create test plant, confirm exists in database, is not archived
         test_id = uuid4()
-        Group.objects.create(uuid=test_id, name='test group')
+        Group.objects.create(uuid=test_id, name='test group', user=get_default_user())
         self.assertEqual(len(Group.objects.all()), 1)
         self.assertFalse(Group.objects.all()[0].archived)
 
@@ -408,6 +440,87 @@ class OverviewTests(TestCase):
         self.assertEqual(response.json(), {"error": "archived key is not bool"})
         self.assertFalse(Group.objects.all()[0].archived)
 
+    def test_bulk_delete_plants_and_groups(self):
+        # Create test plant and group, confirm both exist in database
+        plant_id = uuid4()
+        group_id = uuid4()
+        default_user = get_default_user()
+        Plant.objects.create(uuid=plant_id, name='test plant', user=default_user)
+        Group.objects.create(uuid=group_id, name='test group', user=default_user)
+        self.assertEqual(len(Plant.objects.all()), 1)
+        self.assertEqual(len(Group.objects.all()), 1)
+
+        # Post both UUIDs to /bulk_delete_plants_and_groups
+        response = self.client.post('/bulk_delete_plants_and_groups', {
+            'uuids': [
+                str(plant_id),
+                str(group_id)
+            ]
+        })
+
+        # Confirm response, confirm removed from database
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {'deleted': [str(plant_id), str(group_id)], 'failed': []}
+        )
+        self.assertEqual(len(Plant.objects.all()), 0)
+        self.assertEqual(len(Group.objects.all()), 0)
+
+        # Attempt to delete non-existing plant, confirm error
+        response = self.client.post('/bulk_delete_plants_and_groups', {
+            'uuids': [str(plant_id)]
+        })
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.json(),
+            {'deleted': [], 'failed': [str(plant_id)]}
+        )
+
+    def test_bulk_archive_plants_and_groups(self):
+        # Create test plant and group, confirm both exist in database and are not archived
+        plant_id = uuid4()
+        group_id = uuid4()
+        default_user = get_default_user()
+        Plant.objects.create(uuid=plant_id, name='test plant', user=default_user)
+        Group.objects.create(uuid=group_id, name='test group', user=default_user)
+        self.assertEqual(len(Plant.objects.all()), 1)
+        self.assertEqual(len(Group.objects.all()), 1)
+        self.assertFalse(Plant.objects.all()[0].archived)
+        self.assertFalse(Group.objects.all()[0].archived)
+
+        # Post both UUIDs to /bulk_archive_plants_and_groups
+        response = self.client.post('/bulk_archive_plants_and_groups', {
+            'uuids': [
+                str(plant_id),
+                str(group_id)
+            ],
+            'archived': True
+        })
+
+        # Confirm response, confirm still in database but archived is True
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {'archived': [str(plant_id), str(group_id)], 'failed': []}
+        )
+        self.assertEqual(len(Plant.objects.all()), 1)
+        self.assertEqual(len(Group.objects.all()), 1)
+        self.assertTrue(Plant.objects.all()[0].archived)
+        self.assertTrue(Group.objects.all()[0].archived)
+
+        # Attempt to archive non-existing uuid, confirm error
+        test_id = uuid4()
+        response = self.client.post('/bulk_archive_plants_and_groups', {
+            'uuids': [str(test_id)],
+            'archived': True
+        })
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.json(),
+            {'archived': [], 'failed': [str(test_id)]}
+        )
+
 
 class ArchivedOverviewTests(TestCase):
     def setUp(self):
@@ -415,27 +528,33 @@ class ArchivedOverviewTests(TestCase):
         self.client = JSONClient()
 
     def test_archived_overview_page_no_database_entries(self):
-        # Request overview, confirm uses correct JS bundle and title
+        # Request archived overview when no archived plants or groups exist
         response = self.client.get('/archived')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['js_bundle'], 'plant_tracker/overview.js')
-        self.assertEqual(response.context['title'], 'Archived')
 
-        # Confirm correct state object (no plants or groups in database)
-        self.assertEqual(
-            response.context['state'],
-            {'plants': [], 'groups': []}
-        )
+        # Confirm redirected to main overview
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/')
 
     def test_overview_page_with_database_entries(self):
         # Create test group and 2 test plants (should NOT be in context)
-        Group.objects.create(uuid=uuid4())
-        Plant.objects.create(uuid=uuid4(), name='Test plant')
-        Plant.objects.create(uuid=uuid4(), species='fittonia')
+        default_user = get_default_user()
+        Group.objects.create(uuid=uuid4(), user=default_user)
+        Plant.objects.create(uuid=uuid4(), name='Test plant', user=default_user)
+        Plant.objects.create(uuid=uuid4(), species='fittonia', user=default_user)
+
         # Create archived group and archived plant (SHOULD be in context)
-        plant = Plant.objects.create(uuid=uuid4(), name='Archived plant', archived=True)
-        group = Group.objects.create(uuid=uuid4(), name='Archived group', archived=True)
+        plant = Plant.objects.create(
+            uuid=uuid4(),
+            name='Archived plant',
+            user=default_user,
+            archived=True
+        )
+        group = Group.objects.create(
+            uuid=uuid4(),
+            name='Archived group',
+            user=default_user,
+            archived=True
+        )
 
         # Request archive overview, confirm uses correct JS bundle and title
         response = self.client.get('/archived')
@@ -516,6 +635,8 @@ class RegistrationTests(TestCase):
         self.assertEqual(plant.species, 'Giant Sequoia')
         self.assertEqual(plant.description, '300 feet and a few thousand years old')
         self.assertEqual(plant.pot_size, 4)
+        # Confirm plant is owned by default user
+        self.assertEqual(plant.user, get_default_user())
 
     def test_register_group_endpoint(self):
         # Confirm no plants or groups in database
@@ -544,6 +665,8 @@ class RegistrationTests(TestCase):
         self.assertEqual(group.name, 'test group')
         self.assertEqual(group.location, 'top shelf')
         self.assertEqual(group.description, 'This group is used for propagation')
+        # Confirm group is owned by default user
+        self.assertEqual(group.user, get_default_user())
 
     def test_registration_page(self):
         # Request management page with uuid that doesn't exist in database
@@ -564,8 +687,8 @@ class RegistrationTests(TestCase):
         self.assertEqual(response.context['state']['species_options'], [])
 
         # Create 2 test plants with species set
-        Plant.objects.create(uuid=uuid4(), species='Calathea')
-        Plant.objects.create(uuid=uuid4(), species='Fittonia')
+        Plant.objects.create(uuid=uuid4(), species='Calathea', user=get_default_user())
+        Plant.objects.create(uuid=uuid4(), species='Fittonia', user=get_default_user())
 
         # Reguest page again, confirm species_options contains both species
         response = self.client.get(f'/manage/{uuid4()}')
@@ -580,9 +703,10 @@ class ManagePageTests(TestCase):
         self.client = JSONClient()
 
         # Create test plants and groups
-        self.plant1 = Plant.objects.create(uuid=uuid4())
-        self.plant2 = Plant.objects.create(uuid=uuid4())
-        self.group1 = Group.objects.create(uuid=uuid4())
+        default_user = get_default_user()
+        self.plant1 = Plant.objects.create(uuid=uuid4(), user=default_user)
+        self.plant2 = Plant.objects.create(uuid=uuid4(), user=default_user)
+        self.group1 = Group.objects.create(uuid=uuid4(), user=default_user)
 
     def test_manage_plant(self):
         # Request management page for test plant, confirm status
@@ -1003,8 +1127,8 @@ class ManagePlantEndpointTests(TestCase):
         self.client = JSONClient()
 
         # Create test plant and group
-        self.plant = Plant.objects.create(uuid=uuid4())
-        self.group = Group.objects.create(uuid=uuid4())
+        self.plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        self.group = Group.objects.create(uuid=uuid4(), user=get_default_user())
 
     def _refresh_test_models(self):
         self.plant.refresh_from_db()
@@ -1148,9 +1272,10 @@ class ManageGroupEndpointTests(TestCase):
         self.client = JSONClient()
 
         # Create test plants and groups
-        self.plant1 = Plant.objects.create(uuid=uuid4())
-        self.plant2 = Plant.objects.create(uuid=uuid4())
-        self.group1 = Group.objects.create(uuid=uuid4())
+        default_user = get_default_user()
+        self.plant1 = Plant.objects.create(uuid=uuid4(), user=default_user)
+        self.plant2 = Plant.objects.create(uuid=uuid4(), user=default_user)
+        self.group1 = Group.objects.create(uuid=uuid4(), user=default_user)
 
         # Create fake UUID that doesn't exist in database
         self.fake_id = uuid4()
@@ -1275,16 +1400,17 @@ class ChangeQrCodeTests(TestCase):
         self.client = JSONClient()
 
         # Create test plants and groups
-        self.plant1 = Plant.objects.create(uuid=uuid4())
-        self.plant2 = Plant.objects.create(uuid=uuid4())
-        self.group1 = Group.objects.create(uuid=uuid4())
+        self.default_user = get_default_user()
+        self.plant1 = Plant.objects.create(uuid=uuid4(), user=self.default_user)
+        self.plant2 = Plant.objects.create(uuid=uuid4(), user=self.default_user)
+        self.group1 = Group.objects.create(uuid=uuid4(), user=self.default_user)
 
         # Create fake UUID that doesn't exist in database
         self.fake_id = uuid4()
 
     def tearDown(self):
         # Clear cache after each test
-        cache.delete('old_uuid')
+        cache.delete(f'old_uuid_{self.default_user.pk}')
 
     def _refresh_test_models(self):
         self.plant1.refresh_from_db()
@@ -1293,7 +1419,7 @@ class ChangeQrCodeTests(TestCase):
 
     def test_change_qr_code_endpoint(self):
         # Confirm cache key is empty
-        self.assertIsNone(cache.get('old_uuid'))
+        self.assertIsNone(cache.get(f'old_uuid_{self.default_user.pk}'))
 
         # Post UUID to change_qr_code endpoint, confirm response
         response = self.client.post('/change_qr_code', {
@@ -1306,12 +1432,18 @@ class ChangeQrCodeTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
         # Confirm cache key contains UUID
-        self.assertEqual(cache.get('old_uuid'), str(self.plant1.uuid))
+        self.assertEqual(
+            cache.get(f'old_uuid_{self.default_user.pk}'),
+            str(self.plant1.uuid)
+        )
 
     def test_change_uuid_endpoint_plant(self):
         # Simulate cached UUID from change_qr_code request
-        cache.set('old_uuid', str(self.plant1.uuid))
-        self.assertEqual(cache.get('old_uuid'), str(self.plant1.uuid))
+        cache.set(f'old_uuid_{self.default_user.pk}', str(self.plant1.uuid))
+        self.assertEqual(
+            cache.get(f'old_uuid_{self.default_user.pk}'),
+            str(self.plant1.uuid)
+        )
 
         # Post new UUID to change_uuid endpoint, confirm response
         response = self.client.post('/change_uuid', {
@@ -1327,12 +1459,15 @@ class ChangeQrCodeTests(TestCase):
         # Confirm plant UUID changed + cache cleared
         self._refresh_test_models()
         self.assertEqual(str(self.plant1.uuid), str(self.fake_id))
-        self.assertIsNone(cache.get('old_uuid'))
+        self.assertIsNone(cache.get(f'old_uuid_{self.default_user.pk}'))
 
     def test_change_uuid_endpoint_group(self):
         # Simulate cached UUID from change_qr_code request
-        cache.set('old_uuid', str(self.group1.uuid))
-        self.assertEqual(cache.get('old_uuid'), str(self.group1.uuid))
+        cache.set(f'old_uuid_{self.default_user.pk}', str(self.group1.uuid))
+        self.assertEqual(
+            cache.get(f'old_uuid_{self.default_user.pk}'),
+            str(self.group1.uuid)
+        )
 
         # Post new UUID to change_uuid endpoint, confirm response
         response = self.client.post('/change_uuid', {
@@ -1348,7 +1483,7 @@ class ChangeQrCodeTests(TestCase):
         # Confirm plant UUID changed + cache cleared
         self._refresh_test_models()
         self.assertEqual(str(self.group1.uuid), str(self.fake_id))
-        self.assertIsNone(cache.get('old_uuid'))
+        self.assertIsNone(cache.get(f'old_uuid_{self.default_user.pk}'))
 
     def test_change_uuid_invalid(self):
         # post invalid UUID to change_uuid endpoint, confirm error
@@ -1364,8 +1499,11 @@ class ChangeQrCodeTests(TestCase):
 
     def test_confirmation_page_plant(self):
         # Simulate cached UUID from change_qr_code request
-        cache.set('old_uuid', str(self.plant1.uuid))
-        self.assertEqual(cache.get('old_uuid'), str(self.plant1.uuid))
+        cache.set(f'old_uuid_{self.default_user.pk}', str(self.plant1.uuid))
+        self.assertEqual(
+            cache.get(f'old_uuid_{self.default_user.pk}'),
+            str(self.plant1.uuid)
+        )
 
         # Request management page with new UUID (simulate user scanning new QR)
         response = self.client.get(f'/manage/{self.fake_id}')
@@ -1403,8 +1541,11 @@ class ChangeQrCodeTests(TestCase):
 
     def test_confirmation_page_group(self):
         # Simulate cached UUID from change_qr_code request
-        cache.set('old_uuid', str(self.group1.uuid))
-        self.assertEqual(cache.get('old_uuid'), str(self.group1.uuid))
+        cache.set(f'old_uuid_{self.default_user.pk}', str(self.group1.uuid))
+        self.assertEqual(
+            cache.get(f'old_uuid_{self.default_user.pk}'),
+            str(self.group1.uuid)
+        )
 
         # Request management page with new UUID (simulate user scanning new QR)
         response = self.client.get(f'/manage/{self.fake_id}')
@@ -1444,8 +1585,11 @@ class ChangeQrCodeTests(TestCase):
         '''
 
         # Simulate cached UUID from change_qr_code request
-        cache.set('old_uuid', str(self.plant1.uuid))
-        self.assertEqual(cache.get('old_uuid'), str(self.plant1.uuid))
+        cache.set(f'old_uuid_{self.default_user.pk}', str(self.plant1.uuid))
+        self.assertEqual(
+            cache.get(f'old_uuid_{self.default_user.pk}'),
+            str(self.plant1.uuid)
+        )
 
         # Request management page with new UUID (should return confirmation page)
         response = self.client.get(f'/manage/{self.fake_id}')
@@ -1482,8 +1626,8 @@ class ChangeQrCodeTests(TestCase):
         # will clear entire cache immediately when Plant.delete hook is
         # triggered. In production this wouldn't happen for 30 seconds.)
         self.plant1.delete()
-        cache.set('old_uuid', str(self.plant1.uuid))
-        self.assertIsNotNone(cache.get('old_uuid'))
+        cache.set(f'old_uuid_{self.default_user.pk}', str(self.plant1.uuid))
+        self.assertIsNotNone(cache.get(f'old_uuid_{self.default_user.pk}'))
 
         # Request management page with new UUID (simulate user scanning new QR)
         response = self.client.get(f'/manage/{self.fake_id}')
@@ -1498,7 +1642,7 @@ class ChangeQrCodeTests(TestCase):
         self.assertEqual(response.context['title'], 'Register New Plant')
 
         # Confirm old_id cache was cleared
-        self.assertIsNone(cache.get('old_uuid'))
+        self.assertIsNone(cache.get(f'old_uuid_{self.default_user.pk}'))
 
 
 class PlantEventEndpointTests(TestCase):
@@ -1507,8 +1651,9 @@ class PlantEventEndpointTests(TestCase):
         self.client = JSONClient()
 
         # Create test plants
-        self.plant1 = Plant.objects.create(uuid=uuid4())
-        self.plant2 = Plant.objects.create(uuid=uuid4())
+        self.default_user = get_default_user()
+        self.plant1 = Plant.objects.create(uuid=uuid4(), user=self.default_user)
+        self.plant2 = Plant.objects.create(uuid=uuid4(), user=self.default_user)
 
         # Create fake UUID that doesn't exist in database
         self.fake_id = uuid4()
@@ -1803,7 +1948,7 @@ class NoteEventEndpointTests(TestCase):
         self.client = JSONClient()
 
         # Create test plant
-        self.plant = Plant.objects.create(uuid=uuid4())
+        self.plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
 
     def test_add_note_event(self):
         # Confirm test plant has no note events
@@ -1974,7 +2119,7 @@ class PlantPhotoEndpointTests(TestCase):
         self.client = JSONClient()
 
         # Create test plant
-        self.plant = Plant.objects.create(uuid=uuid4())
+        self.plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
 
     def tearDown(self):
         # Delete mock photos between tests to prevent duplicate names (django
@@ -2157,7 +2302,7 @@ class PlantPhotoEndpointTests(TestCase):
 
     def test_set_photo_of_wrong_plant_as_default_photo(self):
         # Create second plant entry + photo associated with second plant
-        wrong_plant = Plant.objects.create(uuid=uuid4())
+        wrong_plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         wrong_plant_photo = Photo.objects.create(
             photo=create_mock_photo('2024:02:21 10:52:03', 'IMG1.jpg'),
             plant=wrong_plant

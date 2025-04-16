@@ -14,6 +14,7 @@ the user logs events on the frontend.
 from celery import shared_task
 from django.core.cache import cache
 from django.dispatch import receiver
+from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save, post_delete
 
 from backend.celery import app
@@ -67,52 +68,64 @@ def schedule_cached_state_update(cache_name, callback_task, callback_kwargs=None
     cache.set(f'rebuild_{cache_name}_task_id', result.id, delay)
 
 
-def build_overview_state():
-    '''Builds state parsed by overview react app and returns'''
+def build_overview_state(user):
+    '''Takes user, builds state parsed by overview react app and returns.
+    Contains all non-archived plants and groups owned by user.
+    '''
+
+    # Only show link to archived overview if at least 1 archived plant or group
+    has_archived_plants = bool(Plant.objects.filter(archived=True, user=user))
+    has_archived_groups = bool(Group.objects.filter(archived=True, user=user))
+    show_archive = has_archived_plants or has_archived_groups
+
     state = {
         'plants': [],
-        'groups': []
+        'groups': [],
+        'show_archive': show_archive
     }
 
-    for plant in Plant.objects.filter(archived=False):
+    for plant in Plant.objects.filter(archived=False, user=user):
         state['plants'].append(plant.get_details())
 
-    for group in Group.objects.filter(archived=False):
+    for group in Group.objects.filter(archived=False, user=user):
         state['groups'].append(group.get_details())
 
     # Cache state indefinitely (updates automatically when database changes)
-    cache.set('overview_state', state, None)
+    cache.set(f'overview_state_{user.pk}', state, None)
 
     # Revoke queued update tasks (prevent rebuilding again after manual call)
-    revoke_queued_task('rebuild_overview_state_task_id')
+    revoke_queued_task(f'rebuild_overview_state_{user.pk}_task_id')
 
     return state
 
 
-def get_overview_state():
-    '''Returns the state object parsed by the overview page react app.
+def get_overview_state(user):
+    '''Takes user, returns state object parsed by the overview page react app.
     Loads state from cache if present, builds from database if not found.
     '''
-    state = cache.get('overview_state')
+    state = cache.get(f'overview_state_{user.pk}')
     if state is None:
-        state = build_overview_state()
+        state = build_overview_state(user)
     return state
 
 
 @shared_task()
-def update_cached_overview_state():
-    '''Builds and caches overview state'''
-    build_overview_state()
-    print('Rebuilt overview state')
+def update_cached_overview_state(user_pk):
+    '''Takes user primary key, builds and caches overview state'''
+    user = get_user_model().objects.get(pk=user_pk)
+    build_overview_state(user)
+    print(f'Rebuilt overview state for {user_pk}')
 
 
-def schedule_cached_overview_state_update():
-    '''Clears cached overview state immediately and schedules task to update
-    it in 30 seconds (timer resets if called again within 30 seconds).
+def schedule_cached_overview_state_update(user):
+    '''Takes user, clears cached state for their overview page immediately and
+    schedules task to update it in 30 seconds (timer resets if called again
+    within 30 seconds).
     '''
     schedule_cached_state_update(
-        cache_name='overview_state',
+        cache_name=f'overview_state_{user.pk}',
         callback_task=update_cached_overview_state,
+        callback_kwargs={'user_pk': user.pk},
         delay=30
     )
 
@@ -121,11 +134,11 @@ def schedule_cached_overview_state_update():
 @receiver(post_save, sender=Group)
 @receiver(post_delete, sender=Plant)
 @receiver(post_delete, sender=Group)
-def update_cached_overview_state_hook(**kwargs):
-    '''Schedules task to update cached overview state when Plant or Group model
-    is saved or deleted.
+def update_cached_overview_state_hook(instance, **kwargs):
+    '''Schedules task to update cached overview state for a specific user when
+    one of their Plant or Group models is saved or deleted.
     '''
-    schedule_cached_overview_state_update()
+    schedule_cached_overview_state_update(instance.user)
 
 
 def build_manage_plant_state(uuid):
@@ -191,7 +204,7 @@ def get_manage_plant_state(plant):
         state['plant_details']['group']['name'] = plant.group.get_display_name()
 
     # Add species and group options (cached separately)
-    state['group_options'] = get_group_options()
+    state['group_options'] = get_group_options(plant.user)
     state['species_options'] = get_plant_species_options()
 
     return state
@@ -246,60 +259,77 @@ def delete_cached_manage_plant_state_hook(instance, **kwargs):
 
 
 @shared_task()
-def update_cached_plant_options():
-    '''Builds and caches plant options for manage_group add plants modal'''
-    get_plant_options()
-    print('Rebuilt plant_options (manage_group add plants modal)')
+def update_cached_plant_options(user_pk):
+    '''Takes user primary key, builds and caches plant options for manage_group
+    add plants modal'''
+    cache.delete(f'plant_options_{user_pk}')
+    get_plant_options(get_user_model().objects.get(pk=user_pk))
+    print(f'Rebuilt plant_options for {user_pk} (manage_group add plants modal)')
 
 
-def schedule_cached_plant_options_update():
-    '''Clears cached plant_options immediately and schedules task to update it
-    in 30 seconds (timer resets if called again within 30 seconds)'''
+def schedule_cached_plant_options_update(user):
+    '''Takes user, clears cached plant_options immediately and schedules task
+    to update it in 30 seconds (timer resets if called again within 30 seconds)'''
     schedule_cached_state_update(
-        cache_name='plant_options',
+        cache_name=f'plant_options_{user.pk}',
         callback_task=update_cached_plant_options,
+        callback_kwargs={'user_pk': user.pk},
         delay=30
     )
 
 
 @receiver(post_save, sender=Plant)
 @receiver(post_delete, sender=Plant)
-def update_cached_plant_options_hook(**kwargs):
+def update_cached_plant_options_hook(instance, **kwargs):
     '''Schedules task to update cached plant_options when Plant is saved/deleted'''
-    schedule_cached_plant_options_update()
+    schedule_cached_plant_options_update(instance.user)
 
 
 @shared_task()
-def update_cached_group_options():
-    '''Builds and caches group options for manage_plant add group modal'''
-    get_group_options()
-    print('Rebuilt group_options (manage_plant add group modal)')
+def update_cached_group_options(user_pk):
+    '''Takes user primary key, builds and caches group options for manage_plant
+    add group modal'''
+    cache.delete(f'group_options_{user_pk}')
+    get_group_options(get_user_model().objects.get(pk=user_pk))
+    print(f'Rebuilt group_options for {user_pk} (manage_plant add group modal)')
 
 
-def schedule_cached_group_options_update():
-    '''Clears cached group_options immediately and schedules task to update it
-    in 30 seconds (timer resets if called again within 30 seconds)'''
+def schedule_cached_group_options_update(user):
+    '''Takes user, clears cached group_options immediately and schedules task
+    to update it in 30 seconds (timer resets if called again within 30 seconds)'''
     schedule_cached_state_update(
-        cache_name='group_options',
+        cache_name=f'group_options_{user.pk}',
         callback_task=update_cached_group_options,
+        callback_kwargs={'user_pk': user.pk},
         delay=30
     )
 
 
 @receiver(post_save, sender=Group)
 @receiver(post_delete, sender=Group)
-def update_cached_group_options_hook(**kwargs):
+def update_cached_group_options_hook(instance, **kwargs):
     '''Schedules task to update cached group_options when Group is saved/deleted'''
-    schedule_cached_group_options_update()
+    schedule_cached_group_options_update(instance.user)
 
 
 @shared_task()
 def update_all_cached_states():
-    '''Updates cached overview state and all cached manage_plant states
-    Called when server starts to prevent serving outdated states
+    '''Updates all cached overview, plant_options, and group_options states
+    that have keys in redis store. Updates and caches manage_plant state for
+    all plants in database regardless of whether they have existing keys.
+    Called when server starts to prevent serving outdated states.
     '''
-    update_cached_overview_state.delay()
-    update_cached_plant_options.delay()
-    update_cached_group_options.delay()
+
+    # Build states for all plants in database
     for plant in Plant.objects.all():
         update_cached_manage_plant_state.delay(plant.uuid)
+
+    # Iterate existing keys, parse user primary key from cache name and pass
+    # to correct function to rebuild
+    for key in cache.keys('*'):
+        if key.startswith('overview_state_'):
+            update_cached_overview_state.delay(key.split('_')[-1])
+        elif key.startswith('plant_options_'):
+            update_cached_plant_options.delay(key.split('_')[-1])
+        elif key.startswith('group_options_'):
+            update_cached_group_options.delay(key.split('_')[-1])

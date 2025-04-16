@@ -10,9 +10,12 @@ import json
 from functools import wraps
 from datetime import datetime
 
-from django.http import JsonResponse
+from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.http import JsonResponse, HttpResponseRedirect
 from django.core.exceptions import ValidationError
 
+from .render_react_app import render_permission_denied_page
 from .models import Group, Plant, WaterEvent, FertilizeEvent, PruneEvent, RepotEvent
 
 
@@ -55,6 +58,32 @@ def get_plant_or_group_by_uuid(uuid):
     return instance
 
 
+def get_default_user():
+    '''Returns default user (owns all models when SINGLE_USER_MODE enabled)'''
+    return get_user_model().objects.get(username=settings.DEFAULT_USERNAME)
+
+
+def get_user_token(func):
+    '''Passes User model object to wrapped function as user kwarg.
+    If SINGLE_USER_MODE enabled returns default user without checking request.
+    If user accounts enabled reads user from requests. If not logged in returns
+    401 error for POST, redirect to login page for GET.
+    '''
+    @wraps(func)
+    def wrapper(request, **kwargs):
+        # Return default user without checking auth if SINGLE_USER_MODE enabled
+        if settings.SINGLE_USER_MODE:
+            return func(request, user=get_default_user(), **kwargs)
+        if not request.user.is_authenticated:
+            # Redirect to login page if not signed in
+            if request.method != "POST":
+                return HttpResponseRedirect(f'/accounts/login/?next={request.path}')
+            # Frontend sendPostRequest redirects to login if it receives 401
+            return JsonResponse({'error': 'authentication required'}, status=401)
+        return func(request, user=request.user, **kwargs)
+    return wrapper
+
+
 def requires_json_post(required_keys=None):
     '''Decorator throws error if request is not POST with JSON body
     Accepts optional list of required keys, throws error if any are missing
@@ -79,13 +108,14 @@ def requires_json_post(required_keys=None):
                         )
             except json.decoder.JSONDecodeError:
                 return JsonResponse({'error': 'request body must be JSON'}, status=405)
-            return func(data=data, **kwargs)
+            return func(request=request, data=data, **kwargs)
         return wrapper
     return decorator
 
 
 def get_plant_from_post_body(func):
     '''Decorator looks up plant by UUID, throws error if not found
+    If called after get_user_token throws error if Plant is not owned be user
     Must call after requires_json_post (expects dict with plant_id key as first arg)
     Passes Plant instance and data dict to wrapped function as plant and data kwargs
     '''
@@ -105,12 +135,18 @@ def get_plant_from_post_body(func):
                 {"error": "plant_id key is not a valid UUID"},
                 status=400
             )
+        if 'user' in kwargs and plant.user != kwargs['user']:
+            return JsonResponse(
+                {"error": "plant is owned by a different user"},
+                status=403
+            )
         return func(plant=plant, data=data, **kwargs)
     return wrapper
 
 
 def get_group_from_post_body(func):
     '''Decorator looks up group by UUID, throws error if not found
+    If called after get_user_token throws error if Group is not owned be user
     Must call after requires_json_post (expects dict with group_id key as first arg)
     Passes Group instance and data dict to wrapped function as group and data kwargs
     '''
@@ -130,12 +166,18 @@ def get_group_from_post_body(func):
                 {"error": "group_id key is not a valid UUID"},
                 status=400
             )
+        if 'user' in kwargs and group.user != kwargs['user']:
+            return JsonResponse(
+                {"error": "group is owned by a different user"},
+                status=403
+            )
         return func(group=group, data=data, **kwargs)
     return wrapper
 
 
 def get_qr_instance_from_post_body(func):
     '''Decorator looks up plant or group by UUID, throws error if neither found
+    If called after get_user_token throws error if instance is not owned be user
     Must call after requires_json_post (expects dict with uuid key as first arg)
     Passes instance and data dict to wrapped function as instance and data kwargs
     '''
@@ -157,6 +199,11 @@ def get_qr_instance_from_post_body(func):
             return JsonResponse(
                 {"error": "uuid key is not a valid UUID"},
                 status=400
+            )
+        if 'user' in kwargs and instance.user != kwargs['user']:
+            return JsonResponse(
+                {"error": "instance is owned by a different user"},
+                status=403
             )
         return func(instance=instance, data=data, **kwargs)
     return wrapper
@@ -212,4 +259,25 @@ def clean_payload_data(func):
         data = {key: (value.strip() if value != '' else None)
                 for key, value in data.items()}
         return func(data=data, **kwargs)
+    return wrapper
+
+
+def disable_in_single_user_mode(func):
+    '''Decorator prevents accessing view while SINGLE_USER_MODE is enabled.
+    Returns permission denied page for GET requests, JSON error for others.
+    '''
+    def wrapper(request, *args, **kwargs):
+        if settings.SINGLE_USER_MODE:
+            # User requesting disabled page: render permission denied
+            if request.method == "GET":
+                return render_permission_denied_page(
+                    request,
+                    'User accounts are disabled'
+                )
+            # User POSTing to disabled endpoint: return error response
+            return JsonResponse(
+                {"error": "user accounts are disabled"},
+                status=400
+            )
+        return func(request, *args, **kwargs)
     return wrapper

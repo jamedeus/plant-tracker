@@ -10,6 +10,7 @@ describe('App', () => {
         // Create mock state objects
         createMockContext('plants', mockContext.plants);
         createMockContext('groups', mockContext.groups);
+        createMockContext('show_archive', mockContext.show_archive);
 
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({

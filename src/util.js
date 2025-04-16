@@ -26,6 +26,11 @@ async function sendPostRequest(url, body) {
         }
     });
 
+    // Redirect to login page if  user not signed in/session expired
+    if (response.status === 401) {
+        window.location.href = '/accounts/login/';
+    }
+
     return response;
 }
 

@@ -69,10 +69,22 @@ describe('App', () => {
         expect(app.queryByText(/failed to change QR code/)).not.toBeNull();
     });
 
-    it('redirects to overview when dropdown option is clicked', async () => {
-        // Click overview dropdown option, confirm redirected
-        await user.click(app.getByText('Overview'));
-        expect(window.location.href).toBe('/');
+    // Note: this response can only be received if SINGLE_USER_MODE is disabled
+    it('redirects to login page if user is not signed in', async () => {
+        // Mock fetch function to simulate user with an expired session
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            status: 401,
+            json: () => Promise.resolve({
+                "error": "authentication required"
+            })
+        }));
+
+        // Click confirm button
+        await user.click(app.container.querySelector('.btn-success'));
+
+        // Confirm redirected
+        expect(window.location.href).toBe('/accounts/login/');
     });
 
     it('redirects to overview when cancel button is clicked', async () => {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { Tab } from '@headlessui/react';
 import Navbar from 'src/components/Navbar';
-import { useTheme } from 'src/context/ThemeContext';
+import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
 import { sendPostRequest, parseDomContext } from 'src/util';
 import GroupDetailsForm from 'src/forms/GroupDetailsForm';
 import PlantDetailsForm from 'src/forms/PlantDetailsForm';
@@ -79,9 +79,6 @@ function App() {
         };
     }, []);
 
-    // Get toggle theme option from context
-    const { ToggleThemeOption } = useTheme();
-
     // Track visible form (changed by tabs, used to get correct endpoint)
     // Set to 0 for plant form, 1 for group form
     const [visibleForm, setVisibleForm] = useState(0);
@@ -121,14 +118,7 @@ function App() {
     };
 
     // Top left corner dropdown options
-    const DropdownMenuOptions = useMemo(() => (
-        <>
-            <li><a onClick={() => window.location.href = "/"}>
-                Overview
-            </a></li>
-            <ToggleThemeOption />
-        </>
-    ), [ToggleThemeOption]);
+    const DropdownMenuOptions = useMemo(() => <NavbarDropdownOptions />, []);
 
     return (
         <div className="container flex flex-col mx-auto mb-8">

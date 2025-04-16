@@ -11,10 +11,15 @@ Should not be used for backend development (behaves differently).
 import os
 from .settings import *
 
-# Override cache to local memory cache instead of redis
+# Override cache to use fake redis client (does not require actual server,
+# won't leave keys or overwrite stuff in development redis store)
 CACHES = {
     "default": {
-        "BACKEND": "django.core.cache.backends.locmem.LocMemCache"
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:9999/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "plant_tracker.fake_redis_client.FakeRedisClient",
+        }
     }
 }
 CELERY_BROKER_URL = 'memory://'
@@ -29,3 +34,7 @@ TEST_DIR = '/tmp/plant_tracker_unit_test'
 
 # Mock photo uploads dir to temp directory deleted after tests
 MEDIA_ROOT = os.path.join(TEST_DIR, 'data', 'images')
+
+# Use SINGLE_USER_MODE (disables authentication, can be overridden by tests)
+SINGLE_USER_MODE=True
+DEFAULT_USERNAME='DEFAULT'

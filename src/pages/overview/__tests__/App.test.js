@@ -13,6 +13,7 @@ describe('App', () => {
         // Create mock state objects
         createMockContext('plants', mockContext.plants);
         createMockContext('groups', mockContext.groups);
+        createMockContext('show_archive', mockContext.show_archive);
 
         // Mock width to force mobile layout (renders title nav dropdown)
         window.innerWidth = 750;
@@ -28,6 +29,12 @@ describe('App', () => {
                 <App />
             </PageWrapper>
         );
+    });
+
+    it('redirects to user profile when dropdown option is clicked', async () => {
+        // Click User profile dropdown option, confirm redirected
+        await user.click(app.getByText('User profile'));
+        expect(window.location.href).toBe('/accounts/profile/');
     });
 
     it('opens modal when Print QR Codes dropdown option clicked', async () => {
@@ -66,7 +73,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "deleted": "uuid"
+                "deleted": ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"],
+                "failed": []
             })
         }));
 
@@ -77,11 +85,11 @@ describe('App', () => {
         // Click delete button in floating div
         await user.click(app.getByText('Delete'));
 
-        // Confirm correct data posted to /delete_plant endpoint
-        expect(global.fetch).toHaveBeenCalledWith('/delete_plant', {
+        // Confirm correct data posted to /bulk_delete_plants_and_groups endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_delete_plants_and_groups', {
             method: 'POST',
             body: JSON.stringify({
-                "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                "uuids": ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"]
             }),
             headers: postHeaders
         });
@@ -92,7 +100,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "updated": "uuid"
+                "archived": ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"],
+                "failed": []
             })
         }));
 
@@ -103,11 +112,11 @@ describe('App', () => {
         // Click archive button in floating div
         await user.click(app.getByText('Archive'));
 
-        // Confirm correct data posted to /delete_plant endpoint
-        expect(global.fetch).toHaveBeenCalledWith('/archive_plant', {
+        // Confirm correct data posted to /bulk_archive_plants_and_groups endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_archive_plants_and_groups', {
             method: 'POST',
             body: JSON.stringify({
-                plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                uuids: ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"],
                 archived: true
             }),
             headers: postHeaders
@@ -119,22 +128,24 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "deleted": "uuid"
+                "deleted": ["0640ec3b-1bed-4b15-a078-d6e7ec66be14"],
+                "failed": []
             })
         }));
 
-        // Click edit option, click second checkbox (group)
+        // Click edit option, select first group checkbox
         await user.click(app.getByText("Edit"));
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[1]);
+        const groupsCol = app.getByText('Groups (2)').parentElement;
+        await user.click(groupsCol.querySelectorAll('label.cursor-pointer')[0]);
 
         // Click delete button in floating div
         await user.click(app.getByText('Delete'));
 
         // Confirm correct data posted to /delete_group endpoint
-        expect(global.fetch).toHaveBeenCalledWith('/delete_group', {
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_delete_plants_and_groups', {
             method: 'POST',
             body: JSON.stringify({
-                "group_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                "uuids": ["0640ec3b-1bed-4b15-a078-d6e7ec66be14"]
             }),
             headers: postHeaders
         });
@@ -145,26 +156,176 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "updated": "uuid"
+                "archived": ["0640ec3b-1bed-4b15-a078-d6e7ec66be14"],
+                "failed": []
             })
         }));
 
-        // Click edit option, click second checkbox (group)
+        // Click edit option, select first group checkbox
         await user.click(app.getByText("Edit"));
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[1]);
+        const groupsCol = app.getByText('Groups (2)').parentElement;
+        await user.click(groupsCol.querySelectorAll('label.cursor-pointer')[0]);
 
         // Click archive button in floating div
         await user.click(app.getByText('Archive'));
 
-        // Confirm correct data posted to /delete_group endpoint
-        expect(global.fetch).toHaveBeenCalledWith('/archive_group', {
+        // Confirm correct data posted to /bulk_archive_plants_and_groups endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_archive_plants_and_groups', {
             method: 'POST',
             body: JSON.stringify({
-                group_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                uuids: ["0640ec3b-1bed-4b15-a078-d6e7ec66be14"],
                 archived: true
             }),
             headers: postHeaders
         });
+    });
+
+    it('shows error modal when unable to delete plant or group', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            status: 400,
+            json: () => Promise.resolve({
+                "deleted": [],
+                "failed": ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"]
+            })
+        }));
+
+        // Confirm error modal is not rendered
+        expect(app.queryByText(
+            'Failed to delete: 0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+        )).toBeNull();
+
+        // Click edit option, click first checkbox, click delete button
+        await user.click(app.getByText("Edit"));
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.getByText('Delete'));
+
+        // Confirm error modal appeared
+        expect(app.queryByText(
+            'Failed to delete: 0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+        )).not.toBeNull();
+    });
+
+    it('shows error modal when unable to archive plant or group', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            status: 400,
+            json: () => Promise.resolve({
+                "archived": [],
+                "failed": ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"]
+            })
+        }));
+
+        // Confirm error modal is not rendered
+        expect(app.queryByText(
+            'Failed to archive: 0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+        )).toBeNull();
+
+        // Click edit option, click first checkbox, click archive button
+        await user.click(app.getByText("Edit"));
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.getByText('Archive'));
+
+        // Confirm error modal appeared
+        expect(app.queryByText(
+            'Failed to archive: 0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+        )).not.toBeNull();
+    });
+
+    it('removes edit option from dropdown if all plants and groups are deleted', async () => {
+        // Mock fetch to simulate successfully deleting both plants
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "deleted": [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                    "0640ec3b-1bed-fb15-a078-d6e7ec66be12"
+                ],
+                "failed": []
+            })
+        }));
+
+        // Confirm edit option exists
+        expect(app.queryByText('Edit')).not.toBeNull();
+
+        // Click edit option, delete all plants
+        await user.click(app.getByText("Edit"));
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[1]);
+        await user.click(app.getByText('Delete'));
+
+        // Confirm edit option still exists
+        expect(app.queryByText('Edit')).not.toBeNull();
+
+        // Mock fetch to simulate successfully deleting both groups
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "deleted": [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                    "0640ec3b-1bed-4ba5-a078-d6e7ec66be14"
+                ],
+                "failed": []
+            })
+        }));
+
+        // Click edit option again, delete all groups
+        await user.click(app.getByText("Edit"));
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[1]);
+        await user.click(app.getByText('Delete'));
+
+        // Confirm edit option no longer exists
+        expect(app.queryByText('Edit')).toBeNull();
+    });
+
+    it('removes edit option from dropdown if all plants and groups are archived', async () => {
+        // Mock fetch to simulate successfully archiving both groups
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "archived": [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                    "0640ec3b-1bed-4ba5-a078-d6e7ec66be14"
+                ],
+                "failed": []
+            })
+        }));
+
+        // Confirm edit option exists
+        expect(app.queryByText('Edit')).not.toBeNull();
+
+        // Click edit option, archive all groups
+        await user.click(app.getByText("Edit"));
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[2]);
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[3]);
+        await user.click(app.getByText('Archive'));
+
+        // Confirm edit option still exists
+        expect(app.queryByText('Edit')).not.toBeNull();
+
+        // Mock fetch to simulate successfully archiving both plants
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "archived": [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                    "0640ec3b-1bed-fb15-a078-d6e7ec66be12"
+                ],
+                "failed": []
+            })
+        }));
+
+        // Click edit option again, archive all plants
+        await user.click(app.getByText("Edit"));
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[1]);
+        await user.click(app.getByText('Archive'));
+
+        // Confirm edit option no longer exists
+        expect(app.queryByText('Edit')).toBeNull();
     });
 
     it('fetches new state when user navigates to overview with back button', async () => {

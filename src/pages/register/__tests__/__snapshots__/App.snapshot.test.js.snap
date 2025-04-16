@@ -55,6 +55,11 @@ exports[`App matches snapshot 1`] = `
               </li>
               <li>
                 <a>
+                  User profile
+                </a>
+              </li>
+              <li>
+                <a>
                   Light mode
                 </a>
               </li>
@@ -310,6 +315,11 @@ exports[`App matches snapshot 1`] = `
             <li>
               <a>
                 Overview
+              </a>
+            </li>
+            <li>
+              <a>
+                User profile
               </a>
             </li>
             <li>

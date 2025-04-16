@@ -8,10 +8,13 @@ const isProduction = process.env.NODE_ENV == 'production';
 
 const config = {
     entry: {
+        login: './src/pages/login/index.js',
+        user_profile: './src/pages/user_profile/index.js',
         overview: './src/pages/overview/index.js',
         register: './src/pages/register/index.js',
         manage_plant: './src/pages/manage_plant/index.js',
         manage_group: './src/pages/manage_group/index.js',
+        permission_denied: './src/pages/permission_denied/index.js',
         confirm_new_qr_code: './src/pages/confirm_new_qr_code/index.js',
     },
     output: {

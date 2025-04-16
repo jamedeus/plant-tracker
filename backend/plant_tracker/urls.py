@@ -2,13 +2,19 @@
 
 from django.urls import path
 
-from . import views
+from . import views, auth_views
 
 app_name = "api"
 
 # pylint: disable=line-too-long
 urlpatterns = [
     path('', views.overview, name='overview'),
+    path("accounts/login/", auth_views.LoginView.as_view(), name="login"),
+    path("accounts/logout/", auth_views.logout_view, name="logout"),
+    path("accounts/profile/", auth_views.user_profile_page, name="user_profile_page"),
+    path("accounts/create_user/", auth_views.create_user, name="create_user"),
+    path("accounts/edit_user_details/", auth_views.edit_user_details, name="edit_user_details"),
+    path("accounts/change_password/", auth_views.PasswordChangeView.as_view(), name="change_password"),
     path('archived', views.archived_overview, name='archived'),
     path('get_overview_state', views.get_overview_page_state, name='get_overview_state'),
     path('get_qr_codes', views.get_qr_codes, name='get_qr_codes'),
@@ -25,6 +31,8 @@ urlpatterns = [
     path('archive_plant', views.archive_plant, name='archive_plant'),
     path('delete_group', views.delete_group, name='delete_group'),
     path('archive_group', views.archive_group, name='archive_group'),
+    path('bulk_delete_plants_and_groups', views.bulk_delete_plants_and_groups, name='bulk_delete_plants_and_groups'),
+    path('bulk_archive_plants_and_groups', views.bulk_archive_plants_and_groups, name='bulk_archive_plants_and_groups'),
     path('add_plant_event', views.add_plant_event, name='add_plant_event'),
     path('bulk_add_plant_events', views.bulk_add_plant_events, name='bulk_add_plant_events'),
     path('delete_plant_event', views.delete_plant_event, name='delete_plant_event'),

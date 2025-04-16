@@ -105,7 +105,7 @@ cd backend
 python manage.py runserver 0.0.0.0:8000
 ```
 
-This runs celery tasks synchronously (no delay) and uses local memory caching instead of redis. Redis does not need to be installed. Photo uploads are also written to `/tmp/plant_tracker_unit_test` instead of the data dir.
+This runs celery tasks synchronously (no delay) and stores cached data in memory using [fakeredis](https://pypi.org/project/fakeredis/). Redis does not need to be installed. Photo uploads are also written to `/tmp/plant_tracker_unit_test` instead of the data dir.
 
 This setup behaves differently than production and should not be used for backend development.
 

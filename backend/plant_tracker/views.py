@@ -5,15 +5,14 @@ import base64
 from io import BytesIO
 
 from django.conf import settings
-from django.shortcuts import render
 from django.core.cache import cache
 from django.db import transaction, IntegrityError
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponseRedirect
-from django.views.decorators.csrf import ensure_csrf_cookie
 from PIL import UnidentifiedImageError
 
 from generate_qr_code_grid import generate_layout
+from .render_react_app import render_react_app, render_permission_denied_page
 from .models import (
     Group,
     Plant,
@@ -25,6 +24,7 @@ from .models import (
 )
 from .view_decorators import (
     events_map,
+    get_user_token,
     get_plant_by_uuid,
     get_group_by_uuid,
     get_plant_or_group_by_uuid,
@@ -44,26 +44,8 @@ from .tasks import (
 )
 
 
-@ensure_csrf_cookie
-def render_react_app(request, title, bundle, state, log_state=True):
-    '''Helper function to render react app in boilerplate HTML template
-    Takes request object, page title, react bundle name, and react state object
-    Context object is printed to console unless optional log_state arg is False
-    '''
-    context = {
-        'title': title,
-        'js_bundle': f'plant_tracker/{bundle}.js',
-        'state': state
-    }
-
-    if log_state:
-        print(json.dumps(context, indent=4))
-
-    return render(request, 'plant_tracker/index.html', context)
-
-
 @requires_json_post(["qr_per_row"])
-def get_qr_codes(data):
+def get_qr_codes(data, **kwargs):
     '''Returns printer-sized grid of QR code links as base64-encoded PNG
     QR codes point to manage endpoint, can be used for plants or groups
     '''
@@ -90,36 +72,54 @@ def get_qr_codes(data):
         )
 
 
-def overview(request):
-    '''Renders the overview page (shows existing plants/groups, or setup if none)'''
+@get_user_token
+def overview(request, user):
+    '''Renders the overview page for the requesting user (shows their existing
+    plants/groups, or setup if none).
+    '''
+
+    # Set generic page title in SINGLE_USER_MODE or if user has no first name
+    if settings.SINGLE_USER_MODE or not user.first_name:
+        title='Plant Overview'
+    else:
+        title=f"{user.first_name}'s Plants"
+
     return render_react_app(
         request,
-        title='Overview',
+        title=title,
         bundle='overview',
-        state=get_overview_state()
+        state=get_overview_state(user)
     )
 
 
-def get_overview_page_state(request):
-    '''Returns current state for the overview page, used to refresh contents'''
+@get_user_token
+def get_overview_page_state(_, user):
+    '''Returns current overview page state for the requesting user, used to
+    refresh contents when returning to over view with back button.
+    '''
     return JsonResponse(
-        get_overview_state(),
+        get_overview_state(user),
         status=200
     )
 
 
-def archived_overview(request):
-    '''Renders overview page showing only archived plants and groups'''
+@get_user_token
+def archived_overview(request, user):
+    '''Renders overview page for the requesting user showing only their
+    archived plants and groups.
+    '''
+
+    archived_plants = Plant.objects.filter(archived=True, user=user)
+    archived_groups = Group.objects.filter(archived=True, user=user)
+
+    # Redirect to main overview if user has no archived plants or groups
+    if not archived_plants and not archived_groups:
+        return HttpResponseRedirect('/')
+
     state = {
-        'plants': [],
-        'groups': []
+        'plants': [plant.get_details() for plant in archived_plants],
+        'groups': [group.get_details() for group in archived_groups]
     }
-
-    for plant in Plant.objects.filter(archived=True):
-        state['plants'].append(plant.get_details())
-
-    for group in Group.objects.filter(archived=True):
-        state['groups'].append(group.get_details())
 
     return render_react_app(
         request,
@@ -129,7 +129,8 @@ def archived_overview(request):
     )
 
 
-def manage(request, uuid):
+@get_user_token
+def manage(request, uuid, user):
     '''Renders the correct page when a QR code is scanned:
       - manage_plant: rendered if QR code UUID matches an existing Plant entry
       - manage_group: rendered if QR code UUID matches an existing Group entry
@@ -142,26 +143,34 @@ def manage(request, uuid):
     # Look up UUID in plant table, render manage_plant page if found
     plant = get_plant_by_uuid(uuid)
     if plant:
-        return render_manage_plant_page(request, plant)
+        return render_manage_plant_page(request, plant, user)
 
     # Loop up UUID in group table, render manage_group page if found
     group = get_group_by_uuid(uuid)
     if group:
-        return render_manage_group_page(request, group)
+        return render_manage_group_page(request, group, user)
 
     # Query old_uuid cache, render confirmation page if found
-    old_uuid = cache.get('old_uuid')
+    old_uuid = cache.get(f'old_uuid_{user.pk}')
     if old_uuid:
-        return render_confirm_new_qr_code_page(request, uuid, old_uuid)
+        return render_confirm_new_qr_code_page(request, uuid, old_uuid, user)
 
     # Render register page if UUID is new and old_uuid cache was not found
     return render_registration_page(request, uuid)
 
 
-def render_manage_plant_page(request, plant):
+def render_manage_plant_page(request, plant, user):
     '''Renders management page for an existing plant
     Called by /manage endpoint if UUID is found in database plant table
     '''
+
+    # Render permission denied page if requesting user does not own plant
+    if plant.user != user:
+        return render_permission_denied_page(
+            request,
+            'You do not have permission to view this plant'
+        )
+
     return render_react_app(
         request,
         title='Manage Plant',
@@ -191,14 +200,22 @@ def build_manage_group_state(group):
     return {
         'group': group.get_details(),
         'details': group.get_plant_details(),
-        'options': get_plant_options()
+        'options': get_plant_options(group.user)
     }
 
 
-def render_manage_group_page(request, group):
+def render_manage_group_page(request, group, user):
     '''Renders management page for an existing group
     Called by /manage endpoint if UUID is found in database group table
     '''
+
+    # Render permission denied page if requesting user does not own group
+    if group.user != user:
+        return render_permission_denied_page(
+            request,
+            'You do not have permission to view this group'
+        )
+
     return render_react_app(
         request,
         title='Manage Group',
@@ -223,7 +240,7 @@ def get_group_state(request, uuid):
         return JsonResponse({'Error': 'Requires group UUID'}, status=400)
 
 
-def render_confirm_new_qr_code_page(request, uuid, old_uuid):
+def render_confirm_new_qr_code_page(request, uuid, old_uuid, user):
     '''Renders confirmation page used to change a plant or group QR code
     Called by /manage endpoint if UUID does not exist in database and the
     old_uuid cache is set (see /change_qr_code endpoint)
@@ -235,7 +252,7 @@ def render_confirm_new_qr_code_page(request, uuid, old_uuid):
     # If UUID no longer exists in database (plant/group deleted) clear cache
     # and redirect to registration page
     if instance is None:
-        cache.delete('old_uuid')
+        cache.delete(f'old_uuid_{user.pk}')
         return render_registration_page(request, uuid)
 
     state = {
@@ -271,9 +288,10 @@ def render_registration_page(request, uuid):
     )
 
 
+@get_user_token
 @requires_json_post(["name", "species", "pot_size", "description", "uuid"])
 @clean_payload_data
-def register_plant(data):
+def register_plant(user, data, **kwargs):
     '''Creates a Plant database entry with params from POST body
     Requires JSON POST with parameters from plant registration forms
     '''
@@ -281,7 +299,7 @@ def register_plant(data):
         # transaction.atomic cleans up after IntegrityError if uuid not unique
         with transaction.atomic():
             # Instantiate model with payload keys as kwargs
-            Plant.objects.create(**data)
+            Plant.objects.create(user=user, **data)
 
         # Redirect to manage page
         return HttpResponseRedirect(f'/manage/{data["uuid"]}')
@@ -293,9 +311,10 @@ def register_plant(data):
         )
 
 
+@get_user_token
 @requires_json_post(["name", "location", "description", "uuid"])
 @clean_payload_data
-def register_group(data):
+def register_group(user, data, **kwargs):
     '''Creates a Group database entry with params from POST body
     Requires JSON POST with parameters from group registration form
     '''
@@ -303,7 +322,7 @@ def register_group(data):
         # transaction.atomic cleans up after IntegrityError if uuid not unique
         with transaction.atomic():
             # Instantiate model with payload keys as kwargs
-            Group.objects.create(**data)
+            Group.objects.create(user=user, **data)
 
         # Redirect to manage page
         return HttpResponseRedirect(f'/manage/{data["uuid"]}')
@@ -315,24 +334,26 @@ def register_group(data):
         )
 
 
+@get_user_token
 @requires_json_post(["uuid"])
 @get_qr_instance_from_post_body
-def change_qr_code(instance, **kwargs):
-    '''Caches plant or group UUID from POST body for 15 minutes, if a new QR
-    code is scanned before timeout /manage endpoint will return a confirmation
-    page with a button that calls /change_uuid to overwrite UUID
+def change_qr_code(instance, user, **kwargs):
+    '''Caches plant or group UUID from POST body for 15 minutes, if the same
+    user scans a new QR before timeout /manage endpoint will return a
+    confirmation page with a button that calls /change_uuid to overwrite UUID.
     Requires JSON POST with uuid (uuid) key
     '''
-    cache.set('old_uuid', str(instance.uuid), 900)
+    cache.set(f'old_uuid_{user.pk}', str(instance.uuid), 900)
     return JsonResponse(
         {"success": "scan new QR code within 15 minutes to confirm"},
         status=200
     )
 
 
+@get_user_token
 @requires_json_post(["uuid", "new_id"])
 @get_qr_instance_from_post_body
-def change_uuid(instance, data):
+def change_uuid(instance, data, user, **kwargs):
     '''Changes UUID of an existing Plant or Group, called from confirmation
     page served when new QR code scanned (after calling /change_qr_code)
     Requires JSON POST with uuid (uuid) and new_id (uuid) keys
@@ -340,16 +361,17 @@ def change_uuid(instance, data):
     try:
         instance.uuid = data["new_id"]
         instance.save()
-        cache.delete('old_uuid')
+        cache.delete(f'old_uuid_{user.pk}')
         return JsonResponse({"new_uuid": str(instance.uuid)}, status=200)
     except ValidationError:
         return JsonResponse({"error": "new_id key is not a valid UUID"}, status=400)
 
 
+@get_user_token
 @requires_json_post(["plant_id", "name", "species", "description", "pot_size"])
 @get_plant_from_post_body
 @clean_payload_data
-def edit_plant_details(plant, data):
+def edit_plant_details(plant, data, **kwargs):
     '''Updates description attributes of existing Plant entry
     Requires JSON POST with plant_id (uuid), name, species, description, and pot_size keys
     '''
@@ -368,10 +390,11 @@ def edit_plant_details(plant, data):
     return JsonResponse(data, status=200)
 
 
+@get_user_token
 @requires_json_post(["group_id", "name", "location", "description"])
 @get_group_from_post_body
 @clean_payload_data
-def edit_group_details(group, data):
+def edit_group_details(group, data, **kwargs):
     '''Updates description attributes of existing Group entry
     Requires JSON POST with group_id (uuid), name, and location keys
     '''
@@ -389,6 +412,7 @@ def edit_group_details(group, data):
     return JsonResponse(data, status=200)
 
 
+@get_user_token
 @requires_json_post(["plant_id"])
 @get_plant_from_post_body
 def delete_plant(plant, **kwargs):
@@ -399,6 +423,7 @@ def delete_plant(plant, **kwargs):
     return JsonResponse({"deleted": plant.uuid}, status=200)
 
 
+@get_user_token
 @requires_json_post(["plant_id", "archived"])
 @get_plant_from_post_body
 def archive_plant(plant, data, **kwargs):
@@ -413,6 +438,7 @@ def archive_plant(plant, data, **kwargs):
     return JsonResponse({"updated": plant.uuid}, status=200)
 
 
+@get_user_token
 @requires_json_post(["group_id"])
 @get_group_from_post_body
 def delete_group(group, **kwargs):
@@ -423,6 +449,7 @@ def delete_group(group, **kwargs):
     return JsonResponse({"deleted": group.uuid}, status=200)
 
 
+@get_user_token
 @requires_json_post(["group_id", "archived"])
 @get_group_from_post_body
 def archive_group(group, data, **kwargs):
@@ -437,11 +464,60 @@ def archive_group(group, data, **kwargs):
     return JsonResponse({"updated": group.uuid}, status=200)
 
 
+@get_user_token
+@requires_json_post(["uuids"])
+def bulk_delete_plants_and_groups(user, data, **kwargs):
+    '''Deletes a list of plants and groups owned by the requesting user.
+    Requires JSON POST with uuids key (list of plant or group uuids).
+    '''
+    deleted = []
+    failed = []
+    for uuid in data["uuids"]:
+        instance = get_plant_or_group_by_uuid(uuid)
+        # Make sure plant exists and is owned by user
+        if instance and instance.user == user:
+            instance.delete()
+            deleted.append(uuid)
+        else:
+            failed.append(uuid)
+
+    return JsonResponse(
+        {"deleted": deleted, "failed": failed},
+        status=200 if deleted else 400
+    )
+
+
+@get_user_token
+@requires_json_post(["uuids", "archived"])
+def bulk_archive_plants_and_groups(user, data, **kwargs):
+    '''Sets the archived attribute for a list of plants and groups owned by the
+    requesting user.
+    Requires JSON POST with uuids (list of uuids) and archived (bool) keys.
+    '''
+    archived = []
+    failed = []
+    for uuid in data["uuids"]:
+        instance = get_plant_or_group_by_uuid(uuid)
+        # Make sure instance exists and is owned by user
+        if instance and instance.user == user:
+            instance.archived = data["archived"]
+            instance.save()
+            archived.append(uuid)
+        else:
+            failed.append(uuid)
+
+    return JsonResponse(
+        {"archived": archived, "failed": failed},
+        status=200 if archived else 400
+    )
+
+
+@get_user_token
 @requires_json_post(["plant_id", "event_type", "timestamp"])
 @get_plant_from_post_body
 @get_timestamp_from_post_body
 @get_event_type_from_post_body
-def add_plant_event(plant, timestamp, event_type, **kwargs):
+def add_plant_event(user, plant, timestamp, event_type, **kwargs):
     '''Creates new Event entry with requested type for specified Plant entry
     Requires JSON POST with plant_id (uuid), event_type, and timestamp keys
     '''
@@ -449,7 +525,7 @@ def add_plant_event(plant, timestamp, event_type, **kwargs):
         events_map[event_type].objects.create(plant=plant, timestamp=timestamp)
 
         # Create task to update cached overview state (last_watered outdated)
-        schedule_cached_overview_state_update()
+        schedule_cached_overview_state_update(user)
 
         return JsonResponse(
             {"action": event_type, "plant": plant.uuid},
@@ -462,10 +538,11 @@ def add_plant_event(plant, timestamp, event_type, **kwargs):
         )
 
 
+@get_user_token
 @requires_json_post(["plants", "event_type", "timestamp"])
 @get_timestamp_from_post_body
 @get_event_type_from_post_body
-def bulk_add_plant_events(timestamp, event_type, data):
+def bulk_add_plant_events(user, timestamp, event_type, data, **kwargs):
     '''Creates new Event entry with requested type for each Plant specified in body
     Requires JSON POST with plants (list of UUIDs), event_type, and timestamp keys
     '''
@@ -473,7 +550,8 @@ def bulk_add_plant_events(timestamp, event_type, data):
     failed = []
     for plant_id in data["plants"]:
         plant = get_plant_by_uuid(plant_id)
-        if plant:
+        # Make sure plant exists and is owned by user
+        if plant and plant.user == user:
             try:
                 events_map[event_type].objects.create(plant=plant, timestamp=timestamp)
                 added.append(plant_id)
@@ -483,19 +561,21 @@ def bulk_add_plant_events(timestamp, event_type, data):
             failed.append(plant_id)
 
     # Create task to update cached overview state (last_watered outdated)
-    schedule_cached_overview_state_update()
+    schedule_cached_overview_state_update(user)
 
+    # Return 200 if at least 1 succeeded, otherwise return error
     return JsonResponse(
         {"action": event_type, "plants": added, "failed": failed},
-        status=200
+        status=200 if added else 400
     )
 
 
+@get_user_token
 @requires_json_post(["plant_id", "event_type", "timestamp"])
 @get_plant_from_post_body
 @get_timestamp_from_post_body
 @get_event_type_from_post_body
-def delete_plant_event(plant, timestamp, event_type, **kwargs):
+def delete_plant_event(user, plant, timestamp, event_type, **kwargs):
     '''Deletes the Event matching the plant, type, and timestamp specified in body
     Requires JSON POST with plant_id (uuid), event_type, and timestamp keys
     '''
@@ -504,16 +584,17 @@ def delete_plant_event(plant, timestamp, event_type, **kwargs):
         event.delete()
 
         # Create task to update cached overview state (last_watered outdated)
-        schedule_cached_overview_state_update()
+        schedule_cached_overview_state_update(user)
 
         return JsonResponse({"deleted": event_type, "plant": plant.uuid}, status=200)
     except events_map[event_type].DoesNotExist:
         return JsonResponse({"error": "event not found"}, status=404)
 
 
+@get_user_token
 @requires_json_post(["plant_id", "events"])
 @get_plant_from_post_body
-def bulk_delete_plant_events(plant, data):
+def bulk_delete_plant_events(user, plant, data, **kwargs):
     '''Deletes a list of events (any type) associated with a single plant
     Requires JSON POST with plant_id (uuid) and events (list of dicts) keys
     The events list must contain dicts with timestamp and type keys
@@ -534,16 +615,17 @@ def bulk_delete_plant_events(plant, data):
             failed.append(event)
 
     # Create task to update cached overview state (last_watered outdated)
-    schedule_cached_overview_state_update()
+    schedule_cached_overview_state_update(user)
 
     return JsonResponse({"deleted": deleted, "failed": failed}, status=200)
 
 
+@get_user_token
 @requires_json_post(["plant_id", "timestamp", "note_text"])
 @clean_payload_data
 @get_plant_from_post_body
 @get_timestamp_from_post_body
-def add_plant_note(plant, timestamp, data):
+def add_plant_note(plant, timestamp, data, **kwargs):
     '''Creates new NoteEvent with user-entered text for specified Plant entry
     Requires JSON POST with plant_id (uuid), timestamp, and note_text keys
     '''
@@ -576,11 +658,12 @@ def add_plant_note(plant, timestamp, data):
         )
 
 
+@get_user_token
 @requires_json_post(["plant_id", "timestamp", "note_text"])
 @clean_payload_data
 @get_plant_from_post_body
 @get_timestamp_from_post_body
-def edit_plant_note(plant, timestamp, data):
+def edit_plant_note(plant, timestamp, data, **kwargs):
     '''Overwrites text of an existing NoteEvent with the specified timestamp
     Requires JSON POST with plant_id (uuid), timestamp, and note_text keys
     '''
@@ -608,6 +691,7 @@ def edit_plant_note(plant, timestamp, data):
         )
 
 
+@get_user_token
 @requires_json_post(["plant_id", "timestamp"])
 @get_plant_from_post_body
 @get_timestamp_from_post_body
@@ -623,10 +707,11 @@ def delete_plant_note(plant, timestamp, **kwargs):
         return JsonResponse({"error": "note not found"}, status=404)
 
 
+@get_user_token
 @requires_json_post(["plant_id", "group_id"])
 @get_plant_from_post_body
 @get_group_from_post_body
-def add_plant_to_group(plant, group, **kwargs):
+def add_plant_to_group(plant, group, user, **kwargs):
     '''Adds specified Plant to specified Group (creates database relation)
     Requires JSON POST with plant_id (uuid) and group_id (uuid) keys
     '''
@@ -634,7 +719,7 @@ def add_plant_to_group(plant, group, **kwargs):
     plant.save()
 
     # Update cached group_options (number of plants in group changed)
-    schedule_cached_group_options_update()
+    schedule_cached_group_options_update(user)
 
     return JsonResponse(
         {
@@ -647,9 +732,10 @@ def add_plant_to_group(plant, group, **kwargs):
     )
 
 
+@get_user_token
 @requires_json_post(["plant_id"])
 @get_plant_from_post_body
-def remove_plant_from_group(plant, **kwargs):
+def remove_plant_from_group(plant, user, **kwargs):
     '''Removes specified Plant from Group (deletes database relation)
     Requires JSON POST with plant_id (uuid) key
     '''
@@ -657,7 +743,7 @@ def remove_plant_from_group(plant, **kwargs):
     plant.save()
 
     # Update cached group_options (number of plants in group changed)
-    schedule_cached_group_options_update()
+    schedule_cached_group_options_update(user)
 
     return JsonResponse(
         {"action": "remove_plant_from_group", "plant": plant.uuid},
@@ -665,9 +751,10 @@ def remove_plant_from_group(plant, **kwargs):
     )
 
 
+@get_user_token
 @requires_json_post(["group_id", "plants"])
 @get_group_from_post_body
-def bulk_add_plants_to_group(group, data):
+def bulk_add_plants_to_group(group, data, user, **kwargs):
     '''Adds a list of Plants to specified Group (creates database relation for each)
     Requires JSON POST with group_id (uuid) and plants (list of UUIDs) keys
     '''
@@ -683,14 +770,15 @@ def bulk_add_plants_to_group(group, data):
             failed.append(plant_id)
 
     # Update cached group_options (number of plants in group changed)
-    schedule_cached_group_options_update()
+    schedule_cached_group_options_update(user)
 
     return JsonResponse({"added": added, "failed": failed}, status=200)
 
 
+@get_user_token
 @requires_json_post(["group_id", "plants"])
 @get_group_from_post_body
-def bulk_remove_plants_from_group(data, **kwargs):
+def bulk_remove_plants_from_group(data, user, **kwargs):
     '''Removes a list of Plants from specified Group (deletes database relations)
     Requires JSON POST with group_id (uuid) and plants (list of UUIDs) keys
     '''
@@ -706,15 +794,16 @@ def bulk_remove_plants_from_group(data, **kwargs):
             failed.append(plant_id)
 
     # Update cached group_options (number of plants in group changed)
-    schedule_cached_group_options_update()
+    schedule_cached_group_options_update(user)
 
     return JsonResponse({"removed": added, "failed": failed}, status=200)
 
 
+@get_user_token
 @requires_json_post(["plant_id", "new_pot_size", "timestamp"])
 @get_plant_from_post_body
 @get_timestamp_from_post_body
-def repot_plant(plant, timestamp, data):
+def repot_plant(plant, timestamp, data, **kwargs):
     '''Creates a RepotEvent for specified Plant with optional new_pot_size
     Requires JSON POST with plant_id, new_pot_size, and timestamp keys
     '''
@@ -742,7 +831,8 @@ def repot_plant(plant, timestamp, data):
         )
 
 
-def add_plant_photos(request):
+@get_user_token
+def add_plant_photos(request, user):
     '''Creates Photo model for each image in request body
     Requires FormData with plant_id key (UUID) and one or more images
     '''
@@ -752,6 +842,12 @@ def add_plant_photos(request):
     plant = get_plant_by_uuid(request.POST.get("plant_id"))
     if not plant:
         return JsonResponse({'error': 'unable to find plant'}, status=404)
+
+    if user != plant.user:
+        return JsonResponse(
+            {"error": "plant is owned by a different user"},
+            status=403
+        )
 
     if len(request.FILES) == 0:
         return JsonResponse({'error': 'no photos were sent'}, status=404)
@@ -785,9 +881,10 @@ def add_plant_photos(request):
     )
 
 
+@get_user_token
 @requires_json_post(["plant_id", "delete_photos"])
 @get_plant_from_post_body
-def delete_plant_photos(plant, data):
+def delete_plant_photos(plant, data, **kwargs):
     '''Deletes a list of Photos associated with a specific Plant
     Requires JSON POST with plant_id (uuid) and delete_photos (list of db keys)
     '''
@@ -804,9 +901,10 @@ def delete_plant_photos(plant, data):
     return JsonResponse({"deleted": deleted, "failed": failed}, status=200)
 
 
+@get_user_token
 @requires_json_post(["plant_id", "photo_key"])
 @get_plant_from_post_body
-def set_plant_default_photo(plant, data):
+def set_plant_default_photo(plant, data, **kwargs):
     '''Sets the photo used for overview page thumbnail
     Requires JSON POST with plant_id (uuid) and photo_key (db primary key)
     '''

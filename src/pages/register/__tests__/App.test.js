@@ -137,12 +137,6 @@ describe('App', () => {
         expect(app.getByText('Failed to register plant')).toBeInTheDocument();
     });
 
-    it('redirects to overview when dropdown option is clicked', async () => {
-        // Click overview dropdown option, confirm redirected
-        await user.click(app.getByText('Overview'));
-        expect(window.location.href).toBe('/');
-    });
-
     it('shows unexpected API response in error modal', async () => {
         // Mock fetch function to return unexpected response (not error or redirect)
         global.fetch = jest.fn(() => Promise.resolve({
@@ -159,6 +153,30 @@ describe('App', () => {
         // Click Save button, confirm error modal appears
         await user.click(app.getByText('Save'));
         expect(app.getByText(/Unexpected, should return redirect or error/)).toBeInTheDocument();
+    });
+
+    // Note: this response can only be received if SINGLE_USER_MODE is disabled
+    it('redirects to login page if user is not signed in', async () => {
+        // Mock fetch function to simulate user with an expired session
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            status: 401,
+            json: () => Promise.resolve({
+                "error": "authentication required"
+            })
+        }));
+
+        // Fill in form fields
+        await user.type(app.getByLabelText('Plant name'), 'Test plant');
+        await user.type(app.getByLabelText('Plant species'), 'Fittonia');
+        await user.type(app.getByLabelText('Description'), 'Clay pot');
+        await user.type(app.getByLabelText('Pot size'), '6');
+
+        // Click Save button
+        await user.click(app.getByText('Save'));
+
+        // Confirm redirected
+        expect(window.location.href).toBe('/accounts/login/');
     });
 
     it('refreshes when user navigates to register page with back button', async () => {

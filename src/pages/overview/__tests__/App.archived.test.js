@@ -17,8 +17,15 @@ describe('App', () => {
         )));
 
         // Mock window.location to simulate archived overview
-        delete window.location;
-        window.location = new URL('https://plants.lan/archived');
+        Object.defineProperty(window, 'location', {
+            configurable: true,
+            value: {
+                ...window.location,
+                href: 'https://plants.lan/',
+                pathname: '/archived',
+                assign: jest.fn()
+            }
+        });
 
         // Mock width to force mobile layout (renders title nav dropdown)
         window.innerWidth = 750;
@@ -34,6 +41,12 @@ describe('App', () => {
                 <App />
             </PageWrapper>
         );
+    });
+
+    it('redirects to user profile when dropdown option is clicked', async () => {
+        // Click User profile dropdown option, confirm redirected
+        await user.click(app.getByText('User profile'));
+        expect(window.location.href).toBe('/accounts/profile/');
     });
 
     it('shows checkboxes and delete button when edit option clicked', async () => {
@@ -61,7 +74,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "deleted": "uuid"
+                "deleted": ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"],
+                "failed": []
             })
         }));
 
@@ -72,11 +86,11 @@ describe('App', () => {
         // Click delete button in floating div
         await user.click(app.getByText('Delete'));
 
-        // Confirm correct data posted to /delete_plant endpoint
-        expect(global.fetch).toHaveBeenCalledWith('/delete_plant', {
+        // Confirm correct data posted to /bulk_delete_plants_and_groups endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_delete_plants_and_groups', {
             method: 'POST',
             body: JSON.stringify({
-                "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                "uuids": ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"]
             }),
             headers: postHeaders
         });
@@ -87,7 +101,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "updated": "uuid"
+                "archived": ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"],
+                "failed": []
             })
         }));
 
@@ -95,14 +110,14 @@ describe('App', () => {
         await user.click(app.getByText("Edit"));
         await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
 
-        // Click archive button in floating div
+        // Click un-archive button in floating div
         await user.click(app.getByText('Un-archive'));
 
-        // Confirm correct data posted to /delete_plant endpoint
-        expect(global.fetch).toHaveBeenCalledWith('/archive_plant', {
+        // Confirm correct data posted to /bulk_archive_plants_and_groups endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_archive_plants_and_groups', {
             method: 'POST',
             body: JSON.stringify({
-                plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                uuids: ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"],
                 archived: false
             }),
             headers: postHeaders
@@ -114,22 +129,24 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "deleted": "uuid"
+                "deleted": ["0640ec3b-1bed-4b15-a078-d6e7ec66be14"],
+                "failed": []
             })
         }));
 
-        // Click edit option, click second checkbox (group)
+        // Click edit option, select first group checkbox
         await user.click(app.getByText("Edit"));
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[1]);
+        const groupsCol = app.getByText('Groups (2)').parentElement;
+        await user.click(groupsCol.querySelectorAll('label.cursor-pointer')[0]);
 
         // Click delete button in floating div
         await user.click(app.getByText('Delete'));
 
-        // Confirm correct data posted to /delete_group endpoint
-        expect(global.fetch).toHaveBeenCalledWith('/delete_group', {
+        // Confirm correct data posted to /bulk_delete_plants_and_groups endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_delete_plants_and_groups', {
             method: 'POST',
             body: JSON.stringify({
-                "group_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                "uuids": ["0640ec3b-1bed-4b15-a078-d6e7ec66be14"]
             }),
             headers: postHeaders
         });
@@ -152,26 +169,57 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "updated": "uuid"
+                "archived": ["0640ec3b-1bed-4b15-a078-d6e7ec66be14"],
+                "failed": []
             })
         }));
 
-        // Click edit option, click second checkbox (group)
+        // Click edit option, select first group checkbox
         await user.click(app.getByText("Edit"));
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[1]);
+        const groupsCol = app.getByText('Groups (2)').parentElement;
+        await user.click(groupsCol.querySelectorAll('label.cursor-pointer')[0]);
 
-        // Click archive button in floating div
+        // Click un-archive button in floating div
         await user.click(app.getByText('Un-archive'));
 
-        // Confirm correct data posted to /delete_group endpoint
-        expect(global.fetch).toHaveBeenCalledWith('/archive_group', {
+        // Confirm correct data posted to /bulk_archive_plants_and_groups endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_archive_plants_and_groups', {
             method: 'POST',
             body: JSON.stringify({
-                group_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                uuids: ["0640ec3b-1bed-4b15-a078-d6e7ec66be14"],
                 archived: false
             }),
             headers: postHeaders
         });
+    });
+
+    it('redirects to overview when last plant/group is un-archived', async () => {
+        // Mock fetch to simulate successfully un-archiving all plants and groups
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "archived": [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                    "0640ec3b-1bed-fb15-a078-d6e7ec66be12",
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                    "0640ec3b-1bed-4ba5-a078-d6e7ec66be14"
+                ],
+                "failed": []
+            })
+        }));
+
+        // Click edit option, click all checkboxes (2 plants 2 groups)
+        await user.click(app.getByText("Edit"));
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[1]);
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[2]);
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[3]);
+
+        // Click un-archive button in floating div
+        await user.click(app.getByText('Un-archive'));
+
+        // Confirm redirected to overview
+        expect(window.location.href).toBe('/');
     });
 
     // Regression test: When overview and archived overview were merged the

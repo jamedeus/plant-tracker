@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { localToUTC } from 'src/timestampUtils';
 import { sendPostRequest, parseDomContext, pastTense } from 'src/util';
 import Navbar from 'src/components/Navbar';
+import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { showToast } from 'src/components/Toast';
-import { useTheme } from 'src/context/ThemeContext';
 import DetailsCard from 'src/components/DetailsCard';
 import GroupDetails from 'src/components/GroupDetails';
 import PlantsCol from 'src/components/PlantsCol';
@@ -122,9 +122,6 @@ function App() {
         };
     }, []);
 
-    // Get toggle theme option from context
-    const { ToggleThemeOption } = useTheme();
-
     // Create state to track whether selecting plants from list
     const [selectingPlants, setSelectingPlants] = useState(false);
 
@@ -166,8 +163,12 @@ function App() {
     const addEventSelected = async (eventType, timestamp) => {
         // Prevent adding event to archived plants
         const selected = removeArchivedPlants(getSelectedPlants());
-        await bulkAddPlantEvents(eventType, selected, timestamp);
-        setSelectingPlants(false);
+        if (selected.length) {
+            await bulkAddPlantEvents(eventType, selected, timestamp);
+            setSelectingPlants(false);
+        } else {
+            showToast('No plants selected!', 'yellow', 3000);
+        }
     };
 
     // Creates event with specified type and timestamp for every plant in
@@ -269,10 +270,7 @@ function App() {
 
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => (
-        <>
-            <li><a onClick={() => window.location.href = "/"}>
-                Overview
-            </a></li>
+        <NavbarDropdownOptions>
             <li><a onClick={openAddPlantsModal}>
                 Add plants
             </a></li>
@@ -282,9 +280,8 @@ function App() {
             <li><a onClick={openChangeQrModal}>
                 Change QR code
             </a></li>
-            <ToggleThemeOption />
-        </>
-    ), [ToggleThemeOption]);
+        </NavbarDropdownOptions>
+    ), []);
 
     // Group details card shown when title is clicked
     const GroupDetailsDropdown = useMemo(() => (

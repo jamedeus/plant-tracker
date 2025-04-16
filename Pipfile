@@ -12,6 +12,7 @@ pillow = "~=11.0"
 pillow-heif = "*"
 django = "*"
 segno = "*"
+django-unique-user-email = "*"
 
 [dev-packages]
 pylint-django = "*"
@@ -21,6 +22,7 @@ anybadge = "*"
 coverage = "*"
 ipython = "*"
 pylint = "*"
+fakeredis = "*"
 
 [requires]
 python_version = "3.13"

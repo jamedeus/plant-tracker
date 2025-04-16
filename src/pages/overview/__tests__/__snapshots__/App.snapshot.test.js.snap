@@ -49,6 +49,18 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
               tabindex="0"
             >
               <li>
+                <a
+                  href="/"
+                >
+                  Main overview
+                </a>
+              </li>
+              <li>
+                <a>
+                  User profile
+                </a>
+              </li>
+              <li>
                 <a>
                   Edit
                 </a>
@@ -56,13 +68,6 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
               <li>
                 <a>
                   Light mode
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/"
-                >
-                  Main overview
                 </a>
               </li>
             </ul>
@@ -708,6 +713,18 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
             tabindex="0"
           >
             <li>
+              <a
+                href="/"
+              >
+                Main overview
+              </a>
+            </li>
+            <li>
+              <a>
+                User profile
+              </a>
+            </li>
+            <li>
               <a>
                 Edit
               </a>
@@ -715,13 +732,6 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
             <li>
               <a>
                 Light mode
-              </a>
-            </li>
-            <li>
-              <a
-                href="/"
-              >
-                Main overview
               </a>
             </li>
           </ul>
@@ -1399,6 +1409,11 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
     >
       []
     </div>
+    <div
+      id="show_archive"
+    >
+      false
+    </div>
     <div>
       <div
         class="container flex flex-col min-h-screen mx-auto pb-28"
@@ -1435,7 +1450,7 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
             >
               <li>
                 <a>
-                  Edit
+                  User profile
                 </a>
               </li>
               <li>
@@ -1446,13 +1461,6 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
               <li>
                 <a>
                   Light mode
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/archived"
-                >
-                  Archived plants
                 </a>
               </li>
             </ul>
@@ -1659,7 +1667,7 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
           >
             <li>
               <a>
-                Edit
+                User profile
               </a>
             </li>
             <li>
@@ -1670,13 +1678,6 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
             <li>
               <a>
                 Light mode
-              </a>
-            </li>
-            <li>
-              <a
-                href="/archived"
-              >
-                Archived plants
               </a>
             </li>
           </ul>
@@ -1914,6 +1915,11 @@ exports[`App matches snapshot when only groups exist 1`] = `
     >
       [{"uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be14","created":"2023-12-26T01:25:12+00:00","name":"Test group","display_name":"Test group","location":"Middle shelf","plants":4,"archived":false}]
     </div>
+    <div
+      id="show_archive"
+    >
+      true
+    </div>
     <div>
       <div
         class="container flex flex-col min-h-screen mx-auto pb-28"
@@ -1949,6 +1955,18 @@ exports[`App matches snapshot when only groups exist 1`] = `
               tabindex="0"
             >
               <li>
+                <a
+                  href="/archived"
+                >
+                  Archived plants
+                </a>
+              </li>
+              <li>
+                <a>
+                  User profile
+                </a>
+              </li>
+              <li>
                 <a>
                   Edit
                 </a>
@@ -1961,13 +1979,6 @@ exports[`App matches snapshot when only groups exist 1`] = `
               <li>
                 <a>
                   Light mode
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/archived"
-                >
-                  Archived plants
                 </a>
               </li>
             </ul>
@@ -2344,6 +2355,18 @@ exports[`App matches snapshot when only groups exist 1`] = `
             tabindex="0"
           >
             <li>
+              <a
+                href="/archived"
+              >
+                Archived plants
+              </a>
+            </li>
+            <li>
+              <a>
+                User profile
+              </a>
+            </li>
+            <li>
               <a>
                 Edit
               </a>
@@ -2356,13 +2379,6 @@ exports[`App matches snapshot when only groups exist 1`] = `
             <li>
               <a>
                 Light mode
-              </a>
-            </li>
-            <li>
-              <a
-                href="/archived"
-              >
-                Archived plants
               </a>
             </li>
           </ul>
@@ -2771,6 +2787,11 @@ exports[`App matches snapshot when only plants exist 1`] = `
     >
       []
     </div>
+    <div
+      id="show_archive"
+    >
+      true
+    </div>
     <div>
       <div
         class="container flex flex-col min-h-screen mx-auto pb-28"
@@ -2806,6 +2827,18 @@ exports[`App matches snapshot when only plants exist 1`] = `
               tabindex="0"
             >
               <li>
+                <a
+                  href="/archived"
+                >
+                  Archived plants
+                </a>
+              </li>
+              <li>
+                <a>
+                  User profile
+                </a>
+              </li>
+              <li>
                 <a>
                   Edit
                 </a>
@@ -2818,13 +2851,6 @@ exports[`App matches snapshot when only plants exist 1`] = `
               <li>
                 <a>
                   Light mode
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/archived"
-                >
-                  Archived plants
                 </a>
               </li>
             </ul>
@@ -3247,6 +3273,18 @@ exports[`App matches snapshot when only plants exist 1`] = `
             tabindex="0"
           >
             <li>
+              <a
+                href="/archived"
+              >
+                Archived plants
+              </a>
+            </li>
+            <li>
+              <a>
+                User profile
+              </a>
+            </li>
+            <li>
               <a>
                 Edit
               </a>
@@ -3259,13 +3297,6 @@ exports[`App matches snapshot when only plants exist 1`] = `
             <li>
               <a>
                 Light mode
-              </a>
-            </li>
-            <li>
-              <a
-                href="/archived"
-              >
-                Archived plants
               </a>
             </li>
           </ul>
@@ -3720,6 +3751,11 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
     >
       [{"uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be14","created":"2023-12-26T01:25:12+00:00","name":"Test group","display_name":"Test group","location":"Middle shelf","plants":4,"archived":false}]
     </div>
+    <div
+      id="show_archive"
+    >
+      true
+    </div>
     <div>
       <div
         class="container flex flex-col min-h-screen mx-auto pb-28"
@@ -3755,6 +3791,18 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
               tabindex="0"
             >
               <li>
+                <a
+                  href="/archived"
+                >
+                  Archived plants
+                </a>
+              </li>
+              <li>
+                <a>
+                  User profile
+                </a>
+              </li>
+              <li>
                 <a>
                   Edit
                 </a>
@@ -3767,13 +3815,6 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
               <li>
                 <a>
                   Light mode
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/archived"
-                >
-                  Archived plants
                 </a>
               </li>
             </ul>
@@ -4400,6 +4441,18 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
             tabindex="0"
           >
             <li>
+              <a
+                href="/archived"
+              >
+                Archived plants
+              </a>
+            </li>
+            <li>
+              <a>
+                User profile
+              </a>
+            </li>
+            <li>
               <a>
                 Edit
               </a>
@@ -4412,13 +4465,6 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
             <li>
               <a>
                 Light mode
-              </a>
-            </li>
-            <li>
-              <a
-                href="/archived"
-              >
-                Archived plants
               </a>
             </li>
           </ul>
@@ -5077,6 +5123,11 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
     >
       [{"uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be14","created":"2023-12-26T01:25:12+00:00","name":"Test group","display_name":"Test group","location":"Middle shelf","plants":4,"archived":false}]
     </div>
+    <div
+      id="show_archive"
+    >
+      true
+    </div>
     <div>
       <div
         class="container flex flex-col min-h-screen mx-auto pb-28"
@@ -5112,6 +5163,18 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
               tabindex="0"
             >
               <li>
+                <a
+                  href="/archived"
+                >
+                  Archived plants
+                </a>
+              </li>
+              <li>
+                <a>
+                  User profile
+                </a>
+              </li>
+              <li>
                 <a>
                   Edit
                 </a>
@@ -5124,13 +5187,6 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
               <li>
                 <a>
                   Light mode
-                </a>
-              </li>
-              <li>
-                <a
-                  href="/archived"
-                >
-                  Archived plants
                 </a>
               </li>
             </ul>
@@ -5776,6 +5832,18 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
             tabindex="0"
           >
             <li>
+              <a
+                href="/archived"
+              >
+                Archived plants
+              </a>
+            </li>
+            <li>
+              <a>
+                User profile
+              </a>
+            </li>
+            <li>
               <a>
                 Edit
               </a>
@@ -5788,13 +5856,6 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
             <li>
               <a>
                 Light mode
-              </a>
-            </li>
-            <li>
-              <a
-                href="/archived"
-              >
-                Archived plants
               </a>
             </li>
           </ul>
