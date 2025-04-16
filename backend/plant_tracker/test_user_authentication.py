@@ -147,6 +147,18 @@ class AuthenticationEndpointTests(TestCase):
             }
         })
 
+    def test_login_as_default_user(self):
+        # Attempt to log in as default user (does not have password)
+        response = self.client.post(
+            "/accounts/login/",
+            urlencode({"username": settings.DEFAULT_USERNAME, "password": ""}),
+            content_type="application/x-www-form-urlencoded"
+        )
+
+        # Confirm login rejected (default user only used when SINGLE_USER_MODE
+        # is enabled, default user does not need to log in)
+        self.assertEqual(response.status_code, 400)
+
     def test_login_with_missing_parameters(self):
         # POST invalid credentials with no password to login endpoint
         response = self.client.post(
@@ -347,6 +359,27 @@ class AuthenticationEndpointTests(TestCase):
         self.assertEqual(
             response.json()['errors'],
             {'new_password2': ['The two password fields didn’t match.']}
+        )
+
+    def test_password_change_endpoint_default_user(self):
+        # Log in with default user (should not be possible in prod)
+        self.client.force_login(get_default_user())
+
+        # Post old and new passwords to change_password endpoint
+        response = self.client.post('/accounts/change_password/',
+            urlencode({
+                'old_password': '',
+                'new_password1': 'more secure password',
+                'new_password2': 'more secure password',
+            }),
+            content_type="application/x-www-form-urlencoded"
+        )
+
+        # Confirm expected error (refuses to change default user password)
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(
+            response.json(),
+            {"error": "cannot change default user password"}
         )
 
     def test_edit_user_details_endpoint(self):

@@ -58,6 +58,10 @@ class EmailOrUsernameAuthenticationForm(AuthenticationForm):
         username = self.cleaned_data.get("username")
         password = self.cleaned_data.get("password")
 
+        # Prevent default user from logging in (only used when login disabled)
+        if username == settings.DEFAULT_USERNAME:
+            raise self.get_invalid_login_error()
+
         if username is not None and password:
             # Convert username to correct kwarg (username or email)
             credentials = self.get_credentials(username, password)
@@ -119,6 +123,11 @@ class PasswordChangeView(views.PasswordChangeView):
             return JsonResponse(
                 {"error": "user accounts are disabled"},
                 status=400
+            )
+        if self.request.user.username == settings.DEFAULT_USERNAME:
+            return JsonResponse(
+                {"error": "cannot change default user password"},
+                status=403
             )
         return super().dispatch(*args, **kwargs)
 
