@@ -180,6 +180,52 @@ describe('App', () => {
         });
     });
 
+    it('shows error modal when unable to delete plant or group', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            status: 400,
+            json: () => Promise.resolve({
+                "deleted": [],
+                "failed": ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"]
+            })
+        }));
+
+        // Confirm error modal is not rendered
+        expect(app.queryByText('["0640ec3b-1bed-4b15-a078-d6e7ec66be12"]')).toBeNull();
+
+        // Click edit option, click first checkbox, click delete button
+        await user.click(app.getByText("Edit"));
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.getByText('Delete'));
+
+        // Confirm error modal appeared
+        expect(app.queryByText('["0640ec3b-1bed-4b15-a078-d6e7ec66be12"]')).not.toBeNull();
+    });
+
+    it('shows error modal when unable to archive plant or group', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            status: 400,
+            json: () => Promise.resolve({
+                "archived": [],
+                "failed": ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"]
+            })
+        }));
+
+        // Confirm error modal is not rendered
+        expect(app.queryByText('["0640ec3b-1bed-4b15-a078-d6e7ec66be12"]')).toBeNull();
+
+        // Click edit option, click first checkbox, click archive button
+        await user.click(app.getByText("Edit"));
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.getByText('Archive'));
+
+        // Confirm error modal appeared
+        expect(app.queryByText('["0640ec3b-1bed-4b15-a078-d6e7ec66be12"]')).not.toBeNull();
+    });
+
     it('removes edit option from dropdown if all plants and groups are deleted', async () => {
         // Mock fetch to simulate successfully deleting both plants
         global.fetch = jest.fn(() => Promise.resolve({

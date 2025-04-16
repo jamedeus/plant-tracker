@@ -440,6 +440,87 @@ class OverviewTests(TestCase):
         self.assertEqual(response.json(), {"error": "archived key is not bool"})
         self.assertFalse(Group.objects.all()[0].archived)
 
+    def test_bulk_delete_plants_and_groups(self):
+        # Create test plant and group, confirm both exist in database
+        plant_id = uuid4()
+        group_id = uuid4()
+        default_user = get_default_user()
+        Plant.objects.create(uuid=plant_id, name='test plant', user=default_user)
+        Group.objects.create(uuid=group_id, name='test group', user=default_user)
+        self.assertEqual(len(Plant.objects.all()), 1)
+        self.assertEqual(len(Group.objects.all()), 1)
+
+        # Post both UUIDs to /bulk_delete_plants_and_groups
+        response = self.client.post('/bulk_delete_plants_and_groups', {
+            'uuids': [
+                str(plant_id),
+                str(group_id)
+            ]
+        })
+
+        # Confirm response, confirm removed from database
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {'deleted': [str(plant_id), str(group_id)], 'failed': []}
+        )
+        self.assertEqual(len(Plant.objects.all()), 0)
+        self.assertEqual(len(Group.objects.all()), 0)
+
+        # Attempt to delete non-existing plant, confirm error
+        response = self.client.post('/bulk_delete_plants_and_groups', {
+            'uuids': [str(plant_id)]
+        })
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.json(),
+            {'deleted': [], 'failed': [str(plant_id)]}
+        )
+
+    def test_bulk_archive_plants_and_groups(self):
+        # Create test plant and group, confirm both exist in database and are not archived
+        plant_id = uuid4()
+        group_id = uuid4()
+        default_user = get_default_user()
+        Plant.objects.create(uuid=plant_id, name='test plant', user=default_user)
+        Group.objects.create(uuid=group_id, name='test group', user=default_user)
+        self.assertEqual(len(Plant.objects.all()), 1)
+        self.assertEqual(len(Group.objects.all()), 1)
+        self.assertFalse(Plant.objects.all()[0].archived)
+        self.assertFalse(Group.objects.all()[0].archived)
+
+        # Post both UUIDs to /bulk_archive_plants_and_groups
+        response = self.client.post('/bulk_archive_plants_and_groups', {
+            'uuids': [
+                str(plant_id),
+                str(group_id)
+            ],
+            'archived': True
+        })
+
+        # Confirm response, confirm still in database but archived is True
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {'archived': [str(plant_id), str(group_id)], 'failed': []}
+        )
+        self.assertEqual(len(Plant.objects.all()), 1)
+        self.assertEqual(len(Group.objects.all()), 1)
+        self.assertTrue(Plant.objects.all()[0].archived)
+        self.assertTrue(Group.objects.all()[0].archived)
+
+        # Attempt to archive non-existing uuid, confirm error
+        test_id = uuid4()
+        response = self.client.post('/bulk_archive_plants_and_groups', {
+            'uuids': [str(test_id)],
+            'archived': True
+        })
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(
+            response.json(),
+            {'archived': [], 'failed': [str(test_id)]}
+        )
+
 
 class ArchivedOverviewTests(TestCase):
     def setUp(self):
