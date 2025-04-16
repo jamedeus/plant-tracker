@@ -52,6 +52,7 @@ const UserDetails = memo(function UserDetails() {
                 <input
                     name="first_name"
                     type="text"
+                    tabIndex={1}
                     className="input w-full input-bordered"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
@@ -63,6 +64,7 @@ const UserDetails = memo(function UserDetails() {
                 <input
                     name="last_name"
                     type="text"
+                    tabIndex={1}
                     className="input w-full input-bordered"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
@@ -75,6 +77,7 @@ const UserDetails = memo(function UserDetails() {
                     name="email"
                     type="text"
                     autoCapitalize="off"
+                    tabIndex={1}
                     className="input w-full input-bordered"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -98,6 +101,7 @@ const UserDetails = memo(function UserDetails() {
                 className="btn btn-success mt-4"
                 disabled={submitButtonDisabled}
                 onClick={submit}
+                tabIndex={1}
             >
                 Save Changes
             </button>
@@ -277,6 +281,7 @@ function App() {
                 <a
                     className="btn btn-outline btn-error mx-4"
                     href="/accounts/logout/"
+                    tabIndex={2}
                 >
                     Log Out
                 </a>

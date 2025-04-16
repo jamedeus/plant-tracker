@@ -97,6 +97,7 @@ exports[`App matches snapshot 1`] = `
         <a
           class="btn btn-success"
           href="/"
+          tabindex="1"
         >
           Go to Overview
         </a>
@@ -227,6 +228,7 @@ exports[`App matches snapshot 1`] = `
       <a
         class="btn btn-success"
         href="/"
+        tabindex="1"
       >
         Go to Overview
       </a>

@@ -97,6 +97,7 @@ exports[`App matches snapshot 1`] = `
                 autocapitalize="off"
                 class="input w-full input-bordered"
                 name="username"
+                tabindex="1"
                 type="text"
                 value=""
               />
@@ -117,6 +118,7 @@ exports[`App matches snapshot 1`] = `
               <input
                 class="input w-full input-bordered"
                 name="password"
+                tabindex="1"
                 type="password"
                 value=""
               />
@@ -124,16 +126,22 @@ exports[`App matches snapshot 1`] = `
             <button
               class="btn btn-success mt-6"
               disabled=""
+              tabindex="1"
             >
               Login
             </button>
           </form>
         </div>
-        <span
-          class="text-center text-base-content mt-8 pb-8 transition-all hover:text-white"
+        <div
+          class="pb-8"
         >
-          Create account
-        </span>
+          <button
+            class="text-center text-base-content mt-8 transition-all hover:text-white"
+            tabindex="1"
+          >
+            Create account
+          </button>
+        </div>
       </div>
       <dialog
         class="modal"
@@ -266,6 +274,7 @@ exports[`App matches snapshot 1`] = `
               autocapitalize="off"
               class="input w-full input-bordered"
               name="username"
+              tabindex="1"
               type="text"
               value=""
             />
@@ -286,6 +295,7 @@ exports[`App matches snapshot 1`] = `
             <input
               class="input w-full input-bordered"
               name="password"
+              tabindex="1"
               type="password"
               value=""
             />
@@ -293,16 +303,22 @@ exports[`App matches snapshot 1`] = `
           <button
             class="btn btn-success mt-6"
             disabled=""
+            tabindex="1"
           >
             Login
           </button>
         </form>
       </div>
-      <span
-        class="text-center text-base-content mt-8 pb-8 transition-all hover:text-white"
+      <div
+        class="pb-8"
       >
-        Create account
-      </span>
+        <button
+          class="text-center text-base-content mt-8 transition-all hover:text-white"
+          tabindex="1"
+        >
+          Create account
+        </button>
+      </div>
     </div>
     <dialog
       class="modal"

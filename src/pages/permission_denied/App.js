@@ -17,7 +17,7 @@ function App() {
                 {errorMessage}
             </div>
 
-            <a href="/" className='btn btn-success'>
+            <a href="/" className='btn btn-success' tabIndex={1}>
                 Go to Overview
             </a>
         </div>

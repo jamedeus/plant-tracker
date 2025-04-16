@@ -118,6 +118,7 @@ exports[`App matches snapshot 1`] = `
                     class="input w-full input-bordered"
                     data-testid="first_name_input"
                     name="first_name"
+                    tabindex="1"
                     type="text"
                     value="Carlos"
                   />
@@ -130,6 +131,7 @@ exports[`App matches snapshot 1`] = `
                     class="input w-full input-bordered"
                     data-testid="last_name_input"
                     name="last_name"
+                    tabindex="1"
                     type="text"
                     value="Danger"
                   />
@@ -143,6 +145,7 @@ exports[`App matches snapshot 1`] = `
                     class="input w-full input-bordered"
                     data-testid="email_input"
                     name="email"
+                    tabindex="1"
                     type="text"
                     value="totally.not.anthony.weiner@gmail.com"
                   />
@@ -174,6 +177,7 @@ exports[`App matches snapshot 1`] = `
                 <button
                   class="btn btn-success mt-4"
                   disabled=""
+                  tabindex="1"
                 >
                   Save Changes
                 </button>
@@ -270,6 +274,7 @@ exports[`App matches snapshot 1`] = `
           <a
             class="btn btn-outline btn-error mx-4"
             href="/accounts/logout/"
+            tabindex="2"
           >
             Log Out
           </a>
@@ -422,6 +427,7 @@ exports[`App matches snapshot 1`] = `
                   class="input w-full input-bordered"
                   data-testid="first_name_input"
                   name="first_name"
+                  tabindex="1"
                   type="text"
                   value="Carlos"
                 />
@@ -434,6 +440,7 @@ exports[`App matches snapshot 1`] = `
                   class="input w-full input-bordered"
                   data-testid="last_name_input"
                   name="last_name"
+                  tabindex="1"
                   type="text"
                   value="Danger"
                 />
@@ -447,6 +454,7 @@ exports[`App matches snapshot 1`] = `
                   class="input w-full input-bordered"
                   data-testid="email_input"
                   name="email"
+                  tabindex="1"
                   type="text"
                   value="totally.not.anthony.weiner@gmail.com"
                 />
@@ -478,6 +486,7 @@ exports[`App matches snapshot 1`] = `
               <button
                 class="btn btn-success mt-4"
                 disabled=""
+                tabindex="1"
               >
                 Save Changes
               </button>
@@ -574,6 +583,7 @@ exports[`App matches snapshot 1`] = `
         <a
           class="btn btn-outline btn-error mx-4"
           href="/accounts/logout/"
+          tabindex="2"
         >
           Log Out
         </a>
