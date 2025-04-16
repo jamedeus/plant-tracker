@@ -447,18 +447,12 @@ class ArchivedOverviewTests(TestCase):
         self.client = JSONClient()
 
     def test_archived_overview_page_no_database_entries(self):
-        # Request overview, confirm uses correct JS bundle and title
+        # Request archived overview when no archived plants or groups exist
         response = self.client.get('/archived')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['js_bundle'], 'plant_tracker/overview.js')
-        self.assertEqual(response.context['title'], 'Archived')
 
-        # Confirm correct state object (no plants or groups in database)
-        self.assertEqual(
-            response.context['state'],
-            {'plants': [], 'groups': []}
-        )
+        # Confirm redirected to main overview
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, '/')
 
     def test_overview_page_with_database_entries(self):
         # Create test group and 2 test plants (should NOT be in context)

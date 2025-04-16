@@ -108,16 +108,18 @@ def archived_overview(request, user):
     '''Renders overview page for the requesting user showing only their
     archived plants and groups.
     '''
+
+    archived_plants = Plant.objects.filter(archived=True, user=user)
+    archived_groups = Group.objects.filter(archived=True, user=user)
+
+    # Redirect to main overview if user has no archived plants or groups
+    if not archived_plants and not archived_groups:
+        return HttpResponseRedirect('/')
+
     state = {
-        'plants': [],
-        'groups': []
+        'plants': [plant.get_details() for plant in archived_plants],
+        'groups': [group.get_details() for group in archived_groups]
     }
-
-    for plant in Plant.objects.filter(archived=True, user=user):
-        state['plants'].append(plant.get_details())
-
-    for group in Group.objects.filter(archived=True, user=user):
-        state['groups'].append(group.get_details())
 
     return render_react_app(
         request,
