@@ -150,7 +150,7 @@ describe('App', () => {
         // Click create account button
         await user.click(app.getByRole("button", {name: "Create account"}));
 
-        // Confirm correct data posted to /delete_plant endpoint
+        // Confirm correct data posted to /create_user endpoint
         expect(global.fetch).toHaveBeenCalledWith('/accounts/create_user/', {
             method: 'POST',
             body: JSON.stringify({

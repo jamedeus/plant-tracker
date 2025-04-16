@@ -51,7 +51,7 @@ describe('App', () => {
         // Click Save Changes button
         await user.click(app.getByRole("button", {name: "Save Changes"}));
 
-        // Confirm correct data posted to /delete_plant endpoint
+        // Confirm correct data posted to /edit_user_details endpoint
         expect(global.fetch).toHaveBeenCalledWith('/accounts/edit_user_details/', {
             method: 'POST',
             body: JSON.stringify({
@@ -83,7 +83,7 @@ describe('App', () => {
         // Simulate user pressing enter key in first name field
         await user.type(app.getByTestId('first_name_input'), '{enter}');
 
-        // Confirm correct data posted to /delete_plant endpoint
+        // Confirm correct data posted to /edit_user_details endpoint
         expect(global.fetch).toHaveBeenCalledWith('/accounts/edit_user_details/', {
             method: 'POST',
             body: JSON.stringify({
@@ -136,7 +136,7 @@ describe('App', () => {
         // Click Change Password button
         await user.click(app.getByRole("button", {name: "Change Password"}));
 
-        // Confirm correct data posted to /delete_plant endpoint
+        // Confirm correct data posted to /edit_user_details endpoint
         expect(global.fetch).toHaveBeenCalled();
         const [[url, fetchOptions]] = global.fetch.mock.calls;
         expect(url).toBe('/accounts/change_password/');

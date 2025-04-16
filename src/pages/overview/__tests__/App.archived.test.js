@@ -111,7 +111,7 @@ describe('App', () => {
         // Click un-archive button in floating div
         await user.click(app.getByText('Un-archive'));
 
-        // Confirm correct data posted to /delete_plant endpoint
+        // Confirm correct data posted to /archive_plant endpoint
         expect(global.fetch).toHaveBeenCalledWith('/archive_plant', {
             method: 'POST',
             body: JSON.stringify({
@@ -178,7 +178,7 @@ describe('App', () => {
         // Click un-archive button in floating div
         await user.click(app.getByText('Un-archive'));
 
-        // Confirm correct data posted to /delete_group endpoint
+        // Confirm correct data posted to /archive_group endpoint
         expect(global.fetch).toHaveBeenCalledWith('/archive_group', {
             method: 'POST',
             body: JSON.stringify({
