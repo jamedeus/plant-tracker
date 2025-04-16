@@ -192,7 +192,9 @@ describe('App', () => {
         }));
 
         // Confirm error modal is not rendered
-        expect(app.queryByText('["0640ec3b-1bed-4b15-a078-d6e7ec66be12"]')).toBeNull();
+        expect(app.queryByText(
+            'Failed to delete: 0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+        )).toBeNull();
 
         // Click edit option, click first checkbox, click delete button
         await user.click(app.getByText("Edit"));
@@ -200,7 +202,9 @@ describe('App', () => {
         await user.click(app.getByText('Delete'));
 
         // Confirm error modal appeared
-        expect(app.queryByText('["0640ec3b-1bed-4b15-a078-d6e7ec66be12"]')).not.toBeNull();
+        expect(app.queryByText(
+            'Failed to delete: 0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+        )).not.toBeNull();
     });
 
     it('shows error modal when unable to archive plant or group', async () => {
@@ -215,7 +219,9 @@ describe('App', () => {
         }));
 
         // Confirm error modal is not rendered
-        expect(app.queryByText('["0640ec3b-1bed-4b15-a078-d6e7ec66be12"]')).toBeNull();
+        expect(app.queryByText(
+            'Failed to archive: 0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+        )).toBeNull();
 
         // Click edit option, click first checkbox, click archive button
         await user.click(app.getByText("Edit"));
@@ -223,7 +229,9 @@ describe('App', () => {
         await user.click(app.getByText('Archive'));
 
         // Confirm error modal appeared
-        expect(app.queryByText('["0640ec3b-1bed-4b15-a078-d6e7ec66be12"]')).not.toBeNull();
+        expect(app.queryByText(
+            'Failed to archive: 0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+        )).not.toBeNull();
     });
 
     it('removes edit option from dropdown if all plants and groups are deleted', async () => {

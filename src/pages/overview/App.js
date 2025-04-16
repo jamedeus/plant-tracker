@@ -119,7 +119,7 @@ function App() {
             );
         } else {
             const data = await response.json();
-            openErrorModal(JSON.stringify(data.failed));
+            openErrorModal(`Failed to delete: ${data.failed.join(', ')}`);
         }
 
         // Reset editing state
@@ -173,7 +173,7 @@ function App() {
             }
         } else {
             const data = await response.json();
-            openErrorModal(JSON.stringify(data.failed));
+            openErrorModal(`Failed to archive: ${data.failed.join(', ')}`);
         }
 
         // Reset editing state
