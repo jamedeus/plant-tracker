@@ -66,6 +66,35 @@ describe('App', () => {
         expect(app.queryByText('Details updated!')).not.toBeNull();
     });
 
+    it('submits user details form when user presses enter key', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({success: "details updated"})
+        }));
+
+        // Simulate user changing first and last name
+        await user.clear(app.getByTestId('first_name_input'));
+        await user.type(app.getByTestId('first_name_input'), 'Bob');
+        await user.clear(app.getByTestId('last_name_input'));
+        await user.type(app.getByTestId('last_name_input'), 'Smith');
+
+        // Simulate user pressing enter key in first name field
+        await user.type(app.getByTestId('first_name_input'), '{enter}');
+
+        // Confirm correct data posted to /delete_plant endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/accounts/edit_user_details/', {
+            method: 'POST',
+            body: JSON.stringify({
+                first_name: 'Bob',
+                last_name: 'Smith',
+                email: 'totally.not.anthony.weiner@gmail.com'
+            }),
+            headers: postHeaders
+        });
+    });
+
     it('shows error toast when unable to update user details', async () => {
         // Mock fetch function to return expected error
         global.fetch = jest.fn(() => Promise.resolve({
@@ -119,6 +148,29 @@ describe('App', () => {
 
         // Confirm toast message appeared
         expect(app.queryByText('Password changed!')).not.toBeNull();
+    });
+
+    it('submits change password form when user presses enter key', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({success: "password_changed"})
+        }));
+
+        // Simulate user entering old password and new password twice
+        await user.type(app.getByLabelText('Old password'), 'password123');
+        await user.type(app.getByLabelText('New password'), 'thispasswordisbetter');
+        await user.type(app.getByLabelText('Confirm new password'), 'thispasswordisbetter');
+
+        // Simulate user pressing enter key in old password field
+        await user.type(app.getByLabelText('Old password'), '{enter}');
+
+        // Confirm posted data to change_password endpoint
+        expect(global.fetch).toHaveBeenCalled();
+        const [[url, fetchOptions]] = global.fetch.mock.calls;
+        expect(url).toBe('/accounts/change_password/');
+        expect(fetchOptions.method).toBe('POST');
     });
 
     it('highlights old password field if old password is incorrect', async () => {

@@ -43,6 +43,12 @@ const UserDetails = memo(function UserDetails() {
         }
     };
 
+    const submitOnEnterKey = async (event) => {
+        if (event.key === 'Enter' && !submitButtonDisabled) {
+            await submit();
+        }
+    };
+
     return (
         <div className="flex flex-col gap-4">
             <div className="grid grid-cols-[min-content_1fr] gap-4">
@@ -56,6 +62,7 @@ const UserDetails = memo(function UserDetails() {
                     className="input w-full input-bordered"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
+                    onKeyDown={(e) => submitOnEnterKey(e)}
                     data-testid="first_name_input"
                 />
                 <div className="my-auto text-nowrap">
@@ -68,6 +75,7 @@ const UserDetails = memo(function UserDetails() {
                     className="input w-full input-bordered"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
+                    onKeyDown={(e) => submitOnEnterKey(e)}
                     data-testid="last_name_input"
                 />
                 <div className="my-auto text-nowrap">
@@ -81,6 +89,7 @@ const UserDetails = memo(function UserDetails() {
                     className="input w-full input-bordered"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
+                    onKeyDown={(e) => submitOnEnterKey(e)}
                     data-testid="email_input"
                 />
                 <div className="my-auto text-nowrap">
@@ -153,6 +162,12 @@ const ChangePassword = memo(function ChangePassword() {
         }
     };
 
+    const submitOnEnterKey = async (event) => {
+        if (event.key === 'Enter' && !submitButtonDisabled) {
+            await submit(event);
+        }
+    };
+
     return (
         <form ref={formRef} className="flex flex-col gap-2">
             <label
@@ -170,6 +185,7 @@ const ChangePassword = memo(function ChangePassword() {
                         oldPasswordIncorrect && "input-error"
                     )}
                     value={oldPassword}
+                    onKeyDown={(e) => submitOnEnterKey(e)}
                     onInput={() => setOldPasswordIncorrect(false)}
                     onChange={(e) => setOldPassword(e.target.value)}
                 />
@@ -194,6 +210,7 @@ const ChangePassword = memo(function ChangePassword() {
                         newPasswordError && "input-error"
                     )}
                     value={newPassword1}
+                    onKeyDown={(e) => submitOnEnterKey(e)}
                     onChange={(e) => setNewPassword1(e.target.value)}
                 />
             </label>
@@ -212,6 +229,7 @@ const ChangePassword = memo(function ChangePassword() {
                         newPasswordError && "input-error"
                     )}
                     value={newPassword2}
+                    onKeyDown={(e) => submitOnEnterKey(e)}
                     onInput={() => setNewPasswordError(false)}
                     onChange={(e) => setNewPassword2(e.target.value)}
                 />
