@@ -324,7 +324,7 @@ class AuthenticationEndpointTests(TestCase):
         # Confirm no user created in database
         self.assertEqual(len(user_model.objects.all()), 2)
 
-    def test_password_change_endpoint(self):
+    def test_change_password_endpoint(self):
         # Log in with test user
         self.client.login(username='unittest', password='12345')
 
@@ -340,13 +340,13 @@ class AuthenticationEndpointTests(TestCase):
 
         # Confirm success response
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {"success": "password_changed"})
+        self.assertEqual(response.json(), {"success": "password changed"})
 
         # Confirm did not store password as cleartext
         user = user_model.objects.get(username='unittest')
         self.assertNotEqual(user.password, 'more secure password')
 
-    def test_password_change_endpoint_errors(self):
+    def test_change_password_endpoint_errors(self):
         # Log in with test user
         self.client.login(username='unittest', password='12345')
 
@@ -367,7 +367,7 @@ class AuthenticationEndpointTests(TestCase):
             {'new_password2': ['The two password fields didn’t match.']}
         )
 
-    def test_password_change_endpoint_default_user(self):
+    def test_change_password_endpoint_default_user(self):
         # Log in with default user (should not be possible in prod)
         self.client.force_login(get_default_user())
 
@@ -505,7 +505,7 @@ class SingleUserModeTests(TestCase):
             })
         )
 
-    def test_password_change_endpoint(self):
+    def test_change_password_endpoint(self):
         # Post new password while SINGLE_USER_MODE is enabled
         self.assertReceivedUserAccountsDisabledError(
             self.client.post('/accounts/change_password/',

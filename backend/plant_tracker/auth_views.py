@@ -134,7 +134,7 @@ class PasswordChangeView(views.PasswordChangeView):
     def form_valid(self, form):
         '''Returns JSON success message instead of redirect.'''
         super().form_valid(form)
-        return JsonResponse({"success": "password_changed"})
+        return JsonResponse({"success": "password changed"})
 
     def form_invalid(self, form):
         '''Returns errors as JSON instead of redirect with error context.'''
