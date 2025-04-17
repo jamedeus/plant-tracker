@@ -23,7 +23,7 @@ const PlantEventButtons = ({ editing, setEditing, addEventSelected }) => {
         return (
             <>
                 <div
-                    className="flex mx-auto mb-4"
+                    className="flex flex-col items-center mb-4"
                     data-testid="addEventTimeInput"
                 >
                     <DatetimeInput inputRef={addEventTimeInput} />
@@ -302,7 +302,7 @@ function App() {
             />
 
             <DatetimeInput inputRef={addEventAllTimeInput} />
-            <div className="flex mx-auto mb-8">
+            <div className="flex mb-8">
                 <button
                     className="btn btn-info m-2"
                     onClick={() => addEventAll('water')}

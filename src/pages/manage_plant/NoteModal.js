@@ -146,7 +146,7 @@ const NoteModal = () => {
     return (
         <Modal title={editingNote ? "Edit Note" : "Add Note"} ref={modalRef}>
             <div className="flex flex-col">
-                <div className="min-h-36 flex flex-col justify-center mt-2">
+                <div className="min-h-36 flex flex-col items-center mt-2">
                     {editingNote
                         ? <ExistingNoteTimestamp noteTime={noteTime} />
                         : <DatetimeInput inputRef={timestampRef} />

@@ -7,7 +7,7 @@ const DatetimeInput = ({ inputRef, value=null }) => {
     return (
         <input
             ref={inputRef}
-            className="input input-bordered mx-auto my-2"
+            className="input input-bordered my-2"
             type="datetime-local"
             step="1"
             defaultValue={

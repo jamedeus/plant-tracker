@@ -142,13 +142,13 @@ exports[`App matches snapshot 1`] = `
           />
         </div>
         <input
-          class="input input-bordered mx-auto my-2"
+          class="input input-bordered my-2"
           step="1"
           type="datetime-local"
           value="2024-03-01T12:00:00"
         />
         <div
-          class="flex mx-auto mb-8"
+          class="flex mb-8"
         >
           <button
             class="btn btn-info m-2"
@@ -984,13 +984,13 @@ exports[`App matches snapshot 1`] = `
         />
       </div>
       <input
-        class="input input-bordered mx-auto my-2"
+        class="input input-bordered my-2"
         step="1"
         type="datetime-local"
         value="2024-03-01T12:00:00"
       />
       <div
-        class="flex mx-auto mb-8"
+        class="flex mb-8"
       >
         <button
           class="btn btn-info m-2"
