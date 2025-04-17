@@ -16,7 +16,7 @@ exports[`App matches snapshot 1`] = `
     </div>
     <div>
       <div
-        class="container flex flex-col mx-auto mb-8"
+        class="container flex flex-col mx-auto items-center mb-8"
       >
         <div
           class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
@@ -95,7 +95,7 @@ exports[`App matches snapshot 1`] = `
           />
         </div>
         <div
-          class="flex flex-col mx-8 md:w-1/2 md:mx-auto"
+          class="flex flex-col w-96 max-w-[100vw] px-4"
         >
           <div
             aria-orientation="horizontal"
@@ -128,7 +128,7 @@ exports[`App matches snapshot 1`] = `
             </button>
           </div>
           <div
-            class="my-8"
+            class="my-4 md:my-8"
           >
             <div
               aria-labelledby="headlessui-tabs-tab-:r0:"
@@ -138,6 +138,7 @@ exports[`App matches snapshot 1`] = `
               tabindex="0"
             >
               <form
+                class="flex flex-col gap-4"
                 id="plantDetails"
               >
                 <label
@@ -147,7 +148,7 @@ exports[`App matches snapshot 1`] = `
                     class="label"
                   >
                     <span
-                      class="label-text-alt"
+                      class="label-text"
                     >
                       Plant name
                     </span>
@@ -166,7 +167,7 @@ exports[`App matches snapshot 1`] = `
                     class="label"
                   >
                     <span
-                      class="label-text-alt"
+                      class="label-text"
                     >
                       Plant species
                     </span>
@@ -191,7 +192,7 @@ exports[`App matches snapshot 1`] = `
                     class="label"
                   >
                     <span
-                      class="label-text-alt"
+                      class="label-text"
                     >
                       Pot size
                     </span>
@@ -212,7 +213,7 @@ exports[`App matches snapshot 1`] = `
                     class="label"
                   >
                     <span
-                      class="label-text-alt"
+                      class="label-text"
                     >
                       Description
                     </span>
@@ -280,7 +281,7 @@ exports[`App matches snapshot 1`] = `
   </body>,
   "container": <div>
     <div
-      class="container flex flex-col mx-auto mb-8"
+      class="container flex flex-col mx-auto items-center mb-8"
     >
       <div
         class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
@@ -359,7 +360,7 @@ exports[`App matches snapshot 1`] = `
         />
       </div>
       <div
-        class="flex flex-col mx-8 md:w-1/2 md:mx-auto"
+        class="flex flex-col w-96 max-w-[100vw] px-4"
       >
         <div
           aria-orientation="horizontal"
@@ -392,7 +393,7 @@ exports[`App matches snapshot 1`] = `
           </button>
         </div>
         <div
-          class="my-8"
+          class="my-4 md:my-8"
         >
           <div
             aria-labelledby="headlessui-tabs-tab-:r0:"
@@ -402,6 +403,7 @@ exports[`App matches snapshot 1`] = `
             tabindex="0"
           >
             <form
+              class="flex flex-col gap-4"
               id="plantDetails"
             >
               <label
@@ -411,7 +413,7 @@ exports[`App matches snapshot 1`] = `
                   class="label"
                 >
                   <span
-                    class="label-text-alt"
+                    class="label-text"
                   >
                     Plant name
                   </span>
@@ -430,7 +432,7 @@ exports[`App matches snapshot 1`] = `
                   class="label"
                 >
                   <span
-                    class="label-text-alt"
+                    class="label-text"
                   >
                     Plant species
                   </span>
@@ -455,7 +457,7 @@ exports[`App matches snapshot 1`] = `
                   class="label"
                 >
                   <span
-                    class="label-text-alt"
+                    class="label-text"
                   >
                     Pot size
                   </span>
@@ -476,7 +478,7 @@ exports[`App matches snapshot 1`] = `
                   class="label"
                 >
                   <span
-                    class="label-text-alt"
+                    class="label-text"
                   >
                     Description
                   </span>

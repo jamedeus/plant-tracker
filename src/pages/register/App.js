@@ -27,7 +27,7 @@ const Form = memo(function Form({ setVisibleForm, plantFormRef, groupFormRef }) 
                 </Tab>
             </Tab.List>
 
-            <Tab.Panels className="my-8">
+            <Tab.Panels className="my-4 md:my-8">
                 <Tab.Panel>
                     <PlantDetailsForm
                         formRef={plantFormRef}
@@ -121,13 +121,13 @@ function App() {
     const DropdownMenuOptions = useMemo(() => <NavbarDropdownOptions />, []);
 
     return (
-        <div className="container flex flex-col mx-auto mb-8">
+        <div className="container flex flex-col mx-auto items-center mb-8">
             <Navbar
                 menuOptions={DropdownMenuOptions}
                 title='Registration'
             />
 
-            <div className="flex flex-col mx-8 md:w-1/2 md:mx-auto">
+            <div className="flex flex-col w-96 max-w-[100vw] px-4">
                 <Form
                     setVisibleForm={setVisibleForm}
                     plantFormRef={plantFormRef}

@@ -84,10 +84,10 @@ SpeciesSelect.propTypes = {
 
 const PlantDetailsForm = ({ formRef, name, species, pot_size, description }) => {
     return (
-        <form id="plantDetails" ref={formRef}>
+        <form id="plantDetails" ref={formRef} className="flex flex-col gap-4">
             <label className="form-control w-full">
                 <div className="label">
-                    <span className="label-text-alt">Plant name</span>
+                    <span className="label-text">Plant name</span>
                 </div>
                 <input
                     name="name"
@@ -98,13 +98,13 @@ const PlantDetailsForm = ({ formRef, name, species, pot_size, description }) => 
             </label>
             <label className="form-control w-full relative">
                 <div className="label">
-                    <span className="label-text-alt">Plant species</span>
+                    <span className="label-text">Plant species</span>
                 </div>
                 <SpeciesSelect value={species} />
             </label>
             <label className="form-control w-full">
                 <div className="label">
-                    <span className="label-text-alt">Pot size</span>
+                    <span className="label-text">Pot size</span>
                 </div>
                 <input
                     name="pot_size"
@@ -117,7 +117,7 @@ const PlantDetailsForm = ({ formRef, name, species, pot_size, description }) => 
             </label>
             <label className="form-control w-full">
                 <div className="label">
-                    <span className="label-text-alt">Description</span>
+                    <span className="label-text">Description</span>
                 </div>
                 <textarea
                     name="description"

@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 
 const GroupDetailsForm = ({ formRef, name, location, description }) => {
     return (
-        <form id="groupDetails" ref={formRef}>
+        <form id="groupDetails" ref={formRef} className="flex flex-col gap-4">
             <label className="form-control w-full">
                 <div className="label">
-                    <span className="label-text-alt">Group name</span>
+                    <span className="label-text">Group name</span>
                 </div>
                 <input
                     name="name"
@@ -17,7 +17,7 @@ const GroupDetailsForm = ({ formRef, name, location, description }) => {
             </label>
             <label className="form-control w-full">
                 <div className="label">
-                    <span className="label-text-alt">Group location</span>
+                    <span className="label-text">Group location</span>
                 </div>
                 <input
                     name="location"
@@ -28,7 +28,7 @@ const GroupDetailsForm = ({ formRef, name, location, description }) => {
             </label>
             <label className="form-control w-full">
                 <div className="label">
-                    <span className="label-text-alt">Description</span>
+                    <span className="label-text">Description</span>
                 </div>
                 <textarea
                     name="description"
