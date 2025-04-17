@@ -20,7 +20,7 @@ const GroupCard = memo(function GroupCard({
         <a
             href={linkPage ? `/manage/${uuid}` : null}
             className={clsx(
-                'collapse card-collapse bg-neutral',
+                'collapse card-collapse bg-neutral group',
                 archived && 'grayscale',
                 linkPage && 'cursor-pointer'
             )}
@@ -36,7 +36,7 @@ const GroupCard = memo(function GroupCard({
                 <div className='card text-neutral-content relative'>
                     {/* Card body */}
                     <div className='card-body cursor-default text-center'>
-                        <h2 className='card-title mx-auto'>{display_name}</h2>
+                        <h2 className='card-title mx-auto px-8'>{display_name}</h2>
                         <p>Contains {plants} plants</p>
                     </div>
 

@@ -493,7 +493,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                       class="w-full overflow-hidden transition-all duration-300 ml-0"
                     >
                       <a
-                        class="collapse card-collapse bg-neutral grayscale cursor-pointer"
+                        class="collapse card-collapse bg-neutral group grayscale cursor-pointer"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       >
                         <input
@@ -511,7 +511,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                               class="card-body cursor-default text-center"
                             >
                               <h2
-                                class="card-title mx-auto"
+                                class="card-title mx-auto px-8"
                               >
                                 Test group
                               </h2>
@@ -1157,7 +1157,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                     class="w-full overflow-hidden transition-all duration-300 ml-0"
                   >
                     <a
-                      class="collapse card-collapse bg-neutral grayscale cursor-pointer"
+                      class="collapse card-collapse bg-neutral group grayscale cursor-pointer"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     >
                       <input
@@ -1175,7 +1175,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                             class="card-body cursor-default text-center"
                           >
                             <h2
-                              class="card-title mx-auto"
+                              class="card-title mx-auto px-8"
                             >
                               Test group
                             </h2>
@@ -2135,7 +2135,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                       class="w-full overflow-hidden transition-all duration-300 ml-0"
                     >
                       <a
-                        class="collapse card-collapse bg-neutral cursor-pointer"
+                        class="collapse card-collapse bg-neutral group cursor-pointer"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       >
                         <input
@@ -2153,7 +2153,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                               class="card-body cursor-default text-center"
                             >
                               <h2
-                                class="card-title mx-auto"
+                                class="card-title mx-auto px-8"
                               >
                                 Test group
                               </h2>
@@ -2535,7 +2535,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                     class="w-full overflow-hidden transition-all duration-300 ml-0"
                   >
                     <a
-                      class="collapse card-collapse bg-neutral cursor-pointer"
+                      class="collapse card-collapse bg-neutral group cursor-pointer"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     >
                       <input
@@ -2553,7 +2553,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                             class="card-body cursor-default text-center"
                           >
                             <h2
-                              class="card-title mx-auto"
+                              class="card-title mx-auto px-8"
                             >
                               Test group
                             </h2>
@@ -4221,7 +4221,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                       class="w-full overflow-hidden transition-all duration-300 ml-0"
                     >
                       <a
-                        class="collapse card-collapse bg-neutral cursor-pointer"
+                        class="collapse card-collapse bg-neutral group cursor-pointer"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       >
                         <input
@@ -4239,7 +4239,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                               class="card-body cursor-default text-center"
                             >
                               <h2
-                                class="card-title mx-auto"
+                                class="card-title mx-auto px-8"
                               >
                                 Test group
                               </h2>
@@ -4871,7 +4871,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                     class="w-full overflow-hidden transition-all duration-300 ml-0"
                   >
                     <a
-                      class="collapse card-collapse bg-neutral cursor-pointer"
+                      class="collapse card-collapse bg-neutral group cursor-pointer"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     >
                       <input
@@ -4889,7 +4889,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                             class="card-body cursor-default text-center"
                           >
                             <h2
-                              class="card-title mx-auto"
+                              class="card-title mx-auto px-8"
                             >
                               Test group
                             </h2>
@@ -5612,7 +5612,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                       class="w-full overflow-hidden transition-all duration-300 ml-0"
                     >
                       <a
-                        class="collapse card-collapse bg-neutral cursor-pointer"
+                        class="collapse card-collapse bg-neutral group cursor-pointer"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       >
                         <input
@@ -5630,7 +5630,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                               class="card-body cursor-default text-center"
                             >
                               <h2
-                                class="card-title mx-auto"
+                                class="card-title mx-auto px-8"
                               >
                                 Test group
                               </h2>
@@ -6281,7 +6281,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                     class="w-full overflow-hidden transition-all duration-300 ml-0"
                   >
                     <a
-                      class="collapse card-collapse bg-neutral cursor-pointer"
+                      class="collapse card-collapse bg-neutral group cursor-pointer"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     >
                       <input
@@ -6299,7 +6299,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                             class="card-body cursor-default text-center"
                           >
                             <h2
-                              class="card-title mx-auto"
+                              class="card-title mx-auto px-8"
                             >
                               Test group
                             </h2>
