@@ -175,7 +175,7 @@ const PrintModal = memo(function PrintModal() {
                     ref={modalRef}
                     onClose={resetModal}
                 >
-                    <LoadingAnimation className="mt-2" />
+                    <LoadingAnimation className="mt-2 mx-auto" />
                     <div className="modal-action mx-auto">
                         <button className="btn" onClick={cancel}>Cancel</button>
                     </div>

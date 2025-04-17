@@ -190,7 +190,7 @@ const PhotoModal = () => {
 
             {/* Loading animation shown after user clicks submit */}
             <div className={uploading ? "flex flex-col" : "hidden"}>
-                <LoadingAnimation />
+                <LoadingAnimation className="mx-auto" />
             </div>
         </Modal>
     );

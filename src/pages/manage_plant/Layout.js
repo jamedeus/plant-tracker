@@ -119,7 +119,7 @@ function Layout() {
     }, [plantDetails]);
 
     return (
-        <div className="container flex flex-col mx-auto mb-8">
+        <div className="container flex flex-col items-center mx-auto mb-8">
             <Navbar
                 menuOptions={DropdownMenuOptions}
                 onOpenMenu={preloadDefaultPhotoModal}
@@ -136,7 +136,9 @@ function Layout() {
                 <EventButtons />
             )}
 
-            <EventCalendar />
+            <div className="my-8">
+                <EventCalendar />
+            </div>
 
             <Timeline />
 

@@ -43,19 +43,17 @@ const EventCalendar = memo(function EventCalendar() {
     };
 
     return (
-        <div className="mx-auto my-8">
-            <Calendar
-                calendarType='gregory'
-                minDate={new Date('2001-01-01T00:00:00')}
-                maxDate={new Date('2100-01-01T00:00:00')}
-                prevLabel=<ChevronLeftIcon className="w-6 h-6 m-auto" />
-                nextLabel=<ChevronRightIcon className="w-6 h-6 m-auto" />
-                tileContent={
-                    ({ date, view }) => view === 'month' && renderDots(date)
-                }
-                onClickDay={handleClickDay}
-            />
-        </div>
+        <Calendar
+            calendarType='gregory'
+            minDate={new Date('2001-01-01T00:00:00')}
+            maxDate={new Date('2100-01-01T00:00:00')}
+            prevLabel=<ChevronLeftIcon className="w-6 h-6 m-auto" />
+            nextLabel=<ChevronRightIcon className="w-6 h-6 m-auto" />
+            tileContent={
+                ({ date, view }) => view === 'month' && renderDots(date)
+            }
+            onClickDay={handleClickDay}
+        />
     );
 });
 

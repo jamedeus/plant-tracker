@@ -5,7 +5,7 @@ import clsx from 'clsx';
 const LoadingAnimation = ({ className }) => {
     return (
         <div className={clsx(
-            'h-36 flex flex-col justify-center mx-auto',
+            'h-36 flex flex-col justify-center',
             className && className
         )}>
             <span className='loading loading-spinner loading-lg'></span>

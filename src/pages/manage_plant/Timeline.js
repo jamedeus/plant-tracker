@@ -434,7 +434,7 @@ const Timeline = memo(function Timeline() {
 
     return (
         <div className={clsx(
-            'flex flex-col mt-2 mx-4 md:mx-auto p-4 md:p-8 pt-0 md:pt-0',
+            'flex flex-col mt-2 mx-4 p-4 md:p-8 pt-0 md:pt-0',
             'md:w-full md:max-w-screen-md bg-base-200 rounded-2xl'
         )}>
             <Title />
