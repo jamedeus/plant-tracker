@@ -256,6 +256,8 @@ def update_cached_manage_plant_state_hook(instance, **kwargs):
 def delete_cached_manage_plant_state_hook(instance, **kwargs):
     '''Deletes cached manage_plant state when plant is deleted from database'''
     cache.delete(f'{instance.uuid}_state')
+    # Cancel scheduled state update if present (will fail, plant doesn't exist)
+    revoke_queued_task(f'rebuild_{instance.uuid}_state_task_id')
 
 
 @shared_task()

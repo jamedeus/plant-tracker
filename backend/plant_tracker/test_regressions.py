@@ -4,6 +4,7 @@ import shutil
 from uuid import uuid4
 from types import NoneType
 from datetime import datetime
+from unittest.mock import patch
 
 from django.conf import settings
 from django.utils import timezone
@@ -793,6 +794,31 @@ class CachedStateRegressionTests(TestCase):
         update_cached_group_options(user_pk)
         self.assertNotEqual(cache.get(f'group_options_{user_pk}'), 'foo')
         self.assertIsInstance(cache.get(f'group_options_{user_pk}'), list)
+
+    def test_scheduled_plant_state_update_not_canceled_when_plant_deleted(self):
+        '''Issue: delete_cached_manage_plant_state_hook removed cached state of
+        the deleted plant but did not cancel scheduled cached state updates
+        (created by update_cached_manage_plant_state_hook after plant watered,
+        fertilized, etc). If a plant was deleted while a scheduled state update
+        was queued an uncaught Plant.DoesNotExist exception would occur when
+        the task ran.
+        '''
+
+        # Create plant, create water event for plant
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        WaterEvent.objects.create(plant=plant, timestamp=timezone.now())
+
+        # Confirm a scheduled task to rebuild plant state exists (created by
+        # tasks.update_cached_manage_plant_state_hook when WaterEvent created)
+        scheduled_task_id = cache.get(f'rebuild_{plant.uuid}_state_task_id')
+        self.assertIsNotNone(scheduled_task_id)
+
+        # Delete plant, confirm scheduled rebuild state task ID was deleted
+        # from cache and the task itself was revoked
+        with patch('plant_tracker.tasks.app.control.revoke') as mock_revoke:
+            plant.delete()
+            self.assertIsNone(cache.get(f'rebuild_{plant.uuid}_state_task_id'))
+            mock_revoke.assert_any_call(scheduled_task_id, terminate=True)
 
 
 class ViewDecoratorRegressionTests(TestCase):
