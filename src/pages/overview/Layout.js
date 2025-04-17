@@ -19,7 +19,7 @@ const Layout = ({
 
     return (
         <div className={clsx(
-            'grid grid-cols-1 mx-auto',
+            'grid grid-cols-1 mx-auto px-4',
             twoColumns && 'md:grid-cols-2'
         )}>
             {/* Render plants column if 1 or more plants exist */}

@@ -29,7 +29,7 @@ const CollapseCol = ({ title, children, scroll=false }) => {
     }, [open]);
 
     return (
-        <div className="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full">
+        <div className="collapse bg-base-200 max-w-96 px-4">
             <input type="checkbox" onChange={toggle} defaultChecked={true} />
             <div className="collapse-title text-xl font-medium text-center">
                 {title}

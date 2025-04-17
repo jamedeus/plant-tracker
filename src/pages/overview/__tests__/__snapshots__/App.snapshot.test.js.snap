@@ -121,13 +121,13 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
           />
         </div>
         <div
-          class="grid grid-cols-1 mx-auto md:grid-cols-2"
+          class="grid grid-cols-1 mx-auto px-4 md:grid-cols-2"
         >
           <div
             class="scroll-mt-20 md:mr-12 mb-8 md:mb-0"
           >
             <div
-              class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+              class="collapse bg-base-200 max-w-96 px-4"
             >
               <input
                 checked=""
@@ -377,7 +377,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
             class="scroll-mt-20 md:ml-12"
           >
             <div
-              class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+              class="collapse bg-base-200 max-w-96 px-4"
             >
               <input
                 checked=""
@@ -785,13 +785,13 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
         />
       </div>
       <div
-        class="grid grid-cols-1 mx-auto md:grid-cols-2"
+        class="grid grid-cols-1 mx-auto px-4 md:grid-cols-2"
       >
         <div
           class="scroll-mt-20 md:mr-12 mb-8 md:mb-0"
         >
           <div
-            class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+            class="collapse bg-base-200 max-w-96 px-4"
           >
             <input
               checked=""
@@ -1041,7 +1041,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
           class="scroll-mt-20 md:ml-12"
         >
           <div
-            class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+            class="collapse bg-base-200 max-w-96 px-4"
           >
             <input
               checked=""
@@ -1495,7 +1495,7 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
           />
         </div>
         <div
-          class="grid grid-cols-1 mx-auto"
+          class="grid grid-cols-1 mx-auto px-4"
         >
           <div
             class="flex flex-col mx-auto text-center my-auto px-8"
@@ -1712,7 +1712,7 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
         />
       </div>
       <div
-        class="grid grid-cols-1 mx-auto"
+        class="grid grid-cols-1 mx-auto px-4"
       >
         <div
           class="flex flex-col mx-auto text-center my-auto px-8"
@@ -2013,13 +2013,13 @@ exports[`App matches snapshot when only groups exist 1`] = `
           />
         </div>
         <div
-          class="grid grid-cols-1 mx-auto"
+          class="grid grid-cols-1 mx-auto px-4"
         >
           <div
             class="scroll-mt-20"
           >
             <div
-              class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+              class="collapse bg-base-200 max-w-96 px-4"
             >
               <input
                 checked=""
@@ -2413,13 +2413,13 @@ exports[`App matches snapshot when only groups exist 1`] = `
         />
       </div>
       <div
-        class="grid grid-cols-1 mx-auto"
+        class="grid grid-cols-1 mx-auto px-4"
       >
         <div
           class="scroll-mt-20"
         >
           <div
-            class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+            class="collapse bg-base-200 max-w-96 px-4"
           >
             <input
               checked=""
@@ -2885,13 +2885,13 @@ exports[`App matches snapshot when only plants exist 1`] = `
           />
         </div>
         <div
-          class="grid grid-cols-1 mx-auto"
+          class="grid grid-cols-1 mx-auto px-4"
         >
           <div
             class="scroll-mt-20"
           >
             <div
-              class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+              class="collapse bg-base-200 max-w-96 px-4"
             >
               <input
                 checked=""
@@ -3331,13 +3331,13 @@ exports[`App matches snapshot when only plants exist 1`] = `
         />
       </div>
       <div
-        class="grid grid-cols-1 mx-auto"
+        class="grid grid-cols-1 mx-auto px-4"
       >
         <div
           class="scroll-mt-20"
         >
           <div
-            class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+            class="collapse bg-base-200 max-w-96 px-4"
           >
             <input
               checked=""
@@ -3849,13 +3849,13 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
           />
         </div>
         <div
-          class="grid grid-cols-1 mx-auto md:grid-cols-2"
+          class="grid grid-cols-1 mx-auto px-4 md:grid-cols-2"
         >
           <div
             class="scroll-mt-20 md:mr-12 mb-8 md:mb-0"
           >
             <div
-              class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+              class="collapse bg-base-200 max-w-96 px-4"
             >
               <input
                 checked=""
@@ -4105,7 +4105,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
             class="scroll-mt-20 md:ml-12"
           >
             <div
-              class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+              class="collapse bg-base-200 max-w-96 px-4"
             >
               <input
                 checked=""
@@ -4499,13 +4499,13 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
         />
       </div>
       <div
-        class="grid grid-cols-1 mx-auto md:grid-cols-2"
+        class="grid grid-cols-1 mx-auto px-4 md:grid-cols-2"
       >
         <div
           class="scroll-mt-20 md:mr-12 mb-8 md:mb-0"
         >
           <div
-            class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+            class="collapse bg-base-200 max-w-96 px-4"
           >
             <input
               checked=""
@@ -4755,7 +4755,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
           class="scroll-mt-20 md:ml-12"
         >
           <div
-            class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+            class="collapse bg-base-200 max-w-96 px-4"
           >
             <input
               checked=""
@@ -5240,13 +5240,13 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
           />
         </div>
         <div
-          class="grid grid-cols-1 mx-auto md:grid-cols-2"
+          class="grid grid-cols-1 mx-auto px-4 md:grid-cols-2"
         >
           <div
             class="scroll-mt-20 md:mr-12 mb-8 md:mb-0"
           >
             <div
-              class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+              class="collapse bg-base-200 max-w-96 px-4"
             >
               <input
                 checked=""
@@ -5496,7 +5496,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
             class="scroll-mt-20 md:ml-12"
           >
             <div
-              class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+              class="collapse bg-base-200 max-w-96 px-4"
             >
               <input
                 checked=""
@@ -5909,13 +5909,13 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
         />
       </div>
       <div
-        class="grid grid-cols-1 mx-auto md:grid-cols-2"
+        class="grid grid-cols-1 mx-auto px-4 md:grid-cols-2"
       >
         <div
           class="scroll-mt-20 md:mr-12 mb-8 md:mb-0"
         >
           <div
-            class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+            class="collapse bg-base-200 max-w-96 px-4"
           >
             <input
               checked=""
@@ -6165,7 +6165,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
           class="scroll-mt-20 md:ml-12"
         >
           <div
-            class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+            class="collapse bg-base-200 max-w-96 px-4"
           >
             <input
               checked=""

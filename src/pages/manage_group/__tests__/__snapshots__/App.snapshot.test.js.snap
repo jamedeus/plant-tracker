@@ -21,7 +21,7 @@ exports[`App matches snapshot 1`] = `
     </div>
     <div>
       <div
-        class="container flex flex-col mx-auto mb-8"
+        class="container flex flex-col items-center mx-auto mb-8"
       >
         <div
           class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
@@ -162,7 +162,852 @@ exports[`App matches snapshot 1`] = `
           </button>
         </div>
         <div
-          class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
+          class="px-4"
+        >
+          <div
+            class="collapse bg-base-200 max-w-96 px-4"
+          >
+            <input
+              checked=""
+              type="checkbox"
+            />
+            <div
+              class="collapse-title text-xl font-medium text-center"
+            >
+              Plants (3)
+            </div>
+            <div
+              class="collapse-content min-w-0"
+            >
+              <div
+                class="flex px-4 mb-4"
+              >
+                <div
+                  class="relative w-full"
+                >
+                  <input
+                    class="input input-bordered w-full text-center indent-[3.625rem] pr-[4.5rem]"
+                    placeholder="filter"
+                    type="text"
+                    value=""
+                  />
+                  <div
+                    class="absolute flex top-2 right-2"
+                  >
+                    <div
+                      class="dropdown dropdown-end"
+                    >
+                      <div
+                        class="btn-close h-8 w-8 no-animation"
+                        role="button"
+                        tabindex="0"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="w-5 h-5 m-auto"
+                          data-slot="icon"
+                          fill="currentColor"
+                          viewBox="0 0 16 16"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            clip-rule="evenodd"
+                            d="M13.78 10.47a.75.75 0 0 1 0 1.06l-2.25 2.25a.75.75 0 0 1-1.06 0l-2.25-2.25a.75.75 0 1 1 1.06-1.06l.97.97V5.75a.75.75 0 0 1 1.5 0v5.69l.97-.97a.75.75 0 0 1 1.06 0ZM2.22 5.53a.75.75 0 0 1 0-1.06l2.25-2.25a.75.75 0 0 1 1.06 0l2.25 2.25a.75.75 0 0 1-1.06 1.06l-.97-.97v5.69a.75.75 0 0 1-1.5 0V4.56l-.97.97a.75.75 0 0 1-1.06 0Z"
+                            fill-rule="evenodd"
+                          />
+                        </svg>
+                      </div>
+                      <ul
+                        class="dropdown-options mt-2 w-min-content"
+                        tabindex="0"
+                      >
+                        <li>
+                          <a
+                            class="flex justify-end"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="svg-inline--fa fa-arrow-down-long mr-2"
+                              data-icon="arrow-down-long"
+                              data-prefix="fas"
+                              focusable="false"
+                              role="img"
+                              viewBox="0 0 384 512"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M169.4 502.6c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 402.7 224 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 370.7L86.6 329.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128z"
+                                fill="currentColor"
+                              />
+                            </svg>
+                            Added
+                          </a>
+                        </li>
+                        <li>
+                          <a
+                            class="flex justify-end"
+                          >
+                            Name
+                          </a>
+                        </li>
+                        <li>
+                          <a
+                            class="flex justify-end"
+                          >
+                            Species
+                          </a>
+                        </li>
+                        <li>
+                          <a
+                            class="flex justify-end"
+                          >
+                            Watered
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <form>
+                <div
+                  class="flex relative mb-4"
+                >
+                  <div
+                    class="absolute flex h-full z-0"
+                  >
+                    <input
+                      class="radio checked:bg-blue-500 my-auto"
+                      id=":r0:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                      name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                      tabindex="-1"
+                      type="checkbox"
+                    />
+                  </div>
+                  <div
+                    class="w-full overflow-hidden transition-all duration-300 ml-0"
+                  >
+                    <a
+                      class="collapse card-collapse bg-neutral group cursor-pointer"
+                      href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                    >
+                      <input
+                        class="hidden pointer-events-none"
+                        id=":r1:"
+                        type="checkbox"
+                      />
+                      <div
+                        class="collapse-title !p-0 min-w-0 min-h-0"
+                      >
+                        <div
+                          class="card card-side text-neutral-content relative"
+                        >
+                          <div
+                            class="card-body cursor-default text-center"
+                          >
+                            <h2
+                              class="card-title line-clamp-1 mx-auto px-8"
+                            >
+                              Test Plant
+                            </h2>
+                            <span
+                              class="line-clamp-1"
+                              title="04:45 AM - February 29, 2024"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="svg-inline--fa fa-droplet mr-2 text-info"
+                                data-icon="droplet"
+                                data-prefix="fas"
+                                focusable="false"
+                                role="img"
+                                viewBox="0 0 384 512"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                              Yesterday
+                            </span>
+                          </div>
+                          <label
+                            class="btn-close absolute right-2 top-8 z-40"
+                            for=":r1:"
+                            role="button"
+                            tabindex="-1"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
+                              data-slot="icon"
+                              fill="currentColor"
+                              viewBox="0 0 16 16"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                clip-rule="evenodd"
+                                d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                                fill-rule="evenodd"
+                              />
+                            </svg>
+                          </label>
+                        </div>
+                      </div>
+                      <div
+                        class="collapse-content"
+                      >
+                        <div
+                          class="pt-4"
+                        >
+                          <p
+                            class="flex"
+                          >
+                            <span
+                              class="font-semibold"
+                            >
+                              Species:
+                            </span>
+                            <span
+                              class="ml-auto text-right"
+                            >
+                              Calathea
+                            </span>
+                          </p>
+                          <p
+                            class="flex"
+                          >
+                            <span
+                              class="font-semibold"
+                            >
+                              Pot size:
+                            </span>
+                            <span
+                              class="ml-auto text-right"
+                            >
+                              4
+                            </span>
+                          </p>
+                          <div
+                            class="text-center"
+                          >
+                            <p
+                              class="font-semibold mt-3"
+                            >
+                              Description:
+                            </p>
+                            <p
+                              class="text-sm line-clamp-6"
+                            >
+                              This is a plant with a long description with
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <label
+                    class="cursor-pointer absolute z-20"
+                    for=":r0:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                  />
+                </div>
+                <div
+                  class="flex relative mb-4"
+                >
+                  <div
+                    class="absolute flex h-full z-0"
+                  >
+                    <input
+                      class="radio checked:bg-blue-500 my-auto"
+                      id=":r0:-19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
+                      name="19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
+                      tabindex="-1"
+                      type="checkbox"
+                    />
+                  </div>
+                  <div
+                    class="w-full overflow-hidden transition-all duration-300 ml-0"
+                  >
+                    <a
+                      class="collapse card-collapse bg-neutral group grayscale cursor-pointer"
+                      href="/manage/19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
+                    >
+                      <input
+                        class="hidden pointer-events-none"
+                        id=":r2:"
+                        type="checkbox"
+                      />
+                      <div
+                        class="collapse-title !p-0 min-w-0 min-h-0"
+                      >
+                        <div
+                          class="card card-side text-neutral-content relative"
+                        >
+                          <figure
+                            class="h-24 w-20 min-h-20 min-w-20 rounded-b-none"
+                          >
+                            <img
+                              class="w-full h-full object-cover"
+                              loading="lazy"
+                              src="/media/thumbnails/photo_thumb.jpg"
+                            />
+                          </figure>
+                          <div
+                            class="card-body cursor-default my-auto text-start"
+                          >
+                            <h2
+                              class="card-title line-clamp-1 pr-8"
+                            >
+                              Unnamed Spider Plant
+                            </h2>
+                            <span
+                              class="line-clamp-1"
+                              title="04:45 AM - February 29, 2024"
+                            >
+                              <svg
+                                aria-hidden="true"
+                                class="svg-inline--fa fa-droplet mr-2 text-info"
+                                data-icon="droplet"
+                                data-prefix="fas"
+                                focusable="false"
+                                role="img"
+                                viewBox="0 0 384 512"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <path
+                                  d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                                  fill="currentColor"
+                                />
+                              </svg>
+                              Yesterday
+                            </span>
+                          </div>
+                          <label
+                            class="btn-close absolute right-2 top-8 z-40"
+                            for=":r2:"
+                            role="button"
+                            tabindex="-1"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
+                              data-slot="icon"
+                              fill="currentColor"
+                              viewBox="0 0 16 16"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                clip-rule="evenodd"
+                                d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                                fill-rule="evenodd"
+                              />
+                            </svg>
+                          </label>
+                        </div>
+                      </div>
+                      <div
+                        class="collapse-content"
+                      >
+                        <div
+                          class="pt-4"
+                        >
+                          <p
+                            class="flex"
+                          >
+                            <span
+                              class="font-semibold"
+                            >
+                              Species:
+                            </span>
+                            <span
+                              class="ml-auto text-right"
+                            >
+                              Spider Plant
+                            </span>
+                          </p>
+                          <p
+                            class="flex"
+                          >
+                            <span
+                              class="font-semibold"
+                            >
+                              Pot size:
+                            </span>
+                            <span
+                              class="ml-auto text-right"
+                            >
+                              2
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <label
+                    class="cursor-pointer absolute z-20"
+                    for=":r0:-19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
+                  />
+                </div>
+                <div
+                  class="flex relative mb-4"
+                >
+                  <div
+                    class="absolute flex h-full z-0"
+                  >
+                    <input
+                      class="radio checked:bg-blue-500 my-auto"
+                      id=":r0:-26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+                      name="26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+                      tabindex="-1"
+                      type="checkbox"
+                    />
+                  </div>
+                  <div
+                    class="w-full overflow-hidden transition-all duration-300 ml-0"
+                  >
+                    <a
+                      class="collapse card-collapse bg-neutral group cursor-pointer"
+                      href="/manage/26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+                    >
+                      <input
+                        class="hidden pointer-events-none"
+                        id=":r3:"
+                        type="checkbox"
+                      />
+                      <div
+                        class="collapse-title !p-0 min-w-0 min-h-0"
+                      >
+                        <div
+                          class="card card-side text-neutral-content relative"
+                        >
+                          <div
+                            class="card-body cursor-default text-center"
+                          >
+                            <h2
+                              class="card-title line-clamp-1 mx-auto px-8"
+                            >
+                              Newest plant
+                            </h2>
+                            <span>
+                              Never watered
+                            </span>
+                          </div>
+                          <label
+                            class="btn-close absolute right-2 top-8 z-40"
+                            for=":r3:"
+                            role="button"
+                            tabindex="-1"
+                          >
+                            <svg
+                              aria-hidden="true"
+                              class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
+                              data-slot="icon"
+                              fill="currentColor"
+                              viewBox="0 0 16 16"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                clip-rule="evenodd"
+                                d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                                fill-rule="evenodd"
+                              />
+                            </svg>
+                          </label>
+                        </div>
+                      </div>
+                      <div
+                        class="collapse-content"
+                      >
+                        <div
+                          class="pt-4"
+                        >
+                          <p
+                            class="flex"
+                          >
+                            <span
+                              class="font-semibold"
+                            >
+                              Species:
+                            </span>
+                            <span
+                              class="ml-auto text-right"
+                            >
+                              null
+                            </span>
+                          </p>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <label
+                    class="cursor-pointer absolute z-20"
+                    for=":r0:-26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+                  />
+                </div>
+              </form>
+              <div
+                class="flex"
+              >
+                <button
+                  class="btn btn-outline mx-auto"
+                >
+                  Manage
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <dialog
+          class="modal"
+        >
+          <div
+            class="modal-box text-center flex flex-col pt-4 "
+          >
+            <form
+              method="dialog"
+            >
+              <button
+                class="btn-close absolute right-4 top-4"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="w-8 h-8"
+                  data-slot="icon"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+                  />
+                </svg>
+              </button>
+            </form>
+            <h1
+              class="font-bold text-lg md:text-xl mb-4"
+            >
+              Edit Details
+            </h1>
+          </div>
+          <form
+            class="modal-backdrop"
+            method="dialog"
+          >
+            <button>
+              close
+            </button>
+          </form>
+        </dialog>
+        <dialog
+          class="modal"
+        >
+          <div
+            class="modal-box text-center flex flex-col pt-4 max-w-[26rem]"
+          >
+            <form
+              method="dialog"
+            >
+              <button
+                class="btn-close absolute right-4 top-4"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="w-8 h-8"
+                  data-slot="icon"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+                  />
+                </svg>
+              </button>
+            </form>
+            <h1
+              class="font-bold text-lg md:text-xl mb-4"
+            >
+              Add Plants
+            </h1>
+          </div>
+          <form
+            class="modal-backdrop"
+            method="dialog"
+          >
+            <button>
+              close
+            </button>
+          </form>
+        </dialog>
+        <dialog
+          class="modal"
+        >
+          <div
+            class="modal-box text-center flex flex-col pt-4 max-w-[26rem]"
+          >
+            <form
+              method="dialog"
+            >
+              <button
+                class="btn-close absolute right-4 top-4"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="w-8 h-8"
+                  data-slot="icon"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+                  />
+                </svg>
+              </button>
+            </form>
+            <h1
+              class="font-bold text-lg md:text-xl mb-4"
+            >
+              Remove Plants
+            </h1>
+          </div>
+          <form
+            class="modal-backdrop"
+            method="dialog"
+          >
+            <button>
+              close
+            </button>
+          </form>
+        </dialog>
+        <dialog
+          class="modal"
+        >
+          <div
+            class="modal-box text-center flex flex-col pt-4 "
+          >
+            <form
+              method="dialog"
+            >
+              <button
+                class="btn-close absolute right-4 top-4"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="w-8 h-8"
+                  data-slot="icon"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+                  />
+                </svg>
+              </button>
+            </form>
+            <h1
+              class="font-bold text-lg md:text-xl mb-4"
+            >
+              Change QR Code
+            </h1>
+          </div>
+          <form
+            class="modal-backdrop"
+            method="dialog"
+          >
+            <button>
+              close
+            </button>
+          </form>
+        </dialog>
+      </div>
+      <dialog
+        class="modal"
+      >
+        <div
+          class="modal-box text-center flex flex-col pt-4 "
+        >
+          <form
+            method="dialog"
+          >
+            <button
+              class="btn-close absolute right-4 top-4"
+            >
+              <svg
+                aria-hidden="true"
+                class="w-8 h-8"
+                data-slot="icon"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+                />
+              </svg>
+            </button>
+          </form>
+        </div>
+        <form
+          class="modal-backdrop"
+          method="dialog"
+        >
+          <button>
+            close
+          </button>
+        </form>
+      </dialog>
+    </div>
+  </body>,
+  "container": <div>
+    <div
+      class="container flex flex-col items-center mx-auto mb-8"
+    >
+      <div
+        class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
+      >
+        <div
+          class="dropdown justify-start min-w-12"
+        >
+          <div
+            class="btn btn-ghost btn-circle"
+            role="button"
+            tabindex="0"
+          >
+            <svg
+              class="h-5 w-5"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M4 6h16M4 12h16M4 18h7"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+              />
+            </svg>
+          </div>
+          <ul
+            class="dropdown-options mt-3 w-52"
+            tabindex="0"
+          >
+            <li>
+              <a>
+                Overview
+              </a>
+            </li>
+            <li>
+              <a>
+                User profile
+              </a>
+            </li>
+            <li>
+              <a>
+                Add plants
+              </a>
+            </li>
+            <li>
+              <a>
+                Remove plants
+              </a>
+            </li>
+            <li>
+              <a>
+                Change QR code
+              </a>
+            </li>
+            <li>
+              <a>
+                Light mode
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div
+          class="mx-auto shrink min-w-0"
+        >
+          <div
+            class="dropdown dropdown-center w-full"
+          >
+            <a
+              class="btn btn-ghost w-full px-0 text-nowrap"
+              role="button"
+              tabindex="0"
+            >
+              <span
+                class="px-4 leading-[2.75rem] truncate"
+                style="font-size: 14px;"
+              >
+                Test group
+              </span>
+            </a>
+            <div
+              class="dropdown-content z-[1] flex"
+              tabindex="0"
+            >
+              <div
+                class="details-card"
+              >
+                <div
+                  class="card-body"
+                >
+                  <p
+                    class="flex"
+                  >
+                    <span
+                      class="font-semibold"
+                    >
+                      Location:
+                    </span>
+                    <span
+                      class="ml-auto text-right"
+                    >
+                      Middle shelf
+                    </span>
+                  </p>
+                  <button
+                    class="btn btn-sm mt-4"
+                  >
+                    Edit
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div
+          class="justify-end min-w-12"
+        />
+      </div>
+      <input
+        class="input input-bordered mx-auto my-2"
+        step="1"
+        type="datetime-local"
+        value="2024-03-01T12:00:00"
+      />
+      <div
+        class="flex mx-auto mb-8"
+      >
+        <button
+          class="btn btn-info m-2"
+        >
+          Water All
+        </button>
+        <button
+          class="btn btn-success m-2"
+        >
+          Fertilize All
+        </button>
+      </div>
+      <div
+        class="px-4"
+      >
+        <div
+          class="collapse bg-base-200 max-w-96 px-4"
         >
           <input
             checked=""
@@ -652,843 +1497,6 @@ exports[`App matches snapshot 1`] = `
                 Manage
               </button>
             </div>
-          </div>
-        </div>
-        <dialog
-          class="modal"
-        >
-          <div
-            class="modal-box text-center flex flex-col pt-4 "
-          >
-            <form
-              method="dialog"
-            >
-              <button
-                class="btn-close absolute right-4 top-4"
-              >
-                <svg
-                  aria-hidden="true"
-                  class="w-8 h-8"
-                  data-slot="icon"
-                  fill="currentColor"
-                  viewBox="0 0 16 16"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
-                  />
-                </svg>
-              </button>
-            </form>
-            <h1
-              class="font-bold text-lg md:text-xl mb-4"
-            >
-              Edit Details
-            </h1>
-          </div>
-          <form
-            class="modal-backdrop"
-            method="dialog"
-          >
-            <button>
-              close
-            </button>
-          </form>
-        </dialog>
-        <dialog
-          class="modal"
-        >
-          <div
-            class="modal-box text-center flex flex-col pt-4 max-w-[26rem]"
-          >
-            <form
-              method="dialog"
-            >
-              <button
-                class="btn-close absolute right-4 top-4"
-              >
-                <svg
-                  aria-hidden="true"
-                  class="w-8 h-8"
-                  data-slot="icon"
-                  fill="currentColor"
-                  viewBox="0 0 16 16"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
-                  />
-                </svg>
-              </button>
-            </form>
-            <h1
-              class="font-bold text-lg md:text-xl mb-4"
-            >
-              Add Plants
-            </h1>
-          </div>
-          <form
-            class="modal-backdrop"
-            method="dialog"
-          >
-            <button>
-              close
-            </button>
-          </form>
-        </dialog>
-        <dialog
-          class="modal"
-        >
-          <div
-            class="modal-box text-center flex flex-col pt-4 max-w-[26rem]"
-          >
-            <form
-              method="dialog"
-            >
-              <button
-                class="btn-close absolute right-4 top-4"
-              >
-                <svg
-                  aria-hidden="true"
-                  class="w-8 h-8"
-                  data-slot="icon"
-                  fill="currentColor"
-                  viewBox="0 0 16 16"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
-                  />
-                </svg>
-              </button>
-            </form>
-            <h1
-              class="font-bold text-lg md:text-xl mb-4"
-            >
-              Remove Plants
-            </h1>
-          </div>
-          <form
-            class="modal-backdrop"
-            method="dialog"
-          >
-            <button>
-              close
-            </button>
-          </form>
-        </dialog>
-        <dialog
-          class="modal"
-        >
-          <div
-            class="modal-box text-center flex flex-col pt-4 "
-          >
-            <form
-              method="dialog"
-            >
-              <button
-                class="btn-close absolute right-4 top-4"
-              >
-                <svg
-                  aria-hidden="true"
-                  class="w-8 h-8"
-                  data-slot="icon"
-                  fill="currentColor"
-                  viewBox="0 0 16 16"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
-                  />
-                </svg>
-              </button>
-            </form>
-            <h1
-              class="font-bold text-lg md:text-xl mb-4"
-            >
-              Change QR Code
-            </h1>
-          </div>
-          <form
-            class="modal-backdrop"
-            method="dialog"
-          >
-            <button>
-              close
-            </button>
-          </form>
-        </dialog>
-      </div>
-      <dialog
-        class="modal"
-      >
-        <div
-          class="modal-box text-center flex flex-col pt-4 "
-        >
-          <form
-            method="dialog"
-          >
-            <button
-              class="btn-close absolute right-4 top-4"
-            >
-              <svg
-                aria-hidden="true"
-                class="w-8 h-8"
-                data-slot="icon"
-                fill="currentColor"
-                viewBox="0 0 16 16"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
-                />
-              </svg>
-            </button>
-          </form>
-        </div>
-        <form
-          class="modal-backdrop"
-          method="dialog"
-        >
-          <button>
-            close
-          </button>
-        </form>
-      </dialog>
-    </div>
-  </body>,
-  "container": <div>
-    <div
-      class="container flex flex-col mx-auto mb-8"
-    >
-      <div
-        class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
-      >
-        <div
-          class="dropdown justify-start min-w-12"
-        >
-          <div
-            class="btn btn-ghost btn-circle"
-            role="button"
-            tabindex="0"
-          >
-            <svg
-              class="h-5 w-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d="M4 6h16M4 12h16M4 18h7"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-              />
-            </svg>
-          </div>
-          <ul
-            class="dropdown-options mt-3 w-52"
-            tabindex="0"
-          >
-            <li>
-              <a>
-                Overview
-              </a>
-            </li>
-            <li>
-              <a>
-                User profile
-              </a>
-            </li>
-            <li>
-              <a>
-                Add plants
-              </a>
-            </li>
-            <li>
-              <a>
-                Remove plants
-              </a>
-            </li>
-            <li>
-              <a>
-                Change QR code
-              </a>
-            </li>
-            <li>
-              <a>
-                Light mode
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div
-          class="mx-auto shrink min-w-0"
-        >
-          <div
-            class="dropdown dropdown-center w-full"
-          >
-            <a
-              class="btn btn-ghost w-full px-0 text-nowrap"
-              role="button"
-              tabindex="0"
-            >
-              <span
-                class="px-4 leading-[2.75rem] truncate"
-                style="font-size: 14px;"
-              >
-                Test group
-              </span>
-            </a>
-            <div
-              class="dropdown-content z-[1] flex"
-              tabindex="0"
-            >
-              <div
-                class="details-card"
-              >
-                <div
-                  class="card-body"
-                >
-                  <p
-                    class="flex"
-                  >
-                    <span
-                      class="font-semibold"
-                    >
-                      Location:
-                    </span>
-                    <span
-                      class="ml-auto text-right"
-                    >
-                      Middle shelf
-                    </span>
-                  </p>
-                  <button
-                    class="btn btn-sm mt-4"
-                  >
-                    Edit
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div
-          class="justify-end min-w-12"
-        />
-      </div>
-      <input
-        class="input input-bordered mx-auto my-2"
-        step="1"
-        type="datetime-local"
-        value="2024-03-01T12:00:00"
-      />
-      <div
-        class="flex mx-auto mb-8"
-      >
-        <button
-          class="btn btn-info m-2"
-        >
-          Water All
-        </button>
-        <button
-          class="btn btn-success m-2"
-        >
-          Fertilize All
-        </button>
-      </div>
-      <div
-        class="collapse bg-base-200 w-96 px-4 mx-auto max-w-90 md:max-w-full"
-      >
-        <input
-          checked=""
-          type="checkbox"
-        />
-        <div
-          class="collapse-title text-xl font-medium text-center"
-        >
-          Plants (3)
-        </div>
-        <div
-          class="collapse-content min-w-0"
-        >
-          <div
-            class="flex px-4 mb-4"
-          >
-            <div
-              class="relative w-full"
-            >
-              <input
-                class="input input-bordered w-full text-center indent-[3.625rem] pr-[4.5rem]"
-                placeholder="filter"
-                type="text"
-                value=""
-              />
-              <div
-                class="absolute flex top-2 right-2"
-              >
-                <div
-                  class="dropdown dropdown-end"
-                >
-                  <div
-                    class="btn-close h-8 w-8 no-animation"
-                    role="button"
-                    tabindex="0"
-                  >
-                    <svg
-                      aria-hidden="true"
-                      class="w-5 h-5 m-auto"
-                      data-slot="icon"
-                      fill="currentColor"
-                      viewBox="0 0 16 16"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        clip-rule="evenodd"
-                        d="M13.78 10.47a.75.75 0 0 1 0 1.06l-2.25 2.25a.75.75 0 0 1-1.06 0l-2.25-2.25a.75.75 0 1 1 1.06-1.06l.97.97V5.75a.75.75 0 0 1 1.5 0v5.69l.97-.97a.75.75 0 0 1 1.06 0ZM2.22 5.53a.75.75 0 0 1 0-1.06l2.25-2.25a.75.75 0 0 1 1.06 0l2.25 2.25a.75.75 0 0 1-1.06 1.06l-.97-.97v5.69a.75.75 0 0 1-1.5 0V4.56l-.97.97a.75.75 0 0 1-1.06 0Z"
-                        fill-rule="evenodd"
-                      />
-                    </svg>
-                  </div>
-                  <ul
-                    class="dropdown-options mt-2 w-min-content"
-                    tabindex="0"
-                  >
-                    <li>
-                      <a
-                        class="flex justify-end"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="svg-inline--fa fa-arrow-down-long mr-2"
-                          data-icon="arrow-down-long"
-                          data-prefix="fas"
-                          focusable="false"
-                          role="img"
-                          viewBox="0 0 384 512"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M169.4 502.6c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 402.7 224 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 370.7L86.6 329.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128z"
-                            fill="currentColor"
-                          />
-                        </svg>
-                        Added
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        class="flex justify-end"
-                      >
-                        Name
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        class="flex justify-end"
-                      >
-                        Species
-                      </a>
-                    </li>
-                    <li>
-                      <a
-                        class="flex justify-end"
-                      >
-                        Watered
-                      </a>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-          <form>
-            <div
-              class="flex relative mb-4"
-            >
-              <div
-                class="absolute flex h-full z-0"
-              >
-                <input
-                  class="radio checked:bg-blue-500 my-auto"
-                  id=":r0:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-                  name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-                  tabindex="-1"
-                  type="checkbox"
-                />
-              </div>
-              <div
-                class="w-full overflow-hidden transition-all duration-300 ml-0"
-              >
-                <a
-                  class="collapse card-collapse bg-neutral group cursor-pointer"
-                  href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-                >
-                  <input
-                    class="hidden pointer-events-none"
-                    id=":r1:"
-                    type="checkbox"
-                  />
-                  <div
-                    class="collapse-title !p-0 min-w-0 min-h-0"
-                  >
-                    <div
-                      class="card card-side text-neutral-content relative"
-                    >
-                      <div
-                        class="card-body cursor-default text-center"
-                      >
-                        <h2
-                          class="card-title line-clamp-1 mx-auto px-8"
-                        >
-                          Test Plant
-                        </h2>
-                        <span
-                          class="line-clamp-1"
-                          title="04:45 AM - February 29, 2024"
-                        >
-                          <svg
-                            aria-hidden="true"
-                            class="svg-inline--fa fa-droplet mr-2 text-info"
-                            data-icon="droplet"
-                            data-prefix="fas"
-                            focusable="false"
-                            role="img"
-                            viewBox="0 0 384 512"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                              fill="currentColor"
-                            />
-                          </svg>
-                          Yesterday
-                        </span>
-                      </div>
-                      <label
-                        class="btn-close absolute right-2 top-8 z-40"
-                        for=":r1:"
-                        role="button"
-                        tabindex="-1"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
-                          data-slot="icon"
-                          fill="currentColor"
-                          viewBox="0 0 16 16"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            clip-rule="evenodd"
-                            d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                            fill-rule="evenodd"
-                          />
-                        </svg>
-                      </label>
-                    </div>
-                  </div>
-                  <div
-                    class="collapse-content"
-                  >
-                    <div
-                      class="pt-4"
-                    >
-                      <p
-                        class="flex"
-                      >
-                        <span
-                          class="font-semibold"
-                        >
-                          Species:
-                        </span>
-                        <span
-                          class="ml-auto text-right"
-                        >
-                          Calathea
-                        </span>
-                      </p>
-                      <p
-                        class="flex"
-                      >
-                        <span
-                          class="font-semibold"
-                        >
-                          Pot size:
-                        </span>
-                        <span
-                          class="ml-auto text-right"
-                        >
-                          4
-                        </span>
-                      </p>
-                      <div
-                        class="text-center"
-                      >
-                        <p
-                          class="font-semibold mt-3"
-                        >
-                          Description:
-                        </p>
-                        <p
-                          class="text-sm line-clamp-6"
-                        >
-                          This is a plant with a long description with
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </a>
-              </div>
-              <label
-                class="cursor-pointer absolute z-20"
-                for=":r0:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-              />
-            </div>
-            <div
-              class="flex relative mb-4"
-            >
-              <div
-                class="absolute flex h-full z-0"
-              >
-                <input
-                  class="radio checked:bg-blue-500 my-auto"
-                  id=":r0:-19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
-                  name="19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
-                  tabindex="-1"
-                  type="checkbox"
-                />
-              </div>
-              <div
-                class="w-full overflow-hidden transition-all duration-300 ml-0"
-              >
-                <a
-                  class="collapse card-collapse bg-neutral group grayscale cursor-pointer"
-                  href="/manage/19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
-                >
-                  <input
-                    class="hidden pointer-events-none"
-                    id=":r2:"
-                    type="checkbox"
-                  />
-                  <div
-                    class="collapse-title !p-0 min-w-0 min-h-0"
-                  >
-                    <div
-                      class="card card-side text-neutral-content relative"
-                    >
-                      <figure
-                        class="h-24 w-20 min-h-20 min-w-20 rounded-b-none"
-                      >
-                        <img
-                          class="w-full h-full object-cover"
-                          loading="lazy"
-                          src="/media/thumbnails/photo_thumb.jpg"
-                        />
-                      </figure>
-                      <div
-                        class="card-body cursor-default my-auto text-start"
-                      >
-                        <h2
-                          class="card-title line-clamp-1 pr-8"
-                        >
-                          Unnamed Spider Plant
-                        </h2>
-                        <span
-                          class="line-clamp-1"
-                          title="04:45 AM - February 29, 2024"
-                        >
-                          <svg
-                            aria-hidden="true"
-                            class="svg-inline--fa fa-droplet mr-2 text-info"
-                            data-icon="droplet"
-                            data-prefix="fas"
-                            focusable="false"
-                            role="img"
-                            viewBox="0 0 384 512"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <path
-                              d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                              fill="currentColor"
-                            />
-                          </svg>
-                          Yesterday
-                        </span>
-                      </div>
-                      <label
-                        class="btn-close absolute right-2 top-8 z-40"
-                        for=":r2:"
-                        role="button"
-                        tabindex="-1"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
-                          data-slot="icon"
-                          fill="currentColor"
-                          viewBox="0 0 16 16"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            clip-rule="evenodd"
-                            d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                            fill-rule="evenodd"
-                          />
-                        </svg>
-                      </label>
-                    </div>
-                  </div>
-                  <div
-                    class="collapse-content"
-                  >
-                    <div
-                      class="pt-4"
-                    >
-                      <p
-                        class="flex"
-                      >
-                        <span
-                          class="font-semibold"
-                        >
-                          Species:
-                        </span>
-                        <span
-                          class="ml-auto text-right"
-                        >
-                          Spider Plant
-                        </span>
-                      </p>
-                      <p
-                        class="flex"
-                      >
-                        <span
-                          class="font-semibold"
-                        >
-                          Pot size:
-                        </span>
-                        <span
-                          class="ml-auto text-right"
-                        >
-                          2
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-                </a>
-              </div>
-              <label
-                class="cursor-pointer absolute z-20"
-                for=":r0:-19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
-              />
-            </div>
-            <div
-              class="flex relative mb-4"
-            >
-              <div
-                class="absolute flex h-full z-0"
-              >
-                <input
-                  class="radio checked:bg-blue-500 my-auto"
-                  id=":r0:-26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
-                  name="26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
-                  tabindex="-1"
-                  type="checkbox"
-                />
-              </div>
-              <div
-                class="w-full overflow-hidden transition-all duration-300 ml-0"
-              >
-                <a
-                  class="collapse card-collapse bg-neutral group cursor-pointer"
-                  href="/manage/26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
-                >
-                  <input
-                    class="hidden pointer-events-none"
-                    id=":r3:"
-                    type="checkbox"
-                  />
-                  <div
-                    class="collapse-title !p-0 min-w-0 min-h-0"
-                  >
-                    <div
-                      class="card card-side text-neutral-content relative"
-                    >
-                      <div
-                        class="card-body cursor-default text-center"
-                      >
-                        <h2
-                          class="card-title line-clamp-1 mx-auto px-8"
-                        >
-                          Newest plant
-                        </h2>
-                        <span>
-                          Never watered
-                        </span>
-                      </div>
-                      <label
-                        class="btn-close absolute right-2 top-8 z-40"
-                        for=":r3:"
-                        role="button"
-                        tabindex="-1"
-                      >
-                        <svg
-                          aria-hidden="true"
-                          class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
-                          data-slot="icon"
-                          fill="currentColor"
-                          viewBox="0 0 16 16"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            clip-rule="evenodd"
-                            d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
-                            fill-rule="evenodd"
-                          />
-                        </svg>
-                      </label>
-                    </div>
-                  </div>
-                  <div
-                    class="collapse-content"
-                  >
-                    <div
-                      class="pt-4"
-                    >
-                      <p
-                        class="flex"
-                      >
-                        <span
-                          class="font-semibold"
-                        >
-                          Species:
-                        </span>
-                        <span
-                          class="ml-auto text-right"
-                        >
-                          null
-                        </span>
-                      </p>
-                    </div>
-                  </div>
-                </a>
-              </div>
-              <label
-                class="cursor-pointer absolute z-20"
-                for=":r0:-26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
-              />
-            </div>
-          </form>
-          <div
-            class="flex"
-          >
-            <button
-              class="btn btn-outline mx-auto"
-            >
-              Manage
-            </button>
           </div>
         </div>
       </div>

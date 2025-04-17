@@ -294,7 +294,7 @@ function App() {
     ), [group]);
 
     return (
-        <div className="container flex flex-col mx-auto mb-8">
+        <div className="container flex flex-col items-center mx-auto mb-8">
             <Navbar
                 menuOptions={DropdownMenuOptions}
                 title={group.display_name}
@@ -317,18 +317,20 @@ function App() {
                 </button>
             </div>
 
-            <PlantsCol
-                plants={plantDetails}
-                editing={selectingPlants}
-                formRef={selectedPlantsRef}
-                storageKey={`group-${group.uuid}`}
-            >
-                <PlantEventButtons
+            <div className="px-4">
+                <PlantsCol
+                    plants={plantDetails}
                     editing={selectingPlants}
-                    setEditing={setSelectingPlants}
-                    addEventSelected={addEventSelected}
-                />
-            </PlantsCol>
+                    formRef={selectedPlantsRef}
+                    storageKey={`group-${group.uuid}`}
+                >
+                    <PlantEventButtons
+                        editing={selectingPlants}
+                        setEditing={setSelectingPlants}
+                        addEventSelected={addEventSelected}
+                    />
+                </PlantsCol>
+            </div>
 
             <EditGroupModal group={group} setGroup={setGroup} />
 
