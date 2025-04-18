@@ -1784,7 +1784,7 @@ exports[`App matches snapshot 1`] = `
         class="modal"
       >
         <div
-          class="modal-box text-center flex flex-col pt-4 "
+          class="modal-box text-center flex flex-col pt-4 max-w-[25rem]"
         >
           <form
             method="dialog"
@@ -3727,7 +3727,7 @@ exports[`App matches snapshot 1`] = `
       class="modal"
     >
       <div
-        class="modal-box text-center flex flex-col pt-4 "
+        class="modal-box text-center flex flex-col pt-4 max-w-[25rem]"
       >
         <form
           method="dialog"
@@ -5636,7 +5636,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
         class="modal"
       >
         <div
-          class="modal-box text-center flex flex-col pt-4 "
+          class="modal-box text-center flex flex-col pt-4 max-w-[25rem]"
         >
           <form
             method="dialog"
@@ -7458,7 +7458,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
       class="modal"
     >
       <div
-        class="modal-box text-center flex flex-col pt-4 "
+        class="modal-box text-center flex flex-col pt-4 max-w-[25rem]"
       >
         <form
           method="dialog"

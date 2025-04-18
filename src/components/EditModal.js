@@ -14,7 +14,7 @@ const EditModal = ({ title, onSubmit, children }) => {
     modalRef = useRef(null);
 
     return (
-        <Modal title={title} ref={modalRef}>
+        <Modal title={title} ref={modalRef} className="max-w-[25rem]">
             {children}
 
             <div className="modal-action mx-auto">
