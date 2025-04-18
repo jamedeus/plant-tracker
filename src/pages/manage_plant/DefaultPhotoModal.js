@@ -129,15 +129,19 @@ const DefaultPhotoModal = () => {
             onClose={closeDefaultPhotosModal}
         >
             <div className="carousel w-full h-min">
-                {photos.map((photo, index) => (
-                    <PhotoSlide
-                        key={photo.key}
-                        photo={photo}
-                        nextPhotoLink={nextPhotoLink(index)}
-                        prevPhotoLink={prevPhotoLink(index)}
-                        submit={submit}
-                    />
-                ))}
+                {photos.length > 0 ? (
+                    photos.map((photo, index) => (
+                        <PhotoSlide
+                            key={photo.key}
+                            photo={photo}
+                            nextPhotoLink={nextPhotoLink(index)}
+                            prevPhotoLink={prevPhotoLink(index)}
+                            submit={submit}
+                        />
+                    ))
+                ) : (
+                    <p className="my-8 mx-auto">No photos</p>
+                )}
             </div>
         </Modal>
     );
