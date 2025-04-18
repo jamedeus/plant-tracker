@@ -276,12 +276,16 @@ exports[`App matches snapshot 1`] = `
               Fertilized 4 hours ago
             </span>
           </span>
-          <input
-            class="input input-bordered my-2"
-            step="1"
-            type="datetime-local"
-            value="2024-03-01T12:00:00"
-          />
+          <div
+            class="mx-auto"
+          >
+            <input
+              class="input input-bordered my-2"
+              step="1"
+              type="datetime-local"
+              value="2024-03-01T12:00:00"
+            />
+          </div>
           <div
             class="flex mx-auto"
           >
@@ -2219,12 +2223,16 @@ exports[`App matches snapshot 1`] = `
             Fertilized 4 hours ago
           </span>
         </span>
-        <input
-          class="input input-bordered my-2"
-          step="1"
-          type="datetime-local"
-          value="2024-03-01T12:00:00"
-        />
+        <div
+          class="mx-auto"
+        >
+          <input
+            class="input input-bordered my-2"
+            step="1"
+            type="datetime-local"
+            value="2024-03-01T12:00:00"
+          />
+        </div>
         <div
           class="flex mx-auto"
         >

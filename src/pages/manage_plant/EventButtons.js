@@ -63,7 +63,9 @@ const EventButtons = memo(function EventButtons() {
                     timestamp={lastFertilized}
                 />
             </span>
-            <DatetimeInput inputRef={eventTimeInput} />
+            <div className="mx-auto">
+                <DatetimeInput inputRef={eventTimeInput} />
+            </div>
             <div className="flex mx-auto">
                 <button
                     className="btn btn-info m-2"
