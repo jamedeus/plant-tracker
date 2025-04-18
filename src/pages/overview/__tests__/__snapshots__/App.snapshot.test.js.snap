@@ -274,10 +274,10 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                               />
                             </figure>
                             <div
-                              class="card-body cursor-default my-auto text-start"
+                              class="card-body cursor-default max-w-full my-auto text-start"
                             >
                               <h2
-                                class="card-title line-clamp-1 pr-8"
+                                class="card-title line-clamp-1 break-words pr-8"
                               >
                                 Test Plant
                               </h2>
@@ -327,7 +327,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                           </div>
                         </div>
                         <div
-                          class="collapse-content"
+                          class="collapse-content break-all"
                         >
                           <div
                             class="pt-4"
@@ -336,12 +336,12 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                               class="flex"
                             >
                               <span
-                                class="font-semibold"
+                                class="font-semibold break-keep mr-4"
                               >
                                 Species:
                               </span>
                               <span
-                                class="ml-auto text-right"
+                                class="ml-auto text-right line-clamp-1"
                               >
                                 Calathea
                               </span>
@@ -350,12 +350,12 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                               class="flex"
                             >
                               <span
-                                class="font-semibold"
+                                class="font-semibold break-keep mr-4"
                               >
                                 Pot size:
                               </span>
                               <span
-                                class="ml-auto text-right"
+                                class="ml-auto text-right line-clamp-1"
                               >
                                 4
                               </span>
@@ -508,10 +508,10 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                             class="card text-neutral-content relative"
                           >
                             <div
-                              class="card-body cursor-default text-center"
+                              class="card-body cursor-default max-w-full text-center"
                             >
                               <h2
-                                class="card-title mx-auto px-8"
+                                class="card-title line-clamp-1 break-words px-8"
                               >
                                 Test group
                               </h2>
@@ -545,7 +545,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                           </div>
                         </div>
                         <div
-                          class="collapse-content"
+                          class="collapse-content break-all"
                         >
                           <div
                             class="pt-4"
@@ -554,12 +554,12 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                               class="flex"
                             >
                               <span
-                                class="font-semibold"
+                                class="font-semibold break-keep mr-4"
                               >
                                 Location:
                               </span>
                               <span
-                                class="ml-auto text-right"
+                                class="ml-auto text-right line-clamp-1"
                               >
                                 Middle shelf
                               </span>
@@ -938,10 +938,10 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                             />
                           </figure>
                           <div
-                            class="card-body cursor-default my-auto text-start"
+                            class="card-body cursor-default max-w-full my-auto text-start"
                           >
                             <h2
-                              class="card-title line-clamp-1 pr-8"
+                              class="card-title line-clamp-1 break-words pr-8"
                             >
                               Test Plant
                             </h2>
@@ -991,7 +991,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                         </div>
                       </div>
                       <div
-                        class="collapse-content"
+                        class="collapse-content break-all"
                       >
                         <div
                           class="pt-4"
@@ -1000,12 +1000,12 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                             class="flex"
                           >
                             <span
-                              class="font-semibold"
+                              class="font-semibold break-keep mr-4"
                             >
                               Species:
                             </span>
                             <span
-                              class="ml-auto text-right"
+                              class="ml-auto text-right line-clamp-1"
                             >
                               Calathea
                             </span>
@@ -1014,12 +1014,12 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                             class="flex"
                           >
                             <span
-                              class="font-semibold"
+                              class="font-semibold break-keep mr-4"
                             >
                               Pot size:
                             </span>
                             <span
-                              class="ml-auto text-right"
+                              class="ml-auto text-right line-clamp-1"
                             >
                               4
                             </span>
@@ -1172,10 +1172,10 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                           class="card text-neutral-content relative"
                         >
                           <div
-                            class="card-body cursor-default text-center"
+                            class="card-body cursor-default max-w-full text-center"
                           >
                             <h2
-                              class="card-title mx-auto px-8"
+                              class="card-title line-clamp-1 break-words px-8"
                             >
                               Test group
                             </h2>
@@ -1209,7 +1209,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                         </div>
                       </div>
                       <div
-                        class="collapse-content"
+                        class="collapse-content break-all"
                       >
                         <div
                           class="pt-4"
@@ -1218,12 +1218,12 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                             class="flex"
                           >
                             <span
-                              class="font-semibold"
+                              class="font-semibold break-keep mr-4"
                             >
                               Location:
                             </span>
                             <span
-                              class="ml-auto text-right"
+                              class="ml-auto text-right line-clamp-1"
                             >
                               Middle shelf
                             </span>
@@ -2150,10 +2150,10 @@ exports[`App matches snapshot when only groups exist 1`] = `
                             class="card text-neutral-content relative"
                           >
                             <div
-                              class="card-body cursor-default text-center"
+                              class="card-body cursor-default max-w-full text-center"
                             >
                               <h2
-                                class="card-title mx-auto px-8"
+                                class="card-title line-clamp-1 break-words px-8"
                               >
                                 Test group
                               </h2>
@@ -2187,7 +2187,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                           </div>
                         </div>
                         <div
-                          class="collapse-content"
+                          class="collapse-content break-all"
                         >
                           <div
                             class="pt-4"
@@ -2196,12 +2196,12 @@ exports[`App matches snapshot when only groups exist 1`] = `
                               class="flex"
                             >
                               <span
-                                class="font-semibold"
+                                class="font-semibold break-keep mr-4"
                               >
                                 Location:
                               </span>
                               <span
-                                class="ml-auto text-right"
+                                class="ml-auto text-right line-clamp-1"
                               >
                                 Middle shelf
                               </span>
@@ -2550,10 +2550,10 @@ exports[`App matches snapshot when only groups exist 1`] = `
                           class="card text-neutral-content relative"
                         >
                           <div
-                            class="card-body cursor-default text-center"
+                            class="card-body cursor-default max-w-full text-center"
                           >
                             <h2
-                              class="card-title mx-auto px-8"
+                              class="card-title line-clamp-1 break-words px-8"
                             >
                               Test group
                             </h2>
@@ -2587,7 +2587,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                         </div>
                       </div>
                       <div
-                        class="collapse-content"
+                        class="collapse-content break-all"
                       >
                         <div
                           class="pt-4"
@@ -2596,12 +2596,12 @@ exports[`App matches snapshot when only groups exist 1`] = `
                             class="flex"
                           >
                             <span
-                              class="font-semibold"
+                              class="font-semibold break-keep mr-4"
                             >
                               Location:
                             </span>
                             <span
-                              class="ml-auto text-right"
+                              class="ml-auto text-right line-clamp-1"
                             >
                               Middle shelf
                             </span>
@@ -3038,10 +3038,10 @@ exports[`App matches snapshot when only plants exist 1`] = `
                               />
                             </figure>
                             <div
-                              class="card-body cursor-default my-auto text-start"
+                              class="card-body cursor-default max-w-full my-auto text-start"
                             >
                               <h2
-                                class="card-title line-clamp-1 pr-8"
+                                class="card-title line-clamp-1 break-words pr-8"
                               >
                                 Test Plant
                               </h2>
@@ -3091,7 +3091,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                           </div>
                         </div>
                         <div
-                          class="collapse-content"
+                          class="collapse-content break-all"
                         >
                           <div
                             class="pt-4"
@@ -3100,12 +3100,12 @@ exports[`App matches snapshot when only plants exist 1`] = `
                               class="flex"
                             >
                               <span
-                                class="font-semibold"
+                                class="font-semibold break-keep mr-4"
                               >
                                 Species:
                               </span>
                               <span
-                                class="ml-auto text-right"
+                                class="ml-auto text-right line-clamp-1"
                               >
                                 Calathea
                               </span>
@@ -3114,12 +3114,12 @@ exports[`App matches snapshot when only plants exist 1`] = `
                               class="flex"
                             >
                               <span
-                                class="font-semibold"
+                                class="font-semibold break-keep mr-4"
                               >
                                 Pot size:
                               </span>
                               <span
-                                class="ml-auto text-right"
+                                class="ml-auto text-right line-clamp-1"
                               >
                                 4
                               </span>
@@ -3484,10 +3484,10 @@ exports[`App matches snapshot when only plants exist 1`] = `
                             />
                           </figure>
                           <div
-                            class="card-body cursor-default my-auto text-start"
+                            class="card-body cursor-default max-w-full my-auto text-start"
                           >
                             <h2
-                              class="card-title line-clamp-1 pr-8"
+                              class="card-title line-clamp-1 break-words pr-8"
                             >
                               Test Plant
                             </h2>
@@ -3537,7 +3537,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                         </div>
                       </div>
                       <div
-                        class="collapse-content"
+                        class="collapse-content break-all"
                       >
                         <div
                           class="pt-4"
@@ -3546,12 +3546,12 @@ exports[`App matches snapshot when only plants exist 1`] = `
                             class="flex"
                           >
                             <span
-                              class="font-semibold"
+                              class="font-semibold break-keep mr-4"
                             >
                               Species:
                             </span>
                             <span
-                              class="ml-auto text-right"
+                              class="ml-auto text-right line-clamp-1"
                             >
                               Calathea
                             </span>
@@ -3560,12 +3560,12 @@ exports[`App matches snapshot when only plants exist 1`] = `
                             class="flex"
                           >
                             <span
-                              class="font-semibold"
+                              class="font-semibold break-keep mr-4"
                             >
                               Pot size:
                             </span>
                             <span
-                              class="ml-auto text-right"
+                              class="ml-auto text-right line-clamp-1"
                             >
                               4
                             </span>
@@ -4002,10 +4002,10 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                               />
                             </figure>
                             <div
-                              class="card-body cursor-default my-auto text-start"
+                              class="card-body cursor-default max-w-full my-auto text-start"
                             >
                               <h2
-                                class="card-title line-clamp-1 pr-8"
+                                class="card-title line-clamp-1 break-words pr-8"
                               >
                                 Test Plant
                               </h2>
@@ -4055,7 +4055,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                           </div>
                         </div>
                         <div
-                          class="collapse-content"
+                          class="collapse-content break-all"
                         >
                           <div
                             class="pt-4"
@@ -4064,12 +4064,12 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                               class="flex"
                             >
                               <span
-                                class="font-semibold"
+                                class="font-semibold break-keep mr-4"
                               >
                                 Species:
                               </span>
                               <span
-                                class="ml-auto text-right"
+                                class="ml-auto text-right line-clamp-1"
                               >
                                 Calathea
                               </span>
@@ -4078,12 +4078,12 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                               class="flex"
                             >
                               <span
-                                class="font-semibold"
+                                class="font-semibold break-keep mr-4"
                               >
                                 Pot size:
                               </span>
                               <span
-                                class="ml-auto text-right"
+                                class="ml-auto text-right line-clamp-1"
                               >
                                 4
                               </span>
@@ -4236,10 +4236,10 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                             class="card text-neutral-content relative"
                           >
                             <div
-                              class="card-body cursor-default text-center"
+                              class="card-body cursor-default max-w-full text-center"
                             >
                               <h2
-                                class="card-title mx-auto px-8"
+                                class="card-title line-clamp-1 break-words px-8"
                               >
                                 Test group
                               </h2>
@@ -4273,7 +4273,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                           </div>
                         </div>
                         <div
-                          class="collapse-content"
+                          class="collapse-content break-all"
                         >
                           <div
                             class="pt-4"
@@ -4282,12 +4282,12 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                               class="flex"
                             >
                               <span
-                                class="font-semibold"
+                                class="font-semibold break-keep mr-4"
                               >
                                 Location:
                               </span>
                               <span
-                                class="ml-auto text-right"
+                                class="ml-auto text-right line-clamp-1"
                               >
                                 Middle shelf
                               </span>
@@ -4652,10 +4652,10 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                             />
                           </figure>
                           <div
-                            class="card-body cursor-default my-auto text-start"
+                            class="card-body cursor-default max-w-full my-auto text-start"
                           >
                             <h2
-                              class="card-title line-clamp-1 pr-8"
+                              class="card-title line-clamp-1 break-words pr-8"
                             >
                               Test Plant
                             </h2>
@@ -4705,7 +4705,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                         </div>
                       </div>
                       <div
-                        class="collapse-content"
+                        class="collapse-content break-all"
                       >
                         <div
                           class="pt-4"
@@ -4714,12 +4714,12 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                             class="flex"
                           >
                             <span
-                              class="font-semibold"
+                              class="font-semibold break-keep mr-4"
                             >
                               Species:
                             </span>
                             <span
-                              class="ml-auto text-right"
+                              class="ml-auto text-right line-clamp-1"
                             >
                               Calathea
                             </span>
@@ -4728,12 +4728,12 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                             class="flex"
                           >
                             <span
-                              class="font-semibold"
+                              class="font-semibold break-keep mr-4"
                             >
                               Pot size:
                             </span>
                             <span
-                              class="ml-auto text-right"
+                              class="ml-auto text-right line-clamp-1"
                             >
                               4
                             </span>
@@ -4886,10 +4886,10 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                           class="card text-neutral-content relative"
                         >
                           <div
-                            class="card-body cursor-default text-center"
+                            class="card-body cursor-default max-w-full text-center"
                           >
                             <h2
-                              class="card-title mx-auto px-8"
+                              class="card-title line-clamp-1 break-words px-8"
                             >
                               Test group
                             </h2>
@@ -4923,7 +4923,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                         </div>
                       </div>
                       <div
-                        class="collapse-content"
+                        class="collapse-content break-all"
                       >
                         <div
                           class="pt-4"
@@ -4932,12 +4932,12 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                             class="flex"
                           >
                             <span
-                              class="font-semibold"
+                              class="font-semibold break-keep mr-4"
                             >
                               Location:
                             </span>
                             <span
-                              class="ml-auto text-right"
+                              class="ml-auto text-right line-clamp-1"
                             >
                               Middle shelf
                             </span>
@@ -5393,10 +5393,10 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                               />
                             </figure>
                             <div
-                              class="card-body cursor-default my-auto text-start"
+                              class="card-body cursor-default max-w-full my-auto text-start"
                             >
                               <h2
-                                class="card-title line-clamp-1 pr-8"
+                                class="card-title line-clamp-1 break-words pr-8"
                               >
                                 Test Plant
                               </h2>
@@ -5446,7 +5446,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                           </div>
                         </div>
                         <div
-                          class="collapse-content"
+                          class="collapse-content break-all"
                         >
                           <div
                             class="pt-4"
@@ -5455,12 +5455,12 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                               class="flex"
                             >
                               <span
-                                class="font-semibold"
+                                class="font-semibold break-keep mr-4"
                               >
                                 Species:
                               </span>
                               <span
-                                class="ml-auto text-right"
+                                class="ml-auto text-right line-clamp-1"
                               >
                                 Calathea
                               </span>
@@ -5469,12 +5469,12 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                               class="flex"
                             >
                               <span
-                                class="font-semibold"
+                                class="font-semibold break-keep mr-4"
                               >
                                 Pot size:
                               </span>
                               <span
-                                class="ml-auto text-right"
+                                class="ml-auto text-right line-clamp-1"
                               >
                                 4
                               </span>
@@ -5627,10 +5627,10 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                             class="card text-neutral-content relative"
                           >
                             <div
-                              class="card-body cursor-default text-center"
+                              class="card-body cursor-default max-w-full text-center"
                             >
                               <h2
-                                class="card-title mx-auto px-8"
+                                class="card-title line-clamp-1 break-words px-8"
                               >
                                 Test group
                               </h2>
@@ -5664,7 +5664,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                           </div>
                         </div>
                         <div
-                          class="collapse-content"
+                          class="collapse-content break-all"
                         >
                           <div
                             class="pt-4"
@@ -5673,12 +5673,12 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                               class="flex"
                             >
                               <span
-                                class="font-semibold"
+                                class="font-semibold break-keep mr-4"
                               >
                                 Location:
                               </span>
                               <span
-                                class="ml-auto text-right"
+                                class="ml-auto text-right line-clamp-1"
                               >
                                 Middle shelf
                               </span>
@@ -6062,10 +6062,10 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                             />
                           </figure>
                           <div
-                            class="card-body cursor-default my-auto text-start"
+                            class="card-body cursor-default max-w-full my-auto text-start"
                           >
                             <h2
-                              class="card-title line-clamp-1 pr-8"
+                              class="card-title line-clamp-1 break-words pr-8"
                             >
                               Test Plant
                             </h2>
@@ -6115,7 +6115,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                         </div>
                       </div>
                       <div
-                        class="collapse-content"
+                        class="collapse-content break-all"
                       >
                         <div
                           class="pt-4"
@@ -6124,12 +6124,12 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                             class="flex"
                           >
                             <span
-                              class="font-semibold"
+                              class="font-semibold break-keep mr-4"
                             >
                               Species:
                             </span>
                             <span
-                              class="ml-auto text-right"
+                              class="ml-auto text-right line-clamp-1"
                             >
                               Calathea
                             </span>
@@ -6138,12 +6138,12 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                             class="flex"
                           >
                             <span
-                              class="font-semibold"
+                              class="font-semibold break-keep mr-4"
                             >
                               Pot size:
                             </span>
                             <span
-                              class="ml-auto text-right"
+                              class="ml-auto text-right line-clamp-1"
                             >
                               4
                             </span>
@@ -6296,10 +6296,10 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                           class="card text-neutral-content relative"
                         >
                           <div
-                            class="card-body cursor-default text-center"
+                            class="card-body cursor-default max-w-full text-center"
                           >
                             <h2
-                              class="card-title mx-auto px-8"
+                              class="card-title line-clamp-1 break-words px-8"
                             >
                               Test group
                             </h2>
@@ -6333,7 +6333,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                         </div>
                       </div>
                       <div
-                        class="collapse-content"
+                        class="collapse-content break-all"
                       >
                         <div
                           class="pt-4"
@@ -6342,12 +6342,12 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                             class="flex"
                           >
                             <span
-                              class="font-semibold"
+                              class="font-semibold break-keep mr-4"
                             >
                               Location:
                             </span>
                             <span
-                              class="ml-auto text-right"
+                              class="ml-auto text-right line-clamp-1"
                             >
                               Middle shelf
                             </span>

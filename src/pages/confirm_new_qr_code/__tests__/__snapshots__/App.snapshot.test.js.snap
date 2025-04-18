@@ -102,12 +102,12 @@ exports[`App matches snapshot when changing group QR code 1`] = `
                       class="flex"
                     >
                       <span
-                        class="font-semibold"
+                        class="font-semibold break-keep mr-4"
                       >
                         Location:
                       </span>
                       <span
-                        class="ml-auto text-right"
+                        class="ml-auto text-right line-clamp-1"
                       >
                         Nowhere
                       </span>
@@ -296,12 +296,12 @@ exports[`App matches snapshot when changing group QR code 1`] = `
                     class="flex"
                   >
                     <span
-                      class="font-semibold"
+                      class="font-semibold break-keep mr-4"
                     >
                       Location:
                     </span>
                     <span
-                      class="ml-auto text-right"
+                      class="ml-auto text-right line-clamp-1"
                     >
                       Nowhere
                     </span>
@@ -562,12 +562,12 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
                       class="flex"
                     >
                       <span
-                        class="font-semibold"
+                        class="font-semibold break-keep mr-4"
                       >
                         Species:
                       </span>
                       <span
-                        class="ml-auto text-right"
+                        class="ml-auto text-right line-clamp-1"
                       >
                         Calathea
                       </span>
@@ -576,12 +576,12 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
                       class="flex"
                     >
                       <span
-                        class="font-semibold"
+                        class="font-semibold break-keep mr-4"
                       >
                         Pot size:
                       </span>
                       <span
-                        class="ml-auto text-right"
+                        class="ml-auto text-right line-clamp-1"
                       >
                         4
                       </span>
@@ -792,12 +792,12 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
                     class="flex"
                   >
                     <span
-                      class="font-semibold"
+                      class="font-semibold break-keep mr-4"
                     >
                       Species:
                     </span>
                     <span
-                      class="ml-auto text-right"
+                      class="ml-auto text-right line-clamp-1"
                     >
                       Calathea
                     </span>
@@ -806,12 +806,12 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
                     class="flex"
                   >
                     <span
-                      class="font-semibold"
+                      class="font-semibold break-keep mr-4"
                     >
                       Pot size:
                     </span>
                     <span
-                      class="ml-auto text-right"
+                      class="ml-auto text-right line-clamp-1"
                     >
                       4
                     </span>

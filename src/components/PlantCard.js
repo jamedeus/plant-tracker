@@ -51,12 +51,12 @@ const PlantCard = memo(function PlantCard({
 
                     {/* Card body */}
                     <div className={clsx(
-                        'card-body cursor-default',
+                        'card-body cursor-default max-w-full',
                         thumbnail ? 'my-auto text-start' : 'text-center'
                     )}>
                         <h2 className={clsx(
-                            'card-title line-clamp-1',
-                            thumbnail ? 'pr-8' : 'mx-auto px-8'
+                            'card-title line-clamp-1 break-words',
+                            thumbnail ? 'pr-8' : 'text-center px-8'
                         )}>
                             {display_name}
                         </h2>
@@ -91,7 +91,7 @@ const PlantCard = memo(function PlantCard({
                 </div>
             </div>
             {/* Plant details collapse, closed until button clicked */}
-            <div className="collapse-content">
+            <div className="collapse-content break-all">
                 <div className="pt-4">
                     <PlantDetails
                         species={species}

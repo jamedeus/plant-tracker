@@ -35,8 +35,10 @@ const GroupCard = memo(function GroupCard({
             <div className='collapse-title !p-0 min-w-0 min-h-0'>
                 <div className='card text-neutral-content relative'>
                     {/* Card body */}
-                    <div className='card-body cursor-default text-center'>
-                        <h2 className='card-title mx-auto px-8'>{display_name}</h2>
+                    <div className='card-body cursor-default max-w-full text-center'>
+                        <h2 className='card-title line-clamp-1 break-words px-8'>
+                            {display_name}
+                        </h2>
                         <p>Contains {plants} plants</p>
                     </div>
 
@@ -56,7 +58,7 @@ const GroupCard = memo(function GroupCard({
                 </div>
             </div>
             {/* Group details collapse, closed until button clicked */}
-            <div className="collapse-content">
+            <div className="collapse-content break-all">
                 <div className="pt-4">
                     <GroupDetails
                         location={location}

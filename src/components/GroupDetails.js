@@ -10,8 +10,12 @@ const GroupDetails = ({ location, description }) => {
             <>
                 {location &&
                     <p className='flex'>
-                        <span className="font-semibold">Location:</span>
-                        <span className="ml-auto text-right">{location}</span>
+                        <span className="font-semibold break-keep mr-4">
+                            Location:
+                        </span>
+                        <span className="ml-auto text-right line-clamp-1">
+                            {location}
+                        </span>
                     </p>
                 }
                 {description &&

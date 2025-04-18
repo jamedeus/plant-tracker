@@ -10,14 +10,22 @@ const PlantDetails = ({ species, pot_size, description }) => {
             <>
                 {species &&
                     <p className='flex'>
-                        <span className="font-semibold">Species:</span>
-                        <span className="ml-auto text-right">{species}</span>
+                        <span className="font-semibold break-keep mr-4">
+                            Species:
+                        </span>
+                        <span className="ml-auto text-right line-clamp-1">
+                            {species}
+                        </span>
                     </p>
                 }
                 {pot_size &&
                     <p className='flex'>
-                        <span className="font-semibold">Pot size:</span>
-                        <span className="ml-auto text-right">{pot_size}</span>
+                        <span className="font-semibold break-keep mr-4">
+                            Pot size:
+                        </span>
+                        <span className="ml-auto text-right line-clamp-1">
+                            {pot_size}
+                        </span>
                     </p>
                 }
                 {description &&

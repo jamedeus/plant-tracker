@@ -117,12 +117,12 @@ exports[`App matches snapshot 1`] = `
                       class="flex"
                     >
                       <span
-                        class="font-semibold"
+                        class="font-semibold break-keep mr-4"
                       >
                         Location:
                       </span>
                       <span
-                        class="ml-auto text-right"
+                        class="ml-auto text-right line-clamp-1"
                       >
                         Middle shelf
                       </span>
@@ -303,10 +303,10 @@ exports[`App matches snapshot 1`] = `
                           class="card card-side text-neutral-content relative"
                         >
                           <div
-                            class="card-body cursor-default text-center"
+                            class="card-body cursor-default max-w-full text-center"
                           >
                             <h2
-                              class="card-title line-clamp-1 mx-auto px-8"
+                              class="card-title line-clamp-1 break-words text-center px-8"
                             >
                               Test Plant
                             </h2>
@@ -356,7 +356,7 @@ exports[`App matches snapshot 1`] = `
                         </div>
                       </div>
                       <div
-                        class="collapse-content"
+                        class="collapse-content break-all"
                       >
                         <div
                           class="pt-4"
@@ -365,12 +365,12 @@ exports[`App matches snapshot 1`] = `
                             class="flex"
                           >
                             <span
-                              class="font-semibold"
+                              class="font-semibold break-keep mr-4"
                             >
                               Species:
                             </span>
                             <span
-                              class="ml-auto text-right"
+                              class="ml-auto text-right line-clamp-1"
                             >
                               Calathea
                             </span>
@@ -379,12 +379,12 @@ exports[`App matches snapshot 1`] = `
                             class="flex"
                           >
                             <span
-                              class="font-semibold"
+                              class="font-semibold break-keep mr-4"
                             >
                               Pot size:
                             </span>
                             <span
-                              class="ml-auto text-right"
+                              class="ml-auto text-right line-clamp-1"
                             >
                               4
                             </span>
@@ -454,10 +454,10 @@ exports[`App matches snapshot 1`] = `
                             />
                           </figure>
                           <div
-                            class="card-body cursor-default my-auto text-start"
+                            class="card-body cursor-default max-w-full my-auto text-start"
                           >
                             <h2
-                              class="card-title line-clamp-1 pr-8"
+                              class="card-title line-clamp-1 break-words pr-8"
                             >
                               Unnamed Spider Plant
                             </h2>
@@ -507,7 +507,7 @@ exports[`App matches snapshot 1`] = `
                         </div>
                       </div>
                       <div
-                        class="collapse-content"
+                        class="collapse-content break-all"
                       >
                         <div
                           class="pt-4"
@@ -516,12 +516,12 @@ exports[`App matches snapshot 1`] = `
                             class="flex"
                           >
                             <span
-                              class="font-semibold"
+                              class="font-semibold break-keep mr-4"
                             >
                               Species:
                             </span>
                             <span
-                              class="ml-auto text-right"
+                              class="ml-auto text-right line-clamp-1"
                             >
                               Spider Plant
                             </span>
@@ -530,12 +530,12 @@ exports[`App matches snapshot 1`] = `
                             class="flex"
                           >
                             <span
-                              class="font-semibold"
+                              class="font-semibold break-keep mr-4"
                             >
                               Pot size:
                             </span>
                             <span
-                              class="ml-auto text-right"
+                              class="ml-auto text-right line-clamp-1"
                             >
                               2
                             </span>
@@ -582,10 +582,10 @@ exports[`App matches snapshot 1`] = `
                           class="card card-side text-neutral-content relative"
                         >
                           <div
-                            class="card-body cursor-default text-center"
+                            class="card-body cursor-default max-w-full text-center"
                           >
                             <h2
-                              class="card-title line-clamp-1 mx-auto px-8"
+                              class="card-title line-clamp-1 break-words text-center px-8"
                             >
                               Newest plant
                             </h2>
@@ -617,7 +617,7 @@ exports[`App matches snapshot 1`] = `
                         </div>
                       </div>
                       <div
-                        class="collapse-content"
+                        class="collapse-content break-all"
                       >
                         <div
                           class="pt-4"
@@ -626,12 +626,12 @@ exports[`App matches snapshot 1`] = `
                             class="flex"
                           >
                             <span
-                              class="font-semibold"
+                              class="font-semibold break-keep mr-4"
                             >
                               Species:
                             </span>
                             <span
-                              class="ml-auto text-right"
+                              class="ml-auto text-right line-clamp-1"
                             >
                               null
                             </span>
@@ -959,12 +959,12 @@ exports[`App matches snapshot 1`] = `
                     class="flex"
                   >
                     <span
-                      class="font-semibold"
+                      class="font-semibold break-keep mr-4"
                     >
                       Location:
                     </span>
                     <span
-                      class="ml-auto text-right"
+                      class="ml-auto text-right line-clamp-1"
                     >
                       Middle shelf
                     </span>
@@ -1145,10 +1145,10 @@ exports[`App matches snapshot 1`] = `
                         class="card card-side text-neutral-content relative"
                       >
                         <div
-                          class="card-body cursor-default text-center"
+                          class="card-body cursor-default max-w-full text-center"
                         >
                           <h2
-                            class="card-title line-clamp-1 mx-auto px-8"
+                            class="card-title line-clamp-1 break-words text-center px-8"
                           >
                             Test Plant
                           </h2>
@@ -1198,7 +1198,7 @@ exports[`App matches snapshot 1`] = `
                       </div>
                     </div>
                     <div
-                      class="collapse-content"
+                      class="collapse-content break-all"
                     >
                       <div
                         class="pt-4"
@@ -1207,12 +1207,12 @@ exports[`App matches snapshot 1`] = `
                           class="flex"
                         >
                           <span
-                            class="font-semibold"
+                            class="font-semibold break-keep mr-4"
                           >
                             Species:
                           </span>
                           <span
-                            class="ml-auto text-right"
+                            class="ml-auto text-right line-clamp-1"
                           >
                             Calathea
                           </span>
@@ -1221,12 +1221,12 @@ exports[`App matches snapshot 1`] = `
                           class="flex"
                         >
                           <span
-                            class="font-semibold"
+                            class="font-semibold break-keep mr-4"
                           >
                             Pot size:
                           </span>
                           <span
-                            class="ml-auto text-right"
+                            class="ml-auto text-right line-clamp-1"
                           >
                             4
                           </span>
@@ -1296,10 +1296,10 @@ exports[`App matches snapshot 1`] = `
                           />
                         </figure>
                         <div
-                          class="card-body cursor-default my-auto text-start"
+                          class="card-body cursor-default max-w-full my-auto text-start"
                         >
                           <h2
-                            class="card-title line-clamp-1 pr-8"
+                            class="card-title line-clamp-1 break-words pr-8"
                           >
                             Unnamed Spider Plant
                           </h2>
@@ -1349,7 +1349,7 @@ exports[`App matches snapshot 1`] = `
                       </div>
                     </div>
                     <div
-                      class="collapse-content"
+                      class="collapse-content break-all"
                     >
                       <div
                         class="pt-4"
@@ -1358,12 +1358,12 @@ exports[`App matches snapshot 1`] = `
                           class="flex"
                         >
                           <span
-                            class="font-semibold"
+                            class="font-semibold break-keep mr-4"
                           >
                             Species:
                           </span>
                           <span
-                            class="ml-auto text-right"
+                            class="ml-auto text-right line-clamp-1"
                           >
                             Spider Plant
                           </span>
@@ -1372,12 +1372,12 @@ exports[`App matches snapshot 1`] = `
                           class="flex"
                         >
                           <span
-                            class="font-semibold"
+                            class="font-semibold break-keep mr-4"
                           >
                             Pot size:
                           </span>
                           <span
-                            class="ml-auto text-right"
+                            class="ml-auto text-right line-clamp-1"
                           >
                             2
                           </span>
@@ -1424,10 +1424,10 @@ exports[`App matches snapshot 1`] = `
                         class="card card-side text-neutral-content relative"
                       >
                         <div
-                          class="card-body cursor-default text-center"
+                          class="card-body cursor-default max-w-full text-center"
                         >
                           <h2
-                            class="card-title line-clamp-1 mx-auto px-8"
+                            class="card-title line-clamp-1 break-words text-center px-8"
                           >
                             Newest plant
                           </h2>
@@ -1459,7 +1459,7 @@ exports[`App matches snapshot 1`] = `
                       </div>
                     </div>
                     <div
-                      class="collapse-content"
+                      class="collapse-content break-all"
                     >
                       <div
                         class="pt-4"
@@ -1468,12 +1468,12 @@ exports[`App matches snapshot 1`] = `
                           class="flex"
                         >
                           <span
-                            class="font-semibold"
+                            class="font-semibold break-keep mr-4"
                           >
                             Species:
                           </span>
                           <span
-                            class="ml-auto text-right"
+                            class="ml-auto text-right line-clamp-1"
                           >
                             null
                           </span>
