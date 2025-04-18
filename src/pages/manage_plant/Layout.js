@@ -12,9 +12,11 @@ import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
 import { openDefaultPhotoModal, preloadDefaultPhotoModal } from './DefaultPhotoModal';
 import { openErrorModal } from 'src/components/ErrorModal';
 import Timeline from './Timeline';
-import { faPlus, faBan, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPlus, faBan, faPen, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { plantRemovedFromGroup, backButtonPressed } from './plantSlice';
+import clsx from 'clsx';
 
 function Layout() {
     // Get redux state (parsed from context set by django template)
@@ -75,7 +77,39 @@ function Layout() {
         return (
             <DetailsCard>
                 <div className="flex flex-col">
-                    <div className="divider font-bold mt-0">Group</div>
+                    {plantDetails.thumbnail && (
+                        <>
+                            <div className="divider font-bold mt-0">
+                                Default Photo
+                            </div>
+                            <div
+                                className="relative mx-auto cursor-pointer"
+                                onClick={openDefaultPhotoModal}
+                                title="Change default photo"
+                            >
+                                <img
+                                    loading="lazy"
+                                    className={clsx(
+                                        "rounded-lg object-cover mx-auto relative",
+                                        "w-[8rem] h-[8rem] md:w-[14rem] md:h-[14rem]"
+                                    )}
+                                    src={plantDetails.thumbnail}
+                                />
+                                <div className={clsx(
+                                    "absolute bottom-2 right-2 h-8 w-8 min-h-8 min-w-8",
+                                    "btn btn-square bg-base-200/60 border-none"
+                                )}>
+                                    <FontAwesomeIcon className='w-3 h-3' icon={faPen} />
+                                </div>
+                            </div>
+                        </>
+                    )}
+                    <div className={clsx(
+                        "divider font-bold",
+                        !plantDetails.thumbnail && "mt-0"
+                    )}>
+                        Group
+                    </div>
                     {/* Group details if in group, add group button if not */}
                     {plantDetails.group ? (
                         <div className="flex flex-col text-center">

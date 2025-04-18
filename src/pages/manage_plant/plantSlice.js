@@ -33,6 +33,14 @@ export const plantSlice = createSlice({
             };
         },
 
+        // Takes URL of new default photo thumbnail
+        plantDefaultPhotoChanged(state, action) {
+            state.plantDetails = {
+                ...state.plantDetails,
+                thumbnail: action.payload
+            };
+        },
+
         // Takes new pot size
         // Does NOT create event (dispatch timelineSlice.eventAdded separately)
         plantRepotted(state, action) {
@@ -65,6 +73,7 @@ export const plantSlice = createSlice({
 // Export individual action creators from slice
 export const {
     plantDetailsUpdated,
+    plantDefaultPhotoChanged,
     plantRepotted,
     plantAddedToGroup,
     plantRemovedFromGroup

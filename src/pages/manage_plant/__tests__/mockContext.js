@@ -11,6 +11,7 @@ export const mockContext = {
         "last_watered": "2024-03-01T05:45:44+00:00",
         "last_fertilized": "2024-03-01T05:45:44+00:00",
         "display_name": "Test Plant",
+        "thumbnail": "/media/thumbnails/photo3_thumb.jpg",
         "group": {
             "name": "Test group",
             "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
@@ -99,6 +100,7 @@ export const mockContextNoEvents = {
         "last_watered": "2024-03-01T05:45:44+00:00",
         "last_fertilized": "2024-03-01T05:45:44+00:00",
         "display_name": "Test Plant",
+        "thumbnail": null,
         "group": {
             "name": "Test group",
             "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be14"

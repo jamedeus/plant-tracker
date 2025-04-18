@@ -7,7 +7,7 @@ exports[`App matches snapshot 1`] = `
     <div
       id="plant_details"
     >
-      {"name":"Test Plant","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be12","created":"2023-12-26T01:25:12+00:00","archived":false,"species":"Calathea","description":"This is a plant with a long description","pot_size":4,"last_watered":"2024-03-01T05:45:44+00:00","last_fertilized":"2024-03-01T05:45:44+00:00","display_name":"Test Plant","group":{"name":"Test group","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be14"}}
+      {"name":"Test Plant","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be12","created":"2023-12-26T01:25:12+00:00","archived":false,"species":"Calathea","description":"This is a plant with a long description","pot_size":4,"last_watered":"2024-03-01T05:45:44+00:00","last_fertilized":"2024-03-01T05:45:44+00:00","display_name":"Test Plant","thumbnail":"/media/thumbnails/photo3_thumb.jpg","group":{"name":"Test group","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be14"}}
     </div>
     <div
       id="events"
@@ -135,6 +135,40 @@ exports[`App matches snapshot 1`] = `
                     >
                       <div
                         class="divider font-bold mt-0"
+                      >
+                        Default Photo
+                      </div>
+                      <div
+                        class="relative mx-auto cursor-pointer"
+                        title="Change default photo"
+                      >
+                        <img
+                          class="rounded-lg object-cover mx-auto relative w-[8rem] h-[8rem] md:w-[14rem] md:h-[14rem]"
+                          loading="lazy"
+                          src="/media/thumbnails/photo3_thumb.jpg"
+                        />
+                        <div
+                          class="absolute bottom-2 right-2 h-8 w-8 min-h-8 min-w-8 btn btn-square bg-base-200/60 border-none"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="svg-inline--fa fa-pen w-3 h-3"
+                            data-icon="pen"
+                            data-prefix="fas"
+                            focusable="false"
+                            role="img"
+                            viewBox="0 0 512 512"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"
+                              fill="currentColor"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                      <div
+                        class="divider font-bold"
                       >
                         Group
                       </div>
@@ -2083,6 +2117,40 @@ exports[`App matches snapshot 1`] = `
                     <div
                       class="divider font-bold mt-0"
                     >
+                      Default Photo
+                    </div>
+                    <div
+                      class="relative mx-auto cursor-pointer"
+                      title="Change default photo"
+                    >
+                      <img
+                        class="rounded-lg object-cover mx-auto relative w-[8rem] h-[8rem] md:w-[14rem] md:h-[14rem]"
+                        loading="lazy"
+                        src="/media/thumbnails/photo3_thumb.jpg"
+                      />
+                      <div
+                        class="absolute bottom-2 right-2 h-8 w-8 min-h-8 min-w-8 btn btn-square bg-base-200/60 border-none"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="svg-inline--fa fa-pen w-3 h-3"
+                          data-icon="pen"
+                          data-prefix="fas"
+                          focusable="false"
+                          role="img"
+                          viewBox="0 0 512 512"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                    <div
+                      class="divider font-bold"
+                    >
                       Group
                     </div>
                     <div
@@ -3988,7 +4056,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
     <div
       id="plant_details"
     >
-      {"name":"Test Plant","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be12","created":"2023-12-26T01:25:12+00:00","archived":true,"species":"Calathea","description":"This is a plant with a long description","pot_size":4,"last_watered":"2024-03-01T05:45:44+00:00","last_fertilized":"2024-03-01T05:45:44+00:00","display_name":"Test Plant","group":{"name":"Test group","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be14"}}
+      {"name":"Test Plant","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be12","created":"2023-12-26T01:25:12+00:00","archived":true,"species":"Calathea","description":"This is a plant with a long description","pot_size":4,"last_watered":"2024-03-01T05:45:44+00:00","last_fertilized":"2024-03-01T05:45:44+00:00","display_name":"Test Plant","thumbnail":"/media/thumbnails/photo3_thumb.jpg","group":{"name":"Test group","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be14"}}
     </div>
     <div
       id="events"
@@ -4099,6 +4167,40 @@ exports[`App matches snapshot when plant is archived 1`] = `
                     >
                       <div
                         class="divider font-bold mt-0"
+                      >
+                        Default Photo
+                      </div>
+                      <div
+                        class="relative mx-auto cursor-pointer"
+                        title="Change default photo"
+                      >
+                        <img
+                          class="rounded-lg object-cover mx-auto relative w-[8rem] h-[8rem] md:w-[14rem] md:h-[14rem]"
+                          loading="lazy"
+                          src="/media/thumbnails/photo3_thumb.jpg"
+                        />
+                        <div
+                          class="absolute bottom-2 right-2 h-8 w-8 min-h-8 min-w-8 btn btn-square bg-base-200/60 border-none"
+                        >
+                          <svg
+                            aria-hidden="true"
+                            class="svg-inline--fa fa-pen w-3 h-3"
+                            data-icon="pen"
+                            data-prefix="fas"
+                            focusable="false"
+                            role="img"
+                            viewBox="0 0 512 512"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"
+                              fill="currentColor"
+                            />
+                          </svg>
+                        </div>
+                      </div>
+                      <div
+                        class="divider font-bold"
                       >
                         Group
                       </div>
@@ -5921,6 +6023,40 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   >
                     <div
                       class="divider font-bold mt-0"
+                    >
+                      Default Photo
+                    </div>
+                    <div
+                      class="relative mx-auto cursor-pointer"
+                      title="Change default photo"
+                    >
+                      <img
+                        class="rounded-lg object-cover mx-auto relative w-[8rem] h-[8rem] md:w-[14rem] md:h-[14rem]"
+                        loading="lazy"
+                        src="/media/thumbnails/photo3_thumb.jpg"
+                      />
+                      <div
+                        class="absolute bottom-2 right-2 h-8 w-8 min-h-8 min-w-8 btn btn-square bg-base-200/60 border-none"
+                      >
+                        <svg
+                          aria-hidden="true"
+                          class="svg-inline--fa fa-pen w-3 h-3"
+                          data-icon="pen"
+                          data-prefix="fas"
+                          focusable="false"
+                          role="img"
+                          viewBox="0 0 512 512"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M362.7 19.3L314.3 67.7 444.3 197.7l48.4-48.4c25-25 25-65.5 0-90.5L453.3 19.3c-25-25-65.5-25-90.5 0zm-71 71L58.6 323.5c-10.4 10.4-18 23.3-22.2 37.4L1 481.2C-1.5 489.7 .8 498.8 7 505s15.3 8.5 23.7 6.1l120.3-35.4c14.1-4.2 27-11.8 37.4-22.2L421.7 220.3 291.7 90.3z"
+                            fill="currentColor"
+                          />
+                        </svg>
+                      </div>
+                    </div>
+                    <div
+                      class="divider font-bold"
                     >
                       Group
                     </div>

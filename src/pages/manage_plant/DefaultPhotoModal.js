@@ -6,7 +6,8 @@ import { timestampToReadable } from 'src/timestampUtils';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/16/solid';
 import clsx from 'clsx';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { plantDefaultPhotoChanged } from './plantSlice';
 
 let modalRef;
 
@@ -56,7 +57,7 @@ const PhotoSlide = memo(function PhotoSlide({
             <div className="absolute flex bottom-5 -translate-x-1/2 left-1/2">
                 <button
                     className="btn rounded-full font-bold"
-                    onClick={() => submit(photo.key)}
+                    onClick={() => submit(photo)}
                 >
                     Select
                 </button>
@@ -78,6 +79,7 @@ PhotoSlide.propTypes = {
 };
 
 const DefaultPhotoModal = () => {
+    const dispatch = useDispatch();
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
     const photos = useSelector((state) => state.timeline.photos);
 
@@ -86,7 +88,7 @@ const DefaultPhotoModal = () => {
     const submit = useCallback(async (selected) => {
         const payload = {
             plant_id: plantID,
-            photo_key: selected
+            photo_key: selected.key
         };
         const response = await sendPostRequest(
             '/set_plant_default_photo',
@@ -94,6 +96,7 @@ const DefaultPhotoModal = () => {
         );
         if (response.ok) {
             closeDefaultPhotosModal();
+            dispatch(plantDefaultPhotoChanged(selected.thumbnail));
         } else {
             const error = await response.json();
             openErrorModal(error);
