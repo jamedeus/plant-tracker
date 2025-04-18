@@ -505,13 +505,13 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                           class="collapse-title !p-0 min-w-0 min-h-0"
                         >
                           <div
-                            class="card text-neutral-content relative"
+                            class="card card-side text-neutral-content relative"
                           >
                             <div
                               class="card-body cursor-default max-w-full text-center"
                             >
                               <h2
-                                class="card-title line-clamp-1 break-words px-8"
+                                class="card-title line-clamp-1 break-words text-center px-8"
                               >
                                 Test group
                               </h2>
@@ -1169,13 +1169,13 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                         class="collapse-title !p-0 min-w-0 min-h-0"
                       >
                         <div
-                          class="card text-neutral-content relative"
+                          class="card card-side text-neutral-content relative"
                         >
                           <div
                             class="card-body cursor-default max-w-full text-center"
                           >
                             <h2
-                              class="card-title line-clamp-1 break-words px-8"
+                              class="card-title line-clamp-1 break-words text-center px-8"
                             >
                               Test group
                             </h2>
@@ -2147,13 +2147,13 @@ exports[`App matches snapshot when only groups exist 1`] = `
                           class="collapse-title !p-0 min-w-0 min-h-0"
                         >
                           <div
-                            class="card text-neutral-content relative"
+                            class="card card-side text-neutral-content relative"
                           >
                             <div
                               class="card-body cursor-default max-w-full text-center"
                             >
                               <h2
-                                class="card-title line-clamp-1 break-words px-8"
+                                class="card-title line-clamp-1 break-words text-center px-8"
                               >
                                 Test group
                               </h2>
@@ -2547,13 +2547,13 @@ exports[`App matches snapshot when only groups exist 1`] = `
                         class="collapse-title !p-0 min-w-0 min-h-0"
                       >
                         <div
-                          class="card text-neutral-content relative"
+                          class="card card-side text-neutral-content relative"
                         >
                           <div
                             class="card-body cursor-default max-w-full text-center"
                           >
                             <h2
-                              class="card-title line-clamp-1 break-words px-8"
+                              class="card-title line-clamp-1 break-words text-center px-8"
                             >
                               Test group
                             </h2>
@@ -4233,13 +4233,13 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                           class="collapse-title !p-0 min-w-0 min-h-0"
                         >
                           <div
-                            class="card text-neutral-content relative"
+                            class="card card-side text-neutral-content relative"
                           >
                             <div
                               class="card-body cursor-default max-w-full text-center"
                             >
                               <h2
-                                class="card-title line-clamp-1 break-words px-8"
+                                class="card-title line-clamp-1 break-words text-center px-8"
                               >
                                 Test group
                               </h2>
@@ -4883,13 +4883,13 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                         class="collapse-title !p-0 min-w-0 min-h-0"
                       >
                         <div
-                          class="card text-neutral-content relative"
+                          class="card card-side text-neutral-content relative"
                         >
                           <div
                             class="card-body cursor-default max-w-full text-center"
                           >
                             <h2
-                              class="card-title line-clamp-1 break-words px-8"
+                              class="card-title line-clamp-1 break-words text-center px-8"
                             >
                               Test group
                             </h2>
@@ -5624,13 +5624,13 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                           class="collapse-title !p-0 min-w-0 min-h-0"
                         >
                           <div
-                            class="card text-neutral-content relative"
+                            class="card card-side text-neutral-content relative"
                           >
                             <div
                               class="card-body cursor-default max-w-full text-center"
                             >
                               <h2
-                                class="card-title line-clamp-1 break-words px-8"
+                                class="card-title line-clamp-1 break-words text-center px-8"
                               >
                                 Test group
                               </h2>
@@ -6293,13 +6293,13 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                         class="collapse-title !p-0 min-w-0 min-h-0"
                       >
                         <div
-                          class="card text-neutral-content relative"
+                          class="card card-side text-neutral-content relative"
                         >
                           <div
                             class="card-body cursor-default max-w-full text-center"
                           >
                             <h2
-                              class="card-title line-clamp-1 break-words px-8"
+                              class="card-title line-clamp-1 break-words text-center px-8"
                             >
                               Test group
                             </h2>
