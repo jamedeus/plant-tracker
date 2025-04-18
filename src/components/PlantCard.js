@@ -91,7 +91,7 @@ const PlantCard = memo(function PlantCard({
                 </div>
             </div>
             {/* Plant details collapse, closed until button clicked */}
-            <div className="collapse-content break-all">
+            <div className="collapse-content min-w-0">
                 <div className="pt-4">
                     <PlantDetails
                         species={species}

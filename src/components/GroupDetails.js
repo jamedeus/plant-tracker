@@ -13,7 +13,7 @@ const GroupDetails = ({ location, description }) => {
                         <span className="font-semibold break-keep mr-4">
                             Location:
                         </span>
-                        <span className="ml-auto text-right line-clamp-1">
+                        <span className="ml-auto text-right line-clamp-1 break-all">
                             {location}
                         </span>
                     </p>
@@ -21,7 +21,9 @@ const GroupDetails = ({ location, description }) => {
                 {description &&
                     <div className='text-center'>
                         <p className="font-semibold mt-3">Description:</p>
-                        <p className="text-sm line-clamp-6">{description}</p>
+                        <p className="text-sm line-clamp-6 break-anywhere">
+                            {description}
+                        </p>
                     </div>
                 }
             </>

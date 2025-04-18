@@ -183,3 +183,10 @@ html[data-theme="light"] .pot-size-selected::placeholder {
 .floating-footer-visible {
     @apply translate-y-0 scale-100 opacity-100;
 }
+
+/* Allows breaking long strings with no spaces to prevent overflow */
+/* Only breaks words if there is no other opportunity (eg spaces) */
+.break-anywhere {
+    overflow-wrap: anywhere;
+    word-break: break-word;;
+}

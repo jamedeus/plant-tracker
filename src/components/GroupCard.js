@@ -58,7 +58,7 @@ const GroupCard = memo(function GroupCard({
                 </div>
             </div>
             {/* Group details collapse, closed until button clicked */}
-            <div className="collapse-content break-all">
+            <div className="collapse-content min-w-0">
                 <div className="pt-4">
                     <GroupDetails
                         location={location}
