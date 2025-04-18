@@ -389,7 +389,11 @@ const TimelineDay = memo(function TimelineDay({ dateKey, monthDivider }) {
             {monthDivider && <MonthDivider dateKey={dateKey} />}
             <TimelineTimestamp dateKey={dateKey} />
             <div className="flex flex-col bg-neutral rounded-xl p-2 md:p-4">
-                <div className="flex flex-row flex-wrap">
+                {/* mobile: 2x2 grid layout, desktop: 4 events on one row */}
+                <div className={clsx(
+                    "grid grid-cols-[min-content_1fr]",
+                    "min-[553px]:flex min-[553px]:flex-row min-[553px]:flex-wrap"
+                )}>
                     {contents.events.map((e) => (
                         <EventMarker key={e} eventType={e} />
                     ))}

@@ -1269,7 +1269,7 @@ exports[`App matches snapshot 1`] = `
                 class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
               >
                 <div
-                  class="flex flex-row flex-wrap"
+                  class="grid grid-cols-[min-content_1fr] min-[553px]:flex min-[553px]:flex-row min-[553px]:flex-wrap"
                 />
                 <div
                   class="flex flex-row flex-wrap"
@@ -1307,7 +1307,7 @@ exports[`App matches snapshot 1`] = `
                 class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
               >
                 <div
-                  class="flex flex-row flex-wrap"
+                  class="grid grid-cols-[min-content_1fr] min-[553px]:flex min-[553px]:flex-row min-[553px]:flex-wrap"
                 />
                 <div
                   class="flex flex-row flex-wrap"
@@ -1345,7 +1345,7 @@ exports[`App matches snapshot 1`] = `
                 class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
               >
                 <div
-                  class="flex flex-row flex-wrap"
+                  class="grid grid-cols-[min-content_1fr] min-[553px]:flex min-[553px]:flex-row min-[553px]:flex-wrap"
                 />
                 <div
                   class="flex flex-row flex-wrap"
@@ -1383,7 +1383,7 @@ exports[`App matches snapshot 1`] = `
                 class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
               >
                 <div
-                  class="flex flex-row flex-wrap"
+                  class="grid grid-cols-[min-content_1fr] min-[553px]:flex min-[553px]:flex-row min-[553px]:flex-wrap"
                 >
                   <span
                     class="m-2 whitespace-nowrap text-sm md:text-base"
@@ -1494,7 +1494,7 @@ exports[`App matches snapshot 1`] = `
                 class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
               >
                 <div
-                  class="flex flex-row flex-wrap"
+                  class="grid grid-cols-[min-content_1fr] min-[553px]:flex min-[553px]:flex-row min-[553px]:flex-wrap"
                 >
                   <span
                     class="m-2 whitespace-nowrap text-sm md:text-base"
@@ -1543,7 +1543,7 @@ exports[`App matches snapshot 1`] = `
                 class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
               >
                 <div
-                  class="flex flex-row flex-wrap"
+                  class="grid grid-cols-[min-content_1fr] min-[553px]:flex min-[553px]:flex-row min-[553px]:flex-wrap"
                 >
                   <span
                     class="m-2 whitespace-nowrap text-sm md:text-base"
@@ -3250,7 +3250,7 @@ exports[`App matches snapshot 1`] = `
               class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
             >
               <div
-                class="flex flex-row flex-wrap"
+                class="grid grid-cols-[min-content_1fr] min-[553px]:flex min-[553px]:flex-row min-[553px]:flex-wrap"
               />
               <div
                 class="flex flex-row flex-wrap"
@@ -3288,7 +3288,7 @@ exports[`App matches snapshot 1`] = `
               class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
             >
               <div
-                class="flex flex-row flex-wrap"
+                class="grid grid-cols-[min-content_1fr] min-[553px]:flex min-[553px]:flex-row min-[553px]:flex-wrap"
               />
               <div
                 class="flex flex-row flex-wrap"
@@ -3326,7 +3326,7 @@ exports[`App matches snapshot 1`] = `
               class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
             >
               <div
-                class="flex flex-row flex-wrap"
+                class="grid grid-cols-[min-content_1fr] min-[553px]:flex min-[553px]:flex-row min-[553px]:flex-wrap"
               />
               <div
                 class="flex flex-row flex-wrap"
@@ -3364,7 +3364,7 @@ exports[`App matches snapshot 1`] = `
               class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
             >
               <div
-                class="flex flex-row flex-wrap"
+                class="grid grid-cols-[min-content_1fr] min-[553px]:flex min-[553px]:flex-row min-[553px]:flex-wrap"
               >
                 <span
                   class="m-2 whitespace-nowrap text-sm md:text-base"
@@ -3475,7 +3475,7 @@ exports[`App matches snapshot 1`] = `
               class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
             >
               <div
-                class="flex flex-row flex-wrap"
+                class="grid grid-cols-[min-content_1fr] min-[553px]:flex min-[553px]:flex-row min-[553px]:flex-wrap"
               >
                 <span
                   class="m-2 whitespace-nowrap text-sm md:text-base"
@@ -3524,7 +3524,7 @@ exports[`App matches snapshot 1`] = `
               class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
             >
               <div
-                class="flex flex-row flex-wrap"
+                class="grid grid-cols-[min-content_1fr] min-[553px]:flex min-[553px]:flex-row min-[553px]:flex-wrap"
               >
                 <span
                   class="m-2 whitespace-nowrap text-sm md:text-base"
@@ -5193,7 +5193,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
               >
                 <div
-                  class="flex flex-row flex-wrap"
+                  class="grid grid-cols-[min-content_1fr] min-[553px]:flex min-[553px]:flex-row min-[553px]:flex-wrap"
                 />
                 <div
                   class="flex flex-row flex-wrap"
@@ -5231,7 +5231,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
               >
                 <div
-                  class="flex flex-row flex-wrap"
+                  class="grid grid-cols-[min-content_1fr] min-[553px]:flex min-[553px]:flex-row min-[553px]:flex-wrap"
                 />
                 <div
                   class="flex flex-row flex-wrap"
@@ -5269,7 +5269,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
               >
                 <div
-                  class="flex flex-row flex-wrap"
+                  class="grid grid-cols-[min-content_1fr] min-[553px]:flex min-[553px]:flex-row min-[553px]:flex-wrap"
                 />
                 <div
                   class="flex flex-row flex-wrap"
@@ -5307,7 +5307,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
               >
                 <div
-                  class="flex flex-row flex-wrap"
+                  class="grid grid-cols-[min-content_1fr] min-[553px]:flex min-[553px]:flex-row min-[553px]:flex-wrap"
                 >
                   <span
                     class="m-2 whitespace-nowrap text-sm md:text-base"
@@ -5418,7 +5418,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
               >
                 <div
-                  class="flex flex-row flex-wrap"
+                  class="grid grid-cols-[min-content_1fr] min-[553px]:flex min-[553px]:flex-row min-[553px]:flex-wrap"
                 >
                   <span
                     class="m-2 whitespace-nowrap text-sm md:text-base"
@@ -5467,7 +5467,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
               >
                 <div
-                  class="flex flex-row flex-wrap"
+                  class="grid grid-cols-[min-content_1fr] min-[553px]:flex min-[553px]:flex-row min-[553px]:flex-wrap"
                 >
                   <span
                     class="m-2 whitespace-nowrap text-sm md:text-base"
@@ -7049,7 +7049,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
             >
               <div
-                class="flex flex-row flex-wrap"
+                class="grid grid-cols-[min-content_1fr] min-[553px]:flex min-[553px]:flex-row min-[553px]:flex-wrap"
               />
               <div
                 class="flex flex-row flex-wrap"
@@ -7087,7 +7087,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
             >
               <div
-                class="flex flex-row flex-wrap"
+                class="grid grid-cols-[min-content_1fr] min-[553px]:flex min-[553px]:flex-row min-[553px]:flex-wrap"
               />
               <div
                 class="flex flex-row flex-wrap"
@@ -7125,7 +7125,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
             >
               <div
-                class="flex flex-row flex-wrap"
+                class="grid grid-cols-[min-content_1fr] min-[553px]:flex min-[553px]:flex-row min-[553px]:flex-wrap"
               />
               <div
                 class="flex flex-row flex-wrap"
@@ -7163,7 +7163,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
             >
               <div
-                class="flex flex-row flex-wrap"
+                class="grid grid-cols-[min-content_1fr] min-[553px]:flex min-[553px]:flex-row min-[553px]:flex-wrap"
               >
                 <span
                   class="m-2 whitespace-nowrap text-sm md:text-base"
@@ -7274,7 +7274,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
             >
               <div
-                class="flex flex-row flex-wrap"
+                class="grid grid-cols-[min-content_1fr] min-[553px]:flex min-[553px]:flex-row min-[553px]:flex-wrap"
               >
                 <span
                   class="m-2 whitespace-nowrap text-sm md:text-base"
@@ -7323,7 +7323,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
             >
               <div
-                class="flex flex-row flex-wrap"
+                class="grid grid-cols-[min-content_1fr] min-[553px]:flex min-[553px]:flex-row min-[553px]:flex-wrap"
               >
                 <span
                   class="m-2 whitespace-nowrap text-sm md:text-base"
