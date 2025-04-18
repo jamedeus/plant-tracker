@@ -37,7 +37,6 @@ const PlantCard = memo(function PlantCard({
     pot_size,
     last_watered,
     thumbnail,
-    linkPage=true,
     archived=false
 }) {
     return (
@@ -55,7 +54,6 @@ const PlantCard = memo(function PlantCard({
                     description={description}
                 />
             }
-            linkPage={linkPage}
             archived={archived}
         />
     );
@@ -69,7 +67,6 @@ PlantCard.propTypes = {
     pot_size: PropTypes.number,
     last_watered: PropTypes.string,
     thumbnail: PropTypes.string,
-    linkPage: PropTypes.bool,
     archived: PropTypes.bool
 };
 

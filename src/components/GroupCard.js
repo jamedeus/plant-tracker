@@ -9,7 +9,6 @@ const GroupCard = memo(function GroupCard({
     uuid,
     location,
     description,
-    linkPage=true,
     archived=false
 }) {
     return (
@@ -23,7 +22,6 @@ const GroupCard = memo(function GroupCard({
                     description={description}
                 />
             }
-            linkPage={linkPage}
             archived={archived}
         />
     );
@@ -35,7 +33,6 @@ GroupCard.propTypes = {
     uuid: PropTypes.string.isRequired,
     location: PropTypes.string,
     description: PropTypes.string,
-    linkPage: PropTypes.bool,
     archived: PropTypes.bool
 };
 

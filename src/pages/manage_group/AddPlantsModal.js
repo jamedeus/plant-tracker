@@ -32,11 +32,7 @@ const AddPlantsModal = memo(function AddPlantsModal({ options, addPlants }) {
                 {options.length > 0 ? (
                     <EditableNodeList editing={true} formRef={formRef}>
                         {options.map((plant) => (
-                            <PlantCard
-                                key={plant.uuid}
-                                {...plant}
-                                linkPage={false}
-                            />
+                            <PlantCard key={plant.uuid} {...plant} />
                         ))}
                     </EditableNodeList>
                 ) : (

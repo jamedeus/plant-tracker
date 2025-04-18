@@ -48,11 +48,7 @@ const GroupModal = () => {
                         className="max-w-80 w-full mx-auto mb-4 cursor-pointer"
                         onClick={() => submit(group.uuid)}
                     >
-                        <GroupCard
-                            key={group.uuid}
-                            linkPage={false}
-                            {...group}
-                        />
+                        <GroupCard key={group.uuid} {...group} />
                     </div>
                 ))}
                 {!groupOptions.length && (

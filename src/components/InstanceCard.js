@@ -9,7 +9,6 @@ import { ChevronDownIcon } from '@heroicons/react/16/solid';
 // - subtitle: Normal sized text under title (last watered, plants in group)
 // - details: Contents of details dropdown, hidden until expand button clicked
 // - thumbnail: Image rendered on left side of card
-// - linkPage: Controls whether clicking card redirects to manage page
 // - archived: Card appears in grayscale if true, otherwise normal
 const InstanceCard = memo(function InstanceCard({
     uuid,
@@ -17,7 +16,6 @@ const InstanceCard = memo(function InstanceCard({
     subtitle,
     details,
     thumbnail,
-    linkPage,
     archived
 }) {
     // ID for hidden checkbox that controls details collapse open/close state
@@ -25,11 +23,10 @@ const InstanceCard = memo(function InstanceCard({
 
     return (
         <a
-            href={linkPage ? `/manage/${uuid}` : null}
+            href={`/manage/${uuid}`}
             className={clsx(
-                'collapse card-collapse bg-neutral group',
-                archived && 'grayscale',
-                linkPage && 'cursor-pointer'
+                'collapse card-collapse bg-neutral cursor-pointer group',
+                archived && 'grayscale'
             )}
         >
             {/* Hidden checkbox controls open/close state */}
@@ -96,7 +93,6 @@ InstanceCard.propTypes = {
     subtitle: PropTypes.node.isRequired,
     details: PropTypes.node.isRequired,
     thumbnail: PropTypes.string,
-    linkPage: PropTypes.bool,
     archived: PropTypes.bool
 };
 

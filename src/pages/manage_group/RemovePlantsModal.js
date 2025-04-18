@@ -32,11 +32,7 @@ const RemovePlantsModal = memo(function RemovePlantsModal({ plantDetails, remove
                 {plantDetails.length > 0 ? (
                     <EditableNodeList editing={true} formRef={formRef}>
                         {plantDetails.map((plant) => (
-                            <PlantCard
-                                key={plant.uuid}
-                                {...plant}
-                                linkPage={false}
-                            />
+                            <PlantCard key={plant.uuid} {...plant} />
                         ))}
                     </EditableNodeList>
                 ) : (
