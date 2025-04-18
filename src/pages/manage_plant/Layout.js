@@ -159,6 +159,7 @@ function Layout() {
                 onOpenMenu={preloadDefaultPhotoModal}
                 title={plantDetails.display_name}
                 titleOptions={PlantDetailsDropdown}
+                onOpenTitle={preloadDefaultPhotoModal}
             />
 
             {/* Don't render event buttons if plant is archived */}
