@@ -140,7 +140,9 @@ function Layout() {
                 <EventCalendar />
             </div>
 
-            <Timeline />
+            <div className="w-full max-w-screen-md mt-2 px-4">
+                <Timeline />
+            </div>
 
             <ChangeQrModal uuid={plantDetails.uuid} />
         </div>

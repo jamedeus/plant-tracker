@@ -1087,483 +1087,487 @@ exports[`App matches snapshot 1`] = `
           </div>
         </div>
         <div
-          class="flex flex-col mt-2 mx-4 p-4 md:p-8 pt-0 md:pt-0 md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
+          class="w-full max-w-screen-md mt-2 px-4"
         >
           <div
-            class="navbar bg-base-200 rounded-2xl"
+            class="flex flex-col w-full p-4 md:p-8 pt-0 md:pt-0 bg-base-200 rounded-2xl"
           >
             <div
-              class="navbar-start w-12"
-            />
-            <div
-              class="navbar-center mx-auto"
+              class="navbar bg-base-200 rounded-2xl"
             >
               <div
-                class="dropdown dropdown-center dropdown-hover mx-auto"
+                class="navbar-start w-12"
+              />
+              <div
+                class="navbar-center mx-auto"
               >
                 <div
-                  class="btn btn-ghost text-xl font-bold m-1"
+                  class="dropdown dropdown-center dropdown-hover mx-auto"
+                >
+                  <div
+                    class="btn btn-ghost text-xl font-bold m-1"
+                    role="button"
+                    tabindex="0"
+                  >
+                    History
+                  </div>
+                  <ul
+                    class="dropdown-options w-44"
+                    tabindex="0"
+                  >
+                    <li>
+                      <details>
+                        <summary>
+                          2024
+                        </summary>
+                        <ul>
+                          <li>
+                            <a>
+                              March
+                            </a>
+                          </li>
+                          <li>
+                            <a>
+                              February
+                            </a>
+                          </li>
+                        </ul>
+                      </details>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div
+                class="navbar-end w-12 dropdown dropdown-end"
+              >
+                <div
+                  class="btn btn-ghost btn-circle"
                   role="button"
                   tabindex="0"
                 >
-                  History
+                  <svg
+                    aria-hidden="true"
+                    class="svg-inline--fa fa-ellipsis w-6 h-6"
+                    data-icon="ellipsis"
+                    data-prefix="fas"
+                    focusable="false"
+                    role="img"
+                    viewBox="0 0 448 512"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z"
+                      fill="currentColor"
+                    />
+                  </svg>
                 </div>
                 <ul
-                  class="dropdown-options w-44"
+                  class="dropdown-options w-40"
                   tabindex="0"
                 >
                   <li>
-                    <details>
-                      <summary>
-                        2024
-                      </summary>
-                      <ul>
-                        <li>
-                          <a>
-                            March
-                          </a>
-                        </li>
-                        <li>
-                          <a>
-                            February
-                          </a>
-                        </li>
-                      </ul>
-                    </details>
+                    <a
+                      class="flex justify-end"
+                    >
+                      Add note
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      class="flex justify-end"
+                    >
+                      Add photos
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      class="flex justify-end"
+                    >
+                      Repot plant
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      class="flex justify-end"
+                    >
+                      Delete photos
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      class="flex justify-end"
+                    >
+                      Delete events
+                    </a>
                   </li>
                 </ul>
               </div>
             </div>
             <div
-              class="navbar-end w-12 dropdown dropdown-end"
+              class="grid grid-cols-[min-content_1fr] gap-4 md:gap-8"
             >
               <div
-                class="btn btn-ghost btn-circle"
-                role="button"
-                tabindex="0"
+                class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+                data-timeline-divider="2024-03"
               >
-                <svg
-                  aria-hidden="true"
-                  class="svg-inline--fa fa-ellipsis w-6 h-6"
-                  data-icon="ellipsis"
-                  data-prefix="fas"
-                  focusable="false"
-                  role="img"
-                  viewBox="0 0 448 512"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z"
-                    fill="currentColor"
-                  />
-                </svg>
-              </div>
-              <ul
-                class="dropdown-options w-40"
-                tabindex="0"
-              >
-                <li>
-                  <a
-                    class="flex justify-end"
-                  >
-                    Add note
-                  </a>
-                </li>
-                <li>
-                  <a
-                    class="flex justify-end"
-                  >
-                    Add photos
-                  </a>
-                </li>
-                <li>
-                  <a
-                    class="flex justify-end"
-                  >
-                    Repot plant
-                  </a>
-                </li>
-                <li>
-                  <a
-                    class="flex justify-end"
-                  >
-                    Delete photos
-                  </a>
-                </li>
-                <li>
-                  <a
-                    class="flex justify-end"
-                  >
-                    Delete events
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div
-            class="grid grid-cols-[min-content_1fr] gap-4 md:gap-8"
-          >
-            <div
-              class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
-              data-timeline-divider="2024-03"
-            >
-              March 2024
-            </div>
-            <div
-              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
-              data-date="2024-03-23"
-            >
-              <span
-                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
-              >
-                in 22 days
-              </span>
-              <span
-                class="hidden md:block text-sm mb-auto"
-              >
-                Mar 23, 2024
-              </span>
-            </div>
-            <div
-              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
-            >
-              <div
-                class="flex flex-row flex-wrap"
-              />
-              <div
-                class="flex flex-row flex-wrap"
-              >
-                <div
-                  title="02:52 AM - March 23, 2024"
-                >
-                  <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
-                    loading="lazy"
-                    src="/media/thumbnails/photo3_thumb.jpg"
-                  />
-                </div>
+                March 2024
               </div>
               <div
-                class="flex flex-col"
-              />
-            </div>
-            <div
-              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
-              data-date="2024-03-22"
-            >
-              <span
-                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
-              >
-                in 21 days
-              </span>
-              <span
-                class="hidden md:block text-sm mb-auto"
-              >
-                Mar 22, 2024
-              </span>
-            </div>
-            <div
-              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
-            >
-              <div
-                class="flex flex-row flex-wrap"
-              />
-              <div
-                class="flex flex-row flex-wrap"
-              >
-                <div
-                  title="02:52 AM - March 22, 2024"
-                >
-                  <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
-                    loading="lazy"
-                    src="/media/thumbnails/photo2_thumb.jpg"
-                  />
-                </div>
-              </div>
-              <div
-                class="flex flex-col"
-              />
-            </div>
-            <div
-              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
-              data-date="2024-03-21"
-            >
-              <span
-                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
-              >
-                in 20 days
-              </span>
-              <span
-                class="hidden md:block text-sm mb-auto"
-              >
-                Mar 21, 2024
-              </span>
-            </div>
-            <div
-              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
-            >
-              <div
-                class="flex flex-row flex-wrap"
-              />
-              <div
-                class="flex flex-row flex-wrap"
-              >
-                <div
-                  title="02:52 AM - March 21, 2024"
-                >
-                  <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
-                    loading="lazy"
-                    src="/media/thumbnails/photo1_thumb.jpg"
-                  />
-                </div>
-              </div>
-              <div
-                class="flex flex-col"
-              />
-            </div>
-            <div
-              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
-              data-date="2024-03-01"
-            >
-              <span
-                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
-              >
-                today
-              </span>
-              <span
-                class="hidden md:block text-sm mb-auto"
-              >
-                Mar 01, 2024
-              </span>
-            </div>
-            <div
-              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
-            >
-              <div
-                class="flex flex-row flex-wrap"
+                class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+                data-date="2024-03-23"
               >
                 <span
-                  class="m-2 whitespace-nowrap text-sm md:text-base"
+                  class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
                 >
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-droplet mr-2 text-info"
-                    data-icon="droplet"
-                    data-prefix="fas"
-                    focusable="false"
-                    role="img"
-                    viewBox="0 0 384 512"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                  Watered
+                  in 22 days
                 </span>
                 <span
-                  class="m-2 whitespace-nowrap text-sm md:text-base"
+                  class="hidden md:block text-sm mb-auto"
                 >
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-seedling mr-2 text-success"
-                    data-icon="seedling"
-                    data-prefix="fas"
-                    focusable="false"
-                    role="img"
-                    viewBox="0 0 512 512"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                  Fertilized
+                  Mar 23, 2024
                 </span>
               </div>
               <div
-                class="flex flex-row flex-wrap"
-              />
-              <div
-                class="flex flex-col"
+                class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
               >
                 <div
-                  class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
-                  style=""
+                  class="flex flex-row flex-wrap"
+                />
+                <div
+                  class="flex flex-row flex-wrap"
                 >
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 cursor-pointer"
-                    data-icon="pen-to-square"
-                    data-prefix="fas"
-                    focusable="false"
-                    role="img"
-                    viewBox="0 0 512 512"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"
-                      fill="currentColor"
-                    />
-                  </svg>
                   <div
-                    class="cursor-pointer overflow-hidden line-clamp-1"
-                    title="07:45 AM - March 1, 2024"
+                    title="02:52 AM - March 23, 2024"
                   >
-                    <span
-                      class="text-sm md:text-base mr-2 after:content-['\\200B']"
+                    <img
+                      class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                      loading="lazy"
+                      src="/media/thumbnails/photo3_thumb.jpg"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="flex flex-col"
+                />
+              </div>
+              <div
+                class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+                data-date="2024-03-22"
+              >
+                <span
+                  class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                >
+                  in 21 days
+                </span>
+                <span
+                  class="hidden md:block text-sm mb-auto"
+                >
+                  Mar 22, 2024
+                </span>
+              </div>
+              <div
+                class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+              >
+                <div
+                  class="flex flex-row flex-wrap"
+                />
+                <div
+                  class="flex flex-row flex-wrap"
+                >
+                  <div
+                    title="02:52 AM - March 22, 2024"
+                  >
+                    <img
+                      class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                      loading="lazy"
+                      src="/media/thumbnails/photo2_thumb.jpg"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="flex flex-col"
+                />
+              </div>
+              <div
+                class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+                data-date="2024-03-21"
+              >
+                <span
+                  class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                >
+                  in 20 days
+                </span>
+                <span
+                  class="hidden md:block text-sm mb-auto"
+                >
+                  Mar 21, 2024
+                </span>
+              </div>
+              <div
+                class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+              >
+                <div
+                  class="flex flex-row flex-wrap"
+                />
+                <div
+                  class="flex flex-row flex-wrap"
+                >
+                  <div
+                    title="02:52 AM - March 21, 2024"
+                  >
+                    <img
+                      class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                      loading="lazy"
+                      src="/media/thumbnails/photo1_thumb.jpg"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="flex flex-col"
+                />
+              </div>
+              <div
+                class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+                data-date="2024-03-01"
+              >
+                <span
+                  class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                >
+                  today
+                </span>
+                <span
+                  class="hidden md:block text-sm mb-auto"
+                >
+                  Mar 01, 2024
+                </span>
+              </div>
+              <div
+                class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+              >
+                <div
+                  class="flex flex-row flex-wrap"
+                >
+                  <span
+                    class="m-2 whitespace-nowrap text-sm md:text-base"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-droplet mr-2 text-info"
+                      data-icon="droplet"
+                      data-prefix="fas"
+                      focusable="false"
+                      role="img"
+                      viewBox="0 0 384 512"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      Fertilized with dilute 10-15-10 liquid fertilizer
-                    </span>
-                    <span
-                      class="text-xs"
+                      <path
+                        d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                    Watered
+                  </span>
+                  <span
+                    class="m-2 whitespace-nowrap text-sm md:text-base"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-seedling mr-2 text-success"
+                      data-icon="seedling"
+                      data-prefix="fas"
+                      focusable="false"
+                      role="img"
+                      viewBox="0 0 512 512"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      07:45 AM
-                    </span>
+                      <path
+                        d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                    Fertilized
+                  </span>
+                </div>
+                <div
+                  class="flex flex-row flex-wrap"
+                />
+                <div
+                  class="flex flex-col"
+                >
+                  <div
+                    class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                    style=""
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 cursor-pointer"
+                      data-icon="pen-to-square"
+                      data-prefix="fas"
+                      focusable="false"
+                      role="img"
+                      viewBox="0 0 512 512"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                    <div
+                      class="cursor-pointer overflow-hidden line-clamp-1"
+                      title="07:45 AM - March 1, 2024"
+                    >
+                      <span
+                        class="text-sm md:text-base mr-2 after:content-['\\200B']"
+                      >
+                        Fertilized with dilute 10-15-10 liquid fertilizer
+                      </span>
+                      <span
+                        class="text-xs"
+                      >
+                        07:45 AM
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div
-              class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
-              data-timeline-divider="2024-02"
-            >
-              February 2024
-            </div>
-            <div
-              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
-              data-date="2024-02-29"
-            >
-              <span
-                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
-              >
-                yesterday
-              </span>
-              <span
-                class="hidden md:block text-sm mb-auto"
-              >
-                Feb 29, 2024
-              </span>
-            </div>
-            <div
-              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
-            >
               <div
-                class="flex flex-row flex-wrap"
+                class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+                data-timeline-divider="2024-02"
+              >
+                February 2024
+              </div>
+              <div
+                class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+                data-date="2024-02-29"
               >
                 <span
-                  class="m-2 whitespace-nowrap text-sm md:text-base"
+                  class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
                 >
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-droplet mr-2 text-info"
-                    data-icon="droplet"
-                    data-prefix="fas"
-                    focusable="false"
-                    role="img"
-                    viewBox="0 0 384 512"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                  Watered
+                  yesterday
+                </span>
+                <span
+                  class="hidden md:block text-sm mb-auto"
+                >
+                  Feb 29, 2024
                 </span>
               </div>
               <div
-                class="flex flex-row flex-wrap"
-              />
-              <div
-                class="flex flex-col"
-              />
-            </div>
-            <div
-              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
-              data-date="2024-02-26"
-            >
-              <span
-                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
-              >
-                4 days ago
-              </span>
-              <span
-                class="hidden md:block text-sm mb-auto"
-              >
-                Feb 26, 2024
-              </span>
-            </div>
-            <div
-              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
-            >
-              <div
-                class="flex flex-row flex-wrap"
-              >
-                <span
-                  class="m-2 whitespace-nowrap text-sm md:text-base"
-                >
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-seedling mr-2 text-success"
-                    data-icon="seedling"
-                    data-prefix="fas"
-                    focusable="false"
-                    role="img"
-                    viewBox="0 0 512 512"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                  Fertilized
-                </span>
-              </div>
-              <div
-                class="flex flex-row flex-wrap"
-              />
-              <div
-                class="flex flex-col"
+                class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
               >
                 <div
-                  class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
-                  style=""
+                  class="flex flex-row flex-wrap"
                 >
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 cursor-pointer"
-                    data-icon="pen-to-square"
-                    data-prefix="fas"
-                    focusable="false"
-                    role="img"
-                    viewBox="0 0 512 512"
-                    xmlns="http://www.w3.org/2000/svg"
+                  <span
+                    class="m-2 whitespace-nowrap text-sm md:text-base"
                   >
-                    <path
-                      d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"
-                      fill="currentColor"
-                    />
-                  </svg>
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-droplet mr-2 text-info"
+                      data-icon="droplet"
+                      data-prefix="fas"
+                      focusable="false"
+                      role="img"
+                      viewBox="0 0 384 512"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                    Watered
+                  </span>
+                </div>
+                <div
+                  class="flex flex-row flex-wrap"
+                />
+                <div
+                  class="flex flex-col"
+                />
+              </div>
+              <div
+                class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+                data-date="2024-02-26"
+              >
+                <span
+                  class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                >
+                  4 days ago
+                </span>
+                <span
+                  class="hidden md:block text-sm mb-auto"
+                >
+                  Feb 26, 2024
+                </span>
+              </div>
+              <div
+                class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+              >
+                <div
+                  class="flex flex-row flex-wrap"
+                >
+                  <span
+                    class="m-2 whitespace-nowrap text-sm md:text-base"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-seedling mr-2 text-success"
+                      data-icon="seedling"
+                      data-prefix="fas"
+                      focusable="false"
+                      role="img"
+                      viewBox="0 0 512 512"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                    Fertilized
+                  </span>
+                </div>
+                <div
+                  class="flex flex-row flex-wrap"
+                />
+                <div
+                  class="flex flex-col"
+                >
                   <div
-                    class="cursor-pointer overflow-hidden line-clamp-1"
-                    title="04:44 AM - February 26, 2024"
+                    class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                    style=""
                   >
-                    <span
-                      class="text-sm md:text-base mr-2 after:content-['\\200B']"
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 cursor-pointer"
+                      data-icon="pen-to-square"
+                      data-prefix="fas"
+                      focusable="false"
+                      role="img"
+                      viewBox="0 0 512 512"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      One of the older leaves is starting to turn yellow
-                    </span>
-                    <span
-                      class="text-xs"
+                      <path
+                        d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                    <div
+                      class="cursor-pointer overflow-hidden line-clamp-1"
+                      title="04:44 AM - February 26, 2024"
                     >
-                      04:44 AM
-                    </span>
+                      <span
+                        class="text-sm md:text-base mr-2 after:content-['\\200B']"
+                      >
+                        One of the older leaves is starting to turn yellow
+                      </span>
+                      <span
+                        class="text-xs"
+                      >
+                        04:44 AM
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -3026,483 +3030,487 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        class="flex flex-col mt-2 mx-4 p-4 md:p-8 pt-0 md:pt-0 md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
+        class="w-full max-w-screen-md mt-2 px-4"
       >
         <div
-          class="navbar bg-base-200 rounded-2xl"
+          class="flex flex-col w-full p-4 md:p-8 pt-0 md:pt-0 bg-base-200 rounded-2xl"
         >
           <div
-            class="navbar-start w-12"
-          />
-          <div
-            class="navbar-center mx-auto"
+            class="navbar bg-base-200 rounded-2xl"
           >
             <div
-              class="dropdown dropdown-center dropdown-hover mx-auto"
+              class="navbar-start w-12"
+            />
+            <div
+              class="navbar-center mx-auto"
             >
               <div
-                class="btn btn-ghost text-xl font-bold m-1"
+                class="dropdown dropdown-center dropdown-hover mx-auto"
+              >
+                <div
+                  class="btn btn-ghost text-xl font-bold m-1"
+                  role="button"
+                  tabindex="0"
+                >
+                  History
+                </div>
+                <ul
+                  class="dropdown-options w-44"
+                  tabindex="0"
+                >
+                  <li>
+                    <details>
+                      <summary>
+                        2024
+                      </summary>
+                      <ul>
+                        <li>
+                          <a>
+                            March
+                          </a>
+                        </li>
+                        <li>
+                          <a>
+                            February
+                          </a>
+                        </li>
+                      </ul>
+                    </details>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div
+              class="navbar-end w-12 dropdown dropdown-end"
+            >
+              <div
+                class="btn btn-ghost btn-circle"
                 role="button"
                 tabindex="0"
               >
-                History
+                <svg
+                  aria-hidden="true"
+                  class="svg-inline--fa fa-ellipsis w-6 h-6"
+                  data-icon="ellipsis"
+                  data-prefix="fas"
+                  focusable="false"
+                  role="img"
+                  viewBox="0 0 448 512"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z"
+                    fill="currentColor"
+                  />
+                </svg>
               </div>
               <ul
-                class="dropdown-options w-44"
+                class="dropdown-options w-40"
                 tabindex="0"
               >
                 <li>
-                  <details>
-                    <summary>
-                      2024
-                    </summary>
-                    <ul>
-                      <li>
-                        <a>
-                          March
-                        </a>
-                      </li>
-                      <li>
-                        <a>
-                          February
-                        </a>
-                      </li>
-                    </ul>
-                  </details>
+                  <a
+                    class="flex justify-end"
+                  >
+                    Add note
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="flex justify-end"
+                  >
+                    Add photos
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="flex justify-end"
+                  >
+                    Repot plant
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="flex justify-end"
+                  >
+                    Delete photos
+                  </a>
+                </li>
+                <li>
+                  <a
+                    class="flex justify-end"
+                  >
+                    Delete events
+                  </a>
                 </li>
               </ul>
             </div>
           </div>
           <div
-            class="navbar-end w-12 dropdown dropdown-end"
+            class="grid grid-cols-[min-content_1fr] gap-4 md:gap-8"
           >
             <div
-              class="btn btn-ghost btn-circle"
-              role="button"
-              tabindex="0"
+              class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+              data-timeline-divider="2024-03"
             >
-              <svg
-                aria-hidden="true"
-                class="svg-inline--fa fa-ellipsis w-6 h-6"
-                data-icon="ellipsis"
-                data-prefix="fas"
-                focusable="false"
-                role="img"
-                viewBox="0 0 448 512"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z"
-                  fill="currentColor"
-                />
-              </svg>
-            </div>
-            <ul
-              class="dropdown-options w-40"
-              tabindex="0"
-            >
-              <li>
-                <a
-                  class="flex justify-end"
-                >
-                  Add note
-                </a>
-              </li>
-              <li>
-                <a
-                  class="flex justify-end"
-                >
-                  Add photos
-                </a>
-              </li>
-              <li>
-                <a
-                  class="flex justify-end"
-                >
-                  Repot plant
-                </a>
-              </li>
-              <li>
-                <a
-                  class="flex justify-end"
-                >
-                  Delete photos
-                </a>
-              </li>
-              <li>
-                <a
-                  class="flex justify-end"
-                >
-                  Delete events
-                </a>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div
-          class="grid grid-cols-[min-content_1fr] gap-4 md:gap-8"
-        >
-          <div
-            class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
-            data-timeline-divider="2024-03"
-          >
-            March 2024
-          </div>
-          <div
-            class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
-            data-date="2024-03-23"
-          >
-            <span
-              class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
-            >
-              in 22 days
-            </span>
-            <span
-              class="hidden md:block text-sm mb-auto"
-            >
-              Mar 23, 2024
-            </span>
-          </div>
-          <div
-            class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
-          >
-            <div
-              class="flex flex-row flex-wrap"
-            />
-            <div
-              class="flex flex-row flex-wrap"
-            >
-              <div
-                title="02:52 AM - March 23, 2024"
-              >
-                <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
-                  loading="lazy"
-                  src="/media/thumbnails/photo3_thumb.jpg"
-                />
-              </div>
+              March 2024
             </div>
             <div
-              class="flex flex-col"
-            />
-          </div>
-          <div
-            class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
-            data-date="2024-03-22"
-          >
-            <span
-              class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
-            >
-              in 21 days
-            </span>
-            <span
-              class="hidden md:block text-sm mb-auto"
-            >
-              Mar 22, 2024
-            </span>
-          </div>
-          <div
-            class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
-          >
-            <div
-              class="flex flex-row flex-wrap"
-            />
-            <div
-              class="flex flex-row flex-wrap"
-            >
-              <div
-                title="02:52 AM - March 22, 2024"
-              >
-                <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
-                  loading="lazy"
-                  src="/media/thumbnails/photo2_thumb.jpg"
-                />
-              </div>
-            </div>
-            <div
-              class="flex flex-col"
-            />
-          </div>
-          <div
-            class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
-            data-date="2024-03-21"
-          >
-            <span
-              class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
-            >
-              in 20 days
-            </span>
-            <span
-              class="hidden md:block text-sm mb-auto"
-            >
-              Mar 21, 2024
-            </span>
-          </div>
-          <div
-            class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
-          >
-            <div
-              class="flex flex-row flex-wrap"
-            />
-            <div
-              class="flex flex-row flex-wrap"
-            >
-              <div
-                title="02:52 AM - March 21, 2024"
-              >
-                <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
-                  loading="lazy"
-                  src="/media/thumbnails/photo1_thumb.jpg"
-                />
-              </div>
-            </div>
-            <div
-              class="flex flex-col"
-            />
-          </div>
-          <div
-            class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
-            data-date="2024-03-01"
-          >
-            <span
-              class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
-            >
-              today
-            </span>
-            <span
-              class="hidden md:block text-sm mb-auto"
-            >
-              Mar 01, 2024
-            </span>
-          </div>
-          <div
-            class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
-          >
-            <div
-              class="flex flex-row flex-wrap"
+              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+              data-date="2024-03-23"
             >
               <span
-                class="m-2 whitespace-nowrap text-sm md:text-base"
+                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
               >
-                <svg
-                  aria-hidden="true"
-                  class="svg-inline--fa fa-droplet mr-2 text-info"
-                  data-icon="droplet"
-                  data-prefix="fas"
-                  focusable="false"
-                  role="img"
-                  viewBox="0 0 384 512"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                    fill="currentColor"
-                  />
-                </svg>
-                Watered
+                in 22 days
               </span>
               <span
-                class="m-2 whitespace-nowrap text-sm md:text-base"
+                class="hidden md:block text-sm mb-auto"
               >
-                <svg
-                  aria-hidden="true"
-                  class="svg-inline--fa fa-seedling mr-2 text-success"
-                  data-icon="seedling"
-                  data-prefix="fas"
-                  focusable="false"
-                  role="img"
-                  viewBox="0 0 512 512"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
-                    fill="currentColor"
-                  />
-                </svg>
-                Fertilized
+                Mar 23, 2024
               </span>
             </div>
             <div
-              class="flex flex-row flex-wrap"
-            />
-            <div
-              class="flex flex-col"
+              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
             >
               <div
-                class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
-                style=""
+                class="flex flex-row flex-wrap"
+              />
+              <div
+                class="flex flex-row flex-wrap"
               >
-                <svg
-                  aria-hidden="true"
-                  class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 cursor-pointer"
-                  data-icon="pen-to-square"
-                  data-prefix="fas"
-                  focusable="false"
-                  role="img"
-                  viewBox="0 0 512 512"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"
-                    fill="currentColor"
-                  />
-                </svg>
                 <div
-                  class="cursor-pointer overflow-hidden line-clamp-1"
-                  title="07:45 AM - March 1, 2024"
+                  title="02:52 AM - March 23, 2024"
                 >
-                  <span
-                    class="text-sm md:text-base mr-2 after:content-['\\200B']"
+                  <img
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    loading="lazy"
+                    src="/media/thumbnails/photo3_thumb.jpg"
+                  />
+                </div>
+              </div>
+              <div
+                class="flex flex-col"
+              />
+            </div>
+            <div
+              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+              data-date="2024-03-22"
+            >
+              <span
+                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+              >
+                in 21 days
+              </span>
+              <span
+                class="hidden md:block text-sm mb-auto"
+              >
+                Mar 22, 2024
+              </span>
+            </div>
+            <div
+              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+            >
+              <div
+                class="flex flex-row flex-wrap"
+              />
+              <div
+                class="flex flex-row flex-wrap"
+              >
+                <div
+                  title="02:52 AM - March 22, 2024"
+                >
+                  <img
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    loading="lazy"
+                    src="/media/thumbnails/photo2_thumb.jpg"
+                  />
+                </div>
+              </div>
+              <div
+                class="flex flex-col"
+              />
+            </div>
+            <div
+              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+              data-date="2024-03-21"
+            >
+              <span
+                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+              >
+                in 20 days
+              </span>
+              <span
+                class="hidden md:block text-sm mb-auto"
+              >
+                Mar 21, 2024
+              </span>
+            </div>
+            <div
+              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+            >
+              <div
+                class="flex flex-row flex-wrap"
+              />
+              <div
+                class="flex flex-row flex-wrap"
+              >
+                <div
+                  title="02:52 AM - March 21, 2024"
+                >
+                  <img
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    loading="lazy"
+                    src="/media/thumbnails/photo1_thumb.jpg"
+                  />
+                </div>
+              </div>
+              <div
+                class="flex flex-col"
+              />
+            </div>
+            <div
+              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+              data-date="2024-03-01"
+            >
+              <span
+                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+              >
+                today
+              </span>
+              <span
+                class="hidden md:block text-sm mb-auto"
+              >
+                Mar 01, 2024
+              </span>
+            </div>
+            <div
+              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+            >
+              <div
+                class="flex flex-row flex-wrap"
+              >
+                <span
+                  class="m-2 whitespace-nowrap text-sm md:text-base"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="svg-inline--fa fa-droplet mr-2 text-info"
+                    data-icon="droplet"
+                    data-prefix="fas"
+                    focusable="false"
+                    role="img"
+                    viewBox="0 0 384 512"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    Fertilized with dilute 10-15-10 liquid fertilizer
-                  </span>
-                  <span
-                    class="text-xs"
+                    <path
+                      d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                  Watered
+                </span>
+                <span
+                  class="m-2 whitespace-nowrap text-sm md:text-base"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="svg-inline--fa fa-seedling mr-2 text-success"
+                    data-icon="seedling"
+                    data-prefix="fas"
+                    focusable="false"
+                    role="img"
+                    viewBox="0 0 512 512"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    07:45 AM
-                  </span>
+                    <path
+                      d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                  Fertilized
+                </span>
+              </div>
+              <div
+                class="flex flex-row flex-wrap"
+              />
+              <div
+                class="flex flex-col"
+              >
+                <div
+                  class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                  style=""
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 cursor-pointer"
+                    data-icon="pen-to-square"
+                    data-prefix="fas"
+                    focusable="false"
+                    role="img"
+                    viewBox="0 0 512 512"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                  <div
+                    class="cursor-pointer overflow-hidden line-clamp-1"
+                    title="07:45 AM - March 1, 2024"
+                  >
+                    <span
+                      class="text-sm md:text-base mr-2 after:content-['\\200B']"
+                    >
+                      Fertilized with dilute 10-15-10 liquid fertilizer
+                    </span>
+                    <span
+                      class="text-xs"
+                    >
+                      07:45 AM
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div
-            class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
-            data-timeline-divider="2024-02"
-          >
-            February 2024
-          </div>
-          <div
-            class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
-            data-date="2024-02-29"
-          >
-            <span
-              class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
-            >
-              yesterday
-            </span>
-            <span
-              class="hidden md:block text-sm mb-auto"
-            >
-              Feb 29, 2024
-            </span>
-          </div>
-          <div
-            class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
-          >
             <div
-              class="flex flex-row flex-wrap"
+              class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+              data-timeline-divider="2024-02"
+            >
+              February 2024
+            </div>
+            <div
+              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+              data-date="2024-02-29"
             >
               <span
-                class="m-2 whitespace-nowrap text-sm md:text-base"
+                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
               >
-                <svg
-                  aria-hidden="true"
-                  class="svg-inline--fa fa-droplet mr-2 text-info"
-                  data-icon="droplet"
-                  data-prefix="fas"
-                  focusable="false"
-                  role="img"
-                  viewBox="0 0 384 512"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                    fill="currentColor"
-                  />
-                </svg>
-                Watered
+                yesterday
+              </span>
+              <span
+                class="hidden md:block text-sm mb-auto"
+              >
+                Feb 29, 2024
               </span>
             </div>
             <div
-              class="flex flex-row flex-wrap"
-            />
-            <div
-              class="flex flex-col"
-            />
-          </div>
-          <div
-            class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
-            data-date="2024-02-26"
-          >
-            <span
-              class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
-            >
-              4 days ago
-            </span>
-            <span
-              class="hidden md:block text-sm mb-auto"
-            >
-              Feb 26, 2024
-            </span>
-          </div>
-          <div
-            class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
-          >
-            <div
-              class="flex flex-row flex-wrap"
-            >
-              <span
-                class="m-2 whitespace-nowrap text-sm md:text-base"
-              >
-                <svg
-                  aria-hidden="true"
-                  class="svg-inline--fa fa-seedling mr-2 text-success"
-                  data-icon="seedling"
-                  data-prefix="fas"
-                  focusable="false"
-                  role="img"
-                  viewBox="0 0 512 512"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
-                    fill="currentColor"
-                  />
-                </svg>
-                Fertilized
-              </span>
-            </div>
-            <div
-              class="flex flex-row flex-wrap"
-            />
-            <div
-              class="flex flex-col"
+              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
             >
               <div
-                class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
-                style=""
+                class="flex flex-row flex-wrap"
               >
-                <svg
-                  aria-hidden="true"
-                  class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 cursor-pointer"
-                  data-icon="pen-to-square"
-                  data-prefix="fas"
-                  focusable="false"
-                  role="img"
-                  viewBox="0 0 512 512"
-                  xmlns="http://www.w3.org/2000/svg"
+                <span
+                  class="m-2 whitespace-nowrap text-sm md:text-base"
                 >
-                  <path
-                    d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"
-                    fill="currentColor"
-                  />
-                </svg>
+                  <svg
+                    aria-hidden="true"
+                    class="svg-inline--fa fa-droplet mr-2 text-info"
+                    data-icon="droplet"
+                    data-prefix="fas"
+                    focusable="false"
+                    role="img"
+                    viewBox="0 0 384 512"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                  Watered
+                </span>
+              </div>
+              <div
+                class="flex flex-row flex-wrap"
+              />
+              <div
+                class="flex flex-col"
+              />
+            </div>
+            <div
+              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+              data-date="2024-02-26"
+            >
+              <span
+                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+              >
+                4 days ago
+              </span>
+              <span
+                class="hidden md:block text-sm mb-auto"
+              >
+                Feb 26, 2024
+              </span>
+            </div>
+            <div
+              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+            >
+              <div
+                class="flex flex-row flex-wrap"
+              >
+                <span
+                  class="m-2 whitespace-nowrap text-sm md:text-base"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="svg-inline--fa fa-seedling mr-2 text-success"
+                    data-icon="seedling"
+                    data-prefix="fas"
+                    focusable="false"
+                    role="img"
+                    viewBox="0 0 512 512"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                  Fertilized
+                </span>
+              </div>
+              <div
+                class="flex flex-row flex-wrap"
+              />
+              <div
+                class="flex flex-col"
+              >
                 <div
-                  class="cursor-pointer overflow-hidden line-clamp-1"
-                  title="04:44 AM - February 26, 2024"
+                  class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                  style=""
                 >
-                  <span
-                    class="text-sm md:text-base mr-2 after:content-['\\200B']"
+                  <svg
+                    aria-hidden="true"
+                    class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1 cursor-pointer"
+                    data-icon="pen-to-square"
+                    data-prefix="fas"
+                    focusable="false"
+                    role="img"
+                    viewBox="0 0 512 512"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    One of the older leaves is starting to turn yellow
-                  </span>
-                  <span
-                    class="text-xs"
+                    <path
+                      d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                  <div
+                    class="cursor-pointer overflow-hidden line-clamp-1"
+                    title="04:44 AM - February 26, 2024"
                   >
-                    04:44 AM
-                  </span>
+                    <span
+                      class="text-sm md:text-base mr-2 after:content-['\\200B']"
+                    >
+                      One of the older leaves is starting to turn yellow
+                    </span>
+                    <span
+                      class="text-xs"
+                    >
+                      04:44 AM
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -4993,421 +5001,425 @@ exports[`App matches snapshot when plant is archived 1`] = `
           </div>
         </div>
         <div
-          class="flex flex-col mt-2 mx-4 p-4 md:p-8 pt-0 md:pt-0 md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
+          class="w-full max-w-screen-md mt-2 px-4"
         >
           <div
-            class="navbar bg-base-200 rounded-2xl"
+            class="flex flex-col w-full p-4 md:p-8 pt-0 md:pt-0 bg-base-200 rounded-2xl"
           >
             <div
-              class="navbar-start w-12"
-            />
-            <div
-              class="navbar-center mx-auto"
+              class="navbar bg-base-200 rounded-2xl"
             >
               <div
-                class="dropdown dropdown-center dropdown-hover mx-auto"
+                class="navbar-start w-12"
+              />
+              <div
+                class="navbar-center mx-auto"
               >
                 <div
-                  class="btn btn-ghost text-xl font-bold m-1"
-                  role="button"
-                  tabindex="0"
+                  class="dropdown dropdown-center dropdown-hover mx-auto"
                 >
-                  History
-                </div>
-                <ul
-                  class="dropdown-options w-44"
-                  tabindex="0"
-                >
-                  <li>
-                    <details>
-                      <summary>
-                        2024
-                      </summary>
-                      <ul>
-                        <li>
-                          <a>
-                            March
-                          </a>
-                        </li>
-                        <li>
-                          <a>
-                            February
-                          </a>
-                        </li>
-                      </ul>
-                    </details>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div
-              class="navbar-end w-12 dropdown dropdown-end"
-            />
-          </div>
-          <div
-            class="grid grid-cols-[min-content_1fr] gap-4 md:gap-8"
-          >
-            <div
-              class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
-              data-timeline-divider="2024-03"
-            >
-              March 2024
-            </div>
-            <div
-              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
-              data-date="2024-03-23"
-            >
-              <span
-                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
-              >
-                in 22 days
-              </span>
-              <span
-                class="hidden md:block text-sm mb-auto"
-              >
-                Mar 23, 2024
-              </span>
-            </div>
-            <div
-              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
-            >
-              <div
-                class="flex flex-row flex-wrap"
-              />
-              <div
-                class="flex flex-row flex-wrap"
-              >
-                <div
-                  title="02:52 AM - March 23, 2024"
-                >
-                  <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
-                    loading="lazy"
-                    src="/media/thumbnails/photo3_thumb.jpg"
-                  />
-                </div>
-              </div>
-              <div
-                class="flex flex-col"
-              />
-            </div>
-            <div
-              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
-              data-date="2024-03-22"
-            >
-              <span
-                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
-              >
-                in 21 days
-              </span>
-              <span
-                class="hidden md:block text-sm mb-auto"
-              >
-                Mar 22, 2024
-              </span>
-            </div>
-            <div
-              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
-            >
-              <div
-                class="flex flex-row flex-wrap"
-              />
-              <div
-                class="flex flex-row flex-wrap"
-              >
-                <div
-                  title="02:52 AM - March 22, 2024"
-                >
-                  <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
-                    loading="lazy"
-                    src="/media/thumbnails/photo2_thumb.jpg"
-                  />
-                </div>
-              </div>
-              <div
-                class="flex flex-col"
-              />
-            </div>
-            <div
-              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
-              data-date="2024-03-21"
-            >
-              <span
-                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
-              >
-                in 20 days
-              </span>
-              <span
-                class="hidden md:block text-sm mb-auto"
-              >
-                Mar 21, 2024
-              </span>
-            </div>
-            <div
-              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
-            >
-              <div
-                class="flex flex-row flex-wrap"
-              />
-              <div
-                class="flex flex-row flex-wrap"
-              >
-                <div
-                  title="02:52 AM - March 21, 2024"
-                >
-                  <img
-                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
-                    loading="lazy"
-                    src="/media/thumbnails/photo1_thumb.jpg"
-                  />
-                </div>
-              </div>
-              <div
-                class="flex flex-col"
-              />
-            </div>
-            <div
-              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
-              data-date="2024-03-01"
-            >
-              <span
-                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
-              >
-                today
-              </span>
-              <span
-                class="hidden md:block text-sm mb-auto"
-              >
-                Mar 01, 2024
-              </span>
-            </div>
-            <div
-              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
-            >
-              <div
-                class="flex flex-row flex-wrap"
-              >
-                <span
-                  class="m-2 whitespace-nowrap text-sm md:text-base"
-                >
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-droplet mr-2 text-info"
-                    data-icon="droplet"
-                    data-prefix="fas"
-                    focusable="false"
-                    role="img"
-                    viewBox="0 0 384 512"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                  Watered
-                </span>
-                <span
-                  class="m-2 whitespace-nowrap text-sm md:text-base"
-                >
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-seedling mr-2 text-success"
-                    data-icon="seedling"
-                    data-prefix="fas"
-                    focusable="false"
-                    role="img"
-                    viewBox="0 0 512 512"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                  Fertilized
-                </span>
-              </div>
-              <div
-                class="flex flex-row flex-wrap"
-              />
-              <div
-                class="flex flex-col"
-              >
-                <div
-                  class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
-                  style=""
-                >
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1"
-                    data-icon="pen-to-square"
-                    data-prefix="fas"
-                    focusable="false"
-                    role="img"
-                    viewBox="0 0 512 512"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"
-                      fill="currentColor"
-                    />
-                  </svg>
                   <div
-                    class="cursor-pointer overflow-hidden line-clamp-1"
-                    title="07:45 AM - March 1, 2024"
+                    class="btn btn-ghost text-xl font-bold m-1"
+                    role="button"
+                    tabindex="0"
                   >
-                    <span
-                      class="text-sm md:text-base mr-2 after:content-['\\200B']"
+                    History
+                  </div>
+                  <ul
+                    class="dropdown-options w-44"
+                    tabindex="0"
+                  >
+                    <li>
+                      <details>
+                        <summary>
+                          2024
+                        </summary>
+                        <ul>
+                          <li>
+                            <a>
+                              March
+                            </a>
+                          </li>
+                          <li>
+                            <a>
+                              February
+                            </a>
+                          </li>
+                        </ul>
+                      </details>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div
+                class="navbar-end w-12 dropdown dropdown-end"
+              />
+            </div>
+            <div
+              class="grid grid-cols-[min-content_1fr] gap-4 md:gap-8"
+            >
+              <div
+                class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+                data-timeline-divider="2024-03"
+              >
+                March 2024
+              </div>
+              <div
+                class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+                data-date="2024-03-23"
+              >
+                <span
+                  class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                >
+                  in 22 days
+                </span>
+                <span
+                  class="hidden md:block text-sm mb-auto"
+                >
+                  Mar 23, 2024
+                </span>
+              </div>
+              <div
+                class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+              >
+                <div
+                  class="flex flex-row flex-wrap"
+                />
+                <div
+                  class="flex flex-row flex-wrap"
+                >
+                  <div
+                    title="02:52 AM - March 23, 2024"
+                  >
+                    <img
+                      class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                      loading="lazy"
+                      src="/media/thumbnails/photo3_thumb.jpg"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="flex flex-col"
+                />
+              </div>
+              <div
+                class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+                data-date="2024-03-22"
+              >
+                <span
+                  class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                >
+                  in 21 days
+                </span>
+                <span
+                  class="hidden md:block text-sm mb-auto"
+                >
+                  Mar 22, 2024
+                </span>
+              </div>
+              <div
+                class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+              >
+                <div
+                  class="flex flex-row flex-wrap"
+                />
+                <div
+                  class="flex flex-row flex-wrap"
+                >
+                  <div
+                    title="02:52 AM - March 22, 2024"
+                  >
+                    <img
+                      class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                      loading="lazy"
+                      src="/media/thumbnails/photo2_thumb.jpg"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="flex flex-col"
+                />
+              </div>
+              <div
+                class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+                data-date="2024-03-21"
+              >
+                <span
+                  class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                >
+                  in 20 days
+                </span>
+                <span
+                  class="hidden md:block text-sm mb-auto"
+                >
+                  Mar 21, 2024
+                </span>
+              </div>
+              <div
+                class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+              >
+                <div
+                  class="flex flex-row flex-wrap"
+                />
+                <div
+                  class="flex flex-row flex-wrap"
+                >
+                  <div
+                    title="02:52 AM - March 21, 2024"
+                  >
+                    <img
+                      class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                      loading="lazy"
+                      src="/media/thumbnails/photo1_thumb.jpg"
+                    />
+                  </div>
+                </div>
+                <div
+                  class="flex flex-col"
+                />
+              </div>
+              <div
+                class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+                data-date="2024-03-01"
+              >
+                <span
+                  class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                >
+                  today
+                </span>
+                <span
+                  class="hidden md:block text-sm mb-auto"
+                >
+                  Mar 01, 2024
+                </span>
+              </div>
+              <div
+                class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+              >
+                <div
+                  class="flex flex-row flex-wrap"
+                >
+                  <span
+                    class="m-2 whitespace-nowrap text-sm md:text-base"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-droplet mr-2 text-info"
+                      data-icon="droplet"
+                      data-prefix="fas"
+                      focusable="false"
+                      role="img"
+                      viewBox="0 0 384 512"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      Fertilized with dilute 10-15-10 liquid fertilizer
-                    </span>
-                    <span
-                      class="text-xs"
+                      <path
+                        d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                    Watered
+                  </span>
+                  <span
+                    class="m-2 whitespace-nowrap text-sm md:text-base"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-seedling mr-2 text-success"
+                      data-icon="seedling"
+                      data-prefix="fas"
+                      focusable="false"
+                      role="img"
+                      viewBox="0 0 512 512"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      07:45 AM
-                    </span>
+                      <path
+                        d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                    Fertilized
+                  </span>
+                </div>
+                <div
+                  class="flex flex-row flex-wrap"
+                />
+                <div
+                  class="flex flex-col"
+                >
+                  <div
+                    class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                    style=""
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1"
+                      data-icon="pen-to-square"
+                      data-prefix="fas"
+                      focusable="false"
+                      role="img"
+                      viewBox="0 0 512 512"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                    <div
+                      class="cursor-pointer overflow-hidden line-clamp-1"
+                      title="07:45 AM - March 1, 2024"
+                    >
+                      <span
+                        class="text-sm md:text-base mr-2 after:content-['\\200B']"
+                      >
+                        Fertilized with dilute 10-15-10 liquid fertilizer
+                      </span>
+                      <span
+                        class="text-xs"
+                      >
+                        07:45 AM
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div
-              class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
-              data-timeline-divider="2024-02"
-            >
-              February 2024
-            </div>
-            <div
-              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
-              data-date="2024-02-29"
-            >
-              <span
-                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
-              >
-                yesterday
-              </span>
-              <span
-                class="hidden md:block text-sm mb-auto"
-              >
-                Feb 29, 2024
-              </span>
-            </div>
-            <div
-              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
-            >
               <div
-                class="flex flex-row flex-wrap"
+                class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+                data-timeline-divider="2024-02"
+              >
+                February 2024
+              </div>
+              <div
+                class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+                data-date="2024-02-29"
               >
                 <span
-                  class="m-2 whitespace-nowrap text-sm md:text-base"
+                  class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
                 >
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-droplet mr-2 text-info"
-                    data-icon="droplet"
-                    data-prefix="fas"
-                    focusable="false"
-                    role="img"
-                    viewBox="0 0 384 512"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                  Watered
+                  yesterday
+                </span>
+                <span
+                  class="hidden md:block text-sm mb-auto"
+                >
+                  Feb 29, 2024
                 </span>
               </div>
               <div
-                class="flex flex-row flex-wrap"
-              />
-              <div
-                class="flex flex-col"
-              />
-            </div>
-            <div
-              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
-              data-date="2024-02-26"
-            >
-              <span
-                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
-              >
-                4 days ago
-              </span>
-              <span
-                class="hidden md:block text-sm mb-auto"
-              >
-                Feb 26, 2024
-              </span>
-            </div>
-            <div
-              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
-            >
-              <div
-                class="flex flex-row flex-wrap"
-              >
-                <span
-                  class="m-2 whitespace-nowrap text-sm md:text-base"
-                >
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-seedling mr-2 text-success"
-                    data-icon="seedling"
-                    data-prefix="fas"
-                    focusable="false"
-                    role="img"
-                    viewBox="0 0 512 512"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
-                      fill="currentColor"
-                    />
-                  </svg>
-                  Fertilized
-                </span>
-              </div>
-              <div
-                class="flex flex-row flex-wrap"
-              />
-              <div
-                class="flex flex-col"
+                class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
               >
                 <div
-                  class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
-                  style=""
+                  class="flex flex-row flex-wrap"
                 >
-                  <svg
-                    aria-hidden="true"
-                    class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1"
-                    data-icon="pen-to-square"
-                    data-prefix="fas"
-                    focusable="false"
-                    role="img"
-                    viewBox="0 0 512 512"
-                    xmlns="http://www.w3.org/2000/svg"
+                  <span
+                    class="m-2 whitespace-nowrap text-sm md:text-base"
                   >
-                    <path
-                      d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"
-                      fill="currentColor"
-                    />
-                  </svg>
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-droplet mr-2 text-info"
+                      data-icon="droplet"
+                      data-prefix="fas"
+                      focusable="false"
+                      role="img"
+                      viewBox="0 0 384 512"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                    Watered
+                  </span>
+                </div>
+                <div
+                  class="flex flex-row flex-wrap"
+                />
+                <div
+                  class="flex flex-col"
+                />
+              </div>
+              <div
+                class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+                data-date="2024-02-26"
+              >
+                <span
+                  class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                >
+                  4 days ago
+                </span>
+                <span
+                  class="hidden md:block text-sm mb-auto"
+                >
+                  Feb 26, 2024
+                </span>
+              </div>
+              <div
+                class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+              >
+                <div
+                  class="flex flex-row flex-wrap"
+                >
+                  <span
+                    class="m-2 whitespace-nowrap text-sm md:text-base"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-seedling mr-2 text-success"
+                      data-icon="seedling"
+                      data-prefix="fas"
+                      focusable="false"
+                      role="img"
+                      viewBox="0 0 512 512"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                    Fertilized
+                  </span>
+                </div>
+                <div
+                  class="flex flex-row flex-wrap"
+                />
+                <div
+                  class="flex flex-col"
+                >
                   <div
-                    class="cursor-pointer overflow-hidden line-clamp-1"
-                    title="04:44 AM - February 26, 2024"
+                    class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                    style=""
                   >
-                    <span
-                      class="text-sm md:text-base mr-2 after:content-['\\200B']"
+                    <svg
+                      aria-hidden="true"
+                      class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1"
+                      data-icon="pen-to-square"
+                      data-prefix="fas"
+                      focusable="false"
+                      role="img"
+                      viewBox="0 0 512 512"
+                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      One of the older leaves is starting to turn yellow
-                    </span>
-                    <span
-                      class="text-xs"
+                      <path
+                        d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"
+                        fill="currentColor"
+                      />
+                    </svg>
+                    <div
+                      class="cursor-pointer overflow-hidden line-clamp-1"
+                      title="04:44 AM - February 26, 2024"
                     >
-                      04:44 AM
-                    </span>
+                      <span
+                        class="text-sm md:text-base mr-2 after:content-['\\200B']"
+                      >
+                        One of the older leaves is starting to turn yellow
+                      </span>
+                      <span
+                        class="text-xs"
+                      >
+                        04:44 AM
+                      </span>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -6811,421 +6823,425 @@ exports[`App matches snapshot when plant is archived 1`] = `
         </div>
       </div>
       <div
-        class="flex flex-col mt-2 mx-4 p-4 md:p-8 pt-0 md:pt-0 md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
+        class="w-full max-w-screen-md mt-2 px-4"
       >
         <div
-          class="navbar bg-base-200 rounded-2xl"
+          class="flex flex-col w-full p-4 md:p-8 pt-0 md:pt-0 bg-base-200 rounded-2xl"
         >
           <div
-            class="navbar-start w-12"
-          />
-          <div
-            class="navbar-center mx-auto"
+            class="navbar bg-base-200 rounded-2xl"
           >
             <div
-              class="dropdown dropdown-center dropdown-hover mx-auto"
+              class="navbar-start w-12"
+            />
+            <div
+              class="navbar-center mx-auto"
             >
               <div
-                class="btn btn-ghost text-xl font-bold m-1"
-                role="button"
-                tabindex="0"
+                class="dropdown dropdown-center dropdown-hover mx-auto"
               >
-                History
-              </div>
-              <ul
-                class="dropdown-options w-44"
-                tabindex="0"
-              >
-                <li>
-                  <details>
-                    <summary>
-                      2024
-                    </summary>
-                    <ul>
-                      <li>
-                        <a>
-                          March
-                        </a>
-                      </li>
-                      <li>
-                        <a>
-                          February
-                        </a>
-                      </li>
-                    </ul>
-                  </details>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div
-            class="navbar-end w-12 dropdown dropdown-end"
-          />
-        </div>
-        <div
-          class="grid grid-cols-[min-content_1fr] gap-4 md:gap-8"
-        >
-          <div
-            class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
-            data-timeline-divider="2024-03"
-          >
-            March 2024
-          </div>
-          <div
-            class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
-            data-date="2024-03-23"
-          >
-            <span
-              class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
-            >
-              in 22 days
-            </span>
-            <span
-              class="hidden md:block text-sm mb-auto"
-            >
-              Mar 23, 2024
-            </span>
-          </div>
-          <div
-            class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
-          >
-            <div
-              class="flex flex-row flex-wrap"
-            />
-            <div
-              class="flex flex-row flex-wrap"
-            >
-              <div
-                title="02:52 AM - March 23, 2024"
-              >
-                <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
-                  loading="lazy"
-                  src="/media/thumbnails/photo3_thumb.jpg"
-                />
-              </div>
-            </div>
-            <div
-              class="flex flex-col"
-            />
-          </div>
-          <div
-            class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
-            data-date="2024-03-22"
-          >
-            <span
-              class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
-            >
-              in 21 days
-            </span>
-            <span
-              class="hidden md:block text-sm mb-auto"
-            >
-              Mar 22, 2024
-            </span>
-          </div>
-          <div
-            class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
-          >
-            <div
-              class="flex flex-row flex-wrap"
-            />
-            <div
-              class="flex flex-row flex-wrap"
-            >
-              <div
-                title="02:52 AM - March 22, 2024"
-              >
-                <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
-                  loading="lazy"
-                  src="/media/thumbnails/photo2_thumb.jpg"
-                />
-              </div>
-            </div>
-            <div
-              class="flex flex-col"
-            />
-          </div>
-          <div
-            class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
-            data-date="2024-03-21"
-          >
-            <span
-              class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
-            >
-              in 20 days
-            </span>
-            <span
-              class="hidden md:block text-sm mb-auto"
-            >
-              Mar 21, 2024
-            </span>
-          </div>
-          <div
-            class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
-          >
-            <div
-              class="flex flex-row flex-wrap"
-            />
-            <div
-              class="flex flex-row flex-wrap"
-            >
-              <div
-                title="02:52 AM - March 21, 2024"
-              >
-                <img
-                  class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
-                  loading="lazy"
-                  src="/media/thumbnails/photo1_thumb.jpg"
-                />
-              </div>
-            </div>
-            <div
-              class="flex flex-col"
-            />
-          </div>
-          <div
-            class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
-            data-date="2024-03-01"
-          >
-            <span
-              class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
-            >
-              today
-            </span>
-            <span
-              class="hidden md:block text-sm mb-auto"
-            >
-              Mar 01, 2024
-            </span>
-          </div>
-          <div
-            class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
-          >
-            <div
-              class="flex flex-row flex-wrap"
-            >
-              <span
-                class="m-2 whitespace-nowrap text-sm md:text-base"
-              >
-                <svg
-                  aria-hidden="true"
-                  class="svg-inline--fa fa-droplet mr-2 text-info"
-                  data-icon="droplet"
-                  data-prefix="fas"
-                  focusable="false"
-                  role="img"
-                  viewBox="0 0 384 512"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                    fill="currentColor"
-                  />
-                </svg>
-                Watered
-              </span>
-              <span
-                class="m-2 whitespace-nowrap text-sm md:text-base"
-              >
-                <svg
-                  aria-hidden="true"
-                  class="svg-inline--fa fa-seedling mr-2 text-success"
-                  data-icon="seedling"
-                  data-prefix="fas"
-                  focusable="false"
-                  role="img"
-                  viewBox="0 0 512 512"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
-                    fill="currentColor"
-                  />
-                </svg>
-                Fertilized
-              </span>
-            </div>
-            <div
-              class="flex flex-row flex-wrap"
-            />
-            <div
-              class="flex flex-col"
-            >
-              <div
-                class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
-                style=""
-              >
-                <svg
-                  aria-hidden="true"
-                  class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1"
-                  data-icon="pen-to-square"
-                  data-prefix="fas"
-                  focusable="false"
-                  role="img"
-                  viewBox="0 0 512 512"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"
-                    fill="currentColor"
-                  />
-                </svg>
                 <div
-                  class="cursor-pointer overflow-hidden line-clamp-1"
-                  title="07:45 AM - March 1, 2024"
+                  class="btn btn-ghost text-xl font-bold m-1"
+                  role="button"
+                  tabindex="0"
                 >
-                  <span
-                    class="text-sm md:text-base mr-2 after:content-['\\200B']"
+                  History
+                </div>
+                <ul
+                  class="dropdown-options w-44"
+                  tabindex="0"
+                >
+                  <li>
+                    <details>
+                      <summary>
+                        2024
+                      </summary>
+                      <ul>
+                        <li>
+                          <a>
+                            March
+                          </a>
+                        </li>
+                        <li>
+                          <a>
+                            February
+                          </a>
+                        </li>
+                      </ul>
+                    </details>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div
+              class="navbar-end w-12 dropdown dropdown-end"
+            />
+          </div>
+          <div
+            class="grid grid-cols-[min-content_1fr] gap-4 md:gap-8"
+          >
+            <div
+              class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+              data-timeline-divider="2024-03"
+            >
+              March 2024
+            </div>
+            <div
+              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+              data-date="2024-03-23"
+            >
+              <span
+                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+              >
+                in 22 days
+              </span>
+              <span
+                class="hidden md:block text-sm mb-auto"
+              >
+                Mar 23, 2024
+              </span>
+            </div>
+            <div
+              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+            >
+              <div
+                class="flex flex-row flex-wrap"
+              />
+              <div
+                class="flex flex-row flex-wrap"
+              >
+                <div
+                  title="02:52 AM - March 23, 2024"
+                >
+                  <img
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    loading="lazy"
+                    src="/media/thumbnails/photo3_thumb.jpg"
+                  />
+                </div>
+              </div>
+              <div
+                class="flex flex-col"
+              />
+            </div>
+            <div
+              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+              data-date="2024-03-22"
+            >
+              <span
+                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+              >
+                in 21 days
+              </span>
+              <span
+                class="hidden md:block text-sm mb-auto"
+              >
+                Mar 22, 2024
+              </span>
+            </div>
+            <div
+              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+            >
+              <div
+                class="flex flex-row flex-wrap"
+              />
+              <div
+                class="flex flex-row flex-wrap"
+              >
+                <div
+                  title="02:52 AM - March 22, 2024"
+                >
+                  <img
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    loading="lazy"
+                    src="/media/thumbnails/photo2_thumb.jpg"
+                  />
+                </div>
+              </div>
+              <div
+                class="flex flex-col"
+              />
+            </div>
+            <div
+              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+              data-date="2024-03-21"
+            >
+              <span
+                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+              >
+                in 20 days
+              </span>
+              <span
+                class="hidden md:block text-sm mb-auto"
+              >
+                Mar 21, 2024
+              </span>
+            </div>
+            <div
+              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+            >
+              <div
+                class="flex flex-row flex-wrap"
+              />
+              <div
+                class="flex flex-row flex-wrap"
+              >
+                <div
+                  title="02:52 AM - March 21, 2024"
+                >
+                  <img
+                    class="rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem] md:w-[5.4rem] md:h-[5.4rem]"
+                    loading="lazy"
+                    src="/media/thumbnails/photo1_thumb.jpg"
+                  />
+                </div>
+              </div>
+              <div
+                class="flex flex-col"
+              />
+            </div>
+            <div
+              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+              data-date="2024-03-01"
+            >
+              <span
+                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+              >
+                today
+              </span>
+              <span
+                class="hidden md:block text-sm mb-auto"
+              >
+                Mar 01, 2024
+              </span>
+            </div>
+            <div
+              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+            >
+              <div
+                class="flex flex-row flex-wrap"
+              >
+                <span
+                  class="m-2 whitespace-nowrap text-sm md:text-base"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="svg-inline--fa fa-droplet mr-2 text-info"
+                    data-icon="droplet"
+                    data-prefix="fas"
+                    focusable="false"
+                    role="img"
+                    viewBox="0 0 384 512"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    Fertilized with dilute 10-15-10 liquid fertilizer
-                  </span>
-                  <span
-                    class="text-xs"
+                    <path
+                      d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                  Watered
+                </span>
+                <span
+                  class="m-2 whitespace-nowrap text-sm md:text-base"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="svg-inline--fa fa-seedling mr-2 text-success"
+                    data-icon="seedling"
+                    data-prefix="fas"
+                    focusable="false"
+                    role="img"
+                    viewBox="0 0 512 512"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    07:45 AM
-                  </span>
+                    <path
+                      d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                  Fertilized
+                </span>
+              </div>
+              <div
+                class="flex flex-row flex-wrap"
+              />
+              <div
+                class="flex flex-col"
+              >
+                <div
+                  class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                  style=""
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1"
+                    data-icon="pen-to-square"
+                    data-prefix="fas"
+                    focusable="false"
+                    role="img"
+                    viewBox="0 0 512 512"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                  <div
+                    class="cursor-pointer overflow-hidden line-clamp-1"
+                    title="07:45 AM - March 1, 2024"
+                  >
+                    <span
+                      class="text-sm md:text-base mr-2 after:content-['\\200B']"
+                    >
+                      Fertilized with dilute 10-15-10 liquid fertilizer
+                    </span>
+                    <span
+                      class="text-xs"
+                    >
+                      07:45 AM
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-          <div
-            class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
-            data-timeline-divider="2024-02"
-          >
-            February 2024
-          </div>
-          <div
-            class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
-            data-date="2024-02-29"
-          >
-            <span
-              class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
-            >
-              yesterday
-            </span>
-            <span
-              class="hidden md:block text-sm mb-auto"
-            >
-              Feb 29, 2024
-            </span>
-          </div>
-          <div
-            class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
-          >
             <div
-              class="flex flex-row flex-wrap"
+              class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+              data-timeline-divider="2024-02"
+            >
+              February 2024
+            </div>
+            <div
+              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+              data-date="2024-02-29"
             >
               <span
-                class="m-2 whitespace-nowrap text-sm md:text-base"
+                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
               >
-                <svg
-                  aria-hidden="true"
-                  class="svg-inline--fa fa-droplet mr-2 text-info"
-                  data-icon="droplet"
-                  data-prefix="fas"
-                  focusable="false"
-                  role="img"
-                  viewBox="0 0 384 512"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                    fill="currentColor"
-                  />
-                </svg>
-                Watered
+                yesterday
+              </span>
+              <span
+                class="hidden md:block text-sm mb-auto"
+              >
+                Feb 29, 2024
               </span>
             </div>
             <div
-              class="flex flex-row flex-wrap"
-            />
-            <div
-              class="flex flex-col"
-            />
-          </div>
-          <div
-            class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
-            data-date="2024-02-26"
-          >
-            <span
-              class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
-            >
-              4 days ago
-            </span>
-            <span
-              class="hidden md:block text-sm mb-auto"
-            >
-              Feb 26, 2024
-            </span>
-          </div>
-          <div
-            class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
-          >
-            <div
-              class="flex flex-row flex-wrap"
-            >
-              <span
-                class="m-2 whitespace-nowrap text-sm md:text-base"
-              >
-                <svg
-                  aria-hidden="true"
-                  class="svg-inline--fa fa-seedling mr-2 text-success"
-                  data-icon="seedling"
-                  data-prefix="fas"
-                  focusable="false"
-                  role="img"
-                  viewBox="0 0 512 512"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
-                    fill="currentColor"
-                  />
-                </svg>
-                Fertilized
-              </span>
-            </div>
-            <div
-              class="flex flex-row flex-wrap"
-            />
-            <div
-              class="flex flex-col"
+              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
             >
               <div
-                class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
-                style=""
+                class="flex flex-row flex-wrap"
               >
-                <svg
-                  aria-hidden="true"
-                  class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1"
-                  data-icon="pen-to-square"
-                  data-prefix="fas"
-                  focusable="false"
-                  role="img"
-                  viewBox="0 0 512 512"
-                  xmlns="http://www.w3.org/2000/svg"
+                <span
+                  class="m-2 whitespace-nowrap text-sm md:text-base"
                 >
-                  <path
-                    d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"
-                    fill="currentColor"
-                  />
-                </svg>
+                  <svg
+                    aria-hidden="true"
+                    class="svg-inline--fa fa-droplet mr-2 text-info"
+                    data-icon="droplet"
+                    data-prefix="fas"
+                    focusable="false"
+                    role="img"
+                    viewBox="0 0 384 512"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                  Watered
+                </span>
+              </div>
+              <div
+                class="flex flex-row flex-wrap"
+              />
+              <div
+                class="flex flex-col"
+              />
+            </div>
+            <div
+              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+              data-date="2024-02-26"
+            >
+              <span
+                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+              >
+                4 days ago
+              </span>
+              <span
+                class="hidden md:block text-sm mb-auto"
+              >
+                Feb 26, 2024
+              </span>
+            </div>
+            <div
+              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4"
+            >
+              <div
+                class="flex flex-row flex-wrap"
+              >
+                <span
+                  class="m-2 whitespace-nowrap text-sm md:text-base"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="svg-inline--fa fa-seedling mr-2 text-success"
+                    data-icon="seedling"
+                    data-prefix="fas"
+                    focusable="false"
+                    role="img"
+                    viewBox="0 0 512 512"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                  Fertilized
+                </span>
+              </div>
+              <div
+                class="flex flex-row flex-wrap"
+              />
+              <div
+                class="flex flex-col"
+              >
                 <div
-                  class="cursor-pointer overflow-hidden line-clamp-1"
-                  title="04:44 AM - February 26, 2024"
+                  class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                  style=""
                 >
-                  <span
-                    class="text-sm md:text-base mr-2 after:content-['\\200B']"
+                  <svg
+                    aria-hidden="true"
+                    class="svg-inline--fa fa-pen-to-square w-4 h-4 mr-2 mt-1"
+                    data-icon="pen-to-square"
+                    data-prefix="fas"
+                    focusable="false"
+                    role="img"
+                    viewBox="0 0 512 512"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    One of the older leaves is starting to turn yellow
-                  </span>
-                  <span
-                    class="text-xs"
+                    <path
+                      d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"
+                      fill="currentColor"
+                    />
+                  </svg>
+                  <div
+                    class="cursor-pointer overflow-hidden line-clamp-1"
+                    title="04:44 AM - February 26, 2024"
                   >
-                    04:44 AM
-                  </span>
+                    <span
+                      class="text-sm md:text-base mr-2 after:content-['\\200B']"
+                    >
+                      One of the older leaves is starting to turn yellow
+                    </span>
+                    <span
+                      class="text-xs"
+                    >
+                      04:44 AM
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>

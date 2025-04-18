@@ -26,7 +26,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
     </div>
     <div>
       <div
-        class="flex flex-col mt-2 mx-4 p-4 md:p-8 pt-0 md:pt-0 md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
+        class="flex flex-col w-full p-4 md:p-8 pt-0 md:pt-0 bg-base-200 rounded-2xl"
       >
         <div
           class="navbar bg-base-200 rounded-2xl"
@@ -2593,7 +2593,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
   </body>,
   "container": <div>
     <div
-      class="flex flex-col mt-2 mx-4 p-4 md:p-8 pt-0 md:pt-0 md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
+      class="flex flex-col w-full p-4 md:p-8 pt-0 md:pt-0 bg-base-200 rounded-2xl"
     >
       <div
         class="navbar bg-base-200 rounded-2xl"
@@ -5237,7 +5237,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
     </div>
     <div>
       <div
-        class="flex flex-col mt-2 mx-4 p-4 md:p-8 pt-0 md:pt-0 md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
+        class="flex flex-col w-full p-4 md:p-8 pt-0 md:pt-0 bg-base-200 rounded-2xl"
       >
         <div
           class="navbar bg-base-200 rounded-2xl"
@@ -7866,7 +7866,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
   </body>,
   "container": <div>
     <div
-      class="flex flex-col mt-2 mx-4 p-4 md:p-8 pt-0 md:pt-0 md:w-full md:max-w-screen-md bg-base-200 rounded-2xl"
+      class="flex flex-col w-full p-4 md:p-8 pt-0 md:pt-0 bg-base-200 rounded-2xl"
     >
       <div
         class="navbar bg-base-200 rounded-2xl"
