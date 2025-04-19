@@ -26,10 +26,10 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
     </div>
     <div>
       <div
-        class="flex flex-col w-full overflow-hidden p-4 md:p-8 pt-0 md:pt-0 bg-base-200 rounded-2xl"
+        class="flex flex-col w-full overflow-hidden bg-base-200 rounded-2xl"
       >
         <div
-          class="navbar bg-base-200 rounded-2xl"
+          class="navbar bg-base-200 rounded-2xl px-4"
         >
           <div
             class="navbar-start w-12"
@@ -171,7 +171,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           />
         </div>
         <div
-          class="grid grid-cols-[min-content_1fr] gap-4 md:gap-8"
+          class="grid grid-cols-[min-content_1fr] gap-4 md:gap-8 p-4 md:p-8 pt-0 md:pt-0"
         >
           <div
             class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
@@ -2593,10 +2593,10 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
   </body>,
   "container": <div>
     <div
-      class="flex flex-col w-full overflow-hidden p-4 md:p-8 pt-0 md:pt-0 bg-base-200 rounded-2xl"
+      class="flex flex-col w-full overflow-hidden bg-base-200 rounded-2xl"
     >
       <div
-        class="navbar bg-base-200 rounded-2xl"
+        class="navbar bg-base-200 rounded-2xl px-4"
       >
         <div
           class="navbar-start w-12"
@@ -2738,7 +2738,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         />
       </div>
       <div
-        class="grid grid-cols-[min-content_1fr] gap-4 md:gap-8"
+        class="grid grid-cols-[min-content_1fr] gap-4 md:gap-8 p-4 md:p-8 pt-0 md:pt-0"
       >
         <div
           class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
@@ -5237,10 +5237,10 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
     </div>
     <div>
       <div
-        class="flex flex-col w-full overflow-hidden p-4 md:p-8 pt-0 md:pt-0 bg-base-200 rounded-2xl"
+        class="flex flex-col w-full overflow-hidden bg-base-200 rounded-2xl"
       >
         <div
-          class="navbar bg-base-200 rounded-2xl"
+          class="navbar bg-base-200 rounded-2xl px-4"
         >
           <div
             class="navbar-start w-12"
@@ -5444,7 +5444,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
         </div>
         <div
-          class="grid grid-cols-[min-content_1fr] gap-4 md:gap-8"
+          class="grid grid-cols-[min-content_1fr] gap-4 md:gap-8 p-4 md:p-8 pt-0 md:pt-0"
         >
           <div
             class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
@@ -7866,10 +7866,10 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
   </body>,
   "container": <div>
     <div
-      class="flex flex-col w-full overflow-hidden p-4 md:p-8 pt-0 md:pt-0 bg-base-200 rounded-2xl"
+      class="flex flex-col w-full overflow-hidden bg-base-200 rounded-2xl"
     >
       <div
-        class="navbar bg-base-200 rounded-2xl"
+        class="navbar bg-base-200 rounded-2xl px-4"
       >
         <div
           class="navbar-start w-12"
@@ -8073,7 +8073,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         </div>
       </div>
       <div
-        class="grid grid-cols-[min-content_1fr] gap-4 md:gap-8"
+        class="grid grid-cols-[min-content_1fr] gap-4 md:gap-8 p-4 md:p-8 pt-0 md:pt-0"
       >
         <div
           class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"

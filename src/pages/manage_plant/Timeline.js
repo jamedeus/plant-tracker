@@ -36,7 +36,7 @@ const Title = memo(function Title() {
     const archived = useSelector((state) => state.plant.plantDetails.archived);
 
     return (
-        <div className="navbar bg-base-200 rounded-2xl">
+        <div className="navbar bg-base-200 rounded-2xl px-4">
             <div className="navbar-start w-12">
                 {/* Spacer with same width as .navbar-end button */}
             </div>
@@ -441,13 +441,13 @@ const Timeline = memo(function Timeline() {
     const dayKeys = Object.keys(timelineDays).sort().reverse();
 
     return (
-        <div className={clsx(
-            'flex flex-col w-full overflow-hidden p-4 md:p-8 pt-0 md:pt-0',
-            'bg-base-200 rounded-2xl'
-        )}>
+        <div className='flex flex-col w-full overflow-hidden bg-base-200 rounded-2xl'>
             <Title />
             {dayKeys.length > 0 ? (
-                <div className="grid grid-cols-[min-content_1fr] gap-4 md:gap-8">
+                <div className={clsx(
+                    "grid grid-cols-[min-content_1fr] gap-4 md:gap-8",
+                    "p-4 md:p-8 pt-0 md:pt-0"
+                )}>
                     {dayKeys.map((dateKey, index) => {
                         // Slice YYYY-MM from dateKey, truncate day
                         const yearMonth = dateKey.slice(0, 7);
