@@ -39,6 +39,18 @@ const plants = [
         "thumbnail": "/media/thumbnails/IMG_8002_thumb.jpg"
     },
     {
+        "name": null,
+        "display_name": "Unnamed plant 2",
+        "uuid": "67337371-d65a-4c0b-b32b-49a20d043495",
+        "created": "2023-12-27T03:51:32+00:00",
+        "species": null,
+        "description": null,
+        "pot_size": 2,
+        "last_watered": "2024-03-02T04:31:20+00:00",
+        "last_fertilized": "2024-03-02T04:31:20+00:00",
+        "thumbnail": "/media/thumbnails/IMG_8004_thumb.jpg"
+    },
+    {
         "name": "Favorite plant",
         "display_name": "Favorite plant",
         "uuid": "9c9d1767-a97f-4ca8-ad6e-b706ff943ff2",
@@ -49,7 +61,7 @@ const plants = [
         "last_watered": null,
         "last_fertilized": "2024-03-01T05:45:44+00:00",
         "thumbnail": "/media/thumbnails/IMG_8003_thumb.jpg"
-    }
+    },
 ];
 
 describe('FilterColumn', () => {
@@ -85,7 +97,7 @@ describe('FilterColumn', () => {
 
     it('renders expected default state', () => {
         // Confirm a card was rendered for each item in contents array
-        expect(component.container.querySelectorAll('.card').length).toBe(4);
+        expect(component.container.querySelectorAll('.card').length).toBe(5);
 
         // Confirm the sort dropdown contains the options set in sortByKeys arg
         const menu = component.container.querySelector('.dropdown-options');
@@ -100,11 +112,12 @@ describe('FilterColumn', () => {
     });
 
     it('filters visible cards when user types in the filter input', async () => {
-        // Type "plant", should only show "Unnamed plant 1" and "Favorite plant"
+        // Type "plant", should only show "Unnamed plant 1", "Unnamed plant 2",
+        // and "Favorite plant"
         const filterInput = component.getByRole('textbox');
         await user.type(filterInput, 'plant');
         await waitFor(() => {
-            expect(component.container.querySelectorAll('.card').length).toBe(2);
+            expect(component.container.querySelectorAll('.card').length).toBe(3);
             expect(component.getByText('Unnamed plant 1')).toBeInTheDocument();
             expect(component.getByText('Favorite plant')).toBeInTheDocument();
         });
@@ -168,7 +181,7 @@ describe('FilterColumn', () => {
         // Click clear button, confirm all 4 cards reappear
         await user.click(component.getAllByRole('button')[0]);
         await waitFor(() => {
-            expect(component.container.querySelectorAll('.card').length).toBe(4);
+            expect(component.container.querySelectorAll('.card').length).toBe(5);
         });
     });
 
@@ -179,6 +192,7 @@ describe('FilterColumn', () => {
         expect(titles[1].innerHTML).toBe("Unnamed Fittonia");
         expect(titles[2].innerHTML).toBe("Unnamed plant 1");
         expect(titles[3].innerHTML).toBe("Favorite plant");
+        expect(titles[4].innerHTML).toBe("Unnamed plant 2");
 
         // Click the Name option in sort dropdown
         await user.click(component.getByText('Name'));
@@ -189,6 +203,7 @@ describe('FilterColumn', () => {
         expect(titles[1].innerHTML).toBe("mini palm tree");
         expect(titles[2].innerHTML).toBe("Unnamed Fittonia");
         expect(titles[3].innerHTML).toBe("Unnamed plant 1");
+        expect(titles[4].innerHTML).toBe("Unnamed plant 2");
 
         // Confirm a down arrow icon appeared next to name
         let nameOption = component.getByText('Name').parentElement;
@@ -199,10 +214,11 @@ describe('FilterColumn', () => {
 
         // Confirm cards were sorted reverse alphabetically by name
         titles = component.container.querySelectorAll('.card-title');
-        expect(titles[0].innerHTML).toBe("Unnamed plant 1");
-        expect(titles[1].innerHTML).toBe("Unnamed Fittonia");
-        expect(titles[2].innerHTML).toBe("mini palm tree");
-        expect(titles[3].innerHTML).toBe("Favorite plant");
+        expect(titles[0].innerHTML).toBe("Unnamed plant 2");
+        expect(titles[1].innerHTML).toBe("Unnamed plant 1");
+        expect(titles[2].innerHTML).toBe("Unnamed Fittonia");
+        expect(titles[3].innerHTML).toBe("mini palm tree");
+        expect(titles[4].innerHTML).toBe("Favorite plant");
 
         // Confirm the down arrow was replaced by an up arrow
         nameOption = component.getByText('Name').parentElement;
@@ -220,16 +236,32 @@ describe('FilterColumn', () => {
         expect(titles[1].innerHTML).toBe("Unnamed Fittonia");
         expect(titles[2].innerHTML).toBe("mini palm tree");
         expect(titles[3].innerHTML).toBe("Unnamed plant 1");
+        expect(titles[4].innerHTML).toBe("Unnamed plant 2");
 
+        // Click the Species option in sort dropdown again (reverse direction)
+        await user.click(component.getByText('Species'));
+
+        // Confirm cards sorted reverse alphabetically, plants without species are first
+        titles = component.container.querySelectorAll('.card-title');
+        expect(titles[0].innerHTML).toBe("Unnamed plant 1");
+        expect(titles[1].innerHTML).toBe("Unnamed plant 2");
+        expect(titles[2].innerHTML).toBe("mini palm tree");
+        expect(titles[3].innerHTML).toBe("Unnamed Fittonia");
+        expect(titles[4].innerHTML).toBe("Favorite plant");
+    });
+
+    it('sorts null to top of list when selected key is last_watered', async () => {
         // Click the Watered option in sort dropdown
         await user.click(component.getByText('Watered'));
 
-        // Confirm cards sorted alphabetically, plants without last_watered are last
-        titles = component.container.querySelectorAll('.card-title');
-        expect(titles[0].innerHTML).toBe("mini palm tree");
-        expect(titles[1].innerHTML).toBe("Unnamed plant 1");
-        expect(titles[2].innerHTML).toBe("Unnamed Fittonia");
-        expect(titles[3].innerHTML).toBe("Favorite plant");
+        // Confirm "Never watered" is sorted to top followed by least-recently
+        // watered (not to the bottom with most-recently watered)
+        const titles = component.container.querySelectorAll('.card-title');
+        expect(titles[0].innerHTML).toBe("Favorite plant");
+        expect(titles[1].innerHTML).toBe("Unnamed Fittonia");
+        expect(titles[2].innerHTML).toBe("mini palm tree");
+        expect(titles[3].innerHTML).toBe("Unnamed plant 1");
+        expect(titles[4].innerHTML).toBe("Unnamed plant 2");
     });
 });
 
@@ -309,6 +341,7 @@ describe('FilterColumn  ', () => {
         expect(titles[1].innerHTML).toBe("mini palm tree");
         expect(titles[2].innerHTML).toBe("Unnamed Fittonia");
         expect(titles[3].innerHTML).toBe("Unnamed plant 1");
+        expect(titles[4].innerHTML).toBe("Unnamed plant 2");
     });
 
     it('sorts cards in same order as contents array if defaultSortKey arg empty', () => {
@@ -323,7 +356,8 @@ describe('FilterColumn  ', () => {
         expect(titles[0].innerHTML).toBe("mini palm tree");
         expect(titles[1].innerHTML).toBe("Unnamed Fittonia");
         expect(titles[2].innerHTML).toBe("Unnamed plant 1");
-        expect(titles[3].innerHTML).toBe("Favorite plant");
+        expect(titles[3].innerHTML).toBe("Unnamed plant 2");
+        expect(titles[4].innerHTML).toBe("Favorite plant");
 
         // Confirm neither arrow icon is present anywhere in the component
         expect(component.container.querySelector('.fa-arrow-up-long')).toBeNull();
@@ -363,7 +397,7 @@ describe('FilterColumn  ', () => {
         const filterInput = component.getByRole('textbox');
         await user.type(filterInput, 'plant');
         await waitFor(() => {
-            expect(component.container.querySelectorAll('.card').length).toBe(2);
+            expect(component.container.querySelectorAll('.card').length).toBe(3);
         });
 
         // Confirm that query was written to sessionStorage
@@ -377,7 +411,7 @@ describe('FilterColumn  ', () => {
         // Clear input, confirm query was updated in sessionStorage
         await user.clear(filterInput);
         await waitFor(() => {
-            expect(component.container.querySelectorAll('.card').length).toBe(4);
+            expect(component.container.querySelectorAll('.card').length).toBe(5);
         });
         persistedState = JSON.parse(sessionStorage.getItem('unittest'));
         expect(persistedState).toEqual({
@@ -404,9 +438,10 @@ describe('FilterColumn  ', () => {
 
         // Confirm cards were sorted reverse alphabetically by name
         const titles = component.container.querySelectorAll('.card-title');
-        expect(titles[0].innerHTML).toBe("Unnamed plant 1");
-        expect(titles[1].innerHTML).toBe("Unnamed Fittonia");
-        expect(titles[2].innerHTML).toBe("mini palm tree");
-        expect(titles[3].innerHTML).toBe("Favorite plant");
+        expect(titles[0].innerHTML).toBe("Unnamed plant 2");
+        expect(titles[1].innerHTML).toBe("Unnamed plant 1");
+        expect(titles[2].innerHTML).toBe("Unnamed Fittonia");
+        expect(titles[3].innerHTML).toBe("mini palm tree");
+        expect(titles[4].innerHTML).toBe("Favorite plant");
     });
 });

@@ -293,25 +293,31 @@ const FilterColumn = ({
 
     // Takes array of objects and one of their keys
     // Returns array sorted alphabetically by value of key
-    // Items where key is null are sorted to bottom
+    // Items where key is null are sorted to bottom (except last_watered)
     const sortByKey = (items, key) => {
         // Return unchanged if sortKey not set
         if (!key) {
             return items;
         }
 
-        // Sort alphabetically if sortDirection is true, reverse if false
-        if (state.sortDirection) {
-            const sorted = [...items].sort((a, b) => {
-                return compare(a[key], b[key]);
-            });
-            return sorted;
-        } else {
-            const sorted = [...items].sort((a, b) => {
-                return -compare(a[key], b[key]);
-            });
-            return sorted;
-        }
+        // Convert sortDirection bool to int (used to negate compare output if
+        // direction is false, no change if true)
+        const direction = state.sortDirection ?  1 : -1;
+
+        return [...items].sort((a, b) => {
+            let aVal = a[key];
+            let bVal = b[key];
+
+            // Replace null with empty string if key is last_watered (sorts
+            // "Never watered" as least-recent instead of most-recent)
+            if (key === 'last_watered') {
+                aVal = aVal ?? '';
+                bVal = bVal ?? '';
+            }
+
+            // Sort alphabetically if sortDirection is true, reverse if false
+            return compare(aVal, bVal) * direction;
+        });
     };
 
     return (
