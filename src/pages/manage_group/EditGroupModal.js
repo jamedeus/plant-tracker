@@ -41,10 +41,10 @@ const EditGroupModal = memo(function EditGroupModal({ group, setGroup }) {
 
 EditGroupModal.propTypes = {
     group: PropTypes.shape({
-        name: PropTypes.string.isRequired,
+        name: PropTypes.string,
         uuid: PropTypes.string.isRequired,
-        location: PropTypes.string.isRequired,
-        description: PropTypes.string.isRequired
+        location: PropTypes.string,
+        description: PropTypes.string
     }).isRequired,
     setGroup: PropTypes.func.isRequired
 };
