@@ -88,7 +88,7 @@ ClearButton.propTypes = {
 
 // Indicates sort direction on selected option
 const OptionArrow = ({ down }) => {
-    if (down) {
+    if (down === 1) {
         return <FontAwesomeIcon icon={faArrowDownLong} className="mr-2" />;
     } else {
         return <FontAwesomeIcon icon={faArrowUpLong} className="mr-2" />;
@@ -96,7 +96,7 @@ const OptionArrow = ({ down }) => {
 };
 
 OptionArrow.propTypes = {
-    down: PropTypes.bool.isRequired
+    down: PropTypes.oneOf([1, -1]).isRequired
 };
 
 // Dropdown button rendered next to filter input, used to sort column
@@ -165,13 +165,13 @@ const FilterInput = memo(function FilterInput({ state, dispatch, sortByKeys }) {
             dispatch({
                 type: 'set_sort',
                 sortKey: state.sortKey,
-                sortDirection: !state.sortDirection
+                sortDirection: state.sortDirection * -1
             });
         } else {
             dispatch({
                 type: 'set_sort',
                 sortKey: keyName,
-                sortDirection: true
+                sortDirection: 1
             });
         }
         document.activeElement.blur();
@@ -248,14 +248,14 @@ const FilterColumn = ({
     const persistedState = JSON.parse(sessionStorage.getItem(storageKey));
 
     // sortKey: contents object key used to sort items
-    // sortDirection: alphabetical if true, reverse alphabetical if false
+    // sortDirection: alphabetical if 1, reverse alphabetical if -1
     // currentContents: array of contents objects matching current filter query
     // originalContents: full array of contents objects (ignores filter query)
     // ignoreKeys: array of contents object keys ignored by filter function
     // query: string entered in filter input (only show items containing query)
     const [state, dispatch] = useReducer(reducer, {
         sortKey: persistedState ? persistedState.sortKey : defaultSortKey,
-        sortDirection: persistedState ? persistedState.sortDirection : true,
+        sortDirection: persistedState ? persistedState.sortDirection : 1,
         currentContents: persistedState ? getCurrentContents(
             contents,
             ignoreKeys,
@@ -300,10 +300,6 @@ const FilterColumn = ({
             return items;
         }
 
-        // Convert sortDirection bool to int (used to negate compare output if
-        // direction is false, no change if true)
-        const direction = state.sortDirection ?  1 : -1;
-
         return [...items].sort((a, b) => {
             let aVal = a[key];
             let bVal = b[key];
@@ -315,8 +311,8 @@ const FilterColumn = ({
                 bVal = bVal ?? '';
             }
 
-            // Sort alphabetically if sortDirection is true, reverse if false
-            return compare(aVal, bVal) * direction;
+            // Sort alphabetically if sortDirection is 1, reverse if -1
+            return compare(aVal, bVal) * state.sortDirection;
         });
     };
 

@@ -380,7 +380,7 @@ describe('FilterColumn  ', () => {
         const persistedState = JSON.parse(sessionStorage.getItem('unittest'));
         expect(persistedState).toEqual({
             sortKey: 'display_name',
-            sortDirection: false,
+            sortDirection: -1,
             query: ''
         });
     });
@@ -404,7 +404,7 @@ describe('FilterColumn  ', () => {
         let persistedState = JSON.parse(sessionStorage.getItem('unittest'));
         expect(persistedState).toEqual({
             sortKey: 'created',
-            sortDirection: true,
+            sortDirection: 1,
             query: 'plant'
         });
 
@@ -416,7 +416,7 @@ describe('FilterColumn  ', () => {
         persistedState = JSON.parse(sessionStorage.getItem('unittest'));
         expect(persistedState).toEqual({
             sortKey: 'created',
-            sortDirection: true,
+            sortDirection: 1,
             query: ''
         });
 
@@ -426,7 +426,7 @@ describe('FilterColumn  ', () => {
         // Simulate object created when user sorts by name + reverses direction
         sessionStorage.setItem('unittest', JSON.stringify({
             sortKey: 'display_name',
-            sortDirection: false,
+            sortDirection: -1,
             query: ''
         }));
 
