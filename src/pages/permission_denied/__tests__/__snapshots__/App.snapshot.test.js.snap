@@ -9,6 +9,11 @@ exports[`App matches snapshot 1`] = `
     >
       "You do not have permission to view this"
     </div>
+    <div
+      id="user_accounts_enabled"
+    >
+      true
+    </div>
     <div>
       <div
         class="container flex flex-col h-screen mx-auto items-center gap-16"

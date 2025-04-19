@@ -15,6 +15,7 @@ describe('App', () => {
         createMockContext('groups', mockContext.groups.map(group => (
             { ...group, archived: true }
         )));
+        createMockContext('user_accounts_enabled', true);
 
         // Mock window.location to simulate archived overview
         Object.defineProperty(window, 'location', {

@@ -461,6 +461,16 @@ class SingleUserModeTests(TestCase):
             {"error": "user accounts are disabled"}
         )
 
+    def test_user_accounts_enabled_context(self):
+        # Create test plant and group iwbed by default user
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        group = Group.objects.create(uuid=uuid4(), user=get_default_user())
+
+        # Confirm all pages have user_accounts_enabled set to False
+        for url in ['/', f'/manage/{plant.uuid}', f'/manage/{group.uuid}']:
+            response = self.client.get(url)
+            self.assertFalse(response.context['user_accounts_enabled'])
+
     def test_login_page(self):
         # Request login page while SINGLE_USER_MODE is enabled
         response = self.client.get('/accounts/login/')
@@ -717,6 +727,20 @@ class MultiUserModeTests(TestCase):
             {"error": "group is owned by a different user"}
         )
 
+    def test_user_accounts_enabled_context(self):
+        # Create test plant and group
+        plant = Plant.objects.create(uuid=uuid4(), user=self.test_user)
+        group = Group.objects.create(uuid=uuid4(), user=self.test_user)
+
+        # Log in as test user
+        self.client.login(username='unittest', password='12345')
+        response = self.client.get('/')
+
+        # Confirm all pages have user_accounts_enabled set to True
+        for url in ['/', f'/manage/{plant.uuid}', f'/manage/{group.uuid}']:
+            response = self.client.get(url)
+            self.assertTrue(response.context['user_accounts_enabled'])
+
     def test_overview_page_signed_in(self):
         # Request overview page while signed in
         self.client.login(username='unittest', password='12345')
@@ -726,6 +750,9 @@ class MultiUserModeTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context['title'], "Bob's Plants")
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
+
+        # Confirm user_accounts_enabled context is true
+        self.assertTrue(response.context['user_accounts_enabled'])
 
     def test_overview_page_not_signed_in(self):
         # Request overview page while not signed in

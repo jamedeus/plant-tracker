@@ -9,6 +9,11 @@ exports[`App matches snapshot 1`] = `
     >
       {"username":"cdanger","email":"totally.not.anthony.weiner@gmail.com","first_name":"Carlos","last_name":"Danger","date_joined":"2025-04-06T00:08:53.392806+00:00"}
     </div>
+    <div
+      id="user_accounts_enabled"
+    >
+      true
+    </div>
     <div>
       <div
         class="container flex flex-col h-screen mx-auto items-center"

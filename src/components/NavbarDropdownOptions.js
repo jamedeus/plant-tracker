@@ -1,17 +1,25 @@
-import { useTheme } from 'src/context/ThemeContext';
+import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
+import { parseDomContext } from 'src/util';
+import { useTheme } from 'src/context/ThemeContext';
 
 const NavbarDropdownOptions = ({ children }) => {
     const { ToggleThemeOption } = useTheme();
+
+    const userAccountsEnabled = useMemo(() => (
+        parseDomContext("user_accounts_enabled")
+    ), []);
 
     return (
         <>
             <li><a onClick={() => window.location.href = "/"}>
                 Overview
             </a></li>
-            <li><a onClick={() => window.location.href = "/accounts/profile/"}>
-                User profile
-            </a></li>
+            {userAccountsEnabled && (
+                <li><a onClick={() => window.location.href = "/accounts/profile/"}>
+                    User profile
+                </a></li>
+            )}
             {children}
             <ToggleThemeOption />
         </>

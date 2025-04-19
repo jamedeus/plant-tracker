@@ -19,6 +19,11 @@ exports[`App matches snapshot when changing group QR code 1`] = `
     >
       "07919189-514d-4ec1-a967-8af553dfa7e8"
     </div>
+    <div
+      id="user_accounts_enabled"
+    >
+      true
+    </div>
     <div>
       <div
         class="container flex flex-col mx-auto h-screen"
@@ -478,6 +483,11 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
       id="new_uuid"
     >
       "07919189-514d-4ec1-a967-8af553dfa7e8"
+    </div>
+    <div
+      id="user_accounts_enabled"
+    >
+      true
     </div>
     <div>
       <div

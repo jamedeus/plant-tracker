@@ -14,6 +14,7 @@ describe('App', () => {
         createMockContext('plants', mockContext.plants);
         createMockContext('groups', mockContext.groups);
         createMockContext('show_archive', mockContext.show_archive);
+        createMockContext('user_accounts_enabled', true);
     });
 
     beforeEach(() => {

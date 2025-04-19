@@ -13,6 +13,7 @@ describe('App', () => {
         removeMockContext('group_options');
         removeMockContext('species_options');
         removeMockContext('photos');
+        removeMockContext('user_accounts_enabled');
     });
 
     it('matches snapshot', () => {
@@ -23,6 +24,7 @@ describe('App', () => {
         createMockContext('group_options', mockContext.group_options);
         createMockContext('species_options', mockContext.species_options);
         createMockContext('photos', mockContext.photos);
+        createMockContext('user_accounts_enabled', true);
 
         // Render App, confirm matches snapshot
         const component = render(
@@ -44,6 +46,7 @@ describe('App', () => {
         createMockContext('group_options', mockContext.group_options);
         createMockContext('species_options', mockContext.species_options);
         createMockContext('photos', mockContext.photos);
+        createMockContext('user_accounts_enabled', true);
 
         // Render App, confirm matches snapshot
         const component = render(

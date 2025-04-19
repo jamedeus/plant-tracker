@@ -16,6 +16,7 @@ describe('Timeline', () => {
         createMockContext('events', mockEvents);
         createMockContext('notes', mockContext.notes);
         createMockContext('photos', mockphotos);
+        createMockContext('user_accounts_enabled', true);
     });
 
     it('matches snapshot when plant is not archived', () => {

@@ -10,6 +10,7 @@ describe('App', () => {
         removeMockContext('type');
         removeMockContext('instance');
         removeMockContext('new_uuid');
+        removeMockContext('user_accounts_enabled');
     });
 
     it('matches snapshot when changing plant QR code', () => {
@@ -17,6 +18,7 @@ describe('App', () => {
         createMockContext('type', 'plant');
         createMockContext('instance', mockContext.plant);
         createMockContext('new_uuid', mockContext.new_uuid);
+        createMockContext('user_accounts_enabled', true);
 
         // Render App, confirm matches snapshot
         const component = render(
@@ -32,6 +34,7 @@ describe('App', () => {
         createMockContext('type', 'group');
         createMockContext('instance', mockContext.group);
         createMockContext('new_uuid', mockContext.new_uuid);
+        createMockContext('user_accounts_enabled', true);
 
         // Render App, confirm matches snapshot
         const component = render(

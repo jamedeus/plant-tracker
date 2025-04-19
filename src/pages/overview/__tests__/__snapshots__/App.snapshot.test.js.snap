@@ -14,6 +14,11 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
     >
       [{"uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be14","created":"2023-12-26T01:25:12+00:00","name":"Test group","display_name":"Test group","location":"Middle shelf","plants":4,"archived":true}]
     </div>
+    <div
+      id="user_accounts_enabled"
+    >
+      true
+    </div>
     <div>
       <div
         class="container flex flex-col min-h-screen mx-auto pb-28"
@@ -1414,6 +1419,11 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
     >
       false
     </div>
+    <div
+      id="user_accounts_enabled"
+    >
+      true
+    </div>
     <div>
       <div
         class="container flex flex-col min-h-screen mx-auto pb-28"
@@ -1917,6 +1927,11 @@ exports[`App matches snapshot when only groups exist 1`] = `
     </div>
     <div
       id="show_archive"
+    >
+      true
+    </div>
+    <div
+      id="user_accounts_enabled"
     >
       true
     </div>
@@ -2789,6 +2804,11 @@ exports[`App matches snapshot when only plants exist 1`] = `
     </div>
     <div
       id="show_archive"
+    >
+      true
+    </div>
+    <div
+      id="user_accounts_enabled"
     >
       true
     </div>
@@ -3753,6 +3773,11 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
     </div>
     <div
       id="show_archive"
+    >
+      true
+    </div>
+    <div
+      id="user_accounts_enabled"
     >
       true
     </div>
@@ -5125,6 +5150,11 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
     </div>
     <div
       id="show_archive"
+    >
+      true
+    </div>
+    <div
+      id="user_accounts_enabled"
     >
       true
     </div>

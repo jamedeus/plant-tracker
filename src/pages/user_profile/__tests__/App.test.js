@@ -14,6 +14,7 @@ describe('App', () => {
         last_name: "Danger",
         date_joined: "2025-04-06T00:08:53.392806+00:00"
     });
+    createMockContext('user_accounts_enabled', true);
 
     beforeEach(() => {
         // Render app + create userEvent instance to use in tests

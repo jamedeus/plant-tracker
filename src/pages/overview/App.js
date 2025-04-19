@@ -19,6 +19,11 @@ function App() {
     const [showArchive, setShowArchive] = useState(() => {
         return parseDomContext("show_archive");
     });
+    // Controls whether dropdown contains user profile link
+    const userAccountsEnabled = useMemo(() => (
+        parseDomContext("user_accounts_enabled")
+    ), []);
+
 
     // True if desktop layout, false if mobile
     const desktop = useIsBreakpointActive('md');
@@ -198,11 +203,13 @@ function App() {
                         <li><a href='/'>
                             Main overview
                         </a></li>
-                        <li><a onClick={
-                            () => window.location.href = "/accounts/profile/"
-                        }>
-                            User profile
-                        </a></li>
+                        {userAccountsEnabled && (
+                            <li><a onClick={
+                                () => window.location.href = "/accounts/profile/"
+                            }>
+                                User profile
+                            </a></li>
+                        )}
                         {showEditOption && (
                             <li><a onClick={toggleEditing}>
                                 Edit
@@ -219,11 +226,13 @@ function App() {
                                 Archived plants
                             </a></li>
                         )}
-                        <li><a onClick={
-                            () => window.location.href = "/accounts/profile/"
-                        }>
-                            User profile
-                        </a></li>
+                        {userAccountsEnabled && (
+                            <li><a onClick={
+                                () => window.location.href = "/accounts/profile/"
+                            }>
+                                User profile
+                            </a></li>
+                        )}
                         {showEditOption && (
                             <li><a onClick={toggleEditing}>
                                 Edit

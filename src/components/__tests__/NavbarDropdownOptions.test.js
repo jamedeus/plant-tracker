@@ -1,8 +1,14 @@
 import NavbarDropdownOptions from '../NavbarDropdownOptions';
 import { PageWrapper } from 'src/index';
+import createMockContext from 'src/testUtils/createMockContext';
+import removeMockContext from 'src/testUtils/removeMockContext';
 
 describe('NavbarDropdownOptions', () => {
     let component, user;
+
+    beforeAll(() => {
+        createMockContext('user_accounts_enabled', true);
+    });
 
     beforeEach(() => {
         // Render component + create userEvent instance to use in tests
@@ -12,6 +18,10 @@ describe('NavbarDropdownOptions', () => {
                 <NavbarDropdownOptions />
             </PageWrapper>
         );
+    });
+
+    afterAll(() => {
+        removeMockContext('user_accounts_enabled');
     });
 
     it('redirects to overview when dropdown option is clicked', async () => {
@@ -24,5 +34,23 @@ describe('NavbarDropdownOptions', () => {
         // Click User profile dropdown option, confirm redirected
         await user.click(component.getByText('User profile'));
         expect(window.location.href).toBe('/accounts/profile/');
+    });
+});
+
+describe('NavbarDropdownOptions SINGLE_USER_MODE', () => {
+    it('does not render user profile link when SINGLE_USER_MODE enabled', async () => {
+        // Simulate SINGLE_USER_MODE enabled on backend
+        createMockContext('user_accounts_enabled', false);
+
+        // Render component + create userEvent instance to use in tests
+        const user = userEvent.setup();
+        const component = render(
+            <PageWrapper>
+                <NavbarDropdownOptions />
+            </PageWrapper>
+        );
+
+        // Confirm user profile link was not rendered
+        expect(component.queryByText('User profile')).toBeNull();
     });
 });

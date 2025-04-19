@@ -27,6 +27,9 @@
         {{ value|json_script:key }}
     {% endfor %}
 
+    {# Save bool that controls whether user profile links are rendered #}
+    {{ user_accounts_enabled|json_script:"user_accounts_enabled" }}
+
     {# Import bundle specified in context, renders app into root div #}
     <script src="{% static js_bundle %}"></script>
 </body>

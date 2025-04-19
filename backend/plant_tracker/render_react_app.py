@@ -2,6 +2,7 @@
 
 import json
 
+from django.conf import settings
 from django.shortcuts import render
 from django.views.decorators.csrf import ensure_csrf_cookie
 
@@ -15,7 +16,8 @@ def render_react_app(request, title, bundle, state, log_state=True):
     context = {
         'title': title,
         'js_bundle': f'plant_tracker/{bundle}.js',
-        'state': state
+        'state': state,
+        'user_accounts_enabled': not settings.SINGLE_USER_MODE
     }
 
     if log_state:

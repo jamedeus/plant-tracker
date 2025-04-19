@@ -9,6 +9,7 @@ describe('App', () => {
         createMockContext('group', mockContext.group);
         createMockContext('details', mockContext.details);
         createMockContext('options', mockContext.options);
+        createMockContext('user_accounts_enabled', true);
 
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({

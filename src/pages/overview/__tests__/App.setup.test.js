@@ -12,6 +12,7 @@ describe('App with empty database', () => {
         createMockContext('plants', []);
         createMockContext('groups', []);
         createMockContext('show_archived', false);
+        createMockContext('user_accounts_enabled', true);
     });
 
     beforeEach(() => {

@@ -13,6 +13,7 @@ describe('App', () => {
         createMockContext('group', mockContext.group);
         createMockContext('details', mockContext.details);
         createMockContext('options', mockContext.options);
+        createMockContext('user_accounts_enabled', true);
     });
 
     beforeEach(() => {

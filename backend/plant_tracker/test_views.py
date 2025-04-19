@@ -101,7 +101,8 @@ class RenderReactAppTests(TestCase):
                 'js_bundle': 'plant_tracker/mock.js',
                 'state': {
                     'data': 'mock'
-                }
+                },
+                'user_accounts_enabled': False
             }, indent=4) + '\n'
         )
 

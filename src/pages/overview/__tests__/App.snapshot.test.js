@@ -15,6 +15,7 @@ describe('App', () => {
         removeMockContext('plants');
         removeMockContext('groups');
         removeMockContext('show_archive');
+        removeMockContext('user_accounts_enabled');
     });
 
     it('matches snapshot when plants and groups exist (desktop layout)', () => {
@@ -22,6 +23,7 @@ describe('App', () => {
         createMockContext('plants', [mockContext.plants[0]]);
         createMockContext('groups', [mockContext.groups[0]]);
         createMockContext('show_archive', mockContext.show_archive);
+        createMockContext('user_accounts_enabled', true);
 
         // Set width greater than tailwind md breakpoint
         window.innerWidth = 800;
@@ -40,6 +42,7 @@ describe('App', () => {
         createMockContext('plants', [mockContext.plants[0]]);
         createMockContext('groups', [mockContext.groups[0]]);
         createMockContext('show_archive', mockContext.show_archive);
+        createMockContext('user_accounts_enabled', true);
 
         // Set width less than tailwind md breakpoint
         window.innerWidth = 600;
@@ -58,6 +61,7 @@ describe('App', () => {
         createMockContext('plants', [mockContext.plants[0]]);
         createMockContext('groups', []);
         createMockContext('show_archive', mockContext.show_archive);
+        createMockContext('user_accounts_enabled', true);
 
         // Render App, confirm matches snapshot
         const component = render(
@@ -73,6 +77,7 @@ describe('App', () => {
         createMockContext('plants', []);
         createMockContext('groups', [mockContext.groups[0]]);
         createMockContext('show_archive', mockContext.show_archive);
+        createMockContext('user_accounts_enabled', true);
 
         // Render App, confirm matches snapshot
         const component = render(
@@ -88,6 +93,7 @@ describe('App', () => {
         createMockContext('plants', []);
         createMockContext('groups', []);
         createMockContext('show_archive', false);
+        createMockContext('user_accounts_enabled', true);
 
         // Render App, confirm matches snapshot
         const component = render(
@@ -116,6 +122,7 @@ describe('App (archived page)', () => {
             ...mockContext.groups[0],
             archived: true
         }]);
+        createMockContext('user_accounts_enabled', true);
 
         // Mock window.location to simulate archived overview
         Object.defineProperty(window, 'location', {
