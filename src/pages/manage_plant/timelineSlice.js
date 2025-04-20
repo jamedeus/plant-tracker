@@ -89,7 +89,9 @@ export const timelineSlice = createSlice({
         //   key         (backend database key used to delete photo)
         photos: [],
         // Keys are year strings (YYYY), values are array of month strings (MM)
-        navigationOptions: {}
+        navigationOptions: {},
+        // URL of default photo thumbnail (or null if no photos)
+        defaultPhoto: null
     },
     reducers: {
         // Takes object with timestamp and type keys, adds to events,
@@ -250,6 +252,11 @@ export const timelineSlice = createSlice({
                 return true;
             });
         },
+
+        // Takes URL of new default photo thumbnail
+        defaultPhotoChanged(state, action) {
+            state.defaultPhoto = action.payload;
+        },
     },
     extraReducers: builder => {
         // Rebuild all states when user navigates to the page with back button
@@ -276,5 +283,6 @@ export const {
     noteEdited,
     noteDeleted,
     photosAdded,
-    photosDeleted
+    photosDeleted,
+    defaultPhotoChanged
 } = timelineSlice.actions;

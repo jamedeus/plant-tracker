@@ -116,6 +116,9 @@ export function ReduxProvider({ children }) {
         const calendarDays = buildCalendarDays(timelineDays);
         const navigationOptions = buildNavigationOptions(timelineDays);
 
+        // Copy default photo url (managed in timelineSlice with other photos)
+        const defaultPhoto = plantDetails.thumbnail;
+
         // Return object with keys expected by plantSlice and timelineSlice
         return {
             plant: {
@@ -127,7 +130,8 @@ export function ReduxProvider({ children }) {
                 calendarDays,
                 timelineDays,
                 photos,
-                navigationOptions
+                navigationOptions,
+                defaultPhoto
             }
         };
     };

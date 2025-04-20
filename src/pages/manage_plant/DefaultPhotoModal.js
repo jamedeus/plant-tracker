@@ -7,7 +7,7 @@ import { openErrorModal } from 'src/components/ErrorModal';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/16/solid';
 import clsx from 'clsx';
 import { useSelector, useDispatch } from 'react-redux';
-import { plantDefaultPhotoChanged } from './plantSlice';
+import { defaultPhotoChanged } from './timelineSlice';
 
 let modalRef;
 
@@ -96,7 +96,7 @@ const DefaultPhotoModal = () => {
         );
         if (response.ok) {
             closeDefaultPhotosModal();
-            dispatch(plantDefaultPhotoChanged(selected.thumbnail));
+            dispatch(defaultPhotoChanged(selected.thumbnail));
         } else {
             const error = await response.json();
             openErrorModal(error);
