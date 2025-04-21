@@ -441,12 +441,12 @@ const Timeline = memo(function Timeline() {
     const dayKeys = Object.keys(timelineDays).sort().reverse();
 
     return (
-        <div className='flex flex-col w-full overflow-hidden bg-base-200 rounded-2xl'>
+        <div className='flex flex-col w-full bg-base-200 rounded-2xl'>
             <Title />
             {dayKeys.length > 0 ? (
                 <div className={clsx(
                     "grid grid-cols-[min-content_1fr] gap-4 md:gap-8",
-                    "p-4 md:p-8 pt-0 md:pt-0"
+                    "p-4 md:p-8 pt-0 md:pt-0 overflow-hidden"
                 )}>
                     {dayKeys.map((dateKey, index) => {
                         // Slice YYYY-MM from dateKey, truncate day
@@ -471,7 +471,7 @@ const Timeline = memo(function Timeline() {
                     })}
                 </div>
             ) : (
-                <div className="text-center text-lg p-4">
+                <div className="text-center text-lg p-4 mb-4 mx-4 md:mb-8 md:mx-8">
                     <p>Events created with the buttons above will appear here</p>
                 </div>
             )}
