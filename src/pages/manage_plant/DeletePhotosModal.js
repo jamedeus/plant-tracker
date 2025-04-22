@@ -72,6 +72,7 @@ const PhotoSlide = memo(function PhotoSlide({
                             selected && 'btn-error'
                         )}
                         onClick={() => toggle(photo)}
+                        data-testid={`select_photo_${photo.key}`}
                     >
                         Select
                     </button>
@@ -241,6 +242,7 @@ const DeletePhotosModal = () => {
                         className="btn btn-error ml-2"
                         onClick={() => setConfirmDelete(true)}
                         disabled={!selectedPhotos.length}
+                        data-testid="delete_photos"
                     >
                         Delete
                     </button>

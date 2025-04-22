@@ -47,15 +47,15 @@ describe('DeletePhotosModal', () => {
 
     it('disables delete button until at least one photo selected', async() => {
         // Delete button should be disabled
-        expect(component.getAllByText('Delete')[0]).toBeDisabled();
+        expect(component.getByTestId('delete_photos')).toBeDisabled();
 
         // Select first photo, confirm delete button is enabled
-        await user.click(component.getAllByText(/Select/)[0]);
-        expect(component.getAllByText('Delete')[0]).not.toBeDisabled();
+        await user.click(component.getByTestId('select_photo_3'));
+        expect(component.getByTestId('delete_photos')).not.toBeDisabled();
 
         // Un-select photo, confirm delete button is disabled
-        await user.click(component.getAllByText(/Select/)[0]);
-        expect(component.getAllByText('Delete')[0]).toBeDisabled();
+        await user.click(component.getByTestId('select_photo_3'));
+        expect(component.getByTestId('delete_photos')).toBeDisabled();
     });
 
     it('closes modal when cancel button clicked', async () => {
@@ -73,8 +73,8 @@ describe('DeletePhotosModal', () => {
         expect(confirm.classList.contains('hidden')).toBe(true);
 
         // Simulate user selecting first photo and clicking delete button
-        await user.click(component.getAllByText(/Select/)[0]);
-        await user.click(component.getAllByText(/Delete/)[1]);
+        await user.click(component.getByTestId('select_photo_3'));
+        await user.click(component.getByTestId('delete_photos'))
 
         // Confirmation screen should now be visible, select should be hidden
         expect(select.classList.contains('hidden')).toBe(true);
@@ -98,17 +98,15 @@ describe('DeletePhotosModal', () => {
         }));
 
         // Simulate user selecting and then unselecting first photo
-        await user.click(component.getAllByText(/Select/)[0]);
-        await user.click(component.getAllByText(/Select/)[0]);
+        await user.click(component.getByTestId('select_photo_3'));
+        await user.click(component.getByTestId('select_photo_3'));
 
         // Simulate user selecting second photo
-        await user.click(component.getAllByText(/Select/)[1]);
+        await user.click(component.getByTestId('select_photo_2'));
 
-        // Simulate user clicking delete button
-        // First occurrence of "Delete" is title, second is delete button,
-        // third is "Confirm Delete" title, forth is confirm delete button
-        await user.click(component.getAllByText(/Delete/)[1]);
-        await user.click(component.getAllByText(/Delete/)[3]);
+        // Simulate user clicking delete button, confirm delete button
+        await user.click(component.getByTestId('delete_photos'))
+        await user.click(component.getByTestId('confirm_delete_photos'));
 
         // Confirm correct data posted to /delete_plant_photos endpoint
         // Should contain key of first photo but not second (unselected)
@@ -128,17 +126,17 @@ describe('DeletePhotosModal', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                "deleted": [1],
+                "deleted": [2],
                 "failed": []
             })
         }));
 
         // Simulate user selecting first 2 photos
-        await user.click(component.getAllByText(/Select/)[0]);
-        await user.click(component.getAllByText(/Select/)[1]);
+        await user.click(component.getByTestId('select_photo_3'));
+        await user.click(component.getByTestId('select_photo_2'));
 
         // Click first delete button
-        await user.click(component.getAllByText(/Delete/)[1]);
+        await user.click(component.getByTestId('delete_photos'))
 
         // Click X button next to first photo on confirmation screen
         const confirmScreen = component.getByText('Confirm Delete').parentElement;
@@ -146,7 +144,7 @@ describe('DeletePhotosModal', () => {
         await user.click(removeButton);
 
         // Click second delete button (confirm delete, makes API call)
-        await user.click(component.getAllByText(/Delete/)[3]);
+        await user.click(component.getByTestId('confirm_delete_photos'));
 
         // Confirm payload only includes key of second photo
         expect(fetch).toHaveBeenCalledWith('/delete_plant_photos', {
@@ -172,11 +170,9 @@ describe('DeletePhotosModal', () => {
         expect(component.queryByText(/failed to delete photos/)).toBeNull();
 
         // Simulate user deleting first photo in history
-        // First occurrence of "Delete" is title, second is delete button,
-        // third is "Confirm Delete" title, forth is confirm delete button
-        await user.click(component.getAllByText(/Select/)[0]);
-        await user.click(component.getAllByText(/Delete/)[1]);
-        await user.click(component.getAllByText(/Delete/)[3]);
+        await user.click(component.getByTestId('select_photo_3'));
+        await user.click(component.getByTestId('delete_photos'))
+        await user.click(component.getByTestId('confirm_delete_photos'));
 
         // Confirm modal appeared with arbitrary error text
         expect(component.queryByText(/failed to delete photos/)).not.toBeNull();
