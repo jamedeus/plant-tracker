@@ -26,6 +26,7 @@ describe('DeletePhotosModal', () => {
         createMockContext('events', {});
         createMockContext('notes', []);
         createMockContext('photos', mockContext.photos);
+        createMockContext('default_photo', mockContext.default_photo);
     });
 
     beforeEach(async () => {
@@ -91,16 +92,16 @@ describe('DeletePhotosModal', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                "deleted": [1],
+                "deleted": [2],
                 "failed": []
             })
         }));
 
-        // Simulate user selecting first photo
+        // Simulate user selecting and then unselecting first photo
+        await user.click(component.getAllByText(/Select/)[0]);
         await user.click(component.getAllByText(/Select/)[0]);
 
-        // Simulate user selecting and then unselecting second photo
-        await user.click(component.getAllByText(/Select/)[1]);
+        // Simulate user selecting second photo
         await user.click(component.getAllByText(/Select/)[1]);
 
         // Simulate user clicking delete button
@@ -115,7 +116,7 @@ describe('DeletePhotosModal', () => {
             method: 'POST',
             body: JSON.stringify({
                 "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                "delete_photos": [3]
+                "delete_photos": [2]
             }),
             headers: postHeaders
         });

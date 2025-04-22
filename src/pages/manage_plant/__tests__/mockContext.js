@@ -85,7 +85,14 @@ export const mockContext = {
             'thumbnail': '/media/thumbnails/photo3_thumb.jpg',
             'key': 3
         }
-    ]
+    ],
+    "default_photo":
+    {
+        'created': '2024-03-23T10:52:03+00:00',
+        'image': '/media/images/photo3.jpg',
+        'thumbnail': '/media/thumbnails/photo3_thumb.jpg',
+        'key': 3
+    }
 };
 
 export const mockContextNoEvents = {

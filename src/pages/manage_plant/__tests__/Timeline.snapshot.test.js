@@ -11,6 +11,7 @@ describe('Timeline', () => {
         createMockContext('notes', mockContext.notes);
         createMockContext('photos', mockphotos);
         createMockContext('user_accounts_enabled', true);
+        createMockContext('default_photo', mockContext.default_photo);
     });
 
     it('matches snapshot when plant is not archived', () => {

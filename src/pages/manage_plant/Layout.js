@@ -21,7 +21,7 @@ import clsx from 'clsx';
 function Layout() {
     // Get redux state (parsed from context set by django template)
     const plantDetails = useSelector((state) => state.plant.plantDetails);
-    const defaultPhoto = useSelector((state) => state.timeline.defaultPhoto);
+    const defaultPhotoUrl = useSelector((state) => state.timeline.defaultPhotoUrl);
 
     // Used to update redux store
     const dispatch = useDispatch();
@@ -78,7 +78,7 @@ function Layout() {
         return (
             <DetailsCard>
                 <div className="flex flex-col">
-                    {defaultPhoto && (
+                    {defaultPhotoUrl && (
                         <>
                             <div className="divider font-bold mt-0">
                                 Default Photo
@@ -94,7 +94,8 @@ function Layout() {
                                         "rounded-lg object-cover mx-auto relative",
                                         "w-[8rem] h-[8rem] md:w-[14rem] md:h-[14rem]"
                                     )}
-                                    src={defaultPhoto}
+                                    src={defaultPhotoUrl}
+                                    data-testid="defaultPhotoThumbnail"
                                 />
                                 <div className={clsx(
                                     "absolute bottom-2 right-2 h-8 w-8 min-h-8 min-w-8",
@@ -107,7 +108,7 @@ function Layout() {
                     )}
                     <div className={clsx(
                         "divider font-bold",
-                        !defaultPhoto && "mt-0"
+                        !defaultPhotoUrl && "mt-0"
                     )}>
                         Group
                     </div>
@@ -151,7 +152,7 @@ function Layout() {
                 />
             </DetailsCard>
         );
-    }, [plantDetails, defaultPhoto]);
+    }, [plantDetails, defaultPhotoUrl]);
 
     return (
         <div className="container flex flex-col items-center mx-auto mb-8">

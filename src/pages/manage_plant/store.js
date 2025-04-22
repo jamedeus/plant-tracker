@@ -110,14 +110,14 @@ export function ReduxProvider({ children }) {
         const eventsByType = parseDomContext("events");
         const photos = parseDomContext('photos');
         const notes = parseDomContext('notes');
+        const defaultPhoto = parseDomContext('default_photo');
+        // Copy default photo url (managed in timelineSlice with other photos)
+        const defaultPhotoUrl = plantDetails.thumbnail;
 
         // Build state objects
         const timelineDays = buildTimelineDays(eventsByType, notes, photos);
         const calendarDays = buildCalendarDays(timelineDays);
         const navigationOptions = buildNavigationOptions(timelineDays);
-
-        // Copy default photo url (managed in timelineSlice with other photos)
-        const defaultPhoto = plantDetails.thumbnail;
 
         // Return object with keys expected by plantSlice and timelineSlice
         return {
@@ -131,7 +131,8 @@ export function ReduxProvider({ children }) {
                 timelineDays,
                 photos,
                 navigationOptions,
-                defaultPhoto
+                defaultPhoto,
+                defaultPhotoUrl
             }
         };
     };

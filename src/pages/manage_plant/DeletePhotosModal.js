@@ -275,6 +275,7 @@ const DeletePhotosModal = () => {
                     <button
                         className="btn btn-error ml-2"
                         onClick={deleteSelected}
+                        data-testid="confirm_delete_photos"
                     >
                         Delete
                     </button>

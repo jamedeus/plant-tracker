@@ -90,8 +90,12 @@ export const timelineSlice = createSlice({
         photos: [],
         // Keys are year strings (YYYY), values are array of month strings (MM)
         navigationOptions: {},
-        // URL of default photo thumbnail (or null if no photos)
-        defaultPhoto: null
+        // Object with keys image, thumbnail, created, and key if default photo
+        // set, or null if default photo not set
+        defaultPhoto: null,
+        // Default photo thumbnail URL (most-recent photo if default not set,
+        // null if no photos exist)
+        defaultPhotoUrl: null
     },
     reducers: {
         // Takes object with timestamp and type keys, adds to events,
@@ -229,6 +233,11 @@ export const timelineSlice = createSlice({
             state.photos = state.photos.concat(photos).sort((a, b) => {
                 return a.created.localeCompare(b.created);
             }).reverse();
+
+            // If defaultPhoto not set: Use most-recent photo as default photo
+            if (!state.defaultPhoto) {
+                state.defaultPhotoUrl = state.photos[0].thumbnail;
+            }
         },
 
         // Takes array of deleted photo keys, removes from photos state and
@@ -251,11 +260,25 @@ export const timelineSlice = createSlice({
                 }
                 return true;
             });
+
+            // If last photo deleted: clear default photo states
+            if (!state.photos.length) {
+                state.defaultPhoto = null;
+                state.defaultPhotoUrl = null;
+            // If defaultPhoto not set: Use most-recent photo as default photo
+            } else if (!state.defaultPhoto) {
+                state.defaultPhotoUrl = state.photos[0].thumbnail;
+            // If defaultPhoto deleted: set defaultPhoto to most-recent photo
+            } else if (deletedKeys.includes(state.defaultPhoto?.key)) {
+                state.defaultPhotoUrl = state.photos[0].thumbnail;
+                state.defaultPhoto = null;
+            }
         },
 
-        // Takes URL of new default photo thumbnail
+        // Takes object with same keys as defaultPhoto state
         defaultPhotoChanged(state, action) {
             state.defaultPhoto = action.payload;
+            state.defaultPhotoUrl = action.payload.thumbnail;
         },
     },
     extraReducers: builder => {
