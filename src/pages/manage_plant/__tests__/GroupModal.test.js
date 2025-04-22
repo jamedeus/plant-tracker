@@ -1,5 +1,6 @@
 import React from 'react';
 import createMockContext from 'src/testUtils/createMockContext';
+import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import GroupModal, { openGroupModal } from '../GroupModal';
 import { ReduxProvider } from '../store';
 import { PageWrapper } from 'src/index';
@@ -8,10 +9,7 @@ import { mockContext } from './mockContext';
 describe('GroupModal', () => {
     beforeAll(() => {
         // Create mock state objects (used by ReduxProvider)
-        createMockContext('plant_details', mockContext.plant_details);
-        createMockContext('events', {});
-        createMockContext('notes', []);
-        createMockContext('photos', []);
+        bulkCreateMockContext(mockContext);
     });
 
     it('renders card for each object in group_options context', async () => {

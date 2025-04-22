@@ -1,4 +1,6 @@
 import createMockContext from 'src/testUtils/createMockContext';
+import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
+import { mockContext } from './mockContext';
 import { PageWrapper } from 'src/index';
 import App from '../App';
 
@@ -9,9 +11,11 @@ describe('App with empty database', () => {
 
     beforeAll(() => {
         // Create mock state objects
-        createMockContext('plants', []);
-        createMockContext('groups', []);
-        createMockContext('show_archived', false);
+        bulkCreateMockContext({ ...mockContext,
+            plants: [],
+            groups: [],
+            show_archived: false
+        });
         createMockContext('user_accounts_enabled', true);
     });
 

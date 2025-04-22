@@ -1,5 +1,5 @@
 import React from 'react';
-import createMockContext from 'src/testUtils/createMockContext';
+import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import DefaultPhotoModal, {
     openDefaultPhotoModal,
     closeDefaultPhotosModal
@@ -28,10 +28,7 @@ describe('DefaultPhotoModal', () => {
 
     beforeAll(() => {
         // Create mock state objects (used by ReduxProvider)
-        createMockContext('plant_details', mockContext.plant_details);
-        createMockContext('events', {});
-        createMockContext('notes', []);
-        createMockContext('photos', mockContext.photos);
+        bulkCreateMockContext(mockContext);
     });
 
     beforeEach(async () => {

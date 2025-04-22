@@ -1,5 +1,6 @@
 import React from 'react';
 import createMockContext from 'src/testUtils/createMockContext';
+import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import NoteModal, { openNoteModal } from '../NoteModal';
 import { ReduxProvider } from '../store';
 import { PageWrapper } from 'src/index';
@@ -29,11 +30,10 @@ describe('Add new note', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state objects (used by ReduxProvider)
-        createMockContext('plant_details', mockContext.plant_details);
-        createMockContext('events', {});
+        // Create mock state objects
+        bulkCreateMockContext(mockContext);
+        // Override notes state with mock containing more notes
         createMockContext('notes', mockNotes);
-        createMockContext('photos', []);
     });
 
     beforeEach(async () => {
@@ -150,11 +150,10 @@ describe('Edit existing note', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state object
-        createMockContext('plant_details', mockContext.plant_details);
-        createMockContext('events', {});
+        // Create mock state objects
+        bulkCreateMockContext(mockContext);
+        // Override notes state with mock containing more notes
         createMockContext('notes', mockNotes);
-        createMockContext('photos', []);
     });
 
     beforeEach(async () => {

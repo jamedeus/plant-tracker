@@ -1,4 +1,4 @@
-import createMockContext from 'src/testUtils/createMockContext';
+import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import DeletePhotosModal, { openDeletePhotosModal } from '../DeletePhotosModal';
 import { ReduxProvider } from '../store';
@@ -22,11 +22,7 @@ describe('DeletePhotosModal', () => {
 
     beforeAll(() => {
         // Create mock state objects (used by ReduxProvider)
-        createMockContext('plant_details', mockContext.plant_details);
-        createMockContext('events', {});
-        createMockContext('notes', []);
-        createMockContext('photos', mockContext.photos);
-        createMockContext('default_photo', mockContext.default_photo);
+        bulkCreateMockContext(mockContext);
     });
 
     beforeEach(async () => {
@@ -74,7 +70,7 @@ describe('DeletePhotosModal', () => {
 
         // Simulate user selecting first photo and clicking delete button
         await user.click(component.getByTestId('select_photo_3'));
-        await user.click(component.getByTestId('delete_photos'))
+        await user.click(component.getByTestId('delete_photos'));
 
         // Confirmation screen should now be visible, select should be hidden
         expect(select.classList.contains('hidden')).toBe(true);
@@ -105,7 +101,7 @@ describe('DeletePhotosModal', () => {
         await user.click(component.getByTestId('select_photo_2'));
 
         // Simulate user clicking delete button, confirm delete button
-        await user.click(component.getByTestId('delete_photos'))
+        await user.click(component.getByTestId('delete_photos'));
         await user.click(component.getByTestId('confirm_delete_photos'));
 
         // Confirm correct data posted to /delete_plant_photos endpoint
@@ -136,7 +132,7 @@ describe('DeletePhotosModal', () => {
         await user.click(component.getByTestId('select_photo_2'));
 
         // Click first delete button
-        await user.click(component.getByTestId('delete_photos'))
+        await user.click(component.getByTestId('delete_photos'));
 
         // Click X button next to first photo on confirmation screen
         const confirmScreen = component.getByText('Confirm Delete').parentElement;
@@ -171,7 +167,7 @@ describe('DeletePhotosModal', () => {
 
         // Simulate user deleting first photo in history
         await user.click(component.getByTestId('select_photo_3'));
-        await user.click(component.getByTestId('delete_photos'))
+        await user.click(component.getByTestId('delete_photos'));
         await user.click(component.getByTestId('confirm_delete_photos'));
 
         // Confirm modal appeared with arbitrary error text

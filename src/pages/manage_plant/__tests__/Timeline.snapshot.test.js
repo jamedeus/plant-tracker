@@ -1,4 +1,5 @@
 import createMockContext from 'src/testUtils/createMockContext';
+import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import Timeline from '../Timeline';
 import { ReduxProvider } from '../store';
 import { PageWrapper } from 'src/index';
@@ -7,17 +8,14 @@ import { mockContext, mockEvents, mockphotos } from './mockContext';
 describe('Timeline', () => {
     beforeAll(() => {
         // Create mock state objects
+        bulkCreateMockContext(mockContext);
+        // Overwrite events and photos with larger mocks (populate timeline)
         createMockContext('events', mockEvents);
-        createMockContext('notes', mockContext.notes);
         createMockContext('photos', mockphotos);
         createMockContext('user_accounts_enabled', true);
-        createMockContext('default_photo', mockContext.default_photo);
     });
 
     it('matches snapshot when plant is not archived', () => {
-        // Create mock plant_details context with archived=false
-        createMockContext('plant_details', mockContext.plant_details);
-
         // Render Timeline, confirm matches snapshot
         const component = render(
             <PageWrapper>

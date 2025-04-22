@@ -5,11 +5,13 @@ import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
 
 describe('App', () => {
-    it('matches snapshot', () => {
+    beforeEach(() => {
         // Create mock state objects
         bulkCreateMockContext(mockContext);
         createMockContext('user_accounts_enabled', true);
+    });
 
+    it('matches snapshot', () => {
         // Render App, confirm matches snapshot
         const component = render(
             <PageWrapper>
@@ -20,10 +22,6 @@ describe('App', () => {
     });
 
     it('matches snapshot when plant is archived', () => {
-        // Create mock state objects
-        bulkCreateMockContext(mockContext);
-        createMockContext('user_accounts_enabled', true);
-
         // Override plant_details state to simulate archived plant
         createMockContext('plant_details', {
             ...mockContext.plant_details, archived: true

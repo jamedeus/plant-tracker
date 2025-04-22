@@ -38,7 +38,6 @@ describe('NavbarDropdownOptions SINGLE_USER_MODE', () => {
         createMockContext('user_accounts_enabled', false);
 
         // Render component + create userEvent instance to use in tests
-        const user = userEvent.setup();
         const component = render(
             <PageWrapper>
                 <NavbarDropdownOptions />

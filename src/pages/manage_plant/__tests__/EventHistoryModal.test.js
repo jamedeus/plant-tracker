@@ -1,4 +1,5 @@
 import createMockContext from 'src/testUtils/createMockContext';
+import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import EventHistoryModal, { openEventHistoryModal } from '../EventHistoryModal';
 import { PageWrapper } from 'src/index';
@@ -17,10 +18,9 @@ describe('EventHistoryModal', () => {
         };
 
         // Create mock state objects (used by ReduxProvider)
-        createMockContext('plant_details', mockContext.plant_details);
+        bulkCreateMockContext(mockContext);
+        // Override events state with mock containing more events
         createMockContext('events', mockEvents);
-        createMockContext('notes', []);
-        createMockContext('photos', []);
     });
 
     beforeEach(async () => {
@@ -49,15 +49,15 @@ describe('EventHistoryModal', () => {
 
     it('disables delete button until at least one event selected', async() => {
         // Delete button should be disabled
-        expect(component.getByText('Delete')).toBeDisabled();
+        expect(component.getByRole('button', {name: 'Delete'})).toBeDisabled();
 
         // Select first water event, confirm delete button is enabled
         await user.click(component.getByText(/today/));
-        expect(component.getByText('Delete')).not.toBeDisabled();
+        expect(component.getByRole('button', {name: 'Delete'})).not.toBeDisabled();
 
         // Un-select event, confirm delete button is disabled
         await user.click(component.getByText(/today/));
-        expect(component.getByText('Delete')).toBeDisabled();
+        expect(component.getByRole('button', {name: 'Delete'})).toBeDisabled();
     });
 
     it('sends correct payload when events are deleted', async () => {
@@ -83,19 +83,19 @@ describe('EventHistoryModal', () => {
         await user.click(component.getByText(/yesterday/));
 
         // Switch to fertilize column, click first event
-        await user.click(component.getByText(/Fertilize/));
+        await user.click(component.getByRole('tab', {name: 'Fertilize'}));
         await user.click(component.getByText(/today/));
 
         // Switch to prune column, click first event
-        await user.click(component.getByText(/Prune/));
+        await user.click(component.getByRole('tab', {name: 'Prune'}));
         await user.click(component.getByText(/60 days ago/));
 
         // Switch to repot column, click first event
-        await user.click(component.getByText(/Repot/));
+        await user.click(component.getByRole('tab', {name: 'Repot'}));
         await user.click(component.getByText(/60 days ago/));
 
         // Click delete button
-        await user.click(component.getByText('Delete'));
+        await user.click(component.getByRole('button', {name: 'Delete'}));
 
         // Confirm correct data posted to /delete_plant_event endpoint
         expect(global.fetch).toHaveBeenCalledWith('/bulk_delete_plant_events', {
@@ -119,14 +119,14 @@ describe('EventHistoryModal', () => {
         expect(component.queryByText(/February 26/)).toBeNull();
 
         // Click fertilize button
-        await user.click(component.getByText(/Fertilize/));
+        await user.click(component.getByRole('tab', {name: 'Fertilize'}));
 
         // Confirm fertilize event date is visible, water event date is not
         expect(component.queryByText(/February 26/)).not.toBeNull();
         expect(component.queryByText(/February 29/)).toBeNull();
 
         // Click prune button
-        await user.click(component.getByText(/Prune/));
+        await user.click(component.getByRole('tab', {name: 'Prune'}));
 
         // Confirm neither date is visible (no prune events in mock context)
         expect(component.queryByText(/February 26/)).toBeNull();
@@ -147,7 +147,7 @@ describe('EventHistoryModal', () => {
 
         // Simulate user deleting first event in water history
         await user.click(component.getByText(/today/));
-        await user.click(component.getByText('Delete'));
+        await user.click(component.getByRole('button', {name: 'Delete'}));
 
         // Confirm modal appeared with arbitrary error text
         expect(component.queryByText(/failed to delete event/)).not.toBeNull();
@@ -169,12 +169,12 @@ describe('EventHistoryModal', () => {
 
         // Click first event in water column, confirm delete button enabled
         await user.click(component.getByText(/today/));
-        expect(component.getByText('Delete')).not.toBeDisabled();
+        expect(component.getByRole('button', {name: 'Delete'})).not.toBeDisabled();
 
         // Click delete button
-        await user.click(component.getByText('Delete'));
+        await user.click(component.getByRole('button', {name: 'Delete'}));
 
         // Confirm delete button is now disabled
-        expect(component.getByText('Delete')).toBeDisabled();
+        expect(component.getByRole('button', {name: 'Delete'})).toBeDisabled();
     });
 });

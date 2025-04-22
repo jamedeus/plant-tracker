@@ -1,4 +1,5 @@
 import createMockContext from 'src/testUtils/createMockContext';
+import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import { PageWrapper } from 'src/index';
 import App from '../App';
@@ -9,12 +10,14 @@ describe('App', () => {
 
     beforeAll(() => {
         // Create mock state objects (flip all archived bools to true)
-        createMockContext('plants', mockContext.plants.map(plant => (
-            { ...plant, archived: true }
-        )));
-        createMockContext('groups', mockContext.groups.map(group => (
-            { ...group, archived: true }
-        )));
+        bulkCreateMockContext({ ...mockContext,
+            plants: mockContext.plants.map(plant => (
+                { ...plant, archived: true }
+            )),
+            groups: mockContext.groups.map(group => (
+                { ...group, archived: true }
+            ))
+        });
         createMockContext('user_accounts_enabled', true);
 
         // Mock window.location to simulate archived overview

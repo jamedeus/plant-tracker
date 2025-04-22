@@ -1,5 +1,5 @@
 import React from 'react';
-import createMockContext from 'src/testUtils/createMockContext';
+import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import { fireEvent } from '@testing-library/react';
 import PhotoModal, { openPhotoModal } from '../PhotoModal';
 import { ReduxProvider } from '../store';
@@ -23,10 +23,7 @@ describe('PhotoModal', () => {
 
     beforeAll(() => {
         // Create mock state objects (used by ReduxProvider)
-        createMockContext('plant_details', mockContext.plant_details);
-        createMockContext('events', {});
-        createMockContext('notes', []);
-        createMockContext('photos', []);
+        bulkCreateMockContext(mockContext);
     });
 
     beforeEach(async () => {
