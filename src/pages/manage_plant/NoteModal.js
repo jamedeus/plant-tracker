@@ -45,6 +45,9 @@ const NoteModal = () => {
     // Ref to read value of timestamp input
     const timestampRef = useRef(null);
 
+    // Disable save button if text field empty or over character limit
+    const saveButtonDisabled = !noteText.length || noteText.length > 500;
+
     // Create ref for Modal component (used to show/hide)
     modalRef = useRef(null);
 
@@ -179,7 +182,7 @@ const NoteModal = () => {
                             <button
                                 className="btn btn-success"
                                 onClick={handleEdit}
-                                disabled={!noteText.length}
+                                disabled={saveButtonDisabled}
                             >
                                 Save
                             </button>
@@ -189,7 +192,7 @@ const NoteModal = () => {
                             <button
                                 className="btn btn-success"
                                 onClick={handleSubmit}
-                                disabled={!noteText.length}
+                                disabled={saveButtonDisabled}
                             >
                                 Save
                             </button>
