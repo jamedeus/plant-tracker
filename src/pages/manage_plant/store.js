@@ -111,8 +111,6 @@ export function ReduxProvider({ children }) {
         const photos = parseDomContext('photos');
         const notes = parseDomContext('notes');
         const defaultPhoto = parseDomContext('default_photo');
-        // Copy default photo url (managed in timelineSlice with other photos)
-        const defaultPhotoUrl = plantDetails.thumbnail;
 
         // Build state objects
         const timelineDays = buildTimelineDays(eventsByType, notes, photos);
@@ -131,8 +129,7 @@ export function ReduxProvider({ children }) {
                 timelineDays,
                 photos,
                 navigationOptions,
-                defaultPhoto,
-                defaultPhotoUrl
+                defaultPhoto
             }
         };
     };

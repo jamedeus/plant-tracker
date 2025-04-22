@@ -21,16 +21,19 @@ describe('Plant with no photos (no default photo set)', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state objects
-        bulkCreateMockContext(mockContext);
-        createMockContext('user_accounts_enabled', true);
-
-        // Override photos and default_photo to simulate plant with no photos
-        createMockContext('photos', []);
-        createMockContext('default_photo', null);
-        createMockContext('plant_details', {
-            ...mockContext.plant_details, thumbnail: null
+        // Create mock state objects (override photos and default_photo to
+        // simulate plant with no photos)
+        bulkCreateMockContext({ ...mockContext,
+            photos: [],
+            default_photo: { ...mockContext.default_photo,
+                set: false,
+                created: null,
+                image: null,
+                thumbnail: null,
+                key: null
+            }
         });
+        createMockContext('user_accounts_enabled', true);
     });
 
     beforeEach(() => {
@@ -92,16 +95,14 @@ describe('Plant with photos but no configured default photo', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state objects
-        bulkCreateMockContext(mockContext);
-        createMockContext('user_accounts_enabled', true);
-
-        // Override default_photo to simulate plant with photos but no
-        // configured default photo (uses most-recent as default)
-        createMockContext('default_photo', null);
-        createMockContext('plant_details', {
-            ...mockContext.plant_details, thumbnail: mockContext.photos[2].thumbnail
+        // Create mock state objects to simulate plant with photos but no
+        // default photo set (uses most-recent photo as default photo)
+        bulkCreateMockContext({ ...mockContext,
+            default_photo: { ...mockContext.default_photo,
+                set: false
+            }
         });
+        createMockContext('user_accounts_enabled', true);
     });
 
     beforeEach(() => {
@@ -222,8 +223,7 @@ describe('Plant with default photo configured', () => {
     let app, user;
 
     beforeAll(() => {
-        // Create mock state objects to simulate plant with photos and
-        // default photo configured
+        // Create mock state objects (has default photo set)
         bulkCreateMockContext(mockContext);
         createMockContext('user_accounts_enabled', true);
     });

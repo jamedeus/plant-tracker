@@ -49,6 +49,14 @@ class PlantModelTests(TestCase):
         # Create test datetime object for creating events
         self.timestamp = timezone.now()
 
+    def tearDown(self):
+        # Delete mock photos between tests to prevent duplicate names (django
+        # appends random string to keep unique, which makes testing difficult)
+        for i in os.listdir(os.path.join(settings.TEST_DIR, 'data', 'images', 'images')):
+            os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'images', i))
+        for i in os.listdir(os.path.join(settings.TEST_DIR, 'data', 'images', 'thumbnails')):
+            os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'thumbnails', i))
+
     def test_str_method(self):
         # Should return "Unnamed plant <num> (UUID)" when no params are set
         self.assertEqual(str(self.plant), f"Unnamed plant 1 ({self.plant.uuid})")
@@ -242,6 +250,56 @@ class PlantModelTests(TestCase):
 
         # Confirm get_thumbnail method now returns default photo thumbnail URL
         self.assertEqual(self.plant.get_thumbnail(), photo1.get_thumbnail_url())
+
+    def test_get_default_photo_details(self):
+        # Confirm returns empty template when no photos exist
+        self.assertEqual(
+            self.plant.get_default_photo_details(),
+            {
+                "set": False,
+                "created": None,
+                "image": None,
+                "thumbnail": None,
+                "key": None
+            }
+        )
+
+        # Create 2 mock photos for test plant
+        photo1 = Photo.objects.create(
+            photo=create_mock_photo('2024:02:21 10:52:03', 'IMG1.jpg'),
+            plant=self.plant
+        )
+        photo2 = Photo.objects.create(
+            photo=create_mock_photo('2024:03:22 10:52:03', 'IMG2.jpg'),
+            plant=self.plant
+        )
+
+        # Confirm returns details of most-recent photo with set = False
+        self.assertEqual(
+            self.plant.get_default_photo_details(),
+            {
+                "set": False,
+                "created": photo2.created.isoformat(),
+                "image": photo2.get_photo_url(),
+                "thumbnail": photo2.get_thumbnail_url(),
+                "key": photo2.pk
+            }
+        )
+
+        # Set older photo as default_photo
+        self.plant.default_photo = photo1
+
+        # Confirm returns details of configured default photo with set = True
+        self.assertEqual(
+            self.plant.get_default_photo_details(),
+            {
+                "set": True,
+                "created": photo1.created.isoformat(),
+                "image": photo1.get_photo_url(),
+                "thumbnail": photo1.get_thumbnail_url(),
+                "key": photo1.pk
+            }
+        )
 
     def test_set_invalid_default_photo(self):
         # Create second plant entry + photo associated with second plant

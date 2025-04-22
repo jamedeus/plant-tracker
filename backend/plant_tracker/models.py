@@ -300,6 +300,29 @@ class Plant(models.Model):
             'thumbnail': self.thumbnail_url
         }
 
+    def get_default_photo_details(self):
+        '''Returns dict containing set key (True if default photo set, False if
+        not set) and details of default photo (or most-recent if not set).
+        '''
+        if self.default_photo:
+            return dict(
+                {'set': True},
+                **self.default_photo.get_details()
+            )
+        try:
+            return dict(
+                {'set': False},
+                **self.photo_set.all().order_by('-created')[0].get_details()
+            )
+        except IndexError:
+            return {
+                'set': False,
+                'created': None,
+                'image': None,
+                'thumbnail': None,
+                'key': None
+            }
+
     def last_watered(self):
         '''Returns timestamp string of last WaterEvent, or None if no events'''
         last_event = self.waterevent_set.all().order_by('timestamp').last()

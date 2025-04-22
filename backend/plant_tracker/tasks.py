@@ -150,8 +150,7 @@ def build_manage_plant_state(uuid):
     state = {
         'plant_details': plant.get_details(),
         'photos': plant.get_photos(),
-        'default_photo': plant.default_photo.get_details()
-                         if plant.default_photo else None
+        'default_photo': plant.get_default_photo_details()
     }
 
     # Add all water and fertilize timestamps

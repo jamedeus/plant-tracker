@@ -90,12 +90,15 @@ export const timelineSlice = createSlice({
         photos: [],
         // Keys are year strings (YYYY), values are array of month strings (MM)
         navigationOptions: {},
-        // Object with keys image, thumbnail, created, and key if default photo
-        // set, or null if default photo not set
-        defaultPhoto: null,
-        // Default photo thumbnail URL (most-recent photo if default not set,
-        // null if no photos exist)
-        defaultPhotoUrl: null
+        // Object with set key (true if default photo set, false if not) and
+        // details of default photo (or most-recent photo if not set)
+        defaultPhoto: {
+            set: false,
+            created: null,
+            image: null,
+            thumbnail: null,
+            key: null
+        }
     },
     reducers: {
         // Takes object with timestamp and type keys, adds to events,
@@ -228,15 +231,15 @@ export const timelineSlice = createSlice({
                 }
             });
 
-            // Add new URLs to photoUrl state (used by DeletePhotoModal and
+            // Add new URLs to photos state (used by DeletePhotoModal and
             // DefaultPhotoModal)
             state.photos = state.photos.concat(photos).sort((a, b) => {
                 return a.created.localeCompare(b.created);
             }).reverse();
 
             // If defaultPhoto not set: Use most-recent photo as default photo
-            if (!state.defaultPhoto) {
-                state.defaultPhotoUrl = state.photos[0].thumbnail;
+            if (!state.defaultPhoto.set) {
+                state.defaultPhoto = { ...state.defaultPhoto, ...state.photos[0] };
             }
         },
 
@@ -261,24 +264,30 @@ export const timelineSlice = createSlice({
                 return true;
             });
 
-            // If last photo deleted: clear default photo states
+            // If last photo deleted: clear default photo state
             if (!state.photos.length) {
-                state.defaultPhoto = null;
-                state.defaultPhotoUrl = null;
+                state.defaultPhoto = {
+                    set: false,
+                    created: null,
+                    image: null,
+                    thumbnail: null,
+                    key: null
+                };
             // If defaultPhoto not set: Use most-recent photo as default photo
-            } else if (!state.defaultPhoto) {
-                state.defaultPhotoUrl = state.photos[0].thumbnail;
+            } else if (!state.defaultPhoto.set) {
+                state.defaultPhoto = { ...state.defaultPhoto, ...state.photos[0] };
             // If defaultPhoto deleted: set defaultPhoto to most-recent photo
             } else if (deletedKeys.includes(state.defaultPhoto?.key)) {
-                state.defaultPhotoUrl = state.photos[0].thumbnail;
-                state.defaultPhoto = null;
+                state.defaultPhoto = { set: false, ...state.photos[0] };
             }
         },
 
         // Takes object with same keys as defaultPhoto state
         defaultPhotoChanged(state, action) {
-            state.defaultPhoto = action.payload;
-            state.defaultPhotoUrl = action.payload.thumbnail;
+            state.defaultPhoto = {
+                set: true,
+                ...action.payload
+            };
         },
     },
     extraReducers: builder => {

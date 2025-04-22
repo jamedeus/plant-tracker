@@ -589,7 +589,13 @@ class HookTests(TestCase):
                     "repot": []
                 },
                 "photos": [],
-                "default_photo": None,
+                "default_photo": {
+                    "set": False,
+                    "created": None,
+                    "image": None,
+                    "thumbnail": None,
+                    "key": None
+                },
                 "notes": []
             }
         )

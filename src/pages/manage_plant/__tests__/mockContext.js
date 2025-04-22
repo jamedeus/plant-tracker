@@ -88,6 +88,7 @@ export const mockContext = {
     ],
     "default_photo":
     {
+        'set': true,
         'created': '2024-03-23T10:52:03+00:00',
         'image': '/media/images/photo3.jpg',
         'thumbnail': '/media/thumbnails/photo3_thumb.jpg',
@@ -147,7 +148,15 @@ export const mockContextNoEvents = {
         "Spider Plant",
         "Calathea"
     ],
-    "photos": []
+    "photos": [],
+    "default_photo":
+    {
+        'set': false,
+        'created': null,
+        'image': null,
+        'thumbnail': null,
+        'key': null
+    }
 };
 
 export const mockEvents = {
