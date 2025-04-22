@@ -257,12 +257,7 @@ class Plant(models.Model):
         timestamps, and database keys of each photo associated with this plant
         '''
         return [
-            {
-                'created': photo.created.isoformat(),
-                'image': photo.get_photo_url(),
-                'thumbnail': photo.get_thumbnail_url(),
-                'key': photo.pk
-            }
+            photo.get_details()
             for photo in self.photo_set.all().order_by('-created')
         ]
 
@@ -424,6 +419,15 @@ class Photo(models.Model):
     def get_thumbnail_url(self):
         '''Returns public URL of the reduced-resolution thumbnail'''
         return f'{settings.MEDIA_URL}{self.thumbnail.name}'
+
+    def get_details(self):
+        '''Returns dict with photo and thumnail urls, timestamp, and primary key'''
+        return {
+            'created': self.created.isoformat(),
+            'image': self.get_photo_url(),
+            'thumbnail': self.get_thumbnail_url(),
+            'key': self.pk
+        }
 
     def create_thumbnail(self):
         '''Generate a reduced-resolution image and write to the thumbnail field'''

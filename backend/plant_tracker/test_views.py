@@ -931,6 +931,7 @@ class ManagePageTests(TestCase):
                 },
                 'notes': [],
                 'photos': [],
+                'default_photo': None,
                 'group_options': [
                     {
                         'name': None,
