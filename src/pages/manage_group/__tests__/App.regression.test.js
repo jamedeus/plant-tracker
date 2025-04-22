@@ -1,5 +1,6 @@
 import { fireEvent } from '@testing-library/react';
 import createMockContext from 'src/testUtils/createMockContext';
+import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import { mockContext } from './mockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
@@ -10,9 +11,7 @@ describe('App', () => {
 
     beforeAll(() => {
         // Create mock state objects
-        createMockContext('group', mockContext.group);
-        createMockContext('details', mockContext.details);
-        createMockContext('options', mockContext.options);
+        bulkCreateMockContext(mockContext);
         createMockContext('user_accounts_enabled', true);
     });
 

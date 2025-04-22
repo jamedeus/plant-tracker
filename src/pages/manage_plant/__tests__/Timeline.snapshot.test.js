@@ -1,16 +1,10 @@
 import createMockContext from 'src/testUtils/createMockContext';
-import removeMockContext from 'src/testUtils/removeMockContext';
 import Timeline from '../Timeline';
 import { ReduxProvider } from '../store';
 import { PageWrapper } from 'src/index';
 import { mockContext, mockEvents, mockphotos } from './mockContext';
 
 describe('Timeline', () => {
-    // Delete mock context after each test (isolation)
-    afterEach(() => {
-        removeMockContext('plant_details');
-    });
-
     beforeAll(() => {
         // Create mock state objects
         createMockContext('events', mockEvents);

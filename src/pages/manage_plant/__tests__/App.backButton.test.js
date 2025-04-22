@@ -1,4 +1,5 @@
 import createMockContext from 'src/testUtils/createMockContext';
+import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import App from '../App';
 import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
@@ -6,12 +7,7 @@ import { mockContext } from './mockContext';
 describe('App', () => {
     it('does not stack pageshow listeners each time back button pressed', async () => {
         // Create mock state objects
-        createMockContext('plant_details', mockContext.plant_details);
-        createMockContext('events', mockContext.events);
-        createMockContext('notes', mockContext.notes);
-        createMockContext('group_options', mockContext.group_options);
-        createMockContext('species_options', mockContext.species_options);
-        createMockContext('photos', mockContext.photos);
+        bulkCreateMockContext(mockContext);
         createMockContext('user_accounts_enabled', true);
 
         // Mock fetch function to return expected response

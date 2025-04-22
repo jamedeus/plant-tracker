@@ -1,7 +1,6 @@
 import NavbarDropdownOptions from '../NavbarDropdownOptions';
 import { PageWrapper } from 'src/index';
 import createMockContext from 'src/testUtils/createMockContext';
-import removeMockContext from 'src/testUtils/removeMockContext';
 
 describe('NavbarDropdownOptions', () => {
     let component, user;
@@ -18,10 +17,6 @@ describe('NavbarDropdownOptions', () => {
                 <NavbarDropdownOptions />
             </PageWrapper>
         );
-    });
-
-    afterAll(() => {
-        removeMockContext('user_accounts_enabled');
     });
 
     it('redirects to overview when dropdown option is clicked', async () => {

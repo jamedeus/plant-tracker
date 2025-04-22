@@ -4059,11 +4059,6 @@ exports[`App matches snapshot when plant is archived 1`] = `
   "asFragment": [Function],
   "baseElement": <body>
     <div
-      id="plant_details"
-    >
-      {"name":"Test Plant","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be12","created":"2023-12-26T01:25:12+00:00","archived":true,"species":"Calathea","description":"This is a plant with a long description","pot_size":4,"last_watered":"2024-03-01T05:45:44+00:00","last_fertilized":"2024-03-01T05:45:44+00:00","display_name":"Test Plant","thumbnail":"/media/thumbnails/photo3_thumb.jpg","group":{"name":"Test group","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be14"}}
-    </div>
-    <div
       id="events"
     >
       {"water":["2024-03-01T15:45:44+00:00","2024-02-29T10:20:15+00:00"],"fertilize":["2024-03-01T15:45:44+00:00","2024-02-26T12:44:12+00:00"],"prune":[],"repot":[]}
@@ -4092,6 +4087,11 @@ exports[`App matches snapshot when plant is archived 1`] = `
       id="user_accounts_enabled"
     >
       true
+    </div>
+    <div
+      id="plant_details"
+    >
+      {"name":"Test Plant","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be12","created":"2023-12-26T01:25:12+00:00","archived":true,"species":"Calathea","description":"This is a plant with a long description","pot_size":4,"last_watered":"2024-03-01T05:45:44+00:00","last_fertilized":"2024-03-01T05:45:44+00:00","display_name":"Test Plant","thumbnail":"/media/thumbnails/photo3_thumb.jpg","group":{"name":"Test group","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be14"}}
     </div>
     <div>
       <div

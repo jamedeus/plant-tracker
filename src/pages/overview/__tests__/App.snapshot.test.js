@@ -1,5 +1,4 @@
 import createMockContext from 'src/testUtils/createMockContext';
-import removeMockContext from 'src/testUtils/removeMockContext';
 import { PageWrapper } from 'src/index';
 import App from '../App';
 import { mockContext } from './mockContext';
@@ -8,14 +7,6 @@ describe('App', () => {
     beforeAll(() => {
         // Mock page title (set by django template in prod)
         document.title = 'Plant Overview';
-    });
-
-    // Delete mock contexts after each test (isolation)
-    afterEach(() => {
-        removeMockContext('plants');
-        removeMockContext('groups');
-        removeMockContext('show_archive');
-        removeMockContext('user_accounts_enabled');
     });
 
     it('matches snapshot when plants and groups exist (desktop layout)', () => {

@@ -1,4 +1,5 @@
 import createMockContext from 'src/testUtils/createMockContext';
+import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import { PageWrapper } from 'src/index';
 import App from '../App';
 import { mockContext } from './mockContext';
@@ -8,9 +9,7 @@ jest.mock('print-js');
 describe('App', () => {
     it('does not stack pageshow listeners each time back button pressed', async () => {
         // Create mock state objects
-        createMockContext('plants', mockContext.plants);
-        createMockContext('groups', mockContext.groups);
-        createMockContext('show_archive', mockContext.show_archive);
+        bulkCreateMockContext(mockContext);
         createMockContext('user_accounts_enabled', true);
 
         // Mock fetch function to return expected response

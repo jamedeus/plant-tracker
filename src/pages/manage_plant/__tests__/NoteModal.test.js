@@ -153,7 +153,7 @@ describe('Edit existing note', () => {
         // Create mock state object
         createMockContext('plant_details', mockContext.plant_details);
         createMockContext('events', {});
-        createMockContext('notes', []);
+        createMockContext('notes', mockNotes);
         createMockContext('photos', []);
     });
 

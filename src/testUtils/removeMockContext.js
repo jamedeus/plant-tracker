@@ -2,7 +2,9 @@
 // Takes id of element to remove
 const removeMockContext = (id) => {
     const element = document.getElementById(id);
-    element.remove();
+    if (element) {
+        element.remove();
+    }
 };
 
 export default removeMockContext;

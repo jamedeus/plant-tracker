@@ -1,18 +1,9 @@
 import createMockContext from 'src/testUtils/createMockContext';
-import removeMockContext from 'src/testUtils/removeMockContext';
 import App from '../App';
 import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
 
 describe('App', () => {
-    // Delete mock contexts after each test (isolation)
-    afterEach(() => {
-        removeMockContext('type');
-        removeMockContext('instance');
-        removeMockContext('new_uuid');
-        removeMockContext('user_accounts_enabled');
-    });
-
     it('matches snapshot when changing plant QR code', () => {
         // Create mock state objects
         createMockContext('type', 'plant');
