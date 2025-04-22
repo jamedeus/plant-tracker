@@ -460,4 +460,73 @@ describe('App', () => {
         expect(app.container.querySelectorAll('.dot-water').length).toBe(1);
         expect(app.container.querySelectorAll('.fa-droplet').length).toBe(1);
     });
+
+    // Original bug: If multiple photos existed on the same day and the first
+    // photo (most-recent) was deleted the last photo would be removed instead,
+    // leaving the deleted photo in the timeline until the page was refreshed.
+    // This happened because a photo object from state.photos was passed to
+    // state.timelineDays[dateKey].photos.indexOf, which returned -1 since the
+    // object was not in the array (it was identical to an object in the array
+    // but not the same reference, so strict equality check failed), resulting
+    // in the last photo being deleted from the array.
+    it('removes the correct photo from timelineDays state when photos are deleted', async () => {
+        // Mock expected API response when 2 photos are uploaded
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                "uploaded": "2 photo(s)",
+                "failed": [],
+                "urls": [
+                    {
+                        "created": "2024-03-01T20:54:03+00:00",
+                        "image": "/media/images/photo1.jpg",
+                        "thumbnail": "/media/images/photo1_thumb.jpg",
+                        "key": 12
+                    },
+                    {
+                        "created": "2024-03-01T20:52:03+00:00",
+                        "image": "/media/images/photo2.jpg",
+                        "thumbnail": "/media/images/photo2_thumb.jpg",
+                        "key": 13
+                    }
+                ]
+            })
+        }));
+
+        // Simulate user opening photo modal, selecting 2 files, and submitting
+        await user.click(app.getByText('Add photos'));
+        const fileInput = app.getByTestId('photo-input');
+        fireEvent.change(fileInput, { target: { files: [
+            new File(['photo1'], 'photo1.jpg', { type: 'image/jpeg' }),
+            new File(['photo2'], 'photo2.jpg', { type: 'image/jpeg' })
+        ] } });
+        await user.click(app.getByText('Upload'));
+
+        // Confirm both photos rendered to the timeline
+        expect(app.getByTitle('12:52 PM - March 1, 2024')).not.toBeNull();
+        expect(app.getByTitle('12:54 PM - March 1, 2024')).not.toBeNull();
+
+        // Mock fetch to return expected response when newest photo is deleted
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                "deleted": [12],
+                "failed": []
+            })
+        }));
+
+        // Simulate user opening DeletePhotosModal, selecting first photo
+        await user.click(app.getByText('Delete photos'));
+        const modal = app.getByText('Delete Photos').parentElement;
+        await user.click(within(modal).getAllByText(/Select/)[0]);
+        // Simulate user clicking delete button, confirm delete button
+        await user.click(within(modal).getAllByRole("button", {name: "Delete"})[0]);
+        await user.click(app.getByTestId('confirm_delete_photos'));
+
+        // Confirm the deleted photo is no longer in the timeline
+        expect(app.getByTitle('12:52 PM - March 1, 2024')).not.toBeNull();
+        expect(app.queryByTitle('12:54 PM - March 1, 2024')).toBeNull();
+    });
 });
