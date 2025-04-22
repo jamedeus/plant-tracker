@@ -575,11 +575,15 @@ describe('App', () => {
                 "urls": [
                     {
                         "created": "2024-06-21T20:52:03+00:00",
-                        "url": "/media/images/photo1.jpg"
+                        "image": "/media/images/photo1.jpg",
+                        "thumbnail": "/media/images/photo1_thumb.jpg",
+                        "key": 12
                     },
                     {
                         "created": "2024-06-21T20:54:03+00:00",
-                        "url": "/media/images/photo2.jpg"
+                        "image": "/media/images/photo2.jpg",
+                        "thumbnail": "/media/images/photo2_thumb.jpg",
+                        "key": 13
                     }
                 ]
             })

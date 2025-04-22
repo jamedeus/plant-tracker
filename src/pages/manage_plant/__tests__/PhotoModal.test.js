@@ -50,11 +50,15 @@ describe('PhotoModal', () => {
                 "urls": [
                     {
                         "created": "2024-03-21T10:52:03+00:00",
-                        "url": "/media/images/photo1.jpg"
+                        "image": "/media/images/photo1.jpg",
+                        "thumbnail": "/media/images/photo1_thumb.jpg",
+                        "key": 12
                     },
                     {
                         "created": "2024-03-22T10:52:03+00:00",
-                        "url": "/media/images/photo2.jpg"
+                        "image": "/media/images/photo2.jpg",
+                        "thumbnail": "/media/images/photo2_thumb.jpg",
+                        "key": 13
                     }
                 ]
             })
@@ -98,7 +102,9 @@ describe('PhotoModal', () => {
                 "urls": [
                     {
                         "created": "2024-03-21T10:52:03",
-                        "url": "/media/images/photo1.jpg"
+                        "image": "/media/images/photo1.jpg",
+                        "thumbnail": "/media/images/photo1_thumb.jpg",
+                        "key": 12
                     }
                 ]
             })
