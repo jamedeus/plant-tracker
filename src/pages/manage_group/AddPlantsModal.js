@@ -46,7 +46,7 @@ const AddPlantsModal = memo(function AddPlantsModal({ options, addPlants }) {
                         Cancel
                     </button>
                     <button
-                        className="btn btn-success ml-2"
+                        className="btn btn-accent ml-2"
                         onClick={submit}
                     >
                         Add

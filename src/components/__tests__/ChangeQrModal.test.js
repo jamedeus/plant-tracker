@@ -43,7 +43,7 @@ describe('ChangeQrModal', () => {
         }));
 
         // Click OK button
-        await user.click(app.container.querySelector('.btn-success'));
+        await user.click(app.getByRole('button', {name: 'OK'}));
 
         // Confirm correct payload posted to /change_qr_code endpoint
         expect(fetch).toHaveBeenCalledWith('/change_qr_code', {
@@ -72,7 +72,7 @@ describe('ChangeQrModal', () => {
         expect(app.queryByText(/failed to cache UUID/)).toBeNull();
 
         // Click OK button
-        await user.click(app.container.querySelector('.btn-success'));
+        await user.click(app.getByRole('button', {name: 'OK'}));
 
         // Confirm modal appeared with arbitrary error text
         expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();

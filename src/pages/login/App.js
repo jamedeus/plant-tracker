@@ -89,7 +89,7 @@ const LoginForm = () => {
             </label>
 
             <button
-                className="btn btn-success mt-6"
+                className="btn btn-accent mt-6"
                 onClick={(e) => submit(e)}
                 disabled={!formValid}
                 tabIndex={1}
@@ -259,7 +259,7 @@ const RegisterForm = () => {
             </span>
 
             <button
-                className="btn btn-success mt-6"
+                className="btn btn-accent mt-6"
                 onClick={(e) => submit(e)}
                 disabled={!formValid}
                 tabIndex={1}

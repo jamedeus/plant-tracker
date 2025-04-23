@@ -107,7 +107,7 @@ const UserDetails = memo(function UserDetails() {
                 </div>
             </div>
             <button
-                className="btn btn-success mt-4"
+                className="btn btn-accent mt-4"
                 disabled={submitButtonDisabled}
                 onClick={submit}
                 tabIndex={1}
@@ -241,7 +241,7 @@ const ChangePassword = memo(function ChangePassword() {
             )}
 
             <button
-                className="btn btn-success mt-6"
+                className="btn btn-accent mt-6"
                 disabled={submitButtonDisabled}
                 onClick={(e) => submit(e)}
             >

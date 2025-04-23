@@ -180,7 +180,7 @@ const NoteModal = () => {
                                 Delete
                             </button>
                             <button
-                                className="btn btn-success"
+                                className="btn btn-accent"
                                 onClick={handleEdit}
                                 disabled={saveButtonDisabled}
                             >
@@ -190,7 +190,7 @@ const NoteModal = () => {
                     ) : (
                         <div className="modal-action mx-auto">
                             <button
-                                className="btn btn-success"
+                                className="btn btn-accent"
                                 onClick={handleSubmit}
                                 disabled={saveButtonDisabled}
                             >

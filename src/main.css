@@ -55,6 +55,11 @@
     opacity: 0.5;
 }
 
+/* Change input focus color, remove gap between outline and input */
+.input, .input-bordered, .textarea-bordered {
+    @apply focus:border-accent focus:outline-accent !outline-offset-0;
+}
+
 .max-h-half-screen {
     max-height: 50vh;
 }

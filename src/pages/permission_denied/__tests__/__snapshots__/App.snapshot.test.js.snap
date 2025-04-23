@@ -100,7 +100,7 @@ exports[`App matches snapshot 1`] = `
           You do not have permission to view this
         </div>
         <a
-          class="btn btn-success"
+          class="btn btn-accent"
           href="/"
           tabindex="1"
         >
@@ -231,7 +231,7 @@ exports[`App matches snapshot 1`] = `
         You do not have permission to view this
       </div>
       <a
-        class="btn btn-success"
+        class="btn btn-accent"
         href="/"
         tabindex="1"
       >

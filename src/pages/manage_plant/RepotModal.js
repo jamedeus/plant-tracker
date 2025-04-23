@@ -138,7 +138,7 @@ const RepotModal = () => {
                 </RadioGroup>
             </div>
 
-            <button className="btn btn-success mx-auto" onClick={submit}>
+            <button className="btn btn-accent mx-auto" onClick={submit}>
                 Repot
             </button>
         </Modal>

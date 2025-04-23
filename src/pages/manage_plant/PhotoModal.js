@@ -179,7 +179,7 @@ const PhotoModal = () => {
 
                 <div className="modal-action mx-auto">
                     <button
-                        className="btn btn-success"
+                        className="btn btn-accent"
                         onClick={handleSubmit}
                         disabled={!selectedFiles.length}
                     >

@@ -180,7 +180,7 @@ exports[`App matches snapshot 1`] = `
                   </div>
                 </div>
                 <button
-                  class="btn btn-success mt-4"
+                  class="btn btn-accent mt-4"
                   disabled=""
                   tabindex="1"
                 >
@@ -268,7 +268,7 @@ exports[`App matches snapshot 1`] = `
                   />
                 </label>
                 <button
-                  class="btn btn-success mt-6"
+                  class="btn btn-accent mt-6"
                   disabled=""
                 >
                   Change Password
@@ -489,7 +489,7 @@ exports[`App matches snapshot 1`] = `
                 </div>
               </div>
               <button
-                class="btn btn-success mt-4"
+                class="btn btn-accent mt-4"
                 disabled=""
                 tabindex="1"
               >
@@ -577,7 +577,7 @@ exports[`App matches snapshot 1`] = `
                 />
               </label>
               <button
-                class="btn btn-success mt-6"
+                class="btn btn-accent mt-6"
                 disabled=""
               >
                 Change Password
