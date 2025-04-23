@@ -288,7 +288,7 @@ describe('App', () => {
 
         // Select the first plant option, click Add button
         await user.click(addPlantsModal.querySelectorAll('label.cursor-pointer')[0]);
-        await user.click(addPlantsModal.querySelector('.btn-success'));
+        await user.click(app.getByRole('button', {name: 'Add'}));
 
         // Confirm correct data posted to /bulk_add_plants_to_group endpoint
         // Should only contain UUID of first plant
@@ -334,7 +334,7 @@ describe('App', () => {
 
         // Select the first plant option, click Remove button
         await user.click(removePlantsModal.querySelectorAll('label.cursor-pointer')[0]);
-        await user.click(removePlantsModal.querySelector('.btn-error'));
+        await user.click(app.getByRole('button', {name: 'Remove'}));
 
         // Confirm correct data posted to /bulk_remove_plants_from_group endpoint
         // Should only contain UUID of first plant

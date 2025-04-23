@@ -168,7 +168,7 @@ describe('App', () => {
         // Get reference to modal, select first plant option, click add button
         const addPlantsModal = app.getByText("Add Plants").parentElement;
         await user.click(addPlantsModal.querySelectorAll('label.cursor-pointer')[0]);
-        await user.click(addPlantsModal.querySelector('.btn-success'));
+        await user.click(app.getByRole('button', {name: 'Add'}));
 
         // Confirm payload contains UUID of first plant
         expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plants_to_group', {
@@ -184,7 +184,7 @@ describe('App', () => {
 
         // Reopen modal again, click add button again
         await user.click(app.getByText("Add plants"));
-        await user.click(addPlantsModal.querySelector('.btn-success'));
+        await user.click(app.getByRole('button', {name: 'Add'}));
 
         // Confirm payload contains no UUIDs (selected ref cleared)
         expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plants_to_group', {
@@ -218,7 +218,7 @@ describe('App', () => {
         // Get reference to modal, select first plant option, click Remove button
         const removePlantsModal = app.getByText("Remove Plants").parentElement;
         await user.click(removePlantsModal.querySelectorAll('label.cursor-pointer')[0]);
-        await user.click(removePlantsModal.querySelector('.btn-error'));
+        await user.click(app.getByRole('button', {name: 'Remove'}));
 
         // Confirm correct data posted to /bulk_remove_plants_from_group endpoint
         // Should only contain UUID of first plant
@@ -233,9 +233,9 @@ describe('App', () => {
             headers: postHeaders
         });
 
-        // Reopen modal again, click add button again
+        // Reopen modal again, click Remove button again
         await user.click(app.getByText("Remove plants"));
-        await user.click(removePlantsModal.querySelector('.btn-error'));
+        await user.click(app.getByRole('button', {name: 'Remove'}));
 
         // Confirm payload contains no UUIDs (selected ref cleared)
         expect(global.fetch).toHaveBeenCalledWith('/bulk_remove_plants_from_group', {
@@ -264,7 +264,7 @@ describe('App', () => {
         const removePlantsModal = app.getByText("Remove Plants").parentElement;
         await user.click(removePlantsModal.querySelectorAll('label.cursor-pointer')[0]);
 
-        // Mock fetch function to return expected response, click remove button
+        // Mock fetch function to return expected response, click Remove button
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
@@ -274,7 +274,7 @@ describe('App', () => {
                 "failed": []
             })
         }));
-        await user.click(removePlantsModal.querySelector('.btn-error'));
+        await user.click(app.getByRole('button', {name: 'Remove'}));
 
         // Mock fetch function to return expected response when third plant is
         // watered (first and third were selected but then first was removed)

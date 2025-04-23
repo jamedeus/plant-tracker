@@ -92,9 +92,7 @@ describe('App', () => {
         await user.click(app.getAllByText(/Repot plant/)[0]);
 
         // Click Repot Modal submit button
-        const repotModal = app.getAllByText(/Repot plant/)[1].parentNode;
-        const submit = repotModal.querySelector('.btn-success');
-        await user.click(submit);
+        await user.click(app.getByRole('button', {name: 'Repot'}));
 
         // Repot event should appear on calendar
         expect(calendar.querySelector('.dot-repot')).not.toBeNull();
@@ -192,7 +190,7 @@ describe('App', () => {
         // Open Note Modal, enter text (doesn't matter, will render text from
         // mock API response above), save first note
         await user.click(app.getByText('Add note'));
-        await user.type(app.container.querySelector('.textarea'), '.');
+        await user.type(app.getByRole('textbox'), '.');
         await user.click(app.getByText('Save'));
 
         // Simulate a second note with an earlier timestamp on the same day
@@ -210,7 +208,7 @@ describe('App', () => {
 
         // Save second note (created later, but earlier timestamp)
         await user.click(app.getByText('Add note'));
-        await user.type(app.container.querySelector('.textarea'), '.');
+        await user.type(app.getByRole('textbox'), '.');
         await user.click(app.getByText('Save'));
 
         // Get div wrapping both notes, get first and second child
@@ -273,9 +271,7 @@ describe('App', () => {
     // size value they could easily reset back to the initial pot size.
     it('updates pot size in EditModal form when plant is repotted', async () => {
         // Open edit modal
-        await user.click(within(
-            app.container.querySelector('.dropdown-center')
-        ).getByText("Edit"));
+        await user.click(app.getByRole('button', {name: 'Edit'}));
 
         // Confirm pot size field defaults to '4'
         expect(app.getByLabelText('Pot size').value).toBe('4');
@@ -290,8 +286,7 @@ describe('App', () => {
             })
         }));
         await user.click(app.getAllByText(/Repot plant/)[0]);
-        const repotModal = app.getAllByText(/Repot plant/)[1].parentElement;
-        await user.click(repotModal.querySelector('.btn-success'));
+        await user.click(app.getByRole('button', {name: 'Repot'}));
 
         // Confirm pot size field in EditModal changed to '6'
         expect(app.getByLabelText('Pot size').value).toBe('6');

@@ -85,7 +85,7 @@ describe('App', () => {
         // Simulate user selecting first plant in modal and clicking add
         const addPlantsModal = app.getByText("Add Plants").parentElement;
         await user.click(addPlantsModal.querySelectorAll('label.cursor-pointer')[0]);
-        await user.click(addPlantsModal.querySelector('.btn-success'));
+        await user.click(app.getByRole('button', {name: 'Add'}));
 
         // Confirm modal appeared with arbitrary error text
         expect(app.queryByText(/failed to add plants to group/)).not.toBeNull();
@@ -109,7 +109,7 @@ describe('App', () => {
         // Simulate user selecting first plant in modal and clicking remove
         const addPlantsModal = app.getByText("Remove Plants").parentElement;
         await user.click(addPlantsModal.querySelectorAll('label.cursor-pointer')[0]);
-        await user.click(addPlantsModal.querySelector('.btn-error'));
+        await user.click(app.getByRole('button', {name: 'Remove'}));
 
         // Confirm modal appeared with arbitrary error text
         expect(app.queryByText(/failed to remove plants from group/)).not.toBeNull();

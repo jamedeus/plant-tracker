@@ -62,8 +62,7 @@ describe('App', () => {
         expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).not.toBe(0);
 
         // Click cancel button, confirm buttons and checkboxes disappear
-        const buttonDiv = app.container.querySelector('.floating-footer');
-        await user.click(within(buttonDiv).getByText('Cancel'));
+        await user.click(app.getByRole('button', {name: 'Cancel'}));
         expect(floatingFooter.classList).toContain('floating-footer-hidden');
         expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(0);
     });

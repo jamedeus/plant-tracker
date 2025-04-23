@@ -98,9 +98,7 @@ describe('App', () => {
 
         // Simulate user submitting repot modal
         await user.click(app.getAllByText('Repot plant')[0]);
-        const repotModal = app.getAllByText(/Repot plant/)[1].parentElement;
-        const submit = repotModal.querySelector('.btn-success');
-        await user.click(submit);
+        await user.click(app.getByRole('button', {name: 'Repot'}));
 
         // Confirm modal appeared with arbitrary error text
         expect(app.queryByText(/failed to repot plant/)).not.toBeNull();

@@ -34,8 +34,7 @@ describe('App', () => {
         expect(app.queryByText('Group location')).toBeNull();
 
         // Click group button
-        const buttons = app.container.querySelector('.tab-group');
-        await user.click(within(buttons).getByText('Group'));
+        await user.click(app.getByRole('tab', {name: 'Group'}));
 
         // Confirm group form is visible
         expect(app.getByText('Group name').nodeName).toBe('SPAN');
@@ -46,7 +45,7 @@ describe('App', () => {
         expect(app.queryByText('Pot size')).toBeNull();
 
         // Click plant button
-        await user.click(within(buttons).getByText('Plant'));
+        await user.click(app.getByRole('tab', {name: 'Plant'}));
 
         // Confirm plant form is visible
         expect(app.getByText('Plant name').nodeName).toBe('SPAN');

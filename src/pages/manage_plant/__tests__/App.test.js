@@ -39,9 +39,7 @@ describe('App', () => {
         }));
 
         // Open edit modal
-        await user.click(within(
-            app.container.querySelector('.dropdown-center')
-        ).getByText("Edit"));
+        await user.click(app.getByRole('button', {name: 'Edit'}));
 
         // Click submit button inside edit modal
         const modal = app.getByText("Edit Details").parentElement;
@@ -227,12 +225,8 @@ describe('App', () => {
         // Click "Repot plant" dropdown option (open modal)
         await user.click(app.getAllByText(/Repot plant/)[0]);
 
-        // Get reference to Repot Modal + submit button
-        const repotModal = app.getAllByText(/Repot plant/)[1].parentElement;
-        const submit = repotModal.querySelector('.btn-success');
-
         // Click submit button
-        await user.click(submit);
+        await user.click(app.getByRole('button', {name: 'Repot'}));
 
         // Confirm correct data posted to /repot_plant endpoint
         expect(global.fetch).toHaveBeenCalledWith('/repot_plant', {
@@ -259,17 +253,13 @@ describe('App', () => {
         // Click "Repot plant" dropdown option (open modal)
         await user.click(app.getAllByText(/Repot plant/)[0]);
 
-        // Get reference to Repot Modal + submit button
-        const repotModal = app.getAllByText(/Repot plant/)[1].parentElement;
-        const submit = repotModal.querySelector('.btn-success');
-
         // Click custom pot size option, enter "5"
-        const customPotSize = repotModal.querySelector('.pot-size.w-32');
+        const customPotSize = app.container.querySelector('.pot-size.w-32');
         await user.click(customPotSize);
         await user.type(customPotSize, '5');
 
         // Click submit button
-        await user.click(submit);
+        await user.click(app.getByRole('button', {name: 'Repot'}));
 
         // Confirm payload includes custom pot size
         expect(global.fetch).toHaveBeenCalledWith('/repot_plant', {
@@ -476,10 +466,7 @@ describe('App', () => {
         await user.click(app.getByText('Add note'));
 
         // Simulate user typing new note and clicking save
-        await user.type(
-            app.container.querySelector('.textarea'),
-            '  Started flowering  '
-        );
+        await user.type(app.getByRole('textbox'), '  Started flowering  ');
         await user.click(app.getByText('Save'));
 
         // Confirm note text appeared on page
@@ -518,10 +505,7 @@ describe('App', () => {
             'One of the older leaves is starting to turn yellow'
         ).parentElement.parentElement.children[0];
         await user.click(editButton);
-        await user.type(
-            app.container.querySelector('.textarea'),
-            ', pinched it off'
-        );
+        await user.type(app.getByRole('textbox'), ', pinched it off');
         await user.click(app.getByText('Save'));
 
         // Confirm new text was added to note

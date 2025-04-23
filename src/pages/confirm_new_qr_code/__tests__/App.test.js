@@ -35,7 +35,7 @@ describe('App', () => {
         }));
 
         // Click confirm button
-        await user.click(app.container.querySelector('.btn-success'));
+        await user.click(app.getByTitle('Change QR code'));
 
         // Confirm correct data posted to /change_uuid endpoint
         expect(global.fetch).toHaveBeenCalledWith('/change_uuid', {
@@ -64,7 +64,7 @@ describe('App', () => {
         expect(app.queryByText(/failed to change QR code/)).toBeNull();
 
         // Click confirm button
-        await user.click(app.container.querySelector('.btn-success'));
+        await user.click(app.getByTitle('Change QR code'));
 
         // Confirm modal appeared with arbitrary error text
         expect(app.queryByText(/failed to change QR code/)).not.toBeNull();
@@ -82,7 +82,7 @@ describe('App', () => {
         }));
 
         // Click confirm button
-        await user.click(app.container.querySelector('.btn-success'));
+        await user.click(app.getByTitle('Change QR code'));
 
         // Confirm redirected
         expect(window.location.href).toBe('/accounts/login/');
@@ -90,7 +90,7 @@ describe('App', () => {
 
     it('redirects to overview when cancel button is clicked', async () => {
         // Click cancel button, confirm redirected
-        await user.click(app.container.querySelector('.btn-error'));
+        await user.click(app.getByTitle("Don't change QR code"));
         expect(window.location.href).toBe('/');
     });
 

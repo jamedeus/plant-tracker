@@ -64,7 +64,7 @@ describe('Add new note', () => {
 
         // Simulate user entering note text and clicking save
         await user.type(
-            app.container.querySelector('.textarea'),
+            app.getByRole('textbox'),
             'Some leaves turning yellow, probably watering too often'
         );
         await user.click(app.getByText('Save'));
@@ -96,7 +96,7 @@ describe('Add new note', () => {
 
         // Simulate user typing note and clicking save
         await user.type(
-            app.container.querySelector('.textarea'),
+            app.getByRole('textbox'),
             'Some leaves turning yellow, probably watering too often'
         );
         await user.click(app.getByText('Save'));
@@ -118,7 +118,7 @@ describe('Add new note', () => {
 
         // Simulate user typing note and clicking save
         await user.type(
-            app.container.querySelector('.textarea'),
+            app.getByRole('textbox'),
             'Some leaves turning yellow, probably watering too often'
         );
         await user.click(app.getByText('Save'));
@@ -126,21 +126,17 @@ describe('Add new note', () => {
 
     it('field and character count turn red if character limit exceeded', async() => {
         // Confirm field and character count are not red
-        expect(
-            app.container.querySelector('.textarea').classList
-        ).not.toContain('textarea-error');
+        expect(app.getByRole('textbox').classList).not.toContain('textarea-error');
         expect(app.getByText('0 / 500').classList).not.toContain('text-error');
 
         // Simulate user typing 505 characters
         await user.type(
-            app.container.querySelector('.textarea'),
+            app.getByRole('textbox'),
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tristique, nulla vel feugiat venenatis, eros quam pellentesque ipsum, ut venenatis libero ex nec lectus. Vestibulum maximus ullamcorper placerat. Sed porttitor eleifend suscipit. In cursus tempus mi, nec condimentum quam porttitor et. Cras elementum maximus neque eu efficitur. Pellentesque sit amet ante finibus, egestas urna ut, iaculis justo. Phasellus eget nibh imperdiet, tincidunt sapien a, blandit ex. Fusce sed euismod nisi. Phasellus'
         );
 
         // Confirm field and character count turned red
-        expect(
-            app.container.querySelector('.textarea').classList
-        ).toContain('textarea-error');
+        expect(app.getByRole('textbox').classList).toContain('textarea-error');
         expect(app.getByText('505 / 500').classList).toContain('text-error');
     });
 });
@@ -208,10 +204,7 @@ describe('Edit existing note', () => {
         }));
 
         // Simulate user adding more note text and clicking save
-        await user.type(
-            app.container.querySelector('.textarea'),
-            ' some more details'
-        );
+        await user.type(app.getByRole('textbox'), ' some more details');
         await user.click(app.getByText('Save'));
 
         // Confirm correct data posted to /add_plant_note endpoint

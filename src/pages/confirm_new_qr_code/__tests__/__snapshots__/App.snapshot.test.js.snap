@@ -141,6 +141,7 @@ exports[`App matches snapshot when changing group QR code 1`] = `
           >
             <button
               class="btn btn-error btn-square text-white"
+              title="Don't change QR code"
             >
               <svg
                 aria-hidden="true"
@@ -160,6 +161,7 @@ exports[`App matches snapshot when changing group QR code 1`] = `
             </button>
             <button
               class="btn btn-success btn-square text-white"
+              title="Change QR code"
             >
               <svg
                 aria-hidden="true"
@@ -335,6 +337,7 @@ exports[`App matches snapshot when changing group QR code 1`] = `
         >
           <button
             class="btn btn-error btn-square text-white"
+            title="Don't change QR code"
           >
             <svg
               aria-hidden="true"
@@ -354,6 +357,7 @@ exports[`App matches snapshot when changing group QR code 1`] = `
           </button>
           <button
             class="btn btn-success btn-square text-white"
+            title="Change QR code"
           >
             <svg
               aria-hidden="true"
@@ -642,6 +646,7 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
           >
             <button
               class="btn btn-error btn-square text-white"
+              title="Don't change QR code"
             >
               <svg
                 aria-hidden="true"
@@ -661,6 +666,7 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
             </button>
             <button
               class="btn btn-success btn-square text-white"
+              title="Change QR code"
             >
               <svg
                 aria-hidden="true"
@@ -872,6 +878,7 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
         >
           <button
             class="btn btn-error btn-square text-white"
+            title="Don't change QR code"
           >
             <svg
               aria-hidden="true"
@@ -891,6 +898,7 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
           </button>
           <button
             class="btn btn-success btn-square text-white"
+            title="Change QR code"
           >
             <svg
               aria-hidden="true"
