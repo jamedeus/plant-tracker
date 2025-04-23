@@ -40,7 +40,7 @@ exports[`App matches snapshot when changing group QR code 1`] = `
               tabindex="0"
             >
               <svg
-                class="h-5 w-5"
+                class="size-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -145,7 +145,7 @@ exports[`App matches snapshot when changing group QR code 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-xmark h-6 w-6"
+                class="svg-inline--fa fa-xmark size-6"
                 data-icon="xmark"
                 data-prefix="fas"
                 focusable="false"
@@ -165,7 +165,7 @@ exports[`App matches snapshot when changing group QR code 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-check h-6 w-6"
+                class="svg-inline--fa fa-check size-6"
                 data-icon="check"
                 data-prefix="fas"
                 focusable="false"
@@ -196,7 +196,7 @@ exports[`App matches snapshot when changing group QR code 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-8 h-8"
+                class="size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -236,7 +236,7 @@ exports[`App matches snapshot when changing group QR code 1`] = `
             tabindex="0"
           >
             <svg
-              class="h-5 w-5"
+              class="size-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -341,7 +341,7 @@ exports[`App matches snapshot when changing group QR code 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-xmark h-6 w-6"
+              class="svg-inline--fa fa-xmark size-6"
               data-icon="xmark"
               data-prefix="fas"
               focusable="false"
@@ -361,7 +361,7 @@ exports[`App matches snapshot when changing group QR code 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-check h-6 w-6"
+              class="svg-inline--fa fa-check size-6"
               data-icon="check"
               data-prefix="fas"
               focusable="false"
@@ -392,7 +392,7 @@ exports[`App matches snapshot when changing group QR code 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="w-8 h-8"
+              class="size-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"
@@ -509,7 +509,7 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
               tabindex="0"
             >
               <svg
-                class="h-5 w-5"
+                class="size-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -650,7 +650,7 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-xmark h-6 w-6"
+                class="svg-inline--fa fa-xmark size-6"
                 data-icon="xmark"
                 data-prefix="fas"
                 focusable="false"
@@ -670,7 +670,7 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="svg-inline--fa fa-check h-6 w-6"
+                class="svg-inline--fa fa-check size-6"
                 data-icon="check"
                 data-prefix="fas"
                 focusable="false"
@@ -701,7 +701,7 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-8 h-8"
+                class="size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -741,7 +741,7 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
             tabindex="0"
           >
             <svg
-              class="h-5 w-5"
+              class="size-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -882,7 +882,7 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-xmark h-6 w-6"
+              class="svg-inline--fa fa-xmark size-6"
               data-icon="xmark"
               data-prefix="fas"
               focusable="false"
@@ -902,7 +902,7 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="svg-inline--fa fa-check h-6 w-6"
+              class="svg-inline--fa fa-check size-6"
               data-icon="check"
               data-prefix="fas"
               focusable="false"
@@ -933,7 +933,7 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="w-8 h-8"
+              class="size-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"

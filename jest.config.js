@@ -19,7 +19,8 @@ module.exports = {
         'src/main.css',
         'src/calendar.css',
         'src/testUtils/',
-        'mockContext.js'
+        'mockContext.js',
+        'tailwind.config.js'
     ],
     testPathIgnorePatterns: ['mockContext.js'],
     setupFilesAfterEnv: ['<rootDir>/src/testUtils/jest.setup.js'],

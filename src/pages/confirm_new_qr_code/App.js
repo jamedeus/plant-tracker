@@ -31,14 +31,14 @@ const Layout = ({ type, thumbnailUrl, handleConfirm }) => {
                     onClick={() => window.location.href = "/"}
                     title="Don't change QR code"
                 >
-                    <FontAwesomeIcon className="h-6 w-6" icon={faXmark} />
+                    <FontAwesomeIcon className="size-6" icon={faXmark} />
                 </button>
                 <button
                     className="btn btn-success btn-square text-white"
                     onClick={handleConfirm}
                     title="Change QR code"
                 >
-                    <FontAwesomeIcon className="h-6 w-6" icon={faCheck} />
+                    <FontAwesomeIcon className="size-6" icon={faCheck} />
                 </button>
             </div>
         </div>

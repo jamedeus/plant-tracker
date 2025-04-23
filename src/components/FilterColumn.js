@@ -74,10 +74,10 @@ const reducer = (state, action) => {
 const ClearButton = ({ onClick }) => {
     return (
         <button
-            className="btn-close h-8 w-8 no-animation"
+            className="btn-close size-8 no-animation"
             onClick={onClick}
         >
-            <XMarkIcon className="w-7 h-7 m-auto" />
+            <XMarkIcon className="size-7 m-auto" />
         </button>
     );
 };
@@ -107,9 +107,9 @@ const SortMenu = ({ sortByKeys, state, setSort }) => {
             <div
                 role="button"
                 tabIndex="0"
-                className="btn-close h-8 w-8 no-animation"
+                className="btn-close size-8 no-animation"
             >
-                <ArrowsUpDownIcon className="w-5 h-5 m-auto" />
+                <ArrowsUpDownIcon className="size-5 m-auto" />
             </div>
             <ul tabIndex={0} className="dropdown-options mt-2 w-min-content">
                 {sortByKeys.map((key) => (

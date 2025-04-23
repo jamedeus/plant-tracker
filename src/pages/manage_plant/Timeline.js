@@ -68,7 +68,7 @@ const Title = memo(function Title() {
                         >
                             <FontAwesomeIcon
                                 icon={faEllipsis}
-                                className="w-6 h-6"
+                                className="size-6"
                             />
                         </div>
                         <ul tabIndex={0} className="dropdown-options w-40">
@@ -284,10 +284,7 @@ const PhotoThumbnail = memo(function PhotoThumbnail({ thumbnailUrl, photoUrl, ti
             >
                 <img
                     loading="lazy"
-                    className={clsx(
-                        'rounded-lg m-2 object-cover w-[4.9rem] h-[4.9rem]',
-                        'md:w-[5.4rem] md:h-[5.4rem]'
-                    )}
+                    className='photo-thumbnail m-2 size-[4.9rem] md:size-[5.4rem]'
                     src={thumbnailUrl}
                 />
             </div>
@@ -341,7 +338,7 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
             <FontAwesomeIcon
                 icon={faPenToSquare}
                 className={clsx(
-                    'w-4 h-4 mr-2 mt-1',
+                    'size-4 mr-2 mt-1',
                     !archived && 'cursor-pointer'
                 )}
                 onClick={archived ? null : () => openNoteModal(note)}

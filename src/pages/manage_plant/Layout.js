@@ -91,17 +91,20 @@ function Layout() {
                                 <img
                                     loading="lazy"
                                     className={clsx(
-                                        "rounded-lg object-cover mx-auto relative",
-                                        "w-[8rem] h-[8rem] md:w-[14rem] md:h-[14rem]"
+                                        "photo-thumbnail mx-auto",
+                                        "size-[8rem] md:size-[14rem]"
                                     )}
                                     src={defaultPhoto.thumbnail}
                                     data-testid="defaultPhotoThumbnail"
                                 />
                                 <div className={clsx(
-                                    "absolute bottom-2 right-2 h-8 w-8 min-h-8 min-w-8",
+                                    "absolute bottom-2 right-2 size-8 min-size-8",
                                     "btn btn-square bg-base-200/60 border-none"
                                 )}>
-                                    <FontAwesomeIcon className='w-3 h-3' icon={faPen} />
+                                    <FontAwesomeIcon
+                                        className='size-3'
+                                        icon={faPen}
+                                    />
                                 </div>
                             </div>
                         </>

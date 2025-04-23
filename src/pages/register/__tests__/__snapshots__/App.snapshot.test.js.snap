@@ -35,7 +35,7 @@ exports[`App matches snapshot 1`] = `
               tabindex="0"
             >
               <svg
-                class="h-5 w-5"
+                class="size-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -260,7 +260,7 @@ exports[`App matches snapshot 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-8 h-8"
+                class="size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -300,7 +300,7 @@ exports[`App matches snapshot 1`] = `
             tabindex="0"
           >
             <svg
-              class="h-5 w-5"
+              class="size-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -525,7 +525,7 @@ exports[`App matches snapshot 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="w-8 h-8"
+              class="size-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"

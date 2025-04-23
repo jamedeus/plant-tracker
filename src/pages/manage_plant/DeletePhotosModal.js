@@ -27,11 +27,11 @@ export const closeDeletePhotosModal = () => {
 };
 
 const NextPhotoIcon = memo(function NextPhotoIcon() {
-    return <ChevronRightIcon className="w-6 h-6" />;
+    return <ChevronRightIcon className="size-6" />;
 });
 
 const PrevPhotoIcon = memo(function PrevPhotoIcon() {
-    return <ChevronLeftIcon className="w-6 h-6" />;
+    return <ChevronLeftIcon className="size-6" />;
 });
 
 // Renders single photo slide with next, prev, and select buttons

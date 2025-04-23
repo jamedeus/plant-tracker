@@ -48,10 +48,10 @@ const PhotoSlide = memo(function PhotoSlide({
                 'left-5 right-5 top-1/2'
             )}>
                 <a href={prevPhotoLink} className="btn btn-circle">
-                    <ChevronLeftIcon className="w-6 h-6" />
+                    <ChevronLeftIcon className="size-6" />
                 </a>
                 <a href={nextPhotoLink} className="btn btn-circle">
-                    <ChevronRightIcon className="w-6 h-6" />
+                    <ChevronRightIcon className="size-6" />
                 </a>
             </div>
             <div className="absolute flex bottom-5 -translate-x-1/2 left-1/2">

@@ -40,7 +40,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
               tabindex="0"
             >
               <svg
-                class="h-5 w-5"
+                class="size-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -170,13 +170,13 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                         class="dropdown dropdown-end"
                       >
                         <div
-                          class="btn-close h-8 w-8 no-animation"
+                          class="btn-close size-8 no-animation"
                           role="button"
                           tabindex="0"
                         >
                           <svg
                             aria-hidden="true"
-                            class="w-5 h-5 m-auto"
+                            class="size-5 m-auto"
                             data-slot="icon"
                             fill="currentColor"
                             viewBox="0 0 16 16"
@@ -270,16 +270,16 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                           type="checkbox"
                         />
                         <div
-                          class="collapse-title !p-0 min-w-0 min-h-0"
+                          class="collapse-title !p-0 min-size-0"
                         >
                           <div
                             class="card card-side text-neutral-content relative"
                           >
                             <figure
-                              class="h-24 w-20 min-h-20 min-w-20 rounded-b-none"
+                              class="h-24 w-20 min-size-20 rounded-b-none"
                             >
                               <img
-                                class="w-full h-full object-cover"
+                                class="size-full object-cover"
                                 loading="lazy"
                                 src="/media/thumbnails/photo_thumb.jpg"
                               />
@@ -322,7 +322,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                             >
                               <svg
                                 aria-hidden="true"
-                                class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
+                                class="size-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                                 data-slot="icon"
                                 fill="currentColor"
                                 viewBox="0 0 16 16"
@@ -421,13 +421,13 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                         class="dropdown dropdown-end"
                       >
                         <div
-                          class="btn-close h-8 w-8 no-animation"
+                          class="btn-close size-8 no-animation"
                           role="button"
                           tabindex="0"
                         >
                           <svg
                             aria-hidden="true"
-                            class="w-5 h-5 m-auto"
+                            class="size-5 m-auto"
                             data-slot="icon"
                             fill="currentColor"
                             viewBox="0 0 16 16"
@@ -514,7 +514,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                           type="checkbox"
                         />
                         <div
-                          class="collapse-title !p-0 min-w-0 min-h-0"
+                          class="collapse-title !p-0 min-size-0"
                         >
                           <div
                             class="card card-side text-neutral-content relative"
@@ -541,7 +541,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                             >
                               <svg
                                 aria-hidden="true"
-                                class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
+                                class="size-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                                 data-slot="icon"
                                 fill="currentColor"
                                 viewBox="0 0 16 16"
@@ -624,7 +624,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
               >
                 <svg
                   aria-hidden="true"
-                  class="w-8 h-8"
+                  class="size-8"
                   data-slot="icon"
                   fill="currentColor"
                   viewBox="0 0 16 16"
@@ -666,7 +666,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
             >
               <svg
                 aria-hidden="true"
-                class="w-8 h-8"
+                class="size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -706,7 +706,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
             tabindex="0"
           >
             <svg
-              class="h-5 w-5"
+              class="size-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -836,13 +836,13 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                       class="dropdown dropdown-end"
                     >
                       <div
-                        class="btn-close h-8 w-8 no-animation"
+                        class="btn-close size-8 no-animation"
                         role="button"
                         tabindex="0"
                       >
                         <svg
                           aria-hidden="true"
-                          class="w-5 h-5 m-auto"
+                          class="size-5 m-auto"
                           data-slot="icon"
                           fill="currentColor"
                           viewBox="0 0 16 16"
@@ -936,16 +936,16 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                         type="checkbox"
                       />
                       <div
-                        class="collapse-title !p-0 min-w-0 min-h-0"
+                        class="collapse-title !p-0 min-size-0"
                       >
                         <div
                           class="card card-side text-neutral-content relative"
                         >
                           <figure
-                            class="h-24 w-20 min-h-20 min-w-20 rounded-b-none"
+                            class="h-24 w-20 min-size-20 rounded-b-none"
                           >
                             <img
-                              class="w-full h-full object-cover"
+                              class="size-full object-cover"
                               loading="lazy"
                               src="/media/thumbnails/photo_thumb.jpg"
                             />
@@ -988,7 +988,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                           >
                             <svg
                               aria-hidden="true"
-                              class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
+                              class="size-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                               data-slot="icon"
                               fill="currentColor"
                               viewBox="0 0 16 16"
@@ -1087,13 +1087,13 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                       class="dropdown dropdown-end"
                     >
                       <div
-                        class="btn-close h-8 w-8 no-animation"
+                        class="btn-close size-8 no-animation"
                         role="button"
                         tabindex="0"
                       >
                         <svg
                           aria-hidden="true"
-                          class="w-5 h-5 m-auto"
+                          class="size-5 m-auto"
                           data-slot="icon"
                           fill="currentColor"
                           viewBox="0 0 16 16"
@@ -1180,7 +1180,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                         type="checkbox"
                       />
                       <div
-                        class="collapse-title !p-0 min-w-0 min-h-0"
+                        class="collapse-title !p-0 min-size-0"
                       >
                         <div
                           class="card card-side text-neutral-content relative"
@@ -1207,7 +1207,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                           >
                             <svg
                               aria-hidden="true"
-                              class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
+                              class="size-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                               data-slot="icon"
                               fill="currentColor"
                               viewBox="0 0 16 16"
@@ -1290,7 +1290,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
             >
               <svg
                 aria-hidden="true"
-                class="w-8 h-8"
+                class="size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -1332,7 +1332,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
           >
             <svg
               aria-hidden="true"
-              class="w-8 h-8"
+              class="size-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"
@@ -1449,7 +1449,7 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
               tabindex="0"
             >
               <svg
-                class="h-5 w-5"
+                class="size-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -1584,7 +1584,7 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="w-8 h-8"
+                  class="size-8"
                   data-slot="icon"
                   fill="currentColor"
                   viewBox="0 0 16 16"
@@ -1626,7 +1626,7 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-8 h-8"
+                class="size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -1666,7 +1666,7 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
             tabindex="0"
           >
             <svg
-              class="h-5 w-5"
+              class="size-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -1801,7 +1801,7 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-8 h-8"
+                class="size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -1843,7 +1843,7 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="w-8 h-8"
+              class="size-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"
@@ -1960,7 +1960,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
               tabindex="0"
             >
               <svg
-                class="h-5 w-5"
+                class="size-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -2076,13 +2076,13 @@ exports[`App matches snapshot when only groups exist 1`] = `
                         class="dropdown dropdown-end"
                       >
                         <div
-                          class="btn-close h-8 w-8 no-animation"
+                          class="btn-close size-8 no-animation"
                           role="button"
                           tabindex="0"
                         >
                           <svg
                             aria-hidden="true"
-                            class="w-5 h-5 m-auto"
+                            class="size-5 m-auto"
                             data-slot="icon"
                             fill="currentColor"
                             viewBox="0 0 16 16"
@@ -2169,7 +2169,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                           type="checkbox"
                         />
                         <div
-                          class="collapse-title !p-0 min-w-0 min-h-0"
+                          class="collapse-title !p-0 min-size-0"
                         >
                           <div
                             class="card card-side text-neutral-content relative"
@@ -2196,7 +2196,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                             >
                               <svg
                                 aria-hidden="true"
-                                class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
+                                class="size-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                                 data-slot="icon"
                                 fill="currentColor"
                                 viewBox="0 0 16 16"
@@ -2279,7 +2279,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="w-8 h-8"
+                  class="size-8"
                   data-slot="icon"
                   fill="currentColor"
                   viewBox="0 0 16 16"
@@ -2321,7 +2321,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-8 h-8"
+                class="size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -2361,7 +2361,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
             tabindex="0"
           >
             <svg
-              class="h-5 w-5"
+              class="size-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -2477,13 +2477,13 @@ exports[`App matches snapshot when only groups exist 1`] = `
                       class="dropdown dropdown-end"
                     >
                       <div
-                        class="btn-close h-8 w-8 no-animation"
+                        class="btn-close size-8 no-animation"
                         role="button"
                         tabindex="0"
                       >
                         <svg
                           aria-hidden="true"
-                          class="w-5 h-5 m-auto"
+                          class="size-5 m-auto"
                           data-slot="icon"
                           fill="currentColor"
                           viewBox="0 0 16 16"
@@ -2570,7 +2570,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                         type="checkbox"
                       />
                       <div
-                        class="collapse-title !p-0 min-w-0 min-h-0"
+                        class="collapse-title !p-0 min-size-0"
                       >
                         <div
                           class="card card-side text-neutral-content relative"
@@ -2597,7 +2597,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                           >
                             <svg
                               aria-hidden="true"
-                              class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
+                              class="size-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                               data-slot="icon"
                               fill="currentColor"
                               viewBox="0 0 16 16"
@@ -2680,7 +2680,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-8 h-8"
+                class="size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -2722,7 +2722,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="w-8 h-8"
+              class="size-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"
@@ -2839,7 +2839,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
               tabindex="0"
             >
               <svg
-                class="h-5 w-5"
+                class="size-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -2955,13 +2955,13 @@ exports[`App matches snapshot when only plants exist 1`] = `
                         class="dropdown dropdown-end"
                       >
                         <div
-                          class="btn-close h-8 w-8 no-animation"
+                          class="btn-close size-8 no-animation"
                           role="button"
                           tabindex="0"
                         >
                           <svg
                             aria-hidden="true"
-                            class="w-5 h-5 m-auto"
+                            class="size-5 m-auto"
                             data-slot="icon"
                             fill="currentColor"
                             viewBox="0 0 16 16"
@@ -3055,16 +3055,16 @@ exports[`App matches snapshot when only plants exist 1`] = `
                           type="checkbox"
                         />
                         <div
-                          class="collapse-title !p-0 min-w-0 min-h-0"
+                          class="collapse-title !p-0 min-size-0"
                         >
                           <div
                             class="card card-side text-neutral-content relative"
                           >
                             <figure
-                              class="h-24 w-20 min-h-20 min-w-20 rounded-b-none"
+                              class="h-24 w-20 min-size-20 rounded-b-none"
                             >
                               <img
-                                class="w-full h-full object-cover"
+                                class="size-full object-cover"
                                 loading="lazy"
                                 src="/media/thumbnails/photo_thumb.jpg"
                               />
@@ -3107,7 +3107,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                             >
                               <svg
                                 aria-hidden="true"
-                                class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
+                                class="size-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                                 data-slot="icon"
                                 fill="currentColor"
                                 viewBox="0 0 16 16"
@@ -3204,7 +3204,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="w-8 h-8"
+                  class="size-8"
                   data-slot="icon"
                   fill="currentColor"
                   viewBox="0 0 16 16"
@@ -3246,7 +3246,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-8 h-8"
+                class="size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -3286,7 +3286,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
             tabindex="0"
           >
             <svg
-              class="h-5 w-5"
+              class="size-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -3402,13 +3402,13 @@ exports[`App matches snapshot when only plants exist 1`] = `
                       class="dropdown dropdown-end"
                     >
                       <div
-                        class="btn-close h-8 w-8 no-animation"
+                        class="btn-close size-8 no-animation"
                         role="button"
                         tabindex="0"
                       >
                         <svg
                           aria-hidden="true"
-                          class="w-5 h-5 m-auto"
+                          class="size-5 m-auto"
                           data-slot="icon"
                           fill="currentColor"
                           viewBox="0 0 16 16"
@@ -3502,16 +3502,16 @@ exports[`App matches snapshot when only plants exist 1`] = `
                         type="checkbox"
                       />
                       <div
-                        class="collapse-title !p-0 min-w-0 min-h-0"
+                        class="collapse-title !p-0 min-size-0"
                       >
                         <div
                           class="card card-side text-neutral-content relative"
                         >
                           <figure
-                            class="h-24 w-20 min-h-20 min-w-20 rounded-b-none"
+                            class="h-24 w-20 min-size-20 rounded-b-none"
                           >
                             <img
-                              class="w-full h-full object-cover"
+                              class="size-full object-cover"
                               loading="lazy"
                               src="/media/thumbnails/photo_thumb.jpg"
                             />
@@ -3554,7 +3554,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                           >
                             <svg
                               aria-hidden="true"
-                              class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
+                              class="size-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                               data-slot="icon"
                               fill="currentColor"
                               viewBox="0 0 16 16"
@@ -3651,7 +3651,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="w-8 h-8"
+                class="size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -3693,7 +3693,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="w-8 h-8"
+              class="size-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"
@@ -3810,7 +3810,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
               tabindex="0"
             >
               <svg
-                class="h-5 w-5"
+                class="size-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -3926,13 +3926,13 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                         class="dropdown dropdown-end"
                       >
                         <div
-                          class="btn-close h-8 w-8 no-animation"
+                          class="btn-close size-8 no-animation"
                           role="button"
                           tabindex="0"
                         >
                           <svg
                             aria-hidden="true"
-                            class="w-5 h-5 m-auto"
+                            class="size-5 m-auto"
                             data-slot="icon"
                             fill="currentColor"
                             viewBox="0 0 16 16"
@@ -4026,16 +4026,16 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                           type="checkbox"
                         />
                         <div
-                          class="collapse-title !p-0 min-w-0 min-h-0"
+                          class="collapse-title !p-0 min-size-0"
                         >
                           <div
                             class="card card-side text-neutral-content relative"
                           >
                             <figure
-                              class="h-24 w-20 min-h-20 min-w-20 rounded-b-none"
+                              class="h-24 w-20 min-size-20 rounded-b-none"
                             >
                               <img
-                                class="w-full h-full object-cover"
+                                class="size-full object-cover"
                                 loading="lazy"
                                 src="/media/thumbnails/photo_thumb.jpg"
                               />
@@ -4078,7 +4078,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                             >
                               <svg
                                 aria-hidden="true"
-                                class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
+                                class="size-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                                 data-slot="icon"
                                 fill="currentColor"
                                 viewBox="0 0 16 16"
@@ -4177,13 +4177,13 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                         class="dropdown dropdown-end"
                       >
                         <div
-                          class="btn-close h-8 w-8 no-animation"
+                          class="btn-close size-8 no-animation"
                           role="button"
                           tabindex="0"
                         >
                           <svg
                             aria-hidden="true"
-                            class="w-5 h-5 m-auto"
+                            class="size-5 m-auto"
                             data-slot="icon"
                             fill="currentColor"
                             viewBox="0 0 16 16"
@@ -4270,7 +4270,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                           type="checkbox"
                         />
                         <div
-                          class="collapse-title !p-0 min-w-0 min-h-0"
+                          class="collapse-title !p-0 min-size-0"
                         >
                           <div
                             class="card card-side text-neutral-content relative"
@@ -4297,7 +4297,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                             >
                               <svg
                                 aria-hidden="true"
-                                class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
+                                class="size-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                                 data-slot="icon"
                                 fill="currentColor"
                                 viewBox="0 0 16 16"
@@ -4380,7 +4380,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
               >
                 <svg
                   aria-hidden="true"
-                  class="w-8 h-8"
+                  class="size-8"
                   data-slot="icon"
                   fill="currentColor"
                   viewBox="0 0 16 16"
@@ -4422,7 +4422,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
             >
               <svg
                 aria-hidden="true"
-                class="w-8 h-8"
+                class="size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -4462,7 +4462,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
             tabindex="0"
           >
             <svg
-              class="h-5 w-5"
+              class="size-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -4578,13 +4578,13 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                       class="dropdown dropdown-end"
                     >
                       <div
-                        class="btn-close h-8 w-8 no-animation"
+                        class="btn-close size-8 no-animation"
                         role="button"
                         tabindex="0"
                       >
                         <svg
                           aria-hidden="true"
-                          class="w-5 h-5 m-auto"
+                          class="size-5 m-auto"
                           data-slot="icon"
                           fill="currentColor"
                           viewBox="0 0 16 16"
@@ -4678,16 +4678,16 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                         type="checkbox"
                       />
                       <div
-                        class="collapse-title !p-0 min-w-0 min-h-0"
+                        class="collapse-title !p-0 min-size-0"
                       >
                         <div
                           class="card card-side text-neutral-content relative"
                         >
                           <figure
-                            class="h-24 w-20 min-h-20 min-w-20 rounded-b-none"
+                            class="h-24 w-20 min-size-20 rounded-b-none"
                           >
                             <img
-                              class="w-full h-full object-cover"
+                              class="size-full object-cover"
                               loading="lazy"
                               src="/media/thumbnails/photo_thumb.jpg"
                             />
@@ -4730,7 +4730,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                           >
                             <svg
                               aria-hidden="true"
-                              class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
+                              class="size-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                               data-slot="icon"
                               fill="currentColor"
                               viewBox="0 0 16 16"
@@ -4829,13 +4829,13 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                       class="dropdown dropdown-end"
                     >
                       <div
-                        class="btn-close h-8 w-8 no-animation"
+                        class="btn-close size-8 no-animation"
                         role="button"
                         tabindex="0"
                       >
                         <svg
                           aria-hidden="true"
-                          class="w-5 h-5 m-auto"
+                          class="size-5 m-auto"
                           data-slot="icon"
                           fill="currentColor"
                           viewBox="0 0 16 16"
@@ -4922,7 +4922,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                         type="checkbox"
                       />
                       <div
-                        class="collapse-title !p-0 min-w-0 min-h-0"
+                        class="collapse-title !p-0 min-size-0"
                       >
                         <div
                           class="card card-side text-neutral-content relative"
@@ -4949,7 +4949,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                           >
                             <svg
                               aria-hidden="true"
-                              class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
+                              class="size-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                               data-slot="icon"
                               fill="currentColor"
                               viewBox="0 0 16 16"
@@ -5032,7 +5032,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
             >
               <svg
                 aria-hidden="true"
-                class="w-8 h-8"
+                class="size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -5074,7 +5074,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
           >
             <svg
               aria-hidden="true"
-              class="w-8 h-8"
+              class="size-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"
@@ -5191,7 +5191,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
               tabindex="0"
             >
               <svg
-                class="h-5 w-5"
+                class="size-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -5326,13 +5326,13 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                         class="dropdown dropdown-end"
                       >
                         <div
-                          class="btn-close h-8 w-8 no-animation"
+                          class="btn-close size-8 no-animation"
                           role="button"
                           tabindex="0"
                         >
                           <svg
                             aria-hidden="true"
-                            class="w-5 h-5 m-auto"
+                            class="size-5 m-auto"
                             data-slot="icon"
                             fill="currentColor"
                             viewBox="0 0 16 16"
@@ -5426,16 +5426,16 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                           type="checkbox"
                         />
                         <div
-                          class="collapse-title !p-0 min-w-0 min-h-0"
+                          class="collapse-title !p-0 min-size-0"
                         >
                           <div
                             class="card card-side text-neutral-content relative"
                           >
                             <figure
-                              class="h-24 w-20 min-h-20 min-w-20 rounded-b-none"
+                              class="h-24 w-20 min-size-20 rounded-b-none"
                             >
                               <img
-                                class="w-full h-full object-cover"
+                                class="size-full object-cover"
                                 loading="lazy"
                                 src="/media/thumbnails/photo_thumb.jpg"
                               />
@@ -5478,7 +5478,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                             >
                               <svg
                                 aria-hidden="true"
-                                class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
+                                class="size-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                                 data-slot="icon"
                                 fill="currentColor"
                                 viewBox="0 0 16 16"
@@ -5577,13 +5577,13 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                         class="dropdown dropdown-end"
                       >
                         <div
-                          class="btn-close h-8 w-8 no-animation"
+                          class="btn-close size-8 no-animation"
                           role="button"
                           tabindex="0"
                         >
                           <svg
                             aria-hidden="true"
-                            class="w-5 h-5 m-auto"
+                            class="size-5 m-auto"
                             data-slot="icon"
                             fill="currentColor"
                             viewBox="0 0 16 16"
@@ -5670,7 +5670,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                           type="checkbox"
                         />
                         <div
-                          class="collapse-title !p-0 min-w-0 min-h-0"
+                          class="collapse-title !p-0 min-size-0"
                         >
                           <div
                             class="card card-side text-neutral-content relative"
@@ -5697,7 +5697,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                             >
                               <svg
                                 aria-hidden="true"
-                                class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
+                                class="size-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                                 data-slot="icon"
                                 fill="currentColor"
                                 viewBox="0 0 16 16"
@@ -5780,7 +5780,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
               >
                 <svg
                   aria-hidden="true"
-                  class="w-8 h-8"
+                  class="size-8"
                   data-slot="icon"
                   fill="currentColor"
                   viewBox="0 0 16 16"
@@ -5822,7 +5822,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
             >
               <svg
                 aria-hidden="true"
-                class="w-8 h-8"
+                class="size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -5862,7 +5862,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
             tabindex="0"
           >
             <svg
-              class="h-5 w-5"
+              class="size-5"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -5997,13 +5997,13 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                       class="dropdown dropdown-end"
                     >
                       <div
-                        class="btn-close h-8 w-8 no-animation"
+                        class="btn-close size-8 no-animation"
                         role="button"
                         tabindex="0"
                       >
                         <svg
                           aria-hidden="true"
-                          class="w-5 h-5 m-auto"
+                          class="size-5 m-auto"
                           data-slot="icon"
                           fill="currentColor"
                           viewBox="0 0 16 16"
@@ -6097,16 +6097,16 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                         type="checkbox"
                       />
                       <div
-                        class="collapse-title !p-0 min-w-0 min-h-0"
+                        class="collapse-title !p-0 min-size-0"
                       >
                         <div
                           class="card card-side text-neutral-content relative"
                         >
                           <figure
-                            class="h-24 w-20 min-h-20 min-w-20 rounded-b-none"
+                            class="h-24 w-20 min-size-20 rounded-b-none"
                           >
                             <img
-                              class="w-full h-full object-cover"
+                              class="size-full object-cover"
                               loading="lazy"
                               src="/media/thumbnails/photo_thumb.jpg"
                             />
@@ -6149,7 +6149,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                           >
                             <svg
                               aria-hidden="true"
-                              class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
+                              class="size-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                               data-slot="icon"
                               fill="currentColor"
                               viewBox="0 0 16 16"
@@ -6248,13 +6248,13 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                       class="dropdown dropdown-end"
                     >
                       <div
-                        class="btn-close h-8 w-8 no-animation"
+                        class="btn-close size-8 no-animation"
                         role="button"
                         tabindex="0"
                       >
                         <svg
                           aria-hidden="true"
-                          class="w-5 h-5 m-auto"
+                          class="size-5 m-auto"
                           data-slot="icon"
                           fill="currentColor"
                           viewBox="0 0 16 16"
@@ -6341,7 +6341,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                         type="checkbox"
                       />
                       <div
-                        class="collapse-title !p-0 min-w-0 min-h-0"
+                        class="collapse-title !p-0 min-size-0"
                       >
                         <div
                           class="card card-side text-neutral-content relative"
@@ -6368,7 +6368,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                           >
                             <svg
                               aria-hidden="true"
-                              class="w-8 h-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
+                              class="size-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
                               data-slot="icon"
                               fill="currentColor"
                               viewBox="0 0 16 16"
@@ -6451,7 +6451,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
             >
               <svg
                 aria-hidden="true"
-                class="w-8 h-8"
+                class="size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -6493,7 +6493,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
           >
             <svg
               aria-hidden="true"
-              class="w-8 h-8"
+              class="size-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"

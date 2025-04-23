@@ -24,7 +24,7 @@ const PotSizeOption = memo(function PotSizeOption({ option }) {
         <RadioGroup.Option value={option} as={Fragment}>
             {({ checked }) => (
                 <div className={clsx(
-                    'pot-size w-10 h-10 md:w-12 md:h-12',
+                    'pot-size size-10 md:size-12',
                     checked ? 'pot-size-selected' : 'bg-base-300'
                 )}>
                     <span className="m-auto">{option}</span>

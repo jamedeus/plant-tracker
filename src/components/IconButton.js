@@ -5,12 +5,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 const IconButton = ({ onClick=null, href=null, title, icon}) => {
     return (
         <a
-            className='btn btn-square h-10 w-10 min-h-10 min-w-10'
+            className='btn btn-square size-10 min-size-10'
             href={href}
             onClick={onClick}
             title={title}
         >
-            <FontAwesomeIcon className='w-4 h-4' icon={icon} />
+            <FontAwesomeIcon className='size-4' icon={icon} />
         </a>
     );
 };

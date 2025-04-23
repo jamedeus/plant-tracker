@@ -33,7 +33,7 @@ const EditableNodeList = ({ editing, formRef, children }) => {
                         htmlFor={`${prefix}-${node.key}`}
                         className={clsx(
                             "cursor-pointer absolute z-20",
-                            editing && "h-full w-full"
+                            editing && "size-full"
                         )}
                     />
                 </div>

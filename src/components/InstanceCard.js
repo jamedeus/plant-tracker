@@ -37,14 +37,14 @@ const InstanceCard = memo(function InstanceCard({
                 className="hidden pointer-events-none"
             />
 
-            <div className='collapse-title !p-0 min-w-0 min-h-0'>
+            <div className='collapse-title !p-0 min-size-0'>
                 <div className='card card-side text-neutral-content relative'>
                     {thumbnail && (
-                        <figure className="h-24 w-20 min-h-20 min-w-20 rounded-b-none">
+                        <figure className="h-24 w-20 min-size-20 rounded-b-none">
                             <img
                                 loading="lazy"
                                 src={thumbnail}
-                                className="w-full h-full object-cover"
+                                className="size-full object-cover"
                             />
                         </figure>
                     )}
@@ -72,7 +72,7 @@ const InstanceCard = memo(function InstanceCard({
                         onClick={(e) => e.stopPropagation()}
                     >
                         <ChevronDownIcon className={clsx(
-                            "w-8 h-8 transition-transform duration-200",
+                            "size-8 transition-transform duration-200",
                             "rotate-0 group-has-[:checked]:rotate-180"
                         )} />
                     </label>
