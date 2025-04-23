@@ -323,77 +323,65 @@ class Plant(models.Model):
                 'key': None
             }
 
-    def last_watered(self):
-        '''Returns timestamp string of last WaterEvent, or None if no events'''
-        last_event = self.waterevent_set.all().order_by('timestamp').last()
+    def _get_most_recent_timestamp(self, queryset):
+        '''Takes QuerySet containing events, returns timestamp string of
+        most-recent event (or None if queryset empty).
+        '''
+        last_event = queryset.order_by('timestamp').last()
         if last_event:
             return last_event.timestamp.isoformat()
         return None
+
+    def last_watered(self):
+        '''Returns timestamp string of last WaterEvent, or None if no events'''
+        return self._get_most_recent_timestamp(self.waterevent_set.all())
 
     def last_fertilized(self):
         '''Returns timestamp string of last FertilizeEvent, or None if no events'''
-        last_event = self.fertilizeevent_set.all().order_by('timestamp').last()
-        if last_event:
-            return last_event.timestamp.isoformat()
-        return None
+        return self._get_most_recent_timestamp(self.fertilizeevent_set.all())
 
     def last_pruned(self):
         '''Returns timestamp string of last PruneEvent, or None if no events'''
-        last_event = self.pruneevent_set.all().order_by('timestamp').last()
-        if last_event:
-            return last_event.timestamp.isoformat()
-        return None
+        return self._get_most_recent_timestamp(self.pruneevent_set.all())
 
     def last_repotted(self):
         '''Returns timestamp string of last RepotEvent, or None if no events'''
-        last_event = self.repotevent_set.all().order_by('timestamp').last()
-        if last_event:
-            return last_event.timestamp.isoformat()
-        return None
+        return self._get_most_recent_timestamp(self.repotevent_set.all())
+
+    def _get_all_timestamps(self, queryset):
+        '''Takes QuerySet containing events, returns list of timestamp strings
+        for every item in queryset sorted from most recent to least recent.
+        '''
+        return [
+            timestamp[0].isoformat()
+            for timestamp in queryset
+            .order_by('-timestamp')
+            .values_list('timestamp')
+        ]
 
     def get_water_timestamps(self):
         '''Returns list of timestamp strings for every WaterEvent sorted from
         most recent to least recent
         '''
-        return [
-            timestamp[0].isoformat()
-            for timestamp in self.waterevent_set.all()
-            .order_by('-timestamp')
-            .values_list('timestamp')
-        ]
+        return self._get_all_timestamps(self.waterevent_set.all())
 
     def get_fertilize_timestamps(self):
         '''Returns list of timestamp strings for every FertilizeEvent sorted from
         most recent to least recent
         '''
-        return [
-            timestamp[0].isoformat()
-            for timestamp in self.fertilizeevent_set.all()
-            .order_by('-timestamp')
-            .values_list('timestamp')
-        ]
+        return self._get_all_timestamps(self.fertilizeevent_set.all())
 
     def get_prune_timestamps(self):
         '''Returns list of timestamp strings for every PruneEvent sorted from
         most recent to least recent
         '''
-        return [
-            timestamp[0].isoformat()
-            for timestamp in self.pruneevent_set.all()
-            .order_by('-timestamp')
-            .values_list('timestamp')
-        ]
+        return self._get_all_timestamps(self.pruneevent_set.all())
 
     def get_repot_timestamps(self):
         '''Returns list of timestamp strings for every RepotEvent sorted from
         most recent to least recent
         '''
-        return [
-            timestamp[0].isoformat()
-            for timestamp in self.repotevent_set.all()
-            .order_by('-timestamp')
-            .values_list('timestamp')
-        ]
+        return self._get_all_timestamps(self.repotevent_set.all())
 
     def save(self, *args, **kwargs):
         # Prevent setting photo of a different plant as default
