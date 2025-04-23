@@ -297,7 +297,7 @@ function App() {
                     <ChangePassword />
                 </Section>
                 <a
-                    className="btn btn-outline btn-error mx-4"
+                    className="btn btn-outline btn-error mx-4 mb-8"
                     href="/accounts/logout/"
                     tabIndex={2}
                 >

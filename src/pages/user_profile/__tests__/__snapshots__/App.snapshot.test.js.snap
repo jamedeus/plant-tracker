@@ -277,7 +277,7 @@ exports[`App matches snapshot 1`] = `
             </div>
           </div>
           <a
-            class="btn btn-outline btn-error mx-4"
+            class="btn btn-outline btn-error mx-4 mb-8"
             href="/accounts/logout/"
             tabindex="2"
           >
@@ -586,7 +586,7 @@ exports[`App matches snapshot 1`] = `
           </div>
         </div>
         <a
-          class="btn btn-outline btn-error mx-4"
+          class="btn btn-outline btn-error mx-4 mb-8"
           href="/accounts/logout/"
           tabindex="2"
         >
