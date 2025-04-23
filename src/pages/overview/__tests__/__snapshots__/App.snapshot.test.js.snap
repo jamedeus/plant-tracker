@@ -260,6 +260,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                       class="w-full overflow-hidden transition-all duration-300 ml-0"
                     >
                       <a
+                        aria-label="Go to Test Plant page"
                         class="collapse card-collapse bg-neutral cursor-pointer group grayscale"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       >
@@ -503,6 +504,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                       class="w-full overflow-hidden transition-all duration-300 ml-0"
                     >
                       <a
+                        aria-label="Go to Test group page"
                         class="collapse card-collapse bg-neutral cursor-pointer group grayscale"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       >
@@ -924,6 +926,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                     class="w-full overflow-hidden transition-all duration-300 ml-0"
                   >
                     <a
+                      aria-label="Go to Test Plant page"
                       class="collapse card-collapse bg-neutral cursor-pointer group grayscale"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     >
@@ -1167,6 +1170,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                     class="w-full overflow-hidden transition-all duration-300 ml-0"
                   >
                     <a
+                      aria-label="Go to Test group page"
                       class="collapse card-collapse bg-neutral cursor-pointer group grayscale"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     >
@@ -2155,6 +2159,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                       class="w-full overflow-hidden transition-all duration-300 ml-0"
                     >
                       <a
+                        aria-label="Go to Test group page"
                         class="collapse card-collapse bg-neutral cursor-pointer group"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       >
@@ -2555,6 +2560,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                     class="w-full overflow-hidden transition-all duration-300 ml-0"
                   >
                     <a
+                      aria-label="Go to Test group page"
                       class="collapse card-collapse bg-neutral cursor-pointer group"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     >
@@ -3039,6 +3045,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                       class="w-full overflow-hidden transition-all duration-300 ml-0"
                     >
                       <a
+                        aria-label="Go to Test Plant page"
                         class="collapse card-collapse bg-neutral cursor-pointer group"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       >
@@ -3485,6 +3492,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                     class="w-full overflow-hidden transition-all duration-300 ml-0"
                   >
                     <a
+                      aria-label="Go to Test Plant page"
                       class="collapse card-collapse bg-neutral cursor-pointer group"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     >
@@ -4008,6 +4016,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                       class="w-full overflow-hidden transition-all duration-300 ml-0"
                     >
                       <a
+                        aria-label="Go to Test Plant page"
                         class="collapse card-collapse bg-neutral cursor-pointer group"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       >
@@ -4251,6 +4260,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                       class="w-full overflow-hidden transition-all duration-300 ml-0"
                     >
                       <a
+                        aria-label="Go to Test group page"
                         class="collapse card-collapse bg-neutral cursor-pointer group"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       >
@@ -4658,6 +4668,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                     class="w-full overflow-hidden transition-all duration-300 ml-0"
                   >
                     <a
+                      aria-label="Go to Test Plant page"
                       class="collapse card-collapse bg-neutral cursor-pointer group"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     >
@@ -4901,6 +4912,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                     class="w-full overflow-hidden transition-all duration-300 ml-0"
                   >
                     <a
+                      aria-label="Go to Test group page"
                       class="collapse card-collapse bg-neutral cursor-pointer group"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     >
@@ -5404,6 +5416,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                       class="w-full overflow-hidden transition-all duration-300 ml-0"
                     >
                       <a
+                        aria-label="Go to Test Plant page"
                         class="collapse card-collapse bg-neutral cursor-pointer group"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       >
@@ -5647,6 +5660,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                       class="w-full overflow-hidden transition-all duration-300 ml-0"
                     >
                       <a
+                        aria-label="Go to Test group page"
                         class="collapse card-collapse bg-neutral cursor-pointer group"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       >
@@ -6073,6 +6087,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                     class="w-full overflow-hidden transition-all duration-300 ml-0"
                   >
                     <a
+                      aria-label="Go to Test Plant page"
                       class="collapse card-collapse bg-neutral cursor-pointer group"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     >
@@ -6316,6 +6331,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                     class="w-full overflow-hidden transition-all duration-300 ml-0"
                   >
                     <a
+                      aria-label="Go to Test group page"
                       class="collapse card-collapse bg-neutral cursor-pointer group"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     >

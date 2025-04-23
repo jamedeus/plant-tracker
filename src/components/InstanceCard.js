@@ -28,6 +28,7 @@ const InstanceCard = memo(function InstanceCard({
                 'collapse card-collapse bg-neutral cursor-pointer group',
                 archived && 'grayscale'
             )}
+            aria-label={`Go to ${title} page`}
         >
             {/* Hidden checkbox controls open/close state */}
             <input

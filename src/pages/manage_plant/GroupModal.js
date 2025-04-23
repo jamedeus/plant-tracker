@@ -45,10 +45,14 @@ const GroupModal = () => {
                 {groupOptions.map(group => (
                     <div
                         key={group.uuid}
-                        className="max-w-80 w-full mx-auto mb-4 cursor-pointer"
-                        onClick={() => submit(group.uuid)}
+                        className="flex relative w-full max-w-80 mx-auto mb-4"
                     >
                         <GroupCard key={group.uuid} {...group} />
+                        {/* Cover card with transparent div with listener */}
+                        <div
+                            className="absolute h-full w-full cursor-pointer"
+                            onClick={() => submit(group.uuid)}
+                        ></div>
                     </div>
                 ))}
                 {!groupOptions.length && (

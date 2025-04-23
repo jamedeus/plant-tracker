@@ -135,9 +135,9 @@ describe('App', () => {
         // Open AddToGroupModal
         await user.click(addButton);
 
-        // Simulate user selecting group
-        const addToGroupModal = app.getByText("Add plant to group").parentElement;
-        await user.click(within(addToGroupModal).getByText("Test group"));
+        // Simulate user clicking group option (nextSibling targets transparent
+        // absolute-positioned div with click listener that covers group card)
+        await user.click(app.getByLabelText('Go to Test group page').nextSibling);
 
         // Confirm modal appeared with arbitrary error text
         expect(app.queryByText(/failed to add plant to group/)).not.toBeNull();

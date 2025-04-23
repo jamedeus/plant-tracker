@@ -197,11 +197,11 @@ describe('App', () => {
         // Click "Add to group" button in details dropdown
         await user.click(app.getByTitle(/Add plant to group/));
 
-        // Get reference to AddToGroupModal
-        const addToGroupModal = app.getByText("Add plant to group").parentElement;
+        // Simulate user clicking group option (nextSibling targets transparent
+        // absolute-positioned div with click listener that covers group card)
+        await user.click(app.getByLabelText('Go to Test group page').nextSibling);
 
-        // Select group option, confirm correct data posted to /add_plant_to_group
-        await user.click(within(addToGroupModal).getByText("Test group"));
+        // Confirm correct data posted to /add_plant_to_group
         expect(global.fetch).toHaveBeenCalledWith('/add_plant_to_group', {
             method: 'POST',
             body: JSON.stringify({
