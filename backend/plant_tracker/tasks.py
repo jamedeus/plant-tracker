@@ -111,7 +111,7 @@ def get_overview_state(user):
 
 @shared_task()
 def update_cached_overview_state(user_pk):
-    '''Takes user primary key, builds and caches overview state'''
+    '''Takes user primary key, builds and caches overview state.'''
     user = get_user_model().objects.get(pk=user_pk)
     build_overview_state(user)
     print(f'Rebuilt overview state for {user_pk}')
@@ -142,7 +142,7 @@ def update_cached_overview_state_hook(instance, **kwargs):
 
 
 def build_manage_plant_state(uuid):
-    '''Builds state parsed by manage_plant react app and returns'''
+    '''Builds state parsed by manage_plant react app and returns.'''
 
     # Look up Plant by uuid (can't pass model entry to task, not serializable)
     plant = Plant.objects.get(uuid=uuid)
@@ -213,7 +213,7 @@ def get_manage_plant_state(plant):
 
 @shared_task()
 def update_cached_manage_plant_state(uuid):
-    '''Builds and caches manage_plant state'''
+    '''Builds and caches manage_plant state.'''
     build_manage_plant_state(uuid)
     print(f'Rebuilt {uuid} state')
 
@@ -255,7 +255,7 @@ def update_cached_manage_plant_state_hook(instance, **kwargs):
 
 @receiver(post_delete, sender=Plant)
 def delete_cached_manage_plant_state_hook(instance, **kwargs):
-    '''Deletes cached manage_plant state when plant is deleted from database'''
+    '''Deletes cached manage_plant state when plant is deleted from database.'''
     cache.delete(f'{instance.uuid}_state')
     # Cancel scheduled state update if present (will fail, plant doesn't exist)
     revoke_queued_task(f'rebuild_{instance.uuid}_state_task_id')
@@ -264,7 +264,7 @@ def delete_cached_manage_plant_state_hook(instance, **kwargs):
 @shared_task()
 def update_cached_plant_options(user_pk):
     '''Takes user primary key, builds and caches plant options for manage_group
-    add plants modal'''
+    add plants modal.'''
     cache.delete(f'plant_options_{user_pk}')
     get_plant_options(get_user_model().objects.get(pk=user_pk))
     print(f'Rebuilt plant_options for {user_pk} (manage_group add plants modal)')
@@ -272,7 +272,7 @@ def update_cached_plant_options(user_pk):
 
 def schedule_cached_plant_options_update(user):
     '''Takes user, clears cached plant_options immediately and schedules task
-    to update it in 30 seconds (timer resets if called again within 30 seconds)'''
+    to update it in 30 seconds (timer resets if called again within 30 seconds).'''
     schedule_cached_state_update(
         cache_name=f'plant_options_{user.pk}',
         callback_task=update_cached_plant_options,
@@ -284,14 +284,14 @@ def schedule_cached_plant_options_update(user):
 @receiver(post_save, sender=Plant)
 @receiver(post_delete, sender=Plant)
 def update_cached_plant_options_hook(instance, **kwargs):
-    '''Schedules task to update cached plant_options when Plant is saved/deleted'''
+    '''Schedules task to update cached plant_options when Plant is saved/deleted.'''
     schedule_cached_plant_options_update(instance.user)
 
 
 @shared_task()
 def update_cached_group_options(user_pk):
     '''Takes user primary key, builds and caches group options for manage_plant
-    add group modal'''
+    add group modal.'''
     cache.delete(f'group_options_{user_pk}')
     get_group_options(get_user_model().objects.get(pk=user_pk))
     print(f'Rebuilt group_options for {user_pk} (manage_plant add group modal)')
@@ -299,7 +299,7 @@ def update_cached_group_options(user_pk):
 
 def schedule_cached_group_options_update(user):
     '''Takes user, clears cached group_options immediately and schedules task
-    to update it in 30 seconds (timer resets if called again within 30 seconds)'''
+    to update it in 30 seconds (timer resets if called again within 30 seconds).'''
     schedule_cached_state_update(
         cache_name=f'group_options_{user.pk}',
         callback_task=update_cached_group_options,
@@ -311,7 +311,7 @@ def schedule_cached_group_options_update(user):
 @receiver(post_save, sender=Group)
 @receiver(post_delete, sender=Group)
 def update_cached_group_options_hook(instance, **kwargs):
-    '''Schedules task to update cached group_options when Group is saved/deleted'''
+    '''Schedules task to update cached group_options when Group is saved/deleted.'''
     schedule_cached_group_options_update(instance.user)
 
 

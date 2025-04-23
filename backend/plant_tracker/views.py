@@ -46,8 +46,8 @@ from .tasks import (
 
 @requires_json_post(["qr_per_row"])
 def get_qr_codes(data, **kwargs):
-    '''Returns printer-sized grid of QR code links as base64-encoded PNG
-    QR codes point to manage endpoint, can be used for plants or groups
+    '''Returns printer-sized grid of QR code links as base64-encoded PNG.
+    QR codes point to manage endpoint, can be used for plants or groups.
     '''
 
     # Return error if URL_PREFIX env var is unset or invalid
@@ -160,8 +160,8 @@ def manage(request, uuid, user):
 
 
 def render_manage_plant_page(request, plant, user):
-    '''Renders management page for an existing plant
-    Called by /manage endpoint if UUID is found in database plant table
+    '''Renders management page for an existing plant.
+    Called by /manage endpoint if UUID is found in database plant table.
     '''
 
     # Render permission denied page if requesting user does not own plant
@@ -196,7 +196,7 @@ def get_plant_state(request, uuid):
 
 
 def build_manage_group_state(group):
-    '''Builds state parsed by manage_group react app and returns'''
+    '''Builds state parsed by manage_group react app and returns.'''
     return {
         'group': group.get_details(),
         'details': group.get_plant_details(),
@@ -205,8 +205,8 @@ def build_manage_group_state(group):
 
 
 def render_manage_group_page(request, group, user):
-    '''Renders management page for an existing group
-    Called by /manage endpoint if UUID is found in database group table
+    '''Renders management page for an existing group.
+    Called by /manage endpoint if UUID is found in database group table.
     '''
 
     # Render permission denied page if requesting user does not own group
@@ -241,9 +241,9 @@ def get_group_state(request, uuid):
 
 
 def render_confirm_new_qr_code_page(request, uuid, old_uuid, user):
-    '''Renders confirmation page used to change a plant or group QR code
+    '''Renders confirmation page used to change a plant or group QR code.
     Called by /manage endpoint if UUID does not exist in database and the
-    old_uuid cache is set (see /change_qr_code endpoint)
+    old_uuid cache is set (see /change_qr_code endpoint).
     '''
 
     # Returns Plant instance, Group Instance, or None (not found)
@@ -270,9 +270,9 @@ def render_confirm_new_qr_code_page(request, uuid, old_uuid, user):
 
 
 def render_registration_page(request, uuid):
-    '''Renders registration page used to create a new plant or group
+    '''Renders registration page used to create a new plant or group.
     Called by /manage endpoint if UUID does not exist in database and the
-    old_uuid cache is NOT set
+    old_uuid cache is NOT set.
     '''
 
     state = {
@@ -292,8 +292,8 @@ def render_registration_page(request, uuid):
 @requires_json_post(["name", "species", "pot_size", "description", "uuid"])
 @clean_payload_data
 def register_plant(user, data, **kwargs):
-    '''Creates a Plant database entry with params from POST body
-    Requires JSON POST with parameters from plant registration forms
+    '''Creates a Plant database entry with params from POST body.
+    Requires JSON POST with parameters from plant registration forms.
     '''
     try:
         # transaction.atomic cleans up after IntegrityError if uuid not unique
@@ -315,8 +315,8 @@ def register_plant(user, data, **kwargs):
 @requires_json_post(["name", "location", "description", "uuid"])
 @clean_payload_data
 def register_group(user, data, **kwargs):
-    '''Creates a Group database entry with params from POST body
-    Requires JSON POST with parameters from group registration form
+    '''Creates a Group database entry with params from POST body.
+    Requires JSON POST with parameters from group registration form.
     '''
     try:
         # transaction.atomic cleans up after IntegrityError if uuid not unique
@@ -338,10 +338,10 @@ def register_group(user, data, **kwargs):
 @requires_json_post(["uuid"])
 @get_qr_instance_from_post_body
 def change_qr_code(instance, user, **kwargs):
-    '''Caches plant or group UUID from POST body for 15 minutes, if the same
+    '''Caches plant or group UUID from POST body for 15 minutes. If the same
     user scans a new QR before timeout /manage endpoint will return a
     confirmation page with a button that calls /change_uuid to overwrite UUID.
-    Requires JSON POST with uuid (uuid) key
+    Requires JSON POST with uuid (uuid) key.
     '''
     cache.set(f'old_uuid_{user.pk}', str(instance.uuid), 900)
     return JsonResponse(
@@ -354,9 +354,9 @@ def change_qr_code(instance, user, **kwargs):
 @requires_json_post(["uuid", "new_id"])
 @get_qr_instance_from_post_body
 def change_uuid(instance, data, user, **kwargs):
-    '''Changes UUID of an existing Plant or Group, called from confirmation
-    page served when new QR code scanned (after calling /change_qr_code)
-    Requires JSON POST with uuid (uuid) and new_id (uuid) keys
+    '''Changes UUID of an existing Plant or Group. Called from confirmation
+    page served when new QR code scanned (after calling /change_qr_code).
+    Requires JSON POST with uuid (uuid) and new_id (uuid) keys.
     '''
     try:
         instance.uuid = data["new_id"]
@@ -372,8 +372,9 @@ def change_uuid(instance, data, user, **kwargs):
 @get_plant_from_post_body
 @clean_payload_data
 def edit_plant_details(plant, data, **kwargs):
-    '''Updates description attributes of existing Plant entry
-    Requires JSON POST with plant_id (uuid), name, species, description, and pot_size keys
+    '''Updates description attributes of existing Plant entry.
+    Requires JSON POST with plant_id (uuid), name, species, description
+    (string), and pot_size (int) keys.
     '''
     print(json.dumps(data, indent=4))
 
@@ -395,8 +396,8 @@ def edit_plant_details(plant, data, **kwargs):
 @get_group_from_post_body
 @clean_payload_data
 def edit_group_details(group, data, **kwargs):
-    '''Updates description attributes of existing Group entry
-    Requires JSON POST with group_id (uuid), name, and location keys
+    '''Updates description attributes of existing Group entry.
+    Requires JSON POST with group_id (uuid), name, and location (string) keys.
     '''
     print(json.dumps(data, indent=4))
 
@@ -416,8 +417,8 @@ def edit_group_details(group, data, **kwargs):
 @requires_json_post(["plant_id"])
 @get_plant_from_post_body
 def delete_plant(plant, **kwargs):
-    '''Deletes an existing Plant from database
-    Requires JSON POST with plant_id (uuid) key
+    '''Deletes an existing Plant from database.
+    Requires JSON POST with plant_id (uuid) key.
     '''
     plant.delete()
     return JsonResponse({"deleted": plant.uuid}, status=200)
@@ -427,8 +428,8 @@ def delete_plant(plant, **kwargs):
 @requires_json_post(["plant_id", "archived"])
 @get_plant_from_post_body
 def archive_plant(plant, data, **kwargs):
-    '''Sets the archived attribute of an existing Plant to bool in POST body
-    Requires JSON POST with plant_id (uuid) and archived (bool) keys
+    '''Sets the archived attribute of an existing Plant to bool in POST body.
+    Requires JSON POST with plant_id (uuid) and archived (bool) keys.
     '''
     if not isinstance(data["archived"], bool):
         return JsonResponse({"error": "archived key is not bool"}, status=400)
@@ -442,8 +443,8 @@ def archive_plant(plant, data, **kwargs):
 @requires_json_post(["group_id"])
 @get_group_from_post_body
 def delete_group(group, **kwargs):
-    '''Deletes an existing Group from database
-    Requires JSON POST with group_id (uuid) key
+    '''Deletes an existing Group from database.
+    Requires JSON POST with group_id (uuid) key.
     '''
     group.delete()
     return JsonResponse({"deleted": group.uuid}, status=200)
@@ -453,8 +454,8 @@ def delete_group(group, **kwargs):
 @requires_json_post(["group_id", "archived"])
 @get_group_from_post_body
 def archive_group(group, data, **kwargs):
-    '''Sets the archived attribute of an existing Group to bool in POST body
-    Requires JSON POST with group_id (uuid) and archived (bool) keys
+    '''Sets the archived attribute of an existing Group to bool in POST body.
+    Requires JSON POST with group_id (uuid) and archived (bool) keys.
     '''
     if not isinstance(data["archived"], bool):
         return JsonResponse({"error": "archived key is not bool"}, status=400)
@@ -518,8 +519,8 @@ def bulk_archive_plants_and_groups(user, data, **kwargs):
 @get_timestamp_from_post_body
 @get_event_type_from_post_body
 def add_plant_event(user, plant, timestamp, event_type, **kwargs):
-    '''Creates new Event entry with requested type for specified Plant entry
-    Requires JSON POST with plant_id (uuid), event_type, and timestamp keys
+    '''Creates new Event entry with requested type for specified Plant entry.
+    Requires JSON POST with plant_id (uuid), event_type, and timestamp keys.
     '''
     try:
         events_map[event_type].objects.create(plant=plant, timestamp=timestamp)
@@ -543,8 +544,8 @@ def add_plant_event(user, plant, timestamp, event_type, **kwargs):
 @get_timestamp_from_post_body
 @get_event_type_from_post_body
 def bulk_add_plant_events(user, timestamp, event_type, data, **kwargs):
-    '''Creates new Event entry with requested type for each Plant specified in body
-    Requires JSON POST with plants (list of UUIDs), event_type, and timestamp keys
+    '''Creates new Event entry with requested type for each Plant specified in body.
+    Requires JSON POST with plants (list of UUIDs), event_type, and timestamp keys.
     '''
     added = []
     failed = []
@@ -576,8 +577,8 @@ def bulk_add_plant_events(user, timestamp, event_type, data, **kwargs):
 @get_timestamp_from_post_body
 @get_event_type_from_post_body
 def delete_plant_event(user, plant, timestamp, event_type, **kwargs):
-    '''Deletes the Event matching the plant, type, and timestamp specified in body
-    Requires JSON POST with plant_id (uuid), event_type, and timestamp keys
+    '''Deletes the Event matching the plant, type, and timestamp specified in body.
+    Requires JSON POST with plant_id (uuid), event_type, and timestamp keys.
     '''
     try:
         event = events_map[event_type].objects.get(plant=plant, timestamp=timestamp)
@@ -595,9 +596,9 @@ def delete_plant_event(user, plant, timestamp, event_type, **kwargs):
 @requires_json_post(["plant_id", "events"])
 @get_plant_from_post_body
 def bulk_delete_plant_events(user, plant, data, **kwargs):
-    '''Deletes a list of events (any type) associated with a single plant
-    Requires JSON POST with plant_id (uuid) and events (list of dicts) keys
-    The events list must contain dicts with timestamp and type keys
+    '''Deletes a list of events (any type) associated with a single plant.
+    Requires JSON POST with plant_id (uuid) and events (list of dicts) keys.
+    The events list must contain dicts with timestamp and type keys.
     '''
     deleted = []
     failed = []
@@ -626,8 +627,8 @@ def bulk_delete_plant_events(user, plant, data, **kwargs):
 @get_plant_from_post_body
 @get_timestamp_from_post_body
 def add_plant_note(plant, timestamp, data, **kwargs):
-    '''Creates new NoteEvent with user-entered text for specified Plant entry
-    Requires JSON POST with plant_id (uuid), timestamp, and note_text keys
+    '''Creates new NoteEvent with user-entered text for specified Plant entry.
+    Requires JSON POST with plant_id (uuid), timestamp, and note_text keys.
     '''
     try:
         # Use transaction.atomic to clean up after IntegrityError if text empty
@@ -664,8 +665,8 @@ def add_plant_note(plant, timestamp, data, **kwargs):
 @get_plant_from_post_body
 @get_timestamp_from_post_body
 def edit_plant_note(plant, timestamp, data, **kwargs):
-    '''Overwrites text of an existing NoteEvent with the specified timestamp
-    Requires JSON POST with plant_id (uuid), timestamp, and note_text keys
+    '''Overwrites text of an existing NoteEvent with the specified timestamp.
+    Requires JSON POST with plant_id (uuid), timestamp, and note_text keys.
     '''
     try:
         # Use transaction.atomic to clean up after IntegrityError if text empty
@@ -696,8 +697,8 @@ def edit_plant_note(plant, timestamp, data, **kwargs):
 @get_plant_from_post_body
 @get_timestamp_from_post_body
 def delete_plant_note(plant, timestamp, **kwargs):
-    '''Deletes the NoteEvent matching the plant and timestamp specified in body
-    Requires JSON POST with plant_id (uuid) and timestamp keys
+    '''Deletes the NoteEvent matching the plant and timestamp specified in body.
+    Requires JSON POST with plant_id (uuid) and timestamp keys.
     '''
     try:
         event = NoteEvent.objects.get(plant=plant, timestamp=timestamp)
@@ -712,8 +713,8 @@ def delete_plant_note(plant, timestamp, **kwargs):
 @get_plant_from_post_body
 @get_group_from_post_body
 def add_plant_to_group(plant, group, user, **kwargs):
-    '''Adds specified Plant to specified Group (creates database relation)
-    Requires JSON POST with plant_id (uuid) and group_id (uuid) keys
+    '''Adds specified Plant to specified Group (creates database relation).
+    Requires JSON POST with plant_id (uuid) and group_id (uuid) keys.
     '''
     plant.group = group
     plant.save()
@@ -736,8 +737,8 @@ def add_plant_to_group(plant, group, user, **kwargs):
 @requires_json_post(["plant_id"])
 @get_plant_from_post_body
 def remove_plant_from_group(plant, user, **kwargs):
-    '''Removes specified Plant from Group (deletes database relation)
-    Requires JSON POST with plant_id (uuid) key
+    '''Removes specified Plant from Group (deletes database relation).
+    Requires JSON POST with plant_id (uuid) key.
     '''
     plant.group = None
     plant.save()
@@ -755,8 +756,8 @@ def remove_plant_from_group(plant, user, **kwargs):
 @requires_json_post(["group_id", "plants"])
 @get_group_from_post_body
 def bulk_add_plants_to_group(group, data, user, **kwargs):
-    '''Adds a list of Plants to specified Group (creates database relation for each)
-    Requires JSON POST with group_id (uuid) and plants (list of UUIDs) keys
+    '''Adds a list of Plants to specified Group (creates database relation for each).
+    Requires JSON POST with group_id (uuid) and plants (list of UUIDs) keys.
     '''
     added = []
     failed = []
@@ -779,8 +780,8 @@ def bulk_add_plants_to_group(group, data, user, **kwargs):
 @requires_json_post(["group_id", "plants"])
 @get_group_from_post_body
 def bulk_remove_plants_from_group(data, user, **kwargs):
-    '''Removes a list of Plants from specified Group (deletes database relations)
-    Requires JSON POST with group_id (uuid) and plants (list of UUIDs) keys
+    '''Removes a list of Plants from specified Group (deletes database relations).
+    Requires JSON POST with group_id (uuid) and plants (list of UUIDs) keys.
     '''
     added = []
     failed = []
@@ -804,8 +805,8 @@ def bulk_remove_plants_from_group(data, user, **kwargs):
 @get_plant_from_post_body
 @get_timestamp_from_post_body
 def repot_plant(plant, timestamp, data, **kwargs):
-    '''Creates a RepotEvent for specified Plant with optional new_pot_size
-    Requires JSON POST with plant_id, new_pot_size, and timestamp keys
+    '''Creates a RepotEvent for specified Plant with optional new_pot_size.
+    Requires JSON POST with plant_id, new_pot_size, and timestamp keys.
     '''
 
     try:
@@ -833,8 +834,8 @@ def repot_plant(plant, timestamp, data, **kwargs):
 
 @get_user_token
 def add_plant_photos(request, user):
-    '''Creates Photo model for each image in request body
-    Requires FormData with plant_id key (UUID) and one or more images
+    '''Creates Photo model for each image in request body.
+    Requires FormData with plant_id key (UUID) and one or more images.
     '''
     if request.method != "POST":
         return JsonResponse({'error': 'must post FormData'}, status=405)
@@ -885,8 +886,8 @@ def add_plant_photos(request, user):
 @requires_json_post(["plant_id", "delete_photos"])
 @get_plant_from_post_body
 def delete_plant_photos(plant, data, **kwargs):
-    '''Deletes a list of Photos associated with a specific Plant
-    Requires JSON POST with plant_id (uuid) and delete_photos (list of db keys)
+    '''Deletes a list of Photos associated with a specific Plant.
+    Requires JSON POST with plant_id (uuid) and delete_photos (list of db keys).
     '''
     deleted = []
     failed = []
@@ -905,8 +906,8 @@ def delete_plant_photos(plant, data, **kwargs):
 @requires_json_post(["plant_id", "photo_key"])
 @get_plant_from_post_body
 def set_plant_default_photo(plant, data, **kwargs):
-    '''Sets the photo used for overview page thumbnail
-    Requires JSON POST with plant_id (uuid) and photo_key (db primary key)
+    '''Sets the photo used for overview page thumbnail.
+    Requires JSON POST with plant_id (uuid) and photo_key (db primary key).
     '''
     try:
         photo = Photo.objects.get(plant=plant, pk=data["photo_key"])

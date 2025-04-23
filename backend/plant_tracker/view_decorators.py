@@ -35,7 +35,7 @@ EVENT_TYPE_OPTIONS = "'{}'".format("', '".join(options[:-1]) + "', or '" + optio
 
 
 def get_plant_by_uuid(uuid):
-    '''Returns Plant model instance matching UUID, or None if not found'''
+    '''Returns Plant model instance matching UUID, or None if not found.'''
     try:
         return Plant.objects.get(uuid=uuid)
     except Plant.DoesNotExist:
@@ -43,7 +43,7 @@ def get_plant_by_uuid(uuid):
 
 
 def get_group_by_uuid(uuid):
-    '''Returns Group model instance matching UUID, or None if not found'''
+    '''Returns Group model instance matching UUID, or None if not found.'''
     try:
         return Group.objects.get(uuid=uuid)
     except Group.DoesNotExist:
@@ -51,7 +51,7 @@ def get_group_by_uuid(uuid):
 
 
 def get_plant_or_group_by_uuid(uuid):
-    '''Returns Plant or Group model instance matching UUID, or None if neither found'''
+    '''Returns Plant or Group model instance matching UUID, or None if neither found.'''
     instance = get_plant_by_uuid(uuid)
     if not instance:
         instance = get_group_by_uuid(uuid)
@@ -59,7 +59,7 @@ def get_plant_or_group_by_uuid(uuid):
 
 
 def get_default_user():
-    '''Returns default user (owns all models when SINGLE_USER_MODE enabled)'''
+    '''Returns default user (owns all models when SINGLE_USER_MODE enabled).'''
     return get_user_model().objects.get(username=settings.DEFAULT_USERNAME)
 
 
@@ -85,9 +85,9 @@ def get_user_token(func):
 
 
 def requires_json_post(required_keys=None):
-    '''Decorator throws error if request is not POST with JSON body
-    Accepts optional list of required keys, throws error if any are missing
-    Parses JSON from request body and passes to wrapped function as data kwarg
+    '''Decorator throws error if request is not POST with JSON body.
+    Accepts optional list of required keys, throws error if any are missing.
+    Parses JSON from request body and passes to wrapped function as data kwarg.
     '''
     def decorator(func):
         @wraps(func)
@@ -114,10 +114,10 @@ def requires_json_post(required_keys=None):
 
 
 def get_plant_from_post_body(func):
-    '''Decorator looks up plant by UUID, throws error if not found
-    If called after get_user_token throws error if Plant is not owned be user
-    Must call after requires_json_post (expects dict with plant_id key as first arg)
-    Passes Plant instance and data dict to wrapped function as plant and data kwargs
+    '''Decorator looks up plant by UUID, throws error if not found.
+    If called after get_user_token throws error if Plant is not owned be user.
+    Must call after requires_json_post (expects dict with plant_id key as first arg).
+    Passes Plant instance and data dict to wrapped function as plant and data kwargs.
     '''
     @wraps(func)
     def wrapper(data, **kwargs):
@@ -145,10 +145,10 @@ def get_plant_from_post_body(func):
 
 
 def get_group_from_post_body(func):
-    '''Decorator looks up group by UUID, throws error if not found
-    If called after get_user_token throws error if Group is not owned be user
-    Must call after requires_json_post (expects dict with group_id key as first arg)
-    Passes Group instance and data dict to wrapped function as group and data kwargs
+    '''Decorator looks up group by UUID, throws error if not found.
+    If called after get_user_token throws error if Group is not owned be user.
+    Must call after requires_json_post (expects dict with group_id key as first arg).
+    Passes Group instance and data dict to wrapped function as group and data kwargs.
     '''
     @wraps(func)
     def wrapper(data, **kwargs):
@@ -176,10 +176,10 @@ def get_group_from_post_body(func):
 
 
 def get_qr_instance_from_post_body(func):
-    '''Decorator looks up plant or group by UUID, throws error if neither found
-    If called after get_user_token throws error if instance is not owned be user
-    Must call after requires_json_post (expects dict with uuid key as first arg)
-    Passes instance and data dict to wrapped function as instance and data kwargs
+    '''Decorator looks up plant or group by UUID, throws error if neither found.
+    If called after get_user_token throws error if instance is not owned be user.
+    Must call after requires_json_post (expects dict with uuid key as first arg).
+    Passes instance and data dict to wrapped function as instance and data kwargs.
     '''
     @wraps(func)
     def wrapper(data, **kwargs):
@@ -210,9 +210,9 @@ def get_qr_instance_from_post_body(func):
 
 
 def get_timestamp_from_post_body(func):
-    '''Decorator converts timestamp string to Datetime object, throws error if invalid
-    Must call after requires_json_post (expects dict with timestamp key as first arg)
-    Passes Datetime object and data dict to wrapped function as timestamp and data kwargs
+    '''Decorator converts timestamp string to Datetime object, throws error if invalid.
+    Must call after requires_json_post (expects dict with timestamp key as first arg).
+    Passes Datetime object and data dict to wrapped function as timestamp and data kwargs.
     '''
     def wrapper(data, **kwargs):
         try:
@@ -229,9 +229,9 @@ def get_timestamp_from_post_body(func):
 
 
 def get_event_type_from_post_body(func):
-    '''Decorator verifies event_type from POST body, throws error if missing or invalid
-    Must call after requires_json_post (expects dict with event_type key as first arg)
-    Passes event_type and data dict to wrapped function as event_type and data kwargs
+    '''Decorator verifies event_type from POST body, throws error if missing or invalid.
+    Must call after requires_json_post (expects dict with event_type key as first arg).
+    Passes event_type and data dict to wrapped function as event_type and data kwargs.
     '''
     def wrapper(data, **kwargs):
         try:
@@ -250,10 +250,10 @@ def get_event_type_from_post_body(func):
 
 
 def clean_payload_data(func):
-    '''Decorator cleans up whitespace in payload that will be written to database
-    Replaces empty strings with None (writes nothing to db instead of empty string)
-    Remove leading and trailing whitespace (prevent frontend display issues)
-    Must call after requires_json_post (expects dict as data kwarg)
+    '''Decorator cleans up whitespace in payload that will be written to database.
+    Replaces empty strings with None (writes nothing to db instead of empty string).
+    Remove leading and trailing whitespace (prevent frontend display issues).
+    Must call after requires_json_post (expects dict as data kwarg).
     '''
     def wrapper(data, **kwargs):
         data = {key: (value.strip() if value != '' else None)

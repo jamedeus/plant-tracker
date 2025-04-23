@@ -27,7 +27,7 @@ register_heif_opener()
 def get_unnamed_plants(user):
     '''Takes user, returns list of primary_keys for all Plants owned by user
     with no name or species (cached 10 minutes or until plant model changed).
-    Uses list instead of QuerySet to avoid serialization overhead
+    Uses list instead of QuerySet to avoid serialization overhead.
     '''
     unnamed_plants = cache.get(f'unnamed_plants_{user.pk}')
     if not unnamed_plants:
@@ -43,7 +43,7 @@ def get_unnamed_plants(user):
 def get_unnamed_groups(user):
     '''Takes user, returns list of primary_keys for all Groups owned by user
     with no name or location (cached 10 minutes or until group model changed).
-    Uses list instead of QuerySet to avoid serialization overhead
+    Uses list instead of QuerySet to avoid serialization overhead.
     '''
     unnamed_groups = cache.get(f'unnamed_groups_{user.pk}')
     if not unnamed_groups:
@@ -63,7 +63,9 @@ def get_plant_options(user):
     '''
     plant_options = cache.get(f'plant_options_{user.pk}')
     if not plant_options:
-        plant_options = [plant.get_details() for plant in Plant.objects.filter(user=user)]
+        plant_options = [
+            plant.get_details()  for plant in Plant.objects.filter(user=user)
+        ]
         cache.set(f'plant_options_{user.pk}', plant_options, None)
     return plant_options
 
@@ -88,14 +90,16 @@ def get_group_options(user):
     '''
     group_options = cache.get(f'group_options_{user.pk}')
     if not group_options:
-        group_options = [group.get_details() for group in Group.objects.filter(user=user)]
+        group_options = [
+            group.get_details() for group in Group.objects.filter(user=user)
+        ]
         cache.set(f'group_options_{user.pk}', group_options, None)
     return group_options
 
 
 class Group(models.Model):
-    '''Tracks a group containing multiple plants, created by scanning QR code
-    Provides methods to water or fertilize all plants within group
+    '''Tracks a group containing multiple plants, created by scanning QR code.
+    Provides methods to water or fertilize all plants within group.
     '''
 
     # User who registered the group
@@ -124,7 +128,11 @@ class Group(models.Model):
         return f"{self.get_display_name()} ({self.uuid})"
 
     def get_display_name(self):
-        '''Returns frontend display string determined from description attributes'''
+        '''Returns frontend display string determined from attributes.
+        If name attribute is set returns name attribute.
+        If location attribute is set returns "{location} group".
+        If neither attribute set returns "Unnamed group {index}".
+        '''
         if self.name:
             return self.name
         if self.location:
@@ -135,21 +143,21 @@ class Group(models.Model):
         return f'Unnamed group {unnamed_groups.index(self.id) + 1}'
 
     def water_all(self, timestamp):
-        '''Takes datetime instance, creates WaterEvent for each Plant in Group'''
+        '''Takes datetime instance, creates WaterEvent for each Plant in Group.'''
         for plant in self.plant_set.all():
             WaterEvent.objects.create(plant=plant, timestamp=timestamp)
 
     def fertilize_all(self, timestamp):
-        '''Takes datetime instance, creates FertilizeEvent for each Plant in Group'''
+        '''Takes datetime instance, creates FertilizeEvent for each Plant in Group.'''
         for plant in self.plant_set.all():
             FertilizeEvent.objects.create(plant=plant, timestamp=timestamp)
 
     def get_plant_uuids(self):
-        '''Returns a list of UUID strings for all Plants in Group'''
+        '''Returns a list of UUID strings for all Plants in Group.'''
         return [str(uuid) for uuid in self.plant_set.all().values_list('uuid', flat=True)]
 
     def get_details(self):
-        '''Returns dict containing all group attributes and number of plants'''
+        '''Returns dict containing all group attributes and number of plants.'''
         return {
             'name': self.name,
             'display_name': self.get_display_name(),
@@ -162,8 +170,8 @@ class Group(models.Model):
         }
 
     def get_plant_details(self):
-        '''Returns list of dicts with parameters for each Plant in Group
-        See Plant.get_details for dict parameters
+        '''Returns list of dicts with parameters for each Plant in Group.
+        See Plant.get_details for dict parameters.
         '''
         return [plant.get_details() for plant in self.plant_set.all()]
 
@@ -186,9 +194,10 @@ def clear_cached_group_lists(instance, **kwargs):
 
 
 class Plant(models.Model):
-    '''Tracks an individual plant, created by scanning QR code
-    Stores optional description params added during registration
-    Receives database relation to all WaterEvents and FertilizeEvents
+    '''Tracks an individual plant, created by scanning QR code.
+    Stores optional description params added during registration.
+    Receives database relations to all WaterEvent, FertilizeEvent, PruneEvent,
+    RepotEvent, Photo, and NoteEvent instances associated with Plant.
     '''
 
     # User who registered the plant
@@ -242,7 +251,11 @@ class Plant(models.Model):
         return f"{self.get_display_name()} ({self.uuid})"
 
     def get_display_name(self):
-        '''Returns frontend display string determined from description attributes'''
+        '''Returns frontend display string determined from attributes.
+        If name attribute is set returns name attribute.
+        If species attribute is set returns "Unnamed {species}".
+        If neither attribute set returns "Unnamed plant {index}".
+        '''
         if self.name:
             return self.name
         if self.species:
@@ -254,7 +267,7 @@ class Plant(models.Model):
 
     def get_photos(self):
         '''Returns list of dicts containing photo and thumbnail URLs, creation
-        timestamps, and database keys of each photo associated with this plant
+        timestamps, and database keys of each photo associated with this plant.
         '''
         return [
             photo.get_details()
@@ -262,8 +275,8 @@ class Plant(models.Model):
         ]
 
     def get_thumbnail(self):
-        '''Returns thumbnail URL shown on frontend overview page
-        Uses user-configured default_photo if set, or most recent photo
+        '''Returns thumbnail URL shown on frontend overview page.
+        Uses user-configured default_photo if set, or most recent photo.
         '''
         if self.default_photo:
             return self.default_photo.get_thumbnail_url()
@@ -333,19 +346,19 @@ class Plant(models.Model):
         return None
 
     def last_watered(self):
-        '''Returns timestamp string of last WaterEvent, or None if no events'''
+        '''Returns timestamp string of last WaterEvent, or None if no events.'''
         return self._get_most_recent_timestamp(self.waterevent_set.all())
 
     def last_fertilized(self):
-        '''Returns timestamp string of last FertilizeEvent, or None if no events'''
+        '''Returns timestamp string of last FertilizeEvent, or None if no events.'''
         return self._get_most_recent_timestamp(self.fertilizeevent_set.all())
 
     def last_pruned(self):
-        '''Returns timestamp string of last PruneEvent, or None if no events'''
+        '''Returns timestamp string of last PruneEvent, or None if no events.'''
         return self._get_most_recent_timestamp(self.pruneevent_set.all())
 
     def last_repotted(self):
-        '''Returns timestamp string of last RepotEvent, or None if no events'''
+        '''Returns timestamp string of last RepotEvent, or None if no events.'''
         return self._get_most_recent_timestamp(self.repotevent_set.all())
 
     def _get_all_timestamps(self, queryset):
@@ -361,25 +374,25 @@ class Plant(models.Model):
 
     def get_water_timestamps(self):
         '''Returns list of timestamp strings for every WaterEvent sorted from
-        most recent to least recent
+        most recent to least recent.
         '''
         return self._get_all_timestamps(self.waterevent_set.all())
 
     def get_fertilize_timestamps(self):
         '''Returns list of timestamp strings for every FertilizeEvent sorted from
-        most recent to least recent
+        most recent to least recent.
         '''
         return self._get_all_timestamps(self.fertilizeevent_set.all())
 
     def get_prune_timestamps(self):
         '''Returns list of timestamp strings for every PruneEvent sorted from
-        most recent to least recent
+        most recent to least recent.
         '''
         return self._get_all_timestamps(self.pruneevent_set.all())
 
     def get_repot_timestamps(self):
         '''Returns list of timestamp strings for every RepotEvent sorted from
-        most recent to least recent
+        most recent to least recent.
         '''
         return self._get_all_timestamps(self.repotevent_set.all())
 
@@ -397,7 +410,7 @@ class Plant(models.Model):
 @receiver(post_delete, sender=Plant)
 def clear_cached_plant_lists(instance, **kwargs):
     '''Clear cached unnamed_plant and species_options lists when a Plant is
-    saved or deleted (will be generated and cached next time needed)
+    saved or deleted (will be generated and cached next time needed).
 
     The plant_options list is updated automatically by hook in tasks.py.
     '''
@@ -406,7 +419,7 @@ def clear_cached_plant_lists(instance, **kwargs):
 
 
 class Photo(models.Model):
-    '''Stores a user-uploaded image of a specific plant'''
+    '''Stores a user-uploaded image of a specific plant.'''
     photo = models.ImageField(upload_to="images")
     thumbnail = models.ImageField(upload_to="thumbnails", null=True, blank=True)
 
@@ -424,15 +437,15 @@ class Photo(models.Model):
         return f"{name} - {timestamp} - {filename}"
 
     def get_photo_url(self):
-        '''Returns public URL of the full-resolution photo'''
+        '''Returns public URL of the full-resolution photo.'''
         return f'{settings.MEDIA_URL}{self.photo.name}'
 
     def get_thumbnail_url(self):
-        '''Returns public URL of the reduced-resolution thumbnail'''
+        '''Returns public URL of the reduced-resolution thumbnail.'''
         return f'{settings.MEDIA_URL}{self.thumbnail.name}'
 
     def get_details(self):
-        '''Returns dict with photo and thumnail urls, timestamp, and primary key'''
+        '''Returns dict with photo and thumbnail urls, timestamp, and primary key.'''
         return {
             'created': self.created.isoformat(),
             'image': self.get_photo_url(),
@@ -441,7 +454,7 @@ class Photo(models.Model):
         }
 
     def create_thumbnail(self):
-        '''Generate a reduced-resolution image and write to the thumbnail field'''
+        '''Generate a reduced-resolution image and write to the thumbnail field.'''
 
         # Open image, rotate and remove exif rotation param if needed
         image = ImageOps.exif_transpose(
@@ -514,13 +527,13 @@ class Photo(models.Model):
 @receiver(post_delete, sender=Photo)
 def update_plant_thumbnail_when_photo_deleted(instance, **kwargs):
     '''Updates Plant.thumbnail_url field when associated Photo is deleted (if
-    deleted photo was most recent photo the thumbnail_url will be outdated)
+    deleted photo was most recent photo the thumbnail_url will be outdated).
     '''
     instance.plant.update_thumbnail_url()
 
 
 class Event(models.Model):
-    '''Abstract base class for all plant events'''
+    '''Abstract base class for all plant events.'''
     plant = models.ForeignKey(Plant, on_delete=models.CASCADE)
     timestamp = models.DateTimeField()
 
@@ -545,19 +558,19 @@ class Event(models.Model):
 
 
 class WaterEvent(Event):
-    '''Records timestamp when a Plant entry was watered'''
+    '''Records timestamp when a Plant entry was watered.'''
 
 
 class FertilizeEvent(Event):
-    '''Records timestamp when a Plant entry was fertilized'''
+    '''Records timestamp when a Plant entry was fertilized.'''
 
 
 class PruneEvent(Event):
-    '''Records timestamp when a Plant entry was pruned'''
+    '''Records timestamp when a Plant entry was pruned.'''
 
 
 class RepotEvent(Event):
-    '''Records timestamp when a Plant entry was repotted'''
+    '''Records timestamp when a Plant entry was repotted.'''
 
     # Optional old and new pot sizes
     old_pot_size = models.PositiveIntegerField(
@@ -573,5 +586,5 @@ class RepotEvent(Event):
 
 
 class NoteEvent(Event):
-    '''Records timestamp and user-entered text about a specific Plant'''
+    '''Records timestamp and user-entered text about a specific Plant.'''
     text = models.CharField(max_length=500)
