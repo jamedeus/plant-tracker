@@ -39,10 +39,10 @@ export const buildTimelineDays = (events, notes, photos) => {
 
     // Add objects from photos context to photos key under correct dateKey
     photos.sort((a, b) => {
-        return a.created.localeCompare(b.created);
+        return a.timestamp.localeCompare(b.timestamp);
     }).reverse();
     photos.forEach((photo) => {
-        const dateKey = timestampToDateString(photo.created);
+        const dateKey = timestampToDateString(photo.timestamp);
         if (!timelineDays[dateKey]) {
             timelineDays[dateKey] = {events: [], notes: [], photos: []};
         }

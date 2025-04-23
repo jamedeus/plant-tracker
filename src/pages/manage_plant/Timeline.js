@@ -404,13 +404,13 @@ const TimelineDay = memo(function TimelineDay({ dateKey, monthDivider }) {
                 </div>
                 <div className="flex flex-row flex-wrap">
                     {[...contents.photos].sort((a, b) => {
-                        return a.created.localeCompare(b.created);
+                        return a.timestamp.localeCompare(b.timestamp);
                     }).reverse().map((photo) => (
                         <PhotoThumbnail
                             key={photo.key}
                             thumbnailUrl={photo.thumbnail}
                             photoUrl={photo.image}
-                            timestamp={photo.created}
+                            timestamp={photo.timestamp}
                         />
                     ))}
                 </div>

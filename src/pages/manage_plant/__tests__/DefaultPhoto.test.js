@@ -27,7 +27,7 @@ describe('Plant with no photos (no default photo set)', () => {
             photos: [],
             default_photo: { ...mockContext.default_photo,
                 set: false,
-                created: null,
+                timestamp: null,
                 image: null,
                 thumbnail: null,
                 key: null
@@ -60,13 +60,13 @@ describe('Plant with no photos (no default photo set)', () => {
                 "failed": [],
                 "urls": [
                     {
-                        "created": "2024-03-21T10:52:03+00:00",
+                        "timestamp": "2024-03-21T10:52:03+00:00",
                         "image": "/media/images/photo1.jpg",
                         "thumbnail": "/media/images/photo1_thumb.jpg",
                         "key": 1774
                     },
                     {
-                        "created": "2024-03-22T10:52:03+00:00",
+                        "timestamp": "2024-03-22T10:52:03+00:00",
                         "image": "/media/images/photo2.jpg",
                         "thumbnail": "/media/images/photo2_thumb.jpg",
                         "key": 1775
@@ -134,7 +134,7 @@ describe('Plant with photos but no configured default photo', () => {
                 "failed": [],
                 "urls": [
                     {
-                        "created": "2025-03-21T10:52:03+00:00",
+                        "timestamp": "2025-03-21T10:52:03+00:00",
                         "image": "/media/images/photo_new.jpg",
                         "thumbnail": "/media/images/photo_new_thumb.jpg",
                         "key": 1774
@@ -257,7 +257,7 @@ describe('Plant with default photo configured', () => {
                 "failed": [],
                 "urls": [
                     {
-                        "created": "2025-03-21T10:52:03+00:00",
+                        "timestamp": "2025-03-21T10:52:03+00:00",
                         "image": "/media/images/photo_new.jpg",
                         "thumbnail": "/media/images/photo_new_thumb.jpg",
                         "key": 1774

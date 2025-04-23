@@ -36,7 +36,7 @@ const PhotoSlide = memo(function PhotoSlide({
         <div
             id={`slide${photo.key}`}
             className="carousel-item relative w-full mx-1"
-            title={timestampToReadable(photo.created)}
+            title={timestampToReadable(photo.timestamp)}
         >
             <img
                 loading="lazy"
@@ -69,7 +69,7 @@ const PhotoSlide = memo(function PhotoSlide({
 PhotoSlide.propTypes = {
     photo: PropTypes.shape({
         key: PropTypes.number.isRequired,
-        created: PropTypes.string.isRequired,
+        timestamp: PropTypes.string.isRequired,
         thumbnail: PropTypes.string.isRequired,
         image: PropTypes.string.isRequired
     }).isRequired,

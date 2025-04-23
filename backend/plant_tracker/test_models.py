@@ -211,19 +211,19 @@ class PlantModelTests(TestCase):
             photos,
             [
                 {
-                    'created': '2024-03-22T10:52:03+00:00',
+                    'timestamp': '2024-03-22T10:52:03+00:00',
                     'image': '/media/images/IMG2.jpg',
                     'thumbnail': '/media/thumbnails/IMG2_thumb.jpg',
                     'key': 2
                 },
                 {
-                    'created': '2024-02-21T10:52:03+00:00',
+                    'timestamp': '2024-02-21T10:52:03+00:00',
                     'image': '/media/images/IMG1.jpg',
                     'thumbnail': '/media/thumbnails/IMG1_thumb.jpg',
                     'key': 1
                 },
                 {
-                    'created': '2024-01-28T10:52:03+00:00',
+                    'timestamp': '2024-01-28T10:52:03+00:00',
                     'image': '/media/images/IMG3.jpg',
                     'thumbnail': '/media/thumbnails/IMG3_thumb.jpg',
                     'key': 3
@@ -257,7 +257,7 @@ class PlantModelTests(TestCase):
             self.plant.get_default_photo_details(),
             {
                 "set": False,
-                "created": None,
+                "timestamp": None,
                 "image": None,
                 "thumbnail": None,
                 "key": None
@@ -279,7 +279,7 @@ class PlantModelTests(TestCase):
             self.plant.get_default_photo_details(),
             {
                 "set": False,
-                "created": photo2.created.isoformat(),
+                "timestamp": photo2.timestamp.isoformat(),
                 "image": photo2.get_photo_url(),
                 "thumbnail": photo2.get_thumbnail_url(),
                 "key": photo2.pk
@@ -294,7 +294,7 @@ class PlantModelTests(TestCase):
             self.plant.get_default_photo_details(),
             {
                 "set": True,
-                "created": photo1.created.isoformat(),
+                "timestamp": photo1.timestamp.isoformat(),
                 "image": photo1.get_photo_url(),
                 "thumbnail": photo1.get_thumbnail_url(),
                 "key": photo1.pk
@@ -432,7 +432,7 @@ class PhotoModelTests(TestCase):
             "Unnamed plant 1 - 2024:03:21 10:52:03 - photo1.jpg"
         )
 
-    def test_sets_correct_created_timestamp(self):
+    def test_sets_correct_timestamp(self):
         # Create mock photo with DateTime and OffsetTime exif params
         both_exif_params = Photo.objects.create(
             plant=self.plant,
@@ -443,9 +443,9 @@ class PhotoModelTests(TestCase):
             )
         )
 
-        # Confirm created timestamp was converted from -07:00 to UTC
+        # Confirm timestamp was converted from -07:00 to UTC
         self.assertEqual(
-            both_exif_params.created.isoformat(),
+            both_exif_params.timestamp.isoformat(),
             '2024-03-21T17:52:03+00:00'
         )
 
@@ -460,7 +460,7 @@ class PhotoModelTests(TestCase):
 
         # Confirm timestamp is unchanged, UTC timezone is added
         self.assertEqual(
-            only_datetime_param.created.isoformat(),
+            only_datetime_param.timestamp.isoformat(),
             '2024-03-21T10:52:03+00:00'
         )
 
@@ -473,7 +473,7 @@ class PhotoModelTests(TestCase):
         # Confirm timestamp matches current time in UTC, has timezone offset
         # (ignore seconds to reduce chance of false negatives)
         self.assertEqual(
-            no_exif_data.created.strftime('%Y:%m:%d %H:%M +z'),
+            no_exif_data.timestamp.strftime('%Y:%m:%d %H:%M +z'),
             timezone.now().strftime('%Y:%m:%d %H:%M +z')
         )
 
@@ -486,7 +486,7 @@ class PhotoModelTests(TestCase):
         # Confirm timestamp matches current time in UTC, has timezone offset
         # (ignore seconds to reduce chance of false negatives)
         self.assertEqual(
-            no_exif_data.created.strftime('%Y:%m:%d %H:%M +z'),
+            no_exif_data.timestamp.strftime('%Y:%m:%d %H:%M +z'),
             timezone.now().strftime('%Y:%m:%d %H:%M +z')
         )
 

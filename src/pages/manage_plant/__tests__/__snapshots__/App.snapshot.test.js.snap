@@ -32,12 +32,12 @@ exports[`App matches snapshot 1`] = `
     <div
       id="photos"
     >
-      [{"created":"2024-03-21T10:52:03+00:00","image":"/media/images/photo1.jpg","thumbnail":"/media/thumbnails/photo1_thumb.jpg","key":1},{"created":"2024-03-22T10:52:03+00:00","image":"/media/images/photo2.jpg","thumbnail":"/media/thumbnails/photo2_thumb.jpg","key":2},{"created":"2024-03-23T10:52:03+00:00","image":"/media/images/photo3.jpg","thumbnail":"/media/thumbnails/photo3_thumb.jpg","key":3}]
+      [{"timestamp":"2024-03-21T10:52:03+00:00","image":"/media/images/photo1.jpg","thumbnail":"/media/thumbnails/photo1_thumb.jpg","key":1},{"timestamp":"2024-03-22T10:52:03+00:00","image":"/media/images/photo2.jpg","thumbnail":"/media/thumbnails/photo2_thumb.jpg","key":2},{"timestamp":"2024-03-23T10:52:03+00:00","image":"/media/images/photo3.jpg","thumbnail":"/media/thumbnails/photo3_thumb.jpg","key":3}]
     </div>
     <div
       id="default_photo"
     >
-      {"set":true,"created":"2024-03-23T10:52:03+00:00","image":"/media/images/photo3.jpg","thumbnail":"/media/thumbnails/photo3_thumb.jpg","key":3}
+      {"set":true,"timestamp":"2024-03-23T10:52:03+00:00","image":"/media/images/photo3.jpg","thumbnail":"/media/thumbnails/photo3_thumb.jpg","key":3}
     </div>
     <div
       id="user_accounts_enabled"
@@ -4088,12 +4088,12 @@ exports[`App matches snapshot when plant is archived 1`] = `
     <div
       id="photos"
     >
-      [{"created":"2024-03-21T10:52:03+00:00","image":"/media/images/photo1.jpg","thumbnail":"/media/thumbnails/photo1_thumb.jpg","key":1},{"created":"2024-03-22T10:52:03+00:00","image":"/media/images/photo2.jpg","thumbnail":"/media/thumbnails/photo2_thumb.jpg","key":2},{"created":"2024-03-23T10:52:03+00:00","image":"/media/images/photo3.jpg","thumbnail":"/media/thumbnails/photo3_thumb.jpg","key":3}]
+      [{"timestamp":"2024-03-21T10:52:03+00:00","image":"/media/images/photo1.jpg","thumbnail":"/media/thumbnails/photo1_thumb.jpg","key":1},{"timestamp":"2024-03-22T10:52:03+00:00","image":"/media/images/photo2.jpg","thumbnail":"/media/thumbnails/photo2_thumb.jpg","key":2},{"timestamp":"2024-03-23T10:52:03+00:00","image":"/media/images/photo3.jpg","thumbnail":"/media/thumbnails/photo3_thumb.jpg","key":3}]
     </div>
     <div
       id="default_photo"
     >
-      {"set":true,"created":"2024-03-23T10:52:03+00:00","image":"/media/images/photo3.jpg","thumbnail":"/media/thumbnails/photo3_thumb.jpg","key":3}
+      {"set":true,"timestamp":"2024-03-23T10:52:03+00:00","image":"/media/images/photo3.jpg","thumbnail":"/media/thumbnails/photo3_thumb.jpg","key":3}
     </div>
     <div
       id="user_accounts_enabled"

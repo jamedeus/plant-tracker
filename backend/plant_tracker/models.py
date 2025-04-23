@@ -271,7 +271,7 @@ class Plant(models.Model):
         '''
         return [
             photo.get_details()
-            for photo in self.photo_set.all().order_by('-created')
+            for photo in self.photo_set.all().order_by('-timestamp')
         ]
 
     def get_thumbnail(self):
@@ -282,7 +282,7 @@ class Plant(models.Model):
             return self.default_photo.get_thumbnail_url()
         try:
             # Most recent photo
-            return self.photo_set.all().order_by('-created')[0].get_thumbnail_url()
+            return self.photo_set.all().order_by('-timestamp')[0].get_thumbnail_url()
         except IndexError:
             return None
 
@@ -325,12 +325,12 @@ class Plant(models.Model):
         try:
             return dict(
                 {'set': False},
-                **self.photo_set.all().order_by('-created')[0].get_details()
+                **self.photo_set.all().order_by('-timestamp')[0].get_details()
             )
         except IndexError:
             return {
                 'set': False,
-                'created': None,
+                'timestamp': None,
                 'image': None,
                 'thumbnail': None,
                 'key': None
@@ -423,16 +423,18 @@ class Photo(models.Model):
     photo = models.ImageField(upload_to="images")
     thumbnail = models.ImageField(upload_to="thumbnails", null=True, blank=True)
 
-    # Save upload time, created time will be read from exifdata by save method
-    uploaded = models.DateTimeField(auto_now_add=True)
-    created = models.DateTimeField(null=True, blank=True)
+    # Store timestamp when created (not editable)
+    created = models.DateTimeField(auto_now_add=True)
+
+    # Timestamp will be read from exifdata by save method
+    timestamp = models.DateTimeField(null=True, blank=True)
 
     # Required relation field matching Photo to correct Plant
     plant = models.ForeignKey(Plant, on_delete=models.CASCADE)
 
     def __str__(self):
         name = self.plant.get_display_name()
-        timestamp = self.created.strftime(TIME_FORMAT)
+        timestamp = self.timestamp.strftime(TIME_FORMAT)
         filename = self.photo.file.file.name.split("/")[-1]
         return f"{name} - {timestamp} - {filename}"
 
@@ -447,7 +449,7 @@ class Photo(models.Model):
     def get_details(self):
         '''Returns dict with photo and thumbnail urls, timestamp, and primary key.'''
         return {
-            'created': self.created.isoformat(),
+            'timestamp': self.timestamp.isoformat(),
             'image': self.get_photo_url(),
             'thumbnail': self.get_thumbnail_url(),
             'key': self.pk
@@ -482,7 +484,7 @@ class Photo(models.Model):
         if not self.thumbnail:
             self.create_thumbnail()
 
-        # Copy exif timestamp to created field when saved for the first time
+        # Copy exif timestamp to timestamp field when saved for the first time
         if not self.pk:
             # Read raw exif data
             exif_raw = Image.open(self.photo).info.get('exif')
@@ -504,19 +506,19 @@ class Photo(models.Model):
                         f"{datetime_original} {offset_original.replace(':', '')}",
                         f"{TIME_FORMAT} %z"
                     )
-                    self.created = timestamp.astimezone(timezone.utc)
+                    self.timestamp = timestamp.astimezone(timezone.utc)
 
                 # If offset not found parse as UTC
                 elif datetime_original:
                     timestamp = datetime.strptime(datetime_original, TIME_FORMAT)
-                    self.created = timestamp.astimezone(timezone.utc)
+                    self.timestamp = timestamp.astimezone(timezone.utc)
 
                 # Default to current time if neither exif param found
                 else:
-                    self.created = django_timezone.now()
+                    self.timestamp = django_timezone.now()
             # Default to current time if no exif data found
             else:
-                self.created = django_timezone.now()
+                self.timestamp = django_timezone.now()
 
         super().save(*args, **kwargs)
 

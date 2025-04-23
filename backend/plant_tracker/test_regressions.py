@@ -81,8 +81,8 @@ class ModelRegressionTests(TestCase):
         self.assertEqual(len(Plant.objects.all()), 1)
         self.assertEqual(len(Group.objects.all()), 1)
 
-    def test_photos_with_no_exif_data_should_set_created_time_to_upload_time(self):
-        '''Issue: The created field is populated in the save method using a
+    def test_photos_with_no_exif_data_should_set_timestamp_to_upload_time(self):
+        '''Issue: The timestamp field is populated in the save method using a
         timestamp parsed from exif data, or with the current time if the exif
         param was not found. The current time was copied from the uploaded
         field resulting in a None value because uploaded (set by auto_now_add)
@@ -96,9 +96,9 @@ class ModelRegressionTests(TestCase):
             plant=plant
         )
 
-        # Photo.created should be a datetime object, not NoneType
-        self.assertNotEqual(type(photo.created), NoneType)
-        self.assertEqual(type(photo.created), datetime)
+        # Photo.timestamp should be a datetime object, not NoneType
+        self.assertNotEqual(type(photo.timestamp), NoneType)
+        self.assertEqual(type(photo.timestamp), datetime)
 
     def test_should_not_allow_creating_plant_with_same_uuid_as_group(self):
         '''Issue: The unique constraint on the Plant.uuid field only applies to
@@ -348,11 +348,11 @@ class ViewRegressionTests(TestCase):
         # Confirm both timestamp strings have timezone offset
         photos = response.json()["urls"]
         self.assertRegex(
-            photos[0]["created"],
+            photos[0]["timestamp"],
             r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?\+\d{2}:\d{2}'
         )
         self.assertRegex(
-            photos[1]["created"],
+            photos[1]["timestamp"],
             r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?\+\d{2}:\d{2}'
         )
 

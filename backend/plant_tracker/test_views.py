@@ -801,13 +801,13 @@ class ManagePageTests(TestCase):
             response.context['state']['photos'],
             [
                 {
-                    'created': '2024-03-22T10:52:03+00:00',
+                    'timestamp': '2024-03-22T10:52:03+00:00',
                     'image': '/media/images/photo2.jpg',
                     'thumbnail': '/media/thumbnails/photo2_thumb.jpg',
                     'key': 2
                 },
                 {
-                    'created': '2024-03-21T10:52:03+00:00',
+                    'timestamp': '2024-03-21T10:52:03+00:00',
                     'image': '/media/images/photo1.jpg',
                     'thumbnail': '/media/thumbnails/photo1_thumb.jpg',
                     'key': 1
@@ -933,7 +933,7 @@ class ManagePageTests(TestCase):
                 'photos': [],
                 'default_photo': {
                     'set': False,
-                    'created': None,
+                    'timestamp': None,
                     'image': None,
                     'thumbnail': None,
                     'key': None
@@ -2164,7 +2164,7 @@ class PlantPhotoEndpointTests(TestCase):
             response.json()["urls"],
             [
                 {
-                    "created": "2024-03-22T10:52:03+00:00",
+                    "timestamp": "2024-03-22T10:52:03+00:00",
                     "image": "/media/images/mock_photo.jpg",
                     "thumbnail": "/media/thumbnails/mock_photo_thumb.jpg",
                     "key": 1
@@ -2176,9 +2176,9 @@ class PlantPhotoEndpointTests(TestCase):
         self.assertEqual(len(Photo.objects.all()), 1)
         self.assertEqual(len(self.plant.photo_set.all()), 1)
 
-        # Confirm Photo.created was set from exif DateTimeOriginal param
+        # Confirm Photo.timestamp was set from exif DateTimeOriginal param
         self.assertEqual(
-            Photo.objects.all()[0].created.strftime('%Y:%m:%d %H:%M:%S'),
+            Photo.objects.all()[0].timestamp.strftime('%Y:%m:%d %H:%M:%S'),
             '2024:03:22 10:52:03'
         )
 

@@ -83,7 +83,7 @@ export const timelineSlice = createSlice({
         //   photos      (array of objects with same keys as photos state)
         timelineDays: {},
         // Array of objects each representing 1 photo, keys:
-        //   created     (full ISO timestamp in UTC)
+        //   timestamp   (full ISO timestamp in UTC)
         //   image       (full resolution URL)
         //   thumbnail   (thumbnail image URL)
         //   key         (backend database key used to delete photo)
@@ -94,7 +94,7 @@ export const timelineSlice = createSlice({
         // details of default photo (or most-recent photo if not set)
         defaultPhoto: {
             set: false,
-            created: null,
+            timestamp: null,
             image: null,
             thumbnail: null,
             key: null
@@ -215,7 +215,7 @@ export const timelineSlice = createSlice({
 
             // Add new URLs to timelineDays state used to render timeline
             photos.forEach((photo) => {
-                const dateKey = timestampToDateString(photo.created);
+                const dateKey = timestampToDateString(photo.timestamp);
                 // Add new dateKey if missing
                 if (!state.timelineDays[dateKey]) {
                     state.timelineDays[dateKey] = {
@@ -234,7 +234,7 @@ export const timelineSlice = createSlice({
             // Add new URLs to photos state (used by DeletePhotoModal and
             // DefaultPhotoModal)
             state.photos = state.photos.concat(photos).sort((a, b) => {
-                return a.created.localeCompare(b.created);
+                return a.timestamp.localeCompare(b.timestamp);
             }).reverse();
 
             // If defaultPhoto not set: Use most-recent photo as default photo
@@ -251,7 +251,7 @@ export const timelineSlice = createSlice({
                 if (deletedKeys.includes(photo.key)) {
                     // Parse YYYY-MM-DD from deleted photo timestamp, find in
                     // timelineDays state and remove
-                    const dateKey = timestampToDateString(photo.created);
+                    const dateKey = timestampToDateString(photo.timestamp);
                     state.timelineDays[dateKey].photos =
                         state.timelineDays[dateKey].photos.filter(
                             p => p.key !== photo.key
@@ -268,7 +268,7 @@ export const timelineSlice = createSlice({
             if (!state.photos.length) {
                 state.defaultPhoto = {
                     set: false,
-                    created: null,
+                    timestamp: null,
                     image: null,
                     thumbnail: null,
                     key: null

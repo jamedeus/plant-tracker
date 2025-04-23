@@ -591,7 +591,7 @@ class HookTests(TestCase):
                 "photos": [],
                 "default_photo": {
                     "set": False,
-                    "created": None,
+                    "timestamp": None,
                     "image": None,
                     "thumbnail": None,
                     "key": None
@@ -762,7 +762,7 @@ class HookTests(TestCase):
             cache.get(f'{self.uuid}_state')['photos'],
             [
                 {
-                    "created": "2024-03-21T10:52:03+00:00",
+                    "timestamp": "2024-03-21T10:52:03+00:00",
                     "image": f"/media/{photo.photo.name}",
                     "thumbnail": f"/media/{photo.thumbnail.name}",
                     "key": photo.pk

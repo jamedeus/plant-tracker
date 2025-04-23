@@ -46,7 +46,7 @@ const PhotoSlide = memo(function PhotoSlide({
         <div id={`photo${photo.key}`} className="carousel-item relative w-full mx-1">
             <div className="flex flex-col mx-auto">
                 <h1 className="mt-auto mb-1 md:text-lg">
-                    {timestampToReadable(photo.created)}
+                    {timestampToReadable(photo.timestamp)}
                 </h1>
                 <img
                     loading="lazy"
@@ -85,7 +85,7 @@ const PhotoSlide = memo(function PhotoSlide({
 PhotoSlide.propTypes = {
     photo: PropTypes.shape({
         key: PropTypes.number.isRequired,
-        created: PropTypes.string.isRequired,
+        timestamp: PropTypes.string.isRequired,
         thumbnail: PropTypes.string.isRequired,
         image: PropTypes.string.isRequired
     }).isRequired,
@@ -120,7 +120,7 @@ const ConfirmDeleteRow = memo(function ConfirmDeleteRow({ photo, unselectPhoto }
 ConfirmDeleteRow.propTypes = {
     photo: PropTypes.shape({
         key: PropTypes.number.isRequired,
-        created: PropTypes.string.isRequired,
+        timestamp: PropTypes.string.isRequired,
         thumbnail: PropTypes.string.isRequired,
         image: PropTypes.string.isRequired
     }).isRequired,
