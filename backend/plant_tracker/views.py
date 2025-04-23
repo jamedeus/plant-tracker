@@ -862,12 +862,7 @@ def add_plant_photos(request, user):
                 photo=request.FILES[key],
                 plant=plant
             )
-            created.append({
-                "created": photo.created.isoformat(),
-                "image": photo.get_photo_url(),
-                "thumbnail": photo.get_thumbnail_url(),
-                "key": photo.pk
-            })
+            created.append(photo.get_details())
         except UnidentifiedImageError:
             failed.append(request.FILES[key].name)
 
