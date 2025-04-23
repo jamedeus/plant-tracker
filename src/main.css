@@ -118,6 +118,8 @@ html[data-theme="light"] .pot-size-selected::placeholder {
     @apply card card-compact w-72 p-2 mt-2 mx-auto shadow bg-neutral text-neutral-content;
     /* Allow scrolling inside card, eg phone in landscape orientation */
     @apply max-h-[calc(100svh-4rem)] overflow-y-auto overscroll-contain;
+    /* Prevent long strings without spaces making card side scroll */
+    @apply overflow-x-hidden;
 }
 
 .btn-prune {

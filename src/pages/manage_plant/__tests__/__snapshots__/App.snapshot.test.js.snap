@@ -187,7 +187,7 @@ exports[`App matches snapshot 1`] = `
                         class="flex flex-col text-center"
                       >
                         <a
-                          class="font-bold text-lg"
+                          class="font-bold text-lg line-clamp-1"
                           href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                         >
                           Test group
@@ -2169,7 +2169,7 @@ exports[`App matches snapshot 1`] = `
                       class="flex flex-col text-center"
                     >
                       <a
-                        class="font-bold text-lg"
+                        class="font-bold text-lg line-clamp-1"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       >
                         Test group
@@ -4231,7 +4231,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                         class="flex flex-col text-center"
                       >
                         <a
-                          class="font-bold text-lg"
+                          class="font-bold text-lg line-clamp-1"
                           href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                         >
                           Test group
@@ -6088,7 +6088,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                       class="flex flex-col text-center"
                     >
                       <a
-                        class="font-bold text-lg"
+                        class="font-bold text-lg line-clamp-1"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       >
                         Test group

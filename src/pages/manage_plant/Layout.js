@@ -116,7 +116,7 @@ function Layout() {
                     {plantDetails.group ? (
                         <div className="flex flex-col text-center">
                             <a
-                                className="font-bold text-lg"
+                                className="font-bold text-lg line-clamp-1"
                                 href={`/manage/${plantDetails.group.uuid}`}
                             >
                                 { plantDetails.group.name }
