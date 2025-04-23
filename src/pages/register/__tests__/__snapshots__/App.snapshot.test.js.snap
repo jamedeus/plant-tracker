@@ -204,10 +204,11 @@ exports[`App matches snapshot 1`] = `
                   </div>
                   <input
                     class="input w-full input-bordered"
+                    inputmode="numeric"
                     max="36"
                     min="1"
                     name="pot_size"
-                    type="number"
+                    type="text"
                     value=""
                   />
                 </label>
@@ -469,10 +470,11 @@ exports[`App matches snapshot 1`] = `
                 </div>
                 <input
                   class="input w-full input-bordered"
+                  inputmode="numeric"
                   max="36"
                   min="1"
                   name="pot_size"
-                  type="number"
+                  type="text"
                   value=""
                 />
               </label>

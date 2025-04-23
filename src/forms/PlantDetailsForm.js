@@ -108,11 +108,15 @@ const PlantDetailsForm = ({ formRef, name, species, pot_size, description }) => 
                 </div>
                 <input
                     name="pot_size"
-                    type="number"
+                    type="text"
+                    inputMode="numeric"
                     className="input w-full input-bordered"
                     min="1"
                     max="36"
                     defaultValue={pot_size}
+                    onInput={(e) => {
+                        e.target.value = e.target.value.replace(/\D+/g, '');
+                    }}
                 />
             </label>
             <label className="form-control w-full">
