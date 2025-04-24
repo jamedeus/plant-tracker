@@ -163,7 +163,7 @@ describe('App', () => {
         }));
 
         // Click Add plants dropdown option
-        await user.click(app.getByText("Add plants"));
+        await user.click(app.getByTestId("add_plants_option"));
 
         // Get reference to modal, select first plant option, click add button
         const addPlantsModal = app.getByText("Add Plants").parentElement;
@@ -183,7 +183,7 @@ describe('App', () => {
         });
 
         // Reopen modal again, click add button again
-        await user.click(app.getByText("Add plants"));
+        await user.click(app.getByTestId("add_plants_option"));
         await user.click(app.getByRole('button', {name: 'Add'}));
 
         // Confirm payload contains no UUIDs (selected ref cleared)
@@ -213,7 +213,7 @@ describe('App', () => {
         }));
 
         // Click Remove plants dropdown option
-        await user.click(app.getByText("Remove plants"));
+        await user.click(app.getByTestId("remove_plants_option"));
 
         // Get reference to modal, select first plant option, click Remove button
         const removePlantsModal = app.getByText("Remove Plants").parentElement;
@@ -234,7 +234,7 @@ describe('App', () => {
         });
 
         // Reopen modal again, click Remove button again
-        await user.click(app.getByText("Remove plants"));
+        await user.click(app.getByTestId("remove_plants_option"));
         await user.click(app.getByRole('button', {name: 'Remove'}));
 
         // Confirm payload contains no UUIDs (selected ref cleared)
@@ -260,7 +260,7 @@ describe('App', () => {
         await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[2]);
 
         // Open Remove plants modal, select first plant option
-        await user.click(app.getByText("Remove plants"));
+        await user.click(app.getByTestId("remove_plants_option"));
         const removePlantsModal = app.getByText("Remove Plants").parentElement;
         await user.click(removePlantsModal.querySelectorAll('label.cursor-pointer')[0]);
 

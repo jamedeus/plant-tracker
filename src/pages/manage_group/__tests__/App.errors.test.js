@@ -80,7 +80,7 @@ describe('App', () => {
         expect(app.queryByText(/failed to add plants to group/)).toBeNull();
 
         // Open AddPlantsModal modal
-        await user.click(app.getByText("Add plants"));
+        await user.click(app.getByTestId("add_plants_option"));
 
         // Simulate user selecting first plant in modal and clicking add
         const addPlantsModal = app.getByText("Add Plants").parentElement;
@@ -104,7 +104,7 @@ describe('App', () => {
         expect(app.queryByText(/failed to remove plants from group/)).toBeNull();
 
         // Open RemovePlantsModal modal
-        await user.click(app.getByText("Remove plants"));
+        await user.click(app.getByTestId("remove_plants_option"));
 
         // Simulate user selecting first plant in modal and clicking remove
         const addPlantsModal = app.getByText("Remove Plants").parentElement;

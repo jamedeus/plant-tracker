@@ -14,6 +14,8 @@ import AddPlantsModal, { openAddPlantsModal } from './AddPlantsModal';
 import RemovePlantsModal, { openRemovePlantsModal } from './RemovePlantsModal';
 import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
 import { openErrorModal } from 'src/components/ErrorModal';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPen } from '@fortawesome/free-solid-svg-icons';
 
 // Buttons used to add events to all selected plants
 const PlantEventButtons = ({ editing, setEditing, addEventSelected }) => {
@@ -271,12 +273,6 @@ function App() {
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => (
         <NavbarDropdownOptions>
-            <li><a onClick={openAddPlantsModal}>
-                Add plants
-            </a></li>
-            <li><a onClick={openRemovePlantsModal}>
-                Remove plants
-            </a></li>
             <li><a onClick={openChangeQrModal}>
                 Change QR code
             </a></li>
@@ -317,7 +313,7 @@ function App() {
                 </button>
             </div>
 
-            <div className="px-4">
+            <div className="px-4 relative">
                 <PlantsCol
                     plants={plantDetails}
                     editing={selectingPlants}
@@ -330,6 +326,40 @@ function App() {
                         addEventSelected={addEventSelected}
                     />
                 </PlantsCol>
+                {/* Add/remove plants dropdown */}
+                <div className="absolute flex top-3 right-[1.625rem] size-10">
+                    <div className="dropdown dropdown-end size-10 m-auto z-20">
+                        <div
+                            role="button"
+                            tabIndex="0"
+                            className="btn-close !size-10"
+                        >
+                            <FontAwesomeIcon
+                                className='size-[1.125rem]'
+                                icon={faPen}
+                            />
+                        </div>
+                        <ul
+                            tabIndex={0}
+                            className="dropdown-options w-min-content"
+                        >
+                            <li><a
+                                className="flex justify-end"
+                                onClick={openAddPlantsModal}
+                                data-testid="add_plants_option"
+                            >
+                                Add
+                            </a></li>
+                            <li><a
+                                className="flex justify-end"
+                                onClick={openRemovePlantsModal}
+                                data-testid="remove_plants_option"
+                            >
+                                Remove
+                            </a></li>
+                        </ul>
+                    </div>
+                </div>
             </div>
 
             <EditGroupModal group={group} setGroup={setGroup} />

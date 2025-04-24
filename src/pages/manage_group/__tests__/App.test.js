@@ -276,7 +276,7 @@ describe('App', () => {
         expect(plantsCol.querySelectorAll('.card-title').length).toBe(3);
 
         // Click Add plants dropdown option
-        await user.click(app.getByText("Add plants"));
+        await user.click(app.getByTestId("add_plants_option"));
 
         // Get reference to modal, confirm contains 2 plant options
         const addPlantsModal = app.getByText("Add Plants").parentElement;
@@ -326,7 +326,7 @@ describe('App', () => {
         expect(plantsCol.querySelectorAll('.card-title').length).toBe(3);
 
         // Click Remove plants dropdown option
-        await user.click(app.getByText("Remove plants"));
+        await user.click(app.getByTestId("remove_plants_option"));
 
         // Get reference to modal, confirm contains 3 plant options
         const removePlantsModal = app.getByText("Remove Plants").parentElement;
