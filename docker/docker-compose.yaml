@@ -1,24 +1,9 @@
 services:
-  nginx-proxy:
-    image: jwilder/nginx-proxy
-    container_name: nginx
-    ports:
-      - "80:80"
-      - "443:443"
-    volumes:
-      - /var/run/docker.sock:/tmp/docker.sock:ro
-      - /home/pi/docker/nginx:/etc/nginx/certs
-    restart: unless-stopped
-    networks:
-      - reverse_proxy
-
   plant-tracker:
     image: plant-tracker
     container_name: plant-tracker
     hostname: plant-tracker
     environment:
-      # Reverse proxy domain name
-      - VIRTUAL_HOST=plants.lan
       # Comma-seperated list, access on all others will be blocked
       # Defaults to * if omitted (not recommended)
       - ALLOWED_HOSTS=plants.lan,localhost
@@ -39,14 +24,7 @@ services:
       - plant-tracker-data:/mnt/backend/data/
     ports:
       - 8456:8456
-    networks:
-      - reverse_proxy
     restart: unless-stopped
-
-networks:
-  reverse_proxy:
-    name: reverse_proxy
-    driver: bridge
 
 volumes:
   plant-tracker-data:

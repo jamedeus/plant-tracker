@@ -39,9 +39,11 @@ Build the docker image:
 docker build -t plant-tracker . -f docker/Dockerfile
 ```
 
-Copy the [docker-compose.yaml](docker/docker-compose.yaml) example to the machine where you'll host the app. Set the `URL_PREFIX` env var to the address you use to access the app (this will be part of the URL in the QR code stickers). If you have a local DNS setup configure it to point `plants.lan` to your docker host and the included reverse proxy configuration will take care of the rest. You can also use the docker host's IP address with no local DNS/reverse proxy, but it's highly recommended to set a static IP so the QR code links don't break if the IP changes.
+Copy the [docker-compose.yaml](docker/docker-compose.yaml) example to the machine where you'll host the app. Set the `URL_PREFIX` env var to the address you use to access the app (this will be part of the URL in the QR code stickers). This could be a domain if the app is served from behind a reverse proxy, or it can be the docker host's IP address. If hosting on a LAN it is highly recommended to set a static IP so the QR code links don't break if the IP changes.
 
-Once your docker compose is setup up start the app:
+If serving behind a reverse proxy you may need additional configuration to allow uploading multiple photos at once (eg if serving behind nginx you will need to set `client_max_body_size` to a reasonable value like 50MB).
+
+Once your docker compose is set up start the app:
 ```
 docker compose up -d
 ```
