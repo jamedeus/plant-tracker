@@ -168,6 +168,38 @@ describe('PhotoModal', () => {
         expect(app.queryByText(/photo1.heic/)).not.toBeNull();
     });
 
+    it('shows error modal when payload exceeds proxy client_max_body_size', async () => {
+        // Mock fetch function to return expected response when nginx reverse
+        // proxy rejects a request that exceeds client_max_body_size
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            status: 413,
+            text: () => Promise.resolve(
+`<html>
+<head><title>413 Request Entity Too Large</title></head>
+<body>
+<center><h1>413 Request Entity Too Large</h1></center>
+<hr><center>nginx/1.27.3</center>
+</body>
+</html>`
+            )
+        }));
+
+        // Confirm error message does not appear on page
+        expect(app.queryByText(/Your upload was too big to process./)).toBeNull();
+
+        // Simulate user selecting a file and clicking upload
+        const file1 = new File(['file1'], 'file1.jpg', { type: 'image/jpeg' });
+        const fileInput = app.getByTestId('photo-input');
+        fireEvent.change(fileInput, { target: { files: [file1] } });
+        await user.click(app.getByText('Upload'));
+
+        // Confirm modal appeared with error message
+        expect(app.queryByText(/Your upload was too big to process./)).not.toBeNull();
+        // Confirm file input was cleared
+        expect(fileInput.files.length).toBe(0);
+    });
+
     it('shows error in modal when API call fails', async () => {
         // Mock fetch function to return arbitrary error message
         global.fetch = jest.fn(() => Promise.resolve({

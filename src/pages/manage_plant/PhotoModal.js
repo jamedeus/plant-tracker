@@ -115,13 +115,20 @@ const PhotoModal = () => {
             // Redirect to login page if  user not signed in/session expired
             if (response.status === 401) {
                 window.location.href = '/accounts/login/';
-            }
+            // Show error if proxy client_max_body_size exceeded
+            } else if (response.status === 413) {
+                openErrorModal(
+                    'Your upload was too big to process. ' +
+                    'Please try again with fewer photos.'
+                );
             // Show other errors in modal
-            try {
-                const error = await response.json();
-                openErrorModal(JSON.stringify(error));
-            } catch(err) {
-                openErrorModal('Unexpected response from backend');
+            } else {
+                try {
+                    const error = await response.json();
+                    openErrorModal(JSON.stringify(error));
+                } catch(err) {
+                    openErrorModal('Unexpected response from backend');
+                }
             }
         }
     };
