@@ -97,11 +97,6 @@ exports[`App matches snapshot 1`] = `
               </li>
               <li>
                 <a>
-                  Set default photo
-                </a>
-              </li>
-              <li>
-                <a>
                   Change QR code
                 </a>
               </li>
@@ -2075,11 +2070,6 @@ exports[`App matches snapshot 1`] = `
                 href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
               >
                 Go to group
-              </a>
-            </li>
-            <li>
-              <a>
-                Set default photo
               </a>
             </li>
             <li>

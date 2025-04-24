@@ -47,9 +47,6 @@ function Layout() {
                             Go to group
                         </a></li>
                     }
-                    <li><a onClick={openDefaultPhotoModal}>
-                        Set default photo
-                    </a></li>
                     <li><a onClick={openChangeQrModal}>
                         Change QR code
                     </a></li>
