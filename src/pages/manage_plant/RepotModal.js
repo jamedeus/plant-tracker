@@ -11,6 +11,9 @@ import { eventAdded } from './timelineSlice';
 import { plantRepotted } from './plantSlice';
 import clsx from 'clsx';
 
+// Pot size options (inches)
+const POT_SIZES = [2, 3, 4, 6, 8, 10, 12, 14, 18, 21];
+
 let modalRef;
 
 export const openRepotModal = () => {
@@ -45,16 +48,13 @@ const RepotModal = () => {
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
     const currentPotSize = useSelector((state) => state.plant.plantDetails.pot_size);
 
-    // Pot size options (inches)
-    const potSizes = [2, 3, 4, 6, 8, 10, 12, 14, 18, 21];
-
     // Ref to access timestamp input
     const repotTimeRef = useRef(null);
 
-    // Default to next size if currentPotSize set, otherwise default to 2in
+    // Default to next size if currentPotSize set, otherwise default to 2 inch
     const [selected, setSelected] = useState((() => {
-        if (currentPotSize && potSizes.includes(parseInt(currentPotSize))) {
-            return potSizes[potSizes.indexOf(parseInt(currentPotSize)) + 1];
+        if (currentPotSize && POT_SIZES.includes(parseInt(currentPotSize))) {
+            return POT_SIZES[POT_SIZES.indexOf(parseInt(currentPotSize)) + 1];
         } else {
             return 2;
         }
@@ -94,9 +94,9 @@ const RepotModal = () => {
             </div>
 
             <div className="flex flex-col my-8">
-                <p className="text-md">New pot size</p>
+                <p className="text-md mb-2">New pot size</p>
                 <div className="grid grid-cols-5 mx-auto">
-                    {potSizes.map((option) => (
+                    {POT_SIZES.map((option) => (
                         <PotSizeOption
                             key={option}
                             option={option}
