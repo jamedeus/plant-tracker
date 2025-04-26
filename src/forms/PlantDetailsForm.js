@@ -111,11 +111,11 @@ const PlantDetailsForm = ({ formRef, name, species, pot_size, description }) => 
                     type="text"
                     inputMode="numeric"
                     className="input w-full input-bordered"
-                    min="1"
-                    max="36"
                     defaultValue={pot_size}
                     onInput={(e) => {
-                        e.target.value = e.target.value.replace(/\D+/g, '');
+                        e.target.value = e.target.value.replace(
+                            /\D+/g, ''
+                        ).slice(0, 2);
                     }}
                 />
             </label>

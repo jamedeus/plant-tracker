@@ -205,8 +205,6 @@ exports[`App matches snapshot 1`] = `
                   <input
                     class="input w-full input-bordered"
                     inputmode="numeric"
-                    max="36"
-                    min="1"
                     name="pot_size"
                     type="text"
                     value=""
@@ -471,8 +469,6 @@ exports[`App matches snapshot 1`] = `
                 <input
                   class="input w-full input-bordered"
                   inputmode="numeric"
-                  max="36"
-                  min="1"
                   name="pot_size"
                   type="text"
                   value=""
