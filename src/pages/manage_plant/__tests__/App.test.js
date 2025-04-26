@@ -275,6 +275,28 @@ describe('App', () => {
         });
     });
 
+    it('does not match /repot_plant request if custom pot size is blank', async () => {
+        // Confirm error text does not exist
+        expect(app.queryByText(
+            'Please enter a custom pot size or select a different option'
+        )).toBeNull();
+
+        // Click "Repot plant" dropdown option (open modal)
+        await user.click(app.getAllByText(/Repot plant/)[0]);
+
+        // Click custom pot size option, click submit without entering value
+        await user.click(app.getByPlaceholderText('custom'));
+        await user.click(app.getByRole('button', {name: 'Repot'}));
+
+        // Confirm error modal appeared with instructions
+        expect(app.getByText(
+            'Please enter a custom pot size or select a different option'
+        )).not.toBeNull();
+
+        // Confirm fetch was NOT called
+        expect(global.fetch).not.toHaveBeenCalled();
+    });
+
     it('scrolls to timeline when calendar day with events is clicked', async () => {
         // Click calendar day with no events, confirm scrollIntoView NOT called
         await user.click(app.getByLabelText('March 10, 2024'));

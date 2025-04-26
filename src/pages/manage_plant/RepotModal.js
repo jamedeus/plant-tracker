@@ -66,6 +66,14 @@ const RepotModal = () => {
     const submit = async () => {
         const new_pot_size = selected === 'custom' ? customPotSize : selected;
 
+        // Don't submit with blank custom pot size
+        if (!new_pot_size) {
+            openErrorModal(
+                'Please enter a custom pot size or select a different option'
+            );
+            return;
+        }
+
         const payload = {
             plant_id: plantID,
             new_pot_size: parseInt(new_pot_size),
