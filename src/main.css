@@ -76,12 +76,11 @@
 /* Repot modal pot size option */
 .pot-size {
     @apply text-xl md:text-2xl text-center font-bold;
-    @apply flex m-2 rounded-full bg-base-300 focus:outline-none;
+    @apply flex rounded-full bg-base-300 focus:outline-none;
 }
 
 /* Repot modal selected pot size option */
-.pot-size[data-headlessui-state="checked"],
-.pot-size[data-headlessui-state="checked active"] {
+.pot-size-selected {
     @apply bg-primary text-white;
 }
 

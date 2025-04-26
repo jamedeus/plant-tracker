@@ -1,6 +1,6 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
-import { fireEvent } from '@testing-library/react';
+import { fireEvent, within } from '@testing-library/react';
 import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
 import { PageWrapper } from 'src/index';
@@ -225,6 +225,9 @@ describe('App', () => {
         // Click "Repot plant" dropdown option (open modal)
         await user.click(app.getAllByText(/Repot plant/)[0]);
 
+        // Select 8 inch pot
+        await user.click(app.getByTitle('8 inch pot'));
+
         // Click submit button
         await user.click(app.getByRole('button', {name: 'Repot'}));
 
@@ -233,7 +236,7 @@ describe('App', () => {
             method: 'POST',
             body: JSON.stringify({
                 "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                "new_pot_size": 6,
+                "new_pot_size": 8,
                 "timestamp": "2024-03-01T20:00:00.000Z"
             }),
             headers: postHeaders
@@ -254,9 +257,8 @@ describe('App', () => {
         await user.click(app.getAllByText(/Repot plant/)[0]);
 
         // Click custom pot size option, enter "5"
-        const customPotSize = app.container.querySelector('.pot-size.w-32');
-        await user.click(customPotSize);
-        await user.type(customPotSize, '5');
+        await user.click(app.getByPlaceholderText('custom'));
+        await user.type(app.getByPlaceholderText('custom'), '5');
 
         // Click submit button
         await user.click(app.getByRole('button', {name: 'Repot'}));

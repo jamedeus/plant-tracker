@@ -1,6 +1,5 @@
-import React, { useState, useRef, Fragment, memo } from 'react';
+import React, { useState, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
-import { RadioGroup } from '@headlessui/react';
 import Modal from 'src/components/Modal';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { localToUTC } from 'src/timestampUtils';
@@ -10,6 +9,7 @@ import { openChangeQrModal } from 'src/components/ChangeQrModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { eventAdded } from './timelineSlice';
 import { plantRepotted } from './plantSlice';
+import clsx from 'clsx';
 
 let modalRef;
 
@@ -17,19 +17,25 @@ export const openRepotModal = () => {
     modalRef.current.open();
 };
 
-// Takes integer pot size, renders round div with number centered
-const PotSizeOption = memo(function PotSizeOption({ option }) {
+const PotSizeOption = memo(function PotSizeOption({ option, isSelected, setSelected }) {
     return (
-        <RadioGroup.Option value={option} as={Fragment}>
-            <div className='pot-size size-10 md:size-12'>
-                <span className="m-auto">{option}</span>
-            </div>
-        </RadioGroup.Option>
+        <div
+            className={clsx(
+                "pot-size size-10 md:size-12 m-2",
+                isSelected && "pot-size-selected"
+            )}
+            title={`${option} inch pot`}
+            onClick={() => setSelected(option)}
+        >
+            <span className="m-auto">{option}</span>
+        </div>
     );
 });
 
 PotSizeOption.propTypes = {
-    option: PropTypes.number.isRequired
+    option: PropTypes.number.isRequired,
+    isSelected: PropTypes.bool.isRequired,
+    setSelected: PropTypes.func.isRequired
 };
 
 const RepotModal = () => {
@@ -42,8 +48,7 @@ const RepotModal = () => {
     // Pot size options (inches)
     const potSizes = [2, 3, 4, 6, 8, 10, 12, 14, 18, 21];
 
-    // Refs to access custom pot size input, timestamp input
-    const customPotRef = useRef(null);
+    // Ref to access timestamp input
     const repotTimeRef = useRef(null);
 
     // Default to next size if currentPotSize set, otherwise default to 2in
@@ -55,27 +60,17 @@ const RepotModal = () => {
         }
     })());
 
-    const isInt = (value) => {
-        return !isNaN(value) &&
-        parseInt(Number(value)) == value &&
-        !isNaN(parseInt(value, 10));
-    };
+    const [customPotSize, setCustomPotSize] = useState('');
 
     // Post user selection to backend, create RepotEvent in database
     const submit = async () => {
+        const new_pot_size = selected === 'custom' ? customPotSize : selected;
+
         const payload = {
             plant_id: plantID,
-            new_pot_size: null,
+            new_pot_size: parseInt(new_pot_size),
             timestamp: localToUTC(repotTimeRef.current.value)
         };
-
-        // Selected will be integer value of chosen option, or "custom" if the
-        // custom pot size input is selected
-        if (isInt(selected)) {
-            payload.new_pot_size = parseInt(selected);
-        } else {
-            payload.new_pot_size = parseInt(customPotRef.current.value);
-        }
 
         const response = await sendPostRequest('/repot_plant', payload);
         if (response.ok) {
@@ -98,33 +93,34 @@ const RepotModal = () => {
                 <DatetimeInput inputRef={repotTimeRef} />
             </div>
 
-            <div className="my-8">
+            <div className="flex flex-col my-8">
                 <p className="text-md">New pot size</p>
-                <RadioGroup
-                    value={selected}
-                    onChange={setSelected}
-                    className="flex flex-col"
-                >
-                    <div className="flex justify-center mx-auto">
-                        {potSizes.slice(0, 5).map((option) => (
-                            <PotSizeOption key={option} option={option} />
-                        ))}
-                    </div>
-                    <div className="flex justify-center mx-auto">
-                        {potSizes.slice(5).map((option) => (
-                            <PotSizeOption key={option} option={option} />
-                        ))}
-                    </div>
-                    <div className="flex justify-center mx-auto">
-                        <RadioGroup.Option value="custom" as={Fragment}>
-                            <input
-                                ref={customPotRef}
-                                className="pot-size w-32 p-2"
-                                placeholder="custom"
-                            />
-                        </RadioGroup.Option>
-                    </div>
-                </RadioGroup>
+                <div className="grid grid-cols-5 mx-auto">
+                    {potSizes.map((option) => (
+                        <PotSizeOption
+                            key={option}
+                            option={option}
+                            isSelected={selected === option}
+                            setSelected={setSelected}
+                        />
+                    ))}
+                </div>
+                <input
+                    className={clsx(
+                        "pot-size w-32 h-10 md:h-12 p-2 mx-auto my-2",
+                        selected === "custom" && "pot-size-selected"
+                    )}
+                    placeholder="custom"
+                    type="text"
+                    inputMode="numeric"
+                    value={customPotSize}
+                    onFocus={() => setSelected("custom")}
+                    onInput={(e) => {
+                        setCustomPotSize(e.target.value.replace(
+                            /\D+/g, ''
+                        ).slice(0, 2));
+                    }}
+                />
             </div>
 
             <button className="btn btn-accent mx-auto" onClick={submit}>
