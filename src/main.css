@@ -73,11 +73,15 @@
     scrollbar-width: none;
 }
 
+/* Repot modal pot size option */
 .pot-size {
-    @apply m-2 p-2 text-xl md:text-2xl font-bold text-center rounded-full focus:outline-none;
+    @apply text-xl md:text-2xl text-center font-bold;
+    @apply flex m-2 rounded-full bg-base-300 focus:outline-none;
 }
 
-.pot-size-selected {
+/* Repot modal selected pot size option */
+.pot-size[data-headlessui-state="checked"],
+.pot-size[data-headlessui-state="checked active"] {
     @apply bg-primary text-white;
 }
 

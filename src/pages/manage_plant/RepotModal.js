@@ -10,7 +10,6 @@ import { openChangeQrModal } from 'src/components/ChangeQrModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { eventAdded } from './timelineSlice';
 import { plantRepotted } from './plantSlice';
-import clsx from 'clsx';
 
 let modalRef;
 
@@ -22,14 +21,9 @@ export const openRepotModal = () => {
 const PotSizeOption = memo(function PotSizeOption({ option }) {
     return (
         <RadioGroup.Option value={option} as={Fragment}>
-            {({ checked }) => (
-                <div className={clsx(
-                    'pot-size size-10 md:size-12',
-                    checked ? 'pot-size-selected' : 'bg-base-300'
-                )}>
-                    <span className="m-auto">{option}</span>
-                </div>
-            )}
+            <div className='pot-size size-10 md:size-12'>
+                <span className="m-auto">{option}</span>
+            </div>
         </RadioGroup.Option>
     );
 });
@@ -123,16 +117,11 @@ const RepotModal = () => {
                     </div>
                     <div className="flex justify-center mx-auto">
                         <RadioGroup.Option value="custom" as={Fragment}>
-                            {({ checked }) => (
-                                <input
-                                    ref={customPotRef}
-                                    className={clsx(
-                                        'pot-size w-32',
-                                        checked ? 'pot-size-selected' : 'bg-base-300'
-                                    )}
-                                    placeholder="custom"
-                                />
-                            )}
+                            <input
+                                ref={customPotRef}
+                                className="pot-size w-32 p-2"
+                                placeholder="custom"
+                            />
                         </RadioGroup.Option>
                     </div>
                 </RadioGroup>
