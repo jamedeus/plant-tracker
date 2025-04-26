@@ -38,7 +38,7 @@ const InstanceCard = memo(function InstanceCard({
             />
 
             <div className='collapse-title !p-0 min-size-0'>
-                <div className='card card-side text-neutral-content relative'>
+                <div className='card card-side text-neutral-content relative h-24'>
                     {thumbnail && (
                         <figure className="h-24 w-20 min-size-20 rounded-b-none">
                             <img
@@ -51,8 +51,8 @@ const InstanceCard = memo(function InstanceCard({
 
                     {/* Card body */}
                     <div className={clsx(
-                        'card-body cursor-default max-w-full',
-                        thumbnail ? 'my-auto text-start' : 'text-center'
+                        'card-body cursor-default max-w-full my-auto',
+                        thumbnail ? 'text-start' : 'text-center'
                     )}>
                         <h2 className={clsx(
                             'card-title line-clamp-1 break-words',

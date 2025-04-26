@@ -273,7 +273,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                           class="collapse-title !p-0 min-size-0"
                         >
                           <div
-                            class="card card-side text-neutral-content relative"
+                            class="card card-side text-neutral-content relative h-24"
                           >
                             <figure
                               class="h-24 w-20 min-size-20 rounded-b-none"
@@ -517,10 +517,10 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                           class="collapse-title !p-0 min-size-0"
                         >
                           <div
-                            class="card card-side text-neutral-content relative"
+                            class="card card-side text-neutral-content relative h-24"
                           >
                             <div
-                              class="card-body cursor-default max-w-full text-center"
+                              class="card-body cursor-default max-w-full my-auto text-center"
                             >
                               <h2
                                 class="card-title line-clamp-1 break-words text-center px-8"
@@ -939,7 +939,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                         class="collapse-title !p-0 min-size-0"
                       >
                         <div
-                          class="card card-side text-neutral-content relative"
+                          class="card card-side text-neutral-content relative h-24"
                         >
                           <figure
                             class="h-24 w-20 min-size-20 rounded-b-none"
@@ -1183,10 +1183,10 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                         class="collapse-title !p-0 min-size-0"
                       >
                         <div
-                          class="card card-side text-neutral-content relative"
+                          class="card card-side text-neutral-content relative h-24"
                         >
                           <div
-                            class="card-body cursor-default max-w-full text-center"
+                            class="card-body cursor-default max-w-full my-auto text-center"
                           >
                             <h2
                               class="card-title line-clamp-1 break-words text-center px-8"
@@ -2172,10 +2172,10 @@ exports[`App matches snapshot when only groups exist 1`] = `
                           class="collapse-title !p-0 min-size-0"
                         >
                           <div
-                            class="card card-side text-neutral-content relative"
+                            class="card card-side text-neutral-content relative h-24"
                           >
                             <div
-                              class="card-body cursor-default max-w-full text-center"
+                              class="card-body cursor-default max-w-full my-auto text-center"
                             >
                               <h2
                                 class="card-title line-clamp-1 break-words text-center px-8"
@@ -2573,10 +2573,10 @@ exports[`App matches snapshot when only groups exist 1`] = `
                         class="collapse-title !p-0 min-size-0"
                       >
                         <div
-                          class="card card-side text-neutral-content relative"
+                          class="card card-side text-neutral-content relative h-24"
                         >
                           <div
-                            class="card-body cursor-default max-w-full text-center"
+                            class="card-body cursor-default max-w-full my-auto text-center"
                           >
                             <h2
                               class="card-title line-clamp-1 break-words text-center px-8"
@@ -3058,7 +3058,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                           class="collapse-title !p-0 min-size-0"
                         >
                           <div
-                            class="card card-side text-neutral-content relative"
+                            class="card card-side text-neutral-content relative h-24"
                           >
                             <figure
                               class="h-24 w-20 min-size-20 rounded-b-none"
@@ -3505,7 +3505,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                         class="collapse-title !p-0 min-size-0"
                       >
                         <div
-                          class="card card-side text-neutral-content relative"
+                          class="card card-side text-neutral-content relative h-24"
                         >
                           <figure
                             class="h-24 w-20 min-size-20 rounded-b-none"
@@ -4029,7 +4029,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                           class="collapse-title !p-0 min-size-0"
                         >
                           <div
-                            class="card card-side text-neutral-content relative"
+                            class="card card-side text-neutral-content relative h-24"
                           >
                             <figure
                               class="h-24 w-20 min-size-20 rounded-b-none"
@@ -4273,10 +4273,10 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                           class="collapse-title !p-0 min-size-0"
                         >
                           <div
-                            class="card card-side text-neutral-content relative"
+                            class="card card-side text-neutral-content relative h-24"
                           >
                             <div
-                              class="card-body cursor-default max-w-full text-center"
+                              class="card-body cursor-default max-w-full my-auto text-center"
                             >
                               <h2
                                 class="card-title line-clamp-1 break-words text-center px-8"
@@ -4681,7 +4681,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                         class="collapse-title !p-0 min-size-0"
                       >
                         <div
-                          class="card card-side text-neutral-content relative"
+                          class="card card-side text-neutral-content relative h-24"
                         >
                           <figure
                             class="h-24 w-20 min-size-20 rounded-b-none"
@@ -4925,10 +4925,10 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                         class="collapse-title !p-0 min-size-0"
                       >
                         <div
-                          class="card card-side text-neutral-content relative"
+                          class="card card-side text-neutral-content relative h-24"
                         >
                           <div
-                            class="card-body cursor-default max-w-full text-center"
+                            class="card-body cursor-default max-w-full my-auto text-center"
                           >
                             <h2
                               class="card-title line-clamp-1 break-words text-center px-8"
@@ -5429,7 +5429,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                           class="collapse-title !p-0 min-size-0"
                         >
                           <div
-                            class="card card-side text-neutral-content relative"
+                            class="card card-side text-neutral-content relative h-24"
                           >
                             <figure
                               class="h-24 w-20 min-size-20 rounded-b-none"
@@ -5673,10 +5673,10 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                           class="collapse-title !p-0 min-size-0"
                         >
                           <div
-                            class="card card-side text-neutral-content relative"
+                            class="card card-side text-neutral-content relative h-24"
                           >
                             <div
-                              class="card-body cursor-default max-w-full text-center"
+                              class="card-body cursor-default max-w-full my-auto text-center"
                             >
                               <h2
                                 class="card-title line-clamp-1 break-words text-center px-8"
@@ -6100,7 +6100,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                         class="collapse-title !p-0 min-size-0"
                       >
                         <div
-                          class="card card-side text-neutral-content relative"
+                          class="card card-side text-neutral-content relative h-24"
                         >
                           <figure
                             class="h-24 w-20 min-size-20 rounded-b-none"
@@ -6344,10 +6344,10 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                         class="collapse-title !p-0 min-size-0"
                       >
                         <div
-                          class="card card-side text-neutral-content relative"
+                          class="card card-side text-neutral-content relative h-24"
                         >
                           <div
-                            class="card-body cursor-default max-w-full text-center"
+                            class="card-body cursor-default max-w-full my-auto text-center"
                           >
                             <h2
                               class="card-title line-clamp-1 break-words text-center px-8"
