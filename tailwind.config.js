@@ -51,7 +51,10 @@ module.exports = {
             {
                 light: {
                     ...require("daisyui/src/theming/themes")["light"],
-                    "neutral": "#dddddd",
+                    "base-100": "#F2F2F2",
+                    "base-200": "#E5E6E6",
+                    "base-300": "#dddddd",
+                    "neutral": "#FFFFFF",
                     "neutral-content": "#000",
                     "--prune": "theme('colors.orange.300')",
                     "--repot": "#703f21",
