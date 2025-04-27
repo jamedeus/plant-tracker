@@ -1,13 +1,13 @@
 /** @type {import('tailwindcss').Config} */
-const plugin = require('tailwindcss/plugin')
+const plugin = require('tailwindcss/plugin');
 
 module.exports = {
     content: ["./src/**/*.{html,js,css}"],
     theme: {
         extend: {
             colors: {
-                prune: 'var(--prune)',
-                repot: 'var(--repot)',
+                prune: 'oklch(var(--prune) / <alpha-value>)',
+                repot: 'oklch(var(--repot) / <alpha-value>)',
             }
         },
     },
@@ -28,7 +28,7 @@ module.exports = {
                     // Enable arbitrary values
                     type: ['length', 'percentage'],
                 }
-            )
+            );
             // Add max-size classes (max-w + max-h)
             matchUtilities(
                 {
@@ -43,7 +43,7 @@ module.exports = {
                     // Enable arbitrary values
                     type: ['length', 'percentage'],
                 }
-            )
+            );
         }),
     ],
     daisyui: {
@@ -56,15 +56,15 @@ module.exports = {
                     "base-300": "#dddddd",
                     "neutral": "#FFFFFF",
                     "neutral-content": "#000",
-                    "--prune": "theme('colors.orange.300')",
-                    "--repot": "#703f21",
+                    "--prune": "0.83 0.155 66.29",
+                    "--repot": "0.42 0.081 50.5",
                 },
                 dark: {
                     ...require("daisyui/src/theming/themes")["dark"],
-                    "--prune": "theme('colors.orange.300')",
-                    "--repot": "#60381b",
+                    "--prune": "0.85 0.1265 66.29",
+                    "--repot": "0.38 0.0709 54.66",
                 },
             }
         ],
     },
-}
+};
