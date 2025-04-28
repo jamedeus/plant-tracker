@@ -25,7 +25,7 @@ const InstanceCard = memo(function InstanceCard({
         <a
             href={`/manage/${uuid}`}
             className={clsx(
-                'collapse card-collapse bg-neutral cursor-pointer group',
+                'collapse card-collapse cursor-pointer group',
                 archived && 'grayscale'
             )}
             aria-label={`Go to ${title} page`}
@@ -38,7 +38,7 @@ const InstanceCard = memo(function InstanceCard({
             />
 
             <div className='collapse-title !p-0 min-size-0'>
-                <div className='card card-side text-neutral-content relative h-24'>
+                <div className='card card-side relative h-24'>
                     {thumbnail && (
                         <figure className="h-24 w-20 min-size-20 rounded-b-none">
                             <img

@@ -261,7 +261,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                     >
                       <a
                         aria-label="Go to Test Plant page"
-                        class="collapse card-collapse bg-neutral cursor-pointer group grayscale"
+                        class="collapse card-collapse cursor-pointer group grayscale"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       >
                         <input
@@ -273,7 +273,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                           class="collapse-title !p-0 min-size-0"
                         >
                           <div
-                            class="card card-side text-neutral-content relative h-24"
+                            class="card card-side relative h-24"
                           >
                             <figure
                               class="h-24 w-20 min-size-20 rounded-b-none"
@@ -505,7 +505,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                     >
                       <a
                         aria-label="Go to Test group page"
-                        class="collapse card-collapse bg-neutral cursor-pointer group grayscale"
+                        class="collapse card-collapse cursor-pointer group grayscale"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       >
                         <input
@@ -517,7 +517,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                           class="collapse-title !p-0 min-size-0"
                         >
                           <div
-                            class="card card-side text-neutral-content relative h-24"
+                            class="card card-side relative h-24"
                           >
                             <div
                               class="card-body cursor-default max-w-full my-auto text-center"
@@ -927,7 +927,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                   >
                     <a
                       aria-label="Go to Test Plant page"
-                      class="collapse card-collapse bg-neutral cursor-pointer group grayscale"
+                      class="collapse card-collapse cursor-pointer group grayscale"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     >
                       <input
@@ -939,7 +939,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                         class="collapse-title !p-0 min-size-0"
                       >
                         <div
-                          class="card card-side text-neutral-content relative h-24"
+                          class="card card-side relative h-24"
                         >
                           <figure
                             class="h-24 w-20 min-size-20 rounded-b-none"
@@ -1171,7 +1171,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                   >
                     <a
                       aria-label="Go to Test group page"
-                      class="collapse card-collapse bg-neutral cursor-pointer group grayscale"
+                      class="collapse card-collapse cursor-pointer group grayscale"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     >
                       <input
@@ -1183,7 +1183,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                         class="collapse-title !p-0 min-size-0"
                       >
                         <div
-                          class="card card-side text-neutral-content relative h-24"
+                          class="card card-side relative h-24"
                         >
                           <div
                             class="card-body cursor-default max-w-full my-auto text-center"
@@ -2160,7 +2160,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                     >
                       <a
                         aria-label="Go to Test group page"
-                        class="collapse card-collapse bg-neutral cursor-pointer group"
+                        class="collapse card-collapse cursor-pointer group"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       >
                         <input
@@ -2172,7 +2172,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                           class="collapse-title !p-0 min-size-0"
                         >
                           <div
-                            class="card card-side text-neutral-content relative h-24"
+                            class="card card-side relative h-24"
                           >
                             <div
                               class="card-body cursor-default max-w-full my-auto text-center"
@@ -2561,7 +2561,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                   >
                     <a
                       aria-label="Go to Test group page"
-                      class="collapse card-collapse bg-neutral cursor-pointer group"
+                      class="collapse card-collapse cursor-pointer group"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     >
                       <input
@@ -2573,7 +2573,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                         class="collapse-title !p-0 min-size-0"
                       >
                         <div
-                          class="card card-side text-neutral-content relative h-24"
+                          class="card card-side relative h-24"
                         >
                           <div
                             class="card-body cursor-default max-w-full my-auto text-center"
@@ -3046,7 +3046,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                     >
                       <a
                         aria-label="Go to Test Plant page"
-                        class="collapse card-collapse bg-neutral cursor-pointer group"
+                        class="collapse card-collapse cursor-pointer group"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       >
                         <input
@@ -3058,7 +3058,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                           class="collapse-title !p-0 min-size-0"
                         >
                           <div
-                            class="card card-side text-neutral-content relative h-24"
+                            class="card card-side relative h-24"
                           >
                             <figure
                               class="h-24 w-20 min-size-20 rounded-b-none"
@@ -3493,7 +3493,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                   >
                     <a
                       aria-label="Go to Test Plant page"
-                      class="collapse card-collapse bg-neutral cursor-pointer group"
+                      class="collapse card-collapse cursor-pointer group"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     >
                       <input
@@ -3505,7 +3505,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                         class="collapse-title !p-0 min-size-0"
                       >
                         <div
-                          class="card card-side text-neutral-content relative h-24"
+                          class="card card-side relative h-24"
                         >
                           <figure
                             class="h-24 w-20 min-size-20 rounded-b-none"
@@ -4017,7 +4017,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                     >
                       <a
                         aria-label="Go to Test Plant page"
-                        class="collapse card-collapse bg-neutral cursor-pointer group"
+                        class="collapse card-collapse cursor-pointer group"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       >
                         <input
@@ -4029,7 +4029,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                           class="collapse-title !p-0 min-size-0"
                         >
                           <div
-                            class="card card-side text-neutral-content relative h-24"
+                            class="card card-side relative h-24"
                           >
                             <figure
                               class="h-24 w-20 min-size-20 rounded-b-none"
@@ -4261,7 +4261,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                     >
                       <a
                         aria-label="Go to Test group page"
-                        class="collapse card-collapse bg-neutral cursor-pointer group"
+                        class="collapse card-collapse cursor-pointer group"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       >
                         <input
@@ -4273,7 +4273,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                           class="collapse-title !p-0 min-size-0"
                         >
                           <div
-                            class="card card-side text-neutral-content relative h-24"
+                            class="card card-side relative h-24"
                           >
                             <div
                               class="card-body cursor-default max-w-full my-auto text-center"
@@ -4669,7 +4669,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                   >
                     <a
                       aria-label="Go to Test Plant page"
-                      class="collapse card-collapse bg-neutral cursor-pointer group"
+                      class="collapse card-collapse cursor-pointer group"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     >
                       <input
@@ -4681,7 +4681,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                         class="collapse-title !p-0 min-size-0"
                       >
                         <div
-                          class="card card-side text-neutral-content relative h-24"
+                          class="card card-side relative h-24"
                         >
                           <figure
                             class="h-24 w-20 min-size-20 rounded-b-none"
@@ -4913,7 +4913,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                   >
                     <a
                       aria-label="Go to Test group page"
-                      class="collapse card-collapse bg-neutral cursor-pointer group"
+                      class="collapse card-collapse cursor-pointer group"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     >
                       <input
@@ -4925,7 +4925,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                         class="collapse-title !p-0 min-size-0"
                       >
                         <div
-                          class="card card-side text-neutral-content relative h-24"
+                          class="card card-side relative h-24"
                         >
                           <div
                             class="card-body cursor-default max-w-full my-auto text-center"
@@ -5417,7 +5417,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                     >
                       <a
                         aria-label="Go to Test Plant page"
-                        class="collapse card-collapse bg-neutral cursor-pointer group"
+                        class="collapse card-collapse cursor-pointer group"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       >
                         <input
@@ -5429,7 +5429,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                           class="collapse-title !p-0 min-size-0"
                         >
                           <div
-                            class="card card-side text-neutral-content relative h-24"
+                            class="card card-side relative h-24"
                           >
                             <figure
                               class="h-24 w-20 min-size-20 rounded-b-none"
@@ -5661,7 +5661,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                     >
                       <a
                         aria-label="Go to Test group page"
-                        class="collapse card-collapse bg-neutral cursor-pointer group"
+                        class="collapse card-collapse cursor-pointer group"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       >
                         <input
@@ -5673,7 +5673,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                           class="collapse-title !p-0 min-size-0"
                         >
                           <div
-                            class="card card-side text-neutral-content relative h-24"
+                            class="card card-side relative h-24"
                           >
                             <div
                               class="card-body cursor-default max-w-full my-auto text-center"
@@ -6088,7 +6088,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                   >
                     <a
                       aria-label="Go to Test Plant page"
-                      class="collapse card-collapse bg-neutral cursor-pointer group"
+                      class="collapse card-collapse cursor-pointer group"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     >
                       <input
@@ -6100,7 +6100,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                         class="collapse-title !p-0 min-size-0"
                       >
                         <div
-                          class="card card-side text-neutral-content relative h-24"
+                          class="card card-side relative h-24"
                         >
                           <figure
                             class="h-24 w-20 min-size-20 rounded-b-none"
@@ -6332,7 +6332,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                   >
                     <a
                       aria-label="Go to Test group page"
-                      class="collapse card-collapse bg-neutral cursor-pointer group"
+                      class="collapse card-collapse cursor-pointer group"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                     >
                       <input
@@ -6344,7 +6344,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                         class="collapse-title !p-0 min-size-0"
                       >
                         <div
-                          class="card card-side text-neutral-content relative h-24"
+                          class="card card-side relative h-24"
                         >
                           <div
                             class="card-body cursor-default max-w-full my-auto text-center"

@@ -20,10 +20,7 @@ export const openEventHistoryModal = () => {
 // When clicked color changes and timestamp is passed to onSelect callback
 const EventCard = memo(function EventCard({ timestamp, selected, onSelect }) {
     return (
-        <label className={clsx(
-            'card card-compact w-full max-w-80 select-none bg-neutral',
-            'text-neutral-content'
-        )}>
+        <label className='card card-compact w-full max-w-80 select-none'>
             <input
                 type="checkbox"
                 className="hidden peer"

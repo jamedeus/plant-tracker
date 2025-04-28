@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+.card, .card-collapse {
+    @apply bg-neutral text-neutral-content;
+}
+
 .card-body {
     @apply p-4;
 }
@@ -123,7 +127,7 @@ html[data-theme="light"] .pot-size-selected::placeholder {
 
 /* Wraps Navbar title dropdown contents (plant/group details) */
 .details-card {
-    @apply card card-compact w-72 p-2 mt-2 mx-auto shadow bg-neutral text-neutral-content;
+    @apply card card-compact w-72 p-2 mt-2 mx-auto shadow;
     /* Allow scrolling inside card, eg phone in landscape orientation */
     @apply max-h-[calc(100svh-4rem)] overflow-y-auto overscroll-contain;
     /* Prevent long strings without spaces making card side scroll */
