@@ -28,7 +28,7 @@ const AddPlantsModal = memo(function AddPlantsModal({ options, addPlants }) {
             ref={modalRef}
             className='max-w-[26rem]'
         >
-            <div className="max-h-screen md:max-h-half-screen overflow-y-scroll pr-4 mt-4">
+            <div className="md:max-h-[50vh] overflow-y-scroll pr-4 mt-4">
                 {options.length > 0 ? (
                     <EditableNodeList editing={true} formRef={formRef}>
                         {options.map((plant) => (

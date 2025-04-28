@@ -64,10 +64,6 @@
     @apply focus:border-accent focus:outline-accent !outline-offset-0;
 }
 
-.max-h-half-screen {
-    max-height: 50vh;
-}
-
 .no-scrollbar::-webkit-scrollbar {
     display: none;
 }

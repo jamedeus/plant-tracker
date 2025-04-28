@@ -169,7 +169,7 @@ const PhotoModal = () => {
                         onChange={handleSelect}
                         data-testid="photo-input"
                     />
-                    <div className="max-h-half-screen overflow-y-scroll overflow-x-hidden">
+                    <div className="max-h-[50vh] overflow-y-scroll overflow-x-hidden">
                         <table className="table mt-2">
                             <tbody>
                                 {selectedFiles.map(file => (

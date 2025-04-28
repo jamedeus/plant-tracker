@@ -256,7 +256,7 @@ const DeletePhotosModal = () => {
 
                 <div className={clsx(
                     'grid grid-cols-[min-content_1fr] mx-auto px-8 gap-4',
-                    'max-h-half-screen overflow-y-scroll'
+                    'max-h-[50vh] overflow-y-scroll'
                 )}>
                     {selectedPhotos.map(photo => (
                         <ConfirmDeleteRow
