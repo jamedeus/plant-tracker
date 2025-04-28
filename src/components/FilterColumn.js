@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useReducer, memo } from 'react';
 import PropTypes from 'prop-types';
 import useDebounce from 'src/useDebounce';
-import CollapseCol from 'src/components/CollapseCol';
+import SectionCol from 'src/components/SectionCol';
 import EditableNodeList from 'src/components/EditableNodeList';
 import { XMarkIcon, ArrowsUpDownIcon } from '@heroicons/react/16/solid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -213,7 +213,7 @@ FilterInput.propTypes = {
     sortByKeys: PropTypes.array.isRequired
 };
 
-// Renders CollapseCol with EditableNodeList, text input used to filter visible
+// Renders SectionCol with EditableNodeList, text input used to filter visible
 // items, and dropdown used to sort contents.
 //
 // Args:
@@ -317,7 +317,7 @@ const FilterColumn = ({
     };
 
     return (
-        <CollapseCol
+        <SectionCol
             title={`${title} (${Object.keys(state.currentContents).length})`}
         >
             <FilterInput
@@ -333,7 +333,7 @@ const FilterColumn = ({
                 ))}
             </EditableNodeList>
             {children}
-        </CollapseCol>
+        </SectionCol>
     );
 };
 

@@ -137,19 +137,15 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
             class="scroll-mt-20 md:mr-12 mb-8 md:mb-0"
           >
             <div
-              class="collapse bg-base-200 max-w-96 px-4"
+              class="section"
             >
-              <input
-                checked=""
-                type="checkbox"
-              />
               <div
-                class="collapse-title text-xl font-medium text-center"
+                class="section-title"
               >
                 Plants (1)
               </div>
               <div
-                class="collapse-content min-w-0 px-2 md:px-4"
+                class="section-content"
               >
                 <div
                   class="flex px-4 mb-4"
@@ -388,19 +384,15 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
             class="scroll-mt-20 md:ml-12"
           >
             <div
-              class="collapse bg-base-200 max-w-96 px-4"
+              class="section"
             >
-              <input
-                checked=""
-                type="checkbox"
-              />
               <div
-                class="collapse-title text-xl font-medium text-center"
+                class="section-title"
               >
                 Groups (1)
               </div>
               <div
-                class="collapse-content min-w-0 px-2 md:px-4"
+                class="section-content"
               >
                 <div
                   class="flex px-4 mb-4"
@@ -803,19 +795,15 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
           class="scroll-mt-20 md:mr-12 mb-8 md:mb-0"
         >
           <div
-            class="collapse bg-base-200 max-w-96 px-4"
+            class="section"
           >
-            <input
-              checked=""
-              type="checkbox"
-            />
             <div
-              class="collapse-title text-xl font-medium text-center"
+              class="section-title"
             >
               Plants (1)
             </div>
             <div
-              class="collapse-content min-w-0 px-2 md:px-4"
+              class="section-content"
             >
               <div
                 class="flex px-4 mb-4"
@@ -1054,19 +1042,15 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
           class="scroll-mt-20 md:ml-12"
         >
           <div
-            class="collapse bg-base-200 max-w-96 px-4"
+            class="section"
           >
-            <input
-              checked=""
-              type="checkbox"
-            />
             <div
-              class="collapse-title text-xl font-medium text-center"
+              class="section-title"
             >
               Groups (1)
             </div>
             <div
-              class="collapse-content min-w-0 px-2 md:px-4"
+              class="section-content"
             >
               <div
                 class="flex px-4 mb-4"
@@ -2043,19 +2027,15 @@ exports[`App matches snapshot when only groups exist 1`] = `
             class="scroll-mt-20"
           >
             <div
-              class="collapse bg-base-200 max-w-96 px-4"
+              class="section"
             >
-              <input
-                checked=""
-                type="checkbox"
-              />
               <div
-                class="collapse-title text-xl font-medium text-center"
+                class="section-title"
               >
                 Groups (1)
               </div>
               <div
-                class="collapse-content min-w-0 px-2 md:px-4"
+                class="section-content"
               >
                 <div
                   class="flex px-4 mb-4"
@@ -2444,19 +2424,15 @@ exports[`App matches snapshot when only groups exist 1`] = `
           class="scroll-mt-20"
         >
           <div
-            class="collapse bg-base-200 max-w-96 px-4"
+            class="section"
           >
-            <input
-              checked=""
-              type="checkbox"
-            />
             <div
-              class="collapse-title text-xl font-medium text-center"
+              class="section-title"
             >
               Groups (1)
             </div>
             <div
-              class="collapse-content min-w-0 px-2 md:px-4"
+              class="section-content"
             >
               <div
                 class="flex px-4 mb-4"
@@ -2922,19 +2898,15 @@ exports[`App matches snapshot when only plants exist 1`] = `
             class="scroll-mt-20"
           >
             <div
-              class="collapse bg-base-200 max-w-96 px-4"
+              class="section"
             >
-              <input
-                checked=""
-                type="checkbox"
-              />
               <div
-                class="collapse-title text-xl font-medium text-center"
+                class="section-title"
               >
                 Plants (1)
               </div>
               <div
-                class="collapse-content min-w-0 px-2 md:px-4"
+                class="section-content"
               >
                 <div
                   class="flex px-4 mb-4"
@@ -3369,19 +3341,15 @@ exports[`App matches snapshot when only plants exist 1`] = `
           class="scroll-mt-20"
         >
           <div
-            class="collapse bg-base-200 max-w-96 px-4"
+            class="section"
           >
-            <input
-              checked=""
-              type="checkbox"
-            />
             <div
-              class="collapse-title text-xl font-medium text-center"
+              class="section-title"
             >
               Plants (1)
             </div>
             <div
-              class="collapse-content min-w-0 px-2 md:px-4"
+              class="section-content"
             >
               <div
                 class="flex px-4 mb-4"
@@ -3893,19 +3861,15 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
             class="scroll-mt-20 md:mr-12 mb-8 md:mb-0"
           >
             <div
-              class="collapse bg-base-200 max-w-96 px-4"
+              class="section"
             >
-              <input
-                checked=""
-                type="checkbox"
-              />
               <div
-                class="collapse-title text-xl font-medium text-center"
+                class="section-title"
               >
                 Plants (1)
               </div>
               <div
-                class="collapse-content min-w-0 px-2 md:px-4"
+                class="section-content"
               >
                 <div
                   class="flex px-4 mb-4"
@@ -4144,19 +4108,15 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
             class="scroll-mt-20 md:ml-12"
           >
             <div
-              class="collapse bg-base-200 max-w-96 px-4"
+              class="section"
             >
-              <input
-                checked=""
-                type="checkbox"
-              />
               <div
-                class="collapse-title text-xl font-medium text-center"
+                class="section-title"
               >
                 Groups (1)
               </div>
               <div
-                class="collapse-content min-w-0 px-2 md:px-4"
+                class="section-content"
               >
                 <div
                   class="flex px-4 mb-4"
@@ -4545,19 +4505,15 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
           class="scroll-mt-20 md:mr-12 mb-8 md:mb-0"
         >
           <div
-            class="collapse bg-base-200 max-w-96 px-4"
+            class="section"
           >
-            <input
-              checked=""
-              type="checkbox"
-            />
             <div
-              class="collapse-title text-xl font-medium text-center"
+              class="section-title"
             >
               Plants (1)
             </div>
             <div
-              class="collapse-content min-w-0 px-2 md:px-4"
+              class="section-content"
             >
               <div
                 class="flex px-4 mb-4"
@@ -4796,19 +4752,15 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
           class="scroll-mt-20 md:ml-12"
         >
           <div
-            class="collapse bg-base-200 max-w-96 px-4"
+            class="section"
           >
-            <input
-              checked=""
-              type="checkbox"
-            />
             <div
-              class="collapse-title text-xl font-medium text-center"
+              class="section-title"
             >
               Groups (1)
             </div>
             <div
-              class="collapse-content min-w-0 px-2 md:px-4"
+              class="section-content"
             >
               <div
                 class="flex px-4 mb-4"
@@ -5293,19 +5245,15 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
             class="scroll-mt-20 md:mr-12 mb-8 md:mb-0"
           >
             <div
-              class="collapse bg-base-200 max-w-96 px-4"
+              class="section"
             >
-              <input
-                checked=""
-                type="checkbox"
-              />
               <div
-                class="collapse-title text-xl font-medium text-center"
+                class="section-title"
               >
                 Plants (1)
               </div>
               <div
-                class="collapse-content min-w-0 px-2 md:px-4"
+                class="section-content"
               >
                 <div
                   class="flex px-4 mb-4"
@@ -5544,19 +5492,15 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
             class="scroll-mt-20 md:ml-12"
           >
             <div
-              class="collapse bg-base-200 max-w-96 px-4"
+              class="section"
             >
-              <input
-                checked=""
-                type="checkbox"
-              />
               <div
-                class="collapse-title text-xl font-medium text-center"
+                class="section-title"
               >
                 Groups (1)
               </div>
               <div
-                class="collapse-content min-w-0 px-2 md:px-4"
+                class="section-content"
               >
                 <div
                   class="flex px-4 mb-4"
@@ -5964,19 +5908,15 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
           class="scroll-mt-20 md:mr-12 mb-8 md:mb-0"
         >
           <div
-            class="collapse bg-base-200 max-w-96 px-4"
+            class="section"
           >
-            <input
-              checked=""
-              type="checkbox"
-            />
             <div
-              class="collapse-title text-xl font-medium text-center"
+              class="section-title"
             >
               Plants (1)
             </div>
             <div
-              class="collapse-content min-w-0 px-2 md:px-4"
+              class="section-content"
             >
               <div
                 class="flex px-4 mb-4"
@@ -6215,19 +6155,15 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
           class="scroll-mt-20 md:ml-12"
         >
           <div
-            class="collapse bg-base-200 max-w-96 px-4"
+            class="section"
           >
-            <input
-              checked=""
-              type="checkbox"
-            />
             <div
-              class="collapse-title text-xl font-medium text-center"
+              class="section-title"
             >
               Groups (1)
             </div>
             <div
-              class="collapse-content min-w-0 px-2 md:px-4"
+              class="section-content"
             >
               <div
                 class="flex px-4 mb-4"

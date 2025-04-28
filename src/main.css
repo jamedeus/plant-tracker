@@ -10,14 +10,16 @@
     @apply p-4;
 }
 
-.collapse-title {
-    @apply p-4;
+.section {
+    @apply flex flex-col w-full max-w-96 bg-base-200 px-4 rounded-2xl;
 }
 
-/* Allow overflow when collapse is open */
-/* Prevents FilterColumn sort dropdown getting cut off when only 1 item */
-.collapse:has(> input[type="checkbox"]:checked) {
-    @apply overflow-visible;
+.section-title {
+    @apply text-xl font-medium text-center w-full p-4;
+}
+
+.section-content {
+    @apply min-w-0 min-h-fit px-2 md:px-4 pb-2 md:pb-4;
 }
 
 /* Prevent PlantCard and GroupCard from expanding when focused */
