@@ -21,7 +21,7 @@ export const openEventHistoryModal = () => {
 const EventCard = memo(function EventCard({ timestamp, selected, onSelect }) {
     return (
         <label className={clsx(
-            'card card-compact max-w-80 mb-4 mx-auto select-none bg-neutral',
+            'card card-compact w-full max-w-80 select-none bg-neutral',
             'text-neutral-content'
         )}>
             <input
@@ -63,21 +63,21 @@ const EventsCol = ({ type, selectedRef, handleSelect }) => {
     }, [handleSelect, selectedRef]);
 
     return (
-        <div className="flex flex-col mx-auto">
-            <div className="max-h-half-screen overflow-y-scroll px-4">
-                {events.length > 0 ? (
-                    events.map((timestamp) => (
-                        <EventCard
-                            key={timestamp}
-                            timestamp={timestamp}
-                            selected={selectedRef.current.includes(timestamp)}
-                            onSelect={onSelect}
-                        />
-                    ))
-                ) : (
-                    <p className="my-8">No events</p>
-                )}
-            </div>
+        <div className={
+            "flex flex-col items-center gap-4 h-[50vh] overflow-y-scroll px-4"
+        }>
+            {events.length > 0 ? (
+                events.map((timestamp) => (
+                    <EventCard
+                        key={timestamp}
+                        timestamp={timestamp}
+                        selected={selectedRef.current.includes(timestamp)}
+                        onSelect={onSelect}
+                    />
+                ))
+            ) : (
+                <p className="my-8">No events</p>
+            )}
         </div>
     );
 };
@@ -132,7 +132,9 @@ const EventHistoryModal = () => {
 
     const handleSelect = useCallback((key, selectedRef) => {
         if (selectedRef.current.includes(key)) {
-            selectedRef.current = selectedRef.current.filter(item => item !== key);
+            selectedRef.current = selectedRef.current.filter(
+                item => item !== key
+            );
         } else {
             selectedRef.current.push(key);
         }
@@ -160,7 +162,9 @@ const EventHistoryModal = () => {
             payload.events.push({type: 'repot', timestamp: timestamp});
         });
 
-        const response = await sendPostRequest('/bulk_delete_plant_events', payload);
+        const response = await sendPostRequest('/bulk_delete_plant_events',
+            payload
+        );
 
         // If successful remove event from history column
         if (response.ok) {
