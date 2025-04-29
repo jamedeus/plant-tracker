@@ -140,9 +140,18 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
               class="section"
             >
               <div
-                class="section-title"
+                class="section-title dropdown dropdown-center"
               >
-                Plants (1)
+                <div
+                  class="section-title-font"
+                  role="button"
+                  tabindex="0"
+                >
+                  Plants (1)
+                </div>
+                <div
+                  class="dropdown-content z-50 mt-14"
+                />
               </div>
               <div
                 class="section-content"
@@ -388,9 +397,18 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
               class="section"
             >
               <div
-                class="section-title"
+                class="section-title dropdown dropdown-center"
               >
-                Groups (1)
+                <div
+                  class="section-title-font"
+                  role="button"
+                  tabindex="0"
+                >
+                  Groups (1)
+                </div>
+                <div
+                  class="dropdown-content z-50 mt-14"
+                />
               </div>
               <div
                 class="section-content"
@@ -800,9 +818,18 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
             class="section"
           >
             <div
-              class="section-title"
+              class="section-title dropdown dropdown-center"
             >
-              Plants (1)
+              <div
+                class="section-title-font"
+                role="button"
+                tabindex="0"
+              >
+                Plants (1)
+              </div>
+              <div
+                class="dropdown-content z-50 mt-14"
+              />
             </div>
             <div
               class="section-content"
@@ -1048,9 +1075,18 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
             class="section"
           >
             <div
-              class="section-title"
+              class="section-title dropdown dropdown-center"
             >
-              Groups (1)
+              <div
+                class="section-title-font"
+                role="button"
+                tabindex="0"
+              >
+                Groups (1)
+              </div>
+              <div
+                class="dropdown-content z-50 mt-14"
+              />
             </div>
             <div
               class="section-content"
@@ -2034,9 +2070,18 @@ exports[`App matches snapshot when only groups exist 1`] = `
               class="section"
             >
               <div
-                class="section-title"
+                class="section-title dropdown dropdown-center"
               >
-                Groups (1)
+                <div
+                  class="section-title-font"
+                  role="button"
+                  tabindex="0"
+                >
+                  Groups (1)
+                </div>
+                <div
+                  class="dropdown-content z-50 mt-14"
+                />
               </div>
               <div
                 class="section-content"
@@ -2432,9 +2477,18 @@ exports[`App matches snapshot when only groups exist 1`] = `
             class="section"
           >
             <div
-              class="section-title"
+              class="section-title dropdown dropdown-center"
             >
-              Groups (1)
+              <div
+                class="section-title-font"
+                role="button"
+                tabindex="0"
+              >
+                Groups (1)
+              </div>
+              <div
+                class="dropdown-content z-50 mt-14"
+              />
             </div>
             <div
               class="section-content"
@@ -2907,9 +2961,18 @@ exports[`App matches snapshot when only plants exist 1`] = `
               class="section"
             >
               <div
-                class="section-title"
+                class="section-title dropdown dropdown-center"
               >
-                Plants (1)
+                <div
+                  class="section-title-font"
+                  role="button"
+                  tabindex="0"
+                >
+                  Plants (1)
+                </div>
+                <div
+                  class="dropdown-content z-50 mt-14"
+                />
               </div>
               <div
                 class="section-content"
@@ -3351,9 +3414,18 @@ exports[`App matches snapshot when only plants exist 1`] = `
             class="section"
           >
             <div
-              class="section-title"
+              class="section-title dropdown dropdown-center"
             >
-              Plants (1)
+              <div
+                class="section-title-font"
+                role="button"
+                tabindex="0"
+              >
+                Plants (1)
+              </div>
+              <div
+                class="dropdown-content z-50 mt-14"
+              />
             </div>
             <div
               class="section-content"
@@ -3872,9 +3944,18 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
               class="section"
             >
               <div
-                class="section-title"
+                class="section-title dropdown dropdown-center"
               >
-                Plants (1)
+                <div
+                  class="section-title-font"
+                  role="button"
+                  tabindex="0"
+                >
+                  Plants (1)
+                </div>
+                <div
+                  class="dropdown-content z-50 mt-14"
+                />
               </div>
               <div
                 class="section-content"
@@ -4120,9 +4201,18 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
               class="section"
             >
               <div
-                class="section-title"
+                class="section-title dropdown dropdown-center"
               >
-                Groups (1)
+                <div
+                  class="section-title-font"
+                  role="button"
+                  tabindex="0"
+                >
+                  Groups (1)
+                </div>
+                <div
+                  class="dropdown-content z-50 mt-14"
+                />
               </div>
               <div
                 class="section-content"
@@ -4518,9 +4608,18 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
             class="section"
           >
             <div
-              class="section-title"
+              class="section-title dropdown dropdown-center"
             >
-              Plants (1)
+              <div
+                class="section-title-font"
+                role="button"
+                tabindex="0"
+              >
+                Plants (1)
+              </div>
+              <div
+                class="dropdown-content z-50 mt-14"
+              />
             </div>
             <div
               class="section-content"
@@ -4766,9 +4865,18 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
             class="section"
           >
             <div
-              class="section-title"
+              class="section-title dropdown dropdown-center"
             >
-              Groups (1)
+              <div
+                class="section-title-font"
+                role="button"
+                tabindex="0"
+              >
+                Groups (1)
+              </div>
+              <div
+                class="dropdown-content z-50 mt-14"
+              />
             </div>
             <div
               class="section-content"
@@ -5260,9 +5368,18 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
               class="section"
             >
               <div
-                class="section-title"
+                class="section-title dropdown dropdown-center"
               >
-                Plants (1)
+                <div
+                  class="section-title-font"
+                  role="button"
+                  tabindex="0"
+                >
+                  Plants (1)
+                </div>
+                <div
+                  class="dropdown-content z-50 mt-14"
+                />
               </div>
               <div
                 class="section-content"
@@ -5508,9 +5625,18 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
               class="section"
             >
               <div
-                class="section-title"
+                class="section-title dropdown dropdown-center"
               >
-                Groups (1)
+                <div
+                  class="section-title-font"
+                  role="button"
+                  tabindex="0"
+                >
+                  Groups (1)
+                </div>
+                <div
+                  class="dropdown-content z-50 mt-14"
+                />
               </div>
               <div
                 class="section-content"
@@ -5925,9 +6051,18 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
             class="section"
           >
             <div
-              class="section-title"
+              class="section-title dropdown dropdown-center"
             >
-              Plants (1)
+              <div
+                class="section-title-font"
+                role="button"
+                tabindex="0"
+              >
+                Plants (1)
+              </div>
+              <div
+                class="dropdown-content z-50 mt-14"
+              />
             </div>
             <div
               class="section-content"
@@ -6173,9 +6308,18 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
             class="section"
           >
             <div
-              class="section-title"
+              class="section-title dropdown dropdown-center"
             >
-              Groups (1)
+              <div
+                class="section-title-font"
+                role="button"
+                tabindex="0"
+              >
+                Groups (1)
+              </div>
+              <div
+                class="dropdown-content z-50 mt-14"
+              />
             </div>
             <div
               class="section-content"

@@ -15,7 +15,11 @@
 }
 
 .section-title {
-    @apply text-xl font-medium text-center w-full p-4;
+    @apply flex text-center w-full min-h-[3.75rem];
+}
+
+.section-title-font {
+    @apply text-xl font-medium min-h-0 h-auto py-1 m-auto cursor-default;
 }
 
 .section-content {
