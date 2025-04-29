@@ -158,7 +158,6 @@ function Layout() {
         <div className="container flex flex-col items-center mx-auto mb-8">
             <Navbar
                 menuOptions={DropdownMenuOptions}
-                onOpenMenu={preloadDefaultPhotoModal}
                 title={plantDetails.display_name}
                 titleOptions={PlantDetailsDropdown}
                 onOpenTitle={preloadDefaultPhotoModal}
