@@ -90,7 +90,7 @@ const Navbar = memo(function Navbar({ menuOptions, onOpenMenu, title, titleOptio
             {/* Top left dropdown button */}
             <div
                 className="dropdown justify-start min-w-12"
-                onFocus={onOpenMenu}
+                onClick={onOpenMenu}
             >
                 <DropdownButton />
                 <ul tabIndex={0} className="dropdown-options mt-3 w-52">
@@ -106,7 +106,7 @@ const Navbar = memo(function Navbar({ menuOptions, onOpenMenu, title, titleOptio
             >
                 <div
                     className="dropdown dropdown-center w-full"
-                    onFocus={onOpenTitle}
+                    onClick={onOpenTitle}
                 >
                     <a
                         tabIndex={0}

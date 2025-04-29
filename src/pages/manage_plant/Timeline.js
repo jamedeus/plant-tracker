@@ -58,7 +58,7 @@ const Title = memo(function Title() {
 
             <div
                 className="navbar-end w-12 dropdown dropdown-end"
-                onFocus={preloadDeletePhotosModal}
+                onClick={preloadDeletePhotosModal}
             >
                 {!archived &&
                     <>
