@@ -16,10 +16,11 @@ const IGNORE_KEYS = [
 ];
 
 // Renders FilterColumn with GroupCard for each item in groups param (array)
-const GroupsCol = ({ groups, editing, formRef, storageKey, children }) => {
+const GroupsCol = ({ groups, editing, formRef, storageKey, onOpenTitle, children }) => {
     return (
         <FilterColumn
             title="Groups"
+            onOpenTitle={onOpenTitle}
             contents={groups}
             CardComponent={GroupCard}
             editing={editing}
@@ -42,6 +43,7 @@ GroupsCol.propTypes = {
         PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
     ]).isRequired,
     storageKey: PropTypes.string,
+    onOpenTitle: PropTypes.func,
     children: PropTypes.node
 };
 

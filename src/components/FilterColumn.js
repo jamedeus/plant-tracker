@@ -221,6 +221,7 @@ FilterInput.propTypes = {
 // Args:
 // - title: String displayed at top of column.
 // - titleOptions: Optional dropdown options shown when title is clicked.
+// - onOpenTitle: Optional function called when title dropdown opened.
 // - contents: Array of objects with attributes matching the args expected by
 //   CardComponent, used to render cards in EditableNodeList.
 // - CardComponent: A JSX component rendered for each item in contents.
@@ -237,6 +238,7 @@ FilterInput.propTypes = {
 const FilterColumn = ({
     title,
     titleOptions,
+    onOpenTitle,
     contents,
     CardComponent,
     editing,
@@ -324,6 +326,7 @@ const FilterColumn = ({
         <SectionCol
             title={`${title} (${Object.keys(state.currentContents).length})`}
             titleOptions={titleOptions}
+            onOpenTitle={onOpenTitle}
         >
             <FilterInput
                 sortByKeys={sortByKeys}
@@ -345,6 +348,7 @@ const FilterColumn = ({
 FilterColumn.propTypes = {
     title: PropTypes.string.isRequired,
     titleOptions: PropTypes.node,
+    onOpenTitle: PropTypes.func,
     contents: PropTypes.array.isRequired,
     CardComponent: PropTypes.elementType.isRequired,
     editing: PropTypes.bool,

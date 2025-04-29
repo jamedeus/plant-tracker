@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import Navbar from 'src/components/Navbar';
 import { useTheme } from 'src/context/ThemeContext';
 import { sendPostRequest, parseDomContext } from 'src/util';
@@ -64,6 +64,10 @@ function App() {
 
     // State object to track edit mode (shows checkbox for each card when true)
     const [editing, setEditing] = useState(false);
+
+    const toggleEditing = useCallback(() => {
+        setEditing(!editing);
+    }, [editing]);
 
     // FormRefs for PlantsCol and GroupsCol, used to read user selection
     const selectedPlantsRef = useRef(null);
@@ -292,6 +296,7 @@ function App() {
                 selectedPlantsRef={selectedPlantsRef}
                 selectedGroupsRef={selectedGroupsRef}
                 editing={editing}
+                toggleEditing={toggleEditing}
                 plantsColRef={plantsColRef}
                 groupsColRef={groupsColRef}
             />

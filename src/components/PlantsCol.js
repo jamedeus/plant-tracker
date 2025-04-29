@@ -20,11 +20,12 @@ const IGNORE_KEYS = [
 ];
 
 // Renders FilterColumn with PlantCard for each item in plants param (array)
-const PlantsCol = ({ plants, editing, formRef, storageKey, titleOptions, children }) => {
+const PlantsCol = ({ plants, editing, formRef, storageKey, titleOptions, onOpenTitle, children }) => {
     return (
         <FilterColumn
             title="Plants"
             titleOptions={titleOptions}
+            onOpenTitle={onOpenTitle}
             contents={plants}
             CardComponent={PlantCard}
             editing={editing}
@@ -48,6 +49,7 @@ PlantsCol.propTypes = {
     ]).isRequired,
     storageKey: PropTypes.string,
     titleOptions: PropTypes.node,
+    onOpenTitle: PropTypes.func,
     children: PropTypes.node
 };
 

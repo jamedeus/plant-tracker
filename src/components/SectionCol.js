@@ -1,19 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import clsx from 'clsx';
 
 // Renders section with centered title and flex column containing children
-const SectionCol = ({ title, titleOptions, children }) => {
+const SectionCol = ({ title, titleOptions, onOpenTitle, children }) => {
     return (
         <div className="section">
-            <div className="section-title dropdown dropdown-center">
+            <div
+                className="section-title dropdown dropdown-center"
+                onClick={onOpenTitle}
+            >
                 <div
                     tabIndex={0}
                     role="button"
-                    className={clsx(
-                        "section-title-font",
-                        titleOptions && "btn btn-ghost cursor-pointer"
-                    )}
+                    className="section-title-font btn btn-ghost cursor-pointer"
                 >
                     {title}
                 </div>
@@ -31,6 +30,7 @@ const SectionCol = ({ title, titleOptions, children }) => {
 SectionCol.propTypes = {
     title: PropTypes.string.isRequired,
     titleOptions: PropTypes.node,
+    onOpenTitle: PropTypes.func,
     children: PropTypes.node
 };
 

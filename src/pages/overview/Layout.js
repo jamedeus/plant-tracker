@@ -11,6 +11,7 @@ const Layout = ({
     selectedPlantsRef,
     selectedGroupsRef,
     editing,
+    toggleEditing,
     plantsColRef,
     groupsColRef
 }) => {
@@ -36,6 +37,7 @@ const Layout = ({
                         editing={editing}
                         formRef={selectedPlantsRef}
                         storageKey='overviewPlantsColumn'
+                        onOpenTitle={toggleEditing}
                     />
                 </div>
             )}
@@ -53,6 +55,7 @@ const Layout = ({
                         editing={editing}
                         formRef={selectedGroupsRef}
                         storageKey='overviewGroupsColumn'
+                        onOpenTitle={toggleEditing}
                     />
                 </div>
             )}
@@ -76,6 +79,7 @@ Layout.propTypes = {
         PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
     ]).isRequired,
     editing: PropTypes.bool.isRequired,
+    toggleEditing: PropTypes.func.isRequired,
     plantsColRef: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.instanceOf(Element) }),

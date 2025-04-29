@@ -65,6 +65,16 @@ describe('App', () => {
         await user.click(app.getByRole('button', {name: 'Cancel'}));
         expect(floatingFooter.classList).toContain('floating-footer-hidden');
         expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(0);
+
+        // Click Plants column title, confirm entered edit mode again
+        await user.click(app.getByText('Plants (2)'));
+        expect(floatingFooter.classList).toContain('floating-footer-visible');
+        expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).not.toBe(0);
+
+        // Click Groups column title, confirm exited edit
+        await user.click(app.getByText('Groups (2)'));
+        expect(floatingFooter.classList).toContain('floating-footer-hidden');
+        expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(0);
     });
 
     it('sends correct payload when plants are deleted', async () => {
