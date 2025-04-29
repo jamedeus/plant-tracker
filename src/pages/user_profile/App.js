@@ -255,7 +255,7 @@ const Section = ({ title, open=false, children }) => {
     return (
         <div className="collapse collapse-arrow bg-base-200">
             <input type="radio" name="my-accordion-2" defaultChecked={open} />
-            <div className="collapse-title text-xl font-medium text-center">
+            <div className="collapse-title text-xl font-medium text-center p-4">
                 {title}
             </div>
             <div className="collapse-content">

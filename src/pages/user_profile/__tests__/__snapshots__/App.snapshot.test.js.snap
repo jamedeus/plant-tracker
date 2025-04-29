@@ -101,7 +101,7 @@ exports[`App matches snapshot 1`] = `
               type="radio"
             />
             <div
-              class="collapse-title text-xl font-medium text-center"
+              class="collapse-title text-xl font-medium text-center p-4"
             >
               Details
             </div>
@@ -197,7 +197,7 @@ exports[`App matches snapshot 1`] = `
               type="radio"
             />
             <div
-              class="collapse-title text-xl font-medium text-center"
+              class="collapse-title text-xl font-medium text-center p-4"
             >
               Change Password
             </div>
@@ -410,7 +410,7 @@ exports[`App matches snapshot 1`] = `
             type="radio"
           />
           <div
-            class="collapse-title text-xl font-medium text-center"
+            class="collapse-title text-xl font-medium text-center p-4"
           >
             Details
           </div>
@@ -506,7 +506,7 @@ exports[`App matches snapshot 1`] = `
             type="radio"
           />
           <div
-            class="collapse-title text-xl font-medium text-center"
+            class="collapse-title text-xl font-medium text-center p-4"
           >
             Change Password
           </div>
