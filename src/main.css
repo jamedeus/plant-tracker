@@ -149,31 +149,6 @@ html[data-theme="light"] .pot-size-selected::placeholder {
     @apply rounded-lg object-cover;
 }
 
-@keyframes popover-animation {
-    0% {
-        opacity: 0;
-        transform: scale(0.95);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-.popover-enter {
-    transform-origin: bottom;
-    animation: popover-animation 0.3s cubic-bezier(0, 0, 0.2, 1);
-}
-
-.popover-image {
-    @apply object-scale-down max-h-[80vh] max-w-[80vw] md:max-h-[50vh] md:max-w-[50vw];
-}
-
-/* Prevent navbar covering top of popover */
-#react-tiny-popover-container {
-    z-index: 99;
-}
-
 /* Make cursor-pointer override cursor style for all children */
 .cursor-pointer, .cursor-pointer * {
     cursor: pointer !important;

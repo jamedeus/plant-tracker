@@ -1146,7 +1146,7 @@ exports[`App matches snapshot 1`] = `
                 class="navbar-center mx-auto"
               >
                 <div
-                  class="dropdown dropdown-center dropdown-hover mx-auto"
+                  class="dropdown dropdown-center dropdown-hover"
                 >
                   <div
                     class="btn btn-ghost text-xl font-bold m-1"
@@ -1248,34 +1248,34 @@ exports[`App matches snapshot 1`] = `
               </div>
             </div>
             <div
-              class="grid grid-cols-[min-content_1fr] gap-4 md:gap-8 p-4 md:p-8 pt-0 md:pt-0 overflow-hidden"
+              class="timeline-layout"
             >
               <div
-                class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+                class="month-divider"
                 data-timeline-divider="2024-03"
               >
                 March 2024
               </div>
               <div
-                class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+                class="timeline-timestamp"
                 data-date="2024-03-23"
               >
                 <span
-                  class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                  class="text-sm md:text-lg"
                 >
                   in 22 days
                 </span>
                 <span
-                  class="hidden md:block text-sm mb-auto"
+                  class="hidden md:block text-sm"
                 >
                   Mar 23, 2024
                 </span>
               </div>
               <div
-                class="flex flex-col bg-neutral rounded-xl p-2 md:p-4 min-w-0 overflow-hidden"
+                class="timeline-day"
               >
                 <div
-                  class="flex flex-col min-[372px]:grid min-[372px]:grid-cols-[min-content_1fr] min-[457px]:flex min-[457px]:flex-row min-[457px]:flex-wrap"
+                  class="timeline-day-events"
                 />
                 <div
                   class="flex flex-row flex-wrap"
@@ -1284,7 +1284,7 @@ exports[`App matches snapshot 1`] = `
                     title="02:52 AM - March 23, 2024"
                   >
                     <img
-                      class="photo-thumbnail m-2 size-[4.9rem] md:size-[5.4rem]"
+                      class="photo-thumbnail photo-thumbnail-timeline"
                       loading="lazy"
                       src="/media/thumbnails/photo3_thumb.jpg"
                     />
@@ -1295,25 +1295,25 @@ exports[`App matches snapshot 1`] = `
                 />
               </div>
               <div
-                class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+                class="timeline-timestamp"
                 data-date="2024-03-22"
               >
                 <span
-                  class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                  class="text-sm md:text-lg"
                 >
                   in 21 days
                 </span>
                 <span
-                  class="hidden md:block text-sm mb-auto"
+                  class="hidden md:block text-sm"
                 >
                   Mar 22, 2024
                 </span>
               </div>
               <div
-                class="flex flex-col bg-neutral rounded-xl p-2 md:p-4 min-w-0 overflow-hidden"
+                class="timeline-day"
               >
                 <div
-                  class="flex flex-col min-[372px]:grid min-[372px]:grid-cols-[min-content_1fr] min-[457px]:flex min-[457px]:flex-row min-[457px]:flex-wrap"
+                  class="timeline-day-events"
                 />
                 <div
                   class="flex flex-row flex-wrap"
@@ -1322,7 +1322,7 @@ exports[`App matches snapshot 1`] = `
                     title="02:52 AM - March 22, 2024"
                   >
                     <img
-                      class="photo-thumbnail m-2 size-[4.9rem] md:size-[5.4rem]"
+                      class="photo-thumbnail photo-thumbnail-timeline"
                       loading="lazy"
                       src="/media/thumbnails/photo2_thumb.jpg"
                     />
@@ -1333,25 +1333,25 @@ exports[`App matches snapshot 1`] = `
                 />
               </div>
               <div
-                class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+                class="timeline-timestamp"
                 data-date="2024-03-21"
               >
                 <span
-                  class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                  class="text-sm md:text-lg"
                 >
                   in 20 days
                 </span>
                 <span
-                  class="hidden md:block text-sm mb-auto"
+                  class="hidden md:block text-sm"
                 >
                   Mar 21, 2024
                 </span>
               </div>
               <div
-                class="flex flex-col bg-neutral rounded-xl p-2 md:p-4 min-w-0 overflow-hidden"
+                class="timeline-day"
               >
                 <div
-                  class="flex flex-col min-[372px]:grid min-[372px]:grid-cols-[min-content_1fr] min-[457px]:flex min-[457px]:flex-row min-[457px]:flex-wrap"
+                  class="timeline-day-events"
                 />
                 <div
                   class="flex flex-row flex-wrap"
@@ -1360,7 +1360,7 @@ exports[`App matches snapshot 1`] = `
                     title="02:52 AM - March 21, 2024"
                   >
                     <img
-                      class="photo-thumbnail m-2 size-[4.9rem] md:size-[5.4rem]"
+                      class="photo-thumbnail photo-thumbnail-timeline"
                       loading="lazy"
                       src="/media/thumbnails/photo1_thumb.jpg"
                     />
@@ -1371,28 +1371,28 @@ exports[`App matches snapshot 1`] = `
                 />
               </div>
               <div
-                class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+                class="timeline-timestamp"
                 data-date="2024-03-01"
               >
                 <span
-                  class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                  class="text-sm md:text-lg"
                 >
                   today
                 </span>
                 <span
-                  class="hidden md:block text-sm mb-auto"
+                  class="hidden md:block text-sm"
                 >
                   Mar 01, 2024
                 </span>
               </div>
               <div
-                class="flex flex-col bg-neutral rounded-xl p-2 md:p-4 min-w-0 overflow-hidden"
+                class="timeline-day"
               >
                 <div
-                  class="flex flex-col min-[372px]:grid min-[372px]:grid-cols-[min-content_1fr] min-[457px]:flex min-[457px]:flex-row min-[457px]:flex-wrap"
+                  class="timeline-day-events"
                 >
                   <span
-                    class="m-2 whitespace-nowrap text-sm md:text-base"
+                    class="event-marker"
                   >
                     <svg
                       aria-hidden="true"
@@ -1412,7 +1412,7 @@ exports[`App matches snapshot 1`] = `
                     Watered
                   </span>
                   <span
-                    class="m-2 whitespace-nowrap text-sm md:text-base"
+                    class="event-marker"
                   >
                     <svg
                       aria-hidden="true"
@@ -1439,7 +1439,7 @@ exports[`App matches snapshot 1`] = `
                   class="flex flex-col"
                 >
                   <div
-                    class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                    class="note-collapse"
                     style=""
                   >
                     <svg
@@ -1462,7 +1462,7 @@ exports[`App matches snapshot 1`] = `
                       title="07:45 AM - March 1, 2024"
                     >
                       <span
-                        class="text-sm md:text-base mr-2 after:content-['\\200B']"
+                        class="note-collapse-text"
                       >
                         Fertilized with dilute 10-15-10 liquid fertilizer
                       </span>
@@ -1476,34 +1476,34 @@ exports[`App matches snapshot 1`] = `
                 </div>
               </div>
               <div
-                class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+                class="month-divider"
                 data-timeline-divider="2024-02"
               >
                 February 2024
               </div>
               <div
-                class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+                class="timeline-timestamp"
                 data-date="2024-02-29"
               >
                 <span
-                  class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                  class="text-sm md:text-lg"
                 >
                   yesterday
                 </span>
                 <span
-                  class="hidden md:block text-sm mb-auto"
+                  class="hidden md:block text-sm"
                 >
                   Feb 29, 2024
                 </span>
               </div>
               <div
-                class="flex flex-col bg-neutral rounded-xl p-2 md:p-4 min-w-0 overflow-hidden"
+                class="timeline-day"
               >
                 <div
-                  class="flex flex-col min-[372px]:grid min-[372px]:grid-cols-[min-content_1fr] min-[457px]:flex min-[457px]:flex-row min-[457px]:flex-wrap"
+                  class="timeline-day-events"
                 >
                   <span
-                    class="m-2 whitespace-nowrap text-sm md:text-base"
+                    class="event-marker"
                   >
                     <svg
                       aria-hidden="true"
@@ -1531,28 +1531,28 @@ exports[`App matches snapshot 1`] = `
                 />
               </div>
               <div
-                class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+                class="timeline-timestamp"
                 data-date="2024-02-26"
               >
                 <span
-                  class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                  class="text-sm md:text-lg"
                 >
                   4 days ago
                 </span>
                 <span
-                  class="hidden md:block text-sm mb-auto"
+                  class="hidden md:block text-sm"
                 >
                   Feb 26, 2024
                 </span>
               </div>
               <div
-                class="flex flex-col bg-neutral rounded-xl p-2 md:p-4 min-w-0 overflow-hidden"
+                class="timeline-day"
               >
                 <div
-                  class="flex flex-col min-[372px]:grid min-[372px]:grid-cols-[min-content_1fr] min-[457px]:flex min-[457px]:flex-row min-[457px]:flex-wrap"
+                  class="timeline-day-events"
                 >
                   <span
-                    class="m-2 whitespace-nowrap text-sm md:text-base"
+                    class="event-marker"
                   >
                     <svg
                       aria-hidden="true"
@@ -1579,7 +1579,7 @@ exports[`App matches snapshot 1`] = `
                   class="flex flex-col"
                 >
                   <div
-                    class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                    class="note-collapse"
                     style=""
                   >
                     <svg
@@ -1602,7 +1602,7 @@ exports[`App matches snapshot 1`] = `
                       title="04:44 AM - February 26, 2024"
                     >
                       <span
-                        class="text-sm md:text-base mr-2 after:content-['\\200B']"
+                        class="note-collapse-text"
                       >
                         One of the older leaves is starting to turn yellow
                       </span>
@@ -3123,7 +3123,7 @@ exports[`App matches snapshot 1`] = `
               class="navbar-center mx-auto"
             >
               <div
-                class="dropdown dropdown-center dropdown-hover mx-auto"
+                class="dropdown dropdown-center dropdown-hover"
               >
                 <div
                   class="btn btn-ghost text-xl font-bold m-1"
@@ -3225,34 +3225,34 @@ exports[`App matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="grid grid-cols-[min-content_1fr] gap-4 md:gap-8 p-4 md:p-8 pt-0 md:pt-0 overflow-hidden"
+            class="timeline-layout"
           >
             <div
-              class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+              class="month-divider"
               data-timeline-divider="2024-03"
             >
               March 2024
             </div>
             <div
-              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+              class="timeline-timestamp"
               data-date="2024-03-23"
             >
               <span
-                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                class="text-sm md:text-lg"
               >
                 in 22 days
               </span>
               <span
-                class="hidden md:block text-sm mb-auto"
+                class="hidden md:block text-sm"
               >
                 Mar 23, 2024
               </span>
             </div>
             <div
-              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4 min-w-0 overflow-hidden"
+              class="timeline-day"
             >
               <div
-                class="flex flex-col min-[372px]:grid min-[372px]:grid-cols-[min-content_1fr] min-[457px]:flex min-[457px]:flex-row min-[457px]:flex-wrap"
+                class="timeline-day-events"
               />
               <div
                 class="flex flex-row flex-wrap"
@@ -3261,7 +3261,7 @@ exports[`App matches snapshot 1`] = `
                   title="02:52 AM - March 23, 2024"
                 >
                   <img
-                    class="photo-thumbnail m-2 size-[4.9rem] md:size-[5.4rem]"
+                    class="photo-thumbnail photo-thumbnail-timeline"
                     loading="lazy"
                     src="/media/thumbnails/photo3_thumb.jpg"
                   />
@@ -3272,25 +3272,25 @@ exports[`App matches snapshot 1`] = `
               />
             </div>
             <div
-              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+              class="timeline-timestamp"
               data-date="2024-03-22"
             >
               <span
-                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                class="text-sm md:text-lg"
               >
                 in 21 days
               </span>
               <span
-                class="hidden md:block text-sm mb-auto"
+                class="hidden md:block text-sm"
               >
                 Mar 22, 2024
               </span>
             </div>
             <div
-              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4 min-w-0 overflow-hidden"
+              class="timeline-day"
             >
               <div
-                class="flex flex-col min-[372px]:grid min-[372px]:grid-cols-[min-content_1fr] min-[457px]:flex min-[457px]:flex-row min-[457px]:flex-wrap"
+                class="timeline-day-events"
               />
               <div
                 class="flex flex-row flex-wrap"
@@ -3299,7 +3299,7 @@ exports[`App matches snapshot 1`] = `
                   title="02:52 AM - March 22, 2024"
                 >
                   <img
-                    class="photo-thumbnail m-2 size-[4.9rem] md:size-[5.4rem]"
+                    class="photo-thumbnail photo-thumbnail-timeline"
                     loading="lazy"
                     src="/media/thumbnails/photo2_thumb.jpg"
                   />
@@ -3310,25 +3310,25 @@ exports[`App matches snapshot 1`] = `
               />
             </div>
             <div
-              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+              class="timeline-timestamp"
               data-date="2024-03-21"
             >
               <span
-                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                class="text-sm md:text-lg"
               >
                 in 20 days
               </span>
               <span
-                class="hidden md:block text-sm mb-auto"
+                class="hidden md:block text-sm"
               >
                 Mar 21, 2024
               </span>
             </div>
             <div
-              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4 min-w-0 overflow-hidden"
+              class="timeline-day"
             >
               <div
-                class="flex flex-col min-[372px]:grid min-[372px]:grid-cols-[min-content_1fr] min-[457px]:flex min-[457px]:flex-row min-[457px]:flex-wrap"
+                class="timeline-day-events"
               />
               <div
                 class="flex flex-row flex-wrap"
@@ -3337,7 +3337,7 @@ exports[`App matches snapshot 1`] = `
                   title="02:52 AM - March 21, 2024"
                 >
                   <img
-                    class="photo-thumbnail m-2 size-[4.9rem] md:size-[5.4rem]"
+                    class="photo-thumbnail photo-thumbnail-timeline"
                     loading="lazy"
                     src="/media/thumbnails/photo1_thumb.jpg"
                   />
@@ -3348,28 +3348,28 @@ exports[`App matches snapshot 1`] = `
               />
             </div>
             <div
-              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+              class="timeline-timestamp"
               data-date="2024-03-01"
             >
               <span
-                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                class="text-sm md:text-lg"
               >
                 today
               </span>
               <span
-                class="hidden md:block text-sm mb-auto"
+                class="hidden md:block text-sm"
               >
                 Mar 01, 2024
               </span>
             </div>
             <div
-              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4 min-w-0 overflow-hidden"
+              class="timeline-day"
             >
               <div
-                class="flex flex-col min-[372px]:grid min-[372px]:grid-cols-[min-content_1fr] min-[457px]:flex min-[457px]:flex-row min-[457px]:flex-wrap"
+                class="timeline-day-events"
               >
                 <span
-                  class="m-2 whitespace-nowrap text-sm md:text-base"
+                  class="event-marker"
                 >
                   <svg
                     aria-hidden="true"
@@ -3389,7 +3389,7 @@ exports[`App matches snapshot 1`] = `
                   Watered
                 </span>
                 <span
-                  class="m-2 whitespace-nowrap text-sm md:text-base"
+                  class="event-marker"
                 >
                   <svg
                     aria-hidden="true"
@@ -3416,7 +3416,7 @@ exports[`App matches snapshot 1`] = `
                 class="flex flex-col"
               >
                 <div
-                  class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                  class="note-collapse"
                   style=""
                 >
                   <svg
@@ -3439,7 +3439,7 @@ exports[`App matches snapshot 1`] = `
                     title="07:45 AM - March 1, 2024"
                   >
                     <span
-                      class="text-sm md:text-base mr-2 after:content-['\\200B']"
+                      class="note-collapse-text"
                     >
                       Fertilized with dilute 10-15-10 liquid fertilizer
                     </span>
@@ -3453,34 +3453,34 @@ exports[`App matches snapshot 1`] = `
               </div>
             </div>
             <div
-              class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+              class="month-divider"
               data-timeline-divider="2024-02"
             >
               February 2024
             </div>
             <div
-              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+              class="timeline-timestamp"
               data-date="2024-02-29"
             >
               <span
-                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                class="text-sm md:text-lg"
               >
                 yesterday
               </span>
               <span
-                class="hidden md:block text-sm mb-auto"
+                class="hidden md:block text-sm"
               >
                 Feb 29, 2024
               </span>
             </div>
             <div
-              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4 min-w-0 overflow-hidden"
+              class="timeline-day"
             >
               <div
-                class="flex flex-col min-[372px]:grid min-[372px]:grid-cols-[min-content_1fr] min-[457px]:flex min-[457px]:flex-row min-[457px]:flex-wrap"
+                class="timeline-day-events"
               >
                 <span
-                  class="m-2 whitespace-nowrap text-sm md:text-base"
+                  class="event-marker"
                 >
                   <svg
                     aria-hidden="true"
@@ -3508,28 +3508,28 @@ exports[`App matches snapshot 1`] = `
               />
             </div>
             <div
-              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+              class="timeline-timestamp"
               data-date="2024-02-26"
             >
               <span
-                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                class="text-sm md:text-lg"
               >
                 4 days ago
               </span>
               <span
-                class="hidden md:block text-sm mb-auto"
+                class="hidden md:block text-sm"
               >
                 Feb 26, 2024
               </span>
             </div>
             <div
-              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4 min-w-0 overflow-hidden"
+              class="timeline-day"
             >
               <div
-                class="flex flex-col min-[372px]:grid min-[372px]:grid-cols-[min-content_1fr] min-[457px]:flex min-[457px]:flex-row min-[457px]:flex-wrap"
+                class="timeline-day-events"
               >
                 <span
-                  class="m-2 whitespace-nowrap text-sm md:text-base"
+                  class="event-marker"
                 >
                   <svg
                     aria-hidden="true"
@@ -3556,7 +3556,7 @@ exports[`App matches snapshot 1`] = `
                 class="flex flex-col"
               >
                 <div
-                  class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                  class="note-collapse"
                   style=""
                 >
                   <svg
@@ -3579,7 +3579,7 @@ exports[`App matches snapshot 1`] = `
                     title="04:44 AM - February 26, 2024"
                   >
                     <span
-                      class="text-sm md:text-base mr-2 after:content-['\\200B']"
+                      class="note-collapse-text"
                     >
                       One of the older leaves is starting to turn yellow
                     </span>
@@ -5139,7 +5139,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 class="navbar-center mx-auto"
               >
                 <div
-                  class="dropdown dropdown-center dropdown-hover mx-auto"
+                  class="dropdown dropdown-center dropdown-hover"
                 >
                   <div
                     class="btn btn-ghost text-xl font-bold m-1"
@@ -5179,34 +5179,34 @@ exports[`App matches snapshot when plant is archived 1`] = `
               />
             </div>
             <div
-              class="grid grid-cols-[min-content_1fr] gap-4 md:gap-8 p-4 md:p-8 pt-0 md:pt-0 overflow-hidden"
+              class="timeline-layout"
             >
               <div
-                class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+                class="month-divider"
                 data-timeline-divider="2024-03"
               >
                 March 2024
               </div>
               <div
-                class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+                class="timeline-timestamp"
                 data-date="2024-03-23"
               >
                 <span
-                  class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                  class="text-sm md:text-lg"
                 >
                   in 22 days
                 </span>
                 <span
-                  class="hidden md:block text-sm mb-auto"
+                  class="hidden md:block text-sm"
                 >
                   Mar 23, 2024
                 </span>
               </div>
               <div
-                class="flex flex-col bg-neutral rounded-xl p-2 md:p-4 min-w-0 overflow-hidden"
+                class="timeline-day"
               >
                 <div
-                  class="flex flex-col min-[372px]:grid min-[372px]:grid-cols-[min-content_1fr] min-[457px]:flex min-[457px]:flex-row min-[457px]:flex-wrap"
+                  class="timeline-day-events"
                 />
                 <div
                   class="flex flex-row flex-wrap"
@@ -5215,7 +5215,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                     title="02:52 AM - March 23, 2024"
                   >
                     <img
-                      class="photo-thumbnail m-2 size-[4.9rem] md:size-[5.4rem]"
+                      class="photo-thumbnail photo-thumbnail-timeline"
                       loading="lazy"
                       src="/media/thumbnails/photo3_thumb.jpg"
                     />
@@ -5226,25 +5226,25 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 />
               </div>
               <div
-                class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+                class="timeline-timestamp"
                 data-date="2024-03-22"
               >
                 <span
-                  class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                  class="text-sm md:text-lg"
                 >
                   in 21 days
                 </span>
                 <span
-                  class="hidden md:block text-sm mb-auto"
+                  class="hidden md:block text-sm"
                 >
                   Mar 22, 2024
                 </span>
               </div>
               <div
-                class="flex flex-col bg-neutral rounded-xl p-2 md:p-4 min-w-0 overflow-hidden"
+                class="timeline-day"
               >
                 <div
-                  class="flex flex-col min-[372px]:grid min-[372px]:grid-cols-[min-content_1fr] min-[457px]:flex min-[457px]:flex-row min-[457px]:flex-wrap"
+                  class="timeline-day-events"
                 />
                 <div
                   class="flex flex-row flex-wrap"
@@ -5253,7 +5253,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                     title="02:52 AM - March 22, 2024"
                   >
                     <img
-                      class="photo-thumbnail m-2 size-[4.9rem] md:size-[5.4rem]"
+                      class="photo-thumbnail photo-thumbnail-timeline"
                       loading="lazy"
                       src="/media/thumbnails/photo2_thumb.jpg"
                     />
@@ -5264,25 +5264,25 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 />
               </div>
               <div
-                class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+                class="timeline-timestamp"
                 data-date="2024-03-21"
               >
                 <span
-                  class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                  class="text-sm md:text-lg"
                 >
                   in 20 days
                 </span>
                 <span
-                  class="hidden md:block text-sm mb-auto"
+                  class="hidden md:block text-sm"
                 >
                   Mar 21, 2024
                 </span>
               </div>
               <div
-                class="flex flex-col bg-neutral rounded-xl p-2 md:p-4 min-w-0 overflow-hidden"
+                class="timeline-day"
               >
                 <div
-                  class="flex flex-col min-[372px]:grid min-[372px]:grid-cols-[min-content_1fr] min-[457px]:flex min-[457px]:flex-row min-[457px]:flex-wrap"
+                  class="timeline-day-events"
                 />
                 <div
                   class="flex flex-row flex-wrap"
@@ -5291,7 +5291,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                     title="02:52 AM - March 21, 2024"
                   >
                     <img
-                      class="photo-thumbnail m-2 size-[4.9rem] md:size-[5.4rem]"
+                      class="photo-thumbnail photo-thumbnail-timeline"
                       loading="lazy"
                       src="/media/thumbnails/photo1_thumb.jpg"
                     />
@@ -5302,28 +5302,28 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 />
               </div>
               <div
-                class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+                class="timeline-timestamp"
                 data-date="2024-03-01"
               >
                 <span
-                  class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                  class="text-sm md:text-lg"
                 >
                   today
                 </span>
                 <span
-                  class="hidden md:block text-sm mb-auto"
+                  class="hidden md:block text-sm"
                 >
                   Mar 01, 2024
                 </span>
               </div>
               <div
-                class="flex flex-col bg-neutral rounded-xl p-2 md:p-4 min-w-0 overflow-hidden"
+                class="timeline-day"
               >
                 <div
-                  class="flex flex-col min-[372px]:grid min-[372px]:grid-cols-[min-content_1fr] min-[457px]:flex min-[457px]:flex-row min-[457px]:flex-wrap"
+                  class="timeline-day-events"
                 >
                   <span
-                    class="m-2 whitespace-nowrap text-sm md:text-base"
+                    class="event-marker"
                   >
                     <svg
                       aria-hidden="true"
@@ -5343,7 +5343,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                     Watered
                   </span>
                   <span
-                    class="m-2 whitespace-nowrap text-sm md:text-base"
+                    class="event-marker"
                   >
                     <svg
                       aria-hidden="true"
@@ -5370,7 +5370,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   class="flex flex-col"
                 >
                   <div
-                    class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                    class="note-collapse"
                     style=""
                   >
                     <svg
@@ -5393,7 +5393,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                       title="07:45 AM - March 1, 2024"
                     >
                       <span
-                        class="text-sm md:text-base mr-2 after:content-['\\200B']"
+                        class="note-collapse-text"
                       >
                         Fertilized with dilute 10-15-10 liquid fertilizer
                       </span>
@@ -5407,34 +5407,34 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 </div>
               </div>
               <div
-                class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+                class="month-divider"
                 data-timeline-divider="2024-02"
               >
                 February 2024
               </div>
               <div
-                class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+                class="timeline-timestamp"
                 data-date="2024-02-29"
               >
                 <span
-                  class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                  class="text-sm md:text-lg"
                 >
                   yesterday
                 </span>
                 <span
-                  class="hidden md:block text-sm mb-auto"
+                  class="hidden md:block text-sm"
                 >
                   Feb 29, 2024
                 </span>
               </div>
               <div
-                class="flex flex-col bg-neutral rounded-xl p-2 md:p-4 min-w-0 overflow-hidden"
+                class="timeline-day"
               >
                 <div
-                  class="flex flex-col min-[372px]:grid min-[372px]:grid-cols-[min-content_1fr] min-[457px]:flex min-[457px]:flex-row min-[457px]:flex-wrap"
+                  class="timeline-day-events"
                 >
                   <span
-                    class="m-2 whitespace-nowrap text-sm md:text-base"
+                    class="event-marker"
                   >
                     <svg
                       aria-hidden="true"
@@ -5462,28 +5462,28 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 />
               </div>
               <div
-                class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+                class="timeline-timestamp"
                 data-date="2024-02-26"
               >
                 <span
-                  class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                  class="text-sm md:text-lg"
                 >
                   4 days ago
                 </span>
                 <span
-                  class="hidden md:block text-sm mb-auto"
+                  class="hidden md:block text-sm"
                 >
                   Feb 26, 2024
                 </span>
               </div>
               <div
-                class="flex flex-col bg-neutral rounded-xl p-2 md:p-4 min-w-0 overflow-hidden"
+                class="timeline-day"
               >
                 <div
-                  class="flex flex-col min-[372px]:grid min-[372px]:grid-cols-[min-content_1fr] min-[457px]:flex min-[457px]:flex-row min-[457px]:flex-wrap"
+                  class="timeline-day-events"
                 >
                   <span
-                    class="m-2 whitespace-nowrap text-sm md:text-base"
+                    class="event-marker"
                   >
                     <svg
                       aria-hidden="true"
@@ -5510,7 +5510,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   class="flex flex-col"
                 >
                   <div
-                    class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                    class="note-collapse"
                     style=""
                   >
                     <svg
@@ -5533,7 +5533,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                       title="04:44 AM - February 26, 2024"
                     >
                       <span
-                        class="text-sm md:text-base mr-2 after:content-['\\200B']"
+                        class="note-collapse-text"
                       >
                         One of the older leaves is starting to turn yellow
                       </span>
@@ -6996,7 +6996,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               class="navbar-center mx-auto"
             >
               <div
-                class="dropdown dropdown-center dropdown-hover mx-auto"
+                class="dropdown dropdown-center dropdown-hover"
               >
                 <div
                   class="btn btn-ghost text-xl font-bold m-1"
@@ -7036,34 +7036,34 @@ exports[`App matches snapshot when plant is archived 1`] = `
             />
           </div>
           <div
-            class="grid grid-cols-[min-content_1fr] gap-4 md:gap-8 p-4 md:p-8 pt-0 md:pt-0 overflow-hidden"
+            class="timeline-layout"
           >
             <div
-              class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+              class="month-divider"
               data-timeline-divider="2024-03"
             >
               March 2024
             </div>
             <div
-              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+              class="timeline-timestamp"
               data-date="2024-03-23"
             >
               <span
-                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                class="text-sm md:text-lg"
               >
                 in 22 days
               </span>
               <span
-                class="hidden md:block text-sm mb-auto"
+                class="hidden md:block text-sm"
               >
                 Mar 23, 2024
               </span>
             </div>
             <div
-              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4 min-w-0 overflow-hidden"
+              class="timeline-day"
             >
               <div
-                class="flex flex-col min-[372px]:grid min-[372px]:grid-cols-[min-content_1fr] min-[457px]:flex min-[457px]:flex-row min-[457px]:flex-wrap"
+                class="timeline-day-events"
               />
               <div
                 class="flex flex-row flex-wrap"
@@ -7072,7 +7072,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   title="02:52 AM - March 23, 2024"
                 >
                   <img
-                    class="photo-thumbnail m-2 size-[4.9rem] md:size-[5.4rem]"
+                    class="photo-thumbnail photo-thumbnail-timeline"
                     loading="lazy"
                     src="/media/thumbnails/photo3_thumb.jpg"
                   />
@@ -7083,25 +7083,25 @@ exports[`App matches snapshot when plant is archived 1`] = `
               />
             </div>
             <div
-              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+              class="timeline-timestamp"
               data-date="2024-03-22"
             >
               <span
-                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                class="text-sm md:text-lg"
               >
                 in 21 days
               </span>
               <span
-                class="hidden md:block text-sm mb-auto"
+                class="hidden md:block text-sm"
               >
                 Mar 22, 2024
               </span>
             </div>
             <div
-              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4 min-w-0 overflow-hidden"
+              class="timeline-day"
             >
               <div
-                class="flex flex-col min-[372px]:grid min-[372px]:grid-cols-[min-content_1fr] min-[457px]:flex min-[457px]:flex-row min-[457px]:flex-wrap"
+                class="timeline-day-events"
               />
               <div
                 class="flex flex-row flex-wrap"
@@ -7110,7 +7110,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   title="02:52 AM - March 22, 2024"
                 >
                   <img
-                    class="photo-thumbnail m-2 size-[4.9rem] md:size-[5.4rem]"
+                    class="photo-thumbnail photo-thumbnail-timeline"
                     loading="lazy"
                     src="/media/thumbnails/photo2_thumb.jpg"
                   />
@@ -7121,25 +7121,25 @@ exports[`App matches snapshot when plant is archived 1`] = `
               />
             </div>
             <div
-              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+              class="timeline-timestamp"
               data-date="2024-03-21"
             >
               <span
-                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                class="text-sm md:text-lg"
               >
                 in 20 days
               </span>
               <span
-                class="hidden md:block text-sm mb-auto"
+                class="hidden md:block text-sm"
               >
                 Mar 21, 2024
               </span>
             </div>
             <div
-              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4 min-w-0 overflow-hidden"
+              class="timeline-day"
             >
               <div
-                class="flex flex-col min-[372px]:grid min-[372px]:grid-cols-[min-content_1fr] min-[457px]:flex min-[457px]:flex-row min-[457px]:flex-wrap"
+                class="timeline-day-events"
               />
               <div
                 class="flex flex-row flex-wrap"
@@ -7148,7 +7148,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   title="02:52 AM - March 21, 2024"
                 >
                   <img
-                    class="photo-thumbnail m-2 size-[4.9rem] md:size-[5.4rem]"
+                    class="photo-thumbnail photo-thumbnail-timeline"
                     loading="lazy"
                     src="/media/thumbnails/photo1_thumb.jpg"
                   />
@@ -7159,28 +7159,28 @@ exports[`App matches snapshot when plant is archived 1`] = `
               />
             </div>
             <div
-              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+              class="timeline-timestamp"
               data-date="2024-03-01"
             >
               <span
-                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                class="text-sm md:text-lg"
               >
                 today
               </span>
               <span
-                class="hidden md:block text-sm mb-auto"
+                class="hidden md:block text-sm"
               >
                 Mar 01, 2024
               </span>
             </div>
             <div
-              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4 min-w-0 overflow-hidden"
+              class="timeline-day"
             >
               <div
-                class="flex flex-col min-[372px]:grid min-[372px]:grid-cols-[min-content_1fr] min-[457px]:flex min-[457px]:flex-row min-[457px]:flex-wrap"
+                class="timeline-day-events"
               >
                 <span
-                  class="m-2 whitespace-nowrap text-sm md:text-base"
+                  class="event-marker"
                 >
                   <svg
                     aria-hidden="true"
@@ -7200,7 +7200,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   Watered
                 </span>
                 <span
-                  class="m-2 whitespace-nowrap text-sm md:text-base"
+                  class="event-marker"
                 >
                   <svg
                     aria-hidden="true"
@@ -7227,7 +7227,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 class="flex flex-col"
               >
                 <div
-                  class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                  class="note-collapse"
                   style=""
                 >
                   <svg
@@ -7250,7 +7250,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                     title="07:45 AM - March 1, 2024"
                   >
                     <span
-                      class="text-sm md:text-base mr-2 after:content-['\\200B']"
+                      class="note-collapse-text"
                     >
                       Fertilized with dilute 10-15-10 liquid fertilizer
                     </span>
@@ -7264,34 +7264,34 @@ exports[`App matches snapshot when plant is archived 1`] = `
               </div>
             </div>
             <div
-              class="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
+              class="month-divider"
               data-timeline-divider="2024-02"
             >
               February 2024
             </div>
             <div
-              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+              class="timeline-timestamp"
               data-date="2024-02-29"
             >
               <span
-                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                class="text-sm md:text-lg"
               >
                 yesterday
               </span>
               <span
-                class="hidden md:block text-sm mb-auto"
+                class="hidden md:block text-sm"
               >
                 Feb 29, 2024
               </span>
             </div>
             <div
-              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4 min-w-0 overflow-hidden"
+              class="timeline-day"
             >
               <div
-                class="flex flex-col min-[372px]:grid min-[372px]:grid-cols-[min-content_1fr] min-[457px]:flex min-[457px]:flex-row min-[457px]:flex-wrap"
+                class="timeline-day-events"
               >
                 <span
-                  class="m-2 whitespace-nowrap text-sm md:text-base"
+                  class="event-marker"
                 >
                   <svg
                     aria-hidden="true"
@@ -7319,28 +7319,28 @@ exports[`App matches snapshot when plant is archived 1`] = `
               />
             </div>
             <div
-              class="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
+              class="timeline-timestamp"
               data-date="2024-02-26"
             >
               <span
-                class="text-sm md:text-lg my-auto md:mt-auto md:mb-0"
+                class="text-sm md:text-lg"
               >
                 4 days ago
               </span>
               <span
-                class="hidden md:block text-sm mb-auto"
+                class="hidden md:block text-sm"
               >
                 Feb 26, 2024
               </span>
             </div>
             <div
-              class="flex flex-col bg-neutral rounded-xl p-2 md:p-4 min-w-0 overflow-hidden"
+              class="timeline-day"
             >
               <div
-                class="flex flex-col min-[372px]:grid min-[372px]:grid-cols-[min-content_1fr] min-[457px]:flex min-[457px]:flex-row min-[457px]:flex-wrap"
+                class="timeline-day-events"
               >
                 <span
-                  class="m-2 whitespace-nowrap text-sm md:text-base"
+                  class="event-marker"
                 >
                   <svg
                     aria-hidden="true"
@@ -7367,7 +7367,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 class="flex flex-col"
               >
                 <div
-                  class="m-2 flex flex-row transition-[height] duration-300 ease-in-out"
+                  class="note-collapse"
                   style=""
                 >
                   <svg
@@ -7390,7 +7390,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                     title="04:44 AM - February 26, 2024"
                   >
                     <span
-                      class="text-sm md:text-base mr-2 after:content-['\\200B']"
+                      class="note-collapse-text"
                     >
                       One of the older leaves is starting to turn yellow
                     </span>

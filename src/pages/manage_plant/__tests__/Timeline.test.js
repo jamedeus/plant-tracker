@@ -85,7 +85,7 @@ describe('Timeline', () => {
 
     it('expands/collapses note text when clicked', async () => {
         // Get reference to note div, confirm is collapsed (default)
-        const note = within(app.container.querySelector('.grid')).queryByText(
+        const note = app.queryByText(
             'Fertilized with dilute 10-15-10 liquid fertilizer'
         );
         expect(note.parentElement.classList).toContain('line-clamp-1');

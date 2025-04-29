@@ -479,7 +479,7 @@ describe('App', () => {
         }));
 
         // Get reference to timeline div (excluding NoteModal)
-        const timeline = app.container.querySelector('.grid');
+        const timeline = app.container.querySelector('.timeline-layout');
 
         // Confirm timeline does not contain note text
         expect(within(timeline).queryByText(
@@ -513,7 +513,7 @@ describe('App', () => {
         }));
 
         // Get reference to timeline div (excluding NoteModal)
-        const timeline = app.container.querySelector('.grid');
+        const timeline = app.container.querySelector('.timeline-layout');
 
         // Confirm timeline contains note text from mockContext
         expect(within(timeline).queryByText(
@@ -550,7 +550,7 @@ describe('App', () => {
         }));
 
         // Get reference to timeline div (excluding NoteModal)
-        const timeline = app.container.querySelector('.grid');
+        const timeline = app.container.querySelector('.timeline-layout');
 
         // Confirm timeline contains note text
         expect(within(timeline).queryByText(
@@ -598,7 +598,7 @@ describe('App', () => {
         }));
 
         // Get reference to timeline div
-        const timeline = app.container.querySelector('.grid');
+        const timeline = app.container.querySelector('.timeline-layout');
 
         // Confirm mock photos don't exist in timeline
         expect(within(timeline).queryByTitle('12:52 PM - June 21, 2024')).toBeNull();

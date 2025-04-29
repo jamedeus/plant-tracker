@@ -18,6 +18,7 @@ module.exports = {
     coveragePathIgnorePatterns: [
         'src/main.css',
         'src/calendar.css',
+        'src/timeline.css',
         'src/testUtils/',
         'mockContext.js',
         'tailwind.config.js'

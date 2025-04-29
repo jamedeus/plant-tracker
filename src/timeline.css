@@ -1,0 +1,75 @@
+/* Layout classes */
+.timeline-layout {
+    @apply grid grid-cols-[min-content_1fr] gap-4 md:gap-8 overflow-hidden;
+    @apply p-4 md:p-8 pt-0 md:pt-0;
+}
+
+.timeline-empty {
+    @apply text-center text-lg p-4 mb-4 mx-4 md:mb-8 md:mx-8;
+}
+
+.month-divider {
+    @apply divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20;
+}
+
+.timeline-timestamp {
+    @apply flex flex-col h-full justify-center;
+    @apply text-end whitespace-nowrap md:ml-4 scroll-mt-20;
+}
+
+.timeline-day {
+    @apply flex flex-col bg-neutral rounded-xl p-2 md:p-4 min-w-0 overflow-hidden;
+}
+
+.timeline-day-events {
+    /* Very small screens: column of event markers */
+    @apply flex flex-col;
+    /* Most mobile devices: 2x2 grid layout */
+    @apply min-[372px]:grid min-[372px]:grid-cols-[min-content_1fr];
+    /* Desktop, tablets: Flex wrap (starts when room for 3 events per row) */
+    @apply min-[457px]:flex min-[457px]:flex-row min-[457px]:flex-wrap;
+}
+
+/* Timeline content classes */
+.event-marker {
+    @apply m-2 whitespace-nowrap text-sm md:text-base;
+}
+
+.note-collapse {
+    @apply m-2 flex flex-row transition-[height] duration-300 ease-in-out;
+}
+
+.note-collapse-text {
+    @apply text-sm md:text-base mr-2 after:content-['\200B'];
+}
+
+.photo-thumbnail-timeline {
+    @apply m-2 size-[4.9rem] md:size-[5.4rem];
+}
+
+/* Photo popover classes */
+.popover-image {
+    @apply max-h-[80vh] max-w-[80vw] md:max-h-[50vh] md:max-w-[50vw];
+    @apply object-scale-down rounded-lg mx-4;
+}
+
+@keyframes popover-animation {
+    0% {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.popover-enter {
+    transform-origin: bottom;
+    animation: popover-animation 0.3s cubic-bezier(0, 0, 0.2, 1);
+}
+
+/* Prevent navbar covering top of popover */
+#react-tiny-popover-container {
+    z-index: 99;
+}

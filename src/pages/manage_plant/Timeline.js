@@ -1,4 +1,4 @@
-import React, { useRef, useState, useLayoutEffect, Fragment, memo } from 'react';
+import React, { useRef, useState, useLayoutEffect, memo } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { DateTime } from 'luxon';
@@ -17,6 +17,7 @@ import FertilizeIcon from 'src/components/FertilizeIcon';
 import PruneIcon from 'src/components/PruneIcon';
 import RepotIcon from 'src/components/RepotIcon';
 import { useSelector } from 'react-redux';
+import 'src/timeline.css';
 
 // Takes ISO timestamp string, returns "x days ago"
 const getRelativeTimeString = (timestamp) => {
@@ -41,7 +42,7 @@ const Title = memo(function Title() {
                 {/* Spacer with same width as .navbar-end button */}
             </div>
             <div className="navbar-center mx-auto">
-                <div className="dropdown dropdown-center dropdown-hover mx-auto">
+                <div className="dropdown dropdown-center dropdown-hover">
                     <div
                         tabIndex={0}
                         role="button"
@@ -194,14 +195,11 @@ QuickNavigationYear.propTypes = {
 // Has dataset attribute used to scroll page when EventCalendar day clicked.
 const TimelineTimestamp = memo(function TimelineTimestamp({ dateKey }) {
     return (
-        <div
-            className="flex flex-col h-full whitespace-nowrap text-end md:ml-4 scroll-mt-20"
-            data-date={dateKey}
-        >
-            <span className="text-sm md:text-lg my-auto md:mt-auto md:mb-0">
+        <div className="timeline-timestamp" data-date={dateKey}>
+            <span className="text-sm md:text-lg">
                 {getRelativeTimeString(dateKey)}
             </span>
-            <span className="hidden md:block text-sm mb-auto">
+            <span className="hidden md:block text-sm">
                 {DateTime.fromISO(dateKey).toFormat('MMM dd, yyyy')}
             </span>
         </div>
@@ -218,10 +216,7 @@ TimelineTimestamp.propTypes = {
 const MonthDivider = memo(function MonthDivider({ dateKey }) {
     const yearMonth = dateKey.slice(0, 7);
     return (
-        <div
-            className="divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20"
-            data-timeline-divider={yearMonth}
-        >
+        <div className="month-divider" data-timeline-divider={yearMonth}>
             {DateTime.fromFormat(yearMonth, 'yyyy-MM').toFormat('MMMM yyyy')}
         </div>
     );
@@ -242,7 +237,7 @@ const eventIconMap = {
 // Takes event type string, renders timeline marker with icon and text
 const EventMarker = memo(function EventMarker({ eventType }) {
     return (
-        <span className="m-2 whitespace-nowrap text-sm md:text-base">
+        <span className="event-marker">
             {eventIconMap[eventType]}
             {pastTense(capitalize(eventType))}
         </span>
@@ -271,7 +266,7 @@ const PhotoThumbnail = memo(function PhotoThumbnail({ thumbnailUrl, photoUrl, ti
                     <a href={photoUrl}>
                         <img
                             loading="lazy"
-                            className="rounded-lg popover-image mx-4"
+                            className="popover-image"
                             src={thumbnailUrl}
                         />
                     </a>
@@ -284,7 +279,7 @@ const PhotoThumbnail = memo(function PhotoThumbnail({ thumbnailUrl, photoUrl, ti
             >
                 <img
                     loading="lazy"
-                    className='photo-thumbnail m-2 size-[4.9rem] md:size-[5.4rem]'
+                    className='photo-thumbnail photo-thumbnail-timeline'
                     src={thumbnailUrl}
                 />
             </div>
@@ -332,7 +327,7 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
 
     return (
         <div
-            className='m-2 flex flex-row transition-[height] duration-300 ease-in-out'
+            className='note-collapse'
             style={{ height: height }}
         >
             <FontAwesomeIcon
@@ -352,7 +347,7 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
                 ref={textRef}
                 onClick={() => setExpanded(!expanded)}
             >
-                <span className="text-sm md:text-base mr-2 after:content-['\200B']">
+                <span className="note-collapse-text">
                     {note.text}
                 </span>
                 <span className='text-xs'>
@@ -385,16 +380,9 @@ const TimelineDay = memo(function TimelineDay({ dateKey, monthDivider }) {
             {/* Render MonthDivider if monthDivider param was given */}
             {monthDivider && <MonthDivider dateKey={dateKey} />}
             <TimelineTimestamp dateKey={dateKey} />
-            <div className={clsx(
-                "flex flex-col bg-neutral rounded-xl p-2 md:p-4",
-                "min-w-0 overflow-hidden"
-            )}>
+            <div className="timeline-day">
                 {/* mobile: 2x2 grid layout, desktop: 4 events on one row */}
-                <div className={clsx(
-                    "flex flex-col",
-                    "min-[372px]:grid min-[372px]:grid-cols-[min-content_1fr]",
-                    "min-[457px]:flex min-[457px]:flex-row min-[457px]:flex-wrap"
-                )}>
+                <div className="timeline-day-events">
                     {contents.events.map((e) => (
                         <EventMarker key={e} eventType={e} />
                     ))}
@@ -441,10 +429,7 @@ const Timeline = memo(function Timeline() {
         <div className='flex flex-col w-full bg-base-200 rounded-2xl'>
             <Title />
             {dayKeys.length > 0 ? (
-                <div className={clsx(
-                    "grid grid-cols-[min-content_1fr] gap-4 md:gap-8",
-                    "p-4 md:p-8 pt-0 md:pt-0 overflow-hidden"
-                )}>
+                <div className='timeline-layout'>
                     {dayKeys.map((dateKey, index) => {
                         // Slice YYYY-MM from dateKey, truncate day
                         const yearMonth = dateKey.slice(0, 7);
@@ -468,9 +453,9 @@ const Timeline = memo(function Timeline() {
                     })}
                 </div>
             ) : (
-                <div className="text-center text-lg p-4 mb-4 mx-4 md:mb-8 md:mx-8">
-                    <p>Events created with the buttons above will appear here</p>
-                </div>
+                <p className='timeline-empty'>
+                    Events created with the buttons above will appear here
+                </p>
             )}
         </div>
     );
