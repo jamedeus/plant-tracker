@@ -169,6 +169,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                           class="btn-close size-8 no-animation"
                           role="button"
                           tabindex="0"
+                          title="Sort menu"
                         >
                           <svg
                             aria-hidden="true"
@@ -416,6 +417,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                           class="btn-close size-8 no-animation"
                           role="button"
                           tabindex="0"
+                          title="Sort menu"
                         >
                           <svg
                             aria-hidden="true"
@@ -827,6 +829,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                         class="btn-close size-8 no-animation"
                         role="button"
                         tabindex="0"
+                        title="Sort menu"
                       >
                         <svg
                           aria-hidden="true"
@@ -1074,6 +1077,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                         class="btn-close size-8 no-animation"
                         role="button"
                         tabindex="0"
+                        title="Sort menu"
                       >
                         <svg
                           aria-hidden="true"
@@ -2059,6 +2063,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                           class="btn-close size-8 no-animation"
                           role="button"
                           tabindex="0"
+                          title="Sort menu"
                         >
                           <svg
                             aria-hidden="true"
@@ -2456,6 +2461,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                         class="btn-close size-8 no-animation"
                         role="button"
                         tabindex="0"
+                        title="Sort menu"
                       >
                         <svg
                           aria-hidden="true"
@@ -2930,6 +2936,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                           class="btn-close size-8 no-animation"
                           role="button"
                           tabindex="0"
+                          title="Sort menu"
                         >
                           <svg
                             aria-hidden="true"
@@ -3373,6 +3380,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                         class="btn-close size-8 no-animation"
                         role="button"
                         tabindex="0"
+                        title="Sort menu"
                       >
                         <svg
                           aria-hidden="true"
@@ -3893,6 +3901,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                           class="btn-close size-8 no-animation"
                           role="button"
                           tabindex="0"
+                          title="Sort menu"
                         >
                           <svg
                             aria-hidden="true"
@@ -4140,6 +4149,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                           class="btn-close size-8 no-animation"
                           role="button"
                           tabindex="0"
+                          title="Sort menu"
                         >
                           <svg
                             aria-hidden="true"
@@ -4537,6 +4547,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                         class="btn-close size-8 no-animation"
                         role="button"
                         tabindex="0"
+                        title="Sort menu"
                       >
                         <svg
                           aria-hidden="true"
@@ -4784,6 +4795,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                         class="btn-close size-8 no-animation"
                         role="button"
                         tabindex="0"
+                        title="Sort menu"
                       >
                         <svg
                           aria-hidden="true"
@@ -5277,6 +5289,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                           class="btn-close size-8 no-animation"
                           role="button"
                           tabindex="0"
+                          title="Sort menu"
                         >
                           <svg
                             aria-hidden="true"
@@ -5524,6 +5537,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                           class="btn-close size-8 no-animation"
                           role="button"
                           tabindex="0"
+                          title="Sort menu"
                         >
                           <svg
                             aria-hidden="true"
@@ -5940,6 +5954,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                         class="btn-close size-8 no-animation"
                         role="button"
                         tabindex="0"
+                        title="Sort menu"
                       >
                         <svg
                           aria-hidden="true"
@@ -6187,6 +6202,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                         class="btn-close size-8 no-animation"
                         role="button"
                         tabindex="0"
+                        title="Sort menu"
                       >
                         <svg
                           aria-hidden="true"

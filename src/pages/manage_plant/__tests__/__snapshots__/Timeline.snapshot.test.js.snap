@@ -219,6 +219,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-04-17-events"
             >
               <span
                 class="event-marker"
@@ -243,9 +244,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-04-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-04-17-notes"
             />
           </div>
           <div
@@ -268,6 +271,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-04-16-events"
             >
               <span
                 class="event-marker"
@@ -292,9 +296,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-04-16-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-04-16-notes"
             />
           </div>
           <div
@@ -317,6 +323,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-04-15-events"
             >
               <span
                 class="event-marker"
@@ -341,9 +348,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-04-15-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-04-15-notes"
             />
           </div>
           <div
@@ -366,6 +375,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-04-14-events"
             >
               <span
                 class="event-marker"
@@ -390,9 +400,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-04-14-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-04-14-notes"
             />
           </div>
           <div
@@ -415,6 +427,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-04-13-events"
             >
               <span
                 class="event-marker"
@@ -479,9 +492,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-04-13-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-04-13-notes"
             />
           </div>
           <div
@@ -504,6 +519,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-04-12-events"
             >
               <span
                 class="event-marker"
@@ -548,9 +564,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-04-12-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-04-12-notes"
             />
           </div>
           <div
@@ -573,6 +591,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-04-11-events"
             >
               <span
                 class="event-marker"
@@ -597,9 +616,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-04-11-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-04-11-notes"
             />
           </div>
           <div
@@ -628,6 +649,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-03-31-events"
             >
               <span
                 class="event-marker"
@@ -652,9 +674,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-03-31-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-03-31-notes"
             />
           </div>
           <div
@@ -677,6 +701,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-03-25-events"
             >
               <span
                 class="event-marker"
@@ -741,6 +766,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-03-25-photos"
             >
               <div
                 title="07:28 AM - March 25, 2024"
@@ -853,6 +879,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-col"
+              data-testid="2024-03-25-notes"
             />
           </div>
           <div
@@ -875,6 +902,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-03-24-events"
             >
               <span
                 class="event-marker"
@@ -919,9 +947,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-03-24-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-03-24-notes"
             />
           </div>
           <div
@@ -944,6 +974,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-03-23-events"
             >
               <span
                 class="event-marker"
@@ -988,9 +1019,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-03-23-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-03-23-notes"
             />
           </div>
           <div
@@ -1013,6 +1046,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-03-22-events"
             >
               <span
                 class="event-marker"
@@ -1057,9 +1091,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-03-22-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-03-22-notes"
             />
           </div>
           <div
@@ -1082,6 +1118,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-03-21-events"
             >
               <span
                 class="event-marker"
@@ -1126,9 +1163,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-03-21-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-03-21-notes"
             />
           </div>
           <div
@@ -1151,6 +1190,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-03-17-events"
             >
               <span
                 class="event-marker"
@@ -1175,9 +1215,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-03-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-03-17-notes"
             />
           </div>
           <div
@@ -1200,6 +1242,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-03-13-events"
             >
               <span
                 class="event-marker"
@@ -1224,9 +1267,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-03-13-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-03-13-notes"
             />
           </div>
           <div
@@ -1249,6 +1294,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-03-12-events"
             >
               <span
                 class="event-marker"
@@ -1273,9 +1319,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-03-12-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-03-12-notes"
             />
           </div>
           <div
@@ -1298,12 +1346,15 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-03-01-events"
             />
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-03-01-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-03-01-notes"
             >
               <div
                 class="note-collapse"
@@ -1368,12 +1419,15 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-02-26-events"
             />
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-02-26-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-02-26-notes"
             >
               <div
                 class="note-collapse"
@@ -1432,9 +1486,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-02-21-events"
             />
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-02-21-photos"
             >
               <div
                 title="01:21 PM - February 21, 2024"
@@ -1448,6 +1504,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-col"
+              data-testid="2024-02-21-notes"
             />
           </div>
           <div
@@ -1470,6 +1527,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-02-17-events"
             >
               <span
                 class="event-marker"
@@ -1494,9 +1552,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-02-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-02-17-notes"
             />
           </div>
           <div
@@ -1525,6 +1585,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-01-17-events"
             >
               <span
                 class="event-marker"
@@ -1549,9 +1610,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-01-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-01-17-notes"
             />
           </div>
           <div
@@ -1580,6 +1643,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-12-17-events"
             >
               <span
                 class="event-marker"
@@ -1604,9 +1668,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-12-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2023-12-17-notes"
             />
           </div>
           <div
@@ -1635,6 +1701,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-11-22-events"
             >
               <span
                 class="event-marker"
@@ -1679,9 +1746,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-11-22-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2023-11-22-notes"
             />
           </div>
           <div
@@ -1704,6 +1773,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-11-21-events"
             >
               <span
                 class="event-marker"
@@ -1748,6 +1818,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-11-21-photos"
             >
               <div
                 title="03:57 AM - November 21, 2023"
@@ -1761,6 +1832,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-col"
+              data-testid="2023-11-21-notes"
             />
           </div>
           <div
@@ -1783,6 +1855,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-11-20-events"
             >
               <span
                 class="event-marker"
@@ -1807,9 +1880,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-11-20-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2023-11-20-notes"
             />
           </div>
           <div
@@ -1832,6 +1907,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-11-17-events"
             >
               <span
                 class="event-marker"
@@ -1896,9 +1972,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-11-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2023-11-17-notes"
             />
           </div>
           <div
@@ -1927,6 +2005,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-10-17-events"
             >
               <span
                 class="event-marker"
@@ -1951,9 +2030,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-10-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2023-10-17-notes"
             />
           </div>
           <div
@@ -1982,6 +2063,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-09-17-events"
             >
               <span
                 class="event-marker"
@@ -2006,9 +2088,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-09-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2023-09-17-notes"
             />
           </div>
           <div
@@ -2031,9 +2115,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-09-11-events"
             />
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-09-11-photos"
             >
               <div
                 title="05:59 PM - September 11, 2023"
@@ -2047,6 +2133,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-col"
+              data-testid="2023-09-11-notes"
             />
           </div>
           <div
@@ -2075,9 +2162,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-08-23-events"
             />
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-08-23-photos"
             >
               <div
                 title="08:43 PM - August 23, 2023"
@@ -2091,6 +2180,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-col"
+              data-testid="2023-08-23-notes"
             />
           </div>
           <div
@@ -2113,6 +2203,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-08-17-events"
             >
               <span
                 class="event-marker"
@@ -2137,9 +2228,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-08-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2023-08-17-notes"
             />
           </div>
           <div
@@ -2168,6 +2261,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-07-17-events"
             >
               <span
                 class="event-marker"
@@ -2192,9 +2286,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-07-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2023-07-17-notes"
             />
           </div>
           <div
@@ -2223,6 +2319,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-06-17-events"
             >
               <span
                 class="event-marker"
@@ -2247,9 +2344,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-06-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2023-06-17-notes"
             />
           </div>
           <div
@@ -2278,6 +2377,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-05-17-events"
             >
               <span
                 class="event-marker"
@@ -2302,9 +2402,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-05-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2023-05-17-notes"
             />
           </div>
           <div
@@ -2333,6 +2435,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-04-17-events"
             >
               <span
                 class="event-marker"
@@ -2357,9 +2460,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-04-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2023-04-17-notes"
             />
           </div>
           <div
@@ -2388,6 +2493,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-03-17-events"
             >
               <span
                 class="event-marker"
@@ -2412,9 +2518,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-03-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2023-03-17-notes"
             />
           </div>
           <div
@@ -2443,6 +2551,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-02-17-events"
             >
               <span
                 class="event-marker"
@@ -2467,9 +2576,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-02-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2023-02-17-notes"
             />
           </div>
           <div
@@ -2498,6 +2609,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-01-17-events"
             >
               <span
                 class="event-marker"
@@ -2522,9 +2634,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-01-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2023-01-17-notes"
             />
           </div>
           <div
@@ -2553,9 +2667,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2008-08-22-events"
             />
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2008-08-22-photos"
             >
               <div
                 title="11:00 AM - August 22, 2008"
@@ -2569,6 +2685,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
             <div
               class="flex flex-col"
+              data-testid="2008-08-22-notes"
             />
           </div>
         </div>
@@ -2786,6 +2903,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-04-17-events"
           >
             <span
               class="event-marker"
@@ -2810,9 +2928,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-04-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-04-17-notes"
           />
         </div>
         <div
@@ -2835,6 +2955,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-04-16-events"
           >
             <span
               class="event-marker"
@@ -2859,9 +2980,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-04-16-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-04-16-notes"
           />
         </div>
         <div
@@ -2884,6 +3007,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-04-15-events"
           >
             <span
               class="event-marker"
@@ -2908,9 +3032,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-04-15-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-04-15-notes"
           />
         </div>
         <div
@@ -2933,6 +3059,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-04-14-events"
           >
             <span
               class="event-marker"
@@ -2957,9 +3084,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-04-14-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-04-14-notes"
           />
         </div>
         <div
@@ -2982,6 +3111,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-04-13-events"
           >
             <span
               class="event-marker"
@@ -3046,9 +3176,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-04-13-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-04-13-notes"
           />
         </div>
         <div
@@ -3071,6 +3203,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-04-12-events"
           >
             <span
               class="event-marker"
@@ -3115,9 +3248,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-04-12-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-04-12-notes"
           />
         </div>
         <div
@@ -3140,6 +3275,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-04-11-events"
           >
             <span
               class="event-marker"
@@ -3164,9 +3300,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-04-11-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-04-11-notes"
           />
         </div>
         <div
@@ -3195,6 +3333,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-03-31-events"
           >
             <span
               class="event-marker"
@@ -3219,9 +3358,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-03-31-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-03-31-notes"
           />
         </div>
         <div
@@ -3244,6 +3385,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-03-25-events"
           >
             <span
               class="event-marker"
@@ -3308,6 +3450,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-03-25-photos"
           >
             <div
               title="07:28 AM - March 25, 2024"
@@ -3420,6 +3563,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-col"
+            data-testid="2024-03-25-notes"
           />
         </div>
         <div
@@ -3442,6 +3586,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-03-24-events"
           >
             <span
               class="event-marker"
@@ -3486,9 +3631,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-03-24-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-03-24-notes"
           />
         </div>
         <div
@@ -3511,6 +3658,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-03-23-events"
           >
             <span
               class="event-marker"
@@ -3555,9 +3703,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-03-23-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-03-23-notes"
           />
         </div>
         <div
@@ -3580,6 +3730,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-03-22-events"
           >
             <span
               class="event-marker"
@@ -3624,9 +3775,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-03-22-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-03-22-notes"
           />
         </div>
         <div
@@ -3649,6 +3802,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-03-21-events"
           >
             <span
               class="event-marker"
@@ -3693,9 +3847,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-03-21-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-03-21-notes"
           />
         </div>
         <div
@@ -3718,6 +3874,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-03-17-events"
           >
             <span
               class="event-marker"
@@ -3742,9 +3899,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-03-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-03-17-notes"
           />
         </div>
         <div
@@ -3767,6 +3926,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-03-13-events"
           >
             <span
               class="event-marker"
@@ -3791,9 +3951,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-03-13-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-03-13-notes"
           />
         </div>
         <div
@@ -3816,6 +3978,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-03-12-events"
           >
             <span
               class="event-marker"
@@ -3840,9 +4003,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-03-12-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-03-12-notes"
           />
         </div>
         <div
@@ -3865,12 +4030,15 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-03-01-events"
           />
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-03-01-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-03-01-notes"
           >
             <div
               class="note-collapse"
@@ -3935,12 +4103,15 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-02-26-events"
           />
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-02-26-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-02-26-notes"
           >
             <div
               class="note-collapse"
@@ -3999,9 +4170,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-02-21-events"
           />
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-02-21-photos"
           >
             <div
               title="01:21 PM - February 21, 2024"
@@ -4015,6 +4188,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-col"
+            data-testid="2024-02-21-notes"
           />
         </div>
         <div
@@ -4037,6 +4211,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-02-17-events"
           >
             <span
               class="event-marker"
@@ -4061,9 +4236,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-02-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-02-17-notes"
           />
         </div>
         <div
@@ -4092,6 +4269,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-01-17-events"
           >
             <span
               class="event-marker"
@@ -4116,9 +4294,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-01-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-01-17-notes"
           />
         </div>
         <div
@@ -4147,6 +4327,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-12-17-events"
           >
             <span
               class="event-marker"
@@ -4171,9 +4352,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-12-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2023-12-17-notes"
           />
         </div>
         <div
@@ -4202,6 +4385,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-11-22-events"
           >
             <span
               class="event-marker"
@@ -4246,9 +4430,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-11-22-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2023-11-22-notes"
           />
         </div>
         <div
@@ -4271,6 +4457,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-11-21-events"
           >
             <span
               class="event-marker"
@@ -4315,6 +4502,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-11-21-photos"
           >
             <div
               title="03:57 AM - November 21, 2023"
@@ -4328,6 +4516,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-col"
+            data-testid="2023-11-21-notes"
           />
         </div>
         <div
@@ -4350,6 +4539,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-11-20-events"
           >
             <span
               class="event-marker"
@@ -4374,9 +4564,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-11-20-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2023-11-20-notes"
           />
         </div>
         <div
@@ -4399,6 +4591,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-11-17-events"
           >
             <span
               class="event-marker"
@@ -4463,9 +4656,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-11-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2023-11-17-notes"
           />
         </div>
         <div
@@ -4494,6 +4689,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-10-17-events"
           >
             <span
               class="event-marker"
@@ -4518,9 +4714,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-10-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2023-10-17-notes"
           />
         </div>
         <div
@@ -4549,6 +4747,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-09-17-events"
           >
             <span
               class="event-marker"
@@ -4573,9 +4772,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-09-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2023-09-17-notes"
           />
         </div>
         <div
@@ -4598,9 +4799,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-09-11-events"
           />
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-09-11-photos"
           >
             <div
               title="05:59 PM - September 11, 2023"
@@ -4614,6 +4817,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-col"
+            data-testid="2023-09-11-notes"
           />
         </div>
         <div
@@ -4642,9 +4846,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-08-23-events"
           />
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-08-23-photos"
           >
             <div
               title="08:43 PM - August 23, 2023"
@@ -4658,6 +4864,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-col"
+            data-testid="2023-08-23-notes"
           />
         </div>
         <div
@@ -4680,6 +4887,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-08-17-events"
           >
             <span
               class="event-marker"
@@ -4704,9 +4912,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-08-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2023-08-17-notes"
           />
         </div>
         <div
@@ -4735,6 +4945,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-07-17-events"
           >
             <span
               class="event-marker"
@@ -4759,9 +4970,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-07-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2023-07-17-notes"
           />
         </div>
         <div
@@ -4790,6 +5003,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-06-17-events"
           >
             <span
               class="event-marker"
@@ -4814,9 +5028,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-06-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2023-06-17-notes"
           />
         </div>
         <div
@@ -4845,6 +5061,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-05-17-events"
           >
             <span
               class="event-marker"
@@ -4869,9 +5086,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-05-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2023-05-17-notes"
           />
         </div>
         <div
@@ -4900,6 +5119,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-04-17-events"
           >
             <span
               class="event-marker"
@@ -4924,9 +5144,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-04-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2023-04-17-notes"
           />
         </div>
         <div
@@ -4955,6 +5177,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-03-17-events"
           >
             <span
               class="event-marker"
@@ -4979,9 +5202,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-03-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2023-03-17-notes"
           />
         </div>
         <div
@@ -5010,6 +5235,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-02-17-events"
           >
             <span
               class="event-marker"
@@ -5034,9 +5260,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-02-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2023-02-17-notes"
           />
         </div>
         <div
@@ -5065,6 +5293,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-01-17-events"
           >
             <span
               class="event-marker"
@@ -5089,9 +5318,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-01-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2023-01-17-notes"
           />
         </div>
         <div
@@ -5120,9 +5351,11 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2008-08-22-events"
           />
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2008-08-22-photos"
           >
             <div
               title="11:00 AM - August 22, 2008"
@@ -5136,6 +5369,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
           <div
             class="flex flex-col"
+            data-testid="2008-08-22-notes"
           />
         </div>
       </div>
@@ -5512,6 +5746,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-04-17-events"
             >
               <span
                 class="event-marker"
@@ -5536,9 +5771,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-04-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-04-17-notes"
             />
           </div>
           <div
@@ -5561,6 +5798,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-04-16-events"
             >
               <span
                 class="event-marker"
@@ -5585,9 +5823,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-04-16-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-04-16-notes"
             />
           </div>
           <div
@@ -5610,6 +5850,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-04-15-events"
             >
               <span
                 class="event-marker"
@@ -5634,9 +5875,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-04-15-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-04-15-notes"
             />
           </div>
           <div
@@ -5659,6 +5902,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-04-14-events"
             >
               <span
                 class="event-marker"
@@ -5683,9 +5927,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-04-14-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-04-14-notes"
             />
           </div>
           <div
@@ -5708,6 +5954,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-04-13-events"
             >
               <span
                 class="event-marker"
@@ -5772,9 +6019,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-04-13-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-04-13-notes"
             />
           </div>
           <div
@@ -5797,6 +6046,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-04-12-events"
             >
               <span
                 class="event-marker"
@@ -5841,9 +6091,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-04-12-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-04-12-notes"
             />
           </div>
           <div
@@ -5866,6 +6118,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-04-11-events"
             >
               <span
                 class="event-marker"
@@ -5890,9 +6143,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-04-11-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-04-11-notes"
             />
           </div>
           <div
@@ -5921,6 +6176,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-03-31-events"
             >
               <span
                 class="event-marker"
@@ -5945,9 +6201,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-03-31-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-03-31-notes"
             />
           </div>
           <div
@@ -5970,6 +6228,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-03-25-events"
             >
               <span
                 class="event-marker"
@@ -6034,6 +6293,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-03-25-photos"
             >
               <div
                 title="07:28 AM - March 25, 2024"
@@ -6146,6 +6406,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-col"
+              data-testid="2024-03-25-notes"
             />
           </div>
           <div
@@ -6168,6 +6429,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-03-24-events"
             >
               <span
                 class="event-marker"
@@ -6212,9 +6474,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-03-24-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-03-24-notes"
             />
           </div>
           <div
@@ -6237,6 +6501,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-03-23-events"
             >
               <span
                 class="event-marker"
@@ -6281,9 +6546,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-03-23-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-03-23-notes"
             />
           </div>
           <div
@@ -6306,6 +6573,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-03-22-events"
             >
               <span
                 class="event-marker"
@@ -6350,9 +6618,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-03-22-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-03-22-notes"
             />
           </div>
           <div
@@ -6375,6 +6645,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-03-21-events"
             >
               <span
                 class="event-marker"
@@ -6419,9 +6690,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-03-21-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-03-21-notes"
             />
           </div>
           <div
@@ -6444,6 +6717,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-03-17-events"
             >
               <span
                 class="event-marker"
@@ -6468,9 +6742,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-03-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-03-17-notes"
             />
           </div>
           <div
@@ -6493,6 +6769,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-03-13-events"
             >
               <span
                 class="event-marker"
@@ -6517,9 +6794,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-03-13-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-03-13-notes"
             />
           </div>
           <div
@@ -6542,6 +6821,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-03-12-events"
             >
               <span
                 class="event-marker"
@@ -6566,9 +6846,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-03-12-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-03-12-notes"
             />
           </div>
           <div
@@ -6591,12 +6873,15 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-03-01-events"
             />
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-03-01-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-03-01-notes"
             >
               <div
                 class="note-collapse"
@@ -6661,12 +6946,15 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-02-26-events"
             />
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-02-26-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-02-26-notes"
             >
               <div
                 class="note-collapse"
@@ -6725,9 +7013,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-02-21-events"
             />
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-02-21-photos"
             >
               <div
                 title="01:21 PM - February 21, 2024"
@@ -6741,6 +7031,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-col"
+              data-testid="2024-02-21-notes"
             />
           </div>
           <div
@@ -6763,6 +7054,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-02-17-events"
             >
               <span
                 class="event-marker"
@@ -6787,9 +7079,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-02-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-02-17-notes"
             />
           </div>
           <div
@@ -6818,6 +7112,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2024-01-17-events"
             >
               <span
                 class="event-marker"
@@ -6842,9 +7137,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2024-01-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2024-01-17-notes"
             />
           </div>
           <div
@@ -6873,6 +7170,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-12-17-events"
             >
               <span
                 class="event-marker"
@@ -6897,9 +7195,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-12-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2023-12-17-notes"
             />
           </div>
           <div
@@ -6928,6 +7228,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-11-22-events"
             >
               <span
                 class="event-marker"
@@ -6972,9 +7273,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-11-22-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2023-11-22-notes"
             />
           </div>
           <div
@@ -6997,6 +7300,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-11-21-events"
             >
               <span
                 class="event-marker"
@@ -7041,6 +7345,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-11-21-photos"
             >
               <div
                 title="03:57 AM - November 21, 2023"
@@ -7054,6 +7359,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-col"
+              data-testid="2023-11-21-notes"
             />
           </div>
           <div
@@ -7076,6 +7382,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-11-20-events"
             >
               <span
                 class="event-marker"
@@ -7100,9 +7407,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-11-20-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2023-11-20-notes"
             />
           </div>
           <div
@@ -7125,6 +7434,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-11-17-events"
             >
               <span
                 class="event-marker"
@@ -7189,9 +7499,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-11-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2023-11-17-notes"
             />
           </div>
           <div
@@ -7220,6 +7532,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-10-17-events"
             >
               <span
                 class="event-marker"
@@ -7244,9 +7557,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-10-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2023-10-17-notes"
             />
           </div>
           <div
@@ -7275,6 +7590,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-09-17-events"
             >
               <span
                 class="event-marker"
@@ -7299,9 +7615,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-09-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2023-09-17-notes"
             />
           </div>
           <div
@@ -7324,9 +7642,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-09-11-events"
             />
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-09-11-photos"
             >
               <div
                 title="05:59 PM - September 11, 2023"
@@ -7340,6 +7660,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-col"
+              data-testid="2023-09-11-notes"
             />
           </div>
           <div
@@ -7368,9 +7689,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-08-23-events"
             />
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-08-23-photos"
             >
               <div
                 title="08:43 PM - August 23, 2023"
@@ -7384,6 +7707,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-col"
+              data-testid="2023-08-23-notes"
             />
           </div>
           <div
@@ -7406,6 +7730,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-08-17-events"
             >
               <span
                 class="event-marker"
@@ -7430,9 +7755,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-08-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2023-08-17-notes"
             />
           </div>
           <div
@@ -7461,6 +7788,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-07-17-events"
             >
               <span
                 class="event-marker"
@@ -7485,9 +7813,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-07-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2023-07-17-notes"
             />
           </div>
           <div
@@ -7516,6 +7846,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-06-17-events"
             >
               <span
                 class="event-marker"
@@ -7540,9 +7871,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-06-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2023-06-17-notes"
             />
           </div>
           <div
@@ -7571,6 +7904,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-05-17-events"
             >
               <span
                 class="event-marker"
@@ -7595,9 +7929,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-05-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2023-05-17-notes"
             />
           </div>
           <div
@@ -7626,6 +7962,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-04-17-events"
             >
               <span
                 class="event-marker"
@@ -7650,9 +7987,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-04-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2023-04-17-notes"
             />
           </div>
           <div
@@ -7681,6 +8020,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-03-17-events"
             >
               <span
                 class="event-marker"
@@ -7705,9 +8045,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-03-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2023-03-17-notes"
             />
           </div>
           <div
@@ -7736,6 +8078,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-02-17-events"
             >
               <span
                 class="event-marker"
@@ -7760,9 +8103,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-02-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2023-02-17-notes"
             />
           </div>
           <div
@@ -7791,6 +8136,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2023-01-17-events"
             >
               <span
                 class="event-marker"
@@ -7815,9 +8161,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2023-01-17-photos"
             />
             <div
               class="flex flex-col"
+              data-testid="2023-01-17-notes"
             />
           </div>
           <div
@@ -7846,9 +8194,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="timeline-day-events"
+              data-testid="2008-08-22-events"
             />
             <div
               class="flex flex-row flex-wrap"
+              data-testid="2008-08-22-photos"
             >
               <div
                 title="11:00 AM - August 22, 2008"
@@ -7862,6 +8212,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
             <div
               class="flex flex-col"
+              data-testid="2008-08-22-notes"
             />
           </div>
         </div>
@@ -8141,6 +8492,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-04-17-events"
           >
             <span
               class="event-marker"
@@ -8165,9 +8517,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-04-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-04-17-notes"
           />
         </div>
         <div
@@ -8190,6 +8544,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-04-16-events"
           >
             <span
               class="event-marker"
@@ -8214,9 +8569,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-04-16-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-04-16-notes"
           />
         </div>
         <div
@@ -8239,6 +8596,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-04-15-events"
           >
             <span
               class="event-marker"
@@ -8263,9 +8621,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-04-15-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-04-15-notes"
           />
         </div>
         <div
@@ -8288,6 +8648,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-04-14-events"
           >
             <span
               class="event-marker"
@@ -8312,9 +8673,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-04-14-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-04-14-notes"
           />
         </div>
         <div
@@ -8337,6 +8700,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-04-13-events"
           >
             <span
               class="event-marker"
@@ -8401,9 +8765,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-04-13-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-04-13-notes"
           />
         </div>
         <div
@@ -8426,6 +8792,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-04-12-events"
           >
             <span
               class="event-marker"
@@ -8470,9 +8837,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-04-12-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-04-12-notes"
           />
         </div>
         <div
@@ -8495,6 +8864,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-04-11-events"
           >
             <span
               class="event-marker"
@@ -8519,9 +8889,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-04-11-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-04-11-notes"
           />
         </div>
         <div
@@ -8550,6 +8922,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-03-31-events"
           >
             <span
               class="event-marker"
@@ -8574,9 +8947,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-03-31-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-03-31-notes"
           />
         </div>
         <div
@@ -8599,6 +8974,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-03-25-events"
           >
             <span
               class="event-marker"
@@ -8663,6 +9039,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-03-25-photos"
           >
             <div
               title="07:28 AM - March 25, 2024"
@@ -8775,6 +9152,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-col"
+            data-testid="2024-03-25-notes"
           />
         </div>
         <div
@@ -8797,6 +9175,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-03-24-events"
           >
             <span
               class="event-marker"
@@ -8841,9 +9220,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-03-24-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-03-24-notes"
           />
         </div>
         <div
@@ -8866,6 +9247,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-03-23-events"
           >
             <span
               class="event-marker"
@@ -8910,9 +9292,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-03-23-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-03-23-notes"
           />
         </div>
         <div
@@ -8935,6 +9319,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-03-22-events"
           >
             <span
               class="event-marker"
@@ -8979,9 +9364,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-03-22-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-03-22-notes"
           />
         </div>
         <div
@@ -9004,6 +9391,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-03-21-events"
           >
             <span
               class="event-marker"
@@ -9048,9 +9436,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-03-21-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-03-21-notes"
           />
         </div>
         <div
@@ -9073,6 +9463,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-03-17-events"
           >
             <span
               class="event-marker"
@@ -9097,9 +9488,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-03-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-03-17-notes"
           />
         </div>
         <div
@@ -9122,6 +9515,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-03-13-events"
           >
             <span
               class="event-marker"
@@ -9146,9 +9540,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-03-13-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-03-13-notes"
           />
         </div>
         <div
@@ -9171,6 +9567,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-03-12-events"
           >
             <span
               class="event-marker"
@@ -9195,9 +9592,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-03-12-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-03-12-notes"
           />
         </div>
         <div
@@ -9220,12 +9619,15 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-03-01-events"
           />
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-03-01-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-03-01-notes"
           >
             <div
               class="note-collapse"
@@ -9290,12 +9692,15 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-02-26-events"
           />
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-02-26-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-02-26-notes"
           >
             <div
               class="note-collapse"
@@ -9354,9 +9759,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-02-21-events"
           />
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-02-21-photos"
           >
             <div
               title="01:21 PM - February 21, 2024"
@@ -9370,6 +9777,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-col"
+            data-testid="2024-02-21-notes"
           />
         </div>
         <div
@@ -9392,6 +9800,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-02-17-events"
           >
             <span
               class="event-marker"
@@ -9416,9 +9825,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-02-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-02-17-notes"
           />
         </div>
         <div
@@ -9447,6 +9858,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2024-01-17-events"
           >
             <span
               class="event-marker"
@@ -9471,9 +9883,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2024-01-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2024-01-17-notes"
           />
         </div>
         <div
@@ -9502,6 +9916,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-12-17-events"
           >
             <span
               class="event-marker"
@@ -9526,9 +9941,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-12-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2023-12-17-notes"
           />
         </div>
         <div
@@ -9557,6 +9974,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-11-22-events"
           >
             <span
               class="event-marker"
@@ -9601,9 +10019,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-11-22-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2023-11-22-notes"
           />
         </div>
         <div
@@ -9626,6 +10046,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-11-21-events"
           >
             <span
               class="event-marker"
@@ -9670,6 +10091,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-11-21-photos"
           >
             <div
               title="03:57 AM - November 21, 2023"
@@ -9683,6 +10105,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-col"
+            data-testid="2023-11-21-notes"
           />
         </div>
         <div
@@ -9705,6 +10128,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-11-20-events"
           >
             <span
               class="event-marker"
@@ -9729,9 +10153,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-11-20-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2023-11-20-notes"
           />
         </div>
         <div
@@ -9754,6 +10180,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-11-17-events"
           >
             <span
               class="event-marker"
@@ -9818,9 +10245,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-11-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2023-11-17-notes"
           />
         </div>
         <div
@@ -9849,6 +10278,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-10-17-events"
           >
             <span
               class="event-marker"
@@ -9873,9 +10303,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-10-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2023-10-17-notes"
           />
         </div>
         <div
@@ -9904,6 +10336,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-09-17-events"
           >
             <span
               class="event-marker"
@@ -9928,9 +10361,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-09-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2023-09-17-notes"
           />
         </div>
         <div
@@ -9953,9 +10388,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-09-11-events"
           />
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-09-11-photos"
           >
             <div
               title="05:59 PM - September 11, 2023"
@@ -9969,6 +10406,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-col"
+            data-testid="2023-09-11-notes"
           />
         </div>
         <div
@@ -9997,9 +10435,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-08-23-events"
           />
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-08-23-photos"
           >
             <div
               title="08:43 PM - August 23, 2023"
@@ -10013,6 +10453,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-col"
+            data-testid="2023-08-23-notes"
           />
         </div>
         <div
@@ -10035,6 +10476,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-08-17-events"
           >
             <span
               class="event-marker"
@@ -10059,9 +10501,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-08-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2023-08-17-notes"
           />
         </div>
         <div
@@ -10090,6 +10534,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-07-17-events"
           >
             <span
               class="event-marker"
@@ -10114,9 +10559,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-07-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2023-07-17-notes"
           />
         </div>
         <div
@@ -10145,6 +10592,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-06-17-events"
           >
             <span
               class="event-marker"
@@ -10169,9 +10617,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-06-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2023-06-17-notes"
           />
         </div>
         <div
@@ -10200,6 +10650,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-05-17-events"
           >
             <span
               class="event-marker"
@@ -10224,9 +10675,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-05-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2023-05-17-notes"
           />
         </div>
         <div
@@ -10255,6 +10708,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-04-17-events"
           >
             <span
               class="event-marker"
@@ -10279,9 +10733,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-04-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2023-04-17-notes"
           />
         </div>
         <div
@@ -10310,6 +10766,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-03-17-events"
           >
             <span
               class="event-marker"
@@ -10334,9 +10791,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-03-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2023-03-17-notes"
           />
         </div>
         <div
@@ -10365,6 +10824,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-02-17-events"
           >
             <span
               class="event-marker"
@@ -10389,9 +10849,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-02-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2023-02-17-notes"
           />
         </div>
         <div
@@ -10420,6 +10882,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2023-01-17-events"
           >
             <span
               class="event-marker"
@@ -10444,9 +10907,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2023-01-17-photos"
           />
           <div
             class="flex flex-col"
+            data-testid="2023-01-17-notes"
           />
         </div>
         <div
@@ -10475,9 +10940,11 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         >
           <div
             class="timeline-day-events"
+            data-testid="2008-08-22-events"
           />
           <div
             class="flex flex-row flex-wrap"
+            data-testid="2008-08-22-photos"
           >
             <div
               title="11:00 AM - August 22, 2008"
@@ -10491,6 +10958,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
           <div
             class="flex flex-col"
+            data-testid="2008-08-22-notes"
           />
         </div>
       </div>

@@ -30,10 +30,9 @@ describe('Timeline', () => {
     });
 
     it('expands quick navigation subsections when user hovers', async () => {
-        // Get reference to History title, dropdown menu, and first subsection
+        // Get reference to History title and first subsection in dropdown menu
         const history = app.getByText(/History/);
-        const dropdown = history.parentElement.children[1];
-        const yearSection = dropdown.children[0].children[0];
+        const yearSection = history.nextSibling.querySelector('details');
 
         // Confirm year subsection is closed
         expect(yearSection).toHaveProperty('open', false);
@@ -50,7 +49,7 @@ describe('Timeline', () => {
 
     it('scrolls to timeline when quick navigation is clicked', async () => {
         // Get reference to History title (contains quick nav dropdown)
-        const history = app.getByText(/History/).parentElement;
+        const history = app.getByText(/History/).closest('.dropdown');
 
         // Confirm scrollIntoView has not been called
         expect(window.HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled();
@@ -88,16 +87,23 @@ describe('Timeline', () => {
         const note = app.queryByText(
             'Fertilized with dilute 10-15-10 liquid fertilizer'
         );
-        expect(note.parentElement.classList).toContain('line-clamp-1');
+        // NOTE: Non-breaking space between HH:MM and AM, will fail without
+        expect(
+            app.getByTitle('07:45 AM - March 1, 2024').classList
+        ).toContain('line-clamp-1');
 
         // Click note, confirm expanded (line clamp class removed)
         await user.click(note);
-        expect(note.parentElement.classList).not.toContain('line-clamp-1');
+        expect(
+            app.getByTitle('07:45 AM - March 1, 2024').classList
+        ).not.toContain('line-clamp-1');
 
         // Click again, confirm collapsed (line clamp class added)
         await user.click(note);
         await waitFor(() => {
-            expect(note.parentElement.classList).toContain('line-clamp-1');
+            expect(
+                app.getByTitle('07:45 AM - March 1, 2024').classList
+            ).toContain('line-clamp-1');
         });
     });
 });

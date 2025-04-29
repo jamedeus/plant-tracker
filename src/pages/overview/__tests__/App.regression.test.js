@@ -31,8 +31,8 @@ describe('App', () => {
     // Original bug: Plant and Group filter inputs included results where the
     // UUID, last_watered timestamp, or thumbnail URL matched the user's query.
     it('does not match match UUIDs, timestamps, or URLs when filtering', async () => {
-        const plantColumn = app.getByText('Plants (2)').parentElement;
-        const groupColumn = app.getByText('Groups (2)').parentElement;
+        const plantColumn = app.getByText('Plants (2)').closest('.section');
+        const groupColumn = app.getByText('Groups (2)').closest('.section');
         const plantFilterInput = within(plantColumn).getByRole('textbox');
         const groupFilterInput = within(groupColumn).getByRole('textbox');
 
@@ -79,9 +79,9 @@ describe('App', () => {
 
         // Click edit option, select first plant and first group checkboxes
         await user.click(app.getByText("Edit"));
-        const plantsCol = app.getByText('Plants (2)').parentElement;
+        const plantsCol = app.getByText('Plants (2)').closest('.section');
         await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[0]);
-        const groupsCol = app.getByText('Groups (2)').parentElement;
+        const groupsCol = app.getByText('Groups (2)').closest('.section');
         await user.click(groupsCol.querySelectorAll('label.cursor-pointer')[0]);
 
         // Click delete button in floating div
@@ -130,9 +130,9 @@ describe('App', () => {
 
         // Click edit option, select first plant and first group checkboxes
         await user.click(app.getByText("Edit"));
-        const plantsCol = app.getByText('Plants (2)').parentElement;
+        const plantsCol = app.getByText('Plants (2)').closest('.section');
         await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[0]);
-        const groupsCol = app.getByText('Groups (2)').parentElement;
+        const groupsCol = app.getByText('Groups (2)').closest('.section');
         await user.click(groupsCol.querySelectorAll('label.cursor-pointer')[0]);
 
         // Click archive button in floating div

@@ -106,29 +106,21 @@ describe('PlantCard last watered time display', () => {
     it('says "Today" if plant was watered during current calendar day', () => {
         // Render with timestamp 5 minutes before current time mock
         let component = renderWithTimestamp("2024-03-01T11:55:00-08:00");
-        expect(within(getLastWateredSpan(component)).getByText(
-            "Today"
-        )).toBeInTheDocument();
+        expect(getLastWateredSpan(component).textContent).toBe("Today");
 
         // Render with timestamp 1 minute after midnight on mocked day
         component = renderWithTimestamp("2024-03-01T00:01:00-08:00");
-        expect(within(getLastWateredSpan(component)).getByText(
-            "Today"
-        )).toBeInTheDocument();
+        expect(getLastWateredSpan(component).textContent).toBe("Today");
     });
 
     it('says "Yesterday" if plant was watered during previous calendar day', () => {
         // Render with timestamp 1 day and 5 minutes before current time mock
         let component = renderWithTimestamp("2024-02-29T11:55:00-08:00");
-        expect(within(getLastWateredSpan(component)).getByText(
-            "Yesterday"
-        )).toBeInTheDocument();
+        expect(getLastWateredSpan(component).textContent).toBe("Yesterday");
 
         // Render with timestamp 1 minute after midnight on previous day
         component = renderWithTimestamp("2024-02-29T00:01:00-08:00");
-        expect(within(getLastWateredSpan(component)).getByText(
-            "Yesterday"
-        )).toBeInTheDocument();
+        expect(getLastWateredSpan(component).textContent).toBe("Yesterday");
     });
 
     it('says number of calendar days since last watered if earlier than yesterday', () => {
@@ -136,58 +128,42 @@ describe('PlantCard last watered time display', () => {
         let component = renderWithTimestamp("2024-02-27T16:00:00-08:00");
         // Should say 3 days even though less than 72 hours ago (goes by calendar day)
         // Should NOT say "last month" (confusing since its only a few days)
-        expect(within(getLastWateredSpan(component)).getByText(
-            "3 days ago"
-        )).toBeInTheDocument();
+        expect(getLastWateredSpan(component).textContent).toBe("3 days ago");
 
         // Render with timestamp 3 day and 11 hours 59 minutes before current time mock
         component = renderWithTimestamp("2024-02-27T00:01:00-08:00");
         // Should still say 3 days even though over 72 hours ago
-        expect(within(getLastWateredSpan(component)).getByText(
-            "3 days ago"
-        )).toBeInTheDocument();
+        expect(getLastWateredSpan(component).textContent).toBe("3 days ago");
     });
 
     it('says number of months since last watered if >30 days ago', () => {
         // Render with timestamp 31 day before current time mock
         let component = renderWithTimestamp("2024-01-30T12:00:00-08:00");
-        expect(within(getLastWateredSpan(component)).getByText(
-            "1 month ago"
-        )).toBeInTheDocument();
+        expect(getLastWateredSpan(component).textContent).toBe("1 month ago");
 
         // Render with timestamp 57 days before current time mock
         component = renderWithTimestamp("2024-01-04T12:00:00-08:00");
         // Should still say 1 month ago (until actually > 2 months)
-        expect(within(getLastWateredSpan(component)).getByText(
-            "1 month ago"
-        )).toBeInTheDocument();
+        expect(getLastWateredSpan(component).textContent).toBe("1 month ago");
 
         // Render with timestamp 78 days before current time mock
         component = renderWithTimestamp("2023-12-14T12:00:00-08:00");
         // Should say 2 month ago (NOT "last year") even though it is prior year
-        expect(within(getLastWateredSpan(component)).getByText(
-            "2 months ago"
-        )).toBeInTheDocument();
+        expect(getLastWateredSpan(component).textContent).toBe("2 months ago");
     });
 
     it('says number of years since last watered if >365 days ago', () => {
         // Render with timestamp 360 day before current time mock
         let component = renderWithTimestamp("2023-03-07T12:00:00-08:00");
         // Should say 11 months ago (not quite a year yet)
-        expect(within(getLastWateredSpan(component)).getByText(
-            "11 months ago"
-        )).toBeInTheDocument();
+        expect(getLastWateredSpan(component).textContent).toBe("11 months ago");
 
         // Render with timestamp 366 days before current time mock
         component = renderWithTimestamp("2023-03-01T12:00:00-08:00");
-        expect(within(getLastWateredSpan(component)).getByText(
-            "1 year ago"
-        )).toBeInTheDocument();
+        expect(getLastWateredSpan(component).textContent).toBe("1 year ago");
 
         // Render with timestamp 750 days before current time mock
         component = renderWithTimestamp("2022-02-10T12:00:00-08:00");
-        expect(within(getLastWateredSpan(component)).getByText(
-            "2 years ago"
-        )).toBeInTheDocument();
+        expect(getLastWateredSpan(component).textContent).toBe("2 years ago");
     });
 });

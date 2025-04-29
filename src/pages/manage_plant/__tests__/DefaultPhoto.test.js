@@ -175,7 +175,7 @@ describe('Plant with photos but no configured default photo', () => {
 
         // Simulate user opening DeletePhotosModal, selecting first 2 photos
         await user.click(app.getByText('Delete photos'));
-        const modal = app.getByText('Delete Photos').parentElement;
+        const modal = app.getByText('Delete Photos').closest('.modal-box');
         await user.click(within(modal).getAllByText(/Select/)[0]);
         await user.click(within(modal).getAllByText(/Select/)[1]);
         // Simulate user clicking delete button, confirm delete button
@@ -206,7 +206,7 @@ describe('Plant with photos but no configured default photo', () => {
 
         // Simulate user opening DeletePhotosModal, selecting all 3 photos
         await user.click(app.getByText('Delete photos'));
-        const modal = app.getByText('Delete Photos').parentElement;
+        const modal = app.getByText('Delete Photos').closest('.modal-box');
         await user.click(within(modal).getAllByText(/Select/)[0]);
         await user.click(within(modal).getAllByText(/Select/)[1]);
         await user.click(within(modal).getAllByText(/Select/)[2]);
@@ -298,7 +298,7 @@ describe('Plant with default photo configured', () => {
 
         // Simulate user opening DeletePhotosModal, selecting default photo
         await user.click(app.getByText('Delete photos'));
-        const modal = app.getByText('Delete Photos').parentElement;
+        const modal = app.getByText('Delete Photos').closest('.modal-box');
         await user.click(within(modal).getAllByText(/Select/)[2]);
         // Simulate user clicking delete button, confirm delete button
         await user.click(within(modal).getAllByRole("button", {name: "Delete"})[0]);

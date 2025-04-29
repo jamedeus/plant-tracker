@@ -212,7 +212,7 @@ describe('App', () => {
         await user.click(app.getByText('Save'));
 
         // Get div wrapping both notes, get first and second child
-        const notesSection = app.getByText('Later timestamp').parentElement.parentElement.parentElement;
+        const notesSection = app.getByTestId('2024-04-01-notes');
         const firstNote = notesSection.children[0];
         const secondNote = notesSection.children[1];
 
@@ -258,8 +258,7 @@ describe('App', () => {
         await user.click(app.getByRole("button", {name: "Water"}));
 
         // Get div containing both EventMarkers, confirm "Watered" is first
-        const today = app.getByText('today').parentElement.nextSibling;
-        const eventMarkers = today.children[0];
+        const eventMarkers = app.getByTestId('2024-03-01-events');
         expect(eventMarkers.children[0].textContent).toContain('Watered');
         expect(eventMarkers.children[1].textContent).toContain('Fertilized');
         expect(eventMarkers.children[2].textContent).toContain('Pruned');
@@ -330,7 +329,7 @@ describe('App', () => {
 
         // Open event history modal, delete more recent event
         await user.click(app.getByText('Delete events'));
-        const modal = app.getByText('Event History').parentElement;
+        const modal = app.getByText('Event History').closest('.modal-box');
         await user.click(within(modal).getAllByText(/today/)[0]);
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
@@ -390,7 +389,7 @@ describe('App', () => {
 
         // Open event history modal, delete March 1 event
         await user.click(app.getByText('Delete events'));
-        const modal = app.getByText('Event History').parentElement;
+        const modal = app.getByText('Event History').closest('.modal-box');
         await user.click(within(modal).getByText(/today/));
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
@@ -518,7 +517,7 @@ describe('App', () => {
 
         // Simulate user opening DeletePhotosModal, selecting first photo
         await user.click(app.getByText('Delete photos'));
-        const modal = app.getByText('Delete Photos').parentElement;
+        const modal = app.getByText('Delete Photos').closest('.modal-box');
         await user.click(within(modal).getAllByText(/Select/)[0]);
         // Simulate user clicking delete button, confirm delete button
         await user.click(within(modal).getAllByRole("button", {name: "Delete"})[0]);

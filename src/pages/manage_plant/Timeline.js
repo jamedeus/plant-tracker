@@ -382,12 +382,18 @@ const TimelineDay = memo(function TimelineDay({ dateKey, monthDivider }) {
             <TimelineTimestamp dateKey={dateKey} />
             <div className="timeline-day">
                 {/* mobile: 2x2 grid layout, desktop: 4 events on one row */}
-                <div className="timeline-day-events">
+                <div
+                    className="timeline-day-events"
+                    data-testid={`${dateKey}-events`}
+                >
                     {contents.events.map((e) => (
                         <EventMarker key={e} eventType={e} />
                     ))}
                 </div>
-                <div className="flex flex-row flex-wrap">
+                <div
+                    className="flex flex-row flex-wrap"
+                    data-testid={`${dateKey}-photos`}
+                >
                     {[...contents.photos].sort((a, b) => {
                         return a.timestamp.localeCompare(b.timestamp);
                     }).reverse().map((photo) => (
@@ -399,7 +405,10 @@ const TimelineDay = memo(function TimelineDay({ dateKey, monthDivider }) {
                         />
                     ))}
                 </div>
-                <div className="flex flex-col">
+                <div
+                    className="flex flex-col"
+                    data-testid={`${dateKey}-notes`}
+                >
                     {[...contents.notes].sort((a, b) => {
                         return a.timestamp.localeCompare(b.timestamp);
                     }).map((note) => (

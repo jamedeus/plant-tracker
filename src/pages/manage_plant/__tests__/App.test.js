@@ -42,7 +42,7 @@ describe('App', () => {
         await user.click(app.getByRole('button', {name: 'Edit'}));
 
         // Click submit button inside edit modal
-        const modal = app.getByText("Edit Details").parentElement;
+        const modal = app.getByText("Edit Details").closest(".modal-box");
         await user.click(within(modal).getByText("Edit"));
 
         // Confirm correct data posted to /edit_plant endpoint
@@ -444,7 +444,7 @@ describe('App', () => {
 
         // Open event history modal, get reference to modal
         await user.click(app.getByText('Delete events'));
-        const modal = app.getByText('Event History').parentElement;
+        const modal = app.getByText('Event History').closest('.modal-box');
 
         // Select both water events, click delete button
         await user.click(within(modal).getByText(/today/));
@@ -527,7 +527,7 @@ describe('App', () => {
         // Simulate user clicking icon next to note, adding text, clicking save
         const editButton = within(timeline).getByText(
             'One of the older leaves is starting to turn yellow'
-        ).parentElement.parentElement.children[0];
+        ).closest('.note-collapse').querySelector('svg');
         await user.click(editButton);
         await user.type(app.getByRole('textbox'), ', pinched it off');
         await user.click(app.getByText('Save'));
@@ -560,11 +560,10 @@ describe('App', () => {
         // Simulate user clicking icon next to note, then clicking delete
         const editButton = within(timeline).getByText(
             'Fertilized with dilute 10-15-10 liquid fertilizer'
-        ).parentElement.parentElement.children[0];
+        ).closest('.note-collapse').querySelector('svg');
         await user.click(editButton);
-        await user.click(
-            within(app.getByText('Edit Note').parentElement).getByText('Delete')
-        );
+        const editModal = app.getByText('Edit Note').closest('.modal-box');
+        await user.click(within(editModal).getByText('Delete'));
 
         // Confirm timeline no longer contains note text
         expect(within(timeline).queryByText(
@@ -647,7 +646,7 @@ describe('App', () => {
 
         // Open event history modal, delete 2025 event
         await user.click(app.getByText('Delete events'));
-        const modal = app.getByText('Event History').parentElement;
+        const modal = app.getByText('Event History').closest('.modal-box');
         await user.click(within(modal).getByText(/2025/));
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,

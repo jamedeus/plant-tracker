@@ -42,7 +42,7 @@ describe('App', () => {
         await user.click(app.getByText("Edit"));
 
         // Click submit button inside edit modal
-        const modal = app.getByText("Edit Details").parentElement;
+        const modal = app.getByText("Edit Details").closest(".modal-box");
         await user.click(within(modal).getByText("Edit"));
 
         // Confirm correct data posted to /edit_plant endpoint
@@ -144,7 +144,7 @@ describe('App', () => {
 
     it('shows checkboxes and event buttons when Manage button is clicked', async () => {
         // Get reference to plants column
-        const plantsCol = app.getByText("Plants (3)").parentElement;
+        const plantsCol = app.getByText("Plants (3)").closest('.section');
         // Confirm Water, Fertilize, and Cancel buttons are not visible
         expect(within(plantsCol).queryByText('Water')).toBeNull();
         expect(within(plantsCol).queryByText('Fertilize')).toBeNull();
@@ -187,7 +187,7 @@ describe('App', () => {
         }));
 
         // Get reference to plants column
-        const plantsCol = app.getByText("Plants (3)").parentElement;
+        const plantsCol = app.getByText("Plants (3)").closest('.section');
 
         // Click Manage button under plants, select first plant, click water
         await user.click(within(plantsCol).getByText("Manage"));
@@ -223,7 +223,7 @@ describe('App', () => {
         }));
 
         // Get reference to plants column
-        const plantsCol = app.getByText("Plants (3)").parentElement;
+        const plantsCol = app.getByText("Plants (3)").closest('.section');
 
         // Click Manage button under plants, select third plant, click fertilize
         await user.click(within(plantsCol).getByText("Manage"));
@@ -250,7 +250,7 @@ describe('App', () => {
         expect(app.queryByText('No plants selected!')).toBeNull();
 
         // Click Manage button, click water without selecting anything
-        const plantsCol = app.getByText("Plants (3)").parentElement;
+        const plantsCol = app.getByText("Plants (3)").closest('.section');
         await user.click(within(plantsCol).getByText("Manage"));
         await user.click(within(plantsCol).getByText("Water"));
 
@@ -272,14 +272,14 @@ describe('App', () => {
         }));
 
         // Confirm plant list contains 3 cards
-        const plantsCol = app.getByText("Plants (3)").parentElement;
+        const plantsCol = app.getByText("Plants (3)").closest('.section');
         expect(plantsCol.querySelectorAll('.card-title').length).toBe(3);
 
         // Click Add plants dropdown option
         await user.click(app.getByTestId("add_plants_option"));
 
         // Get reference to modal, confirm contains 2 plant options
-        const addPlantsModal = app.getByText("Add Plants").parentElement;
+        const addPlantsModal = app.getByText("Add Plants").closest(".modal-box");
         expect(addPlantsModal.children[2].children[0].children.length).toBe(2);
 
         // Click the second option twice (unselect, should not be in payload)
@@ -322,14 +322,14 @@ describe('App', () => {
         }));
 
         // Confirm plant list contains 3 cards
-        const plantsCol = app.getByText("Plants (3)").parentElement;
+        const plantsCol = app.getByText("Plants (3)").closest('.section');
         expect(plantsCol.querySelectorAll('.card-title').length).toBe(3);
 
         // Click Remove plants dropdown option
         await user.click(app.getByTestId("remove_plants_option"));
 
         // Get reference to modal, confirm contains 3 plant options
-        const removePlantsModal = app.getByText("Remove Plants").parentElement;
+        const removePlantsModal = app.getByText("Remove Plants").closest(".modal-box");
         expect(removePlantsModal.children[2].children[0].children.length).toBe(3);
 
         // Select the first plant option, click Remove button

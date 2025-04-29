@@ -46,7 +46,7 @@ describe('App', () => {
         }));
 
         // Get reference to plants column
-        const plantsCol = app.getByText("Plants (3)").parentElement;
+        const plantsCol = app.getByText("Plants (3)").closest('.section');
 
         // Confirm last_watered timestamps of first 2 plants say "Yesterday"
         expect(within(plantsCol).queryAllByText('Yesterday').length).toBe(2);
@@ -81,7 +81,7 @@ describe('App', () => {
     // Original bug: Plant filter input included results where the UUID,
     // last_watered timestamp, or thumbnail URL matched the user's query.
     it('does not match match UUIDs, timestamps, or URLs when filtering', async () => {
-        const plantColumn = app.getByText('Plants (3)').parentElement;
+        const plantColumn = app.getByText('Plants (3)').closest('.section');
         const filterInput = within(plantColumn).getByRole('textbox');
 
         // Type part of UUID in input, should remove all cards
@@ -122,7 +122,7 @@ describe('App', () => {
         }));
 
         // Get reference to plants column
-        const plantsCol = app.getByText("Plants (3)").parentElement;
+        const plantsCol = app.getByText("Plants (3)").closest('.section');
 
         // Click Manage button under plants, select all plants, click water
         await user.click(within(plantsCol).getByText("Manage"));
@@ -166,7 +166,7 @@ describe('App', () => {
         await user.click(app.getByTestId("add_plants_option"));
 
         // Get reference to modal, select first plant option, click add button
-        const addPlantsModal = app.getByText("Add Plants").parentElement;
+        const addPlantsModal = app.getByText("Add Plants").closest(".modal-box");
         await user.click(addPlantsModal.querySelectorAll('label.cursor-pointer')[0]);
         await user.click(app.getByRole('button', {name: 'Add'}));
 
@@ -216,7 +216,7 @@ describe('App', () => {
         await user.click(app.getByTestId("remove_plants_option"));
 
         // Get reference to modal, select first plant option, click Remove button
-        const removePlantsModal = app.getByText("Remove Plants").parentElement;
+        const removePlantsModal = app.getByText("Remove Plants").closest(".modal-box");
         await user.click(removePlantsModal.querySelectorAll('label.cursor-pointer')[0]);
         await user.click(app.getByRole('button', {name: 'Remove'}));
 
@@ -255,13 +255,13 @@ describe('App', () => {
         // Click manage button to show checkboxes, water button
         await user.click(app.getByText("Manage"));
         // Select the first and third plants (not archived)
-        const plantsCol = app.getByText("Plants (3)").parentElement;
+        const plantsCol = app.getByText("Plants (3)").closest('.section');
         await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[0]);
         await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[2]);
 
         // Open Remove plants modal, select first plant option
         await user.click(app.getByTestId("remove_plants_option"));
-        const removePlantsModal = app.getByText("Remove Plants").parentElement;
+        const removePlantsModal = app.getByText("Remove Plants").closest(".modal-box");
         await user.click(removePlantsModal.querySelectorAll('label.cursor-pointer')[0]);
 
         // Mock fetch function to return expected response, click Remove button
@@ -292,7 +292,7 @@ describe('App', () => {
         // Click water button, confirm payload only includes the third plant
         // uuid (first plant was removed from group after selecting)
         await user.click(within(
-            app.getByText("Plants (2)").parentElement
+            app.getByText("Plants (2)").closest(".section")
         ).getByText("Water"));
         expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plant_events', {
             method: 'POST',

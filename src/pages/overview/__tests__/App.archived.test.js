@@ -139,7 +139,7 @@ describe('App', () => {
 
         // Click edit option, select first group checkbox
         await user.click(app.getByText("Edit"));
-        const groupsCol = app.getByText('Groups (2)').parentElement;
+        const groupsCol = app.getByText('Groups (2)').closest('.section');
         await user.click(groupsCol.querySelectorAll('label.cursor-pointer')[0]);
 
         // Click delete button in floating div
@@ -179,7 +179,7 @@ describe('App', () => {
 
         // Click edit option, select first group checkbox
         await user.click(app.getByText("Edit"));
-        const groupsCol = app.getByText('Groups (2)').parentElement;
+        const groupsCol = app.getByText('Groups (2)').closest('.section');
         await user.click(groupsCol.querySelectorAll('label.cursor-pointer')[0]);
 
         // Click un-archive button in floating div

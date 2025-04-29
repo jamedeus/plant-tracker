@@ -62,8 +62,8 @@ describe('DeletePhotosModal', () => {
 
     it('shows confirmation screen before deleting photos', async () => {
         // Get references to select screen and confirmation screen
-        const select = component.container.querySelector('.modal-box').children[1];
-        const confirm = component.container.querySelector('.modal-box').children[2];
+        const select = component.getByTestId('delete-photos-select');
+        const confirm = component.getByTestId('delete-photos-confirm');
         // Select screen should be visible, confirmation should be hidden
         expect(select.classList.contains('hidden')).toBe(false);
         expect(confirm.classList.contains('hidden')).toBe(true);
@@ -135,8 +135,8 @@ describe('DeletePhotosModal', () => {
         await user.click(component.getByTestId('delete_photos'));
 
         // Click X button next to first photo on confirmation screen
-        const confirmScreen = component.getByText('Confirm Delete').parentElement;
-        const removeButton = confirmScreen.children[1].children[0].children[0];
+        const confirmScreen = component.getByTestId('delete-photos-confirm');
+        const removeButton = confirmScreen.querySelector('svg');
         await user.click(removeButton);
 
         // Click second delete button (confirm delete, makes API call)

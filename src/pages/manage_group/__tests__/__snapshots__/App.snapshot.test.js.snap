@@ -192,6 +192,7 @@ exports[`App matches snapshot 1`] = `
                         class="btn-close size-8 no-animation"
                         role="button"
                         tabindex="0"
+                        title="Sort menu"
                       >
                         <svg
                           aria-hidden="true"
@@ -1073,6 +1074,7 @@ exports[`App matches snapshot 1`] = `
                       class="btn-close size-8 no-animation"
                       role="button"
                       tabindex="0"
+                      title="Sort menu"
                     >
                       <svg
                         aria-hidden="true"

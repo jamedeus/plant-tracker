@@ -76,6 +76,7 @@ const ClearButton = ({ onClick }) => {
         <button
             className="btn-close size-8 no-animation"
             onClick={onClick}
+            title="Clear filter input"
         >
             <XMarkIcon className="size-7 m-auto" />
         </button>
@@ -108,6 +109,7 @@ const SortMenu = ({ sortByKeys, state, setSort }) => {
                 role="button"
                 tabIndex="0"
                 className="btn-close size-8 no-animation"
+                title="Sort menu"
             >
                 <ArrowsUpDownIcon className="size-5 m-auto" />
             </div>

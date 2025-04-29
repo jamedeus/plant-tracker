@@ -208,9 +208,12 @@ const DeletePhotosModal = () => {
 
     return (
         <Modal ref={modalRef} onClose={closeDeletePhotosModal}>
-            <div className={
-                `${confirmDelete ? "hidden" : "flex flex-col overflow-hidden"}`
-            }>
+            <div
+                className={
+                    confirmDelete ? "hidden" : "flex flex-col overflow-hidden"
+                }
+                data-testid="delete-photos-select"
+            >
                 <h1 className="font-bold text-lg md:text-xl mb-4">
                     Delete Photos
                 </h1>
@@ -249,7 +252,10 @@ const DeletePhotosModal = () => {
                 </div>
             </div>
 
-            <div className={confirmDelete ? "flex flex-col" : "hidden"}>
+            <div
+                className={confirmDelete ? "flex flex-col" : "hidden"}
+                data-testid="delete-photos-confirm"
+            >
                 <h1 className="font-bold text-lg md:text-xl mb-4">
                     Confirm Delete
                 </h1>

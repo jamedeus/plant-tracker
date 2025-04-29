@@ -179,7 +179,7 @@ describe('FilterColumn', () => {
         });
 
         // Click clear button, confirm all 4 cards reappear
-        await user.click(component.getAllByRole('button')[0]);
+        await user.click(component.getByTitle("Clear filter input"));
         await waitFor(() => {
             expect(component.container.querySelectorAll('.card').length).toBe(5);
         });
@@ -206,7 +206,7 @@ describe('FilterColumn', () => {
         expect(titles[4].innerHTML).toBe("Unnamed plant 2");
 
         // Confirm a down arrow icon appeared next to name
-        let nameOption = component.getByText('Name').parentElement;
+        let nameOption = component.getByText('Name').closest('li');
         expect(nameOption.querySelector('.fa-arrow-down-long')).not.toBeNull();
 
         // Click the Name option again to reverse sort order
@@ -221,7 +221,7 @@ describe('FilterColumn', () => {
         expect(titles[4].innerHTML).toBe("Favorite plant");
 
         // Confirm the down arrow was replaced by an up arrow
-        nameOption = component.getByText('Name').parentElement;
+        nameOption = component.getByText('Name').closest('li');
         expect(nameOption.querySelector('.fa-arrow-down-long')).toBeNull();
         expect(nameOption.querySelector('.fa-arrow-up-long')).not.toBeNull();
     });
@@ -301,8 +301,8 @@ describe('FilterColumn  ', () => {
         );
 
         // Confirm dropdown button and menu were not rendered
-        expect(component.container.querySelector('.dropdown')).toBeNull();
-        expect(component.container.querySelector('.btn-square')).toBeNull();
+        expect(component.container.querySelector('.dropdown-end')).toBeNull();
+        expect(component.queryByTitle('Sort menu')).toBeNull();
     });
 
     it('matches any key when ignoreKeys arg is empty', async () => {

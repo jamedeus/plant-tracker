@@ -39,7 +39,7 @@ describe('App', () => {
         await user.click(app.getByText("Edit"));
 
         // Click submit button inside edit modal
-        const modal = app.getByText("Edit Details").parentElement;
+        const modal = app.getByText("Edit Details").closest(".modal-box");
         await user.click(within(modal).getByText("Edit"));
 
         // Confirm modal appeared with arbitrary error text

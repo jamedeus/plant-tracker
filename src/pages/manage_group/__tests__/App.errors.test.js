@@ -41,7 +41,7 @@ describe('App', () => {
         await user.click(app.getByText("Edit"));
 
         // Click submit button inside edit modal
-        const modal = app.getByText("Edit Details").parentElement;
+        const modal = app.getByText("Edit Details").closest(".modal-box");
         await user.click(within(modal).getByText("Edit"));
 
         // Confirm modal appeared with arbitrary error text
@@ -83,7 +83,7 @@ describe('App', () => {
         await user.click(app.getByTestId("add_plants_option"));
 
         // Simulate user selecting first plant in modal and clicking add
-        const addPlantsModal = app.getByText("Add Plants").parentElement;
+        const addPlantsModal = app.getByText("Add Plants").closest(".modal-box");
         await user.click(addPlantsModal.querySelectorAll('label.cursor-pointer')[0]);
         await user.click(app.getByRole('button', {name: 'Add'}));
 
@@ -107,7 +107,7 @@ describe('App', () => {
         await user.click(app.getByTestId("remove_plants_option"));
 
         // Simulate user selecting first plant in modal and clicking remove
-        const addPlantsModal = app.getByText("Remove Plants").parentElement;
+        const addPlantsModal = app.getByText("Remove Plants").closest(".modal-box");
         await user.click(addPlantsModal.querySelectorAll('label.cursor-pointer')[0]);
         await user.click(app.getByRole('button', {name: 'Remove'}));
 
