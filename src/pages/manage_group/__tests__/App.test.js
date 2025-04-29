@@ -279,15 +279,16 @@ describe('App', () => {
         await user.click(app.getByTestId("add_plants_option"));
 
         // Get reference to modal, confirm contains 2 plant options
-        const addPlantsModal = app.getByText("Add Plants").closest(".modal-box");
-        expect(addPlantsModal.children[2].children[0].children.length).toBe(2);
+        const modal = app.getByText("Add Plants").closest(".modal-box");
+        const plantOptions = modal.querySelector('form:not([method="dialog"])');
+        expect(plantOptions.children.length).toBe(2);
 
         // Click the second option twice (unselect, should not be in payload)
-        await user.click(addPlantsModal.querySelectorAll('label.cursor-pointer')[1]);
-        await user.click(addPlantsModal.querySelectorAll('label.cursor-pointer')[1]);
+        await user.click(modal.querySelectorAll('label.cursor-pointer')[1]);
+        await user.click(modal.querySelectorAll('label.cursor-pointer')[1]);
 
         // Select the first plant option, click Add button
-        await user.click(addPlantsModal.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(modal.querySelectorAll('label.cursor-pointer')[0]);
         await user.click(app.getByRole('button', {name: 'Add'}));
 
         // Confirm correct data posted to /bulk_add_plants_to_group endpoint
@@ -329,11 +330,12 @@ describe('App', () => {
         await user.click(app.getByTestId("remove_plants_option"));
 
         // Get reference to modal, confirm contains 3 plant options
-        const removePlantsModal = app.getByText("Remove Plants").closest(".modal-box");
-        expect(removePlantsModal.children[2].children[0].children.length).toBe(3);
+        const modal = app.getByText("Remove Plants").closest(".modal-box");
+        const plantOptions = modal.querySelector('form:not([method="dialog"])');
+        expect(plantOptions.children.length).toBe(3);
 
         // Select the first plant option, click Remove button
-        await user.click(removePlantsModal.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(modal.querySelectorAll('label.cursor-pointer')[0]);
         await user.click(app.getByRole('button', {name: 'Remove'}));
 
         // Confirm correct data posted to /bulk_remove_plants_from_group endpoint

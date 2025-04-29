@@ -85,7 +85,7 @@ describe('App', () => {
         }));
 
         // Confirm no repot events are shown on calendar
-        const calendar = app.getByText('March 2024').parentNode.parentNode.parentNode;
+        const calendar = app.getByText('March 2024').closest('.react-calendar');
         expect(calendar.querySelector('.dot-repot')).toBeNull();
 
         // Open Repot Modal
