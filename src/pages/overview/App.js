@@ -268,10 +268,10 @@ function App() {
 
         return (
             <ul tabIndex={0} className="dropdown-options mt-3 w-24">
-                <li className="mx-auto"><a onClick={jumpToPlants}>
+                <li><a className="flex justify-center" onClick={jumpToPlants}>
                     Plants
                 </a></li>
-                <li className="mx-auto"><a onClick={jumpToGroups}>
+                <li><a className="flex justify-center" onClick={jumpToGroups}>
                     Groups
                 </a></li>
             </ul>

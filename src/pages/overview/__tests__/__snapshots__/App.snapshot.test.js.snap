@@ -108,17 +108,17 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                   class="dropdown-options mt-3 w-24"
                   tabindex="0"
                 >
-                  <li
-                    class="mx-auto"
-                  >
-                    <a>
+                  <li>
+                    <a
+                      class="flex justify-center"
+                    >
                       Plants
                     </a>
                   </li>
-                  <li
-                    class="mx-auto"
-                  >
-                    <a>
+                  <li>
+                    <a
+                      class="flex justify-center"
+                    >
                       Groups
                     </a>
                   </li>
@@ -786,17 +786,17 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                 class="dropdown-options mt-3 w-24"
                 tabindex="0"
               >
-                <li
-                  class="mx-auto"
-                >
-                  <a>
+                <li>
+                  <a
+                    class="flex justify-center"
+                  >
                     Plants
                   </a>
                 </li>
-                <li
-                  class="mx-auto"
-                >
-                  <a>
+                <li>
+                  <a
+                    class="flex justify-center"
+                  >
                     Groups
                   </a>
                 </li>
@@ -5336,17 +5336,17 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                   class="dropdown-options mt-3 w-24"
                   tabindex="0"
                 >
-                  <li
-                    class="mx-auto"
-                  >
-                    <a>
+                  <li>
+                    <a
+                      class="flex justify-center"
+                    >
                       Plants
                     </a>
                   </li>
-                  <li
-                    class="mx-auto"
-                  >
-                    <a>
+                  <li>
+                    <a
+                      class="flex justify-center"
+                    >
                       Groups
                     </a>
                   </li>
@@ -6019,17 +6019,17 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                 class="dropdown-options mt-3 w-24"
                 tabindex="0"
               >
-                <li
-                  class="mx-auto"
-                >
-                  <a>
+                <li>
+                  <a
+                    class="flex justify-center"
+                  >
                     Plants
                   </a>
                 </li>
-                <li
-                  class="mx-auto"
-                >
-                  <a>
+                <li>
+                  <a
+                    class="flex justify-center"
+                  >
                     Groups
                   </a>
                 </li>
