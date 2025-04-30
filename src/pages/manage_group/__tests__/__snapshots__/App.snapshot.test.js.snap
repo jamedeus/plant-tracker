@@ -59,12 +59,16 @@ exports[`App matches snapshot 1`] = `
               tabindex="0"
             >
               <li>
-                <a>
+                <a
+                  href="/"
+                >
                   Overview
                 </a>
               </li>
               <li>
-                <a>
+                <a
+                  href="/accounts/profile/"
+                >
                   User profile
                 </a>
               </li>
@@ -919,12 +923,16 @@ exports[`App matches snapshot 1`] = `
             tabindex="0"
           >
             <li>
-              <a>
+              <a
+                href="/"
+              >
                 Overview
               </a>
             </li>
             <li>
-              <a>
+              <a
+                href="/accounts/profile/"
+              >
                 User profile
               </a>
             </li>

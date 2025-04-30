@@ -12,11 +12,11 @@ const NavbarDropdownOptions = ({ children }) => {
 
     return (
         <>
-            <li><a onClick={() => window.location.href = "/"}>
+            <li><a href='/'>
                 Overview
             </a></li>
             {userAccountsEnabled && (
-                <li><a onClick={() => window.location.href = "/accounts/profile/"}>
+                <li><a href="/accounts/profile/">
                     User profile
                 </a></li>
             )}

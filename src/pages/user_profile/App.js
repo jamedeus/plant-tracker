@@ -276,7 +276,7 @@ function App() {
 
     const DropdownMenuOptions = useMemo(() => (
         <>
-            <li><a onClick={() => window.location.href = "/"}>
+            <li><a href='/'>
                 Overview
             </a></li>
             <ToggleThemeOption />

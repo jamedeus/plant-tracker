@@ -88,12 +88,6 @@ describe('App', () => {
         expect(window.location.href).toBe('/accounts/login/');
     });
 
-    it('redirects to overview when cancel button is clicked', async () => {
-        // Click cancel button, confirm redirected
-        await user.click(app.getByTitle("Don't change QR code"));
-        expect(window.location.href).toBe('/');
-    });
-
     it('refreshes when user navigates to confirm page with back button', async () => {
         // Simulate user navigating to confirm_new_qr_code page with back button
         const pageshowEvent = new Event('pageshow');

@@ -216,9 +216,7 @@ function App() {
                 )}
                 {/* Link to user profile unless accounts disabled */}
                 {userAccountsEnabled && (
-                    <li><a onClick={
-                        () => window.location.href = "/accounts/profile/"
-                    }>
+                    <li><a href='/accounts/profile/'>
                         User profile
                     </a></li>
                 )}
