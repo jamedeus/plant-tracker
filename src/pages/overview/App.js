@@ -283,7 +283,7 @@ function App() {
     }, []);
 
     return (
-        <div className="container flex flex-col min-h-screen mx-auto pb-28">
+        <div className="container flex flex-col items-center mx-auto pb-28">
             <Navbar
                 menuOptions={DropdownMenuOptions}
                 title={pageTitle}
@@ -303,20 +303,20 @@ function App() {
 
             <FloatingFooter visible={editing}>
                 <button
-                    className="btn btn-neutral mr-4"
+                    className="btn btn-neutral"
                     onClick={() => setEditing(false)}
                 >
                     Cancel
                 </button>
 
                 <button
-                    className="btn mx-4"
+                    className="btn"
                     onClick={() => handleArchive()}
                 >
                     {archivedOverview ? "Un-archive" : "Archive"}
                 </button>
                 <button
-                    className="btn btn-error ml-4"
+                    className="btn btn-error"
                     onClick={handleDelete}
                 >
                     Delete

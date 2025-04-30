@@ -712,12 +712,12 @@ exports[`App matches snapshot 1`] = `
           data-testid="floating-footer"
         >
           <button
-            class="btn btn-neutral mr-4"
+            class="btn btn-neutral"
           >
             Cancel
           </button>
           <button
-            class="btn btn-error ml-4"
+            class="btn btn-error"
           >
             Remove
           </button>
@@ -1572,12 +1572,12 @@ exports[`App matches snapshot 1`] = `
         data-testid="floating-footer"
       >
         <button
-          class="btn btn-neutral mr-4"
+          class="btn btn-neutral"
         >
           Cancel
         </button>
         <button
-          class="btn btn-error ml-4"
+          class="btn btn-error"
         >
           Remove
         </button>

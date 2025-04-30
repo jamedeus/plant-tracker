@@ -26,7 +26,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
     </div>
     <div>
       <div
-        class="container flex flex-col min-h-screen mx-auto pb-28"
+        class="container flex flex-col items-center mx-auto pb-28"
       >
         <div
           class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
@@ -607,17 +607,17 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
           data-testid="floating-footer"
         >
           <button
-            class="btn btn-neutral mr-4"
+            class="btn btn-neutral"
           >
             Cancel
           </button>
           <button
-            class="btn mx-4"
+            class="btn"
           >
             Un-archive
           </button>
           <button
-            class="btn btn-error ml-4"
+            class="btn btn-error"
           >
             Delete
           </button>
@@ -704,7 +704,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
   </body>,
   "container": <div>
     <div
-      class="container flex flex-col min-h-screen mx-auto pb-28"
+      class="container flex flex-col items-center mx-auto pb-28"
     >
       <div
         class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
@@ -1285,17 +1285,17 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
         data-testid="floating-footer"
       >
         <button
-          class="btn btn-neutral mr-4"
+          class="btn btn-neutral"
         >
           Cancel
         </button>
         <button
-          class="btn mx-4"
+          class="btn"
         >
           Un-archive
         </button>
         <button
-          class="btn btn-error ml-4"
+          class="btn btn-error"
         >
           Delete
         </button>
@@ -1459,7 +1459,7 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
     </div>
     <div>
       <div
-        class="container flex flex-col min-h-screen mx-auto pb-28"
+        class="container flex flex-col items-center mx-auto pb-28"
       >
         <div
           class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
@@ -1579,17 +1579,17 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
           data-testid="floating-footer"
         >
           <button
-            class="btn btn-neutral mr-4"
+            class="btn btn-neutral"
           >
             Cancel
           </button>
           <button
-            class="btn mx-4"
+            class="btn"
           >
             Archive
           </button>
           <button
-            class="btn btn-error ml-4"
+            class="btn btn-error"
           >
             Delete
           </button>
@@ -1676,7 +1676,7 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
   </body>,
   "container": <div>
     <div
-      class="container flex flex-col min-h-screen mx-auto pb-28"
+      class="container flex flex-col items-center mx-auto pb-28"
     >
       <div
         class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
@@ -1796,17 +1796,17 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
         data-testid="floating-footer"
       >
         <button
-          class="btn btn-neutral mr-4"
+          class="btn btn-neutral"
         >
           Cancel
         </button>
         <button
-          class="btn mx-4"
+          class="btn"
         >
           Archive
         </button>
         <button
-          class="btn btn-error ml-4"
+          class="btn btn-error"
         >
           Delete
         </button>
@@ -1970,7 +1970,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
     </div>
     <div>
       <div
-        class="container flex flex-col min-h-screen mx-auto pb-28"
+        class="container flex flex-col items-center mx-auto pb-28"
       >
         <div
           class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
@@ -2280,17 +2280,17 @@ exports[`App matches snapshot when only groups exist 1`] = `
           data-testid="floating-footer"
         >
           <button
-            class="btn btn-neutral mr-4"
+            class="btn btn-neutral"
           >
             Cancel
           </button>
           <button
-            class="btn mx-4"
+            class="btn"
           >
             Archive
           </button>
           <button
-            class="btn btn-error ml-4"
+            class="btn btn-error"
           >
             Delete
           </button>
@@ -2377,7 +2377,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
   </body>,
   "container": <div>
     <div
-      class="container flex flex-col min-h-screen mx-auto pb-28"
+      class="container flex flex-col items-center mx-auto pb-28"
     >
       <div
         class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
@@ -2687,17 +2687,17 @@ exports[`App matches snapshot when only groups exist 1`] = `
         data-testid="floating-footer"
       >
         <button
-          class="btn btn-neutral mr-4"
+          class="btn btn-neutral"
         >
           Cancel
         </button>
         <button
-          class="btn mx-4"
+          class="btn"
         >
           Archive
         </button>
         <button
-          class="btn btn-error ml-4"
+          class="btn btn-error"
         >
           Delete
         </button>
@@ -2861,7 +2861,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
     </div>
     <div>
       <div
-        class="container flex flex-col min-h-screen mx-auto pb-28"
+        class="container flex flex-col items-center mx-auto pb-28"
       >
         <div
           class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
@@ -3217,17 +3217,17 @@ exports[`App matches snapshot when only plants exist 1`] = `
           data-testid="floating-footer"
         >
           <button
-            class="btn btn-neutral mr-4"
+            class="btn btn-neutral"
           >
             Cancel
           </button>
           <button
-            class="btn mx-4"
+            class="btn"
           >
             Archive
           </button>
           <button
-            class="btn btn-error ml-4"
+            class="btn btn-error"
           >
             Delete
           </button>
@@ -3314,7 +3314,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
   </body>,
   "container": <div>
     <div
-      class="container flex flex-col min-h-screen mx-auto pb-28"
+      class="container flex flex-col items-center mx-auto pb-28"
     >
       <div
         class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
@@ -3670,17 +3670,17 @@ exports[`App matches snapshot when only plants exist 1`] = `
         data-testid="floating-footer"
       >
         <button
-          class="btn btn-neutral mr-4"
+          class="btn btn-neutral"
         >
           Cancel
         </button>
         <button
-          class="btn mx-4"
+          class="btn"
         >
           Archive
         </button>
         <button
-          class="btn btn-error ml-4"
+          class="btn btn-error"
         >
           Delete
         </button>
@@ -3844,7 +3844,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
     </div>
     <div>
       <div
-        class="container flex flex-col min-h-screen mx-auto pb-28"
+        class="container flex flex-col items-center mx-auto pb-28"
       >
         <div
           class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
@@ -4411,17 +4411,17 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
           data-testid="floating-footer"
         >
           <button
-            class="btn btn-neutral mr-4"
+            class="btn btn-neutral"
           >
             Cancel
           </button>
           <button
-            class="btn mx-4"
+            class="btn"
           >
             Archive
           </button>
           <button
-            class="btn btn-error ml-4"
+            class="btn btn-error"
           >
             Delete
           </button>
@@ -4508,7 +4508,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
   </body>,
   "container": <div>
     <div
-      class="container flex flex-col min-h-screen mx-auto pb-28"
+      class="container flex flex-col items-center mx-auto pb-28"
     >
       <div
         class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
@@ -5075,17 +5075,17 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
         data-testid="floating-footer"
       >
         <button
-          class="btn btn-neutral mr-4"
+          class="btn btn-neutral"
         >
           Cancel
         </button>
         <button
-          class="btn mx-4"
+          class="btn"
         >
           Archive
         </button>
         <button
-          class="btn btn-error ml-4"
+          class="btn btn-error"
         >
           Delete
         </button>
@@ -5249,7 +5249,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
     </div>
     <div>
       <div
-        class="container flex flex-col min-h-screen mx-auto pb-28"
+        class="container flex flex-col items-center mx-auto pb-28"
       >
         <div
           class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
@@ -5835,17 +5835,17 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
           data-testid="floating-footer"
         >
           <button
-            class="btn btn-neutral mr-4"
+            class="btn btn-neutral"
           >
             Cancel
           </button>
           <button
-            class="btn mx-4"
+            class="btn"
           >
             Archive
           </button>
           <button
-            class="btn btn-error ml-4"
+            class="btn btn-error"
           >
             Delete
           </button>
@@ -5932,7 +5932,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
   </body>,
   "container": <div>
     <div
-      class="container flex flex-col min-h-screen mx-auto pb-28"
+      class="container flex flex-col items-center mx-auto pb-28"
     >
       <div
         class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
@@ -6518,17 +6518,17 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
         data-testid="floating-footer"
       >
         <button
-          class="btn btn-neutral mr-4"
+          class="btn btn-neutral"
         >
           Cancel
         </button>
         <button
-          class="btn mx-4"
+          class="btn"
         >
           Archive
         </button>
         <button
-          class="btn btn-error ml-4"
+          class="btn btn-error"
         >
           Delete
         </button>

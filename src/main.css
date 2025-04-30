@@ -173,9 +173,8 @@ html[data-theme="light"] .pot-size-selected::placeholder {
 }
 
 .floating-footer {
-    @apply fixed bottom-0 left-1/2 -translate-x-1/2 z-50;
-    @apply flex flex-row my-4 p-4 bg-gray-600/50 rounded-box shadow-inner;
-    @apply transition-all duration-300 flex flex-row;
+    @apply fixed bottom-0 z-50 flex flex-row my-4 p-4 gap-8;
+    @apply bg-gray-600/50 rounded-box shadow-inner transition-all duration-300;
 }
 
 .floating-footer-hidden {

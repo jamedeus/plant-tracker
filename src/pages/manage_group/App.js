@@ -342,14 +342,14 @@ function App() {
 
             <FloatingFooter visible={removingPlants}>
                 <button
-                    className="btn btn-neutral mr-4"
+                    className="btn btn-neutral"
                     onClick={stopRemovingPlants}
                 >
                     Cancel
                 </button>
 
                 <button
-                    className="btn btn-error ml-4"
+                    className="btn btn-error"
                     onClick={removePlants}
                 >
                     Remove
