@@ -1,5 +1,4 @@
 import React, { useState, useRef, useEffect, useCallback, useMemo } from 'react';
-import PropTypes from 'prop-types';
 import { localToUTC } from 'src/timestampUtils';
 import { sendPostRequest, parseDomContext, pastTense } from 'src/util';
 import Navbar from 'src/components/Navbar';
@@ -14,66 +13,8 @@ import AddPlantsModal, { openAddPlantsModal } from './AddPlantsModal';
 import RemovePlantsModal, { openRemovePlantsModal } from './RemovePlantsModal';
 import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
 import { openErrorModal } from 'src/components/ErrorModal';
-
-// Buttons used to add events to all selected plants
-const PlantEventButtons = ({ editing, setEditing, addEventSelected }) => {
-    const addEventTimeInput = useRef(null);
-
-    if (editing) {
-        return (
-            <>
-                <div
-                    className="flex flex-col items-center mb-4"
-                    data-testid="addEventTimeInput"
-                >
-                    <DatetimeInput inputRef={addEventTimeInput} />
-                </div>
-                <div className="flex">
-                    <button
-                        className="btn btn-outline mx-auto"
-                        onClick={() => setEditing(false)}
-                    >
-                        Cancel
-                    </button>
-                    <button
-                        className="btn btn-outline btn-info mx-auto"
-                        onClick={() => addEventSelected(
-                            'water',
-                            localToUTC(addEventTimeInput.current.value)
-                        )}
-                    >
-                        Water
-                    </button>
-                    <button
-                        className="btn btn-outline btn-success mx-auto"
-                        onClick={() => addEventSelected(
-                            'fertilize',
-                            localToUTC(addEventTimeInput.current.value)
-                        )}
-                    >
-                        Fertilize
-                    </button>
-                </div>
-            </>
-        );
-    } else {
-        return (
-            <div className="flex">
-                <button
-                    className="btn btn-outline mx-auto"
-                    onClick={() => setEditing(true)}>
-                    Manage
-                </button>
-            </div>
-        );
-    }
-};
-
-PlantEventButtons.propTypes = {
-    editing: PropTypes.bool.isRequired,
-    setEditing: PropTypes.func.isRequired,
-    addEventSelected: PropTypes.func.isRequired
-};
+import { Tab } from '@headlessui/react';
+import clsx from 'clsx';
 
 function App() {
     // Load context set by django template
@@ -123,8 +64,18 @@ function App() {
         };
     }, []);
 
-    // Create state to track whether selecting plants from list
+    // Buttons add events to all plants if 0, only selected plants if 1
+    // Set with tabs above event timestamp input
+    const [addEventsMode, setAddEventsMode] = useState(0);
+
+    // Create state to control whether checkboxes next to plants are visible
     const [selectingPlants, setSelectingPlants] = useState(false);
+
+    // Show checkboxes next to plants when "Select plants" tab active, hide
+    // when "All plants" tab clicked
+    useEffect(() => {
+        setSelectingPlants(Boolean(addEventsMode));
+    }, [addEventsMode]);
 
     // FormRef for FilterColumn used to add events to subset of plants in group
     const selectedPlantsRef = useRef(null);
@@ -135,8 +86,8 @@ function App() {
         return Array.from(selected.keys());
     };
 
-    // Ref to access timestamp input used by water all/fertilize all
-    const addEventAllTimeInput = useRef(null);
+    // Ref to access timestamp input used by water/fertilize buttons
+    const addEventTimeInput = useRef(null);
 
     // Takes array of plant UUIDs, removes archived plants and returns
     const removeArchivedPlants = (selected) => {
@@ -148,33 +99,34 @@ function App() {
         });
     };
 
-    // Handler for "Water All" and "Fertilize All" buttons
-    const addEventAll = async (eventType) => {
-        const timestamp = localToUTC(addEventAllTimeInput.current.value);
-        // Post eventType, UUIDs of all plants that aren't archived, and
-        // timestamp to backend endpoint
-        await bulkAddPlantEvents(
-            eventType,
-            removeArchivedPlants(plantDetails.map(plant => plant.uuid)),
-            timestamp
-        );
+    // Handler for water and fertilize buttons
+    const addEvents = async (eventType) => {
+        // If "Select plants" tab active: only add events to selected plants
+        if (addEventsMode) {
+            await addEventSelected(eventType);
+        // If "All plants" tab active: add events to all plants in group
+        } else {
+            await bulkAddPlantEvents(
+                eventType,
+                removeArchivedPlants(plantDetails.map(plant => plant.uuid))
+            );
+        }
     };
 
-    // Handler for water and fertilize buttons under plant cards
-    const addEventSelected = async (eventType, timestamp) => {
+    const addEventSelected = async (eventType) => {
         // Prevent adding event to archived plants
         const selected = removeArchivedPlants(getSelectedPlants());
         if (selected.length) {
-            await bulkAddPlantEvents(eventType, selected, timestamp);
-            setSelectingPlants(false);
+            await bulkAddPlantEvents(eventType, selected);
         } else {
             showToast('No plants selected!', 'yellow', 3000);
         }
     };
 
-    // Creates event with specified type and timestamp for every plant in
-    // selectedIds (array of UUIDs)
-    const bulkAddPlantEvents = async (eventType, selectedIds, timestamp) => {
+    // Creates event with specified type and timestamp from addEventTimeInput
+    // for every plant in selectedIds (array of UUIDs)
+    const bulkAddPlantEvents = async (eventType, selectedIds) => {
+        const timestamp = localToUTC(addEventTimeInput.current.value);
         const payload = {
             plants: selectedIds,
             event_type: eventType,
@@ -185,7 +137,10 @@ function App() {
             payload
         );
         if (response.ok) {
-            showToast(`All plants ${pastTense(eventType)}!`, 'blue', 5000);
+            // Show toast with correct message (All plants or Selected plants)
+            const updated = addEventsMode ? "Selected plants" : "All plants";
+            showToast(`${updated} ${pastTense(eventType)}!`, 'blue', 5000);
+            // Update last watered/fertilized times for all plants in response
             const data = await response.json();
             updatePlantTimestamps(data.plants, timestamp, eventType);
         } else {
@@ -299,19 +254,36 @@ function App() {
                 titleOptions={GroupDetailsDropdown}
             />
 
-            <DatetimeInput inputRef={addEventAllTimeInput} />
+            <Tab.Group onChange={(index) => setAddEventsMode(index)}>
+                <Tab.List className="tab-group my-2 w-64">
+                    <Tab className={({ selected }) => clsx(
+                        'tab-option whitespace-nowrap',
+                        selected && 'tab-option-selected'
+                    )}>
+                        All plants
+                    </Tab>
+                    <Tab className={({ selected }) => clsx(
+                        'tab-option whitespace-nowrap',
+                        selected && 'tab-option-selected'
+                    )}>
+                        Select plants
+                    </Tab>
+                </Tab.List>
+            </Tab.Group>
+
+            <DatetimeInput inputRef={addEventTimeInput} />
             <div className="flex mb-8">
                 <button
                     className="btn btn-info m-2"
-                    onClick={() => addEventAll('water')}
+                    onClick={() => addEvents('water')}
                 >
-                    Water All
+                    Water
                 </button>
                 <button
                     className="btn btn-success m-2"
-                    onClick={() => addEventAll('fertilize')}
+                    onClick={() => addEvents('fertilize')}
                 >
-                    Fertilize All
+                    Fertilize
                 </button>
             </div>
 
@@ -343,11 +315,6 @@ function App() {
                         </ul>
                     }
                 >
-                    <PlantEventButtons
-                        editing={selectingPlants}
-                        setEditing={setSelectingPlants}
-                        addEventSelected={addEventSelected}
-                    />
                 </PlantsCol>
             </div>
 

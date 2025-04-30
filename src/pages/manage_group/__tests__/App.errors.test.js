@@ -60,8 +60,9 @@ describe('App', () => {
         // Confirm arbitrary error does not appear on page
         expect(app.queryByText(/failed to bulk add events/)).toBeNull();
 
-        // Click Water All button
-        await user.click(app.getByText("Water All"));
+        // Ensure All plants tab active, click Water button
+        await user.click(app.getByRole("tab", {name: "All plants"}));
+        await user.click(app.getByRole("button", {name: "Water"}));
 
         // Confirm modal appeared with arbitrary error text
         expect(app.queryByText(/failed to bulk add events/)).not.toBeNull();

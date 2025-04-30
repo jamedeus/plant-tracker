@@ -58,7 +58,7 @@ describe('App', () => {
         });
     });
 
-    it('sends correct payload when Water All button clicked', async () => {
+    it('sends correct payload when all plants are watered', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
@@ -72,8 +72,9 @@ describe('App', () => {
             })
         }));
 
-        // Click Water All button
-        await user.click(app.getByText("Water All"));
+        // Ensure "All plants" tab is active, click Water button
+        await user.click(app.getByRole("tab", {name: "All plants"}));
+        await user.click(app.getByRole("button", {name: "Water"}));
 
         // Confirm correct data posted to /bulk_add_plant_events endpoint
         // Should contain UUIDs of both plants in group
@@ -105,8 +106,9 @@ describe('App', () => {
             })
         }));
 
-        // Click Fertilize All button
-        await user.click(app.getByText("Fertilize All"));
+        // Ensure "All plants" tab is active, click Fertilize button
+        await user.click(app.getByRole("tab", {name: "All plants"}));
+        await user.click(app.getByRole("button", {name: "Fertilize"}));
 
         // Confirm correct data posted to /bulk_add_plant_events endpoint
         // Should contain UUIDs of both plants in group
@@ -135,42 +137,27 @@ describe('App', () => {
             })
         }));
 
-        // Click Water All button
-        await user.click(app.getByRole("button", {name: "Water All"}));
+        // Click Water button
+        await user.click(app.getByRole("button", {name: "Water"}));
 
         // Confirm redirected
         expect(window.location.href).toBe('/accounts/login/');
     });
 
-    it('shows checkboxes and event buttons when Manage button is clicked', async () => {
+    it('shows checkboxes when Select plants tab is clicked', async () => {
         // Get reference to plants column
         const plantsCol = app.getByText("Plants (3)").closest('.section');
-        // Confirm Water, Fertilize, and Cancel buttons are not visible
-        expect(within(plantsCol).queryByText('Water')).toBeNull();
-        expect(within(plantsCol).queryByText('Fertilize')).toBeNull();
-        expect(within(plantsCol).queryByText('Cancel')).toBeNull();
-
-        // Confirm timestamp input and checkboxes next to plants are not visible
-        expect(app.queryByTestId('addEventTimeInput')).toBeNull();
         // Checkboxes are rendered underneath card with position: absolute, so
         // they are not visible until margin-left is added to the card wrapper
         expect(plantsCol.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(0);
 
-        // Click Manage button, confirm buttons, checkboxes, and input appear
-        await user.click(app.getByText("Manage"));
-        expect(within(plantsCol).getByText('Water').nodeName).toBe('BUTTON');
-        expect(within(plantsCol).getByText('Fertilize').nodeName).toBe('BUTTON');
-        expect(within(plantsCol).getByText('Cancel').nodeName).toBe('BUTTON');
+        // Click Select plants tab, confirm checkboxes appear
+        await user.click(app.getByRole("tab", {name: "Select plants"}));
         expect(plantsCol.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(3);
-        expect(app.queryByTestId('addEventTimeInput')).not.toBeNull();
 
-        // Click cancel button, confirm elements disappear
-        await user.click(within(plantsCol).getByText("Cancel"));
-        expect(within(plantsCol).queryByText('Water')).toBeNull();
-        expect(within(plantsCol).queryByText('Fertilize')).toBeNull();
-        expect(within(plantsCol).queryByText('Cancel')).toBeNull();
+        // Click All plants tab, confirm checkboxes disappear
+        await user.click(app.getByRole("tab", {name: "All plants"}));
         expect(plantsCol.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(0);
-        expect(app.queryByTestId('addEventTimeInput')).toBeNull();
     });
 
     it('sends correct payload when only 1 plant is watered', async () => {
@@ -189,10 +176,10 @@ describe('App', () => {
         // Get reference to plants column
         const plantsCol = app.getByText("Plants (3)").closest('.section');
 
-        // Click Manage button under plants, select first plant, click water
-        await user.click(within(plantsCol).getByText("Manage"));
+        // Click Select plants tab, select first plant, click water
+        await user.click(app.getByRole("tab", {name: "Select plants"}));
         await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[0]);
-        await user.click(within(plantsCol).getByText("Water"));
+        await user.click(app.getByRole("button", {name: "Water"}));
 
         // Confirm correct data posted to /bulk_add_plant_events endpoint
         // Should only contain UUID of first plant
@@ -225,10 +212,10 @@ describe('App', () => {
         // Get reference to plants column
         const plantsCol = app.getByText("Plants (3)").closest('.section');
 
-        // Click Manage button under plants, select third plant, click fertilize
-        await user.click(within(plantsCol).getByText("Manage"));
+        // Click Select plants tab, select third plant, click fertilize
+        await user.click(app.getByRole("tab", {name: "Select plants"}));
         await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[2]);
-        await user.click(within(plantsCol).getByText("Fertilize"));
+        await user.click(app.getByRole("button", {name: "Fertilize"}));
 
         // Confirm correct data posted to /bulk_add_plant_events endpoint
         // Should only contain UUID of third plant
@@ -249,10 +236,9 @@ describe('App', () => {
         // Confirm toast warning message is not on page
         expect(app.queryByText('No plants selected!')).toBeNull();
 
-        // Click Manage button, click water without selecting anything
-        const plantsCol = app.getByText("Plants (3)").closest('.section');
-        await user.click(within(plantsCol).getByText("Manage"));
-        await user.click(within(plantsCol).getByText("Water"));
+        // Click Select plants tab, click water without selecting anything
+        await user.click(app.getByRole("tab", {name: "Select plants"}));
+        await user.click(app.getByRole("button", {name: "Water"}));
 
         // Confirm toast appeared, no request was made
         expect(app.getByText('No plants selected!')).not.toBeNull();

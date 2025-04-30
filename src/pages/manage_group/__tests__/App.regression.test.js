@@ -53,25 +53,25 @@ describe('App', () => {
         // Confirm last_watered timestamp of last plant says "Never watered"
         expect(within(plantsCol).queryAllByText('Never watered').length).toBe(1);
 
-        // Simulate user selecting 2 days ago in datetime input, click Water All
+        // Simulate user selecting 2 days ago in datetime input, click Water
         const dateTimeInput = app.container.querySelector('input');
         fireEvent.input(
             dateTimeInput,
             {target: {value: '2024-02-28T04:45:00'}}
         );
-        await user.click(app.getByText("Water All"));
+        await user.click(app.getByRole("button", {name: "Water"}));
 
         // Confirm last_watered for first 2 plants didn't change (new timestamp
         // older than existing), confirm last plant now says "2 days ago"
         expect(within(plantsCol).queryAllByText('Yesterday').length).toBe(2);
         expect(within(plantsCol).queryAllByText('2 days ago').length).toBe(1);
 
-        // Simulate user selecting 15 min ago in datetime input, click Water All
+        // Simulate user selecting 15 min ago in datetime input, click Water
         fireEvent.input(
             dateTimeInput,
             {target: {value: '2024-03-01T11:45:00'}}
         );
-        await user.click(app.getByText("Water All"));
+        await user.click(app.getByRole("button", {name: "Water"}));
 
         // Confirm all last_watered changed (new timestamp newer than existing)
         expect(within(plantsCol).queryAllByText('Yesterday').length).toBe(0);
@@ -124,12 +124,12 @@ describe('App', () => {
         // Get reference to plants column
         const plantsCol = app.getByText("Plants (3)").closest('.section');
 
-        // Click Manage button under plants, select all plants, click water
-        await user.click(within(plantsCol).getByText("Manage"));
+        // Click Select plants tab, select all plants, click water
+        await user.click(app.getByRole("tab", {name: "Select plants"}));
         await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[0]);
         await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[1]);
         await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[2]);
-        await user.click(within(plantsCol).getByText("Water"));
+        await user.click(app.getByRole("button", {name: "Water"}));
 
         // Confirm payload only contains UUIDs of the first and third plants
         // (the second plant is archived and can not be watered)
@@ -260,12 +260,12 @@ describe('App', () => {
         });
     });
 
-    // Original bug: If the user clicked manage, selected a plant, then opened
+    // Original bug: If user clicked select plants, selected a plant, then opened
     // RemovePlantsModal and removed the selected plant from group it's UUID
     // would still be in the selectedPlants ref (tracks FilterColumn selection)
     it('removes plant uuid from create events array if plant is removed from the group', async () => {
-        // Click manage button to show checkboxes, water button
-        await user.click(app.getByText("Manage"));
+        // Click Select plants tab to show checkboxes, water button
+        await user.click(app.getByRole("tab", {name: "Select plants"}));
         // Select the first and third plants (not archived)
         const plantsCol = app.getByText("Plants (3)").closest('.section');
         await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[0]);
@@ -315,9 +315,7 @@ describe('App', () => {
 
         // Click water button, confirm payload only includes the third plant
         // uuid (first plant was removed from group after selecting)
-        await user.click(within(
-            app.getByText("Plants (2)").closest(".section")
-        ).getByText("Water"));
+        await user.click(app.getByRole("button", {name: "Water"}));
         expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plant_events', {
             method: 'POST',
             body: JSON.stringify({

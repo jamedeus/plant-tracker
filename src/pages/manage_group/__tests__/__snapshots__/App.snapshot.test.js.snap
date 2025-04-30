@@ -136,6 +136,34 @@ exports[`App matches snapshot 1`] = `
             class="justify-end min-w-12"
           />
         </div>
+        <div
+          aria-orientation="horizontal"
+          class="tab-group my-2 w-64"
+          role="tablist"
+        >
+          <button
+            aria-selected="true"
+            class="tab-option whitespace-nowrap tab-option-selected"
+            data-headlessui-state="selected"
+            id="headlessui-tabs-tab-:r0:"
+            role="tab"
+            tabindex="0"
+            type="button"
+          >
+            All plants
+          </button>
+          <button
+            aria-selected="false"
+            class="tab-option whitespace-nowrap"
+            data-headlessui-state=""
+            id="headlessui-tabs-tab-:r1:"
+            role="tab"
+            tabindex="-1"
+            type="button"
+          >
+            Select plants
+          </button>
+        </div>
         <input
           class="input input-bordered my-2"
           step="1"
@@ -148,12 +176,12 @@ exports[`App matches snapshot 1`] = `
           <button
             class="btn btn-info m-2"
           >
-            Water All
+            Water
           </button>
           <button
             class="btn btn-success m-2"
           >
-            Fertilize All
+            Fertilize
           </button>
         </div>
         <div
@@ -301,7 +329,7 @@ exports[`App matches snapshot 1`] = `
                   >
                     <input
                       class="radio checked:bg-blue-500 my-auto"
-                      id=":r0:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                      id=":r2:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       tabindex="-1"
                       type="checkbox"
@@ -317,7 +345,7 @@ exports[`App matches snapshot 1`] = `
                     >
                       <input
                         class="hidden pointer-events-none"
-                        id=":r1:"
+                        id=":r3:"
                         type="checkbox"
                       />
                       <div
@@ -358,7 +386,7 @@ exports[`App matches snapshot 1`] = `
                           </div>
                           <label
                             class="btn-close absolute right-2 top-8 z-40"
-                            for=":r1:"
+                            for=":r3:"
                             role="button"
                             tabindex="-1"
                           >
@@ -433,7 +461,7 @@ exports[`App matches snapshot 1`] = `
                   </div>
                   <label
                     class="cursor-pointer absolute z-20"
-                    for=":r0:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                    for=":r2:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                   />
                 </div>
                 <div
@@ -444,7 +472,7 @@ exports[`App matches snapshot 1`] = `
                   >
                     <input
                       class="radio checked:bg-blue-500 my-auto"
-                      id=":r0:-19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
+                      id=":r2:-19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
                       name="19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
                       tabindex="-1"
                       type="checkbox"
@@ -460,7 +488,7 @@ exports[`App matches snapshot 1`] = `
                     >
                       <input
                         class="hidden pointer-events-none"
-                        id=":r2:"
+                        id=":r4:"
                         type="checkbox"
                       />
                       <div
@@ -510,7 +538,7 @@ exports[`App matches snapshot 1`] = `
                           </div>
                           <label
                             class="btn-close absolute right-2 top-8 z-40"
-                            for=":r2:"
+                            for=":r4:"
                             role="button"
                             tabindex="-1"
                           >
@@ -571,7 +599,7 @@ exports[`App matches snapshot 1`] = `
                   </div>
                   <label
                     class="cursor-pointer absolute z-20"
-                    for=":r0:-19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
+                    for=":r2:-19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
                   />
                 </div>
                 <div
@@ -582,7 +610,7 @@ exports[`App matches snapshot 1`] = `
                   >
                     <input
                       class="radio checked:bg-blue-500 my-auto"
-                      id=":r0:-26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+                      id=":r2:-26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                       name="26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                       tabindex="-1"
                       type="checkbox"
@@ -598,7 +626,7 @@ exports[`App matches snapshot 1`] = `
                     >
                       <input
                         class="hidden pointer-events-none"
-                        id=":r3:"
+                        id=":r5:"
                         type="checkbox"
                       />
                       <div
@@ -621,7 +649,7 @@ exports[`App matches snapshot 1`] = `
                           </div>
                           <label
                             class="btn-close absolute right-2 top-8 z-40"
-                            for=":r3:"
+                            for=":r5:"
                             role="button"
                             tabindex="-1"
                           >
@@ -668,19 +696,10 @@ exports[`App matches snapshot 1`] = `
                   </div>
                   <label
                     class="cursor-pointer absolute z-20"
-                    for=":r0:-26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+                    for=":r2:-26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                   />
                 </div>
               </form>
-              <div
-                class="flex"
-              >
-                <button
-                  class="btn btn-outline mx-auto"
-                >
-                  Manage
-                </button>
-              </div>
             </div>
           </div>
         </div>
@@ -999,6 +1018,34 @@ exports[`App matches snapshot 1`] = `
           class="justify-end min-w-12"
         />
       </div>
+      <div
+        aria-orientation="horizontal"
+        class="tab-group my-2 w-64"
+        role="tablist"
+      >
+        <button
+          aria-selected="true"
+          class="tab-option whitespace-nowrap tab-option-selected"
+          data-headlessui-state="selected"
+          id="headlessui-tabs-tab-:r0:"
+          role="tab"
+          tabindex="0"
+          type="button"
+        >
+          All plants
+        </button>
+        <button
+          aria-selected="false"
+          class="tab-option whitespace-nowrap"
+          data-headlessui-state=""
+          id="headlessui-tabs-tab-:r1:"
+          role="tab"
+          tabindex="-1"
+          type="button"
+        >
+          Select plants
+        </button>
+      </div>
       <input
         class="input input-bordered my-2"
         step="1"
@@ -1011,12 +1058,12 @@ exports[`App matches snapshot 1`] = `
         <button
           class="btn btn-info m-2"
         >
-          Water All
+          Water
         </button>
         <button
           class="btn btn-success m-2"
         >
-          Fertilize All
+          Fertilize
         </button>
       </div>
       <div
@@ -1164,7 +1211,7 @@ exports[`App matches snapshot 1`] = `
                 >
                   <input
                     class="radio checked:bg-blue-500 my-auto"
-                    id=":r0:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                    id=":r2:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     tabindex="-1"
                     type="checkbox"
@@ -1180,7 +1227,7 @@ exports[`App matches snapshot 1`] = `
                   >
                     <input
                       class="hidden pointer-events-none"
-                      id=":r1:"
+                      id=":r3:"
                       type="checkbox"
                     />
                     <div
@@ -1221,7 +1268,7 @@ exports[`App matches snapshot 1`] = `
                         </div>
                         <label
                           class="btn-close absolute right-2 top-8 z-40"
-                          for=":r1:"
+                          for=":r3:"
                           role="button"
                           tabindex="-1"
                         >
@@ -1296,7 +1343,7 @@ exports[`App matches snapshot 1`] = `
                 </div>
                 <label
                   class="cursor-pointer absolute z-20"
-                  for=":r0:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                  for=":r2:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                 />
               </div>
               <div
@@ -1307,7 +1354,7 @@ exports[`App matches snapshot 1`] = `
                 >
                   <input
                     class="radio checked:bg-blue-500 my-auto"
-                    id=":r0:-19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
+                    id=":r2:-19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
                     name="19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
                     tabindex="-1"
                     type="checkbox"
@@ -1323,7 +1370,7 @@ exports[`App matches snapshot 1`] = `
                   >
                     <input
                       class="hidden pointer-events-none"
-                      id=":r2:"
+                      id=":r4:"
                       type="checkbox"
                     />
                     <div
@@ -1373,7 +1420,7 @@ exports[`App matches snapshot 1`] = `
                         </div>
                         <label
                           class="btn-close absolute right-2 top-8 z-40"
-                          for=":r2:"
+                          for=":r4:"
                           role="button"
                           tabindex="-1"
                         >
@@ -1434,7 +1481,7 @@ exports[`App matches snapshot 1`] = `
                 </div>
                 <label
                   class="cursor-pointer absolute z-20"
-                  for=":r0:-19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
+                  for=":r2:-19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
                 />
               </div>
               <div
@@ -1445,7 +1492,7 @@ exports[`App matches snapshot 1`] = `
                 >
                   <input
                     class="radio checked:bg-blue-500 my-auto"
-                    id=":r0:-26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+                    id=":r2:-26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                     name="26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                     tabindex="-1"
                     type="checkbox"
@@ -1461,7 +1508,7 @@ exports[`App matches snapshot 1`] = `
                   >
                     <input
                       class="hidden pointer-events-none"
-                      id=":r3:"
+                      id=":r5:"
                       type="checkbox"
                     />
                     <div
@@ -1484,7 +1531,7 @@ exports[`App matches snapshot 1`] = `
                         </div>
                         <label
                           class="btn-close absolute right-2 top-8 z-40"
-                          for=":r3:"
+                          for=":r5:"
                           role="button"
                           tabindex="-1"
                         >
@@ -1531,19 +1578,10 @@ exports[`App matches snapshot 1`] = `
                 </div>
                 <label
                   class="cursor-pointer absolute z-20"
-                  for=":r0:-26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+                  for=":r2:-26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                 />
               </div>
             </form>
-            <div
-              class="flex"
-            >
-              <button
-                class="btn btn-outline mx-auto"
-              >
-                Manage
-              </button>
-            </div>
           </div>
         </div>
       </div>
