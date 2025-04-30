@@ -83,8 +83,9 @@ function App() {
     const [plantDetails, setPlantDetails] = useState(() => {
         return parseDomContext("details");
     });
-    // Contains list of objects with name and uuid of every plant in database
-    // Should NOT be mutated except by pageshow listener below
+    // Contains list of objects with details of every plant owned by same user
+    // that is not already in a group (AddPlantsModal options state).
+    // Should only be mutated by pageshow listener and removePlants callback.
     const [options, setOptions] = useState(() => {
         return parseDomContext("options");
     });
@@ -269,7 +270,7 @@ function App() {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
         }
-    }, [plantDetails]);
+    }, [plantDetails, options]);
 
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => (
