@@ -44,26 +44,26 @@ const Title = memo(function Title() {
             <div className="navbar-center mx-auto">
                 <div className="dropdown dropdown-center dropdown-hover">
                     <div
-                        tabIndex={0}
+                        tabIndex={2}
                         role="button"
                         className="btn btn-ghost text-xl font-bold m-1"
                     >
                         History
                     </div>
-                    <ul tabIndex={0} className="dropdown-options w-44">
+                    <ul tabIndex={2} className="dropdown-options w-44">
                         <QuickNavigation />
                     </ul>
                 </div>
             </div>
 
             <div
-                className="navbar-end w-12 dropdown dropdown-end"
-                onClick={preloadDeletePhotosModal}
+                className="justify-end w-12 dropdown dropdown-end"
+                onFocus={preloadDeletePhotosModal}
             >
                 {!archived &&
                     <>
                         <div
-                            tabIndex={0}
+                            tabIndex={1}
                             role="button"
                             className="btn btn-ghost btn-circle"
                         >
@@ -73,36 +73,41 @@ const Title = memo(function Title() {
                             />
                         </div>
                         <ul tabIndex={0} className="dropdown-options w-40">
-                            <li><a
+                            <li><button
                                 className="flex justify-end"
                                 onClick={() => openNoteModal()}
+                                tabIndex={1}
                             >
                                 Add note
-                            </a></li>
-                            <li><a
+                            </button></li>
+                            <li><button
                                 className="flex justify-end"
                                 onClick={openPhotoModal}
+                                tabIndex={1}
                             >
                                 Add photos
-                            </a></li>
-                            <li><a
+                            </button></li>
+                            <li><button
                                 className="flex justify-end"
                                 onClick={openRepotModal}
+                                tabIndex={1}
                             >
                                 Repot plant
-                            </a></li>
-                            <li><a
+                            </button></li>
+                            <li><button
                                 className="flex justify-end"
                                 onClick={openDeletePhotosModal}
+                                tabIndex={1}
                             >
                                 Delete photos
-                            </a></li>
-                            <li><a
+                            </button></li>
+                            <li><button
                                 className="flex justify-end"
                                 onClick={openEventHistoryModal}
+                                tabIndex={1}
                             >
                                 Delete events
-                            </a></li>
+                            </button></li>
                         </ul>
                     </>
                 }
@@ -169,15 +174,18 @@ const QuickNavigationYear = ({ year, months }) => {
             <details
                 ref={detailsRef}
                 onMouseOver={open}
+                onFocus={open}
                 onMouseOut={close}
+                tabIndex={2}
+                className="outline-none"
             >
                 <summary>{year}</summary>
                 <ul>
                     {months.map(month => (
                         <li key={month}>
-                            <a onClick={() => jumpTo(`${year}-${month}`)}>
+                            <button onClick={() => jumpTo(`${year}-${month}`)} tabIndex={2}>
                                 {monthNumToName(month)}
-                            </a>
+                            </button>
                         </li>
                     ))}
                 </ul>

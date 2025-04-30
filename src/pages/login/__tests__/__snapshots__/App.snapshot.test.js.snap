@@ -39,9 +39,9 @@ exports[`App matches snapshot 1`] = `
               tabindex="0"
             >
               <li>
-                <a>
+                <button>
                   Light mode
-                </a>
+                </button>
               </li>
             </ul>
           </div>
@@ -216,9 +216,9 @@ exports[`App matches snapshot 1`] = `
             tabindex="0"
           >
             <li>
-              <a>
+              <button>
                 Light mode
-              </a>
+              </button>
             </li>
           </ul>
         </div>

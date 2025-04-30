@@ -10,6 +10,7 @@ const DatetimeInput = ({ inputRef, value=null }) => {
             className="input input-bordered my-2"
             type="datetime-local"
             step="1"
+            tabIndex={1}
             defaultValue={
                 value ? value : DateTime.now().toFormat("yyyy-MM-dd'T'HH:mm:ss")
             }

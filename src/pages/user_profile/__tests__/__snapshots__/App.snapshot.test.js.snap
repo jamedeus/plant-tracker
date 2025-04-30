@@ -56,9 +56,9 @@ exports[`App matches snapshot 1`] = `
                 </a>
               </li>
               <li>
-                <a>
+                <button>
                   Light mode
-                </a>
+                </button>
               </li>
             </ul>
           </div>
@@ -367,9 +367,9 @@ exports[`App matches snapshot 1`] = `
               </a>
             </li>
             <li>
-              <a>
+              <button>
                 Light mode
-              </a>
+              </button>
             </li>
           </ul>
         </div>

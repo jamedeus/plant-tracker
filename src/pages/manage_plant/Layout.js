@@ -43,13 +43,13 @@ function Layout() {
             {!plantDetails.archived && (
                 <>
                     {plantDetails.group &&
-                        <li><a href={"/manage/" + plantDetails.group.uuid}>
+                        <li><a href={`/manage/${plantDetails.group.uuid}`}>
                             Go to group
                         </a></li>
                     }
-                    <li><a onClick={openChangeQrModal}>
+                    <li><button onClick={openChangeQrModal}>
                         Change QR code
-                    </a></li>
+                    </button></li>
                 </>
             )}
         </NavbarDropdownOptions>
@@ -80,10 +80,14 @@ function Layout() {
                             <div className="divider font-bold mt-0">
                                 Default Photo
                             </div>
-                            <div
-                                className="relative mx-auto cursor-pointer"
+                            <button
+                                className={clsx(
+                                    "relative mx-auto cursor-pointer",
+                                    "focus:outline outline-offset-2 rounded-lg"
+                                )}
                                 onClick={openDefaultPhotoModal}
                                 title="Change default photo"
+                                tabIndex={0}
                             >
                                 <img
                                     loading="lazy"
@@ -96,14 +100,14 @@ function Layout() {
                                 />
                                 <div className={clsx(
                                     "absolute bottom-2 right-2 size-8 min-size-8",
-                                    "btn btn-square bg-base-200/60 border-none"
+                                    "btn btn-square bg-base-200/60 border-none",
                                 )}>
                                     <FontAwesomeIcon
                                         className='size-3'
                                         icon={faPen}
                                     />
                                 </div>
-                            </div>
+                            </button>
                         </>
                     )}
                     <div className={clsx(
@@ -116,7 +120,10 @@ function Layout() {
                     {plantDetails.group ? (
                         <div className="flex flex-col text-center">
                             <a
-                                className="font-bold text-lg line-clamp-1"
+                                className={clsx(
+                                    "font-bold text-lg line-clamp-1 rounded-lg",
+                                    "focus:outline outline-2 outline-offset-2"
+                                )}
                                 href={`/manage/${plantDetails.group.uuid}`}
                             >
                                 { plantDetails.group.name }

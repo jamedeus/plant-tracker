@@ -63,122 +63,165 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
               <div
                 class="btn btn-ghost text-xl font-bold m-1"
                 role="button"
-                tabindex="0"
+                tabindex="2"
               >
                 History
               </div>
               <ul
                 class="dropdown-options w-44"
-                tabindex="0"
+                tabindex="2"
               >
                 <li>
-                  <details>
+                  <details
+                    class="outline-none"
+                    tabindex="2"
+                  >
                     <summary>
                       2024
                     </summary>
                     <ul>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           April
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           March
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           February
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           January
-                        </a>
+                        </button>
                       </li>
                     </ul>
                   </details>
                 </li>
                 <li>
-                  <details>
+                  <details
+                    class="outline-none"
+                    tabindex="2"
+                  >
                     <summary>
                       2023
                     </summary>
                     <ul>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           December
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           November
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           October
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           September
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           August
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           July
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           June
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           May
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           April
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           March
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           February
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           January
-                        </a>
+                        </button>
                       </li>
                     </ul>
                   </details>
                 </li>
                 <li>
-                  <details>
+                  <details
+                    class="outline-none"
+                    tabindex="2"
+                  >
                     <summary>
                       2008
                     </summary>
                     <ul>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           August
-                        </a>
+                        </button>
                       </li>
                     </ul>
                   </details>
@@ -187,7 +230,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             </div>
           </div>
           <div
-            class="navbar-end w-12 dropdown dropdown-end"
+            class="justify-end w-12 dropdown dropdown-end"
           />
         </div>
         <div
@@ -2942,122 +2985,165 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             <div
               class="btn btn-ghost text-xl font-bold m-1"
               role="button"
-              tabindex="0"
+              tabindex="2"
             >
               History
             </div>
             <ul
               class="dropdown-options w-44"
-              tabindex="0"
+              tabindex="2"
             >
               <li>
-                <details>
+                <details
+                  class="outline-none"
+                  tabindex="2"
+                >
                   <summary>
                     2024
                   </summary>
                   <ul>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         April
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         March
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         February
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         January
-                      </a>
+                      </button>
                     </li>
                   </ul>
                 </details>
               </li>
               <li>
-                <details>
+                <details
+                  class="outline-none"
+                  tabindex="2"
+                >
                   <summary>
                     2023
                   </summary>
                   <ul>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         December
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         November
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         October
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         September
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         August
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         July
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         June
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         May
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         April
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         March
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         February
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         January
-                      </a>
+                      </button>
                     </li>
                   </ul>
                 </details>
               </li>
               <li>
-                <details>
+                <details
+                  class="outline-none"
+                  tabindex="2"
+                >
                   <summary>
                     2008
                   </summary>
                   <ul>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         August
-                      </a>
+                      </button>
                     </li>
                   </ul>
                 </details>
@@ -3066,7 +3152,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           </div>
         </div>
         <div
-          class="navbar-end w-12 dropdown dropdown-end"
+          class="justify-end w-12 dropdown dropdown-end"
         />
       </div>
       <div
@@ -5918,122 +6004,165 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
               <div
                 class="btn btn-ghost text-xl font-bold m-1"
                 role="button"
-                tabindex="0"
+                tabindex="2"
               >
                 History
               </div>
               <ul
                 class="dropdown-options w-44"
-                tabindex="0"
+                tabindex="2"
               >
                 <li>
-                  <details>
+                  <details
+                    class="outline-none"
+                    tabindex="2"
+                  >
                     <summary>
                       2024
                     </summary>
                     <ul>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           April
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           March
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           February
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           January
-                        </a>
+                        </button>
                       </li>
                     </ul>
                   </details>
                 </li>
                 <li>
-                  <details>
+                  <details
+                    class="outline-none"
+                    tabindex="2"
+                  >
                     <summary>
                       2023
                     </summary>
                     <ul>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           December
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           November
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           October
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           September
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           August
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           July
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           June
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           May
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           April
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           March
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           February
-                        </a>
+                        </button>
                       </li>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           January
-                        </a>
+                        </button>
                       </li>
                     </ul>
                   </details>
                 </li>
                 <li>
-                  <details>
+                  <details
+                    class="outline-none"
+                    tabindex="2"
+                  >
                     <summary>
                       2008
                     </summary>
                     <ul>
                       <li>
-                        <a>
+                        <button
+                          tabindex="2"
+                        >
                           August
-                        </a>
+                        </button>
                       </li>
                     </ul>
                   </details>
@@ -6042,12 +6171,12 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             </div>
           </div>
           <div
-            class="navbar-end w-12 dropdown dropdown-end"
+            class="justify-end w-12 dropdown dropdown-end"
           >
             <div
               class="btn btn-ghost btn-circle"
               role="button"
-              tabindex="0"
+              tabindex="1"
             >
               <svg
                 aria-hidden="true"
@@ -6070,39 +6199,44 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
               tabindex="0"
             >
               <li>
-                <a
+                <button
                   class="flex justify-end"
+                  tabindex="1"
                 >
                   Add note
-                </a>
+                </button>
               </li>
               <li>
-                <a
+                <button
                   class="flex justify-end"
+                  tabindex="1"
                 >
                   Add photos
-                </a>
+                </button>
               </li>
               <li>
-                <a
+                <button
                   class="flex justify-end"
+                  tabindex="1"
                 >
                   Repot plant
-                </a>
+                </button>
               </li>
               <li>
-                <a
+                <button
                   class="flex justify-end"
+                  tabindex="1"
                 >
                   Delete photos
-                </a>
+                </button>
               </li>
               <li>
-                <a
+                <button
                   class="flex justify-end"
+                  tabindex="1"
                 >
                   Delete events
-                </a>
+                </button>
               </li>
             </ul>
           </div>
@@ -8859,122 +8993,165 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             <div
               class="btn btn-ghost text-xl font-bold m-1"
               role="button"
-              tabindex="0"
+              tabindex="2"
             >
               History
             </div>
             <ul
               class="dropdown-options w-44"
-              tabindex="0"
+              tabindex="2"
             >
               <li>
-                <details>
+                <details
+                  class="outline-none"
+                  tabindex="2"
+                >
                   <summary>
                     2024
                   </summary>
                   <ul>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         April
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         March
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         February
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         January
-                      </a>
+                      </button>
                     </li>
                   </ul>
                 </details>
               </li>
               <li>
-                <details>
+                <details
+                  class="outline-none"
+                  tabindex="2"
+                >
                   <summary>
                     2023
                   </summary>
                   <ul>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         December
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         November
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         October
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         September
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         August
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         July
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         June
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         May
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         April
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         March
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         February
-                      </a>
+                      </button>
                     </li>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         January
-                      </a>
+                      </button>
                     </li>
                   </ul>
                 </details>
               </li>
               <li>
-                <details>
+                <details
+                  class="outline-none"
+                  tabindex="2"
+                >
                   <summary>
                     2008
                   </summary>
                   <ul>
                     <li>
-                      <a>
+                      <button
+                        tabindex="2"
+                      >
                         August
-                      </a>
+                      </button>
                     </li>
                   </ul>
                 </details>
@@ -8983,12 +9160,12 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           </div>
         </div>
         <div
-          class="navbar-end w-12 dropdown dropdown-end"
+          class="justify-end w-12 dropdown dropdown-end"
         >
           <div
             class="btn btn-ghost btn-circle"
             role="button"
-            tabindex="0"
+            tabindex="1"
           >
             <svg
               aria-hidden="true"
@@ -9011,39 +9188,44 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             tabindex="0"
           >
             <li>
-              <a
+              <button
                 class="flex justify-end"
+                tabindex="1"
               >
                 Add note
-              </a>
+              </button>
             </li>
             <li>
-              <a
+              <button
                 class="flex justify-end"
+                tabindex="1"
               >
                 Add photos
-              </a>
+              </button>
             </li>
             <li>
-              <a
+              <button
                 class="flex justify-end"
+                tabindex="1"
               >
                 Repot plant
-              </a>
+              </button>
             </li>
             <li>
-              <a
+              <button
                 class="flex justify-end"
+                tabindex="1"
               >
                 Delete photos
-              </a>
+              </button>
             </li>
             <li>
-              <a
+              <button
                 class="flex justify-end"
+                tabindex="1"
               >
                 Delete events
-              </a>
+              </button>
             </li>
           </ul>
         </div>

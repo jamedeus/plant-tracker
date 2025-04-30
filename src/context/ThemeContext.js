@@ -35,9 +35,9 @@ export const ThemeProvider = ({ children }) => {
     const ToggleThemeOption = () => {
         switch(theme) {
             case('light'):
-                return <li><a onClick={toggleTheme}>Dark mode</a></li>;
+                return <li><button onClick={toggleTheme}>Dark mode</button></li>;
             case('dark'):
-                return <li><a onClick={toggleTheme}>Light mode</a></li>;
+                return <li><button onClick={toggleTheme}>Light mode</button></li>;
         }
     };
 

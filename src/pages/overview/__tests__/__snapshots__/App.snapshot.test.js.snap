@@ -78,9 +78,9 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                 </a>
               </li>
               <li>
-                <a>
+                <button>
                   Light mode
-                </a>
+                </button>
               </li>
             </ul>
           </div>
@@ -758,9 +758,9 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
               </a>
             </li>
             <li>
-              <a>
+              <button>
                 Light mode
-              </a>
+              </button>
             </li>
           </ul>
         </div>
@@ -1508,9 +1508,9 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
                 </a>
               </li>
               <li>
-                <a>
+                <button>
                   Light mode
-                </a>
+                </button>
               </li>
             </ul>
           </div>
@@ -1727,9 +1727,9 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
               </a>
             </li>
             <li>
-              <a>
+              <button>
                 Light mode
-              </a>
+              </button>
             </li>
           </ul>
         </div>
@@ -2035,9 +2035,9 @@ exports[`App matches snapshot when only groups exist 1`] = `
                 </a>
               </li>
               <li>
-                <a>
+                <button>
                   Light mode
-                </a>
+                </button>
               </li>
             </ul>
           </div>
@@ -2444,9 +2444,9 @@ exports[`App matches snapshot when only groups exist 1`] = `
               </a>
             </li>
             <li>
-              <a>
+              <button>
                 Light mode
-              </a>
+              </button>
             </li>
           </ul>
         </div>
@@ -2930,9 +2930,9 @@ exports[`App matches snapshot when only plants exist 1`] = `
                 </a>
               </li>
               <li>
-                <a>
+                <button>
                   Light mode
-                </a>
+                </button>
               </li>
             </ul>
           </div>
@@ -3385,9 +3385,9 @@ exports[`App matches snapshot when only plants exist 1`] = `
               </a>
             </li>
             <li>
-              <a>
+              <button>
                 Light mode
-              </a>
+              </button>
             </li>
           </ul>
         </div>
@@ -3917,9 +3917,9 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                 </a>
               </li>
               <li>
-                <a>
+                <button>
                   Light mode
-                </a>
+                </button>
               </li>
             </ul>
           </div>
@@ -4583,9 +4583,9 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
               </a>
             </li>
             <li>
-              <a>
+              <button>
                 Light mode
-              </a>
+              </button>
             </li>
           </ul>
         </div>
@@ -5326,9 +5326,9 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                 </a>
               </li>
               <li>
-                <a>
+                <button>
                   Light mode
-                </a>
+                </button>
               </li>
             </ul>
           </div>
@@ -6011,9 +6011,9 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
               </a>
             </li>
             <li>
-              <a>
+              <button>
                 Light mode
-              </a>
+              </button>
             </li>
           </ul>
         </div>
