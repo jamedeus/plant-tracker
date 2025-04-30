@@ -265,7 +265,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 "added": [
-                    mockContext.options[1]
+                    mockContext.options[0]
                 ],
                 "failed": []
             })
@@ -356,6 +356,36 @@ describe('App', () => {
         expect(titles.length).toBe(2);
         expect(titles[0].innerHTML).toBe('Unnamed Spider Plant');
         expect(titles[1].innerHTML).toBe('Newest plant');
+    });
+
+    it('adds removed plants to Add Plants modal options', async () => {
+        // Mock fetch function to return expected response when "Newest plant"
+        // is removed from the group
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "removed": [
+                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+                ],
+                "failed": []
+            })
+        }));
+
+        // Open Add Plants modal, confirm "Newest plant" is not an
+        // option (already in group)
+        await user.click(app.getByTestId("add_plants_option"));
+        const addModal = app.getByText("Add Plants").closest(".modal-box");
+        expect(within(addModal).queryByText("Newest plant")).toBeNull();
+
+        // Open Remove Plants modal, delete Newest plant
+        await user.click(app.getByTestId("remove_plants_option"));
+        const removeModal = app.getByText("Remove Plants").closest(".modal-box");
+        await user.click(removeModal.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.getByRole('button', {name: 'Remove'}));
+        expect(global.fetch).toHaveBeenCalled();
+
+        // Confirm "Newest plant" appeared in Add Plants Modal
+        expect(within(addModal).queryByText("Newest plant")).not.toBeNull();
     });
 
     it('fetches new state when user navigates to page with back button', async () => {

@@ -1063,10 +1063,16 @@ class ManagePageTests(TestCase):
         )
 
     def test_get_group_state(self):
+        # Create second group, add plant2
+        group2 = Group.objects.create(uuid=uuid4(), user=get_default_user())
+        self.plant2.group = group2
+        self.plant2.save()
+
         # Call get_group_state endpoint with UUID of existing group entry
         response = self.client.get(f'/get_group_state/{self.group1.uuid}')
 
         # Confirm returned full manage_group state
+        # Confirm options list does NOT contain plant2 (already in a group)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
@@ -1088,19 +1094,6 @@ class ManagePageTests(TestCase):
                         'display_name': self.plant1.get_display_name(),
                         'uuid': str(self.plant1.uuid),
                         'created': self.plant1.created.isoformat(),
-                        'archived': False,
-                        'species': None,
-                        'pot_size': None,
-                        'description': None,
-                        'last_watered': None,
-                        'last_fertilized': None,
-                        'thumbnail': None
-                    },
-                    {
-                        'name': self.plant2.name,
-                        'display_name': self.plant2.get_display_name(),
-                        'uuid': str(self.plant2.uuid),
-                        'created': self.plant2.created.isoformat(),
                         'archived': False,
                         'species': None,
                         'pot_size': None,

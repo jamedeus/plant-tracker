@@ -57,14 +57,15 @@ def get_unnamed_groups(user):
 
 
 def get_plant_options(user):
-    '''Takes user, returns list of dicts with details for all plants owned by user.
+    '''Takes user, returns list of dicts with details for all of user's plants
+    with no group. Populates options in add plants modal on manage_group page.
     List is cached until Plant model changes (detected by hooks in tasks.py).
-    Used to populate options in add plants modal on manage_group page.
     '''
     plant_options = cache.get(f'plant_options_{user.pk}')
     if not plant_options:
         plant_options = [
-            plant.get_details()  for plant in Plant.objects.filter(user=user)
+            plant.get_details()
+            for plant in Plant.objects.filter(user=user, group=None)
         ]
         cache.set(f'plant_options_{user.pk}', plant_options, None)
     return plant_options

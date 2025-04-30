@@ -52,19 +52,6 @@ export const mockContext = {
     ],
     "options": [
         {
-            "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-            "created": "2023-12-26T01:25:12+00:00",
-            "name": "Test Plant",
-            "display_name": "Test Plant",
-            "species": null,
-            "description": "This plant is not in a group yet",
-            "pot_size": null,
-            "last_watered": null,
-            "last_fertilized": null,
-            "thumbnail": null,
-            "archived": false
-        },
-        {
             "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be16",
             "created": "2024-02-26T01:25:12+00:00",
             "name": "Another test plant",
@@ -88,19 +75,6 @@ export const mockContext = {
             "last_watered": null,
             "last_fertilized": null,
             "thumbnail": "/media/thumbnails/photo3_thumb.jpg",
-            "archived": false
-        },
-        {
-            "uuid": "19f65fa0-1c75-4cba-b590-0c9b5b315fcc",
-            "created": "2023-12-26T01:25:12+00:00",
-            "name": null,
-            "display_name": "Unnamed Spider Plant",
-            "species": null,
-            "description": null,
-            "pot_size": null,
-            "last_watered": null,
-            "last_fertilized": "2024-03-01T05:45:44+00:00",
-            "thumbnail": null,
             "archived": false
         },
         {

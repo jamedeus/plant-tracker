@@ -156,7 +156,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 "added": [
-                    mockContext.options[1]
+                    mockContext.options[0]
                 ],
                 "failed": []
             })
