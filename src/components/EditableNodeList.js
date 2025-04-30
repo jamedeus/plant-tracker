@@ -20,7 +20,7 @@ const EditableNodeList = ({ editing, formRef, children }) => {
                             tabIndex={editing ? 0 : -1}
                             id={`${prefix}-${node.key}`}
                             name={node.key}
-                            className="radio checked:bg-blue-500 my-auto"
+                            className="radio checked:bg-accent my-auto"
                         />
                     </div>
                     <div className={clsx(
