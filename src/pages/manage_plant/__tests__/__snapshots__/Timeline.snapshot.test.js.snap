@@ -203,11 +203,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-04-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Apr 17, 2024"
             >
-              in 47 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 47 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -255,11 +260,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-04-16"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Apr 16, 2024"
             >
-              in 46 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 46 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -307,11 +317,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-04-15"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Apr 15, 2024"
             >
-              in 45 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 45 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -359,11 +374,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-04-14"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Apr 14, 2024"
             >
-              in 44 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 44 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -411,11 +431,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-04-13"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Apr 13, 2024"
             >
-              in 43 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 43 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -503,11 +528,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-04-12"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Apr 12, 2024"
             >
-              in 42 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 42 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -575,11 +605,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-04-11"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Apr 11, 2024"
             >
-              in 41 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 41 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -633,11 +668,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-03-31"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Mar 31, 2024"
             >
-              in 30 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 30 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -685,11 +725,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-03-25"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Mar 25, 2024"
             >
-              in 24 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 24 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -886,11 +931,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-03-24"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Mar 24, 2024"
             >
-              in 23 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 23 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -958,11 +1008,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-03-23"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Mar 23, 2024"
             >
-              in 22 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 22 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -1030,11 +1085,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-03-22"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Mar 22, 2024"
             >
-              in 21 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 21 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -1102,11 +1162,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-03-21"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Mar 21, 2024"
             >
-              in 20 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 20 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -1174,11 +1239,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-03-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Mar 17, 2024"
             >
-              in 16 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 16 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -1226,11 +1296,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-03-13"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Mar 13, 2024"
             >
-              in 12 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 12 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -1278,11 +1353,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-03-12"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Mar 12, 2024"
             >
-              in 11 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 11 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -1330,11 +1410,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-03-01"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Mar 01, 2024"
             >
-              today
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                today
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -1403,11 +1488,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-02-26"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Feb 26, 2024"
             >
-              4 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                4 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -1470,11 +1560,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-02-21"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Feb 21, 2024"
             >
-              9 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                9 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -1511,11 +1606,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-02-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Feb 17, 2024"
             >
-              13 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                13 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -1569,11 +1669,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-01-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Jan 17, 2024"
             >
-              44 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                44 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -1627,11 +1732,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-12-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Dec 17, 2023"
             >
-              75 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                75 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -1685,11 +1795,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-11-22"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Nov 22, 2023"
             >
-              100 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                100 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -1757,11 +1872,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-11-21"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Nov 21, 2023"
             >
-              101 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                101 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -1839,11 +1959,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-11-20"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Nov 20, 2023"
             >
-              102 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                102 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -1891,11 +2016,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-11-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Nov 17, 2023"
             >
-              105 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                105 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -1989,11 +2119,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-10-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Oct 17, 2023"
             >
-              136 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                136 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -2047,11 +2182,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-09-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Sep 17, 2023"
             >
-              166 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                166 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -2099,11 +2239,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-09-11"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Sep 11, 2023"
             >
-              172 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                172 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -2146,11 +2291,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-08-23"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Aug 23, 2023"
             >
-              191 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                191 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -2187,11 +2337,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-08-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Aug 17, 2023"
             >
-              197 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                197 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -2245,11 +2400,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-07-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Jul 17, 2023"
             >
-              228 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                228 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -2303,11 +2463,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-06-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Jun 17, 2023"
             >
-              258 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                258 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -2361,11 +2526,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-05-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="May 17, 2023"
             >
-              289 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                289 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -2419,11 +2589,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-04-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Apr 17, 2023"
             >
-              319 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                319 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -2477,11 +2652,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-03-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Mar 17, 2023"
             >
-              350 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                350 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -2535,11 +2715,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-02-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Feb 17, 2023"
             >
-              378 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                378 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -2593,11 +2778,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-01-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Jan 17, 2023"
             >
-              409 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                409 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -2651,11 +2841,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="timeline-timestamp"
             data-date="2008-08-22"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Aug 22, 2008"
             >
-              5670 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                5670 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -2887,11 +3082,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-04-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Apr 17, 2024"
           >
-            in 47 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 47 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -2939,11 +3139,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-04-16"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Apr 16, 2024"
           >
-            in 46 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 46 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -2991,11 +3196,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-04-15"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Apr 15, 2024"
           >
-            in 45 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 45 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -3043,11 +3253,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-04-14"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Apr 14, 2024"
           >
-            in 44 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 44 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -3095,11 +3310,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-04-13"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Apr 13, 2024"
           >
-            in 43 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 43 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -3187,11 +3407,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-04-12"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Apr 12, 2024"
           >
-            in 42 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 42 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -3259,11 +3484,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-04-11"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Apr 11, 2024"
           >
-            in 41 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 41 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -3317,11 +3547,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-03-31"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Mar 31, 2024"
           >
-            in 30 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 30 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -3369,11 +3604,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-03-25"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Mar 25, 2024"
           >
-            in 24 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 24 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -3570,11 +3810,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-03-24"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Mar 24, 2024"
           >
-            in 23 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 23 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -3642,11 +3887,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-03-23"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Mar 23, 2024"
           >
-            in 22 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 22 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -3714,11 +3964,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-03-22"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Mar 22, 2024"
           >
-            in 21 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 21 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -3786,11 +4041,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-03-21"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Mar 21, 2024"
           >
-            in 20 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 20 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -3858,11 +4118,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-03-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Mar 17, 2024"
           >
-            in 16 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 16 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -3910,11 +4175,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-03-13"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Mar 13, 2024"
           >
-            in 12 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 12 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -3962,11 +4232,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-03-12"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Mar 12, 2024"
           >
-            in 11 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 11 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -4014,11 +4289,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-03-01"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Mar 01, 2024"
           >
-            today
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              today
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -4087,11 +4367,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-02-26"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Feb 26, 2024"
           >
-            4 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              4 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -4154,11 +4439,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-02-21"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Feb 21, 2024"
           >
-            9 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              9 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -4195,11 +4485,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-02-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Feb 17, 2024"
           >
-            13 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              13 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -4253,11 +4548,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-01-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Jan 17, 2024"
           >
-            44 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              44 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -4311,11 +4611,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-12-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Dec 17, 2023"
           >
-            75 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              75 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -4369,11 +4674,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-11-22"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Nov 22, 2023"
           >
-            100 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              100 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -4441,11 +4751,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-11-21"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Nov 21, 2023"
           >
-            101 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              101 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -4523,11 +4838,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-11-20"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Nov 20, 2023"
           >
-            102 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              102 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -4575,11 +4895,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-11-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Nov 17, 2023"
           >
-            105 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              105 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -4673,11 +4998,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-10-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Oct 17, 2023"
           >
-            136 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              136 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -4731,11 +5061,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-09-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Sep 17, 2023"
           >
-            166 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              166 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -4783,11 +5118,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-09-11"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Sep 11, 2023"
           >
-            172 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              172 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -4830,11 +5170,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-08-23"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Aug 23, 2023"
           >
-            191 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              191 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -4871,11 +5216,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-08-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Aug 17, 2023"
           >
-            197 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              197 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -4929,11 +5279,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-07-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Jul 17, 2023"
           >
-            228 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              228 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -4987,11 +5342,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-06-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Jun 17, 2023"
           >
-            258 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              258 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -5045,11 +5405,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-05-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="May 17, 2023"
           >
-            289 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              289 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -5103,11 +5468,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-04-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Apr 17, 2023"
           >
-            319 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              319 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -5161,11 +5531,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-03-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Mar 17, 2023"
           >
-            350 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              350 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -5219,11 +5594,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-02-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Feb 17, 2023"
           >
-            378 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              378 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -5277,11 +5657,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-01-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Jan 17, 2023"
           >
-            409 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              409 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -5335,11 +5720,16 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-timestamp"
           data-date="2008-08-22"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Aug 22, 2008"
           >
-            5670 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              5670 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -5730,11 +6120,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-04-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Apr 17, 2024"
             >
-              in 47 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 47 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -5782,11 +6177,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-04-16"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Apr 16, 2024"
             >
-              in 46 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 46 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -5834,11 +6234,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-04-15"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Apr 15, 2024"
             >
-              in 45 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 45 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -5886,11 +6291,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-04-14"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Apr 14, 2024"
             >
-              in 44 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 44 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -5938,11 +6348,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-04-13"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Apr 13, 2024"
             >
-              in 43 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 43 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -6030,11 +6445,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-04-12"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Apr 12, 2024"
             >
-              in 42 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 42 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -6102,11 +6522,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-04-11"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Apr 11, 2024"
             >
-              in 41 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 41 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -6160,11 +6585,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-03-31"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Mar 31, 2024"
             >
-              in 30 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 30 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -6212,11 +6642,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-03-25"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Mar 25, 2024"
             >
-              in 24 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 24 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -6413,11 +6848,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-03-24"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Mar 24, 2024"
             >
-              in 23 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 23 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -6485,11 +6925,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-03-23"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Mar 23, 2024"
             >
-              in 22 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 22 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -6557,11 +7002,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-03-22"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Mar 22, 2024"
             >
-              in 21 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 21 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -6629,11 +7079,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-03-21"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Mar 21, 2024"
             >
-              in 20 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 20 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -6701,11 +7156,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-03-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Mar 17, 2024"
             >
-              in 16 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 16 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -6753,11 +7213,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-03-13"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Mar 13, 2024"
             >
-              in 12 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 12 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -6805,11 +7270,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-03-12"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Mar 12, 2024"
             >
-              in 11 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                in 11 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -6857,11 +7327,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-03-01"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Mar 01, 2024"
             >
-              today
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                today
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -6930,11 +7405,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-02-26"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Feb 26, 2024"
             >
-              4 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                4 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -6997,11 +7477,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-02-21"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Feb 21, 2024"
             >
-              9 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                9 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -7038,11 +7523,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-02-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Feb 17, 2024"
             >
-              13 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                13 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -7096,11 +7586,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2024-01-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Jan 17, 2024"
             >
-              44 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                44 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -7154,11 +7649,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-12-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Dec 17, 2023"
             >
-              75 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                75 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -7212,11 +7712,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-11-22"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Nov 22, 2023"
             >
-              100 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                100 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -7284,11 +7789,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-11-21"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Nov 21, 2023"
             >
-              101 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                101 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -7366,11 +7876,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-11-20"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Nov 20, 2023"
             >
-              102 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                102 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -7418,11 +7933,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-11-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Nov 17, 2023"
             >
-              105 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                105 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -7516,11 +8036,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-10-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Oct 17, 2023"
             >
-              136 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                136 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -7574,11 +8099,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-09-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Sep 17, 2023"
             >
-              166 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                166 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -7626,11 +8156,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-09-11"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Sep 11, 2023"
             >
-              172 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                172 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -7673,11 +8208,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-08-23"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Aug 23, 2023"
             >
-              191 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                191 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -7714,11 +8254,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-08-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Aug 17, 2023"
             >
-              197 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                197 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -7772,11 +8317,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-07-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Jul 17, 2023"
             >
-              228 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                228 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -7830,11 +8380,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-06-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Jun 17, 2023"
             >
-              258 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                258 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -7888,11 +8443,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-05-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="May 17, 2023"
             >
-              289 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                289 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -7946,11 +8506,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-04-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Apr 17, 2023"
             >
-              319 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                319 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -8004,11 +8569,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-03-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Mar 17, 2023"
             >
-              350 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                350 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -8062,11 +8632,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-02-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Feb 17, 2023"
             >
-              378 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                378 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -8120,11 +8695,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2023-01-17"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Jan 17, 2023"
             >
-              409 days ago
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                409 days ago
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -8178,11 +8758,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="timeline-timestamp"
             data-date="2008-08-22"
           >
-            <span
-              class="text-sm md:text-lg"
+            <div
+              class="tooltip !text-end"
+              data-tip="Aug 22, 2008"
             >
-              5670 days
-            </span>
+              <span
+                class="text-sm md:text-lg"
+              >
+                5670 days
+              </span>
+            </div>
             <span
               class="hidden md:block text-sm"
             >
@@ -8476,11 +9061,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-04-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Apr 17, 2024"
           >
-            in 47 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 47 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -8528,11 +9118,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-04-16"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Apr 16, 2024"
           >
-            in 46 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 46 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -8580,11 +9175,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-04-15"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Apr 15, 2024"
           >
-            in 45 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 45 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -8632,11 +9232,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-04-14"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Apr 14, 2024"
           >
-            in 44 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 44 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -8684,11 +9289,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-04-13"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Apr 13, 2024"
           >
-            in 43 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 43 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -8776,11 +9386,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-04-12"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Apr 12, 2024"
           >
-            in 42 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 42 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -8848,11 +9463,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-04-11"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Apr 11, 2024"
           >
-            in 41 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 41 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -8906,11 +9526,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-03-31"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Mar 31, 2024"
           >
-            in 30 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 30 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -8958,11 +9583,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-03-25"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Mar 25, 2024"
           >
-            in 24 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 24 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -9159,11 +9789,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-03-24"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Mar 24, 2024"
           >
-            in 23 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 23 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -9231,11 +9866,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-03-23"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Mar 23, 2024"
           >
-            in 22 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 22 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -9303,11 +9943,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-03-22"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Mar 22, 2024"
           >
-            in 21 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 21 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -9375,11 +10020,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-03-21"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Mar 21, 2024"
           >
-            in 20 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 20 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -9447,11 +10097,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-03-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Mar 17, 2024"
           >
-            in 16 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 16 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -9499,11 +10154,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-03-13"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Mar 13, 2024"
           >
-            in 12 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 12 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -9551,11 +10211,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-03-12"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Mar 12, 2024"
           >
-            in 11 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              in 11 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -9603,11 +10268,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-03-01"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Mar 01, 2024"
           >
-            today
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              today
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -9676,11 +10346,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-02-26"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Feb 26, 2024"
           >
-            4 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              4 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -9743,11 +10418,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-02-21"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Feb 21, 2024"
           >
-            9 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              9 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -9784,11 +10464,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-02-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Feb 17, 2024"
           >
-            13 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              13 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -9842,11 +10527,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2024-01-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Jan 17, 2024"
           >
-            44 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              44 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -9900,11 +10590,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-12-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Dec 17, 2023"
           >
-            75 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              75 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -9958,11 +10653,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-11-22"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Nov 22, 2023"
           >
-            100 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              100 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -10030,11 +10730,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-11-21"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Nov 21, 2023"
           >
-            101 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              101 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -10112,11 +10817,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-11-20"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Nov 20, 2023"
           >
-            102 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              102 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -10164,11 +10874,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-11-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Nov 17, 2023"
           >
-            105 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              105 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -10262,11 +10977,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-10-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Oct 17, 2023"
           >
-            136 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              136 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -10320,11 +11040,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-09-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Sep 17, 2023"
           >
-            166 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              166 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -10372,11 +11097,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-09-11"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Sep 11, 2023"
           >
-            172 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              172 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -10419,11 +11149,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-08-23"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Aug 23, 2023"
           >
-            191 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              191 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -10460,11 +11195,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-08-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Aug 17, 2023"
           >
-            197 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              197 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -10518,11 +11258,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-07-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Jul 17, 2023"
           >
-            228 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              228 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -10576,11 +11321,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-06-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Jun 17, 2023"
           >
-            258 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              258 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -10634,11 +11384,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-05-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="May 17, 2023"
           >
-            289 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              289 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -10692,11 +11447,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-04-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Apr 17, 2023"
           >
-            319 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              319 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -10750,11 +11510,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-03-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Mar 17, 2023"
           >
-            350 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              350 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -10808,11 +11573,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-02-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Feb 17, 2023"
           >
-            378 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              378 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -10866,11 +11636,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2023-01-17"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Jan 17, 2023"
           >
-            409 days ago
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              409 days ago
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >
@@ -10924,11 +11699,16 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-timestamp"
           data-date="2008-08-22"
         >
-          <span
-            class="text-sm md:text-lg"
+          <div
+            class="tooltip !text-end"
+            data-tip="Aug 22, 2008"
           >
-            5670 days
-          </span>
+            <span
+              class="text-sm md:text-lg"
+            >
+              5670 days
+            </span>
+          </div>
           <span
             class="hidden md:block text-sm"
           >

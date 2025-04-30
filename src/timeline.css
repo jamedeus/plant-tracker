@@ -12,6 +12,11 @@
     @apply divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20;
 }
 
+/* Only show date tooltip on small screens, move closer to anchor text */
+.tooltip::before {
+    @apply md:hidden !bottom-6;
+}
+
 .timeline-timestamp {
     @apply flex flex-col h-full justify-center;
     @apply text-end whitespace-nowrap md:ml-4 scroll-mt-20;

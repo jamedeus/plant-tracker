@@ -1260,11 +1260,16 @@ exports[`App matches snapshot 1`] = `
                 class="timeline-timestamp"
                 data-date="2024-03-23"
               >
-                <span
-                  class="text-sm md:text-lg"
+                <div
+                  class="tooltip !text-end"
+                  data-tip="Mar 23, 2024"
                 >
-                  in 22 days
-                </span>
+                  <span
+                    class="text-sm md:text-lg"
+                  >
+                    in 22 days
+                  </span>
+                </div>
                 <span
                   class="hidden md:block text-sm"
                 >
@@ -1301,11 +1306,16 @@ exports[`App matches snapshot 1`] = `
                 class="timeline-timestamp"
                 data-date="2024-03-22"
               >
-                <span
-                  class="text-sm md:text-lg"
+                <div
+                  class="tooltip !text-end"
+                  data-tip="Mar 22, 2024"
                 >
-                  in 21 days
-                </span>
+                  <span
+                    class="text-sm md:text-lg"
+                  >
+                    in 21 days
+                  </span>
+                </div>
                 <span
                   class="hidden md:block text-sm"
                 >
@@ -1342,11 +1352,16 @@ exports[`App matches snapshot 1`] = `
                 class="timeline-timestamp"
                 data-date="2024-03-21"
               >
-                <span
-                  class="text-sm md:text-lg"
+                <div
+                  class="tooltip !text-end"
+                  data-tip="Mar 21, 2024"
                 >
-                  in 20 days
-                </span>
+                  <span
+                    class="text-sm md:text-lg"
+                  >
+                    in 20 days
+                  </span>
+                </div>
                 <span
                   class="hidden md:block text-sm"
                 >
@@ -1383,11 +1398,16 @@ exports[`App matches snapshot 1`] = `
                 class="timeline-timestamp"
                 data-date="2024-03-01"
               >
-                <span
-                  class="text-sm md:text-lg"
+                <div
+                  class="tooltip !text-end"
+                  data-tip="Mar 01, 2024"
                 >
-                  today
-                </span>
+                  <span
+                    class="text-sm md:text-lg"
+                  >
+                    today
+                  </span>
+                </div>
                 <span
                   class="hidden md:block text-sm"
                 >
@@ -1497,11 +1517,16 @@ exports[`App matches snapshot 1`] = `
                 class="timeline-timestamp"
                 data-date="2024-02-29"
               >
-                <span
-                  class="text-sm md:text-lg"
+                <div
+                  class="tooltip !text-end"
+                  data-tip="Feb 29, 2024"
                 >
-                  yesterday
-                </span>
+                  <span
+                    class="text-sm md:text-lg"
+                  >
+                    yesterday
+                  </span>
+                </div>
                 <span
                   class="hidden md:block text-sm"
                 >
@@ -1549,11 +1574,16 @@ exports[`App matches snapshot 1`] = `
                 class="timeline-timestamp"
                 data-date="2024-02-26"
               >
-                <span
-                  class="text-sm md:text-lg"
+                <div
+                  class="tooltip !text-end"
+                  data-tip="Feb 26, 2024"
                 >
-                  4 days ago
-                </span>
+                  <span
+                    class="text-sm md:text-lg"
+                  >
+                    4 days ago
+                  </span>
+                </div>
                 <span
                   class="hidden md:block text-sm"
                 >
@@ -3255,11 +3285,16 @@ exports[`App matches snapshot 1`] = `
               class="timeline-timestamp"
               data-date="2024-03-23"
             >
-              <span
-                class="text-sm md:text-lg"
+              <div
+                class="tooltip !text-end"
+                data-tip="Mar 23, 2024"
               >
-                in 22 days
-              </span>
+                <span
+                  class="text-sm md:text-lg"
+                >
+                  in 22 days
+                </span>
+              </div>
               <span
                 class="hidden md:block text-sm"
               >
@@ -3296,11 +3331,16 @@ exports[`App matches snapshot 1`] = `
               class="timeline-timestamp"
               data-date="2024-03-22"
             >
-              <span
-                class="text-sm md:text-lg"
+              <div
+                class="tooltip !text-end"
+                data-tip="Mar 22, 2024"
               >
-                in 21 days
-              </span>
+                <span
+                  class="text-sm md:text-lg"
+                >
+                  in 21 days
+                </span>
+              </div>
               <span
                 class="hidden md:block text-sm"
               >
@@ -3337,11 +3377,16 @@ exports[`App matches snapshot 1`] = `
               class="timeline-timestamp"
               data-date="2024-03-21"
             >
-              <span
-                class="text-sm md:text-lg"
+              <div
+                class="tooltip !text-end"
+                data-tip="Mar 21, 2024"
               >
-                in 20 days
-              </span>
+                <span
+                  class="text-sm md:text-lg"
+                >
+                  in 20 days
+                </span>
+              </div>
               <span
                 class="hidden md:block text-sm"
               >
@@ -3378,11 +3423,16 @@ exports[`App matches snapshot 1`] = `
               class="timeline-timestamp"
               data-date="2024-03-01"
             >
-              <span
-                class="text-sm md:text-lg"
+              <div
+                class="tooltip !text-end"
+                data-tip="Mar 01, 2024"
               >
-                today
-              </span>
+                <span
+                  class="text-sm md:text-lg"
+                >
+                  today
+                </span>
+              </div>
               <span
                 class="hidden md:block text-sm"
               >
@@ -3492,11 +3542,16 @@ exports[`App matches snapshot 1`] = `
               class="timeline-timestamp"
               data-date="2024-02-29"
             >
-              <span
-                class="text-sm md:text-lg"
+              <div
+                class="tooltip !text-end"
+                data-tip="Feb 29, 2024"
               >
-                yesterday
-              </span>
+                <span
+                  class="text-sm md:text-lg"
+                >
+                  yesterday
+                </span>
+              </div>
               <span
                 class="hidden md:block text-sm"
               >
@@ -3544,11 +3599,16 @@ exports[`App matches snapshot 1`] = `
               class="timeline-timestamp"
               data-date="2024-02-26"
             >
-              <span
-                class="text-sm md:text-lg"
+              <div
+                class="tooltip !text-end"
+                data-tip="Feb 26, 2024"
               >
-                4 days ago
-              </span>
+                <span
+                  class="text-sm md:text-lg"
+                >
+                  4 days ago
+                </span>
+              </div>
               <span
                 class="hidden md:block text-sm"
               >
@@ -5227,11 +5287,16 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 class="timeline-timestamp"
                 data-date="2024-03-23"
               >
-                <span
-                  class="text-sm md:text-lg"
+                <div
+                  class="tooltip !text-end"
+                  data-tip="Mar 23, 2024"
                 >
-                  in 22 days
-                </span>
+                  <span
+                    class="text-sm md:text-lg"
+                  >
+                    in 22 days
+                  </span>
+                </div>
                 <span
                   class="hidden md:block text-sm"
                 >
@@ -5268,11 +5333,16 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 class="timeline-timestamp"
                 data-date="2024-03-22"
               >
-                <span
-                  class="text-sm md:text-lg"
+                <div
+                  class="tooltip !text-end"
+                  data-tip="Mar 22, 2024"
                 >
-                  in 21 days
-                </span>
+                  <span
+                    class="text-sm md:text-lg"
+                  >
+                    in 21 days
+                  </span>
+                </div>
                 <span
                   class="hidden md:block text-sm"
                 >
@@ -5309,11 +5379,16 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 class="timeline-timestamp"
                 data-date="2024-03-21"
               >
-                <span
-                  class="text-sm md:text-lg"
+                <div
+                  class="tooltip !text-end"
+                  data-tip="Mar 21, 2024"
                 >
-                  in 20 days
-                </span>
+                  <span
+                    class="text-sm md:text-lg"
+                  >
+                    in 20 days
+                  </span>
+                </div>
                 <span
                   class="hidden md:block text-sm"
                 >
@@ -5350,11 +5425,16 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 class="timeline-timestamp"
                 data-date="2024-03-01"
               >
-                <span
-                  class="text-sm md:text-lg"
+                <div
+                  class="tooltip !text-end"
+                  data-tip="Mar 01, 2024"
                 >
-                  today
-                </span>
+                  <span
+                    class="text-sm md:text-lg"
+                  >
+                    today
+                  </span>
+                </div>
                 <span
                   class="hidden md:block text-sm"
                 >
@@ -5464,11 +5544,16 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 class="timeline-timestamp"
                 data-date="2024-02-29"
               >
-                <span
-                  class="text-sm md:text-lg"
+                <div
+                  class="tooltip !text-end"
+                  data-tip="Feb 29, 2024"
                 >
-                  yesterday
-                </span>
+                  <span
+                    class="text-sm md:text-lg"
+                  >
+                    yesterday
+                  </span>
+                </div>
                 <span
                   class="hidden md:block text-sm"
                 >
@@ -5516,11 +5601,16 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 class="timeline-timestamp"
                 data-date="2024-02-26"
               >
-                <span
-                  class="text-sm md:text-lg"
+                <div
+                  class="tooltip !text-end"
+                  data-tip="Feb 26, 2024"
                 >
-                  4 days ago
-                </span>
+                  <span
+                    class="text-sm md:text-lg"
+                  >
+                    4 days ago
+                  </span>
+                </div>
                 <span
                   class="hidden md:block text-sm"
                 >
@@ -7102,11 +7192,16 @@ exports[`App matches snapshot when plant is archived 1`] = `
               class="timeline-timestamp"
               data-date="2024-03-23"
             >
-              <span
-                class="text-sm md:text-lg"
+              <div
+                class="tooltip !text-end"
+                data-tip="Mar 23, 2024"
               >
-                in 22 days
-              </span>
+                <span
+                  class="text-sm md:text-lg"
+                >
+                  in 22 days
+                </span>
+              </div>
               <span
                 class="hidden md:block text-sm"
               >
@@ -7143,11 +7238,16 @@ exports[`App matches snapshot when plant is archived 1`] = `
               class="timeline-timestamp"
               data-date="2024-03-22"
             >
-              <span
-                class="text-sm md:text-lg"
+              <div
+                class="tooltip !text-end"
+                data-tip="Mar 22, 2024"
               >
-                in 21 days
-              </span>
+                <span
+                  class="text-sm md:text-lg"
+                >
+                  in 21 days
+                </span>
+              </div>
               <span
                 class="hidden md:block text-sm"
               >
@@ -7184,11 +7284,16 @@ exports[`App matches snapshot when plant is archived 1`] = `
               class="timeline-timestamp"
               data-date="2024-03-21"
             >
-              <span
-                class="text-sm md:text-lg"
+              <div
+                class="tooltip !text-end"
+                data-tip="Mar 21, 2024"
               >
-                in 20 days
-              </span>
+                <span
+                  class="text-sm md:text-lg"
+                >
+                  in 20 days
+                </span>
+              </div>
               <span
                 class="hidden md:block text-sm"
               >
@@ -7225,11 +7330,16 @@ exports[`App matches snapshot when plant is archived 1`] = `
               class="timeline-timestamp"
               data-date="2024-03-01"
             >
-              <span
-                class="text-sm md:text-lg"
+              <div
+                class="tooltip !text-end"
+                data-tip="Mar 01, 2024"
               >
-                today
-              </span>
+                <span
+                  class="text-sm md:text-lg"
+                >
+                  today
+                </span>
+              </div>
               <span
                 class="hidden md:block text-sm"
               >
@@ -7339,11 +7449,16 @@ exports[`App matches snapshot when plant is archived 1`] = `
               class="timeline-timestamp"
               data-date="2024-02-29"
             >
-              <span
-                class="text-sm md:text-lg"
+              <div
+                class="tooltip !text-end"
+                data-tip="Feb 29, 2024"
               >
-                yesterday
-              </span>
+                <span
+                  class="text-sm md:text-lg"
+                >
+                  yesterday
+                </span>
+              </div>
               <span
                 class="hidden md:block text-sm"
               >
@@ -7391,11 +7506,16 @@ exports[`App matches snapshot when plant is archived 1`] = `
               class="timeline-timestamp"
               data-date="2024-02-26"
             >
-              <span
-                class="text-sm md:text-lg"
+              <div
+                class="tooltip !text-end"
+                data-tip="Feb 26, 2024"
               >
-                4 days ago
-              </span>
+                <span
+                  class="text-sm md:text-lg"
+                >
+                  4 days ago
+                </span>
+              </div>
               <span
                 class="hidden md:block text-sm"
               >

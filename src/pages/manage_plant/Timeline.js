@@ -194,13 +194,19 @@ QuickNavigationYear.propTypes = {
 // Takes YYYY-MM-DD string, renders relative timestamp div (left column).
 // Has dataset attribute used to scroll page when EventCalendar day clicked.
 const TimelineTimestamp = memo(function TimelineTimestamp({ dateKey }) {
+    const dateString = DateTime.fromISO(dateKey).toFormat('MMM dd, yyyy');
     return (
         <div className="timeline-timestamp" data-date={dateKey}>
-            <span className="text-sm md:text-lg">
-                {getRelativeTimeString(dateKey)}
-            </span>
+            <div
+                className="tooltip !text-end"
+                data-tip={dateString}
+            >
+                <span className="text-sm md:text-lg">
+                    {getRelativeTimeString(dateKey)}
+                </span>
+            </div>
             <span className="hidden md:block text-sm">
-                {DateTime.fromISO(dateKey).toFormat('MMM dd, yyyy')}
+                {dateString}
             </span>
         </div>
     );
