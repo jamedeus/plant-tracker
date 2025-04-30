@@ -104,12 +104,11 @@ describe('App', () => {
         // Confirm arbitrary error does not appear on page
         expect(app.queryByText(/failed to remove plants from group/)).toBeNull();
 
-        // Open RemovePlantsModal modal
+        // Click Remove plants dropdown option
         await user.click(app.getByTestId("remove_plants_option"));
 
-        // Simulate user selecting first plant in modal and clicking remove
-        const addPlantsModal = app.getByText("Remove Plants").closest(".modal-box");
-        await user.click(addPlantsModal.querySelectorAll('label.cursor-pointer')[0]);
+        // Simulate user selecting first plant and clicking remove
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
         await user.click(app.getByRole('button', {name: 'Remove'}));
 
         // Confirm modal appeared with arbitrary error text

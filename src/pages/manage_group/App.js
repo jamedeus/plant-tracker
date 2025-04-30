@@ -9,8 +9,8 @@ import DetailsCard from 'src/components/DetailsCard';
 import GroupDetails from 'src/components/GroupDetails';
 import PlantsCol from 'src/components/PlantsCol';
 import EditGroupModal from './EditGroupModal';
+import FloatingFooter from 'src/components/FloatingFooter';
 import AddPlantsModal, { openAddPlantsModal } from './AddPlantsModal';
-import RemovePlantsModal, { openRemovePlantsModal } from './RemovePlantsModal';
 import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { Tab } from '@headlessui/react';
@@ -68,7 +68,7 @@ function App() {
     // Set with tabs above event timestamp input
     const [addEventsMode, setAddEventsMode] = useState(0);
 
-    // Create state to control whether checkboxes next to plants are visible
+    // Controls whether EditableNodeList checkboxes next to plants are visible
     const [selectingPlants, setSelectingPlants] = useState(false);
 
     // Show checkboxes next to plants when "Select plants" tab active, hide
@@ -76,6 +76,20 @@ function App() {
     useEffect(() => {
         setSelectingPlants(Boolean(addEventsMode));
     }, [addEventsMode]);
+
+    // Controls whether FloatingFooter with remove from group button is visible
+    const [removingPlants, setRemovingPlants] = useState(false);
+
+    const startRemovingPlants = () => {
+        setRemovingPlants(true);
+        setSelectingPlants(true);
+        document.activeElement.blur();
+    };
+
+    const stopRemovingPlants = () => {
+        setRemovingPlants(false);
+        setSelectingPlants(false);
+    };
 
     // FormRef for FilterColumn used to add events to subset of plants in group
     const selectedPlantsRef = useRef(null);
@@ -202,11 +216,12 @@ function App() {
         }
     }, [plantDetails]);
 
-    // Handler for remove button in RemovePlantsModal, takes array of UUIDs
-    const removePlants = useCallback(async (selected) => {
+    // Handler for remove button in FloatingFooter that appears when remove
+    // dropdown option clicked
+    const removePlants = useCallback(async () => {
         const payload = {
             group_id: group.uuid,
-            plants: selected
+            plants: getSelectedPlants()
         };
         const response = await sendPostRequest(
             '/bulk_remove_plants_from_group',
@@ -221,6 +236,8 @@ function App() {
             setPlantDetails(plantDetails.filter(
                 plant => !removedIds.includes(plant.uuid)
             ));
+            // Hide FloatingFooter and checkboxes
+            stopRemovingPlants();
         } else {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
@@ -247,44 +264,49 @@ function App() {
     ), [group]);
 
     return (
-        <div className="container flex flex-col items-center mx-auto mb-8">
+        <div className="container flex flex-col items-center mx-auto mb-28">
             <Navbar
                 menuOptions={DropdownMenuOptions}
                 title={group.display_name}
                 titleOptions={GroupDetailsDropdown}
             />
 
-            <Tab.Group onChange={(index) => setAddEventsMode(index)}>
-                <Tab.List className="tab-group my-2 w-64">
-                    <Tab className={({ selected }) => clsx(
-                        'tab-option whitespace-nowrap',
-                        selected && 'tab-option-selected'
-                    )}>
-                        All plants
-                    </Tab>
-                    <Tab className={({ selected }) => clsx(
-                        'tab-option whitespace-nowrap',
-                        selected && 'tab-option-selected'
-                    )}>
-                        Select plants
-                    </Tab>
-                </Tab.List>
-            </Tab.Group>
+            <div className={clsx(
+                "flex flex-col items-center transition-[height] duration-300",
+                removingPlants ? "h-0" : "h-[14.25rem]"
+            )}>
+                <Tab.Group onChange={(index) => setAddEventsMode(index)}>
+                    <Tab.List className="tab-group my-2 w-64">
+                        <Tab className={({ selected }) => clsx(
+                            'tab-option whitespace-nowrap',
+                            selected && 'tab-option-selected'
+                        )}>
+                            All plants
+                        </Tab>
+                        <Tab className={({ selected }) => clsx(
+                            'tab-option whitespace-nowrap',
+                            selected && 'tab-option-selected'
+                        )}>
+                            Select plants
+                        </Tab>
+                    </Tab.List>
+                </Tab.Group>
 
-            <DatetimeInput inputRef={addEventTimeInput} />
-            <div className="flex mb-8">
-                <button
-                    className="btn btn-info m-2"
-                    onClick={() => addEvents('water')}
-                >
-                    Water
-                </button>
-                <button
-                    className="btn btn-success m-2"
-                    onClick={() => addEvents('fertilize')}
-                >
-                    Fertilize
-                </button>
+                <DatetimeInput inputRef={addEventTimeInput} />
+                <div className="flex mb-8">
+                    <button
+                        className="btn btn-info m-2"
+                        onClick={() => addEvents('water')}
+                    >
+                        Water
+                    </button>
+                    <button
+                        className="btn btn-success m-2"
+                        onClick={() => addEvents('fertilize')}
+                    >
+                        Fertilize
+                    </button>
+                </div>
             </div>
 
             <div className="px-4 relative">
@@ -307,7 +329,7 @@ function App() {
                             </a></li>
                             <li><a
                                 className="flex justify-center"
-                                onClick={openRemovePlantsModal}
+                                onClick={startRemovingPlants}
                                 data-testid="remove_plants_option"
                             >
                                 Remove
@@ -318,16 +340,27 @@ function App() {
                 </PlantsCol>
             </div>
 
+            <FloatingFooter visible={removingPlants}>
+                <button
+                    className="btn btn-neutral mr-4"
+                    onClick={stopRemovingPlants}
+                >
+                    Cancel
+                </button>
+
+                <button
+                    className="btn btn-error ml-4"
+                    onClick={removePlants}
+                >
+                    Remove
+                </button>
+            </FloatingFooter>
+
             <EditGroupModal group={group} setGroup={setGroup} />
 
             <AddPlantsModal
                 options={addPlantsModalOptions}
                 addPlants={addPlants}
-            />
-
-            <RemovePlantsModal
-                plantDetails={plantDetails}
-                removePlants={removePlants}
             />
 
             <ChangeQrModal

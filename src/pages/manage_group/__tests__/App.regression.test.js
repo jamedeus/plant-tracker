@@ -224,12 +224,12 @@ describe('App', () => {
             })
         }));
 
-        // Click Remove plants dropdown option
+        // Click Remove plants dropdown option (replaced RemovePlantsModal
+        // since test written, plants now selected from main PlantsCol)
         await user.click(app.getByTestId("remove_plants_option"));
 
-        // Get reference to modal, select first plant option, click Remove button
-        const removePlantsModal = app.getByText("Remove Plants").closest(".modal-box");
-        await user.click(removePlantsModal.querySelectorAll('label.cursor-pointer')[0]);
+        // Select first plant option, click Remove button
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
         await user.click(app.getByRole('button', {name: 'Remove'}));
 
         // Confirm correct data posted to /bulk_remove_plants_from_group endpoint
@@ -245,7 +245,7 @@ describe('App', () => {
             headers: postHeaders
         });
 
-        // Reopen modal again, click Remove button again
+        // Click remove dropdown option again, click Remove button again
         await user.click(app.getByTestId("remove_plants_option"));
         await user.click(app.getByRole('button', {name: 'Remove'}));
 
@@ -271,10 +271,10 @@ describe('App', () => {
         await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[0]);
         await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[2]);
 
-        // Open Remove plants modal, select first plant option
+        // Click Remove plants dropdown option, select first plant card
+        // (RemovePlantsModal was removed, now selected from PlantsCol)
         await user.click(app.getByTestId("remove_plants_option"));
-        const removePlantsModal = app.getByText("Remove Plants").closest(".modal-box");
-        await user.click(removePlantsModal.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
 
         // Mock fetch function to return expected response, click Remove button
         global.fetch = jest.fn(() => Promise.resolve({

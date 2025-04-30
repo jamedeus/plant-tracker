@@ -296,7 +296,7 @@ describe('App', () => {
         expect(titles[3].innerHTML).toBe('Another test plant');
     });
 
-    it('sends correct payload when Remove Plants modal is submitted', async () => {
+    it('sends correct payload when plants are removed from group', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
@@ -320,20 +320,18 @@ describe('App', () => {
             })
         }));
 
-        // Confirm plant list contains 3 cards
+        // Confirm plant list contains 3 cards, floating footer not visible
         const plantsCol = app.getByText("Plants (3)").closest('.section');
         expect(plantsCol.querySelectorAll('.card-title').length).toBe(3);
+        const floatingFooter = app.getByTestId('floating-footer');
+        expect(floatingFooter.classList).toContain('floating-footer-hidden');
 
-        // Click Remove plants dropdown option
+        // Click Remove plants dropdown option, confirm floating footer appeared
         await user.click(app.getByTestId("remove_plants_option"));
-
-        // Get reference to modal, confirm contains 3 plant options
-        const modal = app.getByText("Remove Plants").closest(".modal-box");
-        const plantOptions = modal.querySelector('form:not([method="dialog"])');
-        expect(plantOptions.children.length).toBe(3);
+        expect(floatingFooter.classList).toContain('floating-footer-visible');
 
         // Select the first plant option, click Remove button
-        await user.click(modal.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
         await user.click(app.getByRole('button', {name: 'Remove'}));
 
         // Confirm correct data posted to /bulk_remove_plants_from_group endpoint
@@ -354,6 +352,9 @@ describe('App', () => {
         expect(titles.length).toBe(2);
         expect(titles[0].innerHTML).toBe('Unnamed Spider Plant');
         expect(titles[1].innerHTML).toBe('Newest plant');
+
+        // Confirm floating footer disappeared
+        expect(floatingFooter.classList).toContain('floating-footer-hidden');
     });
 
     it('adds removed plants to Add Plants modal options', async () => {
@@ -387,10 +388,9 @@ describe('App', () => {
         const addModal = app.getByText("Add Plants").closest(".modal-box");
         expect(within(addModal).queryByText("Newest plant")).toBeNull();
 
-        // Open Remove Plants modal, delete Newest plant
+        // Click remove plants option, delete Newest plant
         await user.click(app.getByTestId("remove_plants_option"));
-        const removeModal = app.getByText("Remove Plants").closest(".modal-box");
-        await user.click(removeModal.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
         await user.click(app.getByRole('button', {name: 'Remove'}));
         expect(global.fetch).toHaveBeenCalled();
 
