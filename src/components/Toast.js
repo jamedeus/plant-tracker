@@ -51,7 +51,7 @@ export const Toast = () => {
     return (message &&
         <div
             className={clsx(
-                'toast toast-center transition-opacity duration-500 z-100',
+                'toast toast-center transition-opacity duration-500 z-[100]',
                 fade ? 'opacity-100' : 'opacity-0'
             )}
             onClick={hideToast}
