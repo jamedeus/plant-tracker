@@ -17,6 +17,11 @@
     @apply md:hidden !bottom-6;
 }
 
+/* Hide tooltip arrow */
+.tooltip::after {
+    @apply !hidden;
+}
+
 .timeline-timestamp {
     @apply flex flex-col h-full justify-center;
     @apply text-end whitespace-nowrap md:ml-4 scroll-mt-20;
