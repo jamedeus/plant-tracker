@@ -210,6 +210,11 @@ function App() {
             // Add objects in response to plantDetails state
             const data = await response.json();
             setPlantDetails([...plantDetails, ...data.added]);
+            // Remove added plants from AddPlantsModal options state
+            const addedIds = data.added.map(plant => plant.uuid);
+            setOptions(options.filter(
+                plant => !addedIds.includes(plant.uuid)
+            ));
         } else {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));

@@ -1,4 +1,4 @@
-import { fireEvent } from '@testing-library/react';
+import { fireEvent, within } from '@testing-library/react';
 import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import { mockContext } from './mockContext';
@@ -327,5 +327,68 @@ describe('App', () => {
             }),
             headers: postHeaders
         });
+    });
+
+    // Original bug: removePlants function added removed plants back to options
+    // state, but addPlants function did not remove added plants from options.
+    // This usually wasn't a problem since addPlantsModalOptions memo filters
+    // out plants that are in the group, but if the plant was added and removed
+    // in the same session a duplicate option would be added (existing option
+    // on load, not removed on add, added again on remove).
+    it('does not add duplicate options to AddPlantsModal if plant added and removed', async () => {
+        // Mock fetch function to return expected response when "Another test
+        // plant" added to group
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "added": [
+                    mockContext.options[0]
+                ],
+                "failed": []
+            })
+        }));
+
+        // Open AddPlantsModal, confirm "Another test plant" option exists
+        await user.click(app.getByTestId("add_plants_option"));
+        const modal = app.getByText("Add Plants").closest(".modal-box");
+        expect(within(modal).getAllByText("Another test plant").length).toBe(1);
+
+        // Select "Another test plant" option, click Add button
+        await user.click(modal.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.getByRole('button', {name: 'Add'}));
+
+        // Mock fetch function to return expected response when "Another test
+        // plant" is removed from group
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "removed": [
+                    {
+                        "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be16",
+                        "created": "2024-02-26T01:25:12+00:00",
+                        "name": "Another test plant",
+                        "display_name": "Another test plant",
+                        "species": null,
+                        "description": null,
+                        "pot_size": 4,
+                        "last_watered": null,
+                        "last_fertilized": null,
+                        "thumbnail": "/media/thumbnails/photo2_thumb.jpg",
+                        "archived": false
+                    }
+                ],
+                "failed": []
+            })
+        }));
+
+        // Click Remove plants dropdown option
+        await user.click(app.getByTestId("remove_plants_option"));
+
+        // Select the first plant option, click Remove button
+        await user.click(app.container.querySelectorAll('label.cursor-pointer')[3]);
+        await user.click(app.getByRole('button', {name: 'Remove'}));
+
+        // Confirm AddPlantsModal does not contain a duplicate option
+        expect(within(modal).getAllByText("Another test plant").length).toBe(1);
     });
 });
