@@ -200,55 +200,44 @@ function App() {
         // Only add edit option if at least 1 plant or group
         const showEditOption = plants.length > 0 || groups.length > 0;
 
-        switch(archivedOverview) {
-            case(true):
-                return (
-                    <>
-                        <li><a href='/'>
-                            Main overview
-                        </a></li>
-                        {userAccountsEnabled && (
-                            <li><a onClick={
-                                () => window.location.href = "/accounts/profile/"
-                            }>
-                                User profile
-                            </a></li>
-                        )}
-                        {showEditOption && (
-                            <li><a onClick={toggleEditing}>
-                                Edit
-                            </a></li>
-                        )}
-                        <ToggleThemeOption />
-                    </>
-                );
-            case(false):
-                return (
-                    <>
-                        {showArchive && (
-                            <li><a href='/archived'>
-                                Archived plants
-                            </a></li>
-                        )}
-                        {userAccountsEnabled && (
-                            <li><a onClick={
-                                () => window.location.href = "/accounts/profile/"
-                            }>
-                                User profile
-                            </a></li>
-                        )}
-                        {showEditOption && (
-                            <li><a onClick={toggleEditing}>
-                                Edit
-                            </a></li>
-                        )}
-                        <li><a onClick={openPrintModal}>
-                            Print QR Codes
-                        </a></li>
-                        <ToggleThemeOption />
-                    </>
-                );
-        }
+        return (
+            <>
+                {/* Main overview: Link to archive overview if it exists */}
+                {(!archivedOverview && showArchive) && (
+                    <li><a href='/archived'>
+                        Archived plants
+                    </a></li>
+                )}
+                {/* Archive overview: Link back to main overview */}
+                {archivedOverview && (
+                    <li><a href='/'>
+                        Main overview
+                    </a></li>
+                )}
+                {/* Link to user profile unless accounts disabled */}
+                {userAccountsEnabled && (
+                    <li><a onClick={
+                        () => window.location.href = "/accounts/profile/"
+                    }>
+                        User profile
+                    </a></li>
+                )}
+                {/* Show edit option if at least 1 plant or group exists */}
+                {showEditOption && (
+                    <li><a onClick={toggleEditing}>
+                        Edit
+                    </a></li>
+                )}
+                {/* Main overview: Show Print QR Codes option */}
+                {!archivedOverview && (
+                    <li><a onClick={openPrintModal}>
+                        Print QR Codes
+                    </a></li>
+                )}
+                <ToggleThemeOption />
+
+            </>
+        );
     }, [editing, ToggleThemeOption]);
 
     // Dropdown with links to jump to plant or group columns
