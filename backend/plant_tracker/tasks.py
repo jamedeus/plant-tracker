@@ -168,13 +168,7 @@ def build_manage_plant_state(uuid):
     ]
 
     # Add group details if plant is in a group
-    if plant.group:
-        state['plant_details']['group'] = {
-            'name': plant.group.get_display_name(),
-            'uuid': str(plant.group.uuid)
-        }
-    else:
-        state['plant_details']['group'] = None
+    state['plant_details']['group'] = plant.get_group_details()
 
     # Cache state indefinitely (updates automatically when database changes)
     cache.set(f'{uuid}_state', state, None)

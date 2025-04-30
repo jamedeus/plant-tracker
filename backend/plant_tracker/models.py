@@ -314,6 +314,15 @@ class Plant(models.Model):
             'thumbnail': self.thumbnail_url
         }
 
+    def get_group_details(self):
+        '''Returns dict with group name and uuid, or None if not in group.'''
+        if self.group:
+            return {
+                'name': self.group.get_display_name(),
+                'uuid': str(self.group.uuid)
+            }
+        return None
+
     def get_default_photo_details(self):
         '''Returns dict containing set key (True if default photo set, False if
         not set) and details of default photo (or most-recent if not set).
