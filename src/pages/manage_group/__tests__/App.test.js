@@ -316,7 +316,19 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 "removed": [
-                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                    {
+                        "name": "Test Plant",
+                        "display_name": "Test Plant",
+                        "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                        "created": "2023-12-26T01:25:12+00:00",
+                        "species": "Calathea",
+                        "description": "This is a plant with a long description with",
+                        "pot_size": 4,
+                        "last_watered": "2024-02-29T12:45:44+00:00",
+                        "last_fertilized": "2024-03-01T05:45:44+00:00",
+                        "thumbnail": null,
+                        "archived": false
+                    }
                 ],
                 "failed": []
             })
@@ -365,7 +377,19 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 "removed": [
-                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+                    {
+                        "name": "Newest plant",
+                        "display_name": "Newest plant",
+                        "uuid": "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16",
+                        "created": "2023-12-28T01:25:12+00:00",
+                        "species": "null",
+                        "description": null,
+                        "pot_size": null,
+                        "last_watered": null,
+                        "last_fertilized": null,
+                        "thumbnail": null,
+                        "archived": false
+                    }
                 ],
                 "failed": []
             })

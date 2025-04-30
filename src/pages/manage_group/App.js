@@ -257,18 +257,13 @@ function App() {
             payload
         );
         if (response.ok) {
-            // Get array of removed UUIDs from response
             const data = await response.json();
             // Add removed plants back to AddPlantsModal options state
-            const existingOptions = options.map(plant => plant.uuid);
-            const newOptions = plantDetails.filter(
-                plant => data.removed.includes(plant.uuid) &&
-                         !existingOptions.includes(plant.uuid)
-            );
-            setOptions([ ...options, ...newOptions ]);
-            // Remove UUIDs in response from plantDetails state
+            setOptions([ ...options, ...data.removed ]);
+            // Remove plants from response from plantDetails state
+            const removedIds = data.removed.map(plant => plant.uuid);
             setPlantDetails(plantDetails.filter(
-                plant => !data.removed.includes(plant.uuid)
+                plant => !removedIds.includes(plant.uuid)
             ));
         } else {
             const error = await response.json();

@@ -783,21 +783,21 @@ def bulk_remove_plants_from_group(data, user, **kwargs):
     '''Removes a list of Plants from specified Group (deletes database relations).
     Requires JSON POST with group_id (uuid) and plants (list of UUIDs) keys.
     '''
-    added = []
+    removed = []
     failed = []
     for plant_id in data["plants"]:
         plant = get_plant_by_uuid(plant_id)
         if plant:
             plant.group = None
             plant.save()
-            added.append(plant_id)
+            removed.append(plant.get_details())
         else:
             failed.append(plant_id)
 
     # Update cached group_options (number of plants in group changed)
     schedule_cached_group_options_update(user)
 
-    return JsonResponse({"removed": added, "failed": failed}, status=200)
+    return JsonResponse({"removed": removed, "failed": failed}, status=200)
 
 
 @get_user_token

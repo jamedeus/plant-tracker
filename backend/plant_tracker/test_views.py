@@ -1376,12 +1376,13 @@ class ManageGroupEndpointTests(TestCase):
             ]
         })
 
-        # Confirm plant UUIDs were removed, fake ID failed
+        # Confirm plants were removed, response contains details of removed plants
+        # Confirm fake ID failed, response contains UUID
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
             {
-                "removed": [str(self.plant1.uuid), str(self.plant2.uuid)],
+                "removed": [self.plant1.get_details(), self.plant2.get_details()],
                 "failed": [str(self.fake_id)]
             }
         )
