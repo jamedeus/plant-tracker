@@ -137,7 +137,7 @@ html[data-theme="light"] .pot-size-selected::placeholder {
 }
 
 .btn-prune {
-    @apply bg-prune text-warning-content border border-transparent;
+    @apply bg-prune outline-prune text-warning-content border border-transparent;
 }
 
 .btn-prune:hover {
