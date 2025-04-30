@@ -31,13 +31,10 @@ function App() {
         return parseDomContext("options");
     });
 
-    // Array of plant objects that are not archived or already in group
+    // Array of plant objects that are not archived
     const addPlantsModalOptions = useMemo(() => {
-        const existing = plantDetails.map(plant => plant.uuid);
-        return options.filter(
-            plant => !existing.includes(plant.uuid) && !plant.archived
-        );
-    }, [plantDetails, options]);
+        return options.filter(plant => !plant.archived);
+    }, [options]);
 
     // Request new state from backend if user navigates to page by pressing
     // back button (may be outdated if user clicked plant and made changes)
