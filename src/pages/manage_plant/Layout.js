@@ -184,7 +184,7 @@ function Layout() {
                 <EventCalendar />
             </div>
 
-            <div className="w-full max-w-screen-md mt-2 px-4">
+            <div className="w-full max-w-(--breakpoint-md) mt-2 px-4">
                 <Timeline />
             </div>
 

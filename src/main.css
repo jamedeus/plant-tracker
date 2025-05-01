@@ -1,9 +1,23 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
-.card, .card-collapse {
-    @apply bg-neutral text-neutral-content;
+@config '../tailwind.config.js';
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
 }
 
 .card-body {
@@ -54,7 +68,7 @@
 }
 
 .tab-option {
-    @apply w-full rounded-lg py-2.5 font-semibold focus:outline-none;
+    @apply w-full rounded-lg py-2.5 font-semibold focus:outline-hidden;
 }
 
 .tab-option-selected {
@@ -67,7 +81,7 @@
 
 /* Change input focus color, remove gap between outline and input */
 .input, .input-bordered, .textarea-bordered {
-    @apply focus:border-accent focus:outline-accent !outline-offset-0;
+    @apply focus:border-accent focus:outline-accent outline-offset-0!;
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -82,7 +96,7 @@
 /* Repot modal pot size option */
 .pot-size {
     @apply text-xl md:text-2xl text-center font-bold;
-    @apply flex rounded-full bg-base-300 focus:outline-none;
+    @apply flex rounded-full bg-base-300 focus:outline-hidden;
 }
 
 /* Repot modal selected pot size option */
@@ -124,12 +138,12 @@ html[data-theme="light"] .pot-size-selected::placeholder {
 }
 
 .dropdown-options {
-    @apply menu menu-md dropdown-content z-[99] p-2 shadow bg-base-300 rounded-box;
+    @apply menu menu-md dropdown-content z-99 p-2 shadow-sm bg-base-300 rounded-box;
 }
 
 /* Wraps Navbar title dropdown contents (plant/group details) */
 .details-card {
-    @apply card card-compact w-72 p-2 mt-2 mx-auto shadow;
+    @apply card card-compact w-72 p-2 mt-2 mx-auto shadow-sm;
     /* Allow scrolling inside card, eg phone in landscape orientation */
     @apply max-h-[calc(100svh-4rem)] overflow-y-auto overscroll-contain;
     /* Prevent long strings without spaces making card side scroll */
@@ -141,8 +155,8 @@ html[data-theme="light"] .pot-size-selected::placeholder {
 }
 
 .btn-prune:hover {
-    background-color: color-mix(in oklab, theme('colors.prune'), black 10%);
-    border-color: color-mix(in oklab, theme('colors.prune'), black 10%);
+    background-color: color-mix(in oklab, var(--color-prune), black 10%);
+    border-color: color-mix(in oklab, var(--color-prune), black 10%);
 }
 
 .alert {
@@ -189,7 +203,7 @@ html[data-theme="light"] .pot-size-selected::placeholder {
 /* Only breaks words if there is no other opportunity (eg spaces) */
 .break-anywhere {
     overflow-wrap: anywhere;
-    word-break: break-word;;
+    word-break: break-word;
 }
 
 /* Fix text wrapping to multiple lines on mobile */

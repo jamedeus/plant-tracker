@@ -174,7 +174,7 @@ const NoteModal = () => {
                     ? (
                         <div className="modal-action mx-auto">
                             <button
-                                className="btn btn-error !text-error-content"
+                                className="btn btn-error text-error-content!"
                                 onClick={handleDelete}
                             >
                                 Delete

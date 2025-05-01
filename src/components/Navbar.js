@@ -90,7 +90,7 @@ const Navbar = memo(function Navbar({ menuOptions, onOpenMenu, title, titleOptio
     return (
         <div
             ref={navbarRef}
-            className="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
+            className="navbar bg-base-100 mb-4 sticky top-0 z-99"
         >
             {/* Top left dropdown button */}
             <div
@@ -126,7 +126,7 @@ const Navbar = memo(function Navbar({ menuOptions, onOpenMenu, title, titleOptio
                             {title}
                         </span>
                     </a>
-                    <div tabIndex={0} className="dropdown-content z-[1] flex">
+                    <div tabIndex={0} className="dropdown-content z-1 flex">
                         {titleOptions}
                     </div>
                 </div>

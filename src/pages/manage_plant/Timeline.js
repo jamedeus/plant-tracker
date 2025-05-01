@@ -201,7 +201,7 @@ const TimelineTimestamp = memo(function TimelineTimestamp({ dateKey }) {
     return (
         <div className="timeline-timestamp" data-date={dateKey}>
             <div
-                className="tooltip !text-end"
+                className="tooltip text-end!"
                 data-tip={dateString}
             >
                 <span className="text-sm md:text-lg">
