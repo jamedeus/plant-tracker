@@ -56,6 +56,12 @@
     @apply text-base-content;
 }
 
+/* Don't change color when disabled */
+/* Tiles with no events are disabled (prevent focus, improve tab navigation) */
+.react-calendar__tile:disabled {
+    @apply bg-inherit text-inherit;
+}
+
 .react-calendar__tile:enabled:hover,
 .react-calendar__tile:enabled:focus,
 .react-calendar__tile--active {
