@@ -21,6 +21,7 @@ const EditableNodeList = ({ editing, formRef, children }) => {
                             id={`${prefix}-${node.key}`}
                             name={node.key}
                             className="radio checked:bg-accent my-auto"
+                            aria-label={`Select ${node.props?.name || 'node'}`}
                         />
                     </div>
                     <div className={clsx(

@@ -45,6 +45,7 @@ const InstanceCard = memo(function InstanceCard({
                                 loading="lazy"
                                 src={thumbnail}
                                 className="size-full object-cover"
+                                alt={`${title} photo`}
                             />
                         </figure>
                     )}
@@ -66,10 +67,10 @@ const InstanceCard = memo(function InstanceCard({
                     {/* Button opens/closes collapse with details */}
                     <label
                         tabIndex={-1}
-                        role="button"
                         htmlFor={checkboxId}
                         className="btn-close absolute right-2 top-8 z-40"
                         onClick={(e) => e.stopPropagation()}
+                        aria-label="Show or hide details"
                     >
                         <ChevronDownIcon className={clsx(
                             "size-8 transition-transform duration-200",

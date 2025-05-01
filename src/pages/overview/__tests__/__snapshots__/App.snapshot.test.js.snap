@@ -258,6 +258,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                       class="absolute flex h-full z-0"
                     >
                       <input
+                        aria-label="Select Test Plant"
                         class="radio checked:bg-accent my-auto"
                         id=":rc:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
@@ -288,6 +289,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                               class="h-24 w-20 min-size-20 rounded-b-none"
                             >
                               <img
+                                alt="Test Plant photo"
                                 class="size-full object-cover"
                                 loading="lazy"
                                 src="/media/thumbnails/photo_thumb.jpg"
@@ -324,9 +326,9 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                               </span>
                             </div>
                             <label
+                              aria-label="Show or hide details"
                               class="btn-close absolute right-2 top-8 z-40"
                               for=":rd:"
-                              role="button"
                               tabindex="-1"
                             >
                               <svg
@@ -508,6 +510,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                       class="absolute flex h-full z-0"
                     >
                       <input
+                        aria-label="Select Test group"
                         class="radio checked:bg-accent my-auto"
                         id=":re:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
@@ -549,9 +552,9 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                               </p>
                             </div>
                             <label
+                              aria-label="Show or hide details"
                               class="btn-close absolute right-2 top-8 z-40"
                               for=":rf:"
-                              role="button"
                               tabindex="-1"
                             >
                               <svg
@@ -941,6 +944,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                     class="absolute flex h-full z-0"
                   >
                     <input
+                      aria-label="Select Test Plant"
                       class="radio checked:bg-accent my-auto"
                       id=":rc:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
@@ -971,6 +975,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                             class="h-24 w-20 min-size-20 rounded-b-none"
                           >
                             <img
+                              alt="Test Plant photo"
                               class="size-full object-cover"
                               loading="lazy"
                               src="/media/thumbnails/photo_thumb.jpg"
@@ -1007,9 +1012,9 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                             </span>
                           </div>
                           <label
+                            aria-label="Show or hide details"
                             class="btn-close absolute right-2 top-8 z-40"
                             for=":rd:"
-                            role="button"
                             tabindex="-1"
                           >
                             <svg
@@ -1191,6 +1196,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                     class="absolute flex h-full z-0"
                   >
                     <input
+                      aria-label="Select Test group"
                       class="radio checked:bg-accent my-auto"
                       id=":re:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
@@ -1232,9 +1238,9 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                             </p>
                           </div>
                           <label
+                            aria-label="Show or hide details"
                             class="btn-close absolute right-2 top-8 z-40"
                             for=":rf:"
-                            role="button"
                             tabindex="-1"
                           >
                             <svg
@@ -2201,6 +2207,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                       class="absolute flex h-full z-0"
                     >
                       <input
+                        aria-label="Select Test group"
                         class="radio checked:bg-accent my-auto"
                         id=":ra:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
@@ -2242,9 +2249,9 @@ exports[`App matches snapshot when only groups exist 1`] = `
                               </p>
                             </div>
                             <label
+                              aria-label="Show or hide details"
                               class="btn-close absolute right-2 top-8 z-40"
                               for=":rb:"
-                              role="button"
                               tabindex="-1"
                             >
                               <svg
@@ -2613,6 +2620,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
                     class="absolute flex h-full z-0"
                   >
                     <input
+                      aria-label="Select Test group"
                       class="radio checked:bg-accent my-auto"
                       id=":ra:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
@@ -2654,9 +2662,9 @@ exports[`App matches snapshot when only groups exist 1`] = `
                             </p>
                           </div>
                           <label
+                            aria-label="Show or hide details"
                             class="btn-close absolute right-2 top-8 z-40"
                             for=":rb:"
-                            role="button"
                             tabindex="-1"
                           >
                             <svg
@@ -3109,6 +3117,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                       class="absolute flex h-full z-0"
                     >
                       <input
+                        aria-label="Select Test Plant"
                         class="radio checked:bg-accent my-auto"
                         id=":r8:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
@@ -3139,6 +3148,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                               class="h-24 w-20 min-size-20 rounded-b-none"
                             >
                               <img
+                                alt="Test Plant photo"
                                 class="size-full object-cover"
                                 loading="lazy"
                                 src="/media/thumbnails/photo_thumb.jpg"
@@ -3175,9 +3185,9 @@ exports[`App matches snapshot when only plants exist 1`] = `
                               </span>
                             </div>
                             <label
+                              aria-label="Show or hide details"
                               class="btn-close absolute right-2 top-8 z-40"
                               for=":r9:"
-                              role="button"
                               tabindex="-1"
                             >
                               <svg
@@ -3567,6 +3577,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                     class="absolute flex h-full z-0"
                   >
                     <input
+                      aria-label="Select Test Plant"
                       class="radio checked:bg-accent my-auto"
                       id=":r8:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
@@ -3597,6 +3608,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                             class="h-24 w-20 min-size-20 rounded-b-none"
                           >
                             <img
+                              alt="Test Plant photo"
                               class="size-full object-cover"
                               loading="lazy"
                               src="/media/thumbnails/photo_thumb.jpg"
@@ -3633,9 +3645,9 @@ exports[`App matches snapshot when only plants exist 1`] = `
                             </span>
                           </div>
                           <label
+                            aria-label="Show or hide details"
                             class="btn-close absolute right-2 top-8 z-40"
                             for=":r9:"
-                            role="button"
                             tabindex="-1"
                           >
                             <svg
@@ -4102,6 +4114,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                       class="absolute flex h-full z-0"
                     >
                       <input
+                        aria-label="Select Test Plant"
                         class="radio checked:bg-accent my-auto"
                         id=":r0:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
@@ -4132,6 +4145,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                               class="h-24 w-20 min-size-20 rounded-b-none"
                             >
                               <img
+                                alt="Test Plant photo"
                                 class="size-full object-cover"
                                 loading="lazy"
                                 src="/media/thumbnails/photo_thumb.jpg"
@@ -4168,9 +4182,9 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                               </span>
                             </div>
                             <label
+                              aria-label="Show or hide details"
                               class="btn-close absolute right-2 top-8 z-40"
                               for=":r1:"
-                              role="button"
                               tabindex="-1"
                             >
                               <svg
@@ -4352,6 +4366,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                       class="absolute flex h-full z-0"
                     >
                       <input
+                        aria-label="Select Test group"
                         class="radio checked:bg-accent my-auto"
                         id=":r2:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
@@ -4393,9 +4408,9 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                               </p>
                             </div>
                             <label
+                              aria-label="Show or hide details"
                               class="btn-close absolute right-2 top-8 z-40"
                               for=":r3:"
-                              role="button"
                               tabindex="-1"
                             >
                               <svg
@@ -4771,6 +4786,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                     class="absolute flex h-full z-0"
                   >
                     <input
+                      aria-label="Select Test Plant"
                       class="radio checked:bg-accent my-auto"
                       id=":r0:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
@@ -4801,6 +4817,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                             class="h-24 w-20 min-size-20 rounded-b-none"
                           >
                             <img
+                              alt="Test Plant photo"
                               class="size-full object-cover"
                               loading="lazy"
                               src="/media/thumbnails/photo_thumb.jpg"
@@ -4837,9 +4854,9 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                             </span>
                           </div>
                           <label
+                            aria-label="Show or hide details"
                             class="btn-close absolute right-2 top-8 z-40"
                             for=":r1:"
-                            role="button"
                             tabindex="-1"
                           >
                             <svg
@@ -5021,6 +5038,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                     class="absolute flex h-full z-0"
                   >
                     <input
+                      aria-label="Select Test group"
                       class="radio checked:bg-accent my-auto"
                       id=":r2:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
@@ -5062,9 +5080,9 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                             </p>
                           </div>
                           <label
+                            aria-label="Show or hide details"
                             class="btn-close absolute right-2 top-8 z-40"
                             for=":r3:"
-                            role="button"
                             tabindex="-1"
                           >
                             <svg
@@ -5536,6 +5554,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                       class="absolute flex h-full z-0"
                     >
                       <input
+                        aria-label="Select Test Plant"
                         class="radio checked:bg-accent my-auto"
                         id=":r4:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
@@ -5566,6 +5585,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                               class="h-24 w-20 min-size-20 rounded-b-none"
                             >
                               <img
+                                alt="Test Plant photo"
                                 class="size-full object-cover"
                                 loading="lazy"
                                 src="/media/thumbnails/photo_thumb.jpg"
@@ -5602,9 +5622,9 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                               </span>
                             </div>
                             <label
+                              aria-label="Show or hide details"
                               class="btn-close absolute right-2 top-8 z-40"
                               for=":r5:"
-                              role="button"
                               tabindex="-1"
                             >
                               <svg
@@ -5786,6 +5806,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                       class="absolute flex h-full z-0"
                     >
                       <input
+                        aria-label="Select Test group"
                         class="radio checked:bg-accent my-auto"
                         id=":r6:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                         name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
@@ -5827,9 +5848,9 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                               </p>
                             </div>
                             <label
+                              aria-label="Show or hide details"
                               class="btn-close absolute right-2 top-8 z-40"
                               for=":r7:"
-                              role="button"
                               tabindex="-1"
                             >
                               <svg
@@ -6224,6 +6245,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                     class="absolute flex h-full z-0"
                   >
                     <input
+                      aria-label="Select Test Plant"
                       class="radio checked:bg-accent my-auto"
                       id=":r4:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
@@ -6254,6 +6276,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                             class="h-24 w-20 min-size-20 rounded-b-none"
                           >
                             <img
+                              alt="Test Plant photo"
                               class="size-full object-cover"
                               loading="lazy"
                               src="/media/thumbnails/photo_thumb.jpg"
@@ -6290,9 +6313,9 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                             </span>
                           </div>
                           <label
+                            aria-label="Show or hide details"
                             class="btn-close absolute right-2 top-8 z-40"
                             for=":r5:"
-                            role="button"
                             tabindex="-1"
                           >
                             <svg
@@ -6474,6 +6497,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                     class="absolute flex h-full z-0"
                   >
                     <input
+                      aria-label="Select Test group"
                       class="radio checked:bg-accent my-auto"
                       id=":r6:-0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be14"
@@ -6515,9 +6539,9 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                             </p>
                           </div>
                           <label
+                            aria-label="Show or hide details"
                             class="btn-close absolute right-2 top-8 z-40"
                             for=":r7:"
-                            role="button"
                             tabindex="-1"
                           >
                             <svg

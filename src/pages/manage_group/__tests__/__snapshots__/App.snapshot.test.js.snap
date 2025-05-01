@@ -338,6 +338,7 @@ exports[`App matches snapshot 1`] = `
                     class="absolute flex h-full z-0"
                   >
                     <input
+                      aria-label="Select Test Plant"
                       class="radio checked:bg-accent my-auto"
                       id=":r2:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
@@ -395,9 +396,9 @@ exports[`App matches snapshot 1`] = `
                             </span>
                           </div>
                           <label
+                            aria-label="Show or hide details"
                             class="btn-close absolute right-2 top-8 z-40"
                             for=":r3:"
-                            role="button"
                             tabindex="-1"
                           >
                             <svg
@@ -481,6 +482,7 @@ exports[`App matches snapshot 1`] = `
                     class="absolute flex h-full z-0"
                   >
                     <input
+                      aria-label="Select node"
                       class="radio checked:bg-accent my-auto"
                       id=":r2:-19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
                       name="19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
@@ -511,6 +513,7 @@ exports[`App matches snapshot 1`] = `
                             class="h-24 w-20 min-size-20 rounded-b-none"
                           >
                             <img
+                              alt="Unnamed Spider Plant photo"
                               class="size-full object-cover"
                               loading="lazy"
                               src="/media/thumbnails/photo_thumb.jpg"
@@ -547,9 +550,9 @@ exports[`App matches snapshot 1`] = `
                             </span>
                           </div>
                           <label
+                            aria-label="Show or hide details"
                             class="btn-close absolute right-2 top-8 z-40"
                             for=":r4:"
-                            role="button"
                             tabindex="-1"
                           >
                             <svg
@@ -619,6 +622,7 @@ exports[`App matches snapshot 1`] = `
                     class="absolute flex h-full z-0"
                   >
                     <input
+                      aria-label="Select Newest plant"
                       class="radio checked:bg-accent my-auto"
                       id=":r2:-26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                       name="26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
@@ -658,9 +662,9 @@ exports[`App matches snapshot 1`] = `
                             </span>
                           </div>
                           <label
+                            aria-label="Show or hide details"
                             class="btn-close absolute right-2 top-8 z-40"
                             for=":r5:"
-                            role="button"
                             tabindex="-1"
                           >
                             <svg
@@ -1208,6 +1212,7 @@ exports[`App matches snapshot 1`] = `
                   class="absolute flex h-full z-0"
                 >
                   <input
+                    aria-label="Select Test Plant"
                     class="radio checked:bg-accent my-auto"
                     id=":r2:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
@@ -1265,9 +1270,9 @@ exports[`App matches snapshot 1`] = `
                           </span>
                         </div>
                         <label
+                          aria-label="Show or hide details"
                           class="btn-close absolute right-2 top-8 z-40"
                           for=":r3:"
-                          role="button"
                           tabindex="-1"
                         >
                           <svg
@@ -1351,6 +1356,7 @@ exports[`App matches snapshot 1`] = `
                   class="absolute flex h-full z-0"
                 >
                   <input
+                    aria-label="Select node"
                     class="radio checked:bg-accent my-auto"
                     id=":r2:-19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
                     name="19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
@@ -1381,6 +1387,7 @@ exports[`App matches snapshot 1`] = `
                           class="h-24 w-20 min-size-20 rounded-b-none"
                         >
                           <img
+                            alt="Unnamed Spider Plant photo"
                             class="size-full object-cover"
                             loading="lazy"
                             src="/media/thumbnails/photo_thumb.jpg"
@@ -1417,9 +1424,9 @@ exports[`App matches snapshot 1`] = `
                           </span>
                         </div>
                         <label
+                          aria-label="Show or hide details"
                           class="btn-close absolute right-2 top-8 z-40"
                           for=":r4:"
-                          role="button"
                           tabindex="-1"
                         >
                           <svg
@@ -1489,6 +1496,7 @@ exports[`App matches snapshot 1`] = `
                   class="absolute flex h-full z-0"
                 >
                   <input
+                    aria-label="Select Newest plant"
                     class="radio checked:bg-accent my-auto"
                     id=":r2:-26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                     name="26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
@@ -1528,9 +1536,9 @@ exports[`App matches snapshot 1`] = `
                           </span>
                         </div>
                         <label
+                          aria-label="Show or hide details"
                           class="btn-close absolute right-2 top-8 z-40"
                           for=":r5:"
-                          role="button"
                           tabindex="-1"
                         >
                           <svg
