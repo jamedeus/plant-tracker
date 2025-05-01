@@ -83,7 +83,7 @@ const UserDetails = memo(function UserDetails() {
                 </div>
                 <input
                     name="email"
-                    type="text"
+                    type="email"
                     autoCapitalize="off"
                     aria-label="Email address input"
                     className="input w-full input-bordered"

@@ -156,7 +156,7 @@ exports[`App matches snapshot 1`] = `
                     class="input w-full input-bordered"
                     data-testid="email_input"
                     name="email"
-                    type="text"
+                    type="email"
                     value="totally.not.anthony.weiner@gmail.com"
                   />
                   <div
@@ -471,7 +471,7 @@ exports[`App matches snapshot 1`] = `
                   class="input w-full input-bordered"
                   data-testid="email_input"
                   name="email"
-                  type="text"
+                  type="email"
                   value="totally.not.anthony.weiner@gmail.com"
                 />
                 <div
