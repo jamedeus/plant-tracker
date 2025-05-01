@@ -66,6 +66,7 @@ const Title = memo(function Title() {
                             tabIndex={0}
                             role="button"
                             className="btn btn-ghost btn-circle"
+                            aria-label="More plant actions menu"
                         >
                             <FontAwesomeIcon
                                 icon={faEllipsis}
@@ -289,6 +290,7 @@ const PhotoThumbnail = memo(function PhotoThumbnail({ thumbnailUrl, photoUrl, ti
                     loading="lazy"
                     className='photo-thumbnail photo-thumbnail-timeline'
                     src={thumbnailUrl}
+                    alt={timestampToReadable(timestamp)}
                 />
             </div>
         </Popover>

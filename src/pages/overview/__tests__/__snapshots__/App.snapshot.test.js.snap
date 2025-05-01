@@ -35,6 +35,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
             class="dropdown justify-start min-w-12"
           >
             <div
+              aria-label="Navigation menu"
               class="btn btn-ghost btn-circle"
               role="button"
               tabindex="0"
@@ -634,6 +635,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
               method="dialog"
             >
               <button
+                aria-label="Close modal"
                 class="btn-close absolute right-4 top-4"
               >
                 <svg
@@ -676,6 +678,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
             method="dialog"
           >
             <button
+              aria-label="Close modal"
               class="btn-close absolute right-4 top-4"
             >
               <svg
@@ -715,6 +718,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
           class="dropdown justify-start min-w-12"
         >
           <div
+            aria-label="Navigation menu"
             class="btn btn-ghost btn-circle"
             role="button"
             tabindex="0"
@@ -1314,6 +1318,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
             method="dialog"
           >
             <button
+              aria-label="Close modal"
               class="btn-close absolute right-4 top-4"
             >
               <svg
@@ -1356,6 +1361,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
           method="dialog"
         >
           <button
+            aria-label="Close modal"
             class="btn-close absolute right-4 top-4"
           >
             <svg
@@ -1472,6 +1478,7 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
             class="dropdown justify-start min-w-12"
           >
             <div
+              aria-label="Navigation menu"
               class="btn btn-ghost btn-circle"
               role="button"
               tabindex="0"
@@ -1610,6 +1617,7 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
               method="dialog"
             >
               <button
+                aria-label="Close modal"
                 class="btn-close absolute right-4 top-4"
               >
                 <svg
@@ -1652,6 +1660,7 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
             method="dialog"
           >
             <button
+              aria-label="Close modal"
               class="btn-close absolute right-4 top-4"
             >
               <svg
@@ -1691,6 +1700,7 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
           class="dropdown justify-start min-w-12"
         >
           <div
+            aria-label="Navigation menu"
             class="btn btn-ghost btn-circle"
             role="button"
             tabindex="0"
@@ -1829,6 +1839,7 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
             method="dialog"
           >
             <button
+              aria-label="Close modal"
               class="btn-close absolute right-4 top-4"
             >
               <svg
@@ -1871,6 +1882,7 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
           method="dialog"
         >
           <button
+            aria-label="Close modal"
             class="btn-close absolute right-4 top-4"
           >
             <svg
@@ -1987,6 +1999,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
             class="dropdown justify-start min-w-12"
           >
             <div
+              aria-label="Navigation menu"
               class="btn btn-ghost btn-circle"
               role="button"
               tabindex="0"
@@ -2315,6 +2328,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
               method="dialog"
             >
               <button
+                aria-label="Close modal"
                 class="btn-close absolute right-4 top-4"
               >
                 <svg
@@ -2357,6 +2371,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
             method="dialog"
           >
             <button
+              aria-label="Close modal"
               class="btn-close absolute right-4 top-4"
             >
               <svg
@@ -2396,6 +2411,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
           class="dropdown justify-start min-w-12"
         >
           <div
+            aria-label="Navigation menu"
             class="btn btn-ghost btn-circle"
             role="button"
             tabindex="0"
@@ -2724,6 +2740,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
             method="dialog"
           >
             <button
+              aria-label="Close modal"
               class="btn-close absolute right-4 top-4"
             >
               <svg
@@ -2766,6 +2783,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
           method="dialog"
         >
           <button
+            aria-label="Close modal"
             class="btn-close absolute right-4 top-4"
           >
             <svg
@@ -2882,6 +2900,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
             class="dropdown justify-start min-w-12"
           >
             <div
+              aria-label="Navigation menu"
               class="btn btn-ghost btn-circle"
               role="button"
               tabindex="0"
@@ -3256,6 +3275,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
               method="dialog"
             >
               <button
+                aria-label="Close modal"
                 class="btn-close absolute right-4 top-4"
               >
                 <svg
@@ -3298,6 +3318,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
             method="dialog"
           >
             <button
+              aria-label="Close modal"
               class="btn-close absolute right-4 top-4"
             >
               <svg
@@ -3337,6 +3358,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
           class="dropdown justify-start min-w-12"
         >
           <div
+            aria-label="Navigation menu"
             class="btn btn-ghost btn-circle"
             role="button"
             tabindex="0"
@@ -3711,6 +3733,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
             method="dialog"
           >
             <button
+              aria-label="Close modal"
               class="btn-close absolute right-4 top-4"
             >
               <svg
@@ -3753,6 +3776,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
           method="dialog"
         >
           <button
+            aria-label="Close modal"
             class="btn-close absolute right-4 top-4"
           >
             <svg
@@ -3869,6 +3893,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
             class="dropdown justify-start min-w-12"
           >
             <div
+              aria-label="Navigation menu"
               class="btn btn-ghost btn-circle"
               role="button"
               tabindex="0"
@@ -4454,6 +4479,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
               method="dialog"
             >
               <button
+                aria-label="Close modal"
                 class="btn-close absolute right-4 top-4"
               >
                 <svg
@@ -4496,6 +4522,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
             method="dialog"
           >
             <button
+              aria-label="Close modal"
               class="btn-close absolute right-4 top-4"
             >
               <svg
@@ -4535,6 +4562,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
           class="dropdown justify-start min-w-12"
         >
           <div
+            aria-label="Navigation menu"
             class="btn btn-ghost btn-circle"
             role="button"
             tabindex="0"
@@ -5120,6 +5148,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
             method="dialog"
           >
             <button
+              aria-label="Close modal"
               class="btn-close absolute right-4 top-4"
             >
               <svg
@@ -5162,6 +5191,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
           method="dialog"
         >
           <button
+            aria-label="Close modal"
             class="btn-close absolute right-4 top-4"
           >
             <svg
@@ -5278,6 +5308,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
             class="dropdown justify-start min-w-12"
           >
             <div
+              aria-label="Navigation menu"
               class="btn btn-ghost btn-circle"
               role="button"
               tabindex="0"
@@ -5882,6 +5913,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
               method="dialog"
             >
               <button
+                aria-label="Close modal"
                 class="btn-close absolute right-4 top-4"
               >
                 <svg
@@ -5924,6 +5956,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
             method="dialog"
           >
             <button
+              aria-label="Close modal"
               class="btn-close absolute right-4 top-4"
             >
               <svg
@@ -5963,6 +5996,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
           class="dropdown justify-start min-w-12"
         >
           <div
+            aria-label="Navigation menu"
             class="btn btn-ghost btn-circle"
             role="button"
             tabindex="0"
@@ -6567,6 +6601,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
             method="dialog"
           >
             <button
+              aria-label="Close modal"
               class="btn-close absolute right-4 top-4"
             >
               <svg
@@ -6609,6 +6644,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
           method="dialog"
         >
           <button
+            aria-label="Close modal"
             class="btn-close absolute right-4 top-4"
           >
             <svg

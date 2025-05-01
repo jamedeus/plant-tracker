@@ -64,7 +64,10 @@ const EventButtons = memo(function EventButtons() {
                 />
             </span>
             <div className="mx-auto">
-                <DatetimeInput inputRef={eventTimeInput} />
+                <DatetimeInput
+                    inputRef={eventTimeInput}
+                    ariaLabel="New event timestamp"
+                />
             </div>
             <div className="flex mx-auto">
                 <button

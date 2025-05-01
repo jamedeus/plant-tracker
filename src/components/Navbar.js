@@ -4,7 +4,12 @@ import PropTypes from 'prop-types';
 // Button with icon, used for dropdown and hidden placeholder on right side
 const DropdownButton = memo(function DropdownButton() {
     return (
-        <div tabIndex={0} role="button" className="btn btn-ghost btn-circle">
+        <div
+            tabIndex={0}
+            role="button"
+            className="btn btn-ghost btn-circle"
+            aria-label="Navigation menu"
+        >
             <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className="size-5"

@@ -35,6 +35,7 @@ exports[`App matches snapshot when changing group QR code 1`] = `
             class="dropdown justify-start min-w-12"
           >
             <div
+              aria-label="Navigation menu"
               class="btn btn-ghost btn-circle"
               role="button"
               tabindex="0"
@@ -198,6 +199,7 @@ exports[`App matches snapshot when changing group QR code 1`] = `
             method="dialog"
           >
             <button
+              aria-label="Close modal"
               class="btn-close absolute right-4 top-4"
             >
               <svg
@@ -237,6 +239,7 @@ exports[`App matches snapshot when changing group QR code 1`] = `
           class="dropdown justify-start min-w-12"
         >
           <div
+            aria-label="Navigation menu"
             class="btn btn-ghost btn-circle"
             role="button"
             tabindex="0"
@@ -400,6 +403,7 @@ exports[`App matches snapshot when changing group QR code 1`] = `
           method="dialog"
         >
           <button
+            aria-label="Close modal"
             class="btn-close absolute right-4 top-4"
           >
             <svg
@@ -516,6 +520,7 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
             class="dropdown justify-start min-w-12"
           >
             <div
+              aria-label="Navigation menu"
               class="btn btn-ghost btn-circle"
               role="button"
               tabindex="0"
@@ -715,6 +720,7 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
             method="dialog"
           >
             <button
+              aria-label="Close modal"
               class="btn-close absolute right-4 top-4"
             >
               <svg
@@ -754,6 +760,7 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
           class="dropdown justify-start min-w-12"
         >
           <div
+            aria-label="Navigation menu"
             class="btn btn-ghost btn-circle"
             role="button"
             tabindex="0"
@@ -953,6 +960,7 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
           method="dialog"
         >
           <button
+            aria-label="Close modal"
             class="btn-close absolute right-4 top-4"
           >
             <svg

@@ -39,7 +39,10 @@ const Modal = forwardRef(function Modal({ title, children, className='', onClose
         <dialog className="modal" ref={dialogRef} onClose={onClose}>
             <div className={`modal-box text-center flex flex-col pt-4 ${className}`}>
                 <form method="dialog">
-                    <button className="btn-close absolute right-4 top-4">
+                    <button
+                        className="btn-close absolute right-4 top-4"
+                        aria-label="Close modal"
+                    >
                         <CloseButtonIcon />
                     </button>
                 </form>
