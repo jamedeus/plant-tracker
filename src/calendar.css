@@ -48,8 +48,9 @@
 /* Constant tile size (prevent rows with no events from being shorter) */
 /* Tile font tweaks (larger, weekends same color, responsive colors) */
 /* Remove horizontal padding so dots aren't squished when all 4 present */
+/* Flex col + items-center prevents text alignment change when no dots */
 .react-calendar__tile {
-    @apply size-12 text-sm font-medium px-0;
+    @apply size-12 text-sm font-medium px-0 flex flex-col items-center;
 }
 
 .react-calendar__month-view__days__day--weekend {

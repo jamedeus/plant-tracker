@@ -23,12 +23,9 @@ const EventCalendar = memo(function EventCalendar() {
     const renderDots = (date) => {
         const dateKey = date.toISOString().split('T')[0];
         const dateEvents = calendarDays[dateKey];
-        // If no events return empty div (consistent alignment)
+        // Don't add dots if no events
         if (!dateEvents) {
-            return (
-                <div className="dots">
-                </div>
-            );
+            return;
         }
         // Return div containing 1 span for each event on day
         return (
