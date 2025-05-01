@@ -173,12 +173,9 @@ describe('App', () => {
             })
         }));
 
-        // Get reference to plants column
-        const plantsCol = app.getByText("Plants (3)").closest('.section');
-
         // Click Select plants tab, select first plant, click water
         await user.click(app.getByRole("tab", {name: "Select plants"}));
-        await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.getByLabelText('Select Test Plant'));
         await user.click(app.getByRole("button", {name: "Water"}));
 
         // Confirm correct data posted to /bulk_add_plant_events endpoint
@@ -209,12 +206,9 @@ describe('App', () => {
             })
         }));
 
-        // Get reference to plants column
-        const plantsCol = app.getByText("Plants (3)").closest('.section');
-
         // Click Select plants tab, select third plant, click fertilize
         await user.click(app.getByRole("tab", {name: "Select plants"}));
-        await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[2]);
+        await user.click(app.getByLabelText('Select Newest plant'));
         await user.click(app.getByRole("button", {name: "Fertilize"}));
 
         // Confirm correct data posted to /bulk_add_plant_events endpoint
@@ -270,11 +264,11 @@ describe('App', () => {
         expect(plantOptions.children.length).toBe(2);
 
         // Click the second option twice (unselect, should not be in payload)
-        await user.click(modal.querySelectorAll('label.cursor-pointer')[1]);
-        await user.click(modal.querySelectorAll('label.cursor-pointer')[1]);
+        await user.click(app.getByLabelText('Select Third test plant'));
+        await user.click(app.getByLabelText('Select Third test plant'));
 
         // Select the first plant option, click Add button
-        await user.click(modal.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.getByLabelText('Select Another test plant'));
         await user.click(app.getByRole('button', {name: 'Add'}));
 
         // Confirm correct data posted to /bulk_add_plants_to_group endpoint
@@ -331,7 +325,7 @@ describe('App', () => {
         expect(floatingFooter.classList).toContain('floating-footer-visible');
 
         // Select the first plant option, click Remove button
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.getByLabelText('Select Test Plant'));
         await user.click(app.getByRole('button', {name: 'Remove'}));
 
         // Confirm correct data posted to /bulk_remove_plants_from_group endpoint
@@ -390,7 +384,7 @@ describe('App', () => {
 
         // Click remove plants option, delete Newest plant
         await user.click(app.getByTestId("remove_plants_option"));
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.getByLabelText('Select Test Plant'));
         await user.click(app.getByRole('button', {name: 'Remove'}));
         expect(global.fetch).toHaveBeenCalled();
 

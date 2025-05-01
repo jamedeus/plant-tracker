@@ -84,8 +84,7 @@ describe('App', () => {
         await user.click(app.getByTestId("add_plants_option"));
 
         // Simulate user selecting first plant in modal and clicking add
-        const addPlantsModal = app.getByText("Add Plants").closest(".modal-box");
-        await user.click(addPlantsModal.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.getByLabelText('Select Another test plant'));
         await user.click(app.getByRole('button', {name: 'Add'}));
 
         // Confirm modal appeared with arbitrary error text
@@ -108,7 +107,7 @@ describe('App', () => {
         await user.click(app.getByTestId("remove_plants_option"));
 
         // Simulate user selecting first plant and clicking remove
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.getByLabelText('Select Test Plant'));
         await user.click(app.getByRole('button', {name: 'Remove'}));
 
         // Confirm modal appeared with arbitrary error text

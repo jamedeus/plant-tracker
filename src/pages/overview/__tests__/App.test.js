@@ -83,7 +83,7 @@ describe('App', () => {
 
         // Click edit option, click first checkbox (plant)
         await user.click(app.getByText("Edit"));
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.getByLabelText('Select Test Plant'));
 
         // Click delete button in floating div
         await user.click(app.getByText('Delete'));
@@ -110,7 +110,7 @@ describe('App', () => {
 
         // Click edit option, click first checkbox (plant)
         await user.click(app.getByText("Edit"));
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.getByLabelText('Select Test Plant'));
 
         // Click archive button in floating div
         await user.click(app.getByText('Archive'));
@@ -138,8 +138,7 @@ describe('App', () => {
 
         // Click edit option, select first group checkbox
         await user.click(app.getByText("Edit"));
-        const groupsCol = app.getByText('Groups (2)').closest('.section');
-        await user.click(groupsCol.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.getByLabelText('Select Test group'));
 
         // Click delete button in floating div
         await user.click(app.getByText('Delete'));
@@ -166,8 +165,7 @@ describe('App', () => {
 
         // Click edit option, select first group checkbox
         await user.click(app.getByText("Edit"));
-        const groupsCol = app.getByText('Groups (2)').closest('.section');
-        await user.click(groupsCol.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.getByLabelText('Select Test group'));
 
         // Click archive button in floating div
         await user.click(app.getByText('Archive'));
@@ -201,7 +199,7 @@ describe('App', () => {
 
         // Click edit option, click first checkbox, click delete button
         await user.click(app.getByText("Edit"));
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.getByLabelText('Select Test Plant'));
         await user.click(app.getByText('Delete'));
 
         // Confirm error modal appeared
@@ -228,7 +226,7 @@ describe('App', () => {
 
         // Click edit option, click first checkbox, click archive button
         await user.click(app.getByText("Edit"));
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.getByLabelText('Select Test Plant'));
         await user.click(app.getByText('Archive'));
 
         // Confirm error modal appeared
@@ -255,8 +253,8 @@ describe('App', () => {
 
         // Click edit option, delete all plants
         await user.click(app.getByText("Edit"));
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[1]);
+        await user.click(app.getByLabelText('Select Test Plant'));
+        await user.click(app.getByLabelText('Select Second Test Plant'));
         await user.click(app.getByText('Delete'));
 
         // Confirm edit option still exists
@@ -276,8 +274,8 @@ describe('App', () => {
 
         // Click edit option again, delete all groups
         await user.click(app.getByText("Edit"));
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[1]);
+        await user.click(app.getByLabelText('Select Test group'));
+        await user.click(app.getByLabelText('Select Second Test group'));
         await user.click(app.getByText('Delete'));
 
         // Confirm edit option no longer exists
@@ -302,8 +300,8 @@ describe('App', () => {
 
         // Click edit option, archive all groups
         await user.click(app.getByText("Edit"));
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[2]);
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[3]);
+        await user.click(app.getByLabelText('Select Test group'));
+        await user.click(app.getByLabelText('Select Second Test group'));
         await user.click(app.getByText('Archive'));
 
         // Confirm edit option still exists
@@ -323,8 +321,8 @@ describe('App', () => {
 
         // Click edit option again, archive all plants
         await user.click(app.getByText("Edit"));
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[1]);
+        await user.click(app.getByLabelText('Select Test Plant'));
+        await user.click(app.getByLabelText('Select Second Test Plant'));
         await user.click(app.getByText('Archive'));
 
         // Confirm edit option no longer exists

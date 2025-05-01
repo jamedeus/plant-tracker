@@ -121,14 +121,11 @@ describe('App', () => {
             })
         }));
 
-        // Get reference to plants column
-        const plantsCol = app.getByText("Plants (3)").closest('.section');
-
         // Click Select plants tab, select all plants, click water
         await user.click(app.getByRole("tab", {name: "Select plants"}));
-        await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[0]);
-        await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[1]);
-        await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[2]);
+        await user.click(app.getByLabelText('Select Test Plant'));
+        await user.click(app.getByLabelText('Select node'));
+        await user.click(app.getByLabelText('Select Newest plant'));
         await user.click(app.getByRole("button", {name: "Water"}));
 
         // Confirm payload only contains UUIDs of the first and third plants
@@ -165,9 +162,8 @@ describe('App', () => {
         // Click Add plants dropdown option
         await user.click(app.getByTestId("add_plants_option"));
 
-        // Get reference to modal, select first plant option, click add button
-        const addPlantsModal = app.getByText("Add Plants").closest(".modal-box");
-        await user.click(addPlantsModal.querySelectorAll('label.cursor-pointer')[0]);
+        // Select first plant option in modal, click add button
+        await user.click(app.getByLabelText('Select Another test plant'));
         await user.click(app.getByRole('button', {name: 'Add'}));
 
         // Confirm payload contains UUID of first plant
@@ -229,7 +225,7 @@ describe('App', () => {
         await user.click(app.getByTestId("remove_plants_option"));
 
         // Select first plant option, click Remove button
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.getByLabelText('Select Test Plant'));
         await user.click(app.getByRole('button', {name: 'Remove'}));
 
         // Confirm correct data posted to /bulk_remove_plants_from_group endpoint
@@ -267,14 +263,13 @@ describe('App', () => {
         // Click Select plants tab to show checkboxes, water button
         await user.click(app.getByRole("tab", {name: "Select plants"}));
         // Select the first and third plants (not archived)
-        const plantsCol = app.getByText("Plants (3)").closest('.section');
-        await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[0]);
-        await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[2]);
+        await user.click(app.getByLabelText('Select Test Plant'));
+        await user.click(app.getByLabelText('Select Newest plant'));
 
         // Click Remove plants dropdown option, select first plant card
         // (RemovePlantsModal was removed, now selected from PlantsCol)
         await user.click(app.getByTestId("remove_plants_option"));
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.getByLabelText('Select Test Plant'));
 
         // Mock fetch function to return expected response, click Remove button
         global.fetch = jest.fn(() => Promise.resolve({
@@ -354,7 +349,7 @@ describe('App', () => {
         expect(within(modal).getAllByText("Another test plant").length).toBe(1);
 
         // Select "Another test plant" option, click Add button
-        await user.click(modal.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.getByLabelText('Select Another test plant'));
         await user.click(app.getByRole('button', {name: 'Add'}));
 
         // Mock fetch function to return expected response when "Another test
@@ -385,7 +380,7 @@ describe('App', () => {
         await user.click(app.getByTestId("remove_plants_option"));
 
         // Select the first plant option, click Remove button
-        await user.click(app.container.querySelectorAll('label.cursor-pointer')[3]);
+        await user.click(app.getByLabelText('Select Another test plant'));
         await user.click(app.getByRole('button', {name: 'Remove'}));
 
         // Confirm AddPlantsModal does not contain a duplicate option

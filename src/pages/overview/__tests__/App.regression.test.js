@@ -79,10 +79,8 @@ describe('App', () => {
 
         // Click edit option, select first plant and first group checkboxes
         await user.click(app.getByText("Edit"));
-        const plantsCol = app.getByText('Plants (2)').closest('.section');
-        await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[0]);
-        const groupsCol = app.getByText('Groups (2)').closest('.section');
-        await user.click(groupsCol.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.getByLabelText('Select Test Plant'));
+        await user.click(app.getByLabelText('Select Test group'));
 
         // Click delete button in floating div
         await user.click(app.getByText('Delete'));
@@ -130,10 +128,8 @@ describe('App', () => {
 
         // Click edit option, select first plant and first group checkboxes
         await user.click(app.getByText("Edit"));
-        const plantsCol = app.getByText('Plants (2)').closest('.section');
-        await user.click(plantsCol.querySelectorAll('label.cursor-pointer')[0]);
-        const groupsCol = app.getByText('Groups (2)').closest('.section');
-        await user.click(groupsCol.querySelectorAll('label.cursor-pointer')[0]);
+        await user.click(app.getByLabelText('Select Test Plant'));
+        await user.click(app.getByLabelText('Select Test group'));
 
         // Click archive button in floating div
         await user.click(app.getByText('Archive'));
