@@ -58,6 +58,7 @@ const UserDetails = memo(function UserDetails() {
                 <input
                     name="first_name"
                     type="text"
+                    aria-label="First name input"
                     className="input w-full input-bordered"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
@@ -70,6 +71,7 @@ const UserDetails = memo(function UserDetails() {
                 <input
                     name="last_name"
                     type="text"
+                    aria-label="Last name input"
                     className="input w-full input-bordered"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
@@ -83,6 +85,7 @@ const UserDetails = memo(function UserDetails() {
                     name="email"
                     type="text"
                     autoCapitalize="off"
+                    aria-label="Email address input"
                     className="input w-full input-bordered"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -250,7 +253,12 @@ const ChangePassword = memo(function ChangePassword() {
 const Section = ({ title, open=false, children }) => {
     return (
         <div className="collapse collapse-arrow bg-base-200" tabIndex={0}>
-            <input type="radio" name="my-accordion-2" defaultChecked={open} />
+            <input
+                type="radio"
+                name="my-accordion-2"
+                defaultChecked={open}
+                aria-label={`Show ${title} form`}
+            />
             <div className="collapse-title text-xl font-medium text-center p-4">
                 {title}
             </div>

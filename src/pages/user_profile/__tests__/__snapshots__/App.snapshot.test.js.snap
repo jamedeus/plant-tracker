@@ -100,6 +100,7 @@ exports[`App matches snapshot 1`] = `
             tabindex="0"
           >
             <input
+              aria-label="Show Details form"
               checked=""
               name="my-accordion-2"
               type="radio"
@@ -124,6 +125,7 @@ exports[`App matches snapshot 1`] = `
                     First Name:
                   </div>
                   <input
+                    aria-label="First name input"
                     class="input w-full input-bordered"
                     data-testid="first_name_input"
                     name="first_name"
@@ -136,6 +138,7 @@ exports[`App matches snapshot 1`] = `
                     Last Name:
                   </div>
                   <input
+                    aria-label="Last name input"
                     class="input w-full input-bordered"
                     data-testid="last_name_input"
                     name="last_name"
@@ -148,6 +151,7 @@ exports[`App matches snapshot 1`] = `
                     Email:
                   </div>
                   <input
+                    aria-label="Email address input"
                     autocapitalize="off"
                     class="input w-full input-bordered"
                     data-testid="email_input"
@@ -194,6 +198,7 @@ exports[`App matches snapshot 1`] = `
             tabindex="0"
           >
             <input
+              aria-label="Show Change Password form"
               name="my-accordion-2"
               type="radio"
             />
@@ -410,6 +415,7 @@ exports[`App matches snapshot 1`] = `
           tabindex="0"
         >
           <input
+            aria-label="Show Details form"
             checked=""
             name="my-accordion-2"
             type="radio"
@@ -434,6 +440,7 @@ exports[`App matches snapshot 1`] = `
                   First Name:
                 </div>
                 <input
+                  aria-label="First name input"
                   class="input w-full input-bordered"
                   data-testid="first_name_input"
                   name="first_name"
@@ -446,6 +453,7 @@ exports[`App matches snapshot 1`] = `
                   Last Name:
                 </div>
                 <input
+                  aria-label="Last name input"
                   class="input w-full input-bordered"
                   data-testid="last_name_input"
                   name="last_name"
@@ -458,6 +466,7 @@ exports[`App matches snapshot 1`] = `
                   Email:
                 </div>
                 <input
+                  aria-label="Email address input"
                   autocapitalize="off"
                   class="input w-full input-bordered"
                   data-testid="email_input"
@@ -504,6 +513,7 @@ exports[`App matches snapshot 1`] = `
           tabindex="0"
         >
           <input
+            aria-label="Show Change Password form"
             name="my-accordion-2"
             type="radio"
           />

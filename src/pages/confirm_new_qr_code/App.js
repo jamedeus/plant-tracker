@@ -9,7 +9,7 @@ import { openErrorModal } from 'src/components/ErrorModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
 
-const Layout = ({ type, thumbnailUrl, handleConfirm }) => {
+const Layout = ({ type, thumbnailUrl, thumbnailAltText, handleConfirm }) => {
     return (
         <div className="flex flex-col gap-8 text-center my-auto">
             <p className="text-lg font-bold">
@@ -20,6 +20,7 @@ const Layout = ({ type, thumbnailUrl, handleConfirm }) => {
                     <img
                         className="max-h-[50vh] rounded-xl object-contain"
                         src={thumbnailUrl}
+                        alt={thumbnailAltText}
                     />
                 </div>
             )}
@@ -52,6 +53,7 @@ Layout.propTypes = {
         'group'
     ]).isRequired,
     thumbnailUrl: PropTypes.string,
+    thumbnailAltText: PropTypes.string,
     handleConfirm: PropTypes.func.isRequired
 };
 
@@ -124,6 +126,7 @@ function App() {
             <Layout
                 type={type}
                 thumbnailUrl={instance.thumbnail}
+                thumbnailAltText={`${instance.display_name} photo`}
                 handleConfirm={handleConfirm}
             />
         </div>

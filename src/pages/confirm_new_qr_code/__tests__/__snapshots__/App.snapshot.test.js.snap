@@ -658,6 +658,7 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
             class="mx-auto p-4 bg-base-200 rounded-3xl"
           >
             <img
+              alt="Test Plant photo"
               class="max-h-[50vh] rounded-xl object-contain"
               src="/media/thumbnails/photo_thumb.jpg"
             />
@@ -898,6 +899,7 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
           class="mx-auto p-4 bg-base-200 rounded-3xl"
         >
           <img
+            alt="Test Plant photo"
             class="max-h-[50vh] rounded-xl object-contain"
             src="/media/thumbnails/photo_thumb.jpg"
           />
