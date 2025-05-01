@@ -2,6 +2,8 @@
 
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 const isProduction = process.env.NODE_ENV == 'production';
 
@@ -9,6 +11,15 @@ const isProduction = process.env.NODE_ENV == 'production';
 const config = {
     optimization: {
         minimize: isProduction,
+        minimizer: [
+            // terser & cssnano in parallel
+            new TerserPlugin({ extractComments: false, parallel: true }),
+            new CssMinimizerPlugin({
+                minimizerOptions: {
+                    preset: ['default', { discardComments: { removeAll: true } }],
+                },
+            }),
+        ],
         splitChunks: {
             cacheGroups: {
                 // Move react + react-dom from page bundles to react-common.js
@@ -17,7 +28,7 @@ const config = {
                     name: 'react-common',
                     chunks: 'all',
                     enforce: true,
-                },
+                }
             },
         },
     },
