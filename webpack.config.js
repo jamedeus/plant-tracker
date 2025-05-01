@@ -7,6 +7,20 @@ const isProduction = process.env.NODE_ENV == 'production';
 
 
 const config = {
+    optimization: {
+        minimize: isProduction,
+        splitChunks: {
+            cacheGroups: {
+                // Move react + react-dom from page bundles to react-common.js
+                reactCommon: {
+                    test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+                    name: 'react-common',
+                    chunks: 'all',
+                    enforce: true,
+                },
+            },
+        },
+    },
     entry: {
         login: './src/pages/login/index.js',
         user_profile: './src/pages/user_profile/index.js',
