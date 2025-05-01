@@ -57,7 +57,6 @@ const LoginForm = () => {
                     type="text"
                     autoFocus
                     autoCapitalize="off"
-                    tabIndex={1}
                     className={clsx(
                         "input w-full input-bordered",
                         showError && "input-error"
@@ -77,7 +76,6 @@ const LoginForm = () => {
                 <input
                     name="password"
                     type="password"
-                    tabIndex={1}
                     className={clsx(
                         "input w-full input-bordered",
                         showError && "input-error"
@@ -92,7 +90,6 @@ const LoginForm = () => {
                 className="btn btn-accent mt-6"
                 onClick={(e) => submit(e)}
                 disabled={!formValid}
-                tabIndex={1}
             >
                 Login
             </button>
@@ -165,7 +162,6 @@ const RegisterForm = () => {
                     type="email"
                     autoFocus
                     autoCapitalize="off"
-                    tabIndex={1}
                     className={clsx(
                         "input w-full input-bordered",
                         (showError || showEmailError) && "input-error"
@@ -191,7 +187,6 @@ const RegisterForm = () => {
                     name="username"
                     type="text"
                     autoCapitalize="off"
-                    tabIndex={1}
                     className={clsx(
                         "input w-full input-bordered",
                         (showError || showUsernameError) && "input-error"
@@ -216,7 +211,6 @@ const RegisterForm = () => {
                 <input
                     name="password"
                     type="password"
-                    tabIndex={1}
                     className={clsx(
                         "input w-full input-bordered",
                         (showError || showPasswordError) && "input-error"
@@ -238,7 +232,6 @@ const RegisterForm = () => {
                 <input
                     name="first_name"
                     type="text"
-                    tabIndex={1}
                     className="input w-full input-bordered"
                 />
             </label>
@@ -249,7 +242,6 @@ const RegisterForm = () => {
                 <input
                     name="last_name"
                     type="text"
-                    tabIndex={1}
                     className="input w-full input-bordered"
                 />
             </label>
@@ -262,7 +254,6 @@ const RegisterForm = () => {
                 className="btn btn-accent mt-6"
                 onClick={(e) => submit(e)}
                 disabled={!formValid}
-                tabIndex={1}
             >
                 Create account
             </button>
@@ -301,7 +292,6 @@ function App() {
                         "transition-all hover:text-white"
                     )}
                     onClick={toggleForm}
-                    tabIndex={1}
                 >
                     {showLoginForm ? "Create account" : "Already have an account?"}
                 </button>

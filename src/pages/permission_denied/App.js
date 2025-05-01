@@ -17,7 +17,7 @@ function App() {
                 {errorMessage}
             </div>
 
-            <a href="/" className='btn btn-accent' tabIndex={1}>
+            <a href="/" className='btn btn-accent'>
                 Go to Overview
             </a>
         </div>

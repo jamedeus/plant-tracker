@@ -58,7 +58,6 @@ const UserDetails = memo(function UserDetails() {
                 <input
                     name="first_name"
                     type="text"
-                    tabIndex={1}
                     className="input w-full input-bordered"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
@@ -71,7 +70,6 @@ const UserDetails = memo(function UserDetails() {
                 <input
                     name="last_name"
                     type="text"
-                    tabIndex={1}
                     className="input w-full input-bordered"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
@@ -85,7 +83,6 @@ const UserDetails = memo(function UserDetails() {
                     name="email"
                     type="text"
                     autoCapitalize="off"
-                    tabIndex={1}
                     className="input w-full input-bordered"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
@@ -110,7 +107,6 @@ const UserDetails = memo(function UserDetails() {
                 className="btn btn-accent mt-4"
                 disabled={submitButtonDisabled}
                 onClick={submit}
-                tabIndex={1}
             >
                 Save Changes
             </button>
@@ -253,7 +249,7 @@ const ChangePassword = memo(function ChangePassword() {
 
 const Section = ({ title, open=false, children }) => {
     return (
-        <div className="collapse collapse-arrow bg-base-200">
+        <div className="collapse collapse-arrow bg-base-200" tabIndex={0}>
             <input type="radio" name="my-accordion-2" defaultChecked={open} />
             <div className="collapse-title text-xl font-medium text-center p-4">
                 {title}
@@ -299,7 +295,6 @@ function App() {
                 <a
                     className="btn btn-outline btn-error mx-4 mb-8"
                     href="/accounts/logout/"
-                    tabIndex={2}
                 >
                     Log Out
                 </a>
