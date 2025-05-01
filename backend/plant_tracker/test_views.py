@@ -99,6 +99,7 @@ class RenderReactAppTests(TestCase):
             json.dumps({
                 'title': 'Mock Title',
                 'js_bundle': 'plant_tracker/mock.js',
+                'css_bundle': 'plant_tracker/mock.css',
                 'state': {
                     'data': 'mock'
                 },
