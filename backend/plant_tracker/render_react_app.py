@@ -16,6 +16,7 @@ def render_react_app(request, title, bundle, state, log_state=True):
     context = {
         'title': title,
         'js_bundle': f'plant_tracker/{bundle}.js',
+        'css_bundle': f'plant_tracker/{bundle}.css',
         'state': state,
         'user_accounts_enabled': not settings.SINGLE_USER_MODE
     }
