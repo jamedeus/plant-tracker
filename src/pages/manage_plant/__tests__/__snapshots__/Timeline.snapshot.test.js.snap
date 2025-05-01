@@ -63,48 +63,39 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
               <div
                 class="btn btn-ghost text-xl font-bold m-1"
                 role="button"
-                tabindex="2"
+                tabindex="0"
               >
                 History
               </div>
               <ul
                 class="dropdown-options w-44"
-                tabindex="2"
+                tabindex="0"
               >
                 <li>
                   <details
                     class="outline-none"
-                    tabindex="2"
                   >
                     <summary>
                       2024
                     </summary>
                     <ul>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           April
                         </button>
                       </li>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           March
                         </button>
                       </li>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           February
                         </button>
                       </li>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           January
                         </button>
                       </li>
@@ -114,93 +105,68 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 <li>
                   <details
                     class="outline-none"
-                    tabindex="2"
                   >
                     <summary>
                       2023
                     </summary>
                     <ul>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           December
                         </button>
                       </li>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           November
                         </button>
                       </li>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           October
                         </button>
                       </li>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           September
                         </button>
                       </li>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           August
                         </button>
                       </li>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           July
                         </button>
                       </li>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           June
                         </button>
                       </li>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           May
                         </button>
                       </li>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           April
                         </button>
                       </li>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           March
                         </button>
                       </li>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           February
                         </button>
                       </li>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           January
                         </button>
                       </li>
@@ -210,16 +176,13 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 <li>
                   <details
                     class="outline-none"
-                    tabindex="2"
                   >
                     <summary>
                       2008
                     </summary>
                     <ul>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           August
                         </button>
                       </li>
@@ -2985,48 +2948,39 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             <div
               class="btn btn-ghost text-xl font-bold m-1"
               role="button"
-              tabindex="2"
+              tabindex="0"
             >
               History
             </div>
             <ul
               class="dropdown-options w-44"
-              tabindex="2"
+              tabindex="0"
             >
               <li>
                 <details
                   class="outline-none"
-                  tabindex="2"
                 >
                   <summary>
                     2024
                   </summary>
                   <ul>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         April
                       </button>
                     </li>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         March
                       </button>
                     </li>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         February
                       </button>
                     </li>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         January
                       </button>
                     </li>
@@ -3036,93 +2990,68 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
               <li>
                 <details
                   class="outline-none"
-                  tabindex="2"
                 >
                   <summary>
                     2023
                   </summary>
                   <ul>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         December
                       </button>
                     </li>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         November
                       </button>
                     </li>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         October
                       </button>
                     </li>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         September
                       </button>
                     </li>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         August
                       </button>
                     </li>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         July
                       </button>
                     </li>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         June
                       </button>
                     </li>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         May
                       </button>
                     </li>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         April
                       </button>
                     </li>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         March
                       </button>
                     </li>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         February
                       </button>
                     </li>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         January
                       </button>
                     </li>
@@ -3132,16 +3061,13 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
               <li>
                 <details
                   class="outline-none"
-                  tabindex="2"
                 >
                   <summary>
                     2008
                   </summary>
                   <ul>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         August
                       </button>
                     </li>
@@ -6004,48 +5930,39 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
               <div
                 class="btn btn-ghost text-xl font-bold m-1"
                 role="button"
-                tabindex="2"
+                tabindex="0"
               >
                 History
               </div>
               <ul
                 class="dropdown-options w-44"
-                tabindex="2"
+                tabindex="0"
               >
                 <li>
                   <details
                     class="outline-none"
-                    tabindex="2"
                   >
                     <summary>
                       2024
                     </summary>
                     <ul>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           April
                         </button>
                       </li>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           March
                         </button>
                       </li>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           February
                         </button>
                       </li>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           January
                         </button>
                       </li>
@@ -6055,93 +5972,68 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                 <li>
                   <details
                     class="outline-none"
-                    tabindex="2"
                   >
                     <summary>
                       2023
                     </summary>
                     <ul>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           December
                         </button>
                       </li>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           November
                         </button>
                       </li>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           October
                         </button>
                       </li>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           September
                         </button>
                       </li>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           August
                         </button>
                       </li>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           July
                         </button>
                       </li>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           June
                         </button>
                       </li>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           May
                         </button>
                       </li>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           April
                         </button>
                       </li>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           March
                         </button>
                       </li>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           February
                         </button>
                       </li>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           January
                         </button>
                       </li>
@@ -6151,16 +6043,13 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                 <li>
                   <details
                     class="outline-none"
-                    tabindex="2"
                   >
                     <summary>
                       2008
                     </summary>
                     <ul>
                       <li>
-                        <button
-                          tabindex="2"
-                        >
+                        <button>
                           August
                         </button>
                       </li>
@@ -6176,7 +6065,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             <div
               class="btn btn-ghost btn-circle"
               role="button"
-              tabindex="1"
+              tabindex="0"
             >
               <svg
                 aria-hidden="true"
@@ -6201,7 +6090,6 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
               <li>
                 <button
                   class="flex justify-end"
-                  tabindex="1"
                 >
                   Add note
                 </button>
@@ -6209,7 +6097,6 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
               <li>
                 <button
                   class="flex justify-end"
-                  tabindex="1"
                 >
                   Add photos
                 </button>
@@ -6217,7 +6104,6 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
               <li>
                 <button
                   class="flex justify-end"
-                  tabindex="1"
                 >
                   Repot plant
                 </button>
@@ -6225,7 +6111,6 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
               <li>
                 <button
                   class="flex justify-end"
-                  tabindex="1"
                 >
                   Delete photos
                 </button>
@@ -6233,7 +6118,6 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
               <li>
                 <button
                   class="flex justify-end"
-                  tabindex="1"
                 >
                   Delete events
                 </button>
@@ -8993,48 +8877,39 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             <div
               class="btn btn-ghost text-xl font-bold m-1"
               role="button"
-              tabindex="2"
+              tabindex="0"
             >
               History
             </div>
             <ul
               class="dropdown-options w-44"
-              tabindex="2"
+              tabindex="0"
             >
               <li>
                 <details
                   class="outline-none"
-                  tabindex="2"
                 >
                   <summary>
                     2024
                   </summary>
                   <ul>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         April
                       </button>
                     </li>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         March
                       </button>
                     </li>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         February
                       </button>
                     </li>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         January
                       </button>
                     </li>
@@ -9044,93 +8919,68 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
               <li>
                 <details
                   class="outline-none"
-                  tabindex="2"
                 >
                   <summary>
                     2023
                   </summary>
                   <ul>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         December
                       </button>
                     </li>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         November
                       </button>
                     </li>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         October
                       </button>
                     </li>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         September
                       </button>
                     </li>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         August
                       </button>
                     </li>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         July
                       </button>
                     </li>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         June
                       </button>
                     </li>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         May
                       </button>
                     </li>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         April
                       </button>
                     </li>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         March
                       </button>
                     </li>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         February
                       </button>
                     </li>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         January
                       </button>
                     </li>
@@ -9140,16 +8990,13 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
               <li>
                 <details
                   class="outline-none"
-                  tabindex="2"
                 >
                   <summary>
                     2008
                   </summary>
                   <ul>
                     <li>
-                      <button
-                        tabindex="2"
-                      >
+                      <button>
                         August
                       </button>
                     </li>
@@ -9165,7 +9012,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           <div
             class="btn btn-ghost btn-circle"
             role="button"
-            tabindex="1"
+            tabindex="0"
           >
             <svg
               aria-hidden="true"
@@ -9190,7 +9037,6 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             <li>
               <button
                 class="flex justify-end"
-                tabindex="1"
               >
                 Add note
               </button>
@@ -9198,7 +9044,6 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             <li>
               <button
                 class="flex justify-end"
-                tabindex="1"
               >
                 Add photos
               </button>
@@ -9206,7 +9051,6 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             <li>
               <button
                 class="flex justify-end"
-                tabindex="1"
               >
                 Repot plant
               </button>
@@ -9214,7 +9058,6 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             <li>
               <button
                 class="flex justify-end"
-                tabindex="1"
               >
                 Delete photos
               </button>
@@ -9222,7 +9065,6 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             <li>
               <button
                 class="flex justify-end"
-                tabindex="1"
               >
                 Delete events
               </button>

@@ -68,21 +68,18 @@ const EventButtons = memo(function EventButtons() {
             </div>
             <div className="flex mx-auto">
                 <button
-                    tabIndex={1}
                     className="btn btn-info m-2"
                     onClick={() => addEvent('water', eventTimeInput.current.value)}
                 >
                     Water
                 </button>
                 <button
-                    tabIndex={1}
                     className="btn btn-success m-2"
                     onClick={() => addEvent('fertilize', eventTimeInput.current.value)}
                 >
                     Fertilize
                 </button>
                 <button
-                    tabIndex={1}
                     className="btn btn-prune m-2"
                     onClick={() => addEvent('prune', eventTimeInput.current.value)}
                 >

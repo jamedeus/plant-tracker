@@ -174,7 +174,6 @@ exports[`App matches snapshot 1`] = `
           <input
             class="input input-bordered my-2"
             step="1"
-            tabindex="1"
             type="datetime-local"
             value="2024-03-01T12:00:00"
           />
@@ -1039,7 +1038,6 @@ exports[`App matches snapshot 1`] = `
         <input
           class="input input-bordered my-2"
           step="1"
-          tabindex="1"
           type="datetime-local"
           value="2024-03-01T12:00:00"
         />

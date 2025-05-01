@@ -87,7 +87,6 @@ function Layout() {
                                 )}
                                 onClick={openDefaultPhotoModal}
                                 title="Change default photo"
-                                tabIndex={0}
                             >
                                 <img
                                     loading="lazy"

@@ -44,13 +44,13 @@ const Title = memo(function Title() {
             <div className="navbar-center mx-auto">
                 <div className="dropdown dropdown-center dropdown-hover">
                     <div
-                        tabIndex={2}
+                        tabIndex={0}
                         role="button"
                         className="btn btn-ghost text-xl font-bold m-1"
                     >
                         History
                     </div>
-                    <ul tabIndex={2} className="dropdown-options w-44">
+                    <ul tabIndex={0} className="dropdown-options w-44">
                         <QuickNavigation />
                     </ul>
                 </div>
@@ -63,7 +63,7 @@ const Title = memo(function Title() {
                 {!archived &&
                     <>
                         <div
-                            tabIndex={1}
+                            tabIndex={0}
                             role="button"
                             className="btn btn-ghost btn-circle"
                         >
@@ -76,35 +76,30 @@ const Title = memo(function Title() {
                             <li><button
                                 className="flex justify-end"
                                 onClick={() => openNoteModal()}
-                                tabIndex={1}
                             >
                                 Add note
                             </button></li>
                             <li><button
                                 className="flex justify-end"
                                 onClick={openPhotoModal}
-                                tabIndex={1}
                             >
                                 Add photos
                             </button></li>
                             <li><button
                                 className="flex justify-end"
                                 onClick={openRepotModal}
-                                tabIndex={1}
                             >
                                 Repot plant
                             </button></li>
                             <li><button
                                 className="flex justify-end"
                                 onClick={openDeletePhotosModal}
-                                tabIndex={1}
                             >
                                 Delete photos
                             </button></li>
                             <li><button
                                 className="flex justify-end"
                                 onClick={openEventHistoryModal}
-                                tabIndex={1}
                             >
                                 Delete events
                             </button></li>
@@ -176,14 +171,13 @@ const QuickNavigationYear = ({ year, months }) => {
                 onMouseOver={open}
                 onFocus={open}
                 onMouseOut={close}
-                tabIndex={2}
                 className="outline-none"
             >
                 <summary>{year}</summary>
                 <ul>
                     {months.map(month => (
                         <li key={month}>
-                            <button onClick={() => jumpTo(`${year}-${month}`)} tabIndex={2}>
+                            <button onClick={() => jumpTo(`${year}-${month}`)}>
                                 {monthNumToName(month)}
                             </button>
                         </li>

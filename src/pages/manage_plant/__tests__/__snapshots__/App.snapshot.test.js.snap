@@ -149,7 +149,6 @@ exports[`App matches snapshot 1`] = `
                       </div>
                       <button
                         class="relative mx-auto cursor-pointer focus:outline outline-offset-2 rounded-lg"
-                        tabindex="0"
                         title="Change default photo"
                       >
                         <img
@@ -329,7 +328,6 @@ exports[`App matches snapshot 1`] = `
             <input
               class="input input-bordered my-2"
               step="1"
-              tabindex="1"
               type="datetime-local"
               value="2024-03-01T12:00:00"
             />
@@ -339,19 +337,16 @@ exports[`App matches snapshot 1`] = `
           >
             <button
               class="btn btn-info m-2"
-              tabindex="1"
             >
               Water
             </button>
             <button
               class="btn btn-success m-2"
-              tabindex="1"
             >
               Fertilize
             </button>
             <button
               class="btn btn-prune m-2"
-              tabindex="1"
             >
               Prune
             </button>
@@ -1162,34 +1157,29 @@ exports[`App matches snapshot 1`] = `
                   <div
                     class="btn btn-ghost text-xl font-bold m-1"
                     role="button"
-                    tabindex="2"
+                    tabindex="0"
                   >
                     History
                   </div>
                   <ul
                     class="dropdown-options w-44"
-                    tabindex="2"
+                    tabindex="0"
                   >
                     <li>
                       <details
                         class="outline-none"
-                        tabindex="2"
                       >
                         <summary>
                           2024
                         </summary>
                         <ul>
                           <li>
-                            <button
-                              tabindex="2"
-                            >
+                            <button>
                               March
                             </button>
                           </li>
                           <li>
-                            <button
-                              tabindex="2"
-                            >
+                            <button>
                               February
                             </button>
                           </li>
@@ -1205,7 +1195,7 @@ exports[`App matches snapshot 1`] = `
                 <div
                   class="btn btn-ghost btn-circle"
                   role="button"
-                  tabindex="1"
+                  tabindex="0"
                 >
                   <svg
                     aria-hidden="true"
@@ -1230,7 +1220,6 @@ exports[`App matches snapshot 1`] = `
                   <li>
                     <button
                       class="flex justify-end"
-                      tabindex="1"
                     >
                       Add note
                     </button>
@@ -1238,7 +1227,6 @@ exports[`App matches snapshot 1`] = `
                   <li>
                     <button
                       class="flex justify-end"
-                      tabindex="1"
                     >
                       Add photos
                     </button>
@@ -1246,7 +1234,6 @@ exports[`App matches snapshot 1`] = `
                   <li>
                     <button
                       class="flex justify-end"
-                      tabindex="1"
                     >
                       Repot plant
                     </button>
@@ -1254,7 +1241,6 @@ exports[`App matches snapshot 1`] = `
                   <li>
                     <button
                       class="flex justify-end"
-                      tabindex="1"
                     >
                       Delete photos
                     </button>
@@ -1262,7 +1248,6 @@ exports[`App matches snapshot 1`] = `
                   <li>
                     <button
                       class="flex justify-end"
-                      tabindex="1"
                     >
                       Delete events
                     </button>
@@ -2197,7 +2182,6 @@ exports[`App matches snapshot 1`] = `
                     </div>
                     <button
                       class="relative mx-auto cursor-pointer focus:outline outline-offset-2 rounded-lg"
-                      tabindex="0"
                       title="Change default photo"
                     >
                       <img
@@ -2377,7 +2361,6 @@ exports[`App matches snapshot 1`] = `
           <input
             class="input input-bordered my-2"
             step="1"
-            tabindex="1"
             type="datetime-local"
             value="2024-03-01T12:00:00"
           />
@@ -2387,19 +2370,16 @@ exports[`App matches snapshot 1`] = `
         >
           <button
             class="btn btn-info m-2"
-            tabindex="1"
           >
             Water
           </button>
           <button
             class="btn btn-success m-2"
-            tabindex="1"
           >
             Fertilize
           </button>
           <button
             class="btn btn-prune m-2"
-            tabindex="1"
           >
             Prune
           </button>
@@ -3210,34 +3190,29 @@ exports[`App matches snapshot 1`] = `
                 <div
                   class="btn btn-ghost text-xl font-bold m-1"
                   role="button"
-                  tabindex="2"
+                  tabindex="0"
                 >
                   History
                 </div>
                 <ul
                   class="dropdown-options w-44"
-                  tabindex="2"
+                  tabindex="0"
                 >
                   <li>
                     <details
                       class="outline-none"
-                      tabindex="2"
                     >
                       <summary>
                         2024
                       </summary>
                       <ul>
                         <li>
-                          <button
-                            tabindex="2"
-                          >
+                          <button>
                             March
                           </button>
                         </li>
                         <li>
-                          <button
-                            tabindex="2"
-                          >
+                          <button>
                             February
                           </button>
                         </li>
@@ -3253,7 +3228,7 @@ exports[`App matches snapshot 1`] = `
               <div
                 class="btn btn-ghost btn-circle"
                 role="button"
-                tabindex="1"
+                tabindex="0"
               >
                 <svg
                   aria-hidden="true"
@@ -3278,7 +3253,6 @@ exports[`App matches snapshot 1`] = `
                 <li>
                   <button
                     class="flex justify-end"
-                    tabindex="1"
                   >
                     Add note
                   </button>
@@ -3286,7 +3260,6 @@ exports[`App matches snapshot 1`] = `
                 <li>
                   <button
                     class="flex justify-end"
-                    tabindex="1"
                   >
                     Add photos
                   </button>
@@ -3294,7 +3267,6 @@ exports[`App matches snapshot 1`] = `
                 <li>
                   <button
                     class="flex justify-end"
-                    tabindex="1"
                   >
                     Repot plant
                   </button>
@@ -3302,7 +3274,6 @@ exports[`App matches snapshot 1`] = `
                 <li>
                   <button
                     class="flex justify-end"
-                    tabindex="1"
                   >
                     Delete photos
                   </button>
@@ -3310,7 +3281,6 @@ exports[`App matches snapshot 1`] = `
                 <li>
                   <button
                     class="flex justify-end"
-                    tabindex="1"
                   >
                     Delete events
                   </button>
@@ -4330,7 +4300,6 @@ exports[`App matches snapshot when plant is archived 1`] = `
                       </div>
                       <button
                         class="relative mx-auto cursor-pointer focus:outline outline-offset-2 rounded-lg"
-                        tabindex="0"
                         title="Change default photo"
                       >
                         <img
@@ -5293,34 +5262,29 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   <div
                     class="btn btn-ghost text-xl font-bold m-1"
                     role="button"
-                    tabindex="2"
+                    tabindex="0"
                   >
                     History
                   </div>
                   <ul
                     class="dropdown-options w-44"
-                    tabindex="2"
+                    tabindex="0"
                   >
                     <li>
                       <details
                         class="outline-none"
-                        tabindex="2"
                       >
                         <summary>
                           2024
                         </summary>
                         <ul>
                           <li>
-                            <button
-                              tabindex="2"
-                            >
+                            <button>
                               March
                             </button>
                           </li>
                           <li>
-                            <button
-                              tabindex="2"
-                            >
+                            <button>
                               February
                             </button>
                           </li>
@@ -6249,7 +6213,6 @@ exports[`App matches snapshot when plant is archived 1`] = `
                     </div>
                     <button
                       class="relative mx-auto cursor-pointer focus:outline outline-offset-2 rounded-lg"
-                      tabindex="0"
                       title="Change default photo"
                     >
                       <img
@@ -7212,34 +7175,29 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 <div
                   class="btn btn-ghost text-xl font-bold m-1"
                   role="button"
-                  tabindex="2"
+                  tabindex="0"
                 >
                   History
                 </div>
                 <ul
                   class="dropdown-options w-44"
-                  tabindex="2"
+                  tabindex="0"
                 >
                   <li>
                     <details
                       class="outline-none"
-                      tabindex="2"
                     >
                       <summary>
                         2024
                       </summary>
                       <ul>
                         <li>
-                          <button
-                            tabindex="2"
-                          >
+                          <button>
                             March
                           </button>
                         </li>
                         <li>
-                          <button
-                            tabindex="2"
-                          >
+                          <button>
                             February
                           </button>
                         </li>
