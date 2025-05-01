@@ -24,9 +24,7 @@ export const Toast = () => {
     // Takes string, color (from colorMap), and timeout milliseconds
     showToast = (message, color, timeout) => {
         // Clear old timer if running
-        if (timerRef.current) {
-            clearTimeout(timerRef.current);
-        }
+        clearTimeout(timerRef.current);
 
         // Set color and fade states, then message state (mounts Toast)
         setColor(color);

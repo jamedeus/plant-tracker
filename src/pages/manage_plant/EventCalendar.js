@@ -41,12 +41,10 @@ const EventCalendar = memo(function EventCalendar() {
     const handleClickDay = (value) => {
         const t = DateTime.fromISO(value.toISOString()).toFormat('yyyy-MM-dd');
         const timelineRow = document.querySelector(`[data-date="${t}"]`);
-        if (timelineRow) {
-            timelineRow.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-            });
-        }
+        timelineRow?.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
     };
 
     return (
