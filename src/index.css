@@ -1,0 +1,66 @@
+@import 'tailwindcss';
+@config "../tailwind.config.cjs";
+@plugin "daisyui" {
+    themes: light --default, dark --prefersdark;
+}
+
+/* TODO this is necessary to allow daisyui to override the custom colors added
+   to tailwind.config.cjs theme section, but I do not understand why. Without
+   it the daisyui theme will apply to every color except these (they inherit).
+
+   If @config "../tailwind.config.cjs"; above is removed the build will fail
+   because of bg-prune in one of the classes in this file. This results in
+   the whole app falling back to the default daisyui colors since the ones
+   below are never parsed.
+*/
+@theme {
+    --color-prune: #FFF;
+    --color-repot: #FFF;
+}
+
+@plugin "daisyui/theme" {
+    name: "dark";
+    prefersdark: true;
+    --color-primary: oklch(0.6569 0.196 275.75/1);
+    --color-accent: oklch(0.7676 0.184 183.61/1);
+    --color-neutral: oklch(0.313815 0.021108 254.139175/1);
+    --color-error: oklch(0.7176 0.221 22.18/1);
+    --color-info: oklch(0.7206 0.191 231.6/1);
+    --color-success: oklch(64.8% 0.150 160/1);
+    --color-prune: oklch(0.85 0.1265 66.29);
+    --color-repot: oklch(0.38 0.0709 54.66);
+}
+@plugin "daisyui/theme" {
+    name: "light";
+    default: true;
+    --color-primary: oklch(0.4912 0.3096 275.75/1);
+    --color-accent: oklch(0.7676 0.184 183.61/1);
+    --color-base-100: #F2F2F2;
+    --color-base-200: #E5E6E6;
+    --color-base-300: #dddddd;
+    --color-neutral: #FFFFFF;
+    --color-neutral-content: #000;
+    --color-error: oklch(0.7176 0.221 22.18/1);
+    --color-info: oklch(0.7206 0.191 231.6/1);
+    --color-success: oklch(64.8% 0.150 160/1);
+    --color-prune: oklch(0.83 0.155 66.29);
+    --color-repot: oklch(0.42 0.081 50.5);
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}

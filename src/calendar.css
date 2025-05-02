@@ -1,7 +1,5 @@
+@import "./index.css";
 @import '../node_modules/react-calendar/dist/Calendar.css';
-@import 'tailwindcss';
-@config "../tailwind.config.cjs";
-@plugin 'daisyui';
 
 /* Rounded corners, responsive background color, slight padding */
 .react-calendar {
@@ -84,9 +82,9 @@
     color: color-mix(in oklab, theme('colors.base-content'), white 70%);
 }
 
-/* Underline + bold current day */
+/* Underline + bold current day, don't change color */
 .react-calendar__tile--now {
-    @apply underline font-bold;
+    @apply bg-inherit text-inherit underline font-bold;
 }
 
 
