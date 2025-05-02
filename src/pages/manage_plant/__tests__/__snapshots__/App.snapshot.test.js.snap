@@ -184,7 +184,7 @@ exports[`App matches snapshot 1`] = `
                         Group
                       </div>
                       <div
-                        class="flex flex-col text-center"
+                        class="flex flex-col text-center items-center"
                       >
                         <a
                           class="font-bold text-lg line-clamp-1 rounded-lg focus:outline outline-2 outline-offset-2"
@@ -2155,7 +2155,7 @@ exports[`App matches snapshot 1`] = `
                       Group
                     </div>
                     <div
-                      class="flex flex-col text-center"
+                      class="flex flex-col text-center items-center"
                     >
                       <a
                         class="font-bold text-lg line-clamp-1 rounded-lg focus:outline outline-2 outline-offset-2"
@@ -4211,7 +4211,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                         Group
                       </div>
                       <div
-                        class="flex flex-col text-center"
+                        class="flex flex-col text-center items-center"
                       >
                         <a
                           class="font-bold text-lg line-clamp-1 rounded-lg focus:outline outline-2 outline-offset-2"
@@ -6060,7 +6060,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                       Group
                     </div>
                     <div
-                      class="flex flex-col text-center"
+                      class="flex flex-col text-center items-center"
                     >
                       <a
                         class="font-bold text-lg line-clamp-1 rounded-lg focus:outline outline-2 outline-offset-2"

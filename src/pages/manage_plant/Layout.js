@@ -116,8 +116,8 @@ function Layout() {
                         Group
                     </div>
                     {/* Group details if in group, add group button if not */}
-                    {plantDetails.group ? (
-                        <div className="flex flex-col text-center">
+                    <div className="flex flex-col text-center items-center">
+                        {plantDetails.group && (
                             <a
                                 className={clsx(
                                     "font-bold text-lg line-clamp-1 rounded-lg",
@@ -127,28 +127,30 @@ function Layout() {
                             >
                                 { plantDetails.group.name }
                             </a>
-                            <div className="flex gap-2 mx-auto mt-2">
+                        )}
+                        <div className="flex gap-2 mx-auto mt-2">
+                            {plantDetails.group ? (
+                                <>
+                                    <IconButton
+                                        onClick={handleRemoveGroup}
+                                        title='Remove plant from group'
+                                        icon={faBan}
+                                    />
+                                    <IconButton
+                                        href={`/manage/${plantDetails.group.uuid}`}
+                                        title='Go to group page'
+                                        icon={faUpRightFromSquare}
+                                    />
+                                </>
+                            ) : (
                                 <IconButton
-                                    onClick={handleRemoveGroup}
-                                    title='Remove plant from group'
-                                    icon={faBan}
+                                    onClick={openGroupModal}
+                                    title='Add plant to group'
+                                    icon={faPlus}
                                 />
-                                <IconButton
-                                    href={`/manage/${plantDetails.group.uuid}`}
-                                    title='Go to group page'
-                                    icon={faUpRightFromSquare}
-                                />
-                            </div>
+                            )}
                         </div>
-                    ) : (
-                        <div className="mx-auto mt-2">
-                            <IconButton
-                                onClick={openGroupModal}
-                                title='Add plant to group'
-                                icon={faPlus}
-                            />
-                        </div>
-                    )}
+                    </div>
                 </div>
                 <div className="divider font-bold">Details</div>
                 <PlantDetails
