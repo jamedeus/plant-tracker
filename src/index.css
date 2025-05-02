@@ -22,7 +22,7 @@
     name: "dark";
     prefersdark: true;
     --color-primary: oklch(0.6569 0.196 275.75/1);
-    --color-accent: oklch(0.7676 0.184 183.61/1);
+    --color-accent: oklch(0.7451 0.167 183.61/1);
     --color-neutral: oklch(0.313815 0.021108 254.139175/1);
     --color-error: oklch(0.7176 0.221 22.18/1);
     --color-info: oklch(0.7206 0.191 231.6/1);
@@ -45,22 +45,4 @@
     --color-success: oklch(64.8% 0.150 160/1);
     --color-prune: oklch(0.83 0.155 66.29);
     --color-repot: oklch(0.42 0.081 50.5);
-}
-
-/*
-  The default border color has changed to `currentcolor` in Tailwind CSS v4,
-  so we've added these compatibility styles to make sure everything still
-  looks the same as it did with Tailwind CSS v3.
-
-  If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
-*/
-@layer base {
-  *,
-  ::after,
-  ::before,
-  ::backdrop,
-  ::file-selector-button {
-    border-color: var(--color-gray-200, currentcolor);
-  }
 }

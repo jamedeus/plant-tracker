@@ -178,7 +178,7 @@ const QuickNavigationYear = ({ year, months }) => {
                 onMouseOver={open}
                 onFocus={open}
                 onMouseOut={close}
-                className="outline-none"
+                className="outline-hidden"
             >
                 <summary>{year}</summary>
                 <ul>

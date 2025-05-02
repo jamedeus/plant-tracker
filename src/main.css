@@ -1,7 +1,7 @@
 @import "./index.css";
 
 .card, .card-collapse {
-    @apply bg-neutral text-neutral-content outline-none!;
+    @apply bg-neutral text-neutral-content outline-hidden!;
 }
 
 .card-body {
@@ -48,11 +48,11 @@
 }
 
 .tab-group {
-    @apply flex space-x-1 rounded-xl bg-neutral p-1;
+    @apply flex gap-1 rounded-xl bg-neutral p-1;
 }
 
 .tab-option {
-    @apply w-full rounded-lg py-2.5 font-semibold focus:outline-hidden;
+    @apply w-full rounded-lg py-2.5 font-semibold focus:outline-hidden cursor-pointer;
 }
 
 .tab-option-selected {
