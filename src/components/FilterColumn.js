@@ -74,7 +74,7 @@ const reducer = (state, action) => {
 const ClearButton = ({ onClick }) => {
     return (
         <button
-            className="btn-close size-8 no-animation"
+            className="btn-close size-8 no-animation z-10"
             onClick={onClick}
             title="Clear filter input"
         >
@@ -104,7 +104,7 @@ OptionArrow.propTypes = {
 // Only rendered if sortByKeys array is not empty
 const SortMenu = ({ sortByKeys, state, setSort }) => {
     return (
-        <div className="dropdown dropdown-end">
+        <div className="dropdown dropdown-end z-10">
             <div
                 role="button"
                 tabIndex="0"
