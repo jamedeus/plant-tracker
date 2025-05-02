@@ -188,7 +188,7 @@ const FilterInput = memo(function FilterInput({ state, dispatch, sortByKeys }) {
                 <input
                     type="text"
                     className={clsx(
-                        'input input-bordered w-full text-center',
+                        'input w-full text-center',
                         sortByKeys.length
                             ? 'indent-[3.625rem] pr-[4.5rem]'
                             : 'indent-[1.625rem] pr-10'

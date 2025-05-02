@@ -45,46 +45,42 @@ const LoginForm = () => {
 
     return (
         <form ref={formRef} className="flex flex-col gap-4 mt-8">
-            <label
-                className="form-control w-full"
+            <fieldset
+                className="fieldset"
                 title="Username or email address"
             >
-                <div className="label">
-                    <span className="label-text">Username</span>
-                </div>
+                <legend className="fieldset-legend">Username</legend>
                 <input
                     name="username"
                     type="text"
                     autoFocus
                     autoCapitalize="off"
                     className={clsx(
-                        "input w-full input-bordered",
+                        "input w-full",
                         showError && "input-error"
                     )}
                     value={username}
                     onInput={() => setShowError(false)}
                     onChange={e => setUsername(e.target.value)}
                 />
-            </label>
-            <label
-                className="form-control w-full relative"
+            </fieldset>
+            <fieldset
+                className="fieldset"
                 title="Must be at least 8 characters, can't be all numbers"
             >
-                <div className="label">
-                    <span className="label-text">Password</span>
-                </div>
+                <legend className="fieldset-legend">Password</legend>
                 <input
                     name="password"
                     type="password"
                     className={clsx(
-                        "input w-full input-bordered",
+                        "input w-full",
                         showError && "input-error"
                     )}
                     value={password}
                     onInput={() => setShowError(false)}
                     onChange={e => setPassword(e.target.value)}
                 />
-            </label>
+            </fieldset>
 
             <button
                 className="btn btn-accent mt-6"
@@ -153,98 +149,88 @@ const RegisterForm = () => {
 
     return (
         <form ref={formRef} className="flex flex-col gap-4">
-            <label className="form-control w-full">
-                <div className="label">
-                    <span className="label-text">Email *</span>
-                </div>
+            <fieldset className="fieldset">
+                <legend className="fieldset-legend">Email *</legend>
                 <input
                     name="email"
                     type="email"
                     autoFocus
                     autoCapitalize="off"
                     className={clsx(
-                        "input w-full input-bordered",
+                        "input w-full",
                         (showError || showEmailError) && "input-error"
                     )}
                     value={email}
                     onInput={() => setShowError(false)}
                     onChange={e => setEmail(e.target.value)}
                 />
-            </label>
-            {showEmailError && (
-                <span className="text-error text-center">
-                    {showEmailError}
-                </span>
-            )}
-            <label
-                className="form-control w-full"
+                {showEmailError && (
+                    <span className="text-error text-center">
+                        {showEmailError}
+                    </span>
+                )}
+            </fieldset>
+            <fieldset
+                className="fieldset"
                 title="Must be at least 3 characters"
             >
-                <div className="label">
-                    <span className="label-text">Username *</span>
-                </div>
+                <legend className="fieldset-legend">Username *</legend>
                 <input
                     name="username"
                     type="text"
                     autoCapitalize="off"
                     className={clsx(
-                        "input w-full input-bordered",
+                        "input w-full",
                         (showError || showUsernameError) && "input-error"
                     )}
                     value={username}
                     onInput={clearErrors}
                     onChange={e => setUsername(e.target.value)}
                 />
-            </label>
-            {showUsernameError && (
-                <span className="text-error text-center">
-                    {showUsernameError}
-                </span>
-            )}
-            <label
-                className="form-control w-full relative"
+                {showUsernameError && (
+                    <span className="text-error text-center">
+                        {showUsernameError}
+                    </span>
+                )}
+            </fieldset>
+            <fieldset
+                className="fieldset"
                 title="Must be at least 8 characters, can't be all numbers"
             >
-                <div className="label">
-                    <span className="label-text">Password *</span>
-                </div>
+                <legend className="fieldset-legend">Password *</legend>
                 <input
                     name="password"
                     type="password"
                     className={clsx(
-                        "input w-full input-bordered",
+                        "input w-full",
                         (showError || showPasswordError) && "input-error"
                     )}
                     value={password}
                     onInput={clearErrors}
                     onChange={e => setPassword(e.target.value)}
                 />
-            </label>
-            {showPasswordError && (
-                <span className="text-error text-center">
-                    {showPasswordError}
-                </span>
-            )}
-            <label className="form-control w-full">
-                <div className="label">
-                    <span className="label-text">First name</span>
-                </div>
+                {showPasswordError && (
+                    <span className="text-error text-center">
+                        {showPasswordError}
+                    </span>
+                )}
+            </fieldset>
+            <fieldset className="fieldset">
+                <legend className="fieldset-legend">First name</legend>
                 <input
                     name="first_name"
                     type="text"
-                    className="input w-full input-bordered"
+                    className="input w-full"
                 />
-            </label>
-            <label className="form-control w-full">
-                <div className="label">
-                    <span className="label-text">Last name</span>
-                </div>
+            </fieldset>
+            <fieldset className="fieldset">
+                <legend className="fieldset-legend">Last name</legend>
                 <input
                     name="last_name"
                     type="text"
-                    className="input w-full input-bordered"
+                    className="input w-full"
                 />
-            </label>
+            </fieldset>
 
             <span className="text-center text-sm">
                 * required fields

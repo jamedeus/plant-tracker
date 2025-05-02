@@ -4,38 +4,32 @@ import PropTypes from 'prop-types';
 const GroupDetailsForm = ({ formRef, name, location, description }) => {
     return (
         <form id="groupDetails" ref={formRef} className="flex flex-col gap-4">
-            <label className="form-control w-full">
-                <div className="label">
-                    <span className="label-text">Group name</span>
-                </div>
+            <fieldset className="fieldset">
+                <legend className="fieldset-legend">Group name</legend>
                 <input
                     name="name"
                     type="text"
-                    className="input w-full input-bordered"
+                    className="input w-full"
                     defaultValue={name}
                 />
-            </label>
-            <label className="form-control w-full">
-                <div className="label">
-                    <span className="label-text">Group location</span>
-                </div>
+            </fieldset>
+            <fieldset className="fieldset">
+                <legend className="fieldset-legend">Group Location</legend>
                 <input
                     name="location"
                     type="text"
-                    className="input w-full input-bordered"
+                    className="input w-full"
                     defaultValue={location}
                 />
-            </label>
-            <label className="form-control w-full">
-                <div className="label">
-                    <span className="label-text">Description</span>
-                </div>
+            </fieldset>
+            <fieldset className="fieldset">
+                <legend className="fieldset-legend">Description</legend>
                 <textarea
                     name="description"
-                    className="textarea textarea-bordered"
+                    className="textarea w-full"
                     defaultValue={description}
                 />
-            </label>
+            </fieldset>
         </form>
     );
 };

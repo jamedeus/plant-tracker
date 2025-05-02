@@ -165,7 +165,7 @@ const PhotoModal = () => {
                         type="file"
                         accept="image/*"
                         multiple="multiple"
-                        className="file-input file-input-bordered w-full max-w-xs"
+                        className="file-input w-full max-w-xs"
                         onChange={handleSelect}
                         data-testid="photo-input"
                     />

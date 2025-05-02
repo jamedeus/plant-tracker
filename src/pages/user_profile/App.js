@@ -59,7 +59,7 @@ const UserDetails = memo(function UserDetails() {
                     name="first_name"
                     type="text"
                     aria-label="First name input"
-                    className="input w-full input-bordered"
+                    className="input w-full"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     onKeyDown={(e) => submitOnEnterKey(e)}
@@ -72,7 +72,7 @@ const UserDetails = memo(function UserDetails() {
                     name="last_name"
                     type="text"
                     aria-label="Last name input"
-                    className="input w-full input-bordered"
+                    className="input w-full"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     onKeyDown={(e) => submitOnEnterKey(e)}
@@ -86,7 +86,7 @@ const UserDetails = memo(function UserDetails() {
                     type="email"
                     autoCapitalize="off"
                     aria-label="Email address input"
-                    className="input w-full input-bordered"
+                    className="input w-full"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     onKeyDown={(e) => submitOnEnterKey(e)}
@@ -169,18 +169,16 @@ const ChangePassword = memo(function ChangePassword() {
 
     return (
         <form ref={formRef} className="flex flex-col gap-2">
-            <label
-                className="form-control w-full"
+            <fieldset
+                className="fieldset"
                 title="Must be at least 8 characters, can't be all numbers"
             >
-                <div className="label">
-                    <span className="label-text">Old password</span>
-                </div>
+                <legend className="fieldset-legend">Old password</legend>
                 <input
                     name="old_password"
                     type="password"
                     className={clsx(
-                        "input w-full input-bordered",
+                        "input w-full",
                         oldPasswordIncorrect && "input-error"
                     )}
                     value={oldPassword}
@@ -188,56 +186,51 @@ const ChangePassword = memo(function ChangePassword() {
                     onInput={() => setOldPasswordIncorrect(false)}
                     onChange={(e) => setOldPassword(e.target.value)}
                 />
-            </label>
-            {oldPasswordIncorrect && (
-                <span className="text-error text-center">
-                    Old password incorrect
-                </span>
-            )}
-            <label
-                className="form-control w-full"
+                {oldPasswordIncorrect && (
+                    <span className="text-error text-center">
+                        Old password incorrect
+                    </span>
+                )}
+            </fieldset>
+            <fieldset
+                className="fieldset"
                 title="Must be at least 8 characters, can't be all numbers"
             >
-                <div className="label">
-                    <span className="label-text">New password</span>
-                </div>
+                <legend className="fieldset-legend">New password</legend>
                 <input
                     name="new_password1"
                     type="password"
                     className={clsx(
-                        "input w-full input-bordered",
+                        "input w-full",
                         newPasswordError && "input-error"
                     )}
                     value={newPassword1}
                     onKeyDown={(e) => submitOnEnterKey(e)}
                     onChange={(e) => setNewPassword1(e.target.value)}
                 />
-            </label>
-            <label
-                className="form-control w-full"
+            </fieldset>
+            <fieldset
+                className="fieldset"
                 title="Must be at least 8 characters, can't be all numbers"
             >
-                <div className="label">
-                    <span className="label-text">Confirm new password</span>
-                </div>
+                <legend className="fieldset-legend">Confirm new password</legend>
                 <input
                     name="new_password2"
                     type="password"
                     className={clsx(
-                        "input w-full input-bordered",
+                        "input w-full",
                         newPasswordError && "input-error"
                     )}
-                    value={newPassword2}
+                    value={newPassword1}
                     onKeyDown={(e) => submitOnEnterKey(e)}
-                    onInput={() => setNewPasswordError(false)}
                     onChange={(e) => setNewPassword2(e.target.value)}
                 />
-            </label>
-            {newPasswordError && (
-                <span className="text-error text-center">
-                    {newPasswordError}
-                </span>
-            )}
+                {newPasswordError && (
+                    <span className="text-error text-center">
+                        {newPasswordError}
+                    </span>
+                )}
+            </fieldset>
 
             <button
                 className="btn btn-accent mt-6"

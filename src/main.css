@@ -64,7 +64,7 @@
 }
 
 /* Change input focus color, remove gap between outline and input */
-.input, .input-bordered, .textarea-bordered {
+.input {
     @apply focus:border-accent focus:outline-accent outline-offset-0!;
 }
 
