@@ -12,7 +12,6 @@ module.exports = {
         },
     },
     plugins: [
-        require("daisyui"),
         plugin(function({ matchUtilities, theme }) {
             // Add min-size classes (min-w + min-h)
             matchUtilities(
