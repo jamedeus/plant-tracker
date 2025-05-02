@@ -1,12 +1,10 @@
 import { useEffect, useState } from "react";
-import tailwindConfig from "src/../tailwind.config";
-import resolveConfig from "tailwindcss/resolveConfig";
+import defaultTheme from 'tailwindcss/defaultTheme';
 
-const config = resolveConfig(tailwindConfig);
 
 export const useIsBreakpointActive = (breakpoint) => {
     // Get width of requested breakpoint from tailwind config
-    const width = config.theme.screens[breakpoint];
+    const width = defaultTheme.screens[breakpoint];
     const widthPx = parseInt(width);
 
     const [isBreakpointActive, setIsBreakpointActive] = useState(

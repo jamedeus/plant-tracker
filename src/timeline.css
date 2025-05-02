@@ -1,3 +1,37 @@
+@import 'tailwindcss';
+@plugin "daisyui" {
+    themes: light --default, dark --prefersdark;
+};
+@theme {
+    --color-prune: oklch(0.83 0.155 66.29);
+    --color-repot: oklch(0.42 0.081 50.5);
+};
+
+@layer base {
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --color-prune: oklch(0.85 0.1265 66.29);
+            --color-repot: oklch(0.38 0.0709 54.66);
+        }
+    }
+};
+
+@plugin "daisyui/theme" {
+    name: "dark";
+    --color-prune: oklch(0.85 0.1265 66.29);
+    --color-repot: oklch(0.38 0.0709 54.66);
+};
+@plugin "daisyui/theme" {
+    name: "light";
+    --color-base-100: #F2F2F2;
+    --color-base-200: #E5E6E6;
+    --color-base-300: #dddddd;
+    --color-neutral: #FFFFFF;
+    --color-neutral-content: #000;
+    --color-prune: oklch(0.83 0.155 66.29);
+    --color-repot: oklch(0.42 0.081 50.5);
+};
+
 /* Layout classes */
 .timeline-layout {
     @apply grid grid-cols-[min-content_1fr] gap-4 md:gap-8 overflow-hidden;

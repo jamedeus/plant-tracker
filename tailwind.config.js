@@ -6,8 +6,8 @@ module.exports = {
     theme: {
         extend: {
             colors: {
-                prune: 'oklch(var(--prune) / <alpha-value>)',
-                repot: 'oklch(var(--repot) / <alpha-value>)',
+                prune: 'oklch(var(--color-prune) / <alpha-value>)',
+                repot: 'oklch(var(--color-repot) / <alpha-value>)',
             }
         },
     },
@@ -46,25 +46,4 @@ module.exports = {
             );
         }),
     ],
-    daisyui: {
-        themes: [
-            {
-                light: {
-                    ...require("daisyui/src/theming/themes")["light"],
-                    "base-100": "#F2F2F2",
-                    "base-200": "#E5E6E6",
-                    "base-300": "#dddddd",
-                    "neutral": "#FFFFFF",
-                    "neutral-content": "#000",
-                    "--prune": "0.83 0.155 66.29",
-                    "--repot": "0.42 0.081 50.5",
-                },
-                dark: {
-                    ...require("daisyui/src/theming/themes")["dark"],
-                    "--prune": "0.85 0.1265 66.29",
-                    "--repot": "0.38 0.0709 54.66",
-                },
-            }
-        ],
-    },
 };
