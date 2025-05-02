@@ -174,10 +174,6 @@ html[data-theme="light"] .pot-size-selected::placeholder {
     @apply outline-0;
 }
 
-.dropdown-center .dropdown-content {
-    @apply left-1/2 transform -translate-x-1/2;
-}
-
 .dropdown-options {
     @apply menu menu-md z-99 p-2 shadow-sm bg-base-300 rounded-box;
 }

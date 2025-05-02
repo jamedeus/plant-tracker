@@ -113,7 +113,10 @@ const SortMenu = ({ sortByKeys, state, setSort }) => {
             >
                 <ArrowsUpDownIcon className="size-5 m-auto" />
             </div>
-            <ul tabIndex={0} className="dropdown-options mt-2 w-min-content">
+            <ul
+                tabIndex={0}
+                className="dropdown-options dropdown-content mt-2 w-min-content"
+            >
                 {sortByKeys.map((key) => (
                     <li key={key.key}>
                         <a
