@@ -121,7 +121,7 @@ function Layout() {
                             <a
                                 className={clsx(
                                     "font-bold text-lg line-clamp-1 rounded-lg",
-                                    "focus:outline outline-2 outline-offset-2"
+                                    "focus:outline-2 outline-offset-2"
                                 )}
                                 href={`/manage/${plantDetails.group.uuid}`}
                             >

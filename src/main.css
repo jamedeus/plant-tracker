@@ -73,7 +73,7 @@
 }
 
 .card, .card-collapse {
-    @apply bg-neutral text-neutral-content;
+    @apply bg-neutral text-neutral-content outline-none!;
 }
 
 .card-body {
