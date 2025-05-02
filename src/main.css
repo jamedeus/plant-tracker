@@ -1,22 +1,21 @@
 @import 'tailwindcss';
-@config "../tailwind.config.js";
+@config "../tailwind.config.cjs";
 @plugin "daisyui" {
     themes: light --default, dark --prefersdark;
 };
 
-/* TODO try to remove this, creates ambiguity (is it being applied by daisyUI
-   or prefers-color-scheme? Answer is daisyUI but that won't be clear in a few
-   months. Without this it fails to build with:
-     Error: Cannot apply unknown utility class: bg-prune
+/* TODO this is necessary to allow daisyui to override the custom colors added
+   to tailwind.config.cjs theme section, but I do not understand why. Without
+   it the daisyui theme will apply to every color except these (they inherit).
 
-   I have these defined in tailwind.config.js, but if I include that I get:
-     TypeError: b is not a function
-
-    Also need to find a way to not have this boilerplate in every CSS file.
+   If @config "../tailwind.config.cjs"; above is removed the build will fail
+   because of bg-prune in one of the classes in this file. This results in
+   the whole app falling back to the default daisyui colors since the ones
+   below are never parsed.
 */
 @theme {
-    --color-prune: oklch(0.83 0.155 66.29);
-    --color-repot: oklch(0.42 0.081 50.5);
+    --color-prune: #FFF;
+    --color-repot: #FFF;
 };
 
 @plugin "daisyui/theme" {
