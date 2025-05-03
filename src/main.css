@@ -8,6 +8,14 @@
     @apply p-4;
 }
 
+.card-title {
+    @apply text-xl;
+}
+
+.fieldset {
+    @apply text-sm;
+}
+
 .section {
     @apply flex flex-col w-full max-w-96 bg-base-200 px-4 rounded-2xl;
 }
@@ -57,6 +65,10 @@
 
 .tab-option-selected {
     @apply bg-accent text-accent-content;
+}
+
+.input {
+    @apply text-base;
 }
 
 .input::placeholder {
