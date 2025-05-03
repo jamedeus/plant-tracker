@@ -133,7 +133,8 @@ html[data-theme="light"] .pot-size-selected::placeholder {
 }
 .dropdown.dropdown-open .dropdown-options,
 .dropdown:focus-within .dropdown-options,
-.dropdown:not(.dropdown-hover):focus .dropdown-options {
+.dropdown:not(.dropdown-hover):focus .dropdown-options,
+.dropdown.dropdown-hover:hover .dropdown-options {
     @apply visible;
 }
 

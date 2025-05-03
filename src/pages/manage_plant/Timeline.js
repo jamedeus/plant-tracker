@@ -52,7 +52,7 @@ const Title = memo(function Title() {
                     </div>
                     <ul
                         tabIndex={0}
-                        className="dropdown-options dropdown-content w-44"
+                        className="dropdown-options dropdown-content min-w-44"
                     >
                         <QuickNavigation />
                     </ul>
