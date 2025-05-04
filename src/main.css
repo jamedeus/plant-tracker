@@ -68,7 +68,7 @@
 }
 
 .input::placeholder {
-    opacity: 0.5;
+    opacity: 1;
 }
 
 .input, .textarea {
@@ -171,7 +171,7 @@ html[data-theme="light"] .pot-size-selected::placeholder {
 }
 
 .btn-prune {
-    @apply bg-prune outline-prune text-warning-content border border-transparent;
+    @apply bg-prune outline-prune text-prune-content border border-transparent;
 }
 
 .btn-prune:hover {
