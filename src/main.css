@@ -119,15 +119,21 @@ html[data-theme="light"] .pot-size-selected::placeholder {
     @apply text-white/65;
 }
 
+/* Restore v4 background color (custom CSS var), remove border */
+.btn-ghost:hover, .btn-close:hover {
+    background-color: var(--btn-ghost-background);
+    border-width: 0px;
+}
+
 .btn-close {
-    @apply btn btn-sm btn-ghost;
+    @apply btn btn-sm btn-ghost size-8;
     border-radius: 9999px;
     padding: 0;
 }
 
 /* Keep dropdown button hover highlight visible while dropdown is open */
-.dropdown > .btn-ghost:focus {
-    background-color: var(--fallback-bc,oklch(var(--bc)/0.2));
+.dropdown > .btn-ghost:focus, .dropdown > .btn-close:focus {
+    background-color: var(--btn-ghost-background);
 }
 
 .btn-close:focus-visible {
