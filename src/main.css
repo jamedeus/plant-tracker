@@ -64,20 +64,17 @@
 }
 
 .input, .file-input {
-    @apply text-base input-lg rounded-lg;
+    @apply text-base;
 }
 
 .input::placeholder {
     opacity: 0.5;
 }
 
-/* Change input focus color, remove gap between outline and input */
 .input, .textarea {
+    /* Change input focus color, remove gap between outline and input */
     @apply focus:border-accent focus:outline-accent outline-offset-0!;
-}
-
-.input, .textarea {
-    @apply rounded-lg px-4;
+    padding-inline: calc(var(--spacing) * 4);
 }
 
 .fieldset {
@@ -120,10 +117,6 @@ html[data-theme="light"] .pot-size::placeholder {
 
 html[data-theme="light"] .pot-size-selected::placeholder {
     @apply text-white/65;
-}
-
-.btn {
-    @apply rounded-lg;
 }
 
 .btn-close {

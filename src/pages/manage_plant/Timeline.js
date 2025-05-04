@@ -46,7 +46,7 @@ const Title = memo(function Title() {
                     <div
                         tabIndex={0}
                         role="button"
-                        className="btn btn-lg btn-ghost text-xl font-bold m-1"
+                        className="btn btn-ghost text-xl font-bold m-1"
                     >
                         History
                     </div>

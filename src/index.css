@@ -23,7 +23,9 @@
     prefersdark: true;
     --depth: 0;
     --card-fs: 1rem;
+    --size-field: 0.3rem;
     --radius-box: 1rem;
+    --radius-field: 0.5rem;
     --color-primary: oklch(0.6569 0.196 275.75/1);
     --color-accent: oklch(0.7451 0.167 183.61/1);
     --color-neutral: oklch(0.313815 0.021108 254.139175/1);
@@ -38,7 +40,9 @@
     default: true;
     --depth: 0;
     --card-fs: 1rem;
+    --size-field: 0.3rem;
     --radius-box: 1rem;
+    --radius-field: 0.5rem;
     --color-primary: oklch(0.4912 0.3096 275.75/1);
     --color-accent: oklch(0.7676 0.184 183.61/1);
     --color-base-100: #F2F2F2;
