@@ -7,7 +7,7 @@ const DropdownButton = memo(function DropdownButton() {
         <div
             tabIndex={0}
             role="button"
-            className="btn btn-ghost btn-circle"
+            className="btn btn-ghost btn-circle size-12"
             aria-label="Navigation menu"
         >
             <svg

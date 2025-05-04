@@ -74,7 +74,7 @@ const reducer = (state, action) => {
 const ClearButton = ({ onClick }) => {
     return (
         <button
-            className="btn-close size-8 no-animation z-10"
+            className="btn-close size-8! no-animation z-10"
             onClick={onClick}
             title="Clear filter input"
         >
@@ -108,7 +108,7 @@ const SortMenu = ({ sortByKeys, state, setSort }) => {
             <div
                 role="button"
                 tabIndex="0"
-                className="btn-close size-8 no-animation"
+                className="btn-close size-8! no-animation"
                 title="Sort menu"
             >
                 <ArrowsUpDownIcon className="size-5 m-auto" />

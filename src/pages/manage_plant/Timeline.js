@@ -46,7 +46,7 @@ const Title = memo(function Title() {
                     <div
                         tabIndex={0}
                         role="button"
-                        className="btn btn-ghost text-xl font-bold m-1"
+                        className="btn btn-lg btn-ghost text-xl font-bold m-1"
                     >
                         History
                     </div>
@@ -68,12 +68,12 @@ const Title = memo(function Title() {
                         <div
                             tabIndex={0}
                             role="button"
-                            className="btn btn-ghost btn-circle"
+                            className="btn btn-ghost btn-circle size-12"
                             aria-label="More plant actions menu"
                         >
                             <FontAwesomeIcon
                                 icon={faEllipsis}
-                                className="size-6"
+                                className="size-6!"
                             />
                         </div>
                         <ul

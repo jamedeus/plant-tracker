@@ -102,7 +102,7 @@ function Layout() {
                                     "btn btn-square bg-base-200/60 border-none",
                                 )}>
                                     <FontAwesomeIcon
-                                        className='size-3'
+                                        className='size-3!'
                                         icon={faPen}
                                     />
                                 </div>
