@@ -122,6 +122,10 @@ html[data-theme="light"] .pot-size-selected::placeholder {
     @apply text-white/65;
 }
 
+.btn {
+    @apply rounded-lg;
+}
+
 .btn-close {
     @apply btn btn-sm btn-ghost;
     border-radius: 9999px;
