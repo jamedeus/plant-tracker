@@ -2,6 +2,9 @@
 @config "../tailwind.config.cjs";
 @plugin "daisyui" {
     themes: light --default, dark --prefersdark;
+    include: button, input, modal, navbar, carousel, dropdown, accordion, card,
+             collapse, timeline, menu, alert, toast, tooltip, fieldset, radio,
+             textarea, divider, rootcolor;
 }
 
 /* TODO this is necessary to allow daisyui to override the custom colors added
