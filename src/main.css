@@ -135,12 +135,12 @@ html[data-theme="light"] .pot-size-selected::placeholder {
 }
 
 .dropdown-options {
-    @apply menu menu-md z-99 p-2 shadow-sm bg-base-300 rounded-box;
+    @apply menu menu-md z-99 p-2 shadow-sm bg-base-300 rounded-box text-sm;
 }
 
 /* Prevent line wrap in dropdown options */
 .dropdown-content > li > a, .dropdown-content > li > button {
-    @apply whitespace-nowrap;
+    @apply whitespace-nowrap py-2 px-4;
 }
 
 /* Revert to old way of hiding/showing dropdown (more reliable) */
