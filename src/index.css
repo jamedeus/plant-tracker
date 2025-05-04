@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@config "../tailwind.config.cjs";
+@plugin './tailwind-min-size.js';
 @plugin "daisyui" {
     themes: light --default, dark --prefersdark;
     include: button, input, modal, navbar, carousel, dropdown, accordion, card,
