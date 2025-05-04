@@ -12,10 +12,6 @@
     @apply text-xl;
 }
 
-.fieldset {
-    @apply text-sm;
-}
-
 .section {
     @apply flex flex-col w-full max-w-96 bg-base-200 px-4 rounded-2xl;
 }
@@ -67,8 +63,8 @@
     @apply bg-accent text-accent-content;
 }
 
-.input {
-    @apply text-base;
+.input, .file-input {
+    @apply text-base input-lg rounded-lg;
 }
 
 .input::placeholder {
@@ -78,6 +74,18 @@
 /* Change input focus color, remove gap between outline and input */
 .input, .textarea {
     @apply focus:border-accent focus:outline-accent outline-offset-0!;
+}
+
+.input, .textarea {
+    @apply rounded-lg px-4;
+}
+
+.fieldset {
+    @apply text-sm py-0;
+}
+
+.fieldset-legend {
+    @apply px-1 pt-2 pb-3 font-light text-left;
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -187,7 +195,7 @@ html[data-theme="light"] .pot-size-selected::placeholder {
 
 /* Prevent iOS zooming in when textarea focused */
 .textarea {
-    @apply text-base;
+    @apply text-base min-h-16;
 }
 
 /* Fix modal filling full height on iOS safari when address bar visible */

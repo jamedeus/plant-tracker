@@ -190,8 +190,8 @@ const FilterInput = memo(function FilterInput({ state, dispatch, sortByKeys }) {
                     className={clsx(
                         'input w-full text-center',
                         sortByKeys.length
-                            ? 'indent-[3.625rem] pr-[4.5rem]'
-                            : 'indent-[1.625rem] pr-10'
+                            ? 'indent-[3.625rem]! pr-[4.5rem]!'
+                            : 'indent-[1.625rem]! pr-10!'
                     )}
                     value={query}
                     onChange={e => handleInput(e.target.value)}
