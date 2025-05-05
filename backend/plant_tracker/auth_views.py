@@ -86,7 +86,8 @@ class LoginView(views.LoginView):
     template_name = "plant_tracker/index.html"
     extra_context = {
         "title": "Login",
-        "js_bundle": "plant_tracker/login.js"
+        "js_bundle": "plant_tracker/login.js",
+        "css_bundle": "plant_tracker/login.css"
     }
 
     @method_decorator(ensure_csrf_cookie)

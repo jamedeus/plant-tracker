@@ -50,6 +50,10 @@ class AuthenticationPageTests(TestCase):
             response.context['js_bundle'],
             'plant_tracker/login.js'
         )
+        self.assertEqual(
+            response.context['css_bundle'],
+            'plant_tracker/login.css'
+        )
 
     def test_user_profile_page(self):
         # Log in with test user
