@@ -38,10 +38,10 @@ const Title = memo(function Title() {
 
     return (
         <div className="navbar bg-base-200 rounded-2xl px-4">
-            <div className="navbar-start w-12">
+            <div className="justify-start w-12">
                 {/* Spacer with same width as .navbar-end button */}
             </div>
-            <div className="navbar-center mx-auto">
+            <div className="mx-auto">
                 <div className="dropdown dropdown-center dropdown-hover">
                     <div
                         tabIndex={0}
