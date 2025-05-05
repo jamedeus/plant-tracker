@@ -1,6 +1,6 @@
 @import "./index.css";
 
-.card, .card-collapse {
+.card {
     @apply bg-neutral text-neutral-content outline-hidden!;
 }
 
@@ -26,17 +26,6 @@
 
 .section-content {
     @apply min-w-0 min-h-fit px-2 md:px-4 pb-2 md:pb-4;
-}
-
-/* Prevent PlantCard and GroupCard from expanding when focused */
-/* Causes card to start expanding while page loads when href is clicked */
-.card-collapse:focus:not(:has(> input[type="checkbox"]:checked)) {
-    grid-template-rows: auto 0fr;
-}
-.card-collapse:focus:not(:has(> input[type="checkbox"]:checked)) > .collapse-content {
-    visibility: hidden;
-    min-height: 0px;
-    padding-bottom: 0rem;
 }
 
 .loading-lg {
