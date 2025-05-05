@@ -1,0 +1,105 @@
+/*
+Utility classes for a collapsible div controlled by a hidden checkbox/radio.
+Inspired by DaisyUI v4 collapse, styling and unused features removed.
+https://github.com/saadeghi/daisyui/blob/0f31b7997ee2909bb7f67856d229c2eb00ed95af/src/components/styled/collapse.css
+
+Usage:
+    <div className="collapse">
+        <input type="checkbox" />
+        <div className="collapse-title">Always Visible</div>
+        <div className="collapse-content">
+            <p>Hidden until collapse opened</p>
+        </div>
+    </div>
+*/
+
+/* Wrapper div, always visible, transition grid-template-rows for animation */
+.collapse {
+    visibility: visible;
+    position: relative;
+    display: grid;
+    overflow: hidden;
+    grid-template-rows: auto 0fr;
+    transition: grid-template-rows 0.2s;
+    width: 100%;
+}
+
+/* Title + hidden inputs that control open/close state: fill first grid row */
+.collapse-title,
+.collapse > input[type="checkbox"],
+.collapse > input[type="radio"] {
+    grid-column-start: 1;
+    grid-row-start: 1;
+    width: 100%;
+    min-height: 3.75rem;
+}
+
+/* Visually hide inputs that control open/close state, but make clickable */
+.collapse > input[type="checkbox"],
+.collapse > input[type="radio"] {
+    appearance: none;
+    opacity: 0;
+    z-index: 1;
+}
+
+/* Cursor pointer unless accordion section already open */
+.collapse > input[type="checkbox"],
+.collapse > input[type="radio"]:not(:checked) {
+    cursor: pointer;
+}
+
+/* Content: second grid row (does not exist until opened), no height */
+.collapse-content {
+    grid-column-start: 1;
+    grid-row-start: 2;
+    min-height: 0px;
+    transition: padding 0.2s ease-out;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    cursor: unset;
+}
+
+/* Open: Add second grid row (animation) */
+.collapse:has(> input[type="checkbox"]:checked),
+.collapse:has(> input[type="radio"]:checked) {
+    grid-template-rows: auto 1fr;
+}
+
+/* Open: Animate to full height, add bottom padding */
+.collapse > input[type="checkbox"]:checked ~ .collapse-content,
+.collapse > input[type="radio"]:checked ~ .collapse-content {
+    min-height: fit-content;
+    transition: padding 0.2s ease-out;
+    padding-bottom: 1rem;
+}
+
+/* Anchor .collapse-arrow icon to title div */
+.collapse-title {
+    position: relative;
+}
+
+/* Collapse arrow icon (absolute positioned over right side of title) */
+.collapse-arrow > .collapse-title:after {
+    position: absolute;
+    display: block;
+    height: 0.5rem;
+    width: 0.5rem;
+    transform: translateY(-50%) rotate(225deg);
+    transition-property: all;
+    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    transition-duration: 150ms;
+    transition-duration: 0.2s;
+    top: 1.9rem;
+    inset-inline-end: 1.4rem;
+    content: "";
+    transform-origin: 75% 75%;
+    box-shadow: 2px 2px;
+    pointer-events: none;
+}
+
+/* Rotate arrow 180 degrees when opened */
+.collapse-arrow > input[type="checkbox"]:checked ~ .collapse-title:after,
+.collapse-arrow > input[type="radio"]:checked ~ .collapse-title:after {
+    transform: translateY(-100%) rotate(45deg);
+}

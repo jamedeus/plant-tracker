@@ -25,7 +25,7 @@ const InstanceCard = memo(function InstanceCard({
         <a
             href={`/manage/${uuid}`}
             className={clsx(
-                'collapse card-collapse cursor-pointer group',
+                'collapse card-collapse cursor-pointer group rounded-2xl',
                 archived && 'grayscale'
             )}
             aria-label={`Go to ${title} page`}

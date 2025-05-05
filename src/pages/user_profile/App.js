@@ -245,7 +245,10 @@ const ChangePassword = memo(function ChangePassword() {
 
 const Section = ({ title, open=false, children }) => {
     return (
-        <div className="collapse collapse-arrow bg-base-200" tabIndex={0}>
+        <div
+            className="collapse collapse-arrow bg-base-200 rounded-2xl"
+            tabIndex={0}
+        >
             <input
                 type="radio"
                 name="my-accordion-2"
