@@ -1,17 +1,5 @@
 @import "./index.css";
 
-.card {
-    @apply bg-neutral text-neutral-content outline-hidden!;
-}
-
-.card-body {
-    @apply p-4;
-}
-
-.card-title {
-    @apply text-xl;
-}
-
 .section {
     @apply flex flex-col w-full max-w-96 bg-base-200 px-4 rounded-2xl;
 }
@@ -152,7 +140,7 @@ html[data-theme="light"] .pot-size-selected::placeholder {
 
 /* Wraps Navbar title dropdown contents (plant/group details) */
 .details-card {
-    @apply card card-sm bg-neutral text-neutral-content w-72 p-2 mt-2 mx-auto shadow-sm;
+    @apply card w-72 p-2 mt-2 mx-auto shadow-sm;
     /* Allow scrolling inside card, eg phone in landscape orientation */
     @apply max-h-[calc(100svh-4rem)] overflow-y-auto overscroll-contain;
     /* Prevent long strings without spaces making card side scroll */

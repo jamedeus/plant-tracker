@@ -2,7 +2,7 @@
 @plugin './tailwind-min-size.js';
 @plugin "daisyui" {
     themes: light --default, dark --prefersdark;
-    include: button, input, modal, carousel, dropdown, accordion, card,
+    include: button, input, modal, carousel, dropdown, accordion,
              timeline, menu, alert, toast, tooltip, fieldset, radio,
              textarea, divider, rootcolor;
 }
@@ -78,6 +78,19 @@
 }
 
 @import "./collapse.css" layer(utilities);
+
+@utility card {
+    @apply flex flex-col relative rounded-2xl bg-neutral text-neutral-content;
+}
+@utility card-side {
+    @apply flex-row;
+}
+@utility card-title {
+    @apply text-xl font-semibold items-center;
+}
+@utility card-body {
+    @apply flex flex-col flex-auto p-4 gap-2;
+}
 
 @utility navbar {
     @apply flex items-center w-full min-h-16 p-2;
