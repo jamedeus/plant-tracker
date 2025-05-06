@@ -152,3 +152,8 @@
         @apply cursor-pointer select-none;
     }
 }
+
+/* Two column layout, left column min-content, right column fills remaining */
+@utility grid-cols-min-max {
+    @apply grid-cols-[min-content_1fr];
+}

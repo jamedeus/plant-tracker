@@ -51,7 +51,7 @@ const UserDetails = memo(function UserDetails() {
 
     return (
         <div className="flex flex-col gap-4">
-            <div className="grid grid-cols-[min-content_1fr] gap-4">
+            <div className="grid grid-cols-min-max gap-4">
                 <div className="my-auto text-nowrap">
                     First Name:
                 </div>
