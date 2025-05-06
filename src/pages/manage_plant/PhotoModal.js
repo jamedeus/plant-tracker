@@ -7,6 +7,7 @@ import CloseButtonIcon from 'src/components/CloseButtonIcon';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { useDispatch, useSelector } from 'react-redux';
 import { photosAdded } from './timelineSlice';
+import './photomodal.css';
 
 let modalRef;
 
@@ -14,22 +15,22 @@ export const openPhotoModal = () => {
     modalRef.current.open();
 };
 
-// Table row with delete button next to filename
+// Grid row with delete button next to filename
 const Row = memo(function Row({ filename, removeFile }) {
     return (
-        <tr className="flex max-w-96">
-            <td className="my-auto">
+        <>
+            <div className="my-auto py-3 pe-4">
                 <button
                     className="btn-close"
                     onClick={() => removeFile(filename)}
                 >
                     <CloseButtonIcon />
                 </button>
-            </td>
-            <td className="text-lg leading-8 w-full text-center">
+            </div>
+            <div className="text-lg leading-8 w-full text-center py-3 ps-4">
                 <p className="w-full line-clamp-1">{filename}</p>
-            </td>
-        </tr>
+            </div>
+        </>
     );
 });
 
@@ -47,7 +48,7 @@ const PhotoModal = () => {
     const inputRef = useRef(null);
 
     // State updated when user selects files, used in submit hook and to
-    // render table of selected files with X buttons to unselect
+    // render row for each selected file with X button to unselect
     const [selectedFiles, setSelectedFiles] = useState([]);
 
     // State to control loading animation visibility
@@ -159,7 +160,9 @@ const PhotoModal = () => {
         >
             {/* Photo select/unselect input, shown until user clicks submit */}
             <div className={uploading ? "hidden" : "flex flex-col"}>
-                <div className="min-h-36 flex flex-col justify-center mx-auto mt-2 max-w-full">
+                <div className={
+                    "min-h-36 flex flex-col justify-center items-center mt-2"
+                }>
                     <input
                         ref={inputRef}
                         type="file"
@@ -169,18 +172,14 @@ const PhotoModal = () => {
                         onChange={handleSelect}
                         data-testid="photo-input"
                     />
-                    <div className="max-h-[50vh] overflow-y-scroll overflow-x-hidden">
-                        <table className="table mt-2">
-                            <tbody>
-                                {selectedFiles.map(file => (
-                                    <Row
-                                        key={file.name}
-                                        filename={file.name}
-                                        removeFile={removeFile}
-                                    />
-                                ))}
-                            </tbody>
-                        </table>
+                    <div className="selected-files-grid">
+                        {selectedFiles.map(file => (
+                            <Row
+                                key={file.name}
+                                filename={file.name}
+                                removeFile={removeFile}
+                            />
+                        ))}
                     </div>
                 </div>
 
