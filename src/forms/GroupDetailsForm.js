@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 const GroupDetailsForm = ({ formRef, name, location, description }) => {
     return (
         <form id="groupDetails" ref={formRef} className="flex flex-col gap-4">
-            <fieldset className="fieldset">
-                <legend className="fieldset-legend">Group name</legend>
+            <fieldset>
+                <legend>Group name</legend>
                 <input
                     name="name"
                     type="text"
@@ -13,8 +13,8 @@ const GroupDetailsForm = ({ formRef, name, location, description }) => {
                     defaultValue={name}
                 />
             </fieldset>
-            <fieldset className="fieldset">
-                <legend className="fieldset-legend">Group Location</legend>
+            <fieldset>
+                <legend>Group Location</legend>
                 <input
                     name="location"
                     type="text"
@@ -22,8 +22,8 @@ const GroupDetailsForm = ({ formRef, name, location, description }) => {
                     defaultValue={location}
                 />
             </fieldset>
-            <fieldset className="fieldset">
-                <legend className="fieldset-legend">Description</legend>
+            <fieldset>
+                <legend>Description</legend>
                 <textarea
                     name="description"
                     className="textarea w-full"

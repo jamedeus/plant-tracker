@@ -45,11 +45,8 @@ const LoginForm = () => {
 
     return (
         <form ref={formRef} className="flex flex-col gap-4 mt-8">
-            <fieldset
-                className="fieldset"
-                title="Username or email address"
-            >
-                <legend className="fieldset-legend">Username</legend>
+            <fieldset title="Username or email address">
+                <legend>Username</legend>
                 <input
                     name="username"
                     type="text"
@@ -64,11 +61,8 @@ const LoginForm = () => {
                     onChange={e => setUsername(e.target.value)}
                 />
             </fieldset>
-            <fieldset
-                className="fieldset"
-                title="Must be at least 8 characters, can't be all numbers"
-            >
-                <legend className="fieldset-legend">Password</legend>
+            <fieldset title="Must be at least 8 characters, can't be all numbers">
+                <legend>Password</legend>
                 <input
                     name="password"
                     type="password"
@@ -149,8 +143,8 @@ const RegisterForm = () => {
 
     return (
         <form ref={formRef} className="flex flex-col gap-4">
-            <fieldset className="fieldset">
-                <legend className="fieldset-legend">Email *</legend>
+            <fieldset>
+                <legend>Email *</legend>
                 <input
                     name="email"
                     type="email"
@@ -170,11 +164,8 @@ const RegisterForm = () => {
                     </span>
                 )}
             </fieldset>
-            <fieldset
-                className="fieldset"
-                title="Must be at least 3 characters"
-            >
-                <legend className="fieldset-legend">Username *</legend>
+            <fieldset title="Must be at least 3 characters">
+                <legend>Username *</legend>
                 <input
                     name="username"
                     type="text"
@@ -193,11 +184,8 @@ const RegisterForm = () => {
                     </span>
                 )}
             </fieldset>
-            <fieldset
-                className="fieldset"
-                title="Must be at least 8 characters, can't be all numbers"
-            >
-                <legend className="fieldset-legend">Password *</legend>
+            <fieldset title="Must be at least 8 characters, can't be all numbers">
+                <legend>Password *</legend>
                 <input
                     name="password"
                     type="password"
@@ -215,16 +203,16 @@ const RegisterForm = () => {
                     </span>
                 )}
             </fieldset>
-            <fieldset className="fieldset">
-                <legend className="fieldset-legend">First name</legend>
+            <fieldset>
+                <legend>First name</legend>
                 <input
                     name="first_name"
                     type="text"
                     className="input w-full"
                 />
             </fieldset>
-            <fieldset className="fieldset">
-                <legend className="fieldset-legend">Last name</legend>
+            <fieldset>
+                <legend>Last name</legend>
                 <input
                     name="last_name"
                     type="text"

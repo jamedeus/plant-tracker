@@ -169,11 +169,8 @@ const ChangePassword = memo(function ChangePassword() {
 
     return (
         <form ref={formRef} className="flex flex-col gap-2">
-            <fieldset
-                className="fieldset"
-                title="Must be at least 8 characters, can't be all numbers"
-            >
-                <legend className="fieldset-legend">Old password</legend>
+            <fieldset title="Must be at least 8 characters, can't be all numbers">
+                <legend>Old password</legend>
                 <input
                     name="old_password"
                     type="password"
@@ -192,11 +189,8 @@ const ChangePassword = memo(function ChangePassword() {
                     </span>
                 )}
             </fieldset>
-            <fieldset
-                className="fieldset"
-                title="Must be at least 8 characters, can't be all numbers"
-            >
-                <legend className="fieldset-legend">New password</legend>
+            <fieldset title="Must be at least 8 characters, can't be all numbers">
+                <legend>New password</legend>
                 <input
                     name="new_password1"
                     type="password"
@@ -209,11 +203,8 @@ const ChangePassword = memo(function ChangePassword() {
                     onChange={(e) => setNewPassword1(e.target.value)}
                 />
             </fieldset>
-            <fieldset
-                className="fieldset"
-                title="Must be at least 8 characters, can't be all numbers"
-            >
-                <legend className="fieldset-legend">Confirm new password</legend>
+            <fieldset title="Must be at least 8 characters, can't be all numbers">
+                <legend>Confirm new password</legend>
                 <input
                     name="new_password2"
                     type="password"

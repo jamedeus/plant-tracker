@@ -40,18 +40,6 @@
     @apply bg-accent text-accent-content;
 }
 
-.file-input {
-    @apply text-base;
-}
-
-.fieldset {
-    @apply text-sm py-0;
-}
-
-.fieldset-legend {
-    @apply px-1 pt-2 pb-3 font-light text-left;
-}
-
 .no-scrollbar::-webkit-scrollbar {
     display: none;
 }

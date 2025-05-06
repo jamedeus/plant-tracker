@@ -3,7 +3,7 @@
 @plugin "daisyui" {
     themes: light --default, dark --prefersdark;
     include: button, modal, carousel, dropdown, accordion,
-             timeline, menu, alert, toast, tooltip, fieldset, radio,
+             timeline, menu, alert, toast, tooltip, radio,
              divider, rootcolor;
 }
 
@@ -75,6 +75,15 @@
     --color-info-content: oklch(0 0 0/1);
     --color-success-content: oklch(0 0 0/1);
     --color-prune-content: oklch(0 0 0/1);
+}
+
+@layer base {
+    fieldset {
+        @apply text-sm;
+    }
+    fieldset > legend {
+        @apply text-base-content text-left px-1 py-2;
+    }
 }
 
 @import "./collapse.css" layer(utilities);
