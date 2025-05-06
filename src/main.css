@@ -40,18 +40,8 @@
     @apply bg-accent text-accent-content;
 }
 
-.input, .file-input {
+.file-input {
     @apply text-base;
-}
-
-.input::placeholder {
-    opacity: 1;
-}
-
-.input, .textarea {
-    /* Change input focus color, remove gap between outline and input */
-    @apply focus:border-accent focus:outline-accent outline-offset-0!;
-    padding-inline: calc(var(--spacing) * 4);
 }
 
 .fieldset {
@@ -171,11 +161,6 @@ html[data-theme="light"] .pot-size-selected::placeholder {
 
 .btn-error {
     color: #eee;
-}
-
-/* Prevent iOS zooming in when textarea focused */
-.textarea {
-    @apply text-base min-h-16;
 }
 
 /* Fix modal filling full height on iOS safari when address bar visible */

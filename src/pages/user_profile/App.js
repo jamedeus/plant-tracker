@@ -179,7 +179,7 @@ const ChangePassword = memo(function ChangePassword() {
                     type="password"
                     className={clsx(
                         "input w-full",
-                        oldPasswordIncorrect && "input-error"
+                        oldPasswordIncorrect && "border-error"
                     )}
                     value={oldPassword}
                     onKeyDown={(e) => submitOnEnterKey(e)}
@@ -202,7 +202,7 @@ const ChangePassword = memo(function ChangePassword() {
                     type="password"
                     className={clsx(
                         "input w-full",
-                        newPasswordError && "input-error"
+                        newPasswordError && "border-error"
                     )}
                     value={newPassword1}
                     onKeyDown={(e) => submitOnEnterKey(e)}
@@ -219,7 +219,7 @@ const ChangePassword = memo(function ChangePassword() {
                     type="password"
                     className={clsx(
                         "input w-full",
-                        newPasswordError && "input-error"
+                        newPasswordError && "border-error"
                     )}
                     value={newPassword2}
                     onKeyDown={(e) => submitOnEnterKey(e)}

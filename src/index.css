@@ -2,9 +2,9 @@
 @plugin './tailwind-min-size.js';
 @plugin "daisyui" {
     themes: light --default, dark --prefersdark;
-    include: button, input, modal, carousel, dropdown, accordion,
+    include: button, modal, carousel, dropdown, accordion,
              timeline, menu, alert, toast, tooltip, fieldset, radio,
-             textarea, divider, rootcolor;
+             divider, rootcolor;
 }
 
 /* TODO this is necessary to allow daisyui to override the custom colors added
@@ -94,4 +94,41 @@
 
 @utility navbar {
     @apply flex items-center w-full min-h-16 p-2;
+}
+
+@utility input {
+    @apply relative inline-flex shrink appearance-none text-base cursor-text h-12 px-4;
+    border: var(--border)solid #0000;
+    border-color: color-mix(in oklab,var(--color-base-content)20%,#0000);
+    border-radius: var(--radius-field);
+    border-width: var(--border);
+    background-color: var(--color-base-100);
+
+    &:focus, &:focus-within {
+        @apply outline-2 outline-accent border-accent;
+    }
+
+    /* Chromium: remove extra space before calendar icon */
+    &::-webkit-calendar-picker-indicator {
+        @apply absolute;
+        inset-inline-end: 0.75em;
+    }
+
+    /* Chromium calendar icon color + calendar picker background color */
+    html[data-theme="dark"] & {
+        @apply scheme-dark;
+    }
+}
+
+@utility textarea {
+    @apply shrink appearance-none text-base cursor-text min-h-16 py-2 px-4;
+    border: var(--border)solid #0000;
+    border-color: color-mix(in oklab,var(--color-base-content)20%,#0000);
+    border-radius: var(--radius-field);
+    border-width: var(--border);
+    background-color: var(--color-base-100);
+
+    &:focus, &:focus-within {
+        @apply outline-2 outline-accent border-accent;
+    }
 }

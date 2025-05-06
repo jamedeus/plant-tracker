@@ -57,7 +57,7 @@ const LoginForm = () => {
                     autoCapitalize="off"
                     className={clsx(
                         "input w-full",
-                        showError && "input-error"
+                        showError && "border-error"
                     )}
                     value={username}
                     onInput={() => setShowError(false)}
@@ -74,7 +74,7 @@ const LoginForm = () => {
                     type="password"
                     className={clsx(
                         "input w-full",
-                        showError && "input-error"
+                        showError && "border-error"
                     )}
                     value={password}
                     onInput={() => setShowError(false)}
@@ -158,7 +158,7 @@ const RegisterForm = () => {
                     autoCapitalize="off"
                     className={clsx(
                         "input w-full",
-                        (showError || showEmailError) && "input-error"
+                        (showError || showEmailError) && "border-error"
                     )}
                     value={email}
                     onInput={() => setShowError(false)}
@@ -181,7 +181,7 @@ const RegisterForm = () => {
                     autoCapitalize="off"
                     className={clsx(
                         "input w-full",
-                        (showError || showUsernameError) && "input-error"
+                        (showError || showUsernameError) && "border-error"
                     )}
                     value={username}
                     onInput={clearErrors}
@@ -203,7 +203,7 @@ const RegisterForm = () => {
                     type="password"
                     className={clsx(
                         "input w-full",
-                        (showError || showPasswordError) && "input-error"
+                        (showError || showPasswordError) && "border-error"
                     )}
                     value={password}
                     onInput={clearErrors}
