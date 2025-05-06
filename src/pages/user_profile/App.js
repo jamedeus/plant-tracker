@@ -221,7 +221,7 @@ const ChangePassword = memo(function ChangePassword() {
                         "input w-full",
                         newPasswordError && "input-error"
                     )}
-                    value={newPassword1}
+                    value={newPassword2}
                     onKeyDown={(e) => submitOnEnterKey(e)}
                     onChange={(e) => setNewPassword2(e.target.value)}
                 />
