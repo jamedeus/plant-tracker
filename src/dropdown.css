@@ -5,8 +5,7 @@
 }
 
 /* Contents wrapper: hidden, transparent, 95% scale when closed */
-.dropdown .dropdown-content,
-.dropdown .dropdown-options {
+.dropdown .dropdown-content {
     position: absolute;
     visibility: hidden;
     opacity: 0;
@@ -19,34 +18,24 @@
 
 /* Dropdown button focused: show contents (fade in + scale up animation) */
 .dropdown:focus .dropdown-content,
-.dropdown:focus .dropdown-options,
-.dropdown:focus-within .dropdown-content,
-.dropdown:focus-within .dropdown-options {
+.dropdown:focus-within .dropdown-content {
     transform: scale(1);
     visibility: visible;
     opacity: 1;
 }
 
 /* Hover variant hovered: show contents (fade in + scale up animation) */
-.dropdown.dropdown-hover:hover .dropdown-content,
-.dropdown.dropdown-hover:hover .dropdown-options {
+.dropdown.dropdown-hover:hover .dropdown-content {
     visibility: visible;
     opacity: 1;
     transform: scale(1);
 }
 
 /* Position variants */
-.dropdown-end .dropdown-content,
-.dropdown-end .dropdown-options {
+.dropdown-end .dropdown-content {
     inset-inline-end: 0px;
 }
-.dropdown-center .dropdown-content,
-.dropdown-center .dropdown-options {
+.dropdown-center .dropdown-content {
     @apply end-1/2;
     translate: 50% 0;
-}
-
-/* Styled <ul> with <li> options, replaces .dropdown-content div */
-ul.dropdown-options {
-    @apply z-99 p-2 shadow-sm bg-base-300 rounded-box text-sm;
 }

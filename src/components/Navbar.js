@@ -1,5 +1,6 @@
 import React, { useState, useLayoutEffect, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
+import DropdownMenu from 'src/components/DropdownMenu';
 
 // Button with icon, used for dropdown and hidden placeholder on right side
 const DropdownButton = memo(function DropdownButton() {
@@ -98,9 +99,9 @@ const Navbar = memo(function Navbar({ menuOptions, onOpenMenu, title, titleOptio
                 onClick={onOpenMenu}
             >
                 <DropdownButton />
-                <ul tabIndex={0} className="dropdown-options menu mt-3 w-52">
+                <DropdownMenu className="mt-3">
                     {menuOptions}
-                </ul>
+                </DropdownMenu>
             </div>
 
             {/* Title */}

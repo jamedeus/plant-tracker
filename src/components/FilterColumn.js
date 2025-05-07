@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import useDebounce from 'src/useDebounce';
 import SectionCol from 'src/components/SectionCol';
 import EditableNodeList from 'src/components/EditableNodeList';
+import DropdownMenu from 'src/components/DropdownMenu';
 import { XMarkIcon, ArrowsUpDownIcon } from '@heroicons/react/16/solid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUpLong, faArrowDownLong } from '@fortawesome/free-solid-svg-icons';
@@ -113,7 +114,7 @@ const SortMenu = ({ sortByKeys, state, setSort }) => {
             >
                 <ArrowsUpDownIcon className="size-5 m-auto" />
             </div>
-            <ul tabIndex={0} className="dropdown-options menu mt-2 w-min-content">
+            <DropdownMenu className="mt-2">
                 {sortByKeys.map((key) => (
                     <li key={key.key}>
                         <a
@@ -127,7 +128,7 @@ const SortMenu = ({ sortByKeys, state, setSort }) => {
                         </a>
                     </li>
                 ))}
-            </ul>
+            </DropdownMenu>
         </div>
     );
 };

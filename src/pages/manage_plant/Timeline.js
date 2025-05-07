@@ -12,6 +12,7 @@ import { openDeletePhotosModal, preloadDeletePhotosModal } from './DeletePhotosM
 import { openEventHistoryModal } from './EventHistoryModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsis, faPenToSquare} from '@fortawesome/free-solid-svg-icons';
+import DropdownMenu from 'src/components/DropdownMenu';
 import WaterIcon from 'src/components/WaterIcon';
 import FertilizeIcon from 'src/components/FertilizeIcon';
 import PruneIcon from 'src/components/PruneIcon';
@@ -50,9 +51,9 @@ const Title = memo(function Title() {
                     >
                         History
                     </div>
-                    <ul tabIndex={0} className="dropdown-options menu min-w-44">
+                    <DropdownMenu className="min-w-44">
                         <QuickNavigation />
-                    </ul>
+                    </DropdownMenu>
                 </div>
             </div>
 
@@ -73,7 +74,7 @@ const Title = memo(function Title() {
                                 className="size-6!"
                             />
                         </div>
-                        <ul tabIndex={0} className="dropdown-options menu w-40">
+                        <DropdownMenu className="w-40">
                             <li><button
                                 className="flex justify-end"
                                 onClick={() => openNoteModal()}
@@ -104,7 +105,7 @@ const Title = memo(function Title() {
                             >
                                 Delete events
                             </button></li>
-                        </ul>
+                        </DropdownMenu>
                     </>
                 }
             </div>
