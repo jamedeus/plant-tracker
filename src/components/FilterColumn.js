@@ -105,7 +105,7 @@ OptionArrow.propTypes = {
 // Only rendered if sortByKeys array is not empty
 const SortMenu = ({ sortByKeys, state, setSort }) => {
     return (
-        <div className="dropdown dropdown-end z-10">
+        <div className="dropdown dropdown-end">
             <div
                 role="button"
                 tabIndex="0"

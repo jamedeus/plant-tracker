@@ -8,7 +8,7 @@ const DropdownMenu = memo(function DropdownMenu({ children, className }) {
         <ul
             tabIndex={0}
             className={clsx(
-                "dropdown-content menu z-99 shadow-sm bg-base-300 rounded-box",
+                "dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box",
                 className && className
             )}
         >
