@@ -47,15 +47,13 @@ export const Toast = () => {
 
     // Rendered when message state set
     return (message &&
-        <div
-            className={clsx(
-                'toast duration-500 z-100',
-                colorMap[color],
-                fade ? 'opacity-100' : 'opacity-0'
-            )}
-            onClick={hideToast}
-        >
-            <span>{message}</span>
+        <div className={clsx(
+            'toast duration-500',
+            fade ? 'opacity-100' : 'opacity-0'
+        )}>
+            <span className={colorMap[color]} onClick={hideToast}>
+                {message}
+            </span>
         </div>
     );
 };
