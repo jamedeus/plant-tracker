@@ -2,7 +2,7 @@
 @plugin './tailwind-min-size.js';
 @plugin "daisyui" {
     themes: light --default, dark --prefersdark;
-    include: button, modal, carousel, dropdown, accordion,
+    include: button, modal, carousel, accordion,
              timeline, menu, alert, toast, tooltip, radio,
              divider, rootcolor;
 }
@@ -87,6 +87,7 @@
 }
 
 @import "./collapse.css" layer(utilities);
+@import "./dropdown.css" layer(utilities);
 
 @utility card {
     @apply flex flex-col relative rounded-2xl bg-neutral text-neutral-content;

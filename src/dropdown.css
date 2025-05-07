@@ -1,0 +1,57 @@
+/* Container div, contains focusable button and .dropdown-content element */
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+/* Contents wrapper: hidden, transparent, 95% scale when closed */
+.dropdown .dropdown-content,
+.dropdown .dropdown-options {
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    transform-origin: top;
+    transform: scale(.95);
+    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    transition-duration: 200ms;
+}
+
+/* Dropdown button focused: show contents (fade in + scale up animation) */
+.dropdown:focus .dropdown-content,
+.dropdown:focus .dropdown-options,
+.dropdown:focus-within .dropdown-content,
+.dropdown:focus-within .dropdown-options {
+    transform: scale(1);
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Hover variant hovered: show contents (fade in + scale up animation) */
+.dropdown.dropdown-hover:hover .dropdown-content,
+.dropdown.dropdown-hover:hover .dropdown-options {
+    visibility: visible;
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Position variants */
+.dropdown-end .dropdown-content,
+.dropdown-end .dropdown-options {
+    inset-inline-end: 0px;
+}
+.dropdown-center .dropdown-content,
+.dropdown-center .dropdown-options {
+    @apply end-1/2;
+    translate: 50% 0;
+}
+
+/* Styled <ul> with <li> options, replaces .dropdown-content div */
+ul.dropdown-options {
+    @apply menu menu-md z-99 p-2 shadow-sm bg-base-300 rounded-box text-sm;
+
+    /* Prevent line wrap in options text */
+    & > li > a, & > li > button {
+        @apply whitespace-nowrap py-2 px-4;
+    }
+}

@@ -95,27 +95,6 @@ html[data-theme="light"] .pot-size-selected::placeholder {
     @apply outline-0;
 }
 
-.dropdown-options {
-    @apply menu menu-md z-99 p-2 shadow-sm bg-base-300 rounded-box text-sm;
-}
-
-/* Prevent line wrap in dropdown options */
-.dropdown-content > li > a, .dropdown-content > li > button {
-    @apply whitespace-nowrap py-2 px-4;
-}
-
-/* Revert to old way of hiding/showing dropdown (more reliable) */
-/* Fixes dropdown clickable when closed even if z-index not set */
-.dropdown:is(:not(details)) .dropdown-options {
-    @apply invisible;
-}
-.dropdown.dropdown-open .dropdown-options,
-.dropdown:focus-within .dropdown-options,
-.dropdown:not(.dropdown-hover):focus .dropdown-options,
-.dropdown.dropdown-hover:hover .dropdown-options {
-    @apply visible;
-}
-
 /* Wraps Navbar title dropdown contents (plant/group details) */
 .details-card {
     @apply card w-72 p-2 mt-2 mx-auto shadow-sm;

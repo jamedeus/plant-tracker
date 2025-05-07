@@ -98,10 +98,7 @@ const Navbar = memo(function Navbar({ menuOptions, onOpenMenu, title, titleOptio
                 onClick={onOpenMenu}
             >
                 <DropdownButton />
-                <ul
-                    tabIndex={0}
-                    className="dropdown-options dropdown-content mt-3 w-52"
-                >
+                <ul tabIndex={0} className="dropdown-options mt-3 w-52">
                     {menuOptions}
                 </ul>
             </div>

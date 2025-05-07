@@ -50,10 +50,7 @@ const Title = memo(function Title() {
                     >
                         History
                     </div>
-                    <ul
-                        tabIndex={0}
-                        className="dropdown-options dropdown-content min-w-44"
-                    >
+                    <ul tabIndex={0} className="dropdown-options min-w-44">
                         <QuickNavigation />
                     </ul>
                 </div>
@@ -76,10 +73,7 @@ const Title = memo(function Title() {
                                 className="size-6!"
                             />
                         </div>
-                        <ul
-                            tabIndex={0}
-                            className="dropdown-options dropdown-content w-40"
-                        >
+                        <ul tabIndex={0} className="dropdown-options w-40">
                             <li><button
                                 className="flex justify-end"
                                 onClick={() => openNoteModal()}
