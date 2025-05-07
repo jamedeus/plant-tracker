@@ -113,10 +113,6 @@ html[data-theme="light"] .pot-size-selected::placeholder {
     border-color: color-mix(in oklab, var(--color-prune), black 10%);
 }
 
-.alert {
-    @apply whitespace-normal md:whitespace-nowrap;
-}
-
 .photo-thumbnail {
     @apply rounded-lg object-cover;
 }
@@ -153,9 +149,4 @@ html[data-theme="light"] .pot-size-selected::placeholder {
 .break-anywhere {
     overflow-wrap: anywhere;
     word-break: break-word;
-}
-
-/* Fix text wrapping to multiple lines on mobile */
-.toast {
-    @apply min-w-max;
 }

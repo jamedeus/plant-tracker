@@ -1,0 +1,15 @@
+.toast {
+    @apply fixed start-1/2 end-1/2 top-auto bottom-0 m-4 p-4 flex flex-col gap-2;
+    @apply min-w-fit whitespace-nowrap rounded-box transition-all text-black;
+    translate: -50% 0;
+    animation: toast 0.25s ease-out;
+}
+@keyframes toast {
+    0% {
+        scale: 0.9;
+    }
+
+    100% {
+        scale: 1;
+    }
+}

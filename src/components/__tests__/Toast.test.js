@@ -38,16 +38,16 @@ describe('ToastContext', () => {
 
         // Confirm toast has expected text and color class
         let toast = component.getByText('Everything is OK').closest('.alert');
-        expect(toast.classList).toContain('alert-info');
-        expect(toast.classList).not.toContain('alert-error');
+        expect(toast.classList).toContain('bg-info');
+        expect(toast.classList).not.toContain('bg-error');
 
         // Click button that passes different color arg
         await user.click(component.getByText('Show Error Toast'));
 
         // Confirm text and color class changed to expected values
         toast = component.getByText('NOTHING IS OK').closest('.alert');
-        expect(toast.classList).not.toContain('alert-info');
-        expect(toast.classList).toContain('alert-error');
+        expect(toast.classList).not.toContain('bg-info');
+        expect(toast.classList).toContain('bg-error');
     });
 
     it('fades out toast automatically after timeout milliseconds', async () => {
