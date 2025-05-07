@@ -48,10 +48,5 @@
 
 /* Styled <ul> with <li> options, replaces .dropdown-content div */
 ul.dropdown-options {
-    @apply menu menu-md z-99 p-2 shadow-sm bg-base-300 rounded-box text-sm;
-
-    /* Prevent line wrap in options text */
-    & > li > a, & > li > button {
-        @apply whitespace-nowrap py-2 px-4;
-    }
+    @apply z-99 p-2 shadow-sm bg-base-300 rounded-box text-sm;
 }

@@ -3,7 +3,7 @@
 @plugin "daisyui" {
     themes: light --default, dark --prefersdark;
     include: button, modal, carousel, accordion,
-             timeline, menu, alert, toast, tooltip, radio,
+             timeline, alert, toast, tooltip, radio,
              divider, rootcolor;
 }
 
@@ -86,6 +86,7 @@
     }
 }
 
+@import "./menu.css" layer(utilities);
 @import "./collapse.css" layer(utilities);
 @import "./dropdown.css" layer(utilities);
 

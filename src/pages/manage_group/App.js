@@ -320,7 +320,7 @@ function App() {
                     titleOptions={
                         <ul
                             tabIndex={0}
-                            className="dropdown-options dropdown-content w-min-content"
+                            className="dropdown-options menu dropdown-content w-min-content"
                         >
                             <li><a
                                 className="flex justify-center"

@@ -258,7 +258,7 @@ function App() {
         };
 
         return (
-            <ul tabIndex={0} className="dropdown-options mt-3 w-24">
+            <ul tabIndex={0} className="dropdown-options menu mt-3 w-24">
                 <li><a className="flex justify-center" onClick={jumpToPlants}>
                     Plants
                 </a></li>
