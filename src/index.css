@@ -2,7 +2,7 @@
 @plugin './tailwind-min-size.js';
 @plugin "daisyui" {
     themes: light --default, dark --prefersdark;
-    include: button, modal, carousel, timeline, tooltip, radio, divider, rootcolor;
+    include: button, modal, carousel, timeline, tooltip, divider, rootcolor;
 }
 
 /* TODO this is necessary to allow daisyui to override the custom colors added
@@ -86,6 +86,7 @@
     }
 }
 
+@import "./radio.css";
 @import "./menu.css" layer(utilities);
 @import "./toast.css" layer(utilities);
 @import "./collapse.css" layer(utilities);
