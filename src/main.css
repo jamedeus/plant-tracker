@@ -74,27 +74,6 @@ html[data-theme="light"] .pot-size-selected::placeholder {
     @apply text-white/65;
 }
 
-/* Restore v4 background color (custom CSS var), remove border */
-.btn-ghost:hover, .btn-close:hover {
-    background-color: var(--btn-ghost-background);
-    border-width: 0px;
-}
-
-.btn-close {
-    @apply btn btn-sm btn-ghost size-8;
-    border-radius: 9999px;
-    padding: 0;
-}
-
-/* Keep dropdown button hover highlight visible while dropdown is open */
-.dropdown > .btn-ghost:focus, .dropdown > .btn-close:focus {
-    background-color: var(--btn-ghost-background);
-}
-
-.btn-close:focus-visible {
-    @apply outline-0;
-}
-
 /* Wraps Navbar title dropdown contents (plant/group details) */
 .details-card {
     @apply card w-72 p-2 mt-2 mx-auto shadow-sm;
@@ -104,15 +83,6 @@ html[data-theme="light"] .pot-size-selected::placeholder {
     @apply overflow-x-hidden;
 }
 
-.btn-prune {
-    @apply bg-prune outline-prune text-prune-content border border-transparent;
-}
-
-.btn-prune:hover {
-    background-color: color-mix(in oklab, var(--color-prune), black 10%);
-    border-color: color-mix(in oklab, var(--color-prune), black 10%);
-}
-
 .photo-thumbnail {
     @apply rounded-lg object-cover;
 }
@@ -120,10 +90,6 @@ html[data-theme="light"] .pot-size-selected::placeholder {
 /* Make cursor-pointer override cursor style for all children */
 .cursor-pointer, .cursor-pointer * {
     cursor: pointer !important;
-}
-
-.btn-error {
-    color: #eee;
 }
 
 /* Fix modal filling full height on iOS safari when address bar visible */
