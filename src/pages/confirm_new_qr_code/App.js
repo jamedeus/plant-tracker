@@ -28,7 +28,7 @@ const Layout = ({ type, thumbnailUrl, thumbnailAltText, handleConfirm }) => {
             {/* Confirm/cancel buttons */}
             <div className="flex gap-4 mx-auto mb-8">
                 <a
-                    className="btn btn-lg btn-error btn-square text-white"
+                    className="btn h-12 btn-error btn-square text-white"
                     role="button"
                     href="/"
                     title="Don't change QR code"
@@ -36,7 +36,7 @@ const Layout = ({ type, thumbnailUrl, thumbnailAltText, handleConfirm }) => {
                     <FontAwesomeIcon className="size-6!" icon={faXmark} />
                 </a>
                 <button
-                    className="btn btn-lg btn-success btn-square text-white"
+                    className="btn h-12 btn-success btn-square text-white"
                     onClick={handleConfirm}
                     title="Change QR code"
                 >
