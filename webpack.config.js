@@ -44,7 +44,8 @@ const config = {
     },
     output: {
         path: path.resolve(__dirname, 'backend/plant_tracker/static/plant_tracker/'),
-        filename: '[name].js'
+        filename: '[name].js',
+        clean: true
     },
     devServer: {
         open: true,
