@@ -27,6 +27,7 @@ Added:
     outline-color: var(--btn-color, var(--color-base-content));
     /* Add transform for v4 click effect */
     transition-property: color, background-color, border-color, opacity, box-shadow, transform;
+    transition-duration: 200ms;
     border-radius: var(--radius-field);
     background-color: var(--btn-bg);
     border-width: var(--border);
