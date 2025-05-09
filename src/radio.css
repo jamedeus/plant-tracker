@@ -3,8 +3,9 @@ DaisyUI v5 radio button modified to use check animation from daisyui v4.
 Color variants removed, checked uses --color-accent, unchecked has neutral border.
 https://github.com/saadeghi/daisyui/blob/f0a7d3fb1e7830ac57b6258137cf4227dcf241f2/packages/daisyui/src/components/radio.css
 */
+@reference './index.css';
 
-@utility radio {
+.radio {
     @apply relative shrink-0 cursor-pointer appearance-none rounded-full p-0 align-middle;
     /* Neutral border color when unchecked (not --color-accent) */
     border: var(--border) solid var(--input-color, color-mix(in srgb, var(--color-base-content) 20%, #0000));

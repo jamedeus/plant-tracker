@@ -8,6 +8,7 @@ import Navbar from 'src/components/Navbar';
 import { showToast } from 'src/components/Toast';
 import Cookies from 'js-cookie';
 import clsx from 'clsx';
+import 'src/collapse.css';
 
 const UserDetails = memo(function UserDetails() {
     // Get initial details for form from django context

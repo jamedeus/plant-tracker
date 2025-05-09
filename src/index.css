@@ -86,11 +86,9 @@
     }
 }
 
-@import "./radio.css";
 @import "./button.css";
 @import "./menu.css" layer(utilities);
 @import "./toast.css" layer(utilities);
-@import "./collapse.css" layer(utilities);
 @import "./dropdown.css" layer(utilities);
 
 @utility card {
