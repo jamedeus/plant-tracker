@@ -51,7 +51,7 @@ const config = {
         host: 'localhost',
     },
     plugins: [
-        ...(isProduction ? [ new MiniCssExtractPlugin({ filename: '[name].css' }) ] : [])
+        new MiniCssExtractPlugin({ filename: '[name].css' })
     ],
     module: {
         rules: [
@@ -62,7 +62,7 @@ const config = {
             {
                 test: /\.css$/i,
                 use: [
-                    isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+                    MiniCssExtractPlugin.loader,
                     'css-loader',
                     'postcss-loader'
                 ],
