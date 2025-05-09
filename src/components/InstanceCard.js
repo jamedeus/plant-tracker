@@ -53,7 +53,7 @@ const InstanceCard = memo(function InstanceCard({
 
                     {/* Card body */}
                     <div className={clsx(
-                        'card-body cursor-default max-w-full my-auto',
+                        'card-body max-w-full my-auto',
                         thumbnail ? 'text-start' : 'text-center'
                     )}>
                         <h2 className={clsx(

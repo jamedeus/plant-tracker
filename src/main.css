@@ -16,10 +16,6 @@
     @apply min-w-0 min-h-fit px-2 md:px-4 pb-2 md:pb-4;
 }
 
-.loading-lg {
-    width: 4rem;
-}
-
 .tab-group {
     @apply flex gap-1 rounded-xl bg-neutral p-1;
 }
@@ -30,15 +26,6 @@
 
 .tab-option-selected {
     @apply bg-accent text-accent-content;
-}
-
-.no-scrollbar::-webkit-scrollbar {
-    display: none;
-}
-
-.no-scrollbar {
-    -ms-overflow-style: none;
-    scrollbar-width: none;
 }
 
 /* Repot modal pot size option */
@@ -77,11 +64,6 @@ html[data-theme="light"] .pot-size-selected::placeholder {
 
 .photo-thumbnail {
     @apply rounded-lg object-cover;
-}
-
-/* Make cursor-pointer override cursor style for all children */
-.cursor-pointer, .cursor-pointer * {
-    cursor: pointer !important;
 }
 
 /* Fix modal filling full height on iOS safari when address bar visible */

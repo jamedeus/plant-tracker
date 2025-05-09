@@ -172,9 +172,9 @@
     @apply grid-cols-[min-content_1fr];
 }
 
-@utility loading {
+@utility loading-spinner {
     @apply pointer-events-none inline-block aspect-square bg-current align-middle;
-    width: calc(var(--size-selector, 0.25rem) * 6);
+    width: 4rem;
     mask-size: 100%;
     mask-repeat: no-repeat;
     mask-position: center;
