@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import './section.css';
 
 // Renders section with centered title and flex column containing children
 const SectionCol = ({ title, titleOptions, onOpenTitle, children }) => {

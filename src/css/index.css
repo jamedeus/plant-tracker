@@ -145,36 +145,44 @@
     }
 }
 
-@utility file-input {
-    @apply text-base bg-base-100 overflow-hidden h-12 shrink pe-4;
-    border: var(--border)solid #0000;
-    border-color: color-mix(in oklab,var(--color-base-content)20%,#0000);
-    border-radius: var(--radius-field);
-    border-width: var(--border);
-    cursor: unset;
-
-    &:focus {
-        @apply outline-base-content/20 outline-2 outline-offset-2;
-    }
-
-    &::file-selector-button {
-        @apply inline-flex flex-wrap justify-center items-center shrink-0 h-full px-4 me-8;
-        @apply bg-neutral border-neutral text-neutral-content;
-        @apply text-center text-sm leading-4 font-semibold no-underline;
-        @apply cursor-pointer select-none;
-    }
-}
-
 /* Two column layout, left column min-content, right column fills remaining */
 @utility grid-cols-min-max {
     @apply grid-cols-[min-content_1fr];
 }
 
-@utility loading-spinner {
-    @apply pointer-events-none inline-block aspect-square bg-current align-middle;
-    width: 4rem;
-    mask-size: 100%;
-    mask-repeat: no-repeat;
-    mask-position: center;
-    mask-image: url("data:image/svg+xml,%3Csvg width='24' height='24' stroke='black' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cg transform-origin='center'%3E%3Ccircle cx='12' cy='12' r='9.5' fill='none' stroke-width='3' stroke-linecap='round'%3E%3CanimateTransform attributeName='transform' type='rotate' from='0 12 12' to='360 12 12' dur='2s' repeatCount='indefinite'/%3E%3Canimate attributeName='stroke-dasharray' values='0,150;42,150;42,150' keyTimes='0;0.475;1' dur='1.5s' repeatCount='indefinite'/%3E%3Canimate attributeName='stroke-dashoffset' values='0;-16;-59' keyTimes='0;0.475;1' dur='1.5s' repeatCount='indefinite'/%3E%3C/circle%3E%3C/g%3E%3C/svg%3E");
+/* Allows breaking long strings with no spaces to prevent overflow */
+/* Only breaks words if there is no other opportunity (eg spaces) */
+@utility break-anywhere {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+@utility photo-thumbnail {
+    @apply rounded-lg object-cover;
+}
+
+/* Fix modal filling full height on iOS safari when address bar visible */
+.modal-box {
+    max-height: calc(100dvh - 5em);
+}
+
+.tab-group {
+    @apply flex gap-1 rounded-xl bg-neutral p-1;
+}
+
+.tab-option {
+    @apply w-full rounded-lg py-2.5 font-semibold focus:outline-hidden cursor-pointer;
+}
+
+.tab-option-selected {
+    @apply bg-accent text-accent-content;
+}
+
+/* Wraps Navbar title dropdown contents (plant/group details) */
+.details-card {
+    @apply card w-72 p-2 mt-2 mx-auto shadow-sm;
+    /* Allow scrolling inside card, eg phone in landscape orientation */
+    @apply max-h-[calc(100svh-4rem)] overflow-y-auto overscroll-contain;
+    /* Prevent long strings without spaces making card side scroll */
+    @apply overflow-x-hidden;
 }

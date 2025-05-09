@@ -9,6 +9,7 @@ import { openChangeQrModal } from 'src/components/ChangeQrModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { eventAdded } from './timelineSlice';
 import { plantRepotted } from './plantSlice';
+import './repot_modal.css';
 import clsx from 'clsx';
 
 // Pot size options (inches)

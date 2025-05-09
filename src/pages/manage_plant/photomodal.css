@@ -1,5 +1,25 @@
 @reference '../../css/index.css';
 
+.file-input {
+    @apply text-base bg-base-100 overflow-hidden h-12 shrink pe-4;
+    border: var(--border)solid #0000;
+    border-color: color-mix(in oklab,var(--color-base-content)20%,#0000);
+    border-radius: var(--radius-field);
+    border-width: var(--border);
+    cursor: unset;
+
+    &:focus {
+        @apply outline-base-content/20 outline-2 outline-offset-2;
+    }
+
+    &::file-selector-button {
+        @apply inline-flex flex-wrap justify-center items-center shrink-0 h-full px-4 me-8;
+        @apply bg-neutral border-neutral text-neutral-content;
+        @apply text-center text-sm leading-4 font-semibold no-underline;
+        @apply cursor-pointer select-none;
+    }
+}
+
 .selected-files-grid {
     /* Two column layout, left column min-content, right column fill width */
     @apply grid grid-cols-min-max max-h-[50vh] max-w-96 w-full px-4;
