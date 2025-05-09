@@ -18,7 +18,7 @@ import FertilizeIcon from 'src/components/FertilizeIcon';
 import PruneIcon from 'src/components/PruneIcon';
 import RepotIcon from 'src/components/RepotIcon';
 import { useSelector } from 'react-redux';
-import 'src/timeline.css';
+import './timeline.css';
 
 // Takes ISO timestamp string, returns "x days ago"
 const getRelativeTimeString = (timestamp) => {

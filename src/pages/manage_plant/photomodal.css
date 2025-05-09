@@ -1,4 +1,4 @@
-@reference '../../index.css';
+@reference '../../css/index.css';
 
 .selected-files-grid {
     /* Two column layout, left column min-content, right column fill width */
