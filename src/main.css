@@ -20,14 +20,6 @@
     width: 4rem;
 }
 
-.combobox-options-div {
-    @apply absolute top-20 mt-2 max-h-60 w-full overflow-auto rounded-md bg-neutral;
-}
-
-.combobox-option {
-    @apply relative text-white text-center select-none py-2;
-}
-
 .tab-group {
     @apply flex gap-1 rounded-xl bg-neutral p-1;
 }

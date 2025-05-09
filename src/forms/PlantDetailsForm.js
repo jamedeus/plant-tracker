@@ -26,8 +26,8 @@ const SpeciesSelect = ({ value }) => {
             <Combobox.Option
                 value={value}
                 className={({ active }) => clsx(
-                    'combobox-option',
-                    active && 'bg-teal-600'
+                    'text-base text-base-content px-4 py-2 rounded-lg',
+                    active && 'bg-accent text-accent-content! font-semibold'
                 )}
             >
                 {text}
@@ -62,7 +62,10 @@ const SpeciesSelect = ({ value }) => {
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
             >
-                <Combobox.Options className="combobox-options-div">
+                <Combobox.Options className={clsx(
+                    "absolute w-full max-h-60 overflow-auto z-10 mt-2 p-2",
+                    "bg-neutral rounded-lg text-center"
+                )}>
                     {/* Add option if current input not in speciesOptions */}
                     {query.length > 0 && !speciesOptions.includes(query) && (
                         <Option value={query} text={`Create "${query}"`} />
@@ -94,7 +97,7 @@ const PlantDetailsForm = ({ formRef, name, species, pot_size, description }) => 
                     defaultValue={name}
                 />
             </fieldset>
-            <fieldset>
+            <fieldset className="relative">
                 <legend>Plant species</legend>
                 <SpeciesSelect value={species} />
             </fieldset>
