@@ -4,7 +4,6 @@ import { createRoot } from 'react-dom/client';
 import { Toast } from 'src/components/Toast';
 import { ErrorModal } from 'src/components/ErrorModal';
 import { ThemeProvider } from 'src/context/ThemeContext';
-import 'src/css/index.css';
 
 // Keeps boilerplate code in one place for maintainability
 export const PageWrapper = ({ children }) => {
