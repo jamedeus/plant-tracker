@@ -1,5 +1,0 @@
-/* Only run source detection on page files + shared components */
-@import 'tailwindcss' source(".");
-@source "../../components/";
-/* Import tailwind, theme, etc */
-@import "../../css/index.css";
