@@ -1,5 +1,3 @@
-@reference '../css/index.css';
-
 .section {
     @apply flex flex-col w-full max-w-96 bg-base-200 px-4 rounded-2xl;
 }

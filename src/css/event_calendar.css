@@ -1,5 +1,5 @@
-@reference '../../css/index.css';
-@import '../../../node_modules/react-calendar/dist/Calendar.css';
+@reference './index.css';
+@import '../../node_modules/react-calendar/dist/Calendar.css';
 
 /* Rounded corners, responsive background color, slight padding */
 .react-calendar {

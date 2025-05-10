@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import './loading_spinner.css';
 import clsx from 'clsx';
 
 const LoadingAnimation = ({ className }) => {

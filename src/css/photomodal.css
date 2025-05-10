@@ -1,4 +1,4 @@
-@reference '../../css/index.css';
+@reference './index.css';
 
 .file-input {
     @apply text-base bg-base-100 overflow-hidden h-12 shrink pe-4;

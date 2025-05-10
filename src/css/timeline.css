@@ -1,4 +1,4 @@
-@reference '../../css/index.css';
+@reference './index.css';
 
 /* Layout classes */
 .timeline-layout {
