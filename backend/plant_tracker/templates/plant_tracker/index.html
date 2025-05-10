@@ -6,8 +6,9 @@
     <title>{{ title }}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    {# Prevent visual flash on page load in dark mode #}
+    <link rel="stylesheet" type="text/css" href="{% static 'plant_tracker/shared.css' %}" />
     <link rel="stylesheet" type="text/css" href="{% static css_bundle %}" />
+    {# Prevent visual flash on page load in dark mode #}
     <style>
         html[data-theme="dark"] body {
             background: #1D232A;

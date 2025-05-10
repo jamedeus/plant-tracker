@@ -28,9 +28,18 @@ const config = {
                     name: 'react-common',
                     chunks: 'all',
                     enforce: true,
+                },
+                // Extract CSS shared by 2 or more pages to separate shared.css
+                sharedStyles: {
+                    type: 'css/mini-extract',
+                    name: 'shared',
+                    chunks: 'all',
+                    enforce: true,
+                    minChunks: 2,
+                    reuseExistingChunk: true,
                 }
             },
-        },
+        }
     },
     entry: {
         login: './src/pages/login/index.js',
