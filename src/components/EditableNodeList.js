@@ -1,7 +1,6 @@
 import React, { useId } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import 'src/css/radio.css';
 
 // Takes editing (bool), formRef (used to parse FormData), and node list
 // Returns node list wrapped in form with a hidden checkbox for each node
