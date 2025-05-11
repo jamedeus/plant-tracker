@@ -87,68 +87,18 @@
 }
 
 /* Import reusable component utility classes */
+@import "./_tab.css";
+@import "./_card.css";
 @import "./_menu.css";
+@import "./_input.css";
 @import "./_radio.css";
 @import "./_toast.css";
 @import "./_button.css";
+@import "./_navbar.css";
 @import "./_section.css";
 @import "./_collapse.css";
 @import "./_dropdown.css";
 @import "./_floating_footer.css";
-
-@utility card {
-    @apply flex flex-col relative rounded-2xl bg-neutral text-neutral-content;
-}
-@utility card-side {
-    @apply flex-row;
-}
-@utility card-title {
-    @apply text-xl font-semibold items-center;
-}
-@utility card-body {
-    @apply flex flex-col flex-auto p-4 gap-2;
-}
-
-@utility navbar {
-    @apply flex items-center w-full min-h-16 p-2;
-}
-
-@utility input {
-    @apply relative inline-flex shrink appearance-none text-base cursor-text h-12 px-4;
-    border: var(--border)solid #0000;
-    border-color: color-mix(in oklab,var(--color-base-content)20%,#0000);
-    border-radius: var(--radius-field);
-    border-width: var(--border);
-    background-color: var(--color-base-100);
-
-    &:focus, &:focus-within {
-        @apply outline-2 outline-accent border-accent;
-    }
-
-    /* Chromium: remove extra space before calendar icon */
-    &::-webkit-calendar-picker-indicator {
-        @apply absolute;
-        inset-inline-end: 0.75em;
-    }
-
-    /* Chromium calendar icon color + calendar picker background color */
-    html[data-theme="dark"] & {
-        @apply scheme-dark;
-    }
-}
-
-@utility textarea {
-    @apply shrink appearance-none text-base cursor-text min-h-16 py-2 px-4;
-    border: var(--border)solid #0000;
-    border-color: color-mix(in oklab,var(--color-base-content)20%,#0000);
-    border-radius: var(--radius-field);
-    border-width: var(--border);
-    background-color: var(--color-base-100);
-
-    &:focus, &:focus-within {
-        @apply outline-2 outline-accent border-accent;
-    }
-}
 
 /* Two column layout, left column min-content, right column fills remaining */
 @utility grid-cols-min-max {
@@ -169,25 +119,4 @@
 /* Fix modal filling full height on iOS safari when address bar visible */
 .modal-box {
     max-height: calc(100dvh - 5em);
-}
-
-@utility tab-group {
-    @apply flex gap-1 rounded-xl bg-neutral p-1;
-}
-
-@utility tab-option {
-    @apply w-full rounded-lg py-2.5 font-semibold focus:outline-hidden cursor-pointer;
-}
-
-@utility tab-option-selected {
-    @apply bg-accent text-accent-content;
-}
-
-/* Wraps Navbar title dropdown contents (plant/group details) */
-@utility details-card {
-    @apply card w-72 p-2 mt-2 mx-auto shadow-sm;
-    /* Allow scrolling inside card, eg phone in landscape orientation */
-    @apply max-h-[calc(100svh-4rem)] overflow-y-auto overscroll-contain;
-    /* Prevent long strings without spaces making card side scroll */
-    @apply overflow-x-hidden;
 }

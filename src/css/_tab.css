@@ -1,0 +1,11 @@
+@utility tab-group {
+    @apply flex gap-1 rounded-xl bg-neutral p-1;
+}
+
+@utility tab-option {
+    @apply w-full rounded-lg py-2.5 font-semibold focus:outline-hidden cursor-pointer;
+}
+
+@utility tab-option-selected {
+    @apply bg-accent text-accent-content;
+}
