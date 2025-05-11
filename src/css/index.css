@@ -86,14 +86,15 @@
     }
 }
 
-@import "./menu.css";
-@import "./radio.css";
-@import "./toast.css";
-@import "./button.css";
-@import "./section.css";
-@import "./collapse.css";
-@import "./dropdown.css";
-@import "./floating_footer.css";
+/* Import reusable component utility classes */
+@import "./_menu.css";
+@import "./_radio.css";
+@import "./_toast.css";
+@import "./_button.css";
+@import "./_section.css";
+@import "./_collapse.css";
+@import "./_dropdown.css";
+@import "./_floating_footer.css";
 
 @utility card {
     @apply flex flex-col relative rounded-2xl bg-neutral text-neutral-content;
