@@ -23,6 +23,7 @@ const Row = memo(function Row({ filename, removeFile }) {
                 <button
                     className="btn-close"
                     onClick={() => removeFile(filename)}
+                    title={`Unselect ${filename}`}
                 >
                     <CloseButtonIcon />
                 </button>

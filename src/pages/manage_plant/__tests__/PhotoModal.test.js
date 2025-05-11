@@ -119,9 +119,7 @@ describe('PhotoModal', () => {
         fireEvent.change(fileInput, { target: { files: [file1, file2] } });
 
         // Simulate user clicking delete button next to second file in list
-        const fileToRemove = app.getByText('file2.jpg');
-        const removeButton = fileToRemove.closest('.flex').querySelector('.btn-close');
-        await user.click(removeButton);
+        await user.click(app.getByTitle('Unselect file2.jpg'));
 
         // Confirm second file no longer shown on page
         expect(app.queryByText('file2.jpg')).toBeNull();

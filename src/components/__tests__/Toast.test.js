@@ -37,7 +37,7 @@ describe('ToastContext', () => {
         expect(component.container.querySelectorAll('.toast').length).toBe(1);
 
         // Confirm toast has expected text and color class
-        let toast = component.getByText('Everything is OK').closest('.alert');
+        let toast = component.getByText('Everything is OK').closest('span');
         expect(toast.classList).toContain('bg-info');
         expect(toast.classList).not.toContain('bg-error');
 
@@ -45,7 +45,7 @@ describe('ToastContext', () => {
         await user.click(component.getByText('Show Error Toast'));
 
         // Confirm text and color class changed to expected values
-        toast = component.getByText('NOTHING IS OK').closest('.alert');
+        toast = component.getByText('NOTHING IS OK').closest('span');
         expect(toast.classList).not.toContain('bg-info');
         expect(toast.classList).toContain('bg-error');
     });
