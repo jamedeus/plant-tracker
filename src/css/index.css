@@ -5,15 +5,8 @@
     include: modal, carousel, timeline, tooltip, divider, loading, rootcolor;
 }
 
-/* TODO this is necessary to allow daisyui to override the custom colors added
-   to tailwind.config.cjs theme section, but I do not understand why. Without
-   it the daisyui theme will apply to every color except these (they inherit).
-
-   If @config "../tailwind.config.cjs"; above is removed the build will fail
-   because of bg-prune in one of the classes in this file. This results in
-   the whole app falling back to the default daisyui colors since the ones
-   below are never parsed.
-*/
+/* Add custom theme colors (values overridden by daisyui themes below) */
+/* Variables need to exist in tailwind theme to generate bg-prune etc */
 @theme {
     --color-prune: #FFF;
     --color-repot: #FFF;
@@ -28,7 +21,6 @@
     --size-field: 0.3rem;
     --radius-box: 1rem;
     --radius-field: 0.5rem;
-    --btn-ghost-background: oklch(0.746477 0.0216 264.435964/.2);
     --color-base-content: oklch(0.746477 0.0216 264.435964/1);
     --color-primary: oklch(0.6569 0.196 275.75/1);
     --color-accent: oklch(0.7451 0.167 183.61/1);
@@ -55,7 +47,7 @@
     --size-field: 0.3rem;
     --radius-box: 1rem;
     --radius-field: 0.5rem;
-    --btn-ghost-background: oklch(0.278078 0.029596 256.847952/.2);
+    --color-base-content: oklch(0.278078 0.029596 256.847952/1);
     --color-primary: oklch(0.4912 0.3096 275.75/1);
     --color-accent: oklch(0.7676 0.184 183.61/1);
     --color-base-100: #F2F2F2;

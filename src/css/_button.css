@@ -128,14 +128,11 @@
     }
 
     /* v4 hover highlight color */
-    &:hover {
-        --btn-bg: var(--btn-ghost-background);
-        --btn-border: #0000;
-    }
-
     /* Keep dropdown button hover highlight visible while dropdown is open */
+    &:hover,
     .dropdown > &:focus {
-        --btn-bg: var(--btn-ghost-background);
+        --btn-bg: color-mix(in oklab,var(--color-base-content)20%,#0000);
+        --btn-border: #0000;
     }
 }
 
