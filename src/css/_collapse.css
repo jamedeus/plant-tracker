@@ -1,16 +1,20 @@
-/*
-Utility classes for a collapsible div controlled by a hidden checkbox/radio.
-Inspired by DaisyUI v4 collapse, styling and unused features removed.
-https://github.com/saadeghi/daisyui/blob/0f31b7997ee2909bb7f67856d229c2eb00ed95af/src/components/styled/collapse.css
+/* ==========================================================================
+ * Portions of this file were adapted from DaisyUI v4.
+ * Original copyright © 2020 Pouya Saadeghi
+ * Licensed under the MIT License – see ../../LICENSES/daisyui-license.txt.
+ * Main source: https://unpkg.com/daisyui@4.7.2/dist/full.css
+ * ==========================================================================
 
-Usage:
-    <div className="collapse">
-        <input type="checkbox" />
-        <div className="collapse-title">Always Visible</div>
-        <div className="collapse-content">
-            <p>Hidden until collapse opened</p>
-        </div>
-    </div>
+  Utility classes for a collapsible div controlled by a hidden checkbox/radio.
+
+  Usage:
+      <div className="collapse">
+          <input type="checkbox" />
+          <div className="collapse-title">Always Visible</div>
+          <div className="collapse-content">
+              <p>Hidden until collapse opened</p>
+          </div>
+      </div>
 */
 
 /* Wrapper div, always visible, transition grid-template-rows for animation */

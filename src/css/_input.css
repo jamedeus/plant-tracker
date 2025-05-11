@@ -1,3 +1,14 @@
+/* ==========================================================================
+ * Portions of this file were adapted from DaisyUI v4 and DaisyUI v5.
+ * Original copyright © 2020 Pouya Saadeghi
+ * Licensed under the MIT License – see ../../LICENSES/daisyui-license.txt.
+ * Main sources:
+ *  - https://github.com/saadeghi/daisyui/blob/f0a7d3fb1e7830ac57b6258137cf4227dcf241f2/packages/daisyui/src/components/button.css
+ *  - https://github.com/saadeghi/daisyui/blob/f0a7d3fb1e7830ac57b6258137cf4227dcf241f2/packages/daisyui/src/components/textarea.css
+ *  - https://github.com/saadeghi/daisyui/blob/0f31b7997ee2909bb7f67856d229c2eb00ed95af/src/components/styled/file-input.css
+ * ==========================================================================
+ */
+
 @utility input {
     @apply relative inline-flex shrink appearance-none text-base cursor-text h-12 px-4;
     border: var(--border)solid #0000;

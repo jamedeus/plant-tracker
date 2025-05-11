@@ -1,3 +1,11 @@
+/* ==========================================================================
+ * Portions of this file were adapted from DaisyUI v4.
+ * Original copyright © 2020 Pouya Saadeghi
+ * Licensed under the MIT License – see ../../LICENSES/daisyui-license.txt.
+ * Main source: https://unpkg.com/daisyui@4.7.2/dist/full.css
+ * ==========================================================================
+ */
+
 /* Container <ul>, contains <li> for each option (no class needed) */
 @utility menu {
     display: flex;
