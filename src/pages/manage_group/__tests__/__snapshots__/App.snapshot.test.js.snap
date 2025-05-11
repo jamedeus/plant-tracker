@@ -29,14 +29,14 @@ exports[`App matches snapshot 1`] = `
         class="container flex flex-col items-center mx-auto mb-28"
       >
         <div
-          class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
+          class="navbar bg-base-100 mb-4 sticky top-0 z-99"
         >
           <div
             class="dropdown justify-start min-w-12"
           >
             <div
               aria-label="Navigation menu"
-              class="btn btn-ghost btn-circle"
+              class="btn btn-ghost btn-circle size-12"
               role="button"
               tabindex="0"
             >
@@ -56,7 +56,7 @@ exports[`App matches snapshot 1`] = `
               </svg>
             </div>
             <ul
-              class="dropdown-options mt-3 w-52"
+              class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-3"
               tabindex="0"
             >
               <li>
@@ -104,14 +104,14 @@ exports[`App matches snapshot 1`] = `
                 </span>
               </a>
               <div
-                class="dropdown-content z-[1] flex"
+                class="dropdown-content z-1 flex"
                 tabindex="0"
               >
                 <div
                   class="details-card"
                 >
                   <div
-                    class="card-body"
+                    class="card-body text-sm"
                   >
                     <p
                       class="flex"
@@ -128,7 +128,7 @@ exports[`App matches snapshot 1`] = `
                       </span>
                     </p>
                     <button
-                      class="btn btn-sm mt-4"
+                      class="btn h-8 mt-4"
                     >
                       Edit
                     </button>
@@ -174,7 +174,7 @@ exports[`App matches snapshot 1`] = `
           </div>
           <input
             aria-label="Timestamp input"
-            class="input input-bordered my-2"
+            class="input my-2 text-center"
             step="1"
             type="datetime-local"
             value="2024-03-01T12:00:00"
@@ -214,7 +214,7 @@ exports[`App matches snapshot 1`] = `
                 class="dropdown-content z-50 mt-14"
               >
                 <ul
-                  class="dropdown-options w-min-content"
+                  class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box"
                   tabindex="0"
                 >
                   <li>
@@ -246,7 +246,7 @@ exports[`App matches snapshot 1`] = `
                   class="relative w-full"
                 >
                   <input
-                    class="input input-bordered w-full text-center indent-[3.625rem] pr-[4.5rem]"
+                    class="input w-full text-center indent-[3.625rem]! pr-[4.5rem]!"
                     placeholder="filter"
                     type="text"
                     value=""
@@ -258,7 +258,7 @@ exports[`App matches snapshot 1`] = `
                       class="dropdown dropdown-end"
                     >
                       <div
-                        class="btn-close size-8 no-animation"
+                        class="btn-close size-8! no-animation"
                         role="button"
                         tabindex="0"
                         title="Sort menu"
@@ -279,7 +279,7 @@ exports[`App matches snapshot 1`] = `
                         </svg>
                       </div>
                       <ul
-                        class="dropdown-options mt-2 w-min-content"
+                        class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2"
                         tabindex="0"
                       >
                         <li>
@@ -339,7 +339,7 @@ exports[`App matches snapshot 1`] = `
                   >
                     <input
                       aria-label="Select Test Plant"
-                      class="radio checked:bg-accent my-auto"
+                      class="radio my-auto"
                       id=":r2:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                       tabindex="-1"
@@ -351,7 +351,7 @@ exports[`App matches snapshot 1`] = `
                   >
                     <a
                       aria-label="Go to Test Plant page"
-                      class="collapse card-collapse cursor-pointer group"
+                      class="collapse cursor-pointer group rounded-2xl bg-neutral text-neutral-content"
                       href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     >
                       <input
@@ -360,13 +360,13 @@ exports[`App matches snapshot 1`] = `
                         type="checkbox"
                       />
                       <div
-                        class="collapse-title !p-0 min-size-0"
+                        class="collapse-title p-0! min-size-0"
                       >
                         <div
                           class="card card-side relative h-24"
                         >
                           <div
-                            class="card-body cursor-default max-w-full my-auto text-center"
+                            class="card-body max-w-full my-auto text-center"
                           >
                             <h2
                               class="card-title line-clamp-1 break-words text-center px-8"
@@ -403,7 +403,7 @@ exports[`App matches snapshot 1`] = `
                           >
                             <svg
                               aria-hidden="true"
-                              class="size-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
+                              class="size-8 transition-transform duration-200 rotate-0 group-has-checked:rotate-180"
                               data-slot="icon"
                               fill="currentColor"
                               viewBox="0 0 16 16"
@@ -483,7 +483,7 @@ exports[`App matches snapshot 1`] = `
                   >
                     <input
                       aria-label="Select node"
-                      class="radio checked:bg-accent my-auto"
+                      class="radio my-auto"
                       id=":r2:-19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
                       name="19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
                       tabindex="-1"
@@ -495,7 +495,7 @@ exports[`App matches snapshot 1`] = `
                   >
                     <a
                       aria-label="Go to Unnamed Spider Plant page"
-                      class="collapse card-collapse cursor-pointer group grayscale"
+                      class="collapse cursor-pointer group rounded-2xl bg-neutral text-neutral-content grayscale"
                       href="/manage/19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
                     >
                       <input
@@ -504,13 +504,13 @@ exports[`App matches snapshot 1`] = `
                         type="checkbox"
                       />
                       <div
-                        class="collapse-title !p-0 min-size-0"
+                        class="collapse-title p-0! min-size-0"
                       >
                         <div
                           class="card card-side relative h-24"
                         >
                           <figure
-                            class="h-24 w-20 min-size-20 rounded-b-none"
+                            class="h-24 w-20 min-size-20"
                           >
                             <img
                               alt="Unnamed Spider Plant photo"
@@ -520,7 +520,7 @@ exports[`App matches snapshot 1`] = `
                             />
                           </figure>
                           <div
-                            class="card-body cursor-default max-w-full my-auto text-start"
+                            class="card-body max-w-full my-auto text-start"
                           >
                             <h2
                               class="card-title line-clamp-1 break-words pr-8"
@@ -557,7 +557,7 @@ exports[`App matches snapshot 1`] = `
                           >
                             <svg
                               aria-hidden="true"
-                              class="size-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
+                              class="size-8 transition-transform duration-200 rotate-0 group-has-checked:rotate-180"
                               data-slot="icon"
                               fill="currentColor"
                               viewBox="0 0 16 16"
@@ -623,7 +623,7 @@ exports[`App matches snapshot 1`] = `
                   >
                     <input
                       aria-label="Select Newest plant"
-                      class="radio checked:bg-accent my-auto"
+                      class="radio my-auto"
                       id=":r2:-26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                       name="26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                       tabindex="-1"
@@ -635,7 +635,7 @@ exports[`App matches snapshot 1`] = `
                   >
                     <a
                       aria-label="Go to Newest plant page"
-                      class="collapse card-collapse cursor-pointer group"
+                      class="collapse cursor-pointer group rounded-2xl bg-neutral text-neutral-content"
                       href="/manage/26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                     >
                       <input
@@ -644,13 +644,13 @@ exports[`App matches snapshot 1`] = `
                         type="checkbox"
                       />
                       <div
-                        class="collapse-title !p-0 min-size-0"
+                        class="collapse-title p-0! min-size-0"
                       >
                         <div
                           class="card card-side relative h-24"
                         >
                           <div
-                            class="card-body cursor-default max-w-full my-auto text-center"
+                            class="card-body max-w-full my-auto text-center"
                           >
                             <h2
                               class="card-title line-clamp-1 break-words text-center px-8"
@@ -669,7 +669,7 @@ exports[`App matches snapshot 1`] = `
                           >
                             <svg
                               aria-hidden="true"
-                              class="size-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
+                              class="size-8 transition-transform duration-200 rotate-0 group-has-checked:rotate-180"
                               data-slot="icon"
                               fill="currentColor"
                               viewBox="0 0 16 16"
@@ -903,14 +903,14 @@ exports[`App matches snapshot 1`] = `
       class="container flex flex-col items-center mx-auto mb-28"
     >
       <div
-        class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
+        class="navbar bg-base-100 mb-4 sticky top-0 z-99"
       >
         <div
           class="dropdown justify-start min-w-12"
         >
           <div
             aria-label="Navigation menu"
-            class="btn btn-ghost btn-circle"
+            class="btn btn-ghost btn-circle size-12"
             role="button"
             tabindex="0"
           >
@@ -930,7 +930,7 @@ exports[`App matches snapshot 1`] = `
             </svg>
           </div>
           <ul
-            class="dropdown-options mt-3 w-52"
+            class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-3"
             tabindex="0"
           >
             <li>
@@ -978,14 +978,14 @@ exports[`App matches snapshot 1`] = `
               </span>
             </a>
             <div
-              class="dropdown-content z-[1] flex"
+              class="dropdown-content z-1 flex"
               tabindex="0"
             >
               <div
                 class="details-card"
               >
                 <div
-                  class="card-body"
+                  class="card-body text-sm"
                 >
                   <p
                     class="flex"
@@ -1002,7 +1002,7 @@ exports[`App matches snapshot 1`] = `
                     </span>
                   </p>
                   <button
-                    class="btn btn-sm mt-4"
+                    class="btn h-8 mt-4"
                   >
                     Edit
                   </button>
@@ -1048,7 +1048,7 @@ exports[`App matches snapshot 1`] = `
         </div>
         <input
           aria-label="Timestamp input"
-          class="input input-bordered my-2"
+          class="input my-2 text-center"
           step="1"
           type="datetime-local"
           value="2024-03-01T12:00:00"
@@ -1088,7 +1088,7 @@ exports[`App matches snapshot 1`] = `
               class="dropdown-content z-50 mt-14"
             >
               <ul
-                class="dropdown-options w-min-content"
+                class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box"
                 tabindex="0"
               >
                 <li>
@@ -1120,7 +1120,7 @@ exports[`App matches snapshot 1`] = `
                 class="relative w-full"
               >
                 <input
-                  class="input input-bordered w-full text-center indent-[3.625rem] pr-[4.5rem]"
+                  class="input w-full text-center indent-[3.625rem]! pr-[4.5rem]!"
                   placeholder="filter"
                   type="text"
                   value=""
@@ -1132,7 +1132,7 @@ exports[`App matches snapshot 1`] = `
                     class="dropdown dropdown-end"
                   >
                     <div
-                      class="btn-close size-8 no-animation"
+                      class="btn-close size-8! no-animation"
                       role="button"
                       tabindex="0"
                       title="Sort menu"
@@ -1153,7 +1153,7 @@ exports[`App matches snapshot 1`] = `
                       </svg>
                     </div>
                     <ul
-                      class="dropdown-options mt-2 w-min-content"
+                      class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-2"
                       tabindex="0"
                     >
                       <li>
@@ -1213,7 +1213,7 @@ exports[`App matches snapshot 1`] = `
                 >
                   <input
                     aria-label="Select Test Plant"
-                    class="radio checked:bg-accent my-auto"
+                    class="radio my-auto"
                     id=":r2:-0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     name="0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                     tabindex="-1"
@@ -1225,7 +1225,7 @@ exports[`App matches snapshot 1`] = `
                 >
                   <a
                     aria-label="Go to Test Plant page"
-                    class="collapse card-collapse cursor-pointer group"
+                    class="collapse cursor-pointer group rounded-2xl bg-neutral text-neutral-content"
                     href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                   >
                     <input
@@ -1234,13 +1234,13 @@ exports[`App matches snapshot 1`] = `
                       type="checkbox"
                     />
                     <div
-                      class="collapse-title !p-0 min-size-0"
+                      class="collapse-title p-0! min-size-0"
                     >
                       <div
                         class="card card-side relative h-24"
                       >
                         <div
-                          class="card-body cursor-default max-w-full my-auto text-center"
+                          class="card-body max-w-full my-auto text-center"
                         >
                           <h2
                             class="card-title line-clamp-1 break-words text-center px-8"
@@ -1277,7 +1277,7 @@ exports[`App matches snapshot 1`] = `
                         >
                           <svg
                             aria-hidden="true"
-                            class="size-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
+                            class="size-8 transition-transform duration-200 rotate-0 group-has-checked:rotate-180"
                             data-slot="icon"
                             fill="currentColor"
                             viewBox="0 0 16 16"
@@ -1357,7 +1357,7 @@ exports[`App matches snapshot 1`] = `
                 >
                   <input
                     aria-label="Select node"
-                    class="radio checked:bg-accent my-auto"
+                    class="radio my-auto"
                     id=":r2:-19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
                     name="19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
                     tabindex="-1"
@@ -1369,7 +1369,7 @@ exports[`App matches snapshot 1`] = `
                 >
                   <a
                     aria-label="Go to Unnamed Spider Plant page"
-                    class="collapse card-collapse cursor-pointer group grayscale"
+                    class="collapse cursor-pointer group rounded-2xl bg-neutral text-neutral-content grayscale"
                     href="/manage/19f65fa0-1c75-4cba-b590-0c9b5b315fcc"
                   >
                     <input
@@ -1378,13 +1378,13 @@ exports[`App matches snapshot 1`] = `
                       type="checkbox"
                     />
                     <div
-                      class="collapse-title !p-0 min-size-0"
+                      class="collapse-title p-0! min-size-0"
                     >
                       <div
                         class="card card-side relative h-24"
                       >
                         <figure
-                          class="h-24 w-20 min-size-20 rounded-b-none"
+                          class="h-24 w-20 min-size-20"
                         >
                           <img
                             alt="Unnamed Spider Plant photo"
@@ -1394,7 +1394,7 @@ exports[`App matches snapshot 1`] = `
                           />
                         </figure>
                         <div
-                          class="card-body cursor-default max-w-full my-auto text-start"
+                          class="card-body max-w-full my-auto text-start"
                         >
                           <h2
                             class="card-title line-clamp-1 break-words pr-8"
@@ -1431,7 +1431,7 @@ exports[`App matches snapshot 1`] = `
                         >
                           <svg
                             aria-hidden="true"
-                            class="size-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
+                            class="size-8 transition-transform duration-200 rotate-0 group-has-checked:rotate-180"
                             data-slot="icon"
                             fill="currentColor"
                             viewBox="0 0 16 16"
@@ -1497,7 +1497,7 @@ exports[`App matches snapshot 1`] = `
                 >
                   <input
                     aria-label="Select Newest plant"
-                    class="radio checked:bg-accent my-auto"
+                    class="radio my-auto"
                     id=":r2:-26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                     name="26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                     tabindex="-1"
@@ -1509,7 +1509,7 @@ exports[`App matches snapshot 1`] = `
                 >
                   <a
                     aria-label="Go to Newest plant page"
-                    class="collapse card-collapse cursor-pointer group"
+                    class="collapse cursor-pointer group rounded-2xl bg-neutral text-neutral-content"
                     href="/manage/26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                   >
                     <input
@@ -1518,13 +1518,13 @@ exports[`App matches snapshot 1`] = `
                       type="checkbox"
                     />
                     <div
-                      class="collapse-title !p-0 min-size-0"
+                      class="collapse-title p-0! min-size-0"
                     >
                       <div
                         class="card card-side relative h-24"
                       >
                         <div
-                          class="card-body cursor-default max-w-full my-auto text-center"
+                          class="card-body max-w-full my-auto text-center"
                         >
                           <h2
                             class="card-title line-clamp-1 break-words text-center px-8"
@@ -1543,7 +1543,7 @@ exports[`App matches snapshot 1`] = `
                         >
                           <svg
                             aria-hidden="true"
-                            class="size-8 transition-transform duration-200 rotate-0 group-has-[:checked]:rotate-180"
+                            class="size-8 transition-transform duration-200 rotate-0 group-has-checked:rotate-180"
                             data-slot="icon"
                             fill="currentColor"
                             viewBox="0 0 16 16"

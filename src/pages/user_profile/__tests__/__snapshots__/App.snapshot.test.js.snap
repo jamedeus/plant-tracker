@@ -19,14 +19,14 @@ exports[`App matches snapshot 1`] = `
         class="container flex flex-col h-screen mx-auto items-center"
       >
         <div
-          class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
+          class="navbar bg-base-100 mb-4 sticky top-0 z-99"
         >
           <div
             class="dropdown justify-start min-w-12"
           >
             <div
               aria-label="Navigation menu"
-              class="btn btn-ghost btn-circle"
+              class="btn btn-ghost btn-circle size-12"
               role="button"
               tabindex="0"
             >
@@ -46,7 +46,7 @@ exports[`App matches snapshot 1`] = `
               </svg>
             </div>
             <ul
-              class="dropdown-options mt-3 w-52"
+              class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-3"
               tabindex="0"
             >
               <li>
@@ -83,7 +83,7 @@ exports[`App matches snapshot 1`] = `
                 </span>
               </a>
               <div
-                class="dropdown-content z-[1] flex"
+                class="dropdown-content z-1 flex"
                 tabindex="0"
               />
             </div>
@@ -96,7 +96,7 @@ exports[`App matches snapshot 1`] = `
           class="flex flex-col w-96 max-w-[100vw] gap-4 md:gap-6 px-4 md:mt-16"
         >
           <div
-            class="collapse collapse-arrow bg-base-200"
+            class="collapse collapse-arrow bg-base-200 rounded-2xl"
             tabindex="0"
           >
             <input
@@ -117,7 +117,7 @@ exports[`App matches snapshot 1`] = `
                 class="flex flex-col gap-4"
               >
                 <div
-                  class="grid grid-cols-[min-content_1fr] gap-4"
+                  class="grid grid-cols-min-max gap-4"
                 >
                   <div
                     class="my-auto text-nowrap"
@@ -126,7 +126,7 @@ exports[`App matches snapshot 1`] = `
                   </div>
                   <input
                     aria-label="First name input"
-                    class="input w-full input-bordered"
+                    class="input w-full"
                     data-testid="first_name_input"
                     name="first_name"
                     type="text"
@@ -139,7 +139,7 @@ exports[`App matches snapshot 1`] = `
                   </div>
                   <input
                     aria-label="Last name input"
-                    class="input w-full input-bordered"
+                    class="input w-full"
                     data-testid="last_name_input"
                     name="last_name"
                     type="text"
@@ -153,7 +153,7 @@ exports[`App matches snapshot 1`] = `
                   <input
                     aria-label="Email address input"
                     autocapitalize="off"
-                    class="input w-full input-bordered"
+                    class="input w-full"
                     data-testid="email_input"
                     name="email"
                     type="email"
@@ -194,7 +194,7 @@ exports[`App matches snapshot 1`] = `
             </div>
           </div>
           <div
-            class="collapse collapse-arrow bg-base-200"
+            class="collapse collapse-arrow bg-base-200 rounded-2xl"
             tabindex="0"
           >
             <input
@@ -211,68 +211,47 @@ exports[`App matches snapshot 1`] = `
               class="collapse-content"
             >
               <form
-                class="flex flex-col gap-2"
+                class="grid grid-cols-1 gap-2"
               >
-                <label
-                  class="form-control w-full"
+                <fieldset
                   title="Must be at least 8 characters, can't be all numbers"
                 >
-                  <div
-                    class="label"
-                  >
-                    <span
-                      class="label-text"
-                    >
-                      Old password
-                    </span>
-                  </div>
+                  <legend>
+                    Old password
+                  </legend>
                   <input
-                    class="input w-full input-bordered"
+                    class="input w-full"
                     name="old_password"
                     type="password"
                     value=""
                   />
-                </label>
-                <label
-                  class="form-control w-full"
+                </fieldset>
+                <fieldset
                   title="Must be at least 8 characters, can't be all numbers"
                 >
-                  <div
-                    class="label"
-                  >
-                    <span
-                      class="label-text"
-                    >
-                      New password
-                    </span>
-                  </div>
+                  <legend>
+                    New password
+                  </legend>
                   <input
-                    class="input w-full input-bordered"
+                    class="input w-full"
                     name="new_password1"
                     type="password"
                     value=""
                   />
-                </label>
-                <label
-                  class="form-control w-full"
+                </fieldset>
+                <fieldset
                   title="Must be at least 8 characters, can't be all numbers"
                 >
-                  <div
-                    class="label"
-                  >
-                    <span
-                      class="label-text"
-                    >
-                      Confirm new password
-                    </span>
-                  </div>
+                  <legend>
+                    Confirm new password
+                  </legend>
                   <input
-                    class="input w-full input-bordered"
+                    class="input w-full"
                     name="new_password2"
                     type="password"
                     value=""
                   />
-                </label>
+                </fieldset>
                 <button
                   class="btn btn-accent mt-6"
                   disabled=""
@@ -334,14 +313,14 @@ exports[`App matches snapshot 1`] = `
       class="container flex flex-col h-screen mx-auto items-center"
     >
       <div
-        class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
+        class="navbar bg-base-100 mb-4 sticky top-0 z-99"
       >
         <div
           class="dropdown justify-start min-w-12"
         >
           <div
             aria-label="Navigation menu"
-            class="btn btn-ghost btn-circle"
+            class="btn btn-ghost btn-circle size-12"
             role="button"
             tabindex="0"
           >
@@ -361,7 +340,7 @@ exports[`App matches snapshot 1`] = `
             </svg>
           </div>
           <ul
-            class="dropdown-options mt-3 w-52"
+            class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-3"
             tabindex="0"
           >
             <li>
@@ -398,7 +377,7 @@ exports[`App matches snapshot 1`] = `
               </span>
             </a>
             <div
-              class="dropdown-content z-[1] flex"
+              class="dropdown-content z-1 flex"
               tabindex="0"
             />
           </div>
@@ -411,7 +390,7 @@ exports[`App matches snapshot 1`] = `
         class="flex flex-col w-96 max-w-[100vw] gap-4 md:gap-6 px-4 md:mt-16"
       >
         <div
-          class="collapse collapse-arrow bg-base-200"
+          class="collapse collapse-arrow bg-base-200 rounded-2xl"
           tabindex="0"
         >
           <input
@@ -432,7 +411,7 @@ exports[`App matches snapshot 1`] = `
               class="flex flex-col gap-4"
             >
               <div
-                class="grid grid-cols-[min-content_1fr] gap-4"
+                class="grid grid-cols-min-max gap-4"
               >
                 <div
                   class="my-auto text-nowrap"
@@ -441,7 +420,7 @@ exports[`App matches snapshot 1`] = `
                 </div>
                 <input
                   aria-label="First name input"
-                  class="input w-full input-bordered"
+                  class="input w-full"
                   data-testid="first_name_input"
                   name="first_name"
                   type="text"
@@ -454,7 +433,7 @@ exports[`App matches snapshot 1`] = `
                 </div>
                 <input
                   aria-label="Last name input"
-                  class="input w-full input-bordered"
+                  class="input w-full"
                   data-testid="last_name_input"
                   name="last_name"
                   type="text"
@@ -468,7 +447,7 @@ exports[`App matches snapshot 1`] = `
                 <input
                   aria-label="Email address input"
                   autocapitalize="off"
-                  class="input w-full input-bordered"
+                  class="input w-full"
                   data-testid="email_input"
                   name="email"
                   type="email"
@@ -509,7 +488,7 @@ exports[`App matches snapshot 1`] = `
           </div>
         </div>
         <div
-          class="collapse collapse-arrow bg-base-200"
+          class="collapse collapse-arrow bg-base-200 rounded-2xl"
           tabindex="0"
         >
           <input
@@ -526,68 +505,47 @@ exports[`App matches snapshot 1`] = `
             class="collapse-content"
           >
             <form
-              class="flex flex-col gap-2"
+              class="grid grid-cols-1 gap-2"
             >
-              <label
-                class="form-control w-full"
+              <fieldset
                 title="Must be at least 8 characters, can't be all numbers"
               >
-                <div
-                  class="label"
-                >
-                  <span
-                    class="label-text"
-                  >
-                    Old password
-                  </span>
-                </div>
+                <legend>
+                  Old password
+                </legend>
                 <input
-                  class="input w-full input-bordered"
+                  class="input w-full"
                   name="old_password"
                   type="password"
                   value=""
                 />
-              </label>
-              <label
-                class="form-control w-full"
+              </fieldset>
+              <fieldset
                 title="Must be at least 8 characters, can't be all numbers"
               >
-                <div
-                  class="label"
-                >
-                  <span
-                    class="label-text"
-                  >
-                    New password
-                  </span>
-                </div>
+                <legend>
+                  New password
+                </legend>
                 <input
-                  class="input w-full input-bordered"
+                  class="input w-full"
                   name="new_password1"
                   type="password"
                   value=""
                 />
-              </label>
-              <label
-                class="form-control w-full"
+              </fieldset>
+              <fieldset
                 title="Must be at least 8 characters, can't be all numbers"
               >
-                <div
-                  class="label"
-                >
-                  <span
-                    class="label-text"
-                  >
-                    Confirm new password
-                  </span>
-                </div>
+                <legend>
+                  Confirm new password
+                </legend>
                 <input
-                  class="input w-full input-bordered"
+                  class="input w-full"
                   name="new_password2"
                   type="password"
                   value=""
                 />
-              </label>
+              </fieldset>
               <button
                 class="btn btn-accent mt-6"
                 disabled=""
