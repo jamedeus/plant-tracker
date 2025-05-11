@@ -1,4 +1,4 @@
-.toast {
+@utility toast {
     @apply fixed bottom-0 z-100 flex flex-row my-4 w-full whitespace-nowrap;
     animation: toast 0.25s ease-out;
 

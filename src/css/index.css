@@ -86,12 +86,12 @@
     }
 }
 
+@import "./menu.css";
+@import "./toast.css";
 @import "./button.css";
 @import "./section.css";
-@import "./menu.css" layer(utilities);
-@import "./toast.css" layer(utilities);
-@import "./dropdown.css" layer(utilities);
-@import "./floating_footer.css" layer(utilities);
+@import "./dropdown.css";
+@import "./floating_footer.css";
 
 @utility card {
     @apply flex flex-col relative rounded-2xl bg-neutral text-neutral-content;
@@ -168,20 +168,20 @@
     max-height: calc(100dvh - 5em);
 }
 
-.tab-group {
+@utility tab-group {
     @apply flex gap-1 rounded-xl bg-neutral p-1;
 }
 
-.tab-option {
+@utility tab-option {
     @apply w-full rounded-lg py-2.5 font-semibold focus:outline-hidden cursor-pointer;
 }
 
-.tab-option-selected {
+@utility tab-option-selected {
     @apply bg-accent text-accent-content;
 }
 
 /* Wraps Navbar title dropdown contents (plant/group details) */
-.details-card {
+@utility details-card {
     @apply card w-72 p-2 mt-2 mx-auto shadow-sm;
     /* Allow scrolling inside card, eg phone in landscape orientation */
     @apply max-h-[calc(100svh-4rem)] overflow-y-auto overscroll-contain;
