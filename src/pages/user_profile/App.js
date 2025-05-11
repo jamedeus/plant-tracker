@@ -167,8 +167,10 @@ const ChangePassword = memo(function ChangePassword() {
         }
     };
 
+    {/* Single-column grid to fix iOS safari bug */}
+    {/* With flex-col spacing is 2-3 rem until field focused, then normal */}
     return (
-        <form ref={formRef} className="flex flex-col gap-2">
+        <form ref={formRef} className="grid grid-cols-1 gap-2">
             <fieldset title="Must be at least 8 characters, can't be all numbers">
                 <legend>Old password</legend>
                 <input
