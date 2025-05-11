@@ -211,47 +211,47 @@ exports[`App matches snapshot 1`] = `
               class="collapse-content"
             >
               <form
-                class="grid grid-cols-1 gap-2"
+                class="flex flex-col gap-2"
               >
-                <fieldset
+                <label
                   title="Must be at least 8 characters, can't be all numbers"
                 >
-                  <legend>
+                  <span>
                     Old password
-                  </legend>
+                  </span>
                   <input
                     class="input w-full"
                     name="old_password"
                     type="password"
                     value=""
                   />
-                </fieldset>
-                <fieldset
+                </label>
+                <label
                   title="Must be at least 8 characters, can't be all numbers"
                 >
-                  <legend>
+                  <span>
                     New password
-                  </legend>
+                  </span>
                   <input
                     class="input w-full"
                     name="new_password1"
                     type="password"
                     value=""
                   />
-                </fieldset>
-                <fieldset
+                </label>
+                <label
                   title="Must be at least 8 characters, can't be all numbers"
                 >
-                  <legend>
+                  <span>
                     Confirm new password
-                  </legend>
+                  </span>
                   <input
                     class="input w-full"
                     name="new_password2"
                     type="password"
                     value=""
                   />
-                </fieldset>
+                </label>
                 <button
                   class="btn btn-accent mt-6"
                   disabled=""
@@ -505,47 +505,47 @@ exports[`App matches snapshot 1`] = `
             class="collapse-content"
           >
             <form
-              class="grid grid-cols-1 gap-2"
+              class="flex flex-col gap-2"
             >
-              <fieldset
+              <label
                 title="Must be at least 8 characters, can't be all numbers"
               >
-                <legend>
+                <span>
                   Old password
-                </legend>
+                </span>
                 <input
                   class="input w-full"
                   name="old_password"
                   type="password"
                   value=""
                 />
-              </fieldset>
-              <fieldset
+              </label>
+              <label
                 title="Must be at least 8 characters, can't be all numbers"
               >
-                <legend>
+                <span>
                   New password
-                </legend>
+                </span>
                 <input
                   class="input w-full"
                   name="new_password1"
                   type="password"
                   value=""
                 />
-              </fieldset>
-              <fieldset
+              </label>
+              <label
                 title="Must be at least 8 characters, can't be all numbers"
               >
-                <legend>
+                <span>
                   Confirm new password
-                </legend>
+                </span>
                 <input
                   class="input w-full"
                   name="new_password2"
                   type="password"
                   value=""
                 />
-              </fieldset>
+              </label>
               <button
                 class="btn btn-accent mt-6"
                 disabled=""

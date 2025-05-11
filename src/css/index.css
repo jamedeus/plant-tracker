@@ -70,11 +70,14 @@
 }
 
 @layer base {
-    fieldset {
-        @apply text-sm;
-    }
-    fieldset > legend {
-        @apply text-base-content text-left px-1 py-2;
+    /* Input label text spacing + size */
+    label:has(> span + input),
+    label:has(> span + textarea) {
+        @apply flex flex-col;
+
+        & > span {
+            @apply text-sm text-base-content text-left px-1 py-2;
+        }
     }
 }
 

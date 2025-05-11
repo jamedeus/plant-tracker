@@ -4,32 +4,32 @@ import PropTypes from 'prop-types';
 const GroupDetailsForm = ({ formRef, name, location, description }) => {
     return (
         <form id="groupDetails" ref={formRef} className="flex flex-col gap-4">
-            <fieldset>
-                <legend>Group name</legend>
+            <label>
+                <span>Group name</span>
                 <input
                     name="name"
                     type="text"
                     className="input w-full"
                     defaultValue={name}
                 />
-            </fieldset>
-            <fieldset>
-                <legend>Group Location</legend>
+            </label>
+            <label>
+                <span>Group location</span>
                 <input
                     name="location"
                     type="text"
                     className="input w-full"
                     defaultValue={location}
                 />
-            </fieldset>
-            <fieldset>
-                <legend>Description</legend>
+            </label>
+            <label>
+                <span>Description</span>
                 <textarea
                     name="description"
                     className="textarea w-full"
                     defaultValue={description}
                 />
-            </fieldset>
+            </label>
         </form>
     );
 };

@@ -151,23 +151,23 @@ exports[`App matches snapshot 1`] = `
                 class="flex flex-col gap-4"
                 id="plantDetails"
               >
-                <fieldset>
-                  <legend>
+                <label>
+                  <span>
                     Plant name
-                  </legend>
+                  </span>
                   <input
                     class="input w-full"
                     name="name"
                     type="text"
                     value=""
                   />
-                </fieldset>
-                <fieldset
+                </label>
+                <label
                   class="relative"
                 >
-                  <legend>
+                  <span>
                     Plant species
-                  </legend>
+                  </span>
                   <input
                     aria-autocomplete="list"
                     aria-expanded="false"
@@ -180,11 +180,11 @@ exports[`App matches snapshot 1`] = `
                     type="text"
                     value=""
                   />
-                </fieldset>
-                <fieldset>
-                  <legend>
+                </label>
+                <label>
+                  <span>
                     Pot size
-                  </legend>
+                  </span>
                   <input
                     class="input w-full"
                     inputmode="numeric"
@@ -192,16 +192,16 @@ exports[`App matches snapshot 1`] = `
                     type="text"
                     value=""
                   />
-                </fieldset>
-                <fieldset>
-                  <legend>
+                </label>
+                <label>
+                  <span>
                     Description
-                  </legend>
+                  </span>
                   <textarea
                     class="textarea w-full"
                     name="description"
                   />
-                </fieldset>
+                </label>
               </form>
             </div>
             <span
@@ -391,23 +391,23 @@ exports[`App matches snapshot 1`] = `
               class="flex flex-col gap-4"
               id="plantDetails"
             >
-              <fieldset>
-                <legend>
+              <label>
+                <span>
                   Plant name
-                </legend>
+                </span>
                 <input
                   class="input w-full"
                   name="name"
                   type="text"
                   value=""
                 />
-              </fieldset>
-              <fieldset
+              </label>
+              <label
                 class="relative"
               >
-                <legend>
+                <span>
                   Plant species
-                </legend>
+                </span>
                 <input
                   aria-autocomplete="list"
                   aria-expanded="false"
@@ -420,11 +420,11 @@ exports[`App matches snapshot 1`] = `
                   type="text"
                   value=""
                 />
-              </fieldset>
-              <fieldset>
-                <legend>
+              </label>
+              <label>
+                <span>
                   Pot size
-                </legend>
+                </span>
                 <input
                   class="input w-full"
                   inputmode="numeric"
@@ -432,16 +432,16 @@ exports[`App matches snapshot 1`] = `
                   type="text"
                   value=""
                 />
-              </fieldset>
-              <fieldset>
-                <legend>
+              </label>
+              <label>
+                <span>
                   Description
-                </legend>
+                </span>
                 <textarea
                   class="textarea w-full"
                   name="description"
                 />
-              </fieldset>
+              </label>
             </form>
           </div>
           <span

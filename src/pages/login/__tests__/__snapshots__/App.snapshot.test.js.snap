@@ -81,12 +81,12 @@ exports[`App matches snapshot 1`] = `
           <form
             class="flex flex-col gap-4 mt-8"
           >
-            <fieldset
+            <label
               title="Username or email address"
             >
-              <legend>
+              <span>
                 Username
-              </legend>
+              </span>
               <input
                 autocapitalize="off"
                 class="input w-full"
@@ -94,20 +94,20 @@ exports[`App matches snapshot 1`] = `
                 type="text"
                 value=""
               />
-            </fieldset>
-            <fieldset
+            </label>
+            <label
               title="Must be at least 8 characters, can't be all numbers"
             >
-              <legend>
+              <span>
                 Password
-              </legend>
+              </span>
               <input
                 class="input w-full"
                 name="password"
                 type="password"
                 value=""
               />
-            </fieldset>
+            </label>
             <button
               class="btn btn-accent mt-6"
               disabled=""
@@ -242,12 +242,12 @@ exports[`App matches snapshot 1`] = `
         <form
           class="flex flex-col gap-4 mt-8"
         >
-          <fieldset
+          <label
             title="Username or email address"
           >
-            <legend>
+            <span>
               Username
-            </legend>
+            </span>
             <input
               autocapitalize="off"
               class="input w-full"
@@ -255,20 +255,20 @@ exports[`App matches snapshot 1`] = `
               type="text"
               value=""
             />
-          </fieldset>
-          <fieldset
+          </label>
+          <label
             title="Must be at least 8 characters, can't be all numbers"
           >
-            <legend>
+            <span>
               Password
-            </legend>
+            </span>
             <input
               class="input w-full"
               name="password"
               type="password"
               value=""
             />
-          </fieldset>
+          </label>
           <button
             class="btn btn-accent mt-6"
             disabled=""

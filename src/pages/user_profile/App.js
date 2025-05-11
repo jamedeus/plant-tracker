@@ -167,12 +167,10 @@ const ChangePassword = memo(function ChangePassword() {
         }
     };
 
-    {/* Single-column grid to fix iOS safari bug */}
-    {/* With flex-col spacing is 2-3 rem until field focused, then normal */}
     return (
-        <form ref={formRef} className="grid grid-cols-1 gap-2">
-            <fieldset title="Must be at least 8 characters, can't be all numbers">
-                <legend>Old password</legend>
+        <form ref={formRef} className="flex flex-col gap-2">
+            <label title="Must be at least 8 characters, can't be all numbers">
+                <span>Old password</span>
                 <input
                     name="old_password"
                     type="password"
@@ -190,9 +188,9 @@ const ChangePassword = memo(function ChangePassword() {
                         Old password incorrect
                     </span>
                 )}
-            </fieldset>
-            <fieldset title="Must be at least 8 characters, can't be all numbers">
-                <legend>New password</legend>
+            </label>
+            <label title="Must be at least 8 characters, can't be all numbers">
+                <span>New password</span>
                 <input
                     name="new_password1"
                     type="password"
@@ -204,9 +202,9 @@ const ChangePassword = memo(function ChangePassword() {
                     onKeyDown={(e) => submitOnEnterKey(e)}
                     onChange={(e) => setNewPassword1(e.target.value)}
                 />
-            </fieldset>
-            <fieldset title="Must be at least 8 characters, can't be all numbers">
-                <legend>Confirm new password</legend>
+            </label>
+            <label title="Must be at least 8 characters, can't be all numbers">
+                <span>Confirm new password</span>
                 <input
                     name="new_password2"
                     type="password"
@@ -223,7 +221,7 @@ const ChangePassword = memo(function ChangePassword() {
                         {newPasswordError}
                     </span>
                 )}
-            </fieldset>
+            </label>
 
             <button
                 className="btn btn-accent mt-6"

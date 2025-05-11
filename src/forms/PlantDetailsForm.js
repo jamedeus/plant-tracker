@@ -88,21 +88,21 @@ SpeciesSelect.propTypes = {
 const PlantDetailsForm = ({ formRef, name, species, pot_size, description }) => {
     return (
         <form id="plantDetails" ref={formRef} className="flex flex-col gap-4">
-            <fieldset>
-                <legend>Plant name</legend>
+            <label>
+                <span>Plant name</span>
                 <input
                     name="name"
                     type="text"
                     className="input w-full"
                     defaultValue={name}
                 />
-            </fieldset>
-            <fieldset className="relative">
-                <legend>Plant species</legend>
+            </label>
+            <label className="relative">
+                <span>Plant species</span>
                 <SpeciesSelect value={species} />
-            </fieldset>
-            <fieldset>
-                <legend>Pot size</legend>
+            </label>
+            <label>
+                <span>Pot size</span>
                 <input
                     name="pot_size"
                     type="text"
@@ -115,15 +115,15 @@ const PlantDetailsForm = ({ formRef, name, species, pot_size, description }) => 
                         ).slice(0, 2);
                     }}
                 />
-            </fieldset>
-            <fieldset>
-                <legend>Description</legend>
+            </label>
+            <label>
+                <span>Description</span>
                 <textarea
                     name="description"
                     className="textarea w-full"
                     defaultValue={description}
                 />
-            </fieldset>
+            </label>
         </form>
     );
 };
