@@ -158,12 +158,12 @@ const RegisterForm = () => {
                     onInput={() => setShowError(false)}
                     onChange={e => setEmail(e.target.value)}
                 />
-                {showEmailError && (
-                    <span className="text-error text-center">
-                        {showEmailError}
-                    </span>
-                )}
             </label>
+            {showEmailError && (
+                <span className="text-error text-center">
+                    {showEmailError}
+                </span>
+            )}
             <label title="Must be at least 3 characters">
                 <span>Username *</span>
                 <input
@@ -178,12 +178,12 @@ const RegisterForm = () => {
                     onInput={clearErrors}
                     onChange={e => setUsername(e.target.value)}
                 />
-                {showUsernameError && (
-                    <span className="text-error text-center">
-                        {showUsernameError}
-                    </span>
-                )}
             </label>
+            {showUsernameError && (
+                <span className="text-error text-center">
+                    {showUsernameError}
+                </span>
+            )}
             <label title="Must be at least 8 characters, can't be all numbers">
                 <span>Password *</span>
                 <input
@@ -197,12 +197,12 @@ const RegisterForm = () => {
                     onInput={clearErrors}
                     onChange={e => setPassword(e.target.value)}
                 />
-                {showPasswordError && (
-                    <span className="text-error text-center">
-                        {showPasswordError}
-                    </span>
-                )}
             </label>
+            {showPasswordError && (
+                <span className="text-error text-center">
+                    {showPasswordError}
+                </span>
+            )}
             <label>
                 <span>First name</span>
                 <input

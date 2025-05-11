@@ -183,12 +183,12 @@ const ChangePassword = memo(function ChangePassword() {
                     onInput={() => setOldPasswordIncorrect(false)}
                     onChange={(e) => setOldPassword(e.target.value)}
                 />
-                {oldPasswordIncorrect && (
-                    <span className="text-error text-center">
-                        Old password incorrect
-                    </span>
-                )}
             </label>
+            {oldPasswordIncorrect && (
+                <span className="text-error text-center">
+                    Old password incorrect
+                </span>
+            )}
             <label title="Must be at least 8 characters, can't be all numbers">
                 <span>New password</span>
                 <input
@@ -216,12 +216,12 @@ const ChangePassword = memo(function ChangePassword() {
                     onKeyDown={(e) => submitOnEnterKey(e)}
                     onChange={(e) => setNewPassword2(e.target.value)}
                 />
-                {newPasswordError && (
-                    <span className="text-error text-center">
-                        {newPasswordError}
-                    </span>
-                )}
             </label>
+            {newPasswordError && (
+                <span className="text-error text-center">
+                    {newPasswordError}
+                </span>
+            )}
 
             <button
                 className="btn btn-accent mt-6"
