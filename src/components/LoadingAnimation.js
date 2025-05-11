@@ -8,7 +8,7 @@ const LoadingAnimation = ({ className }) => {
             'h-36 flex flex-col justify-center',
             className && className
         )}>
-            <span className='loading-spinner'></span>
+            <span className='loading w-16'></span>
         </div>
     );
 };
