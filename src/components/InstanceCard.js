@@ -2,7 +2,6 @@ import React, { useId, memo } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { ChevronDownIcon } from '@heroicons/react/16/solid';
-import 'src/css/collapse.css';
 
 // Renders card representing a Plant or Group entry
 // - uuid: Plant or Group uuid (used for manage page link)

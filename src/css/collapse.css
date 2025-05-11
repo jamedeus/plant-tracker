@@ -14,42 +14,60 @@ Usage:
 */
 
 /* Wrapper div, always visible, transition grid-template-rows for animation */
-.collapse {
-    visibility: visible;
+@utility collapse {
+    /* Use !important to override collision with tailwind collapse class */
+    visibility: visible !important;
     position: relative;
     display: grid;
     overflow: hidden;
     grid-template-rows: auto 0fr;
     transition: grid-template-rows 0.2s;
     width: 100%;
+
+    /* Inputs that control open/close: fill first row, hide but clickable */
+    & > input[type="checkbox"],
+    & > input[type="radio"] {
+        grid-column-start: 1;
+        grid-row-start: 1;
+        width: 100%;
+        min-height: 3.75rem;
+        appearance: none;
+        opacity: 0;
+        z-index: 1;
+    }
+
+    /* Cursor pointer unless accordion section already open */
+    & > input[type="checkbox"],
+    & > input[type="radio"]:not(:checked) {
+        cursor: pointer;
+    }
+
+    /* Open: Add second grid row (animation) */
+    &:has(> input[type="checkbox"]:checked),
+    &:has(> input[type="radio"]:checked) {
+        grid-template-rows: auto 1fr;
+    }
+
+    /* Open: Animate to full height, add bottom padding */
+    & > input[type="checkbox"]:checked ~ .collapse-content,
+    & > input[type="radio"]:checked ~ .collapse-content {
+        min-height: fit-content;
+        transition: padding 0.2s ease-out;
+        padding-bottom: 1rem;
+    }
 }
 
-/* Title + hidden inputs that control open/close state: fill first grid row */
-.collapse-title,
-.collapse > input[type="checkbox"],
-.collapse > input[type="radio"] {
+/* Title: fill first grid row, relative so .collapse-arrow can anchor */
+@utility collapse-title {
     grid-column-start: 1;
     grid-row-start: 1;
     width: 100%;
     min-height: 3.75rem;
-}
-
-/* Visually hide inputs that control open/close state, but make clickable */
-.collapse > input[type="checkbox"],
-.collapse > input[type="radio"] {
-    appearance: none;
-    opacity: 0;
-    z-index: 1;
-}
-
-/* Cursor pointer unless accordion section already open */
-.collapse > input[type="checkbox"],
-.collapse > input[type="radio"]:not(:checked) {
-    cursor: pointer;
+    position: relative;
 }
 
 /* Content: second grid row (does not exist until opened), no height */
-.collapse-content {
+@utility collapse-content {
     grid-column-start: 1;
     grid-row-start: 2;
     min-height: 0px;
@@ -59,47 +77,30 @@ Usage:
     cursor: unset;
 }
 
-/* Open: Add second grid row (animation) */
-.collapse:has(> input[type="checkbox"]:checked),
-.collapse:has(> input[type="radio"]:checked) {
-    grid-template-rows: auto 1fr;
-}
-
-/* Open: Animate to full height, add bottom padding */
-.collapse > input[type="checkbox"]:checked ~ .collapse-content,
-.collapse > input[type="radio"]:checked ~ .collapse-content {
-    min-height: fit-content;
-    transition: padding 0.2s ease-out;
-    padding-bottom: 1rem;
-}
-
-/* Anchor .collapse-arrow icon to title div */
-.collapse-title {
-    position: relative;
-}
-
 /* Collapse arrow icon (absolute positioned over right side of title) */
-.collapse-arrow > .collapse-title:after {
-    position: absolute;
-    display: block;
-    height: 0.5rem;
-    width: 0.5rem;
-    transform: translateY(-50%) rotate(225deg);
-    transition-property: all;
-    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-    transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
-    transition-duration: 150ms;
-    transition-duration: 0.2s;
-    top: 1.9rem;
-    inset-inline-end: 1.4rem;
-    content: "";
-    transform-origin: 75% 75%;
-    box-shadow: 2px 2px;
-    pointer-events: none;
-}
+@utility collapse-arrow {
+    & > .collapse-title:after {
+        position: absolute;
+        display: block;
+        height: 0.5rem;
+        width: 0.5rem;
+        transform: translateY(-50%) rotate(225deg);
+        transition-property: all;
+        transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+        transition-duration: 150ms;
+        transition-duration: 0.2s;
+        top: 1.9rem;
+        inset-inline-end: 1.4rem;
+        content: "";
+        transform-origin: 75% 75%;
+        box-shadow: 2px 2px;
+        pointer-events: none;
+    }
 
-/* Rotate arrow 180 degrees when opened */
-.collapse-arrow > input[type="checkbox"]:checked ~ .collapse-title:after,
-.collapse-arrow > input[type="radio"]:checked ~ .collapse-title:after {
-    transform: translateY(-100%) rotate(45deg);
+    /* Rotate arrow 180 degrees when opened */
+    & > input[type="checkbox"]:checked ~ .collapse-title:after,
+    & > input[type="radio"]:checked ~ .collapse-title:after {
+        transform: translateY(-100%) rotate(45deg);
+    }
 }
