@@ -11,7 +11,7 @@ const IconButton = ({ onClick=null, href=null, title, icon}) => {
             title={title}
             tabIndex={0}
         >
-            <FontAwesomeIcon className='size-4!' icon={icon} />
+            <FontAwesomeIcon className='min-size-4' icon={icon} />
         </a>
     );
 };

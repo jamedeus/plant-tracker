@@ -246,7 +246,7 @@ exports[`App matches snapshot 1`] = `
                   class="relative w-full"
                 >
                   <input
-                    class="input w-full text-center indent-[3.625rem]! pr-[4.5rem]!"
+                    class="input w-full text-center indent-[3.625rem] pr-[4.5rem]"
                     placeholder="filter"
                     type="text"
                     value=""
@@ -258,7 +258,7 @@ exports[`App matches snapshot 1`] = `
                       class="dropdown dropdown-end"
                     >
                       <div
-                        class="btn-close size-8! no-animation"
+                        class="btn-close size-8"
                         role="button"
                         tabindex="0"
                         title="Sort menu"
@@ -360,7 +360,7 @@ exports[`App matches snapshot 1`] = `
                         type="checkbox"
                       />
                       <div
-                        class="collapse-title p-0! min-size-0"
+                        class="collapse-title min-size-0"
                       >
                         <div
                           class="card card-side relative h-24"
@@ -504,7 +504,7 @@ exports[`App matches snapshot 1`] = `
                         type="checkbox"
                       />
                       <div
-                        class="collapse-title p-0! min-size-0"
+                        class="collapse-title min-size-0"
                       >
                         <div
                           class="card card-side relative h-24"
@@ -644,7 +644,7 @@ exports[`App matches snapshot 1`] = `
                         type="checkbox"
                       />
                       <div
-                        class="collapse-title p-0! min-size-0"
+                        class="collapse-title min-size-0"
                       >
                         <div
                           class="card card-side relative h-24"
@@ -1120,7 +1120,7 @@ exports[`App matches snapshot 1`] = `
                 class="relative w-full"
               >
                 <input
-                  class="input w-full text-center indent-[3.625rem]! pr-[4.5rem]!"
+                  class="input w-full text-center indent-[3.625rem] pr-[4.5rem]"
                   placeholder="filter"
                   type="text"
                   value=""
@@ -1132,7 +1132,7 @@ exports[`App matches snapshot 1`] = `
                     class="dropdown dropdown-end"
                   >
                     <div
-                      class="btn-close size-8! no-animation"
+                      class="btn-close size-8"
                       role="button"
                       tabindex="0"
                       title="Sort menu"
@@ -1234,7 +1234,7 @@ exports[`App matches snapshot 1`] = `
                       type="checkbox"
                     />
                     <div
-                      class="collapse-title p-0! min-size-0"
+                      class="collapse-title min-size-0"
                     >
                       <div
                         class="card card-side relative h-24"
@@ -1378,7 +1378,7 @@ exports[`App matches snapshot 1`] = `
                       type="checkbox"
                     />
                     <div
-                      class="collapse-title p-0! min-size-0"
+                      class="collapse-title min-size-0"
                     >
                       <div
                         class="card card-side relative h-24"
@@ -1518,7 +1518,7 @@ exports[`App matches snapshot 1`] = `
                       type="checkbox"
                     />
                     <div
-                      class="collapse-title p-0! min-size-0"
+                      class="collapse-title min-size-0"
                     >
                       <div
                         class="card card-side relative h-24"

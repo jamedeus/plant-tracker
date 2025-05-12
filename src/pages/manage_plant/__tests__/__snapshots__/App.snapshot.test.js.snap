@@ -202,7 +202,7 @@ exports[`App matches snapshot 1`] = `
                           >
                             <svg
                               aria-hidden="true"
-                              class="svg-inline--fa fa-ban size-4!"
+                              class="svg-inline--fa fa-ban min-size-4"
                               data-icon="ban"
                               data-prefix="fas"
                               focusable="false"
@@ -224,7 +224,7 @@ exports[`App matches snapshot 1`] = `
                           >
                             <svg
                               aria-hidden="true"
-                              class="svg-inline--fa fa-up-right-from-square size-4!"
+                              class="svg-inline--fa fa-up-right-from-square min-size-4"
                               data-icon="up-right-from-square"
                               data-prefix="fas"
                               focusable="false"
@@ -2173,7 +2173,7 @@ exports[`App matches snapshot 1`] = `
                         >
                           <svg
                             aria-hidden="true"
-                            class="svg-inline--fa fa-ban size-4!"
+                            class="svg-inline--fa fa-ban min-size-4"
                             data-icon="ban"
                             data-prefix="fas"
                             focusable="false"
@@ -2195,7 +2195,7 @@ exports[`App matches snapshot 1`] = `
                         >
                           <svg
                             aria-hidden="true"
-                            class="svg-inline--fa fa-up-right-from-square size-4!"
+                            class="svg-inline--fa fa-up-right-from-square min-size-4"
                             data-icon="up-right-from-square"
                             data-prefix="fas"
                             focusable="false"
@@ -4229,7 +4229,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                           >
                             <svg
                               aria-hidden="true"
-                              class="svg-inline--fa fa-ban size-4!"
+                              class="svg-inline--fa fa-ban min-size-4"
                               data-icon="ban"
                               data-prefix="fas"
                               focusable="false"
@@ -4251,7 +4251,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                           >
                             <svg
                               aria-hidden="true"
-                              class="svg-inline--fa fa-up-right-from-square size-4!"
+                              class="svg-inline--fa fa-up-right-from-square min-size-4"
                               data-icon="up-right-from-square"
                               data-prefix="fas"
                               focusable="false"
@@ -6078,7 +6078,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                         >
                           <svg
                             aria-hidden="true"
-                            class="svg-inline--fa fa-ban size-4!"
+                            class="svg-inline--fa fa-ban min-size-4"
                             data-icon="ban"
                             data-prefix="fas"
                             focusable="false"
@@ -6100,7 +6100,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                         >
                           <svg
                             aria-hidden="true"
-                            class="svg-inline--fa fa-up-right-from-square size-4!"
+                            class="svg-inline--fa fa-up-right-from-square min-size-4"
                             data-icon="up-right-from-square"
                             data-prefix="fas"
                             focusable="false"

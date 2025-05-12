@@ -75,7 +75,7 @@ const reducer = (state, action) => {
 const ClearButton = ({ onClick }) => {
     return (
         <button
-            className="btn-close size-8! no-animation z-10"
+            className="btn-close size-8"
             onClick={onClick}
             title="Clear filter input"
         >
@@ -109,7 +109,7 @@ const SortMenu = ({ sortByKeys, state, setSort }) => {
             <div
                 role="button"
                 tabIndex="0"
-                className="btn-close size-8! no-animation"
+                className="btn-close size-8"
                 title="Sort menu"
             >
                 <ArrowsUpDownIcon className="size-5 m-auto" />
@@ -188,8 +188,8 @@ const FilterInput = memo(function FilterInput({ state, dispatch, sortByKeys }) {
                     className={clsx(
                         'input w-full text-center',
                         sortByKeys.length
-                            ? 'indent-[3.625rem]! pr-[4.5rem]!'
-                            : 'indent-[1.625rem]! pr-10!'
+                            ? 'indent-[3.625rem] pr-[4.5rem]'
+                            : 'indent-[1.625rem] pr-10'
                     )}
                     value={query}
                     onChange={e => handleInput(e.target.value)}

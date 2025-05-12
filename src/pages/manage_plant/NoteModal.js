@@ -156,7 +156,7 @@ const NoteModal = () => {
                     }
                     <textarea
                         className={clsx(
-                            'textarea w-full max-w-xs mx-auto mt-8 mb-4 min-h-40!',
+                            'textarea w-full max-w-xs mx-auto mt-8 mb-4 min-h-40',
                             charCount > 500 && 'textarea-error'
                         )}
                         value={noteText}

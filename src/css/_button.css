@@ -40,7 +40,7 @@
     --btn-bg: var(--btn-color, var(--color-base-200));
     --btn-fg: var(--color-base-content);
     --btn-p: 1rem;
-    --btn-border: color-mix(in oklab, var(--btn-bg), #000 calc(var(--depth) * 5%));
+    --btn-border: var(--btn-bg);
 
     &:hover {
         --btn-bg: color-mix(in oklab, var(--btn-color, var(--color-base-200)), #000 7%);

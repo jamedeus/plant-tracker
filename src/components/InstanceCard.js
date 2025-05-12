@@ -38,7 +38,7 @@ const InstanceCard = memo(function InstanceCard({
                 className="hidden pointer-events-none"
             />
 
-            <div className='collapse-title p-0! min-size-0'>
+            <div className='collapse-title min-size-0'>
                 <div className='card card-side relative h-24'>
                     {thumbnail && (
                         <figure className="h-24 w-20 min-size-20">
