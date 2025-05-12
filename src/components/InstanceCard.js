@@ -74,7 +74,7 @@ const InstanceCard = memo(function InstanceCard({
                         aria-label="Show or hide details"
                     >
                         <ChevronDownIcon className={clsx(
-                            "size-8 transition-transform duration-200",
+                            "min-size-8 transition-transform duration-200",
                             "rotate-0 group-has-checked:rotate-180"
                         )} />
                     </label>

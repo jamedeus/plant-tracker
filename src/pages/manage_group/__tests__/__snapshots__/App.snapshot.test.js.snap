@@ -403,7 +403,7 @@ exports[`App matches snapshot 1`] = `
                           >
                             <svg
                               aria-hidden="true"
-                              class="size-8 transition-transform duration-200 rotate-0 group-has-checked:rotate-180"
+                              class="min-size-8 transition-transform duration-200 rotate-0 group-has-checked:rotate-180"
                               data-slot="icon"
                               fill="currentColor"
                               viewBox="0 0 16 16"
@@ -557,7 +557,7 @@ exports[`App matches snapshot 1`] = `
                           >
                             <svg
                               aria-hidden="true"
-                              class="size-8 transition-transform duration-200 rotate-0 group-has-checked:rotate-180"
+                              class="min-size-8 transition-transform duration-200 rotate-0 group-has-checked:rotate-180"
                               data-slot="icon"
                               fill="currentColor"
                               viewBox="0 0 16 16"
@@ -669,7 +669,7 @@ exports[`App matches snapshot 1`] = `
                           >
                             <svg
                               aria-hidden="true"
-                              class="size-8 transition-transform duration-200 rotate-0 group-has-checked:rotate-180"
+                              class="min-size-8 transition-transform duration-200 rotate-0 group-has-checked:rotate-180"
                               data-slot="icon"
                               fill="currentColor"
                               viewBox="0 0 16 16"
@@ -1277,7 +1277,7 @@ exports[`App matches snapshot 1`] = `
                         >
                           <svg
                             aria-hidden="true"
-                            class="size-8 transition-transform duration-200 rotate-0 group-has-checked:rotate-180"
+                            class="min-size-8 transition-transform duration-200 rotate-0 group-has-checked:rotate-180"
                             data-slot="icon"
                             fill="currentColor"
                             viewBox="0 0 16 16"
@@ -1431,7 +1431,7 @@ exports[`App matches snapshot 1`] = `
                         >
                           <svg
                             aria-hidden="true"
-                            class="size-8 transition-transform duration-200 rotate-0 group-has-checked:rotate-180"
+                            class="min-size-8 transition-transform duration-200 rotate-0 group-has-checked:rotate-180"
                             data-slot="icon"
                             fill="currentColor"
                             viewBox="0 0 16 16"
@@ -1543,7 +1543,7 @@ exports[`App matches snapshot 1`] = `
                         >
                           <svg
                             aria-hidden="true"
-                            class="size-8 transition-transform duration-200 rotate-0 group-has-checked:rotate-180"
+                            class="min-size-8 transition-transform duration-200 rotate-0 group-has-checked:rotate-180"
                             data-slot="icon"
                             fill="currentColor"
                             viewBox="0 0 16 16"
