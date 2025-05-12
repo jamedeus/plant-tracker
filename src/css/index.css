@@ -2,7 +2,8 @@
 @plugin './tailwind-min-size.js';
 @plugin "daisyui" {
     themes: light --default, dark --prefersdark;
-    include: modal, carousel, timeline, tooltip, divider, loading, rootcolor;
+    include: modal, carousel, timeline, tooltip, divider, loading,
+             rootcolor, rootscrolllock, rootscrollgutter, scrollbar;
 }
 
 /* Add custom theme colors (values overridden by daisyui themes below) */
