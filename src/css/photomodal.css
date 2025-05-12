@@ -2,14 +2,9 @@
 
 .selected-files-grid {
     /* Two column layout, left column min-content, right column fill width */
-    @apply grid grid-cols-min-max max-h-[50vh] max-w-96 w-full px-4;
+    @apply grid grid-cols-min-max max-h-[50vh] max-w-96 w-full mt-4 px-4;
     /* Truncate long file names, prevent layout shifting */
     @apply overflow-y-scroll overflow-x-hidden break-all;
-
-    /* First row: Add top margin */
-    > :nth-child(-n+2) {
-        @apply mt-4;
-    }
 
     /* Add bottom border for all rows except last */
     > :not(:nth-last-child(-n+2)) {
