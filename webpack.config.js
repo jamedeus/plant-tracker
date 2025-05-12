@@ -4,6 +4,7 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 
 const isProduction = process.env.NODE_ENV == 'production';
 
@@ -61,7 +62,11 @@ const config = {
         host: 'localhost',
     },
     plugins: [
-        new MiniCssExtractPlugin({ filename: '[name].css' })
+        new MiniCssExtractPlugin({ filename: '[name].css' }),
+        // Save manifest.json (maps page names to list of bundle dependencies)
+        new WebpackManifestPlugin({
+            generate(_, __, entrypoints) { return entrypoints; },
+        }),
     ],
     module: {
         rules: [

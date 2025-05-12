@@ -82,12 +82,12 @@ class LoginView(views.LoginView):
     # Allow logging in with email address instead of username
     form_class = EmailOrUsernameAuthenticationForm
 
-    # Override default django form with boilerplate template + react bundle
+    # Override default django form with boilerplate template + webpack bundles
     template_name = "plant_tracker/index.html"
     extra_context = {
         "title": "Login",
-        "js_bundle": "plant_tracker/login.js",
-        "css_bundle": "plant_tracker/login.css"
+        'js_files': settings.PAGE_DEPENDENCIES['login']['js'],
+        'css_files': settings.PAGE_DEPENDENCIES['login']['css']
     }
 
     @method_decorator(ensure_csrf_cookie)

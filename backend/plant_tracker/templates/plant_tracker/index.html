@@ -6,8 +6,12 @@
     <title>{{ title }}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" href="{% static 'plant_tracker/shared.css' %}" />
-    <link rel="stylesheet" type="text/css" href="{% static css_bundle %}" />
+    {# Load all CSS files from context #}
+    {% for css in css_files %}
+        {% with 'plant_tracker/'|add:css as css_path %}
+        <link rel="stylesheet" type="text/css" href="{% static css_path %}">
+        {% endwith %}
+    {% endfor %}
     {# Prevent visual flash on page load in dark mode #}
     <style>
         html[data-theme="dark"] body {
@@ -33,7 +37,11 @@
     {# Save bool that controls whether user profile links are rendered #}
     {{ user_accounts_enabled|json_script:"user_accounts_enabled" }}
 
-    {# Import bundle specified in context, renders app into root div #}
-    <script src="{% static js_bundle %}"></script>
+    {# Load all JS files from context (includes bundle that renders to root) #}
+    {% for js in js_files %}
+        {% with 'plant_tracker/'|add:js as js_path %}
+            <script src="{% static js_path %}"></script>
+        {% endwith %}
+    {% endfor %}
 </body>
 </html>

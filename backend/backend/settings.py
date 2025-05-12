@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 import os
+import json
 from pathlib import Path
 from django.core.management.utils import get_random_secret_key
 
@@ -175,6 +176,19 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "static/"
+
+# Read webpack manifest.json from static directory
+MANIFEST_PATH = Path(BASE_DIR, 'plant_tracker/static/plant_tracker/manifest.json')
+with open(MANIFEST_PATH, 'r', encoding='utf-8' ) as file:
+    MANIFEST = json.load(file)
+
+# Build mapping dict with page names as keys, static dependencies as values
+PAGE_DEPENDENCIES = {
+    page_name: {
+        "js": [f for f in dependencies if f.endswith('.js')],
+        "css": [f for f in dependencies if f.endswith('.css')]
+    } for page_name, dependencies in MANIFEST.items()
+}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
