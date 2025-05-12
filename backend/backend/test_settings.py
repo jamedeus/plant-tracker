@@ -38,3 +38,83 @@ MEDIA_ROOT = os.path.join(TEST_DIR, 'data', 'images')
 # Use SINGLE_USER_MODE (disables authentication, can be overridden by tests)
 SINGLE_USER_MODE=True
 DEFAULT_USERNAME='DEFAULT'
+
+# Mock value for settings.PAGE_DEPENDENCIES (built from webpack manifest.json,
+# does not exist in docker CI/CD environment). This may diverge from production
+# as code splitting changes but that shouldn't matter; the important thing for
+# tests is that render_react_app context includes all files from this.
+PAGE_DEPENDENCIES = {
+    "login": {
+        "js": [
+            "react-common.js",
+            "login.js"
+        ],
+        "css": [
+            "shared.css"
+        ]
+    },
+    "user_profile": {
+        "js": [
+            "react-common.js",
+            "user_profile.js"
+        ],
+        "css": [
+            "shared.css"
+        ]
+    },
+    "overview": {
+        "js": [
+            "react-common.js",
+            "overview.js"
+        ],
+        "css": [
+            "shared.css"
+        ]
+    },
+    "register": {
+        "js": [
+            "react-common.js",
+            "register.js"
+        ],
+        "css": [
+            "shared.css"
+        ]
+    },
+    "manage_plant": {
+        "js": [
+            "react-common.js",
+            "manage_plant.js"
+        ],
+        "css": [
+            "shared.css",
+            "manage_plant.css"
+        ]
+    },
+    "manage_group": {
+        "js": [
+            "react-common.js",
+            "manage_group.js"
+        ],
+        "css": [
+            "shared.css"
+        ]
+    },
+    "permission_denied": {
+        "js": [
+            "react-common.js",
+            "permission_denied.js"
+        ],
+        "css": [
+            "shared.css"
+        ]
+    },
+    "confirm_new_qr_code": {
+        "js": [
+            "react-common.js",
+            "confirm_new_qr_code.js"
+        ],
+        "css": [
+            "shared.css"
+        ]
+    }
+}

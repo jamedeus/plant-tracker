@@ -386,8 +386,8 @@ class ViewRegressionTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
         self.assertEqual(
-            response.context['js_bundle'],
-            'plant_tracker/register.js'
+            response.context['js_files'],
+            settings.PAGE_DEPENDENCIES['register']['js']
         )
 
         # Confirm cache was cleared

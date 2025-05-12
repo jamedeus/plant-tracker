@@ -69,7 +69,7 @@ class RenderReactAppTests(TestCase):
         response = render_react_app(
             request=self.request,
             title='Mock Title',
-            bundle='mock',
+            bundle='overview',
             state={
                 'data': 'mock'
             },
@@ -85,7 +85,7 @@ class RenderReactAppTests(TestCase):
         response = render_react_app(
             request=self.request,
             title='Mock Title',
-            bundle='mock',
+            bundle='overview',
             state={
                 'data': 'mock'
             },
@@ -98,8 +98,8 @@ class RenderReactAppTests(TestCase):
             self.stdout.getvalue(),
             json.dumps({
                 'title': 'Mock Title',
-                'js_bundle': 'plant_tracker/mock.js',
-                'css_bundle': 'plant_tracker/mock.css',
+                'js_files': settings.PAGE_DEPENDENCIES['overview']['js'],
+                'css_files': settings.PAGE_DEPENDENCIES['overview']['css'],
                 'state': {
                     'data': 'mock'
                 },
@@ -118,7 +118,10 @@ class OverviewTests(TestCase):
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['js_bundle'], 'plant_tracker/overview.js')
+        self.assertEqual(
+            response.context['js_files'],
+            settings.PAGE_DEPENDENCIES['overview']['js']
+        )
         self.assertEqual(response.context['title'], 'Plant Overview')
 
         # Confirm correct state object (no plants or groups in database)
@@ -167,7 +170,10 @@ class OverviewTests(TestCase):
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['js_bundle'], 'plant_tracker/overview.js')
+        self.assertEqual(
+            response.context['js_files'],
+            settings.PAGE_DEPENDENCIES['overview']['js']
+        )
         self.assertEqual(response.context['title'], 'Plant Overview')
 
         # Confirm state object has details of all non-archived plants and groups,
@@ -562,7 +568,10 @@ class ArchivedOverviewTests(TestCase):
         response = self.client.get('/archived')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['js_bundle'], 'plant_tracker/overview.js')
+        self.assertEqual(
+            response.context['js_files'],
+            settings.PAGE_DEPENDENCIES['overview']['js']
+        )
         self.assertEqual(response.context['title'], 'Archived')
 
         # Confirm state object has details of all archived plants and groups,
@@ -677,7 +686,10 @@ class RegistrationTests(TestCase):
         # Confirm used register bundle and correct title
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['js_bundle'], 'plant_tracker/register.js')
+        self.assertEqual(
+            response.context['js_files'],
+            settings.PAGE_DEPENDENCIES['register']['js']
+        )
         self.assertEqual(response.context['title'], 'Register New Plant')
 
     def test_registration_page_plant_species_options(self):
@@ -717,7 +729,10 @@ class ManagePageTests(TestCase):
 
         # Confirm used manage_plant bundle and correct title
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['js_bundle'], 'plant_tracker/manage_plant.js')
+        self.assertEqual(
+            response.context['js_files'],
+            settings.PAGE_DEPENDENCIES['manage_plant']['js']
+        )
         self.assertEqual(response.context['title'], 'Manage Plant')
 
         # Confirm expected state object
@@ -977,7 +992,10 @@ class ManagePageTests(TestCase):
 
         # Confirm used manage_group bundle and correct title
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
-        self.assertEqual(response.context['js_bundle'], 'plant_tracker/manage_group.js')
+        self.assertEqual(
+            response.context['js_files'],
+            settings.PAGE_DEPENDENCIES['manage_group']['js']
+        )
         self.assertEqual(response.context['title'], 'Manage Group')
 
         # Confirm expected state objects
@@ -1515,8 +1533,8 @@ class ChangeQrCodeTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
         self.assertEqual(
-            response.context['js_bundle'],
-            'plant_tracker/confirm_new_qr_code.js'
+            response.context['js_files'],
+            settings.PAGE_DEPENDENCIES['confirm_new_qr_code']['js']
         )
         self.assertEqual(response.context['title'], 'Confirm new QR code')
 
@@ -1557,8 +1575,8 @@ class ChangeQrCodeTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
         self.assertEqual(
-            response.context['js_bundle'],
-            'plant_tracker/confirm_new_qr_code.js'
+            response.context['js_files'],
+            settings.PAGE_DEPENDENCIES['confirm_new_qr_code']['js']
         )
         self.assertEqual(response.context['title'], 'Confirm new QR code')
 
@@ -1597,30 +1615,30 @@ class ChangeQrCodeTests(TestCase):
         # Request management page with new UUID (should return confirmation page)
         response = self.client.get(f'/manage/{self.fake_id}')
         self.assertEqual(
-            response.context['js_bundle'],
-            'plant_tracker/confirm_new_qr_code.js'
+            response.context['js_files'],
+            settings.PAGE_DEPENDENCIES['confirm_new_qr_code']['js']
         )
 
         # Request management page with existing plant UUID (should return manage_plant)
         response = self.client.get(f'/manage/{self.plant2.uuid}')
         self.assertEqual(
-            response.context['js_bundle'],
-            'plant_tracker/manage_plant.js'
+            response.context['js_files'],
+            settings.PAGE_DEPENDENCIES['manage_plant']['js']
         )
 
         # Request management page with existing group UUID (should return manage_group)
         response = self.client.get(f'/manage/{self.group1.uuid}')
         self.assertEqual(
-            response.context['js_bundle'],
-            'plant_tracker/manage_group.js'
+            response.context['js_files'],
+            settings.PAGE_DEPENDENCIES['manage_group']['js']
         )
 
         # Request management page with UUID of plant waiting for new QR code,
         # should return manage_plant page like normal
         response = self.client.get(f'/manage/{self.plant1.uuid}')
         self.assertEqual(
-            response.context['js_bundle'],
-            'plant_tracker/manage_plant.js'
+            response.context['js_files'],
+            settings.PAGE_DEPENDENCIES['manage_plant']['js']
         )
 
     def test_target_plant_deleted_before_confirmation_page_loaded(self):
@@ -1639,8 +1657,8 @@ class ChangeQrCodeTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
         self.assertEqual(
-            response.context['js_bundle'],
-            'plant_tracker/register.js'
+            response.context['js_files'],
+            settings.PAGE_DEPENDENCIES['register']['js']
         )
         self.assertEqual(response.context['title'], 'Register New Plant')
 
