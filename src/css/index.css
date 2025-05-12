@@ -114,7 +114,7 @@
 
 .modal-box {
     /* Fix modal filling full height on iOS safari when address bar visible */
-    max-height: calc(100dvh - 5em);
+    max-height: calc(100svh - 2em);
 
     /* Speed up transition (fix flicker when opening over colored buttons) */
     transition:
