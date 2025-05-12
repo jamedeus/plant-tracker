@@ -111,7 +111,19 @@
     @apply rounded-lg object-cover;
 }
 
-/* Fix modal filling full height on iOS safari when address bar visible */
 .modal-box {
+    /* Fix modal filling full height on iOS safari when address bar visible */
     max-height: calc(100dvh - 5em);
+
+    /* Speed up transition (fix flicker when opening over colored buttons) */
+    transition:
+        translate 0.2s ease-out,
+        scale 0.2s ease-out,
+        opacity 0.2s ease-out,
+        box-shadow 0.2s ease-out;
+
+    /* Start animation smaller (makes faster animation more noticable) */
+    .modal:not([open]) > & {
+        scale: 90%;
+    }
 }
