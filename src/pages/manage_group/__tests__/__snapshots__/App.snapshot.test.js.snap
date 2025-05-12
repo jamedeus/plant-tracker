@@ -747,7 +747,7 @@ exports[`App matches snapshot 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="size-8"
+                  class="size-8 min-size-8"
                   data-slot="icon"
                   fill="currentColor"
                   viewBox="0 0 16 16"
@@ -789,7 +789,7 @@ exports[`App matches snapshot 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="size-8"
+                  class="size-8 min-size-8"
                   data-slot="icon"
                   fill="currentColor"
                   viewBox="0 0 16 16"
@@ -831,7 +831,7 @@ exports[`App matches snapshot 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="size-8"
+                  class="size-8 min-size-8"
                   data-slot="icon"
                   fill="currentColor"
                   viewBox="0 0 16 16"
@@ -874,7 +874,7 @@ exports[`App matches snapshot 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="size-8"
+                class="size-8 min-size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -1621,7 +1621,7 @@ exports[`App matches snapshot 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="size-8"
+                class="size-8 min-size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -1663,7 +1663,7 @@ exports[`App matches snapshot 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="size-8"
+                class="size-8 min-size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -1705,7 +1705,7 @@ exports[`App matches snapshot 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="size-8"
+                class="size-8 min-size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -1748,7 +1748,7 @@ exports[`App matches snapshot 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="size-8"
+              class="size-8 min-size-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"
