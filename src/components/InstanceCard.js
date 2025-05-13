@@ -25,7 +25,8 @@ const InstanceCard = memo(function InstanceCard({
         <a
             href={`/manage/${uuid}`}
             className={clsx(
-                'collapse card-collapse cursor-pointer group',
+                'collapse cursor-pointer group rounded-2xl',
+                'bg-neutral text-neutral-content',
                 archived && 'grayscale'
             )}
             aria-label={`Go to ${title} page`}
@@ -37,10 +38,10 @@ const InstanceCard = memo(function InstanceCard({
                 className="hidden pointer-events-none"
             />
 
-            <div className='collapse-title !p-0 min-size-0'>
+            <div className='collapse-title min-size-0'>
                 <div className='card card-side relative h-24'>
                     {thumbnail && (
-                        <figure className="h-24 w-20 min-size-20 rounded-b-none">
+                        <figure className="h-24 w-20 min-size-20">
                             <img
                                 loading="lazy"
                                 src={thumbnail}
@@ -52,7 +53,7 @@ const InstanceCard = memo(function InstanceCard({
 
                     {/* Card body */}
                     <div className={clsx(
-                        'card-body cursor-default max-w-full my-auto',
+                        'card-body max-w-full my-auto',
                         thumbnail ? 'text-start' : 'text-center'
                     )}>
                         <h2 className={clsx(
@@ -73,8 +74,8 @@ const InstanceCard = memo(function InstanceCard({
                         aria-label="Show or hide details"
                     >
                         <ChevronDownIcon className={clsx(
-                            "size-8 transition-transform duration-200",
-                            "rotate-0 group-has-[:checked]:rotate-180"
+                            "min-size-8 transition-transform duration-200",
+                            "rotate-0 group-has-checked:rotate-180"
                         )} />
                     </label>
                 </div>

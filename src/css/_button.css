@@ -1,0 +1,220 @@
+/* ==========================================================================
+ * Portions of this file were adapted from DaisyUI v4 and DaisyUI v5.
+ * Original copyright © 2020 Pouya Saadeghi
+ * Licensed under the MIT License – see ../../LICENSES/daisyui-license.txt.
+ * Main source: https://github.com/saadeghi/daisyui/blob/f0a7d3fb1e7830ac57b6258137cf4227dcf241f2/packages/daisyui/src/components/button.css
+ * ==========================================================================
+
+  Added:
+   - More dynamic click animation from DaisyUI v4
+   - btn-prune (custom color variant)
+   - btn-close (convenience variant used to add hover background to icons)
+   - btn-ghost lighter hover background (daisyui v4 color)
+   - Keep btn-ghost hover background while focused if controlling dropdown
+   - btn-error light text (readability)
+
+  Removed:
+   - btn-dash, btn-link, btn-wide, btn-block, btn as checkbox/radio
+   - btn-active, btn-disabled (should only look disabled when actually disabled)
+   - Everything related to noise (variables, background-image + background-size)
+   - Everything related to depth (text-shadow, box-shadow)
+*/
+
+@utility btn {
+    @apply inline-flex shrink-0 cursor-pointer flex-nowrap items-center justify-center gap-1.5 text-center align-middle no-underline outline-offset-2 select-none;
+    padding-inline: var(--btn-p);
+    color: var(--btn-fg);
+    height: var(--size);
+    font-size: 0.875rem;
+    font-weight: 600;
+    outline-color: var(--btn-color, var(--color-base-content));
+    /* Add transform for v4 click effect */
+    transition-property: color, background-color, border-color, opacity, box-shadow, transform;
+    transition-duration: 200ms;
+    border-radius: var(--radius-field);
+    background-color: var(--btn-bg);
+    border-width: var(--border);
+    border-style: solid;
+    border-color: var(--btn-border);
+    --size: calc(var(--size-field, 0.25rem) * 10);
+    --btn-bg: var(--btn-color, var(--color-base-200));
+    --btn-fg: var(--color-base-content);
+    --btn-p: 1rem;
+    --btn-border: var(--btn-bg);
+
+    &:hover {
+        --btn-bg: color-mix(in oklab, var(--btn-color, var(--color-base-200)), #000 7%);
+    }
+
+    /* Press animation */
+    &:active:hover, &:active:focus {
+        animation: button-pop 0s ease-out;
+        transform: scale(0.95);
+    }
+
+    &:focus-visible {
+        outline-width: 2px;
+        outline-style: solid;
+    }
+
+    &:is(:disabled, [disabled]) {
+        &:not(btn-ghost) {
+            @apply bg-base-content/10;
+            /* v4 disabled color (not enough contrast) */
+            /* @apply bg-neutral/20; */
+        }
+
+        @apply pointer-events-none;
+        --btn-border: #0000;
+        --btn-fg: color-mix(in oklch, var(--color-base-content) 20%, #0000);
+    }
+}
+
+@utility btn-primary {
+    --btn-color: var(--color-primary);
+    --btn-fg: var(--color-primary-content);
+}
+
+@utility btn-secondary {
+    --btn-color: var(--color-secondary);
+    --btn-fg: var(--color-secondary-content);
+}
+
+@utility btn-accent {
+    --btn-color: var(--color-accent);
+    --btn-fg: var(--color-accent-content);
+}
+
+@utility btn-neutral {
+    --btn-color: var(--color-neutral);
+    --btn-fg: var(--color-neutral-content);
+}
+
+@utility btn-info {
+    --btn-color: var(--color-info);
+    --btn-fg: var(--color-info-content);
+}
+
+@utility btn-success {
+    --btn-color: var(--color-success);
+    --btn-fg: var(--color-success-content);
+}
+
+@utility btn-warning {
+    --btn-color: var(--color-warning);
+    --btn-fg: var(--color-warning-content);
+}
+
+@utility btn-error {
+    --btn-color: var(--color-error);
+    /* Readability */
+    --btn-fg: #EEE;
+}
+
+@utility btn-prune {
+    --btn-color: var(--color-prune);
+    --btn-fg: var(--color-prune-content);
+}
+
+@utility btn-ghost {
+    /* Set full transparency */
+    &:not(:hover, :active:focus, :focus-visible) {
+        --btn-bg: #0000;
+        --btn-border: #0000;
+        &:not(:disabled, [disabled]) {
+            @apply outline-current;
+            --btn-fg: currentColor;
+        }
+    }
+
+    /* v4 hover highlight color */
+    /* Keep dropdown button hover highlight visible while dropdown is open */
+    &:hover,
+    .dropdown > &:focus {
+        --btn-bg: color-mix(in oklab,var(--color-base-content)20%,#0000);
+        --btn-border: #0000;
+    }
+}
+
+@utility btn-outline {
+    &:not(:hover, :active:focus, :focus-visible, :disabled, [disabled]) {
+        --btn-bg: #0000;
+        --btn-fg: var(--btn-color);
+        --btn-border: var(--btn-color);
+    }
+}
+
+@utility btn-soft {
+    &:not(:hover, :active:focus, :focus-visible, :disabled, [disabled]) {
+        --btn-fg: var(--btn-color, var(--color-base-content));
+        --btn-bg: color-mix(
+            in oklab,
+            var(--btn-color, var(--color-base-content)) 8%,
+            var(--color-base-100)
+        );
+        --btn-border: color-mix(
+            in oklab,
+            var(--btn-color, var(--color-base-content)) 10%,
+            var(--color-base-100)
+        );
+    }
+}
+
+@utility btn-xs {
+    font-size: 0.6875rem;
+    --btn-p: 0.5rem;
+    --size: calc(var(--size-field, 0.25rem) * 6);
+}
+
+@utility btn-sm {
+    font-size: 0.75rem;
+    --btn-p: 0.75rem;
+    --size: calc(var(--size-field, 0.25rem) * 8);
+}
+
+@utility btn-md {
+    font-size: 0.875rem;
+    --btn-p: 1rem;
+    --size: calc(var(--size-field, 0.25rem) * 10);
+}
+
+@utility btn-lg {
+    font-size: 1.125rem;
+    --btn-p: 1.25rem;
+    --size: calc(var(--size-field, 0.25rem) * 12);
+}
+
+@utility btn-xl {
+    font-size: 1.375rem;
+    --btn-p: 1.5rem;
+    --size: calc(var(--size-field, 0.25rem) * 14);
+}
+
+@utility btn-square {
+    @apply px-0;
+    width: var(--size);
+    height: var(--size);
+}
+
+@utility btn-circle {
+    @apply rounded-full px-0;
+    width: var(--size);
+    height: var(--size);
+}
+
+@utility btn-close {
+    @apply btn btn-ghost rounded-full size-8 p-0;
+}
+
+/* Daisyui v4 click animation */
+@keyframes button-pop {
+    0% {
+        transform: scale(0.95);
+    }
+    40% {
+        transform: scale(1.02);
+    }
+    100% {
+        transform: scale(1);
+    }
+}

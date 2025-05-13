@@ -191,9 +191,9 @@ describe('App', () => {
 
         // Confirm error text appeared, only old password field has red highlight
         expect(app.queryByText('Old password incorrect')).not.toBeNull();
-        expect(app.getByLabelText('Old password').classList).toContain('input-error');
-        expect(app.getByLabelText('New password').classList).not.toContain('input-error');
-        expect(app.getByLabelText('Confirm new password').classList).not.toContain('input-error');
+        expect(app.getByLabelText('Old password').classList).toContain('border-error');
+        expect(app.getByLabelText('New password').classList).not.toContain('border-error');
+        expect(app.getByLabelText('Confirm new password').classList).not.toContain('border-error');
     });
 
     it('highlights new password fields if new passwords do not match', async () => {
@@ -220,8 +220,8 @@ describe('App', () => {
 
         // Confirm error text appeared, only new password fields have red highlight
         expect(app.queryByText("The two password fields didn’t match.")).not.toBeNull();
-        expect(app.getByLabelText('Old password').classList).not.toContain('input-error');
-        expect(app.getByLabelText('New password').classList).toContain('input-error');
-        expect(app.getByLabelText('Confirm new password').classList).toContain('input-error');
+        expect(app.getByLabelText('Old password').classList).not.toContain('border-error');
+        expect(app.getByLabelText('New password').classList).toContain('border-error');
+        expect(app.getByLabelText('Confirm new password').classList).toContain('border-error');
     });
 });

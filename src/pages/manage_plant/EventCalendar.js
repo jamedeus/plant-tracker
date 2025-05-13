@@ -1,7 +1,7 @@
 import React, { memo, useMemo } from 'react';
 import { DateTime } from 'luxon';
 import Calendar from 'react-calendar';
-import 'src/calendar.css';
+import 'src/css/event_calendar.css';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/16/solid';
 import { useSelector } from 'react-redux';
 

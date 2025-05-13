@@ -1,0 +1,15 @@
+@utility section {
+    @apply flex flex-col w-full max-w-96 bg-base-200 px-4 rounded-2xl;
+}
+
+@utility section-title {
+    @apply flex text-center w-full min-h-[3.75rem];
+}
+
+@utility section-title-font {
+    @apply text-xl font-medium min-h-0 h-auto py-1 m-auto cursor-default;
+}
+
+@utility section-content {
+    @apply min-w-0 min-h-fit px-2 md:px-4 pb-2 md:pb-4;
+}

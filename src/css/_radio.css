@@ -1,0 +1,63 @@
+/* ==========================================================================
+ * Portions of this file were adapted from DaisyUI v4 and DaisyUI v5.
+ * Original copyright © 2020 Pouya Saadeghi
+ * Licensed under the MIT License – see ../../LICENSES/daisyui-license.txt.
+ * Main source: https://github.com/saadeghi/daisyui/blob/f0a7d3fb1e7830ac57b6258137cf4227dcf241f2/packages/daisyui/src/components/radio.css
+ * ==========================================================================
+
+  Added:
+   - Check animation from DaisyUI v4
+
+  Removed:
+   - Color variants (base class modified to use --color-accent when checked,
+     border color stays neutral when not checked)
+*/
+
+@utility radio {
+    @apply relative shrink-0 cursor-pointer appearance-none rounded-full p-0 align-middle;
+    /* Neutral border color when unchecked (not --color-accent) */
+    border: var(--border) solid var(--input-color, color-mix(in srgb, var(--color-base-content) 20%, #0000));
+    --size: calc(var(--size-selector, 0.25rem) * 6);
+    width: var(--size);
+    height: var(--size);
+    color: var(--color-accent);
+
+    /* Same focus highlight color as most elements (not --color-accent) */
+    &:focus-visible {
+        outline: 2px solid var(--color-base-content);
+        outline-offset: 2px;
+    }
+
+    &:checked, &[aria-checked="true"] {
+        /* Fill entire circle with --color-accent, change border */
+        @apply bg-accent border-accent;
+
+        /* Start with box shadow covering everything except border */
+        /* Animate to thin ring around edge then increase 1px (bounce effect) */
+        animation: radiomark 0.2s ease-out both;
+        box-shadow:
+            0 0 0 4px var(--color-base-100) inset,
+            0 0 0 4px var(--color-base-100) inset;
+    }
+
+    &:disabled { @apply cursor-not-allowed opacity-20; }
+}
+
+/* DaisyUI v4 keyframes */
+@keyframes radiomark {
+    0% {
+        box-shadow:
+            0 0 0 12px var(--color-base-100) inset,
+            0 0 0 12px var(--color-base-100) inset;
+    }
+    50% {
+        box-shadow:
+            0 0 0 3px var(--color-base-100) inset,
+            0 0 0 3px var(--color-base-100) inset;
+    }
+    100% {
+        box-shadow:
+            0 0 0 4px var(--color-base-100) inset,
+            0 0 0 4px var(--color-base-100) inset;
+    }
+}

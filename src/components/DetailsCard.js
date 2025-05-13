@@ -6,9 +6,9 @@ import { openEditModal } from 'src/components/EditModal';
 const DetailsCard = ({ children }) => {
     return (
         <div className="details-card">
-            <div className="card-body">
+            <div className="card-body text-sm">
                 {children}
-                <button className="btn btn-sm mt-4" onClick={openEditModal}>
+                <button className="btn h-8 mt-4" onClick={openEditModal}>
                     Edit
                 </button>
             </div>

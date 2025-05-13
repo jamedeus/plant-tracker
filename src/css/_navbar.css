@@ -1,0 +1,11 @@
+/* ==========================================================================
+ * Portions of this file were adapted from DaisyUI v5.
+ * Original copyright © 2020 Pouya Saadeghi
+ * Licensed under the MIT License – see ../../LICENSES/daisyui-license.txt.
+ * Main source: https://github.com/saadeghi/daisyui/blob/f0a7d3fb1e7830ac57b6258137cf4227dcf241f2/packages/daisyui/src/components/navbar.css
+ * ==========================================================================
+ */
+
+@utility navbar {
+    @apply flex items-center w-full min-h-16 p-2;
+}

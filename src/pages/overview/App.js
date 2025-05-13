@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import Navbar from 'src/components/Navbar';
+import DropdownMenu from 'src/components/DropdownMenu';
 import { useTheme } from 'src/context/ThemeContext';
 import { sendPostRequest, parseDomContext } from 'src/util';
 import FloatingFooter from 'src/components/FloatingFooter';
@@ -258,14 +259,14 @@ function App() {
         };
 
         return (
-            <ul tabIndex={0} className="dropdown-options mt-3 w-24">
+            <DropdownMenu className="mt-3 w-24">
                 <li><a className="flex justify-center" onClick={jumpToPlants}>
                     Plants
                 </a></li>
                 <li><a className="flex justify-center" onClick={jumpToGroups}>
                     Groups
                 </a></li>
-            </ul>
+            </DropdownMenu>
         );
     }, []);
 

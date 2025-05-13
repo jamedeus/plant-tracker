@@ -2,10 +2,10 @@ import React, { useState, useRef } from 'react';
 import clsx from 'clsx';
 
 const colorMap = {
-    red: 'alert-error',
-    blue: 'alert-info',
-    green: 'alert-success',
-    yellow: 'alert-warning'
+    red: 'bg-error',
+    blue: 'bg-info',
+    green: 'bg-success',
+    yellow: 'bg-warning'
 };
 
 export let showToast;
@@ -47,16 +47,13 @@ export const Toast = () => {
 
     // Rendered when message state set
     return (message &&
-        <div
-            className={clsx(
-                'toast toast-center transition-opacity duration-500 z-[100]',
-                fade ? 'opacity-100' : 'opacity-0'
-            )}
-            onClick={hideToast}
-        >
-            <div className={`alert ${colorMap[color]} gap-0`}>
-                <span>{message}</span>
-            </div>
+        <div className={clsx(
+            'toast duration-500',
+            fade ? 'opacity-100' : 'opacity-0'
+        )}>
+            <span className={colorMap[color]} onClick={hideToast}>
+                {message}
+            </span>
         </div>
     );
 };

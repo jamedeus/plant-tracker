@@ -45,40 +45,30 @@ const LoginForm = () => {
 
     return (
         <form ref={formRef} className="flex flex-col gap-4 mt-8">
-            <label
-                className="form-control w-full"
-                title="Username or email address"
-            >
-                <div className="label">
-                    <span className="label-text">Username</span>
-                </div>
+            <label title="Username or email address">
+                <span>Username</span>
                 <input
                     name="username"
                     type="text"
                     autoFocus
                     autoCapitalize="off"
                     className={clsx(
-                        "input w-full input-bordered",
-                        showError && "input-error"
+                        "input w-full",
+                        showError && "border-error"
                     )}
                     value={username}
                     onInput={() => setShowError(false)}
                     onChange={e => setUsername(e.target.value)}
                 />
             </label>
-            <label
-                className="form-control w-full relative"
-                title="Must be at least 8 characters, can't be all numbers"
-            >
-                <div className="label">
-                    <span className="label-text">Password</span>
-                </div>
+            <label title="Must be at least 8 characters, can't be all numbers">
+                <span>Password</span>
                 <input
                     name="password"
                     type="password"
                     className={clsx(
-                        "input w-full input-bordered",
-                        showError && "input-error"
+                        "input w-full",
+                        showError && "border-error"
                     )}
                     value={password}
                     onInput={() => setShowError(false)}
@@ -153,18 +143,16 @@ const RegisterForm = () => {
 
     return (
         <form ref={formRef} className="flex flex-col gap-4">
-            <label className="form-control w-full">
-                <div className="label">
-                    <span className="label-text">Email *</span>
-                </div>
+            <label>
+                <span>Email *</span>
                 <input
                     name="email"
                     type="email"
                     autoFocus
                     autoCapitalize="off"
                     className={clsx(
-                        "input w-full input-bordered",
-                        (showError || showEmailError) && "input-error"
+                        "input w-full",
+                        (showError || showEmailError) && "border-error"
                     )}
                     value={email}
                     onInput={() => setShowError(false)}
@@ -176,20 +164,15 @@ const RegisterForm = () => {
                     {showEmailError}
                 </span>
             )}
-            <label
-                className="form-control w-full"
-                title="Must be at least 3 characters"
-            >
-                <div className="label">
-                    <span className="label-text">Username *</span>
-                </div>
+            <label title="Must be at least 3 characters">
+                <span>Username *</span>
                 <input
                     name="username"
                     type="text"
                     autoCapitalize="off"
                     className={clsx(
-                        "input w-full input-bordered",
-                        (showError || showUsernameError) && "input-error"
+                        "input w-full",
+                        (showError || showUsernameError) && "border-error"
                     )}
                     value={username}
                     onInput={clearErrors}
@@ -201,19 +184,14 @@ const RegisterForm = () => {
                     {showUsernameError}
                 </span>
             )}
-            <label
-                className="form-control w-full relative"
-                title="Must be at least 8 characters, can't be all numbers"
-            >
-                <div className="label">
-                    <span className="label-text">Password *</span>
-                </div>
+            <label title="Must be at least 8 characters, can't be all numbers">
+                <span>Password *</span>
                 <input
                     name="password"
                     type="password"
                     className={clsx(
-                        "input w-full input-bordered",
-                        (showError || showPasswordError) && "input-error"
+                        "input w-full",
+                        (showError || showPasswordError) && "border-error"
                     )}
                     value={password}
                     onInput={clearErrors}
@@ -225,24 +203,20 @@ const RegisterForm = () => {
                     {showPasswordError}
                 </span>
             )}
-            <label className="form-control w-full">
-                <div className="label">
-                    <span className="label-text">First name</span>
-                </div>
+            <label>
+                <span>First name</span>
                 <input
                     name="first_name"
                     type="text"
-                    className="input w-full input-bordered"
+                    className="input w-full"
                 />
             </label>
-            <label className="form-control w-full">
-                <div className="label">
-                    <span className="label-text">Last name</span>
-                </div>
+            <label>
+                <span>Last name</span>
                 <input
                     name="last_name"
                     type="text"
-                    className="input w-full input-bordered"
+                    className="input w-full"
                 />
             </label>
 

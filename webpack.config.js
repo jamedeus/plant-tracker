@@ -4,6 +4,7 @@ const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
+const { WebpackManifestPlugin } = require('webpack-manifest-plugin');
 
 const isProduction = process.env.NODE_ENV == 'production';
 
@@ -28,9 +29,18 @@ const config = {
                     name: 'react-common',
                     chunks: 'all',
                     enforce: true,
+                },
+                // Extract CSS shared by 2 or more pages to separate shared.css
+                sharedStyles: {
+                    type: 'css/mini-extract',
+                    name: 'shared',
+                    chunks: 'all',
+                    enforce: true,
+                    minChunks: 2,
+                    reuseExistingChunk: true,
                 }
             },
-        },
+        }
     },
     entry: {
         login: './src/pages/login/index.js',
@@ -44,14 +54,19 @@ const config = {
     },
     output: {
         path: path.resolve(__dirname, 'backend/plant_tracker/static/plant_tracker/'),
-        filename: '[name].js'
+        filename: '[name].js',
+        clean: true
     },
     devServer: {
         open: true,
         host: 'localhost',
     },
     plugins: [
-        ...(isProduction ? [ new MiniCssExtractPlugin({ filename: '[name].css' }) ] : [])
+        new MiniCssExtractPlugin({ filename: '[name].css' }),
+        // Save manifest.json (maps page names to list of bundle dependencies)
+        new WebpackManifestPlugin({
+            generate(_, __, entrypoints) { return entrypoints; },
+        }),
     ],
     module: {
         rules: [
@@ -62,7 +77,7 @@ const config = {
             {
                 test: /\.css$/i,
                 use: [
-                    isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
+                    MiniCssExtractPlugin.loader,
                     'css-loader',
                     'postcss-loader'
                 ],

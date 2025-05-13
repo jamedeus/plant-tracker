@@ -1,22 +1,19 @@
 import { useEffect, useState } from "react";
-import tailwindConfig from "src/../tailwind.config";
-import resolveConfig from "tailwindcss/resolveConfig";
-
-const config = resolveConfig(tailwindConfig);
+import defaultTheme from 'tailwindcss/defaultTheme';
 
 export const useIsBreakpointActive = (breakpoint) => {
     // Get width of requested breakpoint from tailwind config
-    const width = config.theme.screens[breakpoint];
-    const widthPx = parseInt(width);
+    const width = defaultTheme.screens[breakpoint];
+    const mediaQuery = `(min-width: ${width})`;
 
     const [isBreakpointActive, setIsBreakpointActive] = useState(
-        window.innerWidth >= widthPx
+        () => window.matchMedia(mediaQuery).matches
     );
 
     // Update when window resized
     useEffect(() => {
         const handleResize = () => {
-            setIsBreakpointActive(window.innerWidth >= widthPx);
+            setIsBreakpointActive(() => window.matchMedia(mediaQuery).matches);
         };
         window.addEventListener("resize", handleResize);
         return () => window.removeEventListener("resize", handleResize);

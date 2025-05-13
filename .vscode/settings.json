@@ -1,0 +1,11 @@
+{
+    "files.associations": {
+        "*.css": "tailwindcss"
+    },
+	"editor.tabSize": 4,
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "pylint.args": [
+        "--load-plugins=pylint_django"
+    ],
+}

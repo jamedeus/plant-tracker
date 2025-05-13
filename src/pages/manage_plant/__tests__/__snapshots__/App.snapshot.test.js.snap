@@ -49,14 +49,14 @@ exports[`App matches snapshot 1`] = `
         class="container flex flex-col items-center mx-auto mb-8"
       >
         <div
-          class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
+          class="navbar bg-base-100 mb-4 sticky top-0 z-99"
         >
           <div
             class="dropdown justify-start min-w-12"
           >
             <div
               aria-label="Navigation menu"
-              class="btn btn-ghost btn-circle"
+              class="btn btn-ghost btn-circle size-12"
               role="button"
               tabindex="0"
             >
@@ -76,7 +76,7 @@ exports[`App matches snapshot 1`] = `
               </svg>
             </div>
             <ul
-              class="dropdown-options mt-3 w-52"
+              class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-3"
               tabindex="0"
             >
               <li>
@@ -131,14 +131,14 @@ exports[`App matches snapshot 1`] = `
                 </span>
               </a>
               <div
-                class="dropdown-content z-[1] flex"
+                class="dropdown-content z-1 flex"
                 tabindex="0"
               >
                 <div
                   class="details-card"
                 >
                   <div
-                    class="card-body"
+                    class="card-body text-sm"
                   >
                     <div
                       class="flex flex-col"
@@ -163,7 +163,7 @@ exports[`App matches snapshot 1`] = `
                         >
                           <svg
                             aria-hidden="true"
-                            class="svg-inline--fa fa-pen size-3"
+                            class="svg-inline--fa fa-pen size-3!"
                             data-icon="pen"
                             data-prefix="fas"
                             focusable="false"
@@ -187,7 +187,7 @@ exports[`App matches snapshot 1`] = `
                         class="flex flex-col text-center items-center"
                       >
                         <a
-                          class="font-bold text-lg line-clamp-1 rounded-lg focus:outline outline-2 outline-offset-2"
+                          class="font-bold text-lg line-clamp-1 rounded-lg focus:outline-2 outline-offset-2"
                           href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                         >
                           Test group
@@ -202,7 +202,7 @@ exports[`App matches snapshot 1`] = `
                           >
                             <svg
                               aria-hidden="true"
-                              class="svg-inline--fa fa-ban size-4"
+                              class="svg-inline--fa fa-ban min-size-4"
                               data-icon="ban"
                               data-prefix="fas"
                               focusable="false"
@@ -224,7 +224,7 @@ exports[`App matches snapshot 1`] = `
                           >
                             <svg
                               aria-hidden="true"
-                              class="svg-inline--fa fa-up-right-from-square size-4"
+                              class="svg-inline--fa fa-up-right-from-square min-size-4"
                               data-icon="up-right-from-square"
                               data-prefix="fas"
                               focusable="false"
@@ -289,7 +289,7 @@ exports[`App matches snapshot 1`] = `
                       </p>
                     </div>
                     <button
-                      class="btn btn-sm mt-4"
+                      class="btn h-8 mt-4"
                     >
                       Edit
                     </button>
@@ -328,7 +328,7 @@ exports[`App matches snapshot 1`] = `
           >
             <input
               aria-label="New event timestamp"
-              class="input input-bordered my-2"
+              class="input my-2 text-center"
               step="1"
               type="datetime-local"
               value="2024-03-01T12:00:00"
@@ -1061,7 +1061,7 @@ exports[`App matches snapshot 1`] = `
           </div>
         </div>
         <div
-          class="w-full max-w-screen-md mt-2 px-4"
+          class="w-full max-w-(--breakpoint-md) mt-2 px-4"
         >
           <div
             class="flex flex-col w-full bg-base-200 rounded-2xl"
@@ -1070,10 +1070,10 @@ exports[`App matches snapshot 1`] = `
               class="navbar bg-base-200 rounded-2xl px-4"
             >
               <div
-                class="navbar-start w-12"
+                class="justify-start w-12"
               />
               <div
-                class="navbar-center mx-auto"
+                class="mx-auto"
               >
                 <div
                   class="dropdown dropdown-center dropdown-hover"
@@ -1086,12 +1086,12 @@ exports[`App matches snapshot 1`] = `
                     History
                   </div>
                   <ul
-                    class="dropdown-options w-44"
+                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-44"
                     tabindex="0"
                   >
                     <li>
                       <details
-                        class="outline-none"
+                        class="outline-hidden"
                       >
                         <summary>
                           2024
@@ -1118,13 +1118,13 @@ exports[`App matches snapshot 1`] = `
               >
                 <div
                   aria-label="More plant actions menu"
-                  class="btn btn-ghost btn-circle"
+                  class="btn btn-ghost btn-circle size-12"
                   role="button"
                   tabindex="0"
                 >
                   <svg
                     aria-hidden="true"
-                    class="svg-inline--fa fa-ellipsis size-6"
+                    class="svg-inline--fa fa-ellipsis size-6!"
                     data-icon="ellipsis"
                     data-prefix="fas"
                     focusable="false"
@@ -1139,7 +1139,7 @@ exports[`App matches snapshot 1`] = `
                   </svg>
                 </div>
                 <ul
-                  class="dropdown-options w-40"
+                  class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box w-40"
                   tabindex="0"
                 >
                   <li>
@@ -1194,7 +1194,7 @@ exports[`App matches snapshot 1`] = `
                 data-date="2024-03-23"
               >
                 <div
-                  class="tooltip !text-end"
+                  class="tooltip text-end!"
                   data-tip="Mar 23, 2024"
                 >
                   <span
@@ -1241,7 +1241,7 @@ exports[`App matches snapshot 1`] = `
                 data-date="2024-03-22"
               >
                 <div
-                  class="tooltip !text-end"
+                  class="tooltip text-end!"
                   data-tip="Mar 22, 2024"
                 >
                   <span
@@ -1288,7 +1288,7 @@ exports[`App matches snapshot 1`] = `
                 data-date="2024-03-21"
               >
                 <div
-                  class="tooltip !text-end"
+                  class="tooltip text-end!"
                   data-tip="Mar 21, 2024"
                 >
                   <span
@@ -1335,7 +1335,7 @@ exports[`App matches snapshot 1`] = `
                 data-date="2024-03-01"
               >
                 <div
-                  class="tooltip !text-end"
+                  class="tooltip text-end!"
                   data-tip="Mar 01, 2024"
                 >
                   <span
@@ -1454,7 +1454,7 @@ exports[`App matches snapshot 1`] = `
                 data-date="2024-02-29"
               >
                 <div
-                  class="tooltip !text-end"
+                  class="tooltip text-end!"
                   data-tip="Feb 29, 2024"
                 >
                   <span
@@ -1511,7 +1511,7 @@ exports[`App matches snapshot 1`] = `
                 data-date="2024-02-26"
               >
                 <div
-                  class="tooltip !text-end"
+                  class="tooltip text-end!"
                   data-tip="Feb 26, 2024"
                 >
                   <span
@@ -1617,7 +1617,7 @@ exports[`App matches snapshot 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="size-8"
+                  class="size-8 min-size-8"
                   data-slot="icon"
                   fill="currentColor"
                   viewBox="0 0 16 16"
@@ -1660,7 +1660,7 @@ exports[`App matches snapshot 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="size-8"
+                class="size-8 min-size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -1702,7 +1702,7 @@ exports[`App matches snapshot 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="size-8"
+                class="size-8 min-size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -1744,7 +1744,7 @@ exports[`App matches snapshot 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="size-8"
+                class="size-8 min-size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -1786,7 +1786,7 @@ exports[`App matches snapshot 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="size-8"
+                class="size-8 min-size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -1828,7 +1828,7 @@ exports[`App matches snapshot 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="size-8"
+                class="size-8 min-size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -1870,7 +1870,7 @@ exports[`App matches snapshot 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="size-8"
+                class="size-8 min-size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -1912,7 +1912,7 @@ exports[`App matches snapshot 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="size-8"
+                class="size-8 min-size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -1949,7 +1949,7 @@ exports[`App matches snapshot 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="size-8"
+                class="size-8 min-size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -1991,7 +1991,7 @@ exports[`App matches snapshot 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="size-8"
+                class="size-8 min-size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -2020,14 +2020,14 @@ exports[`App matches snapshot 1`] = `
       class="container flex flex-col items-center mx-auto mb-8"
     >
       <div
-        class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
+        class="navbar bg-base-100 mb-4 sticky top-0 z-99"
       >
         <div
           class="dropdown justify-start min-w-12"
         >
           <div
             aria-label="Navigation menu"
-            class="btn btn-ghost btn-circle"
+            class="btn btn-ghost btn-circle size-12"
             role="button"
             tabindex="0"
           >
@@ -2047,7 +2047,7 @@ exports[`App matches snapshot 1`] = `
             </svg>
           </div>
           <ul
-            class="dropdown-options mt-3 w-52"
+            class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-3"
             tabindex="0"
           >
             <li>
@@ -2102,14 +2102,14 @@ exports[`App matches snapshot 1`] = `
               </span>
             </a>
             <div
-              class="dropdown-content z-[1] flex"
+              class="dropdown-content z-1 flex"
               tabindex="0"
             >
               <div
                 class="details-card"
               >
                 <div
-                  class="card-body"
+                  class="card-body text-sm"
                 >
                   <div
                     class="flex flex-col"
@@ -2134,7 +2134,7 @@ exports[`App matches snapshot 1`] = `
                       >
                         <svg
                           aria-hidden="true"
-                          class="svg-inline--fa fa-pen size-3"
+                          class="svg-inline--fa fa-pen size-3!"
                           data-icon="pen"
                           data-prefix="fas"
                           focusable="false"
@@ -2158,7 +2158,7 @@ exports[`App matches snapshot 1`] = `
                       class="flex flex-col text-center items-center"
                     >
                       <a
-                        class="font-bold text-lg line-clamp-1 rounded-lg focus:outline outline-2 outline-offset-2"
+                        class="font-bold text-lg line-clamp-1 rounded-lg focus:outline-2 outline-offset-2"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       >
                         Test group
@@ -2173,7 +2173,7 @@ exports[`App matches snapshot 1`] = `
                         >
                           <svg
                             aria-hidden="true"
-                            class="svg-inline--fa fa-ban size-4"
+                            class="svg-inline--fa fa-ban min-size-4"
                             data-icon="ban"
                             data-prefix="fas"
                             focusable="false"
@@ -2195,7 +2195,7 @@ exports[`App matches snapshot 1`] = `
                         >
                           <svg
                             aria-hidden="true"
-                            class="svg-inline--fa fa-up-right-from-square size-4"
+                            class="svg-inline--fa fa-up-right-from-square min-size-4"
                             data-icon="up-right-from-square"
                             data-prefix="fas"
                             focusable="false"
@@ -2260,7 +2260,7 @@ exports[`App matches snapshot 1`] = `
                     </p>
                   </div>
                   <button
-                    class="btn btn-sm mt-4"
+                    class="btn h-8 mt-4"
                   >
                     Edit
                   </button>
@@ -2299,7 +2299,7 @@ exports[`App matches snapshot 1`] = `
         >
           <input
             aria-label="New event timestamp"
-            class="input input-bordered my-2"
+            class="input my-2 text-center"
             step="1"
             type="datetime-local"
             value="2024-03-01T12:00:00"
@@ -3032,7 +3032,7 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <div
-        class="w-full max-w-screen-md mt-2 px-4"
+        class="w-full max-w-(--breakpoint-md) mt-2 px-4"
       >
         <div
           class="flex flex-col w-full bg-base-200 rounded-2xl"
@@ -3041,10 +3041,10 @@ exports[`App matches snapshot 1`] = `
             class="navbar bg-base-200 rounded-2xl px-4"
           >
             <div
-              class="navbar-start w-12"
+              class="justify-start w-12"
             />
             <div
-              class="navbar-center mx-auto"
+              class="mx-auto"
             >
               <div
                 class="dropdown dropdown-center dropdown-hover"
@@ -3057,12 +3057,12 @@ exports[`App matches snapshot 1`] = `
                   History
                 </div>
                 <ul
-                  class="dropdown-options w-44"
+                  class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-44"
                   tabindex="0"
                 >
                   <li>
                     <details
-                      class="outline-none"
+                      class="outline-hidden"
                     >
                       <summary>
                         2024
@@ -3089,13 +3089,13 @@ exports[`App matches snapshot 1`] = `
             >
               <div
                 aria-label="More plant actions menu"
-                class="btn btn-ghost btn-circle"
+                class="btn btn-ghost btn-circle size-12"
                 role="button"
                 tabindex="0"
               >
                 <svg
                   aria-hidden="true"
-                  class="svg-inline--fa fa-ellipsis size-6"
+                  class="svg-inline--fa fa-ellipsis size-6!"
                   data-icon="ellipsis"
                   data-prefix="fas"
                   focusable="false"
@@ -3110,7 +3110,7 @@ exports[`App matches snapshot 1`] = `
                 </svg>
               </div>
               <ul
-                class="dropdown-options w-40"
+                class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box w-40"
                 tabindex="0"
               >
                 <li>
@@ -3165,7 +3165,7 @@ exports[`App matches snapshot 1`] = `
               data-date="2024-03-23"
             >
               <div
-                class="tooltip !text-end"
+                class="tooltip text-end!"
                 data-tip="Mar 23, 2024"
               >
                 <span
@@ -3212,7 +3212,7 @@ exports[`App matches snapshot 1`] = `
               data-date="2024-03-22"
             >
               <div
-                class="tooltip !text-end"
+                class="tooltip text-end!"
                 data-tip="Mar 22, 2024"
               >
                 <span
@@ -3259,7 +3259,7 @@ exports[`App matches snapshot 1`] = `
               data-date="2024-03-21"
             >
               <div
-                class="tooltip !text-end"
+                class="tooltip text-end!"
                 data-tip="Mar 21, 2024"
               >
                 <span
@@ -3306,7 +3306,7 @@ exports[`App matches snapshot 1`] = `
               data-date="2024-03-01"
             >
               <div
-                class="tooltip !text-end"
+                class="tooltip text-end!"
                 data-tip="Mar 01, 2024"
               >
                 <span
@@ -3425,7 +3425,7 @@ exports[`App matches snapshot 1`] = `
               data-date="2024-02-29"
             >
               <div
-                class="tooltip !text-end"
+                class="tooltip text-end!"
                 data-tip="Feb 29, 2024"
               >
                 <span
@@ -3482,7 +3482,7 @@ exports[`App matches snapshot 1`] = `
               data-date="2024-02-26"
             >
               <div
-                class="tooltip !text-end"
+                class="tooltip text-end!"
                 data-tip="Feb 26, 2024"
               >
                 <span
@@ -3588,7 +3588,7 @@ exports[`App matches snapshot 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="size-8"
+                class="size-8 min-size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -3631,7 +3631,7 @@ exports[`App matches snapshot 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="size-8"
+              class="size-8 min-size-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"
@@ -3673,7 +3673,7 @@ exports[`App matches snapshot 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="size-8"
+              class="size-8 min-size-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"
@@ -3715,7 +3715,7 @@ exports[`App matches snapshot 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="size-8"
+              class="size-8 min-size-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"
@@ -3757,7 +3757,7 @@ exports[`App matches snapshot 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="size-8"
+              class="size-8 min-size-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"
@@ -3799,7 +3799,7 @@ exports[`App matches snapshot 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="size-8"
+              class="size-8 min-size-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"
@@ -3841,7 +3841,7 @@ exports[`App matches snapshot 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="size-8"
+              class="size-8 min-size-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"
@@ -3883,7 +3883,7 @@ exports[`App matches snapshot 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="size-8"
+              class="size-8 min-size-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"
@@ -3920,7 +3920,7 @@ exports[`App matches snapshot 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="size-8"
+              class="size-8 min-size-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"
@@ -3962,7 +3962,7 @@ exports[`App matches snapshot 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="size-8"
+              class="size-8 min-size-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"
@@ -4088,14 +4088,14 @@ exports[`App matches snapshot when plant is archived 1`] = `
         class="container flex flex-col items-center mx-auto mb-8"
       >
         <div
-          class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
+          class="navbar bg-base-100 mb-4 sticky top-0 z-99"
         >
           <div
             class="dropdown justify-start min-w-12"
           >
             <div
               aria-label="Navigation menu"
-              class="btn btn-ghost btn-circle"
+              class="btn btn-ghost btn-circle size-12"
               role="button"
               tabindex="0"
             >
@@ -4115,7 +4115,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               </svg>
             </div>
             <ul
-              class="dropdown-options mt-3 w-52"
+              class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-3"
               tabindex="0"
             >
               <li>
@@ -4158,14 +4158,14 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 </span>
               </a>
               <div
-                class="dropdown-content z-[1] flex"
+                class="dropdown-content z-1 flex"
                 tabindex="0"
               >
                 <div
                   class="details-card"
                 >
                   <div
-                    class="card-body"
+                    class="card-body text-sm"
                   >
                     <div
                       class="flex flex-col"
@@ -4190,7 +4190,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                         >
                           <svg
                             aria-hidden="true"
-                            class="svg-inline--fa fa-pen size-3"
+                            class="svg-inline--fa fa-pen size-3!"
                             data-icon="pen"
                             data-prefix="fas"
                             focusable="false"
@@ -4214,7 +4214,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                         class="flex flex-col text-center items-center"
                       >
                         <a
-                          class="font-bold text-lg line-clamp-1 rounded-lg focus:outline outline-2 outline-offset-2"
+                          class="font-bold text-lg line-clamp-1 rounded-lg focus:outline-2 outline-offset-2"
                           href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                         >
                           Test group
@@ -4229,7 +4229,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                           >
                             <svg
                               aria-hidden="true"
-                              class="svg-inline--fa fa-ban size-4"
+                              class="svg-inline--fa fa-ban min-size-4"
                               data-icon="ban"
                               data-prefix="fas"
                               focusable="false"
@@ -4251,7 +4251,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                           >
                             <svg
                               aria-hidden="true"
-                              class="svg-inline--fa fa-up-right-from-square size-4"
+                              class="svg-inline--fa fa-up-right-from-square min-size-4"
                               data-icon="up-right-from-square"
                               data-prefix="fas"
                               focusable="false"
@@ -4316,7 +4316,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                       </p>
                     </div>
                     <button
-                      class="btn btn-sm mt-4"
+                      class="btn h-8 mt-4"
                     >
                       Edit
                     </button>
@@ -5041,7 +5041,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
           </div>
         </div>
         <div
-          class="w-full max-w-screen-md mt-2 px-4"
+          class="w-full max-w-(--breakpoint-md) mt-2 px-4"
         >
           <div
             class="flex flex-col w-full bg-base-200 rounded-2xl"
@@ -5050,10 +5050,10 @@ exports[`App matches snapshot when plant is archived 1`] = `
               class="navbar bg-base-200 rounded-2xl px-4"
             >
               <div
-                class="navbar-start w-12"
+                class="justify-start w-12"
               />
               <div
-                class="navbar-center mx-auto"
+                class="mx-auto"
               >
                 <div
                   class="dropdown dropdown-center dropdown-hover"
@@ -5066,12 +5066,12 @@ exports[`App matches snapshot when plant is archived 1`] = `
                     History
                   </div>
                   <ul
-                    class="dropdown-options w-44"
+                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-44"
                     tabindex="0"
                   >
                     <li>
                       <details
-                        class="outline-none"
+                        class="outline-hidden"
                       >
                         <summary>
                           2024
@@ -5111,7 +5111,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 data-date="2024-03-23"
               >
                 <div
-                  class="tooltip !text-end"
+                  class="tooltip text-end!"
                   data-tip="Mar 23, 2024"
                 >
                   <span
@@ -5158,7 +5158,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 data-date="2024-03-22"
               >
                 <div
-                  class="tooltip !text-end"
+                  class="tooltip text-end!"
                   data-tip="Mar 22, 2024"
                 >
                   <span
@@ -5205,7 +5205,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 data-date="2024-03-21"
               >
                 <div
-                  class="tooltip !text-end"
+                  class="tooltip text-end!"
                   data-tip="Mar 21, 2024"
                 >
                   <span
@@ -5252,7 +5252,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 data-date="2024-03-01"
               >
                 <div
-                  class="tooltip !text-end"
+                  class="tooltip text-end!"
                   data-tip="Mar 01, 2024"
                 >
                   <span
@@ -5371,7 +5371,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 data-date="2024-02-29"
               >
                 <div
-                  class="tooltip !text-end"
+                  class="tooltip text-end!"
                   data-tip="Feb 29, 2024"
                 >
                   <span
@@ -5428,7 +5428,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 data-date="2024-02-26"
               >
                 <div
-                  class="tooltip !text-end"
+                  class="tooltip text-end!"
                   data-tip="Feb 26, 2024"
                 >
                   <span
@@ -5534,7 +5534,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               >
                 <svg
                   aria-hidden="true"
-                  class="size-8"
+                  class="size-8 min-size-8"
                   data-slot="icon"
                   fill="currentColor"
                   viewBox="0 0 16 16"
@@ -5577,7 +5577,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="size-8"
+                class="size-8 min-size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -5619,7 +5619,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="size-8"
+                class="size-8 min-size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -5661,7 +5661,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="size-8"
+                class="size-8 min-size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -5703,7 +5703,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="size-8"
+                class="size-8 min-size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -5745,7 +5745,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="size-8"
+                class="size-8 min-size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -5787,7 +5787,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="size-8"
+                class="size-8 min-size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -5829,7 +5829,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="size-8"
+                class="size-8 min-size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -5866,7 +5866,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="size-8"
+                class="size-8 min-size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -5908,7 +5908,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="size-8"
+                class="size-8 min-size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -5937,14 +5937,14 @@ exports[`App matches snapshot when plant is archived 1`] = `
       class="container flex flex-col items-center mx-auto mb-8"
     >
       <div
-        class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
+        class="navbar bg-base-100 mb-4 sticky top-0 z-99"
       >
         <div
           class="dropdown justify-start min-w-12"
         >
           <div
             aria-label="Navigation menu"
-            class="btn btn-ghost btn-circle"
+            class="btn btn-ghost btn-circle size-12"
             role="button"
             tabindex="0"
           >
@@ -5964,7 +5964,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
             </svg>
           </div>
           <ul
-            class="dropdown-options mt-3 w-52"
+            class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-3"
             tabindex="0"
           >
             <li>
@@ -6007,14 +6007,14 @@ exports[`App matches snapshot when plant is archived 1`] = `
               </span>
             </a>
             <div
-              class="dropdown-content z-[1] flex"
+              class="dropdown-content z-1 flex"
               tabindex="0"
             >
               <div
                 class="details-card"
               >
                 <div
-                  class="card-body"
+                  class="card-body text-sm"
                 >
                   <div
                     class="flex flex-col"
@@ -6039,7 +6039,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                       >
                         <svg
                           aria-hidden="true"
-                          class="svg-inline--fa fa-pen size-3"
+                          class="svg-inline--fa fa-pen size-3!"
                           data-icon="pen"
                           data-prefix="fas"
                           focusable="false"
@@ -6063,7 +6063,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                       class="flex flex-col text-center items-center"
                     >
                       <a
-                        class="font-bold text-lg line-clamp-1 rounded-lg focus:outline outline-2 outline-offset-2"
+                        class="font-bold text-lg line-clamp-1 rounded-lg focus:outline-2 outline-offset-2"
                         href="/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                       >
                         Test group
@@ -6078,7 +6078,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                         >
                           <svg
                             aria-hidden="true"
-                            class="svg-inline--fa fa-ban size-4"
+                            class="svg-inline--fa fa-ban min-size-4"
                             data-icon="ban"
                             data-prefix="fas"
                             focusable="false"
@@ -6100,7 +6100,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                         >
                           <svg
                             aria-hidden="true"
-                            class="svg-inline--fa fa-up-right-from-square size-4"
+                            class="svg-inline--fa fa-up-right-from-square min-size-4"
                             data-icon="up-right-from-square"
                             data-prefix="fas"
                             focusable="false"
@@ -6165,7 +6165,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                     </p>
                   </div>
                   <button
-                    class="btn btn-sm mt-4"
+                    class="btn h-8 mt-4"
                   >
                     Edit
                   </button>
@@ -6890,7 +6890,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
         </div>
       </div>
       <div
-        class="w-full max-w-screen-md mt-2 px-4"
+        class="w-full max-w-(--breakpoint-md) mt-2 px-4"
       >
         <div
           class="flex flex-col w-full bg-base-200 rounded-2xl"
@@ -6899,10 +6899,10 @@ exports[`App matches snapshot when plant is archived 1`] = `
             class="navbar bg-base-200 rounded-2xl px-4"
           >
             <div
-              class="navbar-start w-12"
+              class="justify-start w-12"
             />
             <div
-              class="navbar-center mx-auto"
+              class="mx-auto"
             >
               <div
                 class="dropdown dropdown-center dropdown-hover"
@@ -6915,12 +6915,12 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   History
                 </div>
                 <ul
-                  class="dropdown-options w-44"
+                  class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-44"
                   tabindex="0"
                 >
                   <li>
                     <details
-                      class="outline-none"
+                      class="outline-hidden"
                     >
                       <summary>
                         2024
@@ -6960,7 +6960,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               data-date="2024-03-23"
             >
               <div
-                class="tooltip !text-end"
+                class="tooltip text-end!"
                 data-tip="Mar 23, 2024"
               >
                 <span
@@ -7007,7 +7007,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               data-date="2024-03-22"
             >
               <div
-                class="tooltip !text-end"
+                class="tooltip text-end!"
                 data-tip="Mar 22, 2024"
               >
                 <span
@@ -7054,7 +7054,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               data-date="2024-03-21"
             >
               <div
-                class="tooltip !text-end"
+                class="tooltip text-end!"
                 data-tip="Mar 21, 2024"
               >
                 <span
@@ -7101,7 +7101,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               data-date="2024-03-01"
             >
               <div
-                class="tooltip !text-end"
+                class="tooltip text-end!"
                 data-tip="Mar 01, 2024"
               >
                 <span
@@ -7220,7 +7220,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               data-date="2024-02-29"
             >
               <div
-                class="tooltip !text-end"
+                class="tooltip text-end!"
                 data-tip="Feb 29, 2024"
               >
                 <span
@@ -7277,7 +7277,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               data-date="2024-02-26"
             >
               <div
-                class="tooltip !text-end"
+                class="tooltip text-end!"
                 data-tip="Feb 26, 2024"
               >
                 <span
@@ -7383,7 +7383,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="size-8"
+                class="size-8 min-size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -7426,7 +7426,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="size-8"
+              class="size-8 min-size-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"
@@ -7468,7 +7468,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="size-8"
+              class="size-8 min-size-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"
@@ -7510,7 +7510,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="size-8"
+              class="size-8 min-size-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"
@@ -7552,7 +7552,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="size-8"
+              class="size-8 min-size-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"
@@ -7594,7 +7594,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="size-8"
+              class="size-8 min-size-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"
@@ -7636,7 +7636,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="size-8"
+              class="size-8 min-size-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"
@@ -7678,7 +7678,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="size-8"
+              class="size-8 min-size-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"
@@ -7715,7 +7715,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="size-8"
+              class="size-8 min-size-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"
@@ -7757,7 +7757,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="size-8"
+              class="size-8 min-size-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"

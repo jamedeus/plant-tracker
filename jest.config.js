@@ -16,9 +16,7 @@ module.exports = {
         '\\.(css|less|sass|scss)$': 'identity-obj-proxy',
     },
     coveragePathIgnorePatterns: [
-        'src/main.css',
-        'src/calendar.css',
-        'src/timeline.css',
+        'src/css/',
         'src/testUtils/',
         'mockContext.js',
         'tailwind.config.js'

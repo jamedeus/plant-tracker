@@ -1,6 +1,8 @@
+@reference './index.css';
+
 /* Layout classes */
 .timeline-layout {
-    @apply grid grid-cols-[min-content_1fr] gap-4 md:gap-8 overflow-hidden;
+    @apply grid grid-cols-min-max gap-4 md:gap-8 overflow-hidden;
     @apply p-4 md:p-8 pt-0 md:pt-0;
 }
 
@@ -35,7 +37,7 @@
     /* Very small screens: column of event markers */
     @apply flex flex-col;
     /* Most mobile devices: 2x2 grid layout */
-    @apply min-[372px]:grid min-[372px]:grid-cols-[min-content_1fr];
+    @apply min-[372px]:grid min-[372px]:grid-cols-min-max;
     /* Desktop, tablets: Flex wrap (starts when room for 3 events per row) */
     @apply min-[457px]:flex min-[457px]:flex-row min-[457px]:flex-wrap;
 }

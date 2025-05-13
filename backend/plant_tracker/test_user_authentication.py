@@ -47,12 +47,12 @@ class AuthenticationPageTests(TestCase):
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
         self.assertEqual(response.context['title'], 'Login')
         self.assertEqual(
-            response.context['js_bundle'],
-            'plant_tracker/login.js'
+            response.context['js_files'],
+            settings.PAGE_DEPENDENCIES['login']['js']
         )
         self.assertEqual(
-            response.context['css_bundle'],
-            'plant_tracker/login.css'
+            response.context['css_files'],
+            settings.PAGE_DEPENDENCIES['login']['css']
         )
 
     def test_user_profile_page(self):
@@ -65,8 +65,8 @@ class AuthenticationPageTests(TestCase):
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
         self.assertEqual(response.context['title'], 'User Profile')
         self.assertEqual(
-            response.context['js_bundle'],
-            'plant_tracker/user_profile.js'
+            response.context['js_files'],
+            settings.PAGE_DEPENDENCIES['user_profile']['js']
         )
 
         # Confirm context contains current user account details
@@ -450,8 +450,8 @@ class SingleUserModeTests(TestCase):
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
         self.assertEqual(response.context['title'], 'Permission Denied')
         self.assertEqual(
-            response.context['js_bundle'],
-            'plant_tracker/permission_denied.js'
+            response.context['js_files'],
+            settings.PAGE_DEPENDENCIES['permission_denied']['js']
         )
 
     # pylint: disable-next=invalid-name
@@ -582,8 +582,8 @@ class SingleUserModeTests(TestCase):
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
         self.assertEqual(response.context['title'], 'Plant Overview')
         self.assertEqual(
-            response.context['js_bundle'],
-            'plant_tracker/overview.js'
+            response.context['js_files'],
+            settings.PAGE_DEPENDENCIES['overview']['js']
         )
 
         # Confirm only contains default user's plant
@@ -605,8 +605,8 @@ class SingleUserModeTests(TestCase):
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
         self.assertEqual(response.context['title'], 'Manage Plant')
         self.assertEqual(
-            response.context['js_bundle'],
-            'plant_tracker/manage_plant.js'
+            response.context['js_files'],
+            settings.PAGE_DEPENDENCIES['manage_plant']['js']
         )
 
     def test_manage_plant_page_user_does_not_own_plant(self):
@@ -640,8 +640,8 @@ class SingleUserModeTests(TestCase):
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
         self.assertEqual(response.context['title'], 'Manage Group')
         self.assertEqual(
-            response.context['js_bundle'],
-            'plant_tracker/manage_group.js'
+            response.context['js_files'],
+            settings.PAGE_DEPENDENCIES['manage_group']['js']
         )
 
     def test_manage_group_page_user_does_not_own_group(self):
@@ -780,8 +780,8 @@ class MultiUserModeTests(TestCase):
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
         self.assertEqual(response.context['title'], 'Manage Plant')
         self.assertEqual(
-            response.context['js_bundle'],
-            'plant_tracker/manage_plant.js'
+            response.context['js_files'],
+            settings.PAGE_DEPENDENCIES['manage_plant']['js']
         )
 
     def test_manage_plant_page_not_signed_in(self):
@@ -809,8 +809,8 @@ class MultiUserModeTests(TestCase):
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
         self.assertEqual(response.context['title'], 'Manage Group')
         self.assertEqual(
-            response.context['js_bundle'],
-            'plant_tracker/manage_group.js'
+            response.context['js_files'],
+            settings.PAGE_DEPENDENCIES['manage_group']['js']
         )
 
     def test_manage_group_page_not_signed_in(self):

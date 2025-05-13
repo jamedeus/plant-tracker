@@ -16,6 +16,31 @@ beforeAll(() => {
     window.HTMLElement.prototype.scrollIntoView = jest.fn();
     window.scrollTo = jest.fn();
 
+    // Mock matchMedia for useIsBreakpointActive custom hook
+    Object.defineProperty(window, 'matchMedia', {
+        writable: true,
+        value: jest.fn().mockImplementation(query => {
+            // Only process min-width query with px or rem
+            const mediaquery = query.match(/\(min-width:\s*(\d+)(px|rem)\)/);
+            let matches = false;
+            if (mediaquery) {
+                // Get media query value, convert rem to px
+                const [, value, unit] = mediaquery;
+                let minWidth = parseInt(value, 10);
+                if (unit === 'rem') {
+                    minWidth = minWidth * 16;
+                }
+                // Check if window is greater than or equal to query
+                matches = window.innerWidth >= minWidth;
+            }
+            return {
+                matches,
+                media: query,
+                onchange: null
+            };
+        }),
+    });
+
     // Make available in all tests
     global.render = render;
     global.within = within;

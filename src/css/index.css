@@ -1,0 +1,130 @@
+@import 'tailwindcss';
+@plugin './tailwind-min-size.js';
+@plugin "daisyui" {
+    themes: light --default, dark --prefersdark;
+    include: modal, carousel, tooltip, divider, loading, steps,
+             rootcolor, rootscrolllock, rootscrollgutter, scrollbar;
+}
+
+/* Add custom theme colors (values overridden by daisyui themes below) */
+/* Variables need to exist in tailwind theme to generate bg-prune etc */
+@theme {
+    --color-prune: #FFF;
+    --color-repot: #FFF;
+    --color-prune-content: #000;
+}
+
+@plugin "daisyui/theme" {
+    name: "dark";
+    prefersdark: true;
+    --depth: 0;
+    --card-fs: 1rem;
+    --size-field: 0.3rem;
+    --radius-box: 1rem;
+    --radius-field: 0.5rem;
+    --color-base-content: oklch(0.746477 0.0216 264.435964/1);
+    --color-primary: oklch(0.6569 0.196 275.75/1);
+    --color-accent: oklch(0.7451 0.167 183.61/1);
+    --color-neutral: oklch(0.313815 0.021108 254.139175/1);
+    --color-warning: oklch(0.8471 0.199 83.87/1);
+    --color-error: oklch(0.7176 0.221 22.18/1);
+    --color-info: oklch(0.7206 0.191 231.6/1);
+    --color-success: oklch(64.8% 0.150 160/1);
+    --color-prune: oklch(0.85 0.1265 66.29);
+    --color-repot: oklch(0.38 0.0709 54.66);
+    --color-primary-content: oklch(13.138% .0392 275.75/1);
+    --color-accent-content: oklch(0.14902 0.0334 183.61/1);
+    --color-neutral-content: oklch(0.746477 0.0216 264.435964/1);
+    --color-error-content: oklch(0 0 0/1);
+    --color-info-content: oklch(0 0 0/1);
+    --color-success-content: oklch(0 0 0/1);
+    --color-prune-content: oklch(0 0 0/1);
+}
+@plugin "daisyui/theme" {
+    name: "light";
+    default: true;
+    --depth: 0;
+    --card-fs: 1rem;
+    --size-field: 0.3rem;
+    --radius-box: 1rem;
+    --radius-field: 0.5rem;
+    --color-base-content: oklch(0.278078 0.029596 256.847952/1);
+    --color-primary: oklch(0.4912 0.3096 275.75/1);
+    --color-accent: oklch(0.7676 0.184 183.61/1);
+    --color-base-100: #F2F2F2;
+    --color-base-200: #E5E6E6;
+    --color-base-300: #dddddd;
+    --color-neutral: #FFFFFF;
+    --color-warning: oklch(0.8471 0.199 83.87/1);
+    --color-error: oklch(0.7176 0.221 22.18/1);
+    --color-info: oklch(0.7206 0.191 231.6/1);
+    --color-success: oklch(64.8% 0.150 160/1);
+    --color-prune: oklch(0.83 0.155 66.29);
+    --color-repot: oklch(0.42 0.081 50.5);
+    --color-primary-content: oklch(89.824% .06192 275.75/1);
+    --color-accent-content: oklch(0.15352 0.0368 183.61/1);
+    --color-neutral-content: #000;
+    --color-error-content: oklch(0 0 0/1);
+    --color-info-content: oklch(0 0 0/1);
+    --color-success-content: oklch(0 0 0/1);
+    --color-prune-content: oklch(0 0 0/1);
+}
+
+@layer base {
+    /* Input label text spacing + size */
+    label:has(> span + input),
+    label:has(> span + textarea) {
+        @apply flex flex-col;
+
+        & > span {
+            @apply text-sm text-base-content text-left px-1 py-2;
+        }
+    }
+}
+
+/* Import reusable component utility classes */
+@import "./_tab.css";
+@import "./_card.css";
+@import "./_menu.css";
+@import "./_input.css";
+@import "./_radio.css";
+@import "./_toast.css";
+@import "./_button.css";
+@import "./_navbar.css";
+@import "./_section.css";
+@import "./_collapse.css";
+@import "./_dropdown.css";
+@import "./_floating_footer.css";
+
+/* Two column layout, left column min-content, right column fills remaining */
+@utility grid-cols-min-max {
+    @apply grid-cols-[min-content_1fr];
+}
+
+/* Allows breaking long strings with no spaces to prevent overflow */
+/* Only breaks words if there is no other opportunity (eg spaces) */
+@utility break-anywhere {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+@utility photo-thumbnail {
+    @apply rounded-lg object-cover;
+}
+
+.modal-box {
+    /* Fix modal filling full height on iOS safari when address bar visible */
+    max-height: calc(100svh - 2em);
+
+    /* Speed up transition (fix flicker when opening over colored buttons) */
+    transition:
+        translate 0.2s ease-out,
+        scale 0.2s ease-out,
+        opacity 0.2s ease-out,
+        box-shadow 0.2s ease-out;
+
+    /* Start animation smaller (makes faster animation more noticable) */
+    .modal:not([open]) > & {
+        scale: 90%;
+    }
+}

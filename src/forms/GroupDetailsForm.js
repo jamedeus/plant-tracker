@@ -4,35 +4,29 @@ import PropTypes from 'prop-types';
 const GroupDetailsForm = ({ formRef, name, location, description }) => {
     return (
         <form id="groupDetails" ref={formRef} className="flex flex-col gap-4">
-            <label className="form-control w-full">
-                <div className="label">
-                    <span className="label-text">Group name</span>
-                </div>
+            <label>
+                <span>Group name</span>
                 <input
                     name="name"
                     type="text"
-                    className="input w-full input-bordered"
+                    className="input w-full"
                     defaultValue={name}
                 />
             </label>
-            <label className="form-control w-full">
-                <div className="label">
-                    <span className="label-text">Group location</span>
-                </div>
+            <label>
+                <span>Group location</span>
                 <input
                     name="location"
                     type="text"
-                    className="input w-full input-bordered"
+                    className="input w-full"
                     defaultValue={location}
                 />
             </label>
-            <label className="form-control w-full">
-                <div className="label">
-                    <span className="label-text">Description</span>
-                </div>
+            <label>
+                <span>Description</span>
                 <textarea
                     name="description"
-                    className="textarea textarea-bordered"
+                    className="textarea w-full"
                     defaultValue={description}
                 />
             </label>

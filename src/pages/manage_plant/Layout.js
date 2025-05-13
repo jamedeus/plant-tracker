@@ -102,7 +102,7 @@ function Layout() {
                                     "btn btn-square bg-base-200/60 border-none",
                                 )}>
                                     <FontAwesomeIcon
-                                        className='size-3'
+                                        className='size-3!'
                                         icon={faPen}
                                     />
                                 </div>
@@ -121,7 +121,7 @@ function Layout() {
                             <a
                                 className={clsx(
                                     "font-bold text-lg line-clamp-1 rounded-lg",
-                                    "focus:outline outline-2 outline-offset-2"
+                                    "focus:outline-2 outline-offset-2"
                                 )}
                                 href={`/manage/${plantDetails.group.uuid}`}
                             >
@@ -184,7 +184,7 @@ function Layout() {
                 <EventCalendar />
             </div>
 
-            <div className="w-full max-w-screen-md mt-2 px-4">
+            <div className="w-full max-w-(--breakpoint-md) mt-2 px-4">
                 <Timeline />
             </div>
 

@@ -193,9 +193,9 @@ describe('App', () => {
 
         // Confirm error string appeared, only username field has red highlight
         expect(app.queryByText('username already exists')).not.toBeNull();
-        expect(app.getByLabelText('Email *').classList).not.toContain('input-error');
-        expect(app.getByLabelText('Username *').classList).toContain('input-error');
-        expect(app.getByLabelText('Password *').classList).not.toContain('input-error');
+        expect(app.getByLabelText('Email *').classList).not.toContain('border-error');
+        expect(app.getByLabelText('Username *').classList).toContain('border-error');
+        expect(app.getByLabelText('Password *').classList).not.toContain('border-error');
     });
 
     it('shows error text under email when backend rejects email', async () => {
@@ -224,9 +224,9 @@ describe('App', () => {
 
         // Confirm error string appeared, only email field has red highlight
         expect(app.queryByText('email already exists')).not.toBeNull();
-        expect(app.getByLabelText('Email *').classList).toContain('input-error');
-        expect(app.getByLabelText('Username *').classList).not.toContain('input-error');
-        expect(app.getByLabelText('Password *').classList).not.toContain('input-error');
+        expect(app.getByLabelText('Email *').classList).toContain('border-error');
+        expect(app.getByLabelText('Username *').classList).not.toContain('border-error');
+        expect(app.getByLabelText('Password *').classList).not.toContain('border-error');
     });
 
     it('shows error text under password when backend rejects password', async () => {
@@ -255,9 +255,9 @@ describe('App', () => {
 
         // Confirm error string appeared, only password field has red highlight
         expect(app.queryByText('This password is too common.')).not.toBeNull();
-        expect(app.getByLabelText('Email *').classList).not.toContain('input-error');
-        expect(app.getByLabelText('Username *').classList).not.toContain('input-error');
-        expect(app.getByLabelText('Password *').classList).toContain('input-error');
+        expect(app.getByLabelText('Email *').classList).not.toContain('border-error');
+        expect(app.getByLabelText('Username *').classList).not.toContain('border-error');
+        expect(app.getByLabelText('Password *').classList).toContain('border-error');
     });
 
     it('highlights all required fields when a generic error is received', async () => {
@@ -286,8 +286,8 @@ describe('App', () => {
 
         // Confirm error string appeared, all fields have red highlight
         expect(app.queryByText('failed to create account')).not.toBeNull();
-        expect(app.getByLabelText('Email *').classList).toContain('input-error');
-        expect(app.getByLabelText('Username *').classList).toContain('input-error');
-        expect(app.getByLabelText('Password *').classList).toContain('input-error');
+        expect(app.getByLabelText('Email *').classList).toContain('border-error');
+        expect(app.getByLabelText('Username *').classList).toContain('border-error');
+        expect(app.getByLabelText('Password *').classList).toContain('border-error');
     });
 });

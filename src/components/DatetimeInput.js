@@ -7,7 +7,7 @@ const DatetimeInput = ({ inputRef, value=null, ariaLabel="Timestamp input" }) =>
     return (
         <input
             ref={inputRef}
-            className="input input-bordered my-2"
+            className="input my-2 text-center"
             type="datetime-local"
             step="1"
             defaultValue={

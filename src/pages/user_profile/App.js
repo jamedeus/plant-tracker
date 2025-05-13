@@ -51,7 +51,7 @@ const UserDetails = memo(function UserDetails() {
 
     return (
         <div className="flex flex-col gap-4">
-            <div className="grid grid-cols-[min-content_1fr] gap-4">
+            <div className="grid grid-cols-min-max gap-4">
                 <div className="my-auto text-nowrap">
                     First Name:
                 </div>
@@ -59,7 +59,7 @@ const UserDetails = memo(function UserDetails() {
                     name="first_name"
                     type="text"
                     aria-label="First name input"
-                    className="input w-full input-bordered"
+                    className="input w-full"
                     value={firstName}
                     onChange={(e) => setFirstName(e.target.value)}
                     onKeyDown={(e) => submitOnEnterKey(e)}
@@ -72,7 +72,7 @@ const UserDetails = memo(function UserDetails() {
                     name="last_name"
                     type="text"
                     aria-label="Last name input"
-                    className="input w-full input-bordered"
+                    className="input w-full"
                     value={lastName}
                     onChange={(e) => setLastName(e.target.value)}
                     onKeyDown={(e) => submitOnEnterKey(e)}
@@ -86,7 +86,7 @@ const UserDetails = memo(function UserDetails() {
                     type="email"
                     autoCapitalize="off"
                     aria-label="Email address input"
-                    className="input w-full input-bordered"
+                    className="input w-full"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     onKeyDown={(e) => submitOnEnterKey(e)}
@@ -169,19 +169,14 @@ const ChangePassword = memo(function ChangePassword() {
 
     return (
         <form ref={formRef} className="flex flex-col gap-2">
-            <label
-                className="form-control w-full"
-                title="Must be at least 8 characters, can't be all numbers"
-            >
-                <div className="label">
-                    <span className="label-text">Old password</span>
-                </div>
+            <label title="Must be at least 8 characters, can't be all numbers">
+                <span>Old password</span>
                 <input
                     name="old_password"
                     type="password"
                     className={clsx(
-                        "input w-full input-bordered",
-                        oldPasswordIncorrect && "input-error"
+                        "input w-full",
+                        oldPasswordIncorrect && "border-error"
                     )}
                     value={oldPassword}
                     onKeyDown={(e) => submitOnEnterKey(e)}
@@ -194,42 +189,31 @@ const ChangePassword = memo(function ChangePassword() {
                     Old password incorrect
                 </span>
             )}
-            <label
-                className="form-control w-full"
-                title="Must be at least 8 characters, can't be all numbers"
-            >
-                <div className="label">
-                    <span className="label-text">New password</span>
-                </div>
+            <label title="Must be at least 8 characters, can't be all numbers">
+                <span>New password</span>
                 <input
                     name="new_password1"
                     type="password"
                     className={clsx(
-                        "input w-full input-bordered",
-                        newPasswordError && "input-error"
+                        "input w-full",
+                        newPasswordError && "border-error"
                     )}
                     value={newPassword1}
                     onKeyDown={(e) => submitOnEnterKey(e)}
                     onChange={(e) => setNewPassword1(e.target.value)}
                 />
             </label>
-            <label
-                className="form-control w-full"
-                title="Must be at least 8 characters, can't be all numbers"
-            >
-                <div className="label">
-                    <span className="label-text">Confirm new password</span>
-                </div>
+            <label title="Must be at least 8 characters, can't be all numbers">
+                <span>Confirm new password</span>
                 <input
                     name="new_password2"
                     type="password"
                     className={clsx(
-                        "input w-full input-bordered",
-                        newPasswordError && "input-error"
+                        "input w-full",
+                        newPasswordError && "border-error"
                     )}
                     value={newPassword2}
                     onKeyDown={(e) => submitOnEnterKey(e)}
-                    onInput={() => setNewPasswordError(false)}
                     onChange={(e) => setNewPassword2(e.target.value)}
                 />
             </label>
@@ -252,7 +236,10 @@ const ChangePassword = memo(function ChangePassword() {
 
 const Section = ({ title, open=false, children }) => {
     return (
-        <div className="collapse collapse-arrow bg-base-200" tabIndex={0}>
+        <div
+            className="collapse collapse-arrow bg-base-200 rounded-2xl"
+            tabIndex={0}
+        >
             <input
                 type="radio"
                 name="my-accordion-2"

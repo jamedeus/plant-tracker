@@ -1,0 +1,67 @@
+/* ==========================================================================
+ * Portions of this file were adapted from DaisyUI v4 and DaisyUI v5.
+ * Original copyright © 2020 Pouya Saadeghi
+ * Licensed under the MIT License – see ../../LICENSES/daisyui-license.txt.
+ * Main sources:
+ *  - https://github.com/saadeghi/daisyui/blob/f0a7d3fb1e7830ac57b6258137cf4227dcf241f2/packages/daisyui/src/components/button.css
+ *  - https://github.com/saadeghi/daisyui/blob/f0a7d3fb1e7830ac57b6258137cf4227dcf241f2/packages/daisyui/src/components/textarea.css
+ *  - https://github.com/saadeghi/daisyui/blob/0f31b7997ee2909bb7f67856d229c2eb00ed95af/src/components/styled/file-input.css
+ * ==========================================================================
+ */
+
+@utility input {
+    @apply relative inline-flex shrink appearance-none text-base cursor-text h-12 px-4;
+    border: var(--border)solid #0000;
+    border-color: color-mix(in oklab,var(--color-base-content)20%,#0000);
+    border-radius: var(--radius-field);
+    border-width: var(--border);
+    background-color: var(--color-base-100);
+
+    &:focus, &:focus-within {
+        @apply outline-2 outline-accent border-accent;
+    }
+
+    /* Chromium: remove extra space before calendar icon */
+    &::-webkit-calendar-picker-indicator {
+        @apply absolute;
+        inset-inline-end: 0.75em;
+    }
+
+    /* Chromium calendar icon color + calendar picker background color */
+    html[data-theme="dark"] & {
+        @apply scheme-dark;
+    }
+}
+
+@utility textarea {
+    @apply shrink appearance-none text-base cursor-text min-h-16 py-2 px-4;
+    border: var(--border)solid #0000;
+    border-color: color-mix(in oklab,var(--color-base-content)20%,#0000);
+    border-radius: var(--radius-field);
+    border-width: var(--border);
+    background-color: var(--color-base-100);
+
+    &:focus, &:focus-within {
+        @apply outline-2 outline-accent border-accent;
+    }
+}
+
+@utility file-input {
+    @apply text-base bg-base-100 overflow-hidden h-12 shrink pe-4;
+    border: var(--border)solid #0000;
+    border-color: color-mix(in oklab,var(--color-base-content)20%,#0000);
+    border-radius: var(--radius-field);
+    border-width: var(--border);
+    cursor: unset;
+
+    &:focus {
+        @apply outline-base-content/20 outline-2 outline-offset-2;
+    }
+
+    &::file-selector-button {
+        @apply inline-flex flex-wrap justify-center items-center shrink-0 h-full px-4 me-8;
+        @apply bg-neutral border-neutral text-neutral-content;
+        @apply text-center text-sm leading-4 font-semibold no-underline;
+        @apply cursor-pointer select-none;
+    }
+}

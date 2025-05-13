@@ -12,12 +12,13 @@ import { openDeletePhotosModal, preloadDeletePhotosModal } from './DeletePhotosM
 import { openEventHistoryModal } from './EventHistoryModal';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsis, faPenToSquare} from '@fortawesome/free-solid-svg-icons';
+import DropdownMenu from 'src/components/DropdownMenu';
 import WaterIcon from 'src/components/WaterIcon';
 import FertilizeIcon from 'src/components/FertilizeIcon';
 import PruneIcon from 'src/components/PruneIcon';
 import RepotIcon from 'src/components/RepotIcon';
 import { useSelector } from 'react-redux';
-import 'src/timeline.css';
+import 'src/css/timeline.css';
 
 // Takes ISO timestamp string, returns "x days ago"
 const getRelativeTimeString = (timestamp) => {
@@ -38,10 +39,10 @@ const Title = memo(function Title() {
 
     return (
         <div className="navbar bg-base-200 rounded-2xl px-4">
-            <div className="navbar-start w-12">
+            <div className="justify-start w-12">
                 {/* Spacer with same width as .navbar-end button */}
             </div>
-            <div className="navbar-center mx-auto">
+            <div className="mx-auto">
                 <div className="dropdown dropdown-center dropdown-hover">
                     <div
                         tabIndex={0}
@@ -50,9 +51,9 @@ const Title = memo(function Title() {
                     >
                         History
                     </div>
-                    <ul tabIndex={0} className="dropdown-options w-44">
+                    <DropdownMenu className="min-w-44">
                         <QuickNavigation />
-                    </ul>
+                    </DropdownMenu>
                 </div>
             </div>
 
@@ -65,15 +66,15 @@ const Title = memo(function Title() {
                         <div
                             tabIndex={0}
                             role="button"
-                            className="btn btn-ghost btn-circle"
+                            className="btn btn-ghost btn-circle size-12"
                             aria-label="More plant actions menu"
                         >
                             <FontAwesomeIcon
                                 icon={faEllipsis}
-                                className="size-6"
+                                className="size-6!"
                             />
                         </div>
-                        <ul tabIndex={0} className="dropdown-options w-40">
+                        <DropdownMenu className="w-40">
                             <li><button
                                 className="flex justify-end"
                                 onClick={() => openNoteModal()}
@@ -104,7 +105,7 @@ const Title = memo(function Title() {
                             >
                                 Delete events
                             </button></li>
-                        </ul>
+                        </DropdownMenu>
                     </>
                 }
             </div>
@@ -172,7 +173,7 @@ const QuickNavigationYear = ({ year, months }) => {
                 onMouseOver={open}
                 onFocus={open}
                 onMouseOut={close}
-                className="outline-none"
+                className="outline-hidden"
             >
                 <summary>{year}</summary>
                 <ul>
@@ -201,7 +202,7 @@ const TimelineTimestamp = memo(function TimelineTimestamp({ dateKey }) {
     return (
         <div className="timeline-timestamp" data-date={dateKey}>
             <div
-                className="tooltip !text-end"
+                className="tooltip text-end!"
                 data-tip={dateString}
             >
                 <span className="text-sm md:text-lg">

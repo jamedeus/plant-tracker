@@ -1,0 +1,26 @@
+@reference './index.css';
+
+/* Repot modal pot size option */
+.pot-size {
+    @apply text-xl md:text-2xl text-center font-bold;
+    @apply flex rounded-full bg-base-300 focus:outline-hidden;
+}
+
+/* Repot modal selected pot size option */
+.pot-size-selected {
+    @apply bg-primary text-white;
+}
+
+/* Dark mode custom pot size placeholder text */
+html[data-theme="dark"] .pot-size-selected::placeholder {
+    @apply text-white/50;
+}
+
+/* Light mode custom pot size placeholder text */
+html[data-theme="light"] .pot-size::placeholder {
+    @apply text-black/50;
+}
+
+html[data-theme="light"] .pot-size-selected::placeholder {
+    @apply text-white/65;
+}

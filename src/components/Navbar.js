@@ -1,5 +1,6 @@
 import React, { useState, useLayoutEffect, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
+import DropdownMenu from 'src/components/DropdownMenu';
 
 // Button with icon, used for dropdown and hidden placeholder on right side
 const DropdownButton = memo(function DropdownButton() {
@@ -7,7 +8,7 @@ const DropdownButton = memo(function DropdownButton() {
         <div
             tabIndex={0}
             role="button"
-            className="btn btn-ghost btn-circle"
+            className="btn btn-ghost btn-circle size-12"
             aria-label="Navigation menu"
         >
             <svg
@@ -90,7 +91,7 @@ const Navbar = memo(function Navbar({ menuOptions, onOpenMenu, title, titleOptio
     return (
         <div
             ref={navbarRef}
-            className="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
+            className="navbar bg-base-100 mb-4 sticky top-0 z-99"
         >
             {/* Top left dropdown button */}
             <div
@@ -98,9 +99,9 @@ const Navbar = memo(function Navbar({ menuOptions, onOpenMenu, title, titleOptio
                 onClick={onOpenMenu}
             >
                 <DropdownButton />
-                <ul tabIndex={0} className="dropdown-options mt-3 w-52">
+                <DropdownMenu className="mt-3">
                     {menuOptions}
-                </ul>
+                </DropdownMenu>
             </div>
 
             {/* Title */}
@@ -126,7 +127,7 @@ const Navbar = memo(function Navbar({ menuOptions, onOpenMenu, title, titleOptio
                             {title}
                         </span>
                     </a>
-                    <div tabIndex={0} className="dropdown-content z-[1] flex">
+                    <div tabIndex={0} className="dropdown-content z-1 flex">
                         {titleOptions}
                     </div>
                 </div>

@@ -1,0 +1,48 @@
+/* ==========================================================================
+ * Portions of this file were adapted from DaisyUI v4.
+ * Original copyright © 2020 Pouya Saadeghi
+ * Licensed under the MIT License – see ../../LICENSES/daisyui-license.txt.
+ * Main source: https://unpkg.com/daisyui@4.7.2/dist/full.css
+ * ==========================================================================
+ */
+
+/* Container div, contains focusable button and .dropdown-content element */
+@utility dropdown {
+    position: relative;
+    display: inline-block;
+
+    /* Contents wrapper: hidden, transparent, 95% scale when closed */
+    & .dropdown-content {
+        position: absolute;
+        visibility: hidden;
+        opacity: 0;
+        transform-origin: top;
+        transform: scale(.95);
+        transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+        transition-timing-function: cubic-bezier(0, 0, 0.2, 1);
+        transition-duration: 200ms;
+    }
+
+    /* Dropdown button focused OR hover variant hovered: show contents */
+    /* (fade in + scale up animation) */
+    &:focus .dropdown-content,
+    &:focus-within .dropdown-content,
+    &.dropdown-hover:hover .dropdown-content {
+        transform: scale(1);
+        visibility: visible;
+        opacity: 1;
+    }
+}
+
+/* Position variants */
+@utility dropdown-end {
+    & .dropdown-content {
+        inset-inline-end: 0px;
+    }
+}
+@utility dropdown-center {
+    & .dropdown-content {
+        @apply end-1/2;
+        translate: 50% 0;
+    }
+}

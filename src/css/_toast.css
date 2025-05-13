@@ -1,0 +1,17 @@
+@utility toast {
+    @apply fixed bottom-0 z-100 flex flex-row my-4 w-full whitespace-nowrap;
+    animation: toast 0.25s ease-out;
+
+    & > span {
+        @apply mx-auto p-4 rounded-box text-black;
+    }
+}
+@keyframes toast {
+    0% {
+        scale: 0.9;
+    }
+
+    100% {
+        scale: 1;
+    }
+}

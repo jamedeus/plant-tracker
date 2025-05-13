@@ -19,14 +19,14 @@ exports[`App matches snapshot 1`] = `
         class="container flex flex-col h-screen mx-auto items-center gap-16"
       >
         <div
-          class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
+          class="navbar bg-base-100 mb-4 sticky top-0 z-99"
         >
           <div
             class="dropdown justify-start min-w-12"
           >
             <div
               aria-label="Navigation menu"
-              class="btn btn-ghost btn-circle"
+              class="btn btn-ghost btn-circle size-12"
               role="button"
               tabindex="0"
             >
@@ -46,7 +46,7 @@ exports[`App matches snapshot 1`] = `
               </svg>
             </div>
             <ul
-              class="dropdown-options mt-3 w-52"
+              class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-3"
               tabindex="0"
             >
               <li>
@@ -90,7 +90,7 @@ exports[`App matches snapshot 1`] = `
                 </span>
               </a>
               <div
-                class="dropdown-content z-[1] flex"
+                class="dropdown-content z-1 flex"
                 tabindex="0"
               />
             </div>
@@ -126,7 +126,7 @@ exports[`App matches snapshot 1`] = `
             >
               <svg
                 aria-hidden="true"
-                class="size-8"
+                class="size-8 min-size-8"
                 data-slot="icon"
                 fill="currentColor"
                 viewBox="0 0 16 16"
@@ -155,14 +155,14 @@ exports[`App matches snapshot 1`] = `
       class="container flex flex-col h-screen mx-auto items-center gap-16"
     >
       <div
-        class="navbar bg-base-100 mb-4 sticky top-0 z-[99]"
+        class="navbar bg-base-100 mb-4 sticky top-0 z-99"
       >
         <div
           class="dropdown justify-start min-w-12"
         >
           <div
             aria-label="Navigation menu"
-            class="btn btn-ghost btn-circle"
+            class="btn btn-ghost btn-circle size-12"
             role="button"
             tabindex="0"
           >
@@ -182,7 +182,7 @@ exports[`App matches snapshot 1`] = `
             </svg>
           </div>
           <ul
-            class="dropdown-options mt-3 w-52"
+            class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-3"
             tabindex="0"
           >
             <li>
@@ -226,7 +226,7 @@ exports[`App matches snapshot 1`] = `
               </span>
             </a>
             <div
-              class="dropdown-content z-[1] flex"
+              class="dropdown-content z-1 flex"
               tabindex="0"
             />
           </div>
@@ -262,7 +262,7 @@ exports[`App matches snapshot 1`] = `
           >
             <svg
               aria-hidden="true"
-              class="size-8"
+              class="size-8 min-size-8"
               data-slot="icon"
               fill="currentColor"
               viewBox="0 0 16 16"

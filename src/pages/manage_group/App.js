@@ -3,6 +3,7 @@ import { localToUTC } from 'src/timestampUtils';
 import { sendPostRequest, parseDomContext, pastTense } from 'src/util';
 import Navbar from 'src/components/Navbar';
 import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
+import DropdownMenu from 'src/components/DropdownMenu';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { showToast } from 'src/components/Toast';
 import DetailsCard from 'src/components/DetailsCard';
@@ -318,10 +319,7 @@ function App() {
                     formRef={selectedPlantsRef}
                     storageKey={`group-${group.uuid}`}
                     titleOptions={
-                        <ul
-                            tabIndex={0}
-                            className="dropdown-options w-min-content"
-                        >
+                        <DropdownMenu>
                             <li><a
                                 className="flex justify-center"
                                 onClick={openAddPlantsModal}
@@ -336,7 +334,7 @@ function App() {
                             >
                                 Remove
                             </a></li>
-                        </ul>
+                        </DropdownMenu>
                     }
                 >
                 </PlantsCol>

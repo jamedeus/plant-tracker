@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import useDebounce from 'src/useDebounce';
 import SectionCol from 'src/components/SectionCol';
 import EditableNodeList from 'src/components/EditableNodeList';
+import DropdownMenu from 'src/components/DropdownMenu';
 import { XMarkIcon, ArrowsUpDownIcon } from '@heroicons/react/16/solid';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowUpLong, faArrowDownLong } from '@fortawesome/free-solid-svg-icons';
@@ -74,7 +75,7 @@ const reducer = (state, action) => {
 const ClearButton = ({ onClick }) => {
     return (
         <button
-            className="btn-close size-8 no-animation"
+            className="btn-close size-8"
             onClick={onClick}
             title="Clear filter input"
         >
@@ -108,12 +109,12 @@ const SortMenu = ({ sortByKeys, state, setSort }) => {
             <div
                 role="button"
                 tabIndex="0"
-                className="btn-close size-8 no-animation"
+                className="btn-close size-8"
                 title="Sort menu"
             >
                 <ArrowsUpDownIcon className="size-5 m-auto" />
             </div>
-            <ul tabIndex={0} className="dropdown-options mt-2 w-min-content">
+            <DropdownMenu className="mt-2">
                 {sortByKeys.map((key) => (
                     <li key={key.key}>
                         <a
@@ -127,7 +128,7 @@ const SortMenu = ({ sortByKeys, state, setSort }) => {
                         </a>
                     </li>
                 ))}
-            </ul>
+            </DropdownMenu>
         </div>
     );
 };
@@ -185,7 +186,7 @@ const FilterInput = memo(function FilterInput({ state, dispatch, sortByKeys }) {
                 <input
                     type="text"
                     className={clsx(
-                        'input input-bordered w-full text-center',
+                        'input w-full text-center',
                         sortByKeys.length
                             ? 'indent-[3.625rem] pr-[4.5rem]'
                             : 'indent-[1.625rem] pr-10'

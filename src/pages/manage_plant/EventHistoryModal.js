@@ -20,7 +20,7 @@ export const openEventHistoryModal = () => {
 // When clicked color changes and timestamp is passed to onSelect callback
 const EventCard = memo(function EventCard({ timestamp, selected, onSelect }) {
     return (
-        <label className='card card-compact w-full max-w-80 select-none'>
+        <label className='card w-full max-w-80 select-none'>
             <input
                 type="checkbox"
                 className="hidden peer"
@@ -28,13 +28,13 @@ const EventCard = memo(function EventCard({ timestamp, selected, onSelect }) {
                 onChange={() => onSelect(timestamp)}
             />
             <div className={clsx(
-                "card-body text-center rounded-2xl transition-all",
+                "card-body text-center rounded-2xl transition",
                 "duration-[200ms] peer-checked:ring-2 ring-error ring-inset"
             )}>
                 <p className="text-lg font-bold">
                     {timestampToRelativeDays(timestamp)}
                 </p>
-                <p>
+                <p className="text-sm">
                     {DateTime.fromISO(
                         timestamp
                     ).toFormat("h:mm\u202Fa MMMM dd, yyyy")}

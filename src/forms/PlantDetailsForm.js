@@ -26,8 +26,8 @@ const SpeciesSelect = ({ value }) => {
             <Combobox.Option
                 value={value}
                 className={({ active }) => clsx(
-                    'combobox-option',
-                    active && 'bg-teal-600'
+                    'text-base text-base-content px-4 py-2 rounded-lg',
+                    active && 'bg-accent text-accent-content! font-semibold'
                 )}
             >
                 {text}
@@ -44,7 +44,7 @@ const SpeciesSelect = ({ value }) => {
         <Combobox value={selected} onChange={setSelected} nullable>
             <Combobox.Input
                 name="species"
-                className="input w-full input-bordered"
+                className="input w-full"
                 onChange={(event) => {
                     // Set both so value doesn't reset when focus lost
                     // Allows adding new value without clicking "Create" option
@@ -62,7 +62,10 @@ const SpeciesSelect = ({ value }) => {
                 leaveFrom="opacity-100"
                 leaveTo="opacity-0"
             >
-                <Combobox.Options className="combobox-options-div">
+                <Combobox.Options className={clsx(
+                    "absolute w-full max-h-60 overflow-auto z-10 mt-2 p-2",
+                    "bg-neutral rounded-lg text-center"
+                )}>
                     {/* Add option if current input not in speciesOptions */}
                     {query.length > 0 && !speciesOptions.includes(query) && (
                         <Option value={query} text={`Create "${query}"`} />
@@ -85,32 +88,26 @@ SpeciesSelect.propTypes = {
 const PlantDetailsForm = ({ formRef, name, species, pot_size, description }) => {
     return (
         <form id="plantDetails" ref={formRef} className="flex flex-col gap-4">
-            <label className="form-control w-full">
-                <div className="label">
-                    <span className="label-text">Plant name</span>
-                </div>
+            <label>
+                <span>Plant name</span>
                 <input
                     name="name"
                     type="text"
-                    className="input w-full input-bordered"
+                    className="input w-full"
                     defaultValue={name}
                 />
             </label>
-            <label className="form-control w-full relative">
-                <div className="label">
-                    <span className="label-text">Plant species</span>
-                </div>
+            <label className="relative">
+                <span>Plant species</span>
                 <SpeciesSelect value={species} />
             </label>
-            <label className="form-control w-full">
-                <div className="label">
-                    <span className="label-text">Pot size</span>
-                </div>
+            <label>
+                <span>Pot size</span>
                 <input
                     name="pot_size"
                     type="text"
                     inputMode="numeric"
-                    className="input w-full input-bordered"
+                    className="input w-full"
                     defaultValue={pot_size}
                     onInput={(e) => {
                         e.target.value = e.target.value.replace(
@@ -119,13 +116,11 @@ const PlantDetailsForm = ({ formRef, name, species, pot_size, description }) => 
                     }}
                 />
             </label>
-            <label className="form-control w-full">
-                <div className="label">
-                    <span className="label-text">Description</span>
-                </div>
+            <label>
+                <span>Description</span>
                 <textarea
                     name="description"
-                    className="textarea textarea-bordered"
+                    className="textarea w-full"
                     defaultValue={description}
                 />
             </label>
