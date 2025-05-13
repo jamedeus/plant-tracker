@@ -3,6 +3,8 @@
 # Node dependencies build stage
 FROM node:22-bookworm-slim AS node_build
 
+WORKDIR /build
+
 # Copy source and config files
 COPY src/ ./src/
 COPY .babelrc .
@@ -10,7 +12,6 @@ COPY package.json .
 COPY package-lock.json .
 COPY webpack.config.js .
 COPY postcss.config.js .
-COPY tailwind.config.js .
 
 # Install dependencies, build frontend
 RUN npm install
@@ -41,7 +42,7 @@ COPY backend/generate_qr_code_grid.py /mnt/backend/generate_qr_code_grid.py
 COPY backend/plant_tracker /mnt/backend/plant_tracker
 
 # Copy JS bundles from node build stage
-COPY --from=node_build backend/plant_tracker/static/plant_tracker/* /mnt/backend/plant_tracker/static/plant_tracker/
+COPY --from=node_build /build/backend/plant_tracker/static/plant_tracker/* /mnt/backend/plant_tracker/static/plant_tracker/
 
 # Copy python dependencies from build stage
 COPY --from=py_build /usr/local/lib/python3.13/site-packages/ /usr/local/lib/python3.13/site-packages/
