@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import 'tailwindcss' source('../');
 @plugin './tailwind-min-size.js';
 @plugin "daisyui" {
     themes: light --default, dark --prefersdark;
