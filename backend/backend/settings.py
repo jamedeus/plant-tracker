@@ -179,8 +179,11 @@ STATIC_URL = "static/"
 
 # Read webpack manifest.json from static directory
 MANIFEST_PATH = Path(BASE_DIR, 'plant_tracker/static/plant_tracker/manifest.json')
-with open(MANIFEST_PATH, 'r', encoding='utf-8' ) as file:
-    MANIFEST = json.load(file)
+try:
+    with open(MANIFEST_PATH, 'r', encoding='utf-8' ) as file:
+        MANIFEST = json.load(file)
+except FileNotFoundError:
+    MANIFEST = {}
 
 # Build mapping dict with page names as keys, static dependencies as values
 PAGE_DEPENDENCIES = {
