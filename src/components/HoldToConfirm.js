@@ -5,16 +5,19 @@ import 'src/css/hold_to_confirm.css';
 
 const HoldToConfirm = ({ callback, timeout, buttonText, tooltipText }) => {
     const [holding, setHolding] = useState(false);
+    const [showTooltip, setShowTooltip] = useState(false);
     const timerRef = useRef(null);
     const buttonRef = useRef(null);
 
     const handleHold = () => {
         // Start timer to run callback in timeout milliseconds
+        clearTimeout(timerRef.current);
         timerRef.current = setTimeout(() => {
             callback();
         }, timeout);
-        // Start progres bar animation
+        // Start progres bar animation, show tooltip
         setHolding(true);
+        setShowTooltip(true);
     };
 
     const handleRelease = () => {
@@ -24,13 +27,18 @@ const HoldToConfirm = ({ callback, timeout, buttonText, tooltipText }) => {
         // Remove button focus (for onMouseLeave, prevent still looking clicked
         // after moving cursor outside button without releasing click)
         buttonRef.current.blur();
+        // Keep tooltip visible long enough for user to read text
+        clearTimeout(timerRef.current);
+        timerRef.current = setTimeout(() => {
+            setShowTooltip(false);
+        }, 750);
     };
 
     return (
         <div
             className={clsx(
                 "tooltip hold-to-confirm-tooltip",
-                holding && "tooltip-open"
+                showTooltip && "tooltip-open"
             )}
             data-tip={tooltipText}
         >

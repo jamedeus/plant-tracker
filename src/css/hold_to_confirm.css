@@ -45,8 +45,7 @@
 
 .hold-to-confirm-tooltip {
     /* Don't show on hover */
-    &:hover:not(:has(.active)) {
-        > .tooltip-content,
+    &:hover:not(.tooltip-open) {
         &[data-tip]:before,
         &:after {
           @apply opacity-0;
@@ -56,5 +55,21 @@
     /* Increase tooltip text size */
     &:where([data-tip])::before {
         @apply text-lg;
+    }
+
+    /* Disable slide up animation */
+    & {
+        &[data-tip]:before,
+        &:after {
+            transform: translateX(-50%) translateY(0);
+        }
+    }
+
+    /* Increase fade duration to 300ms */
+    &.tooltip-open[data-tip]:before,
+    &.tooltip-open:after,
+    &:not(.tooltip-open)[data-tip]:before,
+    &:not(.tooltip-open):after {
+        transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1) 0ms;
     }
 }
