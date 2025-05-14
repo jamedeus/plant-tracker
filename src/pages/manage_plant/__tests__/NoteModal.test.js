@@ -1,4 +1,5 @@
 import React from 'react';
+import { fireEvent } from '@testing-library/react';
 import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import NoteModal, { openNoteModal } from '../NoteModal';
@@ -153,8 +154,11 @@ describe('Edit existing note', () => {
     });
 
     beforeEach(async () => {
+        // Allow fast forwarding (must hold delete note button to confirm)
+        jest.useFakeTimers({ doNotFake: ['Date'] });
+
         // Render app + create userEvent instance to use in tests
-        user = userEvent.setup();
+        user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
             <PageWrapper>
                 <TestComponent />
@@ -163,6 +167,12 @@ describe('Edit existing note', () => {
 
         // Open modal in edit mode
         await user.click(app.getByText('Edit Existing Note'));
+    });
+
+    // Clean up pending timers after each test
+    afterEach(() => {
+        jest.runAllTimers();
+        jest.useRealTimers();
     });
 
     it('sends correct payload when note is deleted', async () => {
@@ -176,8 +186,11 @@ describe('Edit existing note', () => {
             })
         }));
 
-        // Simulate user clicking delete button
-        await user.click(app.getByText('Delete'));
+        // Simulate user holding delete button for 1.5 seconds
+        const button = app.getByText('Delete');
+        fireEvent.mouseDown(button);
+        await jest.advanceTimersByTimeAsync(1500);
+        fireEvent.mouseUp(button);
 
         // Confirm correct data posted to /add_plant_note endpoint
         expect(fetch).toHaveBeenCalledWith('/delete_plant_note', {
@@ -232,8 +245,11 @@ describe('Edit existing note', () => {
         // Confirm arbitrary error does not appear on page
         expect(app.queryByText(/failed to delete note/)).toBeNull();
 
-        // Simulate user clicking delete
-        await user.click(app.getByText('Delete'));
+        // Simulate user holding delete button for 1.5 seconds
+        const button = app.getByText('Delete');
+        fireEvent.mouseDown(button);
+        await jest.advanceTimersByTimeAsync(1500);
+        fireEvent.mouseUp(button);
 
         // Confirm modal appeared with arbitrary error text
         expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();

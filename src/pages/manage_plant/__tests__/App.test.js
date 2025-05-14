@@ -1,6 +1,6 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
-import { fireEvent, within } from '@testing-library/react';
+import { fireEvent, waitFor, within } from '@testing-library/react';
 import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
 import { PageWrapper } from 'src/index';
@@ -16,13 +16,22 @@ describe('App', () => {
     });
 
     beforeEach(() => {
+        // Allow fast forwarding (must hold delete note button to confirm)
+        jest.useFakeTimers({ doNotFake: ['Date'] });
+
         // Render app + create userEvent instance to use in tests
-        user = userEvent.setup();
+        user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
             <PageWrapper>
                 <App />
             </PageWrapper>
         );
+    });
+
+    // Clean up pending timers after each test
+    afterEach(() => {
+        jest.runAllTimers();
+        jest.useRealTimers();
     });
 
     it('sends correct payload when edit modal is submitted', async () => {
@@ -357,13 +366,12 @@ describe('App', () => {
         const pageshowEvent = new Event('pageshow');
         Object.defineProperty(pageshowEvent, 'persisted', { value: true });
         window.dispatchEvent(pageshowEvent);
+        await jest.advanceTimersByTimeAsync(0);
 
         // Confirm fetched correct endpoint
-        await waitFor(() => {
-            expect(global.fetch).toHaveBeenCalledWith(
-                '/get_plant_state/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-            );
-        });
+        expect(global.fetch).toHaveBeenCalledWith(
+            '/get_plant_state/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+        );
 
         // Confirm page was reloaded
         expect(window.location.reload).toHaveBeenCalled();
@@ -557,13 +565,18 @@ describe('App', () => {
             'Fertilized with dilute 10-15-10 liquid fertilizer'
         )).not.toBeNull();
 
-        // Simulate user clicking icon next to note, then clicking delete
+        // Simulate user clicking icon next to note (open modal)
         const editButton = within(timeline).getByText(
             'Fertilized with dilute 10-15-10 liquid fertilizer'
         ).closest('.note-collapse').querySelector('svg');
         await user.click(editButton);
         const editModal = app.getByText('Edit Note').closest('.modal-box');
-        await user.click(within(editModal).getByText('Delete'));
+
+        // Simulate user holding delete button for 1.5 seconds
+        const button = within(editModal).getByText('Delete');
+        fireEvent.mouseDown(button);
+        await jest.advanceTimersByTimeAsync(1500);
+        fireEvent.mouseUp(button);
 
         // Confirm timeline no longer contains note text
         expect(within(timeline).queryByText(

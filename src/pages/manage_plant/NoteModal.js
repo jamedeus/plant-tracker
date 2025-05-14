@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Modal from 'src/components/Modal';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { showToast } from 'src/components/Toast';
+import HoldToConfirm from 'src/components/HoldToConfirm';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { sendPostRequest } from 'src/util';
 import { localToUTC, timestampToReadable } from 'src/timestampUtils';
@@ -172,12 +173,12 @@ const NoteModal = () => {
                 {editingNote
                     ? (
                         <div className="modal-action mx-auto">
-                            <button
-                                className="btn btn-error text-error-content!"
-                                onClick={handleDelete}
-                            >
-                                Delete
-                            </button>
+                            <HoldToConfirm
+                                callback={handleDelete}
+                                timeout={1500}
+                                buttonText="Delete"
+                                tooltipText="Hold to confirm"
+                            />
                             <button
                                 className="btn btn-accent"
                                 onClick={handleEdit}
