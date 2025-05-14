@@ -30,6 +30,28 @@ const config = {
                     chunks: 'all',
                     enforce: true,
                 },
+                // Move icons from page bundles to icons.js
+                icons: {
+                    test: /[\\/]node_modules[\\/](@fortawesome|@heroicons)[\\/]/,
+                    name: 'icons',
+                    chunks: 'all',
+                    enforce: true,
+                    minChunks: 2,
+                },
+                // Move headless ui to headlessui.js
+                headlessui: {
+                    test: /[\\/]node_modules[\\/]@headlessui[\\/]/,
+                    name: 'headlessui',
+                    chunks: 'all',
+                    enforce: true,
+                },
+                // Move libraries used by all pages to libs.js
+                libs: {
+                    test: /[\\/]node_modules[\\/](luxon|clsx)[\\/]/,
+                    name: 'libs',
+                    chunks: 'all',
+                    enforce: true,
+                },
                 // Extract CSS shared by 2 or more pages to separate shared.css
                 sharedStyles: {
                     type: 'css/mini-extract',
