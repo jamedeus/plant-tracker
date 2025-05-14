@@ -1,3 +1,4 @@
+import { fireEvent } from '@testing-library/react';
 import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import { postHeaders } from 'src/testUtils/headers';
@@ -36,15 +37,24 @@ describe('App', () => {
     });
 
     beforeEach(() => {
+        // Allow fast forwarding (must hold delete button to confirm)
+        jest.useFakeTimers();
+
         // Clear sessionStorage (cached sortDirection, sortKey)
         sessionStorage.clear();
         // Render app + create userEvent instance to use in tests
-        user = userEvent.setup();
+        user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
             <PageWrapper>
                 <App />
             </PageWrapper>
         );
+    });
+
+    // Clean up pending timers after each test
+    afterEach(() => {
+        jest.runAllTimers();
+        jest.useRealTimers();
     });
 
     it('shows checkboxes and delete button when edit option clicked', async () => {
@@ -80,8 +90,11 @@ describe('App', () => {
         await user.click(app.getByText("Edit"));
         await user.click(app.getByLabelText('Select Test Plant'));
 
-        // Click delete button in floating div
-        await user.click(app.getByText('Delete'));
+        // Click delete button in floating div, hold for 2.5 seconds, release
+        const button = app.getByRole('button', { name: 'Delete' });
+        fireEvent.mouseDown(button);
+        await jest.advanceTimersByTimeAsync(2500);
+        fireEvent.mouseUp(button);
 
         // Confirm correct data posted to /bulk_delete_plants_and_groups endpoint
         expect(global.fetch).toHaveBeenCalledWith('/bulk_delete_plants_and_groups', {
@@ -135,8 +148,11 @@ describe('App', () => {
         await user.click(app.getByText("Edit"));
         await user.click(app.getByLabelText('Select Test group'));
 
-        // Click delete button in floating div
-        await user.click(app.getByText('Delete'));
+        // Click delete button in floating div, hold for 2.5 seconds, release
+        const button = app.getByRole('button', { name: 'Delete' });
+        fireEvent.mouseDown(button);
+        await jest.advanceTimersByTimeAsync(2500);
+        fireEvent.mouseUp(button);
 
         // Confirm correct data posted to /bulk_delete_plants_and_groups endpoint
         expect(global.fetch).toHaveBeenCalledWith('/bulk_delete_plants_and_groups', {

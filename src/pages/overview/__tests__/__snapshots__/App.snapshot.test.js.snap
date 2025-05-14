@@ -622,11 +622,19 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
           >
             Un-archive
           </button>
-          <button
-            class="btn btn-error"
+          <div
+            class="tooltip hold-to-confirm-tooltip"
+            data-tip="Hold to confirm"
           >
-            Delete
-          </button>
+            <button
+              class="btn btn-soft btn-error hold-to-confirm"
+              style="--hold-duration: 2500ms;"
+            >
+              <span>
+                Delete
+              </span>
+            </button>
+          </div>
         </div>
         <dialog
           class="modal"
@@ -1308,11 +1316,19 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
         >
           Un-archive
         </button>
-        <button
-          class="btn btn-error"
+        <div
+          class="tooltip hold-to-confirm-tooltip"
+          data-tip="Hold to confirm"
         >
-          Delete
-        </button>
+          <button
+            class="btn btn-soft btn-error hold-to-confirm"
+            style="--hold-duration: 2500ms;"
+          >
+            <span>
+              Delete
+            </span>
+          </button>
+        </div>
       </div>
       <dialog
         class="modal"
@@ -1607,11 +1623,19 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
           >
             Archive
           </button>
-          <button
-            class="btn btn-error"
+          <div
+            class="tooltip hold-to-confirm-tooltip"
+            data-tip="Hold to confirm"
           >
-            Delete
-          </button>
+            <button
+              class="btn btn-soft btn-error hold-to-confirm"
+              style="--hold-duration: 2500ms;"
+            >
+              <span>
+                Delete
+              </span>
+            </button>
+          </div>
         </div>
         <dialog
           class="modal"
@@ -1829,11 +1853,19 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
         >
           Archive
         </button>
-        <button
-          class="btn btn-error"
+        <div
+          class="tooltip hold-to-confirm-tooltip"
+          data-tip="Hold to confirm"
         >
-          Delete
-        </button>
+          <button
+            class="btn btn-soft btn-error hold-to-confirm"
+            style="--hold-duration: 2500ms;"
+          >
+            <span>
+              Delete
+            </span>
+          </button>
+        </div>
       </div>
       <dialog
         class="modal"
@@ -2319,11 +2351,19 @@ exports[`App matches snapshot when only groups exist 1`] = `
           >
             Archive
           </button>
-          <button
-            class="btn btn-error"
+          <div
+            class="tooltip hold-to-confirm-tooltip"
+            data-tip="Hold to confirm"
           >
-            Delete
-          </button>
+            <button
+              class="btn btn-soft btn-error hold-to-confirm"
+              style="--hold-duration: 2500ms;"
+            >
+              <span>
+                Delete
+              </span>
+            </button>
+          </div>
         </div>
         <dialog
           class="modal"
@@ -2732,11 +2772,19 @@ exports[`App matches snapshot when only groups exist 1`] = `
         >
           Archive
         </button>
-        <button
-          class="btn btn-error"
+        <div
+          class="tooltip hold-to-confirm-tooltip"
+          data-tip="Hold to confirm"
         >
-          Delete
-        </button>
+          <button
+            class="btn btn-soft btn-error hold-to-confirm"
+            style="--hold-duration: 2500ms;"
+          >
+            <span>
+              Delete
+            </span>
+          </button>
+        </div>
       </div>
       <dialog
         class="modal"
@@ -3269,11 +3317,19 @@ exports[`App matches snapshot when only plants exist 1`] = `
           >
             Archive
           </button>
-          <button
-            class="btn btn-error"
+          <div
+            class="tooltip hold-to-confirm-tooltip"
+            data-tip="Hold to confirm"
           >
-            Delete
-          </button>
+            <button
+              class="btn btn-soft btn-error hold-to-confirm"
+              style="--hold-duration: 2500ms;"
+            >
+              <span>
+                Delete
+              </span>
+            </button>
+          </div>
         </div>
         <dialog
           class="modal"
@@ -3729,11 +3785,19 @@ exports[`App matches snapshot when only plants exist 1`] = `
         >
           Archive
         </button>
-        <button
-          class="btn btn-error"
+        <div
+          class="tooltip hold-to-confirm-tooltip"
+          data-tip="Hold to confirm"
         >
-          Delete
-        </button>
+          <button
+            class="btn btn-soft btn-error hold-to-confirm"
+            style="--hold-duration: 2500ms;"
+          >
+            <span>
+              Delete
+            </span>
+          </button>
+        </div>
       </div>
       <dialog
         class="modal"
@@ -4478,11 +4542,19 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
           >
             Archive
           </button>
-          <button
-            class="btn btn-error"
+          <div
+            class="tooltip hold-to-confirm-tooltip"
+            data-tip="Hold to confirm"
           >
-            Delete
-          </button>
+            <button
+              class="btn btn-soft btn-error hold-to-confirm"
+              style="--hold-duration: 2500ms;"
+            >
+              <span>
+                Delete
+              </span>
+            </button>
+          </div>
         </div>
         <dialog
           class="modal"
@@ -5150,11 +5222,19 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
         >
           Archive
         </button>
-        <button
-          class="btn btn-error"
+        <div
+          class="tooltip hold-to-confirm-tooltip"
+          data-tip="Hold to confirm"
         >
-          Delete
-        </button>
+          <button
+            class="btn btn-soft btn-error hold-to-confirm"
+            style="--hold-duration: 2500ms;"
+          >
+            <span>
+              Delete
+            </span>
+          </button>
+        </div>
       </div>
       <dialog
         class="modal"
@@ -5918,11 +5998,19 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
           >
             Archive
           </button>
-          <button
-            class="btn btn-error"
+          <div
+            class="tooltip hold-to-confirm-tooltip"
+            data-tip="Hold to confirm"
           >
-            Delete
-          </button>
+            <button
+              class="btn btn-soft btn-error hold-to-confirm"
+              style="--hold-duration: 2500ms;"
+            >
+              <span>
+                Delete
+              </span>
+            </button>
+          </div>
         </div>
         <dialog
           class="modal"
@@ -6609,11 +6697,19 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
         >
           Archive
         </button>
-        <button
-          class="btn btn-error"
+        <div
+          class="tooltip hold-to-confirm-tooltip"
+          data-tip="Hold to confirm"
         >
-          Delete
-        </button>
+          <button
+            class="btn btn-soft btn-error hold-to-confirm"
+            style="--hold-duration: 2500ms;"
+          >
+            <span>
+              Delete
+            </span>
+          </button>
+        </div>
       </div>
       <dialog
         class="modal"

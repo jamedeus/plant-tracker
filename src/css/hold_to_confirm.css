@@ -1,0 +1,60 @@
+@reference './index.css';
+
+.hold-to-confirm {
+    @apply relative overflow-hidden select-none;
+
+    /* Default to 2.5 second duration (override to match JS timeout) */
+    --hold-duration: 2.5s;
+
+    /* Subtle hover effect (default looks like animation is complete) */
+    &:hover,
+    &:active:focus,
+    &:focus-visible {
+        --btn-bg: color-mix(
+            in oklab,
+            var(--btn-color, var(--color-base-content)) 6%,
+            var(--color-base-100)
+        );
+    }
+
+    /* Solid color pseudo element starts on left edge */
+    &::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; bottom: 0;
+        width: 100%;
+        background-color: var(--btn-color);
+        transform: scaleX(0);
+        transform-origin: left center;
+        transition: transform 0.25s linear;
+        z-index: 0;
+    }
+
+    /* Animation start: Slide solid color to the right (fill button) */
+    &.active::before {
+        transform: scaleX(1);
+        transition: transform var(--hold-duration) linear;
+    }
+
+    /* Prevent fill animation covering button text */
+    & > span {
+        position: relative;
+        z-index: 1;
+    }
+}
+
+.hold-to-confirm-tooltip {
+    /* Don't show on hover */
+    &:hover:not(:has(.active)) {
+        > .tooltip-content,
+        &[data-tip]:before,
+        &:after {
+          @apply opacity-0;
+        }
+    }
+
+    /* Increase tooltip text size */
+    &:where([data-tip])::before {
+        @apply text-lg;
+    }
+}

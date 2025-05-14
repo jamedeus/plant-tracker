@@ -7,6 +7,7 @@ import FloatingFooter from 'src/components/FloatingFooter';
 import PrintModal, { openPrintModal } from './PrintModal';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { useIsBreakpointActive } from 'src/useBreakpoint';
+import HoldToConfirm from 'src/components/HoldToConfirm';
 import Layout from './Layout';
 
 function App() {
@@ -303,12 +304,12 @@ function App() {
                 >
                     {archivedOverview ? "Un-archive" : "Archive"}
                 </button>
-                <button
-                    className="btn btn-error"
-                    onClick={handleDelete}
-                >
-                    Delete
-                </button>
+                <HoldToConfirm
+                    callback={handleDelete}
+                    timeout={2500}
+                    buttonText="Delete"
+                    tooltipText="Hold to confirm"
+                />
             </FloatingFooter>
 
             <PrintModal />

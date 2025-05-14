@@ -1,3 +1,4 @@
+import { fireEvent, waitFor } from '@testing-library/react';
 import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import { postHeaders } from 'src/testUtils/headers';
@@ -20,15 +21,24 @@ describe('App', () => {
     });
 
     beforeEach(() => {
+        // Allow fast forwarding (must hold delete button to confirm)
+        jest.useFakeTimers();
+
         // Clear sessionStorage (cached sortDirection, sortKey)
         sessionStorage.clear();
         // Render app + create userEvent instance to use in tests
-        user = userEvent.setup();
+        user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
             <PageWrapper>
                 <App />
             </PageWrapper>
         );
+    });
+
+    // Clean up pending timers after each test
+    afterEach(() => {
+        jest.runAllTimers();
+        jest.useRealTimers();
     });
 
     it('opens modal when Print QR Codes dropdown option clicked', async () => {
@@ -85,8 +95,11 @@ describe('App', () => {
         await user.click(app.getByText("Edit"));
         await user.click(app.getByLabelText('Select Test Plant'));
 
-        // Click delete button in floating div
-        await user.click(app.getByText('Delete'));
+        // Click delete button in floating div, hold for 2.5 seconds, release
+        const button = app.getByRole('button', { name: 'Delete' });
+        fireEvent.mouseDown(button);
+        await jest.advanceTimersByTimeAsync(2500);
+        fireEvent.mouseUp(button);
 
         // Confirm correct data posted to /bulk_delete_plants_and_groups endpoint
         expect(global.fetch).toHaveBeenCalledWith('/bulk_delete_plants_and_groups', {
@@ -140,8 +153,11 @@ describe('App', () => {
         await user.click(app.getByText("Edit"));
         await user.click(app.getByLabelText('Select Test group'));
 
-        // Click delete button in floating div
-        await user.click(app.getByText('Delete'));
+        // Click delete button in floating div, hold for 2.5 seconds, release
+        const button = app.getByRole('button', { name: 'Delete' });
+        fireEvent.mouseDown(button);
+        await jest.advanceTimersByTimeAsync(2500);
+        fireEvent.mouseUp(button);
 
         // Confirm correct data posted to /delete_group endpoint
         expect(global.fetch).toHaveBeenCalledWith('/bulk_delete_plants_and_groups', {
@@ -197,10 +213,15 @@ describe('App', () => {
             'Failed to delete: 0640ec3b-1bed-4b15-a078-d6e7ec66be12'
         )).toBeNull();
 
-        // Click edit option, click first checkbox, click delete button
+        // Click edit option, click first checkbox
         await user.click(app.getByText("Edit"));
         await user.click(app.getByLabelText('Select Test Plant'));
-        await user.click(app.getByText('Delete'));
+
+        // Click delete button in floating div, hold for 2.5 seconds, release
+        const button = app.getByRole('button', { name: 'Delete' });
+        fireEvent.mouseDown(button);
+        await jest.advanceTimersByTimeAsync(2500);
+        fireEvent.mouseUp(button);
 
         // Confirm error modal appeared
         expect(app.queryByText(
@@ -251,11 +272,16 @@ describe('App', () => {
         // Confirm edit option exists
         expect(app.queryByText('Edit')).not.toBeNull();
 
-        // Click edit option, delete all plants
+        // Click edit option, select all plants
         await user.click(app.getByText("Edit"));
         await user.click(app.getByLabelText('Select Test Plant'));
         await user.click(app.getByLabelText('Select Second Test Plant'));
-        await user.click(app.getByText('Delete'));
+
+        // Click delete button in floating div, hold for 2.5 seconds, release
+        const button = app.getByRole('button', { name: 'Delete' });
+        fireEvent.mouseDown(button);
+        await jest.advanceTimersByTimeAsync(2500);
+        fireEvent.mouseUp(button);
 
         // Confirm edit option still exists
         expect(app.queryByText('Edit')).not.toBeNull();
@@ -272,11 +298,15 @@ describe('App', () => {
             })
         }));
 
-        // Click edit option again, delete all groups
+        // Click edit option again, select all groups
         await user.click(app.getByText("Edit"));
         await user.click(app.getByLabelText('Select Test group'));
         await user.click(app.getByLabelText('Select Second Test group'));
-        await user.click(app.getByText('Delete'));
+
+        // Click delete button in floating div, hold for 2.5 seconds, release
+        fireEvent.mouseDown(button);
+        await jest.advanceTimersByTimeAsync(2500);
+        fireEvent.mouseUp(button);
 
         // Confirm edit option no longer exists
         expect(app.queryByText('Edit')).toBeNull();
