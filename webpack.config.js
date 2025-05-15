@@ -24,7 +24,7 @@ module.exports = (env, argv) => {
                 cacheGroups: {
                     // Move react + react-dom from page bundles to react-common.js
                     reactCommon: {
-                        test: /[\\/]node_modules[\\/](react|react-dom)[\\/]/,
+                        test: /[\\/]node_modules[\\/](react|react-dom|prop-types|scheduler)[\\/]/,
                         name: 'react-common',
                         chunks: 'all',
                         enforce: true,
