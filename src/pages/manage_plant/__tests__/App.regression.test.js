@@ -86,7 +86,7 @@ describe('App', () => {
 
         // Confirm no repot events are shown on calendar
         const calendar = app.getByText('March 2024').closest('.react-calendar');
-        expect(calendar.querySelector('.dot-repot')).toBeNull();
+        expect(calendar.querySelector('.dot > .bg-repot')).toBeNull();
 
         // Open Repot Modal
         await user.click(app.getAllByText(/Repot plant/)[0]);
@@ -95,7 +95,7 @@ describe('App', () => {
         await user.click(app.getByRole('button', {name: 'Repot'}));
 
         // Repot event should appear on calendar
-        expect(calendar.querySelector('.dot-repot')).not.toBeNull();
+        expect(calendar.querySelector('.dot > .bg-repot')).not.toBeNull();
     });
 
     // Original bug: PhotoModal file selection input retained prior selection
@@ -165,11 +165,11 @@ describe('App', () => {
 
         // Click water button, confirm only 1 WaterEvent is displayed
         await user.click(app.getByRole("button", {name: "Water"}));
-        expect(app.container.querySelectorAll('.dot-water').length).toBe(1);
+        expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(1);
 
         // Click water button again, confirm no additional dot is added
         await user.click(app.getByRole("button", {name: "Water"}));
-        expect(app.container.querySelectorAll('.dot-water').length).toBe(1);
+        expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(1);
     });
 
     // Original bug: Notes were rendered in database creation order, even if a
@@ -298,7 +298,7 @@ describe('App', () => {
     // and the timeline EventMarker being removed.
     it('does not remove event from timeline if another event with same type exists', async () => {
         // Confirm no water events exist in calendar or timeline
-        expect(app.container.querySelectorAll('.dot-water').length).toBe(0);
+        expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(0);
         expect(app.container.querySelectorAll('.fa-droplet').length).toBe(0);
 
         // Mock fetch function to return expected response
@@ -324,7 +324,7 @@ describe('App', () => {
         await user.click(app.getByRole("button", {name: "Water"}));
 
         // Confirm dot appeared on calendar, EventMarker appeared in timeline
-        expect(app.container.querySelectorAll('.dot-water').length).toBe(1);
+        expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(1);
         expect(app.container.querySelectorAll('.fa-droplet').length).toBe(1);
 
         // Open event history modal, delete more recent event
@@ -343,7 +343,7 @@ describe('App', () => {
         await user.click(within(modal).getByText('Delete'));
 
         // Confirm dot and marker are still present (second event still exists)
-        expect(app.container.querySelectorAll('.dot-water').length).toBe(1);
+        expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(1);
         expect(app.container.querySelectorAll('.fa-droplet').length).toBe(1);
     });
 
@@ -357,7 +357,7 @@ describe('App', () => {
     // This issue could be reintroduced fairly easily.
     it('does not fail to remove timeline day when the UTC timestamp of an event on prev day matches target day', async () => {
         // Confirm no water events exist in calendar or timeline
-        expect(app.container.querySelectorAll('.dot-water').length).toBe(0);
+        expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(0);
         expect(app.container.querySelectorAll('.fa-droplet').length).toBe(0);
 
         // Mock fetch function to return expected response
@@ -384,7 +384,7 @@ describe('App', () => {
         await user.click(app.getByRole("button", {name: "Water"}));
 
         // Confirm 2 EventCalendar dots and 2 EventMarkers in timeline
-        expect(app.container.querySelectorAll('.dot-water').length).toBe(2);
+        expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(2);
         expect(app.container.querySelectorAll('.fa-droplet').length).toBe(2);
 
         // Open event history modal, delete March 1 event
@@ -403,7 +403,7 @@ describe('App', () => {
         await user.click(within(modal).getByText('Delete'));
 
         // Confirm March 1 TimelineDay was removed (only 1 dot and marker left)
-        expect(app.container.querySelectorAll('.dot-water').length).toBe(1);
+        expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(1);
         expect(app.container.querySelectorAll('.fa-droplet').length).toBe(1);
     });
 
@@ -448,14 +448,14 @@ describe('App', () => {
         await user.click(app.getByText('Upload'));
 
         // Confirm no water events exist in calendar or timeline
-        expect(app.container.querySelectorAll('.dot-water').length).toBe(0);
+        expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(0);
         expect(app.container.querySelectorAll('.fa-droplet').length).toBe(0);
 
         // Click water button (datetime input contains same day as photos)
         await user.click(app.getByRole("button", {name: "Water"}));
 
         // Confirm dot appeared on calendar, EventMarker appeared in timeline
-        expect(app.container.querySelectorAll('.dot-water').length).toBe(1);
+        expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(1);
         expect(app.container.querySelectorAll('.fa-droplet').length).toBe(1);
     });
 

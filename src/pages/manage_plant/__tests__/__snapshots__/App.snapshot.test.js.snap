@@ -554,8 +554,12 @@ exports[`App matches snapshot 1`] = `
                           class="dots"
                         >
                           <span
-                            class="dot dot-fertilize"
-                          />
+                            class="dot"
+                          >
+                            <span
+                              class="bg-success"
+                            />
+                          </span>
                         </div>
                       </button>
                       <button
@@ -596,8 +600,12 @@ exports[`App matches snapshot 1`] = `
                           class="dots"
                         >
                           <span
-                            class="dot dot-water"
-                          />
+                            class="dot"
+                          >
+                            <span
+                              class="bg-info"
+                            />
+                          </span>
                         </div>
                       </button>
                       <button
@@ -614,11 +622,19 @@ exports[`App matches snapshot 1`] = `
                           class="dots"
                         >
                           <span
-                            class="dot dot-water"
-                          />
+                            class="dot"
+                          >
+                            <span
+                              class="bg-info"
+                            />
+                          </span>
                           <span
-                            class="dot dot-fertilize"
-                          />
+                            class="dot"
+                          >
+                            <span
+                              class="bg-success"
+                            />
+                          </span>
                         </div>
                       </button>
                       <button
@@ -2525,8 +2541,12 @@ exports[`App matches snapshot 1`] = `
                         class="dots"
                       >
                         <span
-                          class="dot dot-fertilize"
-                        />
+                          class="dot"
+                        >
+                          <span
+                            class="bg-success"
+                          />
+                        </span>
                       </div>
                     </button>
                     <button
@@ -2567,8 +2587,12 @@ exports[`App matches snapshot 1`] = `
                         class="dots"
                       >
                         <span
-                          class="dot dot-water"
-                        />
+                          class="dot"
+                        >
+                          <span
+                            class="bg-info"
+                          />
+                        </span>
                       </div>
                     </button>
                     <button
@@ -2585,11 +2609,19 @@ exports[`App matches snapshot 1`] = `
                         class="dots"
                       >
                         <span
-                          class="dot dot-water"
-                        />
+                          class="dot"
+                        >
+                          <span
+                            class="bg-info"
+                          />
+                        </span>
                         <span
-                          class="dot dot-fertilize"
-                        />
+                          class="dot"
+                        >
+                          <span
+                            class="bg-success"
+                          />
+                        </span>
                       </div>
                     </button>
                     <button
@@ -4534,8 +4566,12 @@ exports[`App matches snapshot when plant is archived 1`] = `
                           class="dots"
                         >
                           <span
-                            class="dot dot-fertilize"
-                          />
+                            class="dot"
+                          >
+                            <span
+                              class="bg-success"
+                            />
+                          </span>
                         </div>
                       </button>
                       <button
@@ -4576,8 +4612,12 @@ exports[`App matches snapshot when plant is archived 1`] = `
                           class="dots"
                         >
                           <span
-                            class="dot dot-water"
-                          />
+                            class="dot"
+                          >
+                            <span
+                              class="bg-info"
+                            />
+                          </span>
                         </div>
                       </button>
                       <button
@@ -4594,11 +4634,19 @@ exports[`App matches snapshot when plant is archived 1`] = `
                           class="dots"
                         >
                           <span
-                            class="dot dot-water"
-                          />
+                            class="dot"
+                          >
+                            <span
+                              class="bg-info"
+                            />
+                          </span>
                           <span
-                            class="dot dot-fertilize"
-                          />
+                            class="dot"
+                          >
+                            <span
+                              class="bg-success"
+                            />
+                          </span>
                         </div>
                       </button>
                       <button
@@ -6383,8 +6431,12 @@ exports[`App matches snapshot when plant is archived 1`] = `
                         class="dots"
                       >
                         <span
-                          class="dot dot-fertilize"
-                        />
+                          class="dot"
+                        >
+                          <span
+                            class="bg-success"
+                          />
+                        </span>
                       </div>
                     </button>
                     <button
@@ -6425,8 +6477,12 @@ exports[`App matches snapshot when plant is archived 1`] = `
                         class="dots"
                       >
                         <span
-                          class="dot dot-water"
-                        />
+                          class="dot"
+                        >
+                          <span
+                            class="bg-info"
+                          />
+                        </span>
                       </div>
                     </button>
                     <button
@@ -6443,11 +6499,19 @@ exports[`App matches snapshot when plant is archived 1`] = `
                         class="dots"
                       >
                         <span
-                          class="dot dot-water"
-                        />
+                          class="dot"
+                        >
+                          <span
+                            class="bg-info"
+                          />
+                        </span>
                         <span
-                          class="dot dot-fertilize"
-                        />
+                          class="dot"
+                        >
+                          <span
+                            class="bg-success"
+                          />
+                        </span>
                       </div>
                     </button>
                     <button

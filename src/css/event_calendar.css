@@ -88,32 +88,50 @@
 }
 
 
-/* Event indicator dots shown on tiles */
+/* Wrapper for event indicator dots shown on tiles */
 .dots {
     display: flex;
     justify-content: center;
     height: 8px;
 }
 
+/* Individual dot container span */
 .dot {
-    width: 8px;
+    width: 0px;
     height: 8px;
-    border-radius: 50%;
     margin: 1px;
+    animation: expand 0.05s ease-out forwards;
+
+    /* Inner span, round + solid background */
+    & > span {
+        display: block;
+        animation: pop 0.3s ease-out 25ms forwards;
+        border-radius: 50%;
+        width: 8px;
+        height: 8px;
+        transform: scale(0);
+    }
 }
 
-.dot-water {
-    @apply bg-info;
+/* New dot container expands to slide neighbors out of the way */
+@keyframes expand {
+    0% {
+        width: 0px;
+    }
+    100% {
+        width: 8px;
+    }
 }
 
-.dot-fertilize {
-    @apply bg-success;
-}
-
-.dot-prune {
-    @apply bg-prune;
-}
-
-.dot-repot {
-    @apply bg-repot;
+/* New dot pop animation, start scaling up after slight delay for expand */
+@keyframes pop {
+    0% {
+        transform: scale(0);
+    }
+    50% {
+        transform: scale(1.35);
+    }
+    100% {
+        transform: scale(1);
+    }
 }

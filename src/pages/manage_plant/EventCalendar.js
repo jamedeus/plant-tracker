@@ -5,6 +5,13 @@ import 'src/css/event_calendar.css';
 import { ChevronLeftIcon, ChevronRightIcon } from '@heroicons/react/16/solid';
 import { useSelector } from 'react-redux';
 
+const colorMap = {
+    water: 'bg-info',
+    fertilize: 'bg-success',
+    prune: 'bg-prune',
+    repot: 'bg-repot'
+};
+
 const EventCalendar = memo(function EventCalendar() {
     // Object with date strings as keys, array of event types as value
     const calendarDays = useSelector((state) => state.timeline.calendarDays);
@@ -30,8 +37,10 @@ const EventCalendar = memo(function EventCalendar() {
         // Return div containing 1 span for each event on day
         return (
             <div className="dots">
-                {dateEvents.map((eventType, index) => (
-                    <span key={index} className={`dot dot-${eventType}`} />
+                {dateEvents.map(eventType => (
+                    <span key={eventType} className="dot">
+                        <span className={colorMap[eventType]} />
+                    </span>
                 ))}
             </div>
         );
