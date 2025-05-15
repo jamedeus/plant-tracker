@@ -55,8 +55,25 @@
     @apply text-sm md:text-base mr-2 after:content-['\200B'];
 }
 
+.timeline-day-photos {
+    /* Small screens: 2x2 grid, photos take 50% width */
+    /* Max photo width before next breakpoint: 120px */
+    @apply grid grid-cols-2 gap-4 m-2;
+    /* 3 columns once wide enough for 3 event-marker per row */
+    @apply min-[457px]:grid-cols-3;
+    /* Increase to 4 columns when photos reach 120px again */
+    @apply min-[592px]:grid-cols-4;
+    /* Only show 5 columns on desktop */
+    @apply xl:grid-cols-5;
+
+    /* Don't increase space between events and notes when empty */
+    &:empty {
+        @apply m-0;
+    }
+}
+
 .photo-thumbnail-timeline {
-    @apply m-2 size-[4.9rem] md:size-[5.4rem];
+    @apply w-full aspect-square;
 }
 
 /* Photo popover classes */

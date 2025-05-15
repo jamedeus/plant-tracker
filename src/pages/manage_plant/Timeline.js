@@ -402,7 +402,7 @@ const TimelineDay = memo(function TimelineDay({ dateKey, monthDivider }) {
                     ))}
                 </div>
                 <div
-                    className="flex flex-row flex-wrap"
+                    className="timeline-day-photos"
                     data-testid={`${dateKey}-photos`}
                 >
                     {[...contents.photos].sort((a, b) => {
