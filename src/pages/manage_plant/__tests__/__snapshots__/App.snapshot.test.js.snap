@@ -1442,7 +1442,7 @@ exports[`App matches snapshot 1`] = `
                       />
                     </svg>
                     <div
-                      class="cursor-pointer overflow-hidden line-clamp-1"
+                      class="cursor-pointer overflow-hidden line-clamp-3 md:line-clamp-1"
                       title="07:45 AM - March 1, 2024"
                     >
                       <span
@@ -1598,7 +1598,7 @@ exports[`App matches snapshot 1`] = `
                       />
                     </svg>
                     <div
-                      class="cursor-pointer overflow-hidden line-clamp-1"
+                      class="cursor-pointer overflow-hidden line-clamp-3 md:line-clamp-1"
                       title="04:44 AM - February 26, 2024"
                     >
                       <span
@@ -3429,7 +3429,7 @@ exports[`App matches snapshot 1`] = `
                     />
                   </svg>
                   <div
-                    class="cursor-pointer overflow-hidden line-clamp-1"
+                    class="cursor-pointer overflow-hidden line-clamp-3 md:line-clamp-1"
                     title="07:45 AM - March 1, 2024"
                   >
                     <span
@@ -3585,7 +3585,7 @@ exports[`App matches snapshot 1`] = `
                     />
                   </svg>
                   <div
-                    class="cursor-pointer overflow-hidden line-clamp-1"
+                    class="cursor-pointer overflow-hidden line-clamp-3 md:line-clamp-1"
                     title="04:44 AM - February 26, 2024"
                   >
                     <span
@@ -5391,7 +5391,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                       />
                     </svg>
                     <div
-                      class="cursor-pointer overflow-hidden line-clamp-1"
+                      class="cursor-pointer overflow-hidden line-clamp-3 md:line-clamp-1"
                       title="07:45 AM - March 1, 2024"
                     >
                       <span
@@ -5547,7 +5547,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                       />
                     </svg>
                     <div
-                      class="cursor-pointer overflow-hidden line-clamp-1"
+                      class="cursor-pointer overflow-hidden line-clamp-3 md:line-clamp-1"
                       title="04:44 AM - February 26, 2024"
                     >
                       <span
@@ -7256,7 +7256,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                     />
                   </svg>
                   <div
-                    class="cursor-pointer overflow-hidden line-clamp-1"
+                    class="cursor-pointer overflow-hidden line-clamp-3 md:line-clamp-1"
                     title="07:45 AM - March 1, 2024"
                   >
                     <span
@@ -7412,7 +7412,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                     />
                   </svg>
                   <div
-                    class="cursor-pointer overflow-hidden line-clamp-1"
+                    class="cursor-pointer overflow-hidden line-clamp-3 md:line-clamp-1"
                     title="04:44 AM - February 26, 2024"
                   >
                     <span

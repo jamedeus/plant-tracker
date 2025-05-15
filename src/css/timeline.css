@@ -48,7 +48,7 @@
 }
 
 .note-collapse {
-    @apply m-2 flex flex-row transition-[height] duration-300 ease-in-out;
+    @apply m-2 flex flex-row transition-[max-height] duration-300 ease-in-out;
 }
 
 .note-collapse-text {

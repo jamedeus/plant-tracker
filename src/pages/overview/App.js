@@ -26,7 +26,6 @@ function App() {
         parseDomContext("user_accounts_enabled")
     ), []);
 
-
     // True if desktop layout, false if mobile
     const desktop = useIsBreakpointActive('md');
     // True if mobile layout with stacked plant and group columns

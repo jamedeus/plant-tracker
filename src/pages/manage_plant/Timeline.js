@@ -18,6 +18,7 @@ import FertilizeIcon from 'src/components/FertilizeIcon';
 import PruneIcon from 'src/components/PruneIcon';
 import RepotIcon from 'src/components/RepotIcon';
 import { useSelector } from 'react-redux';
+import { useIsBreakpointActive } from 'src/useBreakpoint';
 import 'src/css/timeline.css';
 
 // Takes ISO timestamp string, returns "x days ago"
@@ -307,8 +308,11 @@ PhotoThumbnail.propTypes = {
 // Takes note object (timestamp and text keys), renders element with first line
 // of text always visible which expands to show full text when clicked
 const NoteCollapse = memo(function NoteCollapse({ note }) {
+    // True if desktop layout, false if mobile
+    const desktop = useIsBreakpointActive('md');
+    // Show 1 line when closed on desktop, 3 on mobile
+    const [height, setHeight] = useState(desktop ? '24px' : '72px');
     const [expanded, setExpanded] = useState(false);
-    const [height, setHeight] = useState('24px');
     const [clamped, setClamped] = useState(true);
 
     const archived = useSelector((state) => state.plant.plantDetails.archived);
@@ -327,8 +331,9 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
                 // Remove line clamp immediately so expand animation can run
                 setClamped(false);
             } else {
-                // Transition height down to 1 line (collapse)
-                setHeight(getComputedStyle(textRef.current).lineHeight);
+                // Transition height down to 1 line on desktop, 3 on mobile
+                const lineHeight = getComputedStyle(textRef.current).lineHeight;
+                setHeight(desktop ? lineHeight : parseInt(lineHeight) * 3);
                 // Wait until collapse animation completes before line clamping
                 const timer = setTimeout(() => setClamped(true), 300);
                 return () => clearTimeout(timer);
@@ -339,7 +344,7 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
     return (
         <div
             className='note-collapse'
-            style={{ height: height }}
+            style={{ maxHeight: height }}
         >
             <FontAwesomeIcon
                 icon={faPenToSquare}
@@ -352,7 +357,7 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
             <div
                 className={clsx(
                     'cursor-pointer overflow-hidden',
-                    clamped && 'line-clamp-1'
+                    clamped && 'line-clamp-3 md:line-clamp-1'
                 )}
                 title={readableTimestamp}
                 ref={textRef}
