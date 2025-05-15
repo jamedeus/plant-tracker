@@ -1,3 +1,4 @@
+const fs = require('fs');
 const path = require('path');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -62,18 +63,12 @@ module.exports = (env, argv) => {
                 },
             }
         },
-        entry: {
-            login: './src/pages/login/index.js',
-            user_profile: './src/pages/user_profile/index.js',
-            overview: './src/pages/overview/index.js',
-            register: './src/pages/register/index.js',
-            manage_plant: './src/pages/manage_plant/index.js',
-            manage_group: './src/pages/manage_group/index.js',
-            permission_denied: './src/pages/permission_denied/index.js',
-            confirm_new_qr_code: './src/pages/confirm_new_qr_code/index.js',
-        },
+        // Add entry for each directory in src/pages
+        entry: fs.readdirSync(path.resolve('src/pages')).reduce((o, page) => (
+            { ...o, [page]: `./src/pages/${page}/index.js`}
+        ), {}),
         output: {
-            path: path.resolve(__dirname, 'backend/plant_tracker/static/plant_tracker/'),
+            path: path.resolve('backend/plant_tracker/static/plant_tracker/'),
             filename: '[name].js',
             clean: true
         },
@@ -114,7 +109,7 @@ module.exports = (env, argv) => {
         },
         resolve: {
             alias: {
-                src: path.resolve(__dirname, 'src'),
+                src: path.resolve('src'),
             }
         },
     };
