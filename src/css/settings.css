@@ -34,3 +34,9 @@
     /* Scroll vertically but not horizontally */
     @apply overflow-y-scroll overflow-x-hidden;
 }
+
+/* Allow scrolling with drawer open on desktop (unless modal also open) */
+/* Drawer a sidebar that doesn't cover anything on desktop, no reason not */
+:root:has(.drawer > .drawer-toggle:checked):not(:has(.modal[open])) {
+    @apply md:overflow-auto;
+}
