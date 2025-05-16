@@ -6,6 +6,8 @@ import { parseDomContext } from 'src/util';
 import { timestampToDateString } from 'src/timestampUtils';
 import { plantSlice } from './plantSlice';
 import { timelineSlice } from './timelineSlice';
+import { settingsSlice } from './settingsSlice';
+import { useIsBreakpointActive } from 'src/useBreakpoint';
 
 // Takes object with event type keys, array of timestamps as value.
 // Converts to object with YYYY-MM-DD keys, each containing an object with
@@ -94,13 +96,17 @@ function createReduxStore(preloadedState) {
     return configureStore({
         reducer: {
             plant: plantSlice.reducer,
-            timeline: timelineSlice.reducer
+            timeline: timelineSlice.reducer,
+            settings: settingsSlice.reducer
         },
         preloadedState
     });
 }
 
 export function ReduxProvider({ children }) {
+    // True if desktop layout, false if mobile
+    const desktop = useIsBreakpointActive("md");
+
     // Parses django context elements containing events, photos, and notes
     // Merges and returns values for all initialState keys in timelineSlice
     const init = () => {
@@ -117,6 +123,11 @@ export function ReduxProvider({ children }) {
         const calendarDays = buildCalendarDays(timelineDays);
         const navigationOptions = buildNavigationOptions(timelineDays);
 
+        // Load settings from localStorage if they exist
+        // Default to 1 line on desktop and 3 on mobile if setting not set
+        const savedSettings = JSON.parse(localStorage.getItem("manage_plant_settings"));
+        const collapsedNoteLines = savedSettings?.collapsedNoteLines ?? (desktop ? 1 : 3);
+
         // Return object with keys expected by plantSlice and timelineSlice
         return {
             plant: {
@@ -130,6 +141,9 @@ export function ReduxProvider({ children }) {
                 photos,
                 navigationOptions,
                 defaultPhoto
+            },
+            settings: {
+                collapsedNoteLines
             }
         };
     };

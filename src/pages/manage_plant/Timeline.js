@@ -1,4 +1,4 @@
-import React, { useRef, useState, useLayoutEffect, memo } from 'react';
+import React, { useRef, useState, useLayoutEffect, memo, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { DateTime } from 'luxon';
@@ -18,7 +18,6 @@ import FertilizeIcon from 'src/components/FertilizeIcon';
 import PruneIcon from 'src/components/PruneIcon';
 import RepotIcon from 'src/components/RepotIcon';
 import { useSelector } from 'react-redux';
-import { useIsBreakpointActive } from 'src/useBreakpoint';
 import 'src/css/timeline.css';
 
 // Takes ISO timestamp string, returns "x days ago"
@@ -305,39 +304,88 @@ PhotoThumbnail.propTypes = {
     timestamp: PropTypes.string.isRequired
 };
 
+// Map collapsedNoteLines setting values to correct line clamp class
+const clampedLines = {
+    1: 'line-clamp-1',
+    2: 'line-clamp-2',
+    3: 'line-clamp-3',
+    4: 'line-clamp-4',
+    All: 'line-clamp-none'
+};
+
 // Takes note object (timestamp and text keys), renders element with first line
 // of text always visible which expands to show full text when clicked
 const NoteCollapse = memo(function NoteCollapse({ note }) {
-    // True if desktop layout, false if mobile
-    const desktop = useIsBreakpointActive('md');
-    // Show 1 line when closed on desktop, 3 on mobile
-    const [height, setHeight] = useState(desktop ? '24px' : '72px');
-    const [expanded, setExpanded] = useState(false);
-    const [clamped, setClamped] = useState(true);
+    // Read collapsed note number of visible lines from settings
+    const collapsedNoteLines = useSelector(
+        (state) => state.settings.collapsedNoteLines
+    );
 
+    // Can't edit if plant archived
     const archived = useSelector((state) => state.plant.plantDetails.archived);
+
+    // Default to full height (updated before first frame by useEffect below)
+    const [height, setHeight] = useState('fit-content');
+    const [expanded, setExpanded] = useState(false);
+    const [clamped, setClamped] = useState(clampedLines[collapsedNoteLines]);
 
     // Used to measure height of expanded note text
     const textRef = useRef(null);
 
     const readableTimestamp = timestampToReadable(note.timestamp);
 
-    useLayoutEffect(() => {
+    // Expand note to full height
+    const expand = () => {
         /* istanbul ignore else */
         if (textRef.current) {
-            if (expanded) {
-                // Transition height from 1 line to full expanded text height
-                setHeight(textRef.current.scrollHeight + "px");
-                // Remove line clamp immediately so expand animation can run
-                setClamped(false);
+            // Transition height to full expanded text height
+            setHeight(textRef.current.scrollHeight + "px");
+            // Remove line clamp immediately so expand animation can run
+            setClamped('line-clamp-none');
+        }
+    };
+
+    // Collapse note (or update number of visible lines if already collapsed)
+    const collapse = () => {
+        /* istanbul ignore else */
+        if (textRef.current) {
+            // Transition height up/down to configured number of lines
+            const lineHeight = getComputedStyle(textRef.current).lineHeight;
+            const newHeight = parseInt(lineHeight) * collapsedNoteLines;
+            setHeight(newHeight + "px");
+
+            // Height increasing: unclamp immediately so animation can run
+            if (newHeight > parseInt(height)) {
+                setClamped(clampedLines[collapsedNoteLines]);
+
+            // Height decreasing: wait until animation completes before clamping
             } else {
-                // Transition height down to 1 line on desktop, 3 on mobile
-                const lineHeight = getComputedStyle(textRef.current).lineHeight;
-                setHeight(desktop ? lineHeight : parseInt(lineHeight) * 3);
-                // Wait until collapse animation completes before line clamping
-                const timer = setTimeout(() => setClamped(true), 300);
+                const timer = setTimeout(() => {
+                    setClamped(clampedLines[collapsedNoteLines]);
+                }, 300);
                 return () => clearTimeout(timer);
             }
+        }
+    };
+
+    // Setting changed: Update number of visible lines if note is collapsed
+    useEffect(() => {
+        // Skip if note is expanded
+        if (!expanded) {
+            if (collapsedNoteLines === 'All') {
+                expand();
+            } else {
+                return collapse();
+            }
+        }
+    }, [collapsedNoteLines]);
+
+    // User expanded/collapsed note (runs synchronously)
+    useLayoutEffect(() => {
+        if (expanded) {
+            expand();
+        } else {
+            return collapse();
         }
     }, [expanded]);
 
@@ -357,7 +405,7 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
             <div
                 className={clsx(
                     'cursor-pointer overflow-hidden',
-                    clamped && 'line-clamp-3 md:line-clamp-1'
+                    clamped && clamped
                 )}
                 title={readableTimestamp}
                 ref={textRef}

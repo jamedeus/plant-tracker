@@ -16,6 +16,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faBan, faPen, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { plantRemovedFromGroup, backButtonPressed } from './plantSlice';
+import Settings from './Settings';
 import clsx from 'clsx';
 
 function Layout() {
@@ -50,6 +51,9 @@ function Layout() {
                     <li><button onClick={openChangeQrModal}>
                         Change QR code
                     </button></li>
+                    <li><label htmlFor='settings-menu'>
+                        Settings
+                    </label></li>
                 </>
             )}
         </NavbarDropdownOptions>
@@ -189,6 +193,7 @@ function Layout() {
             </div>
 
             <ChangeQrModal uuid={plantDetails.uuid} />
+            <Settings />
         </div>
     );
 }

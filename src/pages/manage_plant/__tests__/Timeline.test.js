@@ -90,20 +90,20 @@ describe('Timeline', () => {
         // NOTE: Non-breaking space between HH:MM and AM, will fail without
         expect(
             app.getByTitle('07:45 AM - March 1, 2024').classList
-        ).toContain('line-clamp-3');
+        ).toContain('line-clamp-1');
 
         // Click note, confirm expanded (line clamp class removed)
         await user.click(note);
         expect(
             app.getByTitle('07:45 AM - March 1, 2024').classList
-        ).not.toContain('line-clamp-3');
+        ).not.toContain('line-clamp-1');
 
         // Click again, confirm collapsed (line clamp class added)
         await user.click(note);
         await waitFor(() => {
             expect(
                 app.getByTitle('07:45 AM - March 1, 2024').classList
-            ).toContain('line-clamp-3');
+            ).toContain('line-clamp-1');
         });
     });
 });
