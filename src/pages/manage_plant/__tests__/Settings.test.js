@@ -44,7 +44,6 @@ describe('Settings menu', () => {
 
         // Click collapsedNoteLines settings dropdown, select option "All"
         await user.click(app.getByTestId('open-settings-menu'));
-        await user.click(app.getByLabelText('Set Closed note visible lines'));
         await user.click(app.getByLabelText('Set Closed note visible lines to All'));
 
         // Confirm collapsed note shows all lines
@@ -57,7 +56,6 @@ describe('Settings menu', () => {
         expect(getSavedSettingValue('collapsedNoteLines')).toBe('All');
 
         // Change collapsedNoteLines to "2"
-        await user.click(app.getByLabelText('Set Closed note visible lines'));
         await user.click(app.getByLabelText('Set Closed note visible lines to 2'));
 
         // Confirm collapsed note shows 2 lines
@@ -78,7 +76,6 @@ describe('Settings menu', () => {
         ).toContain('line-clamp-none');
 
         // Change closed note visible lines to "2"
-        await user.click(app.getByLabelText('Set Closed note visible lines'));
         await user.click(app.getByLabelText('Set Closed note visible lines to 2'));
         // Confirm new setting was written to localStorage
         expect(getSavedSettingValue('collapsedNoteLines')).toBe(2);
@@ -98,7 +95,6 @@ describe('Settings menu', () => {
         expect(fullDate.classList).not.toContain('hidden');
 
         // Change collapsedNoteLines to "Tooltip"
-        await user.click(app.getByLabelText('Set Show full date in timeline'));
         await user.click(app.getByLabelText('Set Show full date in timeline to Tooltip'));
 
         // Confirm full date span was hidden (makes tooltip visible with CSS)
@@ -107,7 +103,6 @@ describe('Settings menu', () => {
         expect(getSavedSettingValue('timelineFullDate')).toBe(false);
 
         // Change collapsedNoteLines to "Show"
-        await user.click(app.getByLabelText('Set Show full date in timeline'));
         await user.click(app.getByLabelText('Set Show full date in timeline to Show'));
 
         // Confirm full date span is visible (hides tooltip with CSS)

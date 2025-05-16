@@ -318,6 +318,7 @@ const clampedLines = {
 // of text always visible which expands to show full text when clicked
 const NoteCollapse = memo(function NoteCollapse({ note }) {
     // Read collapsed note number of visible lines from settings
+    // Collapse disabled if setting is 'All'
     const collapsedNoteLines = useSelector(
         (state) => state.settings.collapsedNoteLines
     );
@@ -334,6 +335,10 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
     const textRef = useRef(null);
 
     const readableTimestamp = timestampToReadable(note.timestamp);
+
+    const toggle = () => {
+        setExpanded(!expanded);
+    };
 
     // Expand note to full height
     const expand = () => {
@@ -405,12 +410,13 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
             />
             <div
                 className={clsx(
-                    'cursor-pointer overflow-hidden',
+                    collapsedNoteLines !== 'All' && 'cursor-pointer',
+                    'overflow-hidden',
                     clamped && clamped
                 )}
                 title={readableTimestamp}
                 ref={textRef}
-                onClick={() => setExpanded(!expanded)}
+                onClick={collapsedNoteLines !== 'All' && toggle}
             >
                 <span className="note-collapse-text">
                     {note.text}
