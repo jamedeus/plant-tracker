@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { settingChanged, settingsReset } from './settingsSlice';
 import DropdownMenu from 'src/components/DropdownMenu';
 import { useIsBreakpointActive } from 'src/useBreakpoint';
+import 'src/css/settings.css';
 
 // Keys must match a settingsSlice state key
 const settings = {
@@ -135,13 +136,7 @@ const Settings = () => {
                 className="drawer-toggle"
             />
             <div className="drawer-side">
-                {/* Off-click overlay */}
-                <label
-                    htmlFor="settings-menu"
-                    aria-label="close sidebar"
-                    className="drawer-overlay"
-                />
-                <div className="flex flex-col bg-base-200 text-base-content h-full w-full md:w-128 p-4">
+                <div className="flex flex-col text-base-content h-full w-full">
                     {/* Title + close button */}
                     <div className="flex items-center">
                         <span className="text-2xl font-bold mr-auto">
