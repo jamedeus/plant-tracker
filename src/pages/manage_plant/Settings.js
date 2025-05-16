@@ -141,7 +141,7 @@ const Settings = () => {
                     aria-label="close sidebar"
                     className="drawer-overlay"
                 />
-                <div className="flex flex-col bg-base-200 text-base-content h-full w-80 md:w-128 p-4">
+                <div className="flex flex-col bg-base-200 text-base-content h-full w-full md:w-128 p-4">
                     {/* Title + close button */}
                     <div className="flex items-center">
                         <span className="text-2xl font-bold mr-auto">
