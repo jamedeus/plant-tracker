@@ -5,7 +5,9 @@ export const settingsSlice = createSlice({
     name: 'settings',
     initialState: {
         // Either 1, 2, 3, 4, or 'All
-        collapsedNoteLines: 1
+        collapsedNoteLines: 1,
+        // True = show, False = tooltip
+        timelineFullDate: true
     },
     reducers: {
         // Takes {setting: name, value: value}
@@ -20,6 +22,5 @@ export const settingsSlice = createSlice({
 });
 
 export const {
-    collapsedNoteLines,
     settingChanged,
 } = settingsSlice.actions;

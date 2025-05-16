@@ -18,9 +18,17 @@
     @apply flex flex-col h-full justify-center;
     @apply text-end whitespace-nowrap md:ml-4 scroll-mt-20;
 
-    /* Only show date tooltip on small screens, move closer to anchor text */
-    & > .tooltip::before {
-        @apply md:hidden !bottom-6;
+    /* Show tooltip if full date is hidden (timelineFullDate setting = False) */
+    &:has(> span.hidden) > .tooltip::before {
+        /* Mobile layout: Move closer to relative date */
+        @apply max-[767px]:bottom-6;
+        /* Desktop layout: Align to end of relative date, move less close */
+        @apply md:ml-2 md:bottom-8
+    }
+
+    /* Hide tooltip if full date is visible (timelineFullDate setting = True) */
+    &:has(> span.block) > .tooltip::before {
+        @apply hidden;
     }
 
     /* Hide tooltip arrow */

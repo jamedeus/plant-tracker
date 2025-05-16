@@ -17,6 +17,15 @@ const settings = [
             { name: 4, value: 4 },
             { name: "All", value: "All" }
         ]
+    },
+    {
+        settingName: "timelineFullDate",
+        settingText: "Show full date in timeline",
+        settingDescription: "Whether the full date is always visible or hidden in tooltip",
+        settingOptions: [
+            { name: 'Show', value: true },
+            { name: 'Tooltip', value: false }
+        ]
     }
 ];
 
@@ -48,7 +57,7 @@ const SettingSection = memo(function SettingSection({
                         aria-label={`Set ${settingText}`}
                         className="btn btn-ghost text-xl font-bold"
                     >
-                        {currentValue}
+                        {settingOptions.find(opt => opt.value === currentValue).name}
                     </button>
                     {/* Setting options */}
                     <DropdownMenu className="min-w-24 mt-2">
@@ -57,7 +66,7 @@ const SettingSection = memo(function SettingSection({
                                 <button
                                     className="flex justify-center"
                                     aria-label={
-                                        `Set ${settingText} to ${option.value}`
+                                        `Set ${settingText} to ${option.name}`
                                     }
                                     onClick={() => {
                                         // Change setting

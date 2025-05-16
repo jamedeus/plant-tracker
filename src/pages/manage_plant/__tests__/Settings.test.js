@@ -87,6 +87,33 @@ describe('Settings menu', () => {
             app.getByTitle('04:44 AM - February 26, 2024').classList
         ).toContain('line-clamp-none');
     });
+
+    it('changes TimelineTimestamp full date visibility when timelineFullDate changed', async () => {
+        // Confirm setting is not set in localStorage
+        expect(getSavedSettingValue('timelineFullDate')).toBe(undefined);
+
+        // Get first full date span, confirm visible
+        const fullDate = app.container.querySelectorAll('.timeline-timestamp > span')[0];
+        expect(fullDate.classList).not.toContain('hidden');
+
+        // Change collapsedNoteLines to "Tooltip"
+        await user.click(app.getByLabelText('Set Show full date in timeline'));
+        await user.click(app.getByLabelText('Set Show full date in timeline to Tooltip'));
+
+        // Confirm full date span was hidden (makes tooltip visible with CSS)
+        expect(fullDate.classList).toContain('hidden');
+        // Confirm setting changed
+        expect(getSavedSettingValue('timelineFullDate')).toBe(false);
+
+        // Change collapsedNoteLines to "Show"
+        await user.click(app.getByLabelText('Set Show full date in timeline'));
+        await user.click(app.getByLabelText('Set Show full date in timeline to Show'));
+
+        // Confirm full date span is visible (hides tooltip with CSS)
+        expect(fullDate.classList).not.toContain('hidden');
+        // Confirm setting changed
+        expect(getSavedSettingValue('timelineFullDate')).toBe(true);
+    });
 });
 
 describe('Settings default values', () => {
@@ -156,5 +183,37 @@ describe('Settings default values', () => {
         expect(
             app.getByTitle('04:44 AM - February 26, 2024').classList
         ).toContain('line-clamp-none');
+    });
+
+    it('defaults timelineFullDate to true on desktop', async () => {
+        // Set width greater than tailwind md breakpoint, render app
+        window.innerWidth = 800;
+        renderApp();
+
+        // Get first full date span, confirm visible
+        const fullDate = app.container.querySelectorAll('.timeline-timestamp > span')[0];
+        expect(fullDate.classList).not.toContain('hidden');
+    });
+
+    it('defaults timelineFullDate to false on mobile', async () => {
+        // Set width greater than tailwind md breakpoint, render app
+        window.innerWidth = 400;
+        renderApp();
+
+        // Get first full date span, confirm hidden
+        const fullDate = app.container.querySelectorAll('.timeline-timestamp > span')[0];
+        expect(fullDate.classList).toContain('hidden');
+    });
+
+    it('ignores default value if timelineFullDate exists in localStorage', async () => {
+        // Set width greater than tailwind md breakpoint
+        window.innerWidth = 800;
+        // Set timelineFullDate to false in localStorage
+        setSavedSettingValue('timelineFullDate', false);
+        // Render app
+        renderApp();
+        // Get first full date span, confirm hidden (not default)
+        const fullDate = app.container.querySelectorAll('.timeline-timestamp > span')[0];
+        expect(fullDate.classList).toContain('hidden');
     });
 });

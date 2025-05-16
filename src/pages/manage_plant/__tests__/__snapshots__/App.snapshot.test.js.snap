@@ -1217,7 +1217,7 @@ exports[`App matches snapshot 1`] = `
                 data-date="2024-03-23"
               >
                 <div
-                  class="tooltip text-end!"
+                  class="tooltip"
                   data-tip="Mar 23, 2024"
                 >
                   <span
@@ -1227,7 +1227,7 @@ exports[`App matches snapshot 1`] = `
                   </span>
                 </div>
                 <span
-                  class="hidden md:block text-sm"
+                  class="text-sm block"
                 >
                   Mar 23, 2024
                 </span>
@@ -1264,7 +1264,7 @@ exports[`App matches snapshot 1`] = `
                 data-date="2024-03-22"
               >
                 <div
-                  class="tooltip text-end!"
+                  class="tooltip"
                   data-tip="Mar 22, 2024"
                 >
                   <span
@@ -1274,7 +1274,7 @@ exports[`App matches snapshot 1`] = `
                   </span>
                 </div>
                 <span
-                  class="hidden md:block text-sm"
+                  class="text-sm block"
                 >
                   Mar 22, 2024
                 </span>
@@ -1311,7 +1311,7 @@ exports[`App matches snapshot 1`] = `
                 data-date="2024-03-21"
               >
                 <div
-                  class="tooltip text-end!"
+                  class="tooltip"
                   data-tip="Mar 21, 2024"
                 >
                   <span
@@ -1321,7 +1321,7 @@ exports[`App matches snapshot 1`] = `
                   </span>
                 </div>
                 <span
-                  class="hidden md:block text-sm"
+                  class="text-sm block"
                 >
                   Mar 21, 2024
                 </span>
@@ -1358,7 +1358,7 @@ exports[`App matches snapshot 1`] = `
                 data-date="2024-03-01"
               >
                 <div
-                  class="tooltip text-end!"
+                  class="tooltip"
                   data-tip="Mar 01, 2024"
                 >
                   <span
@@ -1368,7 +1368,7 @@ exports[`App matches snapshot 1`] = `
                   </span>
                 </div>
                 <span
-                  class="hidden md:block text-sm"
+                  class="text-sm block"
                 >
                   Mar 01, 2024
                 </span>
@@ -1477,7 +1477,7 @@ exports[`App matches snapshot 1`] = `
                 data-date="2024-02-29"
               >
                 <div
-                  class="tooltip text-end!"
+                  class="tooltip"
                   data-tip="Feb 29, 2024"
                 >
                   <span
@@ -1487,7 +1487,7 @@ exports[`App matches snapshot 1`] = `
                   </span>
                 </div>
                 <span
-                  class="hidden md:block text-sm"
+                  class="text-sm block"
                 >
                   Feb 29, 2024
                 </span>
@@ -1534,7 +1534,7 @@ exports[`App matches snapshot 1`] = `
                 data-date="2024-02-26"
               >
                 <div
-                  class="tooltip text-end!"
+                  class="tooltip"
                   data-tip="Feb 26, 2024"
                 >
                   <span
@@ -1544,7 +1544,7 @@ exports[`App matches snapshot 1`] = `
                   </span>
                 </div>
                 <span
-                  class="hidden md:block text-sm"
+                  class="text-sm block"
                 >
                   Feb 26, 2024
                 </span>
@@ -1780,6 +1780,53 @@ exports[`App matches snapshot 1`] = `
                             class="flex justify-center"
                           >
                             All
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="flex items-center mt-4"
+                >
+                  <span
+                    class="text-base font-semibold w-150"
+                    title="Whether the full date is always visible or hidden in tooltip"
+                  >
+                    Show full date in timeline
+                  </span>
+                  <div
+                    class="flex w-full justify-end"
+                  >
+                    <div
+                      class="dropdown dropdown-center mr-4"
+                    >
+                      <button
+                        aria-label="Set Show full date in timeline"
+                        class="btn btn-ghost text-xl font-bold"
+                        role="button"
+                        tabindex="0"
+                      >
+                        Show
+                      </button>
+                      <ul
+                        class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                        tabindex="0"
+                      >
+                        <li>
+                          <button
+                            aria-label="Set Show full date in timeline to Show"
+                            class="flex justify-center"
+                          >
+                            Show
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            aria-label="Set Show full date in timeline to Tooltip"
+                            class="flex justify-center"
+                          >
+                            Tooltip
                           </button>
                         </li>
                       </ul>
@@ -3334,7 +3381,7 @@ exports[`App matches snapshot 1`] = `
               data-date="2024-03-23"
             >
               <div
-                class="tooltip text-end!"
+                class="tooltip"
                 data-tip="Mar 23, 2024"
               >
                 <span
@@ -3344,7 +3391,7 @@ exports[`App matches snapshot 1`] = `
                 </span>
               </div>
               <span
-                class="hidden md:block text-sm"
+                class="text-sm block"
               >
                 Mar 23, 2024
               </span>
@@ -3381,7 +3428,7 @@ exports[`App matches snapshot 1`] = `
               data-date="2024-03-22"
             >
               <div
-                class="tooltip text-end!"
+                class="tooltip"
                 data-tip="Mar 22, 2024"
               >
                 <span
@@ -3391,7 +3438,7 @@ exports[`App matches snapshot 1`] = `
                 </span>
               </div>
               <span
-                class="hidden md:block text-sm"
+                class="text-sm block"
               >
                 Mar 22, 2024
               </span>
@@ -3428,7 +3475,7 @@ exports[`App matches snapshot 1`] = `
               data-date="2024-03-21"
             >
               <div
-                class="tooltip text-end!"
+                class="tooltip"
                 data-tip="Mar 21, 2024"
               >
                 <span
@@ -3438,7 +3485,7 @@ exports[`App matches snapshot 1`] = `
                 </span>
               </div>
               <span
-                class="hidden md:block text-sm"
+                class="text-sm block"
               >
                 Mar 21, 2024
               </span>
@@ -3475,7 +3522,7 @@ exports[`App matches snapshot 1`] = `
               data-date="2024-03-01"
             >
               <div
-                class="tooltip text-end!"
+                class="tooltip"
                 data-tip="Mar 01, 2024"
               >
                 <span
@@ -3485,7 +3532,7 @@ exports[`App matches snapshot 1`] = `
                 </span>
               </div>
               <span
-                class="hidden md:block text-sm"
+                class="text-sm block"
               >
                 Mar 01, 2024
               </span>
@@ -3594,7 +3641,7 @@ exports[`App matches snapshot 1`] = `
               data-date="2024-02-29"
             >
               <div
-                class="tooltip text-end!"
+                class="tooltip"
                 data-tip="Feb 29, 2024"
               >
                 <span
@@ -3604,7 +3651,7 @@ exports[`App matches snapshot 1`] = `
                 </span>
               </div>
               <span
-                class="hidden md:block text-sm"
+                class="text-sm block"
               >
                 Feb 29, 2024
               </span>
@@ -3651,7 +3698,7 @@ exports[`App matches snapshot 1`] = `
               data-date="2024-02-26"
             >
               <div
-                class="tooltip text-end!"
+                class="tooltip"
                 data-tip="Feb 26, 2024"
               >
                 <span
@@ -3661,7 +3708,7 @@ exports[`App matches snapshot 1`] = `
                 </span>
               </div>
               <span
-                class="hidden md:block text-sm"
+                class="text-sm block"
               >
                 Feb 26, 2024
               </span>
@@ -3897,6 +3944,53 @@ exports[`App matches snapshot 1`] = `
                           class="flex justify-center"
                         >
                           All
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="flex items-center mt-4"
+              >
+                <span
+                  class="text-base font-semibold w-150"
+                  title="Whether the full date is always visible or hidden in tooltip"
+                >
+                  Show full date in timeline
+                </span>
+                <div
+                  class="flex w-full justify-end"
+                >
+                  <div
+                    class="dropdown dropdown-center mr-4"
+                  >
+                    <button
+                      aria-label="Set Show full date in timeline"
+                      class="btn btn-ghost text-xl font-bold"
+                      role="button"
+                      tabindex="0"
+                    >
+                      Show
+                    </button>
+                    <ul
+                      class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                      tabindex="0"
+                    >
+                      <li>
+                        <button
+                          aria-label="Set Show full date in timeline to Show"
+                          class="flex justify-center"
+                        >
+                          Show
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          aria-label="Set Show full date in timeline to Tooltip"
+                          class="flex justify-center"
+                        >
+                          Tooltip
                         </button>
                       </li>
                     </ul>
@@ -5419,7 +5513,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 data-date="2024-03-23"
               >
                 <div
-                  class="tooltip text-end!"
+                  class="tooltip"
                   data-tip="Mar 23, 2024"
                 >
                   <span
@@ -5429,7 +5523,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   </span>
                 </div>
                 <span
-                  class="hidden md:block text-sm"
+                  class="text-sm block"
                 >
                   Mar 23, 2024
                 </span>
@@ -5466,7 +5560,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 data-date="2024-03-22"
               >
                 <div
-                  class="tooltip text-end!"
+                  class="tooltip"
                   data-tip="Mar 22, 2024"
                 >
                   <span
@@ -5476,7 +5570,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   </span>
                 </div>
                 <span
-                  class="hidden md:block text-sm"
+                  class="text-sm block"
                 >
                   Mar 22, 2024
                 </span>
@@ -5513,7 +5607,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 data-date="2024-03-21"
               >
                 <div
-                  class="tooltip text-end!"
+                  class="tooltip"
                   data-tip="Mar 21, 2024"
                 >
                   <span
@@ -5523,7 +5617,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   </span>
                 </div>
                 <span
-                  class="hidden md:block text-sm"
+                  class="text-sm block"
                 >
                   Mar 21, 2024
                 </span>
@@ -5560,7 +5654,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 data-date="2024-03-01"
               >
                 <div
-                  class="tooltip text-end!"
+                  class="tooltip"
                   data-tip="Mar 01, 2024"
                 >
                   <span
@@ -5570,7 +5664,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   </span>
                 </div>
                 <span
-                  class="hidden md:block text-sm"
+                  class="text-sm block"
                 >
                   Mar 01, 2024
                 </span>
@@ -5679,7 +5773,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 data-date="2024-02-29"
               >
                 <div
-                  class="tooltip text-end!"
+                  class="tooltip"
                   data-tip="Feb 29, 2024"
                 >
                   <span
@@ -5689,7 +5783,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   </span>
                 </div>
                 <span
-                  class="hidden md:block text-sm"
+                  class="text-sm block"
                 >
                   Feb 29, 2024
                 </span>
@@ -5736,7 +5830,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 data-date="2024-02-26"
               >
                 <div
-                  class="tooltip text-end!"
+                  class="tooltip"
                   data-tip="Feb 26, 2024"
                 >
                   <span
@@ -5746,7 +5840,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   </span>
                 </div>
                 <span
-                  class="hidden md:block text-sm"
+                  class="text-sm block"
                 >
                   Feb 26, 2024
                 </span>
@@ -5982,6 +6076,53 @@ exports[`App matches snapshot when plant is archived 1`] = `
                             class="flex justify-center"
                           >
                             All
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="flex items-center mt-4"
+                >
+                  <span
+                    class="text-base font-semibold w-150"
+                    title="Whether the full date is always visible or hidden in tooltip"
+                  >
+                    Show full date in timeline
+                  </span>
+                  <div
+                    class="flex w-full justify-end"
+                  >
+                    <div
+                      class="dropdown dropdown-center mr-4"
+                    >
+                      <button
+                        aria-label="Set Show full date in timeline"
+                        class="btn btn-ghost text-xl font-bold"
+                        role="button"
+                        tabindex="0"
+                      >
+                        Show
+                      </button>
+                      <ul
+                        class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                        tabindex="0"
+                      >
+                        <li>
+                          <button
+                            aria-label="Set Show full date in timeline to Show"
+                            class="flex justify-center"
+                          >
+                            Show
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            aria-label="Set Show full date in timeline to Tooltip"
+                            class="flex justify-center"
+                          >
+                            Tooltip
                           </button>
                         </li>
                       </ul>
@@ -7407,7 +7548,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               data-date="2024-03-23"
             >
               <div
-                class="tooltip text-end!"
+                class="tooltip"
                 data-tip="Mar 23, 2024"
               >
                 <span
@@ -7417,7 +7558,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 </span>
               </div>
               <span
-                class="hidden md:block text-sm"
+                class="text-sm block"
               >
                 Mar 23, 2024
               </span>
@@ -7454,7 +7595,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               data-date="2024-03-22"
             >
               <div
-                class="tooltip text-end!"
+                class="tooltip"
                 data-tip="Mar 22, 2024"
               >
                 <span
@@ -7464,7 +7605,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 </span>
               </div>
               <span
-                class="hidden md:block text-sm"
+                class="text-sm block"
               >
                 Mar 22, 2024
               </span>
@@ -7501,7 +7642,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               data-date="2024-03-21"
             >
               <div
-                class="tooltip text-end!"
+                class="tooltip"
                 data-tip="Mar 21, 2024"
               >
                 <span
@@ -7511,7 +7652,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 </span>
               </div>
               <span
-                class="hidden md:block text-sm"
+                class="text-sm block"
               >
                 Mar 21, 2024
               </span>
@@ -7548,7 +7689,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               data-date="2024-03-01"
             >
               <div
-                class="tooltip text-end!"
+                class="tooltip"
                 data-tip="Mar 01, 2024"
               >
                 <span
@@ -7558,7 +7699,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 </span>
               </div>
               <span
-                class="hidden md:block text-sm"
+                class="text-sm block"
               >
                 Mar 01, 2024
               </span>
@@ -7667,7 +7808,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               data-date="2024-02-29"
             >
               <div
-                class="tooltip text-end!"
+                class="tooltip"
                 data-tip="Feb 29, 2024"
               >
                 <span
@@ -7677,7 +7818,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 </span>
               </div>
               <span
-                class="hidden md:block text-sm"
+                class="text-sm block"
               >
                 Feb 29, 2024
               </span>
@@ -7724,7 +7865,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               data-date="2024-02-26"
             >
               <div
-                class="tooltip text-end!"
+                class="tooltip"
                 data-tip="Feb 26, 2024"
               >
                 <span
@@ -7734,7 +7875,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 </span>
               </div>
               <span
-                class="hidden md:block text-sm"
+                class="text-sm block"
               >
                 Feb 26, 2024
               </span>
@@ -7970,6 +8111,53 @@ exports[`App matches snapshot when plant is archived 1`] = `
                           class="flex justify-center"
                         >
                           All
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="flex items-center mt-4"
+              >
+                <span
+                  class="text-base font-semibold w-150"
+                  title="Whether the full date is always visible or hidden in tooltip"
+                >
+                  Show full date in timeline
+                </span>
+                <div
+                  class="flex w-full justify-end"
+                >
+                  <div
+                    class="dropdown dropdown-center mr-4"
+                  >
+                    <button
+                      aria-label="Set Show full date in timeline"
+                      class="btn btn-ghost text-xl font-bold"
+                      role="button"
+                      tabindex="0"
+                    >
+                      Show
+                    </button>
+                    <ul
+                      class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                      tabindex="0"
+                    >
+                      <li>
+                        <button
+                          aria-label="Set Show full date in timeline to Show"
+                          class="flex justify-center"
+                        >
+                          Show
+                        </button>
+                      </li>
+                      <li>
+                        <button
+                          aria-label="Set Show full date in timeline to Tooltip"
+                          class="flex justify-center"
+                        >
+                          Tooltip
                         </button>
                       </li>
                     </ul>

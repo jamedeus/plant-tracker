@@ -127,6 +127,8 @@ export function ReduxProvider({ children }) {
         // Default to 1 line on desktop and 3 on mobile if setting not set
         const savedSettings = JSON.parse(localStorage.getItem("manage_plant_settings"));
         const collapsedNoteLines = savedSettings?.collapsedNoteLines ?? (desktop ? 1 : 3);
+        // Default to full date shown on desktop, hidden in tooltip on mobile
+        const timelineFullDate = savedSettings?.timelineFullDate ?? (desktop ? true : false);
 
         // Return object with keys expected by plantSlice and timelineSlice
         return {
@@ -143,7 +145,8 @@ export function ReduxProvider({ children }) {
                 defaultPhoto
             },
             settings: {
-                collapsedNoteLines
+                collapsedNoteLines,
+                timelineFullDate
             }
         };
     };
