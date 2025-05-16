@@ -1829,7 +1829,7 @@ exports[`App matches snapshot 1`] = `
                   </div>
                 </div>
                 <div
-                  class="mt-auto mx-auto w-72"
+                  class="mt-auto mb-4 mx-auto w-72"
                 >
                   <button
                     class="btn btn-error btn-soft w-full"
@@ -3997,7 +3997,7 @@ exports[`App matches snapshot 1`] = `
                 </div>
               </div>
               <div
-                class="mt-auto mx-auto w-72"
+                class="mt-auto mb-4 mx-auto w-72"
               >
                 <button
                   class="btn btn-error btn-soft w-full"
@@ -6133,7 +6133,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   </div>
                 </div>
                 <div
-                  class="mt-auto mx-auto w-72"
+                  class="mt-auto mb-4 mx-auto w-72"
                 >
                   <button
                     class="btn btn-error btn-soft w-full"
@@ -8172,7 +8172,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 </div>
               </div>
               <div
-                class="mt-auto mx-auto w-72"
+                class="mt-auto mb-4 mx-auto w-72"
               >
                 <button
                   class="btn btn-error btn-soft w-full"

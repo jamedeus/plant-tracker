@@ -158,7 +158,7 @@ const Settings = () => {
                                 { ...settings }
                             />
                         ))}
-                        <div className="mt-auto mx-auto w-72">
+                        <div className="mt-auto mb-4 mx-auto w-72">
                             <ResetAllSettingsButton />
                         </div>
                     </div>
