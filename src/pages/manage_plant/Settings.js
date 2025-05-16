@@ -2,8 +2,9 @@ import { memo } from 'react';
 import PropTypes from 'prop-types';
 import CloseButtonIcon from 'src/components/CloseButtonIcon';
 import { useSelector, useDispatch } from 'react-redux';
-import { settingChanged } from './settingsSlice';
+import { settingChanged, settingsReset } from './settingsSlice';
 import DropdownMenu from 'src/components/DropdownMenu';
+import { useIsBreakpointActive } from 'src/useBreakpoint';
 
 // Keys must match a settingsSlice state key
 const settings = {
@@ -108,6 +109,21 @@ SettingSection.propTypes = {
     settingOptions: PropTypes.array.isRequired
 };
 
+const ResetAllSettingsButton = () => {
+    // Get layout string used to look up default settings for current breakpoint
+    const layout = useIsBreakpointActive("md") ? 'desktop' : 'mobile';
+    const dispatch = useDispatch();
+
+    return (
+        <button
+            className="btn btn-error btn-soft w-full"
+            onClick={() => dispatch(settingsReset({layout: layout}))}
+        >
+            Restore Defaults
+        </button>
+    );
+};
+
 const Settings = () => {
     return (
         <div className="drawer z-99">
@@ -125,7 +141,7 @@ const Settings = () => {
                     aria-label="close sidebar"
                     className="drawer-overlay"
                 />
-                <div className="flex flex-col bg-base-200 text-base-content min-h-full w-80 md:w-128 p-4">
+                <div className="flex flex-col bg-base-200 text-base-content h-full w-80 md:w-128 p-4">
                     {/* Title + close button */}
                     <div className="flex items-center">
                         <span className="text-2xl font-bold mr-auto">
@@ -139,7 +155,7 @@ const Settings = () => {
                         </label>
                     </div>
                     {/* Contents */}
-                    <div className="mt-8 flex flex-col">
+                    <div className="mt-8 flex flex-col h-full">
                         {Object.entries(settings).map(([name, settings]) => (
                             <SettingSection
                                 key={name}
@@ -147,6 +163,9 @@ const Settings = () => {
                                 { ...settings }
                             />
                         ))}
+                        <div className="mt-auto mx-auto w-72">
+                            <ResetAllSettingsButton />
+                        </div>
                     </div>
                 </div>
             </div>

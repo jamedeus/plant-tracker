@@ -1684,7 +1684,7 @@ exports[`App matches snapshot 1`] = `
               for="settings-menu"
             />
             <div
-              class="flex flex-col bg-base-200 text-base-content min-h-full w-80 md:w-128 p-4"
+              class="flex flex-col bg-base-200 text-base-content h-full w-80 md:w-128 p-4"
             >
               <div
                 class="flex items-center"
@@ -1713,7 +1713,7 @@ exports[`App matches snapshot 1`] = `
                 </label>
               </div>
               <div
-                class="mt-8 flex flex-col"
+                class="mt-8 flex flex-col h-full"
               >
                 <div
                   class="flex items-center mt-4"
@@ -1832,6 +1832,15 @@ exports[`App matches snapshot 1`] = `
                       </ul>
                     </div>
                   </div>
+                </div>
+                <div
+                  class="mt-auto mx-auto w-72"
+                >
+                  <button
+                    class="btn btn-error btn-soft w-full"
+                  >
+                    Restore Defaults
+                  </button>
                 </div>
               </div>
             </div>
@@ -3848,7 +3857,7 @@ exports[`App matches snapshot 1`] = `
             for="settings-menu"
           />
           <div
-            class="flex flex-col bg-base-200 text-base-content min-h-full w-80 md:w-128 p-4"
+            class="flex flex-col bg-base-200 text-base-content h-full w-80 md:w-128 p-4"
           >
             <div
               class="flex items-center"
@@ -3877,7 +3886,7 @@ exports[`App matches snapshot 1`] = `
               </label>
             </div>
             <div
-              class="mt-8 flex flex-col"
+              class="mt-8 flex flex-col h-full"
             >
               <div
                 class="flex items-center mt-4"
@@ -3996,6 +4005,15 @@ exports[`App matches snapshot 1`] = `
                     </ul>
                   </div>
                 </div>
+              </div>
+              <div
+                class="mt-auto mx-auto w-72"
+              >
+                <button
+                  class="btn btn-error btn-soft w-full"
+                >
+                  Restore Defaults
+                </button>
               </div>
             </div>
           </div>
@@ -5980,7 +5998,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               for="settings-menu"
             />
             <div
-              class="flex flex-col bg-base-200 text-base-content min-h-full w-80 md:w-128 p-4"
+              class="flex flex-col bg-base-200 text-base-content h-full w-80 md:w-128 p-4"
             >
               <div
                 class="flex items-center"
@@ -6009,7 +6027,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 </label>
               </div>
               <div
-                class="mt-8 flex flex-col"
+                class="mt-8 flex flex-col h-full"
               >
                 <div
                   class="flex items-center mt-4"
@@ -6128,6 +6146,15 @@ exports[`App matches snapshot when plant is archived 1`] = `
                       </ul>
                     </div>
                   </div>
+                </div>
+                <div
+                  class="mt-auto mx-auto w-72"
+                >
+                  <button
+                    class="btn btn-error btn-soft w-full"
+                  >
+                    Restore Defaults
+                  </button>
                 </div>
               </div>
             </div>
@@ -8015,7 +8042,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
             for="settings-menu"
           />
           <div
-            class="flex flex-col bg-base-200 text-base-content min-h-full w-80 md:w-128 p-4"
+            class="flex flex-col bg-base-200 text-base-content h-full w-80 md:w-128 p-4"
           >
             <div
               class="flex items-center"
@@ -8044,7 +8071,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               </label>
             </div>
             <div
-              class="mt-8 flex flex-col"
+              class="mt-8 flex flex-col h-full"
             >
               <div
                 class="flex items-center mt-4"
@@ -8163,6 +8190,15 @@ exports[`App matches snapshot when plant is archived 1`] = `
                     </ul>
                   </div>
                 </div>
+              </div>
+              <div
+                class="mt-auto mx-auto w-72"
+              >
+                <button
+                  class="btn btn-error btn-soft w-full"
+                >
+                  Restore Defaults
+                </button>
               </div>
             </div>
           </div>

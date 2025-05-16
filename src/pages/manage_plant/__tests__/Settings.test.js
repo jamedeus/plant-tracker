@@ -117,7 +117,7 @@ describe('Settings menu', () => {
 });
 
 describe('Settings default values', () => {
-    let app;
+    let app, user;
 
     // Takes setting name and value, overwrites setting in localStorage
     const setSavedSettingValue = (setting, value) => {
@@ -132,6 +132,7 @@ describe('Settings default values', () => {
 
     // Renders app (call in tests after mocking window size, localStorage, etc)
     const renderApp = () => {
+        user = userEvent.setup();
         app = render(
             <PageWrapper>
                 <App />
@@ -215,5 +216,31 @@ describe('Settings default values', () => {
         // Get first full date span, confirm hidden (not default)
         const fullDate = app.container.querySelectorAll('.timeline-timestamp > span')[0];
         expect(fullDate.classList).toContain('hidden');
+    });
+
+    it('restores default values when Restore Defaults button clicked', async () => {
+        // Set width greater than tailwind md breakpoint
+        window.innerWidth = 800;
+        // Set non-default settings, render app
+        setSavedSettingValue('timelineFullDate', false);
+        setSavedSettingValue('collapsedNoteLines', 'All');
+        renderApp();
+
+        // Confirm timelineFullDate setting applied
+        const fullDate = app.container.querySelectorAll('.timeline-timestamp > span')[0];
+        expect(fullDate.classList).toContain('hidden');
+        // Confirm collapsedNoteLines setting applied
+        const collapsedNote = app.getByTitle('04:44 AM - February 26, 2024');
+        expect(collapsedNote.classList).toContain('line-clamp-none');
+
+        // Click Restore Defaults button
+        await user.click(app.getByRole('button', {name: 'Restore Defaults'}));
+
+        // Confirm reverted to default values for md breakpoint
+        expect(fullDate.classList).not.toContain('hidden');
+        expect(collapsedNote.classList).toContain('line-clamp-1');
+
+        // Confirm localStorage was cleared
+        expect(localStorage.getItem("manage_plant_settings")).toBeNull();
     });
 });

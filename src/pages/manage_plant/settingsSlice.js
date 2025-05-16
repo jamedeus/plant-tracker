@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { getDefaultSettingValue } from './Settings';
 
 // Redux slice to store all user configurable settings
 export const settingsSlice = createSlice({
@@ -18,9 +19,18 @@ export const settingsSlice = createSlice({
                 [action.payload.setting]: action.payload.value
             }));
         },
+        // Takes {layout: ['mobile'||'desktop']}
+        settingsReset(state, action) {
+            Object.keys(state).forEach(key => (
+                state[key] = getDefaultSettingValue(key, action.payload.layout)
+            ));
+            // Clear localStorage (go back to breakpoint-based values)
+            localStorage.removeItem('manage_plant_settings');
+        }
     }
 });
 
 export const {
     settingChanged,
+    settingsReset
 } = settingsSlice.actions;
