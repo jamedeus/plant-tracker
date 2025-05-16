@@ -43,6 +43,7 @@ describe('Settings menu', () => {
         expect(getSavedSettingValue('collapsedNoteLines')).toBe(undefined);
 
         // Click collapsedNoteLines settings dropdown, select option "All"
+        await user.click(app.getByTestId('open-settings-menu'));
         await user.click(app.getByLabelText('Set Closed note visible lines'));
         await user.click(app.getByLabelText('Set Closed note visible lines to All'));
 

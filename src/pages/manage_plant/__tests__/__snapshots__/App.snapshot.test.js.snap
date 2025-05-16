@@ -107,6 +107,7 @@ exports[`App matches snapshot 1`] = `
               </li>
               <li>
                 <label
+                  data-testid="open-settings-menu"
                   for="settings-menu"
                 >
                   Settings
@@ -2263,6 +2264,7 @@ exports[`App matches snapshot 1`] = `
             </li>
             <li>
               <label
+                data-testid="open-settings-menu"
                 for="settings-menu"
               >
                 Settings

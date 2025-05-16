@@ -51,7 +51,11 @@ function Layout() {
                     <li><button onClick={openChangeQrModal}>
                         Change QR code
                     </button></li>
-                    <li><label htmlFor='settings-menu'>
+                    <li><label
+                        htmlFor='settings-menu'
+                        onClick={() => document.activeElement.blur()}
+                        data-testid='open-settings-menu'
+                    >
                         Settings
                     </label></li>
                 </>
