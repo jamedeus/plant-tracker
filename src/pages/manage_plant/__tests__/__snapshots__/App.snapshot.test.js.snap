@@ -1676,168 +1676,156 @@ exports[`App matches snapshot 1`] = `
             type="checkbox"
           />
           <div
-            class="drawer-side"
+            class="drawer-side flex flex-col gap-8 max-h-screen"
           >
             <div
-              class="flex flex-col text-base-content h-full w-full"
+              class="flex items-center w-full"
             >
+              <h2
+                class="text-2xl font-bold ml-2 md:ml-4 mr-auto"
+              >
+                Settings
+              </h2>
+              <label
+                class="btn btn-ghost btn-circle size-12"
+                for="settings-menu"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="size-8 min-size-8"
+                  data-slot="icon"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+                  />
+                </svg>
+              </label>
+            </div>
+            <div
+              class="settings-grid w-full gap-4 pl-4 md:px-8"
+            >
+              <div
+                class="flex items-center font-semibold"
+                title="Number of line shown in the timeline when a note is closed"
+              >
+                Closed note visible lines
+              </div>
               <div
                 class="flex items-center"
               >
-                <span
-                  class="text-2xl font-bold mr-auto"
-                >
-                  Settings
-                </span>
-                <label
-                  class="btn btn-ghost btn-circle size-12"
-                  for="settings-menu"
-                >
-                  <svg
-                    aria-hidden="true"
-                    class="size-8 min-size-8"
-                    data-slot="icon"
-                    fill="currentColor"
-                    viewBox="0 0 16 16"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
-                    />
-                  </svg>
-                </label>
-              </div>
-              <div
-                class="mt-8 flex flex-col h-full"
-              >
                 <div
-                  class="flex items-center mt-4"
+                  class="dropdown dropdown-center mx-auto"
                 >
-                  <span
-                    class="text-base font-semibold w-150"
-                    title="Number of line shown in the timeline when a note is closed"
+                  <button
+                    aria-label="Set Closed note visible lines"
+                    class="btn btn-ghost text-xl font-bold"
+                    role="button"
+                    tabindex="0"
                   >
-                    Closed note visible lines
-                  </span>
-                  <div
-                    class="flex w-full justify-end"
+                    1
+                  </button>
+                  <ul
+                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                    tabindex="0"
                   >
-                    <div
-                      class="dropdown dropdown-center mr-4"
-                    >
+                    <li>
                       <button
-                        aria-label="Set Closed note visible lines"
-                        class="btn btn-ghost text-xl font-bold"
-                        role="button"
-                        tabindex="0"
+                        aria-label="Set Closed note visible lines to 1"
+                        class="flex justify-center"
                       >
                         1
                       </button>
-                      <ul
-                        class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
-                        tabindex="0"
-                      >
-                        <li>
-                          <button
-                            aria-label="Set Closed note visible lines to 1"
-                            class="flex justify-center"
-                          >
-                            1
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            aria-label="Set Closed note visible lines to 2"
-                            class="flex justify-center"
-                          >
-                            2
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            aria-label="Set Closed note visible lines to 3"
-                            class="flex justify-center"
-                          >
-                            3
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            aria-label="Set Closed note visible lines to 4"
-                            class="flex justify-center"
-                          >
-                            4
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            aria-label="Set Closed note visible lines to All"
-                            class="flex justify-center"
-                          >
-                            All
-                          </button>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="flex items-center mt-4"
-                >
-                  <span
-                    class="text-base font-semibold w-150"
-                    title="Whether the full date is always visible or hidden in tooltip"
-                  >
-                    Show full date in timeline
-                  </span>
-                  <div
-                    class="flex w-full justify-end"
-                  >
-                    <div
-                      class="dropdown dropdown-center mr-4"
-                    >
+                    </li>
+                    <li>
                       <button
-                        aria-label="Set Show full date in timeline"
-                        class="btn btn-ghost text-xl font-bold"
-                        role="button"
-                        tabindex="0"
+                        aria-label="Set Closed note visible lines to 2"
+                        class="flex justify-center"
+                      >
+                        2
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Closed note visible lines to 3"
+                        class="flex justify-center"
+                      >
+                        3
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Closed note visible lines to 4"
+                        class="flex justify-center"
+                      >
+                        4
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Closed note visible lines to All"
+                        class="flex justify-center"
+                      >
+                        All
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div
+                class="flex items-center font-semibold"
+                title="Whether the full date is always visible or hidden in tooltip"
+              >
+                Show full date in timeline
+              </div>
+              <div
+                class="flex items-center"
+              >
+                <div
+                  class="dropdown dropdown-center mx-auto"
+                >
+                  <button
+                    aria-label="Set Show full date in timeline"
+                    class="btn btn-ghost text-xl font-bold"
+                    role="button"
+                    tabindex="0"
+                  >
+                    Show
+                  </button>
+                  <ul
+                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                    tabindex="0"
+                  >
+                    <li>
+                      <button
+                        aria-label="Set Show full date in timeline to Show"
+                        class="flex justify-center"
                       >
                         Show
                       </button>
-                      <ul
-                        class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
-                        tabindex="0"
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Show full date in timeline to Tooltip"
+                        class="flex justify-center"
                       >
-                        <li>
-                          <button
-                            aria-label="Set Show full date in timeline to Show"
-                            class="flex justify-center"
-                          >
-                            Show
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            aria-label="Set Show full date in timeline to Tooltip"
-                            class="flex justify-center"
-                          >
-                            Tooltip
-                          </button>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="mt-auto mb-4 mx-auto w-72"
-                >
-                  <button
-                    class="btn btn-error btn-soft w-full"
-                  >
-                    Restore Defaults
-                  </button>
+                        Tooltip
+                      </button>
+                    </li>
+                  </ul>
                 </div>
               </div>
+            </div>
+            <div
+              class="mt-auto mb-4 mx-auto w-full max-w-72"
+            >
+              <button
+                class="btn btn-error btn-soft w-full"
+              >
+                Restore Defaults
+              </button>
             </div>
           </div>
         </div>
@@ -3844,168 +3832,156 @@ exports[`App matches snapshot 1`] = `
           type="checkbox"
         />
         <div
-          class="drawer-side"
+          class="drawer-side flex flex-col gap-8 max-h-screen"
         >
           <div
-            class="flex flex-col text-base-content h-full w-full"
+            class="flex items-center w-full"
           >
+            <h2
+              class="text-2xl font-bold ml-2 md:ml-4 mr-auto"
+            >
+              Settings
+            </h2>
+            <label
+              class="btn btn-ghost btn-circle size-12"
+              for="settings-menu"
+            >
+              <svg
+                aria-hidden="true"
+                class="size-8 min-size-8"
+                data-slot="icon"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+                />
+              </svg>
+            </label>
+          </div>
+          <div
+            class="settings-grid w-full gap-4 pl-4 md:px-8"
+          >
+            <div
+              class="flex items-center font-semibold"
+              title="Number of line shown in the timeline when a note is closed"
+            >
+              Closed note visible lines
+            </div>
             <div
               class="flex items-center"
             >
-              <span
-                class="text-2xl font-bold mr-auto"
-              >
-                Settings
-              </span>
-              <label
-                class="btn btn-ghost btn-circle size-12"
-                for="settings-menu"
-              >
-                <svg
-                  aria-hidden="true"
-                  class="size-8 min-size-8"
-                  data-slot="icon"
-                  fill="currentColor"
-                  viewBox="0 0 16 16"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
-                  />
-                </svg>
-              </label>
-            </div>
-            <div
-              class="mt-8 flex flex-col h-full"
-            >
               <div
-                class="flex items-center mt-4"
+                class="dropdown dropdown-center mx-auto"
               >
-                <span
-                  class="text-base font-semibold w-150"
-                  title="Number of line shown in the timeline when a note is closed"
+                <button
+                  aria-label="Set Closed note visible lines"
+                  class="btn btn-ghost text-xl font-bold"
+                  role="button"
+                  tabindex="0"
                 >
-                  Closed note visible lines
-                </span>
-                <div
-                  class="flex w-full justify-end"
+                  1
+                </button>
+                <ul
+                  class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                  tabindex="0"
                 >
-                  <div
-                    class="dropdown dropdown-center mr-4"
-                  >
+                  <li>
                     <button
-                      aria-label="Set Closed note visible lines"
-                      class="btn btn-ghost text-xl font-bold"
-                      role="button"
-                      tabindex="0"
+                      aria-label="Set Closed note visible lines to 1"
+                      class="flex justify-center"
                     >
                       1
                     </button>
-                    <ul
-                      class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
-                      tabindex="0"
-                    >
-                      <li>
-                        <button
-                          aria-label="Set Closed note visible lines to 1"
-                          class="flex justify-center"
-                        >
-                          1
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          aria-label="Set Closed note visible lines to 2"
-                          class="flex justify-center"
-                        >
-                          2
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          aria-label="Set Closed note visible lines to 3"
-                          class="flex justify-center"
-                        >
-                          3
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          aria-label="Set Closed note visible lines to 4"
-                          class="flex justify-center"
-                        >
-                          4
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          aria-label="Set Closed note visible lines to All"
-                          class="flex justify-center"
-                        >
-                          All
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="flex items-center mt-4"
-              >
-                <span
-                  class="text-base font-semibold w-150"
-                  title="Whether the full date is always visible or hidden in tooltip"
-                >
-                  Show full date in timeline
-                </span>
-                <div
-                  class="flex w-full justify-end"
-                >
-                  <div
-                    class="dropdown dropdown-center mr-4"
-                  >
+                  </li>
+                  <li>
                     <button
-                      aria-label="Set Show full date in timeline"
-                      class="btn btn-ghost text-xl font-bold"
-                      role="button"
-                      tabindex="0"
+                      aria-label="Set Closed note visible lines to 2"
+                      class="flex justify-center"
+                    >
+                      2
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Closed note visible lines to 3"
+                      class="flex justify-center"
+                    >
+                      3
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Closed note visible lines to 4"
+                      class="flex justify-center"
+                    >
+                      4
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Closed note visible lines to All"
+                      class="flex justify-center"
+                    >
+                      All
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div
+              class="flex items-center font-semibold"
+              title="Whether the full date is always visible or hidden in tooltip"
+            >
+              Show full date in timeline
+            </div>
+            <div
+              class="flex items-center"
+            >
+              <div
+                class="dropdown dropdown-center mx-auto"
+              >
+                <button
+                  aria-label="Set Show full date in timeline"
+                  class="btn btn-ghost text-xl font-bold"
+                  role="button"
+                  tabindex="0"
+                >
+                  Show
+                </button>
+                <ul
+                  class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                  tabindex="0"
+                >
+                  <li>
+                    <button
+                      aria-label="Set Show full date in timeline to Show"
+                      class="flex justify-center"
                     >
                       Show
                     </button>
-                    <ul
-                      class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
-                      tabindex="0"
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Show full date in timeline to Tooltip"
+                      class="flex justify-center"
                     >
-                      <li>
-                        <button
-                          aria-label="Set Show full date in timeline to Show"
-                          class="flex justify-center"
-                        >
-                          Show
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          aria-label="Set Show full date in timeline to Tooltip"
-                          class="flex justify-center"
-                        >
-                          Tooltip
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="mt-auto mb-4 mx-auto w-72"
-              >
-                <button
-                  class="btn btn-error btn-soft w-full"
-                >
-                  Restore Defaults
-                </button>
+                      Tooltip
+                    </button>
+                  </li>
+                </ul>
               </div>
             </div>
+          </div>
+          <div
+            class="mt-auto mb-4 mx-auto w-full max-w-72"
+          >
+            <button
+              class="btn btn-error btn-soft w-full"
+            >
+              Restore Defaults
+            </button>
           </div>
         </div>
       </div>
@@ -5980,168 +5956,156 @@ exports[`App matches snapshot when plant is archived 1`] = `
             type="checkbox"
           />
           <div
-            class="drawer-side"
+            class="drawer-side flex flex-col gap-8 max-h-screen"
           >
             <div
-              class="flex flex-col text-base-content h-full w-full"
+              class="flex items-center w-full"
             >
+              <h2
+                class="text-2xl font-bold ml-2 md:ml-4 mr-auto"
+              >
+                Settings
+              </h2>
+              <label
+                class="btn btn-ghost btn-circle size-12"
+                for="settings-menu"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="size-8 min-size-8"
+                  data-slot="icon"
+                  fill="currentColor"
+                  viewBox="0 0 16 16"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+                  />
+                </svg>
+              </label>
+            </div>
+            <div
+              class="settings-grid w-full gap-4 pl-4 md:px-8"
+            >
+              <div
+                class="flex items-center font-semibold"
+                title="Number of line shown in the timeline when a note is closed"
+              >
+                Closed note visible lines
+              </div>
               <div
                 class="flex items-center"
               >
-                <span
-                  class="text-2xl font-bold mr-auto"
-                >
-                  Settings
-                </span>
-                <label
-                  class="btn btn-ghost btn-circle size-12"
-                  for="settings-menu"
-                >
-                  <svg
-                    aria-hidden="true"
-                    class="size-8 min-size-8"
-                    data-slot="icon"
-                    fill="currentColor"
-                    viewBox="0 0 16 16"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
-                    />
-                  </svg>
-                </label>
-              </div>
-              <div
-                class="mt-8 flex flex-col h-full"
-              >
                 <div
-                  class="flex items-center mt-4"
+                  class="dropdown dropdown-center mx-auto"
                 >
-                  <span
-                    class="text-base font-semibold w-150"
-                    title="Number of line shown in the timeline when a note is closed"
+                  <button
+                    aria-label="Set Closed note visible lines"
+                    class="btn btn-ghost text-xl font-bold"
+                    role="button"
+                    tabindex="0"
                   >
-                    Closed note visible lines
-                  </span>
-                  <div
-                    class="flex w-full justify-end"
+                    1
+                  </button>
+                  <ul
+                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                    tabindex="0"
                   >
-                    <div
-                      class="dropdown dropdown-center mr-4"
-                    >
+                    <li>
                       <button
-                        aria-label="Set Closed note visible lines"
-                        class="btn btn-ghost text-xl font-bold"
-                        role="button"
-                        tabindex="0"
+                        aria-label="Set Closed note visible lines to 1"
+                        class="flex justify-center"
                       >
                         1
                       </button>
-                      <ul
-                        class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
-                        tabindex="0"
-                      >
-                        <li>
-                          <button
-                            aria-label="Set Closed note visible lines to 1"
-                            class="flex justify-center"
-                          >
-                            1
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            aria-label="Set Closed note visible lines to 2"
-                            class="flex justify-center"
-                          >
-                            2
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            aria-label="Set Closed note visible lines to 3"
-                            class="flex justify-center"
-                          >
-                            3
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            aria-label="Set Closed note visible lines to 4"
-                            class="flex justify-center"
-                          >
-                            4
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            aria-label="Set Closed note visible lines to All"
-                            class="flex justify-center"
-                          >
-                            All
-                          </button>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="flex items-center mt-4"
-                >
-                  <span
-                    class="text-base font-semibold w-150"
-                    title="Whether the full date is always visible or hidden in tooltip"
-                  >
-                    Show full date in timeline
-                  </span>
-                  <div
-                    class="flex w-full justify-end"
-                  >
-                    <div
-                      class="dropdown dropdown-center mr-4"
-                    >
+                    </li>
+                    <li>
                       <button
-                        aria-label="Set Show full date in timeline"
-                        class="btn btn-ghost text-xl font-bold"
-                        role="button"
-                        tabindex="0"
+                        aria-label="Set Closed note visible lines to 2"
+                        class="flex justify-center"
+                      >
+                        2
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Closed note visible lines to 3"
+                        class="flex justify-center"
+                      >
+                        3
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Closed note visible lines to 4"
+                        class="flex justify-center"
+                      >
+                        4
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Closed note visible lines to All"
+                        class="flex justify-center"
+                      >
+                        All
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div
+                class="flex items-center font-semibold"
+                title="Whether the full date is always visible or hidden in tooltip"
+              >
+                Show full date in timeline
+              </div>
+              <div
+                class="flex items-center"
+              >
+                <div
+                  class="dropdown dropdown-center mx-auto"
+                >
+                  <button
+                    aria-label="Set Show full date in timeline"
+                    class="btn btn-ghost text-xl font-bold"
+                    role="button"
+                    tabindex="0"
+                  >
+                    Show
+                  </button>
+                  <ul
+                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                    tabindex="0"
+                  >
+                    <li>
+                      <button
+                        aria-label="Set Show full date in timeline to Show"
+                        class="flex justify-center"
                       >
                         Show
                       </button>
-                      <ul
-                        class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
-                        tabindex="0"
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Show full date in timeline to Tooltip"
+                        class="flex justify-center"
                       >
-                        <li>
-                          <button
-                            aria-label="Set Show full date in timeline to Show"
-                            class="flex justify-center"
-                          >
-                            Show
-                          </button>
-                        </li>
-                        <li>
-                          <button
-                            aria-label="Set Show full date in timeline to Tooltip"
-                            class="flex justify-center"
-                          >
-                            Tooltip
-                          </button>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-                <div
-                  class="mt-auto mb-4 mx-auto w-72"
-                >
-                  <button
-                    class="btn btn-error btn-soft w-full"
-                  >
-                    Restore Defaults
-                  </button>
+                        Tooltip
+                      </button>
+                    </li>
+                  </ul>
                 </div>
               </div>
+            </div>
+            <div
+              class="mt-auto mb-4 mx-auto w-full max-w-72"
+            >
+              <button
+                class="btn btn-error btn-soft w-full"
+              >
+                Restore Defaults
+              </button>
             </div>
           </div>
         </div>
@@ -8019,168 +7983,156 @@ exports[`App matches snapshot when plant is archived 1`] = `
           type="checkbox"
         />
         <div
-          class="drawer-side"
+          class="drawer-side flex flex-col gap-8 max-h-screen"
         >
           <div
-            class="flex flex-col text-base-content h-full w-full"
+            class="flex items-center w-full"
           >
+            <h2
+              class="text-2xl font-bold ml-2 md:ml-4 mr-auto"
+            >
+              Settings
+            </h2>
+            <label
+              class="btn btn-ghost btn-circle size-12"
+              for="settings-menu"
+            >
+              <svg
+                aria-hidden="true"
+                class="size-8 min-size-8"
+                data-slot="icon"
+                fill="currentColor"
+                viewBox="0 0 16 16"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+                />
+              </svg>
+            </label>
+          </div>
+          <div
+            class="settings-grid w-full gap-4 pl-4 md:px-8"
+          >
+            <div
+              class="flex items-center font-semibold"
+              title="Number of line shown in the timeline when a note is closed"
+            >
+              Closed note visible lines
+            </div>
             <div
               class="flex items-center"
             >
-              <span
-                class="text-2xl font-bold mr-auto"
-              >
-                Settings
-              </span>
-              <label
-                class="btn btn-ghost btn-circle size-12"
-                for="settings-menu"
-              >
-                <svg
-                  aria-hidden="true"
-                  class="size-8 min-size-8"
-                  data-slot="icon"
-                  fill="currentColor"
-                  viewBox="0 0 16 16"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
-                  />
-                </svg>
-              </label>
-            </div>
-            <div
-              class="mt-8 flex flex-col h-full"
-            >
               <div
-                class="flex items-center mt-4"
+                class="dropdown dropdown-center mx-auto"
               >
-                <span
-                  class="text-base font-semibold w-150"
-                  title="Number of line shown in the timeline when a note is closed"
+                <button
+                  aria-label="Set Closed note visible lines"
+                  class="btn btn-ghost text-xl font-bold"
+                  role="button"
+                  tabindex="0"
                 >
-                  Closed note visible lines
-                </span>
-                <div
-                  class="flex w-full justify-end"
+                  1
+                </button>
+                <ul
+                  class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                  tabindex="0"
                 >
-                  <div
-                    class="dropdown dropdown-center mr-4"
-                  >
+                  <li>
                     <button
-                      aria-label="Set Closed note visible lines"
-                      class="btn btn-ghost text-xl font-bold"
-                      role="button"
-                      tabindex="0"
+                      aria-label="Set Closed note visible lines to 1"
+                      class="flex justify-center"
                     >
                       1
                     </button>
-                    <ul
-                      class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
-                      tabindex="0"
-                    >
-                      <li>
-                        <button
-                          aria-label="Set Closed note visible lines to 1"
-                          class="flex justify-center"
-                        >
-                          1
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          aria-label="Set Closed note visible lines to 2"
-                          class="flex justify-center"
-                        >
-                          2
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          aria-label="Set Closed note visible lines to 3"
-                          class="flex justify-center"
-                        >
-                          3
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          aria-label="Set Closed note visible lines to 4"
-                          class="flex justify-center"
-                        >
-                          4
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          aria-label="Set Closed note visible lines to All"
-                          class="flex justify-center"
-                        >
-                          All
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="flex items-center mt-4"
-              >
-                <span
-                  class="text-base font-semibold w-150"
-                  title="Whether the full date is always visible or hidden in tooltip"
-                >
-                  Show full date in timeline
-                </span>
-                <div
-                  class="flex w-full justify-end"
-                >
-                  <div
-                    class="dropdown dropdown-center mr-4"
-                  >
+                  </li>
+                  <li>
                     <button
-                      aria-label="Set Show full date in timeline"
-                      class="btn btn-ghost text-xl font-bold"
-                      role="button"
-                      tabindex="0"
+                      aria-label="Set Closed note visible lines to 2"
+                      class="flex justify-center"
+                    >
+                      2
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Closed note visible lines to 3"
+                      class="flex justify-center"
+                    >
+                      3
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Closed note visible lines to 4"
+                      class="flex justify-center"
+                    >
+                      4
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Closed note visible lines to All"
+                      class="flex justify-center"
+                    >
+                      All
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div
+              class="flex items-center font-semibold"
+              title="Whether the full date is always visible or hidden in tooltip"
+            >
+              Show full date in timeline
+            </div>
+            <div
+              class="flex items-center"
+            >
+              <div
+                class="dropdown dropdown-center mx-auto"
+              >
+                <button
+                  aria-label="Set Show full date in timeline"
+                  class="btn btn-ghost text-xl font-bold"
+                  role="button"
+                  tabindex="0"
+                >
+                  Show
+                </button>
+                <ul
+                  class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                  tabindex="0"
+                >
+                  <li>
+                    <button
+                      aria-label="Set Show full date in timeline to Show"
+                      class="flex justify-center"
                     >
                       Show
                     </button>
-                    <ul
-                      class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
-                      tabindex="0"
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Show full date in timeline to Tooltip"
+                      class="flex justify-center"
                     >
-                      <li>
-                        <button
-                          aria-label="Set Show full date in timeline to Show"
-                          class="flex justify-center"
-                        >
-                          Show
-                        </button>
-                      </li>
-                      <li>
-                        <button
-                          aria-label="Set Show full date in timeline to Tooltip"
-                          class="flex justify-center"
-                        >
-                          Tooltip
-                        </button>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div
-                class="mt-auto mb-4 mx-auto w-72"
-              >
-                <button
-                  class="btn btn-error btn-soft w-full"
-                >
-                  Restore Defaults
-                </button>
+                      Tooltip
+                    </button>
+                  </li>
+                </ul>
               </div>
             </div>
+          </div>
+          <div
+            class="mt-auto mb-4 mx-auto w-full max-w-72"
+          >
+            <button
+              class="btn btn-error btn-soft w-full"
+            >
+              Restore Defaults
+            </button>
           </div>
         </div>
       </div>

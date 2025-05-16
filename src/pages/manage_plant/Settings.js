@@ -51,29 +51,31 @@ const SettingSection = memo(function SettingSection({
 }) {
     const dispatch = useDispatch();
     const currentValue = useSelector((state) => state.settings[settingName]);
+    const currentValueName = settingOptions.find(opt => (
+        opt.value === currentValue
+    )).name;
 
     return (
 
-        <div className="flex items-center mt-4">
+        <>
             {/* Setting short description, hover for full description */}
-            <span
-                className="text-base font-semibold w-150"
+            <div
+                className="flex items-center font-semibold"
                 title={settingDescription}
             >
                 {settingText}
-            </span>
-            <div className="flex w-full justify-end">
-                <div className="dropdown dropdown-center mr-4">
-                    {/* Button shows current value, opens dropdown */}
+            </div>
+            {/* Button shows current value, opens dropdown with options */}
+            <div className="flex items-center">
+                <div className="dropdown dropdown-center mx-auto">
                     <button
                         tabIndex={0}
                         role="button"
                         aria-label={`Set ${settingText}`}
                         className="btn btn-ghost text-xl font-bold"
                     >
-                        {settingOptions.find(opt => opt.value === currentValue).name}
+                        {currentValueName}
                     </button>
-                    {/* Setting options */}
                     <DropdownMenu className="min-w-24 mt-2">
                         {settingOptions.map((option) =>  (
                             <li key={option.value}>
@@ -99,7 +101,7 @@ const SettingSection = memo(function SettingSection({
                     </DropdownMenu>
                 </div>
             </div>
-        </div>
+        </>
     );
 });
 
@@ -135,33 +137,31 @@ const Settings = () => {
                 type="checkbox"
                 className="drawer-toggle"
             />
-            <div className="drawer-side">
-                <div className="flex flex-col text-base-content h-full w-full">
-                    {/* Title + close button */}
-                    <div className="flex items-center">
-                        <span className="text-2xl font-bold mr-auto">
-                            Settings
-                        </span>
-                        <label
-                            htmlFor="settings-menu"
-                            className="btn btn-ghost btn-circle size-12"
-                        >
-                            <CloseButtonIcon />
-                        </label>
-                    </div>
-                    {/* Contents */}
-                    <div className="mt-8 flex flex-col h-full">
-                        {Object.entries(settings).map(([name, settings]) => (
-                            <SettingSection
-                                key={name}
-                                settingName={name}
-                                { ...settings }
-                            />
-                        ))}
-                        <div className="mt-auto mb-4 mx-auto w-72">
-                            <ResetAllSettingsButton />
-                        </div>
-                    </div>
+            <div className="drawer-side flex flex-col gap-8 max-h-screen">
+                {/* Title + close button */}
+                <div className="flex items-center w-full">
+                    <h2 className="text-2xl font-bold ml-2 md:ml-4 mr-auto">
+                        Settings
+                    </h2>
+                    <label
+                        htmlFor="settings-menu"
+                        className="btn btn-ghost btn-circle size-12"
+                    >
+                        <CloseButtonIcon />
+                    </label>
+                </div>
+                {/* Contents */}
+                <div className="settings-grid w-full gap-4 pl-4 md:px-8">
+                    {Object.entries(settings).map(([name, settings]) => (
+                        <SettingSection
+                            key={name}
+                            settingName={name}
+                            { ...settings }
+                        />
+                    ))}
+                </div>
+                <div className="mt-auto mb-4 mx-auto w-full max-w-72">
+                    <ResetAllSettingsButton />
                 </div>
             </div>
         </div>

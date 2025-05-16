@@ -1,7 +1,7 @@
 @reference './index.css';
 
 .drawer-side {
-    @apply fixed visible opacity-100 inset-0 h-[100vh] w-full md:w-128 p-4 z-99;
+    @apply fixed visible opacity-100 inset-0 h-screen w-full md:w-128 p-4 z-99;
 
     /* Semi-transparent frosted background — */
     backdrop-filter: blur(8px) saturate(180%);
@@ -21,4 +21,16 @@
 /* Drawar open slide animation */
 .drawer-toggle:checked ~ .drawer-side {
     transform: translateX(0);
+}
+
+.settings-grid {
+    /* Two column grid, setting name in left, value + dropdown in right */
+    /* Right is wide enough for button with 6-7 characters, left fills rest */
+    @apply grid grid-cols-[minmax(0,1fr)_6.5rem];
+    /* Prevent row height expanding when not enough rows to fill drawer */
+    @apply content-start;
+    /* Prevent vertical scrollbar when not overflowing */
+    @apply flex-grow;
+    /* Scroll vertically but not horizontally */
+    @apply overflow-y-scroll overflow-x-hidden;
 }
