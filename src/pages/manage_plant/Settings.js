@@ -5,9 +5,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { settingChanged } from './settingsSlice';
 import DropdownMenu from 'src/components/DropdownMenu';
 
-const settings = [
-    {
-        settingName: "collapsedNoteLines",
+// Keys must match a settingsSlice state key
+const settings = {
+    collapsedNoteLines: {
         settingText: "Closed note visible lines",
         settingDescription: "Number of line shown in the timeline when a note is closed",
         settingOptions: [
@@ -16,18 +16,30 @@ const settings = [
             { name: 3, value: 3 },
             { name: 4, value: 4 },
             { name: "All", value: "All" }
-        ]
+        ],
+        default: {
+            desktop: 1,
+            mobile: 3
+        }
     },
-    {
-        settingName: "timelineFullDate",
+    timelineFullDate: {
         settingText: "Show full date in timeline",
         settingDescription: "Whether the full date is always visible or hidden in tooltip",
         settingOptions: [
             { name: 'Show', value: true },
             { name: 'Tooltip', value: false }
-        ]
+        ],
+        default: {
+            desktop: true,
+            mobile: false
+        }
     }
-];
+};
+
+// Takes setting name and layout (mobile or desktop), returns default value
+export const getDefaultSettingValue = (setting, layout) => {
+    return settings[setting].default[layout];
+};
 
 const SettingSection = memo(function SettingSection({
     settingName,
@@ -128,10 +140,11 @@ const Settings = () => {
                     </div>
                     {/* Contents */}
                     <div className="mt-8 flex flex-col">
-                        {settings.map((setting) => (
+                        {Object.entries(settings).map(([name, settings]) => (
                             <SettingSection
-                                key={setting.settingName}
-                                { ...setting }
+                                key={name}
+                                settingName={name}
+                                { ...settings }
                             />
                         ))}
                     </div>

@@ -7,6 +7,7 @@ import { timestampToDateString } from 'src/timestampUtils';
 import { plantSlice } from './plantSlice';
 import { timelineSlice } from './timelineSlice';
 import { settingsSlice } from './settingsSlice';
+import { getDefaultSettingValue } from './Settings';
 import { useIsBreakpointActive } from 'src/useBreakpoint';
 
 // Takes object with event type keys, array of timestamps as value.
@@ -104,8 +105,8 @@ function createReduxStore(preloadedState) {
 }
 
 export function ReduxProvider({ children }) {
-    // True if desktop layout, false if mobile
-    const desktop = useIsBreakpointActive("md");
+    // Get layout string used to look up default settings for current breakpoint
+    const layout = useIsBreakpointActive("md") ? 'desktop' : 'mobile';
 
     // Parses django context elements containing events, photos, and notes
     // Merges and returns values for all initialState keys in timelineSlice
@@ -124,11 +125,14 @@ export function ReduxProvider({ children }) {
         const navigationOptions = buildNavigationOptions(timelineDays);
 
         // Load settings from localStorage if they exist
-        // Default to 1 line on desktop and 3 on mobile if setting not set
-        const savedSettings = JSON.parse(localStorage.getItem("manage_plant_settings"));
-        const collapsedNoteLines = savedSettings?.collapsedNoteLines ?? (desktop ? 1 : 3);
-        // Default to full date shown on desktop, hidden in tooltip on mobile
-        const timelineFullDate = savedSettings?.timelineFullDate ?? (desktop ? true : false);
+        const savedSettings = JSON.parse(localStorage.getItem(
+            "manage_plant_settings"
+        ));
+        // Use default settings for options that don't exist in localStorage
+        const collapsedNoteLines = savedSettings?.collapsedNoteLines ??
+            getDefaultSettingValue('collapsedNoteLines', layout);
+        const timelineFullDate = savedSettings?.timelineFullDate ??
+            getDefaultSettingValue('timelineFullDate', layout);
 
         // Return object with keys expected by plantSlice and timelineSlice
         return {
