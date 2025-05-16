@@ -1431,7 +1431,7 @@ exports[`App matches snapshot 1`] = `
                 >
                   <div
                     class="note-collapse"
-                    style="max-height: NaNpx;"
+                    style="max-height: 24px;"
                   >
                     <svg
                       aria-hidden="true"
@@ -1587,7 +1587,7 @@ exports[`App matches snapshot 1`] = `
                 >
                   <div
                     class="note-collapse"
-                    style="max-height: NaNpx;"
+                    style="max-height: 24px;"
                   >
                     <svg
                       aria-hidden="true"
@@ -1731,7 +1731,7 @@ exports[`App matches snapshot 1`] = `
                       class="dropdown dropdown-center mr-4"
                     >
                       <button
-                        aria-label="Set visible lines per note"
+                        aria-label="Set Closed note visible lines"
                         class="btn btn-ghost text-xl font-bold"
                         role="button"
                         tabindex="0"
@@ -1744,6 +1744,7 @@ exports[`App matches snapshot 1`] = `
                       >
                         <li>
                           <button
+                            aria-label="Set Closed note visible lines to 1"
                             class="flex justify-center"
                           >
                             1
@@ -1751,6 +1752,7 @@ exports[`App matches snapshot 1`] = `
                         </li>
                         <li>
                           <button
+                            aria-label="Set Closed note visible lines to 2"
                             class="flex justify-center"
                           >
                             2
@@ -1758,6 +1760,7 @@ exports[`App matches snapshot 1`] = `
                         </li>
                         <li>
                           <button
+                            aria-label="Set Closed note visible lines to 3"
                             class="flex justify-center"
                           >
                             3
@@ -1765,6 +1768,7 @@ exports[`App matches snapshot 1`] = `
                         </li>
                         <li>
                           <button
+                            aria-label="Set Closed note visible lines to 4"
                             class="flex justify-center"
                           >
                             4
@@ -1772,6 +1776,7 @@ exports[`App matches snapshot 1`] = `
                         </li>
                         <li>
                           <button
+                            aria-label="Set Closed note visible lines to All"
                             class="flex justify-center"
                           >
                             All
@@ -3543,7 +3548,7 @@ exports[`App matches snapshot 1`] = `
               >
                 <div
                   class="note-collapse"
-                  style="max-height: NaNpx;"
+                  style="max-height: 24px;"
                 >
                   <svg
                     aria-hidden="true"
@@ -3699,7 +3704,7 @@ exports[`App matches snapshot 1`] = `
               >
                 <div
                   class="note-collapse"
-                  style="max-height: NaNpx;"
+                  style="max-height: 24px;"
                 >
                   <svg
                     aria-hidden="true"
@@ -3843,7 +3848,7 @@ exports[`App matches snapshot 1`] = `
                     class="dropdown dropdown-center mr-4"
                   >
                     <button
-                      aria-label="Set visible lines per note"
+                      aria-label="Set Closed note visible lines"
                       class="btn btn-ghost text-xl font-bold"
                       role="button"
                       tabindex="0"
@@ -3856,6 +3861,7 @@ exports[`App matches snapshot 1`] = `
                     >
                       <li>
                         <button
+                          aria-label="Set Closed note visible lines to 1"
                           class="flex justify-center"
                         >
                           1
@@ -3863,6 +3869,7 @@ exports[`App matches snapshot 1`] = `
                       </li>
                       <li>
                         <button
+                          aria-label="Set Closed note visible lines to 2"
                           class="flex justify-center"
                         >
                           2
@@ -3870,6 +3877,7 @@ exports[`App matches snapshot 1`] = `
                       </li>
                       <li>
                         <button
+                          aria-label="Set Closed note visible lines to 3"
                           class="flex justify-center"
                         >
                           3
@@ -3877,6 +3885,7 @@ exports[`App matches snapshot 1`] = `
                       </li>
                       <li>
                         <button
+                          aria-label="Set Closed note visible lines to 4"
                           class="flex justify-center"
                         >
                           4
@@ -3884,6 +3893,7 @@ exports[`App matches snapshot 1`] = `
                       </li>
                       <li>
                         <button
+                          aria-label="Set Closed note visible lines to All"
                           class="flex justify-center"
                         >
                           All
@@ -5623,7 +5633,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 >
                   <div
                     class="note-collapse"
-                    style="max-height: NaNpx;"
+                    style="max-height: 24px;"
                   >
                     <svg
                       aria-hidden="true"
@@ -5779,7 +5789,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 >
                   <div
                     class="note-collapse"
-                    style="max-height: NaNpx;"
+                    style="max-height: 24px;"
                   >
                     <svg
                       aria-hidden="true"
@@ -5923,7 +5933,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                       class="dropdown dropdown-center mr-4"
                     >
                       <button
-                        aria-label="Set visible lines per note"
+                        aria-label="Set Closed note visible lines"
                         class="btn btn-ghost text-xl font-bold"
                         role="button"
                         tabindex="0"
@@ -5936,6 +5946,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                       >
                         <li>
                           <button
+                            aria-label="Set Closed note visible lines to 1"
                             class="flex justify-center"
                           >
                             1
@@ -5943,6 +5954,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                         </li>
                         <li>
                           <button
+                            aria-label="Set Closed note visible lines to 2"
                             class="flex justify-center"
                           >
                             2
@@ -5950,6 +5962,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                         </li>
                         <li>
                           <button
+                            aria-label="Set Closed note visible lines to 3"
                             class="flex justify-center"
                           >
                             3
@@ -5957,6 +5970,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                         </li>
                         <li>
                           <button
+                            aria-label="Set Closed note visible lines to 4"
                             class="flex justify-center"
                           >
                             4
@@ -5964,6 +5978,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                         </li>
                         <li>
                           <button
+                            aria-label="Set Closed note visible lines to All"
                             class="flex justify-center"
                           >
                             All
@@ -7606,7 +7621,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               >
                 <div
                   class="note-collapse"
-                  style="max-height: NaNpx;"
+                  style="max-height: 24px;"
                 >
                   <svg
                     aria-hidden="true"
@@ -7762,7 +7777,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               >
                 <div
                   class="note-collapse"
-                  style="max-height: NaNpx;"
+                  style="max-height: 24px;"
                 >
                   <svg
                     aria-hidden="true"
@@ -7906,7 +7921,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                     class="dropdown dropdown-center mr-4"
                   >
                     <button
-                      aria-label="Set visible lines per note"
+                      aria-label="Set Closed note visible lines"
                       class="btn btn-ghost text-xl font-bold"
                       role="button"
                       tabindex="0"
@@ -7919,6 +7934,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                     >
                       <li>
                         <button
+                          aria-label="Set Closed note visible lines to 1"
                           class="flex justify-center"
                         >
                           1
@@ -7926,6 +7942,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                       </li>
                       <li>
                         <button
+                          aria-label="Set Closed note visible lines to 2"
                           class="flex justify-center"
                         >
                           2
@@ -7933,6 +7950,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                       </li>
                       <li>
                         <button
+                          aria-label="Set Closed note visible lines to 3"
                           class="flex justify-center"
                         >
                           3
@@ -7940,6 +7958,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                       </li>
                       <li>
                         <button
+                          aria-label="Set Closed note visible lines to 4"
                           class="flex justify-center"
                         >
                           4
@@ -7947,6 +7966,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                       </li>
                       <li>
                         <button
+                          aria-label="Set Closed note visible lines to All"
                           class="flex justify-center"
                         >
                           All

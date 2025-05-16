@@ -1461,7 +1461,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             >
               <div
                 class="note-collapse"
-                style="max-height: NaNpx;"
+                style="max-height: 24px;"
               >
                 <svg
                   aria-hidden="true"
@@ -1539,7 +1539,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             >
               <div
                 class="note-collapse"
-                style="max-height: NaNpx;"
+                style="max-height: 24px;"
               >
                 <svg
                   aria-hidden="true"
@@ -4364,7 +4364,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="note-collapse"
-              style="max-height: NaNpx;"
+              style="max-height: 24px;"
             >
               <svg
                 aria-hidden="true"
@@ -4442,7 +4442,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           >
             <div
               class="note-collapse"
-              style="max-height: NaNpx;"
+              style="max-height: 24px;"
             >
               <svg
                 aria-hidden="true"
@@ -7427,7 +7427,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             >
               <div
                 class="note-collapse"
-                style="max-height: NaNpx;"
+                style="max-height: 24px;"
               >
                 <svg
                   aria-hidden="true"
@@ -7505,7 +7505,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             >
               <div
                 class="note-collapse"
-                style="max-height: NaNpx;"
+                style="max-height: 24px;"
               >
                 <svg
                   aria-hidden="true"
@@ -10393,7 +10393,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="note-collapse"
-              style="max-height: NaNpx;"
+              style="max-height: 24px;"
             >
               <svg
                 aria-hidden="true"
@@ -10471,7 +10471,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           >
             <div
               class="note-collapse"
-              style="max-height: NaNpx;"
+              style="max-height: 24px;"
             >
               <svg
                 aria-hidden="true"

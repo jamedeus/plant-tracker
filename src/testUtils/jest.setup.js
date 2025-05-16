@@ -41,6 +41,15 @@ beforeAll(() => {
         }),
     });
 
+    // Mock getComputedStyles to return a realistic text lineHeight
+    const realGetComputedStyle = window.getComputedStyle;
+    jest.spyOn(window, 'getComputedStyle').mockImplementation((el) => {
+        // Get actual computed styles, override undefined lineHeight
+        const style = realGetComputedStyle(el);
+        style.lineHeight = '24px';
+        return style;
+    });
+
     // Make available in all tests
     global.render = render;
     global.within = within;

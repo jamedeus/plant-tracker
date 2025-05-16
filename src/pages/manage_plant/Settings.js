@@ -45,7 +45,7 @@ const SettingSection = memo(function SettingSection({
                     <button
                         tabIndex={0}
                         role="button"
-                        aria-label="Set visible lines per note"
+                        aria-label={`Set ${settingText}`}
                         className="btn btn-ghost text-xl font-bold"
                     >
                         {currentValue}
@@ -56,6 +56,9 @@ const SettingSection = memo(function SettingSection({
                             <li key={option.value}>
                                 <button
                                     className="flex justify-center"
+                                    aria-label={
+                                        `Set ${settingText} to ${option.value}`
+                                    }
                                     onClick={() => {
                                         // Change setting
                                         dispatch(settingChanged({
