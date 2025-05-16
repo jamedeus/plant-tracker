@@ -1825,7 +1825,16 @@ exports[`App matches snapshot 1`] = `
               <button
                 class="btn btn-error btn-soft w-full"
               >
-                Restore Defaults
+                <span
+                  class="transition-opacity duration-300 ease-in-out opacity-100 delay-100"
+                >
+                  Restore Defaults
+                </span>
+                <span
+                  class="absolute inset-0 flex items-center justify-center transition-opacity duration-300 ease-in-out opacity-0"
+                >
+                  Done!
+                </span>
               </button>
             </div>
           </div>
@@ -3982,7 +3991,16 @@ exports[`App matches snapshot 1`] = `
             <button
               class="btn btn-error btn-soft w-full"
             >
-              Restore Defaults
+              <span
+                class="transition-opacity duration-300 ease-in-out opacity-100 delay-100"
+              >
+                Restore Defaults
+              </span>
+              <span
+                class="absolute inset-0 flex items-center justify-center transition-opacity duration-300 ease-in-out opacity-0"
+              >
+                Done!
+              </span>
             </button>
           </div>
         </div>
@@ -6106,7 +6124,16 @@ exports[`App matches snapshot when plant is archived 1`] = `
               <button
                 class="btn btn-error btn-soft w-full"
               >
-                Restore Defaults
+                <span
+                  class="transition-opacity duration-300 ease-in-out opacity-100 delay-100"
+                >
+                  Restore Defaults
+                </span>
+                <span
+                  class="absolute inset-0 flex items-center justify-center transition-opacity duration-300 ease-in-out opacity-0"
+                >
+                  Done!
+                </span>
               </button>
             </div>
           </div>
@@ -8133,7 +8160,16 @@ exports[`App matches snapshot when plant is archived 1`] = `
             <button
               class="btn btn-error btn-soft w-full"
             >
-              Restore Defaults
+              <span
+                class="transition-opacity duration-300 ease-in-out opacity-100 delay-100"
+              >
+                Restore Defaults
+              </span>
+              <span
+                class="absolute inset-0 flex items-center justify-center transition-opacity duration-300 ease-in-out opacity-0"
+              >
+                Done!
+              </span>
             </button>
           </div>
         </div>

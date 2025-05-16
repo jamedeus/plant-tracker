@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { memo, useState } from 'react';
 import PropTypes from 'prop-types';
 import CloseButtonIcon from 'src/components/CloseButtonIcon';
 import { useSelector, useDispatch } from 'react-redux';
@@ -6,6 +6,7 @@ import { settingChanged, settingsReset } from './settingsSlice';
 import DropdownMenu from 'src/components/DropdownMenu';
 import { useIsBreakpointActive } from 'src/useBreakpoint';
 import 'src/css/settings.css';
+import clsx from 'clsx';
 
 // Keys must match a settingsSlice state key
 const settings = {
@@ -113,16 +114,39 @@ SettingSection.propTypes = {
 };
 
 const ResetAllSettingsButton = () => {
-    // Get layout string used to look up default settings for current breakpoint
     const layout = useIsBreakpointActive("md") ? 'desktop' : 'mobile';
     const dispatch = useDispatch();
+
+    const [clicked, setClicked] = useState(false);
+
+    // Fade out default text when clicked, show "Done!" for 1 second, revert
+    const handleClick = () => {
+        setClicked(true);
+        dispatch(settingsReset({layout: layout}));
+        setTimeout(() => setClicked(false), 1000);
+    };
 
     return (
         <button
             className="btn btn-error btn-soft w-full"
-            onClick={() => dispatch(settingsReset({layout: layout}))}
+            onClick={handleClick}
         >
-            Restore Defaults
+            {/* Default text, fades out when button clicked */}
+            <span className={clsx(
+                'transition-opacity duration-300 ease-in-out',
+                clicked ? 'opacity-0' : 'opacity-100 delay-100'
+            )}>
+                Restore Defaults
+            </span>
+
+            {/* Positioned over default text, fades in when button clicked */}
+            <span className={clsx(
+                'absolute inset-0 flex items-center justify-center',
+                'transition-opacity duration-300 ease-in-out',
+                clicked ? 'opacity-100 delay-100' : 'opacity-0'
+            )}>
+                Done!
+            </span>
         </button>
     );
 };

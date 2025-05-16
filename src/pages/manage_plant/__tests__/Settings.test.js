@@ -230,7 +230,7 @@ describe('Settings default values', () => {
         expect(collapsedNote.classList).toContain('line-clamp-none');
 
         // Click Restore Defaults button
-        await user.click(app.getByRole('button', {name: 'Restore Defaults'}));
+        await user.click(app.getByText('Restore Defaults'));
 
         // Confirm reverted to default values for md breakpoint
         expect(fullDate.classList).not.toContain('hidden');
