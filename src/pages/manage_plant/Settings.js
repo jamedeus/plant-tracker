@@ -174,7 +174,12 @@ const Settings = () => {
             <input
                 id="settings-menu"
                 type="checkbox"
-                className="drawer-toggle"
+                className="drawer-toggle peer"
+            />
+            {/* Full screen overlay when menu open (click outside to close) */}
+            <label
+                htmlFor="settings-menu"
+                className="fixed inset-0 not-peer-checked:hidden cursor-pointer"
             />
             <div className="drawer-side flex flex-col gap-8 max-h-screen">
                 {/* Title + close button */}

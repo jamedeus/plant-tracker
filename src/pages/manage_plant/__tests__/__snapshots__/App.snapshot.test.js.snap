@@ -1672,9 +1672,13 @@ exports[`App matches snapshot 1`] = `
           class="drawer z-99"
         >
           <input
-            class="drawer-toggle"
+            class="drawer-toggle peer"
             id="settings-menu"
             type="checkbox"
+          />
+          <label
+            class="fixed inset-0 not-peer-checked:hidden cursor-pointer"
+            for="settings-menu"
           />
           <div
             class="drawer-side flex flex-col gap-8 max-h-screen"
@@ -3898,9 +3902,13 @@ exports[`App matches snapshot 1`] = `
         class="drawer z-99"
       >
         <input
-          class="drawer-toggle"
+          class="drawer-toggle peer"
           id="settings-menu"
           type="checkbox"
+        />
+        <label
+          class="fixed inset-0 not-peer-checked:hidden cursor-pointer"
+          for="settings-menu"
         />
         <div
           class="drawer-side flex flex-col gap-8 max-h-screen"
@@ -6091,9 +6099,13 @@ exports[`App matches snapshot when plant is archived 1`] = `
           class="drawer z-99"
         >
           <input
-            class="drawer-toggle"
+            class="drawer-toggle peer"
             id="settings-menu"
             type="checkbox"
+          />
+          <label
+            class="fixed inset-0 not-peer-checked:hidden cursor-pointer"
+            for="settings-menu"
           />
           <div
             class="drawer-side flex flex-col gap-8 max-h-screen"
@@ -8187,9 +8199,13 @@ exports[`App matches snapshot when plant is archived 1`] = `
         class="drawer z-99"
       >
         <input
-          class="drawer-toggle"
+          class="drawer-toggle peer"
           id="settings-menu"
           type="checkbox"
+        />
+        <label
+          class="fixed inset-0 not-peer-checked:hidden cursor-pointer"
+          for="settings-menu"
         />
         <div
           class="drawer-side flex flex-col gap-8 max-h-screen"
