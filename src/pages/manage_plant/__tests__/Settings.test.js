@@ -229,8 +229,19 @@ describe('Settings default values', () => {
         const collapsedNote = app.getByTitle('04:44 AM - February 26, 2024');
         expect(collapsedNote.classList).toContain('line-clamp-none');
 
-        // Click Restore Defaults button
-        await user.click(app.getByText('Restore Defaults'));
+        // Get Restore Defaults button, both text spans (default + hidden)
+        const resetButton = app.getByTestId('restore_default_settings_button');
+        const defaultText = within(resetButton).getByText('Restore Defaults');
+        const activeText = within(resetButton).getByText('Done!');
+
+        // Confirm "Restore Defaults" text is visible, "Done!" is not
+        expect(defaultText.classList).toContain('opacity-100');
+        expect(activeText.classList).toContain('opacity-0');
+
+        // Click Restore Defaults button, confirm text changed
+        await user.click(resetButton);
+        expect(defaultText.classList).toContain('opacity-0');
+        expect(activeText.classList).toContain('opacity-100');
 
         // Confirm reverted to default values for md breakpoint
         expect(fullDate.classList).not.toContain('hidden');
@@ -238,5 +249,11 @@ describe('Settings default values', () => {
 
         // Confirm localStorage was cleared
         expect(localStorage.getItem("manage_plant_settings")).toBeNull();
+
+        // Wait 1 second, confirm button text changes back
+        await waitFor(() => {
+            expect(defaultText.classList).toContain('opacity-100');
+            expect(activeText.classList).toContain('opacity-0');
+        });
     });
 });

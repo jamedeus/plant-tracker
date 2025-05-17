@@ -1824,6 +1824,7 @@ exports[`App matches snapshot 1`] = `
             >
               <button
                 class="btn btn-error btn-soft w-full"
+                data-testid="restore_default_settings_button"
               >
                 <span
                   class="transition-opacity duration-300 ease-in-out opacity-100 delay-100"
@@ -3990,6 +3991,7 @@ exports[`App matches snapshot 1`] = `
           >
             <button
               class="btn btn-error btn-soft w-full"
+              data-testid="restore_default_settings_button"
             >
               <span
                 class="transition-opacity duration-300 ease-in-out opacity-100 delay-100"
@@ -6123,6 +6125,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
             >
               <button
                 class="btn btn-error btn-soft w-full"
+                data-testid="restore_default_settings_button"
               >
                 <span
                   class="transition-opacity duration-300 ease-in-out opacity-100 delay-100"
@@ -8159,6 +8162,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
           >
             <button
               class="btn btn-error btn-soft w-full"
+              data-testid="restore_default_settings_button"
             >
               <span
                 class="transition-opacity duration-300 ease-in-out opacity-100 delay-100"

@@ -130,6 +130,7 @@ const ResetAllSettingsButton = () => {
         <button
             className="btn btn-error btn-soft w-full"
             onClick={handleClick}
+            data-testid="restore_default_settings_button"
         >
             {/* Default text, fades out when button clicked */}
             <span className={clsx(
