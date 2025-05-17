@@ -68,14 +68,18 @@ describe('FilterColumn', () => {
     let component, user;
 
     beforeEach(() => {
+        // Allow fast forwarding (skip debounce)
+        jest.useFakeTimers({ doNotFake: ['Date'] });
+
         // Render component + create userEvent instance to use in tests
-        user = userEvent.setup();
+        user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         component = render(
             <FilterColumn
                 title="Plants"
                 contents={plants}
                 CardComponent={PlantCard}
                 editing={false}
+                formRef={jest.fn()}
                 selected={{current: []}}
                 ignoreKeys={[
                     'uuid',
@@ -93,6 +97,12 @@ describe('FilterColumn', () => {
                 defaultSortKey='created'
             />
         );
+    });
+
+    // Clean up pending timers after each test
+    afterEach(() => {
+        jest.runAllTimers();
+        jest.useRealTimers();
     });
 
     it('renders expected default state', () => {
@@ -116,73 +126,82 @@ describe('FilterColumn', () => {
         // and "Favorite plant"
         const filterInput = component.getByRole('textbox');
         await user.type(filterInput, 'plant');
-        await waitFor(() => {
-            expect(component.container.querySelectorAll('.card').length).toBe(3);
-            expect(component.getByText('Unnamed plant 1')).toBeInTheDocument();
-            expect(component.getByText('Favorite plant')).toBeInTheDocument();
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(200);
         });
+        expect(component.container.querySelectorAll('.card').length).toBe(3);
+        expect(component.getByText('Unnamed plant 1')).toBeInTheDocument();
+        expect(component.getByText('Favorite plant')).toBeInTheDocument();
 
         // Type "calathea", should only show "Favorite plant" (matches species)
         await user.clear(filterInput);
         await user.type(filterInput, 'calathea');
-        await waitFor(() => {
-            expect(component.container.querySelectorAll('.card').length).toBe(1);
-            expect(component.getByText('Favorite plant')).toBeInTheDocument();
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(200);
         });
+        expect(component.container.querySelectorAll('.card').length).toBe(1);
+        expect(component.getByText('Favorite plant')).toBeInTheDocument();
 
         // Type "6", should only show "mini palm tree" (matches 6 inch pot)
         await user.clear(filterInput);
         await user.type(filterInput, '6');
-        await waitFor(() => {
-            expect(component.container.querySelectorAll('.card').length).toBe(1);
-            expect(component.getByText('mini palm tree')).toBeInTheDocument();
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(200);
         });
+        expect(component.container.querySelectorAll('.card').length).toBe(1);
+        expect(component.getByText('mini palm tree')).toBeInTheDocument();
 
         // Type "really", should only show "mini palm tree" (matches description)
         await user.clear(filterInput);
         await user.type(filterInput, 'really');
-        await waitFor(() => {
-            expect(component.container.querySelectorAll('.card').length).toBe(1);
-            expect(component.getByText('mini palm tree')).toBeInTheDocument();
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(200);
         });
+        expect(component.container.querySelectorAll('.card').length).toBe(1);
+        expect(component.getByText('mini palm tree')).toBeInTheDocument();
     });
 
     it('does not match the keys in ignoreKeys arg when filtering', async () => {
         // Type part of UUID, should remove all cards
         const filterInput = component.getByRole('textbox');
         await user.type(filterInput, '2c0991a08806');
-        await waitFor(() => {
-            expect(component.container.querySelectorAll('.card').length).toBe(0);
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(200);
         });
+        expect(component.container.querySelectorAll('.card').length).toBe(0);
 
         // Type part of timestamp, should remove all cards
         await user.clear(filterInput);
         await user.type(filterInput, '2024-03-01');
-        await waitFor(() => {
-            expect(component.container.querySelectorAll('.card').length).toBe(0);
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(200);
         });
+        expect(component.container.querySelectorAll('.card').length).toBe(0);
 
         // Type part of thumbnail URL, should remove all cards
         await user.clear(filterInput);
         await user.type(filterInput, 'IMG_8');
-        await waitFor(() => {
-            expect(component.container.querySelectorAll('.card').length).toBe(0);
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(200);
         });
+        expect(component.container.querySelectorAll('.card').length).toBe(0);
     });
 
     it('clears the filter input when X button is clcked', async () => {
         // Type random characters in field, confirm no cards visible
         const filterInput = component.getByRole('textbox');
         await user.type(filterInput, 'ffduiwafh');
-        await waitFor(() => {
-            expect(component.container.querySelectorAll('.card').length).toBe(0);
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(200);
         });
+        expect(component.container.querySelectorAll('.card').length).toBe(0);
 
         // Click clear button, confirm all 4 cards reappear
         await user.click(component.getByTitle("Clear filter input"));
-        await waitFor(() => {
-            expect(component.container.querySelectorAll('.card').length).toBe(5);
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(200);
         });
+        expect(component.container.querySelectorAll('.card').length).toBe(5);
     });
 
     it('sorts cards correctly when sort dropdown option is clicked', async () => {
@@ -269,11 +288,15 @@ describe('FilterColumn  ', () => {
     // Define default arguments used/overridden in tests below
     let baseArgs;
     beforeEach(() => {
+        // Allow fast forwarding (skip debounce)
+        jest.useFakeTimers({ doNotFake: ['Date'] });
+
         baseArgs = {
             title: 'Plants',
             contents: plants,
             CardComponent: PlantCard,
             editing: false,
+            formRef: jest.fn(),
             selected: {current: []},
             ignoreKeys: [
                 'uuid',
@@ -293,6 +316,12 @@ describe('FilterColumn  ', () => {
         sessionStorage.clear();
     });
 
+    // Clean up pending timers after each test
+    afterEach(() => {
+        jest.runAllTimers();
+        jest.useRealTimers();
+    });
+
     it('does not render dropdown when sortByKeys arg is empty', async () => {
         // Render without sortByKeys arg
         delete baseArgs.sortByKeys;
@@ -308,7 +337,7 @@ describe('FilterColumn  ', () => {
     it('matches any key when ignoreKeys arg is empty', async () => {
         // Render without ignoreKeys arg
         delete baseArgs.ignoreKeys;
-        const user = userEvent.setup();
+        const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         const component = render(
             <FilterColumn { ...baseArgs } />
         );
@@ -316,16 +345,18 @@ describe('FilterColumn  ', () => {
         // Type part of UUID, confirm 1 card still present
         const filterInput = component.getByRole('textbox');
         await user.type(filterInput, '2c0991a08806');
-        await waitFor(() => {
-            expect(component.container.querySelectorAll('.card').length).toBe(1);
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(200);
         });
+        expect(component.container.querySelectorAll('.card').length).toBe(1);
 
         // Type part of timestamp, confirm all cards still present
         await user.clear(filterInput);
         await user.type(filterInput, '2024-03-01');
-        await waitFor(() => {
-            expect(component.container.querySelectorAll('.card').length).toBe(4);
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(200);
         });
+        expect(component.container.querySelectorAll('.card').length).toBe(4);
     });
 
     it('sorts cards by key in defaultSortKey arg by default', () => {
@@ -367,7 +398,7 @@ describe('FilterColumn  ', () => {
     it('caches sortDirection and sortKey to sessionStorage when changed', async () => {
         // Render with optional storageKey param (persist sort direction and key)
         const args = { ...baseArgs, storageKey: 'unittest' };
-        const user = userEvent.setup();
+        const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         const component = render(
             <FilterColumn {...args} />
         );
@@ -388,7 +419,7 @@ describe('FilterColumn  ', () => {
     it('caches query to sessionStorage when user types in the filter input', async () => {
         // Render with optional storageKey param (persist sort direction and key)
         const args = { ...baseArgs, storageKey: 'unittest' };
-        const user = userEvent.setup();
+        const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         const component = render(
             <FilterColumn {...args} />
         );
@@ -396,9 +427,10 @@ describe('FilterColumn  ', () => {
         // Type "plant" in filter input, wait for rerender (debounced)
         const filterInput = component.getByRole('textbox');
         await user.type(filterInput, 'plant');
-        await waitFor(() => {
-            expect(component.container.querySelectorAll('.card').length).toBe(3);
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(200);
         });
+        expect(component.container.querySelectorAll('.card').length).toBe(3);
 
         // Confirm that query was written to sessionStorage
         let persistedState = JSON.parse(sessionStorage.getItem('unittest'));
@@ -410,16 +442,16 @@ describe('FilterColumn  ', () => {
 
         // Clear input, confirm query was updated in sessionStorage
         await user.clear(filterInput);
-        await waitFor(() => {
-            expect(component.container.querySelectorAll('.card').length).toBe(5);
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(200);
         });
+        expect(component.container.querySelectorAll('.card').length).toBe(5);
         persistedState = JSON.parse(sessionStorage.getItem('unittest'));
         expect(persistedState).toEqual({
             sortKey: 'created',
             sortDirection: 1,
             query: ''
         });
-
     });
 
     it('restores sortDirection and sortKey from sessionStorage if set', () => {

@@ -23,9 +23,20 @@ describe('ToastContext', () => {
 
     // Mock localStorage API
     beforeEach(() => {
+        // Allow fast forwarding (skip delay before fade out)
+        jest.useFakeTimers({ doNotFake: ['Date'] });
+
         // Render component + create userEvent instance to use in tests
-        user = userEvent.setup();
+        user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         component = render(<TestComponent />);
+    });
+
+    // Clean up pending timers after each test
+    afterEach(() => {
+        act(() => {
+            jest.runAllTimers();
+        });
+        jest.useRealTimers();
     });
 
     it('renders toast div when showToast method called', async () => {
@@ -56,9 +67,10 @@ describe('ToastContext', () => {
         expect(component.container.querySelectorAll('.toast').length).toBe(1);
 
         // Wait for timeout + animation (100 + 500ms), confirm toast disappeared
-        await waitFor(() => {
-            expect(component.container.querySelectorAll('.toast').length).toBe(0);
-        }, {timeout: 650});
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(600);
+        });
+        expect(component.container.querySelectorAll('.toast').length).toBe(0);
     });
 
     it('resets hide timer each time showToast is called', async () => {
@@ -71,27 +83,29 @@ describe('ToastContext', () => {
 
         // Keep clicking button half way through animation, confirm never
         // starts fading even though >100ms have passed
-        await new Promise((resolve) => setTimeout(resolve, 50));
+        await jest.advanceTimersByTimeAsync(50);
         await user.click(component.getByText('Show Info Toast'));
-        await new Promise((resolve) => setTimeout(resolve, 50));
+        await jest.advanceTimersByTimeAsync(50);
         await user.click(component.getByText('Show Info Toast'));
-        await new Promise((resolve) => setTimeout(resolve, 50));
+        await jest.advanceTimersByTimeAsync(50);
         await user.click(component.getByText('Show Info Toast'));
-        await new Promise((resolve) => setTimeout(resolve, 50));
+        await jest.advanceTimersByTimeAsync(50);
         expect(
             component.container.querySelector('.toast').classList
         ).not.toContain('opacity-0');
 
         // Wait for full timeout without clicking, confirm toast is fading out
-        await waitFor(() => {
-            expect(
-                component.container.querySelector('.toast').classList
-            ).toContain('opacity-0');
-        }, {timeout: 150});
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(150);
+        });
+        expect(
+            component.container.querySelector('.toast').classList
+        ).toContain('opacity-0');
 
         // Wait for fade animation, confirm toast umounted
-        await waitFor(() => {
-            expect(component.container.querySelectorAll('.toast').length).toBe(0);
-        }, {timeout: 600});
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(600);
+        });
+        expect(component.container.querySelectorAll('.toast').length).toBe(0);
     });
 });
