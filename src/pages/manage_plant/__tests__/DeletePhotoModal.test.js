@@ -153,6 +153,25 @@ describe('DeletePhotosModal', () => {
         });
     });
 
+    it('leaves confirmation screen when last selected photo is unselected', async () => {
+        // Simulate user selecting first 2 photos
+        await user.click(component.getByTestId('select_photo_3'));
+        await user.click(component.getByTestId('select_photo_2'));
+
+        // Click first delete button, confirm confirmation screen visible
+        await user.click(component.getByTestId('delete_photos'));
+        const confirmScreen = component.getByTestId('delete-photos-confirm');
+        expect(confirmScreen.classList).not.toContain('hidden');
+
+        // Click first photo X button, confirm still on confirmation screen
+        await user.click(confirmScreen.querySelector('svg'));
+        expect(confirmScreen.classList).not.toContain('hidden');
+
+        // Click second photo X button, confirm returned to first screen
+        await user.click(confirmScreen.querySelector('svg'));
+        expect(confirmScreen.classList).toContain('hidden');
+    });
+
     it('shows error modal if error received while deleting photos', async() => {
         // Mock fetch function to return arbitrary error
         global.fetch = jest.fn(() => Promise.resolve({

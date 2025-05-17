@@ -154,7 +154,12 @@ const DeletePhotosModal = () => {
     // Remove selected photo button handler on confirmation page
     const unselectPhoto = useCallback((photo) => {
         setSelectedPhotos((prevSelectedPhotos) => {
-            return prevSelectedPhotos.filter(item => item !== photo);
+            const newPhotos = prevSelectedPhotos.filter(item => item !== photo);
+            // Leave confirmation screen if last photo unselected
+            if (!newPhotos.length) {
+                setConfirmDelete(false);
+            }
+            return newPhotos;
         });
     }, []);
 
