@@ -34,6 +34,10 @@ ExistingNoteTimestamp.propTypes = {
 const NoteModal = () => {
     const dispatch = useDispatch();
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
+    // Get user-configured hold to delete delay
+    const holdToConfirmDelay = useSelector(
+        (state) => state.settings.holdToConfirmDelay
+    );
 
     // States for text and timestamp inputs
     const [noteTime, setNoteTime] = useState('');
@@ -175,7 +179,7 @@ const NoteModal = () => {
                         <div className="modal-action mx-auto">
                             <HoldToConfirm
                                 callback={handleDelete}
-                                timeout={1500}
+                                timeout={holdToConfirmDelay}
                                 buttonText="Delete"
                                 tooltipText="Hold to confirm"
                             />

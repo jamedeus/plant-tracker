@@ -110,6 +110,30 @@ describe('Settings menu', () => {
         // Confirm setting changed
         expect(getSavedSettingValue('timelineFullDate')).toBe(true);
     });
+
+    it('changes NoteModal hold to delete duration when holdToConfirmDelay changed', async () => {
+        // Confirm setting is not set in localStorage
+        expect(getSavedSettingValue('holdToConfirmDelay')).toBe(undefined);
+
+        // Simulate user clicking icon next to timeline note (open NoteModal)
+        const timeline = app.container.querySelector('.timeline-layout');
+        const editButton = within(timeline).getByText(
+            'One of the older leaves is starting to turn yellow'
+        ).closest('.note-collapse').querySelector('svg');
+        await user.click(editButton);
+
+        // Get delete note button, confirm has hold-to-confirm class
+        const editModal = app.getByText('Edit Note').closest('.modal-box');
+        const button = within(editModal).getByText('Delete').closest('.btn');
+        expect(button.classList).toContain('hold-to-confirm');
+
+        // Change holdToConfirmDelay to 0 (no confirmation)
+        await user.click(app.getByLabelText('Set Hold to delete note (seconds) to 0'));
+        expect(getSavedSettingValue('holdToConfirmDelay')).toBe(0);
+
+        // Confirm delete button no longer has hold-to-confirm (normal button)
+        expect(button).not.toContain('hold-to-confirm');
+    });
 });
 
 describe('Settings default values', () => {
@@ -220,6 +244,7 @@ describe('Settings default values', () => {
         // Set non-default settings, render app
         setSavedSettingValue('timelineFullDate', false);
         setSavedSettingValue('collapsedNoteLines', 'All');
+        setSavedSettingValue('holdToConfirmDelay', 2500);
         renderApp();
 
         // Confirm timelineFullDate setting applied

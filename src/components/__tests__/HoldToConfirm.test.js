@@ -73,4 +73,22 @@ describe('HoldToConfirm', () => {
         // Confirm callback still did not run
         expect(callback).not.toHaveBeenCalled();
     });
+
+    it('behaves like normal button when timeout is 0', () => {
+        // Render HoldToConfirm with 0ms timeout
+        const noDelay = render(
+            <HoldToConfirm
+                callback={callback}
+                timeout={0}
+                buttonText='Delete'
+                tooltipText='No tooltip'
+            />
+        );
+
+        // Simulate user clicking button normally, confirm callback runs
+        const button = noDelay.getByRole('button', {name: 'Delete'});
+        fireEvent.click(button);
+        jest.advanceTimersByTime(0);
+        expect(callback).toHaveBeenCalled();
+    });
 });

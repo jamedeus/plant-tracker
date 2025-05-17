@@ -36,6 +36,20 @@ const settings = {
             desktop: true,
             mobile: false
         }
+    },
+    holdToConfirmDelay: {
+        settingText: "Hold to delete note (seconds)",
+        settingDescription: "How many seconds the delete button must be held to delete a note (prevents accidents)",
+        settingOptions: [
+            { name: 0, value: 0 },
+            { name: 0.5, value: 500 },
+            { name: 1.5, value: 1500 },
+            { name: 2.5, value: 2500 },
+        ],
+        default: {
+            desktop: 1500,
+            mobile: 1500
+        }
     }
 };
 

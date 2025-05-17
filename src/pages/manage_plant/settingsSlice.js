@@ -8,7 +8,9 @@ export const settingsSlice = createSlice({
         // Either 1, 2, 3, 4, or 'All
         collapsedNoteLines: 1,
         // True = show, False = tooltip
-        timelineFullDate: true
+        timelineFullDate: true,
+        // Number of milliseconds to hold delete button (0 for no delay)
+        holdToConfirmDelay: 1500
     },
     reducers: {
         // Takes {setting: name, value: value}

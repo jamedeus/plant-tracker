@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import 'src/css/hold_to_confirm.css';
 
+// User must click and hold for timeout ms before callback runs
+// Shows tooltip with instructions, progress bar animation while held
+// Becomes normal btn-error btn-soft if timeout is 0 (callback runs onClick)
 const HoldToConfirm = ({ callback, timeout, buttonText, tooltipText }) => {
     const [holding, setHolding] = useState(false);
     const [showTooltip, setShowTooltip] = useState(false);
@@ -28,7 +31,6 @@ const HoldToConfirm = ({ callback, timeout, buttonText, tooltipText }) => {
         // after moving cursor outside button without releasing click)
         buttonRef.current.blur();
         // Keep tooltip visible long enough for user to read text
-        clearTimeout(timerRef.current);
         timerRef.current = setTimeout(() => {
             setShowTooltip(false);
         }, 750);
@@ -37,14 +39,16 @@ const HoldToConfirm = ({ callback, timeout, buttonText, tooltipText }) => {
     return (
         <div
             className={clsx(
-                "tooltip hold-to-confirm-tooltip",
+                // Show tooltip unless timeout is 0 (no confirmation)
+                timeout && "tooltip hold-to-confirm-tooltip",
                 showTooltip && "tooltip-open"
             )}
             data-tip={tooltipText}
         >
             <button
                 className={clsx(
-                    'btn btn-soft btn-error hold-to-confirm',
+                    'btn btn-soft btn-error',
+                    timeout && 'hold-to-confirm',
                     holding && 'active'
                 )}
                 style={{ '--hold-duration': `${timeout}ms` }}
@@ -53,6 +57,8 @@ const HoldToConfirm = ({ callback, timeout, buttonText, tooltipText }) => {
                 onMouseUp={handleRelease}
                 onMouseLeave={handleRelease}
                 onTouchEnd={handleRelease}
+                // Only add onClick if timeout is 0 (no confirmation)
+                onClick={!timeout ? handleHold : null}
                 ref={buttonRef}
             >
                 <span>

@@ -1818,6 +1818,65 @@ exports[`App matches snapshot 1`] = `
                   </ul>
                 </div>
               </div>
+              <div
+                class="flex items-center font-semibold"
+                title="How many seconds the delete button must be held to delete a note (prevents accidents)"
+              >
+                Hold to delete note (seconds)
+              </div>
+              <div
+                class="flex items-center"
+              >
+                <div
+                  class="dropdown dropdown-center mx-auto"
+                >
+                  <button
+                    aria-label="Set Hold to delete note (seconds)"
+                    class="btn btn-ghost text-xl font-bold"
+                    role="button"
+                    tabindex="0"
+                  >
+                    1.5
+                  </button>
+                  <ul
+                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                    tabindex="0"
+                  >
+                    <li>
+                      <button
+                        aria-label="Set Hold to delete note (seconds) to 0"
+                        class="flex justify-center"
+                      >
+                        0
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Hold to delete note (seconds) to 0.5"
+                        class="flex justify-center"
+                      >
+                        0.5
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Hold to delete note (seconds) to 1.5"
+                        class="flex justify-center"
+                      >
+                        1.5
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Hold to delete note (seconds) to 2.5"
+                        class="flex justify-center"
+                      >
+                        2.5
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
             <div
               class="mt-auto mb-4 mx-auto w-full max-w-72"
@@ -3985,6 +4044,65 @@ exports[`App matches snapshot 1`] = `
                 </ul>
               </div>
             </div>
+            <div
+              class="flex items-center font-semibold"
+              title="How many seconds the delete button must be held to delete a note (prevents accidents)"
+            >
+              Hold to delete note (seconds)
+            </div>
+            <div
+              class="flex items-center"
+            >
+              <div
+                class="dropdown dropdown-center mx-auto"
+              >
+                <button
+                  aria-label="Set Hold to delete note (seconds)"
+                  class="btn btn-ghost text-xl font-bold"
+                  role="button"
+                  tabindex="0"
+                >
+                  1.5
+                </button>
+                <ul
+                  class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                  tabindex="0"
+                >
+                  <li>
+                    <button
+                      aria-label="Set Hold to delete note (seconds) to 0"
+                      class="flex justify-center"
+                    >
+                      0
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Hold to delete note (seconds) to 0.5"
+                      class="flex justify-center"
+                    >
+                      0.5
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Hold to delete note (seconds) to 1.5"
+                      class="flex justify-center"
+                    >
+                      1.5
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Hold to delete note (seconds) to 2.5"
+                      class="flex justify-center"
+                    >
+                      2.5
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
           <div
             class="mt-auto mb-4 mx-auto w-full max-w-72"
@@ -6119,6 +6237,65 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   </ul>
                 </div>
               </div>
+              <div
+                class="flex items-center font-semibold"
+                title="How many seconds the delete button must be held to delete a note (prevents accidents)"
+              >
+                Hold to delete note (seconds)
+              </div>
+              <div
+                class="flex items-center"
+              >
+                <div
+                  class="dropdown dropdown-center mx-auto"
+                >
+                  <button
+                    aria-label="Set Hold to delete note (seconds)"
+                    class="btn btn-ghost text-xl font-bold"
+                    role="button"
+                    tabindex="0"
+                  >
+                    1.5
+                  </button>
+                  <ul
+                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                    tabindex="0"
+                  >
+                    <li>
+                      <button
+                        aria-label="Set Hold to delete note (seconds) to 0"
+                        class="flex justify-center"
+                      >
+                        0
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Hold to delete note (seconds) to 0.5"
+                        class="flex justify-center"
+                      >
+                        0.5
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Hold to delete note (seconds) to 1.5"
+                        class="flex justify-center"
+                      >
+                        1.5
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Hold to delete note (seconds) to 2.5"
+                        class="flex justify-center"
+                      >
+                        2.5
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
             <div
               class="mt-auto mb-4 mx-auto w-full max-w-72"
@@ -8151,6 +8328,65 @@ exports[`App matches snapshot when plant is archived 1`] = `
                       class="flex justify-center"
                     >
                       Tooltip
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div
+              class="flex items-center font-semibold"
+              title="How many seconds the delete button must be held to delete a note (prevents accidents)"
+            >
+              Hold to delete note (seconds)
+            </div>
+            <div
+              class="flex items-center"
+            >
+              <div
+                class="dropdown dropdown-center mx-auto"
+              >
+                <button
+                  aria-label="Set Hold to delete note (seconds)"
+                  class="btn btn-ghost text-xl font-bold"
+                  role="button"
+                  tabindex="0"
+                >
+                  1.5
+                </button>
+                <ul
+                  class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                  tabindex="0"
+                >
+                  <li>
+                    <button
+                      aria-label="Set Hold to delete note (seconds) to 0"
+                      class="flex justify-center"
+                    >
+                      0
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Hold to delete note (seconds) to 0.5"
+                      class="flex justify-center"
+                    >
+                      0.5
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Hold to delete note (seconds) to 1.5"
+                      class="flex justify-center"
+                    >
+                      1.5
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Hold to delete note (seconds) to 2.5"
+                      class="flex justify-center"
+                    >
+                      2.5
                     </button>
                   </li>
                 </ul>
