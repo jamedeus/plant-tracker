@@ -174,7 +174,8 @@ describe('EventHistoryModal', () => {
         // Click delete button
         await user.click(component.getByRole('button', {name: 'Delete'}));
 
-        // Confirm delete button is now disabled
+        // Reopen, confirm delete button is now disabled
+        await user.click(component.getByText('Open event history modal'));
         expect(component.getByRole('button', {name: 'Delete'})).toBeDisabled();
     });
 });

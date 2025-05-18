@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { sendPostRequest } from 'src/util';
 import Navbar from 'src/components/Navbar';
 import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
@@ -38,6 +38,9 @@ function Layout() {
         return () => window.removeEventListener('pageshow', handleBackButton);
     }, []);
 
+    // Used to open settings menu
+    const settingsRef = useRef(null);
+
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => (
         <NavbarDropdownOptions>
@@ -52,8 +55,7 @@ function Layout() {
                         Change QR code
                     </button></li>
                     <li><label
-                        htmlFor='settings-menu'
-                        onClick={() => document.activeElement.blur()}
+                        onClick={() => settingsRef.current?.open()}
                         data-testid='open-settings-menu'
                     >
                         Settings
@@ -197,7 +199,7 @@ function Layout() {
             </div>
 
             <ChangeQrModal uuid={plantDetails.uuid} />
-            <Settings />
+            <Settings ref={settingsRef} />
         </div>
     );
 }

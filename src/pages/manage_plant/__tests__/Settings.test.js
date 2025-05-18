@@ -3,6 +3,7 @@ import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import App from '../App';
 import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
+import { waitFor } from '@testing-library/react';
 
 describe('Settings menu', () => {
     let app, user;
@@ -34,6 +35,25 @@ describe('Settings menu', () => {
         );
     });
 
+    it('closes when user clicks close button or clicks outside menu', async () => {
+        // Confirm settings menu is closed
+        expect(app.container.querySelector('dialog.drawer').open).toBe(false);
+
+        // Click dropdown option to open settings, confirm open
+        await user.click(app.getByTestId('open-settings-menu'));
+        expect(app.container.querySelector('dialog.drawer').open).toBe(true);
+
+        // Click overlay that covers the full page outside menu, confirm closed
+        await user.click(app.getByTestId('settings-menu-overlay'));
+        expect(app.container.querySelector('dialog.drawer').open).toBe(false);
+
+        // Open again, click close button, confirm closed
+        await user.click(app.getByTestId('open-settings-menu'));
+        expect(app.container.querySelector('dialog.drawer').open).toBe(true);
+        await user.click(app.getByTestId('settings-menu-close-button'));
+        expect(app.container.querySelector('dialog.drawer').open).toBe(false);
+    });
+
     it('changes number of collapsed note visible lines when collapsedNoteLines changed', async () => {
         // Confirm collapsed note shows 1 line
         expect(
@@ -43,7 +63,6 @@ describe('Settings menu', () => {
         expect(getSavedSettingValue('collapsedNoteLines')).toBe(undefined);
 
         // Click collapsedNoteLines settings dropdown, select option "All"
-        await user.click(app.getByTestId('open-settings-menu'));
         await user.click(app.getByLabelText('Set Closed note visible lines to All'));
 
         // Confirm collapsed note shows all lines

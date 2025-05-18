@@ -12,7 +12,9 @@ beforeAll(() => {
     HTMLDialogElement.prototype.showModal = jest.fn(function () {
         this.setAttribute("open", "");
     });
-    HTMLDialogElement.prototype.close = jest.fn();
+    HTMLDialogElement.prototype.close = jest.fn(function () {
+        this.removeAttribute("open");
+    });
     window.HTMLElement.prototype.scrollIntoView = jest.fn();
     window.scrollTo = jest.fn();
 

@@ -108,7 +108,6 @@ exports[`App matches snapshot 1`] = `
               <li>
                 <label
                   data-testid="open-settings-menu"
-                  for="settings-menu"
                 >
                   Settings
                 </label>
@@ -1668,17 +1667,13 @@ exports[`App matches snapshot 1`] = `
             </button>
           </form>
         </dialog>
-        <div
-          class="drawer z-99"
+        <dialog
+          class="drawer text-base-content group"
         >
-          <input
-            class="drawer-toggle peer"
-            id="settings-menu"
-            type="checkbox"
-          />
-          <label
-            class="fixed inset-0 not-peer-checked:hidden cursor-pointer"
-            for="settings-menu"
+          <div
+            class="fixed inset-0 cursor-pointer not-group-open:hidden"
+            data-testid="settings-menu-overlay"
+            tabindex="0"
           />
           <div
             class="drawer-side flex flex-col gap-8 max-h-screen"
@@ -1691,9 +1686,9 @@ exports[`App matches snapshot 1`] = `
               >
                 Settings
               </h2>
-              <label
+              <button
                 class="btn btn-ghost btn-circle size-12"
-                for="settings-menu"
+                data-testid="settings-menu-close-button"
               >
                 <svg
                   aria-hidden="true"
@@ -1707,7 +1702,7 @@ exports[`App matches snapshot 1`] = `
                     d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
                   />
                 </svg>
-              </label>
+              </button>
             </div>
             <div
               class="settings-grid w-full gap-4 pl-4 md:px-8"
@@ -1902,7 +1897,7 @@ exports[`App matches snapshot 1`] = `
               </button>
             </div>
           </div>
-        </div>
+        </dialog>
       </div>
       <dialog
         class="modal"
@@ -2338,7 +2333,6 @@ exports[`App matches snapshot 1`] = `
             <li>
               <label
                 data-testid="open-settings-menu"
-                for="settings-menu"
               >
                 Settings
               </label>
@@ -3898,17 +3892,13 @@ exports[`App matches snapshot 1`] = `
           </button>
         </form>
       </dialog>
-      <div
-        class="drawer z-99"
+      <dialog
+        class="drawer text-base-content group"
       >
-        <input
-          class="drawer-toggle peer"
-          id="settings-menu"
-          type="checkbox"
-        />
-        <label
-          class="fixed inset-0 not-peer-checked:hidden cursor-pointer"
-          for="settings-menu"
+        <div
+          class="fixed inset-0 cursor-pointer not-group-open:hidden"
+          data-testid="settings-menu-overlay"
+          tabindex="0"
         />
         <div
           class="drawer-side flex flex-col gap-8 max-h-screen"
@@ -3921,9 +3911,9 @@ exports[`App matches snapshot 1`] = `
             >
               Settings
             </h2>
-            <label
+            <button
               class="btn btn-ghost btn-circle size-12"
-              for="settings-menu"
+              data-testid="settings-menu-close-button"
             >
               <svg
                 aria-hidden="true"
@@ -3937,7 +3927,7 @@ exports[`App matches snapshot 1`] = `
                   d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
                 />
               </svg>
-            </label>
+            </button>
           </div>
           <div
             class="settings-grid w-full gap-4 pl-4 md:px-8"
@@ -4132,7 +4122,7 @@ exports[`App matches snapshot 1`] = `
             </button>
           </div>
         </div>
-      </div>
+      </dialog>
     </div>
     <dialog
       class="modal"
@@ -6095,17 +6085,13 @@ exports[`App matches snapshot when plant is archived 1`] = `
             </button>
           </form>
         </dialog>
-        <div
-          class="drawer z-99"
+        <dialog
+          class="drawer text-base-content group"
         >
-          <input
-            class="drawer-toggle peer"
-            id="settings-menu"
-            type="checkbox"
-          />
-          <label
-            class="fixed inset-0 not-peer-checked:hidden cursor-pointer"
-            for="settings-menu"
+          <div
+            class="fixed inset-0 cursor-pointer not-group-open:hidden"
+            data-testid="settings-menu-overlay"
+            tabindex="0"
           />
           <div
             class="drawer-side flex flex-col gap-8 max-h-screen"
@@ -6118,9 +6104,9 @@ exports[`App matches snapshot when plant is archived 1`] = `
               >
                 Settings
               </h2>
-              <label
+              <button
                 class="btn btn-ghost btn-circle size-12"
-                for="settings-menu"
+                data-testid="settings-menu-close-button"
               >
                 <svg
                   aria-hidden="true"
@@ -6134,7 +6120,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                     d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
                   />
                 </svg>
-              </label>
+              </button>
             </div>
             <div
               class="settings-grid w-full gap-4 pl-4 md:px-8"
@@ -6329,7 +6315,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               </button>
             </div>
           </div>
-        </div>
+        </dialog>
       </div>
       <dialog
         class="modal"
@@ -8195,17 +8181,13 @@ exports[`App matches snapshot when plant is archived 1`] = `
           </button>
         </form>
       </dialog>
-      <div
-        class="drawer z-99"
+      <dialog
+        class="drawer text-base-content group"
       >
-        <input
-          class="drawer-toggle peer"
-          id="settings-menu"
-          type="checkbox"
-        />
-        <label
-          class="fixed inset-0 not-peer-checked:hidden cursor-pointer"
-          for="settings-menu"
+        <div
+          class="fixed inset-0 cursor-pointer not-group-open:hidden"
+          data-testid="settings-menu-overlay"
+          tabindex="0"
         />
         <div
           class="drawer-side flex flex-col gap-8 max-h-screen"
@@ -8218,9 +8200,9 @@ exports[`App matches snapshot when plant is archived 1`] = `
             >
               Settings
             </h2>
-            <label
+            <button
               class="btn btn-ghost btn-circle size-12"
-              for="settings-menu"
+              data-testid="settings-menu-close-button"
             >
               <svg
                 aria-hidden="true"
@@ -8234,7 +8216,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
                 />
               </svg>
-            </label>
+            </button>
           </div>
           <div
             class="settings-grid w-full gap-4 pl-4 md:px-8"
@@ -8429,7 +8411,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
             </button>
           </div>
         </div>
-      </div>
+      </dialog>
     </div>
     <dialog
       class="modal"

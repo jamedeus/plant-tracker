@@ -1,4 +1,4 @@
-import { memo, useState } from 'react';
+import { memo, useState, useRef, useImperativeHandle, forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import CloseButtonIcon from 'src/components/CloseButtonIcon';
 import { useSelector, useDispatch } from 'react-redux';
@@ -166,20 +166,22 @@ const ResetAllSettingsButton = () => {
     );
 };
 
-const Settings = () => {
+const Settings = forwardRef(function Settings(_, ref) {
+    const dialogRef = useRef(null);
+
+    useImperativeHandle(ref, () => ({
+        open: () => dialogRef.current.showModal()
+    }));
+
     return (
-        <div className="drawer z-99">
-            {/* Hidden checkbox controls open state */}
-            {/* Must add label somewhere with htmlFor targeting this */}
-            <input
-                id="settings-menu"
-                type="checkbox"
-                className="drawer-toggle peer"
-            />
+        <dialog className="drawer text-base-content group" ref={dialogRef}>
             {/* Full screen overlay when menu open (click outside to close) */}
-            <label
-                htmlFor="settings-menu"
-                className="fixed inset-0 not-peer-checked:hidden cursor-pointer"
+            {/* Tabindex sets initial focus (will open dropdown otherwise) */}
+            <div
+                tabIndex={0}
+                onClick={() => dialogRef.current.close()}
+                className="fixed inset-0 cursor-pointer not-group-open:hidden"
+                data-testid="settings-menu-overlay"
             />
             <div className="drawer-side flex flex-col gap-8 max-h-screen">
                 {/* Title + close button */}
@@ -187,12 +189,13 @@ const Settings = () => {
                     <h2 className="text-2xl font-bold ml-2 md:ml-4 mr-auto">
                         Settings
                     </h2>
-                    <label
-                        htmlFor="settings-menu"
+                    <button
                         className="btn btn-ghost btn-circle size-12"
+                        onClick={() => dialogRef.current.close()}
+                        data-testid="settings-menu-close-button"
                     >
                         <CloseButtonIcon />
-                    </label>
+                    </button>
                 </div>
                 {/* Contents */}
                 <div className="settings-grid w-full gap-4 pl-4 md:px-8">
@@ -208,8 +211,8 @@ const Settings = () => {
                     <ResetAllSettingsButton />
                 </div>
             </div>
-        </div>
+        </dialog>
     );
-};
+});
 
 export default Settings;
