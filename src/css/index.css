@@ -2,7 +2,7 @@
 @plugin './tailwind-min-size.js';
 @plugin "daisyui" {
     themes: light --default, dark --prefersdark;
-    include: modal, carousel, tooltip, divider, loading, steps, drawer,
+    include: modal, carousel, tooltip, divider, loading, steps,
              rootcolor, rootscrolllock, rootscrollgutter, scrollbar;
 }
 

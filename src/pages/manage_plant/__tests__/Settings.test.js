@@ -37,21 +37,21 @@ describe('Settings menu', () => {
 
     it('closes when user clicks close button or clicks outside menu', async () => {
         // Confirm settings menu is closed
-        expect(app.container.querySelector('dialog.drawer').open).toBe(false);
+        expect(app.container.querySelector('dialog.settings-menu').open).toBe(false);
 
         // Click dropdown option to open settings, confirm open
         await user.click(app.getByTestId('open-settings-menu'));
-        expect(app.container.querySelector('dialog.drawer').open).toBe(true);
+        expect(app.container.querySelector('dialog.settings-menu').open).toBe(true);
 
         // Click overlay that covers the full page outside menu, confirm closed
         await user.click(app.getByTestId('settings-menu-overlay'));
-        expect(app.container.querySelector('dialog.drawer').open).toBe(false);
+        expect(app.container.querySelector('dialog.settings-menu').open).toBe(false);
 
         // Open again, click close button, confirm closed
         await user.click(app.getByTestId('open-settings-menu'));
-        expect(app.container.querySelector('dialog.drawer').open).toBe(true);
+        expect(app.container.querySelector('dialog.settings-menu').open).toBe(true);
         await user.click(app.getByTestId('settings-menu-close-button'));
-        expect(app.container.querySelector('dialog.drawer').open).toBe(false);
+        expect(app.container.querySelector('dialog.settings-menu').open).toBe(false);
     });
 
     it('changes number of collapsed note visible lines when collapsedNoteLines changed', async () => {

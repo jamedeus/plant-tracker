@@ -1668,7 +1668,7 @@ exports[`App matches snapshot 1`] = `
           </form>
         </dialog>
         <dialog
-          class="drawer text-base-content group"
+          class="settings-menu group"
         >
           <div
             class="fixed inset-0 cursor-pointer not-group-open:hidden"
@@ -1676,7 +1676,7 @@ exports[`App matches snapshot 1`] = `
             tabindex="0"
           />
           <div
-            class="drawer-side flex flex-col gap-8 max-h-screen"
+            class="settings-contents"
           >
             <div
               class="flex items-center w-full"
@@ -1881,7 +1881,7 @@ exports[`App matches snapshot 1`] = `
               class="mt-auto mb-4 mx-auto w-full max-w-72"
             >
               <button
-                class="btn btn-error btn-soft w-full"
+                class="btn btn-error btn-soft w-full relative"
                 data-testid="restore_default_settings_button"
               >
                 <span
@@ -3893,7 +3893,7 @@ exports[`App matches snapshot 1`] = `
         </form>
       </dialog>
       <dialog
-        class="drawer text-base-content group"
+        class="settings-menu group"
       >
         <div
           class="fixed inset-0 cursor-pointer not-group-open:hidden"
@@ -3901,7 +3901,7 @@ exports[`App matches snapshot 1`] = `
           tabindex="0"
         />
         <div
-          class="drawer-side flex flex-col gap-8 max-h-screen"
+          class="settings-contents"
         >
           <div
             class="flex items-center w-full"
@@ -4106,7 +4106,7 @@ exports[`App matches snapshot 1`] = `
             class="mt-auto mb-4 mx-auto w-full max-w-72"
           >
             <button
-              class="btn btn-error btn-soft w-full"
+              class="btn btn-error btn-soft w-full relative"
               data-testid="restore_default_settings_button"
             >
               <span
@@ -6086,7 +6086,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
           </form>
         </dialog>
         <dialog
-          class="drawer text-base-content group"
+          class="settings-menu group"
         >
           <div
             class="fixed inset-0 cursor-pointer not-group-open:hidden"
@@ -6094,7 +6094,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
             tabindex="0"
           />
           <div
-            class="drawer-side flex flex-col gap-8 max-h-screen"
+            class="settings-contents"
           >
             <div
               class="flex items-center w-full"
@@ -6299,7 +6299,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               class="mt-auto mb-4 mx-auto w-full max-w-72"
             >
               <button
-                class="btn btn-error btn-soft w-full"
+                class="btn btn-error btn-soft w-full relative"
                 data-testid="restore_default_settings_button"
               >
                 <span
@@ -8182,7 +8182,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
         </form>
       </dialog>
       <dialog
-        class="drawer text-base-content group"
+        class="settings-menu group"
       >
         <div
           class="fixed inset-0 cursor-pointer not-group-open:hidden"
@@ -8190,7 +8190,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
           tabindex="0"
         />
         <div
-          class="drawer-side flex flex-col gap-8 max-h-screen"
+          class="settings-contents"
         >
           <div
             class="flex items-center w-full"
@@ -8395,7 +8395,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
             class="mt-auto mb-4 mx-auto w-full max-w-72"
           >
             <button
-              class="btn btn-error btn-soft w-full"
+              class="btn btn-error btn-soft w-full relative"
               data-testid="restore_default_settings_button"
             >
               <span

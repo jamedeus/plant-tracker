@@ -1,55 +1,52 @@
 @reference './index.css';
 
-/* Container dialog open state */
-dialog.drawer[open] {
-    /* Enable click events inside menu */
-    & > * {
-        @apply pointer-events-auto;
-    }
+/* Container dialog */
+dialog.settings-menu {
+    /* Prevent display: none when closed (allow open animation to run) */
+    @apply block text-base-content;
 
     /* Slide open animation */
-    & > .drawer-side {
-        transform: translateX(0);
+    &[open] {
+        & > .settings-contents {
+            transform: translateX(0);
+        }
+    }
+
+    /* Hide daisyui dialog backdrop (caused by showModal, need for esc key) */
+    &::backdrop {
+        @apply hidden;
     }
 }
 
-/* Drawer contents */
-.drawer-side {
-    @apply fixed visible opacity-100 inset-0 h-screen w-full md:w-128 p-4 z-99;
+/* Wrapper inside dialog */
+.settings-contents {
+    @apply fixed inset-0 md:w-128 flex flex-col gap-8 p-4 z-99;
 
-    /* Semi-transparent frosted background — */
+    /* Semi-transparent frosted background */
     backdrop-filter: blur(8px) saturate(180%);
     -webkit-backdrop-filter: blur(8px) saturate(180%);
     background-color: color-mix(in oklab, var(--color-base-200)75%, #0000);
 
-    /* Hide/show animation: slide in/out, no fade */
+    /* Translate off left edge of screen when closed */
     transform: translateX(-100%);
-    transition: transform .3s ease;
 
-    /* Remove contents transition */
-    & > * {
-        translate: 0;
-    }
+    /* Slide open/closed */
+    transition: transform .3s ease;
 }
 
 .settings-grid {
     /* Two column grid, setting name in left, value + dropdown in right */
     /* Right is wide enough for button with 6-7 characters, left fills rest */
     @apply grid grid-cols-[minmax(0,1fr)_6.5rem];
-    /* Prevent row height expanding when not enough rows to fill drawer */
+    /* Prevent row height expanding when not enough rows to fill height */
     @apply content-start;
     /* Prevent vertical scrollbar when not overflowing */
     @apply flex-grow;
     /* Scroll vertically but not horizontally */
-    @apply overflow-y-scroll overflow-x-hidden;
+    @apply overflow-y-auto overflow-x-hidden;
 }
 
-/* Block scrolling while drawer is open on mobile, allow on desktop */
-:root:has(.drawer[open]) {
+/* Block scrolling while menu is open on mobile, allow on desktop */
+:root:has(dialog.settings-menu[open]) {
     @apply overflow-hidden md:overflow-auto;
-}
-
-/* Hide daisyui dialog backdrop (caused by showModal, need for esc key) */
-dialog.drawer::backdrop {
-    @apply hidden;
 }

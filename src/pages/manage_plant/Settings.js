@@ -142,7 +142,7 @@ const ResetAllSettingsButton = () => {
 
     return (
         <button
-            className="btn btn-error btn-soft w-full"
+            className="btn btn-error btn-soft w-full relative"
             onClick={handleClick}
             data-testid="restore_default_settings_button"
         >
@@ -174,7 +174,7 @@ const Settings = forwardRef(function Settings(_, ref) {
     }));
 
     return (
-        <dialog className="drawer text-base-content group" ref={dialogRef}>
+        <dialog className="settings-menu group" ref={dialogRef}>
             {/* Full screen overlay when menu open (click outside to close) */}
             {/* Tabindex sets initial focus (will open dropdown otherwise) */}
             <div
@@ -183,7 +183,7 @@ const Settings = forwardRef(function Settings(_, ref) {
                 className="fixed inset-0 cursor-pointer not-group-open:hidden"
                 data-testid="settings-menu-overlay"
             />
-            <div className="drawer-side flex flex-col gap-8 max-h-screen">
+            <div className="settings-contents">
                 {/* Title + close button */}
                 <div className="flex items-center w-full">
                     <h2 className="text-2xl font-bold ml-2 md:ml-4 mr-auto">
