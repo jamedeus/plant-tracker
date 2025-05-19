@@ -3,7 +3,7 @@
 /* Container dialog */
 dialog.settings-menu {
     /* Prevent display: none when closed (allow open animation to run) */
-    @apply block text-base-content;
+    @apply block text-base-content z-99;
 
     /* Slide open animation */
     &[open] {
