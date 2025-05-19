@@ -398,7 +398,7 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
                 )}
                 title={readableTimestamp}
                 ref={textRef}
-                onClick={collapsedNoteLines !== 'All' && toggle}
+                onClick={collapsedNoteLines !== 'All' ? toggle : null}
             >
                 <span className="note-collapse-text">
                     {note.text}
