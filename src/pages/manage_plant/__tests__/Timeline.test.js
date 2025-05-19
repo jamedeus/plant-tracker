@@ -63,17 +63,6 @@ describe('Timeline', () => {
         expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled();
     });
 
-    // it('opens photo gallery when thumbnails are clicked', async () => {
-    //     // Confirm gallery div does not exist
-    //     expect(document.body.querySelector('.yarl__root')).toBeNull();
-
-    //     // Click image thumbnail, confirm gallery appears
-    //     await user.click(document.body.querySelectorAll('img.photo-thumbnail-timeline')[0]);
-    //     await waitFor(() => {
-    //         expect(document.body.querySelector('.yarl__root')).not.toBeNull();
-    //     });
-    // });
-
     it('expands/collapses note text when clicked', async () => {
         // Get reference to note div, confirm is collapsed (default)
         const note = app.queryByText(

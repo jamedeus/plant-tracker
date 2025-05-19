@@ -676,4 +676,32 @@ describe('App', () => {
         expect(quickNav.children.length).toBe(1);
         expect(quickNav.children[0].textContent).toContain('2024');
     });
+
+    it('opens photo gallery when dropdown option is clicked', async () => {
+        // Confirm gallery div does not exist
+        expect(document.body.querySelector('.yarl__root')).toBeNull();
+
+        // Click image thumbnail, confirm gallery appears
+        await user.click(app.getByRole('button', {name: 'Gallery'}));
+        expect(document.body.querySelector('.yarl__root')).not.toBeNull();
+
+        // Click close button, confrim gallery disappears
+        await user.click(app.getByRole('button', {name: 'Close'}));
+        await jest.advanceTimersByTimeAsync(500);
+        expect(document.body.querySelector('.yarl__root')).toBeNull();
+    });
+
+    it('opens photo gallery when timeline photo thumbnails are clicked', async () => {
+        // Confirm gallery div does not exist
+        expect(document.body.querySelector('.yarl__root')).toBeNull();
+
+        // Click first timeline image thumbnail, confirm gallery appears
+        const photoThumbnail = document.body.querySelectorAll('img.photo-thumbnail-timeline')[0];
+        await user.click(photoThumbnail);
+        expect(document.body.querySelector('.yarl__root')).not.toBeNull();
+        // Confirm visible slide matches clicked photo
+        expect(document.querySelector('.yarl__slide_current > img').src).toBe(
+            photoThumbnail.src
+        );
+    });
 });
