@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { sendPostRequest } from 'src/util';
 import Navbar from 'src/components/Navbar';
 import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
@@ -17,12 +17,15 @@ import { faPlus, faBan, faPen, faUpRightFromSquare } from '@fortawesome/free-sol
 import { useSelector, useDispatch } from 'react-redux';
 import { plantRemovedFromGroup, backButtonPressed } from './plantSlice';
 import Settings from './Settings';
+import Gallery from './Gallery';
 import clsx from 'clsx';
 
 function Layout() {
     // Get redux state (parsed from context set by django template)
     const plantDetails = useSelector((state) => state.plant.plantDetails);
     const defaultPhoto = useSelector((state) => state.timeline.defaultPhoto);
+
+    const [galleryOpen, setGalleryOpen] = useState(false);
 
     // Used to update redux store
     const dispatch = useDispatch();
@@ -60,6 +63,9 @@ function Layout() {
                     >
                         Settings
                     </label></li>
+                    <li><button onClick={() => setGalleryOpen(true)}>
+                        Gallery
+                    </button></li>
                 </>
             )}
         </NavbarDropdownOptions>
@@ -200,6 +206,7 @@ function Layout() {
 
             <ChangeQrModal uuid={plantDetails.uuid} />
             <Settings ref={settingsRef} />
+            <Gallery open={galleryOpen} setOpen={setGalleryOpen} />
         </div>
     );
 }

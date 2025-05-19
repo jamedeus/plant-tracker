@@ -1,0 +1,11 @@
+@reference './index.css';
+
+.yarl__slide {
+    @apply p-0;
+}
+
+/* Allow images that are smaller than the screen to scale up */
+/* Should probably make multiple thumbnail sizes instead and use srcSet */
+.yarl__slide_image {
+    @apply h-screen w-screen max-h-screen! max-w-screen!;
+}

@@ -114,6 +114,11 @@ exports[`App matches snapshot 1`] = `
               </li>
               <li>
                 <button>
+                  Gallery
+                </button>
+              </li>
+              <li>
+                <button>
                   Light mode
                 </button>
               </li>
@@ -2336,6 +2341,11 @@ exports[`App matches snapshot 1`] = `
               >
                 Settings
               </label>
+            </li>
+            <li>
+              <button>
+                Gallery
+              </button>
             </li>
             <li>
               <button>
