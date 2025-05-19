@@ -7,7 +7,7 @@ WORKDIR /build
 
 # Copy source and config files
 COPY src/ ./src/
-COPY .babelrc .
+COPY babel.config.cjs .
 COPY package.json .
 COPY package-lock.json .
 COPY webpack.config.js .
