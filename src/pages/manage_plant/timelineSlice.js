@@ -98,7 +98,11 @@ export const timelineSlice = createSlice({
             image: null,
             thumbnail: null,
             key: null
-        }
+        },
+        // Fullscreen lightbox gallery open state
+        photoGalleryOpen: false,
+        // Currently visible photo in lightbox gallery (index of photos state)
+        photoGalleryIndex: 0,
     },
     reducers: {
         // Takes object with timestamp and type keys, adds to events,
@@ -289,6 +293,17 @@ export const timelineSlice = createSlice({
                 ...action.payload
             };
         },
+
+        // Takes { open: <bool> }
+        photoGalleryOpened(state, action) {
+            console.log(action.payload.open)
+            state.photoGalleryOpen = action.payload.open;
+        },
+
+        // Takes { index: <int> }
+        photoGalleryIndexChanged(state, action) {
+            state.photoGalleryIndex = action.payload.index;
+        }
     },
     extraReducers: builder => {
         // Rebuild all states when user navigates to the page with back button
@@ -316,5 +331,7 @@ export const {
     noteDeleted,
     photosAdded,
     photosDeleted,
-    defaultPhotoChanged
+    defaultPhotoChanged,
+    photoGalleryOpened,
+    photoGalleryIndexChanged
 } = timelineSlice.actions;

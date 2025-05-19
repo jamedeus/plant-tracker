@@ -118,6 +118,8 @@ export function ReduxProvider({ children }) {
         const photos = parseDomContext('photos');
         const notes = parseDomContext('notes');
         const defaultPhoto = parseDomContext('default_photo');
+        const photoGalleryIndex = 0;
+        const photoGalleryOpen = false;
 
         // Build state objects
         const timelineDays = buildTimelineDays(eventsByType, notes, photos);
@@ -148,7 +150,9 @@ export function ReduxProvider({ children }) {
                 timelineDays,
                 photos,
                 navigationOptions,
-                defaultPhoto
+                defaultPhoto,
+                photoGalleryIndex,
+                photoGalleryOpen
             },
             settings: {
                 collapsedNoteLines,

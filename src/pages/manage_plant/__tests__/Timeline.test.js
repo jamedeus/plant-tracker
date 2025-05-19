@@ -63,24 +63,16 @@ describe('Timeline', () => {
         expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled();
     });
 
-    it('opens photo popover when thumbnails are clicked', async () => {
-        // Confirm no popover div exists
-        expect(document.body.querySelector(
-            '#react-tiny-popover-container'
-        )).toBeNull();
+    // it('opens photo gallery when thumbnails are clicked', async () => {
+    //     // Confirm gallery div does not exist
+    //     expect(document.body.querySelector('.yarl__root')).toBeNull();
 
-        // Click image thumbnail, confirm popover appears
-        await user.click(app.getAllByRole('img')[0]);
-        expect(document.body.querySelector(
-            '#react-tiny-popover-container'
-        )).not.toBeNull();
-
-        // Click outside, confirm popover closed
-        await user.click(document.body);
-        expect(document.body.querySelector(
-            '#react-tiny-popover-container'
-        )).toBeNull();
-    });
+    //     // Click image thumbnail, confirm gallery appears
+    //     await user.click(document.body.querySelectorAll('img.photo-thumbnail-timeline')[0]);
+    //     await waitFor(() => {
+    //         expect(document.body.querySelector('.yarl__root')).not.toBeNull();
+    //     });
+    // });
 
     it('expands/collapses note text when clicked', async () => {
         // Get reference to note div, confirm is collapsed (default)

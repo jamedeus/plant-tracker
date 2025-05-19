@@ -15,6 +15,7 @@ import Timeline from './Timeline';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faBan, faPen, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { useSelector, useDispatch } from 'react-redux';
+import { photoGalleryOpened } from './timelineSlice';
 import { plantRemovedFromGroup, backButtonPressed } from './plantSlice';
 import Settings from './Settings';
 import Gallery from './Gallery';
@@ -24,8 +25,6 @@ function Layout() {
     // Get redux state (parsed from context set by django template)
     const plantDetails = useSelector((state) => state.plant.plantDetails);
     const defaultPhoto = useSelector((state) => state.timeline.defaultPhoto);
-
-    const [galleryOpen, setGalleryOpen] = useState(false);
 
     // Used to update redux store
     const dispatch = useDispatch();
@@ -63,7 +62,7 @@ function Layout() {
                     >
                         Settings
                     </label></li>
-                    <li><button onClick={() => setGalleryOpen(true)}>
+                    <li><button onClick={() => dispatch(photoGalleryOpened({open: true}))}>
                         Gallery
                     </button></li>
                 </>
@@ -206,7 +205,7 @@ function Layout() {
 
             <ChangeQrModal uuid={plantDetails.uuid} />
             <Settings ref={settingsRef} />
-            <Gallery open={galleryOpen} setOpen={setGalleryOpen} />
+            <Gallery />
         </div>
     );
 }

@@ -1248,16 +1248,13 @@ exports[`App matches snapshot 1`] = `
                   class="timeline-day-photos"
                   data-testid="2024-03-23-photos"
                 >
-                  <div
+                  <img
+                    alt="02:52 AM - March 23, 2024"
+                    class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
+                    loading="lazy"
+                    src="/media/thumbnails/photo3_thumb.jpg"
                     title="02:52 AM - March 23, 2024"
-                  >
-                    <img
-                      alt="02:52 AM - March 23, 2024"
-                      class="photo-thumbnail photo-thumbnail-timeline"
-                      loading="lazy"
-                      src="/media/thumbnails/photo3_thumb.jpg"
-                    />
-                  </div>
+                  />
                 </div>
                 <div
                   class="flex flex-col"
@@ -1295,16 +1292,13 @@ exports[`App matches snapshot 1`] = `
                   class="timeline-day-photos"
                   data-testid="2024-03-22-photos"
                 >
-                  <div
+                  <img
+                    alt="02:52 AM - March 22, 2024"
+                    class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
+                    loading="lazy"
+                    src="/media/thumbnails/photo2_thumb.jpg"
                     title="02:52 AM - March 22, 2024"
-                  >
-                    <img
-                      alt="02:52 AM - March 22, 2024"
-                      class="photo-thumbnail photo-thumbnail-timeline"
-                      loading="lazy"
-                      src="/media/thumbnails/photo2_thumb.jpg"
-                    />
-                  </div>
+                  />
                 </div>
                 <div
                   class="flex flex-col"
@@ -1342,16 +1336,13 @@ exports[`App matches snapshot 1`] = `
                   class="timeline-day-photos"
                   data-testid="2024-03-21-photos"
                 >
-                  <div
+                  <img
+                    alt="02:52 AM - March 21, 2024"
+                    class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
+                    loading="lazy"
+                    src="/media/thumbnails/photo1_thumb.jpg"
                     title="02:52 AM - March 21, 2024"
-                  >
-                    <img
-                      alt="02:52 AM - March 21, 2024"
-                      class="photo-thumbnail photo-thumbnail-timeline"
-                      loading="lazy"
-                      src="/media/thumbnails/photo1_thumb.jpg"
-                    />
-                  </div>
+                  />
                 </div>
                 <div
                   class="flex flex-col"
@@ -3478,16 +3469,13 @@ exports[`App matches snapshot 1`] = `
                 class="timeline-day-photos"
                 data-testid="2024-03-23-photos"
               >
-                <div
+                <img
+                  alt="02:52 AM - March 23, 2024"
+                  class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
+                  loading="lazy"
+                  src="/media/thumbnails/photo3_thumb.jpg"
                   title="02:52 AM - March 23, 2024"
-                >
-                  <img
-                    alt="02:52 AM - March 23, 2024"
-                    class="photo-thumbnail photo-thumbnail-timeline"
-                    loading="lazy"
-                    src="/media/thumbnails/photo3_thumb.jpg"
-                  />
-                </div>
+                />
               </div>
               <div
                 class="flex flex-col"
@@ -3525,16 +3513,13 @@ exports[`App matches snapshot 1`] = `
                 class="timeline-day-photos"
                 data-testid="2024-03-22-photos"
               >
-                <div
+                <img
+                  alt="02:52 AM - March 22, 2024"
+                  class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
+                  loading="lazy"
+                  src="/media/thumbnails/photo2_thumb.jpg"
                   title="02:52 AM - March 22, 2024"
-                >
-                  <img
-                    alt="02:52 AM - March 22, 2024"
-                    class="photo-thumbnail photo-thumbnail-timeline"
-                    loading="lazy"
-                    src="/media/thumbnails/photo2_thumb.jpg"
-                  />
-                </div>
+                />
               </div>
               <div
                 class="flex flex-col"
@@ -3572,16 +3557,13 @@ exports[`App matches snapshot 1`] = `
                 class="timeline-day-photos"
                 data-testid="2024-03-21-photos"
               >
-                <div
+                <img
+                  alt="02:52 AM - March 21, 2024"
+                  class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
+                  loading="lazy"
+                  src="/media/thumbnails/photo1_thumb.jpg"
                   title="02:52 AM - March 21, 2024"
-                >
-                  <img
-                    alt="02:52 AM - March 21, 2024"
-                    class="photo-thumbnail photo-thumbnail-timeline"
-                    loading="lazy"
-                    src="/media/thumbnails/photo1_thumb.jpg"
-                  />
-                </div>
+                />
               </div>
               <div
                 class="flex flex-col"
@@ -5671,16 +5653,13 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   class="timeline-day-photos"
                   data-testid="2024-03-23-photos"
                 >
-                  <div
+                  <img
+                    alt="02:52 AM - March 23, 2024"
+                    class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
+                    loading="lazy"
+                    src="/media/thumbnails/photo3_thumb.jpg"
                     title="02:52 AM - March 23, 2024"
-                  >
-                    <img
-                      alt="02:52 AM - March 23, 2024"
-                      class="photo-thumbnail photo-thumbnail-timeline"
-                      loading="lazy"
-                      src="/media/thumbnails/photo3_thumb.jpg"
-                    />
-                  </div>
+                  />
                 </div>
                 <div
                   class="flex flex-col"
@@ -5718,16 +5697,13 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   class="timeline-day-photos"
                   data-testid="2024-03-22-photos"
                 >
-                  <div
+                  <img
+                    alt="02:52 AM - March 22, 2024"
+                    class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
+                    loading="lazy"
+                    src="/media/thumbnails/photo2_thumb.jpg"
                     title="02:52 AM - March 22, 2024"
-                  >
-                    <img
-                      alt="02:52 AM - March 22, 2024"
-                      class="photo-thumbnail photo-thumbnail-timeline"
-                      loading="lazy"
-                      src="/media/thumbnails/photo2_thumb.jpg"
-                    />
-                  </div>
+                  />
                 </div>
                 <div
                   class="flex flex-col"
@@ -5765,16 +5741,13 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   class="timeline-day-photos"
                   data-testid="2024-03-21-photos"
                 >
-                  <div
+                  <img
+                    alt="02:52 AM - March 21, 2024"
+                    class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
+                    loading="lazy"
+                    src="/media/thumbnails/photo1_thumb.jpg"
                     title="02:52 AM - March 21, 2024"
-                  >
-                    <img
-                      alt="02:52 AM - March 21, 2024"
-                      class="photo-thumbnail photo-thumbnail-timeline"
-                      loading="lazy"
-                      src="/media/thumbnails/photo1_thumb.jpg"
-                    />
-                  </div>
+                  />
                 </div>
                 <div
                   class="flex flex-col"
@@ -7767,16 +7740,13 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 class="timeline-day-photos"
                 data-testid="2024-03-23-photos"
               >
-                <div
+                <img
+                  alt="02:52 AM - March 23, 2024"
+                  class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
+                  loading="lazy"
+                  src="/media/thumbnails/photo3_thumb.jpg"
                   title="02:52 AM - March 23, 2024"
-                >
-                  <img
-                    alt="02:52 AM - March 23, 2024"
-                    class="photo-thumbnail photo-thumbnail-timeline"
-                    loading="lazy"
-                    src="/media/thumbnails/photo3_thumb.jpg"
-                  />
-                </div>
+                />
               </div>
               <div
                 class="flex flex-col"
@@ -7814,16 +7784,13 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 class="timeline-day-photos"
                 data-testid="2024-03-22-photos"
               >
-                <div
+                <img
+                  alt="02:52 AM - March 22, 2024"
+                  class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
+                  loading="lazy"
+                  src="/media/thumbnails/photo2_thumb.jpg"
                   title="02:52 AM - March 22, 2024"
-                >
-                  <img
-                    alt="02:52 AM - March 22, 2024"
-                    class="photo-thumbnail photo-thumbnail-timeline"
-                    loading="lazy"
-                    src="/media/thumbnails/photo2_thumb.jpg"
-                  />
-                </div>
+                />
               </div>
               <div
                 class="flex flex-col"
@@ -7861,16 +7828,13 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 class="timeline-day-photos"
                 data-testid="2024-03-21-photos"
               >
-                <div
+                <img
+                  alt="02:52 AM - March 21, 2024"
+                  class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
+                  loading="lazy"
+                  src="/media/thumbnails/photo1_thumb.jpg"
                   title="02:52 AM - March 21, 2024"
-                >
-                  <img
-                    alt="02:52 AM - March 21, 2024"
-                    class="photo-thumbnail photo-thumbnail-timeline"
-                    loading="lazy"
-                    src="/media/thumbnails/photo1_thumb.jpg"
-                  />
-                </div>
+                />
               </div>
               <div
                 class="flex flex-col"

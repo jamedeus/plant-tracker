@@ -2,7 +2,6 @@ import React, { useRef, useState, useLayoutEffect, memo, useEffect } from 'react
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { DateTime } from 'luxon';
-import { Popover } from "react-tiny-popover";
 import { capitalize, pastTense } from 'src/util';
 import { timestampToReadable, timestampToRelativeDays } from 'src/timestampUtils';
 import { openNoteModal } from './NoteModal';
@@ -17,8 +16,9 @@ import WaterIcon from 'src/components/WaterIcon';
 import FertilizeIcon from 'src/components/FertilizeIcon';
 import PruneIcon from 'src/components/PruneIcon';
 import RepotIcon from 'src/components/RepotIcon';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import 'src/css/timeline.css';
+import { photoGalleryOpened, photoGalleryIndexChanged } from './timelineSlice';
 
 // Takes ISO timestamp string, returns "x days ago"
 const getRelativeTimeString = (timestamp) => {
@@ -260,49 +260,31 @@ EventMarker.propTypes = {
 };
 
 // Takes photo thumbnail URL, full-resolution URL, and creation timestamp
-// Renders thumbnail that opens larger popover when clicked
-const PhotoThumbnail = memo(function PhotoThumbnail({ thumbnailUrl, photoUrl, timestamp }) {
-    const [popoverOpen, setPopoverOpen] = useState(false);
+// Opens fullscreen gallery showing selected photo when clicked
+const PhotoThumbnail = memo(function PhotoThumbnail({ thumbnailUrl, timestamp, index }) {
+    const dispatch = useDispatch();
+
+    const openGallery = () => {
+        dispatch(photoGalleryIndexChanged({index: index}));
+        dispatch(photoGalleryOpened({open: true}));
+    };
 
     return (
-        <Popover
-            isOpen={popoverOpen}
-            positions={["top", "bottom", "left", "right"]}
-            align="center"
-            padding={8}
-            reposition={true}
-            onClickOutside={() => setPopoverOpen(false)}
-            content={
-                <div className="popover-content popover-enter">
-                    <a href={photoUrl}>
-                        <img
-                            loading="lazy"
-                            className="popover-image"
-                            src={thumbnailUrl}
-                        />
-                    </a>
-                </div>
-            }
-        >
-            <div
-                onClick={() => setPopoverOpen(!popoverOpen)}
-                title={timestampToReadable(timestamp)}
-            >
-                <img
-                    loading="lazy"
-                    className='photo-thumbnail photo-thumbnail-timeline'
-                    src={thumbnailUrl}
-                    alt={timestampToReadable(timestamp)}
-                />
-            </div>
-        </Popover>
+        <img
+            loading="lazy"
+            className='photo-thumbnail photo-thumbnail-timeline cursor-pointer'
+            src={thumbnailUrl}
+            alt={timestampToReadable(timestamp)}
+            onClick={openGallery}
+            title={timestampToReadable(timestamp)}
+        />
     );
 });
 
 PhotoThumbnail.propTypes = {
     thumbnailUrl: PropTypes.string.isRequired,
-    photoUrl: PropTypes.string.isRequired,
-    timestamp: PropTypes.string.isRequired
+    timestamp: PropTypes.string.isRequired,
+    index: PropTypes.number.isRequired
 };
 
 // Map collapsedNoteLines setting values to correct line clamp class
@@ -445,6 +427,10 @@ const TimelineDay = memo(function TimelineDay({ dateKey, monthDivider }) {
     const contents = useSelector(
         (state) => state.timeline.timelineDays[dateKey]
     );
+    // Used to get index of each photo so lightbox can be opened
+    // I don't think this should cause any extra renders here since timelineDays
+    // must change whenever photos change, but haven't tested.
+    const photos = useSelector((state) => state.timeline.photos);
 
     return (
         <>
@@ -473,6 +459,7 @@ const TimelineDay = memo(function TimelineDay({ dateKey, monthDivider }) {
                             thumbnailUrl={photo.thumbnail}
                             photoUrl={photo.image}
                             timestamp={photo.timestamp}
+                            index={photos.indexOf(photo)}
                         />
                     ))}
                 </div>

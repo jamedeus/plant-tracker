@@ -626,8 +626,8 @@ describe('App', () => {
         await user.click(app.getByText('Upload'));
 
         // Confirm both mock photos rendered to the timeline
-        expect(within(timeline).getByTitle('12:52 PM - June 21, 2024').children[0].tagName).toBe('IMG');
-        expect(within(timeline).getByTitle('12:54 PM - June 21, 2024').children[0].tagName).toBe('IMG');
+        expect(within(timeline).getByTitle('12:52 PM - June 21, 2024').tagName).toBe('IMG');
+        expect(within(timeline).getByTitle('12:54 PM - June 21, 2024').tagName).toBe('IMG');
     });
 
     it('updates timeline QuickNavigation options when sections are added/removed', async () => {
