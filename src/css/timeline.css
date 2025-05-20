@@ -83,30 +83,3 @@
 .photo-thumbnail-timeline {
     @apply w-full aspect-square;
 }
-
-/* Photo popover classes */
-.popover-image {
-    @apply max-h-[80vh] max-w-[80vw] md:max-h-[50vh] md:max-w-[50vw];
-    @apply object-scale-down rounded-lg mx-4;
-}
-
-@keyframes popover-animation {
-    0% {
-        opacity: 0;
-        transform: scale(0.95);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-.popover-enter {
-    transform-origin: bottom;
-    animation: popover-animation 0.3s cubic-bezier(0, 0, 0.2, 1);
-}
-
-/* Prevent navbar covering top of popover */
-#react-tiny-popover-container {
-    z-index: 99;
-}
