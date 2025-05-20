@@ -1,5 +1,6 @@
 import React from 'react';
 import Lightbox from "yet-another-react-lightbox";
+import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import Captions from "yet-another-react-lightbox/plugins/captions";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
 import "yet-another-react-lightbox/styles.css";
@@ -24,7 +25,15 @@ const Gallery = () => {
         <Lightbox
             open={open}
             close={() => dispatch(photoGalleryOpened({open: false}))}
-            plugins={[Captions, Thumbnails]}
+            controller={{ closeOnPullDown: true }}
+            plugins={[
+                Zoom,
+                Captions,
+                Thumbnails
+            ]}
+            toolbar={{
+                buttons: ["close"]
+            }}
             index={index}
             captions={{
                 showToggle: true,
@@ -43,6 +52,10 @@ const Gallery = () => {
                 padding: 0,
                 imageFit: 'cover',
                 vignette: true,
+            }}
+            zoom={{
+                // Limit zoon to 50% on mobile
+                maxZoomPixelRatio: desktop ? 1 : 0.5
             }}
         />
     );

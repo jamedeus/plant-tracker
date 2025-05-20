@@ -18,3 +18,10 @@ button.yarl__thumbnails_thumbnail {
         @apply photo-thumbnail size-full;
     }
 }
+
+/* Only show close button on mobile, everything on desktop */
+.yarl__button[title='Zoom in'],
+.yarl__button[title='Zoom out'],
+.yarl__button[title='Hide captions'] {
+    @apply hidden md:block;
+}
