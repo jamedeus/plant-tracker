@@ -1,0 +1,16 @@
+@reference './index.css';
+
+.suspense-overlay {
+    @apply fixed inset-0 bg-black flex items-center justify-center z-1000;
+    /* Match yet-another-react-lightbox fade animation */
+    animation: fade 250ms ease forwards;
+}
+
+@keyframes fade {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 100;
+    }
+}

@@ -17,6 +17,7 @@ import { faPlus, faBan, faPen, faUpRightFromSquare } from '@fortawesome/free-sol
 import { useSelector, useDispatch } from 'react-redux';
 import { photoGalleryOpened } from './timelineSlice';
 import { plantRemovedFromGroup, backButtonPressed } from './plantSlice';
+import SuspenseFullscreen from 'src/components/SuspenseFullscreen';
 import Settings from './Settings';
 import clsx from 'clsx';
 
@@ -212,7 +213,7 @@ function Layout() {
             <Settings ref={settingsRef} />
             {/* Don't render until user opens gallery */}
             {galleryOpen && (
-                <Suspense>
+                <Suspense fallback={<SuspenseFullscreen />}>
                     <Gallery />
                 </Suspense>
             )}
