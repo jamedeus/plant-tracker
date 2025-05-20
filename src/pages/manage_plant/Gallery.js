@@ -13,6 +13,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { timestampToReadable } from 'src/timestampUtils';
 import { photoGalleryOpened, photoGalleryIndexChanged } from './timelineSlice';
 import { useIsBreakpointActive } from 'src/useBreakpoint';
+import LoadingAnimation from 'src/components/LoadingAnimation';
 
 const Gallery = () => {
     // Controls open state, set to true when timeline PhotoThumbnail clicked
@@ -53,6 +54,7 @@ const Gallery = () => {
                 // Close gallery
                 exited: () => dispatch(photoGalleryOpened({ open: false })),
             }}
+            render={{ iconLoading: () => <LoadingAnimation /> }}
             controller={{
                 ref: controllerRef,
                 closeOnPullDown: true
