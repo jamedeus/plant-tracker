@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, Suspense, lazy } from 'react';
 import { sendPostRequest } from 'src/util';
 import Navbar from 'src/components/Navbar';
 import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
@@ -18,13 +18,18 @@ import { useSelector, useDispatch } from 'react-redux';
 import { photoGalleryOpened } from './timelineSlice';
 import { plantRemovedFromGroup, backButtonPressed } from './plantSlice';
 import Settings from './Settings';
-import Gallery from './Gallery';
 import clsx from 'clsx';
+
+// Dynamic import (don't request webpack bundle until gallery opened)
+const Gallery = lazy(
+    () => import(/* webpackChunkName: "lightbox" */ './Gallery')
+);
 
 function Layout() {
     // Get redux state (parsed from context set by django template)
     const plantDetails = useSelector((state) => state.plant.plantDetails);
     const defaultPhoto = useSelector((state) => state.timeline.defaultPhoto);
+    const galleryOpen = useSelector((state) => state.timeline.photoGalleryOpen);
 
     // Used to update redux store
     const dispatch = useDispatch();
@@ -205,7 +210,12 @@ function Layout() {
 
             <ChangeQrModal uuid={plantDetails.uuid} />
             <Settings ref={settingsRef} />
-            <Gallery />
+            {/* Don't render until user opens gallery */}
+            {galleryOpen && (
+                <Suspense>
+                    <Gallery />
+                </Suspense>
+            )}
         </div>
     );
 }
