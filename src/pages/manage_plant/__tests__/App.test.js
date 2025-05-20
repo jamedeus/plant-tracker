@@ -710,15 +710,15 @@ describe('App', () => {
     it('remembers the current gallery photo and reopens next time gallery is opened', async () => {
         // Open photo gallery, confirm most-recent photo is visible
         await user.click(app.getByRole('button', {name: 'Gallery'}));
-        expect(document.querySelector('.yarl__slide_current img').src.endsWith(
+        expect(document.querySelector('.yarl__slide_current img').src).toEndWith(
             '/media/images/photo3.jpg'
-        )).toBe(true);
+        );
 
         // Click next photo button, confirm second most-recent photo is visible
         await user.click(app.getByRole('button', {name: 'Next'}));
-        expect(document.querySelector('.yarl__slide_current img').src.endsWith(
+        expect(document.querySelector('.yarl__slide_current img').src).toEndWith(
             '/media/images/photo2.jpg'
-        )).toBe(true);
+        );
 
         // Close gallery, confirm closed
         await user.click(app.getByRole('button', {name: 'Close'}));
@@ -727,8 +727,8 @@ describe('App', () => {
 
         // Reopen gallery, confirm last-viewed photo is visible (not default)
         await user.click(app.getByRole('button', {name: 'Gallery'}));
-        expect(document.querySelector('.yarl__slide_current img').src.endsWith(
+        expect(document.querySelector('.yarl__slide_current img').src).toEndWith(
             '/media/images/photo2.jpg'
-        )).toBe(true);
+        );
     });
 });

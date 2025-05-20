@@ -65,21 +65,21 @@ describe('DeletePhotosModal', () => {
         const select = component.getByTestId('delete-photos-select');
         const confirm = component.getByTestId('delete-photos-confirm');
         // Select screen should be visible, confirmation should be hidden
-        expect(select.classList.contains('hidden')).toBe(false);
-        expect(confirm.classList.contains('hidden')).toBe(true);
+        expect(select.classList).not.toContain('hidden');
+        expect(confirm.classList).toContain('hidden');
 
         // Simulate user selecting first photo and clicking delete button
         await user.click(component.getByTestId('select_photo_3'));
         await user.click(component.getByTestId('delete_photos'));
 
         // Confirmation screen should now be visible, select should be hidden
-        expect(select.classList.contains('hidden')).toBe(true);
-        expect(confirm.classList.contains('hidden')).toBe(false);
+        expect(select.classList).toContain('hidden');
+        expect(confirm.classList).not.toContain('hidden');
 
         // Click cancel button, confirm switches back to select screen
         await user.click(component.getAllByText(/Cancel/)[1]);
-        expect(select.classList.contains('hidden')).toBe(false);
-        expect(confirm.classList.contains('hidden')).toBe(true);
+        expect(select.classList).not.toContain('hidden');
+        expect(confirm.classList).toContain('hidden');
     });
 
     it('sends correct payload when photos are deleted', async () => {

@@ -37,21 +37,21 @@ describe('Settings menu', () => {
 
     it('closes when user clicks close button or clicks outside menu', async () => {
         // Confirm settings menu is closed
-        expect(app.container.querySelector('dialog.settings-menu').open).toBe(false);
+        expect(app.container.querySelector('dialog.settings-menu').open).toBeFalse();
 
         // Click dropdown option to open settings, confirm open
         await user.click(app.getByTestId('open-settings-menu'));
-        expect(app.container.querySelector('dialog.settings-menu').open).toBe(true);
+        expect(app.container.querySelector('dialog.settings-menu').open).toBeTrue();
 
         // Click overlay that covers the full page outside menu, confirm closed
         await user.click(app.getByTestId('settings-menu-overlay'));
-        expect(app.container.querySelector('dialog.settings-menu').open).toBe(false);
+        expect(app.container.querySelector('dialog.settings-menu').open).toBeFalse();
 
         // Open again, click close button, confirm closed
         await user.click(app.getByTestId('open-settings-menu'));
-        expect(app.container.querySelector('dialog.settings-menu').open).toBe(true);
+        expect(app.container.querySelector('dialog.settings-menu').open).toBeTrue();
         await user.click(app.getByTestId('settings-menu-close-button'));
-        expect(app.container.querySelector('dialog.settings-menu').open).toBe(false);
+        expect(app.container.querySelector('dialog.settings-menu').open).toBeFalse();
     });
 
     it('changes number of collapsed note visible lines when collapsedNoteLines changed', async () => {
@@ -119,7 +119,7 @@ describe('Settings menu', () => {
         // Confirm full date span was hidden (makes tooltip visible with CSS)
         expect(fullDate.classList).toContain('hidden');
         // Confirm setting changed
-        expect(getSavedSettingValue('timelineFullDate')).toBe(false);
+        expect(getSavedSettingValue('timelineFullDate')).toBeFalse();
 
         // Change collapsedNoteLines to "Show"
         await user.click(app.getByLabelText('Set Show full date in timeline to Show'));
@@ -127,7 +127,7 @@ describe('Settings menu', () => {
         // Confirm full date span is visible (hides tooltip with CSS)
         expect(fullDate.classList).not.toContain('hidden');
         // Confirm setting changed
-        expect(getSavedSettingValue('timelineFullDate')).toBe(true);
+        expect(getSavedSettingValue('timelineFullDate')).toBeTrue();
     });
 
     it('changes NoteModal hold to delete duration when holdToConfirmDelay changed', async () => {

@@ -1,8 +1,12 @@
 import { render, within } from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
 import { act, waitFor } from '@testing-library/react';
+import * as matchers from 'jest-extended';
 import '@testing-library/jest-dom';
 import 'src/testUtils/dateMock';
+
+// Add jest-extended matchers (toEndWith etc)
+expect.extend(matchers);
 
 beforeAll(() => {
     // Mock methods not implemented in jsdom

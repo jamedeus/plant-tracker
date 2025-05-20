@@ -28,15 +28,15 @@ describe('PlantCard with water event', () => {
 
     it('expands/collapses details when arrow button is clicked', async () => {
         // Confirm that hidden checkbox that controls collapse is not checked
-        expect(component.container.querySelector('input').checked).toBe(false);
+        expect(component.container.querySelector('input').checked).toBeFalse();
 
         // Click button, confirm checkbox is now checked
         await user.click(component.container.querySelector('.btn-close'));
-        expect(component.container.querySelector('input').checked).toBe(true);
+        expect(component.container.querySelector('input').checked).toBeTrue();
 
         // Click button again, confirm checkbox is no longer checked
         await user.click(component.container.querySelector('.btn-close'));
-        expect(component.container.querySelector('input').checked).toBe(false);
+        expect(component.container.querySelector('input').checked).toBeFalse();
     });
 
     it('redirects to manage plant page when clicked', async () => {
