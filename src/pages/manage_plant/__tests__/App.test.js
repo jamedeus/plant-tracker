@@ -696,12 +696,14 @@ describe('App', () => {
         expect(document.body.querySelector('.yarl__root')).toBeNull();
 
         // Click first timeline image thumbnail, confirm gallery appears
-        const photoThumbnail = document.body.querySelectorAll('img.photo-thumbnail-timeline')[0];
+        const photoThumbnail = document.body.querySelector('img.photo-thumbnail-timeline');
         await user.click(photoThumbnail);
         expect(document.body.querySelector('.yarl__root')).not.toBeNull();
-        // Confirm visible slide matches clicked photo
-        expect(document.querySelector('.yarl__slide_current > img').src).toBe(
+        // Confirm visible slide src is full-res version of clicked thumbnail
+        expect(document.querySelector('.yarl__slide_current img').src).toBe(
             photoThumbnail.src
+                .replace('/media/thumbnails', '/media/images')
+                .replace('_thumb', '')
         );
     });
 });

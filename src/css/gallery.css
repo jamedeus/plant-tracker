@@ -6,6 +6,15 @@
 
 /* Allow images that are smaller than the screen to scale up */
 /* Should probably make multiple thumbnail sizes instead and use srcSet */
-.yarl__slide_image {
-    @apply h-screen w-screen max-h-screen! max-w-screen!;
+.yarl__slide > .yarl__slide_image {
+    transition-property: height, max-height, width, max-width;
+    transition-duration: 800ms;
+    @apply max-h-full! max-w-full! h-screen w-screen;
+}
+
+/* Bottom navigation thumbnails */
+button.yarl__thumbnails_thumbnail {
+    & > img {
+        @apply photo-thumbnail size-full;
+    }
 }
