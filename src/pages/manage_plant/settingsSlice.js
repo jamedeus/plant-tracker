@@ -10,7 +10,9 @@ export const settingsSlice = createSlice({
         // True = show, False = tooltip
         timelineFullDate: true,
         // Number of milliseconds to hold delete button (0 for no delay)
-        holdToConfirmDelay: 1500
+        holdToConfirmDelay: 1500,
+        // Number of milliseconds each photo is shown in gallery slideshow
+        gallerySlideshowDelay: 3000
     },
     reducers: {
         // Takes {setting: name, value: value}

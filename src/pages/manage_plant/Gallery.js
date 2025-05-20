@@ -2,7 +2,9 @@ import React from 'react';
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import Captions from "yet-another-react-lightbox/plugins/captions";
+import Slideshow from "yet-another-react-lightbox/plugins/slideshow";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
+import Fullscreen from "yet-another-react-lightbox/plugins/fullscreen";
 import "yet-another-react-lightbox/styles.css";
 import "yet-another-react-lightbox/plugins/captions.css";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
@@ -15,6 +17,7 @@ import { useIsBreakpointActive } from 'src/useBreakpoint';
 const Gallery = () => {
     const open = useSelector((state) => state.timeline.photoGalleryOpen);
     const index = useSelector((state) => state.timeline.photoGalleryIndex);
+    const delay = useSelector((state) => state.settings.gallerySlideshowDelay);
     const photos = useSelector((state) => state.timeline.photos);
     const dispatch = useDispatch();
 
@@ -29,7 +32,9 @@ const Gallery = () => {
             plugins={[
                 Zoom,
                 Captions,
-                Thumbnails
+                Slideshow,
+                Thumbnails,
+                Fullscreen
             ]}
             toolbar={{
                 buttons: ["close"]
@@ -52,6 +57,9 @@ const Gallery = () => {
                 padding: 0,
                 imageFit: 'cover',
                 vignette: true,
+            }}
+            slideshow={{
+                delay: delay
             }}
             zoom={{
                 // Limit zoon to 50% on mobile

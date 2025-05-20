@@ -50,6 +50,21 @@ const settings = {
             desktop: 1500,
             mobile: 1500
         }
+    },
+    gallerySlideshowDelay: {
+        settingText: "Photo gallery slideshow delay (seconds)",
+        settingDescription: "How many seconds each photo is shown in the photo gallery slideshow ",
+        settingOptions: [
+            { name: 1, value: 1000 },
+            { name: 2, value: 2000 },
+            { name: 3, value: 3000 },
+            { name: 4, value: 4000 },
+            { name: 5, value: 5000 },
+        ],
+        default: {
+            desktop: 3000,
+            mobile: 3000
+        }
     }
 };
 

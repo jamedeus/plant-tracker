@@ -1872,6 +1872,73 @@ exports[`App matches snapshot 1`] = `
                   </ul>
                 </div>
               </div>
+              <div
+                class="flex items-center font-semibold"
+                title="How many seconds each photo is shown in the photo gallery slideshow "
+              >
+                Photo gallery slideshow delay (seconds)
+              </div>
+              <div
+                class="flex items-center"
+              >
+                <div
+                  class="dropdown dropdown-center mx-auto"
+                >
+                  <button
+                    aria-label="Set Photo gallery slideshow delay (seconds)"
+                    class="btn btn-ghost text-xl font-bold"
+                    role="button"
+                    tabindex="0"
+                  >
+                    3
+                  </button>
+                  <ul
+                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                    tabindex="0"
+                  >
+                    <li>
+                      <button
+                        aria-label="Set Photo gallery slideshow delay (seconds) to 1"
+                        class="flex justify-center"
+                      >
+                        1
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Photo gallery slideshow delay (seconds) to 2"
+                        class="flex justify-center"
+                      >
+                        2
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Photo gallery slideshow delay (seconds) to 3"
+                        class="flex justify-center"
+                      >
+                        3
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Photo gallery slideshow delay (seconds) to 4"
+                        class="flex justify-center"
+                      >
+                        4
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Photo gallery slideshow delay (seconds) to 5"
+                        class="flex justify-center"
+                      >
+                        5
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
             <div
               class="mt-auto mb-4 mx-auto w-full max-w-72"
@@ -4093,6 +4160,73 @@ exports[`App matches snapshot 1`] = `
                 </ul>
               </div>
             </div>
+            <div
+              class="flex items-center font-semibold"
+              title="How many seconds each photo is shown in the photo gallery slideshow "
+            >
+              Photo gallery slideshow delay (seconds)
+            </div>
+            <div
+              class="flex items-center"
+            >
+              <div
+                class="dropdown dropdown-center mx-auto"
+              >
+                <button
+                  aria-label="Set Photo gallery slideshow delay (seconds)"
+                  class="btn btn-ghost text-xl font-bold"
+                  role="button"
+                  tabindex="0"
+                >
+                  3
+                </button>
+                <ul
+                  class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                  tabindex="0"
+                >
+                  <li>
+                    <button
+                      aria-label="Set Photo gallery slideshow delay (seconds) to 1"
+                      class="flex justify-center"
+                    >
+                      1
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Photo gallery slideshow delay (seconds) to 2"
+                      class="flex justify-center"
+                    >
+                      2
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Photo gallery slideshow delay (seconds) to 3"
+                      class="flex justify-center"
+                    >
+                      3
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Photo gallery slideshow delay (seconds) to 4"
+                      class="flex justify-center"
+                    >
+                      4
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Photo gallery slideshow delay (seconds) to 5"
+                      class="flex justify-center"
+                    >
+                      5
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
           </div>
           <div
             class="mt-auto mb-4 mx-auto w-full max-w-72"
@@ -6277,6 +6411,73 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   </ul>
                 </div>
               </div>
+              <div
+                class="flex items-center font-semibold"
+                title="How many seconds each photo is shown in the photo gallery slideshow "
+              >
+                Photo gallery slideshow delay (seconds)
+              </div>
+              <div
+                class="flex items-center"
+              >
+                <div
+                  class="dropdown dropdown-center mx-auto"
+                >
+                  <button
+                    aria-label="Set Photo gallery slideshow delay (seconds)"
+                    class="btn btn-ghost text-xl font-bold"
+                    role="button"
+                    tabindex="0"
+                  >
+                    3
+                  </button>
+                  <ul
+                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                    tabindex="0"
+                  >
+                    <li>
+                      <button
+                        aria-label="Set Photo gallery slideshow delay (seconds) to 1"
+                        class="flex justify-center"
+                      >
+                        1
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Photo gallery slideshow delay (seconds) to 2"
+                        class="flex justify-center"
+                      >
+                        2
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Photo gallery slideshow delay (seconds) to 3"
+                        class="flex justify-center"
+                      >
+                        3
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Photo gallery slideshow delay (seconds) to 4"
+                        class="flex justify-center"
+                      >
+                        4
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Photo gallery slideshow delay (seconds) to 5"
+                        class="flex justify-center"
+                      >
+                        5
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
             </div>
             <div
               class="mt-auto mb-4 mx-auto w-full max-w-72"
@@ -8359,6 +8560,73 @@ exports[`App matches snapshot when plant is archived 1`] = `
                       class="flex justify-center"
                     >
                       2.5
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div
+              class="flex items-center font-semibold"
+              title="How many seconds each photo is shown in the photo gallery slideshow "
+            >
+              Photo gallery slideshow delay (seconds)
+            </div>
+            <div
+              class="flex items-center"
+            >
+              <div
+                class="dropdown dropdown-center mx-auto"
+              >
+                <button
+                  aria-label="Set Photo gallery slideshow delay (seconds)"
+                  class="btn btn-ghost text-xl font-bold"
+                  role="button"
+                  tabindex="0"
+                >
+                  3
+                </button>
+                <ul
+                  class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                  tabindex="0"
+                >
+                  <li>
+                    <button
+                      aria-label="Set Photo gallery slideshow delay (seconds) to 1"
+                      class="flex justify-center"
+                    >
+                      1
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Photo gallery slideshow delay (seconds) to 2"
+                      class="flex justify-center"
+                    >
+                      2
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Photo gallery slideshow delay (seconds) to 3"
+                      class="flex justify-center"
+                    >
+                      3
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Photo gallery slideshow delay (seconds) to 4"
+                      class="flex justify-center"
+                    >
+                      4
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Photo gallery slideshow delay (seconds) to 5"
+                      class="flex justify-center"
+                    >
+                      5
                     </button>
                   </li>
                 </ul>

@@ -137,6 +137,8 @@ export function ReduxProvider({ children }) {
             getDefaultSettingValue('timelineFullDate', layout);
         const holdToConfirmDelay = savedSettings?.holdToConfirmDelay ??
             getDefaultSettingValue('holdToConfirmDelay', layout);
+        const gallerySlideshowDelay = savedSettings?.gallerySlideshowDelay ??
+            getDefaultSettingValue('gallerySlideshowDelay', layout);
 
         // Return object with keys expected by plantSlice and timelineSlice
         return {
@@ -157,7 +159,8 @@ export function ReduxProvider({ children }) {
             settings: {
                 collapsedNoteLines,
                 timelineFullDate,
-                holdToConfirmDelay
+                holdToConfirmDelay,
+                gallerySlideshowDelay
             }
         };
     };
