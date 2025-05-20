@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import Captions from "yet-another-react-lightbox/plugins/captions";
@@ -11,23 +11,40 @@ import "yet-another-react-lightbox/plugins/thumbnails.css";
 import "src/css/gallery.css";
 import { useSelector, useDispatch } from 'react-redux';
 import { timestampToReadable } from 'src/timestampUtils';
-import { photoGalleryOpened } from './timelineSlice';
+import { photoGalleryOpened, photoGalleryIndexChanged } from './timelineSlice';
 import { useIsBreakpointActive } from 'src/useBreakpoint';
 
 const Gallery = () => {
+    // Controls open state, set to true when timeline PhotoThumbnail clicked
     const open = useSelector((state) => state.timeline.photoGalleryOpen);
+    // Controls initially visible photo (does not update as carousel moves).
+    // Used to open clicked photo + remember last-viewed photo when closing.
     const index = useSelector((state) => state.timeline.photoGalleryIndex);
+    // Controls slideshow delay (user-configurable in settings)
     const delay = useSelector((state) => state.settings.gallerySlideshowDelay);
+    // Array of objects each representing 1 existing photo
     const photos = useSelector((state) => state.timeline.photos);
     const dispatch = useDispatch();
 
     // True if desktop layout, false if mobile
     const desktop = useIsBreakpointActive('md');
 
+    // Tracks current photo index when slide changes, overwrites redux
+    // photoGalleryIndex when gallery is closed (remember last-view photo).
+    // Ref avoids extra render (setting state breaks thumbnail fade animation).
+    const indexRef = useRef(0);
+
+    // Close gallery, write current photo index to redux photoGalleryIndex state
+    // (remember position next time gallery is opened)
+    const handleClose = () => {
+        dispatch(photoGalleryOpened({open: false}));
+        dispatch(photoGalleryIndexChanged({index: indexRef.current}));
+    };
+
     return (
         <Lightbox
             open={open}
-            close={() => dispatch(photoGalleryOpened({open: false}))}
+            close={handleClose}
             controller={{ closeOnPullDown: true }}
             plugins={[
                 Zoom,
@@ -40,6 +57,9 @@ const Gallery = () => {
                 buttons: ["close"]
             }}
             index={index}
+            on={{
+                view: ({ index: currentIndex }) => indexRef.current = currentIndex
+            }}
             captions={{
                 showToggle: true,
                 descriptionTextAlign: 'center'

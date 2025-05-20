@@ -685,7 +685,7 @@ describe('App', () => {
         await user.click(app.getByRole('button', {name: 'Gallery'}));
         expect(document.body.querySelector('.yarl__root')).not.toBeNull();
 
-        // Click close button, confrim gallery disappears
+        // Click close button, confirm gallery disappears
         await user.click(app.getByRole('button', {name: 'Close'}));
         await jest.advanceTimersByTimeAsync(500);
         expect(document.body.querySelector('.yarl__root')).toBeNull();
@@ -705,5 +705,30 @@ describe('App', () => {
                 .replace('/media/thumbnails', '/media/images')
                 .replace('_thumb', '')
         );
+    });
+
+    it('remembers the current gallery photo and reopens next time gallery is opened', async () => {
+        // Open photo gallery, confirm most-recent photo is visible
+        await user.click(app.getByRole('button', {name: 'Gallery'}));
+        expect(document.querySelector('.yarl__slide_current img').src.endsWith(
+            '/media/images/photo3.jpg'
+        )).toBe(true);
+
+        // Click next photo button, confirm second most-recent photo is visible
+        await user.click(app.getByRole('button', {name: 'Next'}));
+        expect(document.querySelector('.yarl__slide_current img').src.endsWith(
+            '/media/images/photo2.jpg'
+        )).toBe(true);
+
+        // Close gallery, confirm closed
+        await user.click(app.getByRole('button', {name: 'Close'}));
+        await jest.advanceTimersByTimeAsync(500);
+        expect(document.body.querySelector('.yarl__root')).toBeNull();
+
+        // Reopen gallery, confirm last-viewed photo is visible (not default)
+        await user.click(app.getByRole('button', {name: 'Gallery'}));
+        expect(document.querySelector('.yarl__slide_current img').src.endsWith(
+            '/media/images/photo2.jpg'
+        )).toBe(true);
     });
 });
