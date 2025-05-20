@@ -29,23 +29,34 @@ const Gallery = () => {
     // True if desktop layout, false if mobile
     const desktop = useIsBreakpointActive('md');
 
-    // Tracks current photo index when slide changes, overwrites redux
-    // photoGalleryIndex when gallery is closed (remember last-view photo).
-    // Ref avoids extra render (setting state breaks thumbnail fade animation).
-    const indexRef = useRef(0);
-
-    // Close gallery, write current photo index to redux photoGalleryIndex state
-    // (remember position next time gallery is opened)
-    const handleClose = () => {
-        dispatch(photoGalleryOpened({open: false}));
-        dispatch(photoGalleryIndexChanged({index: indexRef.current}));
-    };
+    // Use to access current state (visible slide index, url, etc)
+    const controllerRef = useRef(null);
 
     return (
         <Lightbox
             open={open}
-            close={handleClose}
-            controller={{ closeOnPullDown: true }}
+            on={{
+                exiting: () => {
+                    const {
+                        currentIndex,
+                        currentSlide
+                    } = controllerRef.current.getLightboxState();
+
+                    // Save current photo index for next time gallery is opened
+                    dispatch(photoGalleryIndexChanged({ index: currentIndex }));
+
+                    // Scroll timeline to last-view photo
+                    document.querySelector(
+                        `[data-timeline-thumbnail="${currentSlide.thumbnail}"]`
+                    )?.scrollIntoView({ behavior: "smooth", block: "start" });
+                },
+                // Close gallery
+                exited: () => dispatch(photoGalleryOpened({ open: false })),
+            }}
+            controller={{
+                ref: controllerRef,
+                closeOnPullDown: true
+            }}
             plugins={[
                 Zoom,
                 Captions,
@@ -57,9 +68,6 @@ const Gallery = () => {
                 buttons: ["close"]
             }}
             index={index}
-            on={{
-                view: ({ index: currentIndex }) => indexRef.current = currentIndex
-            }}
             captions={{
                 showToggle: true,
                 descriptionTextAlign: 'center'

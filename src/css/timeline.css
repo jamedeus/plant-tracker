@@ -81,5 +81,5 @@
 }
 
 .photo-thumbnail-timeline {
-    @apply w-full aspect-square;
+    @apply w-full aspect-square scroll-mt-20;
 }

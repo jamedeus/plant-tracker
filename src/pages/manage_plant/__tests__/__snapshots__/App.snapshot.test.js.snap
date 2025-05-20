@@ -1251,6 +1251,7 @@ exports[`App matches snapshot 1`] = `
                   <img
                     alt="02:52 AM - March 23, 2024"
                     class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
+                    data-timeline-thumbnail="/media/thumbnails/photo3_thumb.jpg"
                     loading="lazy"
                     src="/media/thumbnails/photo3_thumb.jpg"
                     title="02:52 AM - March 23, 2024"
@@ -1295,6 +1296,7 @@ exports[`App matches snapshot 1`] = `
                   <img
                     alt="02:52 AM - March 22, 2024"
                     class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
+                    data-timeline-thumbnail="/media/thumbnails/photo2_thumb.jpg"
                     loading="lazy"
                     src="/media/thumbnails/photo2_thumb.jpg"
                     title="02:52 AM - March 22, 2024"
@@ -1339,6 +1341,7 @@ exports[`App matches snapshot 1`] = `
                   <img
                     alt="02:52 AM - March 21, 2024"
                     class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
+                    data-timeline-thumbnail="/media/thumbnails/photo1_thumb.jpg"
                     loading="lazy"
                     src="/media/thumbnails/photo1_thumb.jpg"
                     title="02:52 AM - March 21, 2024"
@@ -3539,6 +3542,7 @@ exports[`App matches snapshot 1`] = `
                 <img
                   alt="02:52 AM - March 23, 2024"
                   class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
+                  data-timeline-thumbnail="/media/thumbnails/photo3_thumb.jpg"
                   loading="lazy"
                   src="/media/thumbnails/photo3_thumb.jpg"
                   title="02:52 AM - March 23, 2024"
@@ -3583,6 +3587,7 @@ exports[`App matches snapshot 1`] = `
                 <img
                   alt="02:52 AM - March 22, 2024"
                   class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
+                  data-timeline-thumbnail="/media/thumbnails/photo2_thumb.jpg"
                   loading="lazy"
                   src="/media/thumbnails/photo2_thumb.jpg"
                   title="02:52 AM - March 22, 2024"
@@ -3627,6 +3632,7 @@ exports[`App matches snapshot 1`] = `
                 <img
                   alt="02:52 AM - March 21, 2024"
                   class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
+                  data-timeline-thumbnail="/media/thumbnails/photo1_thumb.jpg"
                   loading="lazy"
                   src="/media/thumbnails/photo1_thumb.jpg"
                   title="02:52 AM - March 21, 2024"
@@ -5790,6 +5796,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   <img
                     alt="02:52 AM - March 23, 2024"
                     class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
+                    data-timeline-thumbnail="/media/thumbnails/photo3_thumb.jpg"
                     loading="lazy"
                     src="/media/thumbnails/photo3_thumb.jpg"
                     title="02:52 AM - March 23, 2024"
@@ -5834,6 +5841,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   <img
                     alt="02:52 AM - March 22, 2024"
                     class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
+                    data-timeline-thumbnail="/media/thumbnails/photo2_thumb.jpg"
                     loading="lazy"
                     src="/media/thumbnails/photo2_thumb.jpg"
                     title="02:52 AM - March 22, 2024"
@@ -5878,6 +5886,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   <img
                     alt="02:52 AM - March 21, 2024"
                     class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
+                    data-timeline-thumbnail="/media/thumbnails/photo1_thumb.jpg"
                     loading="lazy"
                     src="/media/thumbnails/photo1_thumb.jpg"
                     title="02:52 AM - March 21, 2024"
@@ -7944,6 +7953,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 <img
                   alt="02:52 AM - March 23, 2024"
                   class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
+                  data-timeline-thumbnail="/media/thumbnails/photo3_thumb.jpg"
                   loading="lazy"
                   src="/media/thumbnails/photo3_thumb.jpg"
                   title="02:52 AM - March 23, 2024"
@@ -7988,6 +7998,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 <img
                   alt="02:52 AM - March 22, 2024"
                   class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
+                  data-timeline-thumbnail="/media/thumbnails/photo2_thumb.jpg"
                   loading="lazy"
                   src="/media/thumbnails/photo2_thumb.jpg"
                   title="02:52 AM - March 22, 2024"
@@ -8032,6 +8043,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 <img
                   alt="02:52 AM - March 21, 2024"
                   class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
+                  data-timeline-thumbnail="/media/thumbnails/photo1_thumb.jpg"
                   loading="lazy"
                   src="/media/thumbnails/photo1_thumb.jpg"
                   title="02:52 AM - March 21, 2024"
