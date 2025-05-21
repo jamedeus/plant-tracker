@@ -47,3 +47,19 @@ button.yarl__thumbnails_thumbnail {
         transform: scaleX(1);
     }
 }
+
+/* Shrink thumbnail height to 0 when slideshow starts */
+.yarl__thumbnails_container {
+    transition-property: max-height, padding;
+    transition-duration: 250ms;
+    transition-timing-function: linear;
+    /* Matches default height */
+    max-height: calc(var(--yarl__thumbnails_thumbnail_height) + 32px);
+    padding: 16px;
+
+    /* Shrink when class added to yarl root */
+    .slideshow-running & {
+        max-height: 0px;
+        padding: 0px;
+    }
+}

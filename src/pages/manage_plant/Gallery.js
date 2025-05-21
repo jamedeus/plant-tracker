@@ -33,9 +33,6 @@ const Gallery = () => {
     // Use to access current state (visible slide index, url, etc)
     const controllerRef = useRef(null);
 
-    // Used to hide/show thumbnails when slideshow starts
-    const thumbnailsRef = useRef(null);
-
     // Used for progress animation
     const [slideshowRunning, setSlideshowRunning] = useState(false);
     const [progressBarKey, setProgressBarKey] = useState(0);
@@ -85,13 +82,11 @@ const Gallery = () => {
                     dispatch(photoGalleryIndexChanged({ index: currentIndex }));
                     // Start progress animation for first slide
                     setSlideshowRunning(true);
-                    thumbnailsRef.current.hide();
                 },
 
                 slideshowStop: () => {
                     // Stop progress animation
                     setSlideshowRunning(false);
-                    thumbnailsRef.current.show();
                 },
             }}
             render={{
@@ -140,7 +135,6 @@ const Gallery = () => {
                 key: photo.key
             }))}
             thumbnails={{
-                ref: thumbnailsRef,
                 width: desktop ? 100 : 80,
                 height: desktop ? 100 : 80,
                 border: 0,
@@ -155,6 +149,8 @@ const Gallery = () => {
                 // Limit zoon to 50% on mobile
                 maxZoomPixelRatio: desktop ? 1 : 0.5
             }}
+            // Set class that causes thumbnails to shrink when slideshow starts
+            className={slideshowRunning ? 'slideshow-running' : null}
         />
     );
 };
