@@ -85,6 +85,21 @@ export const getDefaultSettingValue = (setting, layout) => {
     return settings[setting].default[layout];
 };
 
+// Takes layout (mobile or desktop)
+// Returns full settings object with values loaded from saved user settings (or
+// default values for settings user has not set)
+export const loadUserSettings = (layout) => {
+    const savedSettings = JSON.parse(localStorage.getItem(
+        "manage_plant_settings",
+    ) || '{}');
+    return Object.fromEntries(
+        Object.keys(settings).map(settingName => ([
+            settingName,
+            savedSettings[settingName] ?? getDefaultSettingValue(settingName, layout)
+        ]))
+    );
+};
+
 const SettingSection = memo(function SettingSection({
     settingName,
     settingText,

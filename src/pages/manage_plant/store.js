@@ -7,7 +7,7 @@ import { timestampToDateString } from 'src/timestampUtils';
 import { plantSlice } from './plantSlice';
 import { timelineSlice } from './timelineSlice';
 import { settingsSlice } from './settingsSlice';
-import { getDefaultSettingValue } from './Settings';
+import { loadUserSettings } from './Settings';
 import { useIsBreakpointActive } from 'src/useBreakpoint';
 
 // Takes object with event type keys, array of timestamps as value.
@@ -126,22 +126,6 @@ export function ReduxProvider({ children }) {
         const calendarDays = buildCalendarDays(timelineDays);
         const navigationOptions = buildNavigationOptions(timelineDays);
 
-        // Load settings from localStorage if they exist
-        const savedSettings = JSON.parse(localStorage.getItem(
-            "manage_plant_settings"
-        ));
-        // Use default settings for options that don't exist in localStorage
-        const collapsedNoteLines = savedSettings?.collapsedNoteLines ??
-            getDefaultSettingValue('collapsedNoteLines', layout);
-        const timelineFullDate = savedSettings?.timelineFullDate ??
-            getDefaultSettingValue('timelineFullDate', layout);
-        const holdToConfirmDelay = savedSettings?.holdToConfirmDelay ??
-            getDefaultSettingValue('holdToConfirmDelay', layout);
-        const gallerySlideshowDelay = savedSettings?.gallerySlideshowDelay ??
-            getDefaultSettingValue('gallerySlideshowDelay', layout);
-        const galleryShowPhotoDate = savedSettings?.galleryShowPhotoDate ??
-            getDefaultSettingValue('galleryShowPhotoDate', layout);
-
         // Return object with keys expected by plantSlice and timelineSlice
         return {
             plant: {
@@ -158,13 +142,7 @@ export function ReduxProvider({ children }) {
                 photoGalleryIndex,
                 photoGalleryOpen
             },
-            settings: {
-                collapsedNoteLines,
-                timelineFullDate,
-                holdToConfirmDelay,
-                gallerySlideshowDelay,
-                galleryShowPhotoDate
-            }
+            settings: loadUserSettings(layout)
         };
     };
 
