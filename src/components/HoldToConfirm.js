@@ -18,7 +18,7 @@ const HoldToConfirm = ({ callback, timeout, buttonText, tooltipText }) => {
         timerRef.current = setTimeout(() => {
             callback();
         }, timeout);
-        // Start progres bar animation, show tooltip
+        // Start progress bar animation, show tooltip
         setHolding(true);
         setShowTooltip(true);
     };

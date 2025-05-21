@@ -296,7 +296,7 @@ export const timelineSlice = createSlice({
 
         // Takes { open: <bool> }
         photoGalleryOpened(state, action) {
-            console.log(action.payload.open)
+            console.log(action.payload.open);
             state.photoGalleryOpen = action.payload.open;
         },
 

@@ -170,7 +170,7 @@ const Gallery = () => {
                 delay: delay
             }}
             zoom={{
-                // Limit zoon to 50% on mobile
+                // Limit zoom to 50% on mobile
                 maxZoomPixelRatio: desktop ? 1 : 0.5
             }}
             // Set class that causes thumbnails to shrink when slideshow starts
