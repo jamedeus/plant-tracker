@@ -25,3 +25,25 @@ button.yarl__thumbnails_thumbnail {
 .yarl__button[title='Hide captions'] {
     @apply hidden md:block;
 }
+
+/* Slideshow progress animation */
+.slideshow_progress_bar {
+    content: "";
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 4px;
+    background-color: var(--color-accent);
+    transform-origin: left center;
+    transition: transform 0s linear;
+    animation: slideshow_progress_bar var(--slideshow-delay) linear forwards;
+}
+
+@keyframes slideshow_progress_bar {
+    from {
+        transform: scaleX(0);
+    }
+    to {
+        transform: scaleX(1);
+    }
+}

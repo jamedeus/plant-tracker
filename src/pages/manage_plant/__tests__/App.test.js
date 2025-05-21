@@ -731,4 +731,30 @@ describe('App', () => {
             '/media/images/photo2.jpg'
         );
     });
+
+    it('shows progress bar while gallery slideshow is playing', async () => {
+        // Open photo gallery, confirm progress bar is not rendered
+        await user.click(app.getByRole('button', {name: 'Gallery'}));
+        expect(document.querySelector('.slideshow_progress_bar')).toBeNull();
+
+        // Start slideshow, confirm progress bar appeared
+        await user.click(app.getByRole('button', {name: 'Play'}));
+        expect(document.querySelector('.slideshow_progress_bar')).not.toBeNull();
+
+        // Confirm visible slide changes every 3000ms (had issues in development
+        // where if photoGalleryIndexChanged was not called for each slide the
+        // progress bar render would cause slideshow to go back to first slide)
+        expect(document.querySelector('.yarl__slide_current img').src).toEndWith(
+            '/media/images/photo3.jpg'
+        );
+        await jest.advanceTimersByTimeAsync(3000);
+        expect(document.querySelector('.yarl__slide_current img').src).toEndWith(
+            '/media/images/photo2.jpg'
+        );
+
+        // Confirm progress bar disappears when slideshow stopped
+        expect(document.querySelector('.slideshow_progress_bar')).not.toBeNull();
+        await user.click(app.getByRole('button', {name: 'Pause'}));
+        expect(document.querySelector('.slideshow_progress_bar')).toBeNull();
+    });
 });

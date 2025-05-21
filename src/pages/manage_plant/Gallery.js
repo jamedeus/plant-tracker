@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import Captions from "yet-another-react-lightbox/plugins/captions";
@@ -33,6 +33,13 @@ const Gallery = () => {
     // Use to access current state (visible slide index, url, etc)
     const controllerRef = useRef(null);
 
+    // Used to hide/show thumbnails when slideshow starts
+    const thumbnailsRef = useRef(null);
+
+    // Used for progress animation
+    const [slideshowRunning, setSlideshowRunning] = useState(false);
+    const [progressBarKey, setProgressBarKey] = useState(0);
+
     return (
         <Lightbox
             open={open}
@@ -53,8 +60,59 @@ const Gallery = () => {
                 },
                 // Close gallery
                 exited: () => dispatch(photoGalleryOpened({ open: false })),
+
+                view: () => {
+                    // When slideshow changes slides: change progress bar key to
+                    // force render (start animation over), set new index (state
+                    // change causes re-render, will go back to whaetever slide
+                    // is saved in photoGalleryIndex state).
+                    //
+                    // Would be simpler to set index every time slide changes
+                    // but this causes render that breaks thumbnail animation.
+                    if (slideshowRunning) {
+                        const {
+                            currentIndex,
+                            currentSlide
+                        } = controllerRef.current.getLightboxState();
+                        dispatch(photoGalleryIndexChanged({ index: currentIndex }));
+                        setProgressBarKey(currentSlide.key);
+                    }
+                },
+
+                slideshowStart: () => {
+                    // Start on current slide
+                    const { currentIndex } = controllerRef.current.getLightboxState();
+                    dispatch(photoGalleryIndexChanged({ index: currentIndex }));
+                    // Start progress animation for first slide
+                    setSlideshowRunning(true);
+                    thumbnailsRef.current.hide();
+                },
+
+                slideshowStop: () => {
+                    // Stop progress animation
+                    setSlideshowRunning(false);
+                    thumbnailsRef.current.show();
+                },
             }}
-            render={{ iconLoading: () => <LoadingAnimation /> }}
+            render={{
+                // Match loading animation used in rest of app
+                iconLoading: () => <LoadingAnimation />,
+                // Render progress bar if slideshow is running
+                // Key changes on each slide (remount, start animation over)
+                controls: () => {
+                    if (slideshowRunning) {
+                        return (
+                            <div
+                                key={progressBarKey}
+                                className="slideshow_progress_bar"
+                                style={{
+                                    "--slideshow-delay": `${delay}ms`
+                                }}
+                            />
+                        );
+                    }
+                }
+            }}
             controller={{
                 ref: controllerRef,
                 closeOnPullDown: true
@@ -79,8 +137,10 @@ const Gallery = () => {
                 thumbnail: photo.thumbnail,
                 description: timestampToReadable(photo.timestamp),
                 imageFit: 'contain',
+                key: photo.key
             }))}
             thumbnails={{
+                ref: thumbnailsRef,
                 width: desktop ? 100 : 80,
                 height: desktop ? 100 : 80,
                 border: 0,
