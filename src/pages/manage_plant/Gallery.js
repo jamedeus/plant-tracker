@@ -34,6 +34,8 @@ const Gallery = () => {
     const index = useSelector((state) => state.timeline.photoGalleryIndex);
     // Controls slideshow delay (user-configurable in settings)
     const delay = useSelector((state) => state.settings.gallerySlideshowDelay);
+    // Controls whether captions with photo date are visible
+    const caption = useSelector((state) => state.settings.galleryShowPhotoDate);
     // Array of objects each representing 1 existing photo
     const photos = useSelector((state) => state.timeline.photos);
     const dispatch = useDispatch();
@@ -140,7 +142,7 @@ const Gallery = () => {
             }}
             plugins={[
                 Zoom,
-                Captions,
+                ...(caption ? [Captions] : []),
                 Slideshow,
                 Thumbnails,
                 Fullscreen
@@ -149,14 +151,10 @@ const Gallery = () => {
                 buttons: ["close"]
             }}
             index={index}
-            captions={{
-                showToggle: true,
-                descriptionTextAlign: 'center'
-            }}
             slides={photos.map(photo => ({
                 src: photo.image,
                 thumbnail: photo.thumbnail,
-                description: timestampToReadable(photo.timestamp),
+                description: timestampToReadable(photo.timestamp).split('-')[1],
                 imageFit: 'contain',
                 key: photo.key
             }))}

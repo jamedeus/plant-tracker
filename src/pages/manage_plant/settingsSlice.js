@@ -12,7 +12,9 @@ export const settingsSlice = createSlice({
         // Number of milliseconds to hold delete button (0 for no delay)
         holdToConfirmDelay: 1500,
         // Number of milliseconds each photo is shown in gallery slideshow
-        gallerySlideshowDelay: 3000
+        gallerySlideshowDelay: 3000,
+        // Whether date captions are rendered in photo gallery
+        galleryShowPhotoDate: true
     },
     reducers: {
         // Takes {setting: name, value: value}

@@ -53,7 +53,7 @@ const settings = {
     },
     gallerySlideshowDelay: {
         settingText: "Photo gallery slideshow delay (seconds)",
-        settingDescription: "How many seconds each photo is shown in the photo gallery slideshow ",
+        settingDescription: "How many seconds each photo is shown in the photo gallery slideshow",
         settingOptions: [
             { name: 1, value: 1000 },
             { name: 2, value: 2000 },
@@ -64,6 +64,18 @@ const settings = {
         default: {
             desktop: 3000,
             mobile: 3000
+        }
+    },
+    galleryShowPhotoDate: {
+        settingText: "Photo gallery show date",
+        settingDescription: "Whether the gallery renders a semi-transparent label with the date each photo was taken on",
+        settingOptions: [
+            { name: 'Yes', value: true },
+            { name: 'No', value: false },
+        ],
+        default: {
+            desktop: true,
+            mobile: false
         }
     }
 };

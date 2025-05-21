@@ -63,3 +63,23 @@ button.yarl__thumbnails_thumbnail {
         padding: 0px;
     }
 }
+
+/* Photo date caption */
+.yarl__slide > .yarl__slide_captions_container {
+    @apply w-fit rounded-full mx-auto px-4 py-2;
+
+    /* Semi-transparent frosted background */
+    backdrop-filter: blur(8px) saturate(180%);
+    -webkit-backdrop-filter: blur(8px) saturate(180%);
+    background-color: color-mix(in oklab, #000 10%, #0000);
+
+    /* Darker on desktop (may have lower contrast than phone screen) */
+    @media (min-width: 768px) {
+        background-color: color-mix(in oklab, #000 25%, #0000);
+    }
+
+    /* Text inside div */
+    & > .yarl__slide_description {
+        @apply font-semibold md:text-lg;
+    }
+}
