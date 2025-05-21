@@ -112,4 +112,21 @@ describe('Gallery', () => {
         await user.click(app.getByRole('button', {name: 'Pause'}));
         expect(document.querySelector('.slideshow_progress_bar')).toBeNull();
     });
+
+    it('enters fullscreen when fullscreen button clicked', async () => {
+        // Open gallery, confirm have not entered or exited fullscreen
+        await user.click(app.getByRole('button', {name: 'Gallery'}));
+        expect(Element.prototype.requestFullscreen).not.toHaveBeenCalled();
+        expect(document.exitFullscreen).not.toHaveBeenCalled();
+
+        // Click fullscreen button, confirm entered fullscreen
+        await user.click(app.getByRole('button', {name: 'Enter Fullscreen'}));
+        expect(Element.prototype.requestFullscreen).toHaveBeenCalled();
+        expect(document.exitFullscreen).not.toHaveBeenCalled();
+        await jest.advanceTimersByTimeAsync(10000);
+
+        // Click exit fullscreen button, confirm exited
+        await user.click(app.getByRole('button', {name: 'Exit Fullscreen'}));
+        expect(document.exitFullscreen).toHaveBeenCalled();
+    });
 });

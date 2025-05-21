@@ -56,6 +56,33 @@ beforeAll(() => {
         return style;
     });
 
+    // Mock fullscreenEnabled so photo gallery renders fullscreen button
+    Object.defineProperty(document, 'fullscreenEnabled', {
+        configurable: true,
+        get: () => true,
+    });
+
+    // Track current fullscreen element
+    let currentFsElement = null;
+    Object.defineProperty(document, 'fullscreenElement', {
+        configurable: true,
+        get: () => currentFsElement,
+    });
+
+    // Mock method called when entering fullscreen
+    Element.prototype.requestFullscreen = jest.fn().mockImplementation(function () {
+        currentFsElement = this;
+        document.dispatchEvent(new Event('fullscreenchange'));
+        return Promise.resolve();
+    });
+
+    // Mock method called when exiting fullscreen
+    document.exitFullscreen = jest.fn().mockImplementation(() => {
+        currentFsElement = null;
+        document.dispatchEvent(new Event('fullscreenchange'));
+        return Promise.resolve();
+    });
+
     // Make available in all tests
     global.render = render;
     global.within = within;

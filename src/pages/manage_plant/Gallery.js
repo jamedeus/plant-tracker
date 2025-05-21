@@ -14,6 +14,17 @@ import { timestampToReadable } from 'src/timestampUtils';
 import { photoGalleryOpened, photoGalleryIndexChanged } from './timelineSlice';
 import { useIsBreakpointActive } from 'src/useBreakpoint';
 import LoadingAnimation from 'src/components/LoadingAnimation';
+import {
+    XMarkIcon,
+    PlayIcon,
+    PauseIcon,
+    ChevronLeftIcon,
+    ChevronRightIcon,
+    ArrowsPointingInIcon,
+    ArrowsPointingOutIcon,
+    MagnifyingGlassPlusIcon,
+    MagnifyingGlassMinusIcon
+} from '@heroicons/react/24/solid';
 
 const Gallery = () => {
     // Controls open state, set to true when timeline PhotoThumbnail clicked
@@ -95,6 +106,16 @@ const Gallery = () => {
                 },
             }}
             render={{
+                // Custom icons (match icons used in rest of the app)
+                iconPrev: () => <ChevronLeftIcon className="size-8" />,
+                iconNext: () => <ChevronRightIcon className="size-8" />,
+                iconZoomIn: () => <MagnifyingGlassPlusIcon className="size-8" />,
+                iconZoomOut: () => <MagnifyingGlassMinusIcon className="size-8" />,
+                iconSlideshowPlay: () => <PlayIcon className="size-8" />,
+                iconSlideshowPause: () => <PauseIcon className="size-8" />,
+                iconClose: () => <XMarkIcon className="size-8" />,
+                iconExitFullscreen: () => (<ArrowsPointingInIcon className="size-8" />),
+                iconEnterFullscreen: () => <ArrowsPointingOutIcon className="size-8" />,
                 // Match loading animation used in rest of app
                 iconLoading: () => <LoadingAnimation />,
                 // Render progress bar if slideshow is running
