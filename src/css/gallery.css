@@ -54,7 +54,7 @@ button.yarl__thumbnails_thumbnail {
     transition-duration: 250ms;
     transition-timing-function: linear;
     /* Matches default height */
-    max-height: calc(var(--yarl__thumbnails_thumbnail_height) + 32px);
+    max-height: var(--thumbnail-container-height);
     padding: 16px;
 
     /* Shrink when class added to yarl root */

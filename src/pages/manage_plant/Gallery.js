@@ -37,6 +37,11 @@ const Gallery = () => {
     const [slideshowRunning, setSlideshowRunning] = useState(false);
     const [progressBarKey, setProgressBarKey] = useState(0);
 
+    // Get thumbnail + container heights for current layout
+    // Pre-computing container height fixes animation stutter on mobile
+    const thumbnailSize = desktop ? 100 : 80;
+    const thumbnailContainerHeight = thumbnailSize + 32;
+
     return (
         <Lightbox
             open={open}
@@ -135,8 +140,8 @@ const Gallery = () => {
                 key: photo.key
             }))}
             thumbnails={{
-                width: desktop ? 100 : 80,
-                height: desktop ? 100 : 80,
+                width: thumbnailSize,
+                height: thumbnailSize,
                 border: 0,
                 padding: 0,
                 imageFit: 'cover',
@@ -151,6 +156,13 @@ const Gallery = () => {
             }}
             // Set class that causes thumbnails to shrink when slideshow starts
             className={slideshowRunning ? 'slideshow-running' : null}
+            // Set pre-computed height var used in thumbnail shrink transition
+            // Fixes stutter on mobile caused by using calc() for initial height
+            styles={{
+                thumbnailsContainer: {
+                    "--thumbnail-container-height": `${thumbnailContainerHeight}px`
+                }
+            }}
         />
     );
 };
