@@ -1937,6 +1937,49 @@ exports[`App matches snapshot 1`] = `
                 </div>
               </div>
               <div
+                class="flex items-center font-semibold"
+                title="Whether the timeline should scroll to each photo viewed in the gallery"
+              >
+                Scroll timeline to viewed photo
+              </div>
+              <div
+                class="flex items-center"
+              >
+                <div
+                  class="dropdown dropdown-center mx-auto"
+                >
+                  <button
+                    aria-label="Set Scroll timeline to viewed photo"
+                    class="btn btn-ghost text-xl font-bold"
+                    role="button"
+                    tabindex="0"
+                  >
+                    Yes
+                  </button>
+                  <ul
+                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                    tabindex="0"
+                  >
+                    <li>
+                      <button
+                        aria-label="Set Scroll timeline to viewed photo to Yes"
+                        class="flex justify-center"
+                      >
+                        Yes
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Scroll timeline to viewed photo to No"
+                        class="flex justify-center"
+                      >
+                        No
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div
                 class="settings-section-header"
               >
                 Other
@@ -4286,6 +4329,49 @@ exports[`App matches snapshot 1`] = `
               </div>
             </div>
             <div
+              class="flex items-center font-semibold"
+              title="Whether the timeline should scroll to each photo viewed in the gallery"
+            >
+              Scroll timeline to viewed photo
+            </div>
+            <div
+              class="flex items-center"
+            >
+              <div
+                class="dropdown dropdown-center mx-auto"
+              >
+                <button
+                  aria-label="Set Scroll timeline to viewed photo"
+                  class="btn btn-ghost text-xl font-bold"
+                  role="button"
+                  tabindex="0"
+                >
+                  Yes
+                </button>
+                <ul
+                  class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                  tabindex="0"
+                >
+                  <li>
+                    <button
+                      aria-label="Set Scroll timeline to viewed photo to Yes"
+                      class="flex justify-center"
+                    >
+                      Yes
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Scroll timeline to viewed photo to No"
+                      class="flex justify-center"
+                    >
+                      No
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div
               class="settings-section-header"
             >
               Other
@@ -6598,6 +6684,49 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 </div>
               </div>
               <div
+                class="flex items-center font-semibold"
+                title="Whether the timeline should scroll to each photo viewed in the gallery"
+              >
+                Scroll timeline to viewed photo
+              </div>
+              <div
+                class="flex items-center"
+              >
+                <div
+                  class="dropdown dropdown-center mx-auto"
+                >
+                  <button
+                    aria-label="Set Scroll timeline to viewed photo"
+                    class="btn btn-ghost text-xl font-bold"
+                    role="button"
+                    tabindex="0"
+                  >
+                    Yes
+                  </button>
+                  <ul
+                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                    tabindex="0"
+                  >
+                    <li>
+                      <button
+                        aria-label="Set Scroll timeline to viewed photo to Yes"
+                        class="flex justify-center"
+                      >
+                        Yes
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Scroll timeline to viewed photo to No"
+                        class="flex justify-center"
+                      >
+                        No
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div
                 class="settings-section-header"
               >
                 Other
@@ -8807,6 +8936,49 @@ exports[`App matches snapshot when plant is archived 1`] = `
                       class="flex justify-center"
                     >
                       5
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div
+              class="flex items-center font-semibold"
+              title="Whether the timeline should scroll to each photo viewed in the gallery"
+            >
+              Scroll timeline to viewed photo
+            </div>
+            <div
+              class="flex items-center"
+            >
+              <div
+                class="dropdown dropdown-center mx-auto"
+              >
+                <button
+                  aria-label="Set Scroll timeline to viewed photo"
+                  class="btn btn-ghost text-xl font-bold"
+                  role="button"
+                  tabindex="0"
+                >
+                  Yes
+                </button>
+                <ul
+                  class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                  tabindex="0"
+                >
+                  <li>
+                    <button
+                      aria-label="Set Scroll timeline to viewed photo to Yes"
+                      class="flex justify-center"
+                    >
+                      Yes
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Scroll timeline to viewed photo to No"
+                      class="flex justify-center"
+                    >
+                      No
                     </button>
                   </li>
                 </ul>

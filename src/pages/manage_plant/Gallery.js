@@ -42,6 +42,8 @@ const Gallery = () => {
     const delay = useSelector((state) => state.settings.gallerySlideshowDelay);
     // Controls whether captions with photo date are visible
     const caption = useSelector((state) => state.settings.galleryShowPhotoDate);
+    // Controls whether timeline scrolls to last photo when gallery closed
+    const scroll = useSelector((state) => state.settings.galleryScrollToPhoto);
     // Array of objects each representing 1 existing photo
     const photos = useSelector((state) => state.timeline.photos);
     const dispatch = useDispatch();
@@ -81,7 +83,8 @@ const Gallery = () => {
 
                 // Scroll timeline to last-viewed photo before closing
                 exiting: () => {
-                    if (slideHasChanged) {
+                    // Only scroll if user setting enabled and slide changed
+                    if (scroll && slideHasChanged) {
                         // Get reference to last-viewed photo thumbnail
                         const currentSlide = slides[index];
                         const thumbnail = document.querySelector(

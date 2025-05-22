@@ -14,7 +14,9 @@ export const settingsSlice = createSlice({
         // Number of milliseconds each photo is shown in gallery slideshow
         gallerySlideshowDelay: 3000,
         // Whether date captions are rendered in photo gallery
-        galleryShowPhotoDate: true
+        galleryShowPhotoDate: true,
+        // Whether timeline scrolls to last-viewed photo when gallery closed
+        galleryScrollToPhoto: true
     },
     reducers: {
         // Takes {setting: name, value: value}

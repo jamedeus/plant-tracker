@@ -17,6 +17,7 @@ const sections = {
     "Photo Gallery": [
         "galleryShowPhotoDate",
         "gallerySlideshowDelay",
+        "galleryScrollToPhoto",
     ],
     Other: [
         "holdToConfirmDelay"
@@ -77,6 +78,18 @@ const settings = {
         default: {
             desktop: true,
             mobile: false
+        }
+    },
+    galleryScrollToPhoto: {
+        settingText: "Scroll timeline to viewed photo",
+        settingDescription: "Whether the timeline should scroll to each photo viewed in the gallery",
+        settingOptions: [
+            { name: 'Yes', value: true },
+            { name: 'No', value: false },
+        ],
+        default: {
+            desktop: true,
+            mobile: true
         }
     },
     holdToConfirmDelay: {
