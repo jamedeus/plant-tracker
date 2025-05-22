@@ -26,6 +26,12 @@ import {
     MagnifyingGlassMinusIcon
 } from '@heroicons/react/24/solid';
 
+// Takes reference to element, returns true if within current viewport
+const elementIsVisible = (element) => {
+    const rect = element.getBoundingClientRect();
+    return rect.top >= 0 && rect.bottom <= window.innerHeight;
+};
+
 const Gallery = () => {
     // Controls open state, set to true when timeline PhotoThumbnail clicked
     const open = useSelector((state) => state.timeline.photoGalleryOpen);
@@ -76,10 +82,17 @@ const Gallery = () => {
                 // Scroll timeline to last-viewed photo before closing
                 exiting: () => {
                     if (slideHasChanged) {
+                        // Get reference to last-viewed photo thumbnail
                         const currentSlide = slides[index];
-                        document.querySelector(
+                        const thumbnail = document.querySelector(
                             `[data-timeline-thumbnail="${currentSlide.thumbnail}"]`
-                        )?.scrollIntoView({ behavior: "smooth", block: "start" });
+                        );
+                        // Only scroll if thumbnail is outside viewport
+                        if (!elementIsVisible(thumbnail)) {
+                            thumbnail.scrollIntoView(
+                                { behavior: "smooth", block: "start" }
+                            );
+                        }
                     }
                 },
 

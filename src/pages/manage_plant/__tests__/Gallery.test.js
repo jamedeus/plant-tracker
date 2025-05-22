@@ -11,6 +11,13 @@ describe('Gallery', () => {
         // Create mock state objects
         bulkCreateMockContext(mockContext);
         createMockContext('user_accounts_enabled', true);
+
+        // Mock viewport height (simulate thumbnails inside/outside viewport)
+        Object.defineProperty(window, 'innerHeight', {
+            writable: true,
+            configurable: true,
+            value: 800,
+        });
     });
 
     beforeEach(() => {
@@ -131,6 +138,12 @@ describe('Gallery', () => {
     });
 
     it('scrolls timeline to last-viewed photo when gallery is closed', async () => {
+        // Mock getBoundingClientRect to simulate timeline photo thumbnail
+        // being outside viewport (only scrolls if photo not already visible)
+        jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue(
+            { top: 900, bottom: 950 }
+        );
+
         // Open gallery, confirm scrollIntoView has not been called yet
         await user.click(app.getByRole('button', {name: 'Gallery'}));
         expect(window.HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled();
@@ -150,6 +163,25 @@ describe('Gallery', () => {
         // Close gallery without changing slides, confirm scrollIntoView was NOT called
         await user.click(app.getByRole('button', {name: 'Close'}));
         await jest.advanceTimersByTimeAsync(500);
+        expect(window.HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled();
+    });
+
+    it('does not scroll timeline when closed if thumbnail is already visible', async () => {
+        // Mock getBoundingClientRect to simulate timeline photo thumbnail
+        // already inside viewport (should not scroll page)
+        jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue(
+            { top: 100, bottom: 150 }
+        );
+
+        // Open gallery, confirm scrollIntoView has not been called yet
+        await user.click(app.getByRole('button', {name: 'Gallery'}));
+        expect(window.HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled();
+
+        // Change slide, close gallery
+        await user.click(app.getByRole('button', {name: 'Next'}));
+        await user.click(app.getByRole('button', {name: 'Close'}));
+        await jest.advanceTimersByTimeAsync(500);
+        // Confirm scrollIntoView was NOT called (photo already visible)
         expect(window.HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled();
     });
 });
