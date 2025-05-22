@@ -29,8 +29,8 @@ import {
 const Gallery = () => {
     // Controls open state, set to true when timeline PhotoThumbnail clicked
     const open = useSelector((state) => state.timeline.photoGalleryOpen);
-    // Controls initially visible photo (does not update as carousel moves).
-    // Used to open clicked photo + remember last-viewed photo when closing.
+    // Controls initially visible photo (updates as carousel moves).
+    // Used to open clicked photo + remember last-viewed photo when reopened.
     const index = useSelector((state) => state.timeline.photoGalleryIndex);
     // Controls slideshow delay (user-configurable in settings)
     const delay = useSelector((state) => state.settings.gallerySlideshowDelay);
@@ -46,16 +46,15 @@ const Gallery = () => {
     // Use to access current state (visible slide index, url, etc)
     const controllerRef = useRef(null);
 
-    // Used for progress animation
+    // Shows progress animation if true
     const [slideshowRunning, setSlideshowRunning] = useState(false);
-    const [progressBarKey, setProgressBarKey] = useState(0);
 
     // Get thumbnail + container heights for current layout
     // Pre-computing container height fixes animation stutter on mobile
     const thumbnailSize = desktop ? 100 : 80;
     const thumbnailContainerHeight = thumbnailSize + 32;
 
-    // Build slides array, only update when photos state changes
+    // Build slides array, only update when redux photos state changes
     const slides = useMemo(() => photos.map(photo => ({
         src: photo.image,
         thumbnail: photo.thumbnail,
@@ -68,51 +67,29 @@ const Gallery = () => {
         <Lightbox
             open={open}
             on={{
+                // Scroll timeline to last-viewed photo before closing
                 exiting: () => {
-                    const {
-                        currentIndex,
-                        currentSlide
-                    } = controllerRef.current.getLightboxState();
-
-                    // Save current photo index for next time gallery is opened
-                    dispatch(photoGalleryIndexChanged({ index: currentIndex }));
-
-                    // Scroll timeline to last-view photo
+                    const { currentSlide } = controllerRef.current.getLightboxState();
                     document.querySelector(
                         `[data-timeline-thumbnail="${currentSlide.thumbnail}"]`
                     )?.scrollIntoView({ behavior: "smooth", block: "start" });
                 },
+
                 // Close gallery
                 exited: () => dispatch(photoGalleryOpened({ open: false })),
 
-                view: () => {
-                    // When slideshow changes slides: change progress bar key to
-                    // force render (start animation over), set new index (state
-                    // change causes re-render, will go back to whaetever slide
-                    // is saved in photoGalleryIndex state).
-                    //
-                    // Would be simpler to set index every time slide changes
-                    // but this causes render that breaks thumbnail animation.
-                    if (slideshowRunning) {
-                        const {
-                            currentIndex,
-                            currentSlide
-                        } = controllerRef.current.getLightboxState();
-                        dispatch(photoGalleryIndexChanged({ index: currentIndex }));
-                        setProgressBarKey(currentSlide.key);
-                    }
+                // Track current slide each time slide changes
+                view: ({ index: currentIndex }) => {
+                    dispatch(photoGalleryIndexChanged({ index: currentIndex }));
                 },
 
+                // Start progress animation when slideshow starts
                 slideshowStart: () => {
-                    // Start on current slide
-                    const { currentIndex } = controllerRef.current.getLightboxState();
-                    dispatch(photoGalleryIndexChanged({ index: currentIndex }));
-                    // Start progress animation for first slide
                     setSlideshowRunning(true);
                 },
 
+                // Stop progress animation when slideshow stops
                 slideshowStop: () => {
-                    // Stop progress animation
                     setSlideshowRunning(false);
                 },
             }}
@@ -135,7 +112,7 @@ const Gallery = () => {
                     if (slideshowRunning) {
                         return (
                             <div
-                                key={progressBarKey}
+                                key={index}
                                 className="slideshow_progress_bar"
                                 style={{
                                     "--slideshow-delay": `${delay}ms`
