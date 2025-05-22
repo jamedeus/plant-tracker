@@ -129,4 +129,27 @@ describe('Gallery', () => {
         await user.click(app.getByRole('button', {name: 'Exit Fullscreen'}));
         expect(document.exitFullscreen).toHaveBeenCalled();
     });
+
+    it('scrolls timeline to last-viewed photo when gallery is closed', async () => {
+        // Open gallery, confirm scrollIntoView has not been called yet
+        await user.click(app.getByRole('button', {name: 'Gallery'}));
+        expect(window.HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled();
+
+        // Change slide, close gallery, confirm scrollIntoView was called
+        await user.click(app.getByRole('button', {name: 'Next'}));
+        await user.click(app.getByRole('button', {name: 'Close'}));
+        await jest.advanceTimersByTimeAsync(500);
+        expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled();
+    });
+
+    it('does not scroll timeline when closed if user did not change slides', async () => {
+        // Open gallery, confirm scrollIntoView has not been called yet
+        await user.click(app.getByRole('button', {name: 'Gallery'}));
+        expect(window.HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled();
+
+        // Close gallery without changing slides, confirm scrollIntoView was NOT called
+        await user.click(app.getByRole('button', {name: 'Close'}));
+        await jest.advanceTimersByTimeAsync(500);
+        expect(window.HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled();
+    });
 });

@@ -43,11 +43,12 @@ const Gallery = () => {
     // True if desktop layout, false if mobile
     const desktop = useIsBreakpointActive('md');
 
-    // Use to access current state (visible slide index, url, etc)
-    const controllerRef = useRef(null);
-
     // Shows progress animation if true
     const [slideshowRunning, setSlideshowRunning] = useState(false);
+
+    // Track if slide has changed since opening (don't scroll timeline to
+    // last-viewed photo unless slide has changed)
+    const [slideHasChanged, setSlideHasChanged] = useState(false);
 
     // Get thumbnail + container heights for current layout
     // Pre-computing container height fixes animation stutter on mobile
@@ -67,12 +68,19 @@ const Gallery = () => {
         <Lightbox
             open={open}
             on={{
+                // Reset slideHasChanged when opened
+                entered: () => {
+                    setSlideHasChanged(false);
+                },
+
                 // Scroll timeline to last-viewed photo before closing
                 exiting: () => {
-                    const { currentSlide } = controllerRef.current.getLightboxState();
-                    document.querySelector(
-                        `[data-timeline-thumbnail="${currentSlide.thumbnail}"]`
-                    )?.scrollIntoView({ behavior: "smooth", block: "start" });
+                    if (slideHasChanged) {
+                        const currentSlide = slides[index];
+                        document.querySelector(
+                            `[data-timeline-thumbnail="${currentSlide.thumbnail}"]`
+                        )?.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }
                 },
 
                 // Close gallery
@@ -80,6 +88,10 @@ const Gallery = () => {
 
                 // Track current slide each time slide changes
                 view: ({ index: currentIndex }) => {
+                    // Don't set slideHasChanged when lightbox first opens
+                    if (currentIndex !== index) {
+                        setSlideHasChanged(true);
+                    }
                     dispatch(photoGalleryIndexChanged({ index: currentIndex }));
                 },
 
@@ -123,7 +135,6 @@ const Gallery = () => {
                 }
             }}
             controller={{
-                ref: controllerRef,
                 closeOnPullDown: true
             }}
             plugins={[
