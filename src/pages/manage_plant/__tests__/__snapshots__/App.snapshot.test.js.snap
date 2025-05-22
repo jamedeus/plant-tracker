@@ -1681,7 +1681,7 @@ exports[`App matches snapshot 1`] = `
               class="flex items-center w-full"
             >
               <h2
-                class="text-2xl font-bold ml-2 md:ml-4 mr-auto"
+                class="text-3xl font-bold ml-2 md:ml-4 mr-auto"
               >
                 Settings
               </h2>
@@ -1704,8 +1704,56 @@ exports[`App matches snapshot 1`] = `
               </button>
             </div>
             <div
-              class="settings-grid w-full gap-4 pl-4 md:px-8"
+              class="settings-grid w-full gap-4 pl-5 md:px-8"
             >
+              <div
+                class="settings-section-header"
+              >
+                Timeline
+              </div>
+              <div
+                class="flex items-center font-semibold"
+                title="Whether the full date is always visible or hidden in tooltip"
+              >
+                Show full dates
+              </div>
+              <div
+                class="flex items-center"
+              >
+                <div
+                  class="dropdown dropdown-center mx-auto"
+                >
+                  <button
+                    aria-label="Set Show full dates"
+                    class="btn btn-ghost text-xl font-bold"
+                    role="button"
+                    tabindex="0"
+                  >
+                    Show
+                  </button>
+                  <ul
+                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                    tabindex="0"
+                  >
+                    <li>
+                      <button
+                        aria-label="Set Show full dates to Show"
+                        class="flex justify-center"
+                      >
+                        Show
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Show full dates to Tooltip"
+                        class="flex justify-center"
+                      >
+                        Tooltip
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
               <div
                 class="flex items-center font-semibold"
                 title="Number of line shown in the timeline when a note is closed"
@@ -1774,10 +1822,15 @@ exports[`App matches snapshot 1`] = `
                 </div>
               </div>
               <div
-                class="flex items-center font-semibold"
-                title="Whether the full date is always visible or hidden in tooltip"
+                class="settings-section-header"
               >
-                Show full date in timeline
+                Photo Gallery
+              </div>
+              <div
+                class="flex items-center font-semibold"
+                title="Whether the gallery renders a semi-transparent label with the date each photo was taken on"
+              >
+                Show photo dates
               </div>
               <div
                 class="flex items-center"
@@ -1786,12 +1839,12 @@ exports[`App matches snapshot 1`] = `
                   class="dropdown dropdown-center mx-auto"
                 >
                   <button
-                    aria-label="Set Show full date in timeline"
+                    aria-label="Set Show photo dates"
                     class="btn btn-ghost text-xl font-bold"
                     role="button"
                     tabindex="0"
                   >
-                    Show
+                    Yes
                   </button>
                   <ul
                     class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
@@ -1799,22 +1852,94 @@ exports[`App matches snapshot 1`] = `
                   >
                     <li>
                       <button
-                        aria-label="Set Show full date in timeline to Show"
+                        aria-label="Set Show photo dates to Yes"
                         class="flex justify-center"
                       >
-                        Show
+                        Yes
                       </button>
                     </li>
                     <li>
                       <button
-                        aria-label="Set Show full date in timeline to Tooltip"
+                        aria-label="Set Show photo dates to No"
                         class="flex justify-center"
                       >
-                        Tooltip
+                        No
                       </button>
                     </li>
                   </ul>
                 </div>
+              </div>
+              <div
+                class="flex items-center font-semibold"
+                title="How many seconds each photo is shown in the photo gallery slideshow"
+              >
+                Slideshow delay (seconds)
+              </div>
+              <div
+                class="flex items-center"
+              >
+                <div
+                  class="dropdown dropdown-center mx-auto"
+                >
+                  <button
+                    aria-label="Set Slideshow delay (seconds)"
+                    class="btn btn-ghost text-xl font-bold"
+                    role="button"
+                    tabindex="0"
+                  >
+                    3
+                  </button>
+                  <ul
+                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                    tabindex="0"
+                  >
+                    <li>
+                      <button
+                        aria-label="Set Slideshow delay (seconds) to 1"
+                        class="flex justify-center"
+                      >
+                        1
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Slideshow delay (seconds) to 2"
+                        class="flex justify-center"
+                      >
+                        2
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Slideshow delay (seconds) to 3"
+                        class="flex justify-center"
+                      >
+                        3
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Slideshow delay (seconds) to 4"
+                        class="flex justify-center"
+                      >
+                        4
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Slideshow delay (seconds) to 5"
+                        class="flex justify-center"
+                      >
+                        5
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div
+                class="settings-section-header"
+              >
+                Other
               </div>
               <div
                 class="flex items-center font-semibold"
@@ -1870,116 +1995,6 @@ exports[`App matches snapshot 1`] = `
                         class="flex justify-center"
                       >
                         2.5
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div
-                class="flex items-center font-semibold"
-                title="How many seconds each photo is shown in the photo gallery slideshow"
-              >
-                Photo gallery slideshow delay (seconds)
-              </div>
-              <div
-                class="flex items-center"
-              >
-                <div
-                  class="dropdown dropdown-center mx-auto"
-                >
-                  <button
-                    aria-label="Set Photo gallery slideshow delay (seconds)"
-                    class="btn btn-ghost text-xl font-bold"
-                    role="button"
-                    tabindex="0"
-                  >
-                    3
-                  </button>
-                  <ul
-                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
-                    tabindex="0"
-                  >
-                    <li>
-                      <button
-                        aria-label="Set Photo gallery slideshow delay (seconds) to 1"
-                        class="flex justify-center"
-                      >
-                        1
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        aria-label="Set Photo gallery slideshow delay (seconds) to 2"
-                        class="flex justify-center"
-                      >
-                        2
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        aria-label="Set Photo gallery slideshow delay (seconds) to 3"
-                        class="flex justify-center"
-                      >
-                        3
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        aria-label="Set Photo gallery slideshow delay (seconds) to 4"
-                        class="flex justify-center"
-                      >
-                        4
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        aria-label="Set Photo gallery slideshow delay (seconds) to 5"
-                        class="flex justify-center"
-                      >
-                        5
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div
-                class="flex items-center font-semibold"
-                title="Whether the gallery renders a semi-transparent label with the date each photo was taken on"
-              >
-                Photo gallery show date
-              </div>
-              <div
-                class="flex items-center"
-              >
-                <div
-                  class="dropdown dropdown-center mx-auto"
-                >
-                  <button
-                    aria-label="Set Photo gallery show date"
-                    class="btn btn-ghost text-xl font-bold"
-                    role="button"
-                    tabindex="0"
-                  >
-                    Yes
-                  </button>
-                  <ul
-                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
-                    tabindex="0"
-                  >
-                    <li>
-                      <button
-                        aria-label="Set Photo gallery show date to Yes"
-                        class="flex justify-center"
-                      >
-                        Yes
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        aria-label="Set Photo gallery show date to No"
-                        class="flex justify-center"
-                      >
-                        No
                       </button>
                     </li>
                   </ul>
@@ -4015,7 +4030,7 @@ exports[`App matches snapshot 1`] = `
             class="flex items-center w-full"
           >
             <h2
-              class="text-2xl font-bold ml-2 md:ml-4 mr-auto"
+              class="text-3xl font-bold ml-2 md:ml-4 mr-auto"
             >
               Settings
             </h2>
@@ -4038,8 +4053,56 @@ exports[`App matches snapshot 1`] = `
             </button>
           </div>
           <div
-            class="settings-grid w-full gap-4 pl-4 md:px-8"
+            class="settings-grid w-full gap-4 pl-5 md:px-8"
           >
+            <div
+              class="settings-section-header"
+            >
+              Timeline
+            </div>
+            <div
+              class="flex items-center font-semibold"
+              title="Whether the full date is always visible or hidden in tooltip"
+            >
+              Show full dates
+            </div>
+            <div
+              class="flex items-center"
+            >
+              <div
+                class="dropdown dropdown-center mx-auto"
+              >
+                <button
+                  aria-label="Set Show full dates"
+                  class="btn btn-ghost text-xl font-bold"
+                  role="button"
+                  tabindex="0"
+                >
+                  Show
+                </button>
+                <ul
+                  class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                  tabindex="0"
+                >
+                  <li>
+                    <button
+                      aria-label="Set Show full dates to Show"
+                      class="flex justify-center"
+                    >
+                      Show
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Show full dates to Tooltip"
+                      class="flex justify-center"
+                    >
+                      Tooltip
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
             <div
               class="flex items-center font-semibold"
               title="Number of line shown in the timeline when a note is closed"
@@ -4108,10 +4171,15 @@ exports[`App matches snapshot 1`] = `
               </div>
             </div>
             <div
-              class="flex items-center font-semibold"
-              title="Whether the full date is always visible or hidden in tooltip"
+              class="settings-section-header"
             >
-              Show full date in timeline
+              Photo Gallery
+            </div>
+            <div
+              class="flex items-center font-semibold"
+              title="Whether the gallery renders a semi-transparent label with the date each photo was taken on"
+            >
+              Show photo dates
             </div>
             <div
               class="flex items-center"
@@ -4120,12 +4188,12 @@ exports[`App matches snapshot 1`] = `
                 class="dropdown dropdown-center mx-auto"
               >
                 <button
-                  aria-label="Set Show full date in timeline"
+                  aria-label="Set Show photo dates"
                   class="btn btn-ghost text-xl font-bold"
                   role="button"
                   tabindex="0"
                 >
-                  Show
+                  Yes
                 </button>
                 <ul
                   class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
@@ -4133,22 +4201,94 @@ exports[`App matches snapshot 1`] = `
                 >
                   <li>
                     <button
-                      aria-label="Set Show full date in timeline to Show"
+                      aria-label="Set Show photo dates to Yes"
                       class="flex justify-center"
                     >
-                      Show
+                      Yes
                     </button>
                   </li>
                   <li>
                     <button
-                      aria-label="Set Show full date in timeline to Tooltip"
+                      aria-label="Set Show photo dates to No"
                       class="flex justify-center"
                     >
-                      Tooltip
+                      No
                     </button>
                   </li>
                 </ul>
               </div>
+            </div>
+            <div
+              class="flex items-center font-semibold"
+              title="How many seconds each photo is shown in the photo gallery slideshow"
+            >
+              Slideshow delay (seconds)
+            </div>
+            <div
+              class="flex items-center"
+            >
+              <div
+                class="dropdown dropdown-center mx-auto"
+              >
+                <button
+                  aria-label="Set Slideshow delay (seconds)"
+                  class="btn btn-ghost text-xl font-bold"
+                  role="button"
+                  tabindex="0"
+                >
+                  3
+                </button>
+                <ul
+                  class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                  tabindex="0"
+                >
+                  <li>
+                    <button
+                      aria-label="Set Slideshow delay (seconds) to 1"
+                      class="flex justify-center"
+                    >
+                      1
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Slideshow delay (seconds) to 2"
+                      class="flex justify-center"
+                    >
+                      2
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Slideshow delay (seconds) to 3"
+                      class="flex justify-center"
+                    >
+                      3
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Slideshow delay (seconds) to 4"
+                      class="flex justify-center"
+                    >
+                      4
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Slideshow delay (seconds) to 5"
+                      class="flex justify-center"
+                    >
+                      5
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div
+              class="settings-section-header"
+            >
+              Other
             </div>
             <div
               class="flex items-center font-semibold"
@@ -4204,116 +4344,6 @@ exports[`App matches snapshot 1`] = `
                       class="flex justify-center"
                     >
                       2.5
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div
-              class="flex items-center font-semibold"
-              title="How many seconds each photo is shown in the photo gallery slideshow"
-            >
-              Photo gallery slideshow delay (seconds)
-            </div>
-            <div
-              class="flex items-center"
-            >
-              <div
-                class="dropdown dropdown-center mx-auto"
-              >
-                <button
-                  aria-label="Set Photo gallery slideshow delay (seconds)"
-                  class="btn btn-ghost text-xl font-bold"
-                  role="button"
-                  tabindex="0"
-                >
-                  3
-                </button>
-                <ul
-                  class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
-                  tabindex="0"
-                >
-                  <li>
-                    <button
-                      aria-label="Set Photo gallery slideshow delay (seconds) to 1"
-                      class="flex justify-center"
-                    >
-                      1
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      aria-label="Set Photo gallery slideshow delay (seconds) to 2"
-                      class="flex justify-center"
-                    >
-                      2
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      aria-label="Set Photo gallery slideshow delay (seconds) to 3"
-                      class="flex justify-center"
-                    >
-                      3
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      aria-label="Set Photo gallery slideshow delay (seconds) to 4"
-                      class="flex justify-center"
-                    >
-                      4
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      aria-label="Set Photo gallery slideshow delay (seconds) to 5"
-                      class="flex justify-center"
-                    >
-                      5
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div
-              class="flex items-center font-semibold"
-              title="Whether the gallery renders a semi-transparent label with the date each photo was taken on"
-            >
-              Photo gallery show date
-            </div>
-            <div
-              class="flex items-center"
-            >
-              <div
-                class="dropdown dropdown-center mx-auto"
-              >
-                <button
-                  aria-label="Set Photo gallery show date"
-                  class="btn btn-ghost text-xl font-bold"
-                  role="button"
-                  tabindex="0"
-                >
-                  Yes
-                </button>
-                <ul
-                  class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
-                  tabindex="0"
-                >
-                  <li>
-                    <button
-                      aria-label="Set Photo gallery show date to Yes"
-                      class="flex justify-center"
-                    >
-                      Yes
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      aria-label="Set Photo gallery show date to No"
-                      class="flex justify-center"
-                    >
-                      No
                     </button>
                   </li>
                 </ul>
@@ -6312,7 +6342,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               class="flex items-center w-full"
             >
               <h2
-                class="text-2xl font-bold ml-2 md:ml-4 mr-auto"
+                class="text-3xl font-bold ml-2 md:ml-4 mr-auto"
               >
                 Settings
               </h2>
@@ -6335,8 +6365,56 @@ exports[`App matches snapshot when plant is archived 1`] = `
               </button>
             </div>
             <div
-              class="settings-grid w-full gap-4 pl-4 md:px-8"
+              class="settings-grid w-full gap-4 pl-5 md:px-8"
             >
+              <div
+                class="settings-section-header"
+              >
+                Timeline
+              </div>
+              <div
+                class="flex items-center font-semibold"
+                title="Whether the full date is always visible or hidden in tooltip"
+              >
+                Show full dates
+              </div>
+              <div
+                class="flex items-center"
+              >
+                <div
+                  class="dropdown dropdown-center mx-auto"
+                >
+                  <button
+                    aria-label="Set Show full dates"
+                    class="btn btn-ghost text-xl font-bold"
+                    role="button"
+                    tabindex="0"
+                  >
+                    Show
+                  </button>
+                  <ul
+                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                    tabindex="0"
+                  >
+                    <li>
+                      <button
+                        aria-label="Set Show full dates to Show"
+                        class="flex justify-center"
+                      >
+                        Show
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Show full dates to Tooltip"
+                        class="flex justify-center"
+                      >
+                        Tooltip
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
               <div
                 class="flex items-center font-semibold"
                 title="Number of line shown in the timeline when a note is closed"
@@ -6405,10 +6483,15 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 </div>
               </div>
               <div
-                class="flex items-center font-semibold"
-                title="Whether the full date is always visible or hidden in tooltip"
+                class="settings-section-header"
               >
-                Show full date in timeline
+                Photo Gallery
+              </div>
+              <div
+                class="flex items-center font-semibold"
+                title="Whether the gallery renders a semi-transparent label with the date each photo was taken on"
+              >
+                Show photo dates
               </div>
               <div
                 class="flex items-center"
@@ -6417,12 +6500,12 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   class="dropdown dropdown-center mx-auto"
                 >
                   <button
-                    aria-label="Set Show full date in timeline"
+                    aria-label="Set Show photo dates"
                     class="btn btn-ghost text-xl font-bold"
                     role="button"
                     tabindex="0"
                   >
-                    Show
+                    Yes
                   </button>
                   <ul
                     class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
@@ -6430,22 +6513,94 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   >
                     <li>
                       <button
-                        aria-label="Set Show full date in timeline to Show"
+                        aria-label="Set Show photo dates to Yes"
                         class="flex justify-center"
                       >
-                        Show
+                        Yes
                       </button>
                     </li>
                     <li>
                       <button
-                        aria-label="Set Show full date in timeline to Tooltip"
+                        aria-label="Set Show photo dates to No"
                         class="flex justify-center"
                       >
-                        Tooltip
+                        No
                       </button>
                     </li>
                   </ul>
                 </div>
+              </div>
+              <div
+                class="flex items-center font-semibold"
+                title="How many seconds each photo is shown in the photo gallery slideshow"
+              >
+                Slideshow delay (seconds)
+              </div>
+              <div
+                class="flex items-center"
+              >
+                <div
+                  class="dropdown dropdown-center mx-auto"
+                >
+                  <button
+                    aria-label="Set Slideshow delay (seconds)"
+                    class="btn btn-ghost text-xl font-bold"
+                    role="button"
+                    tabindex="0"
+                  >
+                    3
+                  </button>
+                  <ul
+                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                    tabindex="0"
+                  >
+                    <li>
+                      <button
+                        aria-label="Set Slideshow delay (seconds) to 1"
+                        class="flex justify-center"
+                      >
+                        1
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Slideshow delay (seconds) to 2"
+                        class="flex justify-center"
+                      >
+                        2
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Slideshow delay (seconds) to 3"
+                        class="flex justify-center"
+                      >
+                        3
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Slideshow delay (seconds) to 4"
+                        class="flex justify-center"
+                      >
+                        4
+                      </button>
+                    </li>
+                    <li>
+                      <button
+                        aria-label="Set Slideshow delay (seconds) to 5"
+                        class="flex justify-center"
+                      >
+                        5
+                      </button>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+              <div
+                class="settings-section-header"
+              >
+                Other
               </div>
               <div
                 class="flex items-center font-semibold"
@@ -6501,116 +6656,6 @@ exports[`App matches snapshot when plant is archived 1`] = `
                         class="flex justify-center"
                       >
                         2.5
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div
-                class="flex items-center font-semibold"
-                title="How many seconds each photo is shown in the photo gallery slideshow"
-              >
-                Photo gallery slideshow delay (seconds)
-              </div>
-              <div
-                class="flex items-center"
-              >
-                <div
-                  class="dropdown dropdown-center mx-auto"
-                >
-                  <button
-                    aria-label="Set Photo gallery slideshow delay (seconds)"
-                    class="btn btn-ghost text-xl font-bold"
-                    role="button"
-                    tabindex="0"
-                  >
-                    3
-                  </button>
-                  <ul
-                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
-                    tabindex="0"
-                  >
-                    <li>
-                      <button
-                        aria-label="Set Photo gallery slideshow delay (seconds) to 1"
-                        class="flex justify-center"
-                      >
-                        1
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        aria-label="Set Photo gallery slideshow delay (seconds) to 2"
-                        class="flex justify-center"
-                      >
-                        2
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        aria-label="Set Photo gallery slideshow delay (seconds) to 3"
-                        class="flex justify-center"
-                      >
-                        3
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        aria-label="Set Photo gallery slideshow delay (seconds) to 4"
-                        class="flex justify-center"
-                      >
-                        4
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        aria-label="Set Photo gallery slideshow delay (seconds) to 5"
-                        class="flex justify-center"
-                      >
-                        5
-                      </button>
-                    </li>
-                  </ul>
-                </div>
-              </div>
-              <div
-                class="flex items-center font-semibold"
-                title="Whether the gallery renders a semi-transparent label with the date each photo was taken on"
-              >
-                Photo gallery show date
-              </div>
-              <div
-                class="flex items-center"
-              >
-                <div
-                  class="dropdown dropdown-center mx-auto"
-                >
-                  <button
-                    aria-label="Set Photo gallery show date"
-                    class="btn btn-ghost text-xl font-bold"
-                    role="button"
-                    tabindex="0"
-                  >
-                    Yes
-                  </button>
-                  <ul
-                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
-                    tabindex="0"
-                  >
-                    <li>
-                      <button
-                        aria-label="Set Photo gallery show date to Yes"
-                        class="flex justify-center"
-                      >
-                        Yes
-                      </button>
-                    </li>
-                    <li>
-                      <button
-                        aria-label="Set Photo gallery show date to No"
-                        class="flex justify-center"
-                      >
-                        No
                       </button>
                     </li>
                   </ul>
@@ -8512,7 +8557,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
             class="flex items-center w-full"
           >
             <h2
-              class="text-2xl font-bold ml-2 md:ml-4 mr-auto"
+              class="text-3xl font-bold ml-2 md:ml-4 mr-auto"
             >
               Settings
             </h2>
@@ -8535,8 +8580,56 @@ exports[`App matches snapshot when plant is archived 1`] = `
             </button>
           </div>
           <div
-            class="settings-grid w-full gap-4 pl-4 md:px-8"
+            class="settings-grid w-full gap-4 pl-5 md:px-8"
           >
+            <div
+              class="settings-section-header"
+            >
+              Timeline
+            </div>
+            <div
+              class="flex items-center font-semibold"
+              title="Whether the full date is always visible or hidden in tooltip"
+            >
+              Show full dates
+            </div>
+            <div
+              class="flex items-center"
+            >
+              <div
+                class="dropdown dropdown-center mx-auto"
+              >
+                <button
+                  aria-label="Set Show full dates"
+                  class="btn btn-ghost text-xl font-bold"
+                  role="button"
+                  tabindex="0"
+                >
+                  Show
+                </button>
+                <ul
+                  class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                  tabindex="0"
+                >
+                  <li>
+                    <button
+                      aria-label="Set Show full dates to Show"
+                      class="flex justify-center"
+                    >
+                      Show
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Show full dates to Tooltip"
+                      class="flex justify-center"
+                    >
+                      Tooltip
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
             <div
               class="flex items-center font-semibold"
               title="Number of line shown in the timeline when a note is closed"
@@ -8605,10 +8698,15 @@ exports[`App matches snapshot when plant is archived 1`] = `
               </div>
             </div>
             <div
-              class="flex items-center font-semibold"
-              title="Whether the full date is always visible or hidden in tooltip"
+              class="settings-section-header"
             >
-              Show full date in timeline
+              Photo Gallery
+            </div>
+            <div
+              class="flex items-center font-semibold"
+              title="Whether the gallery renders a semi-transparent label with the date each photo was taken on"
+            >
+              Show photo dates
             </div>
             <div
               class="flex items-center"
@@ -8617,12 +8715,12 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 class="dropdown dropdown-center mx-auto"
               >
                 <button
-                  aria-label="Set Show full date in timeline"
+                  aria-label="Set Show photo dates"
                   class="btn btn-ghost text-xl font-bold"
                   role="button"
                   tabindex="0"
                 >
-                  Show
+                  Yes
                 </button>
                 <ul
                   class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
@@ -8630,22 +8728,94 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 >
                   <li>
                     <button
-                      aria-label="Set Show full date in timeline to Show"
+                      aria-label="Set Show photo dates to Yes"
                       class="flex justify-center"
                     >
-                      Show
+                      Yes
                     </button>
                   </li>
                   <li>
                     <button
-                      aria-label="Set Show full date in timeline to Tooltip"
+                      aria-label="Set Show photo dates to No"
                       class="flex justify-center"
                     >
-                      Tooltip
+                      No
                     </button>
                   </li>
                 </ul>
               </div>
+            </div>
+            <div
+              class="flex items-center font-semibold"
+              title="How many seconds each photo is shown in the photo gallery slideshow"
+            >
+              Slideshow delay (seconds)
+            </div>
+            <div
+              class="flex items-center"
+            >
+              <div
+                class="dropdown dropdown-center mx-auto"
+              >
+                <button
+                  aria-label="Set Slideshow delay (seconds)"
+                  class="btn btn-ghost text-xl font-bold"
+                  role="button"
+                  tabindex="0"
+                >
+                  3
+                </button>
+                <ul
+                  class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+                  tabindex="0"
+                >
+                  <li>
+                    <button
+                      aria-label="Set Slideshow delay (seconds) to 1"
+                      class="flex justify-center"
+                    >
+                      1
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Slideshow delay (seconds) to 2"
+                      class="flex justify-center"
+                    >
+                      2
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Slideshow delay (seconds) to 3"
+                      class="flex justify-center"
+                    >
+                      3
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Slideshow delay (seconds) to 4"
+                      class="flex justify-center"
+                    >
+                      4
+                    </button>
+                  </li>
+                  <li>
+                    <button
+                      aria-label="Set Slideshow delay (seconds) to 5"
+                      class="flex justify-center"
+                    >
+                      5
+                    </button>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div
+              class="settings-section-header"
+            >
+              Other
             </div>
             <div
               class="flex items-center font-semibold"
@@ -8701,116 +8871,6 @@ exports[`App matches snapshot when plant is archived 1`] = `
                       class="flex justify-center"
                     >
                       2.5
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div
-              class="flex items-center font-semibold"
-              title="How many seconds each photo is shown in the photo gallery slideshow"
-            >
-              Photo gallery slideshow delay (seconds)
-            </div>
-            <div
-              class="flex items-center"
-            >
-              <div
-                class="dropdown dropdown-center mx-auto"
-              >
-                <button
-                  aria-label="Set Photo gallery slideshow delay (seconds)"
-                  class="btn btn-ghost text-xl font-bold"
-                  role="button"
-                  tabindex="0"
-                >
-                  3
-                </button>
-                <ul
-                  class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
-                  tabindex="0"
-                >
-                  <li>
-                    <button
-                      aria-label="Set Photo gallery slideshow delay (seconds) to 1"
-                      class="flex justify-center"
-                    >
-                      1
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      aria-label="Set Photo gallery slideshow delay (seconds) to 2"
-                      class="flex justify-center"
-                    >
-                      2
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      aria-label="Set Photo gallery slideshow delay (seconds) to 3"
-                      class="flex justify-center"
-                    >
-                      3
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      aria-label="Set Photo gallery slideshow delay (seconds) to 4"
-                      class="flex justify-center"
-                    >
-                      4
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      aria-label="Set Photo gallery slideshow delay (seconds) to 5"
-                      class="flex justify-center"
-                    >
-                      5
-                    </button>
-                  </li>
-                </ul>
-              </div>
-            </div>
-            <div
-              class="flex items-center font-semibold"
-              title="Whether the gallery renders a semi-transparent label with the date each photo was taken on"
-            >
-              Photo gallery show date
-            </div>
-            <div
-              class="flex items-center"
-            >
-              <div
-                class="dropdown dropdown-center mx-auto"
-              >
-                <button
-                  aria-label="Set Photo gallery show date"
-                  class="btn btn-ghost text-xl font-bold"
-                  role="button"
-                  tabindex="0"
-                >
-                  Yes
-                </button>
-                <ul
-                  class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
-                  tabindex="0"
-                >
-                  <li>
-                    <button
-                      aria-label="Set Photo gallery show date to Yes"
-                      class="flex justify-center"
-                    >
-                      Yes
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      aria-label="Set Photo gallery show date to No"
-                      class="flex justify-center"
-                    >
-                      No
                     </button>
                   </li>
                 </ul>

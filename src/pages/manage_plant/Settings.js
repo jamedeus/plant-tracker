@@ -1,4 +1,4 @@
-import { memo, useState, useRef, useImperativeHandle, forwardRef } from 'react';
+import { memo, useState, useRef, useImperativeHandle, forwardRef, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import CloseButtonIcon from 'src/components/CloseButtonIcon';
 import { useSelector, useDispatch } from 'react-redux';
@@ -7,6 +7,21 @@ import DropdownMenu from 'src/components/DropdownMenu';
 import { useIsBreakpointActive } from 'src/useBreakpoint';
 import 'src/css/settings.css';
 import clsx from 'clsx';
+
+// Maps section names to array of setting names (must be settings object keys)
+const sections = {
+    Timeline: [
+        "timelineFullDate",
+        "collapsedNoteLines",
+    ],
+    "Photo Gallery": [
+        "galleryShowPhotoDate",
+        "gallerySlideshowDelay",
+    ],
+    Other: [
+        "holdToConfirmDelay"
+    ]
+};
 
 // Keys must match a settingsSlice state key
 const settings = {
@@ -26,11 +41,38 @@ const settings = {
         }
     },
     timelineFullDate: {
-        settingText: "Show full date in timeline",
+        settingText: "Show full dates",
         settingDescription: "Whether the full date is always visible or hidden in tooltip",
         settingOptions: [
             { name: 'Show', value: true },
             { name: 'Tooltip', value: false }
+        ],
+        default: {
+            desktop: true,
+            mobile: false
+        }
+    },
+    gallerySlideshowDelay: {
+        settingText: "Slideshow delay (seconds)",
+        settingDescription: "How many seconds each photo is shown in the photo gallery slideshow",
+        settingOptions: [
+            { name: 1, value: 1000 },
+            { name: 2, value: 2000 },
+            { name: 3, value: 3000 },
+            { name: 4, value: 4000 },
+            { name: 5, value: 5000 },
+        ],
+        default: {
+            desktop: 3000,
+            mobile: 3000
+        }
+    },
+    galleryShowPhotoDate: {
+        settingText: "Show photo dates",
+        settingDescription: "Whether the gallery renders a semi-transparent label with the date each photo was taken on",
+        settingOptions: [
+            { name: 'Yes', value: true },
+            { name: 'No', value: false },
         ],
         default: {
             desktop: true,
@@ -49,33 +91,6 @@ const settings = {
         default: {
             desktop: 1500,
             mobile: 1500
-        }
-    },
-    gallerySlideshowDelay: {
-        settingText: "Photo gallery slideshow delay (seconds)",
-        settingDescription: "How many seconds each photo is shown in the photo gallery slideshow",
-        settingOptions: [
-            { name: 1, value: 1000 },
-            { name: 2, value: 2000 },
-            { name: 3, value: 3000 },
-            { name: 4, value: 4000 },
-            { name: 5, value: 5000 },
-        ],
-        default: {
-            desktop: 3000,
-            mobile: 3000
-        }
-    },
-    galleryShowPhotoDate: {
-        settingText: "Photo gallery show date",
-        settingDescription: "Whether the gallery renders a semi-transparent label with the date each photo was taken on",
-        settingOptions: [
-            { name: 'Yes', value: true },
-            { name: 'No', value: false },
-        ],
-        default: {
-            desktop: true,
-            mobile: false
         }
     }
 };
@@ -228,7 +243,7 @@ const Settings = forwardRef(function Settings(_, ref) {
             <div className="settings-contents">
                 {/* Title + close button */}
                 <div className="flex items-center w-full">
-                    <h2 className="text-2xl font-bold ml-2 md:ml-4 mr-auto">
+                    <h2 className="text-3xl font-bold ml-2 md:ml-4 mr-auto">
                         Settings
                     </h2>
                     <button
@@ -240,13 +255,20 @@ const Settings = forwardRef(function Settings(_, ref) {
                     </button>
                 </div>
                 {/* Contents */}
-                <div className="settings-grid w-full gap-4 pl-4 md:px-8">
-                    {Object.entries(settings).map(([name, settings]) => (
-                        <SettingSection
-                            key={name}
-                            settingName={name}
-                            { ...settings }
-                        />
+                <div className="settings-grid w-full gap-4 pl-5 md:px-8">
+                    {Object.entries(sections).map(([section, settingNames]) => (
+                        <Fragment key={section}>
+                            <div className="settings-section-header">
+                                {section}
+                            </div>
+                            {settingNames.map(name => (
+                                <SettingSection
+                                    key={name}
+                                    settingName={name}
+                                    { ...settings[name] }
+                                />
+                            ))}
+                        </Fragment>
                     ))}
                 </div>
                 <div className="mt-auto mb-4 mx-auto w-full max-w-72">

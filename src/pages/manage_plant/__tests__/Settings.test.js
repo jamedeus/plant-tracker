@@ -114,7 +114,7 @@ describe('Settings menu', () => {
         expect(fullDate.classList).not.toContain('hidden');
 
         // Change collapsedNoteLines to "Tooltip"
-        await user.click(app.getByLabelText('Set Show full date in timeline to Tooltip'));
+        await user.click(app.getByLabelText('Set Show full dates to Tooltip'));
 
         // Confirm full date span was hidden (makes tooltip visible with CSS)
         expect(fullDate.classList).toContain('hidden');
@@ -122,7 +122,7 @@ describe('Settings menu', () => {
         expect(getSavedSettingValue('timelineFullDate')).toBeFalse();
 
         // Change collapsedNoteLines to "Show"
-        await user.click(app.getByLabelText('Set Show full date in timeline to Show'));
+        await user.click(app.getByLabelText('Set Show full dates to Show'));
 
         // Confirm full date span is visible (hides tooltip with CSS)
         expect(fullDate.classList).not.toContain('hidden');

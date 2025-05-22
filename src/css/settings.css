@@ -34,6 +34,18 @@ dialog.settings-menu {
     transition: transform .3s ease;
 }
 
+.settings-section-header {
+    @apply col-span-2 -indent-2 md:-indent-3 mb-2 text-xl font-bold;
+
+    &:first-child {
+        @apply md:mt-4;
+    }
+
+    &:not(:first-child) {
+        @apply mt-8 md:mt-12;
+    }
+}
+
 .settings-grid {
     /* Two column grid, setting name in left, value + dropdown in right */
     /* Right is wide enough for button with 6-7 characters, left fills rest */
