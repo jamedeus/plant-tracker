@@ -1,0 +1,1206 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Gallery matches snapshot for desktop layout 1`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body
+    class="yarl__no_scroll"
+    style="padding-right: 800px;"
+  >
+    <div
+      aria-hidden="true"
+      id="plant_details"
+      inert=""
+    >
+      {"name":"Test Plant","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be12","created":"2023-12-26T01:25:12+00:00","archived":false,"species":"Calathea","description":"This is a plant with a long description","pot_size":4,"last_watered":"2024-03-01T05:45:44+00:00","last_fertilized":"2024-03-01T05:45:44+00:00","display_name":"Test Plant","thumbnail":"/media/thumbnails/photo3_thumb.jpg","group":{"name":"Test group","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be14"}}
+    </div>
+    <div
+      aria-hidden="true"
+      id="events"
+      inert=""
+    >
+      {"water":["2024-03-01T15:45:44+00:00","2024-02-29T10:20:15+00:00"],"fertilize":["2024-03-01T15:45:44+00:00","2024-02-26T12:44:12+00:00"],"prune":[],"repot":[]}
+    </div>
+    <div
+      aria-hidden="true"
+      id="notes"
+      inert=""
+    >
+      [{"timestamp":"2024-03-01T15:45:44+00:00","text":"Fertilized with dilute 10-15-10 liquid fertilizer"},{"timestamp":"2024-02-26T12:44:12+00:00","text":"One of the older leaves is starting to turn yellow"}]
+    </div>
+    <div
+      aria-hidden="true"
+      id="group_options"
+      inert=""
+    >
+      [{"name":"Test group","display_name":"Test group","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be14","created":"2023-12-26T01:25:12+00:00","location":"Top shelf","description":"Medium brightness grow light","plants":3,"archived":false},{"name":"Testing","display_name":"Testing","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be61","created":"2023-12-26T01:25:12+00:00","location":"Middle shelf","description":"Brightest grow light","plants":5,"archived":false}]
+    </div>
+    <div
+      aria-hidden="true"
+      id="species_options"
+      inert=""
+    >
+      ["Parlor Palm","Spider Plant","Calathea"]
+    </div>
+    <div
+      aria-hidden="true"
+      id="default_photo"
+      inert=""
+    >
+      {"set":true,"timestamp":"2024-03-23T10:52:03+00:00","image":"/media/images/photo3.jpg","thumbnail":"/media/thumbnails/photo3_thumb.jpg","key":3}
+    </div>
+    <div
+      aria-hidden="true"
+      id="user_accounts_enabled"
+      inert=""
+    >
+      true
+    </div>
+    <div
+      aria-hidden="true"
+      id="photos"
+      inert=""
+    >
+      [{"timestamp":"2024-03-25T15:28:39+00:00","image":"/media/images/IMG_8103.jpeg","thumbnail":"/media/thumbnails/IMG_8103_thumb.jpg","key":24},{"timestamp":"2024-03-25T15:28:36+00:00","image":"/media/images/IMG_8102.jpeg","thumbnail":"/media/thumbnails/IMG_8102_thumb.jpg","key":25},{"timestamp":"2024-03-25T15:28:33+00:00","image":"/media/images/IMG_8101.jpeg","thumbnail":"/media/thumbnails/IMG_8101_thumb.jpg","key":26},{"timestamp":"2024-03-25T14:34:15+00:00","image":"/media/images/IMG_8098.jpeg","thumbnail":"/media/thumbnails/IMG_8098_thumb.jpg","key":23},{"timestamp":"2024-03-25T14:34:10+00:00","image":"/media/images/IMG_8097.jpeg","thumbnail":"/media/thumbnails/IMG_8097_thumb.jpg","key":21},{"timestamp":"2024-03-25T13:28:54+00:00","image":"/media/images/IMG_8095.jpeg","thumbnail":"/media/thumbnails/IMG_8095_thumb.jpg","key":20},{"timestamp":"2024-03-25T13:28:46+00:00","image":"/media/images/IMG_8094.jpeg","thumbnail":"/media/thumbnails/IMG_8094_thumb.jpg","key":22},{"timestamp":"2024-03-25T13:28:41+00:00","image":"/media/images/IMG_8093.jpeg","thumbnail":"/media/thumbnails/IMG_8093_thumb.jpg","key":27},{"timestamp":"2024-03-25T13:28:30+00:00","image":"/media/images/IMG_8092.jpeg","thumbnail":"/media/thumbnails/IMG_8092_thumb.jpg","key":28},{"timestamp":"2024-03-25T13:28:19+00:00","image":"/media/images/IMG_8091.jpeg","thumbnail":"/media/thumbnails/IMG_8091_thumb.jpg","key":29},{"timestamp":"2024-03-25T13:27:00+00:00","image":"/media/images/IMG_8090.jpeg","thumbnail":"/media/thumbnails/IMG_8090_thumb.jpg","key":30},{"timestamp":"2024-03-25T13:26:48+00:00","image":"/media/images/IMG_8089.jpeg","thumbnail":"/media/thumbnails/IMG_8089_thumb.jpg","key":31},{"timestamp":"2024-02-21T21:21:17+00:00","image":"/media/images/IMG_7598.jpeg","thumbnail":"/media/thumbnails/IMG_7598_thumb.jpg","key":45},{"timestamp":"2023-11-21T11:57:26+00:00","image":"/media/images/IMG_5866.jpeg","thumbnail":"/media/thumbnails/IMG_5866_thumb.jpg","key":46},{"timestamp":"2023-09-12T01:59:28+00:00","image":"/media/images/IMG_5040.jpeg","thumbnail":"/media/thumbnails/IMG_5040_thumb.jpg","key":17},{"timestamp":"2023-08-24T04:43:30+00:00","image":"/media/images/IMG_4813.jpeg","thumbnail":"/media/thumbnails/IMG_4813_thumb.jpg","key":16},{"timestamp":"2008-08-22T19:00:43+00:00","image":"/media/images/IMG_4811.jpeg","thumbnail":"/media/thumbnails/IMG_4811_thumb.jpeg","key":44}]
+    </div>
+    <div
+      aria-hidden="true"
+      inert=""
+    >
+      <button>
+        Open Gallery
+      </button>
+    </div>
+    <div
+      aria-live="polite"
+      aria-modal="true"
+      aria-roledescription="lightbox"
+      class="yarl__root yarl__portal yarl__no_scroll_padding yarl__portal_open"
+      role="dialog"
+    >
+      <div
+        class="yarl__fullscreen yarl__fullsize"
+      >
+        <div
+          class="yarl__thumbnails yarl__thumbnails_bottom"
+        >
+          <div
+            class="yarl__thumbnails_wrapper"
+          >
+            <div
+              class="yarl__container yarl__flex_center"
+              tabindex="-1"
+            >
+              <div
+                class="yarl__carousel yarl__carousel_with_slides"
+                style="--yarl__carousel_slides_count: 5; --yarl__carousel_spacing_px: 0; --yarl__carousel_spacing_percent: 30; --yarl__carousel_padding_px: 16; --yarl__carousel_padding_percent: 0;"
+              >
+                <div
+                  aria-roledescription="slide"
+                  class="yarl__slide yarl__flex_center"
+                  inert=""
+                  role="region"
+                >
+                  <div
+                    class="yarl__fullsize yarl__flex_center yarl__slide_wrapper"
+                  >
+                    <img
+                      class="yarl__slide_image yarl__slide_image_loading"
+                      draggable="false"
+                      src="/media/images/IMG_4813.jpeg"
+                      style="max-width: 100%; max-height: 100%;"
+                    />
+                    <div
+                      class="yarl__slide_placeholder"
+                    >
+                      <div
+                        class="h-36 flex flex-col justify-center"
+                      >
+                        <span
+                          class="loading w-16"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="yarl__slide_captions_container yarl__slide_description_container"
+                  >
+                    <div
+                      class="yarl__slide_description"
+                    >
+                       August 23, 2023
+                    </div>
+                  </div>
+                </div>
+                <div
+                  aria-roledescription="slide"
+                  class="yarl__slide yarl__flex_center"
+                  inert=""
+                  role="region"
+                >
+                  <div
+                    class="yarl__fullsize yarl__flex_center yarl__slide_wrapper"
+                  >
+                    <img
+                      class="yarl__slide_image yarl__slide_image_loading"
+                      draggable="false"
+                      src="/media/images/IMG_4811.jpeg"
+                      style="max-width: 100%; max-height: 100%;"
+                    />
+                    <div
+                      class="yarl__slide_placeholder"
+                    >
+                      <div
+                        class="h-36 flex flex-col justify-center"
+                      >
+                        <span
+                          class="loading w-16"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="yarl__slide_captions_container yarl__slide_description_container"
+                  >
+                    <div
+                      class="yarl__slide_description"
+                    >
+                       August 22, 2008
+                    </div>
+                  </div>
+                </div>
+                <div
+                  aria-roledescription="slide"
+                  class="yarl__slide yarl__slide_current yarl__flex_center"
+                  role="region"
+                >
+                  <div
+                    class="yarl__fullsize yarl__flex_center yarl__slide_wrapper"
+                    style="transform: scale(1) translateX(0px) translateY(0px);"
+                  >
+                    <img
+                      class="yarl__slide_image yarl__slide_image_loading"
+                      draggable="false"
+                      src="/media/images/IMG_8103.jpeg"
+                      style="max-width: 100%; max-height: 100%;"
+                    />
+                    <div
+                      class="yarl__slide_placeholder"
+                    >
+                      <div
+                        class="h-36 flex flex-col justify-center"
+                      >
+                        <span
+                          class="loading w-16"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="yarl__slide_captions_container yarl__slide_description_container"
+                  >
+                    <div
+                      class="yarl__slide_description"
+                    >
+                       March 25, 2024
+                    </div>
+                  </div>
+                </div>
+                <div
+                  aria-roledescription="slide"
+                  class="yarl__slide yarl__flex_center"
+                  inert=""
+                  role="region"
+                >
+                  <div
+                    class="yarl__fullsize yarl__flex_center yarl__slide_wrapper"
+                  >
+                    <img
+                      class="yarl__slide_image yarl__slide_image_loading"
+                      draggable="false"
+                      src="/media/images/IMG_8102.jpeg"
+                      style="max-width: 100%; max-height: 100%;"
+                    />
+                    <div
+                      class="yarl__slide_placeholder"
+                    >
+                      <div
+                        class="h-36 flex flex-col justify-center"
+                      >
+                        <span
+                          class="loading w-16"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="yarl__slide_captions_container yarl__slide_description_container"
+                  >
+                    <div
+                      class="yarl__slide_description"
+                    >
+                       March 25, 2024
+                    </div>
+                  </div>
+                </div>
+                <div
+                  aria-roledescription="slide"
+                  class="yarl__slide yarl__flex_center"
+                  inert=""
+                  role="region"
+                >
+                  <div
+                    class="yarl__fullsize yarl__flex_center yarl__slide_wrapper"
+                  >
+                    <img
+                      class="yarl__slide_image yarl__slide_image_loading"
+                      draggable="false"
+                      src="/media/images/IMG_8101.jpeg"
+                      style="max-width: 100%; max-height: 100%;"
+                    />
+                    <div
+                      class="yarl__slide_placeholder"
+                    >
+                      <div
+                        class="h-36 flex flex-col justify-center"
+                      >
+                        <span
+                          class="loading w-16"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    class="yarl__slide_captions_container yarl__slide_description_container"
+                  >
+                    <div
+                      class="yarl__slide_description"
+                    >
+                       March 25, 2024
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="yarl__toolbar"
+              >
+                <button
+                  aria-label="Zoom in"
+                  class="yarl__button"
+                  disabled=""
+                  title="Zoom in"
+                  type="button"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="size-8"
+                    data-slot="icon"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      clip-rule="evenodd"
+                      d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Zm8.25-3.75a.75.75 0 0 1 .75.75v2.25h2.25a.75.75 0 0 1 0 1.5h-2.25v2.25a.75.75 0 0 1-1.5 0v-2.25H7.5a.75.75 0 0 1 0-1.5h2.25V7.5a.75.75 0 0 1 .75-.75Z"
+                      fill-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+                <button
+                  aria-label="Zoom out"
+                  class="yarl__button"
+                  disabled=""
+                  title="Zoom out"
+                  type="button"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="size-8"
+                    data-slot="icon"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      clip-rule="evenodd"
+                      d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Zm4.5 0a.75.75 0 0 1 .75-.75h6a.75.75 0 0 1 0 1.5h-6a.75.75 0 0 1-.75-.75Z"
+                      fill-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+                <button
+                  aria-label="Play"
+                  class="yarl__button"
+                  title="Play"
+                  type="button"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="size-8"
+                    data-slot="icon"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      clip-rule="evenodd"
+                      d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z"
+                      fill-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+                <button
+                  aria-label="Enter Fullscreen"
+                  class="yarl__button"
+                  title="Enter Fullscreen"
+                  type="button"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="size-8"
+                    data-slot="icon"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      clip-rule="evenodd"
+                      d="M15 3.75a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0V5.56l-3.97 3.97a.75.75 0 1 1-1.06-1.06l3.97-3.97h-2.69a.75.75 0 0 1-.75-.75Zm-12 0A.75.75 0 0 1 3.75 3h4.5a.75.75 0 0 1 0 1.5H5.56l3.97 3.97a.75.75 0 0 1-1.06 1.06L4.5 5.56v2.69a.75.75 0 0 1-1.5 0v-4.5Zm11.47 11.78a.75.75 0 1 1 1.06-1.06l3.97 3.97v-2.69a.75.75 0 0 1 1.5 0v4.5a.75.75 0 0 1-.75.75h-4.5a.75.75 0 0 1 0-1.5h2.69l-3.97-3.97Zm-4.94-1.06a.75.75 0 0 1 0 1.06L5.56 19.5h2.69a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 1 1.5 0v2.69l3.97-3.97a.75.75 0 0 1 1.06 0Z"
+                      fill-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+                <button
+                  aria-label="Close"
+                  class="yarl__button"
+                  title="Close"
+                  type="button"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="size-8"
+                    data-slot="icon"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      clip-rule="evenodd"
+                      d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z"
+                      fill-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <button
+                aria-label="Previous"
+                class="yarl__button yarl__navigation_prev"
+                title="Previous"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="size-8"
+                  data-slot="icon"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    clip-rule="evenodd"
+                    d="M7.72 12.53a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 1 1 1.06 1.06L9.31 12l6.97 6.97a.75.75 0 1 1-1.06 1.06l-7.5-7.5Z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+              </button>
+              <button
+                aria-label="Next"
+                class="yarl__button yarl__navigation_next"
+                title="Next"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="size-8"
+                  data-slot="icon"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    clip-rule="evenodd"
+                    d="M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div
+            class="yarl__thumbnails_container yarl__flex_center"
+            style="--yarl__thumbnails_thumbnail_width: 100px; --yarl__thumbnails_thumbnail_height: 100px; --yarl__thumbnails_thumbnail_border: 0px; --yarl__thumbnails_thumbnail_padding: 0px; --thumbnail-container-height: 132px;"
+          >
+            <nav
+              class="yarl__thumbnails_track yarl__flex_center"
+              tabindex="-1"
+            >
+              <button
+                class="yarl__flex_center yarl__thumbnails_thumbnail"
+                type="button"
+              >
+                <img
+                  class="yarl__slide_image yarl__slide_image_cover yarl__slide_image_loading"
+                  draggable="false"
+                  src="/media/thumbnails/IMG_4813_thumb.jpg"
+                  style="max-width: 100%; max-height: 100%;"
+                />
+                <div
+                  class="yarl__slide_placeholder"
+                >
+                  <div
+                    class="h-36 flex flex-col justify-center"
+                  >
+                    <span
+                      class="loading w-16"
+                    />
+                  </div>
+                </div>
+              </button>
+              <button
+                class="yarl__flex_center yarl__thumbnails_thumbnail"
+                type="button"
+              >
+                <img
+                  class="yarl__slide_image yarl__slide_image_cover yarl__slide_image_loading"
+                  draggable="false"
+                  src="/media/thumbnails/IMG_4811_thumb.jpeg"
+                  style="max-width: 100%; max-height: 100%;"
+                />
+                <div
+                  class="yarl__slide_placeholder"
+                >
+                  <div
+                    class="h-36 flex flex-col justify-center"
+                  >
+                    <span
+                      class="loading w-16"
+                    />
+                  </div>
+                </div>
+              </button>
+              <button
+                class="yarl__flex_center yarl__thumbnails_thumbnail yarl__thumbnails_thumbnail_active"
+                type="button"
+              >
+                <img
+                  class="yarl__slide_image yarl__slide_image_cover yarl__slide_image_loading"
+                  draggable="false"
+                  src="/media/thumbnails/IMG_8103_thumb.jpg"
+                  style="max-width: 100%; max-height: 100%;"
+                />
+                <div
+                  class="yarl__slide_placeholder"
+                >
+                  <div
+                    class="h-36 flex flex-col justify-center"
+                  >
+                    <span
+                      class="loading w-16"
+                    />
+                  </div>
+                </div>
+              </button>
+              <button
+                class="yarl__flex_center yarl__thumbnails_thumbnail"
+                type="button"
+              >
+                <img
+                  class="yarl__slide_image yarl__slide_image_cover yarl__slide_image_loading"
+                  draggable="false"
+                  src="/media/thumbnails/IMG_8102_thumb.jpg"
+                  style="max-width: 100%; max-height: 100%;"
+                />
+                <div
+                  class="yarl__slide_placeholder"
+                >
+                  <div
+                    class="h-36 flex flex-col justify-center"
+                  >
+                    <span
+                      class="loading w-16"
+                    />
+                  </div>
+                </div>
+              </button>
+              <button
+                class="yarl__flex_center yarl__thumbnails_thumbnail"
+                type="button"
+              >
+                <img
+                  class="yarl__slide_image yarl__slide_image_cover yarl__slide_image_loading"
+                  draggable="false"
+                  src="/media/thumbnails/IMG_8101_thumb.jpg"
+                  style="max-width: 100%; max-height: 100%;"
+                />
+                <div
+                  class="yarl__slide_placeholder"
+                >
+                  <div
+                    class="h-36 flex flex-col justify-center"
+                  >
+                    <span
+                      class="loading w-16"
+                    />
+                  </div>
+                </div>
+              </button>
+            </nav>
+            <div
+              class="yarl__thumbnails_vignette"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div
+    aria-hidden="true"
+    inert=""
+  >
+    <button>
+      Open Gallery
+    </button>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
+
+exports[`Gallery matches snapshot for desktop layout 2`] = `
+{
+  "asFragment": [Function],
+  "baseElement": <body
+    class="yarl__no_scroll"
+    style="padding-right: 600px;"
+  >
+    <div
+      aria-hidden="true"
+      id="plant_details"
+      inert=""
+    >
+      {"name":"Test Plant","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be12","created":"2023-12-26T01:25:12+00:00","archived":false,"species":"Calathea","description":"This is a plant with a long description","pot_size":4,"last_watered":"2024-03-01T05:45:44+00:00","last_fertilized":"2024-03-01T05:45:44+00:00","display_name":"Test Plant","thumbnail":"/media/thumbnails/photo3_thumb.jpg","group":{"name":"Test group","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be14"}}
+    </div>
+    <div
+      aria-hidden="true"
+      id="events"
+      inert=""
+    >
+      {"water":["2024-03-01T15:45:44+00:00","2024-02-29T10:20:15+00:00"],"fertilize":["2024-03-01T15:45:44+00:00","2024-02-26T12:44:12+00:00"],"prune":[],"repot":[]}
+    </div>
+    <div
+      aria-hidden="true"
+      id="notes"
+      inert=""
+    >
+      [{"timestamp":"2024-03-01T15:45:44+00:00","text":"Fertilized with dilute 10-15-10 liquid fertilizer"},{"timestamp":"2024-02-26T12:44:12+00:00","text":"One of the older leaves is starting to turn yellow"}]
+    </div>
+    <div
+      aria-hidden="true"
+      id="group_options"
+      inert=""
+    >
+      [{"name":"Test group","display_name":"Test group","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be14","created":"2023-12-26T01:25:12+00:00","location":"Top shelf","description":"Medium brightness grow light","plants":3,"archived":false},{"name":"Testing","display_name":"Testing","uuid":"0640ec3b-1bed-4b15-a078-d6e7ec66be61","created":"2023-12-26T01:25:12+00:00","location":"Middle shelf","description":"Brightest grow light","plants":5,"archived":false}]
+    </div>
+    <div
+      aria-hidden="true"
+      id="species_options"
+      inert=""
+    >
+      ["Parlor Palm","Spider Plant","Calathea"]
+    </div>
+    <div
+      aria-hidden="true"
+      id="default_photo"
+      inert=""
+    >
+      {"set":true,"timestamp":"2024-03-23T10:52:03+00:00","image":"/media/images/photo3.jpg","thumbnail":"/media/thumbnails/photo3_thumb.jpg","key":3}
+    </div>
+    <div
+      aria-hidden="true"
+      id="user_accounts_enabled"
+      inert=""
+    >
+      true
+    </div>
+    <div
+      aria-hidden="true"
+      id="photos"
+      inert=""
+    >
+      [{"timestamp":"2024-03-25T15:28:39+00:00","image":"/media/images/IMG_8103.jpeg","thumbnail":"/media/thumbnails/IMG_8103_thumb.jpg","key":24},{"timestamp":"2024-03-25T15:28:36+00:00","image":"/media/images/IMG_8102.jpeg","thumbnail":"/media/thumbnails/IMG_8102_thumb.jpg","key":25},{"timestamp":"2024-03-25T15:28:33+00:00","image":"/media/images/IMG_8101.jpeg","thumbnail":"/media/thumbnails/IMG_8101_thumb.jpg","key":26},{"timestamp":"2024-03-25T14:34:15+00:00","image":"/media/images/IMG_8098.jpeg","thumbnail":"/media/thumbnails/IMG_8098_thumb.jpg","key":23},{"timestamp":"2024-03-25T14:34:10+00:00","image":"/media/images/IMG_8097.jpeg","thumbnail":"/media/thumbnails/IMG_8097_thumb.jpg","key":21},{"timestamp":"2024-03-25T13:28:54+00:00","image":"/media/images/IMG_8095.jpeg","thumbnail":"/media/thumbnails/IMG_8095_thumb.jpg","key":20},{"timestamp":"2024-03-25T13:28:46+00:00","image":"/media/images/IMG_8094.jpeg","thumbnail":"/media/thumbnails/IMG_8094_thumb.jpg","key":22},{"timestamp":"2024-03-25T13:28:41+00:00","image":"/media/images/IMG_8093.jpeg","thumbnail":"/media/thumbnails/IMG_8093_thumb.jpg","key":27},{"timestamp":"2024-03-25T13:28:30+00:00","image":"/media/images/IMG_8092.jpeg","thumbnail":"/media/thumbnails/IMG_8092_thumb.jpg","key":28},{"timestamp":"2024-03-25T13:28:19+00:00","image":"/media/images/IMG_8091.jpeg","thumbnail":"/media/thumbnails/IMG_8091_thumb.jpg","key":29},{"timestamp":"2024-03-25T13:27:00+00:00","image":"/media/images/IMG_8090.jpeg","thumbnail":"/media/thumbnails/IMG_8090_thumb.jpg","key":30},{"timestamp":"2024-03-25T13:26:48+00:00","image":"/media/images/IMG_8089.jpeg","thumbnail":"/media/thumbnails/IMG_8089_thumb.jpg","key":31},{"timestamp":"2024-02-21T21:21:17+00:00","image":"/media/images/IMG_7598.jpeg","thumbnail":"/media/thumbnails/IMG_7598_thumb.jpg","key":45},{"timestamp":"2023-11-21T11:57:26+00:00","image":"/media/images/IMG_5866.jpeg","thumbnail":"/media/thumbnails/IMG_5866_thumb.jpg","key":46},{"timestamp":"2023-09-12T01:59:28+00:00","image":"/media/images/IMG_5040.jpeg","thumbnail":"/media/thumbnails/IMG_5040_thumb.jpg","key":17},{"timestamp":"2023-08-24T04:43:30+00:00","image":"/media/images/IMG_4813.jpeg","thumbnail":"/media/thumbnails/IMG_4813_thumb.jpg","key":16},{"timestamp":"2008-08-22T19:00:43+00:00","image":"/media/images/IMG_4811.jpeg","thumbnail":"/media/thumbnails/IMG_4811_thumb.jpeg","key":44}]
+    </div>
+    <div
+      aria-hidden="true"
+      inert=""
+    >
+      <button>
+        Open Gallery
+      </button>
+    </div>
+    <div
+      aria-live="polite"
+      aria-modal="true"
+      aria-roledescription="lightbox"
+      class="yarl__root yarl__portal yarl__no_scroll_padding yarl__portal_open"
+      role="dialog"
+    >
+      <div
+        class="yarl__fullscreen yarl__fullsize"
+      >
+        <div
+          class="yarl__thumbnails yarl__thumbnails_bottom"
+        >
+          <div
+            class="yarl__thumbnails_wrapper"
+          >
+            <div
+              class="yarl__container yarl__flex_center"
+              tabindex="-1"
+            >
+              <div
+                class="yarl__carousel yarl__carousel_with_slides"
+                style="--yarl__carousel_slides_count: 5; --yarl__carousel_spacing_px: 0; --yarl__carousel_spacing_percent: 30; --yarl__carousel_padding_px: 16; --yarl__carousel_padding_percent: 0;"
+              >
+                <div
+                  aria-roledescription="slide"
+                  class="yarl__slide yarl__flex_center"
+                  inert=""
+                  role="region"
+                >
+                  <div
+                    class="yarl__fullsize yarl__flex_center yarl__slide_wrapper"
+                  >
+                    <img
+                      class="yarl__slide_image yarl__slide_image_loading"
+                      draggable="false"
+                      src="/media/images/IMG_4813.jpeg"
+                      style="max-width: 100%; max-height: 100%;"
+                    />
+                    <div
+                      class="yarl__slide_placeholder"
+                    >
+                      <div
+                        class="h-36 flex flex-col justify-center"
+                      >
+                        <span
+                          class="loading w-16"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  aria-roledescription="slide"
+                  class="yarl__slide yarl__flex_center"
+                  inert=""
+                  role="region"
+                >
+                  <div
+                    class="yarl__fullsize yarl__flex_center yarl__slide_wrapper"
+                  >
+                    <img
+                      class="yarl__slide_image yarl__slide_image_loading"
+                      draggable="false"
+                      src="/media/images/IMG_4811.jpeg"
+                      style="max-width: 100%; max-height: 100%;"
+                    />
+                    <div
+                      class="yarl__slide_placeholder"
+                    >
+                      <div
+                        class="h-36 flex flex-col justify-center"
+                      >
+                        <span
+                          class="loading w-16"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  aria-roledescription="slide"
+                  class="yarl__slide yarl__slide_current yarl__flex_center"
+                  role="region"
+                >
+                  <div
+                    class="yarl__fullsize yarl__flex_center yarl__slide_wrapper"
+                    style="transform: scale(1) translateX(0px) translateY(0px);"
+                  >
+                    <img
+                      class="yarl__slide_image yarl__slide_image_loading"
+                      draggable="false"
+                      src="/media/images/IMG_8103.jpeg"
+                      style="max-width: 100%; max-height: 100%;"
+                    />
+                    <div
+                      class="yarl__slide_placeholder"
+                    >
+                      <div
+                        class="h-36 flex flex-col justify-center"
+                      >
+                        <span
+                          class="loading w-16"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  aria-roledescription="slide"
+                  class="yarl__slide yarl__flex_center"
+                  inert=""
+                  role="region"
+                >
+                  <div
+                    class="yarl__fullsize yarl__flex_center yarl__slide_wrapper"
+                  >
+                    <img
+                      class="yarl__slide_image yarl__slide_image_loading"
+                      draggable="false"
+                      src="/media/images/IMG_8102.jpeg"
+                      style="max-width: 100%; max-height: 100%;"
+                    />
+                    <div
+                      class="yarl__slide_placeholder"
+                    >
+                      <div
+                        class="h-36 flex flex-col justify-center"
+                      >
+                        <span
+                          class="loading w-16"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  aria-roledescription="slide"
+                  class="yarl__slide yarl__flex_center"
+                  inert=""
+                  role="region"
+                >
+                  <div
+                    class="yarl__fullsize yarl__flex_center yarl__slide_wrapper"
+                  >
+                    <img
+                      class="yarl__slide_image yarl__slide_image_loading"
+                      draggable="false"
+                      src="/media/images/IMG_8101.jpeg"
+                      style="max-width: 100%; max-height: 100%;"
+                    />
+                    <div
+                      class="yarl__slide_placeholder"
+                    >
+                      <div
+                        class="h-36 flex flex-col justify-center"
+                      >
+                        <span
+                          class="loading w-16"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div
+                class="yarl__toolbar"
+              >
+                <button
+                  aria-label="Zoom in"
+                  class="yarl__button"
+                  disabled=""
+                  title="Zoom in"
+                  type="button"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="size-8"
+                    data-slot="icon"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      clip-rule="evenodd"
+                      d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Zm8.25-3.75a.75.75 0 0 1 .75.75v2.25h2.25a.75.75 0 0 1 0 1.5h-2.25v2.25a.75.75 0 0 1-1.5 0v-2.25H7.5a.75.75 0 0 1 0-1.5h2.25V7.5a.75.75 0 0 1 .75-.75Z"
+                      fill-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+                <button
+                  aria-label="Zoom out"
+                  class="yarl__button"
+                  disabled=""
+                  title="Zoom out"
+                  type="button"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="size-8"
+                    data-slot="icon"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      clip-rule="evenodd"
+                      d="M10.5 3.75a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5ZM2.25 10.5a8.25 8.25 0 1 1 14.59 5.28l4.69 4.69a.75.75 0 1 1-1.06 1.06l-4.69-4.69A8.25 8.25 0 0 1 2.25 10.5Zm4.5 0a.75.75 0 0 1 .75-.75h6a.75.75 0 0 1 0 1.5h-6a.75.75 0 0 1-.75-.75Z"
+                      fill-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+                <button
+                  aria-label="Play"
+                  class="yarl__button"
+                  title="Play"
+                  type="button"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="size-8"
+                    data-slot="icon"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      clip-rule="evenodd"
+                      d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z"
+                      fill-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+                <button
+                  aria-label="Enter Fullscreen"
+                  class="yarl__button"
+                  title="Enter Fullscreen"
+                  type="button"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="size-8"
+                    data-slot="icon"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      clip-rule="evenodd"
+                      d="M15 3.75a.75.75 0 0 1 .75-.75h4.5a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0V5.56l-3.97 3.97a.75.75 0 1 1-1.06-1.06l3.97-3.97h-2.69a.75.75 0 0 1-.75-.75Zm-12 0A.75.75 0 0 1 3.75 3h4.5a.75.75 0 0 1 0 1.5H5.56l3.97 3.97a.75.75 0 0 1-1.06 1.06L4.5 5.56v2.69a.75.75 0 0 1-1.5 0v-4.5Zm11.47 11.78a.75.75 0 1 1 1.06-1.06l3.97 3.97v-2.69a.75.75 0 0 1 1.5 0v4.5a.75.75 0 0 1-.75.75h-4.5a.75.75 0 0 1 0-1.5h2.69l-3.97-3.97Zm-4.94-1.06a.75.75 0 0 1 0 1.06L5.56 19.5h2.69a.75.75 0 0 1 0 1.5h-4.5a.75.75 0 0 1-.75-.75v-4.5a.75.75 0 0 1 1.5 0v2.69l3.97-3.97a.75.75 0 0 1 1.06 0Z"
+                      fill-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+                <button
+                  aria-label="Close"
+                  class="yarl__button"
+                  title="Close"
+                  type="button"
+                >
+                  <svg
+                    aria-hidden="true"
+                    class="size-8"
+                    data-slot="icon"
+                    fill="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      clip-rule="evenodd"
+                      d="M5.47 5.47a.75.75 0 0 1 1.06 0L12 10.94l5.47-5.47a.75.75 0 1 1 1.06 1.06L13.06 12l5.47 5.47a.75.75 0 1 1-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 0 1-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 0 1 0-1.06Z"
+                      fill-rule="evenodd"
+                    />
+                  </svg>
+                </button>
+              </div>
+              <button
+                aria-label="Previous"
+                class="yarl__button yarl__navigation_prev"
+                title="Previous"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="size-8"
+                  data-slot="icon"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    clip-rule="evenodd"
+                    d="M7.72 12.53a.75.75 0 0 1 0-1.06l7.5-7.5a.75.75 0 1 1 1.06 1.06L9.31 12l6.97 6.97a.75.75 0 1 1-1.06 1.06l-7.5-7.5Z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+              </button>
+              <button
+                aria-label="Next"
+                class="yarl__button yarl__navigation_next"
+                title="Next"
+                type="button"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="size-8"
+                  data-slot="icon"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    clip-rule="evenodd"
+                    d="M16.28 11.47a.75.75 0 0 1 0 1.06l-7.5 7.5a.75.75 0 0 1-1.06-1.06L14.69 12 7.72 5.03a.75.75 0 0 1 1.06-1.06l7.5 7.5Z"
+                    fill-rule="evenodd"
+                  />
+                </svg>
+              </button>
+            </div>
+          </div>
+          <div
+            class="yarl__thumbnails_container yarl__flex_center"
+            style="--yarl__thumbnails_thumbnail_width: 80px; --yarl__thumbnails_thumbnail_border: 0px; --yarl__thumbnails_thumbnail_padding: 0px; --thumbnail-container-height: 112px;"
+          >
+            <nav
+              class="yarl__thumbnails_track yarl__flex_center"
+              tabindex="-1"
+            >
+              <button
+                class="yarl__flex_center yarl__thumbnails_thumbnail"
+                type="button"
+              >
+                <img
+                  class="yarl__slide_image yarl__slide_image_cover yarl__slide_image_loading"
+                  draggable="false"
+                  src="/media/thumbnails/IMG_4813_thumb.jpg"
+                  style="max-width: 100%; max-height: 100%;"
+                />
+                <div
+                  class="yarl__slide_placeholder"
+                >
+                  <div
+                    class="h-36 flex flex-col justify-center"
+                  >
+                    <span
+                      class="loading w-16"
+                    />
+                  </div>
+                </div>
+              </button>
+              <button
+                class="yarl__flex_center yarl__thumbnails_thumbnail"
+                type="button"
+              >
+                <img
+                  class="yarl__slide_image yarl__slide_image_cover yarl__slide_image_loading"
+                  draggable="false"
+                  src="/media/thumbnails/IMG_4811_thumb.jpeg"
+                  style="max-width: 100%; max-height: 100%;"
+                />
+                <div
+                  class="yarl__slide_placeholder"
+                >
+                  <div
+                    class="h-36 flex flex-col justify-center"
+                  >
+                    <span
+                      class="loading w-16"
+                    />
+                  </div>
+                </div>
+              </button>
+              <button
+                class="yarl__flex_center yarl__thumbnails_thumbnail yarl__thumbnails_thumbnail_active"
+                type="button"
+              >
+                <img
+                  class="yarl__slide_image yarl__slide_image_cover yarl__slide_image_loading"
+                  draggable="false"
+                  src="/media/thumbnails/IMG_8103_thumb.jpg"
+                  style="max-width: 100%; max-height: 100%;"
+                />
+                <div
+                  class="yarl__slide_placeholder"
+                >
+                  <div
+                    class="h-36 flex flex-col justify-center"
+                  >
+                    <span
+                      class="loading w-16"
+                    />
+                  </div>
+                </div>
+              </button>
+              <button
+                class="yarl__flex_center yarl__thumbnails_thumbnail"
+                type="button"
+              >
+                <img
+                  class="yarl__slide_image yarl__slide_image_cover yarl__slide_image_loading"
+                  draggable="false"
+                  src="/media/thumbnails/IMG_8102_thumb.jpg"
+                  style="max-width: 100%; max-height: 100%;"
+                />
+                <div
+                  class="yarl__slide_placeholder"
+                >
+                  <div
+                    class="h-36 flex flex-col justify-center"
+                  >
+                    <span
+                      class="loading w-16"
+                    />
+                  </div>
+                </div>
+              </button>
+              <button
+                class="yarl__flex_center yarl__thumbnails_thumbnail"
+                type="button"
+              >
+                <img
+                  class="yarl__slide_image yarl__slide_image_cover yarl__slide_image_loading"
+                  draggable="false"
+                  src="/media/thumbnails/IMG_8101_thumb.jpg"
+                  style="max-width: 100%; max-height: 100%;"
+                />
+                <div
+                  class="yarl__slide_placeholder"
+                >
+                  <div
+                    class="h-36 flex flex-col justify-center"
+                  >
+                    <span
+                      class="loading w-16"
+                    />
+                  </div>
+                </div>
+              </button>
+            </nav>
+            <div
+              class="yarl__thumbnails_vignette"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>,
+  "container": <div
+    aria-hidden="true"
+    inert=""
+  >
+    <button>
+      Open Gallery
+    </button>
+  </div>,
+  "debug": [Function],
+  "findAllByAltText": [Function],
+  "findAllByDisplayValue": [Function],
+  "findAllByLabelText": [Function],
+  "findAllByPlaceholderText": [Function],
+  "findAllByRole": [Function],
+  "findAllByTestId": [Function],
+  "findAllByText": [Function],
+  "findAllByTitle": [Function],
+  "findByAltText": [Function],
+  "findByDisplayValue": [Function],
+  "findByLabelText": [Function],
+  "findByPlaceholderText": [Function],
+  "findByRole": [Function],
+  "findByTestId": [Function],
+  "findByText": [Function],
+  "findByTitle": [Function],
+  "getAllByAltText": [Function],
+  "getAllByDisplayValue": [Function],
+  "getAllByLabelText": [Function],
+  "getAllByPlaceholderText": [Function],
+  "getAllByRole": [Function],
+  "getAllByTestId": [Function],
+  "getAllByText": [Function],
+  "getAllByTitle": [Function],
+  "getByAltText": [Function],
+  "getByDisplayValue": [Function],
+  "getByLabelText": [Function],
+  "getByPlaceholderText": [Function],
+  "getByRole": [Function],
+  "getByTestId": [Function],
+  "getByText": [Function],
+  "getByTitle": [Function],
+  "queryAllByAltText": [Function],
+  "queryAllByDisplayValue": [Function],
+  "queryAllByLabelText": [Function],
+  "queryAllByPlaceholderText": [Function],
+  "queryAllByRole": [Function],
+  "queryAllByTestId": [Function],
+  "queryAllByText": [Function],
+  "queryAllByTitle": [Function],
+  "queryByAltText": [Function],
+  "queryByDisplayValue": [Function],
+  "queryByLabelText": [Function],
+  "queryByPlaceholderText": [Function],
+  "queryByRole": [Function],
+  "queryByTestId": [Function],
+  "queryByText": [Function],
+  "queryByTitle": [Function],
+  "rerender": [Function],
+  "unmount": [Function],
+}
+`;
