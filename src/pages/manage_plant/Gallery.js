@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useMemo } from 'react';
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import Captions from "yet-another-react-lightbox/plugins/captions";
@@ -54,6 +54,15 @@ const Gallery = () => {
     // Pre-computing container height fixes animation stutter on mobile
     const thumbnailSize = desktop ? 100 : 80;
     const thumbnailContainerHeight = thumbnailSize + 32;
+
+    // Build slides array, only update when photos state changes
+    const slides = useMemo(() => photos.map(photo => ({
+        src: photo.image,
+        thumbnail: photo.thumbnail,
+        description: timestampToReadable(photo.timestamp).split('-')[1],
+        imageFit: 'contain',
+        key: photo.key
+    })), [photos]);
 
     return (
         <Lightbox
@@ -151,13 +160,7 @@ const Gallery = () => {
                 buttons: ["close"]
             }}
             index={index}
-            slides={photos.map(photo => ({
-                src: photo.image,
-                thumbnail: photo.thumbnail,
-                description: timestampToReadable(photo.timestamp).split('-')[1],
-                imageFit: 'contain',
-                key: photo.key
-            }))}
+            slides={slides}
             thumbnails={{
                 width: thumbnailSize,
                 height: thumbnailSize,
