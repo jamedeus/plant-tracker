@@ -19,11 +19,16 @@ button.yarl__thumbnails_thumbnail {
     }
 }
 
-/* Only show close button on mobile, everything on desktop */
+/* Hide zoom buttons on mobile */
 .yarl__button[title='Zoom in'],
-.yarl__button[title='Zoom out'],
-.yarl__button[title='Hide captions'] {
+.yarl__button[title='Zoom out'] {
     @apply hidden md:block;
+}
+
+/* Hide zoom buttons while slideshow running */
+.slideshow-running .yarl__button[title='Zoom in'],
+.slideshow-running .yarl__button[title='Zoom out'] {
+    @apply hidden;
 }
 
 /* Slideshow progress animation */

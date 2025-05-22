@@ -134,7 +134,11 @@ const Gallery = () => {
                 Fullscreen
             ]}
             toolbar={{
-                buttons: ["close"]
+                buttons: [
+                    "slideshow",
+                    "fullscreen",
+                    "close"
+                ]
             }}
             index={index}
             slides={slides}
