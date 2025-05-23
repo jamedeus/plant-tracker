@@ -88,3 +88,14 @@ button.yarl__thumbnails_thumbnail {
         @apply font-semibold md:text-lg;
     }
 }
+
+/* Next/prev buttons fill height (click anywhere along edge of screen) */
+.yarl__button[title='Next'],
+.yarl__button[title='Prev'] {
+    @apply h-full;
+}
+
+/* Prevent next button covering close button */
+.yarl__button[title='Close'] {
+    @apply z-100;
+}

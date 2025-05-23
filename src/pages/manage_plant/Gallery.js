@@ -151,7 +151,8 @@ const Gallery = () => {
                 }
             }}
             controller={{
-                closeOnPullDown: true
+                closeOnPullDown: true,
+                closeOnBackdropClick: true
             }}
             plugins={[
                 Zoom,
