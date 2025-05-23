@@ -45,7 +45,7 @@ describe('Settings menu', () => {
         // Open again, click close button, confirm closed
         await user.click(app.getByTestId('open-settings-menu'));
         expect(app.container.querySelector('dialog.settings-menu').open).toBeTrue();
-        await user.click(app.getByTestId('settings-menu-close-button'));
+        await user.click(app.getByLabelText('Close settings menu'));
         expect(app.container.querySelector('dialog.settings-menu').open).toBeFalse();
     });
 

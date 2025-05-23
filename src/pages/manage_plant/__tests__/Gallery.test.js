@@ -43,7 +43,7 @@ describe('Gallery', () => {
         expect(document.body.querySelector('.yarl__root')).not.toBeNull();
 
         // Click close button, confirm gallery disappears
-        await user.click(app.getByRole('button', {name: 'Close'}));
+        await user.click(app.getByRole('button', {name: 'Close photo gallery'}));
         await jest.advanceTimersByTimeAsync(500);
         expect(document.body.querySelector('.yarl__root')).toBeNull();
     });
@@ -71,14 +71,14 @@ describe('Gallery', () => {
             '/media/images/photo3.jpg'
         );
 
-        // Click next photo button, confirm second most-recent photo is visible
-        await user.click(app.getByRole('button', {name: 'Next'}));
+        // Click Next photo button, confirm second most-recent photo is visible
+        await user.click(app.getByRole('button', {name: 'Next photo'}));
         expect(document.querySelector('.yarl__slide_current img').src).toEndWith(
             '/media/images/photo2.jpg'
         );
 
         // Close gallery, confirm closed
-        await user.click(app.getByRole('button', {name: 'Close'}));
+        await user.click(app.getByRole('button', {name: 'Close photo gallery'}));
         await jest.advanceTimersByTimeAsync(500);
         expect(document.body.querySelector('.yarl__root')).toBeNull();
 
@@ -95,7 +95,7 @@ describe('Gallery', () => {
         expect(document.querySelector('.slideshow_progress_bar')).toBeNull();
 
         // Start slideshow, confirm progress bar appeared
-        await user.click(app.getByRole('button', {name: 'Play'}));
+        await user.click(app.getByRole('button', {name: 'Play photo slideshow'}));
         expect(document.querySelector('.slideshow_progress_bar')).not.toBeNull();
 
         // Confirm visible slide changes every 3000ms (had issues in development
@@ -111,7 +111,7 @@ describe('Gallery', () => {
 
         // Confirm progress bar disappears when slideshow stopped
         expect(document.querySelector('.slideshow_progress_bar')).not.toBeNull();
-        await user.click(app.getByRole('button', {name: 'Pause'}));
+        await user.click(app.getByRole('button', {name: 'Pause photo slideshow'}));
         expect(document.querySelector('.slideshow_progress_bar')).toBeNull();
     });
 
@@ -144,8 +144,8 @@ describe('Gallery', () => {
         expect(window.HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled();
 
         // Change slide, close gallery, confirm scrollIntoView was called
-        await user.click(app.getByRole('button', {name: 'Next'}));
-        await user.click(app.getByRole('button', {name: 'Close'}));
+        await user.click(app.getByRole('button', {name: 'Next photo'}));
+        await user.click(app.getByRole('button', {name: 'Close photo gallery'}));
         await jest.advanceTimersByTimeAsync(500);
         expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled();
     });
@@ -156,7 +156,7 @@ describe('Gallery', () => {
         expect(window.HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled();
 
         // Close gallery without changing slides, confirm scrollIntoView was NOT called
-        await user.click(app.getByRole('button', {name: 'Close'}));
+        await user.click(app.getByRole('button', {name: 'Close photo gallery'}));
         await jest.advanceTimersByTimeAsync(500);
         expect(window.HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled();
     });
@@ -173,8 +173,8 @@ describe('Gallery', () => {
         expect(window.HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled();
 
         // Change slide, close gallery
-        await user.click(app.getByRole('button', {name: 'Next'}));
-        await user.click(app.getByRole('button', {name: 'Close'}));
+        await user.click(app.getByRole('button', {name: 'Next photo'}));
+        await user.click(app.getByRole('button', {name: 'Close photo gallery'}));
         await jest.advanceTimersByTimeAsync(500);
         // Confirm scrollIntoView was NOT called (photo already visible)
         expect(window.HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled();

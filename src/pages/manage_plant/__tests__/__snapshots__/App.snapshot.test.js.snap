@@ -1691,8 +1691,8 @@ exports[`App matches snapshot 1`] = `
               Settings
             </h2>
             <button
+              aria-label="Close settings menu"
               class="btn btn-ghost btn-circle size-12"
-              data-testid="settings-menu-close-button"
             >
               <svg
                 aria-hidden="true"
@@ -4050,8 +4050,8 @@ exports[`App matches snapshot 1`] = `
             Settings
           </h2>
           <button
+            aria-label="Close settings menu"
             class="btn btn-ghost btn-circle size-12"
-            data-testid="settings-menu-close-button"
           >
             <svg
               aria-hidden="true"
@@ -6372,8 +6372,8 @@ exports[`App matches snapshot when plant is archived 1`] = `
               Settings
             </h2>
             <button
+              aria-label="Close settings menu"
               class="btn btn-ghost btn-circle size-12"
-              data-testid="settings-menu-close-button"
             >
               <svg
                 aria-hidden="true"
@@ -8597,8 +8597,8 @@ exports[`App matches snapshot when plant is archived 1`] = `
             Settings
           </h2>
           <button
+            aria-label="Close settings menu"
             class="btn btn-ghost btn-circle size-12"
-            data-testid="settings-menu-close-button"
           >
             <svg
               aria-hidden="true"

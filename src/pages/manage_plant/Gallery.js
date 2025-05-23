@@ -150,6 +150,13 @@ const Gallery = () => {
                     }
                 }
             }}
+            labels={{
+                Next: "Next photo",
+                Prev: "Previous photo",
+                Close: "Close photo gallery",
+                Play: "Play photo slideshow",
+                Pause: "Pause photo slideshow"
+            }}
             controller={{
                 closeOnPullDown: true,
                 closeOnBackdropClick: true

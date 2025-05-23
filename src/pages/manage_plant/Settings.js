@@ -259,7 +259,7 @@ const Settings = () => {
                     <button
                         className="btn btn-ghost btn-circle size-12"
                         onClick={() => dispatch(settingsMenuOpened(false))}
-                        data-testid="settings-menu-close-button"
+                        aria-label="Close settings menu"
                     >
                         <CloseButtonIcon />
                     </button>

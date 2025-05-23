@@ -330,9 +330,9 @@ exports[`Gallery matches snapshot for desktop layout 1`] = `
                   </svg>
                 </button>
                 <button
-                  aria-label="Play"
+                  aria-label="Play photo slideshow"
                   class="yarl__button"
-                  title="Play"
+                  title="Play photo slideshow"
                   type="button"
                 >
                   <svg
@@ -372,9 +372,9 @@ exports[`Gallery matches snapshot for desktop layout 1`] = `
                   </svg>
                 </button>
                 <button
-                  aria-label="Close"
+                  aria-label="Close photo gallery"
                   class="yarl__button"
-                  title="Close"
+                  title="Close photo gallery"
                   type="button"
                 >
                   <svg
@@ -415,9 +415,9 @@ exports[`Gallery matches snapshot for desktop layout 1`] = `
                 </svg>
               </button>
               <button
-                aria-label="Next"
+                aria-label="Next photo"
                 class="yarl__button yarl__navigation_next"
-                title="Next"
+                title="Next photo"
                 type="button"
               >
                 <svg
@@ -911,9 +911,9 @@ exports[`Gallery matches snapshot for desktop layout 2`] = `
                   </svg>
                 </button>
                 <button
-                  aria-label="Play"
+                  aria-label="Play photo slideshow"
                   class="yarl__button"
-                  title="Play"
+                  title="Play photo slideshow"
                   type="button"
                 >
                   <svg
@@ -953,9 +953,9 @@ exports[`Gallery matches snapshot for desktop layout 2`] = `
                   </svg>
                 </button>
                 <button
-                  aria-label="Close"
+                  aria-label="Close photo gallery"
                   class="yarl__button"
-                  title="Close"
+                  title="Close photo gallery"
                   type="button"
                 >
                   <svg
@@ -996,9 +996,9 @@ exports[`Gallery matches snapshot for desktop layout 2`] = `
                 </svg>
               </button>
               <button
-                aria-label="Next"
+                aria-label="Next photo"
                 class="yarl__button yarl__navigation_next"
-                title="Next"
+                title="Next photo"
                 type="button"
               >
                 <svg
