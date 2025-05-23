@@ -1,6 +1,5 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import App from '../App';
-import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
 
 describe('App', () => {
@@ -12,11 +11,7 @@ describe('App', () => {
         createMockContext('user_accounts_enabled', true);
 
         // Render App, confirm matches snapshot
-        const component = render(
-            <PageWrapper>
-                <App />
-            </PageWrapper>
-        );
+        const component = render(<App />);
         expect(component).toMatchSnapshot();
     });
 
@@ -28,11 +23,7 @@ describe('App', () => {
         createMockContext('user_accounts_enabled', true);
 
         // Render App, confirm matches snapshot
-        const component = render(
-            <PageWrapper>
-                <App />
-            </PageWrapper>
-        );
+        const component = render(<App />);
         expect(component).toMatchSnapshot();
     });
 });

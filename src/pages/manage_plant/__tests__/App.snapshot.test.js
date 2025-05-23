@@ -1,7 +1,6 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import App from '../App';
-import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
 
 describe('App', () => {
@@ -13,11 +12,7 @@ describe('App', () => {
 
     it('matches snapshot', () => {
         // Render App, confirm matches snapshot
-        const component = render(
-            <PageWrapper>
-                <App />
-            </PageWrapper>
-        );
+        const component = render(<App />);
         expect(component).toMatchSnapshot();
     });
 
@@ -28,11 +23,7 @@ describe('App', () => {
         });
 
         // Render App, confirm matches snapshot
-        const component = render(
-            <PageWrapper>
-                <App />
-            </PageWrapper>
-        );
+        const component = render(<App />);
         expect(component).toMatchSnapshot();
     });
 });
