@@ -1,5 +1,4 @@
-import { PageWrapper } from 'src/index';
-import { showToast } from 'src/components/Toast';
+import { Toast, showToast } from 'src/components/Toast';
 
 const TestComponent = () => {
     const showInfo = () => {
@@ -11,10 +10,11 @@ const TestComponent = () => {
     };
 
     return (
-        <PageWrapper>
+        <>
             <button onClick={showInfo}>Show Info Toast</button>
             <button onClick={showError}>Show Error Toast</button>
-        </PageWrapper>
+            <Toast />
+        </>
     );
 };
 

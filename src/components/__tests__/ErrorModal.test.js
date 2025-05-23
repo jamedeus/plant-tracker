@@ -1,22 +1,16 @@
-import { PageWrapper } from 'src/index';
-import { openErrorModal } from 'src/components/ErrorModal';
+import { ErrorModal, openErrorModal } from 'src/components/ErrorModal';
 
 describe('ErrorModal', () => {
-    const TestComponent = () => {
-        return (
-            <button onClick={() => openErrorModal('Error message here')}>
-                Open Error Modal
-            </button>
-        );
-    };
-
     it('opens error modal when method called', async () => {
         // Render component
         const user = userEvent.setup();
         const component = render(
-            <PageWrapper>
-                <TestComponent />
-            </PageWrapper>
+            <>
+                <button onClick={() => openErrorModal('Error message here')}>
+                    Open Error Modal
+                </button>
+                <ErrorModal />
+            </>
         );
 
         // Confirm mock error text is not present

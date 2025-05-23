@@ -1,5 +1,4 @@
 import NavbarDropdownOptions from '../NavbarDropdownOptions';
-import { PageWrapper } from 'src/index';
 import createMockContext from 'src/testUtils/createMockContext';
 
 describe('NavbarDropdownOptions', () => {
@@ -8,11 +7,7 @@ describe('NavbarDropdownOptions', () => {
         createMockContext('user_accounts_enabled', true);
 
         // Render component + create userEvent instance to use in tests
-        const component = render(
-            <PageWrapper>
-                <NavbarDropdownOptions />
-            </PageWrapper>
-        );
+        const component = render(<NavbarDropdownOptions />);
 
         // Confirm user profile link was not rendered
         expect(component.queryByText('User profile')).not.toBeNull();
@@ -25,11 +20,7 @@ describe('NavbarDropdownOptions SINGLE_USER_MODE', () => {
         createMockContext('user_accounts_enabled', false);
 
         // Render component + create userEvent instance to use in tests
-        const component = render(
-            <PageWrapper>
-                <NavbarDropdownOptions />
-            </PageWrapper>
-        );
+        const component = render(<NavbarDropdownOptions />);
 
         // Confirm user profile link was not rendered
         expect(component.queryByText('User profile')).toBeNull();

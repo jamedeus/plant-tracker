@@ -1,4 +1,3 @@
-import { PageWrapper } from 'src/index';
 import AddPlantsModal, { openAddPlantsModal } from '../AddPlantsModal';
 import { mockContext } from './mockContext';
 
@@ -12,12 +11,10 @@ describe('AddPlantsModal', () => {
 
         // Render modal with mock context
         const component = render(
-            <PageWrapper>
-                <AddPlantsModal
-                    options={options}
-                    addPlants={jest.fn()}
-                />
-            </PageWrapper>
+            <AddPlantsModal
+                options={options}
+                addPlants={jest.fn()}
+            />
         );
 
         // Confirm a card was rendered for each plant in options (all plants in
@@ -34,12 +31,10 @@ describe('AddPlantsModal', () => {
     it('renders expected text when no plant options', async () => {
         // Render modal with no plant options
         const component = render(
-            <PageWrapper>
-                <AddPlantsModal
-                    options={[]}
-                    addPlants={jest.fn()}
-                />
-            </PageWrapper>
+            <AddPlantsModal
+                options={[]}
+                addPlants={jest.fn()}
+            />
         );
 
         // Confirm no cards, confirm expected text

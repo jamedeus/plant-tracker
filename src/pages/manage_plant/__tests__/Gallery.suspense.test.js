@@ -1,7 +1,6 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import Layout from '../Layout';
-import { PageWrapper } from 'src/index';
 import { ReduxProvider } from '../store';
 import { mockContext } from './mockContext';
 
@@ -32,11 +31,9 @@ describe('Gallery suspense overlay', () => {
     it('closes suspense, cancels opening gallery if suspense close button is clicked', async () => {
         // Render layout component
         const layout = render(
-            <PageWrapper>
-                <ReduxProvider>
-                    <Layout />
-                </ReduxProvider>
-            </PageWrapper>
+            <ReduxProvider>
+                <Layout />
+            </ReduxProvider>
         );
 
         // Open gallery, confirm suspense overlay appeared

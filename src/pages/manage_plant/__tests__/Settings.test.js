@@ -1,7 +1,6 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import App from '../App';
-import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
 import { waitFor } from '@testing-library/react';
 
@@ -28,11 +27,7 @@ describe('Settings menu', () => {
 
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
-        app = render(
-            <PageWrapper>
-                <App />
-            </PageWrapper>
-        );
+        app = render(<App />);
     });
 
     it('closes when user clicks close button or clicks outside menu', async () => {
@@ -172,11 +167,7 @@ describe('Settings default values', () => {
     // Renders app (call in tests after mocking window size, localStorage, etc)
     const renderApp = () => {
         user = userEvent.setup();
-        app = render(
-            <PageWrapper>
-                <App />
-            </PageWrapper>
-        );
+        app = render(<App />);
     };
 
     beforeAll(() => {

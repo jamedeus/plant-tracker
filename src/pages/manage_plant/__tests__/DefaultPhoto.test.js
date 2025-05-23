@@ -3,17 +3,14 @@ import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import { fireEvent } from '@testing-library/react';
 import App from '../App';
 import { ReduxProvider } from '../store';
-import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
 
 const TestComponent = () => {
     // Render app
     return (
-        <PageWrapper>
-            <ReduxProvider>
-                <App />
-            </ReduxProvider>
-        </PageWrapper>
+        <ReduxProvider>
+            <App />
+        </ReduxProvider>
     );
 };
 

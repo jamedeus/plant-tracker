@@ -1,7 +1,6 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import App from '../App';
-import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
 
 describe('Gallery', () => {
@@ -26,11 +25,7 @@ describe('Gallery', () => {
 
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
-        app = render(
-            <PageWrapper>
-                <App />
-            </PageWrapper>
-        );
+        app = render(<App />);
     });
 
     // Clean up pending timers after each test

@@ -3,7 +3,6 @@ import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import GroupModal, { openGroupModal } from '../GroupModal';
 import { ReduxProvider } from '../store';
-import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
 
 describe('GroupModal', () => {
@@ -18,11 +17,9 @@ describe('GroupModal', () => {
 
         // Render modal, open modal
         const component = render(
-            <PageWrapper>
-                <ReduxProvider>
-                    <GroupModal />
-                </ReduxProvider>
-            </PageWrapper>
+            <ReduxProvider>
+                <GroupModal />
+            </ReduxProvider>
         );
         openGroupModal();
 
@@ -40,11 +37,9 @@ describe('GroupModal', () => {
 
         // Render modal
         const component = render(
-            <PageWrapper>
-                <ReduxProvider>
-                    <GroupModal />
-                </ReduxProvider>
-            </PageWrapper>
+            <ReduxProvider>
+                <GroupModal />
+            </ReduxProvider>
         );
         openGroupModal();
 
