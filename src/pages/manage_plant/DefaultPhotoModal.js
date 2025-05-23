@@ -40,6 +40,7 @@ const PhotoSlide = memo(function PhotoSlide({
         >
             <img
                 loading="lazy"
+                draggable={false}
                 src={photo.thumbnail}
                 className="w-full rounded-xl object-scale-down my-auto"
             />

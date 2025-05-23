@@ -272,6 +272,7 @@ const PhotoThumbnail = memo(function PhotoThumbnail({ thumbnailUrl, timestamp, i
     return (
         <img
             loading="lazy"
+            draggable={false}
             className='photo-thumbnail photo-thumbnail-timeline cursor-pointer'
             src={thumbnailUrl}
             alt={timestampToReadable(timestamp)}

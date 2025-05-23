@@ -515,6 +515,7 @@ exports[`App matches snapshot 1`] = `
                             <img
                               alt="Unnamed Spider Plant photo"
                               class="size-full object-cover"
+                              draggable="false"
                               loading="lazy"
                               src="/media/thumbnails/photo_thumb.jpg"
                             />
@@ -1389,6 +1390,7 @@ exports[`App matches snapshot 1`] = `
                           <img
                             alt="Unnamed Spider Plant photo"
                             class="size-full object-cover"
+                            draggable="false"
                             loading="lazy"
                             src="/media/thumbnails/photo_thumb.jpg"
                           />

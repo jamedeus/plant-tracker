@@ -44,6 +44,7 @@ const InstanceCard = memo(function InstanceCard({
                         <figure className="h-24 w-20 min-size-20">
                             <img
                                 loading="lazy"
+                                draggable={false}
                                 src={thumbnail}
                                 className="size-full object-cover"
                                 alt={`${title} photo`}

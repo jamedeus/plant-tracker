@@ -21,6 +21,7 @@ const Layout = ({ type, thumbnailUrl, thumbnailAltText, handleConfirm }) => {
                         className="max-h-[50vh] rounded-xl object-contain"
                         src={thumbnailUrl}
                         alt={thumbnailAltText}
+                        draggable={false}
                     />
                 </div>
             )}

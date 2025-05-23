@@ -50,6 +50,7 @@ const PhotoSlide = memo(function PhotoSlide({
                 </h1>
                 <img
                     loading="lazy"
+                    draggable={false}
                     src={photo.thumbnail}
                     className="rounded-xl overflow-hidden mx-auto mb-auto"
                 />
@@ -109,6 +110,7 @@ const ConfirmDeleteRow = memo(function ConfirmDeleteRow({ photo, unselectPhoto }
             </div>
             <div className="m-auto">
                 <img
+                    draggable={false}
                     src={photo.thumbnail}
                     className="rounded-lg max-h-20 md:max-h-32"
                 />

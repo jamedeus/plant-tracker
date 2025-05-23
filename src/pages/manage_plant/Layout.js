@@ -111,6 +111,7 @@ function Layout() {
                             >
                                 <img
                                     loading="lazy"
+                                    draggable={false}
                                     className={clsx(
                                         "photo-thumbnail mx-auto",
                                         "size-[8rem] md:size-[14rem]"

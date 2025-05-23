@@ -291,6 +291,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                               <img
                                 alt="Test Plant photo"
                                 class="size-full object-cover"
+                                draggable="false"
                                 loading="lazy"
                                 src="/media/thumbnails/photo_thumb.jpg"
                               />
@@ -985,6 +986,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                             <img
                               alt="Test Plant photo"
                               class="size-full object-cover"
+                              draggable="false"
                               loading="lazy"
                               src="/media/thumbnails/photo_thumb.jpg"
                             />
@@ -3198,6 +3200,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                               <img
                                 alt="Test Plant photo"
                                 class="size-full object-cover"
+                                draggable="false"
                                 loading="lazy"
                                 src="/media/thumbnails/photo_thumb.jpg"
                               />
@@ -3666,6 +3669,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
                             <img
                               alt="Test Plant photo"
                               class="size-full object-cover"
+                              draggable="false"
                               loading="lazy"
                               src="/media/thumbnails/photo_thumb.jpg"
                             />
@@ -4211,6 +4215,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                               <img
                                 alt="Test Plant photo"
                                 class="size-full object-cover"
+                                draggable="false"
                                 loading="lazy"
                                 src="/media/thumbnails/photo_thumb.jpg"
                               />
@@ -4891,6 +4896,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                             <img
                               alt="Test Plant photo"
                               class="size-full object-cover"
+                              draggable="false"
                               loading="lazy"
                               src="/media/thumbnails/photo_thumb.jpg"
                             />
@@ -5667,6 +5673,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                               <img
                                 alt="Test Plant photo"
                                 class="size-full object-cover"
+                                draggable="false"
                                 loading="lazy"
                                 src="/media/thumbnails/photo_thumb.jpg"
                               />
@@ -6366,6 +6373,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                             <img
                               alt="Test Plant photo"
                               class="size-full object-cover"
+                              draggable="false"
                               loading="lazy"
                               src="/media/thumbnails/photo_thumb.jpg"
                             />
