@@ -213,7 +213,12 @@ function Layout() {
             <Settings ref={settingsRef} />
             {/* Don't render until user opens gallery */}
             {galleryOpen && (
-                <Suspense fallback={<SuspenseFullscreen />}>
+                <Suspense fallback={
+                    <SuspenseFullscreen onClose={
+                        /* Allow closing suspense (cancel opening gallery) */
+                        () => dispatch(photoGalleryOpened({open: false}))
+                    } />
+                }>
                     <Gallery />
                 </Suspense>
             )}

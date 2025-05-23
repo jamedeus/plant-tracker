@@ -18,7 +18,8 @@
                 "within": "readonly",
                 "userEvent": "readonly",
                 "waitFor": "readonly",
-                "act": "readonly"
+                "act": "readonly",
+                "fireEvent": "readonly"
             }
         }
     ],

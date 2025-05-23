@@ -1,4 +1,4 @@
-import { render, within } from '@testing-library/react';
+import { render, within, fireEvent } from '@testing-library/react';
 import userEvent from "@testing-library/user-event";
 import { act, waitFor } from '@testing-library/react';
 import * as matchers from 'jest-extended';
@@ -89,6 +89,7 @@ beforeAll(() => {
     global.userEvent = userEvent;
     global.act = act;
     global.waitFor = waitFor;
+    global.fireEvent = fireEvent;
 
     // Mock method called when window.location.href set
     Object.defineProperty(window, 'location', {
