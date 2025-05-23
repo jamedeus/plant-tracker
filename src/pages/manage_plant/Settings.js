@@ -1,8 +1,8 @@
-import { memo, useState, useRef, useImperativeHandle, forwardRef, Fragment } from 'react';
+import { memo, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import CloseButtonIcon from 'src/components/CloseButtonIcon';
 import { useSelector, useDispatch } from 'react-redux';
-import { settingChanged, settingsReset } from './settingsSlice';
+import { settingsMenuOpened, settingChanged, settingsReset } from './settingsSlice';
 import DropdownMenu from 'src/components/DropdownMenu';
 import { useIsBreakpointActive } from 'src/useBreakpoint';
 import 'src/css/settings.css';
@@ -236,20 +236,17 @@ const ResetAllSettingsButton = () => {
     );
 };
 
-const Settings = forwardRef(function Settings(_, ref) {
-    const dialogRef = useRef(null);
-
-    useImperativeHandle(ref, () => ({
-        open: () => dialogRef.current.showModal()
-    }));
+const Settings = () => {
+    const open = useSelector((state) => state.settings.settingsMenuOpen);
+    const dispatch = useDispatch();
 
     return (
-        <dialog className="settings-menu group" ref={dialogRef}>
+        <dialog className="settings-menu group" open={open ? true : undefined}>
             {/* Full screen overlay when menu open (click outside to close) */}
             {/* Tabindex sets initial focus (will open dropdown otherwise) */}
             <div
                 tabIndex={0}
-                onClick={() => dialogRef.current.close()}
+                onClick={() => dispatch(settingsMenuOpened(false))}
                 className="fixed inset-0 cursor-pointer not-group-open:hidden"
                 data-testid="settings-menu-overlay"
             />
@@ -261,7 +258,7 @@ const Settings = forwardRef(function Settings(_, ref) {
                     </h2>
                     <button
                         className="btn btn-ghost btn-circle size-12"
-                        onClick={() => dialogRef.current.close()}
+                        onClick={() => dispatch(settingsMenuOpened(false))}
                         data-testid="settings-menu-close-button"
                     >
                         <CloseButtonIcon />
@@ -290,6 +287,6 @@ const Settings = forwardRef(function Settings(_, ref) {
             </div>
         </dialog>
     );
-});
+};
 
 export default Settings;

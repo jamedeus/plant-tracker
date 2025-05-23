@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useRef, Suspense, lazy } from 'react';
+import React, { useEffect, useMemo, Suspense, lazy } from 'react';
 import { sendPostRequest } from 'src/util';
 import Navbar from 'src/components/Navbar';
 import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
@@ -15,10 +15,10 @@ import Timeline from './Timeline';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faBan, faPen, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
 import { useSelector, useDispatch } from 'react-redux';
+import { settingsMenuOpened } from './settingsSlice';
 import { photoGalleryOpened } from './timelineSlice';
 import { plantRemovedFromGroup, backButtonPressed } from './plantSlice';
 import SuspenseFullscreen from 'src/components/SuspenseFullscreen';
-import Settings from './Settings';
 import clsx from 'clsx';
 
 // Dynamic import (don't request webpack bundle until gallery opened)
@@ -46,9 +46,6 @@ function Layout() {
         return () => window.removeEventListener('pageshow', handleBackButton);
     }, []);
 
-    // Used to open settings menu
-    const settingsRef = useRef(null);
-
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => (
         <NavbarDropdownOptions>
@@ -63,7 +60,7 @@ function Layout() {
                         Change QR code
                     </button></li>
                     <li><label
-                        onClick={() => settingsRef.current?.open()}
+                        onClick={() => dispatch(settingsMenuOpened(true))}
                         data-testid='open-settings-menu'
                     >
                         Settings
@@ -211,7 +208,6 @@ function Layout() {
             </div>
 
             <ChangeQrModal uuid={plantDetails.uuid} />
-            <Settings ref={settingsRef} />
             {/* Don't render until user opens gallery */}
             {galleryOpen && (
                 <Suspense fallback={

@@ -5,6 +5,7 @@ import { getDefaultSettingValue } from './Settings';
 export const settingsSlice = createSlice({
     name: 'settings',
     initialState: {
+        settingsMenuOpen: false,
         // Either 1, 2, 3, 4, or 'All
         collapsedNoteLines: 1,
         // True = show, False = tooltip
@@ -19,6 +20,10 @@ export const settingsSlice = createSlice({
         galleryScrollToPhoto: true
     },
     reducers: {
+        // Takes true or false
+        settingsMenuOpened(state, action) {
+            state.settingsMenuOpen = action.payload;
+        },
         // Takes {setting: name, value: value}
         settingChanged(state, action) {
             state[action.payload.setting] = action.payload.value;
@@ -39,6 +44,7 @@ export const settingsSlice = createSlice({
 });
 
 export const {
+    settingsMenuOpened,
     settingChanged,
     settingsReset
 } = settingsSlice.actions;
