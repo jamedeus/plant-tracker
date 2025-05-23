@@ -190,7 +190,20 @@ const Gallery = () => {
             // Fixes stutter on mobile caused by using calc() for initial height
             styles={{
                 thumbnailsContainer: {
-                    "--thumbnail-container-height": `${thumbnailContainerHeight}px`
+                    "--thumbnail-container-height": `${thumbnailContainerHeight}px`,
+                    "--yarl__thumbnails_thumbnail_background": "transparent",
+                },
+                root: {
+                    "--yarl__color_backdrop": "color-mix(in oklab, var(--color-base-200)75%, #0000)",
+                    WebkitBackdropFilter: "blur(8px) saturate(180%)",
+                    backdropFilter: "blur(8px) saturate(180%)"
+                },
+                slide: {
+                    placeholder: {
+                        backgroundColor: "color-mix(in oklab, var(--color-base-200)75%, #0000)",
+                        WebkitBackdropFilter: "blur(8px) saturate(180%)",
+                        backdropFilter: "blur(8px) saturate(180%)"
+                    }
                 }
             }}
         />
