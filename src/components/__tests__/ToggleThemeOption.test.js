@@ -1,4 +1,4 @@
-import { useTheme, ThemeProvider } from 'src/context/ThemeContext';
+import ToggleThemeOption from '../ToggleThemeOption';
 
 const localStorageMock = (() => {
     let store = {};
@@ -28,25 +28,12 @@ describe('ToggleThemeOption', () => {
         window.localStorage.clear();
     });
 
-    const TestComponent = () => {
-        const { ToggleThemeOption } = useTheme();
-        return (
-            <ThemeProvider>
-                <ToggleThemeOption />
-            </ThemeProvider>
-        );
-    };
-
     it('says "Dark mode" when current theme is light', () => {
         // Mock light theme
         window.localStorage.setItem('theme', 'light');
 
         // Render component
-        const component = render(
-            <ThemeProvider>
-                <TestComponent />
-            </ThemeProvider>
-        );
+        const component = render(<ToggleThemeOption />);
 
         // Confirm correct text is shown
         expect(component.getByText('Dark mode')).not.toBeNull();
@@ -57,11 +44,7 @@ describe('ToggleThemeOption', () => {
         window.localStorage.setItem('theme', 'dark');
 
         // Render component
-        const component = render(
-            <ThemeProvider>
-                <TestComponent />
-            </ThemeProvider>
-        );
+        const component = render(<ToggleThemeOption />);
 
         // Confirm correct text is shown
         expect(component.getByText('Light mode')).not.toBeNull();
@@ -71,11 +54,7 @@ describe('ToggleThemeOption', () => {
         // Render component in dark mode
         window.localStorage.setItem('theme', 'dark');
         const user = userEvent.setup();
-        const component = render(
-            <ThemeProvider>
-                <TestComponent />
-            </ThemeProvider>
-        );
+        const component = render(<ToggleThemeOption />);
 
         // Click toggle option
         await user.click(component.getByText('Light mode'));
@@ -93,11 +72,7 @@ describe('ToggleThemeOption', () => {
     it('responds when theme is changed in another tab', async () => {
         // Render component in dark mode, confirm option says "Light mode"
         window.localStorage.setItem('theme', 'dark');
-        const component = render(
-            <ThemeProvider>
-                <TestComponent />
-            </ThemeProvider>
-        );
+        const component = render(<ToggleThemeOption />);
         expect(component.getByText('Light mode')).not.toBeNull();
         expect(component.queryByText('Dark mode')).toBeNull();
 

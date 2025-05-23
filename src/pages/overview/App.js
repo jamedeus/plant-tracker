@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react';
 import Navbar from 'src/components/Navbar';
 import DropdownMenu from 'src/components/DropdownMenu';
-import { useTheme } from 'src/context/ThemeContext';
+import ToggleThemeOption from 'src/components/ToggleThemeOption';
 import { sendPostRequest, parseDomContext } from 'src/util';
 import FloatingFooter from 'src/components/FloatingFooter';
 import PrintModal, { openPrintModal } from './PrintModal';
@@ -97,9 +97,6 @@ function App() {
     // Refs used to jump to top of plant and group columns
     const plantsColRef = useRef(null);
     const groupsColRef = useRef(null);
-
-    // Get toggle theme option from context
-    const { ToggleThemeOption } = useTheme();
 
     // Handler for delete button that appears while editing
     const handleDelete = async () => {

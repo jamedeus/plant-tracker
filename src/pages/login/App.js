@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react';
-import { useTheme } from 'src/context/ThemeContext';
+import ToggleThemeOption from 'src/components/ToggleThemeOption';
 import Navbar from 'src/components/Navbar';
 import { sendPostRequest } from 'src/util';
 import { EMAIL_REGEX } from 'src/regex';
@@ -242,8 +242,6 @@ const RegisterForm = () => {
 };
 
 function App() {
-    const { ToggleThemeOption } = useTheme();
-
     const [showLoginForm, setShowLoginForm] = useState(true);
 
     const toggleForm = () => setShowLoginForm(!showLoginForm);

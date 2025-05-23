@@ -1,11 +1,9 @@
 import React, { useMemo } from 'react';
 import PropTypes from 'prop-types';
 import { parseDomContext } from 'src/util';
-import { useTheme } from 'src/context/ThemeContext';
+import ToggleThemeOption from './ToggleThemeOption';
 
 const NavbarDropdownOptions = ({ children }) => {
-    const { ToggleThemeOption } = useTheme();
-
     const userAccountsEnabled = useMemo(() => (
         parseDomContext("user_accounts_enabled")
     ), []);

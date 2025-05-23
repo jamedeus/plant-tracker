@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
-import { useTheme } from 'src/context/ThemeContext';
+import ToggleThemeOption from 'src/components/ToggleThemeOption';
 import { EMAIL_REGEX } from 'src/regex';
 import { parseDomContext, sendPostRequest } from 'src/util';
 import { timestampToRelative, timestampToReadable } from 'src/timestampUtils';
@@ -263,8 +263,6 @@ Section.propTypes = {
 };
 
 function App() {
-    const { ToggleThemeOption } = useTheme();
-
     const DropdownMenuOptions = useMemo(() => (
         <>
             <li><a href='/'>
