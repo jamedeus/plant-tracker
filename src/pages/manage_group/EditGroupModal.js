@@ -2,7 +2,7 @@ import React, { useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import { sendPostRequest } from 'src/util';
 import EditModal from 'src/components/EditModal';
-import GroupDetailsForm from 'src/forms/GroupDetailsForm';
+import GroupDetailsForm from 'src/components/GroupDetailsForm';
 import { openErrorModal } from 'src/components/ErrorModal';
 
 const EditGroupModal = memo(function EditGroupModal({ group, setGroup }) {

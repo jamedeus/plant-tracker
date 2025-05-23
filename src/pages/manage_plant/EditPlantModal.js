@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { sendPostRequest } from 'src/util';
 import EditModal from 'src/components/EditModal';
-import PlantDetailsForm from 'src/forms/PlantDetailsForm';
+import PlantDetailsForm from 'src/components/PlantDetailsForm';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { plantDetailsUpdated } from './plantSlice';

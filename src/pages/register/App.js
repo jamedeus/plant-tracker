@@ -5,8 +5,8 @@ import { Tab } from '@headlessui/react';
 import Navbar from 'src/components/Navbar';
 import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
 import { sendPostRequest, parseDomContext } from 'src/util';
-import GroupDetailsForm from 'src/forms/GroupDetailsForm';
-import PlantDetailsForm from 'src/forms/PlantDetailsForm';
+import GroupDetailsForm from 'src/components/GroupDetailsForm';
+import PlantDetailsForm from 'src/components/PlantDetailsForm';
 import { openErrorModal } from 'src/components/ErrorModal';
 
 const Form = memo(function Form({ setVisibleForm, plantFormRef, groupFormRef }) {
