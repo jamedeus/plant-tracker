@@ -201,44 +201,44 @@ exports[`App matches snapshot 1`] = `
             class="section"
           >
             <div
-              class="section-title dropdown dropdown-center"
+              class="section-header"
             >
               <div
-                class="section-title-font btn btn-ghost cursor-pointer"
-                role="button"
-                tabindex="0"
+                class="flex dropdown dropdown-center min-h-[3.75rem]"
               >
-                Plants (3)
-              </div>
-              <div
-                class="dropdown-content z-50 mt-14"
-              >
-                <ul
-                  class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box"
+                <div
+                  class="section-title btn btn-ghost cursor-pointer"
+                  role="button"
                   tabindex="0"
                 >
-                  <li>
-                    <a
-                      class="flex justify-center"
-                      data-testid="add_plants_option"
-                    >
-                      Add
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      class="flex justify-center"
-                      data-testid="remove_plants_option"
-                    >
-                      Remove
-                    </a>
-                  </li>
-                </ul>
+                  Plants (3)
+                </div>
+                <div
+                  class="dropdown-content z-50 mt-14"
+                >
+                  <ul
+                    class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box"
+                    tabindex="0"
+                  >
+                    <li>
+                      <a
+                        class="flex justify-center"
+                        data-testid="add_plants_option"
+                      >
+                        Add
+                      </a>
+                    </li>
+                    <li>
+                      <a
+                        class="flex justify-center"
+                        data-testid="remove_plants_option"
+                      >
+                        Remove
+                      </a>
+                    </li>
+                  </ul>
+                </div>
               </div>
-            </div>
-            <div
-              class="section-content"
-            >
               <div
                 class="flex px-4 mb-4"
               >
@@ -330,6 +330,10 @@ exports[`App matches snapshot 1`] = `
                   </div>
                 </div>
               </div>
+            </div>
+            <div
+              class="section-content"
+            >
               <form>
                 <div
                   class="flex relative mb-4"
@@ -1039,44 +1043,44 @@ exports[`App matches snapshot 1`] = `
           class="section"
         >
           <div
-            class="section-title dropdown dropdown-center"
+            class="section-header"
           >
             <div
-              class="section-title-font btn btn-ghost cursor-pointer"
-              role="button"
-              tabindex="0"
+              class="flex dropdown dropdown-center min-h-[3.75rem]"
             >
-              Plants (3)
-            </div>
-            <div
-              class="dropdown-content z-50 mt-14"
-            >
-              <ul
-                class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box"
+              <div
+                class="section-title btn btn-ghost cursor-pointer"
+                role="button"
                 tabindex="0"
               >
-                <li>
-                  <a
-                    class="flex justify-center"
-                    data-testid="add_plants_option"
-                  >
-                    Add
-                  </a>
-                </li>
-                <li>
-                  <a
-                    class="flex justify-center"
-                    data-testid="remove_plants_option"
-                  >
-                    Remove
-                  </a>
-                </li>
-              </ul>
+                Plants (3)
+              </div>
+              <div
+                class="dropdown-content z-50 mt-14"
+              >
+                <ul
+                  class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box"
+                  tabindex="0"
+                >
+                  <li>
+                    <a
+                      class="flex justify-center"
+                      data-testid="add_plants_option"
+                    >
+                      Add
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      class="flex justify-center"
+                      data-testid="remove_plants_option"
+                    >
+                      Remove
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
-          </div>
-          <div
-            class="section-content"
-          >
             <div
               class="flex px-4 mb-4"
             >
@@ -1168,6 +1172,10 @@ exports[`App matches snapshot 1`] = `
                 </div>
               </div>
             </div>
+          </div>
+          <div
+            class="section-content"
+          >
             <form>
               <div
                 class="flex relative mb-4"

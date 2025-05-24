@@ -3,14 +3,14 @@
 
     /* Pseudo element mask positions base-100 squares under title corners.
      * Title is sticky, so once it hits the top of the page it will stay there
-     * while .section slides underneath. Since .section and .section-title have
+     * while .section slides underneath. Since .section and .section-header have
      * the same background color .section will be visible through transparent
      * rounded corners, making title corners look square. Positioning squares
      * with the same background color as body under the corners fixes this.
      */
     &::before {
         content: '';
-        /* Stick to same spot as .section-title, same height as corners */
+        /* Stick to same spot as .section-header, same height as corners */
         @apply sticky top-16 h-4 w-full;
         /* Only fill 1rem squares on each end, not full background color */
         /* Using background color will cover other elements above SectionCol */
@@ -24,13 +24,13 @@
     }
 }
 
-@utility section-title {
-    @apply flex text-center w-full min-h-[3.75rem];
+@utility section-header {
+    @apply flex flex-col text-center w-full min-h-[3.75rem] px-6 md:px-8;
     /* Keep title visible while scrolling contents */
     @apply sticky top-16 bg-base-200 z-50 rounded-t-2xl;
 }
 
-@utility section-title-font {
+@utility section-title {
     @apply text-xl font-medium min-h-0 h-auto py-1 m-auto cursor-default;
 }
 

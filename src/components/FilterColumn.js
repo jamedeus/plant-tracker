@@ -328,12 +328,14 @@ const FilterColumn = ({
             title={`${title} (${Object.keys(state.currentContents).length})`}
             titleOptions={titleOptions}
             onOpenTitle={onOpenTitle}
+            headerChildren={
+                <FilterInput
+                    sortByKeys={sortByKeys}
+                    state={state}
+                    dispatch={dispatch}
+                />
+            }
         >
-            <FilterInput
-                sortByKeys={sortByKeys}
-                state={state}
-                dispatch={dispatch}
-            />
             <EditableNodeList editing={editing} formRef={formRef}>
                 {sortByKey(state.currentContents, state.sortKey).map((item) => (
                     // Render cardComponent by expanding params of each item

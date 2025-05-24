@@ -143,22 +143,22 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
               class="section"
             >
               <div
-                class="section-title dropdown dropdown-center"
+                class="section-header"
               >
                 <div
-                  class="section-title-font btn btn-ghost cursor-pointer"
-                  role="button"
-                  tabindex="0"
+                  class="flex dropdown dropdown-center min-h-[3.75rem]"
                 >
-                  Plants (1)
+                  <div
+                    class="section-title btn btn-ghost cursor-pointer"
+                    role="button"
+                    tabindex="0"
+                  >
+                    Plants (1)
+                  </div>
+                  <div
+                    class="dropdown-content z-50 mt-14"
+                  />
                 </div>
-                <div
-                  class="dropdown-content z-50 mt-14"
-                />
-              </div>
-              <div
-                class="section-content"
-              >
                 <div
                   class="flex px-4 mb-4"
                 >
@@ -250,6 +250,10 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                     </div>
                   </div>
                 </div>
+              </div>
+              <div
+                class="section-content"
+              >
                 <form>
                   <div
                     class="flex relative mb-4"
@@ -403,22 +407,22 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
               class="section"
             >
               <div
-                class="section-title dropdown dropdown-center"
+                class="section-header"
               >
                 <div
-                  class="section-title-font btn btn-ghost cursor-pointer"
-                  role="button"
-                  tabindex="0"
+                  class="flex dropdown dropdown-center min-h-[3.75rem]"
                 >
-                  Groups (1)
+                  <div
+                    class="section-title btn btn-ghost cursor-pointer"
+                    role="button"
+                    tabindex="0"
+                  >
+                    Groups (1)
+                  </div>
+                  <div
+                    class="dropdown-content z-50 mt-14"
+                  />
                 </div>
-                <div
-                  class="dropdown-content z-50 mt-14"
-                />
-              </div>
-              <div
-                class="section-content"
-              >
                 <div
                   class="flex px-4 mb-4"
                 >
@@ -503,6 +507,10 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                     </div>
                   </div>
                 </div>
+              </div>
+              <div
+                class="section-content"
+              >
                 <form>
                   <div
                     class="flex relative mb-4"
@@ -801,22 +809,22 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
             class="section"
           >
             <div
-              class="section-title dropdown dropdown-center"
+              class="section-header"
             >
               <div
-                class="section-title-font btn btn-ghost cursor-pointer"
-                role="button"
-                tabindex="0"
+                class="flex dropdown dropdown-center min-h-[3.75rem]"
               >
-                Plants (1)
+                <div
+                  class="section-title btn btn-ghost cursor-pointer"
+                  role="button"
+                  tabindex="0"
+                >
+                  Plants (1)
+                </div>
+                <div
+                  class="dropdown-content z-50 mt-14"
+                />
               </div>
-              <div
-                class="dropdown-content z-50 mt-14"
-              />
-            </div>
-            <div
-              class="section-content"
-            >
               <div
                 class="flex px-4 mb-4"
               >
@@ -908,6 +916,10 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                   </div>
                 </div>
               </div>
+            </div>
+            <div
+              class="section-content"
+            >
               <form>
                 <div
                   class="flex relative mb-4"
@@ -1061,22 +1073,22 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
             class="section"
           >
             <div
-              class="section-title dropdown dropdown-center"
+              class="section-header"
             >
               <div
-                class="section-title-font btn btn-ghost cursor-pointer"
-                role="button"
-                tabindex="0"
+                class="flex dropdown dropdown-center min-h-[3.75rem]"
               >
-                Groups (1)
+                <div
+                  class="section-title btn btn-ghost cursor-pointer"
+                  role="button"
+                  tabindex="0"
+                >
+                  Groups (1)
+                </div>
+                <div
+                  class="dropdown-content z-50 mt-14"
+                />
               </div>
-              <div
-                class="dropdown-content z-50 mt-14"
-              />
-            </div>
-            <div
-              class="section-content"
-            >
               <div
                 class="flex px-4 mb-4"
               >
@@ -1161,6 +1173,10 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
                   </div>
                 </div>
               </div>
+            </div>
+            <div
+              class="section-content"
+            >
               <form>
                 <div
                   class="flex relative mb-4"
@@ -1985,22 +2001,22 @@ exports[`App matches snapshot when only groups exist 1`] = `
               class="section"
             >
               <div
-                class="section-title dropdown dropdown-center"
+                class="section-header"
               >
                 <div
-                  class="section-title-font btn btn-ghost cursor-pointer"
-                  role="button"
-                  tabindex="0"
+                  class="flex dropdown dropdown-center min-h-[3.75rem]"
                 >
-                  Groups (1)
+                  <div
+                    class="section-title btn btn-ghost cursor-pointer"
+                    role="button"
+                    tabindex="0"
+                  >
+                    Groups (1)
+                  </div>
+                  <div
+                    class="dropdown-content z-50 mt-14"
+                  />
                 </div>
-                <div
-                  class="dropdown-content z-50 mt-14"
-                />
-              </div>
-              <div
-                class="section-content"
-              >
                 <div
                   class="flex px-4 mb-4"
                 >
@@ -2085,6 +2101,10 @@ exports[`App matches snapshot when only groups exist 1`] = `
                     </div>
                   </div>
                 </div>
+              </div>
+              <div
+                class="section-content"
+              >
                 <form>
                   <div
                     class="flex relative mb-4"
@@ -2369,22 +2389,22 @@ exports[`App matches snapshot when only groups exist 1`] = `
             class="section"
           >
             <div
-              class="section-title dropdown dropdown-center"
+              class="section-header"
             >
               <div
-                class="section-title-font btn btn-ghost cursor-pointer"
-                role="button"
-                tabindex="0"
+                class="flex dropdown dropdown-center min-h-[3.75rem]"
               >
-                Groups (1)
+                <div
+                  class="section-title btn btn-ghost cursor-pointer"
+                  role="button"
+                  tabindex="0"
+                >
+                  Groups (1)
+                </div>
+                <div
+                  class="dropdown-content z-50 mt-14"
+                />
               </div>
-              <div
-                class="dropdown-content z-50 mt-14"
-              />
-            </div>
-            <div
-              class="section-content"
-            >
               <div
                 class="flex px-4 mb-4"
               >
@@ -2469,6 +2489,10 @@ exports[`App matches snapshot when only groups exist 1`] = `
                   </div>
                 </div>
               </div>
+            </div>
+            <div
+              class="section-content"
+            >
               <form>
                 <div
                   class="flex relative mb-4"
@@ -2830,22 +2854,22 @@ exports[`App matches snapshot when only plants exist 1`] = `
               class="section"
             >
               <div
-                class="section-title dropdown dropdown-center"
+                class="section-header"
               >
                 <div
-                  class="section-title-font btn btn-ghost cursor-pointer"
-                  role="button"
-                  tabindex="0"
+                  class="flex dropdown dropdown-center min-h-[3.75rem]"
                 >
-                  Plants (1)
+                  <div
+                    class="section-title btn btn-ghost cursor-pointer"
+                    role="button"
+                    tabindex="0"
+                  >
+                    Plants (1)
+                  </div>
+                  <div
+                    class="dropdown-content z-50 mt-14"
+                  />
                 </div>
-                <div
-                  class="dropdown-content z-50 mt-14"
-                />
-              </div>
-              <div
-                class="section-content"
-              >
                 <div
                   class="flex px-4 mb-4"
                 >
@@ -2937,6 +2961,10 @@ exports[`App matches snapshot when only plants exist 1`] = `
                     </div>
                   </div>
                 </div>
+              </div>
+              <div
+                class="section-content"
+              >
                 <form>
                   <div
                     class="flex relative mb-4"
@@ -3262,22 +3290,22 @@ exports[`App matches snapshot when only plants exist 1`] = `
             class="section"
           >
             <div
-              class="section-title dropdown dropdown-center"
+              class="section-header"
             >
               <div
-                class="section-title-font btn btn-ghost cursor-pointer"
-                role="button"
-                tabindex="0"
+                class="flex dropdown dropdown-center min-h-[3.75rem]"
               >
-                Plants (1)
+                <div
+                  class="section-title btn btn-ghost cursor-pointer"
+                  role="button"
+                  tabindex="0"
+                >
+                  Plants (1)
+                </div>
+                <div
+                  class="dropdown-content z-50 mt-14"
+                />
               </div>
-              <div
-                class="dropdown-content z-50 mt-14"
-              />
-            </div>
-            <div
-              class="section-content"
-            >
               <div
                 class="flex px-4 mb-4"
               >
@@ -3369,6 +3397,10 @@ exports[`App matches snapshot when only plants exist 1`] = `
                   </div>
                 </div>
               </div>
+            </div>
+            <div
+              class="section-content"
+            >
               <form>
                 <div
                   class="flex relative mb-4"
@@ -3771,22 +3803,22 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
               class="section"
             >
               <div
-                class="section-title dropdown dropdown-center"
+                class="section-header"
               >
                 <div
-                  class="section-title-font btn btn-ghost cursor-pointer"
-                  role="button"
-                  tabindex="0"
+                  class="flex dropdown dropdown-center min-h-[3.75rem]"
                 >
-                  Plants (1)
+                  <div
+                    class="section-title btn btn-ghost cursor-pointer"
+                    role="button"
+                    tabindex="0"
+                  >
+                    Plants (1)
+                  </div>
+                  <div
+                    class="dropdown-content z-50 mt-14"
+                  />
                 </div>
-                <div
-                  class="dropdown-content z-50 mt-14"
-                />
-              </div>
-              <div
-                class="section-content"
-              >
                 <div
                   class="flex px-4 mb-4"
                 >
@@ -3878,6 +3910,10 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                     </div>
                   </div>
                 </div>
+              </div>
+              <div
+                class="section-content"
+              >
                 <form>
                   <div
                     class="flex relative mb-4"
@@ -4031,22 +4067,22 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
               class="section"
             >
               <div
-                class="section-title dropdown dropdown-center"
+                class="section-header"
               >
                 <div
-                  class="section-title-font btn btn-ghost cursor-pointer"
-                  role="button"
-                  tabindex="0"
+                  class="flex dropdown dropdown-center min-h-[3.75rem]"
                 >
-                  Groups (1)
+                  <div
+                    class="section-title btn btn-ghost cursor-pointer"
+                    role="button"
+                    tabindex="0"
+                  >
+                    Groups (1)
+                  </div>
+                  <div
+                    class="dropdown-content z-50 mt-14"
+                  />
                 </div>
-                <div
-                  class="dropdown-content z-50 mt-14"
-                />
-              </div>
-              <div
-                class="section-content"
-              >
                 <div
                   class="flex px-4 mb-4"
                 >
@@ -4131,6 +4167,10 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                     </div>
                   </div>
                 </div>
+              </div>
+              <div
+                class="section-content"
+              >
                 <form>
                   <div
                     class="flex relative mb-4"
@@ -4415,22 +4455,22 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
             class="section"
           >
             <div
-              class="section-title dropdown dropdown-center"
+              class="section-header"
             >
               <div
-                class="section-title-font btn btn-ghost cursor-pointer"
-                role="button"
-                tabindex="0"
+                class="flex dropdown dropdown-center min-h-[3.75rem]"
               >
-                Plants (1)
+                <div
+                  class="section-title btn btn-ghost cursor-pointer"
+                  role="button"
+                  tabindex="0"
+                >
+                  Plants (1)
+                </div>
+                <div
+                  class="dropdown-content z-50 mt-14"
+                />
               </div>
-              <div
-                class="dropdown-content z-50 mt-14"
-              />
-            </div>
-            <div
-              class="section-content"
-            >
               <div
                 class="flex px-4 mb-4"
               >
@@ -4522,6 +4562,10 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                   </div>
                 </div>
               </div>
+            </div>
+            <div
+              class="section-content"
+            >
               <form>
                 <div
                   class="flex relative mb-4"
@@ -4675,22 +4719,22 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
             class="section"
           >
             <div
-              class="section-title dropdown dropdown-center"
+              class="section-header"
             >
               <div
-                class="section-title-font btn btn-ghost cursor-pointer"
-                role="button"
-                tabindex="0"
+                class="flex dropdown dropdown-center min-h-[3.75rem]"
               >
-                Groups (1)
+                <div
+                  class="section-title btn btn-ghost cursor-pointer"
+                  role="button"
+                  tabindex="0"
+                >
+                  Groups (1)
+                </div>
+                <div
+                  class="dropdown-content z-50 mt-14"
+                />
               </div>
-              <div
-                class="dropdown-content z-50 mt-14"
-              />
-            </div>
-            <div
-              class="section-content"
-            >
               <div
                 class="flex px-4 mb-4"
               >
@@ -4775,6 +4819,10 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                   </div>
                 </div>
               </div>
+            </div>
+            <div
+              class="section-content"
+            >
               <form>
                 <div
                   class="flex relative mb-4"
@@ -5155,22 +5203,22 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
               class="section"
             >
               <div
-                class="section-title dropdown dropdown-center"
+                class="section-header"
               >
                 <div
-                  class="section-title-font btn btn-ghost cursor-pointer"
-                  role="button"
-                  tabindex="0"
+                  class="flex dropdown dropdown-center min-h-[3.75rem]"
                 >
-                  Plants (1)
+                  <div
+                    class="section-title btn btn-ghost cursor-pointer"
+                    role="button"
+                    tabindex="0"
+                  >
+                    Plants (1)
+                  </div>
+                  <div
+                    class="dropdown-content z-50 mt-14"
+                  />
                 </div>
-                <div
-                  class="dropdown-content z-50 mt-14"
-                />
-              </div>
-              <div
-                class="section-content"
-              >
                 <div
                   class="flex px-4 mb-4"
                 >
@@ -5262,6 +5310,10 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                     </div>
                   </div>
                 </div>
+              </div>
+              <div
+                class="section-content"
+              >
                 <form>
                   <div
                     class="flex relative mb-4"
@@ -5415,22 +5467,22 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
               class="section"
             >
               <div
-                class="section-title dropdown dropdown-center"
+                class="section-header"
               >
                 <div
-                  class="section-title-font btn btn-ghost cursor-pointer"
-                  role="button"
-                  tabindex="0"
+                  class="flex dropdown dropdown-center min-h-[3.75rem]"
                 >
-                  Groups (1)
+                  <div
+                    class="section-title btn btn-ghost cursor-pointer"
+                    role="button"
+                    tabindex="0"
+                  >
+                    Groups (1)
+                  </div>
+                  <div
+                    class="dropdown-content z-50 mt-14"
+                  />
                 </div>
-                <div
-                  class="dropdown-content z-50 mt-14"
-                />
-              </div>
-              <div
-                class="section-content"
-              >
                 <div
                   class="flex px-4 mb-4"
                 >
@@ -5515,6 +5567,10 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                     </div>
                   </div>
                 </div>
+              </div>
+              <div
+                class="section-content"
+              >
                 <form>
                   <div
                     class="flex relative mb-4"
@@ -5818,22 +5874,22 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
             class="section"
           >
             <div
-              class="section-title dropdown dropdown-center"
+              class="section-header"
             >
               <div
-                class="section-title-font btn btn-ghost cursor-pointer"
-                role="button"
-                tabindex="0"
+                class="flex dropdown dropdown-center min-h-[3.75rem]"
               >
-                Plants (1)
+                <div
+                  class="section-title btn btn-ghost cursor-pointer"
+                  role="button"
+                  tabindex="0"
+                >
+                  Plants (1)
+                </div>
+                <div
+                  class="dropdown-content z-50 mt-14"
+                />
               </div>
-              <div
-                class="dropdown-content z-50 mt-14"
-              />
-            </div>
-            <div
-              class="section-content"
-            >
               <div
                 class="flex px-4 mb-4"
               >
@@ -5925,6 +5981,10 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                   </div>
                 </div>
               </div>
+            </div>
+            <div
+              class="section-content"
+            >
               <form>
                 <div
                   class="flex relative mb-4"
@@ -6078,22 +6138,22 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
             class="section"
           >
             <div
-              class="section-title dropdown dropdown-center"
+              class="section-header"
             >
               <div
-                class="section-title-font btn btn-ghost cursor-pointer"
-                role="button"
-                tabindex="0"
+                class="flex dropdown dropdown-center min-h-[3.75rem]"
               >
-                Groups (1)
+                <div
+                  class="section-title btn btn-ghost cursor-pointer"
+                  role="button"
+                  tabindex="0"
+                >
+                  Groups (1)
+                </div>
+                <div
+                  class="dropdown-content z-50 mt-14"
+                />
               </div>
-              <div
-                class="dropdown-content z-50 mt-14"
-              />
-            </div>
-            <div
-              class="section-content"
-            >
               <div
                 class="flex px-4 mb-4"
               >
@@ -6178,6 +6238,10 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                   </div>
                 </div>
               </div>
+            </div>
+            <div
+              class="section-content"
+            >
               <form>
                 <div
                   class="flex relative mb-4"
