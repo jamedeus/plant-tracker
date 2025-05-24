@@ -1,7 +1,8 @@
-import React, { useRef, useState, useMemo } from 'react';
+import React, { useState, useMemo } from 'react';
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import Captions from "yet-another-react-lightbox/plugins/captions";
+import Download from "yet-another-react-lightbox/plugins/download";
 import Slideshow from "yet-another-react-lightbox/plugins/slideshow";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
 import Fullscreen from "yet-another-react-lightbox/plugins/fullscreen";
@@ -20,6 +21,7 @@ import {
     PauseIcon,
     ChevronLeftIcon,
     ChevronRightIcon,
+    ArrowDownTrayIcon,
     ArrowsPointingInIcon,
     ArrowsPointingOutIcon,
     MagnifyingGlassPlusIcon,
@@ -130,7 +132,8 @@ const Gallery = () => {
                 iconSlideshowPlay: () => <PlayIcon className="size-8" />,
                 iconSlideshowPause: () => <PauseIcon className="size-8" />,
                 iconClose: () => <XMarkIcon className="size-8" />,
-                iconExitFullscreen: () => (<ArrowsPointingInIcon className="size-8" />),
+                iconDownload: () => <ArrowDownTrayIcon className="size-8" />,
+                iconExitFullscreen: () => <ArrowsPointingInIcon className="size-8" />,
                 iconEnterFullscreen: () => <ArrowsPointingOutIcon className="size-8" />,
                 // Match loading animation used in rest of app
                 iconLoading: () => <LoadingAnimation />,
@@ -155,7 +158,8 @@ const Gallery = () => {
                 Prev: "Previous photo",
                 Close: "Close photo gallery",
                 Play: "Play photo slideshow",
-                Pause: "Pause photo slideshow"
+                Pause: "Pause photo slideshow",
+                Download: "Download plant photo"
             }}
             controller={{
                 closeOnPullDown: true,
@@ -164,12 +168,14 @@ const Gallery = () => {
             plugins={[
                 Zoom,
                 ...(caption ? [Captions] : []),
+                Download,
                 Slideshow,
                 Thumbnails,
                 Fullscreen
             ]}
             toolbar={{
                 buttons: [
+                    "download",
                     "slideshow",
                     "fullscreen",
                     "close"
