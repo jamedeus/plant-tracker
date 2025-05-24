@@ -5,14 +5,12 @@ import PropTypes from 'prop-types';
 const SectionCol = ({ title, titleOptions, onOpenTitle, children }) => {
     return (
         <div className="section">
-            <div
-                className="section-title dropdown dropdown-center"
-                onClick={onOpenTitle}
-            >
+            <div className="section-title dropdown dropdown-center">
                 <div
                     tabIndex={0}
                     role="button"
                     className="section-title-font btn btn-ghost cursor-pointer"
+                    onClick={onOpenTitle}
                 >
                     {title}
                 </div>
