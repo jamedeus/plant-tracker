@@ -19,10 +19,9 @@ const SuspenseFullscreen = ({ onClose }) => {
         return () => {
             // Wait for lightbox background to fade in (starts transparent)
             // before removing overlay (fix visual flash)
-            const timer = setTimeout(() => {
+            setTimeout(() => {
                 document.body.removeChild(overlayRef.current);
             }, 250);
-            return () => clearTimeout(timer);
         };
     }, []);
 
