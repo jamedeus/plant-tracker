@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useReducer, memo } from 'react';
+import React, { useState, useEffect, useRef, useReducer, memo } from 'react';
 import PropTypes from 'prop-types';
 import useDebounce from 'src/useDebounce';
 import SectionCol from 'src/components/SectionCol';
@@ -290,6 +290,32 @@ const FilterColumn = ({
         }
     }, [state.sortKey, state.sortDirection, state.query]);
 
+    // Scroll to top of column when user types in filter input.
+    // SectionCol header is sticky so it stays just below navbar until the full
+    // column scrolls offscreen. Filtering contents changes column height, so if
+    // the new height fits offscreen the header will unstick and whole column
+    // disappears. Instant scroll pulls the offscreen part back into viewport to
+    // prevent this and isn't noticable since the sticky header doesn't move.
+    const colRef = useRef(null);
+    const [hasLoaded, setHasLoaded] = useState(false);
+    useEffect(() => {
+        // Don't scroll when page loads (messes up scroll position on mobile)
+        if (!hasLoaded) {
+            setHasLoaded(true);
+        } else {
+            // Only scroll if part of the column is under navbar (0-64px) or
+            // offscreen (negative px). Issue can only occur when partially
+            // offscreen, otherwise scrolling just force-aligns column to top.
+            const rect = colRef.current.getBoundingClientRect();
+            if (rect.top < 64) {
+                colRef.current.scrollIntoView({
+                    block: "start",
+                    behavior: 'instant'
+                });
+            }
+        }
+    }, [state.query]);
+
     // Array.sort compare function used by sortByKey
     const compare = (a, b) => {
         if (a === null && b === null) return 0;
@@ -335,6 +361,7 @@ const FilterColumn = ({
                     dispatch={dispatch}
                 />
             }
+            colRef={colRef}
         >
             <EditableNodeList editing={editing} formRef={formRef}>
                 {sortByKey(state.currentContents, state.sortKey).map((item) => (

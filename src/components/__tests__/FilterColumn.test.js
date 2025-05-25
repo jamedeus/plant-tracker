@@ -282,9 +282,47 @@ describe('FilterColumn', () => {
         expect(titles[3].innerHTML).toBe("Unnamed plant 1");
         expect(titles[4].innerHTML).toBe("Unnamed plant 2");
     });
+
+    it('scrolls top of column into the viewport when filter query changes', async () => {
+        // Mock getBoundingClientRect to simulate part of column being scrolled
+        // above top of viewport (FilterInput is sticky, stays visible)
+        jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue(
+            { top: -50, bottom: 500 }
+        );
+        expect(window.HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled();
+
+        // Simulate user typing in filter input
+        const filterInput = component.getByRole('textbox');
+        await user.type(filterInput, 'plant');
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(200);
+        });
+
+        // Confirm page scrolled to prevent whole column going off screen
+        expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled();
+    });
+
+    it('does not scroll when filter query changes if top of column already in viewport', async () => {
+        // Mock getBoundingClientRect to simulate entire column being visible
+        jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue(
+            { top: 75, bottom: 500 }
+        );
+        expect(window.HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled();
+
+        // Simulate user typing in filter input
+        const filterInput = component.getByRole('textbox');
+        await user.type(filterInput, 'plant');
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(200);
+        });
+
+        // Confirm page did NOT scroll (height change cannot push column off
+        // screen if top is below the navbar)
+        expect(window.HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled();
+    });
 });
 
-describe('FilterColumn  ', () => {
+describe('FilterColumn optional parameters', () => {
     // Define default arguments used/overridden in tests below
     let baseArgs;
     beforeEach(() => {

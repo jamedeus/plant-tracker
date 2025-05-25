@@ -1,5 +1,7 @@
 @utility section {
     @apply flex flex-col w-full max-w-96 bg-base-200 rounded-2xl;
+    /* Snap to bottom of Navbar when scrolled to top of screen */
+    @apply scroll-mt-16;
 
     /* Pseudo element mask positions base-100 squares under title corners.
      * Title is sticky, so once it hits the top of the page it will stay there
