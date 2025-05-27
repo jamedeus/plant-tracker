@@ -11,12 +11,12 @@
 }
 
 .month-divider {
-    @apply divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-20;
+    @apply divider col-span-2 mt-4 mb-0 font-bold md:text-lg scroll-mt-35;
 }
 
 .timeline-timestamp {
     @apply flex flex-col h-full justify-center;
-    @apply text-end whitespace-nowrap md:ml-4 scroll-mt-20;
+    @apply text-end whitespace-nowrap md:ml-4 scroll-mt-35;
 
     /* Show tooltip if full date is hidden (timelineFullDate setting = False) */
     &:has(> span.hidden) > .tooltip::before {
@@ -81,5 +81,5 @@
 }
 
 .photo-thumbnail-timeline {
-    @apply w-full aspect-square scroll-mt-20;
+    @apply w-full aspect-square scroll-mt-35;
 }

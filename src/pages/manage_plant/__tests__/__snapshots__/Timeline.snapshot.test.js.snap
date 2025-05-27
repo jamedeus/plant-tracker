@@ -46,10 +46,10 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
     </div>
     <div>
       <div
-        class="flex flex-col w-full bg-base-200 rounded-2xl"
+        class="section max-w-full"
       >
         <div
-          class="navbar bg-base-200 rounded-2xl px-4"
+          class="navbar sticky top-16 bg-base-200 rounded-2xl px-4 z-1"
         >
           <div
             class="justify-start w-12"
@@ -2932,10 +2932,10 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
   </body>,
   "container": <div>
     <div
-      class="flex flex-col w-full bg-base-200 rounded-2xl"
+      class="section max-w-full"
     >
       <div
-        class="navbar bg-base-200 rounded-2xl px-4"
+        class="navbar sticky top-16 bg-base-200 rounded-2xl px-4 z-1"
       >
         <div
           class="justify-start w-12"
@@ -5915,10 +5915,10 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
     </div>
     <div>
       <div
-        class="flex flex-col w-full bg-base-200 rounded-2xl"
+        class="section max-w-full"
       >
         <div
-          class="navbar bg-base-200 rounded-2xl px-4"
+          class="navbar sticky top-16 bg-base-200 rounded-2xl px-4 z-1"
         >
           <div
             class="justify-start w-12"
@@ -8864,10 +8864,10 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
   </body>,
   "container": <div>
     <div
-      class="flex flex-col w-full bg-base-200 rounded-2xl"
+      class="section max-w-full"
     >
       <div
-        class="navbar bg-base-200 rounded-2xl px-4"
+        class="navbar sticky top-16 bg-base-200 rounded-2xl px-4 z-1"
       >
         <div
           class="justify-start w-12"

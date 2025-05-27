@@ -38,7 +38,7 @@ const Title = memo(function Title() {
     const archived = useSelector((state) => state.plant.plantDetails.archived);
 
     return (
-        <div className="navbar bg-base-200 rounded-2xl px-4">
+        <div className="navbar sticky top-16 bg-base-200 rounded-2xl px-4 z-1">
             <div className="justify-start w-12">
                 {/* Spacer with same width as .navbar-end button */}
             </div>
@@ -495,7 +495,7 @@ const Timeline = memo(function Timeline() {
     const dayKeys = Object.keys(timelineDays).sort().reverse();
 
     return (
-        <div className='flex flex-col w-full bg-base-200 rounded-2xl'>
+        <div className='section max-w-full'>
             <Title />
             {dayKeys.length > 0 ? (
                 <div className='timeline-layout'>
