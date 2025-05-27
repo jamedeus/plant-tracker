@@ -278,7 +278,6 @@ const PhotoThumbnail = memo(function PhotoThumbnail({ thumbnailUrl, timestamp, i
             alt={timestampToReadable(timestamp)}
             onClick={openGallery}
             title={timestampToReadable(timestamp)}
-            data-timeline-thumbnail={thumbnailUrl}
         />
     );
 });

@@ -27,6 +27,7 @@ import {
     MagnifyingGlassPlusIcon,
     MagnifyingGlassMinusIcon
 } from '@heroicons/react/24/solid';
+import { DateTime } from 'luxon';
 
 // Takes reference to element, returns true if within current viewport
 const elementIsVisible = (element) => {
@@ -69,7 +70,7 @@ const Gallery = () => {
     const slides = useMemo(() => photos.map(photo => ({
         src: photo.image,
         thumbnail: photo.thumbnail,
-        description: timestampToReadable(photo.timestamp).split('-')[1],
+        description: timestampToReadable(photo.timestamp).split('-')[1].trim(),
         imageFit: 'contain',
         key: photo.key
     })), [photos]);
@@ -87,16 +88,24 @@ const Gallery = () => {
                 exiting: () => {
                     // Only scroll if user setting enabled and slide changed
                     if (scroll && slideHasChanged) {
-                        // Get reference to last-viewed photo thumbnail
+                        // Get yyyy-MM-dd date of last-viewed photo
                         const currentSlide = slides[index];
-                        const thumbnail = document.querySelector(
-                            `[data-timeline-thumbnail="${currentSlide.thumbnail}"]`
+                        const currentSlideDate = DateTime.fromFormat(
+                            currentSlide.description,
+                            'MMMM d, yyyy'
+                        ).toFormat('yyyy-MM-dd');
+
+                        // Get timeline row containing last-viewed photo
+                        const timelineRow = document.querySelector(
+                            `[data-date="${currentSlideDate}"]`
                         );
-                        // Only scroll if thumbnail is outside viewport
-                        if (!elementIsVisible(thumbnail)) {
-                            thumbnail.scrollIntoView(
-                                { behavior: "smooth", block: "start" }
-                            );
+
+                        // Only scroll if timeline row is outside viewport
+                        if (!elementIsVisible(timelineRow)) {
+                            timelineRow?.scrollIntoView({
+                                behavior: "smooth",
+                                block: "start"
+                            });
                         }
                     }
                 },
