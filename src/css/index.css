@@ -128,3 +128,12 @@
         scale: 90%;
     }
 }
+
+/* Replaces inline class added by FontAwesomeIcon (not added by react-icons) */
+/* Fixes horizontal alignment when icon is in front of a text string */
+@utility fa-inline {
+    display: inline-block;
+    height: 1em;
+    overflow: visible;
+    vertical-align: -0.125em;
+}

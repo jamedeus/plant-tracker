@@ -31,7 +31,7 @@ module.exports = (env, argv) => {
                     },
                     // Move icons from page bundles to icons.js
                     icons: {
-                        test: /[\\/]node_modules[\\/](@fortawesome|@heroicons)[\\/]/,
+                        test: /[\\/]node_modules[\\/](react-icons|@heroicons)[\\/]/,
                         name: 'icons',
                         chunks: 'all',
                         enforce: true,

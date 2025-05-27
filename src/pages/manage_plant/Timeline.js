@@ -9,8 +9,7 @@ import { openRepotModal } from './RepotModal';
 import { openPhotoModal } from './PhotoModal';
 import { openDeletePhotosModal, preloadDeletePhotosModal } from './DeletePhotosModal';
 import { openEventHistoryModal } from './EventHistoryModal';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEllipsis, faPenToSquare} from '@fortawesome/free-solid-svg-icons';
+import { FaEllipsis, FaPenToSquare} from 'react-icons/fa6';
 import DropdownMenu from 'src/components/DropdownMenu';
 import WaterIcon from 'src/components/WaterIcon';
 import FertilizeIcon from 'src/components/FertilizeIcon';
@@ -69,10 +68,7 @@ const Title = memo(function Title() {
                             className="btn btn-ghost btn-circle size-12"
                             aria-label="More plant actions menu"
                         >
-                            <FontAwesomeIcon
-                                icon={faEllipsis}
-                                className="size-6!"
-                            />
+                            <FaEllipsis className="size-6" />
                         </div>
                         <DropdownMenu className="w-40">
                             <li><button
@@ -366,8 +362,7 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
             className='note-collapse'
             style={{ maxHeight: height }}
         >
-            <FontAwesomeIcon
-                icon={faPenToSquare}
+            <FaPenToSquare
                 className={clsx(
                     'size-4 mr-2 mt-1',
                     !archived && 'cursor-pointer'

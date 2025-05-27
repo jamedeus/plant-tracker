@@ -12,8 +12,7 @@ import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
 import { openDefaultPhotoModal, preloadDefaultPhotoModal } from './DefaultPhotoModal';
 import { openErrorModal } from 'src/components/ErrorModal';
 import Timeline from './Timeline';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlus, faBan, faPen, faUpRightFromSquare } from '@fortawesome/free-solid-svg-icons';
+import { FaPlus, FaBan, FaPen, FaUpRightFromSquare } from 'react-icons/fa6';
 import { useSelector, useDispatch } from 'react-redux';
 import { settingsMenuOpened } from './settingsSlice';
 import { photoGalleryOpened } from './timelineSlice';
@@ -120,10 +119,7 @@ function Layout() {
                                     "absolute bottom-2 right-2 size-8 min-size-8",
                                     "btn btn-square bg-base-200/60 border-none",
                                 )}>
-                                    <FontAwesomeIcon
-                                        className='size-3!'
-                                        icon={faPen}
-                                    />
+                                    <FaPen className='size-3' />
                                 </div>
                             </button>
                         </>
@@ -153,20 +149,23 @@ function Layout() {
                                     <IconButton
                                         onClick={handleRemoveGroup}
                                         title='Remove plant from group'
-                                        icon={faBan}
-                                    />
+                                    >
+                                        <FaBan className="size-4" />
+                                    </IconButton>
                                     <IconButton
                                         href={`/manage/${plantDetails.group.uuid}`}
                                         title='Go to group page'
-                                        icon={faUpRightFromSquare}
-                                    />
+                                    >
+                                        <FaUpRightFromSquare className="size-4" />
+                                    </IconButton>
                                 </>
                             ) : (
                                 <IconButton
                                     onClick={openGroupModal}
                                     title='Add plant to group'
-                                    icon={faPlus}
-                                />
+                                >
+                                    <FaPlus className="size-4" />
+                                </IconButton>
                             )}
                         </div>
                     </div>

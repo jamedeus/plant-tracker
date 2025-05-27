@@ -187,18 +187,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -244,18 +243,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -301,18 +299,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -358,18 +355,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -415,18 +411,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -435,18 +430,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-seedling mr-2 text-success"
-              data-icon="seedling"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-success"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
-                fill="currentColor"
+                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0l32 0c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64l32 0c123.7 0 224 100.3 224 224l0 32 0 160c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-160C100.3 320 0 219.7 0 96z"
               />
             </svg>
             Fertilized
@@ -455,18 +449,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-scissors mr-2 text-prune"
-              data-icon="scissors"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-prune"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 d="M256 192l-39.5-39.5c4.9-12.6 7.5-26.2 7.5-40.5C224 50.1 173.9 0 112 0S0 50.1 0 112s50.1 112 112 112c14.3 0 27.9-2.7 40.5-7.5L192 256l-39.5 39.5c-12.6-4.9-26.2-7.5-40.5-7.5C50.1 288 0 338.1 0 400s50.1 112 112 112s112-50.1 112-112c0-14.3-2.7-27.9-7.5-40.5L499.2 76.8c7.1-7.1 7.1-18.5 0-25.6c-28.3-28.3-74.1-28.3-102.4 0L256 192zm22.6 150.6L396.8 460.8c28.3 28.3 74.1 28.3 102.4 0c7.1-7.1 7.1-18.5 0-25.6L342.6 278.6l-64 64zM64 112a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm48 240a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"
-                fill="currentColor"
               />
             </svg>
             Pruned
@@ -512,18 +505,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -532,18 +524,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-mound mr-2 text-repot"
-              data-icon="mound"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-repot"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 576 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 d="M144.1 179.2C173.8 127.7 228.6 96 288 96s114.2 31.7 143.9 83.2L540.4 368c12.3 21.3-3.1 48-27.7 48H63.3c-24.6 0-40-26.6-27.7-48L144.1 179.2z"
-                fill="currentColor"
               />
             </svg>
             Repoted
@@ -589,18 +580,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -652,18 +642,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-seedling mr-2 text-success"
-              data-icon="seedling"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-success"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
-                fill="currentColor"
+                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0l32 0c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64l32 0c123.7 0 224 100.3 224 224l0 32 0 160c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-160C100.3 320 0 219.7 0 96z"
               />
             </svg>
             Fertilized
@@ -709,18 +698,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -729,18 +717,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-seedling mr-2 text-success"
-              data-icon="seedling"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-success"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
-                fill="currentColor"
+                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0l32 0c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64l32 0c123.7 0 224 100.3 224 224l0 32 0 160c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-160C100.3 320 0 219.7 0 96z"
               />
             </svg>
             Fertilized
@@ -749,18 +736,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-scissors mr-2 text-prune"
-              data-icon="scissors"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-prune"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 d="M256 192l-39.5-39.5c4.9-12.6 7.5-26.2 7.5-40.5C224 50.1 173.9 0 112 0S0 50.1 0 112s50.1 112 112 112c14.3 0 27.9-2.7 40.5-7.5L192 256l-39.5 39.5c-12.6-4.9-26.2-7.5-40.5-7.5C50.1 288 0 338.1 0 400s50.1 112 112 112s112-50.1 112-112c0-14.3-2.7-27.9-7.5-40.5L499.2 76.8c7.1-7.1 7.1-18.5 0-25.6c-28.3-28.3-74.1-28.3-102.4 0L256 192zm22.6 150.6L396.8 460.8c28.3 28.3 74.1 28.3 102.4 0c7.1-7.1 7.1-18.5 0-25.6L342.6 278.6l-64 64zM64 112a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm48 240a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"
-                fill="currentColor"
               />
             </svg>
             Pruned
@@ -903,18 +889,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -923,18 +908,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-scissors mr-2 text-prune"
-              data-icon="scissors"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-prune"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 d="M256 192l-39.5-39.5c4.9-12.6 7.5-26.2 7.5-40.5C224 50.1 173.9 0 112 0S0 50.1 0 112s50.1 112 112 112c14.3 0 27.9-2.7 40.5-7.5L192 256l-39.5 39.5c-12.6-4.9-26.2-7.5-40.5-7.5C50.1 288 0 338.1 0 400s50.1 112 112 112s112-50.1 112-112c0-14.3-2.7-27.9-7.5-40.5L499.2 76.8c7.1-7.1 7.1-18.5 0-25.6c-28.3-28.3-74.1-28.3-102.4 0L256 192zm22.6 150.6L396.8 460.8c28.3 28.3 74.1 28.3 102.4 0c7.1-7.1 7.1-18.5 0-25.6L342.6 278.6l-64 64zM64 112a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm48 240a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"
-                fill="currentColor"
               />
             </svg>
             Pruned
@@ -980,18 +964,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -1000,18 +983,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-seedling mr-2 text-success"
-              data-icon="seedling"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-success"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
-                fill="currentColor"
+                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0l32 0c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64l32 0c123.7 0 224 100.3 224 224l0 32 0 160c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-160C100.3 320 0 219.7 0 96z"
               />
             </svg>
             Fertilized
@@ -1057,18 +1039,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -1077,18 +1058,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-seedling mr-2 text-success"
-              data-icon="seedling"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-success"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
-                fill="currentColor"
+                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0l32 0c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64l32 0c123.7 0 224 100.3 224 224l0 32 0 160c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-160C100.3 320 0 219.7 0 96z"
               />
             </svg>
             Fertilized
@@ -1134,18 +1114,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -1154,18 +1133,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-seedling mr-2 text-success"
-              data-icon="seedling"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-success"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
-                fill="currentColor"
+                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0l32 0c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64l32 0c123.7 0 224 100.3 224 224l0 32 0 160c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-160C100.3 320 0 219.7 0 96z"
               />
             </svg>
             Fertilized
@@ -1211,18 +1189,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -1268,18 +1245,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-mound mr-2 text-repot"
-              data-icon="mound"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-repot"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 576 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 d="M144.1 179.2C173.8 127.7 228.6 96 288 96s114.2 31.7 143.9 83.2L540.4 368c12.3 21.3-3.1 48-27.7 48H63.3c-24.6 0-40-26.6-27.7-48L144.1 179.2z"
-                fill="currentColor"
               />
             </svg>
             Repoted
@@ -1325,18 +1301,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -1391,18 +1366,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             style="max-height: 24px;"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-pen-to-square size-4 mr-2 mt-1"
-              data-icon="pen-to-square"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="size-4 mr-2 mt-1"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"
-                fill="currentColor"
+                d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160L0 416c0 53 43 96 96 96l256 0c53 0 96-43 96-96l0-96c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 96c0 17.7-14.3 32-32 32L96 448c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l96 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 64z"
               />
             </svg>
             <div
@@ -1469,18 +1443,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             style="max-height: 24px;"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-pen-to-square size-4 mr-2 mt-1"
-              data-icon="pen-to-square"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="size-4 mr-2 mt-1"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"
-                fill="currentColor"
+                d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160L0 416c0 53 43 96 96 96l256 0c53 0 96-43 96-96l0-96c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 96c0 17.7-14.3 32-32 32L96 448c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l96 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 64z"
               />
             </svg>
             <div
@@ -1577,18 +1550,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -1640,18 +1612,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -1703,18 +1674,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -1766,18 +1736,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -1786,18 +1755,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-seedling mr-2 text-success"
-              data-icon="seedling"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-success"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
-                fill="currentColor"
+                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0l32 0c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64l32 0c123.7 0 224 100.3 224 224l0 32 0 160c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-160C100.3 320 0 219.7 0 96z"
               />
             </svg>
             Fertilized
@@ -1843,18 +1811,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -1863,18 +1830,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-seedling mr-2 text-success"
-              data-icon="seedling"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-success"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
-                fill="currentColor"
+                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0l32 0c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64l32 0c123.7 0 224 100.3 224 224l0 32 0 160c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-160C100.3 320 0 219.7 0 96z"
               />
             </svg>
             Fertilized
@@ -1929,18 +1895,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -1986,18 +1951,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -2006,18 +1970,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-seedling mr-2 text-success"
-              data-icon="seedling"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-success"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
-                fill="currentColor"
+                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0l32 0c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64l32 0c123.7 0 224 100.3 224 224l0 32 0 160c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-160C100.3 320 0 219.7 0 96z"
               />
             </svg>
             Fertilized
@@ -2026,18 +1989,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-scissors mr-2 text-prune"
-              data-icon="scissors"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-prune"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 d="M256 192l-39.5-39.5c4.9-12.6 7.5-26.2 7.5-40.5C224 50.1 173.9 0 112 0S0 50.1 0 112s50.1 112 112 112c14.3 0 27.9-2.7 40.5-7.5L192 256l-39.5 39.5c-12.6-4.9-26.2-7.5-40.5-7.5C50.1 288 0 338.1 0 400s50.1 112 112 112s112-50.1 112-112c0-14.3-2.7-27.9-7.5-40.5L499.2 76.8c7.1-7.1 7.1-18.5 0-25.6c-28.3-28.3-74.1-28.3-102.4 0L256 192zm22.6 150.6L396.8 460.8c28.3 28.3 74.1 28.3 102.4 0c7.1-7.1 7.1-18.5 0-25.6L342.6 278.6l-64 64zM64 112a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm48 240a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"
-                fill="currentColor"
               />
             </svg>
             Pruned
@@ -2089,18 +2051,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -2152,18 +2113,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -2305,18 +2265,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -2368,18 +2327,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -2431,18 +2389,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -2494,18 +2451,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -2557,18 +2513,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -2620,18 +2575,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -2683,18 +2637,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -2746,18 +2699,17 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -3018,18 +2970,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           tabindex="0"
         >
           <svg
-            aria-hidden="true"
-            class="svg-inline--fa fa-ellipsis size-6!"
-            data-icon="ellipsis"
-            data-prefix="fas"
-            focusable="false"
-            role="img"
+            class="size-6"
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            stroke-width="0"
             viewBox="0 0 448 512"
+            width="1em"
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
               d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z"
-              fill="currentColor"
             />
           </svg>
         </div>
@@ -3115,18 +3066,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -3172,18 +3122,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -3229,18 +3178,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -3286,18 +3234,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -3343,18 +3290,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -3363,18 +3309,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-seedling mr-2 text-success"
-              data-icon="seedling"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-success"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
-                fill="currentColor"
+                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0l32 0c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64l32 0c123.7 0 224 100.3 224 224l0 32 0 160c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-160C100.3 320 0 219.7 0 96z"
               />
             </svg>
             Fertilized
@@ -3383,18 +3328,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-scissors mr-2 text-prune"
-              data-icon="scissors"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-prune"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 d="M256 192l-39.5-39.5c4.9-12.6 7.5-26.2 7.5-40.5C224 50.1 173.9 0 112 0S0 50.1 0 112s50.1 112 112 112c14.3 0 27.9-2.7 40.5-7.5L192 256l-39.5 39.5c-12.6-4.9-26.2-7.5-40.5-7.5C50.1 288 0 338.1 0 400s50.1 112 112 112s112-50.1 112-112c0-14.3-2.7-27.9-7.5-40.5L499.2 76.8c7.1-7.1 7.1-18.5 0-25.6c-28.3-28.3-74.1-28.3-102.4 0L256 192zm22.6 150.6L396.8 460.8c28.3 28.3 74.1 28.3 102.4 0c7.1-7.1 7.1-18.5 0-25.6L342.6 278.6l-64 64zM64 112a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm48 240a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"
-                fill="currentColor"
               />
             </svg>
             Pruned
@@ -3440,18 +3384,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -3460,18 +3403,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-mound mr-2 text-repot"
-              data-icon="mound"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-repot"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 576 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 d="M144.1 179.2C173.8 127.7 228.6 96 288 96s114.2 31.7 143.9 83.2L540.4 368c12.3 21.3-3.1 48-27.7 48H63.3c-24.6 0-40-26.6-27.7-48L144.1 179.2z"
-                fill="currentColor"
               />
             </svg>
             Repoted
@@ -3517,18 +3459,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -3580,18 +3521,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-seedling mr-2 text-success"
-              data-icon="seedling"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-success"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
-                fill="currentColor"
+                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0l32 0c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64l32 0c123.7 0 224 100.3 224 224l0 32 0 160c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-160C100.3 320 0 219.7 0 96z"
               />
             </svg>
             Fertilized
@@ -3637,18 +3577,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -3657,18 +3596,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-seedling mr-2 text-success"
-              data-icon="seedling"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-success"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
-                fill="currentColor"
+                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0l32 0c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64l32 0c123.7 0 224 100.3 224 224l0 32 0 160c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-160C100.3 320 0 219.7 0 96z"
               />
             </svg>
             Fertilized
@@ -3677,18 +3615,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-scissors mr-2 text-prune"
-              data-icon="scissors"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-prune"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 d="M256 192l-39.5-39.5c4.9-12.6 7.5-26.2 7.5-40.5C224 50.1 173.9 0 112 0S0 50.1 0 112s50.1 112 112 112c14.3 0 27.9-2.7 40.5-7.5L192 256l-39.5 39.5c-12.6-4.9-26.2-7.5-40.5-7.5C50.1 288 0 338.1 0 400s50.1 112 112 112s112-50.1 112-112c0-14.3-2.7-27.9-7.5-40.5L499.2 76.8c7.1-7.1 7.1-18.5 0-25.6c-28.3-28.3-74.1-28.3-102.4 0L256 192zm22.6 150.6L396.8 460.8c28.3 28.3 74.1 28.3 102.4 0c7.1-7.1 7.1-18.5 0-25.6L342.6 278.6l-64 64zM64 112a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm48 240a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"
-                fill="currentColor"
               />
             </svg>
             Pruned
@@ -3831,18 +3768,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -3851,18 +3787,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-scissors mr-2 text-prune"
-              data-icon="scissors"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-prune"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 d="M256 192l-39.5-39.5c4.9-12.6 7.5-26.2 7.5-40.5C224 50.1 173.9 0 112 0S0 50.1 0 112s50.1 112 112 112c14.3 0 27.9-2.7 40.5-7.5L192 256l-39.5 39.5c-12.6-4.9-26.2-7.5-40.5-7.5C50.1 288 0 338.1 0 400s50.1 112 112 112s112-50.1 112-112c0-14.3-2.7-27.9-7.5-40.5L499.2 76.8c7.1-7.1 7.1-18.5 0-25.6c-28.3-28.3-74.1-28.3-102.4 0L256 192zm22.6 150.6L396.8 460.8c28.3 28.3 74.1 28.3 102.4 0c7.1-7.1 7.1-18.5 0-25.6L342.6 278.6l-64 64zM64 112a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm48 240a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"
-                fill="currentColor"
               />
             </svg>
             Pruned
@@ -3908,18 +3843,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -3928,18 +3862,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-seedling mr-2 text-success"
-              data-icon="seedling"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-success"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
-                fill="currentColor"
+                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0l32 0c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64l32 0c123.7 0 224 100.3 224 224l0 32 0 160c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-160C100.3 320 0 219.7 0 96z"
               />
             </svg>
             Fertilized
@@ -3985,18 +3918,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -4005,18 +3937,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-seedling mr-2 text-success"
-              data-icon="seedling"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-success"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
-                fill="currentColor"
+                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0l32 0c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64l32 0c123.7 0 224 100.3 224 224l0 32 0 160c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-160C100.3 320 0 219.7 0 96z"
               />
             </svg>
             Fertilized
@@ -4062,18 +3993,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -4082,18 +4012,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-seedling mr-2 text-success"
-              data-icon="seedling"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-success"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
-                fill="currentColor"
+                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0l32 0c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64l32 0c123.7 0 224 100.3 224 224l0 32 0 160c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-160C100.3 320 0 219.7 0 96z"
               />
             </svg>
             Fertilized
@@ -4139,18 +4068,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -4196,18 +4124,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-mound mr-2 text-repot"
-              data-icon="mound"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-repot"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 576 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 d="M144.1 179.2C173.8 127.7 228.6 96 288 96s114.2 31.7 143.9 83.2L540.4 368c12.3 21.3-3.1 48-27.7 48H63.3c-24.6 0-40-26.6-27.7-48L144.1 179.2z"
-                fill="currentColor"
               />
             </svg>
             Repoted
@@ -4253,18 +4180,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -4319,18 +4245,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             style="max-height: 24px;"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-pen-to-square size-4 mr-2 mt-1 cursor-pointer"
-              data-icon="pen-to-square"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="size-4 mr-2 mt-1 cursor-pointer"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"
-                fill="currentColor"
+                d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160L0 416c0 53 43 96 96 96l256 0c53 0 96-43 96-96l0-96c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 96c0 17.7-14.3 32-32 32L96 448c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l96 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 64z"
               />
             </svg>
             <div
@@ -4397,18 +4322,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             style="max-height: 24px;"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-pen-to-square size-4 mr-2 mt-1 cursor-pointer"
-              data-icon="pen-to-square"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="size-4 mr-2 mt-1 cursor-pointer"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160V416c0 53 43 96 96 96H352c53 0 96-43 96-96V320c0-17.7-14.3-32-32-32s-32 14.3-32 32v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V160c0-17.7 14.3-32 32-32h96c17.7 0 32-14.3 32-32s-14.3-32-32-32H96z"
-                fill="currentColor"
+                d="M471.6 21.7c-21.9-21.9-57.3-21.9-79.2 0L362.3 51.7l97.9 97.9 30.1-30.1c21.9-21.9 21.9-57.3 0-79.2L471.6 21.7zm-299.2 220c-6.1 6.1-10.8 13.6-13.5 21.9l-29.6 88.8c-2.9 8.6-.6 18.1 5.8 24.6s15.9 8.7 24.6 5.8l88.8-29.6c8.2-2.7 15.7-7.4 21.9-13.5L437.7 172.3 339.7 74.3 172.4 241.7zM96 64C43 64 0 107 0 160L0 416c0 53 43 96 96 96l256 0c53 0 96-43 96-96l0-96c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 96c0 17.7-14.3 32-32 32L96 448c-17.7 0-32-14.3-32-32l0-256c0-17.7 14.3-32 32-32l96 0c17.7 0 32-14.3 32-32s-14.3-32-32-32L96 64z"
               />
             </svg>
             <div
@@ -4505,18 +4429,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -4568,18 +4491,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -4631,18 +4553,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -4694,18 +4615,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -4714,18 +4634,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-seedling mr-2 text-success"
-              data-icon="seedling"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-success"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
-                fill="currentColor"
+                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0l32 0c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64l32 0c123.7 0 224 100.3 224 224l0 32 0 160c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-160C100.3 320 0 219.7 0 96z"
               />
             </svg>
             Fertilized
@@ -4771,18 +4690,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -4791,18 +4709,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-seedling mr-2 text-success"
-              data-icon="seedling"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-success"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
-                fill="currentColor"
+                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0l32 0c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64l32 0c123.7 0 224 100.3 224 224l0 32 0 160c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-160C100.3 320 0 219.7 0 96z"
               />
             </svg>
             Fertilized
@@ -4857,18 +4774,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -4914,18 +4830,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -4934,18 +4849,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-seedling mr-2 text-success"
-              data-icon="seedling"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-success"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0h32c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64H64c123.7 0 224 100.3 224 224v32V480c0 17.7-14.3 32-32 32s-32-14.3-32-32V320C100.3 320 0 219.7 0 96z"
-                fill="currentColor"
+                d="M512 32c0 113.6-84.6 207.5-194.2 222c-7.1-53.4-30.6-101.6-65.3-139.3C290.8 46.3 364 0 448 0l32 0c17.7 0 32 14.3 32 32zM0 96C0 78.3 14.3 64 32 64l32 0c123.7 0 224 100.3 224 224l0 32 0 160c0 17.7-14.3 32-32 32s-32-14.3-32-32l0-160C100.3 320 0 219.7 0 96z"
               />
             </svg>
             Fertilized
@@ -4954,18 +4868,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-scissors mr-2 text-prune"
-              data-icon="scissors"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-prune"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 512 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 d="M256 192l-39.5-39.5c4.9-12.6 7.5-26.2 7.5-40.5C224 50.1 173.9 0 112 0S0 50.1 0 112s50.1 112 112 112c14.3 0 27.9-2.7 40.5-7.5L192 256l-39.5 39.5c-12.6-4.9-26.2-7.5-40.5-7.5C50.1 288 0 338.1 0 400s50.1 112 112 112s112-50.1 112-112c0-14.3-2.7-27.9-7.5-40.5L499.2 76.8c7.1-7.1 7.1-18.5 0-25.6c-28.3-28.3-74.1-28.3-102.4 0L256 192zm22.6 150.6L396.8 460.8c28.3 28.3 74.1 28.3 102.4 0c7.1-7.1 7.1-18.5 0-25.6L342.6 278.6l-64 64zM64 112a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm48 240a48 48 0 1 1 0 96 48 48 0 1 1 0-96z"
-                fill="currentColor"
               />
             </svg>
             Pruned
@@ -5017,18 +4930,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -5080,18 +4992,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -5233,18 +5144,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -5296,18 +5206,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -5359,18 +5268,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -5422,18 +5330,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -5485,18 +5392,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -5548,18 +5454,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -5611,18 +5516,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered
@@ -5674,18 +5578,17 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="event-marker"
           >
             <svg
-              aria-hidden="true"
-              class="svg-inline--fa fa-droplet mr-2 text-info"
-              data-icon="droplet"
-              data-prefix="fas"
-              focusable="false"
-              role="img"
+              class="fa-inline mr-2 text-info"
+              fill="currentColor"
+              height="1em"
+              stroke="currentColor"
+              stroke-width="0"
               viewBox="0 0 384 512"
+              width="1em"
               xmlns="http://www.w3.org/2000/svg"
             >
               <path
-                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                fill="currentColor"
+                d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
               />
             </svg>
             Watered

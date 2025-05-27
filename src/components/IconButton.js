@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
-const IconButton = ({ onClick=null, href=null, title, icon}) => {
+const IconButton = ({ onClick=null, href=null, title, children }) => {
     return (
         <a
             className='btn btn-square size-10 min-size-10'
@@ -11,7 +10,7 @@ const IconButton = ({ onClick=null, href=null, title, icon}) => {
             title={title}
             tabIndex={0}
         >
-            <FontAwesomeIcon className='min-size-4' icon={icon} />
+            {children}
         </a>
     );
 };
@@ -20,7 +19,7 @@ IconButton.propTypes = {
     onClick: PropTypes.func,
     href: PropTypes.string,
     title: PropTypes.string,
-    icon: PropTypes.object.isRequired
+    children: PropTypes.node.isRequired
 };
 
 export default IconButton;

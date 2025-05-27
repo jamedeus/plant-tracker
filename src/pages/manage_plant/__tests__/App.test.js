@@ -448,7 +448,7 @@ describe('App', () => {
         }));
 
         // Confirm 2 water event icons exist
-        expect(app.container.querySelectorAll('.fa-droplet').length).toBe(2);
+        expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(2);
 
         // Open event history modal, get reference to modal
         await user.click(app.getByText('Delete events'));
@@ -460,7 +460,7 @@ describe('App', () => {
         await user.click(within(modal).getByText('Delete'));
 
         // Confirm both water event icons disappeared
-        expect(app.container.querySelectorAll('.fa-droplet').length).toBe(0);
+        expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(0);
     });
 
     it('opens note modal when add note dropdown option is clicked', async () => {

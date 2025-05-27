@@ -49,7 +49,7 @@ describe('PlantCard with water event', () => {
 
     it('shows water icon and time since the plant was last watered', () => {
         // Confirm that FA droplet icon is present
-        expect(component.container.querySelector('.fa-droplet')).toBeInTheDocument();
+        expect(component.container.querySelector('.fa-inline.text-info')).toBeInTheDocument();
         expect(component.getByText(/4 days ago/)).toBeInTheDocument();
     });
 });
@@ -74,7 +74,7 @@ describe('PlantCard with no water event', () => {
 
     it('says "never watered" with no icon if plant was never watered', () => {
         // Confirm icon and relative time are not present
-        expect(component.container.querySelector('.fa-droplet')).toBeNull();
+        expect(component.container.querySelector('.fa-inline.text-info')).toBeNull();
         expect(component.queryByText(/3 days ago/)).toBeNull();
         // Confirm "Never watered" is present
         expect(component.getByText(/Never watered/)).toBeInTheDocument();
@@ -100,7 +100,7 @@ describe('PlantCard last watered time display', () => {
 
     // Takes rendered component, returns span containing icon and last_watered text
     const getLastWateredSpan = (component) => {
-        return component.container.querySelector('.fa-droplet').parentElement;
+        return component.container.querySelector('.fa-inline.text-info').parentElement;
     };
 
     it('says "Today" if plant was watered during current calendar day', () => {

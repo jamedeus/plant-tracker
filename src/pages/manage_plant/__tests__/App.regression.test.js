@@ -299,7 +299,7 @@ describe('App', () => {
     it('does not remove event from timeline if another event with same type exists', async () => {
         // Confirm no water events exist in calendar or timeline
         expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(0);
-        expect(app.container.querySelectorAll('.fa-droplet').length).toBe(0);
+        expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(0);
 
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
@@ -325,7 +325,7 @@ describe('App', () => {
 
         // Confirm dot appeared on calendar, EventMarker appeared in timeline
         expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(1);
-        expect(app.container.querySelectorAll('.fa-droplet').length).toBe(1);
+        expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(1);
 
         // Open event history modal, delete more recent event
         await user.click(app.getByText('Delete events'));
@@ -344,7 +344,7 @@ describe('App', () => {
 
         // Confirm dot and marker are still present (second event still exists)
         expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(1);
-        expect(app.container.querySelectorAll('.fa-droplet').length).toBe(1);
+        expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(1);
     });
 
     // Original bug: while fixing the issue above (event removed from calendar/
@@ -358,7 +358,7 @@ describe('App', () => {
     it('does not fail to remove timeline day when the UTC timestamp of an event on prev day matches target day', async () => {
         // Confirm no water events exist in calendar or timeline
         expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(0);
-        expect(app.container.querySelectorAll('.fa-droplet').length).toBe(0);
+        expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(0);
 
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
@@ -385,7 +385,7 @@ describe('App', () => {
 
         // Confirm 2 EventCalendar dots and 2 EventMarkers in timeline
         expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(2);
-        expect(app.container.querySelectorAll('.fa-droplet').length).toBe(2);
+        expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(2);
 
         // Open event history modal, delete March 1 event
         await user.click(app.getByText('Delete events'));
@@ -404,7 +404,7 @@ describe('App', () => {
 
         // Confirm March 1 TimelineDay was removed (only 1 dot and marker left)
         expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(1);
-        expect(app.container.querySelectorAll('.fa-droplet').length).toBe(1);
+        expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(1);
     });
 
     // Original bug: If a YYYY-MM-DD date contained photos and/or notes but no
@@ -449,14 +449,14 @@ describe('App', () => {
 
         // Confirm no water events exist in calendar or timeline
         expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(0);
-        expect(app.container.querySelectorAll('.fa-droplet').length).toBe(0);
+        expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(0);
 
         // Click water button (datetime input contains same day as photos)
         await user.click(app.getByRole("button", {name: "Water"}));
 
         // Confirm dot appeared on calendar, EventMarker appeared in timeline
         expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(1);
-        expect(app.container.querySelectorAll('.fa-droplet').length).toBe(1);
+        expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(1);
     });
 
     // Original bug: If multiple photos existed on the same day and the first

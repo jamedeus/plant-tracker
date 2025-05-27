@@ -6,8 +6,7 @@ import NavbarDropdownOptions from 'src/components/NavbarDropdownOptions';
 import PlantDetails from 'src/components/PlantDetails.js';
 import GroupDetails from 'src/components/GroupDetails.js';
 import { openErrorModal } from 'src/components/ErrorModal';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { FaXmark, FaCheck } from 'react-icons/fa6';
 
 const Layout = ({ type, thumbnailUrl, thumbnailAltText, handleConfirm }) => {
     return (
@@ -34,14 +33,14 @@ const Layout = ({ type, thumbnailUrl, thumbnailAltText, handleConfirm }) => {
                     href="/"
                     title="Don't change QR code"
                 >
-                    <FontAwesomeIcon className="size-6!" icon={faXmark} />
+                    <FaXmark className="size-6" />
                 </a>
                 <button
                     className="btn h-12 btn-success btn-square text-white"
                     onClick={handleConfirm}
                     title="Change QR code"
                 >
-                    <FontAwesomeIcon className="size-6!" icon={faCheck} />
+                    <FaCheck className="size-6" />
                 </button>
             </div>
         </div>

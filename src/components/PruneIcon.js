@@ -1,9 +1,8 @@
 import React, { memo } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faScissors } from '@fortawesome/free-solid-svg-icons';
+import { FaScissors } from 'react-icons/fa6';
 
 const PruneIcon = memo(function PruneIcon() {
-    return <FontAwesomeIcon icon={faScissors} className="mr-2 text-prune" />;
+    return <FaScissors className="fa-inline mr-2 text-prune" />;
 });
 
 export default PruneIcon;

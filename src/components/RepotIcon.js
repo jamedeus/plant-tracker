@@ -1,9 +1,8 @@
 import React, { memo } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faMound } from '@fortawesome/free-solid-svg-icons';
+import { FaMound } from 'react-icons/fa6';
 
 const RepotIcon = memo(function RepotIcon() {
-    return <FontAwesomeIcon icon={faMound} className="mr-2 text-repot" />;
+    return <FaMound className="fa-inline mr-2 text-repot" />;
 });
 
 export default RepotIcon;

@@ -264,18 +264,17 @@ exports[`App matches snapshot 1`] = `
                         class="flex justify-end"
                       >
                         <svg
-                          aria-hidden="true"
-                          class="svg-inline--fa fa-arrow-down-long mr-2"
-                          data-icon="arrow-down-long"
-                          data-prefix="fas"
-                          focusable="false"
-                          role="img"
+                          class="fa-arrow-down-long mr-2"
+                          fill="currentColor"
+                          height="1em"
+                          stroke="currentColor"
+                          stroke-width="0"
                           viewBox="0 0 384 512"
+                          width="1em"
                           xmlns="http://www.w3.org/2000/svg"
                         >
                           <path
                             d="M169.4 502.6c12.5 12.5 32.8 12.5 45.3 0l128-128c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L224 402.7 224 32c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 370.7L86.6 329.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l128 128z"
-                            fill="currentColor"
                           />
                         </svg>
                         Added
@@ -359,18 +358,17 @@ exports[`App matches snapshot 1`] = `
                           title="04:45 AM - February 29, 2024"
                         >
                           <svg
-                            aria-hidden="true"
-                            class="svg-inline--fa fa-droplet mr-2 text-info"
-                            data-icon="droplet"
-                            data-prefix="fas"
-                            focusable="false"
-                            role="img"
+                            class="fa-inline mr-2 text-info"
+                            fill="currentColor"
+                            height="1em"
+                            stroke="currentColor"
+                            stroke-width="0"
                             viewBox="0 0 384 512"
+                            width="1em"
                             xmlns="http://www.w3.org/2000/svg"
                           >
                             <path
-                              d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                              fill="currentColor"
+                              d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
                             />
                           </svg>
                           Yesterday
@@ -514,18 +512,17 @@ exports[`App matches snapshot 1`] = `
                           title="04:45 AM - February 29, 2024"
                         >
                           <svg
-                            aria-hidden="true"
-                            class="svg-inline--fa fa-droplet mr-2 text-info"
-                            data-icon="droplet"
-                            data-prefix="fas"
-                            focusable="false"
-                            role="img"
+                            class="fa-inline mr-2 text-info"
+                            fill="currentColor"
+                            height="1em"
+                            stroke="currentColor"
+                            stroke-width="0"
                             viewBox="0 0 384 512"
+                            width="1em"
                             xmlns="http://www.w3.org/2000/svg"
                           >
                             <path
-                              d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0h1.8c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
-                              fill="currentColor"
+                              d="M192 512C86 512 0 426 0 320C0 228.8 130.2 57.7 166.6 11.7C172.6 4.2 181.5 0 191.1 0l1.8 0c9.6 0 18.5 4.2 24.5 11.7C253.8 57.7 384 228.8 384 320c0 106-86 192-192 192zM96 336c0-8.8-7.2-16-16-16s-16 7.2-16 16c0 61.9 50.1 112 112 112c8.8 0 16-7.2 16-16s-7.2-16-16-16c-44.2 0-80-35.8-80-80z"
                             />
                           </svg>
                           Yesterday

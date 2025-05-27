@@ -1,9 +1,8 @@
 import React, { memo } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faDroplet } from '@fortawesome/free-solid-svg-icons';
+import { FaDroplet } from 'react-icons/fa6';
 
 const WaterIcon = memo(function WaterIcon() {
-    return <FontAwesomeIcon icon={faDroplet} className="mr-2 text-info" />;
+    return <FaDroplet className="fa-inline mr-2 text-info" />;
 });
 
 export default WaterIcon;
