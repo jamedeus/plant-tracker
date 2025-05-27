@@ -89,6 +89,10 @@ export const buildNavigationOptions = (timelineDays) => {
             navigationOptions[year].push(month);
         }
     });
+    // Sort months in each year chronologically (timelineDays is not sorted)
+    Object.keys(navigationOptions).forEach(year =>
+        navigationOptions[year].sort().reverse()
+    );
     return navigationOptions;
 };
 
