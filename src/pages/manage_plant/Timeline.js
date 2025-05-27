@@ -364,7 +364,7 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
         >
             <FaPenToSquare
                 className={clsx(
-                    'size-4 mr-2 mt-1',
+                    'fa-inline size-4 mr-2 mt-1',
                     !archived && 'cursor-pointer'
                 )}
                 onClick={archived ? null : () => openNoteModal(note)}

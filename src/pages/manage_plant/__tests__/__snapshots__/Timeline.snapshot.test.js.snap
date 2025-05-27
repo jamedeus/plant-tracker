@@ -1366,7 +1366,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             style="max-height: 24px;"
           >
             <svg
-              class="size-4 mr-2 mt-1"
+              class="fa-inline size-4 mr-2 mt-1"
               fill="currentColor"
               height="1em"
               stroke="currentColor"
@@ -1443,7 +1443,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             style="max-height: 24px;"
           >
             <svg
-              class="size-4 mr-2 mt-1"
+              class="fa-inline size-4 mr-2 mt-1"
               fill="currentColor"
               height="1em"
               stroke="currentColor"
@@ -4245,7 +4245,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             style="max-height: 24px;"
           >
             <svg
-              class="size-4 mr-2 mt-1 cursor-pointer"
+              class="fa-inline size-4 mr-2 mt-1 cursor-pointer"
               fill="currentColor"
               height="1em"
               stroke="currentColor"
@@ -4322,7 +4322,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             style="max-height: 24px;"
           >
             <svg
-              class="size-4 mr-2 mt-1 cursor-pointer"
+              class="fa-inline size-4 mr-2 mt-1 cursor-pointer"
               fill="currentColor"
               height="1em"
               stroke="currentColor"
