@@ -101,6 +101,27 @@ class ModelRegressionTests(TestCase):
         self.assertNotEqual(type(photo.timestamp), NoneType)
         self.assertEqual(type(photo.timestamp), datetime)
 
+    def test_photos_with_periods_in_filename_get_incorrect_thumbnail_names(self):
+        '''Issue: Photo._create_thumbnail built the thumbnail name by calling
+        split('.')[0] and then adding _thumb.jpg suffix. If the photo filename
+        contained periods everything after the first period would be truncated
+        in the thumbnail name, potentially leading to thumbnail name collisions.
+        The _create_thumbnail method now uses rsplit to avoid this.
+        '''
+
+        # Create Photo using mock image with periods in filename
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        photo = Photo.objects.create(
+            photo=create_mock_photo(name='photo.of.my.plant.flowering.jpg'),
+            plant=plant
+        )
+
+        # Confirm filename was not truncated
+        self.assertEqual(
+            photo.thumbnail.name,
+            'thumbnails/photo.of.my.plant.flowering_thumb.jpg'
+        )
+
     def test_should_not_allow_creating_plant_with_same_uuid_as_group(self):
         '''Issue: The unique constraint on the Plant.uuid field only applies to
         the Plant table. This did not prevent the user from creating Plant with

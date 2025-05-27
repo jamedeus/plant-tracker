@@ -483,7 +483,7 @@ class Photo(models.Model):
         image.save(image_buffer, format='JPEG', quality=80)
 
         # Save to thumbnail field, write to disk with _thumb suffix
-        image_name = self.photo.name.split('.')[0]
+        image_name = self.photo.name.rsplit('.', 1)[0]
         self.thumbnail = InMemoryUploadedFile(
             image_buffer,
             'ImageField',
