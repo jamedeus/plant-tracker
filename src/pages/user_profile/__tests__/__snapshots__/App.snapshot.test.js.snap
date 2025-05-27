@@ -1,582 +1,260 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`App matches snapshot 1`] = `
-{
-  "asFragment": [Function],
-  "baseElement": <body>
+<div>
+  <div
+    class="container flex flex-col h-screen mx-auto items-center"
+  >
     <div
-      id="user_details"
+      class="navbar bg-base-100 mb-4 sticky top-0 z-99"
     >
-      {"username":"cdanger","email":"totally.not.anthony.weiner@gmail.com","first_name":"Carlos","last_name":"Danger","date_joined":"2025-04-06T00:08:53.392806+00:00"}
-    </div>
-    <div
-      id="user_accounts_enabled"
-    >
-      true
-    </div>
-    <div>
       <div
-        class="container flex flex-col h-screen mx-auto items-center"
+        class="dropdown justify-start min-w-12"
       >
         <div
-          class="navbar bg-base-100 mb-4 sticky top-0 z-99"
+          aria-label="Navigation menu"
+          class="btn btn-ghost btn-circle size-12"
+          role="button"
+          tabindex="0"
         >
-          <div
-            class="dropdown justify-start min-w-12"
+          <svg
+            class="size-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
           >
-            <div
-              aria-label="Navigation menu"
-              class="btn btn-ghost btn-circle size-12"
-              role="button"
-              tabindex="0"
-            >
-              <svg
-                class="size-5"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M4 6h16M4 12h16M4 18h7"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                />
-              </svg>
-            </div>
-            <ul
-              class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-3"
-              tabindex="0"
-            >
-              <li>
-                <a
-                  href="/"
-                >
-                  Overview
-                </a>
-              </li>
-              <li>
-                <button>
-                  Light mode
-                </button>
-              </li>
-            </ul>
-          </div>
-          <div
-            class="mx-auto shrink min-w-0"
-            title="Scroll to top"
-          >
-            <div
-              class="dropdown dropdown-center w-full"
-            >
-              <a
-                class="btn btn-ghost w-full px-0 text-nowrap"
-                role="button"
-                tabindex="0"
-              >
-                <span
-                  class="px-4 leading-[2.75rem] truncate"
-                  style="font-size: 14px;"
-                >
-                  User Profile
-                </span>
-              </a>
-              <div
-                class="dropdown-content z-1 flex"
-                tabindex="0"
-              />
-            </div>
-          </div>
-          <div
-            class="justify-end min-w-12"
-          />
+            <path
+              d="M4 6h16M4 12h16M4 18h7"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+            />
+          </svg>
         </div>
-        <div
-          class="flex flex-col w-96 max-w-[100vw] gap-4 md:gap-6 px-4 md:mt-16"
+        <ul
+          class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-3"
+          tabindex="0"
         >
-          <div
-            class="collapse collapse-arrow bg-base-200 rounded-2xl"
-            tabindex="0"
-          >
-            <input
-              aria-label="Show Details form"
-              checked=""
-              name="my-accordion-2"
-              type="radio"
-            />
-            <div
-              class="collapse-title text-xl font-medium text-center p-4"
+          <li>
+            <a
+              href="/"
             >
-              Details
-            </div>
-            <div
-              class="collapse-content"
-            >
-              <div
-                class="flex flex-col gap-4"
-              >
-                <div
-                  class="grid grid-cols-min-max gap-4"
-                >
-                  <div
-                    class="my-auto text-nowrap"
-                  >
-                    First Name:
-                  </div>
-                  <input
-                    aria-label="First name input"
-                    class="input w-full"
-                    data-testid="first_name_input"
-                    name="first_name"
-                    type="text"
-                    value="Carlos"
-                  />
-                  <div
-                    class="my-auto text-nowrap"
-                  >
-                    Last Name:
-                  </div>
-                  <input
-                    aria-label="Last name input"
-                    class="input w-full"
-                    data-testid="last_name_input"
-                    name="last_name"
-                    type="text"
-                    value="Danger"
-                  />
-                  <div
-                    class="my-auto text-nowrap"
-                  >
-                    Email:
-                  </div>
-                  <input
-                    aria-label="Email address input"
-                    autocapitalize="off"
-                    class="input w-full"
-                    data-testid="email_input"
-                    name="email"
-                    type="email"
-                    value="totally.not.anthony.weiner@gmail.com"
-                  />
-                  <div
-                    class="my-auto text-nowrap"
-                  >
-                    Joined:
-                  </div>
-                  <div
-                    class="text-center"
-                  >
-                    <span
-                      class="text-nowrap"
-                    >
-                       April 5, 2025
-                    </span>
-                    <span>
-                       
-                    </span>
-                    <span
-                      class="text-nowrap"
-                    >
-                      (
-                      in 1 year
-                      )
-                    </span>
-                  </div>
-                </div>
-                <button
-                  class="btn btn-accent mt-4"
-                  disabled=""
-                >
-                  Save Changes
-                </button>
-              </div>
-            </div>
-          </div>
-          <div
-            class="collapse collapse-arrow bg-base-200 rounded-2xl"
-            tabindex="0"
-          >
-            <input
-              aria-label="Show Change Password form"
-              name="my-accordion-2"
-              type="radio"
-            />
-            <div
-              class="collapse-title text-xl font-medium text-center p-4"
-            >
-              Change Password
-            </div>
-            <div
-              class="collapse-content"
-            >
-              <form
-                class="flex flex-col gap-2"
-              >
-                <label
-                  title="Must be at least 8 characters, can't be all numbers"
-                >
-                  <span>
-                    Old password
-                  </span>
-                  <input
-                    class="input w-full"
-                    name="old_password"
-                    type="password"
-                    value=""
-                  />
-                </label>
-                <label
-                  title="Must be at least 8 characters, can't be all numbers"
-                >
-                  <span>
-                    New password
-                  </span>
-                  <input
-                    class="input w-full"
-                    name="new_password1"
-                    type="password"
-                    value=""
-                  />
-                </label>
-                <label
-                  title="Must be at least 8 characters, can't be all numbers"
-                >
-                  <span>
-                    Confirm new password
-                  </span>
-                  <input
-                    class="input w-full"
-                    name="new_password2"
-                    type="password"
-                    value=""
-                  />
-                </label>
-                <button
-                  class="btn btn-accent mt-6"
-                  disabled=""
-                >
-                  Change Password
-                </button>
-              </form>
-            </div>
-          </div>
-          <a
-            class="btn btn-outline btn-error mx-4 mb-8"
-            href="/accounts/logout/"
-          >
-            Log Out
-          </a>
-        </div>
+              Overview
+            </a>
+          </li>
+          <li>
+            <button>
+              Light mode
+            </button>
+          </li>
+        </ul>
       </div>
-    </div>
-  </body>,
-  "container": <div>
-    <div
-      class="container flex flex-col h-screen mx-auto items-center"
-    >
       <div
-        class="navbar bg-base-100 mb-4 sticky top-0 z-99"
+        class="mx-auto shrink min-w-0"
+        title="Scroll to top"
       >
         <div
-          class="dropdown justify-start min-w-12"
+          class="dropdown dropdown-center w-full"
         >
-          <div
-            aria-label="Navigation menu"
-            class="btn btn-ghost btn-circle size-12"
+          <a
+            class="btn btn-ghost w-full px-0 text-nowrap"
             role="button"
             tabindex="0"
           >
-            <svg
-              class="size-5"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+            <span
+              class="px-4 leading-[2.75rem] truncate"
+              style="font-size: 14px;"
             >
-              <path
-                d="M4 6h16M4 12h16M4 18h7"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-              />
-            </svg>
-          </div>
-          <ul
-            class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-3"
-            tabindex="0"
-          >
-            <li>
-              <a
-                href="/"
-              >
-                Overview
-              </a>
-            </li>
-            <li>
-              <button>
-                Light mode
-              </button>
-            </li>
-          </ul>
-        </div>
-        <div
-          class="mx-auto shrink min-w-0"
-          title="Scroll to top"
-        >
+              User Profile
+            </span>
+          </a>
           <div
-            class="dropdown dropdown-center w-full"
-          >
-            <a
-              class="btn btn-ghost w-full px-0 text-nowrap"
-              role="button"
-              tabindex="0"
-            >
-              <span
-                class="px-4 leading-[2.75rem] truncate"
-                style="font-size: 14px;"
-              >
-                User Profile
-              </span>
-            </a>
-            <div
-              class="dropdown-content z-1 flex"
-              tabindex="0"
-            />
-          </div>
+            class="dropdown-content z-1 flex"
+            tabindex="0"
+          />
         </div>
-        <div
-          class="justify-end min-w-12"
-        />
       </div>
       <div
-        class="flex flex-col w-96 max-w-[100vw] gap-4 md:gap-6 px-4 md:mt-16"
+        class="justify-end min-w-12"
+      />
+    </div>
+    <div
+      class="flex flex-col w-96 max-w-[100vw] gap-4 md:gap-6 px-4 md:mt-16"
+    >
+      <div
+        class="collapse collapse-arrow bg-base-200 rounded-2xl"
+        tabindex="0"
       >
+        <input
+          aria-label="Show Details form"
+          checked=""
+          name="my-accordion-2"
+          type="radio"
+        />
         <div
-          class="collapse collapse-arrow bg-base-200 rounded-2xl"
-          tabindex="0"
+          class="collapse-title text-xl font-medium text-center p-4"
         >
-          <input
-            aria-label="Show Details form"
-            checked=""
-            name="my-accordion-2"
-            type="radio"
-          />
+          Details
+        </div>
+        <div
+          class="collapse-content"
+        >
           <div
-            class="collapse-title text-xl font-medium text-center p-4"
-          >
-            Details
-          </div>
-          <div
-            class="collapse-content"
+            class="flex flex-col gap-4"
           >
             <div
-              class="flex flex-col gap-4"
+              class="grid grid-cols-min-max gap-4"
             >
               <div
-                class="grid grid-cols-min-max gap-4"
+                class="my-auto text-nowrap"
               >
-                <div
-                  class="my-auto text-nowrap"
-                >
-                  First Name:
-                </div>
-                <input
-                  aria-label="First name input"
-                  class="input w-full"
-                  data-testid="first_name_input"
-                  name="first_name"
-                  type="text"
-                  value="Carlos"
-                />
-                <div
-                  class="my-auto text-nowrap"
-                >
-                  Last Name:
-                </div>
-                <input
-                  aria-label="Last name input"
-                  class="input w-full"
-                  data-testid="last_name_input"
-                  name="last_name"
-                  type="text"
-                  value="Danger"
-                />
-                <div
-                  class="my-auto text-nowrap"
-                >
-                  Email:
-                </div>
-                <input
-                  aria-label="Email address input"
-                  autocapitalize="off"
-                  class="input w-full"
-                  data-testid="email_input"
-                  name="email"
-                  type="email"
-                  value="totally.not.anthony.weiner@gmail.com"
-                />
-                <div
-                  class="my-auto text-nowrap"
-                >
-                  Joined:
-                </div>
-                <div
-                  class="text-center"
-                >
-                  <span
-                    class="text-nowrap"
-                  >
-                     April 5, 2025
-                  </span>
-                  <span>
-                     
-                  </span>
-                  <span
-                    class="text-nowrap"
-                  >
-                    (
-                    in 1 year
-                    )
-                  </span>
-                </div>
+                First Name:
               </div>
-              <button
-                class="btn btn-accent mt-4"
-                disabled=""
+              <input
+                aria-label="First name input"
+                class="input w-full"
+                data-testid="first_name_input"
+                name="first_name"
+                type="text"
+                value="Carlos"
+              />
+              <div
+                class="my-auto text-nowrap"
               >
-                Save Changes
-              </button>
+                Last Name:
+              </div>
+              <input
+                aria-label="Last name input"
+                class="input w-full"
+                data-testid="last_name_input"
+                name="last_name"
+                type="text"
+                value="Danger"
+              />
+              <div
+                class="my-auto text-nowrap"
+              >
+                Email:
+              </div>
+              <input
+                aria-label="Email address input"
+                autocapitalize="off"
+                class="input w-full"
+                data-testid="email_input"
+                name="email"
+                type="email"
+                value="totally.not.anthony.weiner@gmail.com"
+              />
+              <div
+                class="my-auto text-nowrap"
+              >
+                Joined:
+              </div>
+              <div
+                class="text-center"
+              >
+                <span
+                  class="text-nowrap"
+                >
+                   April 5, 2025
+                </span>
+                <span>
+                   
+                </span>
+                <span
+                  class="text-nowrap"
+                >
+                  (
+                  in 1 year
+                  )
+                </span>
+              </div>
             </div>
+            <button
+              class="btn btn-accent mt-4"
+              disabled=""
+            >
+              Save Changes
+            </button>
           </div>
+        </div>
+      </div>
+      <div
+        class="collapse collapse-arrow bg-base-200 rounded-2xl"
+        tabindex="0"
+      >
+        <input
+          aria-label="Show Change Password form"
+          name="my-accordion-2"
+          type="radio"
+        />
+        <div
+          class="collapse-title text-xl font-medium text-center p-4"
+        >
+          Change Password
         </div>
         <div
-          class="collapse collapse-arrow bg-base-200 rounded-2xl"
-          tabindex="0"
+          class="collapse-content"
         >
-          <input
-            aria-label="Show Change Password form"
-            name="my-accordion-2"
-            type="radio"
-          />
-          <div
-            class="collapse-title text-xl font-medium text-center p-4"
+          <form
+            class="flex flex-col gap-2"
           >
-            Change Password
-          </div>
-          <div
-            class="collapse-content"
-          >
-            <form
-              class="flex flex-col gap-2"
+            <label
+              title="Must be at least 8 characters, can't be all numbers"
             >
-              <label
-                title="Must be at least 8 characters, can't be all numbers"
-              >
-                <span>
-                  Old password
-                </span>
-                <input
-                  class="input w-full"
-                  name="old_password"
-                  type="password"
-                  value=""
-                />
-              </label>
-              <label
-                title="Must be at least 8 characters, can't be all numbers"
-              >
-                <span>
-                  New password
-                </span>
-                <input
-                  class="input w-full"
-                  name="new_password1"
-                  type="password"
-                  value=""
-                />
-              </label>
-              <label
-                title="Must be at least 8 characters, can't be all numbers"
-              >
-                <span>
-                  Confirm new password
-                </span>
-                <input
-                  class="input w-full"
-                  name="new_password2"
-                  type="password"
-                  value=""
-                />
-              </label>
-              <button
-                class="btn btn-accent mt-6"
-                disabled=""
-              >
-                Change Password
-              </button>
-            </form>
-          </div>
+              <span>
+                Old password
+              </span>
+              <input
+                class="input w-full"
+                name="old_password"
+                type="password"
+                value=""
+              />
+            </label>
+            <label
+              title="Must be at least 8 characters, can't be all numbers"
+            >
+              <span>
+                New password
+              </span>
+              <input
+                class="input w-full"
+                name="new_password1"
+                type="password"
+                value=""
+              />
+            </label>
+            <label
+              title="Must be at least 8 characters, can't be all numbers"
+            >
+              <span>
+                Confirm new password
+              </span>
+              <input
+                class="input w-full"
+                name="new_password2"
+                type="password"
+                value=""
+              />
+            </label>
+            <button
+              class="btn btn-accent mt-6"
+              disabled=""
+            >
+              Change Password
+            </button>
+          </form>
         </div>
-        <a
-          class="btn btn-outline btn-error mx-4 mb-8"
-          href="/accounts/logout/"
-        >
-          Log Out
-        </a>
       </div>
+      <a
+        class="btn btn-outline btn-error mx-4 mb-8"
+        href="/accounts/logout/"
+      >
+        Log Out
+      </a>
     </div>
-  </div>,
-  "debug": [Function],
-  "findAllByAltText": [Function],
-  "findAllByDisplayValue": [Function],
-  "findAllByLabelText": [Function],
-  "findAllByPlaceholderText": [Function],
-  "findAllByRole": [Function],
-  "findAllByTestId": [Function],
-  "findAllByText": [Function],
-  "findAllByTitle": [Function],
-  "findByAltText": [Function],
-  "findByDisplayValue": [Function],
-  "findByLabelText": [Function],
-  "findByPlaceholderText": [Function],
-  "findByRole": [Function],
-  "findByTestId": [Function],
-  "findByText": [Function],
-  "findByTitle": [Function],
-  "getAllByAltText": [Function],
-  "getAllByDisplayValue": [Function],
-  "getAllByLabelText": [Function],
-  "getAllByPlaceholderText": [Function],
-  "getAllByRole": [Function],
-  "getAllByTestId": [Function],
-  "getAllByText": [Function],
-  "getAllByTitle": [Function],
-  "getByAltText": [Function],
-  "getByDisplayValue": [Function],
-  "getByLabelText": [Function],
-  "getByPlaceholderText": [Function],
-  "getByRole": [Function],
-  "getByTestId": [Function],
-  "getByText": [Function],
-  "getByTitle": [Function],
-  "queryAllByAltText": [Function],
-  "queryAllByDisplayValue": [Function],
-  "queryAllByLabelText": [Function],
-  "queryAllByPlaceholderText": [Function],
-  "queryAllByRole": [Function],
-  "queryAllByTestId": [Function],
-  "queryAllByText": [Function],
-  "queryAllByTitle": [Function],
-  "queryByAltText": [Function],
-  "queryByDisplayValue": [Function],
-  "queryByLabelText": [Function],
-  "queryByPlaceholderText": [Function],
-  "queryByRole": [Function],
-  "queryByTestId": [Function],
-  "queryByText": [Function],
-  "queryByTitle": [Function],
-  "rerender": [Function],
-  "unmount": [Function],
-}
+  </div>
+</div>
 `;

@@ -21,8 +21,8 @@ describe('App', () => {
         window.innerWidth = 800;
 
         // Render App, confirm matches snapshot
-        const component = render(<App />);
-        expect(component).toMatchSnapshot();
+        const { container } = render(<App />);
+        expect(container).toMatchSnapshot();
     });
 
     it('matches snapshot when plants and groups exist (mobile layout)', () => {
@@ -37,8 +37,8 @@ describe('App', () => {
         window.innerWidth = 600;
 
         // Render App, confirm matches snapshot
-        const component = render(<App />);
-        expect(component).toMatchSnapshot();
+        const { container } = render(<App />);
+        expect(container).toMatchSnapshot();
     });
 
     it('matches snapshot when only plants exist', () => {
@@ -50,8 +50,8 @@ describe('App', () => {
         createMockContext('user_accounts_enabled', true);
 
         // Render App, confirm matches snapshot
-        const component = render(<App />);
-        expect(component).toMatchSnapshot();
+        const { container } = render(<App />);
+        expect(container).toMatchSnapshot();
     });
 
     it('matches snapshot when only groups exist', () => {
@@ -63,8 +63,8 @@ describe('App', () => {
         createMockContext('user_accounts_enabled', true);
 
         // Render App, confirm matches snapshot
-        const component = render(<App />);
-        expect(component).toMatchSnapshot();
+        const { container } = render(<App />);
+        expect(container).toMatchSnapshot();
     });
 
     it('matches snapshot when no models exist (setup)', () => {
@@ -77,8 +77,8 @@ describe('App', () => {
         createMockContext('user_accounts_enabled', true);
 
         // Render App, confirm matches snapshot
-        const component = render(<App />);
-        expect(component).toMatchSnapshot();
+        const { container } = render(<App />);
+        expect(container).toMatchSnapshot();
     });
 });
 
@@ -115,8 +115,8 @@ describe('App (archived page)', () => {
         });
 
         // Render App, confirm matches snapshot
-        const component = render(<App />);
-        expect(component).toMatchSnapshot();
+        const { container } = render(<App />);
+        expect(container).toMatchSnapshot();
     });
 });
 

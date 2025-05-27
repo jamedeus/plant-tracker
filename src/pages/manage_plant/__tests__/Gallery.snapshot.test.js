@@ -38,30 +38,30 @@ describe('Gallery', () => {
         // Set width greater than tailwind md breakpoint, render gallery
         window.innerWidth = 800;
         const user = userEvent.setup();
-        const component = render(
+        const { container, getByRole } = render(
             <ReduxProvider>
                 <TestComponent />
             </ReduxProvider>
         );
 
         // Open gallery, confirm matches snapshot
-        await user.click(component.getByRole('button', {name: 'Open Gallery'}));
-        expect(component).toMatchSnapshot();
+        await user.click(getByRole('button', {name: 'Open Gallery'}));
+        expect(container).toMatchSnapshot();
     });
 
     it('matches snapshot for desktop layout', async () => {
         // Set width less than tailwind md breakpoint, render gallery
         window.innerWidth = 600;
         const user = userEvent.setup();
-        const component = render(
+        const { container, getByRole } = render(
             <ReduxProvider>
                 <TestComponent />
             </ReduxProvider>
         );
 
         // Open gallery, confirm matches snapshot
-        await user.click(component.getByRole('button', {name: 'Open Gallery'}));
-        expect(component).toMatchSnapshot();
+        await user.click(getByRole('button', {name: 'Open Gallery'}));
+        expect(container).toMatchSnapshot();
     });
 });
 

@@ -8,7 +8,7 @@ describe('App', () => {
         createMockContext('user_accounts_enabled', true);
 
         // Render App, confirm matches snapshot
-        const component = render(<App />);
-        expect(component).toMatchSnapshot();
+        const { container } = render(<App />);
+        expect(container).toMatchSnapshot();
     });
 });

@@ -17,14 +17,14 @@ describe('Timeline', () => {
 
     it('matches snapshot when plant is not archived', () => {
         // Render Timeline, confirm matches snapshot
-        const component = render(
+        const { container } = render(
             <PageWrapper>
                 <ReduxProvider>
                     <Timeline />
                 </ReduxProvider>
             </PageWrapper>
         );
-        expect(component).toMatchSnapshot();
+        expect(container).toMatchSnapshot();
     });
 
     it('matches snapshot when plant is archived', () => {
@@ -35,7 +35,7 @@ describe('Timeline', () => {
         });
 
         // Render Timeline, confirm matches snapshot
-        const component = render(
+        const { container } = render(
             <PageWrapper>
                 <ReduxProvider>
                     <Timeline
@@ -45,6 +45,6 @@ describe('Timeline', () => {
                 </ReduxProvider>
             </PageWrapper>
         );
-        expect(component).toMatchSnapshot();
+        expect(container).toMatchSnapshot();
     });
 });
