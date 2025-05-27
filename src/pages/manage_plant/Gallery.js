@@ -29,10 +29,11 @@ import {
 } from '@heroicons/react/24/solid';
 import { DateTime } from 'luxon';
 
-// Takes reference to element, returns true if within current viewport
+// Takes reference to element, returns true if within current viewport and not
+// behind navbar/timeline sticky header (64 + 72 = 136px)
 const elementIsVisible = (element) => {
     const rect = element.getBoundingClientRect();
-    return rect.top >= 0 && rect.bottom <= window.innerHeight;
+    return rect.top >= 136 && rect.bottom <= window.innerHeight;
 };
 
 const Gallery = () => {

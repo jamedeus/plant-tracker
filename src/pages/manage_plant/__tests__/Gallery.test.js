@@ -165,7 +165,7 @@ describe('Gallery', () => {
         // Mock getBoundingClientRect to simulate timeline photo thumbnail
         // already inside viewport (should not scroll page)
         jest.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue(
-            { top: 100, bottom: 150 }
+            { top: 200, bottom: 350 }
         );
 
         // Open gallery, confirm scrollIntoView has not been called yet
