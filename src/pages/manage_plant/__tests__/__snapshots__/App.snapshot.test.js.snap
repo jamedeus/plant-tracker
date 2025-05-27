@@ -1598,7 +1598,7 @@ exports[`App matches snapshot 1`] = `
           </button>
         </form>
         <h1
-          class="font-bold text-lg md:text-xl mb-4"
+          class="font-bold text-lg leading-8 md:text-xl mb-3"
         >
           Change QR Code
         </h1>
@@ -2040,7 +2040,7 @@ exports[`App matches snapshot 1`] = `
         </button>
       </form>
       <h1
-        class="font-bold text-lg md:text-xl mb-4"
+        class="font-bold text-lg leading-8 md:text-xl mb-3"
       >
         Add Note
       </h1>
@@ -2082,7 +2082,7 @@ exports[`App matches snapshot 1`] = `
         </button>
       </form>
       <h1
-        class="font-bold text-lg md:text-xl mb-4"
+        class="font-bold text-lg leading-8 md:text-xl mb-3"
       >
         Add plant to group
       </h1>
@@ -2124,7 +2124,7 @@ exports[`App matches snapshot 1`] = `
         </button>
       </form>
       <h1
-        class="font-bold text-lg md:text-xl mb-4"
+        class="font-bold text-lg leading-8 md:text-xl mb-3"
       >
         Upload Photos
       </h1>
@@ -2166,7 +2166,7 @@ exports[`App matches snapshot 1`] = `
         </button>
       </form>
       <h1
-        class="font-bold text-lg md:text-xl mb-4"
+        class="font-bold text-lg leading-8 md:text-xl mb-3"
       >
         Repot plant
       </h1>
@@ -2208,7 +2208,7 @@ exports[`App matches snapshot 1`] = `
         </button>
       </form>
       <h1
-        class="font-bold text-lg md:text-xl mb-4"
+        class="font-bold text-lg leading-8 md:text-xl mb-3"
       >
         Edit Details
       </h1>
@@ -2250,7 +2250,7 @@ exports[`App matches snapshot 1`] = `
         </button>
       </form>
       <h1
-        class="font-bold text-lg md:text-xl mb-4"
+        class="font-bold text-lg leading-8 md:text-xl mb-3"
       >
         Select Default Photo
       </h1>
@@ -2329,7 +2329,7 @@ exports[`App matches snapshot 1`] = `
         </button>
       </form>
       <h1
-        class="font-bold text-lg md:text-xl mb-4"
+        class="font-bold text-lg leading-8 md:text-xl mb-3"
       >
         Event History
       </h1>
@@ -3811,7 +3811,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
           </button>
         </form>
         <h1
-          class="font-bold text-lg md:text-xl mb-4"
+          class="font-bold text-lg leading-8 md:text-xl mb-3"
         >
           Change QR Code
         </h1>
@@ -4253,7 +4253,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
         </button>
       </form>
       <h1
-        class="font-bold text-lg md:text-xl mb-4"
+        class="font-bold text-lg leading-8 md:text-xl mb-3"
       >
         Add Note
       </h1>
@@ -4295,7 +4295,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
         </button>
       </form>
       <h1
-        class="font-bold text-lg md:text-xl mb-4"
+        class="font-bold text-lg leading-8 md:text-xl mb-3"
       >
         Add plant to group
       </h1>
@@ -4337,7 +4337,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
         </button>
       </form>
       <h1
-        class="font-bold text-lg md:text-xl mb-4"
+        class="font-bold text-lg leading-8 md:text-xl mb-3"
       >
         Upload Photos
       </h1>
@@ -4379,7 +4379,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
         </button>
       </form>
       <h1
-        class="font-bold text-lg md:text-xl mb-4"
+        class="font-bold text-lg leading-8 md:text-xl mb-3"
       >
         Repot plant
       </h1>
@@ -4421,7 +4421,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
         </button>
       </form>
       <h1
-        class="font-bold text-lg md:text-xl mb-4"
+        class="font-bold text-lg leading-8 md:text-xl mb-3"
       >
         Edit Details
       </h1>
@@ -4463,7 +4463,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
         </button>
       </form>
       <h1
-        class="font-bold text-lg md:text-xl mb-4"
+        class="font-bold text-lg leading-8 md:text-xl mb-3"
       >
         Select Default Photo
       </h1>
@@ -4542,7 +4542,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
         </button>
       </form>
       <h1
-        class="font-bold text-lg md:text-xl mb-4"
+        class="font-bold text-lg leading-8 md:text-xl mb-3"
       >
         Event History
       </h1>

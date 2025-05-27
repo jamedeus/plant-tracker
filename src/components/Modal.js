@@ -48,7 +48,7 @@ const Modal = forwardRef(function Modal({ title, children, className='', onClose
                 </form>
 
                 {title && (
-                    <h1 className="font-bold text-lg md:text-xl mb-4">
+                    <h1 className="font-bold text-lg leading-8 md:text-xl mb-3">
                         {title}
                     </h1>
                 )}
