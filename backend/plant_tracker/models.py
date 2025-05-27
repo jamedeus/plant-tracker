@@ -465,7 +465,7 @@ class Photo(models.Model):
             'key': self.pk
         }
 
-    def create_thumbnail(self):
+    def _create_thumbnail(self):
         '''Generate a reduced-resolution image and write to the thumbnail field.'''
 
         # Open image, rotate and remove exif rotation param if needed
@@ -496,7 +496,7 @@ class Photo(models.Model):
     def save(self, *args, **kwargs):
         # Create thumbnail if it doesn't exist
         if not self.thumbnail:
-            self.create_thumbnail()
+            self._create_thumbnail()
 
         # Copy exif timestamp to timestamp field when saved for the first time
         if not self.pk:
