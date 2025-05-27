@@ -36,6 +36,7 @@ from .view_decorators import (
 from .unit_test_helpers import (
     JSONClient,
     create_mock_photo,
+    create_mock_rgba_png,
     schedule_cached_state_update_patch
 )
 
@@ -355,6 +356,32 @@ class ViewRegressionTests(TestCase):
             photos[1]["timestamp"],
             r'\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}(\.\d+)?\+\d{2}:\d{2}'
         )
+
+    def test_add_plant_photos_returns_500_when_image_is_rgba(self):
+        '''Issue: if the user uploaded an RGBA photo (screenshots) an uncaught
+        exception would occur when PIL tried to save the photo as jpg while
+        creating the thumbnail, causing add_plant_photos to return 500. This
+        prevented all photos in the payload from being saved, not just the RGBA
+        photo. The Photo model now checks image mode and converts RGBA to RGB.
+        '''
+
+        test_plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        self.assertEqual(len(test_plant.photo_set.all()), 0)
+
+        # Create photo with RGBA color mode, post to add_plant_photos endpoint
+        data = {
+            'plant_id': str(test_plant.uuid),
+            'photo_0': create_mock_rgba_png()
+        }
+        response = self.client.post(
+            '/add_plant_photos',
+            data=data,
+            content_type=MULTIPART_CONTENT
+        )
+
+        # Confirm upload was successful
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(len(test_plant.photo_set.all()), 1)
 
     def test_manage_endpoint_crashes_if_plant_expecting_new_qr_is_deleted(self):
         '''Issue: after /manage was split in f6e229fd requests for new UUIDs

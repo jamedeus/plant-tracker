@@ -50,7 +50,7 @@ def create_mock_photo(creation_time=None, name='mock_photo.jpg', timezone=None, 
 
     mock_photo.seek(0)
 
-    uploaded_photo = InMemoryUploadedFile(
+    return InMemoryUploadedFile(
         file=mock_photo,
         field_name='photo_1',
         name=name,
@@ -59,7 +59,23 @@ def create_mock_photo(creation_time=None, name='mock_photo.jpg', timezone=None, 
         charset=None
     )
 
-    return uploaded_photo
+
+def create_mock_rgba_png(name='mock_rgba.png'):
+    '''Creates a mock PNG in memory with RGBA color mode (mock screenshot).'''
+
+    mock_photo = BytesIO()
+    image = Image.new('RGBA', (1, 1), color='white')
+    image.save(mock_photo, format='PNG')
+    mock_photo.seek(0)
+
+    return InMemoryUploadedFile(
+        file=mock_photo,
+        field_name='photo_1',
+        name=name,
+        content_type='image/png',
+        size=mock_photo.getbuffer().nbytes,
+        charset=None
+    )
 
 
 def clear_cache(*args, **kwargs):

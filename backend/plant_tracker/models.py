@@ -473,6 +473,10 @@ class Photo(models.Model):
             Image.open(self.photo)
         )
 
+        # Make sure photo is JPEG-compatible (no transparency)
+        if image.mode in ("RGBA", "P"):
+            image = image.convert("RGB")
+
         # Resize to a maximum resolution of 800x800, write to buffer
         image.thumbnail((800, 800))
         image_buffer = BytesIO()
