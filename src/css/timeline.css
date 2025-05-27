@@ -47,7 +47,7 @@
     /* Most mobile devices: 2x2 grid layout */
     @apply min-[372px]:grid min-[372px]:grid-cols-min-max;
     /* Desktop, tablets: Flex wrap (starts when room for 3 events per row) */
-    @apply min-[457px]:flex min-[457px]:flex-row min-[457px]:flex-wrap;
+    @apply min-[461px]:flex min-[461px]:flex-row min-[461px]:flex-wrap;
 }
 
 /* Timeline content classes */
@@ -68,7 +68,7 @@
     /* Max photo width before next breakpoint: 120px */
     @apply grid grid-cols-2 gap-4 m-2;
     /* 3 columns once wide enough for 3 event-marker per row */
-    @apply min-[457px]:grid-cols-3;
+    @apply min-[461px]:grid-cols-3;
     /* Increase to 4 columns when photos reach 120px again */
     @apply min-[592px]:grid-cols-4;
     /* Only show 5 columns on desktop */
