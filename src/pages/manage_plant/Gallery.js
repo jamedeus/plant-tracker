@@ -165,7 +165,7 @@ const Gallery = () => {
             }}
             labels={{
                 Next: "Next photo",
-                Prev: "Previous photo",
+                Previous: "Previous photo",
                 Close: "Close photo gallery",
                 Play: "Play photo slideshow",
                 Pause: "Pause photo slideshow",

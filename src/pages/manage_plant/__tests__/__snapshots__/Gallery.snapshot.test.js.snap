@@ -415,9 +415,9 @@ exports[`Gallery matches snapshot for desktop layout 1`] = `
                 </button>
               </div>
               <button
-                aria-label="Previous"
+                aria-label="Previous photo"
                 class="yarl__button yarl__navigation_prev"
-                title="Previous"
+                title="Previous photo"
                 type="button"
               >
                 <svg
@@ -1017,9 +1017,9 @@ exports[`Gallery matches snapshot for desktop layout 2`] = `
                 </button>
               </div>
               <button
-                aria-label="Previous"
+                aria-label="Previous photo"
                 class="yarl__button yarl__navigation_prev"
-                title="Previous"
+                title="Previous photo"
                 type="button"
               >
                 <svg

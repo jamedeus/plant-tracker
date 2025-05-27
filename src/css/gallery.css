@@ -90,12 +90,12 @@ button.yarl__thumbnails_thumbnail {
 }
 
 /* Next/prev buttons fill height (click anywhere along edge of screen) */
-.yarl__button[title='Next'],
-.yarl__button[title='Prev'] {
+.yarl__button[title='Next photo'],
+.yarl__button[title='Previous photo'] {
     @apply h-full;
 }
 
 /* Prevent next button covering close button */
-.yarl__button[title='Close'] {
+.yarl__button[title='Close photo gallery'] {
     @apply z-100;
 }
