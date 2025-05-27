@@ -43,7 +43,7 @@ const Title = memo(function Title() {
                 {/* Spacer with same width as .navbar-end button */}
             </div>
             <div className="mx-auto">
-                <div className="dropdown dropdown-center dropdown-hover">
+                <div className="dropdown dropdown-center">
                     <div
                         tabIndex={0}
                         role="button"
@@ -137,17 +137,6 @@ const QuickNavigation = () => {
 // Renders dropdown item with year which expands to show sub-menu of month
 // links that scroll to the correct timeline section when clicked
 const QuickNavigationYear = ({ year, months }) => {
-    // Create ref used to open sub-menu on hover
-    const detailsRef = useRef(null);
-
-    const open = () => {
-        detailsRef.current.open = true;
-    };
-
-    const close = () => {
-        detailsRef.current.open = false;
-    };
-
     // Takes year-month string (ie 2024-03), scrolls to timeline section
     const jumpTo = (yearMonth) => {
         const timelineRow = document.querySelector(
@@ -168,13 +157,7 @@ const QuickNavigationYear = ({ year, months }) => {
 
     return (
         <li>
-            <details
-                ref={detailsRef}
-                onMouseOver={open}
-                onFocus={open}
-                onMouseOut={close}
-                className="outline-hidden"
-            >
+            <details>
                 <summary>{year}</summary>
                 <ul>
                     {months.map(month => (

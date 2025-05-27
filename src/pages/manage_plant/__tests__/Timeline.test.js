@@ -29,24 +29,6 @@ describe('Timeline', () => {
         );
     });
 
-    it('expands quick navigation subsections when user hovers', async () => {
-        // Get reference to History title and first subsection in dropdown menu
-        const history = app.getByText(/History/);
-        const yearSection = history.nextSibling.querySelector('details');
-
-        // Confirm year subsection is closed
-        expect(yearSection).toHaveProperty('open', false);
-
-        // Click history and hover over subsection, confirm subsection opens
-        await user.click(history);
-        await user.hover(yearSection);
-        expect(yearSection).toHaveProperty('open', true);
-
-        // Unhover, confirm subsection closes
-        await user.unhover(yearSection);
-        expect(yearSection).toHaveProperty('open', false);
-    });
-
     it('scrolls to timeline when quick navigation is clicked', async () => {
         // Get reference to History title (contains quick nav dropdown)
         const history = app.getByText(/History/).closest('.dropdown');

@@ -1105,7 +1105,7 @@ exports[`App matches snapshot 1`] = `
                 class="mx-auto"
               >
                 <div
-                  class="dropdown dropdown-center dropdown-hover"
+                  class="dropdown dropdown-center"
                 >
                   <div
                     class="btn btn-ghost text-xl font-bold m-1"
@@ -1119,9 +1119,7 @@ exports[`App matches snapshot 1`] = `
                     tabindex="0"
                   >
                     <li>
-                      <details
-                        class="outline-hidden"
-                      >
+                      <details>
                         <summary>
                           2024
                         </summary>
@@ -3461,7 +3459,7 @@ exports[`App matches snapshot 1`] = `
               class="mx-auto"
             >
               <div
-                class="dropdown dropdown-center dropdown-hover"
+                class="dropdown dropdown-center"
               >
                 <div
                   class="btn btn-ghost text-xl font-bold m-1"
@@ -3475,9 +3473,7 @@ exports[`App matches snapshot 1`] = `
                   tabindex="0"
                 >
                   <li>
-                    <details
-                      class="outline-hidden"
-                    >
+                    <details>
                       <summary>
                         2024
                       </summary>
@@ -5843,7 +5839,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 class="mx-auto"
               >
                 <div
-                  class="dropdown dropdown-center dropdown-hover"
+                  class="dropdown dropdown-center"
                 >
                   <div
                     class="btn btn-ghost text-xl font-bold m-1"
@@ -5857,9 +5853,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                     tabindex="0"
                   >
                     <li>
-                      <details
-                        class="outline-hidden"
-                      >
+                      <details>
                         <summary>
                           2024
                         </summary>
@@ -8065,7 +8059,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               class="mx-auto"
             >
               <div
-                class="dropdown dropdown-center dropdown-hover"
+                class="dropdown dropdown-center"
               >
                 <div
                   class="btn btn-ghost text-xl font-bold m-1"
@@ -8079,9 +8073,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   tabindex="0"
                 >
                   <li>
-                    <details
-                      class="outline-hidden"
-                    >
+                    <details>
                       <summary>
                         2024
                       </summary>

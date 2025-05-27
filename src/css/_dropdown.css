@@ -25,12 +25,12 @@
 
     /* Dropdown button focused OR hover variant hovered: show contents */
     /* (fade in + scale up animation) */
-    &:focus .dropdown-content,
-    &:focus-within .dropdown-content,
-    &.dropdown-hover:hover .dropdown-content {
-        transform: scale(1);
-        visibility: visible;
-        opacity: 1;
+    &:focus, &:focus-within, &.dropdown-hover:hover {
+        .dropdown-content {
+            transform: scale(1);
+            visibility: visible;
+            opacity: 1;
+        }
     }
 }
 

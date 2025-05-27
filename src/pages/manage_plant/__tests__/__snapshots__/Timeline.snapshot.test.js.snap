@@ -58,7 +58,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="mx-auto"
           >
             <div
-              class="dropdown dropdown-center dropdown-hover"
+              class="dropdown dropdown-center"
             >
               <div
                 class="btn btn-ghost text-xl font-bold m-1"
@@ -72,9 +72,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 tabindex="0"
               >
                 <li>
-                  <details
-                    class="outline-hidden"
-                  >
+                  <details>
                     <summary>
                       2024
                     </summary>
@@ -103,9 +101,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                   </details>
                 </li>
                 <li>
-                  <details
-                    class="outline-hidden"
-                  >
+                  <details>
                     <summary>
                       2023
                     </summary>
@@ -174,9 +170,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                   </details>
                 </li>
                 <li>
-                  <details
-                    class="outline-hidden"
-                  >
+                  <details>
                     <summary>
                       2008
                     </summary>
@@ -2927,7 +2921,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="mx-auto"
         >
           <div
-            class="dropdown dropdown-center dropdown-hover"
+            class="dropdown dropdown-center"
           >
             <div
               class="btn btn-ghost text-xl font-bold m-1"
@@ -2941,9 +2935,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
               tabindex="0"
             >
               <li>
-                <details
-                  class="outline-hidden"
-                >
+                <details>
                   <summary>
                     2024
                   </summary>
@@ -2972,9 +2964,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 </details>
               </li>
               <li>
-                <details
-                  class="outline-hidden"
-                >
+                <details>
                   <summary>
                     2023
                   </summary>
@@ -3043,9 +3033,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
                 </details>
               </li>
               <li>
-                <details
-                  class="outline-hidden"
-                >
+                <details>
                   <summary>
                     2008
                   </summary>
@@ -5893,7 +5881,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="mx-auto"
           >
             <div
-              class="dropdown dropdown-center dropdown-hover"
+              class="dropdown dropdown-center"
             >
               <div
                 class="btn btn-ghost text-xl font-bold m-1"
@@ -5907,9 +5895,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                 tabindex="0"
               >
                 <li>
-                  <details
-                    class="outline-hidden"
-                  >
+                  <details>
                     <summary>
                       2024
                     </summary>
@@ -5938,9 +5924,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                   </details>
                 </li>
                 <li>
-                  <details
-                    class="outline-hidden"
-                  >
+                  <details>
                     <summary>
                       2023
                     </summary>
@@ -6009,9 +5993,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                   </details>
                 </li>
                 <li>
-                  <details
-                    class="outline-hidden"
-                  >
+                  <details>
                     <summary>
                       2008
                     </summary>
@@ -8825,7 +8807,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="mx-auto"
         >
           <div
-            class="dropdown dropdown-center dropdown-hover"
+            class="dropdown dropdown-center"
           >
             <div
               class="btn btn-ghost text-xl font-bold m-1"
@@ -8839,9 +8821,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
               tabindex="0"
             >
               <li>
-                <details
-                  class="outline-hidden"
-                >
+                <details>
                   <summary>
                     2024
                   </summary>
@@ -8870,9 +8850,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                 </details>
               </li>
               <li>
-                <details
-                  class="outline-hidden"
-                >
+                <details>
                   <summary>
                     2023
                   </summary>
@@ -8941,9 +8919,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
                 </details>
               </li>
               <li>
-                <details
-                  class="outline-hidden"
-                >
+                <details>
                   <summary>
                     2008
                   </summary>
