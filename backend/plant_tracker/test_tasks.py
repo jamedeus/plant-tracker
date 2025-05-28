@@ -765,6 +765,7 @@ class HookTests(TestCase):
                     "timestamp": "2024-03-21T10:52:03+00:00",
                     "image": f"/media/{photo.photo.name}",
                     "thumbnail": f"/media/{photo.thumbnail.name}",
+                    "preview": f"/media/{photo.preview.name}",
                     "key": photo.pk
                 }
             ]

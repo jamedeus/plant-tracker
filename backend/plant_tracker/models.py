@@ -430,8 +430,13 @@ def clear_cached_plant_lists(instance, **kwargs):
 
 class Photo(models.Model):
     '''Stores a user-uploaded image of a specific plant.'''
+
+    # Original full-resolution photo
     photo = models.ImageField(upload_to="images")
+    # 200x200 thumbnail (shown on PlantCard, timeline thumbnails, etc)
     thumbnail = models.ImageField(upload_to="thumbnails", null=True, blank=True)
+    # 800x800 preview (shown in photo modals)
+    preview = models.ImageField(upload_to="previews", null=True, blank=True)
 
     # Store timestamp when created (not editable)
     created = models.DateTimeField(auto_now_add=True)
@@ -445,7 +450,7 @@ class Photo(models.Model):
     def __str__(self):
         name = self.plant.get_display_name()
         timestamp = self.timestamp.strftime(TIME_FORMAT)
-        filename = self.photo.file.file.name.split("/")[-1]
+        filename = self.photo.name.split("/", 1)[-1]
         return f"{name} - {timestamp} - {filename}"
 
     def get_photo_url(self):
@@ -453,50 +458,64 @@ class Photo(models.Model):
         return f'{settings.MEDIA_URL}{self.photo.name}'
 
     def get_thumbnail_url(self):
-        '''Returns public URL of the reduced-resolution thumbnail.'''
+        '''Returns public URL of the reduced-resolution thumbnail (200x200).'''
         return f'{settings.MEDIA_URL}{self.thumbnail.name}'
 
+    def get_preview_url(self):
+        '''Returns public URL of the reduced-resolution preview (800x800).'''
+        return f'{settings.MEDIA_URL}{self.preview.name}'
+
     def get_details(self):
-        '''Returns dict with photo and thumbnail urls, timestamp, and primary key.'''
+        '''Returns dict with timestamp, primary key, and URLs of all resolutions.'''
         return {
             'timestamp': self.timestamp.isoformat(),
             'image': self.get_photo_url(),
             'thumbnail': self.get_thumbnail_url(),
+            'preview': self.get_preview_url(),
             'key': self.pk
         }
 
-    def _create_thumbnail(self):
-        '''Generate a reduced-resolution image and write to the thumbnail field.'''
+    def _create_thumbnails(self):
+        '''Generates reduced-resolution images (up to 200x200 and 800x800) and
+        writes to the thumbnail and preview fields respectively.
+        '''
 
         # Open image, rotate and remove exif rotation param if needed
-        image = ImageOps.exif_transpose(
+        original = ImageOps.exif_transpose(
             Image.open(self.photo)
         )
 
         # Make sure photo is JPEG-compatible (no transparency)
-        if image.mode in ("RGBA", "P"):
-            image = image.convert("RGB")
+        if original.mode in ("RGBA", "P"):
+            original = original.convert("RGB")
 
-        # Resize to a maximum resolution of 800x800, write to buffer
-        image.thumbnail((800, 800))
-        image_buffer = BytesIO()
-        image.save(image_buffer, format='JPEG', quality=80)
+        def shrink(size, suffix, quality):
+            # Resize to requested resolution (maximum), write to buffer
+            image = original.copy()
+            image.thumbnail(size)
+            image_buffer = BytesIO()
+            image.save(image_buffer, format='JPEG', quality=quality, optimize=True)
+            image_buffer.seek(0)
 
-        # Save to thumbnail field, write to disk with _thumb suffix
-        image_name = self.photo.name.rsplit('.', 1)[0]
-        self.thumbnail = InMemoryUploadedFile(
-            image_buffer,
-            'ImageField',
-            f"{image_name}_thumb.jpg",
-            'image/jpeg',
-            image_buffer.tell(),
-            None
-        )
+            # Add requested suffix to name, return
+            image_name = self.photo.name.rsplit('.', 1)[0]
+            return InMemoryUploadedFile(
+                image_buffer,
+                field_name="ImageField",
+                name=f"{image_name}_{suffix}.jpg",
+                content_type="image/jpeg",
+                size=image_buffer.tell(),
+                charset=None,
+            )
+
+        # Save thumbnail and preview resolutions to disk + database
+        self.thumbnail = shrink((200, 200), 'thumb', 65)
+        self.preview = shrink((800, 800), 'preview', 80)
 
     def save(self, *args, **kwargs):
         # Create thumbnail if it doesn't exist
-        if not self.thumbnail:
-            self._create_thumbnail()
+        if not self.thumbnail or not self.preview:
+            self._create_thumbnails()
 
         # Copy exif timestamp to timestamp field when saved for the first time
         if not self.pk:

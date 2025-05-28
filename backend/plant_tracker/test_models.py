@@ -52,10 +52,15 @@ class PlantModelTests(TestCase):
     def tearDown(self):
         # Delete mock photos between tests to prevent duplicate names (django
         # appends random string to keep unique, which makes testing difficult)
-        for i in os.listdir(os.path.join(settings.TEST_DIR, 'data', 'images', 'images')):
-            os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'images', i))
-        for i in os.listdir(os.path.join(settings.TEST_DIR, 'data', 'images', 'thumbnails')):
-            os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'thumbnails', i))
+        try:
+            for i in os.listdir(os.path.join(settings.TEST_DIR, 'data', 'images', 'images')):
+                os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'images', i))
+            for i in os.listdir(os.path.join(settings.TEST_DIR, 'data', 'images', 'thumbnails')):
+                os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'thumbnails', i))
+            for i in os.listdir(os.path.join(settings.TEST_DIR, 'data', 'images', 'previews')):
+                os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'previews', i))
+        except FileNotFoundError:
+            pass
 
     def test_str_method(self):
         # Should return "Unnamed plant <num> (UUID)" when no params are set
@@ -214,18 +219,21 @@ class PlantModelTests(TestCase):
                     'timestamp': '2024-03-22T10:52:03+00:00',
                     'image': '/media/images/IMG2.jpg',
                     'thumbnail': '/media/thumbnails/IMG2_thumb.jpg',
+                    'preview': '/media/previews/IMG2_preview.jpg',
                     'key': 2
                 },
                 {
                     'timestamp': '2024-02-21T10:52:03+00:00',
                     'image': '/media/images/IMG1.jpg',
                     'thumbnail': '/media/thumbnails/IMG1_thumb.jpg',
+                    'preview': '/media/previews/IMG1_preview.jpg',
                     'key': 1
                 },
                 {
                     'timestamp': '2024-01-28T10:52:03+00:00',
                     'image': '/media/images/IMG3.jpg',
                     'thumbnail': '/media/thumbnails/IMG3_thumb.jpg',
+                    'preview': '/media/previews/IMG3_preview.jpg',
                     'key': 3
                 },
             ]
@@ -282,6 +290,7 @@ class PlantModelTests(TestCase):
                 "timestamp": photo2.timestamp.isoformat(),
                 "image": photo2.get_photo_url(),
                 "thumbnail": photo2.get_thumbnail_url(),
+                "preview": photo2.get_preview_url(),
                 "key": photo2.pk
             }
         )
@@ -297,6 +306,7 @@ class PlantModelTests(TestCase):
                 "timestamp": photo1.timestamp.isoformat(),
                 "image": photo1.get_photo_url(),
                 "thumbnail": photo1.get_thumbnail_url(),
+                "preview": photo1.get_preview_url(),
                 "key": photo1.pk
             }
         )
@@ -424,6 +434,8 @@ class PhotoModelTests(TestCase):
             os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'images', i))
         for i in os.listdir(os.path.join(settings.TEST_DIR, 'data', 'images', 'thumbnails')):
             os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'thumbnails', i))
+        for i in os.listdir(os.path.join(settings.TEST_DIR, 'data', 'images', 'previews')):
+            os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'previews', i))
 
     def test_str_method(self):
         # Should return "<plant name> - <photo creation timestamp> - <filename>"

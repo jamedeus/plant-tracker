@@ -86,6 +86,7 @@ export const timelineSlice = createSlice({
         //   timestamp   (full ISO timestamp in UTC)
         //   image       (full resolution URL)
         //   thumbnail   (thumbnail image URL)
+        //   preview     (preview image URL)
         //   key         (backend database key used to delete photo)
         photos: [],
         // Keys are year strings (YYYY), values are array of month strings (MM)
@@ -97,6 +98,7 @@ export const timelineSlice = createSlice({
             timestamp: null,
             image: null,
             thumbnail: null,
+            preview: null,
             key: null
         },
         // Fullscreen lightbox gallery open state

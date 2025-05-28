@@ -38,6 +38,7 @@ describe('Timeline regressions', () => {
                 "timestamp": "2023-12-21T11:57:26+00:00",
                 "image": "/media/images/IMG_5866.jpeg",
                 "thumbnail": "/media/thumbnails/IMG_5866_thumb.jpg",
+                "preview": "/media/previews/IMG_5866_preview.jpg",
                 "key": 46
             },
         ]);

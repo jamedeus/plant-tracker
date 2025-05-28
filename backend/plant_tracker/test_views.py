@@ -820,12 +820,14 @@ class ManagePageTests(TestCase):
                     'timestamp': '2024-03-22T10:52:03+00:00',
                     'image': '/media/images/photo2.jpg',
                     'thumbnail': '/media/thumbnails/photo2_thumb.jpg',
+                    'preview': '/media/previews/photo2_preview.jpg',
                     'key': 2
                 },
                 {
                     'timestamp': '2024-03-21T10:52:03+00:00',
                     'image': '/media/images/photo1.jpg',
                     'thumbnail': '/media/thumbnails/photo1_thumb.jpg',
+                    'preview': '/media/previews/photo1_preview.jpg',
                     'key': 1
                 },
             ]
@@ -2149,6 +2151,8 @@ class PlantPhotoEndpointTests(TestCase):
             os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'images', i))
         for i in os.listdir(os.path.join(settings.TEST_DIR, 'data', 'images', 'thumbnails')):
             os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'thumbnails', i))
+        for i in os.listdir(os.path.join(settings.TEST_DIR, 'data', 'images', 'previews')):
+            os.remove(os.path.join(settings.TEST_DIR, 'data', 'images', 'previews', i))
 
     def test_add_plant_photos(self):
         # Confirm no photos exist in database or plant reverse relation
@@ -2180,6 +2184,7 @@ class PlantPhotoEndpointTests(TestCase):
                     "timestamp": "2024-03-22T10:52:03+00:00",
                     "image": "/media/images/mock_photo.jpg",
                     "thumbnail": "/media/thumbnails/mock_photo_thumb.jpg",
+                    "preview": "/media/previews/mock_photo_preview.jpg",
                     "key": 1
                 }
             ]
