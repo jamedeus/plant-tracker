@@ -44,15 +44,15 @@ const PhotoSlide = memo(function PhotoSlide({
 }) {
     return (
         <div id={`photo${photo.key}`} className="carousel-item relative w-full mx-1">
-            <div className="flex flex-col mx-auto">
+            <div className="flex flex-col w-full mx-auto">
                 <h1 className="mt-auto mb-1 md:text-lg">
                     {timestampToReadable(photo.timestamp)}
                 </h1>
                 <img
                     loading="lazy"
                     draggable={false}
-                    src={photo.thumbnail}
-                    className="rounded-xl overflow-hidden mx-auto mb-auto"
+                    src={photo.preview}
+                    className="rounded-xl overflow-hidden object-contain mb-auto"
                 />
                 <div className={clsx(
                     'absolute flex justify-between transform -translate-y-1/2',
@@ -88,6 +88,7 @@ PhotoSlide.propTypes = {
         key: PropTypes.number.isRequired,
         timestamp: PropTypes.string.isRequired,
         thumbnail: PropTypes.string.isRequired,
+        preview: PropTypes.string.isRequired,
         image: PropTypes.string.isRequired
     }).isRequired,
     nextPhotoLink: PropTypes.string.isRequired,
@@ -124,6 +125,7 @@ ConfirmDeleteRow.propTypes = {
         key: PropTypes.number.isRequired,
         timestamp: PropTypes.string.isRequired,
         thumbnail: PropTypes.string.isRequired,
+        preview: PropTypes.string.isRequired,
         image: PropTypes.string.isRequired
     }).isRequired,
     unselectPhoto: PropTypes.func.isRequired

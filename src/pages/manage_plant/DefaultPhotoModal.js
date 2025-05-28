@@ -41,8 +41,8 @@ const PhotoSlide = memo(function PhotoSlide({
             <img
                 loading="lazy"
                 draggable={false}
-                src={photo.thumbnail}
-                className="w-full rounded-xl object-scale-down my-auto"
+                src={photo.preview}
+                className="w-full rounded-xl object-contain my-auto"
             />
             <div className={clsx(
                 'absolute flex justify-between transform -translate-y-1/2',
@@ -72,6 +72,7 @@ PhotoSlide.propTypes = {
         key: PropTypes.number.isRequired,
         timestamp: PropTypes.string.isRequired,
         thumbnail: PropTypes.string.isRequired,
+        preview: PropTypes.string.isRequired,
         image: PropTypes.string.isRequired
     }).isRequired,
     nextPhotoLink: PropTypes.string.isRequired,

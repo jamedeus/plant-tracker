@@ -436,7 +436,6 @@ const TimelineDay = memo(function TimelineDay({ dateKey, monthDivider }) {
                         <PhotoThumbnail
                             key={photo.key}
                             thumbnailUrl={photo.thumbnail}
-                            photoUrl={photo.image}
                             timestamp={photo.timestamp}
                             index={photos.indexOf(photo)}
                         />
