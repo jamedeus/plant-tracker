@@ -19,7 +19,7 @@ class JSONClient(Client):
         return super().post(path, data, content_type, **extra)
 
 
-def create_mock_photo(creation_time=None, name='mock_photo.jpg', timezone=None, blank_exif=False):
+def create_mock_photo(creation_time=None, name='mock_photo.jpg', timezone=None, blank_exif=False, size=(1, 1)):
     '''Creates a mock JPG in memory with exif parameters set by optional args.
 
     The creation_time and timezone args set the DateTimeOriginal and
@@ -28,9 +28,11 @@ def create_mock_photo(creation_time=None, name='mock_photo.jpg', timezone=None, 
     image with exif data containing irrelevant parameters will be created.
 
     The name arg sets the filename written to disk and used in URLs.
+
+    The size arg sets the dimensions (width, height).
     '''
     mock_photo = BytesIO()
-    image = Image.new('RGB', (1, 1), color='white')
+    image = Image.new('RGB', size, color='white')
 
     # Add creation time and/or timezone if args passed
     if creation_time or timezone:

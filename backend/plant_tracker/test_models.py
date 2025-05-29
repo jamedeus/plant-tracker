@@ -502,6 +502,28 @@ class PhotoModelTests(TestCase):
             timezone.now().strftime('%Y:%m:%d %H:%M +z')
         )
 
+    def test_crops_thumbnails_to_square(self):
+        # Create mock landscape photo, confirm thumbnail is square
+        landscape = Photo.objects.create(
+            plant=self.plant,
+            photo=create_mock_photo(size=(160, 90))
+        )
+        self.assertEqual(landscape.thumbnail.height, landscape.thumbnail.width)
+
+        # Create mock portrait photo, confirm thumbnail is square
+        portrait = Photo.objects.create(
+            plant=self.plant,
+            photo=create_mock_photo(size=(90, 160))
+        )
+        self.assertEqual(portrait.thumbnail.height, portrait.thumbnail.width)
+
+        # Create mock suqare photo, confirm thumbnail is square
+        suqare = Photo.objects.create(
+            plant=self.plant,
+            photo=create_mock_photo(size=(10, 10))
+        )
+        self.assertEqual(suqare.thumbnail.height, suqare.thumbnail.width)
+
 
 class EventModelTests(TestCase):
     def setUp(self):

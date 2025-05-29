@@ -475,6 +475,56 @@ class Photo(models.Model):
             'key': self.pk
         }
 
+    def _crop_to_square(self, image):
+        '''Takes PIL.Image, crops to square aspect ratio and returns.'''
+        width, height = image.size
+
+        # Already square
+        if height == width:
+            return image
+
+        # Portrait
+        if height > width:
+            top = (height - width) / 2
+            bottom = height - top
+            return image.crop((0, top, width, bottom))
+
+        # Landscape
+        left = (width - height) / 2
+        right = width - left
+        return image.crop((left, 0, right, height))
+
+    def _convert_to_webp(self, image, size, quality, suffix):
+        '''Takes PIL.Image, size (2-tuple), quality (1-100), and filename suffix.
+        Returns as webp with requested dimensions and quality.
+        '''
+
+        # Get ICC profile (color accuracy)
+        icc_profile = image.info.get('icc_profile')
+
+        # Resize, save to buffer
+        image.thumbnail(size)
+        image_buffer = BytesIO()
+        image.save(
+            image_buffer,
+            format='webp',
+            method=6,
+            quality=quality,
+            icc_profile=icc_profile
+        )
+        image_buffer.seek(0)
+
+        # Add requested suffix to name, return
+        image_name = self.photo.name.rsplit('.', 1)[0]
+        return InMemoryUploadedFile(
+            image_buffer,
+            field_name="ImageField",
+            name=f"{image_name}_{suffix}.webp",
+            content_type="image/webp",
+            size=image_buffer.tell(),
+            charset=None,
+        )
+
     def _create_thumbnails(self):
         '''Generates reduced-resolution images (up to 200x200 and 800x800) and
         writes to the thumbnail and preview fields respectively.
@@ -485,41 +535,15 @@ class Photo(models.Model):
             Image.open(self.photo)
         )
 
-        # Get ICC profile (color accuracy)
-        icc_profile = original.info.get('icc_profile')
-
         # Make sure photo is JPEG-compatible (no transparency)
         if original.mode in ("RGBA", "P"):
             original = original.convert("RGB")
 
-        def shrink(size, suffix, quality):
-            # Resize to requested resolution (maximum), write to buffer
-            image = original.copy()
-            image.thumbnail(size)
-            image_buffer = BytesIO()
-            image.save(
-                image_buffer,
-                format='webp',
-                method=6,
-                quality=quality,
-                icc_profile=icc_profile
-            )
-            image_buffer.seek(0)
-
-            # Add requested suffix to name, return
-            image_name = self.photo.name.rsplit('.', 1)[0]
-            return InMemoryUploadedFile(
-                image_buffer,
-                field_name="ImageField",
-                name=f"{image_name}_{suffix}.webp",
-                content_type="image/webp",
-                size=image_buffer.tell(),
-                charset=None,
-            )
-
+        thumbnail = self._crop_to_square(original.copy())
+        preview = original.copy()
         # Save thumbnail and preview resolutions to disk + database
-        self.thumbnail = shrink((200, 200), 'thumb', 65)
-        self.preview = shrink((800, 800), 'preview', 80)
+        self.thumbnail = self._convert_to_webp(thumbnail, (200, 200), 65, 'thumb')
+        self.preview = self._convert_to_webp(preview, (800, 800), 80, 'preview')
 
     def save(self, *args, **kwargs):
         # Create thumbnail if it doesn't exist
