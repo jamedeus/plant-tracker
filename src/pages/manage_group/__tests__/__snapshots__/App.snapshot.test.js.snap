@@ -496,7 +496,7 @@ exports[`App matches snapshot 1`] = `
                           class="size-full object-cover"
                           draggable="false"
                           loading="lazy"
-                          src="/media/thumbnails/photo_thumb.jpg"
+                          src="/media/thumbnails/photo_thumb.webp"
                         />
                       </figure>
                       <div

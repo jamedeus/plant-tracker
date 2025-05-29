@@ -14,7 +14,7 @@ describe('PlantCard with water event', () => {
                 description='Mother plant'
                 pot_size={12}
                 last_watered='2024-02-27T05:45:44+00:00'
-                thumbnail='/media/thumbnails/photo1_thumb.jpg'
+                thumbnail='/media/thumbnails/photo1_thumb.webp'
             />
         );
     });
@@ -67,7 +67,7 @@ describe('PlantCard with no water event', () => {
                 description='Mother plant'
                 pot_size={12}
                 last_watered={null}
-                thumbnail='/media/thumbnails/photo1_thumb.jpg'
+                thumbnail='/media/thumbnails/photo1_thumb.webp'
             />
         );
     });
@@ -93,7 +93,7 @@ describe('PlantCard last watered time display', () => {
                 description='Mother plant'
                 pot_size={12}
                 last_watered={timestamp}
-                thumbnail='/media/thumbnails/photo1_thumb.jpg'
+                thumbnail='/media/thumbnails/photo1_thumb.webp'
             />
         );
     };

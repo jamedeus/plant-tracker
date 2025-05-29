@@ -218,22 +218,22 @@ class PlantModelTests(TestCase):
                 {
                     'timestamp': '2024-03-22T10:52:03+00:00',
                     'image': '/media/images/IMG2.jpg',
-                    'thumbnail': '/media/thumbnails/IMG2_thumb.jpg',
-                    'preview': '/media/previews/IMG2_preview.jpg',
+                    'thumbnail': '/media/thumbnails/IMG2_thumb.webp',
+                    'preview': '/media/previews/IMG2_preview.webp',
                     'key': 2
                 },
                 {
                     'timestamp': '2024-02-21T10:52:03+00:00',
                     'image': '/media/images/IMG1.jpg',
-                    'thumbnail': '/media/thumbnails/IMG1_thumb.jpg',
-                    'preview': '/media/previews/IMG1_preview.jpg',
+                    'thumbnail': '/media/thumbnails/IMG1_thumb.webp',
+                    'preview': '/media/previews/IMG1_preview.webp',
                     'key': 1
                 },
                 {
                     'timestamp': '2024-01-28T10:52:03+00:00',
                     'image': '/media/images/IMG3.jpg',
-                    'thumbnail': '/media/thumbnails/IMG3_thumb.jpg',
-                    'preview': '/media/previews/IMG3_preview.jpg',
+                    'thumbnail': '/media/thumbnails/IMG3_thumb.webp',
+                    'preview': '/media/previews/IMG3_preview.webp',
                     'key': 3
                 },
             ]

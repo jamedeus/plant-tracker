@@ -33,7 +33,7 @@ export const mockContext = {
             "pot_size": 2,
             "last_watered": "2024-02-29T12:45:44+00:00",
             "last_fertilized": "2024-03-01T05:45:44+00:00",
-            "thumbnail": "/media/thumbnails/photo_thumb.jpg",
+            "thumbnail": "/media/thumbnails/photo_thumb.webp",
             "archived": true
         },
         {
@@ -61,7 +61,7 @@ export const mockContext = {
             "pot_size": 4,
             "last_watered": null,
             "last_fertilized": null,
-            "thumbnail": "/media/thumbnails/photo2_thumb.jpg",
+            "thumbnail": "/media/thumbnails/photo2_thumb.webp",
             "archived": false
         },
         {
@@ -74,7 +74,7 @@ export const mockContext = {
             "pot_size": null,
             "last_watered": null,
             "last_fertilized": null,
-            "thumbnail": "/media/thumbnails/photo3_thumb.jpg",
+            "thumbnail": "/media/thumbnails/photo3_thumb.webp",
             "archived": false
         },
         {

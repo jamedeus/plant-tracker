@@ -51,13 +51,13 @@ describe('PhotoModal', () => {
                     {
                         "timestamp": "2024-03-21T10:52:03+00:00",
                         "image": "/media/images/photo1.jpg",
-                        "thumbnail": "/media/images/photo1_thumb.jpg",
+                        "thumbnail": "/media/images/photo1_thumb.webp",
                         "key": 12
                     },
                     {
                         "timestamp": "2024-03-22T10:52:03+00:00",
                         "image": "/media/images/photo2.jpg",
-                        "thumbnail": "/media/images/photo2_thumb.jpg",
+                        "thumbnail": "/media/images/photo2_thumb.webp",
                         "key": 13
                     }
                 ]
@@ -103,7 +103,7 @@ describe('PhotoModal', () => {
                     {
                         "timestamp": "2024-03-21T10:52:03",
                         "image": "/media/images/photo1.jpg",
-                        "thumbnail": "/media/images/photo1_thumb.jpg",
+                        "thumbnail": "/media/images/photo1_thumb.webp",
                         "key": 12
                     }
                 ]

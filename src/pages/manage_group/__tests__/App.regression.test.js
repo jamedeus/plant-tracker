@@ -368,7 +368,7 @@ describe('App', () => {
                         "pot_size": 4,
                         "last_watered": null,
                         "last_fertilized": null,
-                        "thumbnail": "/media/thumbnails/photo2_thumb.jpg",
+                        "thumbnail": "/media/thumbnails/photo2_thumb.webp",
                         "archived": false
                     }
                 ],

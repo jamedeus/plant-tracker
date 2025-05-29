@@ -59,13 +59,13 @@ describe('Plant with no photos (no default photo set)', () => {
                     {
                         "timestamp": "2024-03-21T10:52:03+00:00",
                         "image": "/media/images/photo1.jpg",
-                        "thumbnail": "/media/images/photo1_thumb.jpg",
+                        "thumbnail": "/media/images/photo1_thumb.webp",
                         "key": 1774
                     },
                     {
                         "timestamp": "2024-03-22T10:52:03+00:00",
                         "image": "/media/images/photo2.jpg",
-                        "thumbnail": "/media/images/photo2_thumb.jpg",
+                        "thumbnail": "/media/images/photo2_thumb.webp",
                         "key": 1775
                     }
                 ]
@@ -83,7 +83,7 @@ describe('Plant with no photos (no default photo set)', () => {
 
         // Confirm default photo thumbnail rendered with most-recent photo
         expect(app.getByTestId('defaultPhotoThumbnail').src).toBe(
-            'http://localhost/media/images/photo2_thumb.jpg'
+            'http://localhost/media/images/photo2_thumb.webp'
         );
     });
 });
@@ -133,7 +133,7 @@ describe('Plant with photos but no configured default photo', () => {
                     {
                         "timestamp": "2025-03-21T10:52:03+00:00",
                         "image": "/media/images/photo_new.jpg",
-                        "thumbnail": "/media/images/photo_new_thumb.jpg",
+                        "thumbnail": "/media/images/photo_new_thumb.webp",
                         "key": 1774
                     }
                 ]
@@ -150,7 +150,7 @@ describe('Plant with photos but no configured default photo', () => {
 
         // Confirm default photo thumbnail changed to newer photo
         expect(app.getByTestId('defaultPhotoThumbnail').src).toBe(
-            'http://localhost/media/images/photo_new_thumb.jpg'
+            'http://localhost/media/images/photo_new_thumb.webp'
         );
     });
 
@@ -256,7 +256,7 @@ describe('Plant with default photo configured', () => {
                     {
                         "timestamp": "2025-03-21T10:52:03+00:00",
                         "image": "/media/images/photo_new.jpg",
-                        "thumbnail": "/media/images/photo_new_thumb.jpg",
+                        "thumbnail": "/media/images/photo_new_thumb.webp",
                         "key": 1774
                     }
                 ]

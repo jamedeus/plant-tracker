@@ -12,7 +12,7 @@ const plants = [
         "pot_size": 6,
         "last_watered": "2024-02-26T05:45:44+00:00",
         "last_fertilized": "2024-03-01T05:45:44+00:00",
-        "thumbnail": "/media/thumbnails/IMG_8000_thumb.jpg"
+        "thumbnail": "/media/thumbnails/IMG_8000_thumb.webp"
     },
     {
         "name": null,
@@ -24,7 +24,7 @@ const plants = [
         "pot_size": 4,
         "last_watered": null,
         "last_fertilized": "2024-03-01T05:45:44+00:00",
-        "thumbnail": "/media/thumbnails/IMG_8001_thumb.jpg"
+        "thumbnail": "/media/thumbnails/IMG_8001_thumb.webp"
     },
     {
         "name": null,
@@ -36,7 +36,7 @@ const plants = [
         "pot_size": 8,
         "last_watered": "2024-02-28T05:45:44+00:00",
         "last_fertilized": "2024-03-01T05:45:44+00:00",
-        "thumbnail": "/media/thumbnails/IMG_8002_thumb.jpg"
+        "thumbnail": "/media/thumbnails/IMG_8002_thumb.webp"
     },
     {
         "name": null,
@@ -48,7 +48,7 @@ const plants = [
         "pot_size": 2,
         "last_watered": "2024-03-02T04:31:20+00:00",
         "last_fertilized": "2024-03-02T04:31:20+00:00",
-        "thumbnail": "/media/thumbnails/IMG_8004_thumb.jpg"
+        "thumbnail": "/media/thumbnails/IMG_8004_thumb.webp"
     },
     {
         "name": "Favorite plant",
@@ -60,7 +60,7 @@ const plants = [
         "pot_size": 14,
         "last_watered": null,
         "last_fertilized": "2024-03-01T05:45:44+00:00",
-        "thumbnail": "/media/thumbnails/IMG_8003_thumb.jpg"
+        "thumbnail": "/media/thumbnails/IMG_8003_thumb.webp"
     },
 ];
 

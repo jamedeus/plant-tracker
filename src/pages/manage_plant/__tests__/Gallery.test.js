@@ -60,7 +60,7 @@ describe('Gallery', () => {
         expect(document.querySelector('.yarl__slide_current img').src).toBe(
             photoThumbnail.src
                 .replace('/media/thumbnails', '/media/images')
-                .replace('_thumb', '')
+                .replace('_thumb.webp', '.jpg')
         );
     });
 

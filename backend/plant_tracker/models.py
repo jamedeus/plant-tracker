@@ -485,6 +485,9 @@ class Photo(models.Model):
             Image.open(self.photo)
         )
 
+        # Get ICC profile (color accuracy)
+        icc_profile = original.info.get('icc_profile')
+
         # Make sure photo is JPEG-compatible (no transparency)
         if original.mode in ("RGBA", "P"):
             original = original.convert("RGB")
@@ -494,7 +497,13 @@ class Photo(models.Model):
             image = original.copy()
             image.thumbnail(size)
             image_buffer = BytesIO()
-            image.save(image_buffer, format='JPEG', quality=quality, optimize=True)
+            image.save(
+                image_buffer,
+                format='webp',
+                method=6,
+                quality=quality,
+                icc_profile=icc_profile
+            )
             image_buffer.seek(0)
 
             # Add requested suffix to name, return
@@ -502,8 +511,8 @@ class Photo(models.Model):
             return InMemoryUploadedFile(
                 image_buffer,
                 field_name="ImageField",
-                name=f"{image_name}_{suffix}.jpg",
-                content_type="image/jpeg",
+                name=f"{image_name}_{suffix}.webp",
+                content_type="image/webp",
                 size=image_buffer.tell(),
                 charset=None,
             )

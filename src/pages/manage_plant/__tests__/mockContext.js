@@ -11,7 +11,7 @@ export const mockContext = {
         "last_watered": "2024-03-01T05:45:44+00:00",
         "last_fertilized": "2024-03-01T05:45:44+00:00",
         "display_name": "Test Plant",
-        "thumbnail": "/media/thumbnails/photo3_thumb.jpg",
+        "thumbnail": "/media/thumbnails/photo3_thumb.webp",
         "group": {
             "name": "Test group",
             "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
@@ -70,22 +70,22 @@ export const mockContext = {
         {
             'timestamp': '2024-03-21T10:52:03+00:00',
             'image': '/media/images/photo1.jpg',
-            'thumbnail': '/media/thumbnails/photo1_thumb.jpg',
-            'preview': '/media/previews/photo1_preview.jpg',
+            'thumbnail': '/media/thumbnails/photo1_thumb.webp',
+            'preview': '/media/previews/photo1_preview.webp',
             'key': 1
         },
         {
             'timestamp': '2024-03-22T10:52:03+00:00',
             'image': '/media/images/photo2.jpg',
-            'thumbnail': '/media/thumbnails/photo2_thumb.jpg',
-            'preview': '/media/previews/photo2_preview.jpg',
+            'thumbnail': '/media/thumbnails/photo2_thumb.webp',
+            'preview': '/media/previews/photo2_preview.webp',
             'key': 2
         },
         {
             'timestamp': '2024-03-23T10:52:03+00:00',
             'image': '/media/images/photo3.jpg',
-            'thumbnail': '/media/thumbnails/photo3_thumb.jpg',
-            'preview': '/media/previews/photo3_preview.jpg',
+            'thumbnail': '/media/thumbnails/photo3_thumb.webp',
+            'preview': '/media/previews/photo3_preview.webp',
             'key': 3
         }
     ],
@@ -94,8 +94,8 @@ export const mockContext = {
         'set': true,
         'timestamp': '2024-03-23T10:52:03+00:00',
         'image': '/media/images/photo3.jpg',
-        'thumbnail': '/media/thumbnails/photo3_thumb.jpg',
-        'preview': '/media/previews/photo3_preview.jpg',
+        'thumbnail': '/media/thumbnails/photo3_thumb.webp',
+        'preview': '/media/previews/photo3_preview.webp',
         'key': 3
     }
 };
@@ -225,113 +225,113 @@ export const mockphotos = [
     {
         "timestamp": "2024-03-25T15:28:39+00:00",
         "image": "/media/images/IMG_8103.jpeg",
-        "thumbnail": "/media/thumbnails/IMG_8103_thumb.jpg",
-        "preview": "/media/previews/IMG_8103_preview.jpg",
+        "thumbnail": "/media/thumbnails/IMG_8103_thumb.webp",
+        "preview": "/media/previews/IMG_8103_preview.webp",
         "key": 24
     },
     {
         "timestamp": "2024-03-25T15:28:36+00:00",
         "image": "/media/images/IMG_8102.jpeg",
-        "thumbnail": "/media/thumbnails/IMG_8102_thumb.jpg",
-        "preview": "/media/previews/IMG_8102_preview.jpg",
+        "thumbnail": "/media/thumbnails/IMG_8102_thumb.webp",
+        "preview": "/media/previews/IMG_8102_preview.webp",
         "key": 25
     },
     {
         "timestamp": "2024-03-25T15:28:33+00:00",
         "image": "/media/images/IMG_8101.jpeg",
-        "thumbnail": "/media/thumbnails/IMG_8101_thumb.jpg",
-        "preview": "/media/previews/IMG_8101_preview.jpg",
+        "thumbnail": "/media/thumbnails/IMG_8101_thumb.webp",
+        "preview": "/media/previews/IMG_8101_preview.webp",
         "key": 26
     },
     {
         "timestamp": "2024-03-25T14:34:15+00:00",
         "image": "/media/images/IMG_8098.jpeg",
-        "thumbnail": "/media/thumbnails/IMG_8098_thumb.jpg",
-        "preview": "/media/previews/IMG_8098_preview.jpg",
+        "thumbnail": "/media/thumbnails/IMG_8098_thumb.webp",
+        "preview": "/media/previews/IMG_8098_preview.webp",
         "key": 23
     },
     {
         "timestamp": "2024-03-25T14:34:10+00:00",
         "image": "/media/images/IMG_8097.jpeg",
-        "thumbnail": "/media/thumbnails/IMG_8097_thumb.jpg",
-        "preview": "/media/previews/IMG_8097_preview.jpg",
+        "thumbnail": "/media/thumbnails/IMG_8097_thumb.webp",
+        "preview": "/media/previews/IMG_8097_preview.webp",
         "key": 21
     },
     {
         "timestamp": "2024-03-25T13:28:54+00:00",
         "image": "/media/images/IMG_8095.jpeg",
-        "thumbnail": "/media/thumbnails/IMG_8095_thumb.jpg",
-        "preview": "/media/previews/IMG_8095_preview.jpg",
+        "thumbnail": "/media/thumbnails/IMG_8095_thumb.webp",
+        "preview": "/media/previews/IMG_8095_preview.webp",
         "key": 20
     },
     {
         "timestamp": "2024-03-25T13:28:46+00:00",
         "image": "/media/images/IMG_8094.jpeg",
-        "thumbnail": "/media/thumbnails/IMG_8094_thumb.jpg",
-        "preview": "/media/previews/IMG_8094_preview.jpg",
+        "thumbnail": "/media/thumbnails/IMG_8094_thumb.webp",
+        "preview": "/media/previews/IMG_8094_preview.webp",
         "key": 22
     },
     {
         "timestamp": "2024-03-25T13:28:41+00:00",
         "image": "/media/images/IMG_8093.jpeg",
-        "thumbnail": "/media/thumbnails/IMG_8093_thumb.jpg",
-        "preview": "/media/previews/IMG_8093_preview.jpg",
+        "thumbnail": "/media/thumbnails/IMG_8093_thumb.webp",
+        "preview": "/media/previews/IMG_8093_preview.webp",
         "key": 27
     },
     {
         "timestamp": "2024-03-25T13:28:30+00:00",
         "image": "/media/images/IMG_8092.jpeg",
-        "thumbnail": "/media/thumbnails/IMG_8092_thumb.jpg",
-        "preview": "/media/previews/IMG_8092_preview.jpg",
+        "thumbnail": "/media/thumbnails/IMG_8092_thumb.webp",
+        "preview": "/media/previews/IMG_8092_preview.webp",
         "key": 28
     },
     {
         "timestamp": "2024-03-25T13:28:19+00:00",
         "image": "/media/images/IMG_8091.jpeg",
-        "thumbnail": "/media/thumbnails/IMG_8091_thumb.jpg",
-        "preview": "/media/previews/IMG_8091_preview.jpg",
+        "thumbnail": "/media/thumbnails/IMG_8091_thumb.webp",
+        "preview": "/media/previews/IMG_8091_preview.webp",
         "key": 29
     },
     {
         "timestamp": "2024-03-25T13:27:00+00:00",
         "image": "/media/images/IMG_8090.jpeg",
-        "thumbnail": "/media/thumbnails/IMG_8090_thumb.jpg",
-        "preview": "/media/previews/IMG_8090_preview.jpg",
+        "thumbnail": "/media/thumbnails/IMG_8090_thumb.webp",
+        "preview": "/media/previews/IMG_8090_preview.webp",
         "key": 30
     },
     {
         "timestamp": "2024-03-25T13:26:48+00:00",
         "image": "/media/images/IMG_8089.jpeg",
-        "thumbnail": "/media/thumbnails/IMG_8089_thumb.jpg",
-        "preview": "/media/previews/IMG_8089_preview.jpg",
+        "thumbnail": "/media/thumbnails/IMG_8089_thumb.webp",
+        "preview": "/media/previews/IMG_8089_preview.webp",
         "key": 31
     },
     {
         "timestamp": "2024-02-21T21:21:17+00:00",
         "image": "/media/images/IMG_7598.jpeg",
-        "thumbnail": "/media/thumbnails/IMG_7598_thumb.jpg",
-        "preview": "/media/previews/IMG_7598_preview.jpg",
+        "thumbnail": "/media/thumbnails/IMG_7598_thumb.webp",
+        "preview": "/media/previews/IMG_7598_preview.webp",
         "key": 45
     },
     {
         "timestamp": "2023-11-21T11:57:26+00:00",
         "image": "/media/images/IMG_5866.jpeg",
-        "thumbnail": "/media/thumbnails/IMG_5866_thumb.jpg",
-        "preview": "/media/previews/IMG_5866_preview.jpg",
+        "thumbnail": "/media/thumbnails/IMG_5866_thumb.webp",
+        "preview": "/media/previews/IMG_5866_preview.webp",
         "key": 46
     },
     {
         "timestamp": "2023-09-12T01:59:28+00:00",
         "image": "/media/images/IMG_5040.jpeg",
-        "thumbnail": "/media/thumbnails/IMG_5040_thumb.jpg",
-        "preview": "/media/previews/IMG_5040_preview.jpg",
+        "thumbnail": "/media/thumbnails/IMG_5040_thumb.webp",
+        "preview": "/media/previews/IMG_5040_preview.webp",
         "key": 17
     },
     {
         "timestamp": "2023-08-24T04:43:30+00:00",
         "image": "/media/images/IMG_4813.jpeg",
-        "thumbnail": "/media/thumbnails/IMG_4813_thumb.jpg",
-        "preview": "/media/previews/IMG_4813_preview.jpg",
+        "thumbnail": "/media/thumbnails/IMG_4813_thumb.webp",
+        "preview": "/media/previews/IMG_4813_preview.webp",
         "key": 16
     },
     {

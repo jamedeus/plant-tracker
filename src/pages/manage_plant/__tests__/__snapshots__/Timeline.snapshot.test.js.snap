@@ -761,7 +761,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_8103_thumb.jpg"
+            src="/media/thumbnails/IMG_8103_thumb.webp"
             title="07:28 AM - March 25, 2024"
           />
           <img
@@ -769,7 +769,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_8102_thumb.jpg"
+            src="/media/thumbnails/IMG_8102_thumb.webp"
             title="07:28 AM - March 25, 2024"
           />
           <img
@@ -777,7 +777,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_8101_thumb.jpg"
+            src="/media/thumbnails/IMG_8101_thumb.webp"
             title="07:28 AM - March 25, 2024"
           />
           <img
@@ -785,7 +785,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_8098_thumb.jpg"
+            src="/media/thumbnails/IMG_8098_thumb.webp"
             title="06:34 AM - March 25, 2024"
           />
           <img
@@ -793,7 +793,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_8097_thumb.jpg"
+            src="/media/thumbnails/IMG_8097_thumb.webp"
             title="06:34 AM - March 25, 2024"
           />
           <img
@@ -801,7 +801,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_8095_thumb.jpg"
+            src="/media/thumbnails/IMG_8095_thumb.webp"
             title="05:28 AM - March 25, 2024"
           />
           <img
@@ -809,7 +809,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_8094_thumb.jpg"
+            src="/media/thumbnails/IMG_8094_thumb.webp"
             title="05:28 AM - March 25, 2024"
           />
           <img
@@ -817,7 +817,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_8093_thumb.jpg"
+            src="/media/thumbnails/IMG_8093_thumb.webp"
             title="05:28 AM - March 25, 2024"
           />
           <img
@@ -825,7 +825,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_8092_thumb.jpg"
+            src="/media/thumbnails/IMG_8092_thumb.webp"
             title="05:28 AM - March 25, 2024"
           />
           <img
@@ -833,7 +833,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_8091_thumb.jpg"
+            src="/media/thumbnails/IMG_8091_thumb.webp"
             title="05:28 AM - March 25, 2024"
           />
           <img
@@ -841,7 +841,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_8090_thumb.jpg"
+            src="/media/thumbnails/IMG_8090_thumb.webp"
             title="05:27 AM - March 25, 2024"
           />
           <img
@@ -849,7 +849,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_8089_thumb.jpg"
+            src="/media/thumbnails/IMG_8089_thumb.webp"
             title="05:26 AM - March 25, 2024"
           />
         </div>
@@ -1510,7 +1510,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_7598_thumb.jpg"
+            src="/media/thumbnails/IMG_7598_thumb.webp"
             title="01:21 PM - February 21, 2024"
           />
         </div>
@@ -1855,7 +1855,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_5866_thumb.jpg"
+            src="/media/thumbnails/IMG_5866_thumb.webp"
             title="03:57 AM - November 21, 2023"
           />
         </div>
@@ -2174,7 +2174,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_5040_thumb.jpg"
+            src="/media/thumbnails/IMG_5040_thumb.webp"
             title="05:59 PM - September 11, 2023"
           />
         </div>
@@ -2225,7 +2225,7 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_4813_thumb.jpg"
+            src="/media/thumbnails/IMG_4813_thumb.webp"
             title="08:43 PM - August 23, 2023"
           />
         </div>
@@ -3640,7 +3640,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_8103_thumb.jpg"
+            src="/media/thumbnails/IMG_8103_thumb.webp"
             title="07:28 AM - March 25, 2024"
           />
           <img
@@ -3648,7 +3648,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_8102_thumb.jpg"
+            src="/media/thumbnails/IMG_8102_thumb.webp"
             title="07:28 AM - March 25, 2024"
           />
           <img
@@ -3656,7 +3656,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_8101_thumb.jpg"
+            src="/media/thumbnails/IMG_8101_thumb.webp"
             title="07:28 AM - March 25, 2024"
           />
           <img
@@ -3664,7 +3664,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_8098_thumb.jpg"
+            src="/media/thumbnails/IMG_8098_thumb.webp"
             title="06:34 AM - March 25, 2024"
           />
           <img
@@ -3672,7 +3672,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_8097_thumb.jpg"
+            src="/media/thumbnails/IMG_8097_thumb.webp"
             title="06:34 AM - March 25, 2024"
           />
           <img
@@ -3680,7 +3680,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_8095_thumb.jpg"
+            src="/media/thumbnails/IMG_8095_thumb.webp"
             title="05:28 AM - March 25, 2024"
           />
           <img
@@ -3688,7 +3688,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_8094_thumb.jpg"
+            src="/media/thumbnails/IMG_8094_thumb.webp"
             title="05:28 AM - March 25, 2024"
           />
           <img
@@ -3696,7 +3696,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_8093_thumb.jpg"
+            src="/media/thumbnails/IMG_8093_thumb.webp"
             title="05:28 AM - March 25, 2024"
           />
           <img
@@ -3704,7 +3704,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_8092_thumb.jpg"
+            src="/media/thumbnails/IMG_8092_thumb.webp"
             title="05:28 AM - March 25, 2024"
           />
           <img
@@ -3712,7 +3712,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_8091_thumb.jpg"
+            src="/media/thumbnails/IMG_8091_thumb.webp"
             title="05:28 AM - March 25, 2024"
           />
           <img
@@ -3720,7 +3720,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_8090_thumb.jpg"
+            src="/media/thumbnails/IMG_8090_thumb.webp"
             title="05:27 AM - March 25, 2024"
           />
           <img
@@ -3728,7 +3728,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_8089_thumb.jpg"
+            src="/media/thumbnails/IMG_8089_thumb.webp"
             title="05:26 AM - March 25, 2024"
           />
         </div>
@@ -4389,7 +4389,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_7598_thumb.jpg"
+            src="/media/thumbnails/IMG_7598_thumb.webp"
             title="01:21 PM - February 21, 2024"
           />
         </div>
@@ -4734,7 +4734,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_5866_thumb.jpg"
+            src="/media/thumbnails/IMG_5866_thumb.webp"
             title="03:57 AM - November 21, 2023"
           />
         </div>
@@ -5053,7 +5053,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_5040_thumb.jpg"
+            src="/media/thumbnails/IMG_5040_thumb.webp"
             title="05:59 PM - September 11, 2023"
           />
         </div>
@@ -5104,7 +5104,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
             draggable="false"
             loading="lazy"
-            src="/media/thumbnails/IMG_4813_thumb.jpg"
+            src="/media/thumbnails/IMG_4813_thumb.webp"
             title="08:43 PM - August 23, 2023"
           />
         </div>

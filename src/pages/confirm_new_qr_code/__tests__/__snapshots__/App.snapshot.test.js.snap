@@ -320,7 +320,7 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
           alt="Test Plant photo"
           class="max-h-[50vh] rounded-xl object-contain"
           draggable="false"
-          src="/media/thumbnails/photo_thumb.jpg"
+          src="/media/thumbnails/photo_thumb.webp"
         />
       </div>
       <div

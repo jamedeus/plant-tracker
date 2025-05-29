@@ -126,7 +126,7 @@ exports[`App matches snapshot 1`] = `
                       data-testid="defaultPhotoThumbnail"
                       draggable="false"
                       loading="lazy"
-                      src="/media/thumbnails/photo3_thumb.jpg"
+                      src="/media/thumbnails/photo3_thumb.webp"
                     />
                     <div
                       class="absolute bottom-2 right-2 size-8 min-size-8 btn btn-square bg-base-200/60 border-none"
@@ -1205,7 +1205,7 @@ exports[`App matches snapshot 1`] = `
                 class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
                 draggable="false"
                 loading="lazy"
-                src="/media/thumbnails/photo3_thumb.jpg"
+                src="/media/thumbnails/photo3_thumb.webp"
                 title="02:52 AM - March 23, 2024"
               />
             </div>
@@ -1250,7 +1250,7 @@ exports[`App matches snapshot 1`] = `
                 class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
                 draggable="false"
                 loading="lazy"
-                src="/media/thumbnails/photo2_thumb.jpg"
+                src="/media/thumbnails/photo2_thumb.webp"
                 title="02:52 AM - March 22, 2024"
               />
             </div>
@@ -1295,7 +1295,7 @@ exports[`App matches snapshot 1`] = `
                 class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
                 draggable="false"
                 loading="lazy"
-                src="/media/thumbnails/photo1_thumb.jpg"
+                src="/media/thumbnails/photo1_thumb.webp"
                 title="02:52 AM - March 21, 2024"
               />
             </div>
@@ -2448,7 +2448,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                       data-testid="defaultPhotoThumbnail"
                       draggable="false"
                       loading="lazy"
-                      src="/media/thumbnails/photo3_thumb.jpg"
+                      src="/media/thumbnails/photo3_thumb.webp"
                     />
                     <div
                       class="absolute bottom-2 right-2 size-8 min-size-8 btn btn-square bg-base-200/60 border-none"
@@ -3418,7 +3418,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
                 draggable="false"
                 loading="lazy"
-                src="/media/thumbnails/photo3_thumb.jpg"
+                src="/media/thumbnails/photo3_thumb.webp"
                 title="02:52 AM - March 23, 2024"
               />
             </div>
@@ -3463,7 +3463,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
                 draggable="false"
                 loading="lazy"
-                src="/media/thumbnails/photo2_thumb.jpg"
+                src="/media/thumbnails/photo2_thumb.webp"
                 title="02:52 AM - March 22, 2024"
               />
             </div>
@@ -3508,7 +3508,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                 class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
                 draggable="false"
                 loading="lazy"
-                src="/media/thumbnails/photo1_thumb.jpg"
+                src="/media/thumbnails/photo1_thumb.webp"
                 title="02:52 AM - March 21, 2024"
               />
             </div>

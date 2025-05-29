@@ -53,7 +53,7 @@ describe('DefaultPhotoModal', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                "default_photo": "/media/thumbnails/photo1_thumb.jpg"
+                "default_photo": "/media/thumbnails/photo1_thumb.webp"
             })
         }));
 

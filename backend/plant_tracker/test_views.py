@@ -808,7 +808,7 @@ class ManagePageTests(TestCase):
         # Confirm plant.thumbnail contains URL of most recent photo
         self.assertEqual(
             response.context['state']['plant_details']['thumbnail'],
-            '/media/thumbnails/photo2_thumb.jpg'
+            '/media/thumbnails/photo2_thumb.webp'
         )
 
         # Confirm photos key contains list of dicts with timestamps, database
@@ -819,15 +819,15 @@ class ManagePageTests(TestCase):
                 {
                     'timestamp': '2024-03-22T10:52:03+00:00',
                     'image': '/media/images/photo2.jpg',
-                    'thumbnail': '/media/thumbnails/photo2_thumb.jpg',
-                    'preview': '/media/previews/photo2_preview.jpg',
+                    'thumbnail': '/media/thumbnails/photo2_thumb.webp',
+                    'preview': '/media/previews/photo2_preview.webp',
                     'key': 2
                 },
                 {
                     'timestamp': '2024-03-21T10:52:03+00:00',
                     'image': '/media/images/photo1.jpg',
-                    'thumbnail': '/media/thumbnails/photo1_thumb.jpg',
-                    'preview': '/media/previews/photo1_preview.jpg',
+                    'thumbnail': '/media/thumbnails/photo1_thumb.webp',
+                    'preview': '/media/previews/photo1_preview.webp',
                     'key': 1
                 },
             ]
@@ -2183,8 +2183,8 @@ class PlantPhotoEndpointTests(TestCase):
                 {
                     "timestamp": "2024-03-22T10:52:03+00:00",
                     "image": "/media/images/mock_photo.jpg",
-                    "thumbnail": "/media/thumbnails/mock_photo_thumb.jpg",
-                    "preview": "/media/previews/mock_photo_preview.jpg",
+                    "thumbnail": "/media/thumbnails/mock_photo_thumb.webp",
+                    "preview": "/media/previews/mock_photo_preview.webp",
                     "key": 1
                 }
             ]

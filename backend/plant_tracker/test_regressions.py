@@ -119,7 +119,7 @@ class ModelRegressionTests(TestCase):
         # Confirm filename was not truncated
         self.assertEqual(
             photo.thumbnail.name,
-            'thumbnails/photo.of.my.plant.flowering_thumb.jpg'
+            'thumbnails/photo.of.my.plant.flowering_thumb.webp'
         )
 
     def test_should_not_allow_creating_plant_with_same_uuid_as_group(self):

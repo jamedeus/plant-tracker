@@ -6,7 +6,7 @@ export const mockContext = {
         "name": "Test Plant",
         "display_name": "Test Plant",
         "species": "Calathea",
-        "thumbnail": "/media/thumbnails/photo_thumb.jpg",
+        "thumbnail": "/media/thumbnails/photo_thumb.webp",
         "pot_size": 4,
         "description": "This is a plant with a long description",
         "last_watered": "2024-03-01T05:45:44+00:00",
