@@ -535,14 +535,12 @@ class Photo(models.Model):
             Image.open(self.photo)
         )
 
-        # Make sure photo is JPEG-compatible (no transparency)
-        if original.mode in ("RGBA", "P"):
-            original = original.convert("RGB")
-
+        # Thumbnail: crop to square, resize to 200x200
         thumbnail = self._crop_to_square(original.copy())
-        preview = original.copy()
-        # Save thumbnail and preview resolutions to disk + database
         self.thumbnail = self._convert_to_webp(thumbnail, (200, 200), 65, 'thumb')
+
+        # Preview: resize to maximum of 800x800 (usually 800x600 or 600x800)
+        preview = original.copy()
         self.preview = self._convert_to_webp(preview, (800, 800), 80, 'preview')
 
     def save(self, *args, **kwargs):
