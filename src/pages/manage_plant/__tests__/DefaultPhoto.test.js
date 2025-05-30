@@ -60,12 +60,14 @@ describe('Plant with no photos (no default photo set)', () => {
                         "timestamp": "2024-03-21T10:52:03+00:00",
                         "image": "/media/images/photo1.jpg",
                         "thumbnail": "/media/images/photo1_thumb.webp",
+                        "preview": "/media/images/photo1_preview.webp",
                         "key": 1774
                     },
                     {
                         "timestamp": "2024-03-22T10:52:03+00:00",
                         "image": "/media/images/photo2.jpg",
                         "thumbnail": "/media/images/photo2_thumb.webp",
+                        "preview": "/media/images/photo2_preview.webp",
                         "key": 1775
                     }
                 ]
@@ -83,7 +85,7 @@ describe('Plant with no photos (no default photo set)', () => {
 
         // Confirm default photo thumbnail rendered with most-recent photo
         expect(app.getByTestId('defaultPhotoThumbnail').src).toBe(
-            'http://localhost/media/images/photo2_thumb.webp'
+            'http://localhost/media/images/photo2_preview.webp'
         );
     });
 });
@@ -111,14 +113,14 @@ describe('Plant with photos but no configured default photo', () => {
     it('renders default photo thumbnail with most-recent photo', async () => {
         // Confirm default photo thumbnail used url of most-recent photo
         expect(app.getByTestId('defaultPhotoThumbnail').src).toBe(
-            `http://localhost${mockContext.photos[2].thumbnail}`
+            `http://localhost${mockContext.photos[2].preview}`
         );
     });
 
     it('uses newest photo for default photo thumbnail after photos uploaded', async () => {
         // Confirm default photo thumbnail used url of most-recent photo
         expect(app.getByTestId('defaultPhotoThumbnail').src).toBe(
-            `http://localhost${mockContext.photos[2].thumbnail}`
+            `http://localhost${mockContext.photos[2].preview}`
         );
 
         // Mock fetch to return expected response when a new photo is uploaded
@@ -134,6 +136,7 @@ describe('Plant with photos but no configured default photo', () => {
                         "timestamp": "2025-03-21T10:52:03+00:00",
                         "image": "/media/images/photo_new.jpg",
                         "thumbnail": "/media/images/photo_new_thumb.webp",
+                        "preview": "/media/images/photo_new_preview.webp",
                         "key": 1774
                     }
                 ]
@@ -150,14 +153,14 @@ describe('Plant with photos but no configured default photo', () => {
 
         // Confirm default photo thumbnail changed to newer photo
         expect(app.getByTestId('defaultPhotoThumbnail').src).toBe(
-            'http://localhost/media/images/photo_new_thumb.webp'
+            'http://localhost/media/images/photo_new_preview.webp'
         );
     });
 
     it('uses newest remaining photo for default photo thumbnail after photos deleted', async () => {
         // Confirm default photo thumbnail used url of most-recent photo
         expect(app.getByTestId('defaultPhotoThumbnail').src).toBe(
-            `http://localhost${mockContext.photos[2].thumbnail}`
+            `http://localhost${mockContext.photos[2].preview}`
         );
 
         // Mock fetch to return expected response when 2 newest photos are deleted
@@ -181,14 +184,14 @@ describe('Plant with photos but no configured default photo', () => {
 
         // Confirm default photo thumbnail changed to most-recent remaining photo
         expect(app.getByTestId('defaultPhotoThumbnail').src).toBe(
-            `http://localhost${mockContext.photos[0].thumbnail}`
+            `http://localhost${mockContext.photos[0].preview}`
         );
     });
 
     it('removes default photo thumbnail after deleting last photo', async () => {
         // Confirm default photo thumbnail used url of most-recent photo
         expect(app.getByTestId('defaultPhotoThumbnail').src).toBe(
-            `http://localhost${mockContext.photos[2].thumbnail}`
+            `http://localhost${mockContext.photos[2].preview}`
         );
 
         // Mock fetch to return expected response when all 3 photos are deleted
@@ -234,14 +237,14 @@ describe('Plant with default photo configured', () => {
     it('renders default photo thumbnail with configured default photo', async () => {
         // Confirm default photo thumbnail used url of configured default photo
         expect(app.getByTestId('defaultPhotoThumbnail').src).toBe(
-            `http://localhost${mockContext.plant_details.thumbnail}`
+            `http://localhost${mockContext.default_photo.preview}`
         );
     });
 
     it('shows configured default photo thumbnail even if a newer photo is uploaded', async () => {
         // Confirm default photo thumbnail used url of configured default photo
         expect(app.getByTestId('defaultPhotoThumbnail').src).toBe(
-            `http://localhost${mockContext.plant_details.thumbnail}`
+            `http://localhost${mockContext.default_photo.preview}`
         );
 
         // Mock fetch to return expected response when a new photo is uploaded
@@ -257,6 +260,7 @@ describe('Plant with default photo configured', () => {
                         "timestamp": "2025-03-21T10:52:03+00:00",
                         "image": "/media/images/photo_new.jpg",
                         "thumbnail": "/media/images/photo_new_thumb.webp",
+                        "preview": "/media/images/photo_new_preview.webp",
                         "key": 1774
                     }
                 ]
@@ -273,14 +277,14 @@ describe('Plant with default photo configured', () => {
 
         // Confirm default photo thumbnail url did not change
         expect(app.getByTestId('defaultPhotoThumbnail').src).toBe(
-            `http://localhost${mockContext.plant_details.thumbnail}`
+            `http://localhost${mockContext.default_photo.preview}`
         );
     });
 
     it('switches default photo thumbnail to most-recent photo after default photo deleted', async () => {
         // Confirm default photo thumbnail used url of configured default photo
         expect(app.getByTestId('defaultPhotoThumbnail').src).toBe(
-            `http://localhost${mockContext.plant_details.thumbnail}`
+            `http://localhost${mockContext.default_photo.preview}`
         );
 
         // Mock fetch to return expected response when default photo is deleted
@@ -303,7 +307,7 @@ describe('Plant with default photo configured', () => {
 
         // Confirm default photo thumbnail changed to most-recent remailing photo
         expect(app.getByTestId('defaultPhotoThumbnail').src).toBe(
-            `http://localhost${mockContext.photos[1].thumbnail}`
+            `http://localhost${mockContext.photos[1].preview}`
         );
     });
 });

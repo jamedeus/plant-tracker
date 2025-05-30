@@ -126,7 +126,7 @@ exports[`App matches snapshot 1`] = `
                       data-testid="defaultPhotoThumbnail"
                       draggable="false"
                       loading="lazy"
-                      src="/media/thumbnails/photo3_thumb.webp"
+                      src="/media/previews/photo3_preview.webp"
                     />
                     <div
                       class="absolute bottom-2 right-2 size-8 min-size-8 btn btn-square bg-base-200/60 border-none"
@@ -2448,7 +2448,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
                       data-testid="defaultPhotoThumbnail"
                       draggable="false"
                       loading="lazy"
-                      src="/media/thumbnails/photo3_thumb.webp"
+                      src="/media/previews/photo3_preview.webp"
                     />
                     <div
                       class="absolute bottom-2 right-2 size-8 min-size-8 btn btn-square bg-base-200/60 border-none"

@@ -112,7 +112,7 @@ function Layout() {
                                         "photo-thumbnail mx-auto",
                                         "size-[8rem] md:size-[14rem]"
                                     )}
-                                    src={defaultPhoto.thumbnail}
+                                    src={defaultPhoto.preview}
                                     data-testid="defaultPhotoThumbnail"
                                 />
                                 <div className={clsx(

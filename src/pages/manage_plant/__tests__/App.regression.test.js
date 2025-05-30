@@ -113,12 +113,14 @@ describe('App', () => {
                         "timestamp": "2024-03-21T10:52:03",
                         "image": "/media/images/photo1.jpg",
                         "thumbnail": "/media/images/photo1_thumb.webp",
+                        "preview": "/media/images/photo1_preview.webp",
                         "key": 1
                     },
                     {
                         "timestamp": "2024-03-22T10:52:04",
                         "image": "/media/images/photo2.jpg",
                         "thumbnail": "/media/images/photo2_thumb.webp",
+                        "preview": "/media/images/photo2_preview.webp",
                         "key": 2
                     },
                 ]
@@ -426,12 +428,14 @@ describe('App', () => {
                         "timestamp": "2024-03-01T20:52:03+00:00",
                         "image": "/media/images/photo1.jpg",
                         "thumbnail": "/media/images/photo1_thumb.webp",
+                        "preview": "/media/images/photo1_preview.webp",
                         "key": 12
                     },
                     {
                         "timestamp": "2024-03-01T20:54:03+00:00",
                         "image": "/media/images/photo2.jpg",
                         "thumbnail": "/media/images/photo2_thumb.webp",
+                        "preview": "/media/images/photo2_preview.webp",
                         "key": 13
                     }
                 ]
@@ -480,12 +484,14 @@ describe('App', () => {
                         "timestamp": "2024-03-01T20:54:03+00:00",
                         "image": "/media/images/photo1.jpg",
                         "thumbnail": "/media/images/photo1_thumb.webp",
+                        "preview": "/media/images/photo1_preview.webp",
                         "key": 12
                     },
                     {
                         "timestamp": "2024-03-01T20:52:03+00:00",
                         "image": "/media/images/photo2.jpg",
                         "thumbnail": "/media/images/photo2_thumb.webp",
+                        "preview": "/media/images/photo2_preview.webp",
                         "key": 13
                     }
                 ]
