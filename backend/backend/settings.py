@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 import os
 import json
 from pathlib import Path
+from django.core.exceptions import ImproperlyConfigured
 from django.core.management.utils import get_random_secret_key
 
 from .validate_url_prefix import validate_url_prefix
@@ -54,6 +55,26 @@ try:
 except AttributeError:
     SINGLE_USER_MODE=False
 DEFAULT_USERNAME='DEFAULT'
+
+# Read photo thumbnail/preview resolution and quality env vars, or use defaults
+try:
+    px = int(os.environ.get('THUMBNAIL_RESOLUTION', 200))
+    THUMBNAIL_RESOLUTION = (px, px)
+except ValueError as exc:
+    raise ImproperlyConfigured('THUMBNAIL_RESOLUTION must be an integer') from exc
+try:
+    THUMBNAIL_QUALITY = int(os.environ.get('THUMBNAIL_QUALITY', 65))
+except ValueError as exc:
+    raise ImproperlyConfigured('THUMBNAIL_QUALITY must be an integer') from exc
+try:
+    px = int(os.environ.get('PREVIEW_RESOLUTION', 800))
+    PREVIEW_RESOLUTION = (px, px)
+except ValueError as exc:
+    raise ImproperlyConfigured('PREVIEW_RESOLUTION must be an integer') from exc
+try:
+    PREVIEW_QUALITY = int(os.environ.get('PREVIEW_QUALITY', 80))
+except ValueError as exc:
+    raise ImproperlyConfigured('PREVIEW_QUALITY must be an integer') from exc
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True

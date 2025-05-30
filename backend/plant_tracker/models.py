@@ -536,12 +536,20 @@ class Photo(models.Model):
         )
 
         # Thumbnail: crop to square, resize to 200x200
-        thumbnail = self._crop_to_square(original.copy())
-        self.thumbnail = self._convert_to_webp(thumbnail, (200, 200), 65, 'thumb')
+        self.thumbnail = self._convert_to_webp(
+            self._crop_to_square(original.copy()),
+            size=settings.THUMBNAIL_RESOLUTION,
+            quality=settings.THUMBNAIL_QUALITY,
+            suffix='thumb'
+        )
 
         # Preview: resize to maximum of 800x800 (usually 800x600 or 600x800)
-        preview = original.copy()
-        self.preview = self._convert_to_webp(preview, (800, 800), 80, 'preview')
+        self.preview = self._convert_to_webp(
+            original.copy(),
+            size=settings.PREVIEW_RESOLUTION,
+            quality=settings.PREVIEW_QUALITY,
+            suffix='preview'
+        )
 
     def save(self, *args, **kwargs):
         # Create thumbnail if it doesn't exist
