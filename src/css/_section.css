@@ -14,13 +14,12 @@
         content: '';
         /* Stick to same spot as .section-header, same height as corners */
         @apply sticky top-16 h-4;
-        /* Only fill 1rem squares on each end, not full background color */
-        /* Using background color will cover other elements above SectionCol */
-        /* Kinda hacky, will probably break something one day but fine now */
-        border-left: 1rem solid var(--color-base-100);
-        border-right: 1.5rem solid var(--color-base-100);
-        /* Slight overflow to cover vertical 1px line (chromium bug) */
-        width: calc(100% + 0.5rem);
+        /* Fill with page background color (not section background color) */
+        background-color: var(--color-base-100);
+        /* Overflow 0.5rem on each side */
+        /* Covers vertical 1px line on right edge (chromium bug) */
+        width: calc(100% + 1rem);
+        margin-left: -0.5rem;
         /* Allow clicking elements under transparent part */
         pointer-events: none;
         /* Prevent reserving space at the top of .section */
