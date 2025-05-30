@@ -80,6 +80,11 @@
             @apply text-sm text-base-content text-left px-1 py-2;
         }
     }
+
+    /* Fixed navbar offset */
+    body {
+        @apply pt-20;
+    }
 }
 
 /* Import reusable component utility classes */
