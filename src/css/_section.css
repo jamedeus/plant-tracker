@@ -3,17 +3,21 @@
     /* Snap to bottom of Navbar when scrolled to top of screen */
     @apply scroll-mt-16;
 
-    /* Pseudo element mask positions base-100 squares under title corners.
+    /* Pseudo element mask positions base-100 line under title corners.
      * Title is sticky, so once it hits the top of the page it will stay there
      * while .section slides underneath. Since .section and .section-header have
      * the same background color .section will be visible through transparent
-     * rounded corners, making title corners look square. Positioning squares
-     * with the same background color as body under the corners fixes this.
+     * rounded corners, making title corners look square. Positioning line with
+     * the same background color as body under the corners fixes this.
      */
     &::before {
         content: '';
-        /* Stick to same spot as .section-header, same height as corners */
-        @apply sticky top-16 h-4;
+        /* Stick to same spot as .section-header + 1px */
+        /* Extra 1px fixes iOS Safari bug where sticky element shifts down */
+        /* Increase height by 1px too (full 1rem under rounded corners) */
+        @apply sticky;
+        top: calc(4rem - 1px);
+        height: calc(1rem + 1px);
         /* Fill with page background color (not section background color) */
         background-color: var(--color-base-100);
         /* Overflow 0.5rem on each side */
