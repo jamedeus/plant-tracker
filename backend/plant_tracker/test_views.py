@@ -792,11 +792,11 @@ class ManagePageTests(TestCase):
 
     def test_manage_plant_with_photos(self):
         # Create mock photos for plant1
-        Photo.objects.create(
+        photo1 = Photo.objects.create(
             photo=create_mock_photo('2024:03:21 10:52:03', 'photo1.jpg'),
             plant=self.plant1
         )
-        Photo.objects.create(
+        photo2 = Photo.objects.create(
             photo=create_mock_photo('2024:03:22 10:52:03', 'photo2.jpg'),
             plant=self.plant1
         )
@@ -821,14 +821,14 @@ class ManagePageTests(TestCase):
                     'image': '/media/images/photo2.jpg',
                     'thumbnail': '/media/thumbnails/photo2_thumb.webp',
                     'preview': '/media/previews/photo2_preview.webp',
-                    'key': 2
+                    'key': photo2.pk
                 },
                 {
                     'timestamp': '2024-03-21T10:52:03+00:00',
                     'image': '/media/images/photo1.jpg',
                     'thumbnail': '/media/thumbnails/photo1_thumb.webp',
                     'preview': '/media/previews/photo1_preview.webp',
-                    'key': 1
+                    'key': photo1.pk
                 },
             ]
         )
@@ -2185,7 +2185,7 @@ class PlantPhotoEndpointTests(TestCase):
                     "image": "/media/images/mock_photo.jpg",
                     "thumbnail": "/media/thumbnails/mock_photo_thumb.webp",
                     "preview": "/media/previews/mock_photo_preview.webp",
-                    "key": 1
+                    "key": Photo.objects.all()[0].pk
                 }
             ]
         )

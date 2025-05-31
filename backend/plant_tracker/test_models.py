@@ -195,15 +195,15 @@ class PlantModelTests(TestCase):
 
     def test_get_photos(self):
         # Create 3 mock photos with non-chronological creation times
-        Photo.objects.create(
+        photo1 = Photo.objects.create(
             photo=create_mock_photo('2024:02:21 10:52:03', 'IMG1.jpg'),
             plant=self.plant
         )
-        Photo.objects.create(
+        photo2 = Photo.objects.create(
             photo=create_mock_photo('2024:03:22 10:52:03', 'IMG2.jpg'),
             plant=self.plant
         )
-        Photo.objects.create(
+        photo3 = Photo.objects.create(
             photo=create_mock_photo('2024:01:28 10:52:03', 'IMG3.jpg'),
             plant=self.plant
         )
@@ -220,21 +220,21 @@ class PlantModelTests(TestCase):
                     'image': '/media/images/IMG2.jpg',
                     'thumbnail': '/media/thumbnails/IMG2_thumb.webp',
                     'preview': '/media/previews/IMG2_preview.webp',
-                    'key': 2
+                    'key': photo2.pk
                 },
                 {
                     'timestamp': '2024-02-21T10:52:03+00:00',
                     'image': '/media/images/IMG1.jpg',
                     'thumbnail': '/media/thumbnails/IMG1_thumb.webp',
                     'preview': '/media/previews/IMG1_preview.webp',
-                    'key': 1
+                    'key': photo1.pk
                 },
                 {
                     'timestamp': '2024-01-28T10:52:03+00:00',
                     'image': '/media/images/IMG3.jpg',
                     'thumbnail': '/media/thumbnails/IMG3_thumb.webp',
                     'preview': '/media/previews/IMG3_preview.webp',
-                    'key': 3
+                    'key': photo3.pk
                 },
             ]
         )
