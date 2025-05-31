@@ -17,6 +17,8 @@ from django.db.models.signals import post_save, post_delete
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.validators import MaxValueValidator, MinValueValidator
 
+from .disable_for_loaddata import disable_for_loaddata
+
 # Timestamp format used to print DateTimeFields, parse exif into datetime, etc.
 TIME_FORMAT = '%Y:%m:%d %H:%M:%S'
 
@@ -185,6 +187,7 @@ class Group(models.Model):
 
 @receiver(post_save, sender=Group)
 @receiver(post_delete, sender=Group)
+@disable_for_loaddata
 def clear_cached_group_lists(instance, **kwargs):
     '''Clear cached unnamed_groups list when a Group is saved or deleted (will
     be generated and cached next time needed).
@@ -418,6 +421,7 @@ class Plant(models.Model):
 
 @receiver(post_save, sender=Plant)
 @receiver(post_delete, sender=Plant)
+@disable_for_loaddata
 def clear_cached_plant_lists(instance, **kwargs):
     '''Clear cached unnamed_plant and species_options lists when a Plant is
     saved or deleted (will be generated and cached next time needed).

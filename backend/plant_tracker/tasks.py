@@ -31,6 +31,7 @@ from .models import (
     get_group_options,
     get_plant_species_options
 )
+from .disable_for_loaddata import disable_for_loaddata
 
 
 def revoke_queued_task(task_id_cache_name):
@@ -134,6 +135,7 @@ def schedule_cached_overview_state_update(user):
 @receiver(post_save, sender=Group)
 @receiver(post_delete, sender=Plant)
 @receiver(post_delete, sender=Group)
+@disable_for_loaddata
 def update_cached_overview_state_hook(instance, **kwargs):
     '''Schedules task to update cached overview state for a specific user when
     one of their Plant or Group models is saved or deleted.
@@ -237,6 +239,7 @@ def schedule_cached_manage_plant_state_update(uuid):
 @receiver(post_delete, sender=RepotEvent)
 @receiver(post_delete, sender=NoteEvent)
 @receiver(post_delete, sender=Photo)
+@disable_for_loaddata
 def update_cached_manage_plant_state_hook(instance, **kwargs):
     '''Schedules task to update cached manage_plant state when Plant or events
     with reverse relation to Plant are modified
@@ -277,6 +280,7 @@ def schedule_cached_plant_options_update(user):
 
 @receiver(post_save, sender=Plant)
 @receiver(post_delete, sender=Plant)
+@disable_for_loaddata
 def update_cached_plant_options_hook(instance, **kwargs):
     '''Schedules task to update cached plant_options when Plant is saved/deleted.'''
     schedule_cached_plant_options_update(instance.user)
@@ -304,6 +308,7 @@ def schedule_cached_group_options_update(user):
 
 @receiver(post_save, sender=Group)
 @receiver(post_delete, sender=Group)
+@disable_for_loaddata
 def update_cached_group_options_hook(instance, **kwargs):
     '''Schedules task to update cached group_options when Group is saved/deleted.'''
     schedule_cached_group_options_update(instance.user)
