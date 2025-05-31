@@ -180,7 +180,7 @@ def create_user(request, data):
     except ValueError:
         return JsonResponse({"error": ["missing required field"]}, status=400)
     except IntegrityError as e:
-        duplicate = 'email' if str(e).endswith('email') else 'username'
+        duplicate = 'email' if 'email' in str(e) else 'username'
         return JsonResponse({"error": [f"{duplicate} already exists"]}, status=409)
 
 
