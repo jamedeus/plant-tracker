@@ -24,8 +24,6 @@ test_backend:
     - pipenv run coverage run manage.py test
     - pipenv run coverage report
   coverage: '/TOTAL.*\s+(\d+\.\d+\%)$/'
-  only:
-    - master
 
 # Run react unit tests
 test_frontend:
@@ -40,8 +38,6 @@ test_frontend:
   script:
     - npm test -- --coverage
   coverage: '/All files[^\|]*\|[^\|]*\s+([\d\.]+)/'
-  only:
-    - master
 
 # Update pylint badge
 pylint:
