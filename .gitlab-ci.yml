@@ -15,6 +15,16 @@ test_backend:
   tags:
     - nas
     - docker
+  services:
+    - name: postgres:17.5
+      alias: db
+      variables:
+        POSTGRES_DB: plant_tracker
+        POSTGRES_USER: postgres
+        POSTGRES_PASSWORD: unittest
+  variables:
+    DATABASE_PASSWORD: unittest
+    DATABASE_HOST: db
   before_script:
     - pip3 install pipenv
     - pipenv install --dev

@@ -13,6 +13,7 @@ pillow-heif = "*"
 django = "*"
 segno = "*"
 django-unique-user-email = "*"
+psycopg = {extras = ["binary"], version = "*"}
 
 [dev-packages]
 pylint-django = "*"
