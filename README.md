@@ -73,6 +73,41 @@ Build frontend when files change:
 npm run watch
 ```
 
+### Database
+
+A postgres database is required for development. The easiest way to set this up is docker. Create `docker-compose.yaml` with:
+```
+services:
+  plant-tracker-db:
+    image: postgres:17.5
+    container_name: plant-tracker-development-db
+    environment:
+      POSTGRES_DB: plant_tracker
+      POSTGRES_USER: postgres
+      # Remember to add the DATABASE_PASSWORD env var to your .env
+      POSTGRES_PASSWORD: supersecrettestingpassword
+    volumes:
+      - plant-tracker-development-db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    restart: unless-stopped
+
+volumes:
+  filestash:
+  plant-tracker-development-db:
+```
+
+Run `docker compose up -d` to start the database container.
+
+Then create `.env` at the repository root (same directory as `Pipfile`) and set the database password:
+```
+DATABASE_PASSWORD=supersecrettestingpassword
+```
+
+This will set the env var automatically every time you run `pipenv shell`.
+
+The other database env vars do not need to be set, they will default to the values in the docker-compose above. See [settings.py](backend/backend/settings.py) for all database environment variables.
+
 ### Full development server setup
 
 The production setup requires a celery worker to handle async tasks and redis as a message queue.
