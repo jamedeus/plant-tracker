@@ -9,6 +9,15 @@ services:
       - ALLOWED_HOSTS=plants.lan,localhost
       # Domain for QR code URLS, use one of the ALLOWED_HOSTS
       - URL_PREFIX=plants.lan
+      # Postgres database host (must match container below)
+      - DATABASE_HOST=plant-tracker-db
+      # Postgres database password (must match container below)
+      - DATABASE_PASSWORD=supersecretpassword
+      # Optional: All postgres settings can be overridden with env vars
+      # - DATABASE_NAME=
+      # - DATABASE_USER=
+      # - DATABASE_HOST=
+      # - DATABASE_PORT=
       # Optional: Disables user accounts and authentication if True
       - SINGLE_USER_MODE=False
       # Optional: Persistent key between sessions
@@ -18,7 +27,7 @@ services:
       # username and password are set (email is optional)
       - DJANGO_SUPERUSER_USERNAME=myusername
       - DJANGO_SUPERUSER_PASSWORD=mypassword
-      #- DJANGO_SUPERUSER_EMAIL=
+      # - DJANGO_SUPERUSER_EMAIL=
     volumes:
       # Persistent storage between sessions
       - plant-tracker-data:/mnt/backend/data/
@@ -26,5 +35,21 @@ services:
       - 8456:8456
     restart: unless-stopped
 
+  plant-tracker-db:
+    image: postgres:17.5
+    container_name: plant-tracker-db
+    # shared memory limit
+    shm_size: 128mb
+    environment:
+      POSTGRES_DB: plant_tracker
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: supersecretpassword
+    volumes:
+      - plant-tracker-database:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    restart: unless-stopped
+
 volumes:
   plant-tracker-data:
+  plant-tracker-database:

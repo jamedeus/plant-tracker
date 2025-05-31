@@ -133,8 +133,12 @@ if not os.path.isdir(os.path.join(BASE_DIR, 'data')):
 
 DATABASES = {
     "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": os.path.join(BASE_DIR, 'data', 'db.sqlite3'),
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.environ.get('DATABASE_NAME', "plant_tracker"),
+        "USER": os.environ.get('DATABASE_USER', "postgres"),
+        "PASSWORD": os.environ.get('DATABASE_PASSWORD'),
+        "HOST": os.environ.get('DATABASE_HOST', "127.0.0.1"),
+        "PORT": os.environ.get('DATABASE_PORT', "5432"),
     }
 }
 
