@@ -219,6 +219,30 @@ class ModelRegressionTests(TestCase):
             'Unnamed plant 1'
         )
 
+    def test_unnamed_plant_index_should_not_change_when_added_to_group(self):
+        '''Issue: The get_unnamed_plants function used an unsorted queryset,
+        assuming the entries would be in the same order they were added to the
+        database. This is true on sqlite, but order is non-deterministic on
+        postgres. After the database backend was changed to postgres an unnamed
+        plant's index could change after a ForeignKey was added (eg add group).
+        '''
+
+        # Create 2 test plants and 1 group
+        plant1 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        plant2 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        group = Group.objects.create(uuid=uuid4(), user=get_default_user())
+
+        # Confirm "Unnamed plant <index>" matches creation order
+        self.assertEqual(plant1.get_display_name(), 'Unnamed plant 1')
+        self.assertEqual(plant2.get_display_name(), 'Unnamed plant 2')
+
+        # Add plant1 to group, save
+        plant1.group = group
+        plant1.save()
+
+        # Confirm display name did not change
+        self.assertEqual(plant1.get_display_name(), 'Unnamed plant 1')
+
 
 class ViewRegressionTests(TestCase):
     def tearDown(self):

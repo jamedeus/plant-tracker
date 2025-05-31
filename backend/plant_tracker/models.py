@@ -37,7 +37,12 @@ def get_unnamed_plants(user):
             name__isnull=True,
             species__isnull=True,
             user=user
-        ).values_list('id', flat=True))
+        ).order_by(
+            'created'
+        ).values_list(
+            'id',
+            flat=True
+        ))
         cache.set(f'unnamed_plants_{user.pk}', unnamed_plants, 600)
     return unnamed_plants
 
@@ -53,7 +58,12 @@ def get_unnamed_groups(user):
             name__isnull=True,
             location__isnull=True,
             user=user
-        ).values_list('id', flat=True))
+        ).order_by(
+            'created'
+        ).values_list(
+            'id',
+            flat=True
+        ))
         cache.set(f'unnamed_groups_{user.pk}', unnamed_groups, 600)
     return unnamed_groups
 
