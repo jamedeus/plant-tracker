@@ -9,6 +9,8 @@ services:
       - ALLOWED_HOSTS=plants.lan,localhost
       # Domain for QR code URLS, use one of the ALLOWED_HOSTS
       - URL_PREFIX=plants.lan
+      # Postgres database host (must match container below)
+      - DATABASE_HOST=plant-tracker-db
       # Postgres database password (must match container below)
       - DATABASE_PASSWORD=supersecretpassword
       # Optional: All postgres settings can be overridden with env vars
