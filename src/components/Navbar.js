@@ -91,7 +91,7 @@ const Navbar = memo(function Navbar({ menuOptions, onOpenMenu, title, titleOptio
     return (
         <div
             ref={navbarRef}
-            className="navbar bg-base-100 fixed top-0 container z-99"
+            className="navbar bg-base-100 fixed top-0 z-99"
         >
             {/* Top left dropdown button */}
             <div
