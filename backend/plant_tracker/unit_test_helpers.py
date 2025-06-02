@@ -19,7 +19,13 @@ class JSONClient(Client):
         return super().post(path, data, content_type, **extra)
 
 
-def create_mock_photo(creation_time=None, name='mock_photo.jpg', timezone=None, blank_exif=False, size=(1, 1)):
+def create_mock_photo(
+    creation_time=None,
+    name='mock_photo.jpg',
+    timezone=None,
+    blank_exif=False,
+    size=(1, 1)
+):
     '''Creates a mock JPG in memory with exif parameters set by optional args.
 
     The creation_time and timezone args set the DateTimeOriginal and

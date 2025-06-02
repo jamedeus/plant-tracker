@@ -294,7 +294,7 @@ const FilterColumn = ({
     // column scrolls offscreen. Filtering contents changes column height, so if
     // the new height fits offscreen the header will unstick and whole column
     // disappears. Instant scroll pulls the offscreen part back into viewport to
-    // prevent this and isn't noticable since the sticky header doesn't move.
+    // prevent this and isn't noticeable since the sticky header doesn't move.
     const colRef = useRef(null);
     const [hasLoaded, setHasLoaded] = useState(false);
     useEffect(() => {
