@@ -160,6 +160,22 @@ describe('PrintModal', () => {
         expect(print).not.toHaveBeenCalled();
     });
 
+    it('remembers last-selected tab when options are rendered again', async () => {
+        // Mock fetch function to return promise that never resolves (stay loading)
+        global.fetch = jest.fn(() => new Promise(() => {}));
+
+        // Select medium size option, confirm tab has selected class
+        await user.click(component.getByText("medium"));
+        expect(component.getByText("medium").classList).toContain("tab-option-selected");
+
+        // Click generate button, then click cancel to render options again
+        await user.click(component.getByText("Generate"));
+        await user.click(component.getByText('Cancel'));
+
+        // Confirm medium tab is still selected (did not default back to small)
+        expect(component.getByText("medium").classList).toContain("tab-option-selected");
+    });
+
     it('shows correct error when URL_PREFIX env var is not set', async () => {
         // Mock fetch function to return expected error
         global.fetch = jest.fn(() => Promise.resolve({
@@ -178,7 +194,6 @@ describe('PrintModal', () => {
         expect(component.getByText('Check docker config')).not.toBeNull();
     });
 
-
     it('shows correct error when URL_PREFIX env var is too long', async () => {
         // Mock fetch function to return expected error
         global.fetch = jest.fn(() => Promise.resolve({
@@ -196,7 +211,6 @@ describe('PrintModal', () => {
         await user.click(component.getByText('Generate'));
         expect(component.getByText(/shorter URL_PREFIX/)).not.toBeNull();
     });
-
 
     it('shows placeholder error when an unexpected error is received', async () => {
         // Mock fetch function to return unexpected error code

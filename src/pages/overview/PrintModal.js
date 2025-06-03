@@ -190,9 +190,12 @@ const PrintModal = memo(function PrintModal() {
                     ref={modalRef}
                 >
                     <div className="h-36 mt-2 flex flex-col justify-center">
-                        <Tab.Group onChange={(index) => {
-                            setQrSize(Object.values(sizeOptions)[index]);
-                        }}>
+                        <Tab.Group
+                            onChange={(index) => {
+                                setQrSize(Object.values(sizeOptions)[index]);
+                            }}
+                            defaultIndex={Object.values(sizeOptions).indexOf(qrSize)}
+                        >
                             <Tab.List className="tab-group">
                                 {Object.keys(sizeOptions).map((option) => (
                                     <Tab key={option} className={({ selected }) =>
