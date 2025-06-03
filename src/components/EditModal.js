@@ -27,11 +27,11 @@ const EditModal = ({ title, formRef, onSubmit, children }) => {
 
             <div className="modal-action">
                 <form method="dialog">
-                    <button className="btn">
+                    <button className="btn btn-soft">
                         Cancel
                     </button>
                     <button
-                        className="btn"
+                        className="btn btn-accent"
                         onClick={onSubmit}
                         disabled={!formIsValid}
                     >

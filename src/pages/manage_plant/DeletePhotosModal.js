@@ -243,15 +243,15 @@ const DeletePhotosModal = () => {
                     <p className="my-8">No photos</p>
                 )}
 
-                <div className="flex mt-6 mx-auto">
+                <div className="modal-action mt-6">
                     <button
-                        className="btn mr-2"
+                        className="btn btn-soft"
                         onClick={closeDeletePhotosModal}
                     >
                         Cancel
                     </button>
                     <button
-                        className="btn btn-error ml-2"
+                        className="btn btn-error"
                         onClick={() => setConfirmDelete(true)}
                         disabled={!selectedPhotos.length}
                         data-testid="delete_photos"
@@ -284,7 +284,7 @@ const DeletePhotosModal = () => {
 
                 <div className="modal-action mt-6">
                     <button
-                        className="btn"
+                        className="btn btn-soft"
                         onClick={() => setConfirmDelete(false)}
                     >
                         Cancel

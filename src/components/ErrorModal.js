@@ -35,7 +35,7 @@ export const ErrorModal = () => {
                 {message}
             </div>
             <div className="modal-action">
-                <button className="btn" onClick={closeErrorModal}>
+                <button className="btn btn-accent" onClick={closeErrorModal}>
                     OK
                 </button>
             </div>

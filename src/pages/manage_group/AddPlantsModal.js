@@ -42,7 +42,7 @@ const AddPlantsModal = memo(function AddPlantsModal({ options, addPlants }) {
 
             <div className="modal-action">
                 <form method="dialog">
-                    <button className="btn">
+                    <button className="btn btn-soft">
                         Cancel
                     </button>
                     <button
