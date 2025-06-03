@@ -533,10 +533,10 @@ class ViewRegressionTests(TestCase):
             'description': 'Wide enough to drive a car through',
             'pot_size': '4'
         })
-        self.assertEqual(response.status_code, 409)
+        self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response.json(),
-            {"error": "uuid already exists in database"}
+            {"error": {'uuid': ['Plant with this Uuid already exists.']}}
         )
 
         # Confirm only the first plant was created in database
@@ -574,10 +574,10 @@ class ViewRegressionTests(TestCase):
             'location': 'inside',
             'description': ''
         })
-        self.assertEqual(response.status_code, 409)
+        self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response.json(),
-            {"error": "uuid already exists in database"}
+            {"error": {'uuid': ['Group with this Uuid already exists.']}}
         )
 
         # Confirm only the first group was created in database

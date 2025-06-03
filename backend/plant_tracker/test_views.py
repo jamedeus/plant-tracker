@@ -710,6 +710,103 @@ class RegistrationTests(TestCase):
         self.assertIn('Fittonia', response.context['state']['species_options'])
         self.assertEqual(len(response.context['state']['species_options']), 2)
 
+    def test_plant_fields_max_length(self):
+        # Send plant registration request name longer than 50 characters
+        response = self.client.post('/register_plant', {
+            'uuid': uuid4(),
+            'name': 'this name is longer than the fifty character length limit',
+            'species': '',
+            'description': '',
+            'pot_size': ''
+        })
+
+        # Confirm rejected with correct error message
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {'error': {
+            'name': ["Ensure this value has at most 50 characters (it has 57)."]
+        }})
+
+        # Send plant registration request species longer than 50 characters
+        response = self.client.post('/register_plant', {
+            'uuid': uuid4(),
+            'name': 'this name is longer than the fifty character limit',
+            'species': 'this species is longer than the fifty character limit',
+            'description': '',
+            'pot_size': ''
+        })
+
+        # Confirm rejected with correct error message
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {'error': {
+            'species': ["Ensure this value has at most 50 characters (it has 53)."]
+        }})
+
+        # Send plant registration request description longer than 500 characters
+        response = self.client.post('/register_plant', {
+            'uuid': uuid4(),
+            'name': '',
+            'species': '',
+            # pylint: disable-next=line-too-long
+            'description': 'this is a very excessively long description that uses a large variety of completely unnecessary filler words that add no information to the description and serve no purpose other than to make the lenght of the description exceed the maximum allowed length for a description, which is five hundred characters. Descriptions longer than five hundred characters are not allowed because it is completely, totally, unnecessarily long and will potentially create layout issues in various places on the frontend.',
+            'pot_size': ''
+        })
+
+        # Confirm rejected with correct error message
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {'error': {
+            'description': ["Ensure this value has at most 500 characters (it has 504)."]
+        }})
+
+        # Confirm no plants were added to database
+        self.assertEqual(len(Plant.objects.all()), 0)
+
+    def test_group_fields_max_length(self):
+        # Send group registration request name longer than 50 characters
+        response = self.client.post('/register_group', {
+            'uuid': uuid4(),
+            'name': 'this name is longer than the fifty character length limit',
+            'location': '',
+            'description': ''
+        })
+
+        # Confirm rejected with correct error message
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {'error': {
+            'name': ["Ensure this value has at most 50 characters (it has 57)."]
+        }})
+
+        # Send group registration request species longer than 50 characters
+        response = self.client.post('/register_group', {
+            'uuid': uuid4(),
+            'name': '',
+            'location': 'this location is longer than the fifty character limit',
+            'description': ''
+        })
+
+        # Confirm rejected with correct error message
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {'error': {
+            'location': ["Ensure this value has at most 50 characters (it has 54)."]
+        }})
+
+        # Send group registration request description longer than 500 characters
+        response = self.client.post('/register_group', {
+            'uuid': uuid4(),
+            'name': '',
+            'location': '',
+            # pylint: disable-next=line-too-long
+            'description': 'this is a very excessively long description that uses a large variety of completely unnecessary filler words that add no information to the description and serve no purpose other than to make the lenght of the description exceed the maximum allowed length for a description, which is five hundred characters. Descriptions longer than five hundred characters are not allowed because it is completely, totally, unnecessarily long and will potentially create layout issues in various places on the frontend.'
+        })
+
+        # Confirm rejected with correct error message
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {'error': {
+            'description': ["Ensure this value has at most 500 characters (it has 504)."]
+        }})
+
+        # Confirm no groups were added to database
+        self.assertEqual(len(Group.objects.all()), 0)
+
 
 class ManagePageTests(TestCase):
     def setUp(self):
@@ -1191,6 +1288,25 @@ class ManagePlantEndpointTests(TestCase):
         self.assertEqual(self.plant.name, 'test plant')
         self.assertEqual(self.plant.species, 'Giant Sequoia')
 
+    def test_edit_plant_details_field_too_long(self):
+        # Send edit_plant request with name longer than length limit (50 char)
+        response = self.client.post('/edit_plant', {
+            'plant_id': self.plant.uuid,
+            'name': 'this name is longer than the fifty character length limit',
+            'species': '',
+            'description': '',
+            'pot_size': ''
+        })
+
+        # Confirm rejected with correct error message
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {'error': {
+            'name': ["Ensure this value has at most 50 characters (it has 57)."]
+        }})
+
+        # Confirm name did not change in database
+        self.assertIsNone(self.plant.name)
+
     def test_add_plant_to_group(self):
         # Confirm test plant and group have no database relation
         self.assertIsNone(self.plant.group)
@@ -1344,6 +1460,24 @@ class ManageGroupEndpointTests(TestCase):
             self.group1.description,
             'This group is used for propagation'
         )
+
+    def test_edit_group_details_field_too_long(self):
+        # Send edit_group request with name longer than length limit (50 char)
+        response = self.client.post('/edit_group', {
+            'group_id': self.group1.uuid,
+            'name': 'this name is longer than the fifty character length limit',
+            'location': '',
+            'description': '',
+        })
+
+        # Confirm rejected with correct error message
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {'error': {
+            'name': ["Ensure this value has at most 50 characters (it has 57)."]
+        }})
+
+        # Confirm name did not change in database
+        self.assertIsNone(self.group1.name)
 
     def test_bulk_add_plants_to_group(self):
         # Confirm test plants are not in test group
@@ -2019,7 +2153,9 @@ class NoteEventEndpointTests(TestCase):
         self.assertEqual(response.status_code, 409)
         self.assertEqual(
             response.json(),
-            {'error': 'note with same timestamp already exists'}
+            {'error': {'timestamp': [
+                'Plant already has an event with the same type and timestamp'
+            ]}}
         )
         self.assertEqual(len(NoteEvent.objects.all()), 1)
 
@@ -2031,10 +2167,10 @@ class NoteEventEndpointTests(TestCase):
             'note_text': ''
         })
         # Confirm correct error, confirm no NoteEvent created
-        self.assertEqual(response.status_code, 411)
+        self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response.json(),
-            {'error': 'note cannot be empty'}
+            {"error": {"text": ["This field cannot be null."]}}
         )
         self.assertEqual(len(NoteEvent.objects.all()), 0)
 
@@ -2096,10 +2232,10 @@ class NoteEventEndpointTests(TestCase):
         })
 
         # Confirm correct error, confirm NoteEvent was not modified
-        self.assertEqual(response.status_code, 411)
+        self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response.json(),
-            {'error': 'note cannot be empty'}
+            {"error": {"text": ["This field cannot be null."]}}
         )
         self.assertEqual(len(NoteEvent.objects.all()), 1)
         self.assertEqual(NoteEvent.objects.get(timestamp=timestamp).text, 'note')

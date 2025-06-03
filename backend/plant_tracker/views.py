@@ -299,7 +299,9 @@ def register_plant(user, data, **kwargs):
         # transaction.atomic cleans up after IntegrityError if uuid not unique
         with transaction.atomic():
             # Instantiate model with payload keys as kwargs
-            Plant.objects.create(user=user, **data)
+            plant = Plant(user=user, **data)
+            plant.full_clean()
+            plant.save()
 
         # Redirect to manage page
         return HttpResponseRedirect(f'/manage/{data["uuid"]}')
@@ -309,6 +311,9 @@ def register_plant(user, data, **kwargs):
             {"error": "uuid already exists in database"},
             status=409
         )
+
+    except ValidationError as error:
+        return JsonResponse({"error": error.message_dict}, status=400)
 
 
 @get_user_token
@@ -322,7 +327,9 @@ def register_group(user, data, **kwargs):
         # transaction.atomic cleans up after IntegrityError if uuid not unique
         with transaction.atomic():
             # Instantiate model with payload keys as kwargs
-            Group.objects.create(user=user, **data)
+            group = Group(user=user, **data)
+            group.full_clean()
+            group.save()
 
         # Redirect to manage page
         return HttpResponseRedirect(f'/manage/{data["uuid"]}')
@@ -332,6 +339,9 @@ def register_group(user, data, **kwargs):
             {"error": "uuid already exists in database"},
             status=409
         )
+
+    except ValidationError as error:
+        return JsonResponse({"error": error.message_dict}, status=400)
 
 
 @get_user_token
@@ -383,7 +393,12 @@ def edit_plant_details(plant, data, **kwargs):
     plant.species = data["species"]
     plant.description = data["description"]
     plant.pot_size = data["pot_size"]
-    plant.save()
+    # Enforce length limits
+    try:
+        plant.full_clean()
+        plant.save()
+    except ValidationError as error:
+        return JsonResponse({"error": error.message_dict}, status=400)
 
     # Return modified payload with new display_name
     del data["plant_id"]
@@ -405,7 +420,12 @@ def edit_group_details(group, data, **kwargs):
     group.name = data["name"]
     group.location = data["location"]
     group.description = data["description"]
-    group.save()
+    # Enforce length limits
+    try:
+        group.full_clean()
+        group.save()
+    except ValidationError as error:
+        return JsonResponse({"error": error.message_dict}, status=400)
 
     # Return modified payload with new display_name
     del data["group_id"]
@@ -633,11 +653,13 @@ def add_plant_note(plant, timestamp, data, **kwargs):
     try:
         # Use transaction.atomic to clean up after IntegrityError if text empty
         with transaction.atomic():
-            note = NoteEvent.objects.create(
+            note = NoteEvent(
                 plant=plant,
                 timestamp=timestamp,
                 text=data["note_text"]
             )
+            note.full_clean()
+            note.save()
         return JsonResponse(
             {
                 "action": "add_note",
@@ -647,15 +669,10 @@ def add_plant_note(plant, timestamp, data, **kwargs):
             },
             status=200
         )
-    except ValidationError:
+    except ValidationError as error:
         return JsonResponse(
-            {"error": "note with same timestamp already exists"},
-            status=409
-        )
-    except IntegrityError:
-        return JsonResponse(
-            {"error": "note cannot be empty"},
-            status=411
+            {"error": error.message_dict},
+            status=409 if "timestamp" in error.message_dict.keys() else 400
         )
 
 
@@ -673,6 +690,7 @@ def edit_plant_note(plant, timestamp, data, **kwargs):
         with transaction.atomic():
             note = NoteEvent.objects.get(plant=plant, timestamp=timestamp)
             note.text = data["note_text"]
+            note.full_clean()
             note.save()
         return JsonResponse(
             {
@@ -685,11 +703,8 @@ def edit_plant_note(plant, timestamp, data, **kwargs):
         )
     except NoteEvent.DoesNotExist:
         return JsonResponse({"error": "note not found"}, status=404)
-    except IntegrityError:
-        return JsonResponse(
-            {"error": "note cannot be empty"},
-            status=411
-        )
+    except ValidationError as error:
+        return JsonResponse( {"error": error.message_dict}, status=400)
 
 
 @get_user_token

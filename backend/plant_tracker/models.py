@@ -639,9 +639,11 @@ class Event(models.Model):
             plant=self.plant,
             timestamp=self.timestamp
         ).exclude(pk=self.pk).exists():
-            raise ValidationError(
-                "Plant already has an event with the same type and timestamp"
-            )
+            raise ValidationError({
+                "timestamp": [
+                    "Plant already has an event with the same type and timestamp"
+                ]
+            })
         super().save(*args, **kwargs)
 
 
