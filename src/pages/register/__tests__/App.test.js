@@ -65,9 +65,9 @@ describe('App', () => {
         }));
 
         // Fill in form fields
-        await user.type(app.getByLabelText('Plant name'), 'Test plant');
-        await user.type(app.getByLabelText('Plant species'), 'Fittonia');
-        await user.type(app.getByLabelText('Description'), 'Clay pot');
+        await user.type(app.getByRole('textbox', {name: 'Plant name'}), 'Test plant');
+        await user.type(app.getByRole('combobox', {name: 'Plant species'}), 'Fittonia');
+        await user.type(app.getByRole('textbox', {name: 'Description'}), 'Clay pot');
         await user.type(app.getByLabelText('Pot size'), '6');
 
         // Click Save button
@@ -99,9 +99,9 @@ describe('App', () => {
         await user.click(app.getByText('Group'));
 
         // Fill in form fields
-        await user.type(app.getByLabelText('Group name'), 'Test group');
-        await user.type(app.getByLabelText('Group location'), 'Middle shelf');
-        await user.type(app.getByLabelText('Description'), 'Microgreens');
+        await user.type(app.getByRole('textbox', {name: 'Group name'}), 'Test group');
+        await user.type(app.getByRole('textbox', {name: 'Group location'}), 'Middle shelf');
+        await user.type(app.getByRole('textbox', {name: 'Description'}), 'Microgreens');
 
         // Click Save button
         await user.click(app.getByText('Save'));
@@ -155,6 +155,57 @@ describe('App', () => {
         expect(app.getByText(/Unexpected, should return redirect or error/)).toBeInTheDocument();
     });
 
+    it('disables the save button when plant fields exceed max length', async () => {
+        // Confirm save button is enabled
+        expect(app.getByRole('button', {name: 'Save'})).not.toBeDisabled();
+
+        // Get fields with length limits
+        const nameField = app.getByRole('textbox', {name: 'Plant name'});
+        const speciesField = app.getByRole('combobox', {name: 'Plant species'});
+        const descriptionField = app.getByRole('textbox', {name: 'Description'});
+
+        // Type >50 characters in Plant name field, confirm save button is disabled
+        await user.type(nameField, '.'.repeat(51));
+        expect(app.getByRole('button', {name: 'Save'})).toBeDisabled();
+        await user.clear(nameField);
+
+        // Type >50 characters in species field, confirm save button is disabled
+        await user.type(speciesField, '.'.repeat(51));
+        expect(app.getByRole('button', {name: 'Save'})).toBeDisabled();
+        await user.clear(speciesField);
+
+        // Type >500 characters in description field, confirm save button is disabled
+        await user.type(descriptionField, '.'.repeat(501));
+        expect(app.getByRole('button', {name: 'Save'})).toBeDisabled();
+    });
+
+    it('disables the save button when group fields exceed max length', async () => {
+        // Click Group button
+        await user.click(app.getByText('Group'));
+
+        // Confirm save button is enabled
+        expect(app.getByRole('button', {name: 'Save'})).not.toBeDisabled();
+
+        // Get fields with length limits
+        const nameField = app.getByRole('textbox', {name: 'Group name'});
+        const locationField = app.getByRole('textbox', {name: 'Group location'});
+        const descriptionField = app.getByRole('textbox', {name: 'Description'});
+
+        // Type >50 characters in Group name field, confirm save button is disabled
+        await user.type(nameField, '.'.repeat(51));
+        expect(app.getByRole('button', {name: 'Save'})).toBeDisabled();
+        await user.clear(nameField);
+
+        // Type >50 characters in location field, confirm save button is disabled
+        await user.type(locationField, '.'.repeat(51));
+        expect(app.getByRole('button', {name: 'Save'})).toBeDisabled();
+        await user.clear(locationField);
+
+        // Type >500 characters in description field, confirm save button is disabled
+        await user.type(descriptionField, '.'.repeat(501));
+        expect(app.getByRole('button', {name: 'Save'})).toBeDisabled();
+    });
+
     // Note: this response can only be received if SINGLE_USER_MODE is disabled
     it('redirects to login page if user is not signed in', async () => {
         // Mock fetch function to simulate user with an expired session
@@ -167,9 +218,9 @@ describe('App', () => {
         }));
 
         // Fill in form fields
-        await user.type(app.getByLabelText('Plant name'), 'Test plant');
-        await user.type(app.getByLabelText('Plant species'), 'Fittonia');
-        await user.type(app.getByLabelText('Description'), 'Clay pot');
+        await user.type(app.getByRole('textbox', {name: 'Plant name'}), 'Test plant');
+        await user.type(app.getByRole('combobox', {name: 'Plant species'}), 'Fittonia');
+        await user.type(app.getByRole('textbox', {name: 'Description'}), 'Clay pot');
         await user.type(app.getByLabelText('Pot size'), '6');
 
         // Click Save button

@@ -86,6 +86,13 @@ function App() {
     const plantFormRef = useRef(null);
     const groupFormRef = useRef(null);
 
+    // Disable save button if form invalid (field exceeded length limit)
+    const [formIsValid, setFormIsValid] = useState(true);
+    const onInput = () => {
+        const form = visibleForm === 0 ? plantFormRef : groupFormRef;
+        setFormIsValid(form.current.checkValidity());
+    };
+
     const submit = async () => {
         // Parse all fields from visible form, set correct endpoint
         let payload, endpoint;
@@ -127,14 +134,21 @@ function App() {
                 title='Registration'
             />
 
-            <div className="flex flex-col w-96 max-w-[100vw] px-4">
+            <div
+                className="flex flex-col w-96 max-w-[100vw] px-4"
+                onInput={onInput}
+            >
                 <Form
                     setVisibleForm={setVisibleForm}
                     plantFormRef={plantFormRef}
                     groupFormRef={groupFormRef}
                 />
 
-                <button className="btn btn-accent mx-auto" onClick={submit}>
+                <button
+                    className="btn btn-accent mx-auto"
+                    disabled={!formIsValid}
+                    onClick={submit}
+                >
                     Save
                 </button>
             </div>

@@ -133,16 +133,25 @@ exports[`App matches snapshot 1`] = `
             class="flex flex-col gap-4"
             id="plantDetails"
           >
-            <label>
+            <label
+              class="relative"
+            >
               <span>
                 Plant name
               </span>
               <input
                 class="input w-full"
                 name="name"
+                pattern=".{0,50}"
                 type="text"
                 value=""
               />
+              <p
+                aria-hidden="true"
+                class="invalid-input-label"
+              >
+                too long!
+              </p>
             </label>
             <label
               class="relative"
@@ -158,10 +167,17 @@ exports[`App matches snapshot 1`] = `
                 data-headlessui-state=""
                 id="headlessui-combobox-input-:r3:"
                 name="species"
+                pattern=".{0,50}"
                 role="combobox"
                 type="text"
                 value=""
               />
+              <p
+                aria-hidden="true"
+                class="invalid-input-label"
+              >
+                too long!
+              </p>
             </label>
             <label>
               <span>
@@ -175,7 +191,9 @@ exports[`App matches snapshot 1`] = `
                 value=""
               />
             </label>
-            <label>
+            <label
+              class="relative"
+            >
               <span>
                 Description
               </span>
@@ -183,6 +201,12 @@ exports[`App matches snapshot 1`] = `
                 class="textarea w-full"
                 name="description"
               />
+              <p
+                aria-hidden="true"
+                class="invalid-input-label"
+              >
+                too long!
+              </p>
             </label>
           </form>
         </div>

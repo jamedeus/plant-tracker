@@ -46,6 +46,25 @@
     }
 }
 
+@layer utilities {
+    .input, .textarea {
+        /* Change outline color when value is invalid */
+        &:invalid {
+            @apply outline-error border-error;
+        }
+
+        /* Invalid input label (hidden by default) */
+        & + p.invalid-input-label {
+            @apply hidden;
+        }
+
+        /* Show invalid input label when value is invalid */
+        &:invalid + p.invalid-input-label {
+            @apply block absolute top-2 w-full text-error text-sm text-center;
+        }
+    }
+}
+
 @utility file-input {
     @apply text-base bg-base-100 overflow-hidden h-12 shrink pe-4;
     border: var(--border)solid #0000;

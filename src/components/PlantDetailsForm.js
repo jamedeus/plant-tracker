@@ -52,7 +52,11 @@ const SpeciesSelect = ({ value }) => {
                     setSelected(event.target.value);
                 }}
                 autoComplete="off"
+                pattern=".{0,50}"
             />
+            <p className="invalid-input-label" aria-hidden="true">
+                too long!
+            </p>
             <Transition
                 as={Fragment}
                 enter="transition ease-in duration-100"
@@ -88,14 +92,18 @@ SpeciesSelect.propTypes = {
 const PlantDetailsForm = ({ formRef, name, species, pot_size, description }) => {
     return (
         <form id="plantDetails" ref={formRef} className="flex flex-col gap-4">
-            <label>
+            <label className="relative">
                 <span>Plant name</span>
                 <input
                     name="name"
                     type="text"
                     className="input w-full"
                     defaultValue={name}
+                    pattern=".{0,50}"
                 />
+                <p className="invalid-input-label" aria-hidden="true">
+                    too long!
+                </p>
             </label>
             <label className="relative">
                 <span>Plant species</span>
@@ -116,13 +124,21 @@ const PlantDetailsForm = ({ formRef, name, species, pot_size, description }) => 
                     }}
                 />
             </label>
-            <label>
+            <label className="relative">
                 <span>Description</span>
                 <textarea
                     name="description"
                     className="textarea w-full"
                     defaultValue={description}
+                    onInput={(e) => e.target.value.length > 500 ? (
+                        e.target.setCustomValidity("Too long")
+                    ) : (
+                        e.target.setCustomValidity("")
+                    )}
                 />
+                <p className="invalid-input-label" aria-hidden="true">
+                    too long!
+                </p>
             </label>
         </form>
     );
