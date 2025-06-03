@@ -67,7 +67,7 @@ const SpeciesSelect = ({ value }) => {
                 leaveTo="opacity-0"
             >
                 <Combobox.Options className={clsx(
-                    "absolute w-full max-h-60 overflow-auto z-10 mt-2 p-2",
+                    "absolute w-full max-h-60 overflow-auto z-10 mt-24 p-2",
                     "bg-neutral rounded-lg text-center"
                 )}>
                     {/* Add option if current input not in speciesOptions */}
