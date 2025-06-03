@@ -184,7 +184,7 @@ const PhotoModal = () => {
                     </div>
                 </div>
 
-                <div className="modal-action mx-auto">
+                <div className="modal-action">
                     <button
                         className="btn btn-accent"
                         onClick={handleSubmit}

@@ -246,7 +246,7 @@ const EventHistoryModal = () => {
                     </Tab.Panel>
                 </Tab.Panels>
             </Tab.Group>
-            <div className="flex mt-4">
+            <div className="modal-action mt-4">
                 <button
                     className="btn btn-error mx-auto"
                     onClick={deleteAllSelected}

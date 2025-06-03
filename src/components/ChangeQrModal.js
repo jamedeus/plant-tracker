@@ -38,9 +38,11 @@ const ChangeQrModal = memo(function ChangeQrModal({ uuid }) {
                 </p>
             </div>
 
-            <button className="btn btn-accent mx-auto mt-4" onClick={submit}>
-                OK
-            </button>
+            <div className="modal-action mt-4">
+                <button className="btn btn-accent" onClick={submit}>
+                    OK
+                </button>
+            </div>
         </Modal>
     );
 });

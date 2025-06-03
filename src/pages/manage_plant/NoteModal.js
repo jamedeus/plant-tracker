@@ -174,9 +174,9 @@ const NoteModal = () => {
                         {charCount} / 500
                     </span>
                 </div>
-                {editingNote
-                    ? (
-                        <div className="modal-action mx-auto">
+                <div className="modal-action">
+                    {editingNote ? (
+                        <>
                             <HoldToConfirm
                                 callback={handleDelete}
                                 timeout={holdToConfirmDelay}
@@ -190,19 +190,17 @@ const NoteModal = () => {
                             >
                                 Save
                             </button>
-                        </div>
+                        </>
                     ) : (
-                        <div className="modal-action mx-auto">
-                            <button
-                                className="btn btn-accent"
-                                onClick={handleSubmit}
-                                disabled={saveButtonDisabled}
-                            >
-                                Save
-                            </button>
-                        </div>
-                    )
-                }
+                        <button
+                            className="btn btn-accent"
+                            onClick={handleSubmit}
+                            disabled={saveButtonDisabled}
+                        >
+                            Save
+                        </button>
+                    )}
+                </div>
             </div>
         </Modal>
     );

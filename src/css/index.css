@@ -134,6 +134,15 @@
     }
 }
 
+/* Centered buttons */
+.modal-action {
+    @apply gap-4 justify-center;
+
+    & > form {
+        @apply flex gap-4;
+    }
+}
+
 /* Replaces inline class added by FontAwesomeIcon (not added by react-icons) */
 /* Fixes horizontal alignment when icon is in front of a text string */
 @utility fa-inline {

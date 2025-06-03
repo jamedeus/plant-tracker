@@ -40,13 +40,13 @@ const AddPlantsModal = memo(function AddPlantsModal({ options, addPlants }) {
                 )}
             </div>
 
-            <div className="modal-action mx-auto">
+            <div className="modal-action">
                 <form method="dialog">
-                    <button className="btn mr-2">
+                    <button className="btn">
                         Cancel
                     </button>
                     <button
-                        className="btn btn-accent ml-2"
+                        className="btn btn-accent"
                         onClick={submit}
                     >
                         Add

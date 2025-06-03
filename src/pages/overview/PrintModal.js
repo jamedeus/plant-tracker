@@ -176,7 +176,7 @@ const PrintModal = memo(function PrintModal() {
                     onClose={resetModal}
                 >
                     <LoadingAnimation className="mt-2 mx-auto" />
-                    <div className="modal-action mx-auto">
+                    <div className="modal-action">
                         <button className="btn" onClick={cancel}>Cancel</button>
                     </div>
                 </Modal>
@@ -216,7 +216,7 @@ const PrintModal = memo(function PrintModal() {
                         </Tab.Group>
                     </div>
 
-                    <div className="modal-action mx-auto">
+                    <div className="modal-action">
                         <button className="btn btn-accent" onClick={generate}>
                             Generate
                         </button>
@@ -233,7 +233,7 @@ const PrintModal = memo(function PrintModal() {
                     <div className="h-36 mt-2 flex flex-col justify-center mx-auto">
                         <ErrorMessage error={error} />
                     </div>
-                    <div className="modal-action mx-auto">
+                    <div className="modal-action">
                         <button className="btn" onClick={cancel}>OK</button>
                     </div>
                 </Modal>

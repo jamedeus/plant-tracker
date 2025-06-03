@@ -34,7 +34,7 @@ export const ErrorModal = () => {
             )}>
                 {message}
             </div>
-            <div className="modal-action mx-auto">
+            <div className="modal-action">
                 <button className="btn" onClick={closeErrorModal}>
                     OK
                 </button>

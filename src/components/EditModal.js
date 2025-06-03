@@ -25,13 +25,13 @@ const EditModal = ({ title, formRef, onSubmit, children }) => {
                 {children}
             </div>
 
-            <div className="modal-action mx-auto">
+            <div className="modal-action">
                 <form method="dialog">
-                    <button className="btn mr-2">
+                    <button className="btn">
                         Cancel
                     </button>
                     <button
-                        className="btn ml-2"
+                        className="btn"
                         onClick={onSubmit}
                         disabled={!formIsValid}
                     >

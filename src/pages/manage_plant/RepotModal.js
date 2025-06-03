@@ -132,9 +132,11 @@ const RepotModal = () => {
                 />
             </div>
 
-            <button className="btn btn-accent mx-auto" onClick={submit}>
-                Repot
-            </button>
+            <div className="modal-action mt-0">
+                <button className="btn btn-accent" onClick={submit}>
+                    Repot
+                </button>
+            </div>
         </Modal>
     );
 };

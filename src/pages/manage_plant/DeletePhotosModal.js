@@ -282,15 +282,15 @@ const DeletePhotosModal = () => {
                     ))}
                 </div>
 
-                <div className="flex mt-6 mx-auto">
+                <div className="modal-action mt-6">
                     <button
-                        className="btn mr-2"
+                        className="btn"
                         onClick={() => setConfirmDelete(false)}
                     >
                         Cancel
                     </button>
                     <button
-                        className="btn btn-error ml-2"
+                        className="btn btn-error"
                         onClick={deleteSelected}
                         data-testid="confirm_delete_photos"
                     >
