@@ -29,7 +29,7 @@ const EditPlantModal = () => {
     };
 
     return (
-        <EditModal title="Edit Details" onSubmit={submit}>
+        <EditModal title="Edit Details" formRef={formRef} onSubmit={submit}>
             {/* Key forces form to remount when RepotModal is submitted -
                 form is unmanaged so props only set default values, which
                 do not change when plantDetails updates. If pot_size field

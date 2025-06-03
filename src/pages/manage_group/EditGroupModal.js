@@ -28,7 +28,7 @@ const EditGroupModal = memo(function EditGroupModal({ group, setGroup }) {
     };
 
     return (
-        <EditModal title="Edit Details" onSubmit={submit}>
+        <EditModal title="Edit Details" formRef={formRef} onSubmit={submit}>
             <GroupDetailsForm
                 formRef={formRef}
                 name={group.name}

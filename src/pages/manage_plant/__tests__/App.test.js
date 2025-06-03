@@ -68,6 +68,35 @@ describe('App', () => {
         });
     });
 
+    it('disables edit modal submit button when fields are too long', async () => {
+        // Open edit modal
+        await user.click(app.getByRole('button', {name: 'Edit'}));
+
+        // Get fields with length limits + edit button
+        const modal = app.getByText("Edit Details").closest(".modal-box");
+        const editButton = within(modal).getByRole("button", {name: "Edit"});
+        const nameField = within(modal).getByRole('textbox', {name: 'Plant name'});
+        const speciesField = within(modal).getByRole('combobox', {name: 'Plant species'});
+        const descriptionField = within(modal).getByRole('textbox', {name: 'Description'});
+
+        // Confirm edit button is enabled
+        expect(editButton).not.toBeDisabled();
+
+        // Type >50 characters in Plant name field, confirm edit button is disabled
+        await user.type(nameField, '.'.repeat(51));
+        expect(editButton).toBeDisabled();
+        await user.clear(nameField);
+
+        // Type >50 characters in species field, confirm edit button is disabled
+        await user.type(speciesField, '.'.repeat(51));
+        expect(editButton).toBeDisabled();
+        await user.clear(speciesField);
+
+        // Type >500 characters in description field, confirm edit button is disabled
+        await user.type(descriptionField, '.'.repeat(501));
+        expect(editButton).toBeDisabled();
+    });
+
     it('sends correct payload when plant is watered', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
