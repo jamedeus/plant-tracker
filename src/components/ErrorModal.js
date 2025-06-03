@@ -4,8 +4,6 @@ import clsx from 'clsx';
 
 export let openErrorModal;
 
-export let closeErrorModal;
-
 export const ErrorModal = () => {
     const [message, setMessage] = useState('');
     const modalRef = useRef();
@@ -21,10 +19,6 @@ export const ErrorModal = () => {
         modalRef.current.open();
     };
 
-    closeErrorModal = () => {
-        modalRef.current.close();
-    };
-
     return (
         <Modal ref={modalRef}>
             <h3 className="font-bold text-lg mb-6">Error</h3>
@@ -35,9 +29,11 @@ export const ErrorModal = () => {
                 {message}
             </div>
             <div className="modal-action">
-                <button className="btn btn-accent" onClick={closeErrorModal}>
-                    OK
-                </button>
+                <form method="dialog">
+                    <button className="btn btn-accent">
+                        OK
+                    </button>
+                </form>
             </div>
         </Modal>
     );

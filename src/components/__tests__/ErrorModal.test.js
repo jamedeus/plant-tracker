@@ -20,9 +20,5 @@ describe('ErrorModal', () => {
         await user.click(component.getByText('Open Error Modal'));
         expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
         expect(component.queryByText('Error message here')).not.toBeNull();
-
-        // Click OK button, confirm modal closes
-        await user.click(component.getByText('OK'));
-        expect(HTMLDialogElement.prototype.close).toHaveBeenCalled();
     });
 });

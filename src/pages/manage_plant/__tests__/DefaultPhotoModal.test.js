@@ -1,9 +1,6 @@
 import React from 'react';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
-import DefaultPhotoModal, {
-    openDefaultPhotoModal,
-    closeDefaultPhotosModal
-} from '../DefaultPhotoModal';
+import DefaultPhotoModal, { openDefaultPhotoModal } from '../DefaultPhotoModal';
 import { ReduxProvider } from '../store';
 import { mockContext } from './mockContext';
 import { PageWrapper } from 'src/index';
@@ -87,11 +84,5 @@ describe('DefaultPhotoModal', () => {
 
         // Confirm modal appeared with arbitrary error text
         expect(app.queryByText(/unable to find photo/)).not.toBeNull();
-    });
-
-    it('closes modal when cancel button clicked', async () => {
-        // Click button, confirm HTMLDialogElement method was called
-        closeDefaultPhotosModal();
-        expect(HTMLDialogElement.prototype.close).toHaveBeenCalled();
     });
 });

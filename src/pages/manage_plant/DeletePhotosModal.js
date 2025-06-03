@@ -22,10 +22,6 @@ export const preloadDeletePhotosModal = () => {
     });
 };
 
-export const closeDeletePhotosModal = () => {
-    modalRef.current.close();
-};
-
 const NextPhotoIcon = memo(function NextPhotoIcon() {
     return <ChevronRightIcon className="size-6" />;
 });
@@ -216,7 +212,7 @@ const DeletePhotosModal = () => {
     };
 
     return (
-        <Modal ref={modalRef} onClose={closeDeletePhotosModal}>
+        <Modal ref={modalRef}>
             <div
                 className={
                     confirmDelete ? "hidden" : "flex flex-col overflow-hidden"
@@ -244,12 +240,11 @@ const DeletePhotosModal = () => {
                 )}
 
                 <div className="modal-action mt-6">
-                    <button
-                        className="btn btn-soft"
-                        onClick={closeDeletePhotosModal}
-                    >
-                        Cancel
-                    </button>
+                    <form method="dialog">
+                        <button className="btn btn-soft">
+                            Cancel
+                        </button>
+                    </form>
                     <button
                         className="btn btn-error"
                         onClick={() => setConfirmDelete(true)}

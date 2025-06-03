@@ -21,10 +21,6 @@ export const preloadDefaultPhotoModal = () => {
     });
 };
 
-export const closeDefaultPhotosModal = () => {
-    modalRef.current.close();
-};
-
 // Renders single photo slide with next, prev, and select buttons
 const PhotoSlide = memo(function PhotoSlide({
     photo,
@@ -97,7 +93,7 @@ const DefaultPhotoModal = () => {
             payload
         );
         if (response.ok) {
-            closeDefaultPhotosModal();
+            modalRef.current.close();
             dispatch(defaultPhotoChanged(selected));
         } else {
             const error = await response.json();
@@ -128,11 +124,7 @@ const DefaultPhotoModal = () => {
     };
 
     return (
-        <Modal
-            title='Select Default Photo'
-            ref={modalRef}
-            onClose={closeDefaultPhotosModal}
-        >
+        <Modal title='Select Default Photo' ref={modalRef}>
             <div className="carousel w-full h-min">
                 {photos.length > 0 ? (
                     photos.map((photo, index) => (
