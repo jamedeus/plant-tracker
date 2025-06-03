@@ -93,6 +93,12 @@ function App() {
         setFormIsValid(form.current.checkValidity());
     };
 
+    // Change form and re-enable save button (fields clear when form changes)
+    const handleFormChange = (index) => {
+        setVisibleForm(index);
+        setFormIsValid(true);
+    };
+
     const submit = async () => {
         // Parse all fields from visible form, set correct endpoint
         let payload, endpoint;
@@ -139,7 +145,7 @@ function App() {
                 onInput={onInput}
             >
                 <Form
-                    setVisibleForm={setVisibleForm}
+                    setVisibleForm={handleFormChange}
                     plantFormRef={plantFormRef}
                     groupFormRef={groupFormRef}
                 />

@@ -206,6 +206,27 @@ describe('App', () => {
         expect(app.getByRole('button', {name: 'Save'})).toBeDisabled();
     });
 
+    it('re-enables the save button when form is changed', async () => {
+        // Confirm save button is enabled
+        expect(app.getByRole('button', {name: 'Save'})).not.toBeDisabled();
+
+        // Type >50 characters in Plant name field, confirm save button is disabled
+        await user.type(app.getByRole('textbox', {name: 'Plant name'}), '.'.repeat(51));
+        expect(app.getByRole('button', {name: 'Save'})).toBeDisabled();
+
+        // Switch to Group form, confirm save button is enabled
+        await user.click(app.getByText('Group'));
+        expect(app.getByRole('button', {name: 'Save'})).not.toBeDisabled();
+
+        // Type >50 characters in Group name field, confirm save button is disabled
+        await user.type(app.getByRole('textbox', {name: 'Group name'}), '.'.repeat(51));
+        expect(app.getByRole('button', {name: 'Save'})).toBeDisabled();
+
+        // Switch back to Plant form, confirm save button is enabled
+        await user.click(app.getByText('Plant'));
+        expect(app.getByRole('button', {name: 'Save'})).not.toBeDisabled();
+    });
+
     // Note: this response can only be received if SINGLE_USER_MODE is disabled
     it('redirects to login page if user is not signed in', async () => {
         // Mock fetch function to simulate user with an expired session
