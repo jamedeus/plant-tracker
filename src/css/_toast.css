@@ -1,5 +1,5 @@
 @utility toast {
-    @apply fixed bottom-0 z-100 flex flex-row my-4 w-full whitespace-nowrap;
+    @apply fixed bottom-0 z-100 flex flex-row my-4 w-full px-4 text-center;
     animation: toast 0.25s ease-out;
 
     & > span {
