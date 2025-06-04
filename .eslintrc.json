@@ -47,7 +47,8 @@
         ],
         "no-multiple-empty-lines": ["warn", { "max": 2 }],
         "semi": ["warn", "always"],
-        "react/react-in-jsx-scope": "off"
+        "react/react-in-jsx-scope": "off",
+        "react/no-unknown-property": ["error", { "ignore": ["popover"] }]
     },
     "settings": {
         "react": {

@@ -21,6 +21,8 @@ beforeAll(() => {
     });
     window.HTMLElement.prototype.scrollIntoView = jest.fn();
     window.scrollTo = jest.fn();
+    window.HTMLElement.prototype.showPopover = jest.fn();
+    window.HTMLElement.prototype.hidePopover = jest.fn();
 
     // Mock matchMedia for useIsBreakpointActive custom hook
     Object.defineProperty(window, 'matchMedia', {

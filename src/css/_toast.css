@@ -1,9 +1,14 @@
 @utility toast {
-    @apply fixed bottom-0 z-100 flex flex-row my-4 w-full px-4 text-center;
+    @apply bottom-0 z-100 flex flex-row my-4 w-full px-4 text-center bg-transparent;
     animation: toast 0.25s ease-out;
 
     & > span {
         @apply mx-auto p-4 rounded-box text-black;
+    }
+
+    /* Prevent moving to top of screen (overrides default top-0) */
+    &:popover-open {
+        top: auto;
     }
 }
 @keyframes toast {
