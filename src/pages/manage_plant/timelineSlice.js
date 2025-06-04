@@ -105,6 +105,8 @@ export const timelineSlice = createSlice({
         photoGalleryOpen: false,
         // Currently visible photo in lightbox gallery (index of photos state)
         photoGalleryIndex: 0,
+        // Has 1 or more photo (shows gallery dropdown option if true)
+        hasPhotos: false,
     },
     reducers: {
         // Takes object with timestamp and type keys, adds to events,
@@ -247,6 +249,11 @@ export const timelineSlice = createSlice({
             if (!state.defaultPhoto.set) {
                 state.defaultPhoto = { ...state.defaultPhoto, ...state.photos[0] };
             }
+
+            // First photo added: add gallery dropdown option
+            if(!state.hasPhotos) {
+                state.hasPhotos = true;
+            }
         },
 
         // Takes array of deleted photo keys, removes from photos state and
@@ -279,6 +286,9 @@ export const timelineSlice = createSlice({
                     thumbnail: null,
                     key: null
                 };
+
+                // Remove gallery dropdown option
+                state.hasPhotos = false;
             // If defaultPhoto not set: Use most-recent photo as default photo
             } else if (!state.defaultPhoto.set) {
                 state.defaultPhoto = { ...state.defaultPhoto, ...state.photos[0] };

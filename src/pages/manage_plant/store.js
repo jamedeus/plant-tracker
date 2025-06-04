@@ -124,6 +124,7 @@ export function ReduxProvider({ children }) {
         const defaultPhoto = parseDomContext('default_photo');
         const photoGalleryIndex = 0;
         const photoGalleryOpen = false;
+        const hasPhotos = photos.length > 0;
 
         // Build state objects
         const timelineDays = buildTimelineDays(eventsByType, notes, photos);
@@ -144,7 +145,8 @@ export function ReduxProvider({ children }) {
                 navigationOptions,
                 defaultPhoto,
                 photoGalleryIndex,
-                photoGalleryOpen
+                photoGalleryOpen,
+                hasPhotos
             },
             settings: loadUserSettings(layout)
         };

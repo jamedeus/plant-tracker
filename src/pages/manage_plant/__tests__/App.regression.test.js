@@ -533,4 +533,60 @@ describe('App', () => {
         expect(app.getByTitle('12:52 PM - March 1, 2024')).not.toBeNull();
         expect(app.queryByTitle('12:54 PM - March 1, 2024')).toBeNull();
     });
+
+    // Original bug: The top-left dropdown contained a gallery link even if no
+    // photos existed, which rendered an empty lightbox with no explanation.
+    it('only shows gallery link if 1 or more photos exist', async () => {
+        // Confirm gallery link was not rendered
+        expect(app.queryByText('Gallery')).toBeNull();
+
+        // Mock expected API response when photo is uploaded
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                "uploaded": "1 photo(s)",
+                "failed": [],
+                "urls": [
+                    {
+                        "timestamp": "2024-06-21T20:52:03+00:00",
+                        "image": "/media/images/photo1.jpg",
+                        "thumbnail": "/media/images/photo1_thumb.webp",
+                        "preview": "/media/images/photo1_preview.webp",
+                        "key": 1
+                    }
+                ]
+            })
+        }));
+
+        // Simulate user opening photo modal, selecting 1 photo, and submitting
+        await user.click(app.getByText('Add photos'));
+        const fileInput = app.getByTestId('photo-input');
+        fireEvent.change(fileInput, { target: { files: [
+            new File(['file1'], 'file1.jpg', { type: 'image/jpeg' })
+        ] } });
+        await user.click(app.getByText('Upload'));
+
+        // Confirm gallery link appeared in dropdown
+        expect(app.queryByText('Gallery')).not.toBeNull();
+
+        // Mock fetch function to return expected response when photo is deleted
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                "deleted": [1],
+                "failed": []
+            })
+        }));
+
+        // Simulate user opening delete photos modal and deleting photo
+        await user.click(app.getByText('Delete photos'));
+        await user.click(app.getByTestId('select_photo_1'));
+        await user.click(app.getByTestId('delete_photos'));
+        await user.click(app.getByTestId('confirm_delete_photos'));
+
+        // Confirm gallery link was removed from dropdown
+        expect(app.queryByText('Gallery')).toBeNull();
+    });
 });

@@ -30,6 +30,7 @@ function Layout() {
     const plantDetails = useSelector((state) => state.plant.plantDetails);
     const defaultPhoto = useSelector((state) => state.timeline.defaultPhoto);
     const galleryOpen = useSelector((state) => state.timeline.photoGalleryOpen);
+    const hasPhotos = useSelector((state) => state.timeline.hasPhotos);
 
     // Used to update redux store
     const dispatch = useDispatch();
@@ -64,13 +65,15 @@ function Layout() {
                     >
                         Settings
                     </label></li>
-                    <li><button onClick={() => dispatch(photoGalleryOpened({open: true}))}>
-                        Gallery
-                    </button></li>
+                    {hasPhotos &&
+                        <li><button onClick={() => dispatch(photoGalleryOpened({open: true}))}>
+                            Gallery
+                        </button></li>
+                    }
                 </>
             )}
         </NavbarDropdownOptions>
-    ), [plantDetails]);
+    ), [plantDetails, hasPhotos]);
 
     // Plant details card shown when title is clicked
     const PlantDetailsDropdown = useMemo(() => {
