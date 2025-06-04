@@ -536,9 +536,10 @@ describe('App', () => {
 
     // Original bug: The top-left dropdown contained a gallery link even if no
     // photos existed, which rendered an empty lightbox with no explanation.
-    it('only shows gallery link if 1 or more photos exist', async () => {
-        // Confirm gallery link was not rendered
+    it('only shows gallery and delete photos links if 1 or more photos exist', async () => {
+        // Confirm Gallery and Delete photos dropdown options were not rendered
         expect(app.queryByText('Gallery')).toBeNull();
+        expect(app.queryByText('Delete photos')).toBeNull();
 
         // Mock expected API response when photo is uploaded
         global.fetch = jest.fn(() => Promise.resolve({
@@ -567,8 +568,9 @@ describe('App', () => {
         ] } });
         await user.click(app.getByText('Upload'));
 
-        // Confirm gallery link appeared in dropdown
+        // Confirm Gallery and Delete photos dropdown options appeared
         expect(app.queryByText('Gallery')).not.toBeNull();
+        expect(app.queryByText('Delete photos')).not.toBeNull();
 
         // Mock fetch function to return expected response when photo is deleted
         global.fetch = jest.fn(() => Promise.resolve({
@@ -586,7 +588,48 @@ describe('App', () => {
         await user.click(app.getByTestId('delete_photos'));
         await user.click(app.getByTestId('confirm_delete_photos'));
 
-        // Confirm gallery link was removed from dropdown
+        // Confirm Gallery and Delete photos dropdown options were removed
         expect(app.queryByText('Gallery')).toBeNull();
+        expect(app.queryByText('Delete photos')).toBeNull();
+    });
+
+    it('only shows delete events dropdown option if events exist', async () => {
+        // Confirm Delete events dropdown option was not rendered
+        expect(app.queryByText('Delete events')).toBeNull();
+
+        // Mock fetch function to return expected response when water event added
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "action": "water",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
+
+        // Click water button
+        await user.click(app.getByRole("button", {name: "Water"}));
+
+        // Confirm Delete events dropdown option appeared
+        expect(app.queryByText('Delete events')).not.toBeNull();
+
+        // Mock fetch function to return expected response when water event deleted
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "deleted": [
+                    {"type": "water", "timestamp": "2024-03-01T15:45:44+00:00"},
+                ],
+                "failed": []
+            })
+        }));
+
+        // Open event history modal, delete water event
+        await user.click(app.getByText('Delete events'));
+        const modal = app.getByText('Event History').closest('.modal-box');
+        await user.click(within(modal).getByText(/today/));
+        await user.click(within(modal).getByText('Delete'));
+
+        // Confirm Delete events dropdown option was removed
+        expect(app.queryByText('Delete events')).toBeNull();
     });
 });

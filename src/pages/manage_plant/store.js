@@ -125,6 +125,10 @@ export function ReduxProvider({ children }) {
         const photoGalleryIndex = 0;
         const photoGalleryOpen = false;
         const hasPhotos = photos.length > 0;
+        const hasEvents = eventsByType.water.length > 0 ||
+                          eventsByType.fertilize.length > 0 ||
+                          eventsByType.prune.length > 0 ||
+                          eventsByType.repot.length > 0;
 
         // Build state objects
         const timelineDays = buildTimelineDays(eventsByType, notes, photos);
@@ -146,7 +150,8 @@ export function ReduxProvider({ children }) {
                 defaultPhoto,
                 photoGalleryIndex,
                 photoGalleryOpen,
-                hasPhotos
+                hasPhotos,
+                hasEvents
             },
             settings: loadUserSettings(layout)
         };

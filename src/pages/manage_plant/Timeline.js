@@ -35,6 +35,8 @@ const getRelativeTimeString = (timestamp) => {
 // History title with dropdown menu to jump to a specific month in timeline
 const Title = memo(function Title() {
     const archived = useSelector((state) => state.plant.plantDetails.archived);
+    const hasPhotos = useSelector((state) => state.timeline.hasPhotos);
+    const hasEvents = useSelector((state) => state.timeline.hasEvents);
 
     return (
         <div className="navbar sticky top-16 bg-base-200 rounded-2xl px-4 z-1">
@@ -89,18 +91,22 @@ const Title = memo(function Title() {
                             >
                                 Repot plant
                             </button></li>
-                            <li><button
-                                className="flex justify-end"
-                                onClick={openDeletePhotosModal}
-                            >
-                                Delete photos
-                            </button></li>
-                            <li><button
-                                className="flex justify-end"
-                                onClick={openEventHistoryModal}
-                            >
-                                Delete events
-                            </button></li>
+                            {hasPhotos &&
+                                <li><button
+                                    className="flex justify-end"
+                                    onClick={openDeletePhotosModal}
+                                >
+                                    Delete photos
+                                </button></li>
+                            }
+                            {hasEvents &&
+                                <li><button
+                                    className="flex justify-end"
+                                    onClick={openEventHistoryModal}
+                                >
+                                    Delete events
+                                </button></li>
+                            }
                         </DropdownMenu>
                     </>
                 }

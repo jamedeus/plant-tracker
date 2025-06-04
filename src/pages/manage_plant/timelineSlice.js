@@ -107,6 +107,8 @@ export const timelineSlice = createSlice({
         photoGalleryIndex: 0,
         // Has 1 or more photo (shows gallery dropdown option if true)
         hasPhotos: false,
+        // Has 1 or more event (shows delete events dropdown option if true)
+        hasEvents: false,
     },
     reducers: {
         // Takes object with timestamp and type keys, adds to events,
@@ -141,6 +143,11 @@ export const timelineSlice = createSlice({
                 state.calendarDays[dateKey] = newEvents;
                 state.timelineDays[dateKey].events = newEvents;
             }
+
+            // First event added: add delete events dropdown option
+            if (!state.hasEvents) {
+                state.hasEvents = true;
+            }
         },
 
         // Takes object with timestamp and type keys, removes from events,
@@ -167,6 +174,15 @@ export const timelineSlice = createSlice({
                 state.calendarDays[dateKey] = newEvents;
                 // Remove calendarDays and timelineDays day if no content left
                 removeDateKeyIfEmpty(state, dateKey);
+            }
+
+            // Last event deleted: remove delete events dropdown option
+            if (!state.eventsByType.water.length &&
+                !state.eventsByType.fertilize.length &&
+                !state.eventsByType.prune.length &&
+                !state.eventsByType.repot.length
+            ) {
+                state.hasEvents = false;
             }
         },
 
