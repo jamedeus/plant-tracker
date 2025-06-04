@@ -34,9 +34,11 @@ export const settingsSlice = createSlice({
         },
         // Takes {layout: ['mobile'||'desktop']}
         settingsReset(state, action) {
-            Object.keys(state).forEach(key => (
-                state[key] = getDefaultSettingValue(key, action.payload.layout)
-            ));
+            Object.keys(state).forEach(key => {
+                if (key !== 'settingsMenuOpen') {
+                    state[key] = getDefaultSettingValue(key, action.payload.layout);
+                }
+            });
             // Clear localStorage (go back to breakpoint-based values)
             localStorage.removeItem('manage_plant_settings');
         }

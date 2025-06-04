@@ -255,6 +255,9 @@ describe('Settings default values', () => {
         setSavedSettingValue('timelineFullDate', false);
         setSavedSettingValue('collapsedNoteLines', 'All');
         setSavedSettingValue('holdToConfirmDelay', 2500);
+        setSavedSettingValue('gallerySlideshowDelay', 1000);
+        setSavedSettingValue('galleryShowPhotoDate', false);
+        setSavedSettingValue('galleryScrollToPhoto', false);
         renderApp();
 
         // Confirm timelineFullDate setting applied
@@ -263,6 +266,9 @@ describe('Settings default values', () => {
         // Confirm collapsedNoteLines setting applied
         const collapsedNote = app.getByTitle('04:44 AM - February 26, 2024');
         expect(collapsedNote.classList).toContain('line-clamp-none');
+
+        // Open settings menu
+        await user.click(app.getByTestId('open-settings-menu'));
 
         // Get Restore Defaults button, both text spans (default + hidden)
         const resetButton = app.getByTestId('restore_default_settings_button');
