@@ -29,6 +29,7 @@ import {
     MagnifyingGlassMinusIcon
 } from '@heroicons/react/24/solid';
 import { DateTime } from 'luxon';
+import clsx from 'clsx';
 
 // Takes reference to element, returns true if within current viewport and not
 // behind navbar/timeline sticky header (64 + 72 = 136px)
@@ -58,6 +59,7 @@ const Gallery = () => {
 
     // Shows progress animation if true
     const [slideshowRunning, setSlideshowRunning] = useState(false);
+    const [slideshowForward, setSlideshowForward] = useState(true);
 
     // Track if slide has changed since opening (don't scroll timeline to
     // last-viewed photo unless slide has changed)
@@ -133,6 +135,11 @@ const Gallery = () => {
                 slideshowStop: () => {
                     setSlideshowRunning(false);
                 },
+
+                // Reverse progress animation direction when direction toggled
+                slideshowDirectionChanged: newDirection => {
+                    setSlideshowForward(newDirection);
+                },
             }}
             render={{
                 // Custom icons (match icons used in rest of the app)
@@ -151,12 +158,16 @@ const Gallery = () => {
                 iconLoading: () => <LoadingAnimation />,
                 // Render progress bar if slideshow is running
                 // Key changes on each slide (remount, start animation over)
+                // Also remounts when direction changes (start over animation)
                 controls: () => {
                     if (slideshowRunning) {
                         return (
                             <div
-                                key={index}
-                                className="slideshow_progress_bar"
+                                key={String(`${index}${slideshowForward}`)}
+                                className={clsx(
+                                    "slideshow_progress_bar",
+                                    !slideshowForward && "reverse"
+                                )}
                                 style={{
                                     "--slideshow-delay": `${delay}ms`
                                 }}

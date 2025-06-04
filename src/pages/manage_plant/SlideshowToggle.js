@@ -86,12 +86,10 @@ function SlideshowToggleContextProvider({ slideshowToggle, carousel: { finite },
     // Add callback to toggle slideshow direction
     // Toggles slideshowForward state + calls slideshowDirectionChanged lifecycle method
     const toggleDirection = React.useCallback(() => {
-        setSlideshowForward(currentDirection => {
-            const newDirection = !currentDirection;
-            on.slideshowDirectionChanged?.(newDirection);
-            return newDirection;
-        });
-    }, [on]);
+        const newDirection = !slideshowForward;
+        setSlideshowForward(newDirection);
+        on.slideshowDirectionChanged?.(newDirection);
+    }, [on, slideshowForward]);
 
     const cancelScheduler = React.useCallback(() => {
         clearTimeout(scheduler.current);
