@@ -25,9 +25,10 @@ button.yarl__thumbnails_thumbnail {
     @apply hidden md:block;
 }
 
-/* Hide zoom buttons while slideshow running */
+/* Hide zoom and download buttons while slideshow running */
 .slideshow-running .yarl__button[title='Zoom in'],
-.slideshow-running .yarl__button[title='Zoom out'] {
+.slideshow-running .yarl__button[title='Zoom out'],
+.slideshow-running .yarl__button[title='Download plant photo'] {
     @apply hidden;
 }
 
