@@ -214,7 +214,7 @@ const Gallery = () => {
                 imageFit: 'cover',
                 vignette: true,
             }}
-            slideshow={{
+            slideshowToggle={{
                 delay: delay
             }}
             zoom={{
