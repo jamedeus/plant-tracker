@@ -115,6 +115,30 @@ describe('Gallery', () => {
         expect(document.querySelector('.slideshow_progress_bar')).toBeNull();
     });
 
+    it('reverses slideshow direction when toggle button is clicked', async () => {
+        // Open photo gallery, confirm progress bar is not rendered
+        await user.click(app.getByRole('button', {name: 'Gallery'}));
+        expect(document.querySelector('.slideshow_progress_bar')).toBeNull();
+
+        // Start slideshow, confirm progress bar appeared + moving forward
+        await user.click(app.getByRole('button', {name: 'Play photo slideshow'}));
+        expect(document.querySelector('.slideshow_progress_bar')).not.toBeNull();
+        expect(document.querySelector('.slideshow_progress_bar.reverse')).toBeNull();
+
+        // Click toggle button, confirm progress bar reversed (moving backward)
+        await user.click(app.getByRole('button', {name: 'Toggle direction'}));
+        expect(document.querySelector('.slideshow_progress_bar.reverse')).not.toBeNull();
+
+        // Confirm visible slide changes in opposite direction after 3000ms
+        expect(document.querySelector('.yarl__slide_current img').src).toEndWith(
+            '/media/images/photo3.jpg'
+        );
+        await jest.advanceTimersByTimeAsync(3000);
+        expect(document.querySelector('.yarl__slide_current img').src).toEndWith(
+            '/media/images/photo1.jpg'
+        );
+    });
+
     it('enters fullscreen when fullscreen button clicked', async () => {
         // Open gallery, confirm have not entered or exited fullscreen
         await user.click(app.getByRole('button', {name: 'Gallery'}));
