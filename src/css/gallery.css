@@ -32,6 +32,14 @@ button.yarl__thumbnails_thumbnail {
     @apply hidden;
 }
 
+/* Only show toggle slideshow direction button while slideshow running */
+.yarl__button[title='Toggle direction'] {
+    @apply hidden;
+}
+.slideshow-running .yarl__button[title='Toggle direction'] {
+    @apply block;
+}
+
 /* Slideshow progress animation */
 .slideshow_progress_bar {
     content: "";

@@ -3,9 +3,9 @@ import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import Captions from "yet-another-react-lightbox/plugins/captions";
 import Download from "yet-another-react-lightbox/plugins/download";
-import Slideshow from "yet-another-react-lightbox/plugins/slideshow";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
 import Fullscreen from "yet-another-react-lightbox/plugins/fullscreen";
+import SlideshowToggle from "./SlideshowToggle";
 import "yet-another-react-lightbox/styles.css";
 import "yet-another-react-lightbox/plugins/captions.css";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
@@ -19,6 +19,7 @@ import {
     XMarkIcon,
     PlayIcon,
     PauseIcon,
+    ArrowPathIcon,
     ChevronLeftIcon,
     ChevronRightIcon,
     ArrowDownTrayIcon,
@@ -141,6 +142,7 @@ const Gallery = () => {
                 iconZoomOut: () => <MagnifyingGlassMinusIcon className="size-8" />,
                 iconSlideshowPlay: () => <PlayIcon className="size-8" />,
                 iconSlideshowPause: () => <PauseIcon className="size-8" />,
+                iconSlideshowToggle: () => <ArrowPathIcon className="size-8" />,
                 iconClose: () => <XMarkIcon className="size-8" />,
                 iconDownload: () => <ArrowDownTrayIcon className="size-8" />,
                 iconExitFullscreen: () => <ArrowsPointingInIcon className="size-8" />,
@@ -179,14 +181,14 @@ const Gallery = () => {
                 Zoom,
                 ...(caption ? [Captions] : []),
                 Download,
-                Slideshow,
+                SlideshowToggle,
                 Thumbnails,
                 Fullscreen
             ]}
             toolbar={{
                 buttons: [
                     "download",
-                    "slideshow",
+                    "SlideshowToggle",
                     "fullscreen",
                     "close"
                 ]
