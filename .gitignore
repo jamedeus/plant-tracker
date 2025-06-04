@@ -6,3 +6,7 @@ backend/plant_tracker/static/
 backend/data/
 backend/*.json
 node_modules/
+*.png
+*.jpg
+*.jpeg
+*.webp
