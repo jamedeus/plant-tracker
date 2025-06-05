@@ -4,7 +4,7 @@ import { mockContext, mockphotos } from './mockContext';
 import { ReduxProvider } from '../store';
 import { useDispatch } from 'react-redux';
 import Gallery from '../Gallery';
-import { photoGalleryOpened } from '../timelineSlice';
+import { photoGalleryOpened } from '../interfaceSlice';
 
 const TestComponent = () => {
     const dispatch = useDispatch();

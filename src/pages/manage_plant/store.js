@@ -7,6 +7,7 @@ import { timestampToDateString } from 'src/timestampUtils';
 import { plantSlice } from './plantSlice';
 import { timelineSlice } from './timelineSlice';
 import { settingsSlice } from './settingsSlice';
+import { interfaceSlice } from './interfaceSlice';
 import { loadUserSettings } from './Settings';
 import { useIsBreakpointActive } from 'src/useBreakpoint';
 
@@ -102,7 +103,8 @@ function createReduxStore(preloadedState) {
         reducer: {
             plant: plantSlice.reducer,
             timeline: timelineSlice.reducer,
-            settings: settingsSlice.reducer
+            settings: settingsSlice.reducer,
+            interface: interfaceSlice.reducer
         },
         preloadedState
     });
@@ -153,7 +155,12 @@ export function ReduxProvider({ children }) {
                 hasPhotos,
                 hasEvents
             },
-            settings: loadUserSettings(layout)
+            settings: loadUserSettings(layout),
+            interface: {
+                settingsMenuOpen: false,
+                photoGalleryOpen: false,
+                photoGalleryIndex: 0,
+            }
         };
     };
 

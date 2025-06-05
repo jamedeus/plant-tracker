@@ -2,7 +2,8 @@ import { memo, useState, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import CloseButtonIcon from 'src/components/CloseButtonIcon';
 import { useSelector, useDispatch } from 'react-redux';
-import { settingsMenuOpened, settingChanged, settingsReset } from './settingsSlice';
+import { settingChanged, settingsReset } from './settingsSlice';
+import { settingsMenuOpened } from './interfaceSlice';
 import DropdownMenu from 'src/components/DropdownMenu';
 import { useIsBreakpointActive } from 'src/useBreakpoint';
 import 'src/css/settings.css';
@@ -237,7 +238,7 @@ const ResetAllSettingsButton = () => {
 };
 
 const Settings = () => {
-    const open = useSelector((state) => state.settings.settingsMenuOpen);
+    const open = useSelector((state) => state.interface.settingsMenuOpen);
     const dispatch = useDispatch();
 
     return (

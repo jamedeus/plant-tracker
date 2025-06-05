@@ -17,7 +17,7 @@ import PruneIcon from 'src/components/PruneIcon';
 import RepotIcon from 'src/components/RepotIcon';
 import { useSelector, useDispatch } from 'react-redux';
 import 'src/css/timeline.css';
-import { photoGalleryOpened, photoGalleryIndexChanged } from './timelineSlice';
+import { photoGalleryOpened, photoGalleryIndexChanged } from './interfaceSlice';
 
 // Takes ISO timestamp string, returns "x days ago"
 const getRelativeTimeString = (timestamp) => {

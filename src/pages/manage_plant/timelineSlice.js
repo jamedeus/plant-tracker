@@ -101,10 +101,6 @@ export const timelineSlice = createSlice({
             preview: null,
             key: null
         },
-        // Fullscreen lightbox gallery open state
-        photoGalleryOpen: false,
-        // Currently visible photo in lightbox gallery (index of photos state)
-        photoGalleryIndex: 0,
         // Has 1 or more photo (shows gallery dropdown option if true)
         hasPhotos: false,
         // Has 1 or more event (shows delete events dropdown option if true)
@@ -321,17 +317,6 @@ export const timelineSlice = createSlice({
                 ...action.payload
             };
         },
-
-        // Takes { open: <bool> }
-        photoGalleryOpened(state, action) {
-            console.log(action.payload.open);
-            state.photoGalleryOpen = action.payload.open;
-        },
-
-        // Takes { index: <int> }
-        photoGalleryIndexChanged(state, action) {
-            state.photoGalleryIndex = action.payload.index;
-        }
     },
     extraReducers: builder => {
         // Rebuild all states when user navigates to the page with back button
@@ -359,7 +344,5 @@ export const {
     noteDeleted,
     photosAdded,
     photosDeleted,
-    defaultPhotoChanged,
-    photoGalleryOpened,
-    photoGalleryIndexChanged
+    defaultPhotoChanged
 } = timelineSlice.actions;

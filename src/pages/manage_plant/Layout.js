@@ -14,8 +14,7 @@ import { openErrorModal } from 'src/components/ErrorModal';
 import Timeline from './Timeline';
 import { FaPlus, FaBan, FaPen, FaUpRightFromSquare } from 'react-icons/fa6';
 import { useSelector, useDispatch } from 'react-redux';
-import { settingsMenuOpened } from './settingsSlice';
-import { photoGalleryOpened } from './timelineSlice';
+import { settingsMenuOpened, photoGalleryOpened } from './interfaceSlice';
 import { plantRemovedFromGroup, backButtonPressed } from './plantSlice';
 import SuspenseFullscreen from 'src/components/SuspenseFullscreen';
 import clsx from 'clsx';
@@ -29,7 +28,7 @@ function Layout() {
     // Get redux state (parsed from context set by django template)
     const plantDetails = useSelector((state) => state.plant.plantDetails);
     const defaultPhoto = useSelector((state) => state.timeline.defaultPhoto);
-    const galleryOpen = useSelector((state) => state.timeline.photoGalleryOpen);
+    const galleryOpen = useSelector((state) => state.interface.photoGalleryOpen);
     const hasPhotos = useSelector((state) => state.timeline.hasPhotos);
 
     // Used to update redux store

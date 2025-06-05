@@ -12,7 +12,7 @@ import "yet-another-react-lightbox/plugins/thumbnails.css";
 import "src/css/gallery.css";
 import { useSelector, useDispatch } from 'react-redux';
 import { timestampToReadable } from 'src/timestampUtils';
-import { photoGalleryOpened, photoGalleryIndexChanged } from './timelineSlice';
+import { photoGalleryOpened, photoGalleryIndexChanged } from './interfaceSlice';
 import { useIsBreakpointActive } from 'src/useBreakpoint';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 import {
@@ -40,10 +40,10 @@ const elementIsVisible = (element) => {
 
 const Gallery = () => {
     // Controls open state, set to true when timeline PhotoThumbnail clicked
-    const open = useSelector((state) => state.timeline.photoGalleryOpen);
+    const open = useSelector((state) => state.interface.photoGalleryOpen);
     // Controls initially visible photo (updates as carousel moves).
     // Used to open clicked photo + remember last-viewed photo when reopened.
-    const index = useSelector((state) => state.timeline.photoGalleryIndex);
+    const index = useSelector((state) => state.interface.photoGalleryIndex);
     // Controls slideshow delay (user-configurable in settings)
     const delay = useSelector((state) => state.settings.gallerySlideshowDelay);
     // Controls whether captions with photo date are visible

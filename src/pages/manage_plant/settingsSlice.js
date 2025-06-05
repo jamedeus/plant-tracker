@@ -5,7 +5,6 @@ import { getDefaultSettingValue } from './Settings';
 export const settingsSlice = createSlice({
     name: 'settings',
     initialState: {
-        settingsMenuOpen: false,
         // Either 1, 2, 3, 4, or 'All
         collapsedNoteLines: 1,
         // True = show, False = tooltip
@@ -20,10 +19,6 @@ export const settingsSlice = createSlice({
         galleryScrollToPhoto: true
     },
     reducers: {
-        // Takes true or false
-        settingsMenuOpened(state, action) {
-            state.settingsMenuOpen = action.payload;
-        },
         // Takes {setting: name, value: value}
         settingChanged(state, action) {
             state[action.payload.setting] = action.payload.value;
@@ -34,11 +29,9 @@ export const settingsSlice = createSlice({
         },
         // Takes {layout: ['mobile'||'desktop']}
         settingsReset(state, action) {
-            Object.keys(state).forEach(key => {
-                if (key !== 'settingsMenuOpen') {
-                    state[key] = getDefaultSettingValue(key, action.payload.layout);
-                }
-            });
+            Object.keys(state).forEach(key => (
+                state[key] = getDefaultSettingValue(key, action.payload.layout)
+            ));
             // Clear localStorage (go back to breakpoint-based values)
             localStorage.removeItem('manage_plant_settings');
         }
@@ -46,7 +39,6 @@ export const settingsSlice = createSlice({
 });
 
 export const {
-    settingsMenuOpened,
     settingChanged,
     settingsReset
 } = settingsSlice.actions;
