@@ -37,25 +37,36 @@ const Title = memo(function Title() {
     const archived = useSelector((state) => state.plant.plantDetails.archived);
     const hasPhotos = useSelector((state) => state.timeline.hasPhotos);
     const hasEvents = useSelector((state) => state.timeline.hasEvents);
+    const navigationOptions = useSelector(
+        (state) => state.timeline.navigationOptions
+    );
+    const hasNavigationOptions = Object.keys(navigationOptions).length > 0;
 
     return (
         <div className="navbar sticky top-16 bg-base-200 rounded-2xl px-4 z-1">
             <div className="justify-start w-12">
                 {/* Spacer with same width as .navbar-end button */}
             </div>
-            <div className="mx-auto">
-                <div className="dropdown dropdown-center">
-                    <div
-                        tabIndex={0}
-                        role="button"
-                        className="btn btn-ghost text-xl font-bold m-1"
-                    >
+            <div className="mx-auto my-1">
+                {hasNavigationOptions ? (
+                    <div className="dropdown dropdown-center">
+                        <div
+                            tabIndex={0}
+                            role="button"
+                            className="btn btn-ghost text-xl font-bold"
+                        >
+                            History
+                        </div>
+                        <DropdownMenu className="min-w-44">
+                            <QuickNavigation />
+                        </DropdownMenu>
+                    </div>
+
+                ) : (
+                    <div className="flex items-center text-xl font-bold h-12">
                         History
                     </div>
-                    <DropdownMenu className="min-w-44">
-                        <QuickNavigation />
-                    </DropdownMenu>
-                </div>
+                )}
             </div>
 
             <div

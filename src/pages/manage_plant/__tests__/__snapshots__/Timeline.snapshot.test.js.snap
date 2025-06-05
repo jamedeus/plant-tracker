@@ -12,13 +12,13 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
         class="justify-start w-12"
       />
       <div
-        class="mx-auto"
+        class="mx-auto my-1"
       >
         <div
           class="dropdown dropdown-center"
         >
           <div
-            class="btn btn-ghost text-xl font-bold m-1"
+            class="btn btn-ghost text-xl font-bold"
             role="button"
             tabindex="0"
           >
@@ -2829,13 +2829,13 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
         class="justify-start w-12"
       />
       <div
-        class="mx-auto"
+        class="mx-auto my-1"
       >
         <div
           class="dropdown dropdown-center"
         >
           <div
-            class="btn btn-ghost text-xl font-bold m-1"
+            class="btn btn-ghost text-xl font-bold"
             role="button"
             tabindex="0"
           >
