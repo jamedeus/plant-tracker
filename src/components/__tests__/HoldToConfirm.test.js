@@ -91,4 +91,70 @@ describe('HoldToConfirm', () => {
         jest.advanceTimersByTime(0);
         expect(callback).toHaveBeenCalled();
     });
+
+    it('does NOT run callback when touch user presses button and then moves finger outside', () => {
+        // Mock button bounding box to predictable values
+        const button = component.getByRole('button');
+        button.getBoundingClientRect = jest.fn(() => ({
+            left: 0,
+            right: 100,
+            top: 0,
+            bottom: 50
+        }));
+
+        // Simulate touch screen user pressing button then moving finger outside
+        fireEvent.touchStart(button);
+        fireEvent.touchMove(button, {
+            touches: [{ clientX: 200, clientY: 200 }]
+        });
+
+        // Fast forward timeout ms while holding touch
+        act(() => {
+            jest.advanceTimersByTime(2500);
+        });
+
+        // Confirm callback did NOT run
+        expect(callback).not.toHaveBeenCalled();
+    });
+
+    it('runs callback when touch user presses button, moves finger outside, and moves back', () => {
+        // Mock button bounding box to predictable values
+        const button = component.getByRole('button');
+        button.getBoundingClientRect = jest.fn(() => ({
+            left: 0,
+            right: 100,
+            top: 0,
+            bottom: 50
+        }));
+
+        // Simulate touch screen user pressing button then moving finger outside
+        fireEvent.touchStart(button);
+        fireEvent.touchMove(button, {
+            touches: [{ clientX: 200, clientY: 200 }]
+        });
+
+        // Move finger back inside to restart
+        fireEvent.touchMove(button, {
+            touches: [{ clientX: 10, clientY: 10 }]
+        });
+
+        // Fast forward less than timeout ms while holding touch
+        act(() => {
+            jest.advanceTimersByTime(1500);
+        });
+
+        // Move finger again without leaving button
+        fireEvent.touchMove(button, {
+            touches: [{ clientX: 15, clientY: 10 }]
+        });
+
+        // Fast forward rest of timeout ms while holding touch
+        act(() => {
+            jest.advanceTimersByTime(1500);
+        });
+
+        // Confirm callback ran
+        expect(callback).toHaveBeenCalledTimes(1);
+    });
+
 });

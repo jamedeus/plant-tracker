@@ -36,6 +36,24 @@ const HoldToConfirm = ({ callback, timeout, buttonText, tooltipText }) => {
         }, 750);
     };
 
+    const handleTouchMove = (event) => {
+        // Check if touch is outside button
+        const touch = event.touches[0];
+        const boundingRect = buttonRef.current.getBoundingClientRect();
+        const outside = touch.clientX < boundingRect.left ||
+                        touch.clientX > boundingRect.right ||
+                        touch.clientY < boundingRect.top ||
+                        touch.clientY > boundingRect.bottom;
+
+        // Release if touch moved outside button (prevent getting stuck)
+        if (holding && outside) {
+            handleRelease();
+        // Restart if touch moved back inside button
+        } else if (!holding && !outside) {
+            handleHold();
+        }
+    };
+
     return (
         <div
             className={clsx(
@@ -56,6 +74,7 @@ const HoldToConfirm = ({ callback, timeout, buttonText, tooltipText }) => {
                 onTouchStart={handleHold}
                 onMouseUp={handleRelease}
                 onMouseLeave={handleRelease}
+                onTouchMove={handleTouchMove}
                 onTouchEnd={handleRelease}
                 // Only add onClick if timeout is 0 (no confirmation)
                 onClick={!timeout ? handleHold : null}
