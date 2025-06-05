@@ -245,7 +245,7 @@ exports[`App matches snapshot 1`] = `
         </div>
       </div>
       <a
-        class="btn btn-outline btn-error mx-4 mb-8"
+        class="btn btn-soft btn-error mx-4 mb-8"
         href="/accounts/logout/"
       >
         Log Out
