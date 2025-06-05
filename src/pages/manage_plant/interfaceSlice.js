@@ -15,6 +15,8 @@ export const interfaceSlice = createSlice({
         // Takes true or false
         settingsMenuOpened(state, action) {
             state.settingsMenuOpen = action.payload;
+            // Close dropdown (visible through transparent settings menu)
+            document.activeElement.blur();
         },
 
         // Takes { open: <bool> }
