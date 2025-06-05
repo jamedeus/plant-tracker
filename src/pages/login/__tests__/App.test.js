@@ -58,7 +58,7 @@ describe('App', () => {
         await user.type(app.getByLabelText('Password'), 'defnotanthonyweiner');
 
         // Click login button
-        await user.click(app.getAllByRole("button", {name: "Login"})[1]);
+        await user.click(app.getByRole("button", {name: "Login"}));
 
         // Confirm correct FormData posted to /accounts/login/ endpoint
         expect(global.fetch).toHaveBeenCalled();
@@ -92,7 +92,7 @@ describe('App', () => {
         // Simulate user typing credentials and logging in
         await user.type(app.getByLabelText('Username'), 'carlosdanger');
         await user.type(app.getByLabelText('Password'), 'defnotanthonyweiner');
-        await user.click(app.getAllByRole("button", {name: "Login"})[1]);
+        await user.click(app.getByRole("button", {name: "Login"}));
 
         // Confirm redirected to user profile after login
         expect(window.location.href).toBe('/accounts/profile/');
@@ -118,7 +118,7 @@ describe('App', () => {
         // Simulate user typing credentials and logging in
         await user.type(app.getByLabelText('Username'), 'carlosdanger');
         await user.type(app.getByLabelText('Password'), 'defnotanthonyweiner');
-        await user.click(app.getAllByRole("button", {name: "Login"})[1]);
+        await user.click(app.getByRole("button", {name: "Login"}));
 
         // Confirm fetch was called, error text appeared
         expect(global.fetch).toHaveBeenCalled();

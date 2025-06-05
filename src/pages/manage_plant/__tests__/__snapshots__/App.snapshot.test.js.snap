@@ -88,7 +88,7 @@ exports[`App matches snapshot 1`] = `
           class="dropdown dropdown-center w-full"
         >
           <a
-            class="btn btn-ghost w-full px-0 text-nowrap"
+            class="w-full px-0 text-nowrap font-semibold btn btn-ghost border-0"
             role="button"
             tabindex="0"
           >
@@ -2410,7 +2410,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
           class="dropdown dropdown-center w-full"
         >
           <a
-            class="btn btn-ghost w-full px-0 text-nowrap"
+            class="w-full px-0 text-nowrap font-semibold btn btn-ghost border-0"
             role="button"
             tabindex="0"
           >

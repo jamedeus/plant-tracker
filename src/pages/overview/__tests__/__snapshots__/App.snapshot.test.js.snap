@@ -69,7 +69,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
           class="dropdown dropdown-center w-full"
         >
           <a
-            class="btn btn-ghost w-full px-0 text-nowrap"
+            class="w-full px-0 text-nowrap font-semibold btn btn-ghost border-0"
             role="button"
             tabindex="0"
           >
@@ -728,9 +728,9 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
           class="dropdown dropdown-center w-full"
         >
           <a
-            class="btn btn-ghost w-full px-0 text-nowrap"
-            role="button"
-            tabindex="0"
+            class="w-full px-0 text-nowrap font-semibold"
+            role="heading"
+            tabindex="-1"
           >
             <span
               class="px-4 leading-[2.75rem] truncate"
@@ -739,10 +739,6 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
               Plant Overview
             </span>
           </a>
-          <div
-            class="dropdown-content z-1 flex"
-            tabindex="0"
-          />
         </div>
       </div>
       <div
@@ -935,9 +931,9 @@ exports[`App matches snapshot when only groups exist 1`] = `
           class="dropdown dropdown-center w-full"
         >
           <a
-            class="btn btn-ghost w-full px-0 text-nowrap"
-            role="button"
-            tabindex="0"
+            class="w-full px-0 text-nowrap font-semibold"
+            role="heading"
+            tabindex="-1"
           >
             <span
               class="px-4 leading-[2.75rem] truncate"
@@ -946,10 +942,6 @@ exports[`App matches snapshot when only groups exist 1`] = `
               Plant Overview
             </span>
           </a>
-          <div
-            class="dropdown-content z-1 flex"
-            tabindex="0"
-          />
         </div>
       </div>
       <div
@@ -1324,9 +1316,9 @@ exports[`App matches snapshot when only plants exist 1`] = `
           class="dropdown dropdown-center w-full"
         >
           <a
-            class="btn btn-ghost w-full px-0 text-nowrap"
-            role="button"
-            tabindex="0"
+            class="w-full px-0 text-nowrap font-semibold"
+            role="heading"
+            tabindex="-1"
           >
             <span
               class="px-4 leading-[2.75rem] truncate"
@@ -1335,10 +1327,6 @@ exports[`App matches snapshot when only plants exist 1`] = `
               Plant Overview
             </span>
           </a>
-          <div
-            class="dropdown-content z-1 flex"
-            tabindex="0"
-          />
         </div>
       </div>
       <div
@@ -1760,9 +1748,9 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
           class="dropdown dropdown-center w-full"
         >
           <a
-            class="btn btn-ghost w-full px-0 text-nowrap"
-            role="button"
-            tabindex="0"
+            class="w-full px-0 text-nowrap font-semibold"
+            role="heading"
+            tabindex="-1"
           >
             <span
               class="px-4 leading-[2.75rem] truncate"
@@ -1771,10 +1759,6 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
               Plant Overview
             </span>
           </a>
-          <div
-            class="dropdown-content z-1 flex"
-            tabindex="0"
-          />
         </div>
       </div>
       <div
@@ -2410,7 +2394,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
           class="dropdown dropdown-center w-full"
         >
           <a
-            class="btn btn-ghost w-full px-0 text-nowrap"
+            class="w-full px-0 text-nowrap font-semibold btn btn-ghost border-0"
             role="button"
             tabindex="0"
           >

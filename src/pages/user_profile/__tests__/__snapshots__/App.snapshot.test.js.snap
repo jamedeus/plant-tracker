@@ -58,9 +58,9 @@ exports[`App matches snapshot 1`] = `
           class="dropdown dropdown-center w-full"
         >
           <a
-            class="btn btn-ghost w-full px-0 text-nowrap"
-            role="button"
-            tabindex="0"
+            class="w-full px-0 text-nowrap font-semibold"
+            role="heading"
+            tabindex="-1"
           >
             <span
               class="px-4 leading-[2.75rem] truncate"
@@ -69,10 +69,6 @@ exports[`App matches snapshot 1`] = `
               User Profile
             </span>
           </a>
-          <div
-            class="dropdown-content z-1 flex"
-            tabindex="0"
-          />
         </div>
       </div>
       <div

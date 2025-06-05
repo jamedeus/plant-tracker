@@ -1,6 +1,7 @@
 import React, { useState, useLayoutEffect, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import DropdownMenu from 'src/components/DropdownMenu';
+import clsx from 'clsx';
 
 // Button with icon, used for dropdown and hidden placeholder on right side
 const DropdownButton = memo(function DropdownButton() {
@@ -114,10 +115,14 @@ const Navbar = memo(function Navbar({ menuOptions, onOpenMenu, title, titleOptio
                     className="dropdown dropdown-center w-full"
                     onClick={onOpenTitle}
                 >
+                    {/* Button if dropdown options exist, otherwise text */}
                     <a
-                        tabIndex={0}
-                        role="button"
-                        className="btn btn-ghost w-full px-0 text-nowrap"
+                        tabIndex={titleOptions ? 0 : -1}
+                        role={titleOptions ? "button" : "heading"}
+                        className={clsx(
+                            "w-full px-0 text-nowrap font-semibold",
+                            titleOptions && "btn btn-ghost border-0"
+                        )}
                     >
                         <span
                             ref={titleRef}
@@ -127,9 +132,11 @@ const Navbar = memo(function Navbar({ menuOptions, onOpenMenu, title, titleOptio
                             {title}
                         </span>
                     </a>
-                    <div tabIndex={0} className="dropdown-content z-1 flex">
-                        {titleOptions}
-                    </div>
+                    {titleOptions &&
+                        <div tabIndex={0} className="dropdown-content z-1 flex">
+                            {titleOptions}
+                        </div>
+                    }
                 </div>
             </div>
 
