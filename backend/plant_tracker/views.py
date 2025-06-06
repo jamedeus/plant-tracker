@@ -672,7 +672,7 @@ def add_plant_note(plant, timestamp, data, **kwargs):
     except ValidationError as error:
         return JsonResponse(
             {"error": error.message_dict},
-            status=409 if "timestamp" in error.message_dict.keys() else 400
+            status=409 if "__all__" in error.message_dict.keys() else 400
         )
 
 

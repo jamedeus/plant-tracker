@@ -1,6 +1,7 @@
-# pylint: disable=missing-docstring,R0801
+# pylint: disable=missing-docstring,R0801,too-many-lines
 
 import shutil
+import threading
 from uuid import uuid4
 from types import NoneType
 from datetime import datetime
@@ -9,11 +10,11 @@ from unittest.mock import patch
 from django.conf import settings
 from django.utils import timezone
 from django.core.cache import cache
-from django.db import IntegrityError
-from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
 from django.test.client import MULTIPART_CONTENT
+from django.db import IntegrityError, connections
 from django.core.exceptions import ValidationError
+from django.test import TestCase, TransactionTestCase, Client
 
 from .tasks import (
     update_cached_plant_options,
@@ -993,3 +994,44 @@ class ViewDecoratorRegressionTests(TestCase):
         with self.assertRaises(KeyError) as e:
             test_key_error({'event_type': 'water'})
         self.assertEqual(e.exception.args[0], "wrapped function error")
+
+
+class DatabaseRaceConditionRegressionTests(TransactionTestCase):
+    def test_simultaneous_requests_create_duplicate_water_events(self):
+        '''Issue: If two identical events were created simultaneously the Event
+        model save method would fail to reject the duplicate timestamp because
+        it relied on a database SELECT to see if a duplicate existed (instead of
+        a database-level constraint). If both lookups ran before either event
+        was committed they would both find 0 matches, allowing both events to be
+        created.
+        '''
+
+        # Create test plant + fixed timestamp
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        timestamp = timezone.now()
+
+        def create_water_event():
+            try:
+                WaterEvent.objects.create(
+                    plant=plant,
+                    timestamp=timestamp
+                )
+            except IntegrityError:
+                pass
+            finally:
+                # Close database connection (fix hanging at end of test)
+                connections.close_all()
+
+        # Create 2 identical events simultaneously in separate threads
+        thread_1 = threading.Thread(target=create_water_event)
+        thread_2 = threading.Thread(target=create_water_event)
+        thread_1.start()
+        thread_2.start()
+        thread_1.join()
+        thread_2.join()
+
+        # Confirm only 1 event was created
+        self.assertEqual(
+            len(WaterEvent.objects.filter(plant=plant, timestamp=timestamp)),
+            1
+        )

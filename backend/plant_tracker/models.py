@@ -650,13 +650,22 @@ class Event(models.Model):
 class WaterEvent(Event):
     '''Records timestamp when a Plant entry was watered.'''
 
+    class Meta:
+        unique_together = ('plant', 'timestamp')
+
 
 class FertilizeEvent(Event):
     '''Records timestamp when a Plant entry was fertilized.'''
 
+    class Meta:
+        unique_together = ('plant', 'timestamp')
+
 
 class PruneEvent(Event):
     '''Records timestamp when a Plant entry was pruned.'''
+
+    class Meta:
+        unique_together = ('plant', 'timestamp')
 
 
 class RepotEvent(Event):
@@ -674,7 +683,13 @@ class RepotEvent(Event):
         null=True
     )
 
+    class Meta:
+        unique_together = ('plant', 'timestamp')
+
 
 class NoteEvent(Event):
     '''Records timestamp and user-entered text about a specific Plant.'''
     text = models.CharField(max_length=500)
+
+    class Meta:
+        unique_together = ('plant', 'timestamp')

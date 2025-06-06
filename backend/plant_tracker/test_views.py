@@ -2153,8 +2153,8 @@ class NoteEventEndpointTests(TestCase):
         self.assertEqual(response.status_code, 409)
         self.assertEqual(
             response.json(),
-            {'error': {'timestamp': [
-                'Plant already has an event with the same type and timestamp'
+            {"error": {"__all__": [
+                "Note event with this Plant and Timestamp already exists."
             ]}}
         )
         self.assertEqual(len(NoteEvent.objects.all()), 1)
