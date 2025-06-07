@@ -1,4 +1,4 @@
-import { fireEvent } from '@testing-library/react';
+import { fireEvent, waitFor } from '@testing-library/react';
 import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import App from '../App';
@@ -631,5 +631,139 @@ describe('App', () => {
 
         // Confirm Delete events dropdown option was removed
         expect(app.queryByText('Delete events')).toBeNull();
+    });
+
+    // Original bug: If plant had no events (delete events option not shown) and
+    // an event was added before user navigated back to page with back button
+    // (requests new state) the new event would appear in timeline, but the
+    // delete events option would not appear.
+    it('adds/removes delete events option after navigating to page with back button', async () => {
+        // Confirm Delete events dropdown option was not rendered
+        expect(app.queryByText('Delete events')).toBeNull();
+
+        // Mock fetch function to return /get_plant_state response with water event
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "plant_details": mockContextNoEvents.plant_details,
+                "events": {
+                    "water": [
+                        "2024-03-14T20:46:03+00:00"
+                    ],
+                    "fertilize": [],
+                    "prune": [],
+                    "repot": [],
+                },
+                "notes": [],
+                "group_options": mockContextNoEvents.group_options,
+                "species_options": mockContextNoEvents.species_options,
+                "photos": []
+            })
+        }));
+
+        // Simulate user navigating to page with back button
+        const pageshowEvent = new Event('pageshow');
+        Object.defineProperty(pageshowEvent, 'persisted', { value: true });
+        window.dispatchEvent(pageshowEvent);
+        // Confirm /get_plant_state was called
+        expect(global.fetch).toHaveBeenCalledWith(
+            '/get_plant_state/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+        );
+
+        // Confirm Delete events dropdown option appeared
+        await waitFor(() => {
+            expect(app.queryByText('Delete events')).not.toBeNull();
+        });
+
+        // Mock fetch function to return /get_plant_state response with no events
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "plant_details": mockContextNoEvents.plant_details,
+                "events": mockContextNoEvents.events,
+                "notes": [],
+                "group_options": mockContextNoEvents.group_options,
+                "species_options": mockContextNoEvents.species_options,
+                "photos": []
+            })
+        }));
+
+        // Simulate user navigating to page with back button again
+        Object.defineProperty(pageshowEvent, 'persisted', { value: true });
+        window.dispatchEvent(pageshowEvent);
+
+        // Confirm Delete events dropdown option disappeared
+        await waitFor(() => {
+            expect(app.queryByText('Delete events')).toBeNull();
+        });
+    });
+
+    // Original bug: If plant had no photos (gallery and delete photos options
+    // not shown) and a photowas added before user navigated back to page with
+    // back button (requests new state) the new photo would appear in timeline,
+    // but the gallery and delete photos options would not appear.
+    it('adds/removes delete photos option after navigating to page with back button', async () => {
+        // Confirm Gallery and Delete photos dropdown options were not rendered
+        expect(app.queryByText('Gallery')).toBeNull();
+        expect(app.queryByText('Delete photos')).toBeNull();
+
+        // Mock fetch function to return /get_plant_state response with photo
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "plant_details": mockContextNoEvents.plant_details,
+                "events": mockContextNoEvents.events,
+                "notes": [],
+                "group_options": mockContextNoEvents.group_options,
+                "species_options": mockContextNoEvents.species_options,
+                "photos": [
+                    {
+                        'timestamp': '2024-03-21T10:52:03+00:00',
+                        'image': '/media/images/photo1.jpg',
+                        'thumbnail': '/media/thumbnails/photo1_thumb.webp',
+                        'preview': '/media/previews/photo1_preview.webp',
+                        'key': 1
+                    }
+                ]
+            })
+        }));
+
+        // Simulate user navigating to page with back button
+        const pageshowEvent = new Event('pageshow');
+        Object.defineProperty(pageshowEvent, 'persisted', { value: true });
+        window.dispatchEvent(pageshowEvent);
+        // Confirm /get_plant_state was called
+        expect(global.fetch).toHaveBeenCalledWith(
+            '/get_plant_state/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+        );
+
+        // Confirm Gallery and Delete photos dropdown options appeared
+        await waitFor(() => {
+            expect(app.queryByText('Gallery')).not.toBeNull();
+            expect(app.queryByText('Delete photos')).not.toBeNull();
+        });
+
+        // Mock fetch function to return /get_plant_state response with no photos
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "plant_details": mockContextNoEvents.plant_details,
+                "events": mockContextNoEvents.events,
+                "notes": [],
+                "group_options": mockContextNoEvents.group_options,
+                "species_options": mockContextNoEvents.species_options,
+                "photos": []
+            })
+        }));
+
+        // Simulate user navigating to page with back button again
+        Object.defineProperty(pageshowEvent, 'persisted', { value: true });
+        window.dispatchEvent(pageshowEvent);
+
+        // Confirm Gallery and Delete photos dropdown options disappeared
+        await waitFor(() => {
+            expect(app.queryByText('Gallery')).toBeNull();
+            expect(app.queryByText('Delete photos')).toBeNull();
+        });
     });
 });

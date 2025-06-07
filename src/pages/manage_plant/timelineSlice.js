@@ -332,6 +332,11 @@ export const timelineSlice = createSlice({
             state.timelineDays = newTimelineDays;
             state.calendarDays = buildCalendarDays(newTimelineDays);
             state.navigationOptions = buildNavigationOptions(newTimelineDays);
+            state.hasPhotos = action.payload.photos.length > 0;
+            state.hasEvents = action.payload.events.water.length > 0 ||
+                              action.payload.events.fertilize.length > 0 ||
+                              action.payload.events.prune.length > 0 ||
+                              action.payload.events.repot.length > 0;
         });
     }
 });
