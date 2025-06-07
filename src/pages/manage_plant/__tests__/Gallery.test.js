@@ -39,7 +39,7 @@ describe('Gallery', () => {
         // Confirm gallery div does not exist
         expect(document.body.querySelector('.yarl__root')).toBeNull();
 
-        // Click image thumbnail, confirm gallery appears
+        // Click gallery dropdown option, confirm gallery appears
         await user.click(app.getByRole('button', {name: 'Gallery'}));
         await waitFor(() =>
             expect(document.body.querySelector('.yarl__root')).not.toBeNull()

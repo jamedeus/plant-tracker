@@ -327,6 +327,7 @@ export const timelineSlice = createSlice({
                 action.payload.notes,
                 action.payload.photos
             );
+            state.photos = action.payload.photos;
             state.eventsByType = action.payload.events;
             state.timelineDays = newTimelineDays;
             state.calendarDays = buildCalendarDays(newTimelineDays);
