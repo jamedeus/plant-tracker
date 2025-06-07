@@ -124,8 +124,6 @@ export function ReduxProvider({ children }) {
         const photos = parseDomContext('photos');
         const notes = parseDomContext('notes');
         const defaultPhoto = parseDomContext('default_photo');
-        const photoGalleryIndex = 0;
-        const photoGalleryOpen = false;
         const hasPhotos = photos.length > 0;
         const hasEvents = eventsByType.water.length > 0 ||
                           eventsByType.fertilize.length > 0 ||
@@ -150,8 +148,6 @@ export function ReduxProvider({ children }) {
                 photos,
                 navigationOptions,
                 defaultPhoto,
-                photoGalleryIndex,
-                photoGalleryOpen,
                 hasPhotos,
                 hasEvents
             },
