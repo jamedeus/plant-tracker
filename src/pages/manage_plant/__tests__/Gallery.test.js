@@ -2,6 +2,7 @@ import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import App from '../App';
 import { mockContext } from './mockContext';
+import { waitFor } from '@testing-library/react';
 
 describe('Gallery', () => {
     let app, user;
@@ -40,7 +41,9 @@ describe('Gallery', () => {
 
         // Click image thumbnail, confirm gallery appears
         await user.click(app.getByRole('button', {name: 'Gallery'}));
-        expect(document.body.querySelector('.yarl__root')).not.toBeNull();
+        await waitFor(() =>
+            expect(document.body.querySelector('.yarl__root')).not.toBeNull()
+        );
 
         // Click close button, confirm gallery disappears
         await user.click(app.getByRole('button', {name: 'Close photo gallery'}));
