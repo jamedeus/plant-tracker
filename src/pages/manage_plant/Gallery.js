@@ -19,7 +19,7 @@ import {
     XMarkIcon,
     PlayIcon,
     PauseIcon,
-    ArrowPathIcon,
+    ArrowRightIcon,
     ChevronLeftIcon,
     ChevronRightIcon,
     ArrowDownTrayIcon,
@@ -149,7 +149,10 @@ const Gallery = () => {
                 iconZoomOut: () => <MagnifyingGlassMinusIcon className="size-8" />,
                 iconSlideshowPlay: () => <PlayIcon className="size-8" />,
                 iconSlideshowPause: () => <PauseIcon className="size-8" />,
-                iconSlideshowToggle: () => <ArrowPathIcon className="size-8" />,
+                iconSlideshowToggle: () => <ArrowRightIcon className={clsx(
+                    "size-8 transition-transform duration-300",
+                    slideshowForward ? "rotate-0" : "rotate-180"
+                )} />,
                 iconClose: () => <XMarkIcon className="size-8" />,
                 iconDownload: () => <ArrowDownTrayIcon className="size-8" />,
                 iconExitFullscreen: () => <ArrowsPointingInIcon className="size-8" />,

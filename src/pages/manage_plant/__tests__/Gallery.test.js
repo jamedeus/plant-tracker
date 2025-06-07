@@ -128,9 +128,18 @@ describe('Gallery', () => {
         expect(document.querySelector('.slideshow_progress_bar')).not.toBeNull();
         expect(document.querySelector('.slideshow_progress_bar.reverse')).toBeNull();
 
+        // Confirm toggleButton icon is not flipped
+        const toggleButton = app.getByRole('button', {name: 'Toggle direction'});
+        const toggleButtonIcon = toggleButton.querySelector('svg');
+        expect(toggleButtonIcon.classList).toContain('rotate-0');
+        expect(toggleButtonIcon.classList).not.toContain('rotate-180');
+
         // Click toggle button, confirm progress bar reversed (moving backward)
-        await user.click(app.getByRole('button', {name: 'Toggle direction'}));
+        await user.click(toggleButton);
         expect(document.querySelector('.slideshow_progress_bar.reverse')).not.toBeNull();
+        // Confirm toggle button icon flipped
+        expect(toggleButtonIcon.classList).not.toContain('rotate-0');
+        expect(toggleButtonIcon.classList).toContain('rotate-180');
 
         // Confirm visible slide changes in opposite direction after 3000ms
         expect(document.querySelector('.yarl__slide_current img').src).toEndWith(
