@@ -657,7 +657,8 @@ describe('App', () => {
                 "notes": [],
                 "group_options": mockContextNoEvents.group_options,
                 "species_options": mockContextNoEvents.species_options,
-                "photos": []
+                "photos": [],
+                "default_photo": mockContextNoEvents.default_photo
             })
         }));
 
@@ -684,7 +685,8 @@ describe('App', () => {
                 "notes": [],
                 "group_options": mockContextNoEvents.group_options,
                 "species_options": mockContextNoEvents.species_options,
-                "photos": []
+                "photos": [],
+                "default_photo": mockContextNoEvents.default_photo
             })
         }));
 
@@ -724,7 +726,15 @@ describe('App', () => {
                         'preview': '/media/previews/photo1_preview.webp',
                         'key': 1
                     }
-                ]
+                ],
+                "default_photo": {
+                    'set': false,
+                    'timestamp': '2024-03-21T10:52:03+00:00',
+                    'image': '/media/images/photo1.jpg',
+                    'thumbnail': '/media/thumbnails/photo1_thumb.webp',
+                    'preview': '/media/previews/photo1_preview.webp',
+                    'key': 1
+                }
             })
         }));
 
@@ -752,7 +762,8 @@ describe('App', () => {
                 "notes": [],
                 "group_options": mockContextNoEvents.group_options,
                 "species_options": mockContextNoEvents.species_options,
-                "photos": []
+                "photos": [],
+                "default_photo": mockContextNoEvents.default_photo
             })
         }));
 
@@ -764,6 +775,57 @@ describe('App', () => {
         await waitFor(() => {
             expect(app.queryByText('Gallery')).toBeNull();
             expect(app.queryByText('Delete photos')).toBeNull();
+        });
+    });
+
+    // Original bug: The default photo state was not updated when user navigated
+    // back to page with back button (requests new state). If the default photo
+    // was changed the photo shown in details dropdown would be outdated.
+    it('updates default photo after navigating to page with back button', async () => {
+        // Confirm no default photo in details dropdown (plant has no photos)
+        expect(app.queryByTestId('defaultPhotoThumbnail')).toBeNull();
+
+        // Mock fetch function to return /get_plant_state response with photo + default photo
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "plant_details": mockContextNoEvents.plant_details,
+                "events": mockContextNoEvents.events,
+                "notes": [],
+                "group_options": mockContextNoEvents.group_options,
+                "species_options": mockContextNoEvents.species_options,
+                "photos": [
+                    {
+                        'timestamp': '2024-03-21T10:52:03+00:00',
+                        'image': '/media/images/photo1.jpg',
+                        'thumbnail': '/media/thumbnails/photo1_thumb.webp',
+                        'preview': '/media/previews/photo1_preview.webp',
+                        'key': 1
+                    }
+                ],
+                "default_photo": {
+                    'set': false,
+                    'timestamp': '2024-03-21T10:52:03+00:00',
+                    'image': '/media/images/photo1.jpg',
+                    'thumbnail': '/media/thumbnails/photo1_thumb.webp',
+                    'preview': '/media/previews/photo1_preview.webp',
+                    'key': 1
+                }
+            })
+        }));
+
+        // Simulate user navigating to page with back button
+        const pageshowEvent = new Event('pageshow');
+        Object.defineProperty(pageshowEvent, 'persisted', { value: true });
+        window.dispatchEvent(pageshowEvent);
+        // Confirm /get_plant_state was called
+        expect(global.fetch).toHaveBeenCalledWith(
+            '/get_plant_state/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+        );
+
+        // Confirm efault photo appeared in details dropdown
+        await waitFor(() => {
+            expect(app.queryByTestId('defaultPhotoThumbnail')).not.toBeNull();
         });
     });
 });

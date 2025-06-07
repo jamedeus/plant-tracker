@@ -337,6 +337,7 @@ export const timelineSlice = createSlice({
                               action.payload.events.fertilize.length > 0 ||
                               action.payload.events.prune.length > 0 ||
                               action.payload.events.repot.length > 0;
+            state.defaultPhoto = action.payload.default_photo;
         });
     }
 });

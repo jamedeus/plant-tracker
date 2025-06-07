@@ -24,7 +24,8 @@ describe('App', () => {
                 // Deep copy so subsequent calls don't fail (gets mutated when
                 // buildTimelineDays sorts - not an issue in production since
                 // it's a different response each time but in mock it's reused)
-                "photos": JSON.parse(JSON.stringify(mockContext.photos))
+                "photos": JSON.parse(JSON.stringify(mockContext.photos)),
+                "default_photo": mockContext.default_photo
             })
         }));
     });

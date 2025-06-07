@@ -367,7 +367,8 @@ describe('App', () => {
                 "notes": mockContext.notes,
                 "group_options": mockContext.group_options,
                 "species_options": mockContext.species_options,
-                "photos": mockContext.photos
+                "photos": mockContext.photos,
+                "default_photo": mockContext.default_photo
             })
         }));
 
