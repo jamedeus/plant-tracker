@@ -24,11 +24,11 @@ describe('Gallery suspense overlay', () => {
 
     // Clean up pending timers after each test
     afterEach(() => {
-        jest.runAllTimers();
+        act(() => jest.runAllTimers());
         jest.useRealTimers();
     });
 
-    it('closes suspense, cancels opening gallery if suspense close button is clicked', async () => {
+    it('closes suspense, cancels opening gallery if suspense close button is clicked', () => {
         // Render layout component
         const layout = render(
             <ReduxProvider>
@@ -37,15 +37,15 @@ describe('Gallery suspense overlay', () => {
         );
 
         // Open gallery, confirm suspense overlay appeared
-        fireEvent.click(layout.getByRole('button', {name: 'Gallery'}));
+        act(() => fireEvent.click(layout.getByRole('button', {name: 'Gallery'})));
         expect(document.body.querySelector('.suspense-overlay')).not.toBeNull();
 
         // Click suspense close button
         const closeBtn = layout.getByLabelText('Close loading overlay');
-        fireEvent.click(closeBtn);
+        act(() => fireEvent.click(closeBtn));
 
         // Confirm the suspense overlay disappeared
-        jest.advanceTimersByTime(250);
+        act(() => jest.advanceTimersByTime(250));
         expect(document.body.querySelector('.suspense-overlay')).toBeNull();
     });
 });

@@ -28,12 +28,6 @@ describe('Gallery', () => {
         createMockContext('photos', mockphotos);
     });
 
-    // Clean up pending timers after each test
-    afterEach(() => {
-        jest.runAllTimers();
-        jest.useRealTimers();
-    });
-
     it('matches snapshot for desktop layout', async () => {
         // Set width greater than tailwind md breakpoint, render gallery
         window.innerWidth = 800;

@@ -33,11 +33,15 @@ describe('ToastContext', () => {
 
     // Clean up pending timers after each test
     afterEach(() => {
-        act(() => {
-            jest.runAllTimers();
-        });
+        act(() => jest.runAllTimers());
         jest.useRealTimers();
     });
+
+    const advanceTimers = async (delay) => {
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(delay);
+        });
+    };
 
     it('renders toast div when showToast method called', async () => {
         // Confirm no toast div exists in document
@@ -67,9 +71,7 @@ describe('ToastContext', () => {
         expect(component.container.querySelectorAll('.toast').length).toBe(1);
 
         // Wait for timeout + animation (100 + 500ms), confirm toast disappeared
-        await act(async () => {
-            await jest.advanceTimersByTimeAsync(600);
-        });
+        await advanceTimers(600);
         expect(component.container.querySelectorAll('.toast').length).toBe(0);
     });
 
@@ -95,17 +97,13 @@ describe('ToastContext', () => {
         ).not.toContain('opacity-0');
 
         // Wait for full timeout without clicking, confirm toast is fading out
-        await act(async () => {
-            await jest.advanceTimersByTimeAsync(150);
-        });
+        await advanceTimers(150);
         expect(
             component.container.querySelector('.toast').classList
         ).toContain('opacity-0');
 
         // Wait for fade animation, confirm toast umounted
-        await act(async () => {
-            await jest.advanceTimersByTimeAsync(600);
-        });
+        await advanceTimers(600);
         expect(component.container.querySelectorAll('.toast').length).toBe(0);
     });
 });

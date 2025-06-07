@@ -30,7 +30,7 @@ describe('App', () => {
 
     // Clean up pending timers after each test
     afterEach(() => {
-        jest.runAllTimers();
+        act(() => jest.runAllTimers());
         jest.useRealTimers();
     });
 
@@ -375,7 +375,7 @@ describe('App', () => {
         // Simulate user navigating to page with back button
         const pageshowEvent = new Event('pageshow');
         Object.defineProperty(pageshowEvent, 'persisted', { value: true });
-        window.dispatchEvent(pageshowEvent);
+        await act(() => window.dispatchEvent(pageshowEvent));
 
         // Confirm fetched correct endpoint
         await waitFor(() => {
@@ -395,8 +395,8 @@ describe('App', () => {
         // Simulate user navigating to page with back button
         const pageshowEvent = new Event('pageshow');
         Object.defineProperty(pageshowEvent, 'persisted', { value: true });
-        window.dispatchEvent(pageshowEvent);
-        await jest.advanceTimersByTimeAsync(0);
+        await act(() => window.dispatchEvent(pageshowEvent));
+        await act(async () => await jest.advanceTimersByTimeAsync(0));
 
         // Confirm fetched correct endpoint
         expect(global.fetch).toHaveBeenCalledWith(
@@ -411,7 +411,7 @@ describe('App', () => {
         // Simulate pageshow event with persisted == false (ie initial load)
         const pageshowEvent = new Event('pageshow');
         Object.defineProperty(pageshowEvent, 'persisted', { value: false });
-        window.dispatchEvent(pageshowEvent);
+        act(() => window.dispatchEvent(pageshowEvent));
 
         // Confirm did not call fetch
         expect(global.fetch).not.toHaveBeenCalled();
@@ -605,7 +605,7 @@ describe('App', () => {
         // Simulate user holding delete button for 1.5 seconds
         const button = within(editModal).getByText('Delete');
         fireEvent.mouseDown(button);
-        await jest.advanceTimersByTimeAsync(1500);
+        await act(async () => await jest.advanceTimersByTimeAsync(1500));
         fireEvent.mouseUp(button);
 
         // Confirm timeline no longer contains note text

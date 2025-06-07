@@ -53,7 +53,7 @@ describe('App', () => {
 
     // Clean up pending timers after each test
     afterEach(() => {
-        jest.runAllTimers();
+        act(() => jest.runAllTimers());
         jest.useRealTimers();
     });
 
@@ -93,7 +93,7 @@ describe('App', () => {
         // Click delete button in floating div, hold for 2.5 seconds, release
         const button = app.getByRole('button', { name: 'Delete' });
         fireEvent.mouseDown(button);
-        await jest.advanceTimersByTimeAsync(2500);
+        await act(async () => await jest.advanceTimersByTimeAsync(2500));
         fireEvent.mouseUp(button);
 
         // Confirm correct data posted to /bulk_delete_plants_and_groups endpoint
@@ -151,7 +151,7 @@ describe('App', () => {
         // Click delete button in floating div, hold for 2.5 seconds, release
         const button = app.getByRole('button', { name: 'Delete' });
         fireEvent.mouseDown(button);
-        await jest.advanceTimersByTimeAsync(2500);
+        await act(async () => await jest.advanceTimersByTimeAsync(2500));
         fireEvent.mouseUp(button);
 
         // Confirm correct data posted to /bulk_delete_plants_and_groups endpoint

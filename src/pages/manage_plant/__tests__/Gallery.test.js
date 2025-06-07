@@ -31,9 +31,15 @@ describe('Gallery', () => {
 
     // Clean up pending timers after each test
     afterEach(() => {
-        jest.runAllTimers();
+        act(() => jest.runAllTimers());
         jest.useRealTimers();
     });
+
+    const advanceTimers = async (delay) => {
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(delay);
+        });
+    };
 
     it('opens photo gallery when dropdown option is clicked', async () => {
         // Confirm gallery div does not exist
@@ -47,7 +53,7 @@ describe('Gallery', () => {
 
         // Click close button, confirm gallery disappears
         await user.click(app.getByRole('button', {name: 'Close photo gallery'}));
-        await jest.advanceTimersByTimeAsync(500);
+        await advanceTimers(500);
         expect(document.body.querySelector('.yarl__root')).toBeNull();
     });
 
@@ -82,7 +88,7 @@ describe('Gallery', () => {
 
         // Close gallery, confirm closed
         await user.click(app.getByRole('button', {name: 'Close photo gallery'}));
-        await jest.advanceTimersByTimeAsync(500);
+        await advanceTimers(500);
         expect(document.body.querySelector('.yarl__root')).toBeNull();
 
         // Reopen gallery, confirm last-viewed photo is visible (not default)
@@ -107,7 +113,7 @@ describe('Gallery', () => {
         expect(document.querySelector('.yarl__slide_current img').src).toEndWith(
             '/media/images/photo3.jpg'
         );
-        await jest.advanceTimersByTimeAsync(3000);
+        await advanceTimers(3000);
         expect(document.querySelector('.yarl__slide_current img').src).toEndWith(
             '/media/images/photo2.jpg'
         );
@@ -145,7 +151,7 @@ describe('Gallery', () => {
         expect(document.querySelector('.yarl__slide_current img').src).toEndWith(
             '/media/images/photo3.jpg'
         );
-        await jest.advanceTimersByTimeAsync(3000);
+        await advanceTimers(3000);
         expect(document.querySelector('.yarl__slide_current img').src).toEndWith(
             '/media/images/photo1.jpg'
         );
@@ -161,7 +167,7 @@ describe('Gallery', () => {
         await user.click(app.getByRole('button', {name: 'Enter Fullscreen'}));
         expect(Element.prototype.requestFullscreen).toHaveBeenCalled();
         expect(document.exitFullscreen).not.toHaveBeenCalled();
-        await jest.advanceTimersByTimeAsync(10000);
+        await advanceTimers(10000);
 
         // Click exit fullscreen button, confirm exited
         await user.click(app.getByRole('button', {name: 'Exit Fullscreen'}));
@@ -182,7 +188,7 @@ describe('Gallery', () => {
         // Change slide, close gallery, confirm scrollIntoView was called
         await user.click(app.getByRole('button', {name: 'Next photo'}));
         await user.click(app.getByRole('button', {name: 'Close photo gallery'}));
-        await jest.advanceTimersByTimeAsync(500);
+        await advanceTimers(500);
         expect(window.HTMLElement.prototype.scrollIntoView).toHaveBeenCalled();
     });
 
@@ -193,7 +199,7 @@ describe('Gallery', () => {
 
         // Close gallery without changing slides, confirm scrollIntoView was NOT called
         await user.click(app.getByRole('button', {name: 'Close photo gallery'}));
-        await jest.advanceTimersByTimeAsync(500);
+        await advanceTimers(500);
         expect(window.HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled();
     });
 
@@ -211,7 +217,7 @@ describe('Gallery', () => {
         // Change slide, close gallery
         await user.click(app.getByRole('button', {name: 'Next photo'}));
         await user.click(app.getByRole('button', {name: 'Close photo gallery'}));
-        await jest.advanceTimersByTimeAsync(500);
+        await advanceTimers(500);
         // Confirm scrollIntoView was NOT called (photo already visible)
         expect(window.HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled();
     });

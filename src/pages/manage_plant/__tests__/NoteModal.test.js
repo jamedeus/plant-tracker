@@ -171,7 +171,7 @@ describe('Edit existing note', () => {
 
     // Clean up pending timers after each test
     afterEach(() => {
-        jest.runAllTimers();
+        act(() => jest.runAllTimers());
         jest.useRealTimers();
     });
 
@@ -189,7 +189,7 @@ describe('Edit existing note', () => {
         // Simulate user holding delete button for 1.5 seconds
         const button = app.getByText('Delete');
         fireEvent.mouseDown(button);
-        await jest.advanceTimersByTimeAsync(1500);
+        await act(async () => await jest.advanceTimersByTimeAsync(1500));
         fireEvent.mouseUp(button);
 
         // Confirm correct data posted to /add_plant_note endpoint
@@ -248,7 +248,7 @@ describe('Edit existing note', () => {
         // Simulate user holding delete button for 1.5 seconds
         const button = app.getByText('Delete');
         fireEvent.mouseDown(button);
-        await jest.advanceTimersByTimeAsync(1500);
+        await act(async () => await jest.advanceTimersByTimeAsync(1500));
         fireEvent.mouseUp(button);
 
         // Confirm modal appeared with arbitrary error text

@@ -44,7 +44,7 @@ describe('App', () => {
         // Simulate user navigating to page with back button
         const pageshowEvent = new Event('pageshow');
         Object.defineProperty(pageshowEvent, 'persisted', { value: true });
-        window.dispatchEvent(pageshowEvent);
+        await act(() => window.dispatchEvent(pageshowEvent));
 
         // Confirm /get_plant_state was called once
         expect(global.fetch.mock.calls.filter(
@@ -67,7 +67,7 @@ describe('App', () => {
 
         // Simulate back button again, confirm /get_plant_state state was
         // called once (would call twice before fix due to stacked listener)
-        window.dispatchEvent(pageshowEvent);
+        await act(() => window.dispatchEvent(pageshowEvent));
         expect(global.fetch.mock.calls.filter(
             call => call[0] === '/get_plant_state/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
         )).toHaveLength(1);
@@ -102,7 +102,7 @@ describe('App', () => {
         // Simulate user navigating to page with back button
         const pageshowEvent = new Event('pageshow');
         Object.defineProperty(pageshowEvent, 'persisted', { value: true });
-        window.dispatchEvent(pageshowEvent);
+        await act(() => window.dispatchEvent(pageshowEvent));
         // Confirm /get_plant_state was called
         expect(global.fetch).toHaveBeenCalledWith(
             '/get_plant_state/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
