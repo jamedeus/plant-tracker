@@ -543,7 +543,12 @@ def add_plant_event(user, plant, timestamp, event_type, **kwargs):
     Requires JSON POST with plant_id (uuid), event_type, and timestamp keys.
     '''
     try:
-        events_map[event_type].objects.create(plant=plant, timestamp=timestamp)
+        # Use transaction.atomic to clean up after IntegrityError if duplicate
+        with transaction.atomic():
+            events_map[event_type].objects.create(
+                plant=plant,
+                timestamp=timestamp
+            )
 
         # Create task to update cached overview state (last_watered outdated)
         schedule_cached_overview_state_update(user)
@@ -552,7 +557,7 @@ def add_plant_event(user, plant, timestamp, event_type, **kwargs):
             {"action": event_type, "plant": plant.uuid},
             status=200
         )
-    except ValidationError:
+    except IntegrityError:
         return JsonResponse(
             {"error": "event with same timestamp already exists"},
             status=409
@@ -574,9 +579,14 @@ def bulk_add_plant_events(user, timestamp, event_type, data, **kwargs):
         # Make sure plant exists and is owned by user
         if plant and plant.user == user:
             try:
-                events_map[event_type].objects.create(plant=plant, timestamp=timestamp)
+                # Use transaction.atomic to clean up after IntegrityError if duplicate
+                with transaction.atomic():
+                    events_map[event_type].objects.create(
+                        plant=plant,
+                        timestamp=timestamp
+                    )
                 added.append(plant_id)
-            except ValidationError:
+            except IntegrityError:
                 failed.append(plant_id)
         else:
             failed.append(plant_id)
@@ -658,7 +668,7 @@ def add_plant_note(plant, timestamp, data, **kwargs):
                 timestamp=timestamp,
                 text=data["note_text"]
             )
-            note.full_clean()
+            note.clean_fields()
             note.save()
         return JsonResponse(
             {
@@ -672,7 +682,12 @@ def add_plant_note(plant, timestamp, data, **kwargs):
     except ValidationError as error:
         return JsonResponse(
             {"error": error.message_dict},
-            status=409 if "__all__" in error.message_dict.keys() else 400
+            status=400
+        )
+    except IntegrityError:
+        return JsonResponse(
+            {"error": "Plant already has a note with the same timestamp"},
+            status=409
         )
 
 
@@ -826,12 +841,13 @@ def repot_plant(plant, timestamp, data, **kwargs):
 
     try:
         # Create with current pot_size as both old and new
-        event = RepotEvent.objects.create(
-            plant=plant,
-            timestamp=timestamp,
-            old_pot_size=plant.pot_size,
-            new_pot_size=plant.pot_size
-        )
+        with transaction.atomic():
+            event = RepotEvent.objects.create(
+                plant=plant,
+                timestamp=timestamp,
+                old_pot_size=plant.pot_size,
+                new_pot_size=plant.pot_size
+            )
         # If new_pot_size specified update plant.pot_size and event.new_pot_size
         if data["new_pot_size"]:
             event.new_pot_size = data["new_pot_size"]
@@ -840,7 +856,7 @@ def repot_plant(plant, timestamp, data, **kwargs):
             plant.save()
         return JsonResponse({"action": "repot", "plant": plant.uuid}, status=200)
 
-    except ValidationError:
+    except IntegrityError:
         return JsonResponse(
             {"error": "Event with same timestamp already exists"},
             status=409

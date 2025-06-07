@@ -8,7 +8,7 @@ from datetime import timedelta
 from django.conf import settings
 from django.test import TestCase
 from django.utils import timezone
-from django.core.exceptions import ValidationError
+from django.db import transaction, IntegrityError
 
 from .view_decorators import get_default_user
 from .models import (
@@ -546,7 +546,7 @@ class EventModelTests(TestCase):
         self.assertEqual(len(WaterEvent.objects.all()), 1)
 
         # Attempt to create duplicate with same timestamp, should raise error
-        with self.assertRaises(ValidationError):
+        with self.assertRaises(IntegrityError), transaction.atomic():
             WaterEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
 
         # Confirm second event was not created
@@ -558,7 +558,7 @@ class EventModelTests(TestCase):
         self.assertEqual(len(FertilizeEvent.objects.all()), 1)
 
         # Attempt to create duplicate with same timestamp, should raise error
-        with self.assertRaises(ValidationError):
+        with self.assertRaises(IntegrityError), transaction.atomic():
             FertilizeEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
 
         # Confirm second event was not created
@@ -570,7 +570,7 @@ class EventModelTests(TestCase):
         self.assertEqual(len(PruneEvent.objects.all()), 1)
 
         # Attempt to create duplicate with same timestamp, should raise error
-        with self.assertRaises(ValidationError):
+        with self.assertRaises(IntegrityError), transaction.atomic():
             PruneEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
 
         # Confirm second event was not created
@@ -582,7 +582,7 @@ class EventModelTests(TestCase):
         self.assertEqual(len(RepotEvent.objects.all()), 1)
 
         # Attempt to create duplicate with same timestamp, should raise error
-        with self.assertRaises(ValidationError):
+        with self.assertRaises(IntegrityError), transaction.atomic():
             RepotEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
 
         # Confirm second event was not created
@@ -594,7 +594,7 @@ class EventModelTests(TestCase):
         self.assertEqual(len(NoteEvent.objects.all()), 1)
 
         # Attempt to create duplicate with same timestamp, should raise error
-        with self.assertRaises(ValidationError):
+        with self.assertRaises(IntegrityError), transaction.atomic():
             NoteEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
 
         # Confirm second event was not created

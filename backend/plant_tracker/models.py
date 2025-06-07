@@ -11,7 +11,6 @@ from django.conf import settings
 from django.core.cache import cache
 from django.db import IntegrityError
 from django.dispatch import receiver
-from django.core.exceptions import ValidationError
 from django.utils import timezone as django_timezone
 from django.db.models.signals import post_save, post_delete
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -632,19 +631,6 @@ class Event(models.Model):
         name = self.plant.get_display_name()
         timestamp = self.timestamp.strftime(TIME_FORMAT)
         return f"{name} - {timestamp}"
-
-    def save(self, *args, **kwargs):
-        # Prevent creating duplicate events with the same plant and timestamp
-        if self.__class__.objects.filter(
-            plant=self.plant,
-            timestamp=self.timestamp
-        ).exclude(pk=self.pk).exists():
-            raise ValidationError({
-                "timestamp": [
-                    "Plant already has an event with the same type and timestamp"
-                ]
-            })
-        super().save(*args, **kwargs)
 
 
 class WaterEvent(Event):
