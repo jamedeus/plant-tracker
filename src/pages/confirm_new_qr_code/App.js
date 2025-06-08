@@ -117,7 +117,7 @@ function App() {
     ), []);
 
     return (
-        <div className="container flex flex-col mx-auto h-screen">
+        <div className="container flex flex-col items-center mx-auto h-screen">
             <Navbar
                 menuOptions={<NavbarDropdownOptions />}
                 title={instance.display_name}

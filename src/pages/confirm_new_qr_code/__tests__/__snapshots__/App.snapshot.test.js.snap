@@ -3,7 +3,7 @@
 exports[`App matches snapshot when changing group QR code 1`] = `
 <div>
   <div
-    class="container flex flex-col mx-auto h-screen"
+    class="container flex flex-col items-center mx-auto h-screen"
   >
     <div
       class="navbar bg-base-100 fixed top-0 z-99"
@@ -170,7 +170,7 @@ exports[`App matches snapshot when changing group QR code 1`] = `
 exports[`App matches snapshot when changing plant QR code 1`] = `
 <div>
   <div
-    class="container flex flex-col mx-auto h-screen"
+    class="container flex flex-col items-center mx-auto h-screen"
   >
     <div
       class="navbar bg-base-100 fixed top-0 z-99"
