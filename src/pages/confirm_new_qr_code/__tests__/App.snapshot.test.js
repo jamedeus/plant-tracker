@@ -9,6 +9,7 @@ describe('App', () => {
         createMockContext('instance', mockContext.plant);
         createMockContext('new_uuid', mockContext.new_uuid);
         createMockContext('user_accounts_enabled', true);
+        createMockContext('preview', mockContext.preview);
 
         // Render App, confirm matches snapshot
         const { container } = render(<App />);

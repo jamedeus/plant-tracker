@@ -261,6 +261,9 @@ def render_confirm_new_qr_code_page(request, uuid, old_uuid, user):
         'new_uuid': uuid
     }
 
+    if state['type'] == 'plant':
+        state['preview'] = instance.preview_url
+
     return render_react_app(
         request,
         title='Confirm new QR code',

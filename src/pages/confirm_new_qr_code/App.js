@@ -8,18 +8,18 @@ import GroupDetails from 'src/components/GroupDetails.js';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { FaXmark, FaCheck } from 'react-icons/fa6';
 
-const Layout = ({ type, thumbnailUrl, thumbnailAltText, handleConfirm }) => {
+const Layout = ({ type, previewUrl, previewAltText, handleConfirm }) => {
     return (
         <div className="flex flex-col gap-8 text-center my-auto">
             <p className="text-lg font-bold">
                 Is this the new QR code for your {type}?
             </p>
-            {thumbnailUrl && (
+            {previewUrl && (
                 <div className="mx-auto p-4 bg-base-200 rounded-3xl">
                     <img
                         className="max-h-[50vh] rounded-xl object-contain"
-                        src={thumbnailUrl}
-                        alt={thumbnailAltText}
+                        src={previewUrl}
+                        alt={previewAltText}
                         draggable={false}
                     />
                 </div>
@@ -52,8 +52,8 @@ Layout.propTypes = {
         'plant',
         'group'
     ]).isRequired,
-    thumbnailUrl: PropTypes.string,
-    thumbnailAltText: PropTypes.string,
+    previewUrl: PropTypes.string,
+    previewAltText: PropTypes.string,
     handleConfirm: PropTypes.func.isRequired
 };
 
@@ -61,6 +61,7 @@ function App() {
     // Load UUIDs and plant/group state from django template context
     const type = parseDomContext("type");
     const instance = parseDomContext("instance");
+    const preview = parseDomContext("preview");
     const newUuid = parseDomContext("new_uuid");
 
     // Reload if user navigates to page by pressing back button (change QR code
@@ -125,8 +126,8 @@ function App() {
             />
             <Layout
                 type={type}
-                thumbnailUrl={instance.thumbnail}
-                thumbnailAltText={`${instance.display_name} photo`}
+                previewUrl={preview}
+                previewAltText={`${instance.display_name} photo`}
                 handleConfirm={handleConfirm}
             />
         </div>

@@ -10,6 +10,7 @@ describe('App', () => {
         createMockContext('instance', mockContext.plant);
         createMockContext('new_uuid', mockContext.new_uuid);
         createMockContext('user_accounts_enabled', true);
+        createMockContext('preview', mockContext.preview);
 
         // Render app, confirm reload was not called
         const { unmount } = render(

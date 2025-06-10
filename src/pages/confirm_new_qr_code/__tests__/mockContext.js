@@ -23,5 +23,6 @@ export const mockContext = {
         "plants": 2,
         "archived": false
     },
-    "new_uuid": "07919189-514d-4ec1-a967-8af553dfa7e8"
+    "new_uuid": "07919189-514d-4ec1-a967-8af553dfa7e8",
+    "preview": "/media/previews/photo_preview.webp",
 };

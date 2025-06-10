@@ -1693,7 +1693,8 @@ class ChangeQrCodeTests(TestCase):
                     'last_watered': None,
                     'last_fertilized': None
                 },
-                'new_uuid': str(self.fake_id)
+                'new_uuid': str(self.fake_id),
+                'preview': self.plant1.preview_url
             }
         )
 
