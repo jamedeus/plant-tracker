@@ -104,6 +104,26 @@ describe('App', () => {
         expect(app.queryByText(/failed to repot plant/)).not.toBeNull();
     });
 
+    it('shows error modal if error received while dividing plant', async() => {
+        // Mock fetch function to return arbitrary error
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            json: () => Promise.resolve({
+                "error": "Event with same timestamp already exists"
+            })
+        }));
+
+        // Confirm arbitrary error does not appear on page
+        expect(app.queryByText(/same timestamp already exists/)).toBeNull();
+
+        // Simulate user submitting division modal
+        await user.click(app.getByText(/Divide plant/));
+        await user.click(app.getByRole('button', {name: 'OK'}));
+
+        // Confirm modal appeared with arbitrary error text
+        expect(app.queryByText(/same timestamp already exists/)).not.toBeNull();
+    });
+
     it('shows error modal if error received while adding to group', async() => {
         // Mock "Remove from group" response (must remove before add button appears)
         global.fetch = jest.fn(() => Promise.resolve({

@@ -313,7 +313,7 @@ describe('App', () => {
         });
     });
 
-    it('does not match /repot_plant request if custom pot size is blank', async () => {
+    it('does not make /repot_plant request if custom pot size is blank', async () => {
         // Confirm error text does not exist
         expect(app.queryByText(
             'Please enter a custom pot size or select a different option'
@@ -333,6 +333,33 @@ describe('App', () => {
 
         // Confirm fetch was NOT called
         expect(global.fetch).not.toHaveBeenCalled();
+    });
+
+    it('sends correct payload when DivisionModal is submitted', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "action": "divide",
+                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
+
+        // Click "Divide plant" dropdown option (open modal)
+        await user.click(app.getByText(/Divide plant/));
+
+        // Click submit button
+        await user.click(app.getByRole('button', {name: 'OK'}));
+
+        // Confirm correct data posted to /divide_plant endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/divide_plant', {
+            method: 'POST',
+            body: JSON.stringify({
+                "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                "timestamp": "2024-03-01T20:00:00.000Z"
+            }),
+            headers: postHeaders
+        });
     });
 
     it('scrolls to timeline when calendar day with events is clicked', async () => {

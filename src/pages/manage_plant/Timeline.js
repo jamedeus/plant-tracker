@@ -7,6 +7,7 @@ import { timestampToReadable, timestampToRelativeDays } from 'src/timestampUtils
 import { openNoteModal } from './NoteModal';
 import { openRepotModal } from './RepotModal';
 import { openPhotoModal } from './PhotoModal';
+import { openDivisionModal } from './DivisionModal';
 import { openDeletePhotosModal, preloadDeletePhotosModal } from './DeletePhotosModal';
 import { openEventHistoryModal } from './EventHistoryModal';
 import { FaEllipsis, FaPenToSquare} from 'react-icons/fa6';
@@ -101,6 +102,12 @@ const Title = memo(function Title() {
                                 onClick={openRepotModal}
                             >
                                 Repot plant
+                            </button></li>
+                            <li><button
+                                className="flex justify-end"
+                                onClick={openDivisionModal}
+                            >
+                                Divide plant
                             </button></li>
                             {hasPhotos &&
                                 <li><button
