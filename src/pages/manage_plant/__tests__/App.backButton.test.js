@@ -93,10 +93,12 @@ describe('App', () => {
         // full-res version of clicked thumbnail
         const photoThumbnail = document.body.querySelector('img.photo-thumbnail-timeline');
         await user.click(photoThumbnail);
-        expect(document.querySelector('.yarl__slide_current img').src).toBe(
-            photoThumbnail.src
-                .replace('/media/thumbnails', '/media/images')
-                .replace('_thumb.webp', '.jpg')
+        await waitFor(() =>
+            expect(document.querySelector('.yarl__slide_current img').src).toBe(
+                photoThumbnail.src
+                    .replace('/media/thumbnails', '/media/images')
+                    .replace('_thumb.webp', '.jpg')
+            )
         );
 
         // Simulate user navigating to page with back button
@@ -111,10 +113,12 @@ describe('App', () => {
         // Click first timeline image thumbnail again, confirm still opens
         // correct photo (not oldest photo)
         await user.click(photoThumbnail);
-        expect(document.querySelector('.yarl__slide_current img').src).toBe(
-            photoThumbnail.src
-                .replace('/media/thumbnails', '/media/images')
-                .replace('_thumb.webp', '.jpg')
+        await waitFor(() =>
+            expect(document.querySelector('.yarl__slide_current img').src).toBe(
+                photoThumbnail.src
+                    .replace('/media/thumbnails', '/media/images')
+                    .replace('_thumb.webp', '.jpg')
+            )
         );
     });
 });
