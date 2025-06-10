@@ -85,6 +85,11 @@
     body {
         @apply pt-20;
     }
+
+    /* Full screen minus navbar height (use instead of h-screen) */
+    .full-screen {
+        height: calc(100vh - 5rem);
+    }
 }
 
 /* Import reusable component utility classes */

@@ -7,7 +7,7 @@ function App() {
     const errorMessage = useMemo(() => parseDomContext('error'));
 
     return (
-        <div className="container flex flex-col h-screen mx-auto items-center gap-16">
+        <div className="container flex flex-col full-screen mx-auto items-center gap-16">
             <Navbar
                 menuOptions={<NavbarDropdownOptions />}
                 title="Permission Denied"
