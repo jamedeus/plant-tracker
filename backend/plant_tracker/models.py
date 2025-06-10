@@ -256,9 +256,10 @@ class Plant(models.Model):
         related_name='+'
     )
 
-    # Store the URL of the current overview page thumbnail
-    # This is updated automatically if a new Photo is uploaded (see Photo.save)
+    # Store the URLs of the current thumbnail and preview
+    # These update automatically if a new Photo is uploaded (see Photo.save)
     thumbnail_url = models.URLField(blank=True, null=True)
+    preview_url = models.URLField(blank=True, null=True)
 
     def __str__(self):
         return f"{self.get_display_name()} ({self.uuid})"
@@ -287,26 +288,15 @@ class Plant(models.Model):
             for photo in self.photo_set.all().order_by('-timestamp')
         ]
 
-    def get_thumbnail(self):
-        '''Returns thumbnail URL shown on frontend overview page.
-        Uses user-configured default_photo if set, or most recent photo.
-        '''
-        if self.default_photo:
-            return self.default_photo.get_thumbnail_url()
-        try:
-            # Most recent photo
-            return self.photo_set.all().order_by('-timestamp')[0].get_thumbnail_url()
-        except IndexError:
-            return None
-
     def update_thumbnail_url(self):
-        '''Updates thumbnail_url field if it is outdated.
+        '''Updates thumbnail_url and preview_url fields if they are outdated.
         Called when a new Photo associated with this Plant is saved.
         '''
-        new_thumbnail_url = self.get_thumbnail()
-        if self.thumbnail_url != new_thumbnail_url:
-            self.thumbnail_url = new_thumbnail_url
-            self.save(update_fields=['thumbnail_url'])
+        default_photo = self.get_default_photo_details()
+        if default_photo and default_photo['thumbnail'] != self.thumbnail_url:
+            self.thumbnail_url = default_photo['thumbnail']
+            self.preview_url = default_photo['preview']
+            self.save(update_fields=['thumbnail_url', 'preview_url'])
 
     def get_details(self):
         '''Returns dict containing all plant attributes and last_watered,
@@ -355,6 +345,7 @@ class Plant(models.Model):
                 'timestamp': None,
                 'image': None,
                 'thumbnail': None,
+                'preview': None,
                 'key': None
             }
 

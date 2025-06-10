@@ -594,6 +594,7 @@ class HookTests(TestCase):
                     "timestamp": None,
                     "image": None,
                     "thumbnail": None,
+                    "preview": None,
                     "key": None
                 },
                 "notes": []

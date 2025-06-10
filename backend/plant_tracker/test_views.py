@@ -1051,6 +1051,7 @@ class ManagePageTests(TestCase):
                     'timestamp': None,
                     'image': None,
                     'thumbnail': None,
+                    'preview': None,
                     'key': None
                 },
                 'group_options': [
