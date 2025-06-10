@@ -1454,7 +1454,7 @@ class ManagePlantEndpointTests(TestCase):
 
         # Confirm cache key contains UUID
         self.assertEqual(
-            cache.get(f'old_uuid_{get_default_user().pk}'),
+            cache.get(f'division_uuid_{get_default_user().pk}'),
             str(self.plant.uuid)
         )
         # Confirm DivisionEvent key was cached

@@ -157,7 +157,7 @@ def manage(request, uuid, user):
         return render_confirm_new_qr_code_page(request, uuid, old_uuid, user)
 
     # Render register page if UUID is new and old_uuid cache was not found
-    return render_registration_page(request, uuid)
+    return render_registration_page(request, uuid, user)
 
 
 def render_manage_plant_page(request, plant, user):
@@ -254,7 +254,7 @@ def render_confirm_new_qr_code_page(request, uuid, old_uuid, user):
     # and redirect to registration page
     if instance is None:
         cache.delete(f'old_uuid_{user.pk}')
-        return render_registration_page(request, uuid)
+        return render_registration_page(request, uuid, user)
 
     state = {
         'type': 'plant' if isinstance(instance, Plant) else 'group',
@@ -273,7 +273,7 @@ def render_confirm_new_qr_code_page(request, uuid, old_uuid, user):
     )
 
 
-def render_registration_page(request, uuid):
+def render_registration_page(request, uuid, user):
     '''Renders registration page used to create a new plant or group.
     Called by /manage endpoint if UUID does not exist in database and the
     old_uuid cache is NOT set.
@@ -281,8 +281,14 @@ def render_registration_page(request, uuid):
 
     state = {
         'new_id': uuid,
-        'species_options': get_plant_species_options()
+        'species_options': get_plant_species_options(),
     }
+
+    # Check if user is dividing plant, add details if dividing
+    division_id = cache.get(f'division_uuid_{user.pk}')
+    if division_id:
+        plant = get_plant_by_uuid(division_id)
+        state['dividing_from'] = plant.get_details()
 
     return render_react_app(
         request,
@@ -885,7 +891,7 @@ def divide_plant(user, plant, timestamp, **kwargs):
                 timestamp=timestamp
             )
         # Cache old plant UUID for new plant reverse relations
-        cache.set(f'old_uuid_{user.pk}', str(plant.uuid), 900)
+        cache.set(f'division_uuid_{user.pk}', str(plant.uuid), 900)
         cache.set(f'plant_division_key_{user.pk}', str(event.pk), 900)
         return JsonResponse({"action": "divide", "plant": plant.uuid}, status=200)
 
