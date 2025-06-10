@@ -19,6 +19,7 @@ from .models import (
     RepotEvent,
     Photo,
     NoteEvent,
+    DivisionEvent,
     get_plant_options,
     get_plant_species_options
 )
@@ -858,6 +859,35 @@ def repot_plant(plant, timestamp, data, **kwargs):
             plant.pot_size = data["new_pot_size"]
             plant.save()
         return JsonResponse({"action": "repot", "plant": plant.uuid}, status=200)
+
+    except IntegrityError:
+        return JsonResponse(
+            {"error": "Event with same timestamp already exists"},
+            status=409
+        )
+
+
+@get_user_token
+@requires_json_post(["plant_id", "timestamp"])
+@get_plant_from_post_body
+@get_timestamp_from_post_body
+def divide_plant(user, plant, timestamp, **kwargs):
+    '''Creates a DivisionEvent for specified Plant and caches uuid so new plants
+    can be registered with reverse relation to parent plant.
+    Requires JSON POST with plant_id and timestamp keys.
+    '''
+
+    try:
+        # Create division event
+        with transaction.atomic():
+            event = DivisionEvent.objects.create(
+                plant=plant,
+                timestamp=timestamp
+            )
+        # Cache old plant UUID for new plant reverse relations
+        cache.set(f'old_uuid_{user.pk}', str(plant.uuid), 900)
+        cache.set(f'plant_division_key_{user.pk}', str(event.pk), 900)
+        return JsonResponse({"action": "divide", "plant": plant.uuid}, status=200)
 
     except IntegrityError:
         return JsonResponse(

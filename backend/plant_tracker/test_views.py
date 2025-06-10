@@ -26,6 +26,7 @@ from .models import (
     FertilizeEvent,
     PruneEvent,
     RepotEvent,
+    DivisionEvent,
     Photo,
     NoteEvent
 )
@@ -648,6 +649,34 @@ class RegistrationTests(TestCase):
         self.assertEqual(plant.pot_size, 4)
         # Confirm plant is owned by default user
         self.assertEqual(plant.user, get_default_user())
+
+        # Confirm plant was not divided from another plant
+        self.assertIsNone(plant.divided_from)
+
+    def test_register_plant_divided_from_existing_plant(self):
+        # Create existing plant to divide from
+        existing_plant = Plant.objects.create(user=get_default_user(), uuid=uuid4())
+        self.assertEqual(len(Plant.objects.all()), 1)
+
+        # Send plant registration request with id of exi
+        test_id = uuid4()
+        response = self.client.post('/register_plant', {
+            'uuid': test_id,
+            'name': 'Geoppertia prop',
+            'species': 'Geoppertia Warszewiczii',
+            'description': 'Divided from mature plant',
+            'pot_size': '4',
+            'divided_from_id': str(existing_plant.pk)
+        })
+
+        # Confirm response redirects to management page for new plant
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, f'/manage/{test_id}')
+
+        # Confirm new plant was created, has reverse relation to original plant
+        self.assertEqual(len(Plant.objects.all()), 2)
+        new_plant = Plant.objects.get(name='Geoppertia prop')
+        self.assertEqual(new_plant.divided_from, existing_plant)
 
     def test_register_group_endpoint(self):
         # Confirm no plants or groups in database
@@ -1403,6 +1432,62 @@ class ManagePlantEndpointTests(TestCase):
         # Confirm status, confirm plant pot_size did not change
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.plant.pot_size, 4)
+
+    def test_divide_plant(self):
+        # Confirm plant has no DivisionEvents
+        self.assertEqual(len(self.plant.divisionevent_set.all()), 0)
+
+        # Send divide_plant request
+        response = self.client.post('/divide_plant', {
+            'plant_id': self.plant.uuid,
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        })
+
+        # Confirm response, confirm DivisionEvent created
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {"action": "divide", "plant": str(self.plant.uuid)}
+        )
+        self._refresh_test_models()
+        self.assertEqual(len(self.plant.divisionevent_set.all()), 1)
+
+        # Confirm cache key contains UUID
+        self.assertEqual(
+            cache.get(f'old_uuid_{get_default_user().pk}'),
+            str(self.plant.uuid)
+        )
+        # Confirm DivisionEvent key was cached
+        self.assertEqual(
+            cache.get(f'plant_division_key_{get_default_user().pk}'),
+            str(self.plant.divisionevent_set.all().first().pk)
+        )
+
+    def test_divide_plant_duplicate_timestamp(self):
+        # Create existing DivisionEvent
+        timestamp = '2024-02-06T03:06:26.000Z'
+        DivisionEvent.objects.create(plant=self.plant, timestamp=timestamp)
+        self.assertEqual(len(self.plant.divisionevent_set.all()), 1)
+
+        # Send divide_plant request with identical timestamp
+        response = self.client.post('/divide_plant', {
+            'plant_id': self.plant.uuid,
+            'timestamp': timestamp
+        })
+
+        # Confirm expected error
+        self.assertEqual(response.status_code, 409)
+        self.assertEqual(
+            response.json(),
+            {"error": "Event with same timestamp already exists"}
+        )
+
+        # Confirm no event was created
+        self._refresh_test_models()
+        self.assertEqual(len(self.plant.divisionevent_set.all()), 1)
+
+        # Confirm UUID was not cached key
+        self.assertIsNone(cache.get(f'old_uuid_{get_default_user().pk}'))
 
 
 class ManageGroupEndpointTests(TestCase):

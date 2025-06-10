@@ -232,6 +232,15 @@ class Plant(models.Model):
     # Store timestamp when created (not editable)
     created = models.DateTimeField(auto_now_add=True)
 
+    # Optional relation to parent Plant that this Plant was divided from (adds
+    # link back to parent plant at bottom of timeline)
+    divided_from = models.ForeignKey(
+        'Plant',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True
+    )
+
     # Removes from overview page if True
     archived = models.BooleanField(default=False)
 
@@ -667,6 +676,13 @@ class RepotEvent(Event):
 class NoteEvent(Event):
     '''Records timestamp and user-entered text about a specific Plant.'''
     text = models.CharField(max_length=500)
+
+    class Meta:
+        unique_together = ('plant', 'timestamp')
+
+
+class DivisionEvent(Event):
+    '''Records timestamp when a Plant entry was divided.'''
 
     class Meta:
         unique_together = ('plant', 'timestamp')
