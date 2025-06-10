@@ -96,7 +96,7 @@ const RepotModal = () => {
     };
 
     return (
-        <Modal title='Repot plant' ref={modalRef}>
+        <Modal title='Repot Plant' ref={modalRef}>
             <div className="mt-4">
                 <p>Repot time</p>
                 <DatetimeInput inputRef={repotTimeRef} />

@@ -2175,7 +2175,7 @@ exports[`App matches snapshot 1`] = `
       <h1
         class="font-bold text-lg leading-8 md:text-xl mb-3"
       >
-        Repot plant
+        Repot Plant
       </h1>
     </div>
     <form
@@ -4430,7 +4430,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
       <h1
         class="font-bold text-lg leading-8 md:text-xl mb-3"
       >
-        Repot plant
+        Repot Plant
       </h1>
     </div>
     <form
