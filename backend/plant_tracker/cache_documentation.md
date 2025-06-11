@@ -21,6 +21,13 @@ This should be updated when:
   * Deleted by `views.render_confirm_new_qr_code_page` if it receives a request from same user containing a UUID that does not exist in the database
   * Deleted by `/change_uuid` after updating UUID of a Plant/Group owned by same user
 
+### `division_in_progress_{user_primary_key}`
+- Stores object with `divided_from_plant_uuid` (uuid) and `division_event_key` (DivisionEvent primary key) keys
+- Used by `views.render_registration_page` (adds values to context so frontend can post `/register_plant` payload that creates database relations between parent plant, new child plant, and DivisionEvent)
+- Includes database primary key of user that divided plant (avoid collisions)
+- Set by `/divide_plant`
+  * Expires in 15 minutes
+
 ### `unnamed_plants_{user_primary_key}`
 - Stores list of primary key ints for each unnamed plant owned by a user
 - Includes database primary key of user account that owns plants
