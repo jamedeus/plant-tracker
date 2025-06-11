@@ -1,5 +1,4 @@
-import React, { useRef, memo } from 'react';
-import PropTypes from 'prop-types';
+import React, { useRef } from 'react';
 import Modal from 'src/components/Modal';
 import DatetimeInput from 'src/components/DatetimeInput';
 import { localToUTC } from 'src/timestampUtils';

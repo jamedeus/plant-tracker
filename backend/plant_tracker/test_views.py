@@ -868,7 +868,7 @@ class RegistrationTests(TestCase):
             'name': '',
             'species': '',
             # pylint: disable-next=line-too-long
-            'description': 'this is a very excessively long description that uses a large variety of completely unnecessary filler words that add no information to the description and serve no purpose other than to make the lenght of the description exceed the maximum allowed length for a description, which is five hundred characters. Descriptions longer than five hundred characters are not allowed because it is completely, totally, unnecessarily long and will potentially create layout issues in various places on the frontend.',
+            'description': 'this is a very excessively long description that uses a large variety of completely unnecessary filler words that add no information to the description and serve no purpose other than to make the length of the description exceed the maximum allowed length for a description, which is five hundred characters. Descriptions longer than five hundred characters are not allowed because it is completely, totally, unnecessarily long and will potentially create layout issues in various places on the frontend.',
             'pot_size': ''
         })
 
@@ -916,7 +916,7 @@ class RegistrationTests(TestCase):
             'name': '',
             'location': '',
             # pylint: disable-next=line-too-long
-            'description': 'this is a very excessively long description that uses a large variety of completely unnecessary filler words that add no information to the description and serve no purpose other than to make the lenght of the description exceed the maximum allowed length for a description, which is five hundred characters. Descriptions longer than five hundred characters are not allowed because it is completely, totally, unnecessarily long and will potentially create layout issues in various places on the frontend.'
+            'description': 'this is a very excessively long description that uses a large variety of completely unnecessary filler words that add no information to the description and serve no purpose other than to make the length of the description exceed the maximum allowed length for a description, which is five hundred characters. Descriptions longer than five hundred characters are not allowed because it is completely, totally, unnecessarily long and will potentially create layout issues in various places on the frontend.'
         })
 
         # Confirm rejected with correct error message

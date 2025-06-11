@@ -691,7 +691,7 @@ class NoteEvent(Event):
 
 class DivisionEvent(Event):
     '''Records timestamp when a Plant entry was divided.
-    The inheritted plant attribute is a reverse relation to the parent plant.
+    The inherited plant attribute is a reverse relation to the parent plant.
     All child plants have reverse relation back to DivisionEvent with related
     name "created_plants".
     '''
