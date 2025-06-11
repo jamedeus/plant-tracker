@@ -658,7 +658,9 @@ describe('App', () => {
                 "group_options": mockContextNoEvents.group_options,
                 "species_options": mockContextNoEvents.species_options,
                 "photos": [],
-                "default_photo": mockContextNoEvents.default_photo
+                "default_photo": mockContextNoEvents.default_photo,
+                "division_events": {},
+                "divided_from": false
             })
         }));
 
@@ -686,7 +688,9 @@ describe('App', () => {
                 "group_options": mockContextNoEvents.group_options,
                 "species_options": mockContextNoEvents.species_options,
                 "photos": [],
-                "default_photo": mockContextNoEvents.default_photo
+                "default_photo": mockContextNoEvents.default_photo,
+                "division_events": {},
+                "divided_from": false
             })
         }));
 
@@ -734,7 +738,9 @@ describe('App', () => {
                     'thumbnail': '/media/thumbnails/photo1_thumb.webp',
                     'preview': '/media/previews/photo1_preview.webp',
                     'key': 1
-                }
+                },
+                "division_events": {},
+                "divided_from": false
             })
         }));
 
@@ -763,7 +769,9 @@ describe('App', () => {
                 "group_options": mockContextNoEvents.group_options,
                 "species_options": mockContextNoEvents.species_options,
                 "photos": [],
-                "default_photo": mockContextNoEvents.default_photo
+                "default_photo": mockContextNoEvents.default_photo,
+                "division_events": {},
+                "divided_from": false
             })
         }));
 
@@ -810,7 +818,9 @@ describe('App', () => {
                     'thumbnail': '/media/thumbnails/photo1_thumb.webp',
                     'preview': '/media/previews/photo1_preview.webp',
                     'key': 1
-                }
+                },
+                "division_events": {},
+                "divided_from": false
             })
         }));
 

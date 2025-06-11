@@ -83,3 +83,13 @@
 .photo-thumbnail-timeline {
     @apply w-full aspect-square scroll-mt-35;
 }
+
+/* Plant divided into list bullet points */
+.bullet-point {
+    @apply size-[5px] min-size-[5px] rounded-full bg-base-content;
+}
+
+/* Plant divided from/into links */
+.plant-link {
+    @apply font-semibold underline whitespace-nowrap overflow-hidden truncate;
+}

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useLayoutEffect, memo, useEffect } from 'react';
+import React, { useRef, useState, useLayoutEffect, memo, useEffect, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 import { DateTime } from 'luxon';
@@ -16,6 +16,7 @@ import WaterIcon from 'src/components/WaterIcon';
 import FertilizeIcon from 'src/components/FertilizeIcon';
 import PruneIcon from 'src/components/PruneIcon';
 import RepotIcon from 'src/components/RepotIcon';
+import { LuSplit } from "react-icons/lu";
 import { useSelector, useDispatch } from 'react-redux';
 import 'src/css/timeline.css';
 import { photoGalleryOpened, photoGalleryIndexChanged } from './interfaceSlice';
@@ -262,6 +263,59 @@ EventMarker.propTypes = {
     eventType: PropTypes.oneOf(Object.keys(eventIconMap)).isRequired
 };
 
+// Takes array of plant objects (name and uuid keys) that were divided from this
+// plant on a given day, renders market with bullet point links to each child
+const DivisionEventMarker = ({ dividedPlants }) => {
+    return (
+        <div className="flex flex-col">
+            <span className="event-marker mb-1!">
+                <LuSplit className="fa-inline rotate-90 mr-2" />
+                Divided into:
+            </span>
+            {dividedPlants.sort(
+                (a, b) => a.name.localeCompare(b.name)
+            ).map(plant => (
+                <div
+                    key={plant.uuid}
+                    className="flex items-center ml-8 md:ml-9"
+                >
+                    <span className="bullet-point mr-2"></span>
+                    <a href={`/manage/${plant.uuid}`} className="plant-link">
+                        {plant.name}
+                    </a>
+                </div>
+            ))}
+        </div>
+    );
+};
+
+DivisionEventMarker.propTypes = {
+    dividedPlants: PropTypes.arrayOf(
+        PropTypes.shape({
+            name: PropTypes.string.isRequired,
+            uuid: PropTypes.string.isRequired,
+        })
+    ).isRequired,
+};
+
+// Takes parent plant display name and UUID, renders marker with link to parent
+const DividedFromMarker = ({ name, uuid }) => {
+    return (
+        <span className="event-marker">
+            <LuSplit className="fa-inline rotate-90 mr-2" />
+            Divided from&nbsp;
+            <a href={`/manage/${uuid}`} className="plant-link">
+                {name}
+            </a>
+        </span>
+    );
+};
+
+DividedFromMarker.propTypes = {
+    name: PropTypes.string.isRequired,
+    uuid: PropTypes.string.isRequired
+};
+
 // Takes photo thumbnail URL, full-resolution URL, and creation timestamp
 // Opens fullscreen gallery showing selected photo when clicked
 const PhotoThumbnail = memo(function PhotoThumbnail({ thumbnailUrl, timestamp, index }) {
@@ -478,6 +532,15 @@ const TimelineDay = memo(function TimelineDay({ dateKey, monthDivider }) {
                         />
                     ))}
                 </div>
+                {contents.dividedInto &&
+                    <DivisionEventMarker dividedPlants={contents.dividedInto} />
+                }
+                {contents.dividedFrom &&
+                    <DividedFromMarker
+                        name={contents.dividedFrom.name}
+                        uuid={contents.dividedFrom.uuid}
+                    />
+                }
             </div>
         </>
     );

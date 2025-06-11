@@ -34,10 +34,13 @@ const formatEvents = (events) => {
     );
 };
 
-// Takes events, notes, and photos context objects from django backend, returns
-// timelineDays state used by Timeline component (YYYY-MM-DD keys containing
-// objects with events, notes, and photos keys).
-export const buildTimelineDays = (events, notes, photos) => {
+// Takes events, notes, photos, dividedFrom, and divisionEvents context objects
+// from django backend, returns timelineDays state used by Timeline component
+// (YYYY-MM-DD keys containing objects with events, notes, and photos keys).
+//
+// Only adds dividedFrom and dividedInto keys to date when plant was divided (no
+// empty keys on every day - can only have 1 dividedFrom, dividedInto is rare).
+export const buildTimelineDays = (events, notes, photos, dividedFrom, divisionEvents) => {
     // Convert to object with YYYY-MM-DD keys
     const timelineDays = formatEvents(events);
 
@@ -60,6 +63,25 @@ export const buildTimelineDays = (events, notes, photos) => {
             timelineDays[dateKey] = {events: [], notes: [], photos: []};
         }
         timelineDays[dateKey].notes.push(note);
+    });
+
+    // Add dividedFrom if has parent (adds link to parent at start of timeline)
+    if (dividedFrom) {
+        const dateKey = timestampToDateString(dividedFrom.timestamp);
+        if (!timelineDays[dateKey]) {
+            timelineDays[dateKey] = {events: [], notes: [], photos: []};
+        }
+        timelineDays[dateKey]['dividedFrom'] = dividedFrom;
+    }
+
+    // Add dividedInto if has children (adds link(s) to child plants on days
+    // they were divided)
+    Object.entries(divisionEvents).forEach(([timestamp, plants]) => {
+        const dateKey = timestampToDateString(timestamp);
+        if (!timelineDays[dateKey]) {
+            timelineDays[dateKey] = {events: [], notes: [], photos: []};
+        }
+        timelineDays[dateKey]['dividedInto'] = plants;
     });
 
     return timelineDays;
@@ -121,6 +143,8 @@ export function ReduxProvider({ children }) {
         const plantDetails = parseDomContext("plant_details");
         const groupOptions = parseDomContext("group_options");
         const eventsByType = parseDomContext("events");
+        const dividedFrom = parseDomContext("divided_from");
+        const divisionEvents = parseDomContext("division_events");
         const photos = parseDomContext('photos');
         const notes = parseDomContext('notes');
         const defaultPhoto = parseDomContext('default_photo');
@@ -131,7 +155,13 @@ export function ReduxProvider({ children }) {
                           eventsByType.repot.length > 0;
 
         // Build state objects
-        const timelineDays = buildTimelineDays(eventsByType, notes, photos);
+        const timelineDays = buildTimelineDays(
+            eventsByType,
+            notes,
+            photos,
+            dividedFrom,
+            divisionEvents
+        );
         const calendarDays = buildCalendarDays(timelineDays);
         const navigationOptions = buildNavigationOptions(timelineDays);
 
@@ -143,6 +173,8 @@ export function ReduxProvider({ children }) {
             },
             timeline: {
                 eventsByType,
+                dividedFrom,
+                divisionEvents,
                 calendarDays,
                 timelineDays,
                 photos,

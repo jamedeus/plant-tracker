@@ -89,15 +89,16 @@ export const mockContext = {
             'key': 3
         }
     ],
-    "default_photo":
-    {
+    "default_photo": {
         'set': true,
         'timestamp': '2024-03-23T10:52:03+00:00',
         'image': '/media/images/photo3.jpg',
         'thumbnail': '/media/thumbnails/photo3_thumb.webp',
         'preview': '/media/previews/photo3_preview.webp',
         'key': 3
-    }
+    },
+    "division_events": {},
+    "divided_from": false
 };
 
 export const mockContextNoEvents = {
@@ -153,14 +154,15 @@ export const mockContextNoEvents = {
         "Calathea"
     ],
     "photos": [],
-    "default_photo":
-    {
+    "default_photo": {
         'set': false,
         'timestamp': null,
         'image': null,
         'thumbnail': null,
         'key': null
-    }
+    },
+    "division_events": {},
+    "divided_from": false
 };
 
 export const mockEvents = {

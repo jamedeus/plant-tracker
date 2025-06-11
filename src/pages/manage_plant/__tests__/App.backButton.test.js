@@ -25,7 +25,9 @@ describe('App', () => {
                 // buildTimelineDays sorts - not an issue in production since
                 // it's a different response each time but in mock it's reused)
                 "photos": JSON.parse(JSON.stringify(mockContext.photos)),
-                "default_photo": mockContext.default_photo
+                "default_photo": mockContext.default_photo,
+                "division_events": {},
+                "divided_from": false
             })
         }));
     });

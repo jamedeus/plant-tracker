@@ -395,7 +395,9 @@ describe('App', () => {
                 "group_options": mockContext.group_options,
                 "species_options": mockContext.species_options,
                 "photos": mockContext.photos,
-                "default_photo": mockContext.default_photo
+                "default_photo": mockContext.default_photo,
+                "division_events": {},
+                "divided_from": false
             })
         }));
 

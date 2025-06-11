@@ -73,6 +73,11 @@ export const timelineSlice = createSlice({
             prune: [],
             repot: []
         },
+        // Object (name, uuid, and timestamp keys) if has parent plant (or false)
+        dividedFrom: false,
+        // Object with full ISO event timestamps in UTC as keys, array of child
+        // plant objects (name and uuid keys) created on that date as values
+        divisionEvents: {},
         // Keys are YYYY-MM-DD in user's local timezone
         // Values are array of event types (eg ['water', 'fertilize'])
         calendarDays: {},
@@ -325,10 +330,14 @@ export const timelineSlice = createSlice({
             const newTimelineDays = buildTimelineDays(
                 action.payload.events,
                 action.payload.notes,
-                action.payload.photos
+                action.payload.photos,
+                action.payload.divided_from,
+                action.payload.division_events,
             );
             state.photos = action.payload.photos;
             state.eventsByType = action.payload.events;
+            state.dividedFrom = action.payload.divided_from;
+            state.divisionEvents = action.payload.division_events;
             state.timelineDays = newTimelineDays;
             state.calendarDays = buildCalendarDays(newTimelineDays);
             state.navigationOptions = buildNavigationOptions(newTimelineDays);
