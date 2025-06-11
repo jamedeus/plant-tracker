@@ -1187,9 +1187,55 @@ class ManagePageTests(TestCase):
                         'plants': 0
                     }
                 ],
-                'species_options': []
+                'species_options': [],
+                'divided_from': False,
+                'division_events': {}
             }
         )
+
+    def test_get_plant_state_plant_has_parent(self):
+        # Make plant2 child of plant1
+        divide = DivisionEvent.objects.create(plant=self.plant1, timestamp=timezone.now())
+        self.plant2.divided_from = self.plant1
+        self.plant2.divided_from_event = divide
+        self.plant2.save()
+
+        # Call get_plant_state endpoint with UUID of plant2
+        response = self.client.get(f'/get_plant_state/{self.plant2.uuid}')
+
+        # Confirm returned manage_plant state contains details of plant1 (parent)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['divided_from'], {
+            'name': self.plant1.get_display_name(),
+            'uuid': str(self.plant1.uuid),
+            'timestamp': divide.timestamp.isoformat()
+        })
+        # Confirm no division_events (DivisionEvent associated with parent, not child)
+        self.assertEqual(response.json()['division_events'], {})
+
+    def test_get_plant_state_plant_has_child(self):
+        # Make plant2 child of plant1
+        divide = DivisionEvent.objects.create(plant=self.plant1, timestamp=timezone.now())
+        self.plant2.divided_from = self.plant1
+        self.plant2.divided_from_event = divide
+        self.plant2.save()
+
+        # Call get_plant_state endpoint with UUID of plant1
+        response = self.client.get(f'/get_plant_state/{self.plant1.uuid}')
+
+        # Confirm returned manage_plant state contains division_events + details
+        # of plant2 (child)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()['division_events'], {
+            divide.timestamp.isoformat(): [
+                {
+                    'name': self.plant2.get_display_name(),
+                    'uuid': str(self.plant2.uuid),
+                }
+            ]
+        })
+        # Confirm no divided_from (parent has no parent)
+        self.assertFalse(response.json()['divided_from'])
 
     def test_get_plant_state_invalid(self):
         # Call get_plant_state endpoint with UUID that doesn't exist in database

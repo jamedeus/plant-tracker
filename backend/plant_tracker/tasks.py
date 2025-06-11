@@ -15,7 +15,7 @@ from celery import shared_task
 from django.core.cache import cache
 from django.dispatch import receiver
 from django.contrib.auth import get_user_model
-from django.db.models.signals import post_save, post_delete
+from django.db.models.signals import post_save, post_delete, pre_delete
 
 from backend.celery import app
 from .models import (
@@ -27,6 +27,7 @@ from .models import (
     PruneEvent,
     RepotEvent,
     NoteEvent,
+    DivisionEvent,
     get_plant_options,
     get_group_options,
     get_plant_species_options
@@ -155,7 +156,7 @@ def build_manage_plant_state(uuid):
         'default_photo': plant.get_default_photo_details()
     }
 
-    # Add all water and fertilize timestamps
+    # Add all water, fertilize, prune, and repot timestamps
     state['events'] = {
         'water': plant.get_water_timestamps(),
         'fertilize': plant.get_fertilize_timestamps(),
@@ -168,6 +169,23 @@ def build_manage_plant_state(uuid):
         {'timestamp': note.timestamp.isoformat(), 'text': note.text}
         for note in plant.noteevent_set.all()
     ]
+
+    # Add object with DivisionEvent timestamps as keys, list of child plant
+    # objects as values (adds events to timeline with links to children)
+    state['division_events'] = {
+        event.timestamp.isoformat(): [
+            {'name': child.get_display_name(), 'uuid': str(child.uuid)}
+            for child in event.created_plants.all()
+        ]
+        for event in plant.divisionevent_set.all()
+    }
+
+    # Add object with parent plant details if divided from existing plant
+    state['divided_from'] = {
+        'name': plant.divided_from.get_display_name(),
+        'uuid': str(plant.divided_from.uuid),
+        'timestamp': plant.divided_from_event.timestamp.isoformat()
+    } if plant.divided_from else False
 
     # Add group details if plant is in a group
     state['plant_details']['group'] = plant.get_group_details()
@@ -232,12 +250,14 @@ def schedule_cached_manage_plant_state_update(uuid):
 @receiver(post_save, sender=PruneEvent)
 @receiver(post_save, sender=RepotEvent)
 @receiver(post_save, sender=NoteEvent)
+@receiver(post_save, sender=DivisionEvent)
 @receiver(post_save, sender=Photo)
 @receiver(post_delete, sender=WaterEvent)
 @receiver(post_delete, sender=FertilizeEvent)
 @receiver(post_delete, sender=PruneEvent)
 @receiver(post_delete, sender=RepotEvent)
 @receiver(post_delete, sender=NoteEvent)
+@receiver(post_delete, sender=DivisionEvent)
 @receiver(post_delete, sender=Photo)
 @disable_for_loaddata
 def update_cached_manage_plant_state_hook(instance, **kwargs):
@@ -246,8 +266,26 @@ def update_cached_manage_plant_state_hook(instance, **kwargs):
     '''
     if isinstance(instance, Plant):
         schedule_cached_manage_plant_state_update(instance.uuid)
+        # Also rebuild parent plant state (outdated if plant name changed)
+        if instance.divided_from:
+            schedule_cached_manage_plant_state_update(instance.divided_from.uuid)
+        # Also rebuild child plant states (outdated if plant name changed)
+        for child_plant in instance.children.all():
+            schedule_cached_manage_plant_state_update(child_plant.uuid)
+
     else:
         schedule_cached_manage_plant_state_update(instance.plant.uuid)
+
+
+@receiver(pre_delete, sender=Plant)
+def delete_parent_or_child_cached_manage_plant_state_hook(instance, **kwargs):
+    '''Deletes cached manage_plant state before a plant's child or parent is
+    deleted from the database (prevent references to non-existing plant).
+    '''
+    if instance.divided_from:
+        cache.delete(f'{instance.divided_from.uuid}_state')
+    for child_plant in instance.children.all():
+        cache.delete(f'{child_plant.uuid}_state')
 
 
 @receiver(post_delete, sender=Plant)
