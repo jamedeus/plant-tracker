@@ -238,7 +238,15 @@ class Plant(models.Model):
         'Plant',
         on_delete=models.SET_NULL,
         null=True,
-        blank=True
+        blank=True,
+        related_name='children'
+    )
+    divided_from_event = models.ForeignKey(
+        'DivisionEvent',
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name='created_plants'
     )
 
     # Removes from overview page if True
@@ -682,7 +690,11 @@ class NoteEvent(Event):
 
 
 class DivisionEvent(Event):
-    '''Records timestamp when a Plant entry was divided.'''
+    '''Records timestamp when a Plant entry was divided.
+    The inheritted plant attribute is a reverse relation to the parent plant.
+    All child plants have reverse relation back to DivisionEvent with related
+    name "created_plants".
+    '''
 
     class Meta:
         unique_together = ('plant', 'timestamp')

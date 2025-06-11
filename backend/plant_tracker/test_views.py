@@ -618,6 +618,12 @@ class RegistrationTests(TestCase):
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
 
+        self.default_user = get_default_user()
+
+    def tearDown(self):
+        # Clear cache after each test
+        cache.delete(f'division_in_progress_{self.default_user.pk}')
+
     def test_register_plant_endpoint(self):
         # Confirm no plants or groups in database
         self.assertEqual(len(Plant.objects.all()), 0)
@@ -648,17 +654,28 @@ class RegistrationTests(TestCase):
         self.assertEqual(plant.description, '300 feet and a few thousand years old')
         self.assertEqual(plant.pot_size, 4)
         # Confirm plant is owned by default user
-        self.assertEqual(plant.user, get_default_user())
+        self.assertEqual(plant.user, self.default_user)
 
         # Confirm plant was not divided from another plant
         self.assertIsNone(plant.divided_from)
+        self.assertIsNone(plant.divided_from_event)
 
     def test_register_plant_divided_from_existing_plant(self):
         # Create existing plant to divide from
-        existing_plant = Plant.objects.create(user=get_default_user(), uuid=uuid4())
+        existing_plant = Plant.objects.create(user=self.default_user, uuid=uuid4())
         self.assertEqual(len(Plant.objects.all()), 1)
 
-        # Send plant registration request with id of exi
+        # Simulate division in progress (user hit /divide_plant endpoint)
+        division_event = DivisionEvent.objects.create(
+            plant=existing_plant,
+            timestamp=timezone.now()
+        )
+        cache.set(f'division_in_progress_{self.default_user.pk}', {
+            'divided_from_plant_uuid': str(existing_plant.uuid),
+            'division_event_key': str(division_event.pk)
+        }, 900)
+
+        # Send plant registration request with id of existing plant + event
         test_id = uuid4()
         response = self.client.post('/register_plant', {
             'uuid': test_id,
@@ -666,7 +683,8 @@ class RegistrationTests(TestCase):
             'species': 'Geoppertia Warszewiczii',
             'description': 'Divided from mature plant',
             'pot_size': '4',
-            'divided_from_id': str(existing_plant.pk)
+            'divided_from_id': str(existing_plant.pk),
+            'divided_from_event_id': str(division_event.pk)
         })
 
         # Confirm response redirects to management page for new plant
@@ -674,9 +692,49 @@ class RegistrationTests(TestCase):
         self.assertEqual(response.url, f'/manage/{test_id}')
 
         # Confirm new plant was created, has reverse relation to original plant
+        # and DivisionEvent
         self.assertEqual(len(Plant.objects.all()), 2)
         new_plant = Plant.objects.get(name='Geoppertia prop')
         self.assertEqual(new_plant.divided_from, existing_plant)
+        self.assertEqual(new_plant.divided_from_event, division_event)
+
+        # Confirm new plant is in existing_plant children queryset
+        self.assertIn(new_plant, existing_plant.children.all())
+
+    def test_register_unrelated_plant_while_division_in_progress(self):
+        # Create existing plant, simulate division in progress
+        existing_plant = Plant.objects.create(user=self.default_user, uuid=uuid4())
+        self.assertEqual(len(Plant.objects.all()), 1)
+        division_event = DivisionEvent.objects.create(
+            plant=existing_plant,
+            timestamp=timezone.now()
+        )
+        cache.set(f'division_in_progress_{self.default_user.pk}', {
+            'divided_from_plant_uuid': str(existing_plant.uuid),
+            'division_event_key': str(division_event.pk)
+        }, 900)
+
+        # Send plant registration request WITHOUT existing plant id (user
+        # clicked no at confirmation screen asking if new plant was divided)
+        test_id = uuid4()
+        response = self.client.post('/register_plant', {
+            'uuid': test_id,
+            'name': 'Geoppertia prop',
+            'species': 'Geoppertia Warszewiczii',
+            'description': 'Divided from mature plant',
+            'pot_size': '4'
+        })
+
+        # Confirm response redirects to management page for new plant
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, f'/manage/{test_id}')
+
+        # Confirm new plant was created, does NOT have reverse relation to
+        # original plant or DivisionEvent
+        self.assertEqual(len(Plant.objects.all()), 2)
+        new_plant = Plant.objects.get(name='Geoppertia prop')
+        self.assertIsNone(new_plant.divided_from)
+        self.assertIsNone(new_plant.divided_from_event)
 
     def test_register_group_endpoint(self):
         # Confirm no plants or groups in database
@@ -706,7 +764,7 @@ class RegistrationTests(TestCase):
         self.assertEqual(group.location, 'top shelf')
         self.assertEqual(group.description, 'This group is used for propagation')
         # Confirm group is owned by default user
-        self.assertEqual(group.user, get_default_user())
+        self.assertEqual(group.user, self.default_user)
 
     def test_registration_page(self):
         # Request management page with uuid that doesn't exist in database
@@ -721,6 +779,40 @@ class RegistrationTests(TestCase):
         )
         self.assertEqual(response.context['title'], 'Register New Plant')
 
+        # Confirm does not contain details of plant being divided (cache not set)
+        self.assertNotIn('dividing_from', response.context['state'].keys())
+
+    def test_registration_page_division_in_progress(self):
+        # Create Plant + DivisionEvent, simulate division in progress
+        existing_plant = Plant.objects.create(user=self.default_user, uuid=uuid4())
+        division_event = DivisionEvent.objects.create(
+            plant=existing_plant,
+            timestamp=timezone.now()
+        )
+        cache.set(f'division_in_progress_{self.default_user.pk}', {
+            'divided_from_plant_uuid': str(existing_plant.uuid),
+            'division_event_key': str(division_event.pk)
+        }, 900)
+
+        # Request management page with uuid that doesn't exist in database
+        response = self.client.get(f'/manage/{uuid4()}')
+
+        # Confirm used register bundle and correct title
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'plant_tracker/index.html')
+        self.assertEqual(
+            response.context['js_files'],
+            settings.PAGE_DEPENDENCIES['register']['js']
+        )
+        self.assertEqual(response.context['title'], 'Register New Plant')
+
+        # Confirm context contains details of plant being divided from
+        self.assertEqual(response.context['state']['dividing_from'], {
+            'plant_details': existing_plant.get_details(),
+            'plant_key': str(existing_plant.pk),
+            'event_key': str(division_event.pk)
+        })
+
     def test_registration_page_plant_species_options(self):
         # Request management page with uuid that doesn't exist in database
         response = self.client.get(f'/manage/{uuid4()}')
@@ -730,8 +822,8 @@ class RegistrationTests(TestCase):
         self.assertEqual(response.context['state']['species_options'], [])
 
         # Create 2 test plants with species set
-        Plant.objects.create(uuid=uuid4(), species='Calathea', user=get_default_user())
-        Plant.objects.create(uuid=uuid4(), species='Fittonia', user=get_default_user())
+        Plant.objects.create(uuid=uuid4(), species='Calathea', user=self.default_user)
+        Plant.objects.create(uuid=uuid4(), species='Fittonia', user=self.default_user)
 
         # Reguest page again, confirm species_options contains both species
         response = self.client.get(f'/manage/{uuid4()}')
@@ -1452,15 +1544,14 @@ class ManagePlantEndpointTests(TestCase):
         self._refresh_test_models()
         self.assertEqual(len(self.plant.divisionevent_set.all()), 1)
 
-        # Confirm cache key contains UUID
+        # Confirm cache key contains UUID of divided plant + pk of DivisionEvent
+        division_event = self.plant.divisionevent_set.all().first()
         self.assertEqual(
-            cache.get(f'division_uuid_{get_default_user().pk}'),
-            str(self.plant.uuid)
-        )
-        # Confirm DivisionEvent key was cached
-        self.assertEqual(
-            cache.get(f'plant_division_key_{get_default_user().pk}'),
-            str(self.plant.divisionevent_set.all().first().pk)
+            cache.get(f'division_in_progress_{get_default_user().pk}'),
+            {
+                'divided_from_plant_uuid': str(self.plant.uuid),
+                'division_event_key': str(division_event.pk)
+            }
         )
 
     def test_divide_plant_duplicate_timestamp(self):
@@ -1486,8 +1577,8 @@ class ManagePlantEndpointTests(TestCase):
         self._refresh_test_models()
         self.assertEqual(len(self.plant.divisionevent_set.all()), 1)
 
-        # Confirm UUID was not cached key
-        self.assertIsNone(cache.get(f'old_uuid_{get_default_user().pk}'))
+        # Confirm UUID was not cached
+        self.assertIsNone(cache.get(f'division_in_progress_{get_default_user().pk}'))
 
 
 class ManageGroupEndpointTests(TestCase):

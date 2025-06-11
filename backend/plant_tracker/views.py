@@ -285,10 +285,14 @@ def render_registration_page(request, uuid, user):
     }
 
     # Check if user is dividing plant, add details if dividing
-    division_id = cache.get(f'division_uuid_{user.pk}')
-    if division_id:
-        plant = get_plant_by_uuid(division_id)
-        state['dividing_from'] = plant.get_details()
+    division_in_progress = cache.get(f'division_in_progress_{user.pk}')
+    if division_in_progress:
+        plant = get_plant_by_uuid(division_in_progress['divided_from_plant_uuid'])
+        state['dividing_from'] = {
+            'plant_details': plant.get_details(),
+            'plant_key': str(plant.pk),
+            'event_key': division_in_progress['division_event_key']
+        }
 
     return render_react_app(
         request,
@@ -890,9 +894,12 @@ def divide_plant(user, plant, timestamp, **kwargs):
                 plant=plant,
                 timestamp=timestamp
             )
-        # Cache old plant UUID for new plant reverse relations
-        cache.set(f'division_uuid_{user.pk}', str(plant.uuid), 900)
-        cache.set(f'plant_division_key_{user.pk}', str(event.pk), 900)
+        # Cache object with old plant UUID and DivisionEvent key for 15 minutes.
+        # Will be included in register page context, used to create db relations.
+        cache.set(f'division_in_progress_{user.pk}', {
+            'divided_from_plant_uuid': str(plant.uuid),
+            'division_event_key': str(event.pk)
+        }, 900)
         return JsonResponse({"action": "divide", "plant": plant.uuid}, status=200)
 
     except IntegrityError:
