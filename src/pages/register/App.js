@@ -8,24 +8,27 @@ import { sendPostRequest, parseDomContext } from 'src/util';
 import GroupDetailsForm from 'src/components/GroupDetailsForm';
 import PlantDetailsForm from 'src/components/PlantDetailsForm';
 import { openErrorModal } from 'src/components/ErrorModal';
+import { FaXmark, FaCheck } from 'react-icons/fa6';
 
-const Form = memo(function Form({ setVisibleForm, plantFormRef, groupFormRef }) {
+const Form = memo(function Form({ setVisibleForm, plantFormRef, groupFormRef, showTabs }) {
     return (
         <Tab.Group onChange={(index) => setVisibleForm(index)}>
-            <Tab.List className="tab-group">
-                <Tab className={({ selected }) => clsx(
-                    'tab-option',
-                    selected && 'tab-option-selected'
-                )}>
-                    Plant
-                </Tab>
-                <Tab className={({ selected }) => clsx(
-                    'tab-option',
-                    selected && 'tab-option-selected'
-                )}>
-                    Group
-                </Tab>
-            </Tab.List>
+            {showTabs &&
+                <Tab.List className="tab-group">
+                    <Tab className={({ selected }) => clsx(
+                        'tab-option',
+                        selected && 'tab-option-selected'
+                    )}>
+                        Plant
+                    </Tab>
+                    <Tab className={({ selected }) => clsx(
+                        'tab-option',
+                        selected && 'tab-option-selected'
+                    )}>
+                        Group
+                    </Tab>
+                </Tab.List>
+            }
 
             <Tab.Panels className="my-4 md:my-8">
                 <Tab.Panel>
@@ -56,12 +59,61 @@ Form.propTypes = {
     groupFormRef: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-    ]).isRequired
+    ]).isRequired,
+    showTabs: PropTypes.bool.isRequired
+};
+
+const ConfirmDividingFrom = ({ plantDetails, handleConfirm, handleReject }) => {
+    return (
+        <div className="flex flex-col full-screen justify-center text-center gap-8 px-4">
+            <p className="text-lg font-bold mt-auto mb-8">
+                Was this plant divided from {plantDetails.display_name}?
+            </p>
+            {plantDetails.thumbnail && (
+                <div className="mx-auto p-4 bg-base-200 rounded-3xl">
+                    <img
+                        className="max-h-[50vh] rounded-xl object-contain"
+                        src={plantDetails.thumbnail}
+                        alt={`${plantDetails.display_name} image`}
+                        draggable={false}
+                    />
+                </div>
+            )}
+
+            {/* Confirm/cancel buttons */}
+            <div className="flex gap-4 mx-auto mt-8 mb-auto">
+                <button
+                    className="btn h-12 btn-error btn-square text-white"
+                    onClick={handleReject}
+                    title="Plant was NOT divided"
+                >
+                    <FaXmark className="size-6" />
+                </button>
+                <button
+                    className="btn h-12 btn-success btn-square text-white"
+                    onClick={handleConfirm}
+                    title="Plant was divided"
+                >
+                    <FaCheck className="size-6" />
+                </button>
+            </div>
+        </div>
+    );
+};
+
+ConfirmDividingFrom.propTypes = {
+    plantDetails: PropTypes.object.isRequired,
+    handleConfirm: PropTypes.func.isRequired,
+    handleReject: PropTypes.func.isRequired
 };
 
 function App() {
     // Load context set by django template
     const newID = parseDomContext("new_id");
+    const dividingFrom = parseDomContext("dividing_from");
+
+    const [showConfirm, setShowConfirm] = useState(dividingFrom ? true : false);
+    const [showTabs, setShowTabs] = useState(dividingFrom ? false : true);
 
     // Reload if user navigates to page by pressing back button (uuid may now
     // be registered, refresh will replace with manage plant/group page if so)
@@ -114,6 +166,14 @@ function App() {
             endpoint = '/register_group';
         }
 
+        // If dividing from existing plant and confirmed new plant was divided:
+        // add database keys from context (creates database relations between
+        // new plant, parent plant, and division event)
+        if (dividingFrom && !showTabs) {
+            payload.divided_from_id = dividingFrom.plant_key;
+            payload.divided_from_event_id = dividingFrom.event_key;
+        }
+
         // Add UUID, post to backend
         payload.uuid = newID;
         const response = await sendPostRequest(endpoint, payload);
@@ -144,19 +204,33 @@ function App() {
                 className="flex flex-col w-96 max-w-[100vw] px-4"
                 onInput={onInput}
             >
-                <Form
-                    setVisibleForm={handleFormChange}
-                    plantFormRef={plantFormRef}
-                    groupFormRef={groupFormRef}
-                />
+                {showConfirm ? (
+                    <ConfirmDividingFrom
+                        plantDetails={dividingFrom.plant_details}
+                        handleConfirm={() => setShowConfirm(false)}
+                        handleReject={() => {
+                            setShowTabs(true);
+                            setShowConfirm(false);
+                        }}
+                    />
+                ) : (
+                    <>
+                        <Form
+                            setVisibleForm={handleFormChange}
+                            plantFormRef={plantFormRef}
+                            groupFormRef={groupFormRef}
+                            showTabs={showTabs}
+                        />
 
-                <button
-                    className="btn btn-accent mx-auto"
-                    disabled={!formIsValid}
-                    onClick={submit}
-                >
-                    Save
-                </button>
+                        <button
+                            className="btn btn-accent mx-auto"
+                            disabled={!formIsValid}
+                            onClick={submit}
+                        >
+                            Save
+                        </button>
+                    </>
+                )}
             </div>
         </div>
     );
