@@ -16,18 +16,18 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "plant_details": mockContext.plant_details,
-                "events": mockContext.events,
-                "notes": mockContext.notes,
-                "group_options": mockContext.group_options,
-                "species_options": mockContext.species_options,
+                plant_details: mockContext.plant_details,
+                events: mockContext.events,
+                notes: mockContext.notes,
+                group_options: mockContext.group_options,
+                species_options: mockContext.species_options,
                 // Deep copy so subsequent calls don't fail (gets mutated when
                 // buildTimelineDays sorts - not an issue in production since
                 // it's a different response each time but in mock it's reused)
-                "photos": JSON.parse(JSON.stringify(mockContext.photos)),
-                "default_photo": mockContext.default_photo,
-                "division_events": {},
-                "divided_from": false
+                photos: JSON.parse(JSON.stringify(mockContext.photos)),
+                default_photo: mockContext.default_photo,
+                division_events: {},
+                divided_from: false
             })
         }));
     });
@@ -150,14 +150,14 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "plant_details": mockContext.plant_details,
-                "events": mockContext.events,
-                "notes": mockContext.notes,
-                "group_options": mockContext.group_options,
-                "species_options": mockContext.species_options,
-                "photos": JSON.parse(JSON.stringify(mockContext.photos)),
-                "default_photo": mockContext.default_photo,
-                "division_events": {
+                plant_details: mockContext.plant_details,
+                events: mockContext.events,
+                notes: mockContext.notes,
+                group_options: mockContext.group_options,
+                species_options: mockContext.species_options,
+                photos: JSON.parse(JSON.stringify(mockContext.photos)),
+                default_photo: mockContext.default_photo,
+                division_events: {
                     "2024-02-11T04:19:23+00:00": [
                         {
                             name: "Child plant 1",
