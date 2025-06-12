@@ -320,7 +320,7 @@ const FilterColumn = ({
         if (a === null && b === null) return 0;
         if (a === null) return 1;
         if (b === null) return -1;
-        return a.toLowerCase() > b.toLowerCase() ? 1 : -1;
+        return a.localeCompare(b, undefined, { numeric: true });
     };
 
     // Takes array of objects and one of their keys

@@ -276,8 +276,8 @@ describe('FilterColumn', () => {
         // Confirm "Never watered" is sorted to top followed by least-recently
         // watered (not to the bottom with most-recently watered)
         const titles = component.container.querySelectorAll('.card-title');
-        expect(titles[0].innerHTML).toBe("Favorite plant");
-        expect(titles[1].innerHTML).toBe("Unnamed Fittonia");
+        expect(titles[0].innerHTML).toBe("Unnamed Fittonia");
+        expect(titles[1].innerHTML).toBe("Favorite plant");
         expect(titles[2].innerHTML).toBe("mini palm tree");
         expect(titles[3].innerHTML).toBe("Unnamed plant 1");
         expect(titles[4].innerHTML).toBe("Unnamed plant 2");
@@ -319,6 +319,69 @@ describe('FilterColumn', () => {
         // Confirm page did NOT scroll (height change cannot push column off
         // screen if top is below the navbar)
         expect(window.HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled();
+    });
+
+    it('sorts identical names with numeric suffixes sequentially', async () => {
+        // Reduce boilerplate
+        const template = {
+            "name": "",
+            "display_name": "",
+            "uuid": "",
+            "created": "",
+            "species": "",
+            "description": "",
+            "pot_size": "",
+            "last_watered": "",
+            "last_fertilized": "",
+            "thumbnail": ""
+        };
+
+        // Render with default sort set to name and 4 plants with identical
+        // names other than a numeric suffix
+        component = render(
+            <FilterColumn
+                title="Plants"
+                contents={[
+                    {
+                        ...template,
+                        display_name: "Plant 1",
+                        uuid: "49a55f1f-5703-4f5e-acad-2c0991a08806"
+                    },
+                    {
+                        ...template,
+                        display_name: "Plant 2",
+                        uuid: "49a55f1f-5703-4f5e-acad-2c0991a08807"
+                    },
+                    {
+                        ...template,
+                        display_name: "Plant 10",
+                        uuid: "49a55f1f-5703-4f5e-acad-2c0991a08808"
+                    },
+                    {
+                        ...template,
+                        display_name: "Plant 3",
+                        uuid: "49a55f1f-5703-4f5e-acad-2c0991a08809"
+                    },
+                ]}
+                CardComponent={PlantCard}
+                editing={false}
+                formRef={jest.fn()}
+                selected={{current: []}}
+                ignoreKeys={[]}
+                sortByKeys={[
+                    {key: 'display_name', display: 'Name'}
+                ]}
+                defaultSortKey='display_name'
+            />
+        );
+
+        // Confirm names are sorted sequentially by suffix (10 comes last, not
+        // after 1 like it would with pure lexical sort)
+        let titles = component.container.querySelectorAll('.card-title');
+        expect(titles[0].innerHTML).toBe("Plant 1");
+        expect(titles[1].innerHTML).toBe("Plant 2");
+        expect(titles[2].innerHTML).toBe("Plant 3");
+        expect(titles[3].innerHTML).toBe("Plant 10");
     });
 });
 
