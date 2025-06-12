@@ -44,33 +44,34 @@ export const buildTimelineDays = (events, notes, photos, dividedFrom, divisionEv
     // Convert to object with YYYY-MM-DD keys
     const timelineDays = formatEvents(events);
 
+    // Adds empty template object to timelineDays if dateKey doesn't exist
+    const addDateKeyIfMissing = (dateKey) => {
+        if (!timelineDays[dateKey]) {
+            timelineDays[dateKey] = {events: [], notes: [], photos: []};
+        }
+    };
+
     // Add objects from photos context to photos key under correct dateKey
     photos.sort((a, b) => {
         return a.timestamp.localeCompare(b.timestamp);
     }).reverse();
     photos.forEach((photo) => {
         const dateKey = timestampToDateString(photo.timestamp);
-        if (!timelineDays[dateKey]) {
-            timelineDays[dateKey] = {events: [], notes: [], photos: []};
-        }
+        addDateKeyIfMissing(dateKey);
         timelineDays[dateKey].photos.push(photo);
     });
 
     // Add objects from notes context to notes key under correct dateKey
     notes.forEach((note) => {
         const dateKey = timestampToDateString(note.timestamp);
-        if (!timelineDays[dateKey]) {
-            timelineDays[dateKey] = {events: [], notes: [], photos: []};
-        }
+        addDateKeyIfMissing(dateKey);
         timelineDays[dateKey].notes.push(note);
     });
 
     // Add dividedFrom if has parent (adds link to parent at start of timeline)
     if (dividedFrom) {
         const dateKey = timestampToDateString(dividedFrom.timestamp);
-        if (!timelineDays[dateKey]) {
-            timelineDays[dateKey] = {events: [], notes: [], photos: []};
-        }
+        addDateKeyIfMissing(dateKey);
         timelineDays[dateKey].dividedFrom = dividedFrom;
     }
 
@@ -78,9 +79,7 @@ export const buildTimelineDays = (events, notes, photos, dividedFrom, divisionEv
     // they were divided)
     Object.entries(divisionEvents).forEach(([timestamp, plants]) => {
         const dateKey = timestampToDateString(timestamp);
-        if (!timelineDays[dateKey]) {
-            timelineDays[dateKey] = {events: [], notes: [], photos: []};
-        }
+        addDateKeyIfMissing(dateKey);
         if (!timelineDays[dateKey].dividedInto) {
             timelineDays[dateKey].dividedInto = plants;
         } else {
