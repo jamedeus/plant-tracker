@@ -10,7 +10,7 @@ import { openPhotoModal } from './PhotoModal';
 import { openDivisionModal } from './DivisionModal';
 import { openDeletePhotosModal, preloadDeletePhotosModal } from './DeletePhotosModal';
 import { openEventHistoryModal } from './EventHistoryModal';
-import { FaEllipsis, FaPenToSquare} from 'react-icons/fa6';
+import { FaEllipsis, FaPenToSquare } from 'react-icons/fa6';
 import DropdownMenu from 'src/components/DropdownMenu';
 import WaterIcon from 'src/components/WaterIcon';
 import FertilizeIcon from 'src/components/FertilizeIcon';
@@ -267,9 +267,9 @@ EventMarker.propTypes = {
 // plant on a given day, renders market with bullet point links to each child
 const DivisionEventMarker = ({ dividedPlants }) => {
     return (
-        <div className="flex flex-col">
-            <span className="event-marker mb-1!">
-                <LuSplit className="fa-inline rotate-90 mr-2" />
+        <div className="flex flex-col m-2 text-sm md:text-base">
+            <span className="mb-1">
+                <LuSplit className="fa-inline size-4 rotate-90 mr-2" />
                 Divided into:
             </span>
             {dividedPlants.sort(
@@ -277,10 +277,13 @@ const DivisionEventMarker = ({ dividedPlants }) => {
             ).map(plant => (
                 <div
                     key={plant.uuid}
-                    className="flex items-center ml-8 md:ml-9"
+                    className="flex items-center ml-6 md:ml-7"
                 >
                     <span className="bullet-point mr-2"></span>
-                    <a href={`/manage/${plant.uuid}`} className="plant-link">
+                    <a
+                        href={`/manage/${plant.uuid}`}
+                        className="plant-link truncate"
+                    >
                         {plant.name}
                     </a>
                 </div>
@@ -301,8 +304,8 @@ DivisionEventMarker.propTypes = {
 // Takes parent plant display name and UUID, renders marker with link to parent
 const DividedFromMarker = ({ name, uuid }) => {
     return (
-        <span className="event-marker">
-            <LuSplit className="fa-inline rotate-90 mr-2" />
+        <span className="m-2 text-sm md:text-base line-clamp-1">
+            <LuSplit className="fa-inline size-4 rotate-90 mr-2" />
             Divided from&nbsp;
             <a href={`/manage/${uuid}`} className="plant-link">
                 {name}

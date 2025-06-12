@@ -91,5 +91,5 @@
 
 /* Plant divided from/into links */
 .plant-link {
-    @apply font-semibold underline whitespace-nowrap overflow-hidden truncate;
+    @apply font-semibold underline;
 }

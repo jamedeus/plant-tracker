@@ -149,13 +149,13 @@ exports[`Timeline matches snapshot when plant has divided children 1`] = `
           data-testid="2024-02-10-notes"
         />
         <div
-          class="flex flex-col"
+          class="flex flex-col m-2 text-sm md:text-base"
         >
           <span
-            class="event-marker mb-1!"
+            class="mb-1"
           >
             <svg
-              class="fa-inline rotate-90 mr-2"
+              class="fa-inline size-4 rotate-90 mr-2"
               fill="none"
               height="1em"
               stroke="currentColor"
@@ -182,26 +182,26 @@ exports[`Timeline matches snapshot when plant has divided children 1`] = `
             Divided into:
           </span>
           <div
-            class="flex items-center ml-8 md:ml-9"
+            class="flex items-center ml-6 md:ml-7"
           >
             <span
               class="bullet-point mr-2"
             />
             <a
-              class="plant-link"
+              class="plant-link truncate"
               href="/manage/cc3fcb4f-120a-4577-ac87-ac6b5bea8968"
             >
               Child plant 1
             </a>
           </div>
           <div
-            class="flex items-center ml-8 md:ml-9"
+            class="flex items-center ml-6 md:ml-7"
           >
             <span
               class="bullet-point mr-2"
             />
             <a
-              class="plant-link"
+              class="plant-link truncate"
               href="/manage/dfafcb4d-220e-2543-f187-fb6b5be589ba"
             >
               Child plant 2
@@ -6103,10 +6103,10 @@ exports[`Timeline matches snapshot when plant was divided from parent 1`] = `
           data-testid="2024-02-10-notes"
         />
         <span
-          class="event-marker"
+          class="m-2 text-sm md:text-base line-clamp-1"
         >
           <svg
-            class="fa-inline rotate-90 mr-2"
+            class="fa-inline size-4 rotate-90 mr-2"
             fill="none"
             height="1em"
             stroke="currentColor"
