@@ -225,6 +225,290 @@ exports[`App matches snapshot 1`] = `
 </div>
 `;
 
+exports[`App matches snapshot when changing group QR code 1`] = `
+<div>
+  <div
+    class="container flex flex-col mx-auto items-center"
+  >
+    <div
+      class="navbar bg-base-100 fixed top-0 z-99"
+    >
+      <div
+        class="dropdown justify-start min-w-12"
+      >
+        <div
+          aria-label="Navigation menu"
+          class="btn btn-ghost btn-circle size-12"
+          role="button"
+          tabindex="0"
+        >
+          <svg
+            class="size-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4 6h16M4 12h16M4 18h7"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+            />
+          </svg>
+        </div>
+        <ul
+          class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-3"
+          tabindex="0"
+        >
+          <li>
+            <a
+              href="/"
+            >
+              Overview
+            </a>
+          </li>
+          <li>
+            <a
+              href="/accounts/profile/"
+            >
+              User profile
+            </a>
+          </li>
+          <li>
+            <button>
+              Light mode
+            </button>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="mx-auto shrink min-w-0"
+        title="Scroll to top"
+      >
+        <div
+          class="dropdown dropdown-center w-full"
+        >
+          <a
+            class="w-full px-0 text-nowrap font-semibold"
+            role="heading"
+            tabindex="-1"
+          >
+            <span
+              class="px-4 leading-[2.75rem] truncate"
+              style="font-size: 14px;"
+            >
+              Registration
+            </span>
+          </a>
+        </div>
+      </div>
+      <div
+        class="justify-end min-w-12"
+      />
+    </div>
+    <div
+      class="flex flex-col full-screen justify-center text-center gap-8 px-4"
+    >
+      <p
+        class="text-lg font-bold mt-auto mb-8"
+      >
+        Is this the new QR code for your group?
+      </p>
+      <div
+        class="flex gap-4 mx-auto mt-8 mb-auto"
+      >
+        <button
+          class="btn h-12 btn-error btn-square text-white"
+          title="Don't change QR code"
+        >
+          <svg
+            class="size-6"
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            stroke-width="0"
+            viewBox="0 0 384 512"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"
+            />
+          </svg>
+        </button>
+        <button
+          class="btn h-12 btn-success btn-square text-white"
+          title="Change QR code"
+        >
+          <svg
+            class="size-6"
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            stroke-width="0"
+            viewBox="0 0 448 512"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`App matches snapshot when changing plant QR code 1`] = `
+<div>
+  <div
+    class="container flex flex-col mx-auto items-center"
+  >
+    <div
+      class="navbar bg-base-100 fixed top-0 z-99"
+    >
+      <div
+        class="dropdown justify-start min-w-12"
+      >
+        <div
+          aria-label="Navigation menu"
+          class="btn btn-ghost btn-circle size-12"
+          role="button"
+          tabindex="0"
+        >
+          <svg
+            class="size-5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M4 6h16M4 12h16M4 18h7"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+            />
+          </svg>
+        </div>
+        <ul
+          class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box mt-3"
+          tabindex="0"
+        >
+          <li>
+            <a
+              href="/"
+            >
+              Overview
+            </a>
+          </li>
+          <li>
+            <a
+              href="/accounts/profile/"
+            >
+              User profile
+            </a>
+          </li>
+          <li>
+            <button>
+              Light mode
+            </button>
+          </li>
+        </ul>
+      </div>
+      <div
+        class="mx-auto shrink min-w-0"
+        title="Scroll to top"
+      >
+        <div
+          class="dropdown dropdown-center w-full"
+        >
+          <a
+            class="w-full px-0 text-nowrap font-semibold"
+            role="heading"
+            tabindex="-1"
+          >
+            <span
+              class="px-4 leading-[2.75rem] truncate"
+              style="font-size: 14px;"
+            >
+              Registration
+            </span>
+          </a>
+        </div>
+      </div>
+      <div
+        class="justify-end min-w-12"
+      />
+    </div>
+    <div
+      class="flex flex-col full-screen justify-center text-center gap-8 px-4"
+    >
+      <p
+        class="text-lg font-bold mt-auto mb-8"
+      >
+        Is this the new QR code for your plant?
+      </p>
+      <div
+        class="mx-auto p-4 bg-base-200 rounded-3xl"
+      >
+        <img
+          alt="Test Plant photo"
+          class="max-h-[50vh] rounded-xl object-contain"
+          draggable="false"
+          src="/media/previews/photo_preview.webp"
+        />
+      </div>
+      <div
+        class="flex gap-4 mx-auto mt-8 mb-auto"
+      >
+        <button
+          class="btn h-12 btn-error btn-square text-white"
+          title="Don't change QR code"
+        >
+          <svg
+            class="size-6"
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            stroke-width="0"
+            viewBox="0 0 384 512"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M342.6 150.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L192 210.7 86.6 105.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L146.7 256 41.4 361.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 301.3 297.4 406.6c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L237.3 256 342.6 150.6z"
+            />
+          </svg>
+        </button>
+        <button
+          class="btn h-12 btn-success btn-square text-white"
+          title="Change QR code"
+        >
+          <svg
+            class="size-6"
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            stroke-width="0"
+            viewBox="0 0 448 512"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M438.6 105.4c12.5 12.5 12.5 32.8 0 45.3l-256 256c-12.5 12.5-32.8 12.5-45.3 0l-128-128c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0L160 338.7 393.4 105.4c12.5-12.5 32.8-12.5 45.3 0z"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
 exports[`App matches snapshot when plant division in progress 1`] = `
 <div>
   <div
@@ -313,15 +597,13 @@ exports[`App matches snapshot when plant division in progress 1`] = `
       <p
         class="text-lg font-bold mt-auto mb-8"
       >
-        Was this plant divided from 
-        Test Plant
-        ?
+        Was this plant divided from Test Plant?
       </p>
       <div
         class="mx-auto p-4 bg-base-200 rounded-3xl"
       >
         <img
-          alt="Test Plant image"
+          alt="Test Plant photo"
           class="max-h-[50vh] rounded-xl object-contain"
           draggable="false"
           src="/media/previews/photo_preview.webp"

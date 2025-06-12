@@ -65,18 +65,26 @@ Form.propTypes = {
     defaultValues: PropTypes.object.isRequired
 };
 
-const ConfirmDividingFrom = ({ plantDetails, plantPhoto, handleConfirm, handleReject }) => {
+const ConfirmPrompt = ({
+    prompt,
+    photo,
+    photoAltText,
+    handleConfirm,
+    handleReject,
+    confirmButtonTitle,
+    rejectButtonTitle
+}) => {
     return (
         <div className="flex flex-col full-screen justify-center text-center gap-8 px-4">
             <p className="text-lg font-bold mt-auto mb-8">
-                Was this plant divided from {plantDetails.display_name}?
+                {prompt}
             </p>
-            {plantPhoto && (
+            {photo && (
                 <div className="mx-auto p-4 bg-base-200 rounded-3xl">
                     <img
                         className="max-h-[50vh] rounded-xl object-contain"
-                        src={plantPhoto}
-                        alt={`${plantDetails.display_name} image`}
+                        src={photo}
+                        alt={photoAltText}
                         draggable={false}
                     />
                 </div>
@@ -87,14 +95,14 @@ const ConfirmDividingFrom = ({ plantDetails, plantPhoto, handleConfirm, handleRe
                 <button
                     className="btn h-12 btn-error btn-square text-white"
                     onClick={handleReject}
-                    title="Plant was NOT divided"
+                    title={rejectButtonTitle}
                 >
                     <FaXmark className="size-6" />
                 </button>
                 <button
                     className="btn h-12 btn-success btn-square text-white"
                     onClick={handleConfirm}
-                    title="Plant was divided"
+                    title={confirmButtonTitle}
                 >
                     <FaCheck className="size-6" />
                 </button>
@@ -103,17 +111,21 @@ const ConfirmDividingFrom = ({ plantDetails, plantPhoto, handleConfirm, handleRe
     );
 };
 
-ConfirmDividingFrom.propTypes = {
-    plantDetails: PropTypes.object.isRequired,
-    plantPhoto: PropTypes.string,
+ConfirmPrompt.propTypes = {
+    prompt: PropTypes.string.isRequired,
+    photo: PropTypes.string,
+    photoAltText: PropTypes.string,
     handleConfirm: PropTypes.func.isRequired,
-    handleReject: PropTypes.func.isRequired
+    handleReject: PropTypes.func.isRequired,
+    confirmButtonTitle: PropTypes.string.isRequired,
+    rejectButtonTitle: PropTypes.string.isRequired
 };
 
 function App() {
     // Load context set by django template
     const newID = parseDomContext("new_id");
     const dividingFrom = parseDomContext("dividing_from");
+    const changingQrCode = parseDomContext("changing_qr_code");
 
     // Default form values (only used when dividing existing plant)
     const defaultValues = useMemo(() => {
@@ -132,8 +144,10 @@ function App() {
         }
     }, []);
 
+    // Show confirmation screen if changing QR code for existing plant
+    const [showConfirmQr, setShowConfirmQr] = useState(changingQrCode ? true : false);
     // Show confirmation screen if dividing from existing plant
-    const [showConfirm, setShowConfirm] = useState(dividingFrom ? true : false);
+    const [showConfirmDivide, setShowConfirmDivide] = useState(dividingFrom ? true : false);
     // Tracks user response at confirmation screen
     const [confirmedDividing, setConfirmedDividing] = useState(false);
 
@@ -173,7 +187,7 @@ function App() {
         setFormIsValid(true);
     };
 
-    const submit = async () => {
+    const handleRegister = async () => {
         // Parse all fields from visible form, set correct endpoint
         let payload, endpoint;
         if (visibleForm === 0) {
@@ -212,6 +226,23 @@ function App() {
         }
     };
 
+    const handleConfirmNewQrCode = async () => {
+        const response = await sendPostRequest(
+            '/change_uuid',
+            {
+                uuid: changingQrCode.instance.uuid,
+                new_id: changingQrCode.new_uuid
+            }
+        );
+        // Reload page if changed successfully
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            const error = await response.json();
+            openErrorModal(JSON.stringify(error));
+        }
+    };
+
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => <NavbarDropdownOptions />, []);
 
@@ -222,41 +253,64 @@ function App() {
                 title='Registration'
             />
 
-            {showConfirm ? (
-                <ConfirmDividingFrom
-                    plantDetails={dividingFrom.plant_details}
-                    plantPhoto={dividingFrom.default_photo?.preview}
-                    handleConfirm={() => {
-                        setShowConfirm(false);
-                        setConfirmedDividing(true);
-                    }}
-                    handleReject={() => {
-                        setShowConfirm(false);
-                        setConfirmedDividing(false);
-                    }}
-                />
-            ) : (
-                <div
-                    className="flex flex-col w-96 max-w-[100vw] px-4 mb-8"
-                    onInput={onInput}
-                >
-                    <Form
-                        setVisibleForm={handleFormChange}
-                        plantFormRef={plantFormRef}
-                        groupFormRef={groupFormRef}
-                        showTabs={confirmedDividing ? false : true}
-                        defaultValues={confirmedDividing ? defaultValues : {}}
-                    />
+            {(() => {
+                if (showConfirmQr) {
+                    return (
+                        <ConfirmPrompt
+                            prompt={`Is this the new QR code for your ${changingQrCode.type}?`}
+                            photo={changingQrCode.preview}
+                            photoAltText={`${changingQrCode.instance.display_name} photo`}
+                            handleConfirm={handleConfirmNewQrCode}
+                            handleReject={() => setShowConfirmQr(false)}
+                            confirmButtonTitle={"Change QR code"}
+                            rejectButtonTitle={"Don't change QR code"}
+                        />
+                    );
 
-                    <button
-                        className="btn btn-accent mx-auto"
-                        disabled={!formIsValid}
-                        onClick={submit}
-                    >
-                        Save
-                    </button>
-                </div>
-            )}
+                } else if (showConfirmDivide) {
+                    return (
+                        <ConfirmPrompt
+                            prompt={`Was this plant divided from ${dividingFrom.plant_details.display_name}?`}
+                            photo={dividingFrom.default_photo.preview}
+                            photoAltText={`${dividingFrom.plant_details.display_name} photo`}
+                            handleConfirm={() => {
+                                setShowConfirmDivide(false);
+                                setConfirmedDividing(true);
+                            }}
+                            handleReject={() => {
+                                setShowConfirmDivide(false);
+                                setConfirmedDividing(false);
+                            }}
+                            confirmButtonTitle={"Plant was divided"}
+                            rejectButtonTitle={"Plant was NOT divided"}
+                        />
+                    );
+
+                } else {
+                    return (
+                        <div
+                            className="flex flex-col w-96 max-w-[100vw] px-4 mb-8"
+                            onInput={onInput}
+                        >
+                            <Form
+                                setVisibleForm={handleFormChange}
+                                plantFormRef={plantFormRef}
+                                groupFormRef={groupFormRef}
+                                showTabs={confirmedDividing ? false : true}
+                                defaultValues={confirmedDividing ? defaultValues : {}}
+                            />
+
+                            <button
+                                className="btn btn-accent mx-auto"
+                                disabled={!formIsValid}
+                                onClick={handleRegister}
+                            >
+                                Save
+                            </button>
+                        </div>
+                    );
+                }
+            })()}
         </div>
     );
 }

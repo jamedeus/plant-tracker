@@ -1894,30 +1894,34 @@ class ChangeQrCodeTests(TestCase):
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
         self.assertEqual(
             response.context['js_files'],
-            settings.PAGE_DEPENDENCIES['confirm_new_qr_code']['js']
+            settings.PAGE_DEPENDENCIES['register']['js']
         )
-        self.assertEqual(response.context['title'], 'Confirm new QR code')
+        self.assertEqual(response.context['title'], 'Register New Plant')
 
         # Confirm state contains plant details and new UUID
         self.assertEqual(
             response.context['state'],
             {
-                'type': 'plant',
-                'instance': {
-                    'uuid': str(self.plant1.uuid),
-                    'created': self.plant1.created.isoformat(),
-                    'archived': False,
-                    'name': None,
-                    'display_name': 'Unnamed plant 1',
-                    'species': None,
-                    'thumbnail': None,
-                    'pot_size': None,
-                    'description': None,
-                    'last_watered': None,
-                    'last_fertilized': None
-                },
-                'new_uuid': str(self.fake_id),
-                'preview': self.plant1.preview_url
+                'new_id': str(self.fake_id),
+                'species_options': [],
+                'changing_qr_code': {
+                    'type': 'plant',
+                    'instance': {
+                        'uuid': str(self.plant1.uuid),
+                        'created': self.plant1.created.isoformat(),
+                        'archived': False,
+                        'name': None,
+                        'display_name': 'Unnamed plant 1',
+                        'species': None,
+                        'thumbnail': None,
+                        'pot_size': None,
+                        'description': None,
+                        'last_watered': None,
+                        'last_fertilized': None
+                    },
+                    'new_uuid': str(self.fake_id),
+                    'preview': self.plant1.preview_url
+                }
             }
         )
 
@@ -1937,26 +1941,30 @@ class ChangeQrCodeTests(TestCase):
         self.assertTemplateUsed(response, 'plant_tracker/index.html')
         self.assertEqual(
             response.context['js_files'],
-            settings.PAGE_DEPENDENCIES['confirm_new_qr_code']['js']
+            settings.PAGE_DEPENDENCIES['register']['js']
         )
-        self.assertEqual(response.context['title'], 'Confirm new QR code')
+        self.assertEqual(response.context['title'], 'Register New Plant')
 
         # Confirm state contains plant details and new UUID
         self.assertEqual(
             response.context['state'],
             {
-                'type': 'group',
-                'instance': {
-                    'uuid': str(self.group1.uuid),
-                    'created': self.group1.created.isoformat(),
-                    'archived': False,
-                    'name': None,
-                    'display_name': 'Unnamed group 1',
-                    'location': None,
-                    'description': None,
-                    'plants': 0
-                },
-                'new_uuid': str(self.fake_id)
+                'new_id': str(self.fake_id),
+                'species_options': [],
+                'changing_qr_code': {
+                    'type': 'group',
+                    'instance': {
+                        'uuid': str(self.group1.uuid),
+                        'created': self.group1.created.isoformat(),
+                        'archived': False,
+                        'name': None,
+                        'display_name': 'Unnamed group 1',
+                        'location': None,
+                        'description': None,
+                        'plants': 0
+                    },
+                    'new_uuid': str(self.fake_id)
+                }
             }
         )
 
@@ -1977,7 +1985,7 @@ class ChangeQrCodeTests(TestCase):
         response = self.client.get(f'/manage/{self.fake_id}')
         self.assertEqual(
             response.context['js_files'],
-            settings.PAGE_DEPENDENCIES['confirm_new_qr_code']['js']
+            settings.PAGE_DEPENDENCIES['register']['js']
         )
 
         # Request management page with existing plant UUID (should return manage_plant)

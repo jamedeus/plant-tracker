@@ -462,6 +462,9 @@ class ViewRegressionTests(TestCase):
             response.context['js_files'],
             settings.PAGE_DEPENDENCIES['register']['js']
         )
+        # Confirm context does NOT contain changing_qr_code key (causes register
+        # to show confirm QR prompt since merged with confirm_new_qr_code page)
+        self.assertNotIn('changing_qr_code', response.context['state'])
 
         # Confirm cache was cleared
         self.assertIsNone(cache.get(f'old_uuid_{get_default_user().pk}'))

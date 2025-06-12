@@ -135,10 +135,7 @@ def manage(request, uuid, user):
     '''Renders the correct page when a QR code is scanned:
       - manage_plant: rendered if QR code UUID matches an existing Plant entry
       - manage_group: rendered if QR code UUID matches an existing Group entry
-      - confirm_new_qr_code: rendered if QR code UUID does not match an existing
-        Plant/Group AND the old_uuid cache is set (see /change_qr_code endpoint)
-      - register: rendered if the QR code UUID does not match an existing Plant/
-        Group and the old_uuid cache is NOT set
+      - register: rendered if the QR code UUID does not match an existing Plant/Group
     '''
 
     # Look up UUID in plant table, render manage_plant page if found
@@ -151,12 +148,7 @@ def manage(request, uuid, user):
     if group:
         return render_manage_group_page(request, group, user)
 
-    # Query old_uuid cache, render confirmation page if found
-    old_uuid = cache.get(f'old_uuid_{user.pk}')
-    if old_uuid:
-        return render_confirm_new_qr_code_page(request, uuid, old_uuid, user)
-
-    # Render register page if UUID is new and old_uuid cache was not found
+    # Render register page if UUID is new
     return render_registration_page(request, uuid, user)
 
 
@@ -241,48 +233,40 @@ def get_group_state(request, uuid):
         return JsonResponse({'Error': 'Requires group UUID'}, status=400)
 
 
-def render_confirm_new_qr_code_page(request, uuid, old_uuid, user):
-    '''Renders confirmation page used to change a plant or group QR code.
-    Called by /manage endpoint if UUID does not exist in database and the
-    old_uuid cache is set (see /change_qr_code endpoint).
-    '''
-
-    # Returns Plant instance, Group Instance, or None (not found)
-    instance = get_plant_or_group_by_uuid(old_uuid)
-
-    # If UUID no longer exists in database (plant/group deleted) clear cache
-    # and redirect to registration page
-    if instance is None:
-        cache.delete(f'old_uuid_{user.pk}')
-        return render_registration_page(request, uuid, user)
-
-    state = {
-        'type': 'plant' if isinstance(instance, Plant) else 'group',
-        'instance': instance.get_details(),
-        'new_uuid': uuid
-    }
-
-    if state['type'] == 'plant':
-        state['preview'] = instance.preview_url
-
-    return render_react_app(
-        request,
-        title='Confirm new QR code',
-        bundle='confirm_new_qr_code',
-        state=state
-    )
-
-
 def render_registration_page(request, uuid, user):
     '''Renders registration page used to create a new plant or group.
-    Called by /manage endpoint if UUID does not exist in database and the
-    old_uuid cache is NOT set.
+    Called by /manage endpoint if UUID does not exist in database.
+
+    If the old_uuid cache is set (see /change_qr_code endpoint) context includes
+    information used by frontend to show change QR prompt (calls /change_uuid
+    and redirects if confirmed, shows normal registration form if rejected).
+
+    If the dividing_from cache is set (see /divide_plant endpoint) context
+    includes information used by frontend to show confirm dividing prompt (shows
+    plant form with pre-filled details if confirmed, shows normal registration
+    for if rejected).
     '''
 
     state = {
         'new_id': uuid,
         'species_options': get_plant_species_options(),
     }
+
+    # Check if user is changing plant QR code, add details if so
+    old_uuid = cache.get(f'old_uuid_{user.pk}')
+    if old_uuid:
+        instance = get_plant_or_group_by_uuid(old_uuid)
+        # If UUID no longer exists in database (plant/group deleted) clear cache
+        if instance is None:
+            cache.delete(f'old_uuid_{user.pk}')
+        else:
+            state['changing_qr_code'] = {
+                'type': 'plant' if isinstance(instance, Plant) else 'group',
+                'instance': instance.get_details(),
+                'new_uuid': uuid
+            }
+            if state['changing_qr_code']['type'] == 'plant':
+                state['changing_qr_code']['preview'] = instance.preview_url
 
     # Check if user is dividing plant, add details if dividing
     division_in_progress = cache.get(f'division_in_progress_{user.pk}')

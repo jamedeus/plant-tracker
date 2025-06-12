@@ -18,7 +18,7 @@ This should be updated when:
 - Includes database primary key of user that requested to change QR code (avoid collisions)
 - Set by `/change_qr_code`
   * Expires in 15 minutes
-  * Deleted by `views.render_confirm_new_qr_code_page` if it receives a request from same user containing a UUID that does not exist in the database
+  * Deleted by `views.render_registration_page` if it receives a request from same user containing a UUID that does not exist in the database
   * Deleted by `/change_uuid` after updating UUID of a Plant/Group owned by same user
 
 ### `division_in_progress_{user_primary_key}`
