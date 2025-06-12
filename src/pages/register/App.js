@@ -9,8 +9,9 @@ import GroupDetailsForm from 'src/components/GroupDetailsForm';
 import PlantDetailsForm from 'src/components/PlantDetailsForm';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { FaXmark, FaCheck } from 'react-icons/fa6';
+import { DateTime } from 'luxon';
 
-const Form = memo(function Form({ setVisibleForm, plantFormRef, groupFormRef, showTabs }) {
+const Form = memo(function Form({ setVisibleForm, plantFormRef, groupFormRef, showTabs, defaultValues }) {
     return (
         <Tab.Group onChange={(index) => setVisibleForm(index)}>
             {showTabs &&
@@ -34,10 +35,10 @@ const Form = memo(function Form({ setVisibleForm, plantFormRef, groupFormRef, sh
                 <Tab.Panel>
                     <PlantDetailsForm
                         formRef={plantFormRef}
-                        name=""
-                        species=""
-                        pot_size=""
-                        description=""
+                        name={defaultValues.name || ""}
+                        species={defaultValues.species || ""}
+                        pot_size={defaultValues.pot_size || ""}
+                        description={defaultValues.description || ""}
                     />
                 </Tab.Panel>
                 <Tab.Panel>
@@ -60,7 +61,8 @@ Form.propTypes = {
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
     ]).isRequired,
-    showTabs: PropTypes.bool.isRequired
+    showTabs: PropTypes.bool.isRequired,
+    defaultValues: PropTypes.object.isRequired
 };
 
 const ConfirmDividingFrom = ({ plantDetails, handleConfirm, handleReject }) => {
@@ -112,8 +114,27 @@ function App() {
     const newID = parseDomContext("new_id");
     const dividingFrom = parseDomContext("dividing_from");
 
+    // Default form values (only used when dividing existing plant)
+    const defaultValues = useMemo(() => {
+        if (dividingFrom) {
+            const parentName = dividingFrom.plant_details.display_name;
+            const today = DateTime.now().toFormat('MMMM d, yyyy');
+            return {
+                name: `${dividingFrom.plant_details.display_name} prop`,
+                species: dividingFrom.plant_details.species,
+                pot_size: dividingFrom.plant_details.pot_size,
+                description: `Divided from ${parentName} on ${today}`,
+            };
+        } else {
+            // No defaults if registering new plant with no parent
+            return {};
+        }
+    }, []);
+
+    // Show confirmation screen if dividing from existing plant
     const [showConfirm, setShowConfirm] = useState(dividingFrom ? true : false);
-    const [showTabs, setShowTabs] = useState(dividingFrom ? false : true);
+    // Tracks user response at confirmation screen
+    const [confirmedDividing, setConfirmedDividing] = useState(false);
 
     // Reload if user navigates to page by pressing back button (uuid may now
     // be registered, refresh will replace with manage plant/group page if so)
@@ -169,7 +190,7 @@ function App() {
         // If dividing from existing plant and confirmed new plant was divided:
         // add database keys from context (creates database relations between
         // new plant, parent plant, and division event)
-        if (dividingFrom && !showTabs) {
+        if (dividingFrom && confirmedDividing) {
             payload.divided_from_id = dividingFrom.plant_key;
             payload.divided_from_event_id = dividingFrom.event_key;
         }
@@ -207,10 +228,13 @@ function App() {
                 {showConfirm ? (
                     <ConfirmDividingFrom
                         plantDetails={dividingFrom.plant_details}
-                        handleConfirm={() => setShowConfirm(false)}
-                        handleReject={() => {
-                            setShowTabs(true);
+                        handleConfirm={() => {
                             setShowConfirm(false);
+                            setConfirmedDividing(true);
+                        }}
+                        handleReject={() => {
+                            setShowConfirm(false);
+                            setConfirmedDividing(false);
                         }}
                     />
                 ) : (
@@ -219,7 +243,8 @@ function App() {
                             setVisibleForm={handleFormChange}
                             plantFormRef={plantFormRef}
                             groupFormRef={groupFormRef}
-                            showTabs={showTabs}
+                            showTabs={confirmedDividing ? false : true}
+                            defaultValues={confirmedDividing ? defaultValues : {}}
                         />
 
                         <button

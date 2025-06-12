@@ -29,7 +29,7 @@ describe('Register page while plant division in progress', () => {
         // Confirm plant form is NOT visible
         expect(app.queryByText('Plant name')).toBeNull();
         expect(app.queryByText('Plant species')).toBeNull();
-        expect(app.queryByText('Plant size')).toBeNull();
+        expect(app.queryByText('Pot size')).toBeNull();
         // Confirm group form is not visible
         expect(app.queryByText('Group name')).toBeNull();
         expect(app.queryByText('Group location')).toBeNull();
@@ -50,11 +50,24 @@ describe('Register page while plant division in progress', () => {
         expect(app.queryByRole('tab')).toBeNull();
     });
 
+    it('pre-fills plant form fields if user confirms dividing plant', async () => {
+        // Click green confirm button (confirm dividing plant)
+        await user.click(app.getByTitle('Plant was divided'));
+
+        // Confirm all fields are pre-filled with values from parent plant
+        expect(app.getByRole('textbox', {name: 'Plant name'}).value).toBe('Test Plant prop');
+        expect(app.getByRole('combobox', {name: 'Plant species'}).value).toBe('Calathea');
+        expect(app.getByRole('textbox', {name: 'Pot size'}).value).toBe('4');
+        expect(app.getByRole('textbox', {name: 'Description'}).value).toBe(
+            'Divided from Test Plant on March 1, 2024'
+        );
+    });
+
     it('shows both forms if user clicks red button', async () => {
         // Confirm plant form is NOT visible
         expect(app.queryByText('Plant name')).toBeNull();
         expect(app.queryByText('Plant species')).toBeNull();
-        expect(app.queryByText('Plant size')).toBeNull();
+        expect(app.queryByText('Pot size')).toBeNull();
         // Confirm group form is not visible
         expect(app.queryByText('Group name')).toBeNull();
         expect(app.queryByText('Group location')).toBeNull();
@@ -98,11 +111,9 @@ describe('Register page while plant division in progress', () => {
         // Click green confirm button
         await user.click(app.getByTitle('Plant was divided'));
 
-        // Fill in form fields
-        await user.type(app.getByRole('textbox', {name: 'Plant name'}), 'Test plant');
-        await user.type(app.getByRole('combobox', {name: 'Plant species'}), 'Fittonia');
-        await user.type(app.getByRole('textbox', {name: 'Description'}), 'Clay pot');
-        await user.type(app.getByLabelText('Pot size'), '6');
+        // Change name, leave other fields at default
+        await user.clear(app.getByRole('textbox', {name: 'Plant name'}));
+        await user.type(app.getByRole('textbox', {name: 'Plant name'}), 'Baby test plant');
 
         // Click Save button
         await user.click(app.getByText('Save'));
@@ -112,10 +123,10 @@ describe('Register page while plant division in progress', () => {
         expect(global.fetch).toHaveBeenCalledWith('/register_plant', {
             method: 'POST',
             body: JSON.stringify({
-                "name": "Test plant",
-                "species": "Fittonia",
-                "pot_size": "6",
-                "description": "Clay pot",
+                "name": "Baby test plant",
+                "species": "Calathea",
+                "pot_size": "4",
+                "description": 'Divided from Test Plant on March 1, 2024',
                 "divided_from_id": "234",
                 "divided_from_event_id": "893",
                 "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
