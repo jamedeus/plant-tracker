@@ -1,5 +1,230 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Timeline matches snapshot when plant has DivisionEvent with no children 1`] = `
+<div>
+  <div
+    class="section max-w-full"
+  >
+    <div
+      class="navbar sticky top-16 bg-base-200 rounded-2xl px-4 z-1"
+    >
+      <div
+        class="justify-start w-12"
+      />
+      <div
+        class="mx-auto my-1"
+      >
+        <div
+          class="dropdown dropdown-center"
+        >
+          <div
+            class="btn btn-ghost text-xl font-bold"
+            role="button"
+            tabindex="0"
+          >
+            History
+          </div>
+          <ul
+            class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-44"
+            tabindex="0"
+          >
+            <li>
+              <details>
+                <summary>
+                  2024
+                </summary>
+                <ul>
+                  <li>
+                    <button>
+                      February
+                    </button>
+                  </li>
+                </ul>
+              </details>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div
+        class="justify-end w-12 dropdown dropdown-end"
+      >
+        <div
+          aria-label="More plant actions menu"
+          class="btn btn-ghost btn-circle size-12"
+          role="button"
+          tabindex="0"
+        >
+          <svg
+            class="size-6"
+            fill="currentColor"
+            height="1em"
+            stroke="currentColor"
+            stroke-width="0"
+            viewBox="0 0 448 512"
+            width="1em"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M8 256a56 56 0 1 1 112 0A56 56 0 1 1 8 256zm160 0a56 56 0 1 1 112 0 56 56 0 1 1 -112 0zm216-56a56 56 0 1 1 0 112 56 56 0 1 1 0-112z"
+            />
+          </svg>
+        </div>
+        <ul
+          class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box w-40"
+          tabindex="0"
+        >
+          <li>
+            <button
+              class="flex justify-end"
+            >
+              Add note
+            </button>
+          </li>
+          <li>
+            <button
+              class="flex justify-end"
+            >
+              Add photos
+            </button>
+          </li>
+          <li>
+            <button
+              class="flex justify-end"
+            >
+              Repot plant
+            </button>
+          </li>
+          <li>
+            <button
+              class="flex justify-end"
+            >
+              Divide plant
+            </button>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div
+      class="timeline-layout"
+    >
+      <div
+        class="month-divider"
+        data-timeline-divider="2024-02"
+      >
+        February 2024
+      </div>
+      <div
+        class="timeline-timestamp"
+        data-date="2024-02-10"
+      >
+        <div
+          class="tooltip"
+          data-tip="Feb 10, 2024"
+        >
+          <span
+            class="text-sm md:text-lg"
+          >
+            20 days ago
+          </span>
+        </div>
+        <span
+          class="text-sm block"
+        >
+          Feb 10, 2024
+        </span>
+      </div>
+      <div
+        class="timeline-day"
+      >
+        <div
+          class="timeline-day-events"
+          data-testid="2024-02-10-events"
+        />
+        <div
+          class="timeline-day-photos"
+          data-testid="2024-02-10-photos"
+        />
+        <div
+          class="flex flex-col"
+          data-testid="2024-02-10-notes"
+        />
+        <div
+          class="flex flex-col m-2 text-sm md:text-base"
+        >
+          <span
+            class=""
+          >
+            <svg
+              class="fa-inline size-4 rotate-90 mr-2"
+              fill="none"
+              height="1em"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+              width="1em"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M16 3h5v5"
+              />
+              <path
+                d="M8 3H3v5"
+              />
+              <path
+                d="M12 22v-8.3a4 4 0 0 0-1.172-2.872L3 3"
+              />
+              <path
+                d="m15 9 6-6"
+              />
+            </svg>
+            Divided
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <dialog
+    class="modal"
+  >
+    <div
+      class="modal-box text-center flex flex-col pt-4 "
+    >
+      <form
+        method="dialog"
+      >
+        <button
+          aria-label="Close modal"
+          class="btn-close absolute right-4 top-4"
+        >
+          <svg
+            aria-hidden="true"
+            class="size-8 min-size-8"
+            data-slot="icon"
+            fill="currentColor"
+            viewBox="0 0 16 16"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
+            />
+          </svg>
+        </button>
+      </form>
+    </div>
+    <form
+      class="modal-backdrop"
+      method="dialog"
+    >
+      <button>
+        close
+      </button>
+    </form>
+  </dialog>
+</div>
+`;
+
 exports[`Timeline matches snapshot when plant has divided children 1`] = `
 <div>
   <div

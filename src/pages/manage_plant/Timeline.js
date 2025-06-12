@@ -266,11 +266,13 @@ EventMarker.propTypes = {
 // Takes array of plant objects (name and uuid keys) that were divided from this
 // plant on a given day, renders market with bullet point links to each child
 const DivisionEventMarker = ({ dividedPlants }) => {
+    const hasChildren = dividedPlants.length > 0;
+
     return (
         <div className="flex flex-col m-2 text-sm md:text-base">
-            <span className="mb-1">
+            <span className={clsx(hasChildren && "mb-1")}>
                 <LuSplit className="fa-inline size-4 rotate-90 mr-2" />
-                Divided into:
+                {hasChildren ? "Divided into:" : "Divided"}
             </span>
             {dividedPlants.sort(
                 (a, b) => a.name.localeCompare(b.name)
