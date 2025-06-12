@@ -76,4 +76,43 @@ describe('Timeline regressions', () => {
         expect(months.children[10].textContent).toBe('February');
         expect(months.children[11].textContent).toBe('January');
     });
+
+    // Original bug: If a plant had 2 or more DivisionEvents on the same day
+    // only the children from the most-recent DivisionEvent would be shown. This
+    // was because buildTimelineDays overwrote the existing dividedInto value
+    // instead of concatenating the new array.
+    it('shows child plants from multiple DivisionEvents on the same day', async () => {
+        // Create mock context with multiple DivisionEvents on the same day
+        bulkCreateMockContext({
+            ...mockContext,
+            division_events: {
+                "2024-02-11T04:19:23+00:00": [
+                    {
+                        name: "Child plant 1",
+                        uuid: "cc3fcb4f-120a-4577-ac87-ac6b5bea8968"
+                    },
+                ],
+                "2024-02-11T04:20:23+00:00": [
+                    {
+                        name: "Child plant 2",
+                        uuid: "cc3fcb4f-120a-4577-ac87-ac6b5bea8968"
+                    },
+                ]
+            }
+        });
+
+        // Render, confirm "Divided into" text only appears once
+        const app = render(
+            <PageWrapper>
+                <ReduxProvider>
+                    <Timeline />
+                </ReduxProvider>
+            </PageWrapper>
+        );
+        expect(app.getAllByText('Divided into:').length).toBe(1);
+
+        // Confirm both child plants were rendered (not just second)
+        expect(app.getByRole('link', {name: 'Child plant 1'})).not.toBeNull();
+        expect(app.getByRole('link', {name: 'Child plant 2'})).not.toBeNull();
+    });
 });

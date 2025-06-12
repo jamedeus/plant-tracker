@@ -71,7 +71,7 @@ export const buildTimelineDays = (events, notes, photos, dividedFrom, divisionEv
         if (!timelineDays[dateKey]) {
             timelineDays[dateKey] = {events: [], notes: [], photos: []};
         }
-        timelineDays[dateKey]['dividedFrom'] = dividedFrom;
+        timelineDays[dateKey].dividedFrom = dividedFrom;
     }
 
     // Add dividedInto if has children (adds link(s) to child plants on days
@@ -81,7 +81,11 @@ export const buildTimelineDays = (events, notes, photos, dividedFrom, divisionEv
         if (!timelineDays[dateKey]) {
             timelineDays[dateKey] = {events: [], notes: [], photos: []};
         }
-        timelineDays[dateKey]['dividedInto'] = plants;
+        if (!timelineDays[dateKey].dividedInto) {
+            timelineDays[dateKey].dividedInto = plants;
+        } else {
+            timelineDays[dateKey].dividedInto.push(...plants);
+        }
     });
 
     return timelineDays;
