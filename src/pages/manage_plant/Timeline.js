@@ -275,7 +275,12 @@ const DivisionEventMarker = ({ dividedPlants }) => {
                 {hasChildren ? "Divided into:" : "Divided"}
             </span>
             {dividedPlants.sort(
-                (a, b) => a.name.localeCompare(b.name)
+                (a, b) => a.name.localeCompare(
+                    b.name,
+                    undefined,
+                    // Handle numeric suffix (eg 1, 2, 10 - NOT 1, 10, 2)
+                    { numeric: true }
+                )
             ).map(plant => (
                 <div
                     key={plant.uuid}
