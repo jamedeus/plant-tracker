@@ -809,6 +809,7 @@ class RegistrationTests(TestCase):
         # Confirm context contains details of plant being divided from
         self.assertEqual(response.context['state']['dividing_from'], {
             'plant_details': existing_plant.get_details(),
+            'default_photo': existing_plant.get_default_photo_details(),
             'plant_key': str(existing_plant.pk),
             'event_key': str(division_event.pk)
         })

@@ -22,6 +22,14 @@ export const mockDividingFrom = {
         thumbnail: "/media/thumbnails/photo_thumb.webp",
         archived: false
     },
+    default_photo: {
+        set: false,
+        timestamp: "2024-02-26T02:44:12+00:00",
+        image: "/media/images/photo.jpeg",
+        thumbnail: "/media/thumbnails/photo_thumb.webp",
+        preview: "/media/previews/photo_preview.webp",
+        key: "1337"
+    },
     plant_key: "234",
     event_key: "893"
 };

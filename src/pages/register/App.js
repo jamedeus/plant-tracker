@@ -65,17 +65,17 @@ Form.propTypes = {
     defaultValues: PropTypes.object.isRequired
 };
 
-const ConfirmDividingFrom = ({ plantDetails, handleConfirm, handleReject }) => {
+const ConfirmDividingFrom = ({ plantDetails, plantPhoto, handleConfirm, handleReject }) => {
     return (
         <div className="flex flex-col full-screen justify-center text-center gap-8 px-4">
             <p className="text-lg font-bold mt-auto mb-8">
                 Was this plant divided from {plantDetails.display_name}?
             </p>
-            {plantDetails.thumbnail && (
+            {plantPhoto && (
                 <div className="mx-auto p-4 bg-base-200 rounded-3xl">
                     <img
                         className="max-h-[50vh] rounded-xl object-contain"
-                        src={plantDetails.thumbnail}
+                        src={plantPhoto}
                         alt={`${plantDetails.display_name} image`}
                         draggable={false}
                     />
@@ -105,6 +105,7 @@ const ConfirmDividingFrom = ({ plantDetails, handleConfirm, handleReject }) => {
 
 ConfirmDividingFrom.propTypes = {
     plantDetails: PropTypes.object.isRequired,
+    plantPhoto: PropTypes.string,
     handleConfirm: PropTypes.func.isRequired,
     handleReject: PropTypes.func.isRequired
 };
@@ -215,48 +216,47 @@ function App() {
     const DropdownMenuOptions = useMemo(() => <NavbarDropdownOptions />, []);
 
     return (
-        <div className="container flex flex-col mx-auto items-center mb-8">
+        <div className="container flex flex-col mx-auto items-center">
             <Navbar
                 menuOptions={DropdownMenuOptions}
                 title='Registration'
             />
 
-            <div
-                className="flex flex-col w-96 max-w-[100vw] px-4"
-                onInput={onInput}
-            >
-                {showConfirm ? (
-                    <ConfirmDividingFrom
-                        plantDetails={dividingFrom.plant_details}
-                        handleConfirm={() => {
-                            setShowConfirm(false);
-                            setConfirmedDividing(true);
-                        }}
-                        handleReject={() => {
-                            setShowConfirm(false);
-                            setConfirmedDividing(false);
-                        }}
+            {showConfirm ? (
+                <ConfirmDividingFrom
+                    plantDetails={dividingFrom.plant_details}
+                    plantPhoto={dividingFrom.default_photo?.preview}
+                    handleConfirm={() => {
+                        setShowConfirm(false);
+                        setConfirmedDividing(true);
+                    }}
+                    handleReject={() => {
+                        setShowConfirm(false);
+                        setConfirmedDividing(false);
+                    }}
+                />
+            ) : (
+                <div
+                    className="flex flex-col w-96 max-w-[100vw] px-4 mb-8"
+                    onInput={onInput}
+                >
+                    <Form
+                        setVisibleForm={handleFormChange}
+                        plantFormRef={plantFormRef}
+                        groupFormRef={groupFormRef}
+                        showTabs={confirmedDividing ? false : true}
+                        defaultValues={confirmedDividing ? defaultValues : {}}
                     />
-                ) : (
-                    <>
-                        <Form
-                            setVisibleForm={handleFormChange}
-                            plantFormRef={plantFormRef}
-                            groupFormRef={groupFormRef}
-                            showTabs={confirmedDividing ? false : true}
-                            defaultValues={confirmedDividing ? defaultValues : {}}
-                        />
 
-                        <button
-                            className="btn btn-accent mx-auto"
-                            disabled={!formIsValid}
-                            onClick={submit}
-                        >
-                            Save
-                        </button>
-                    </>
-                )}
-            </div>
+                    <button
+                        className="btn btn-accent mx-auto"
+                        disabled={!formIsValid}
+                        onClick={submit}
+                    >
+                        Save
+                    </button>
+                </div>
+            )}
         </div>
     );
 }
