@@ -123,13 +123,13 @@ describe('Register page while plant division in progress', () => {
         expect(global.fetch).toHaveBeenCalledWith('/register_plant', {
             method: 'POST',
             body: JSON.stringify({
-                "name": "Baby test plant",
-                "species": "Calathea",
-                "pot_size": "4",
-                "description": 'Divided from Test Plant on March 1, 2024',
-                "divided_from_id": "234",
-                "divided_from_event_id": "893",
-                "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                name: "Baby test plant",
+                species: "Calathea",
+                pot_size: "4",
+                description: 'Divided from Test Plant on March 1, 2024',
+                divided_from_id: "234",
+                divided_from_event_id: "893",
+                uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             }),
             headers: postHeaders
         });
@@ -160,11 +160,11 @@ describe('Register page while plant division in progress', () => {
         expect(global.fetch).toHaveBeenCalledWith('/register_plant', {
             method: 'POST',
             body: JSON.stringify({
-                "name": "Test plant",
-                "species": "Fittonia",
-                "pot_size": "6",
-                "description": "Clay pot",
-                "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                name: "Test plant",
+                species: "Fittonia",
+                pot_size: "6",
+                description: "Clay pot",
+                uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             }),
             headers: postHeaders
         });

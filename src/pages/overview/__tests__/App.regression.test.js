@@ -79,11 +79,11 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "deleted": [
+                deleted: [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                 ],
-                "failed": []
+                failed: []
             })
         }));
 
@@ -102,7 +102,7 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/bulk_delete_plants_and_groups', {
             method: 'POST',
             body: JSON.stringify({
-                "uuids": [
+                uuids: [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                 ]
@@ -133,11 +133,11 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "archived": [
+                archived: [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                 ],
-                "failed": []
+                failed: []
             })
         }));
 
@@ -153,7 +153,7 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/bulk_archive_plants_and_groups', {
             method: 'POST',
             body: JSON.stringify({
-                "uuids": [
+                uuids: [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
                 ],

@@ -35,13 +35,13 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "action": "water",
-                "plants": [
+                action: "water",
+                plants: [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
                     "19f65fa0-1c75-4cba-b590-0c9b5b315fcc",
                     "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                 ],
-                "failed": []
+                failed: []
             })
         }));
 
@@ -112,12 +112,12 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "action": "water",
-                "plants": [
+                action: "water",
+                plants: [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
                     "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                 ],
-                "failed": []
+                failed: []
             })
         }));
 
@@ -133,12 +133,12 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plant_events', {
             method: 'POST',
             body: JSON.stringify({
-                "plants": [
+                plants: [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
                     "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                 ],
-                "event_type": "water",
-                "timestamp": "2024-03-01T20:00:00.000Z"
+                event_type: "water",
+                timestamp: "2024-03-01T20:00:00.000Z"
             }),
             headers: postHeaders
         });
@@ -152,10 +152,10 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "added": [
+                added: [
                     mockContext.options[0]
                 ],
-                "failed": []
+                failed: []
             })
         }));
 
@@ -170,8 +170,8 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plants_to_group', {
             method: 'POST',
             body: JSON.stringify({
-                "group_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
-                "plants": [
+                group_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                plants: [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be16"
                 ]
             }),
@@ -186,8 +186,8 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plants_to_group', {
             method: 'POST',
             body: JSON.stringify({
-                "group_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
-                "plants": []
+                group_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                plants: []
             }),
             headers: postHeaders
         });
@@ -201,22 +201,22 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "removed": [
+                removed: [
                     {
-                        "name": "Test Plant",
-                        "display_name": "Test Plant",
-                        "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                        "created": "2023-12-26T01:25:12+00:00",
-                        "species": "Calathea",
-                        "description": "This is a plant with a long description with",
-                        "pot_size": 4,
-                        "last_watered": "2024-02-29T12:45:44+00:00",
-                        "last_fertilized": "2024-03-01T05:45:44+00:00",
-                        "thumbnail": null,
-                        "archived": false
+                        name: "Test Plant",
+                        display_name: "Test Plant",
+                        uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                        created: "2023-12-26T01:25:12+00:00",
+                        species: "Calathea",
+                        description: "This is a plant with a long description with",
+                        pot_size: 4,
+                        last_watered: "2024-02-29T12:45:44+00:00",
+                        last_fertilized: "2024-03-01T05:45:44+00:00",
+                        thumbnail: null,
+                        archived: false
                     }
                 ],
-                "failed": []
+                failed: []
             })
         }));
 
@@ -233,8 +233,8 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/bulk_remove_plants_from_group', {
             method: 'POST',
             body: JSON.stringify({
-                "group_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
-                "plants": [
+                group_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                plants: [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                 ]
             }),
@@ -249,8 +249,8 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/bulk_remove_plants_from_group', {
             method: 'POST',
             body: JSON.stringify({
-                "group_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
-                "plants": []
+                group_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                plants: []
             }),
             headers: postHeaders
         });
@@ -275,22 +275,22 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "removed": [
+                removed: [
                     {
-                        "name": "Test Plant",
-                        "display_name": "Test Plant",
-                        "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                        "created": "2023-12-26T01:25:12+00:00",
-                        "species": "Calathea",
-                        "description": "This is a plant with a long description with",
-                        "pot_size": 4,
-                        "last_watered": "2024-02-29T12:45:44+00:00",
-                        "last_fertilized": "2024-03-01T05:45:44+00:00",
-                        "thumbnail": null,
-                        "archived": false
+                        name: "Test Plant",
+                        display_name: "Test Plant",
+                        uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                        created: "2023-12-26T01:25:12+00:00",
+                        species: "Calathea",
+                        description: "This is a plant with a long description with",
+                        pot_size: 4,
+                        last_watered: "2024-02-29T12:45:44+00:00",
+                        last_fertilized: "2024-03-01T05:45:44+00:00",
+                        thumbnail: null,
+                        archived: false
                     }
                 ],
-                "failed": []
+                failed: []
             })
         }));
         await user.click(app.getByRole('button', {name: 'Remove'}));
@@ -300,11 +300,11 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "action": "water",
-                "plants": [
+                action: "water",
+                plants: [
                     "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                 ],
-                "failed": []
+                failed: []
             })
         }));
 
@@ -314,11 +314,11 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plant_events', {
             method: 'POST',
             body: JSON.stringify({
-                "plants": [
+                plants: [
                     "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                 ],
-                "event_type": "water",
-                "timestamp": "2024-03-01T20:00:00.000Z"
+                event_type: "water",
+                timestamp: "2024-03-01T20:00:00.000Z"
             }),
             headers: postHeaders
         });
@@ -336,10 +336,10 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "added": [
+                added: [
                     mockContext.options[0]
                 ],
-                "failed": []
+                failed: []
             })
         }));
 
@@ -357,22 +357,22 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "removed": [
+                removed: [
                     {
-                        "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be16",
-                        "created": "2024-02-26T01:25:12+00:00",
-                        "name": "Another test plant",
-                        "display_name": "Another test plant",
-                        "species": null,
-                        "description": null,
-                        "pot_size": 4,
-                        "last_watered": null,
-                        "last_fertilized": null,
-                        "thumbnail": "/media/thumbnails/photo2_thumb.webp",
-                        "archived": false
+                        uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be16",
+                        created: "2024-02-26T01:25:12+00:00",
+                        name: "Another test plant",
+                        display_name: "Another test plant",
+                        species: null,
+                        description: null,
+                        pot_size: 4,
+                        last_watered: null,
+                        last_fertilized: null,
+                        thumbnail: "/media/thumbnails/photo2_thumb.webp",
+                        archived: false
                     }
                 ],
-                "failed": []
+                failed: []
             })
         }));
 

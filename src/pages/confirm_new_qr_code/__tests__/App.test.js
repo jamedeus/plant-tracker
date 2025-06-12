@@ -31,7 +31,7 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                'uuid': '07919189-514d-4ec1-a967-8af553dfa7e8'
+                uuid: '07919189-514d-4ec1-a967-8af553dfa7e8'
             })
         }));
 
@@ -42,8 +42,8 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/change_uuid', {
             method: 'POST',
             body: JSON.stringify({
-                'uuid': '0640ec3b-1bed-4b15-a078-d6e7ec66be12',
-                'new_id': '07919189-514d-4ec1-a967-8af553dfa7e8'
+                uuid: '0640ec3b-1bed-4b15-a078-d6e7ec66be12',
+                new_id: '07919189-514d-4ec1-a967-8af553dfa7e8'
             }),
             headers: postHeaders
         });
@@ -57,7 +57,7 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: false,
             json: () => Promise.resolve({
-                "error": "failed to change QR code"
+                error: "failed to change QR code"
             })
         }));
 
@@ -78,7 +78,7 @@ describe('App', () => {
             ok: false,
             status: 401,
             json: () => Promise.resolve({
-                "error": "authentication required"
+                error: "authentication required"
             })
         }));
 

@@ -34,7 +34,7 @@ describe('PrintModal', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "qr_codes": "base64data"
+                qr_codes: "base64data"
             })
         }));
 
@@ -45,7 +45,7 @@ describe('PrintModal', () => {
         expect(global.fetch).toHaveBeenCalledWith('/get_qr_codes', {
             method: 'POST',
             body: JSON.stringify({
-                "qr_per_row": 8
+                qr_per_row: 8
             }),
             headers: postHeaders
         });
@@ -60,7 +60,7 @@ describe('PrintModal', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "qr_codes": "base64data"
+                qr_codes: "base64data"
             })
         }));
 
@@ -72,7 +72,7 @@ describe('PrintModal', () => {
         expect(global.fetch).toHaveBeenCalledWith('/get_qr_codes', {
             method: 'POST',
             body: JSON.stringify({
-                "qr_per_row": 6
+                qr_per_row: 6
             }),
             headers: postHeaders
         });
@@ -87,7 +87,7 @@ describe('PrintModal', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "qr_codes": "base64data"
+                qr_codes: "base64data"
             })
         }));
 
@@ -99,7 +99,7 @@ describe('PrintModal', () => {
         expect(global.fetch).toHaveBeenCalledWith('/get_qr_codes', {
             method: 'POST',
             body: JSON.stringify({
-                "qr_per_row": 4
+                qr_per_row: 4
             }),
             headers: postHeaders
         });
@@ -182,7 +182,7 @@ describe('PrintModal', () => {
             ok: false,
             status: 501,
             json: () => Promise.resolve({
-                'error': 'URL_PREFIX not configured'
+                error: 'URL_PREFIX not configured'
             })
         }));
 
@@ -200,7 +200,7 @@ describe('PrintModal', () => {
             ok: false,
             status: 500,
             json: () => Promise.resolve({
-                'error': 'failed to generate, try a shorter URL_PREFIX'
+                error: 'failed to generate, try a shorter URL_PREFIX'
             })
         }));
 
@@ -218,7 +218,7 @@ describe('PrintModal', () => {
             ok: false,
             status: 418,
             json: () => Promise.resolve({
-                'error': 'an unhandled exception was raised'
+                error: 'an unhandled exception was raised'
             })
         }));
 
@@ -236,7 +236,7 @@ describe('PrintModal', () => {
             ok: false,
             status: 418,
             json: () => Promise.resolve({
-                'error': 'an unhandled exception was raised'
+                error: 'an unhandled exception was raised'
             })
         }));
 

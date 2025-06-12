@@ -243,10 +243,10 @@ MonthDivider.propTypes = {
 
 // Map event type strings to icon components
 const eventIconMap = {
-    'water': <WaterIcon />,
-    'fertilize': <FertilizeIcon />,
-    'prune': <PruneIcon />,
-    'repot': <RepotIcon />,
+    water: <WaterIcon />,
+    fertilize: <FertilizeIcon />,
+    prune: <PruneIcon />,
+    repot: <RepotIcon />,
 };
 
 // Takes event type string, renders timeline marker with icon and text

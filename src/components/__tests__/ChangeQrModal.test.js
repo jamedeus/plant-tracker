@@ -38,7 +38,7 @@ describe('ChangeQrModal', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                "success": "scan new QR code within 15 minutes to confirm"
+                success: "scan new QR code within 15 minutes to confirm"
             })
         }));
 
@@ -64,7 +64,7 @@ describe('ChangeQrModal', () => {
             ok: false,
             status: 500,
             json: () => Promise.resolve({
-                "error": "failed to cache UUID"
+                error: "failed to cache UUID"
             })
         }));
 

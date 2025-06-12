@@ -169,7 +169,7 @@ describe('App', () => {
                         },
                     ]
                 },
-                "divided_from": false
+                divided_from: false
             })
         }));
 

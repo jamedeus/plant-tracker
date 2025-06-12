@@ -30,7 +30,7 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: false,
             json: () => Promise.resolve({
-                "error": "failed to edit group details"
+                error: "failed to edit group details"
             })
         }));
 
@@ -53,7 +53,7 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: false,
             json: () => Promise.resolve({
-                "error": "failed to bulk add events"
+                error: "failed to bulk add events"
             })
         }));
 
@@ -73,7 +73,7 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: false,
             json: () => Promise.resolve({
-                "error": "failed to add plants to group"
+                error: "failed to add plants to group"
             })
         }));
 
@@ -96,7 +96,7 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: false,
             json: () => Promise.resolve({
-                "error": "failed to remove plants from group"
+                error: "failed to remove plants from group"
             })
         }));
 

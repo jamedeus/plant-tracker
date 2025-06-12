@@ -86,8 +86,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "deleted": ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"],
-                "failed": []
+                deleted: ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"],
+                failed: []
             })
         }));
 
@@ -105,7 +105,7 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/bulk_delete_plants_and_groups', {
             method: 'POST',
             body: JSON.stringify({
-                "uuids": ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"]
+                uuids: ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"]
             }),
             headers: postHeaders
         });
@@ -116,8 +116,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "archived": ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"],
-                "failed": []
+                archived: ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"],
+                failed: []
             })
         }));
 
@@ -144,8 +144,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "deleted": ["0640ec3b-1bed-4b15-a078-d6e7ec66be14"],
-                "failed": []
+                deleted: ["0640ec3b-1bed-4b15-a078-d6e7ec66be14"],
+                failed: []
             })
         }));
 
@@ -163,7 +163,7 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/bulk_delete_plants_and_groups', {
             method: 'POST',
             body: JSON.stringify({
-                "uuids": ["0640ec3b-1bed-4b15-a078-d6e7ec66be14"]
+                uuids: ["0640ec3b-1bed-4b15-a078-d6e7ec66be14"]
             }),
             headers: postHeaders
         });
@@ -174,8 +174,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "archived": ["0640ec3b-1bed-4b15-a078-d6e7ec66be14"],
-                "failed": []
+                archived: ["0640ec3b-1bed-4b15-a078-d6e7ec66be14"],
+                failed: []
             })
         }));
 
@@ -203,8 +203,8 @@ describe('App', () => {
             ok: false,
             status: 400,
             json: () => Promise.resolve({
-                "deleted": [],
-                "failed": ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"]
+                deleted: [],
+                failed: ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"]
             })
         }));
 
@@ -235,8 +235,8 @@ describe('App', () => {
             ok: false,
             status: 400,
             json: () => Promise.resolve({
-                "archived": [],
-                "failed": ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"]
+                archived: [],
+                failed: ["0640ec3b-1bed-4b15-a078-d6e7ec66be12"]
             })
         }));
 
@@ -261,11 +261,11 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "deleted": [
+                deleted: [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
                     "0640ec3b-1bed-fb15-a078-d6e7ec66be12"
                 ],
-                "failed": []
+                failed: []
             })
         }));
 
@@ -290,11 +290,11 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "deleted": [
+                deleted: [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
                     "0640ec3b-1bed-4ba5-a078-d6e7ec66be14"
                 ],
-                "failed": []
+                failed: []
             })
         }));
 
@@ -317,11 +317,11 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "archived": [
+                archived: [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
                     "0640ec3b-1bed-4ba5-a078-d6e7ec66be14"
                 ],
-                "failed": []
+                failed: []
             })
         }));
 
@@ -341,11 +341,11 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "archived": [
+                archived: [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
                     "0640ec3b-1bed-fb15-a078-d6e7ec66be12"
                 ],
-                "failed": []
+                failed: []
             })
         }));
 
@@ -364,8 +364,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "plants": mockContext.plants,
-                "groups": mockContext.groups
+                plants: mockContext.plants,
+                groups: mockContext.groups
             })
         }));
 
@@ -384,7 +384,7 @@ describe('App', () => {
         // Mock fetch function to return error response
         global.fetch = jest.fn(() => Promise.resolve({
             ok: false,
-            json: () => Promise.resolve({'Error': 'Unexpected'})
+            json: () => Promise.resolve({Error: 'Unexpected'})
         }));
         // Mock alert function that will be called when request fails
         global.alert = jest.fn();

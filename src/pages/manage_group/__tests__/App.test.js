@@ -31,10 +31,10 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "name": "Test group",
-                "location": "Middle shelf",
-                "description": "",
-                "display_name": "Test group"
+                name: "Test group",
+                location: "Middle shelf",
+                description: "",
+                display_name: "Test group"
             })
         }));
 
@@ -49,10 +49,10 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/edit_group', {
             method: 'POST',
             body: JSON.stringify({
-                "name": "Test group",
-                "location": "Middle shelf",
-                "description": "",
-                "group_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                name: "Test group",
+                location: "Middle shelf",
+                description: "",
+                group_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
             }),
             headers: postHeaders
         });
@@ -92,12 +92,12 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "action": "water",
-                "plants": [
+                action: "water",
+                plants: [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
                     "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                 ],
-                "failed": []
+                failed: []
             })
         }));
 
@@ -110,12 +110,12 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plant_events', {
             method: 'POST',
             body: JSON.stringify({
-                "plants": [
+                plants: [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
                     "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                 ],
-                "event_type": "water",
-                "timestamp": "2024-03-01T20:00:00.000Z"
+                event_type: "water",
+                timestamp: "2024-03-01T20:00:00.000Z"
             }),
             headers: postHeaders
         });
@@ -126,12 +126,12 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "action": "fertilize",
-                "plants": [
+                action: "fertilize",
+                plants: [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
                     "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                 ],
-                "failed": []
+                failed: []
             })
         }));
 
@@ -144,12 +144,12 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plant_events', {
             method: 'POST',
             body: JSON.stringify({
-                "plants": [
+                plants: [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
                     "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                 ],
-                "event_type": "fertilize",
-                "timestamp": "2024-03-01T20:00:00.000Z"
+                event_type: "fertilize",
+                timestamp: "2024-03-01T20:00:00.000Z"
             }),
             headers: postHeaders
         });
@@ -162,7 +162,7 @@ describe('App', () => {
             ok: false,
             status: 401,
             json: () => Promise.resolve({
-                "error": "authentication required"
+                error: "authentication required"
             })
         }));
 
@@ -194,11 +194,11 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "action": "water",
-                "plants": [
+                action: "water",
+                plants: [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                 ],
-                "failed": []
+                failed: []
             })
         }));
 
@@ -212,11 +212,11 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plant_events', {
             method: 'POST',
             body: JSON.stringify({
-                "plants": [
+                plants: [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                 ],
-                "event_type": "water",
-                "timestamp": "2024-03-01T20:00:00.000Z"
+                event_type: "water",
+                timestamp: "2024-03-01T20:00:00.000Z"
             }),
             headers: postHeaders
         });
@@ -227,11 +227,11 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "action": "fertilize",
-                "plants": [
+                action: "fertilize",
+                plants: [
                     "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                 ],
-                "failed": []
+                failed: []
             })
         }));
 
@@ -245,11 +245,11 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plant_events', {
             method: 'POST',
             body: JSON.stringify({
-                "plants": [
+                plants: [
                     "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
                 ],
-                "event_type": "fertilize",
-                "timestamp": "2024-03-01T20:00:00.000Z"
+                event_type: "fertilize",
+                timestamp: "2024-03-01T20:00:00.000Z"
             }),
             headers: postHeaders
         });
@@ -273,10 +273,10 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "added": [
+                added: [
                     mockContext.options[0]
                 ],
-                "failed": []
+                failed: []
             })
         }));
 
@@ -305,8 +305,8 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/bulk_add_plants_to_group', {
             method: 'POST',
             body: JSON.stringify({
-                "group_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
-                "plants": [
+                group_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                plants: [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be16"
                 ]
             }),
@@ -324,22 +324,22 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "removed": [
+                removed: [
                     {
-                        "name": "Test Plant",
-                        "display_name": "Test Plant",
-                        "uuid": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                        "created": "2023-12-26T01:25:12+00:00",
-                        "species": "Calathea",
-                        "description": "This is a plant with a long description with",
-                        "pot_size": 4,
-                        "last_watered": "2024-02-29T12:45:44+00:00",
-                        "last_fertilized": "2024-03-01T05:45:44+00:00",
-                        "thumbnail": null,
-                        "archived": false
+                        name: "Test Plant",
+                        display_name: "Test Plant",
+                        uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                        created: "2023-12-26T01:25:12+00:00",
+                        species: "Calathea",
+                        description: "This is a plant with a long description with",
+                        pot_size: 4,
+                        last_watered: "2024-02-29T12:45:44+00:00",
+                        last_fertilized: "2024-03-01T05:45:44+00:00",
+                        thumbnail: null,
+                        archived: false
                     }
                 ],
-                "failed": []
+                failed: []
             })
         }));
 
@@ -362,8 +362,8 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/bulk_remove_plants_from_group', {
             method: 'POST',
             body: JSON.stringify({
-                "group_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
-                "plants": [
+                group_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+                plants: [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
                 ]
             }),
@@ -386,22 +386,22 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "removed": [
+                removed: [
                     {
-                        "name": "Newest plant",
-                        "display_name": "Newest plant",
-                        "uuid": "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16",
-                        "created": "2023-12-28T01:25:12+00:00",
-                        "species": "null",
-                        "description": null,
-                        "pot_size": null,
-                        "last_watered": null,
-                        "last_fertilized": null,
-                        "thumbnail": null,
-                        "archived": false
+                        name: "Newest plant",
+                        display_name: "Newest plant",
+                        uuid: "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16",
+                        created: "2023-12-28T01:25:12+00:00",
+                        species: "null",
+                        description: null,
+                        pot_size: null,
+                        last_watered: null,
+                        last_fertilized: null,
+                        thumbnail: null,
+                        archived: false
                     }
                 ],
-                "failed": []
+                failed: []
             })
         }));
 
@@ -426,9 +426,9 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "group": mockContext.group,
-                "details": mockContext.details,
-                "options": mockContext.options
+                group: mockContext.group,
+                details: mockContext.details,
+                options: mockContext.options
             })
         }));
 
@@ -449,7 +449,7 @@ describe('App', () => {
         // Mock fetch function to return error response
         global.fetch = jest.fn(() => Promise.resolve({
             ok: false,
-            json: () => Promise.resolve({'Error': 'Group not found'})
+            json: () => Promise.resolve({Error: 'Group not found'})
         }));
 
         // Simulate user navigating to page with back button

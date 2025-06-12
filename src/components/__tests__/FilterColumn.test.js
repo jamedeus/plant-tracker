@@ -3,64 +3,64 @@ import FilterColumn from '../FilterColumn';
 
 const plants = [
     {
-        "name": "mini palm tree",
-        "display_name": "mini palm tree",
-        "uuid": "49a55f1f-5703-4f5e-acad-2c0991a08806",
-        "created": "2023-12-20T01:25:12+00:00",
-        "species": "Parlor Palm",
-        "description": "Palms aren't really trees",
-        "pot_size": 6,
-        "last_watered": "2024-02-26T05:45:44+00:00",
-        "last_fertilized": "2024-03-01T05:45:44+00:00",
-        "thumbnail": "/media/thumbnails/IMG_8000_thumb.webp"
+        name: "mini palm tree",
+        display_name: "mini palm tree",
+        uuid: "49a55f1f-5703-4f5e-acad-2c0991a08806",
+        created: "2023-12-20T01:25:12+00:00",
+        species: "Parlor Palm",
+        description: "Palms aren't really trees",
+        pot_size: 6,
+        last_watered: "2024-02-26T05:45:44+00:00",
+        last_fertilized: "2024-03-01T05:45:44+00:00",
+        thumbnail: "/media/thumbnails/IMG_8000_thumb.webp"
     },
     {
-        "name": null,
-        "display_name": "Unnamed Fittonia",
-        "uuid": "6e8b3664-9b5a-4bc9-a62f-50f89a4c3aaf",
-        "created": "2023-12-22T01:25:12+00:00",
-        "species": "Fittonia",
-        "description": null,
-        "pot_size": 4,
-        "last_watered": null,
-        "last_fertilized": "2024-03-01T05:45:44+00:00",
-        "thumbnail": "/media/thumbnails/IMG_8001_thumb.webp"
+        name: null,
+        display_name: "Unnamed Fittonia",
+        uuid: "6e8b3664-9b5a-4bc9-a62f-50f89a4c3aaf",
+        created: "2023-12-22T01:25:12+00:00",
+        species: "Fittonia",
+        description: null,
+        pot_size: 4,
+        last_watered: null,
+        last_fertilized: "2024-03-01T05:45:44+00:00",
+        thumbnail: "/media/thumbnails/IMG_8001_thumb.webp"
     },
     {
-        "name": null,
-        "display_name": "Unnamed plant 1",
-        "uuid": "645f3149-dd59-4419-b9a2-d8c796fa29e1",
-        "created": "2023-12-24T01:25:12+00:00",
-        "species": null,
-        "description": null,
-        "pot_size": 8,
-        "last_watered": "2024-02-28T05:45:44+00:00",
-        "last_fertilized": "2024-03-01T05:45:44+00:00",
-        "thumbnail": "/media/thumbnails/IMG_8002_thumb.webp"
+        name: null,
+        display_name: "Unnamed plant 1",
+        uuid: "645f3149-dd59-4419-b9a2-d8c796fa29e1",
+        created: "2023-12-24T01:25:12+00:00",
+        species: null,
+        description: null,
+        pot_size: 8,
+        last_watered: "2024-02-28T05:45:44+00:00",
+        last_fertilized: "2024-03-01T05:45:44+00:00",
+        thumbnail: "/media/thumbnails/IMG_8002_thumb.webp"
     },
     {
-        "name": null,
-        "display_name": "Unnamed plant 2",
-        "uuid": "67337371-d65a-4c0b-b32b-49a20d043495",
-        "created": "2023-12-27T03:51:32+00:00",
-        "species": null,
-        "description": null,
-        "pot_size": 2,
-        "last_watered": "2024-03-02T04:31:20+00:00",
-        "last_fertilized": "2024-03-02T04:31:20+00:00",
-        "thumbnail": "/media/thumbnails/IMG_8004_thumb.webp"
+        name: null,
+        display_name: "Unnamed plant 2",
+        uuid: "67337371-d65a-4c0b-b32b-49a20d043495",
+        created: "2023-12-27T03:51:32+00:00",
+        species: null,
+        description: null,
+        pot_size: 2,
+        last_watered: "2024-03-02T04:31:20+00:00",
+        last_fertilized: "2024-03-02T04:31:20+00:00",
+        thumbnail: "/media/thumbnails/IMG_8004_thumb.webp"
     },
     {
-        "name": "Favorite plant",
-        "display_name": "Favorite plant",
-        "uuid": "9c9d1767-a97f-4ca8-ad6e-b706ff943ff2",
-        "created": "2023-12-26T01:25:12+00:00",
-        "species": "Calathea",
-        "description": null,
-        "pot_size": 14,
-        "last_watered": null,
-        "last_fertilized": "2024-03-01T05:45:44+00:00",
-        "thumbnail": "/media/thumbnails/IMG_8003_thumb.webp"
+        name: "Favorite plant",
+        display_name: "Favorite plant",
+        uuid: "9c9d1767-a97f-4ca8-ad6e-b706ff943ff2",
+        created: "2023-12-26T01:25:12+00:00",
+        species: "Calathea",
+        description: null,
+        pot_size: 14,
+        last_watered: null,
+        last_fertilized: "2024-03-01T05:45:44+00:00",
+        thumbnail: "/media/thumbnails/IMG_8003_thumb.webp"
     },
 ];
 
@@ -324,16 +324,16 @@ describe('FilterColumn', () => {
     it('sorts identical names with numeric suffixes sequentially', async () => {
         // Reduce boilerplate
         const template = {
-            "name": "",
-            "display_name": "",
-            "uuid": "",
-            "created": "",
-            "species": "",
-            "description": "",
-            "pot_size": "",
-            "last_watered": "",
-            "last_fertilized": "",
-            "thumbnail": ""
+            name: "",
+            display_name: "",
+            uuid: "",
+            created: "",
+            species: "",
+            description: "",
+            pot_size: "",
+            last_watered: "",
+            last_fertilized: "",
+            thumbnail: ""
         };
 
         // Render with default sort set to name and 4 plants with identical

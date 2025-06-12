@@ -50,7 +50,7 @@ describe('DefaultPhotoModal', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                "default_photo": "/media/thumbnails/photo1_thumb.webp"
+                default_photo: "/media/thumbnails/photo1_thumb.webp"
             })
         }));
 
@@ -73,7 +73,7 @@ describe('DefaultPhotoModal', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: false,
             status: 404,
-            json: () => Promise.resolve({"error": "unable to find photo"})
+            json: () => Promise.resolve({error: "unable to find photo"})
         }));
 
         // Confirm error does not appear on page

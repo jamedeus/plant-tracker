@@ -31,8 +31,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "action": "water",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                action: "water",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
 
@@ -55,8 +55,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "action": "fertilize",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                action: "fertilize",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
 
@@ -79,8 +79,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "action": "repot",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                action: "repot",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
 
@@ -106,22 +106,22 @@ describe('App', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                "uploaded": "2 photo(s)",
-                "failed": [],
-                "urls": [
+                uploaded: "2 photo(s)",
+                failed: [],
+                urls: [
                     {
-                        "timestamp": "2024-03-21T10:52:03",
-                        "image": "/media/images/photo1.jpg",
-                        "thumbnail": "/media/images/photo1_thumb.webp",
-                        "preview": "/media/images/photo1_preview.webp",
-                        "key": 1
+                        timestamp: "2024-03-21T10:52:03",
+                        image: "/media/images/photo1.jpg",
+                        thumbnail: "/media/images/photo1_thumb.webp",
+                        preview: "/media/images/photo1_preview.webp",
+                        key: 1
                     },
                     {
-                        "timestamp": "2024-03-22T10:52:04",
-                        "image": "/media/images/photo2.jpg",
-                        "thumbnail": "/media/images/photo2_thumb.webp",
-                        "preview": "/media/images/photo2_preview.webp",
-                        "key": 2
+                        timestamp: "2024-03-22T10:52:04",
+                        image: "/media/images/photo2.jpg",
+                        thumbnail: "/media/images/photo2_thumb.webp",
+                        preview: "/media/images/photo2_preview.webp",
+                        key: 2
                     },
                 ]
             })
@@ -160,8 +160,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "action": "water",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                action: "water",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
 
@@ -182,10 +182,10 @@ describe('App', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                "action": "add_note",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                "timestamp": "2024-04-01T12:00:00+00:00",
-                "note_text": "Later timestamp"
+                action: "add_note",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                timestamp: "2024-04-01T12:00:00+00:00",
+                note_text: "Later timestamp"
             })
         }));
 
@@ -201,10 +201,10 @@ describe('App', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                "action": "add_note",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                "timestamp": "2024-04-01T10:00:00+00:00",
-                "note_text": "Earlier timestamp"
+                action: "add_note",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                timestamp: "2024-04-01T10:00:00+00:00",
+                note_text: "Earlier timestamp"
             })
         }));
 
@@ -233,8 +233,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "action": "prune",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                action: "prune",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
         await user.click(app.getByRole("button", {name: "Prune"}));
@@ -243,8 +243,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "action": "fertilize",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                action: "fertilize",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
         await user.click(app.getByRole("button", {name: "Fertilize"}));
@@ -253,8 +253,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "action": "water",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                action: "water",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
         await user.click(app.getByRole("button", {name: "Water"}));
@@ -282,8 +282,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "action": "repot",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                action: "repot",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
         await user.click(app.getAllByText(/Repot plant/)[0]);
@@ -307,8 +307,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "action": "water",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                action: "water",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
 
@@ -336,10 +336,10 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "deleted": [
-                    {"type": "water", "timestamp": "2024-03-01T20:00:01+00:00"}
+                deleted: [
+                    {type: "water", timestamp: "2024-03-01T20:00:01+00:00"}
                 ],
-                "failed": []
+                failed: []
             })
         }));
         await user.click(within(modal).getByText('Delete'));
@@ -366,8 +366,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "action": "water",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                action: "water",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
 
@@ -396,10 +396,10 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "deleted": [
-                    {"type": "water", "timestamp": "2024-03-01T20:00:00+00:00"}
+                deleted: [
+                    {type: "water", timestamp: "2024-03-01T20:00:00+00:00"}
                 ],
-                "failed": []
+                failed: []
             })
         }));
         await user.click(within(modal).getByText('Delete'));
@@ -421,22 +421,22 @@ describe('App', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                "uploaded": "2 photo(s)",
-                "failed": [],
-                "urls": [
+                uploaded: "2 photo(s)",
+                failed: [],
+                urls: [
                     {
-                        "timestamp": "2024-03-01T20:52:03+00:00",
-                        "image": "/media/images/photo1.jpg",
-                        "thumbnail": "/media/images/photo1_thumb.webp",
-                        "preview": "/media/images/photo1_preview.webp",
-                        "key": 12
+                        timestamp: "2024-03-01T20:52:03+00:00",
+                        image: "/media/images/photo1.jpg",
+                        thumbnail: "/media/images/photo1_thumb.webp",
+                        preview: "/media/images/photo1_preview.webp",
+                        key: 12
                     },
                     {
-                        "timestamp": "2024-03-01T20:54:03+00:00",
-                        "image": "/media/images/photo2.jpg",
-                        "thumbnail": "/media/images/photo2_thumb.webp",
-                        "preview": "/media/images/photo2_preview.webp",
-                        "key": 13
+                        timestamp: "2024-03-01T20:54:03+00:00",
+                        image: "/media/images/photo2.jpg",
+                        thumbnail: "/media/images/photo2_thumb.webp",
+                        preview: "/media/images/photo2_preview.webp",
+                        key: 13
                     }
                 ]
             })
@@ -477,22 +477,22 @@ describe('App', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                "uploaded": "2 photo(s)",
-                "failed": [],
-                "urls": [
+                uploaded: "2 photo(s)",
+                failed: [],
+                urls: [
                     {
-                        "timestamp": "2024-03-01T20:54:03+00:00",
-                        "image": "/media/images/photo1.jpg",
-                        "thumbnail": "/media/images/photo1_thumb.webp",
-                        "preview": "/media/images/photo1_preview.webp",
-                        "key": 12
+                        timestamp: "2024-03-01T20:54:03+00:00",
+                        image: "/media/images/photo1.jpg",
+                        thumbnail: "/media/images/photo1_thumb.webp",
+                        preview: "/media/images/photo1_preview.webp",
+                        key: 12
                     },
                     {
-                        "timestamp": "2024-03-01T20:52:03+00:00",
-                        "image": "/media/images/photo2.jpg",
-                        "thumbnail": "/media/images/photo2_thumb.webp",
-                        "preview": "/media/images/photo2_preview.webp",
-                        "key": 13
+                        timestamp: "2024-03-01T20:52:03+00:00",
+                        image: "/media/images/photo2.jpg",
+                        thumbnail: "/media/images/photo2_thumb.webp",
+                        preview: "/media/images/photo2_preview.webp",
+                        key: 13
                     }
                 ]
             })
@@ -516,8 +516,8 @@ describe('App', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                "deleted": [12],
-                "failed": []
+                deleted: [12],
+                failed: []
             })
         }));
 
@@ -546,15 +546,15 @@ describe('App', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                "uploaded": "1 photo(s)",
-                "failed": [],
-                "urls": [
+                uploaded: "1 photo(s)",
+                failed: [],
+                urls: [
                     {
-                        "timestamp": "2024-06-21T20:52:03+00:00",
-                        "image": "/media/images/photo1.jpg",
-                        "thumbnail": "/media/images/photo1_thumb.webp",
-                        "preview": "/media/images/photo1_preview.webp",
-                        "key": 1
+                        timestamp: "2024-06-21T20:52:03+00:00",
+                        image: "/media/images/photo1.jpg",
+                        thumbnail: "/media/images/photo1_thumb.webp",
+                        preview: "/media/images/photo1_preview.webp",
+                        key: 1
                     }
                 ]
             })
@@ -577,8 +577,8 @@ describe('App', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                "deleted": [1],
-                "failed": []
+                deleted: [1],
+                failed: []
             })
         }));
 
@@ -601,8 +601,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "action": "water",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                action: "water",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
 
@@ -616,10 +616,10 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "deleted": [
-                    {"type": "water", "timestamp": "2024-03-01T15:45:44+00:00"},
+                deleted: [
+                    {type: "water", timestamp: "2024-03-01T15:45:44+00:00"},
                 ],
-                "failed": []
+                failed: []
             })
         }));
 
@@ -645,22 +645,22 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "plant_details": mockContextNoEvents.plant_details,
-                "events": {
-                    "water": [
+                plant_details: mockContextNoEvents.plant_details,
+                events: {
+                    water: [
                         "2024-03-14T20:46:03+00:00"
                     ],
-                    "fertilize": [],
-                    "prune": [],
-                    "repot": [],
+                    fertilize: [],
+                    prune: [],
+                    repot: [],
                 },
-                "notes": [],
-                "group_options": mockContextNoEvents.group_options,
-                "species_options": mockContextNoEvents.species_options,
-                "photos": [],
-                "default_photo": mockContextNoEvents.default_photo,
-                "division_events": {},
-                "divided_from": false
+                notes: [],
+                group_options: mockContextNoEvents.group_options,
+                species_options: mockContextNoEvents.species_options,
+                photos: [],
+                default_photo: mockContextNoEvents.default_photo,
+                division_events: {},
+                divided_from: false
             })
         }));
 
@@ -682,15 +682,15 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "plant_details": mockContextNoEvents.plant_details,
-                "events": mockContextNoEvents.events,
-                "notes": [],
-                "group_options": mockContextNoEvents.group_options,
-                "species_options": mockContextNoEvents.species_options,
-                "photos": [],
-                "default_photo": mockContextNoEvents.default_photo,
-                "division_events": {},
-                "divided_from": false
+                plant_details: mockContextNoEvents.plant_details,
+                events: mockContextNoEvents.events,
+                notes: [],
+                group_options: mockContextNoEvents.group_options,
+                species_options: mockContextNoEvents.species_options,
+                photos: [],
+                default_photo: mockContextNoEvents.default_photo,
+                division_events: {},
+                divided_from: false
             })
         }));
 
@@ -717,30 +717,30 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "plant_details": mockContextNoEvents.plant_details,
-                "events": mockContextNoEvents.events,
-                "notes": [],
-                "group_options": mockContextNoEvents.group_options,
-                "species_options": mockContextNoEvents.species_options,
-                "photos": [
+                plant_details: mockContextNoEvents.plant_details,
+                events: mockContextNoEvents.events,
+                notes: [],
+                group_options: mockContextNoEvents.group_options,
+                species_options: mockContextNoEvents.species_options,
+                photos: [
                     {
-                        'timestamp': '2024-03-21T10:52:03+00:00',
-                        'image': '/media/images/photo1.jpg',
-                        'thumbnail': '/media/thumbnails/photo1_thumb.webp',
-                        'preview': '/media/previews/photo1_preview.webp',
-                        'key': 1
+                        timestamp: '2024-03-21T10:52:03+00:00',
+                        image: '/media/images/photo1.jpg',
+                        thumbnail: '/media/thumbnails/photo1_thumb.webp',
+                        preview: '/media/previews/photo1_preview.webp',
+                        key: 1
                     }
                 ],
-                "default_photo": {
-                    'set': false,
-                    'timestamp': '2024-03-21T10:52:03+00:00',
-                    'image': '/media/images/photo1.jpg',
-                    'thumbnail': '/media/thumbnails/photo1_thumb.webp',
-                    'preview': '/media/previews/photo1_preview.webp',
-                    'key': 1
+                default_photo: {
+                    set: false,
+                    timestamp: '2024-03-21T10:52:03+00:00',
+                    image: '/media/images/photo1.jpg',
+                    thumbnail: '/media/thumbnails/photo1_thumb.webp',
+                    preview: '/media/previews/photo1_preview.webp',
+                    key: 1
                 },
-                "division_events": {},
-                "divided_from": false
+                division_events: {},
+                divided_from: false
             })
         }));
 
@@ -763,15 +763,15 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "plant_details": mockContextNoEvents.plant_details,
-                "events": mockContextNoEvents.events,
-                "notes": [],
-                "group_options": mockContextNoEvents.group_options,
-                "species_options": mockContextNoEvents.species_options,
-                "photos": [],
-                "default_photo": mockContextNoEvents.default_photo,
-                "division_events": {},
-                "divided_from": false
+                plant_details: mockContextNoEvents.plant_details,
+                events: mockContextNoEvents.events,
+                notes: [],
+                group_options: mockContextNoEvents.group_options,
+                species_options: mockContextNoEvents.species_options,
+                photos: [],
+                default_photo: mockContextNoEvents.default_photo,
+                division_events: {},
+                divided_from: false
             })
         }));
 
@@ -797,30 +797,30 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "plant_details": mockContextNoEvents.plant_details,
-                "events": mockContextNoEvents.events,
-                "notes": [],
-                "group_options": mockContextNoEvents.group_options,
-                "species_options": mockContextNoEvents.species_options,
-                "photos": [
+                plant_details: mockContextNoEvents.plant_details,
+                events: mockContextNoEvents.events,
+                notes: [],
+                group_options: mockContextNoEvents.group_options,
+                species_options: mockContextNoEvents.species_options,
+                photos: [
                     {
-                        'timestamp': '2024-03-21T10:52:03+00:00',
-                        'image': '/media/images/photo1.jpg',
-                        'thumbnail': '/media/thumbnails/photo1_thumb.webp',
-                        'preview': '/media/previews/photo1_preview.webp',
-                        'key': 1
+                        timestamp: '2024-03-21T10:52:03+00:00',
+                        image: '/media/images/photo1.jpg',
+                        thumbnail: '/media/thumbnails/photo1_thumb.webp',
+                        preview: '/media/previews/photo1_preview.webp',
+                        key: 1
                     }
                 ],
-                "default_photo": {
-                    'set': false,
-                    'timestamp': '2024-03-21T10:52:03+00:00',
-                    'image': '/media/images/photo1.jpg',
-                    'thumbnail': '/media/thumbnails/photo1_thumb.webp',
-                    'preview': '/media/previews/photo1_preview.webp',
-                    'key': 1
+                default_photo: {
+                    set: false,
+                    timestamp: '2024-03-21T10:52:03+00:00',
+                    image: '/media/images/photo1.jpg',
+                    thumbnail: '/media/thumbnails/photo1_thumb.webp',
+                    preview: '/media/previews/photo1_preview.webp',
+                    key: 1
                 },
-                "division_events": {},
-                "divided_from": false
+                division_events: {},
+                divided_from: false
             })
         }));
 

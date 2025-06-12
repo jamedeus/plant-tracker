@@ -14,9 +14,9 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "group": mockContext.group,
-                "details": mockContext.details,
-                "options": mockContext.options
+                group: mockContext.group,
+                details: mockContext.details,
+                options: mockContext.options
             })
         }));
 

@@ -56,10 +56,10 @@ describe('Add new note', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                "action": "add_note",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                "timestamp": "2024-02-13T12:00:00+00:00",
-                "note_text": "Some leaves turning yellow, probably watering too often"
+                action: "add_note",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                timestamp: "2024-02-13T12:00:00+00:00",
+                note_text: "Some leaves turning yellow, probably watering too often"
             })
         }));
 
@@ -88,7 +88,7 @@ describe('Add new note', () => {
             ok: false,
             status: 500,
             json: () => Promise.resolve({
-                "error": "failed to save note"
+                error: "failed to save note"
             })
         }));
 
@@ -113,7 +113,7 @@ describe('Add new note', () => {
             ok: false,
             status: 409,
             json: () => Promise.resolve({
-                "error": "note with same timestamp already exists"
+                error: "note with same timestamp already exists"
             })
         }));
 
@@ -181,8 +181,8 @@ describe('Edit existing note', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                "deleted": "note",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                deleted: "note",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
 
@@ -209,10 +209,10 @@ describe('Edit existing note', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                "action": "edit_note",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                "timestamp": "2024-02-13T12:00:00+00:00",
-                "note_text": "this is an existing note some more details"
+                action: "edit_note",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                timestamp: "2024-02-13T12:00:00+00:00",
+                note_text: "this is an existing note some more details"
             })
         }));
 
@@ -238,7 +238,7 @@ describe('Edit existing note', () => {
             ok: false,
             status: 500,
             json: () => Promise.resolve({
-                "error": "failed to delete note"
+                error: "failed to delete note"
             })
         }));
 
@@ -262,7 +262,7 @@ describe('Edit existing note', () => {
             ok: false,
             status: 500,
             json: () => Promise.resolve({
-                "error": "failed to edit note"
+                error: "failed to edit note"
             })
         }));
 

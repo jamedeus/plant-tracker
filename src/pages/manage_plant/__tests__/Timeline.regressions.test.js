@@ -16,7 +16,7 @@ describe('Timeline regressions', () => {
         bulkCreateMockContext(mockContext);
         createMockContext('user_accounts_enabled', true);
         createMockContext('events', {
-            "water": [
+            water: [
                 "2023-11-11T19:04:20+00:00",
                 "2023-10-26T02:49:18+00:00",
                 "2023-09-17T22:21:41+00:00",
@@ -28,25 +28,25 @@ describe('Timeline regressions', () => {
                 "2023-02-11T19:04:20+00:00",
                 "2023-01-26T02:49:18+00:00",
             ],
-            "fertilize": [],
-            "prune": [],
-            "repot": []
+            fertilize: [],
+            prune: [],
+            repot: []
         });
         // Create mock context with a single photo in December
         createMockContext('photos', [
             {
-                "timestamp": "2023-12-21T11:57:26+00:00",
-                "image": "/media/images/IMG_5866.jpeg",
-                "thumbnail": "/media/thumbnails/IMG_5866_thumb.webp",
-                "preview": "/media/previews/IMG_5866_preview.webp",
-                "key": 46
+                timestamp: "2023-12-21T11:57:26+00:00",
+                image: "/media/images/IMG_5866.jpeg",
+                thumbnail: "/media/thumbnails/IMG_5866_thumb.webp",
+                preview: "/media/previews/IMG_5866_preview.webp",
+                key: 46
             },
         ]);
         // Create mock context with a single note in May
         createMockContext('notes', [
             {
-                "timestamp": "2023-05-25T15:28:39+00:00",
-                "text": "Fertilized with a balanced 10-10-10 fertilizer."
+                timestamp: "2023-05-25T15:28:39+00:00",
+                text: "Fertilized with a balanced 10-10-10 fertilizer."
             },
         ]);
 

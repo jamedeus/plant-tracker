@@ -82,8 +82,8 @@ describe('DeletePhotosModal', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                "deleted": [2],
-                "failed": []
+                deleted: [2],
+                failed: []
             })
         }));
 
@@ -103,8 +103,8 @@ describe('DeletePhotosModal', () => {
         expect(fetch).toHaveBeenCalledWith('/delete_plant_photos', {
             method: 'POST',
             body: JSON.stringify({
-                "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                "delete_photos": [2]
+                plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                delete_photos: [2]
             }),
             headers: postHeaders
         });
@@ -116,8 +116,8 @@ describe('DeletePhotosModal', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                "deleted": [2],
-                "failed": []
+                deleted: [2],
+                failed: []
             })
         }));
 
@@ -140,8 +140,8 @@ describe('DeletePhotosModal', () => {
         expect(fetch).toHaveBeenCalledWith('/delete_plant_photos', {
             method: 'POST',
             body: JSON.stringify({
-                "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                "delete_photos": [2]
+                plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                delete_photos: [2]
             }),
             headers: postHeaders
         });
@@ -171,7 +171,7 @@ describe('DeletePhotosModal', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: false,
             json: () => Promise.resolve({
-                "error": "failed to delete photos"
+                error: "failed to delete photos"
             })
         }));
 

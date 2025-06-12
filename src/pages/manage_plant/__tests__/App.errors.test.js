@@ -28,7 +28,7 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: false,
             json: () => Promise.resolve({
-                "error": "failed to edit plant details"
+                error: "failed to edit plant details"
             })
         }));
 
@@ -51,7 +51,7 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: false,
             json: () => Promise.resolve({
-                "error": "failed to create event"
+                error: "failed to create event"
             })
         }));
 
@@ -70,7 +70,7 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: false,
             json: () => Promise.resolve({
-                "error": "failed to remove plant from group"
+                error: "failed to remove plant from group"
             })
         }));
 
@@ -89,7 +89,7 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: false,
             json: () => Promise.resolve({
-                "error": "failed to repot plant"
+                error: "failed to repot plant"
             })
         }));
 
@@ -109,7 +109,7 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: false,
             json: () => Promise.resolve({
-                "error": "Event with same timestamp already exists"
+                error: "Event with same timestamp already exists"
             })
         }));
 
@@ -130,8 +130,8 @@ describe('App', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                "action": "remove_plant_from_group",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                action: "remove_plant_from_group",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
 
@@ -145,7 +145,7 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: false,
             json: () => Promise.resolve({
-                "error": "failed to add plant to group"
+                error: "failed to add plant to group"
             })
         }));
 

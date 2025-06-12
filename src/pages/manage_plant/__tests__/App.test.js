@@ -39,11 +39,11 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "name": "Test Plant",
-                "species": "Calathea",
-                "pot_size": 4,
-                "description": "This is a plant with a long description",
-                "display_name": "Test Plant"
+                name: "Test Plant",
+                species: "Calathea",
+                pot_size: 4,
+                description: "This is a plant with a long description",
+                display_name: "Test Plant"
             })
         }));
 
@@ -58,11 +58,11 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/edit_plant', {
             method: 'POST',
             body: JSON.stringify({
-                "name": "Test Plant",
-                "species": "Calathea",
-                "pot_size": "4",
-                "description": "This is a plant with a long description",
-                "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                name: "Test Plant",
+                species: "Calathea",
+                pot_size: "4",
+                description: "This is a plant with a long description",
+                plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             }),
             headers: postHeaders
         });
@@ -102,8 +102,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "action": "water",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                action: "water",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
 
@@ -114,9 +114,9 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/add_plant_event', {
             method: 'POST',
             body: JSON.stringify({
-                "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                "event_type": "water",
-                "timestamp": "2024-03-01T20:00:00.000Z"
+                plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                event_type: "water",
+                timestamp: "2024-03-01T20:00:00.000Z"
             }),
             headers: postHeaders
         });
@@ -127,8 +127,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "action": "fertilize",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                action: "fertilize",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
 
@@ -139,9 +139,9 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/add_plant_event', {
             method: 'POST',
             body: JSON.stringify({
-                "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                "event_type": "fertilize",
-                "timestamp": "2024-03-01T20:00:00.000Z"
+                plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                event_type: "fertilize",
+                timestamp: "2024-03-01T20:00:00.000Z"
             }),
             headers: postHeaders
         });
@@ -152,8 +152,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "action": "prune",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                action: "prune",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
 
@@ -164,9 +164,9 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/add_plant_event', {
             method: 'POST',
             body: JSON.stringify({
-                "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                "event_type": "prune",
-                "timestamp": "2024-03-01T20:00:00.000Z"
+                plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                event_type: "prune",
+                timestamp: "2024-03-01T20:00:00.000Z"
             }),
             headers: postHeaders
         });
@@ -178,7 +178,7 @@ describe('App', () => {
             ok: false,
             status: 409,
             json: () => Promise.resolve({
-                "error": "event with same timestamp already exists"
+                error: "event with same timestamp already exists"
             })
         }));
 
@@ -193,7 +193,7 @@ describe('App', () => {
             ok: false,
             status: 401,
             json: () => Promise.resolve({
-                "error": "authentication required"
+                error: "authentication required"
             })
         }));
 
@@ -210,8 +210,8 @@ describe('App', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                "action": "remove_plant_from_group",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                action: "remove_plant_from_group",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
 
@@ -222,7 +222,7 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/remove_plant_from_group', {
             method: 'POST',
             body: JSON.stringify({
-                "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             }),
             headers: postHeaders
         });
@@ -243,8 +243,8 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/add_plant_to_group', {
             method: 'POST',
             body: JSON.stringify({
-                "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                "group_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+                plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                group_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
             }),
             headers: postHeaders
         });
@@ -255,8 +255,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "action": "repot",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                action: "repot",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
 
@@ -273,9 +273,9 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/repot_plant', {
             method: 'POST',
             body: JSON.stringify({
-                "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                "new_pot_size": 8,
-                "timestamp": "2024-03-01T20:00:00.000Z"
+                plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                new_pot_size: 8,
+                timestamp: "2024-03-01T20:00:00.000Z"
             }),
             headers: postHeaders
         });
@@ -286,8 +286,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "action": "repot",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                action: "repot",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
 
@@ -305,9 +305,9 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/repot_plant', {
             method: 'POST',
             body: JSON.stringify({
-                "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                "new_pot_size": 5,
-                "timestamp": "2024-03-01T20:00:00.000Z"
+                plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                new_pot_size: 5,
+                timestamp: "2024-03-01T20:00:00.000Z"
             }),
             headers: postHeaders
         });
@@ -340,8 +340,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "action": "divide",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                action: "divide",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
 
@@ -355,8 +355,8 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/divide_plant', {
             method: 'POST',
             body: JSON.stringify({
-                "plant_id": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                "timestamp": "2024-03-01T20:00:00.000Z"
+                plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                timestamp: "2024-03-01T20:00:00.000Z"
             }),
             headers: postHeaders
         });
@@ -389,15 +389,15 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "plant_details": mockContext.plant_details,
-                "events": mockContext.events,
-                "notes": mockContext.notes,
-                "group_options": mockContext.group_options,
-                "species_options": mockContext.species_options,
-                "photos": mockContext.photos,
-                "default_photo": mockContext.default_photo,
-                "division_events": {},
-                "divided_from": false
+                plant_details: mockContext.plant_details,
+                events: mockContext.events,
+                notes: mockContext.notes,
+                group_options: mockContext.group_options,
+                species_options: mockContext.species_options,
+                photos: mockContext.photos,
+                default_photo: mockContext.default_photo,
+                division_events: {},
+                divided_from: false
             })
         }));
 
@@ -418,7 +418,7 @@ describe('App', () => {
         // Mock fetch function to return error response
         global.fetch = jest.fn(() => Promise.resolve({
             ok: false,
-            json: () => Promise.resolve({'Error': 'Plant not found'})
+            json: () => Promise.resolve({Error: 'Plant not found'})
         }));
 
         // Simulate user navigating to page with back button
@@ -499,10 +499,10 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "deleted": [
-                    {"type": "water", "timestamp": "2024-03-01T15:45:44+00:00"},
+                deleted: [
+                    {type: "water", timestamp: "2024-03-01T15:45:44+00:00"},
                 ],
-                "failed": []
+                failed: []
             })
         }));
 
@@ -538,10 +538,10 @@ describe('App', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                "action": "add_note",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                "timestamp": "2024-03-01T12:00:00+00:00",
-                "note_text": "Started flowering"
+                action: "add_note",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                timestamp: "2024-03-01T12:00:00+00:00",
+                note_text: "Started flowering"
             })
         }));
 
@@ -572,10 +572,10 @@ describe('App', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                "action": "edit_note",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                "timestamp": "2024-02-26T12:44:12+00:00",
-                "note_text": "One of the older leaves is starting to turn yellow, pinched it off"
+                action: "edit_note",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                timestamp: "2024-02-26T12:44:12+00:00",
+                note_text: "One of the older leaves is starting to turn yellow, pinched it off"
             })
         }));
 
@@ -611,8 +611,8 @@ describe('App', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                "deleted": "note",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                deleted: "note",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
 
@@ -649,22 +649,22 @@ describe('App', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                "uploaded": "2 photo(s)",
-                "failed": [],
-                "urls": [
+                uploaded: "2 photo(s)",
+                failed: [],
+                urls: [
                     {
-                        "timestamp": "2024-06-21T20:52:03+00:00",
-                        "image": "/media/images/photo1.jpg",
-                        "thumbnail": "/media/images/photo1_thumb.webp",
-                        "preview": "/media/images/photo1_preview.webp",
-                        "key": 12
+                        timestamp: "2024-06-21T20:52:03+00:00",
+                        image: "/media/images/photo1.jpg",
+                        thumbnail: "/media/images/photo1_thumb.webp",
+                        preview: "/media/images/photo1_preview.webp",
+                        key: 12
                     },
                     {
-                        "timestamp": "2024-06-21T20:54:03+00:00",
-                        "image": "/media/images/photo2.jpg",
-                        "thumbnail": "/media/images/photo2_thumb.webp",
-                        "preview": "/media/images/photo2_preview.webp",
-                        "key": 13
+                        timestamp: "2024-06-21T20:54:03+00:00",
+                        image: "/media/images/photo2.jpg",
+                        thumbnail: "/media/images/photo2_thumb.webp",
+                        preview: "/media/images/photo2_preview.webp",
+                        key: 13
                     }
                 ]
             })
@@ -707,8 +707,8 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "action": "water",
-                "plant": "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                action: "water",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
         await user.click(app.getByRole("button", {name: "Water"}));
@@ -725,10 +725,10 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                "deleted": [
-                    {"type": "water", "timestamp": "2025-02-20T20:00:00+00:00"}
+                deleted: [
+                    {type: "water", timestamp: "2025-02-20T20:00:00+00:00"}
                 ],
-                "failed": []
+                failed: []
             })
         }));
         await user.click(within(modal).getByText('Delete'));
