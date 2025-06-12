@@ -130,7 +130,7 @@ describe('App', () => {
     // but if the user navigated back to page with back button (overwrites
     // divisionEvents with response from backend) the mutation was detected and
     // an error was thrown (sometimes causing a hard crash).
-    it('does not crash when user navigates back to a plant with children', () => {
+    it('does not crash when user navigates back to a plant with children', async () => {
         // Add division events to mock context
         createMockContext('division_events', {
             "2024-02-11T04:19:23+00:00": [
@@ -183,8 +183,7 @@ describe('App', () => {
         // Simulate user navigating to page with back button, confirm no error
         const pageshowEvent = new Event('pageshow');
         Object.defineProperty(pageshowEvent, 'persisted', { value: true });
-        expect(() => {
-            act(() => window.dispatchEvent(pageshowEvent));
-        }).not.toThrow();
+        // TypeError causes test to fail here if state was mutated
+        await act(() => window.dispatchEvent(pageshowEvent));
     });
 });
