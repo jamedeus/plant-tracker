@@ -274,7 +274,7 @@ const DivisionEventMarker = ({ dividedPlants }) => {
                 <LuSplit className="fa-inline size-4 rotate-90 mr-2" />
                 {hasChildren ? "Divided into:" : "Divided"}
             </span>
-            {dividedPlants.sort(
+            {[ ...dividedPlants ].sort(
                 (a, b) => a.name.localeCompare(
                     b.name,
                     undefined,

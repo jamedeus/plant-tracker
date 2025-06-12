@@ -123,4 +123,68 @@ describe('App', () => {
             )
         );
     });
+
+    // Issue: Timeline.DivisionEventMarker inadvertently mutated the redux
+    // divisionEvents state by sorting the child plants by name. This was not
+    // detected in normal usage (divisionEvents is set once and does not change)
+    // but if the user navigated back to page with back button (overwrites
+    // divisionEvents with response from backend) the mutation was detected and
+    // an error was thrown (sometimes causing a hard crash).
+    it('does not crash when user navigates back to a plant with children', () => {
+        // Add division events to mock context
+        createMockContext('division_events', {
+            "2024-02-11T04:19:23+00:00": [
+                {
+                    name: "Child plant 1",
+                    uuid: "cc3fcb4f-120a-4577-ac87-ac6b5bea8968"
+                },
+                {
+                    name: "Child plant 2",
+                    uuid: "dfafcb4d-220e-2543-f187-fb6b5be589ba"
+                },
+            ]
+        });
+
+        // Mock fetch function to return expected /get_plant_state response with
+        // same division events as above
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                "plant_details": mockContext.plant_details,
+                "events": mockContext.events,
+                "notes": mockContext.notes,
+                "group_options": mockContext.group_options,
+                "species_options": mockContext.species_options,
+                "photos": JSON.parse(JSON.stringify(mockContext.photos)),
+                "default_photo": mockContext.default_photo,
+                "division_events": {
+                    "2024-02-11T04:19:23+00:00": [
+                        {
+                            name: "Child plant 1",
+                            uuid: "cc3fcb4f-120a-4577-ac87-ac6b5bea8968"
+                        },
+                        {
+                            name: "Child plant 2",
+                            uuid: "dfafcb4d-220e-2543-f187-fb6b5be589ba"
+                        },
+                    ]
+                },
+                "divided_from": false
+            })
+        }));
+
+        // Render app
+        render(
+            <PageWrapper>
+                <App />
+            </PageWrapper>
+        );
+
+        // Simulate user navigating to page with back button, confirm no error
+        const pageshowEvent = new Event('pageshow');
+        Object.defineProperty(pageshowEvent, 'persisted', { value: true });
+        expect(() => {
+            act(() => window.dispatchEvent(pageshowEvent));
+        }).not.toThrow();
+    });
 });
