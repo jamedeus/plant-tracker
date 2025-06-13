@@ -1937,7 +1937,7 @@ class ChangeQrCodeTests(TestCase):
                         'last_fertilized': None
                     },
                     'new_uuid': str(self.fake_id),
-                    'preview': self.plant1.preview_url
+                    'preview': self.plant1.get_default_photo_details()['preview']
                 }
             }
         )

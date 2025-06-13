@@ -273,11 +273,6 @@ class Plant(models.Model):
         related_name='+'
     )
 
-    # Store the URLs of the current thumbnail and preview
-    # These update automatically if a new Photo is uploaded (see Photo.save)
-    thumbnail_url = models.URLField(blank=True, null=True)
-    preview_url = models.URLField(blank=True, null=True)
-
     def __str__(self):
         return f"{self.get_display_name()} ({self.uuid})"
 
@@ -305,16 +300,6 @@ class Plant(models.Model):
             for photo in self.photo_set.all().order_by('-timestamp')
         ]
 
-    def update_thumbnail_url(self):
-        '''Updates thumbnail_url and preview_url fields if they are outdated.
-        Called when a new Photo associated with this Plant is saved.
-        '''
-        default_photo = self.get_default_photo_details()
-        if default_photo and default_photo['thumbnail'] != self.thumbnail_url:
-            self.thumbnail_url = default_photo['thumbnail']
-            self.preview_url = default_photo['preview']
-            self.save(update_fields=['thumbnail_url', 'preview_url'])
-
     def get_details(self):
         '''Returns dict containing all plant attributes and last_watered,
         last_fertilized timestamps. Used as state for frontend components.
@@ -330,7 +315,7 @@ class Plant(models.Model):
             'pot_size': self.pot_size,
             'last_watered': self.last_watered(),
             'last_fertilized': self.last_fertilized(),
-            'thumbnail': self.thumbnail_url
+            'thumbnail': self.get_default_photo_details()['thumbnail']
         }
 
     def get_group_details(self):
@@ -615,8 +600,8 @@ class Photo(models.Model):
 
         super().save(*args, **kwargs)
 
-        # Update Plant's thumbnail URL if new Photo is most recent
-        self.plant.update_thumbnail_url()
+        # Trigger signals that run cached_state updates (replace outdated thumbnail)
+        self.plant.save()
 
 
 @receiver(post_delete, sender=Photo)
@@ -624,7 +609,8 @@ def update_plant_thumbnail_when_photo_deleted(instance, **kwargs):
     '''Updates Plant.thumbnail_url field when associated Photo is deleted (if
     deleted photo was most recent photo the thumbnail_url will be outdated).
     '''
-    instance.plant.update_thumbnail_url()
+    # Trigger signals that run cached_state updates (replace outdated thumbnail)
+    instance.plant.save()
 
 
 class Event(models.Model):

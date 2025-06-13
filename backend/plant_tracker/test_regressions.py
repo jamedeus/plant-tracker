@@ -635,6 +635,47 @@ class ViewRegressionTests(TestCase):
         self.assertEqual(len(Plant.objects.all()), 1)
         self.assertEqual(len(Group.objects.all()), 1)
 
+    def test_edit_plant_details_fails_if_plant_has_photos(self):
+        '''Issue: Plant.thumbnail_url and Plant.preview_url contained paths to
+        the thumbnail and preview resolutions of most-recent photo (or default
+        if configured), but they did not contain domain. This fails URLField
+        validation, so once full_clean was added to /edit_plant_details (enforce
+        character limits) a ValidationError was raised if photos existed. This
+        prevented editing any details of plants with 1 or more photo.
+        '''
+
+        # Create plant with 1 photo
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        Photo.objects.create(
+            photo=create_mock_photo(
+                creation_time='2024:02:21 10:52:03',
+                name='photo1.jpg'
+            ),
+            plant=plant
+        )
+
+        # Send edit_plant request with new name
+        response = JSONClient().post('/edit_plant', {
+            'plant_id': plant.uuid,
+            'name': 'new plant name',
+            'species': '',
+            'description': '',
+            'pot_size': ''
+        })
+
+        # Confirm request succeeded, did not return 'Enter a valid URL' error
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {
+                'name': 'new plant name',
+                'display_name': 'new plant name',
+                'species': None,
+                'description': None,
+                'pot_size': None
+            }
+        )
+
 
 class CachedStateRegressionTests(TestCase):
     def setUp(self):

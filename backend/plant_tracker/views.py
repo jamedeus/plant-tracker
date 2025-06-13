@@ -266,7 +266,8 @@ def render_registration_page(request, uuid, user):
                 'new_uuid': uuid
             }
             if state['changing_qr_code']['type'] == 'plant':
-                state['changing_qr_code']['preview'] = instance.preview_url
+                preview_url = instance.get_default_photo_details()['preview']
+                state['changing_qr_code']['preview'] = preview_url
 
     # Check if user is dividing plant, add details if dividing
     division_in_progress = cache.get(f'division_in_progress_{user.pk}')
@@ -980,7 +981,6 @@ def set_plant_default_photo(plant, data, **kwargs):
     try:
         photo = Photo.objects.get(plant=plant, pk=data["photo_key"])
         plant.default_photo = photo
-        plant.update_thumbnail_url()
         plant.save()
     except Photo.DoesNotExist:
         return JsonResponse({"error": "unable to find photo"}, status=404)

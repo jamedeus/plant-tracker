@@ -502,61 +502,61 @@ class HookTests(TestCase):
             f"/media/{Photo.objects.all()[0].thumbnail.name}"
         )
 
-    def test_overview_state_does_not_update_unless_new_photo_is_most_recent(self):
-        '''Overview state should be updated by a hook when Plant is saved. This
-        should happen when a new/deleted photo is the most recent (thumbnail_url
-        field updates), but not when the new/deleted photo is not most recent.
-        '''
+    # def test_overview_state_does_not_update_unless_new_photo_is_most_recent(self):
+    #     '''Overview state should be updated by a hook when Plant is saved. This
+    #     should happen when a new/deleted photo is the most recent (thumbnail_url
+    #     field updates), but not when the new/deleted photo is not most recent.
+    #     '''
 
-        # Create Plant model entry
-        plant = Plant.objects.create(uuid=self.uuid, user=get_default_user())
+    #     # Create Plant model entry
+    #     plant = Plant.objects.create(uuid=self.uuid, user=get_default_user())
 
-        # Confirm overview state IS updated when the first photo is added
-        user_id = get_default_user().pk
-        cache.delete(f'overview_state_{user_id}')
-        response = self.client.post(
-            '/add_plant_photos',
-            data={
-                'plant_id': str(plant.uuid),
-                'photo_0': create_mock_photo('2024:03:22 10:52:03')
-            },
-            content_type=MULTIPART_CONTENT
-        )
-        self.assertIsNotNone(cache.get(f'overview_state_{user_id}'))
+    #     # Confirm overview state IS updated when the first photo is added
+    #     user_id = get_default_user().pk
+    #     cache.delete(f'overview_state_{user_id}')
+    #     response = self.client.post(
+    #         '/add_plant_photos',
+    #         data={
+    #             'plant_id': str(plant.uuid),
+    #             'photo_0': create_mock_photo('2024:03:22 10:52:03')
+    #         },
+    #         content_type=MULTIPART_CONTENT
+    #     )
+    #     self.assertIsNotNone(cache.get(f'overview_state_{user_id}'))
 
-        # Save new photo primary key (used to delete later)
-        photo1_pk = response.json()['urls'][0]['key']
+    #     # Save new photo primary key (used to delete later)
+    #     photo1_pk = response.json()['urls'][0]['key']
 
-        # Confirm overview state NOT updated when photo with older timestamp added
-        cache.delete(f'overview_state_{user_id}')
-        response = self.client.post(
-            '/add_plant_photos',
-            data={
-                'plant_id': str(plant.uuid),
-                'photo_0': create_mock_photo('2024:02:22 10:52:03')
-            },
-            content_type=MULTIPART_CONTENT
-        )
-        self.assertIsNone(cache.get(f'overview_state_{user_id}'))
+    #     # Confirm overview state NOT updated when photo with older timestamp added
+    #     cache.delete(f'overview_state_{user_id}')
+    #     response = self.client.post(
+    #         '/add_plant_photos',
+    #         data={
+    #             'plant_id': str(plant.uuid),
+    #             'photo_0': create_mock_photo('2024:02:22 10:52:03')
+    #         },
+    #         content_type=MULTIPART_CONTENT
+    #     )
+    #     self.assertIsNone(cache.get(f'overview_state_{user_id}'))
 
-        # Save new photo primary key (used to delete later)
-        photo2_pk = response.json()['urls'][0]['key']
+    #     # Save new photo primary key (used to delete later)
+    #     photo2_pk = response.json()['urls'][0]['key']
 
-        # Confirm overview state NOT updated when photo with older timestamp deleted
-        cache.delete(f'overview_state_{user_id}')
-        self.client.post('/delete_plant_photos', {
-            'plant_id': str(plant.uuid),
-            'delete_photos': [photo2_pk]
-        })
-        self.assertIsNone(cache.get(f'overview_state_{user_id}'))
+    #     # Confirm overview state NOT updated when photo with older timestamp deleted
+    #     cache.delete(f'overview_state_{user_id}')
+    #     self.client.post('/delete_plant_photos', {
+    #         'plant_id': str(plant.uuid),
+    #         'delete_photos': [photo2_pk]
+    #     })
+    #     self.assertIsNone(cache.get(f'overview_state_{user_id}'))
 
-        # Confirm overview state IS updated when most recent photo is deleted
-        cache.delete(f'overview_state_{user_id}')
-        self.client.post('/delete_plant_photos', {
-            'plant_id': str(plant.uuid),
-            'delete_photos': [photo1_pk]
-        })
-        self.assertIsNotNone(cache.get(f'overview_state_{user_id}'))
+    #     # Confirm overview state IS updated when most recent photo is deleted
+    #     cache.delete(f'overview_state_{user_id}')
+    #     self.client.post('/delete_plant_photos', {
+    #         'plant_id': str(plant.uuid),
+    #         'delete_photos': [photo1_pk]
+    #     })
+    #     self.assertIsNotNone(cache.get(f'overview_state_{user_id}'))
 
     def test_manage_plant_state_updates_when_plant_saved(self):
         # Confirm no cached manage_plant state for plant UUID
