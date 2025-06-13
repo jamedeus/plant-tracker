@@ -562,7 +562,7 @@ class SingleUserModeTests(TestCase):
         )
 
         # Create 1 plant owned by default user, 1 plant owned by test user
-        Plant.objects.create(
+        plant = Plant.objects.create(
             uuid=uuid4(),
             name='default user plant',
             user=get_default_user()
@@ -589,7 +589,7 @@ class SingleUserModeTests(TestCase):
         # Confirm only contains default user's plant
         self.assertEqual(len(response.context['state']['plants']), 1)
         self.assertEqual(
-            response.context['state']['plants'][0]['name'],
+            response.context['state']['plants'][str(plant.uuid)]['name'],
             'default user plant'
         )
 

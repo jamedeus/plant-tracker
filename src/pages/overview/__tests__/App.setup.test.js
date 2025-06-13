@@ -11,8 +11,8 @@ describe('App with empty database', () => {
     beforeAll(() => {
         // Create mock state objects
         bulkCreateMockContext({ ...mockContext,
-            plants: [],
-            groups: [],
+            plants: {},
+            groups: {},
             show_archived: false
         });
         createMockContext('user_accounts_enabled', true);

@@ -30,7 +30,9 @@ function App() {
     const desktop = useIsBreakpointActive('md');
     // True if mobile layout with stacked plant and group columns
     // False if desktop layout (side by side columns) or only one column
-    const stackedColumns = !desktop && plants.length > 0 && groups.length > 0;
+    const stackedColumns = !desktop &&
+        Object.keys(plants).length > 0 &&
+        Object.keys(groups).length > 0;
 
     // Check URL to determine if viewing main overview or archive overview
     const archivedOverview = window.location.pathname === '/archived';
@@ -46,8 +48,8 @@ function App() {
                 const response = await fetch('/get_overview_state');
                 if (response.ok) {
                     const data = await response.json();
-                    setPlants(data['plants']);
-                    setGroups(data['groups']);
+                    setPlants(data.plants);
+                    setGroups(data.groups);
                 } else {
                     alert('Failed to fetch new data, page may be outdated');
                 }
@@ -118,12 +120,12 @@ function App() {
         // Remove deleted UUIDs from state
         if (response.ok) {
             const data = await response.json();
-            setPlants(plants.filter(
-                plant => !data['deleted'].includes(plant.uuid))
-            );
-            setGroups(groups.filter(
-                group => !data['deleted'].includes(group.uuid))
-            );
+            setPlants(Object.fromEntries(Object.entries(plants).filter(
+                ([uuid]) => !data.deleted.includes(uuid)
+            )));
+            setGroups(Object.fromEntries(Object.entries(groups).filter(
+                ([uuid]) => !data.deleted.includes(uuid)
+            )));
         } else {
             const data = await response.json();
             openErrorModal(`Failed to delete: ${data.failed.join(', ')}`);
@@ -162,20 +164,24 @@ function App() {
         // Remove deleted UUIDs from state
         if (response.ok) {
             const data = await response.json();
-            const newPlants = plants.filter(
-                plant => !data['archived'].includes(plant.uuid)
-            );
+            const newPlants = Object.fromEntries(Object.entries(plants).filter(
+                ([uuid]) => !data.archived.includes(uuid)
+            ));
             setPlants(newPlants);
-            const newGroups = groups.filter(
-                group => !data['archived'].includes(group.uuid)
-            );
+            const newGroups = Object.fromEntries(Object.entries(groups).filter(
+                ([uuid]) => !data.archived.includes(uuid)
+            ));
             setGroups(newGroups);
 
             // Ensure archive link visible in dropdown menu
             setShowArchive(archived);
 
             // Archived overview: redirect to overview if no plants or groups left
-            if (archivedOverview && !newPlants.length && !newGroups.length) {
+            if (
+                archivedOverview &&
+                !Object.keys(newPlants).length &&
+                !Object.keys(newGroups).length
+            ) {
                 window.location.href = "/";
             }
         } else {
@@ -196,7 +202,8 @@ function App() {
         };
 
         // Only add edit option if at least 1 plant or group
-        const showEditOption = plants.length > 0 || groups.length > 0;
+        const showEditOption = Object.keys(plants).length > 0 ||
+                               Object.keys(groups).length > 0;
 
         return (
             <>
@@ -276,8 +283,8 @@ function App() {
             />
 
             <Layout
-                plants={plants}
-                groups={groups}
+                plants={Object.values(plants)}
+                groups={Object.values(groups)}
                 selectedPlantsRef={selectedPlantsRef}
                 selectedGroupsRef={selectedGroupsRef}
                 editing={editing}

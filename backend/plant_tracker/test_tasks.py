@@ -234,8 +234,8 @@ class HookTests(TestCase):
         self.assertEqual(
             cache.get(f'overview_state_{user_id}'),
             {
-                "plants": [
-                    {
+                "plants": {
+                    str(self.uuid): {
                         "name": None,
                         "display_name": "Unnamed plant 1",
                         "uuid": str(self.uuid),
@@ -248,8 +248,8 @@ class HookTests(TestCase):
                         "last_fertilized": None,
                         "thumbnail": None
                     }
-                ],
-                "groups": [],
+                },
+                "groups": {},
                 "show_archive": False
             }
         )
@@ -264,8 +264,8 @@ class HookTests(TestCase):
         self.assertEqual(
             cache.get(f'overview_state_{user_id}'),
             {
-                "plants": [
-                    {
+                "plants": {
+                    str(self.uuid): {
                         "name": "Favorite Plant",
                         "display_name": "Favorite Plant",
                         "uuid": str(self.uuid),
@@ -278,8 +278,8 @@ class HookTests(TestCase):
                         "last_fertilized": None,
                         "thumbnail": None
                     }
-                ],
-                "groups": [],
+                },
+                "groups": {},
                 "show_archive": False
             }
         )
@@ -289,8 +289,8 @@ class HookTests(TestCase):
         self.assertEqual(
             cache.get(f'overview_state_{user_id}'),
             {
-                "plants": [],
-                "groups": [],
+                "plants": {},
+                "groups": {},
                 "show_archive": False
             }
         )
@@ -307,9 +307,9 @@ class HookTests(TestCase):
         self.assertEqual(
             cache.get(f'overview_state_{user_id}'),
             {
-                "plants": [],
-                "groups": [
-                    {
+                "plants": {},
+                "groups": {
+                    str(self.uuid): {
                         "name": None,
                         "display_name": "Unnamed group 1",
                         "uuid": str(self.uuid),
@@ -319,7 +319,7 @@ class HookTests(TestCase):
                         "description": None,
                         "plants": 0
                     }
-                ],
+                },
                 "show_archive": False
             }
         )
@@ -333,9 +333,9 @@ class HookTests(TestCase):
         self.assertEqual(
             cache.get(f'overview_state_{user_id}'),
             {
-                "plants": [],
-                "groups": [
-                    {
+                "plants": {},
+                "groups": {
+                    str(self.uuid): {
                         "name": "Living room plants",
                         "display_name": "Living room plants",
                         "uuid": str(self.uuid),
@@ -345,7 +345,7 @@ class HookTests(TestCase):
                         "description": None,
                         "plants": 0
                     }
-                ],
+                },
                 "show_archive": False
             }
         )
@@ -355,8 +355,8 @@ class HookTests(TestCase):
         self.assertEqual(
             cache.get(f'overview_state_{user_id}'),
             {
-                "plants": [],
-                "groups": [],
+                "plants": {},
+                "groups": {},
                 "show_archive": False
             }
         )
@@ -369,7 +369,7 @@ class HookTests(TestCase):
         user_id = get_default_user().pk
         cached_state = cache.get(f'overview_state_{user_id}')
         self.assertIsNotNone(cached_state)
-        self.assertIsNone(cached_state["plants"][0]["last_watered"])
+        self.assertIsNone(cached_state["plants"][str(self.uuid)]["last_watered"])
 
         # Create WaterEvent for plant entry with API call
         self.client.post('/add_plant_event', {
@@ -381,7 +381,7 @@ class HookTests(TestCase):
         # Confirm last_watered in cached state matches timestamp
         cached_state = cache.get(f'overview_state_{user_id}')
         self.assertEqual(
-            cached_state["plants"][0]["last_watered"],
+            cached_state["plants"][str(self.uuid)]["last_watered"],
             '2024-02-06T03:06:26+00:00'
         )
 
@@ -394,7 +394,7 @@ class HookTests(TestCase):
 
         # Confirm last_watered in cached state reverted to None
         cached_state = cache.get(f'overview_state_{user_id}')
-        self.assertIsNone(cached_state["plants"][0]["last_watered"])
+        self.assertIsNone(cached_state["plants"][str(self.uuid)]["last_watered"])
 
     def test_overview_state_updates_when_plant_events_bulk_created_or_bulk_deleted(self):
         # Create 1 Plant model entries
@@ -405,8 +405,8 @@ class HookTests(TestCase):
         user_id = get_default_user().pk
         cached_state = cache.get(f'overview_state_{user_id}')
         self.assertIsNotNone(cached_state)
-        self.assertIsNone(cached_state["plants"][0]["last_watered"])
-        self.assertIsNone(cached_state["plants"][1]["last_watered"])
+        self.assertIsNone(cached_state["plants"][str(plant1.uuid)]["last_watered"])
+        self.assertIsNone(cached_state["plants"][str(plant2.uuid)]["last_watered"])
 
         # Create WaterEvent for both plants with API call
         self.client.post('/bulk_add_plant_events', {
@@ -421,11 +421,11 @@ class HookTests(TestCase):
         # Confirm last_watered in cached state matches timestamp for both plants
         cached_state = cache.get(f'overview_state_{user_id}')
         self.assertEqual(
-            cached_state["plants"][0]["last_watered"],
+            cached_state["plants"][str(plant1.uuid)]["last_watered"],
             '2024-02-06T03:06:26+00:00'
         )
         self.assertEqual(
-            cached_state["plants"][1]["last_watered"],
+            cached_state["plants"][str(plant2.uuid)]["last_watered"],
             '2024-02-06T03:06:26+00:00'
         )
 
@@ -439,9 +439,9 @@ class HookTests(TestCase):
 
         # Confirm last_watered in cached state is None for first plant, but not second
         cached_state = cache.get(f'overview_state_{user_id}')
-        self.assertIsNone(cached_state["plants"][0]["last_watered"])
+        self.assertIsNone(cached_state["plants"][str(plant1.uuid)]["last_watered"])
         self.assertEqual(
-            cached_state["plants"][1]["last_watered"],
+            cached_state["plants"][str(plant2.uuid)]["last_watered"],
             '2024-02-06T03:06:26+00:00'
         )
 
@@ -453,7 +453,7 @@ class HookTests(TestCase):
         user_id = get_default_user().pk
         cached_state = cache.get(f'overview_state_{user_id}')
         self.assertIsNotNone(cached_state)
-        self.assertIsNone(cached_state["plants"][0]["thumbnail"])
+        self.assertIsNone(cached_state["plants"][str(plant.uuid)]["thumbnail"])
 
         # Create mock photo associated with plant
         photo = Photo.objects.create(
@@ -464,14 +464,14 @@ class HookTests(TestCase):
         # Confirm thumbnail in cached state now matches new photo
         cached_state = cache.get(f'overview_state_{user_id}')
         self.assertEqual(
-            cached_state["plants"][0]["thumbnail"],
+            cached_state["plants"][str(plant.uuid)]["thumbnail"],
             f"/media/{photo.thumbnail.name}"
         )
 
         # Delete mock photo, confirm thumbnail in cached state reverted to None
         photo.delete()
         cached_state = cache.get(f'overview_state_{user_id}')
-        self.assertIsNone(cached_state["plants"][0]["thumbnail"])
+        self.assertIsNone(cached_state["plants"][str(plant.uuid)]["thumbnail"])
 
     def test_overview_state_updates_when_plant_default_photo_set(self):
         # Create Plant model entry
@@ -481,7 +481,7 @@ class HookTests(TestCase):
         user_id = get_default_user().pk
         cached_state = cache.get(f'overview_state_{user_id}')
         self.assertIsNotNone(cached_state)
-        self.assertIsNone(cached_state["plants"][0]["thumbnail"])
+        self.assertIsNone(cached_state["plants"][str(plant.uuid)]["thumbnail"])
 
         # Create 2 mock photos, add to database
         mock_photo1 = create_mock_photo('2024:03:21 10:52:03')
@@ -498,7 +498,7 @@ class HookTests(TestCase):
         # Confirm thumbnail in cached state now matches first photo
         cached_state = cache.get(f'overview_state_{user_id}')
         self.assertEqual(
-            cached_state["plants"][0]["thumbnail"],
+            cached_state["plants"][str(plant.uuid)]["thumbnail"],
             f"/media/{Photo.objects.all()[0].thumbnail.name}"
         )
 

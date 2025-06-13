@@ -118,8 +118,14 @@ def archived_overview(request, user):
         return HttpResponseRedirect('/')
 
     state = {
-        'plants': [plant.get_details() for plant in archived_plants],
-        'groups': [group.get_details() for group in archived_groups]
+        'plants': {
+            str(plant.uuid): plant.get_details()
+            for plant in archived_plants
+        },
+        'groups': {
+            str(group.uuid): group.get_details()
+            for group in archived_groups
+        },
     }
 
     return render_react_app(

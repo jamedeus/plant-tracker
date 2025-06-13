@@ -1,6 +1,5 @@
 import { fireEvent } from '@testing-library/react';
 import createMockContext from 'src/testUtils/createMockContext';
-import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import { PageWrapper } from 'src/index';
 import App from '../App';
@@ -11,14 +10,17 @@ describe('App', () => {
 
     beforeAll(() => {
         // Create mock state objects (flip all archived bools to true)
-        bulkCreateMockContext({ ...mockContext,
-            plants: mockContext.plants.map(plant => (
-                { ...plant, archived: true }
-            )),
-            groups: mockContext.groups.map(group => (
-                { ...group, archived: true }
-            ))
-        });
+        createMockContext('plants', Object.fromEntries(
+            Object.entries(mockContext.plants).map(
+                ([uuid, plant]) => [ uuid, { ...plant, archived: true } ]
+            )
+        ));
+        createMockContext('groups', Object.fromEntries(
+            Object.entries(mockContext.groups).map(
+                ([uuid, group]) => [ uuid, { ...group, archived: true } ]
+            )
+        ));
+        createMockContext('show_archive', mockContext.show_archive);
         createMockContext('user_accounts_enabled', true);
 
         // Mock window.location to simulate archived overview

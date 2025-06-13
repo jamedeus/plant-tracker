@@ -81,16 +81,16 @@ def build_overview_state(user):
     show_archive = has_archived_plants or has_archived_groups
 
     state = {
-        'plants': [],
-        'groups': [],
+        'plants': {
+            str(plant.uuid): plant.get_details()
+            for plant in Plant.objects.filter(archived=False, user=user)
+        },
+        'groups': {
+            str(group.uuid): group.get_details()
+            for group in Group.objects.filter(archived=False, user=user)
+        },
         'show_archive': show_archive
     }
-
-    for plant in Plant.objects.filter(archived=False, user=user):
-        state['plants'].append(plant.get_details())
-
-    for group in Group.objects.filter(archived=False, user=user):
-        state['groups'].append(group.get_details())
 
     # Cache state indefinitely (updates automatically when database changes)
     cache.set(f'overview_state_{user.pk}', state, None)

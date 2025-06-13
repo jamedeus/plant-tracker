@@ -129,8 +129,8 @@ class OverviewTests(TestCase):
         self.assertEqual(
             response.context['state'],
             {
-                'plants': [],
-                'groups': [],
+                'plants': {},
+                'groups': {},
                 'show_archive': False
             }
         )
@@ -182,8 +182,8 @@ class OverviewTests(TestCase):
         state = response.context['state']
         self.assertEqual(
             state['plants'],
-            [
-                {
+            {
+                str(plant1.uuid): {
                     'uuid': str(plant1.uuid),
                     'created': plant1.created.isoformat(),
                     'archived': False,
@@ -196,7 +196,7 @@ class OverviewTests(TestCase):
                     'last_watered': None,
                     'last_fertilized': None
                 },
-                {
+                str(plant2.uuid): {
                     'uuid': str(plant2.uuid),
                     'created': plant2.created.isoformat(),
                     'archived': False,
@@ -209,12 +209,12 @@ class OverviewTests(TestCase):
                     'last_watered': None,
                     'last_fertilized': None
                 }
-            ]
+            }
         )
         self.assertEqual(
             state['groups'],
-            [
-                {
+            {
+                str(group.uuid): {
                     'uuid': str(group.uuid),
                     'created': group.created.isoformat(),
                     'archived': False,
@@ -224,7 +224,7 @@ class OverviewTests(TestCase):
                     'description': None,
                     'plants': 1
                 }
-            ]
+            }
         )
 
     def test_overview_page_cached_state(self):
@@ -254,8 +254,8 @@ class OverviewTests(TestCase):
         self.assertEqual(
             response.json(),
             {
-                'plants': [],
-                'groups': [],
+                'plants': {},
+                'groups': {},
                 'show_archive': False
             }
         )
@@ -580,8 +580,8 @@ class ArchivedOverviewTests(TestCase):
         state = response.context['state']
         self.assertEqual(
             state['plants'],
-            [
-                {
+            {
+                str(plant.uuid): {
                     'uuid': str(plant.uuid),
                     'created': plant.created.isoformat(),
                     'archived': True,
@@ -594,12 +594,12 @@ class ArchivedOverviewTests(TestCase):
                     'last_watered': None,
                     'last_fertilized': None
                 }
-            ]
+            }
         )
         self.assertEqual(
             state['groups'],
-            [
-                {
+            {
+                str(group.uuid): {
                     'uuid': str(group.uuid),
                     'created': group.created.isoformat(),
                     'archived': True,
@@ -609,7 +609,7 @@ class ArchivedOverviewTests(TestCase):
                     'description': None,
                     'plants': 0
                 }
-            ]
+            }
         )
 
 
