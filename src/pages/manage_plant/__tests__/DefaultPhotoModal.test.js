@@ -50,7 +50,14 @@ describe('DefaultPhotoModal', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                default_photo: "/media/thumbnails/photo1_thumb.webp"
+                default_photo: {
+                    set: true,
+                    timestamp: '2024-03-23T10:52:03+00:00',
+                    image: '/media/images/photo3.jpg',
+                    thumbnail: '/media/thumbnails/photo3_thumb.webp',
+                    preview: '/media/previews/photo3_preview.webp',
+                    key: 3
+                }
             })
         }));
 

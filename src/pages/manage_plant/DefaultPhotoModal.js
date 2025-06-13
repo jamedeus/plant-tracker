@@ -94,7 +94,8 @@ const DefaultPhotoModal = () => {
         );
         if (response.ok) {
             modalRef.current.close();
-            dispatch(defaultPhotoChanged(selected));
+            const data = await response.json();
+            dispatch(defaultPhotoChanged(data.default_photo));
         } else {
             const error = await response.json();
             openErrorModal(error);

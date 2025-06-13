@@ -317,10 +317,7 @@ export const timelineSlice = createSlice({
 
         // Takes object with same keys as defaultPhoto state
         defaultPhotoChanged(state, action) {
-            state.defaultPhoto = {
-                set: true,
-                ...action.payload
-            };
+            state.defaultPhoto = action.payload;
         },
     },
     extraReducers: builder => {

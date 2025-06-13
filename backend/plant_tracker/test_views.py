@@ -2668,9 +2668,17 @@ class PlantPhotoEndpointTests(TestCase):
 
         # Confirm response, confirm plant now has default_photo
         self.assertEqual(response.status_code, 200)
+        self.plant.refresh_from_db()
         self.assertEqual(
             response.json(),
-            {"default_photo": photo.get_thumbnail_url()}
+            {'default_photo': {
+                'set': True,
+                'timestamp': '2024-03-21T10:52:03+00:00',
+                'image': '/media/images/mock_photo.jpg',
+                'thumbnail': '/media/thumbnails/mock_photo_thumb.webp',
+                'preview': '/media/previews/mock_photo_preview.webp',
+                'key': photo.pk
+            }}
         )
         self.plant.refresh_from_db()
         self.assertEqual(self.plant.default_photo, photo)

@@ -984,4 +984,7 @@ def set_plant_default_photo(plant, data, **kwargs):
         plant.save()
     except Photo.DoesNotExist:
         return JsonResponse({"error": "unable to find photo"}, status=404)
-    return JsonResponse({"default_photo": plant.thumbnail_url}, status=200)
+    return JsonResponse(
+        {"default_photo": plant.get_default_photo_details()},
+        status=200
+    )
