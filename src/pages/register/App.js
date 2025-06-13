@@ -10,6 +10,7 @@ import PlantDetailsForm from 'src/components/PlantDetailsForm';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { FaXmark, FaCheck } from 'react-icons/fa6';
 import { DateTime } from 'luxon';
+import DetailsCard from './DetailsCard';
 
 const Form = memo(function Form({ setVisibleForm, plantFormRef, groupFormRef, showTabs, defaultValues }) {
     return (
@@ -67,31 +68,29 @@ Form.propTypes = {
 
 const ConfirmPrompt = ({
     prompt,
+    name,
     photo,
-    photoAltText,
+    type,
+    detailsParams,
     handleConfirm,
     handleReject,
     confirmButtonTitle,
     rejectButtonTitle
 }) => {
     return (
-        <div className="flex flex-col full-screen justify-center text-center gap-8 px-4">
-            <p className="text-lg font-bold mt-auto mb-8">
+        <div className="flex flex-col text-center gap-4 px-4 mt-2 mb-4">
+            <p className="text-lg md:text-xl font-bold">
                 {prompt}
             </p>
-            {photo && (
-                <div className="mx-auto p-4 bg-base-200 rounded-3xl">
-                    <img
-                        className="max-h-[50vh] rounded-xl object-contain"
-                        src={photo}
-                        alt={photoAltText}
-                        draggable={false}
-                    />
-                </div>
-            )}
+            <DetailsCard
+                name={name}
+                photo={photo}
+                type={type}
+                detailsParams={detailsParams}
+            />
 
             {/* Confirm/cancel buttons */}
-            <div className="flex gap-4 mx-auto mt-8 mb-auto">
+            <div className="flex gap-4 mx-auto">
                 <button
                     className="btn h-12 btn-error btn-square text-white"
                     onClick={handleReject}
@@ -113,8 +112,13 @@ const ConfirmPrompt = ({
 
 ConfirmPrompt.propTypes = {
     prompt: PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
     photo: PropTypes.string,
-    photoAltText: PropTypes.string,
+    type: PropTypes.oneOf([
+        "plant",
+        "group"
+    ]).isRequired,
+    detailsParams: PropTypes.object.isRequired,
     handleConfirm: PropTypes.func.isRequired,
     handleReject: PropTypes.func.isRequired,
     confirmButtonTitle: PropTypes.string.isRequired,
@@ -262,8 +266,10 @@ function App() {
         if (showConfirmQr) {
             return {
                 prompt: `Is this the new QR code for your ${changingQrCode.type}?`,
+                name: changingQrCode.instance.display_name,
                 photo: changingQrCode.preview,
-                photoAltText: `${changingQrCode.instance.display_name} photo`,
+                type: changingQrCode.type,
+                detailsParams: changingQrCode.instance,
                 handleConfirm: handleAcceptNewQrCode,
                 handleReject: handleRejectNewQrCode,
                 confirmButtonTitle: "Change QR code",
@@ -273,8 +279,10 @@ function App() {
             const parentPlantName = dividingFrom.plant_details.display_name;
             return {
                 prompt: `Was this plant divided from ${parentPlantName}?`,
+                name: parentPlantName,
                 photo: dividingFrom.default_photo.preview,
-                photoAltText: `${parentPlantName} photo`,
+                type: "plant",
+                detailsParams: dividingFrom.plant_details,
                 handleConfirm: handleAcceptDivision,
                 handleReject: handleRejectDivision,
                 confirmButtonTitle: "Plant was divided",

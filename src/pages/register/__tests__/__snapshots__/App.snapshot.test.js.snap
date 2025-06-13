@@ -308,15 +308,52 @@ exports[`App matches snapshot when changing group QR code 1`] = `
       />
     </div>
     <div
-      class="flex flex-col full-screen justify-center text-center gap-8 px-4"
+      class="flex flex-col text-center gap-4 px-4 mt-2 mb-4"
     >
       <p
-        class="text-lg font-bold mt-auto mb-8"
+        class="text-lg md:text-xl font-bold"
       >
         Is this the new QR code for your group?
       </p>
       <div
-        class="flex gap-4 mx-auto mt-8 mb-auto"
+        class="card p-4 gap-4"
+      >
+        <span
+          class="text-xl font-bold text-center"
+        >
+          Test Group
+        </span>
+        <div
+          class="collapse group"
+        >
+          <input
+            checked=""
+            class="hidden pointer-events-none"
+            id="showDetails"
+            type="checkbox"
+          />
+          <div
+            class="collapse-content mx-auto max-w-72 w-full"
+          >
+            <p
+              class="flex"
+            >
+              <span
+                class="font-semibold break-keep mr-4"
+              >
+                Location:
+              </span>
+              <span
+                class="ml-auto text-right line-clamp-1 break-all"
+              >
+                Nowhere
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div
+        class="flex gap-4 mx-auto"
       >
         <button
           class="btn h-12 btn-error btn-square text-white"
@@ -445,25 +482,97 @@ exports[`App matches snapshot when changing plant QR code 1`] = `
       />
     </div>
     <div
-      class="flex flex-col full-screen justify-center text-center gap-8 px-4"
+      class="flex flex-col text-center gap-4 px-4 mt-2 mb-4"
     >
       <p
-        class="text-lg font-bold mt-auto mb-8"
+        class="text-lg md:text-xl font-bold"
       >
         Is this the new QR code for your plant?
       </p>
       <div
-        class="mx-auto p-4 bg-base-200 rounded-3xl"
+        class="card p-4 gap-4"
       >
+        <span
+          class="text-xl font-bold text-center"
+        >
+          Test Plant
+        </span>
         <img
           alt="Test Plant photo"
-          class="max-h-[50vh] rounded-xl object-contain"
+          class="rounded-xl object-cover aspect-square w-full"
           draggable="false"
           src="/media/previews/photo_preview.webp"
         />
+        <div
+          class="collapse group"
+        >
+          <input
+            class="hidden pointer-events-none"
+            id="showDetails"
+            type="checkbox"
+          />
+          <div
+            class="collapse-title min-h-0 text-sm md:text-base"
+          >
+            <label
+              aria-label="Show details"
+              class="transition-opacity duration-300 group-has-checked:opacity-0"
+              for="showDetails"
+              tabindex="-1"
+            >
+              Show details
+            </label>
+          </div>
+          <div
+            class="collapse-content mx-auto max-w-72 w-full"
+          >
+            <p
+              class="flex"
+            >
+              <span
+                class="font-semibold break-keep mr-4"
+              >
+                Species:
+              </span>
+              <span
+                class="ml-auto text-right line-clamp-1 break-all"
+              >
+                Calathea
+              </span>
+            </p>
+            <p
+              class="flex"
+            >
+              <span
+                class="font-semibold break-keep mr-4"
+              >
+                Pot size:
+              </span>
+              <span
+                class="ml-auto text-right line-clamp-1 break-all"
+              >
+                4
+              </span>
+            </p>
+            <div
+              class="text-center"
+            >
+              <p
+                class="font-semibold mt-3"
+              >
+                Description:
+              </p>
+              <p
+                class="text-sm line-clamp-6 break-anywhere"
+              >
+                This is a plant with a long description
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
       <div
-        class="flex gap-4 mx-auto mt-8 mb-auto"
+        class="flex gap-4 mx-auto"
       >
         <button
           class="btn h-12 btn-error btn-square text-white"
@@ -592,25 +701,83 @@ exports[`App matches snapshot when plant division in progress 1`] = `
       />
     </div>
     <div
-      class="flex flex-col full-screen justify-center text-center gap-8 px-4"
+      class="flex flex-col text-center gap-4 px-4 mt-2 mb-4"
     >
       <p
-        class="text-lg font-bold mt-auto mb-8"
+        class="text-lg md:text-xl font-bold"
       >
         Was this plant divided from Test Plant?
       </p>
       <div
-        class="mx-auto p-4 bg-base-200 rounded-3xl"
+        class="card p-4 gap-4"
       >
+        <span
+          class="text-xl font-bold text-center"
+        >
+          Test Plant
+        </span>
         <img
           alt="Test Plant photo"
-          class="max-h-[50vh] rounded-xl object-contain"
+          class="rounded-xl object-cover aspect-square w-full"
           draggable="false"
           src="/media/previews/photo_preview.webp"
         />
+        <div
+          class="collapse group"
+        >
+          <input
+            class="hidden pointer-events-none"
+            id="showDetails"
+            type="checkbox"
+          />
+          <div
+            class="collapse-title min-h-0 text-sm md:text-base"
+          >
+            <label
+              aria-label="Show details"
+              class="transition-opacity duration-300 group-has-checked:opacity-0"
+              for="showDetails"
+              tabindex="-1"
+            >
+              Show details
+            </label>
+          </div>
+          <div
+            class="collapse-content mx-auto max-w-72 w-full"
+          >
+            <p
+              class="flex"
+            >
+              <span
+                class="font-semibold break-keep mr-4"
+              >
+                Species:
+              </span>
+              <span
+                class="ml-auto text-right line-clamp-1 break-all"
+              >
+                Calathea
+              </span>
+            </p>
+            <p
+              class="flex"
+            >
+              <span
+                class="font-semibold break-keep mr-4"
+              >
+                Pot size:
+              </span>
+              <span
+                class="ml-auto text-right line-clamp-1 break-all"
+              >
+                4
+              </span>
+            </p>
+          </div>
+        </div>
       </div>
       <div
-        class="flex gap-4 mx-auto mt-8 mb-auto"
+        class="flex gap-4 mx-auto"
       >
         <button
           class="btn h-12 btn-error btn-square text-white"
