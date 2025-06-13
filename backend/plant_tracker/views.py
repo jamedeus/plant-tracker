@@ -302,6 +302,17 @@ def register_plant(user, data, **kwargs):
             plant.full_clean()
             plant.save()
 
+        # If divided from existing plant: create RepotEvent with parent plant
+        # pot size as old and current pot size as new
+        if plant.divided_from:
+            with transaction.atomic():
+                RepotEvent.objects.create(
+                    plant=plant,
+                    timestamp=plant.created,
+                    old_pot_size=plant.divided_from.pot_size,
+                    new_pot_size=plant.pot_size
+                )
+
         # Redirect to manage page
         return HttpResponseRedirect(f'/manage/{data["uuid"]}')
 

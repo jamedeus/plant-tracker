@@ -646,6 +646,8 @@ class RegistrationTests(TestCase):
         # Confirm new plant exists in database, confirm no group was created
         self.assertEqual(len(Plant.objects.all()), 1)
         self.assertEqual(len(Group.objects.all()), 0)
+        # Confirm no repot event was created (not divided from existing plant)
+        self.assertEqual(len(RepotEvent.objects.all()), 0)
 
         # Confirm plant has correct params, confirm extra spaces were removed
         plant = Plant.objects.get(uuid=test_id)
@@ -662,8 +664,13 @@ class RegistrationTests(TestCase):
 
     def test_register_plant_divided_from_existing_plant(self):
         # Create existing plant to divide from
-        existing_plant = Plant.objects.create(user=self.default_user, uuid=uuid4())
+        existing_plant = Plant.objects.create(
+            user=self.default_user,
+            uuid=uuid4(),
+            pot_size=8
+        )
         self.assertEqual(len(Plant.objects.all()), 1)
+        self.assertEqual(len(RepotEvent.objects.all()), 0)
 
         # Simulate division in progress (user hit /divide_plant endpoint)
         division_event = DivisionEvent.objects.create(
@@ -701,6 +708,14 @@ class RegistrationTests(TestCase):
         # Confirm new plant is in existing_plant children queryset
         self.assertIn(new_plant, existing_plant.children.all())
 
+        # Confirm RepotEvent was created for new plant with same timestamp
+        self.assertEqual(len(RepotEvent.objects.all()), 1)
+        repot = RepotEvent.objects.all().first()
+        self.assertEqual(repot.timestamp, new_plant.created)
+        # Confirm RepotEvent has parent pot size for old, child pot size for new
+        self.assertEqual(repot.old_pot_size, 8)
+        self.assertEqual(repot.new_pot_size, 4)
+
     def test_register_unrelated_plant_while_division_in_progress(self):
         # Create existing plant, simulate division in progress
         existing_plant = Plant.objects.create(user=self.default_user, uuid=uuid4())
@@ -735,6 +750,8 @@ class RegistrationTests(TestCase):
         new_plant = Plant.objects.get(name='Geoppertia prop')
         self.assertIsNone(new_plant.divided_from)
         self.assertIsNone(new_plant.divided_from_event)
+        # Confirm no repot event was created (not divided from existing plant)
+        self.assertEqual(len(RepotEvent.objects.all()), 0)
 
     def test_register_group_endpoint(self):
         # Confirm no plants or groups in database
