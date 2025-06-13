@@ -61,7 +61,7 @@ const EventsCol = ({ type, selectedRef, handleSelect }) => {
 
     return (
         <div className={
-            "flex flex-col items-center gap-4 h-[50vh] overflow-y-scroll px-4"
+            "flex flex-col items-center gap-4 h-[50vh] overflow-y-auto px-4"
         }>
             {events.length > 0 ? (
                 events.map((timestamp) => (

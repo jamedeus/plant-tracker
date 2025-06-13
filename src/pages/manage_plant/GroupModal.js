@@ -41,7 +41,7 @@ const GroupModal = () => {
 
     return (
         <Modal title='Add plant to group' ref={modalRef}>
-            <div className="flex flex-col px-4 overflow-y-scroll">
+            <div className="flex flex-col px-4 overflow-y-auto">
                 {groupOptions.map(group => (
                     <div
                         key={group.uuid}
