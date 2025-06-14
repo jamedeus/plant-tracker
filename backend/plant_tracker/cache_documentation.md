@@ -15,7 +15,7 @@ This should be updated when:
 
 ### `old_uuid_{user_primary_key}`
 - Stores UUID of plant/group expecting new UUID
-- Includes database primary key of user that requested to change QR code (avoid collisions)
+- Name includes database primary key of user that requested to change QR code (avoid collisions)
 - Set by `/change_qr_code`
   * Expires in 15 minutes
   * Deleted by `views.render_registration_page` if it receives a request from same user containing a UUID that does not exist in the database
@@ -24,20 +24,20 @@ This should be updated when:
 ### `division_in_progress_{user_primary_key}`
 - Stores object with `divided_from_plant_uuid` (uuid) and `division_event_key` (DivisionEvent primary key) keys
 - Used by `views.render_registration_page` (adds values to context so frontend can post `/register_plant` payload that creates database relations between parent plant, new child plant, and DivisionEvent)
-- Includes database primary key of user that divided plant (avoid collisions)
+- Name includes database primary key of user that divided plant (avoid collisions)
 - Set by `/divide_plant`
   * Expires in 15 minutes
 
 ### `unnamed_plants_{user_primary_key}`
 - Stores list of primary key ints for each unnamed plant owned by a user
-- Includes database primary key of user account that owns plants
+- Name includes database primary key of user account that owns plants
 - Set by `models.get_unnamed_plants`
   * Expires in 10 minutes
   * Deleted if Plant model owned by same user is saved or deleted (`models.clear_cached_plant_lists`)
 
 ### `unnamed_groups_{user_primary_key}`
 - Stores list of primary key ints for each unnamed group owned by a user
-- Includes database primary key of user account that owns groups
+- Name includes database primary key of user account that owns groups
 - Set by `models.get_unnamed_groups`
   * Expires in 10 minutes
   * Deleted if Group model owned by same user is saved or deleted (`models.clear_cached_group_lists`)
@@ -45,7 +45,7 @@ This should be updated when:
 ### `plant_options_{user_primary_key}`
 - Stores dict with plant uuids as keys and plant details dict as values
 - Contains all plants that are not in a group, used to populate add plants modal cards
-- Includes database primary key of user account that owns plants
+- Name includes database primary key of user account that owns plants
 - Set by `models.get_plant_options`,
   * Never expires
   * Updated if Plant model owned by same user saved (`tasks.update_instance_details_in_cached_plant_options_hook`)
@@ -54,7 +54,7 @@ This should be updated when:
 
 ### `group_options_{user_primary_key}`
 - Stores list of dicts with group attributes used to populate add plant to group modal
-- Includes database primary key of user account that owns groups
+- Name includes database primary key of user account that owns groups
 - Set by `models.get_group_options`
   * Never expires
   * Deleted if Group model owned by same user saved or deleted (replaced after 30 second delay) (`tasks.update_cached_group_options_hook`)
@@ -69,7 +69,7 @@ This should be updated when:
 
 ### `overview_state_{user_primary_key}`
 - Stores overview page state
-- Includes database primary key of user account that owns plants/groups in state
+- Name includes database primary key of user account that owns plants/groups in state
 - Set by `tasks.build_overview_state` (only called when cache does not already exist)
   * Never expires
   * Updated when Plant model owned by same user saved (`tasks.update_instance_details_in_cached_overview_state_hook`)
