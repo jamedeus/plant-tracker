@@ -72,8 +72,8 @@ This should be updated when:
 - Name includes database primary key of user account that owns plants/groups in state
 - Set by `tasks.build_overview_state` (only called when cache does not already exist)
   * Never expires
-  * Updated when Plant model owned by same user saved (`tasks.update_instance_details_in_cached_overview_state_hook`)
-  * Updated when Group model owned by same user saved (`tasks.update_instance_details_in_cached_overview_state_hook`)
+  * Updated when Plant model owned by same user saved (`tasks.update_plant_details_in_cached_overview_state_hook`)
+  * Updated when Group model owned by same user saved (`tasks.update_group_details_in_cached_overview_state_hook`)
   * Updated when Plant model owned by same user deleted (`tasks.remove_deleted_instance_from_cached_overview_state_hook`)
   * Updated when Group model owned by same user deleted (`tasks.remove_deleted_instance_from_cached_overview_state_hook`)
   * Updated when WaterEvent or FertilizeEvent owned by same user saved (`views.add_plant_event`, `views.bulk_add_plant_events`)

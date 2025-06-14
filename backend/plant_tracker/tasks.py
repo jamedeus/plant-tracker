@@ -155,13 +155,23 @@ def remove_group_from_cached_overview_state(group):
 
 
 @receiver(post_save, sender=Plant)
-@receiver(post_save, sender=Group)
-def update_instance_details_in_cached_overview_state_hook(instance, **kwargs):
-    '''Updates plant or group details in the cached overview state for the user
-    who owns the updated plant or group.
+def update_plant_details_in_cached_overview_state_hook(instance, **kwargs):
+    '''Updates plant details in the cached overview state for the user who owns
+    the updated plant. Removes plant from cached state if plant is archived.
     '''
-    if isinstance(instance, Plant):
+    if instance.archived:
+        remove_plant_from_cached_overview_state(instance)
+    else:
         update_plant_in_cached_overview_state(instance)
+
+
+@receiver(post_save, sender=Group)
+def update_group_details_in_cached_overview_state_hook(instance, **kwargs):
+    '''Updates group details in the cached overview state for the user who owns
+    the updated group. Removes group from cached state if group is archived.
+    '''
+    if instance.archived:
+        remove_group_from_cached_overview_state(instance)
     else:
         update_group_in_cached_overview_state(instance)
 

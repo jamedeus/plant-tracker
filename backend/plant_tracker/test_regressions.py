@@ -937,6 +937,30 @@ class CachedStateRegressionTests(TestCase):
             self.assertIsNone(cache.get(f'rebuild_{plant.uuid}_state_task_id'))
             mock_revoke.assert_any_call(scheduled_task_id, terminate=True)
 
+    def test_archived_plants_added_to_main_overview_state_when_saved(self):
+        '''Issue: tasks.update_instance_details_in_cached_overview_state_hook
+        added/updated plant details to cached overview state whenever a plant
+        was saved, without checking if it was archived (should not appear on
+        main overview). This caused archived plants to be immediately added
+        back to the overview state.
+        '''
+
+        # Create test plant, confirm added to cached overview state
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        overview_state = cache.get(f'overview_state_{plant.user.pk}')
+        self.assertIn(str(plant.uuid), overview_state['plants'])
+
+        # Simulate user archiving plant
+        response = JSONClient().post('/archive_plant', {
+            'plant_id': str(plant.uuid),
+            'archived': True
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm plant removed from overview state
+        overview_state = cache.get(f'overview_state_{plant.user.pk}')
+        self.assertNotIn(str(plant.uuid), overview_state['plants'])
+
 
 class ViewDecoratorRegressionTests(TestCase):
     def setUp(self):
