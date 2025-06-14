@@ -21,7 +21,7 @@ const GroupsCol = ({ groups, editing, formRef, storageKey, onOpenTitle, children
         <FilterColumn
             title="Groups"
             onOpenTitle={onOpenTitle}
-            contents={groups}
+            contents={Object.values(groups)}
             CardComponent={GroupCard}
             editing={editing}
             formRef={formRef}
@@ -36,7 +36,18 @@ const GroupsCol = ({ groups, editing, formRef, storageKey, onOpenTitle, children
 };
 
 GroupsCol.propTypes = {
-    groups: PropTypes.array.isRequired,
+    groups: PropTypes.objectOf(
+        PropTypes.exact({
+            name: PropTypes.string,
+            display_name: PropTypes.string.isRequired,
+            uuid: PropTypes.string.isRequired,
+            created: PropTypes.string.isRequired,
+            plants: PropTypes.number.isRequired,
+            description: PropTypes.string,
+            location: PropTypes.string,
+            archived: PropTypes.bool.isRequired
+        })
+    ).isRequired,
     editing: PropTypes.bool.isRequired,
     formRef: PropTypes.oneOfType([
         PropTypes.func,

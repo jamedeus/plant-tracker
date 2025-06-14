@@ -16,7 +16,9 @@ const Layout = ({
     groupsColRef
 }) => {
     // Determines if 2-column layout or single centered column
-    const twoColumns = plants.length > 0 && groups.length > 0;
+    const hasPlants = Object.keys(plants).length > 0;
+    const hasGroups = Object.keys(groups).length > 0;
+    const twoColumns = hasPlants && hasGroups;
 
     return (
         <div className={clsx(
@@ -24,7 +26,7 @@ const Layout = ({
             twoColumns && 'md:grid-cols-2'
         )}>
             {/* Render plants column if 1 or more plants exist */}
-            {plants.length > 0 && (
+            {hasPlants && (
                 <div
                     className={clsx(
                         'scroll-mt-20',
@@ -42,7 +44,7 @@ const Layout = ({
                 </div>
             )}
             {/* Render groups column if 1 or more groups exist */}
-            {groups.length > 0 && (
+            {hasGroups && (
                 <div
                     className={clsx(
                         'scroll-mt-20',
@@ -60,7 +62,7 @@ const Layout = ({
                 </div>
             )}
             {/* Render setup instructions if database is empty */}
-            {plants.length === 0 && groups.length === 0 && (
+            {!hasPlants && !hasGroups && (
                 <Setup />
             )}
         </div>
@@ -68,8 +70,8 @@ const Layout = ({
 };
 
 Layout.propTypes = {
-    plants: PropTypes.array.isRequired,
-    groups: PropTypes.array.isRequired,
+    plants: PropTypes.object.isRequired,
+    groups: PropTypes.object.isRequired,
     selectedPlantsRef: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.instanceOf(Element) }),

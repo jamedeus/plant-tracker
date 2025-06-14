@@ -350,7 +350,7 @@ const FilterColumn = ({
 
     return (
         <SectionCol
-            title={`${title} (${Object.keys(state.currentContents).length})`}
+            title={`${title} (${state.currentContents.length})`}
             titleOptions={titleOptions}
             onOpenTitle={onOpenTitle}
             headerChildren={

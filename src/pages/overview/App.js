@@ -283,8 +283,8 @@ function App() {
             />
 
             <Layout
-                plants={Object.values(plants)}
-                groups={Object.values(groups)}
+                plants={plants}
+                groups={groups}
                 selectedPlantsRef={selectedPlantsRef}
                 selectedGroupsRef={selectedGroupsRef}
                 editing={editing}

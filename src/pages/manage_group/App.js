@@ -316,7 +316,7 @@ function App() {
 
             <div className="px-4 relative">
                 <PlantsCol
-                    plants={Object.values(plantDetails)}
+                    plants={plantDetails}
                     editing={selectingPlants}
                     formRef={selectedPlantsRef}
                     storageKey={`group-${group.uuid}`}

@@ -26,7 +26,7 @@ const PlantsCol = ({ plants, editing, formRef, storageKey, titleOptions, onOpenT
             title="Plants"
             titleOptions={titleOptions}
             onOpenTitle={onOpenTitle}
-            contents={plants}
+            contents={Object.values(plants)}
             CardComponent={PlantCard}
             editing={editing}
             formRef={formRef}
@@ -41,7 +41,21 @@ const PlantsCol = ({ plants, editing, formRef, storageKey, titleOptions, onOpenT
 };
 
 PlantsCol.propTypes = {
-    plants: PropTypes.array.isRequired,
+    plants: PropTypes.objectOf(
+        PropTypes.exact({
+            name: PropTypes.string,
+            display_name: PropTypes.string.isRequired,
+            uuid: PropTypes.string.isRequired,
+            created: PropTypes.string.isRequired,
+            species: PropTypes.string,
+            description: PropTypes.string,
+            pot_size: PropTypes.number,
+            last_watered: PropTypes.string,
+            last_fertilized: PropTypes.string,
+            thumbnail: PropTypes.string,
+            archived: PropTypes.bool.isRequired
+        })
+    ).isRequired,
     editing: PropTypes.bool.isRequired,
     formRef: PropTypes.oneOfType([
         PropTypes.func,
