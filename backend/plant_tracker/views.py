@@ -39,7 +39,7 @@ from .view_decorators import (
 )
 from .tasks import (
     get_overview_state,
-    schedule_cached_overview_state_update,
+    update_plant_in_cached_overview_state,
     get_manage_plant_state,
     schedule_cached_group_options_update
 )
@@ -555,7 +555,7 @@ def bulk_archive_plants_and_groups(user, data, **kwargs):
 @get_plant_from_post_body
 @get_timestamp_from_post_body
 @get_event_type_from_post_body
-def add_plant_event(user, plant, timestamp, event_type, **kwargs):
+def add_plant_event(plant, timestamp, event_type, **kwargs):
     '''Creates new Event entry with requested type for specified Plant entry.
     Requires JSON POST with plant_id (uuid), event_type, and timestamp keys.
     '''
@@ -567,8 +567,9 @@ def add_plant_event(user, plant, timestamp, event_type, **kwargs):
                 timestamp=timestamp
             )
 
-        # Create task to update cached overview state (last_watered outdated)
-        schedule_cached_overview_state_update(user)
+        # Update last_watered or last_fertilized in cached overview state
+        if event_type in ("water", "fertilize"):
+            update_plant_in_cached_overview_state(plant)
 
         return JsonResponse(
             {"action": event_type, "plant": plant.uuid},
@@ -603,13 +604,13 @@ def bulk_add_plant_events(user, timestamp, event_type, data, **kwargs):
                         timestamp=timestamp
                     )
                 added.append(plant_id)
+                # Update last_watered or last_fertilized in cached overview state
+                if event_type in ("water", "fertilize"):
+                    update_plant_in_cached_overview_state(plant)
             except IntegrityError:
                 failed.append(plant_id)
         else:
             failed.append(plant_id)
-
-    # Create task to update cached overview state (last_watered outdated)
-    schedule_cached_overview_state_update(user)
 
     # Return 200 if at least 1 succeeded, otherwise return error
     return JsonResponse(
@@ -623,7 +624,7 @@ def bulk_add_plant_events(user, timestamp, event_type, data, **kwargs):
 @get_plant_from_post_body
 @get_timestamp_from_post_body
 @get_event_type_from_post_body
-def delete_plant_event(user, plant, timestamp, event_type, **kwargs):
+def delete_plant_event(plant, timestamp, event_type, **kwargs):
     '''Deletes the Event matching the plant, type, and timestamp specified in body.
     Requires JSON POST with plant_id (uuid), event_type, and timestamp keys.
     '''
@@ -631,8 +632,9 @@ def delete_plant_event(user, plant, timestamp, event_type, **kwargs):
         event = events_map[event_type].objects.get(plant=plant, timestamp=timestamp)
         event.delete()
 
-        # Create task to update cached overview state (last_watered outdated)
-        schedule_cached_overview_state_update(user)
+        # Update last_watered or last_fertilized in cached overview state
+        if event_type in ("water", "fertilize"):
+            update_plant_in_cached_overview_state(plant)
 
         return JsonResponse({"deleted": event_type, "plant": plant.uuid}, status=200)
     except events_map[event_type].DoesNotExist:
@@ -642,7 +644,7 @@ def delete_plant_event(user, plant, timestamp, event_type, **kwargs):
 @get_user_token
 @requires_json_post(["plant_id", "events"])
 @get_plant_from_post_body
-def bulk_delete_plant_events(user, plant, data, **kwargs):
+def bulk_delete_plant_events(plant, data, **kwargs):
     '''Deletes a list of events (any type) associated with a single plant.
     Requires JSON POST with plant_id (uuid) and events (list of dicts) keys.
     The events list must contain dicts with timestamp and type keys.
@@ -662,8 +664,9 @@ def bulk_delete_plant_events(user, plant, data, **kwargs):
         except events_map[event["type"]].DoesNotExist:
             failed.append(event)
 
-    # Create task to update cached overview state (last_watered outdated)
-    schedule_cached_overview_state_update(user)
+    # Update last_watered or last_fertilized in cached overview state
+    if any(event['type'] in ("water", "fertilize") for event in data["events"]):
+        update_plant_in_cached_overview_state(plant)
 
     return JsonResponse({"deleted": deleted, "failed": failed}, status=200)
 

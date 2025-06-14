@@ -26,7 +26,6 @@ from .tasks import (
     revoke_queued_task,
     schedule_cached_state_update,
     update_cached_overview_state,
-    schedule_cached_overview_state_update,
     update_cached_manage_plant_state,
     schedule_cached_manage_plant_state_update,
     update_all_cached_states
@@ -58,10 +57,10 @@ class HelperFunctionTests(TestCase):
             mock_cache_get.return_value = 'mock_task_id'
 
             # Call function to revoke scheduled task
-            revoke_queued_task('rebuild_overview_state_task_id')
+            revoke_queued_task('rebuild_state_task_id')
 
             # Confirm correct cache key was looked up
-            mock_cache_get.assert_called_once_with('rebuild_overview_state_task_id')
+            mock_cache_get.assert_called_once_with('rebuild_state_task_id')
 
             # Confirm mock task ID was revoked
             mock_revoke.assert_called_once_with('mock_task_id', terminate=True)
@@ -73,10 +72,10 @@ class HelperFunctionTests(TestCase):
             mock_cache_get.return_value = None
 
             # Call function to revoke scheduled task
-            revoke_queued_task('rebuild_overview_state_task_id')
+            revoke_queued_task('rebuild_state_task_id')
 
             # Confirm correct cache key was looked up, revoke was not called
-            mock_cache_get.assert_called_once_with('rebuild_overview_state_task_id')
+            mock_cache_get.assert_called_once_with('rebuild_state_task_id')
             mock_revoke.assert_not_called()
 
     def test_schedule_cached_state_update(self):
@@ -120,16 +119,16 @@ class HelperFunctionTests(TestCase):
             mock_cache_set.assert_called_once_with(f'rebuild_{uuid}_state_task_id', 'mock_task_id', 30)
 
     def test_update_all_cached_states(self):
-        # Replace all cache keys with dummy strings
-        default_user = get_default_user()
-        cache.set(f'overview_state_{default_user.pk}', 'foo')
-        cache.set(f'plant_options_{default_user.pk}', 'foo')
-        cache.set(f'group_options_{default_user.pk}', 'foo')
-
         # Create 5 Plant entries, cache dummy string for each
+        default_user = get_default_user()
         for _ in range(0, 5):
             plant = Plant.objects.create(uuid=uuid4(), user=default_user)
             cache.set(f'{plant.uuid}_state', 'foo')
+
+        # Replace all cache keys with dummy strings
+        cache.set(f'overview_state_{default_user.pk}', 'foo')
+        cache.set(f'plant_options_{default_user.pk}', 'foo')
+        cache.set(f'group_options_{default_user.pk}', 'foo')
 
         # Call update_all_cached_states method
         update_all_cached_states()
@@ -158,21 +157,6 @@ class TaskTests(TestCase):
         update_cached_overview_state.delay(user_id)
 
         # Confirm overview state was generated and cached
-        self.assertTrue(isinstance(cache.get(f'overview_state_{user_id}'), dict))
-
-    def test_schedule_cached_overview_state_update(self):
-        # Mock existing cached overview state (should be replaced)
-        user_id = get_default_user().pk
-        cache.set(f'overview_state_{user_id}', 'mock_state')
-
-        # Call function to schedule rebuild task (runs immediately in tests)
-        schedule_cached_overview_state_update(get_default_user())
-
-        # Confirm ID of rebuild task was cached
-        self.assertIsNotNone(cache.get(f'rebuild_overview_state_{user_id}_task_id'))
-
-        # Confirm existing cached state was replaced (not just cleared)
-        self.assertIsNotNone(cache.get(f'overview_state_{user_id}'))
         self.assertTrue(isinstance(cache.get(f'overview_state_{user_id}'), dict))
 
     def test_update_cached_manage_plant_state(self):
@@ -204,9 +188,8 @@ class TaskTests(TestCase):
         self.assertIsNotNone(cache.get(f'rebuild_{plant.uuid}_state_task_id'))
 
         # Confirm existing cached state was replaced (not just cleared)
-        user_id = get_default_user().pk
-        self.assertIsNotNone(cache.get(f'overview_state_{user_id}'))
-        self.assertTrue(isinstance(cache.get(f'overview_state_{user_id}'), dict))
+        self.assertIsNotNone(cache.get(f'{plant.uuid}_state'))
+        self.assertTrue(isinstance(cache.get(f'{plant.uuid}_state'), dict))
 
 
 class HookTests(TestCase):

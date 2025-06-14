@@ -71,7 +71,7 @@ def schedule_cached_state_update(cache_name, callback_task, callback_kwargs=None
 
 
 def build_overview_state(user):
-    '''Takes user, builds state parsed by overview react app and returns.
+    '''Takes user, builds state parsed by overview page, caches, and returns.
     Contains all non-archived plants and groups owned by user.
     '''
 
@@ -95,9 +95,6 @@ def build_overview_state(user):
     # Cache state indefinitely (updates automatically when database changes)
     cache.set(f'overview_state_{user.pk}', state, None)
 
-    # Revoke queued update tasks (prevent rebuilding again after manual call)
-    revoke_queued_task(f'rebuild_overview_state_{user.pk}_task_id')
-
     return state
 
 
@@ -119,29 +116,67 @@ def update_cached_overview_state(user_pk):
     print(f'Rebuilt overview state for {user_pk}')
 
 
-def schedule_cached_overview_state_update(user):
-    '''Takes user, clears cached state for their overview page immediately and
-    schedules task to update it in 30 seconds (timer resets if called again
-    within 30 seconds).
+def update_plant_in_cached_overview_state(plant):
+    '''Takes plant entry that was updated. Loads cached overview state,
+    overwrites plant details with current values, and re-caches.
     '''
-    schedule_cached_state_update(
-        cache_name=f'overview_state_{user.pk}',
-        callback_task=update_cached_overview_state,
-        callback_kwargs={'user_pk': user.pk},
-        delay=30
-    )
+    state = get_overview_state(plant.user)
+    state['plants'][str(plant.uuid)] = plant.get_details()
+    cache.set(f'overview_state_{plant.user.pk}', state, None)
+
+
+def remove_plant_from_cached_overview_state(plant):
+    '''Takes plant entry that was deleted. Loads cached overview state,
+    removes plant from plants key, and re-caches.
+    '''
+    state = get_overview_state(plant.user)
+    if str(plant.uuid) in state['plants']:
+        del state['plants'][str(plant.uuid)]
+        cache.set(f'overview_state_{plant.user.pk}', state, None)
+
+
+def update_group_in_cached_overview_state(group):
+    '''Takes group entry that was updated. Loads cached overview state,
+    overwrites group details with current values, and re-caches.
+    '''
+    state = get_overview_state(group.user)
+    state['groups'][str(group.uuid)] = group.get_details()
+    cache.set(f'overview_state_{group.user.pk}', state, None)
+
+
+def remove_group_from_cached_overview_state(group):
+    '''Takes group entry that was deleted. Loads cached overview state,
+    removes group from groups key, and re-caches.
+    '''
+    state = get_overview_state(group.user)
+    if str(group.uuid) in state['groups']:
+        del state['groups'][str(group.uuid)]
+        cache.set(f'overview_state_{group.user.pk}', state, None)
 
 
 @receiver(post_save, sender=Plant)
 @receiver(post_save, sender=Group)
+def update_instance_details_in_cached_overview_state_hook(instance, **kwargs):
+    '''Updates plant or group details in the cached overview state for the user
+    who owns the updated plant or group.
+    '''
+    if isinstance(instance, Plant):
+        update_plant_in_cached_overview_state(instance)
+    else:
+        update_group_in_cached_overview_state(instance)
+
+
 @receiver(post_delete, sender=Plant)
 @receiver(post_delete, sender=Group)
 @disable_for_loaddata
-def update_cached_overview_state_hook(instance, **kwargs):
-    '''Schedules task to update cached overview state for a specific user when
-    one of their Plant or Group models is saved or deleted.
+def remove_deleted_instance_from_cached_overview_state_hook(instance, **kwargs):
+    '''Removes deleted plant or group details from the cached overview state for
+    the user who owned the deleted plant or group.
     '''
-    schedule_cached_overview_state_update(instance.user)
+    if isinstance(instance, Plant):
+        remove_plant_from_cached_overview_state(instance)
+    else:
+        remove_group_from_cached_overview_state(instance)
 
 
 def build_manage_plant_state(uuid):

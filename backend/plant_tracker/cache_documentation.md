@@ -70,11 +70,13 @@ This should be updated when:
 - Includes database primary key of user account that owns plants/groups in state
 - Set by `tasks.build_overview_state` (only called when cache does not already exist)
   * Never expires
-  * Deleted when Plant model owned by same user saved or deleted (replaced after 30 second delay) (`tasks.update_cached_overview_state_hook`)
-  * Deleted when Group model owned by same user saved or deleted (replaced after 30 second delay) (`tasks.update_cached_overview_state_hook`)
-  * Deleted when any Event created by same user (replaced after 30 second delay) (`views.add_plant_event`, `views.bulk_add_plant_events`)
-  * Deleted when any Event deleted by same user (replaced after 30 second delay) (`views.delete_plant_event`, `views.bulk_delete_plant_events`)
-  * Deleted when server restarts (replaced immediately) (`tasks.update_all_cached_states`)
+  * Updated when Plant model owned by same user saved (`tasks.update_instance_details_in_cached_overview_state_hook`)
+  * Updated when Group model owned by same user saved (`tasks.update_instance_details_in_cached_overview_state_hook`)
+  * Updated when Plant model owned by same user deleted (`tasks.remove_deleted_instance_from_cached_overview_state_hook`)
+  * Updated when Group model owned by same user deleted (`tasks.remove_deleted_instance_from_cached_overview_state_hook`)
+  * Updated when WaterEvent or FertilizeEvent owned by same user saved (`views.add_plant_event`, `views.bulk_add_plant_events`)
+  * Updated when WaterEvent or FertilizeEvent owned by same user deleted (`views.delete_plant_event`, `views.bulk_delete_plant_events`)
+  * Overwritten when server restarts (`tasks.update_all_cached_states`)
 
 ### `{uuid}_state`
 - Stores manage_plant page state for the plant matching UUID (excluding the `group_options` and `species_options` keys which are cached separately)
