@@ -90,5 +90,7 @@ This should be updated when:
   * Deleted when associated Plant's parent (plant's `Plant.divided_from` ForeignKey points to parent) is deleted (not replaced) (`tasks.delete_parent_or_child_cached_manage_plant_state_hook`)
   * Deleted when associated Plant's child (child's `Plant.divided_from` ForeignKey points to plant) is deleted (not replaced) (`tasks.delete_parent_or_child_cached_manage_plant_state_hook`)
   * Deleted when associated Plant is deleted
-  * Deleted when WaterEvent, FertilizeEvent, PruneEvent, RepotEvent, DivisionEvent, NoteEvent, or Photo associated with Plant is saved or deleted (replaced after 30 second delay) (`tasks.update_cached_manage_plant_state_hook`)
+  * Deleted when WaterEvent, FertilizeEvent, PruneEvent, RepotEvent, DivisionEvent, or Photo associated with Plant is saved or deleted (replaced after 30 second delay) (`tasks.update_cached_manage_plant_state_hook`)
+  * Updated when a NoteEvent associated with Plant is saved or edited (`tasks.update_note_in_cached_manage_plant_state_hook`)
+  * Updated when a NoteEvent associated with Plant is deleted (`delete_note_from_cached_manage_plant_state_hook`)
   * Deleted when server restarts (replaced immediately) (`tasks.update_all_cached_states`)

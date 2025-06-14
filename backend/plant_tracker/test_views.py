@@ -1000,8 +1000,8 @@ class ManagePageTests(TestCase):
             }
         )
 
-        # Confirm notes list is empty (test plant has no notes)
-        self.assertEqual(state['notes'], [])
+        # Confirm notes dict is empty (test plant has no notes)
+        self.assertEqual(state['notes'], {})
 
         # Confirm species_options list is empty (test plants have no species)
         self.assertEqual(state['species_options'], [])
@@ -1086,19 +1086,13 @@ class ManagePageTests(TestCase):
         response = self.client.get(f'/manage/{self.plant1.uuid}')
         self.assertEqual(response.status_code, 200)
 
-        # Confirm notes list contains dicts with timestamp and text of both notes
+        # Confirm notes dict contains timestamp and text of both notes
         self.assertEqual(
             response.context['state']['notes'],
-            [
-                {
-                    'text': 'Leaves drooping, needs to be watered more often',
-                    'timestamp': '2024-02-06T03:06:26+00:00'
-                },
-                {
-                    'text': 'Looks much better now',
-                    'timestamp': '2024-02-16T03:06:26+00:00'
-                }
-            ]
+            {
+                '2024-02-06T03:06:26+00:00': 'Leaves drooping, needs to be watered more often',
+                '2024-02-16T03:06:26+00:00': 'Looks much better now'
+            }
         )
 
     def test_manage_plant_with_group(self):
@@ -1183,7 +1177,7 @@ class ManagePageTests(TestCase):
                     'prune': [],
                     'repot': []
                 },
-                'notes': [],
+                'notes': {},
                 'photos': [],
                 'default_photo': {
                     'set': False,

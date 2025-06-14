@@ -29,16 +29,10 @@ export const mockContext = {
         prune: [],
         repot: [],
     },
-    notes: [
-        {
-            timestamp: "2024-03-01T15:45:44+00:00",
-            text: "Fertilized with dilute 10-15-10 liquid fertilizer"
-        },
-        {
-            timestamp: "2024-02-26T12:44:12+00:00",
-            text: "One of the older leaves is starting to turn yellow"
-        }
-    ],
+    notes: {
+        "2024-03-01T15:45:44+00:00": "Fertilized with dilute 10-15-10 liquid fertilizer",
+        "2024-02-26T12:44:12+00:00": "One of the older leaves is starting to turn yellow"
+    },
     group_options: [
         {
             name: "Test group",
@@ -125,7 +119,7 @@ export const mockContextNoEvents = {
         prune: [],
         repot: [],
     },
-    notes: [],
+    notes: {},
     group_options: [
         {
             name: "Test group",
@@ -346,29 +340,11 @@ export const mockphotos = [
 ];
 
 
-export const mockNotes = [
-    {
-        timestamp: "2024-03-25T15:28:39+00:00",
-        text: "Fertilized with a balanced 10-10-10 fertilizer."
-    },
-    {
-        timestamp: "2024-02-21T21:21:17+00:00",
-        text: "Noticed some yellow leaves, reduced watering and moved it away from direct sunlight."
-    },
-    {
-        timestamp: "2023-11-21T11:57:26+00:00",
-        text: "Discovered aphids and applied the strongest pesticide I have, fuck aphids."
-    },
-    {
-        timestamp: "2023-09-12T01:59:28+00:00",
-        text: "Needs to get repotted soon, roots are starting to grow through the bottom."
-    },
-    {
-        timestamp: "2023-08-29T04:43:30+00:00",
-        text: "Pruned a little to encourage new growth, removed dead heads and weaker branches."
-    },
-    {
-        timestamp: "2008-08-22T19:00:43+00:00",
-        text: "Flowers look like they will open within a couple days."
-    }
-];
+export const mockNotes = {
+    "2024-03-25T15:28:39+00:00": "Fertilized with a balanced 10-10-10 fertilizer.",
+    "2024-02-21T21:21:17+00:00": "Noticed some yellow leaves, reduced watering and moved it away from direct sunlight.",
+    "2023-11-21T11:57:26+00:00": "Discovered aphids and applied the strongest pesticide I have, fuck aphids.",
+    "2023-09-12T01:59:28+00:00": "Needs to get repotted soon, roots are starting to grow through the bottom.",
+    "2023-08-29T04:43:30+00:00": "Pruned a little to encourage new growth, removed dead heads and weaker branches.",
+    "2008-08-22T19:00:43+00:00": "Flowers look like they will open within a couple days."
+};

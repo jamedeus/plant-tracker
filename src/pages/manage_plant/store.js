@@ -62,10 +62,13 @@ export const buildTimelineDays = (events, notes, photos, dividedFrom, divisionEv
     });
 
     // Add objects from notes context to notes key under correct dateKey
-    notes.forEach((note) => {
-        const dateKey = timestampToDateString(note.timestamp);
+    Object.entries(notes).forEach(([timestamp, text]) => {
+        const dateKey = timestampToDateString(timestamp);
         addDateKeyIfMissing(dateKey);
-        timelineDays[dateKey].notes.push(note);
+        timelineDays[dateKey].notes.push({
+            timestamp: timestamp,
+            text: text
+        });
     });
 
     // Add dividedFrom if has parent (adds link to parent at start of timeline)

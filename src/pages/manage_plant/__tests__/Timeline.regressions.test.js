@@ -43,12 +43,9 @@ describe('Timeline regressions', () => {
             },
         ]);
         // Create mock context with a single note in May
-        createMockContext('notes', [
-            {
-                timestamp: "2023-05-25T15:28:39+00:00",
-                text: "Fertilized with a balanced 10-10-10 fertilizer."
-            },
-        ]);
+        createMockContext('notes', {
+            "2023-05-25T15:28:39+00:00": "Fertilized with a balanced 10-10-10 fertilizer."
+        });
 
         // Render, get reference to to 2023 month options in QuickNavigation menu
         const app = render(

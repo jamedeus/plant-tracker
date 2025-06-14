@@ -751,8 +751,8 @@ def delete_plant_note(plant, timestamp, **kwargs):
     Requires JSON POST with plant_id (uuid) and timestamp keys.
     '''
     try:
-        event = NoteEvent.objects.get(plant=plant, timestamp=timestamp)
-        event.delete()
+        note = NoteEvent.objects.get(plant=plant, timestamp=timestamp)
+        note.delete()
         return JsonResponse({"deleted": "note", "plant": plant.uuid}, status=200)
     except NoteEvent.DoesNotExist:
         return JsonResponse({"error": "note not found"}, status=404)

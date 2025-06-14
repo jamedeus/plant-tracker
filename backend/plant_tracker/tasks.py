@@ -209,11 +209,11 @@ def build_manage_plant_state(uuid):
         'repot': plant.get_repot_timestamps()
     }
 
-    # Add timestamps and text of all notes
-    state['notes'] = [
-        {'timestamp': note.timestamp.isoformat(), 'text': note.text}
+    # Add notes dict with timestamps as keys and text as values
+    state['notes'] = {
+        note.timestamp.isoformat(): note.text
         for note in plant.noteevent_set.all()
-    ]
+    }
 
     # Add object with DivisionEvent timestamps as keys, list of child plant
     # objects as values (adds events to timeline with links to children)
@@ -294,14 +294,12 @@ def schedule_cached_manage_plant_state_update(uuid):
 @receiver(post_save, sender=FertilizeEvent)
 @receiver(post_save, sender=PruneEvent)
 @receiver(post_save, sender=RepotEvent)
-@receiver(post_save, sender=NoteEvent)
 @receiver(post_save, sender=DivisionEvent)
 @receiver(post_save, sender=Photo)
 @receiver(post_delete, sender=WaterEvent)
 @receiver(post_delete, sender=FertilizeEvent)
 @receiver(post_delete, sender=PruneEvent)
 @receiver(post_delete, sender=RepotEvent)
-@receiver(post_delete, sender=NoteEvent)
 @receiver(post_delete, sender=DivisionEvent)
 @receiver(post_delete, sender=Photo)
 @disable_for_loaddata
@@ -320,6 +318,24 @@ def update_cached_manage_plant_state_hook(instance, **kwargs):
 
     else:
         schedule_cached_manage_plant_state_update(instance.plant.uuid)
+
+
+@receiver(post_save, sender=NoteEvent)
+def update_note_in_cached_manage_plant_state_hook(instance, **kwargs):
+    '''Adds note to cached manage_plant state when the note is saved.'''
+    cached_state = cache.get(f'{instance.plant.uuid}_state')
+    if cached_state:
+        cached_state['notes'][instance.timestamp.isoformat()] = instance.text
+        cache.set(f'{instance.plant.uuid}_state', cached_state, None)
+
+
+@receiver(post_delete, sender=NoteEvent)
+def delete_note_from_cached_manage_plant_state_hook(instance, **kwargs):
+    '''Removes note from cached manage_plant state when the note is deleted.'''
+    cached_state = cache.get(f'{instance.plant.uuid}_state')
+    if cached_state:
+        del cached_state['notes'][instance.timestamp.isoformat()]
+        cache.set(f'{instance.plant.uuid}_state', cached_state, None)
 
 
 @receiver(pre_delete, sender=Plant)

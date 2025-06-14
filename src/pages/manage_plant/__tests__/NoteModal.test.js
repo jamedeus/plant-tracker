@@ -8,10 +8,10 @@ import { PageWrapper } from 'src/index';
 import { postHeaders } from 'src/testUtils/headers';
 import { mockContext } from './mockContext';
 
-const mockNotes = [
-    {text: 'this is an existing note', timestamp: '2024-02-13T12:00:00'},
-    {text: 'another existing note', timestamp: '2024-02-12T12:00:00'}
-];
+const mockNotes = {
+    '2024-02-13T12:00:00': 'this is an existing note',
+    '2024-02-12T12:00:00': 'another existing note'
+};
 
 const TestComponent = () => {
     return (
@@ -20,7 +20,10 @@ const TestComponent = () => {
             <button onClick={() => openNoteModal()}>
                 Add New Note
             </button>
-            <button onClick={() => openNoteModal(mockNotes[0])}>
+            <button onClick={() => openNoteModal({
+                timestamp: Object.keys(mockNotes)[0],
+                text: Object.values(mockNotes)[0]
+            })}>
                 Edit Existing Note
             </button>
         </ReduxProvider>
