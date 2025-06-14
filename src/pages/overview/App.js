@@ -120,12 +120,12 @@ function App() {
         // Remove deleted UUIDs from state
         if (response.ok) {
             const data = await response.json();
-            setPlants(Object.fromEntries(Object.entries(plants).filter(
-                ([uuid]) => !data.deleted.includes(uuid)
-            )));
-            setGroups(Object.fromEntries(Object.entries(groups).filter(
-                ([uuid]) => !data.deleted.includes(uuid)
-            )));
+            const newPlants = { ...plants };
+            data.deleted.forEach(uuid => delete newPlants[uuid]);
+            setPlants(newPlants);
+            const newGroups = { ...groups };
+            data.deleted.forEach(uuid => delete newGroups[uuid]);
+            setGroups(newGroups);
         } else {
             const data = await response.json();
             openErrorModal(`Failed to delete: ${data.failed.join(', ')}`);
@@ -164,13 +164,11 @@ function App() {
         // Remove deleted UUIDs from state
         if (response.ok) {
             const data = await response.json();
-            const newPlants = Object.fromEntries(Object.entries(plants).filter(
-                ([uuid]) => !data.archived.includes(uuid)
-            ));
+            const newPlants = { ...plants };
+            data.archived.forEach(uuid => delete newPlants[uuid]);
             setPlants(newPlants);
-            const newGroups = Object.fromEntries(Object.entries(groups).filter(
-                ([uuid]) => !data.archived.includes(uuid)
-            ));
+            const newGroups = { ...groups };
+            data.archived.forEach(uuid => delete newGroups[uuid]);
             setGroups(newGroups);
 
             // Ensure archive link visible in dropdown menu
