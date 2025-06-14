@@ -160,6 +160,11 @@ coverage run manage.py test --settings=backend.test_settings
 coverage report
 ```
 
+Note: if the tests are accidentally run without `--settings` the cleanup methods will delete all photo thumbnails and previews (but not originals) in the data directory. These can be regenerated with this management command:
+```
+python manage.py regenerate_thumbnails
+```
+
 #### Frontend
 
 Frontend tests require **node v20.12** or newer (some mocks don't work on earlier versions).
