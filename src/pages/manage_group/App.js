@@ -104,7 +104,7 @@ function App() {
     // Takes array of plant UUIDs, removes archived plants and returns
     const removeArchivedPlants = (selected) => {
         return selected.filter(uuid => {
-            const plant = plantDetails.find(plant => plant.uuid === uuid);
+            const plant = plantDetails[uuid];
             if (plant && !plant.archived) {
                 return uuid;
             }
@@ -120,7 +120,7 @@ function App() {
         } else {
             await bulkAddPlantEvents(
                 eventType,
-                removeArchivedPlants(plantDetails.map(plant => plant.uuid))
+                removeArchivedPlants(Object.keys(plantDetails))
             );
         }
     };
@@ -170,14 +170,13 @@ function App() {
 
     // Called by bulkAddPlantEvents to update plant water/fertilize timestamps
     const updatePlantTimestamps = (updatedPlants, timestamp, eventType) => {
-        let newPlantDetails = [];
+        let newPlantDetails = { ...plantDetails };
         const lastEvent = eventTypeMap[eventType];
-        plantDetails.forEach(plant => {
-            // Update lastEvent timestamp if UUID in JSON response
-            if (updatedPlants.includes(plant.uuid)) {
-                plant[lastEvent] = getMostRecent(plant[lastEvent], timestamp);
-            }
-            newPlantDetails.push(plant);
+        updatedPlants.forEach(uuid => {
+            newPlantDetails[uuid][lastEvent] = getMostRecent(
+                newPlantDetails[uuid][lastEvent],
+                timestamp
+            );
         });
         setPlantDetails(newPlantDetails);
     };
@@ -207,7 +206,9 @@ function App() {
         if (response.ok) {
             // Add objects in response to plantDetails state
             const data = await response.json();
-            setPlantDetails([...plantDetails, ...data.added]);
+            const newPlantDetails = { ...plantDetails };
+            data.added.forEach(plant => newPlantDetails[plant.uuid] = plant);
+            setPlantDetails(newPlantDetails);
             // Remove added plants from AddPlantsModal options state
             const addedIds = data.added.map(plant => plant.uuid);
             setOptions(options.filter(
@@ -234,11 +235,12 @@ function App() {
             const data = await response.json();
             // Add removed plants back to AddPlantsModal options state
             setOptions([ ...options, ...data.removed ]);
-            // Remove plants from response from plantDetails state
-            const removedIds = data.removed.map(plant => plant.uuid);
-            setPlantDetails(plantDetails.filter(
-                plant => !removedIds.includes(plant.uuid)
-            ));
+            // Remove plants in response from plantDetails state
+            const newPlantDetails = { ...plantDetails };
+            data.removed.map(plant => plant.uuid).forEach(
+                uuid => delete newPlantDetails[uuid]
+            );
+            setPlantDetails(newPlantDetails);
             // Hide FloatingFooter and checkboxes
             stopRemovingPlants();
         } else {
@@ -314,7 +316,7 @@ function App() {
 
             <div className="px-4 relative">
                 <PlantsCol
-                    plants={plantDetails}
+                    plants={Object.values(plantDetails)}
                     editing={selectingPlants}
                     formRef={selectedPlantsRef}
                     storageKey={`group-${group.uuid}`}

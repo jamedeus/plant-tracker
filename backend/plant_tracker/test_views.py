@@ -1300,7 +1300,7 @@ class ManagePageTests(TestCase):
         )
 
         # Confirm details state contains empty list (no plants in group)
-        self.assertEqual(state['details'], [])
+        self.assertEqual(state['details'], {})
 
         # Confirm options state contains params for all plants
         self.assertEqual(
@@ -1351,19 +1351,21 @@ class ManagePageTests(TestCase):
         # Confirm details state contains params for plant in group
         self.assertEqual(
             state['details'],
-            [{
-                'name': None,
-                'display_name': 'Unnamed plant 1',
-                'uuid': str(self.plant1.uuid),
-                'created': self.plant1.created.isoformat(),
-                'archived': False,
-                'species': None,
-                'thumbnail': None,
-                'description': None,
-                'pot_size': None,
-                'last_watered': None,
-                'last_fertilized': None
-            }]
+            {
+                str(self.plant1.uuid): {
+                    'name': None,
+                    'display_name': 'Unnamed plant 1',
+                    'uuid': str(self.plant1.uuid),
+                    'created': self.plant1.created.isoformat(),
+                    'archived': False,
+                    'species': None,
+                    'thumbnail': None,
+                    'description': None,
+                    'pot_size': None,
+                    'last_watered': None,
+                    'last_fertilized': None
+                }
+            }
         )
 
     def test_get_group_state(self):
@@ -1391,7 +1393,7 @@ class ManagePageTests(TestCase):
                     'display_name': 'Unnamed group 1',
                     'plants': 0
                 },
-                'details': [],
+                'details': {},
                 'options': [
                     {
                         'name': self.plant1.name,

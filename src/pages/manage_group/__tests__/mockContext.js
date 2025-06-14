@@ -9,8 +9,8 @@ export const mockContext = {
         description: null,
         plants: 3
     },
-    details: [
-        {
+    details: {
+        "0640ec3b-1bed-4b15-a078-d6e7ec66be12": {
             name: "Test Plant",
             display_name: "Test Plant",
             uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
@@ -23,7 +23,7 @@ export const mockContext = {
             thumbnail: null,
             archived: false
         },
-        {
+        "19f65fa0-1c75-4cba-b590-0c9b5b315fcc": {
             name: null,
             display_name: "Unnamed Spider Plant",
             uuid: "19f65fa0-1c75-4cba-b590-0c9b5b315fcc",
@@ -36,7 +36,7 @@ export const mockContext = {
             thumbnail: "/media/thumbnails/photo_thumb.webp",
             archived: true
         },
-        {
+        "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16": {
             name: "Newest plant",
             display_name: "Newest plant",
             uuid: "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16",
@@ -49,7 +49,7 @@ export const mockContext = {
             thumbnail: null,
             archived: false
         },
-    ],
+    },
     options: [
         {
             uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be16",

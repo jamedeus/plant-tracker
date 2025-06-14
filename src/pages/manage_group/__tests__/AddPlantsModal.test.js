@@ -4,7 +4,7 @@ import { mockContext } from './mockContext';
 describe('AddPlantsModal', () => {
     it('renders a card for each plant option', async () => {
         // Get output of getAddPlantsModalOptions (from App component)
-        const existing = mockContext.details.map(plant => plant.uuid);
+        const existing = Object.keys(mockContext.details);
         const options = mockContext.options.filter(
             plant => !existing.includes(plant.uuid) && !plant.archived
         );

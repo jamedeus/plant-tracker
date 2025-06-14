@@ -182,10 +182,13 @@ class Group(models.Model):
         }
 
     def get_plant_details(self):
-        '''Returns list of dicts with parameters for each Plant in Group.
-        See Plant.get_details for dict parameters.
+        '''Returns dict with uuid of each plant in group as keys, plant details
+        dicts as values (see Plant.get_details for dict parameters).
         '''
-        return [plant.get_details() for plant in self.plant_set.all()]
+        return {
+            str(plant.uuid): plant.get_details()
+            for plant in self.plant_set.all()
+        }
 
     def save(self, *args, **kwargs):
         # Prevent saving Group with UUID that is already used by Plant
