@@ -1305,8 +1305,8 @@ class ManagePageTests(TestCase):
         # Confirm options state contains params for all plants
         self.assertEqual(
             state['options'],
-            [
-                {
+            {
+                str(self.plant1.uuid): {
                     'name': self.plant1.name,
                     'display_name': self.plant1.get_display_name(),
                     'uuid': str(self.plant1.uuid),
@@ -1319,7 +1319,7 @@ class ManagePageTests(TestCase):
                     'last_fertilized': None,
                     'thumbnail': None
                 },
-                {
+                str(self.plant2.uuid): {
                     'name': self.plant2.name,
                     'display_name': self.plant2.get_display_name(),
                     'uuid': str(self.plant2.uuid),
@@ -1332,7 +1332,7 @@ class ManagePageTests(TestCase):
                     'last_fertilized': None,
                     'thumbnail': None
                 }
-            ]
+            }
         )
 
     def test_manage_group_with_plant(self):
@@ -1394,8 +1394,8 @@ class ManagePageTests(TestCase):
                     'plants': 0
                 },
                 'details': {},
-                'options': [
-                    {
+                'options': {
+                    str(self.plant1.uuid): {
                         'name': self.plant1.name,
                         'display_name': self.plant1.get_display_name(),
                         'uuid': str(self.plant1.uuid),
@@ -1408,7 +1408,7 @@ class ManagePageTests(TestCase):
                         'last_fertilized': None,
                         'thumbnail': None
                     }
-                ]
+                }
             }
         )
 

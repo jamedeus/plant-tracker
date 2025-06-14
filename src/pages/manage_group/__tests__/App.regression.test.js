@@ -153,7 +153,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 added: [
-                    mockContext.options[0]
+                    mockContext.options[Object.keys(mockContext.options)[0]]
                 ],
                 failed: []
             })
@@ -337,7 +337,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 added: [
-                    mockContext.options[0]
+                    mockContext.options[Object.keys(mockContext.options)[0]]
                 ],
                 failed: []
             })

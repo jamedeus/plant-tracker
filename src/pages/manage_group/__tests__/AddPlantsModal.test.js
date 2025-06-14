@@ -3,11 +3,10 @@ import { mockContext } from './mockContext';
 
 describe('AddPlantsModal', () => {
     it('renders a card for each plant option', async () => {
-        // Get output of getAddPlantsModalOptions (from App component)
-        const existing = Object.keys(mockContext.details);
-        const options = mockContext.options.filter(
-            plant => !existing.includes(plant.uuid) && !plant.archived
-        );
+        // Get non-archived options (see addPlantsModalOptions memo in App.js)
+        const options = Object.fromEntries(Object.entries(mockContext.options).filter(
+            ([, plant]) => !plant.archived
+        ));
 
         // Render modal with mock context
         const component = render(

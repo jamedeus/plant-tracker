@@ -331,6 +331,37 @@ def delete_cached_manage_plant_state_hook(instance, **kwargs):
     revoke_queued_task(f'rebuild_{instance.uuid}_state_task_id')
 
 
+@receiver(post_save, sender=Plant)
+def update_instance_details_in_cached_plant_options_hook(instance, **kwargs):
+    '''Updates plant details in the cached plant_options dict for the user who
+    owns the updated plant (used for manage_group add plants modal options).
+
+    If plant is not in a group: add to options dict (or update details).
+    If plant was just added to a group: remove from options dict.
+    If plant was already in a group (isn't in options dict): do nothing.
+    '''
+    options = get_plant_options(instance.user)
+    # Plant not in group
+    if not instance.group:
+        options[str(instance.uuid)] = instance.get_details()
+        cache.set(f'plant_options_{instance.user.pk}', options, None)
+    # Plant was just added to group
+    elif str(instance.uuid) in options:
+        del options[str(instance.uuid)]
+        cache.set(f'plant_options_{instance.user.pk}', options, None)
+
+
+@receiver(post_delete, sender=Plant)
+def remove_deleted_instance_from_cached_plant_options_hook(instance, **kwargs):
+    '''Removes deleted plant from the cached plant options dict for the user who
+    owned the deleted plant (used for manage_group add plants modal options).
+    '''
+    options = get_plant_options(instance.user)
+    if str(instance.uuid) in options:
+        del options[str(instance.uuid)]
+        cache.set(f'plant_options_{instance.user.pk}', options, None)
+
+
 @shared_task()
 def update_cached_plant_options(user_pk):
     '''Takes user primary key, builds and caches plant options for manage_group
@@ -338,25 +369,6 @@ def update_cached_plant_options(user_pk):
     cache.delete(f'plant_options_{user_pk}')
     get_plant_options(get_user_model().objects.get(pk=user_pk))
     print(f'Rebuilt plant_options for {user_pk} (manage_group add plants modal)')
-
-
-def schedule_cached_plant_options_update(user):
-    '''Takes user, clears cached plant_options immediately and schedules task
-    to update it in 30 seconds (timer resets if called again within 30 seconds).'''
-    schedule_cached_state_update(
-        cache_name=f'plant_options_{user.pk}',
-        callback_task=update_cached_plant_options,
-        callback_kwargs={'user_pk': user.pk},
-        delay=30
-    )
-
-
-@receiver(post_save, sender=Plant)
-@receiver(post_delete, sender=Plant)
-@disable_for_loaddata
-def update_cached_plant_options_hook(instance, **kwargs):
-    '''Schedules task to update cached plant_options when Plant is saved/deleted.'''
-    schedule_cached_plant_options_update(instance.user)
 
 
 @shared_task()

@@ -780,7 +780,7 @@ class CachedStateRegressionTests(TestCase):
 
         # Confirm options state contains photo1 thumbnail (most-recent)
         self.assertEqual(
-            response.context['state']['options'][0]['thumbnail'],
+            response.context['state']['options'][str(plant.uuid)]['thumbnail'],
             photo1.get_thumbnail_url()
         )
 
@@ -799,7 +799,7 @@ class CachedStateRegressionTests(TestCase):
         # Confirm manage_group state now contains photo2 thumbnail (most-recent)
         response = self.client.get(f'/manage/{group.uuid}')
         self.assertEqual(
-            response.context['state']['options'][0]['thumbnail'],
+            response.context['state']['options'][str(plant.uuid)]['thumbnail'],
             photo2.get_thumbnail_url()
         )
 
@@ -812,7 +812,7 @@ class CachedStateRegressionTests(TestCase):
         # Confirm manage_group state reverted to photo1 thumbnail
         response = self.client.get(f'/manage/{group.uuid}')
         self.assertEqual(
-            response.context['state']['options'][0]['thumbnail'],
+            response.context['state']['options'][str(plant.uuid)]['thumbnail'],
             photo1.get_thumbnail_url()
         )
 
@@ -892,7 +892,7 @@ class CachedStateRegressionTests(TestCase):
         # Call function, confirm dummy string was overwritten
         update_cached_plant_options(user_pk)
         self.assertNotEqual(cache.get(f'plant_options_{user_pk}'), 'foo')
-        self.assertIsInstance(cache.get(f'plant_options_{user_pk}'), list)
+        self.assertIsInstance(cache.get(f'plant_options_{user_pk}'), dict)
 
     def test_update_cached_group_options_fails_to_replace_cached_state(self):
         '''Issue: update_cached_group_options rebuilt + cached state by calling

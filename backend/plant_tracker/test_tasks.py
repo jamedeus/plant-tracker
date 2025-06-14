@@ -135,7 +135,7 @@ class HelperFunctionTests(TestCase):
 
         # Confirm all cached states were rebuilt (no longer dummy strings)
         self.assertIsInstance(cache.get(f'overview_state_{default_user.pk}'), dict)
-        self.assertIsInstance(cache.get(f'plant_options_{default_user.pk}'), list)
+        self.assertIsInstance(cache.get(f'plant_options_{default_user.pk}'), dict)
         self.assertIsInstance(cache.get(f'group_options_{default_user.pk}'), list)
         for plant in Plant.objects.filter(user=default_user):
             self.assertIsInstance(cache.get(f'{plant.uuid}_state'), dict)

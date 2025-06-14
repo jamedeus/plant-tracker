@@ -43,11 +43,13 @@ This should be updated when:
   * Deleted if Group model owned by same user is saved or deleted (`models.clear_cached_group_lists`)
 
 ### `plant_options_{user_primary_key}`
-- Stores list of dicts with plant attributes used to populate add plants modal cards
+- Stores dict with plant uuids as keys and plant details dict as values
+- Contains all plants that are not in a group, used to populate add plants modal cards
 - Includes database primary key of user account that owns plants
 - Set by `models.get_plant_options`,
   * Never expires
-  * Deleted if Plant model owned by same user saved or deleted (replaced after 30 second delay) (`tasks.update_cached_plant_options_hook`)
+  * Updated if Plant model owned by same user saved (`tasks.update_instance_details_in_cached_plant_options_hook`)
+  * Updated if Plant model owned by same user deleted (`tasks.remove_deleted_instance_from_cached_plant_options_hook`)
   * Deleted when server restarts (replaced immediately) (`tasks.update_all_cached_states`)
 
 ### `group_options_{user_primary_key}`

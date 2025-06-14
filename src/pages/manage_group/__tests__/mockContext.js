@@ -50,8 +50,8 @@ export const mockContext = {
             archived: false
         },
     },
-    options: [
-        {
+    options: {
+        "0640ec3b-1bed-4b15-a078-d6e7ec66be16": {
             uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be16",
             created: "2024-02-26T01:25:12+00:00",
             name: "Another test plant",
@@ -64,7 +64,7 @@ export const mockContext = {
             thumbnail: "/media/thumbnails/photo2_thumb.webp",
             archived: false
         },
-        {
+        "0640ec3b-1bed-4b15-a078-d6e7ec66be69": {
             uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be69",
             created: "2023-12-26T01:25:12+00:00",
             name: "Third test plant",
@@ -77,7 +77,7 @@ export const mockContext = {
             thumbnail: "/media/thumbnails/photo3_thumb.webp",
             archived: false
         },
-        {
+        "102d1a8c-07e6-4ece-bac7-60ed6a95a463": {
             uuid: "102d1a8c-07e6-4ece-bac7-60ed6a95a463",
             created: "2022-12-26T01:25:12+00:00",
             name: null,
@@ -90,5 +90,5 @@ export const mockContext = {
             thumbnail: null,
             archived: true
         }
-    ]
+    }
 };

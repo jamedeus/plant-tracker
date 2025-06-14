@@ -32,10 +32,12 @@ function App() {
         return parseDomContext("options");
     });
 
-    // Array of plant objects that are not archived
-    const addPlantsModalOptions = useMemo(() => {
-        return options.filter(plant => !plant.archived);
-    }, [options]);
+    // Subset of plant option objects that are not archived
+    const addPlantsModalOptions = useMemo(() => (
+        Object.fromEntries(Object.entries(options).filter(
+            ([, plant]) => !plant.archived
+        ))
+    ), [options]);
 
     // Request new state from backend if user navigates to page by pressing
     // back button (may be outdated if user clicked plant and made changes)
@@ -210,10 +212,11 @@ function App() {
             data.added.forEach(plant => newPlantDetails[plant.uuid] = plant);
             setPlantDetails(newPlantDetails);
             // Remove added plants from AddPlantsModal options state
-            const addedIds = data.added.map(plant => plant.uuid);
-            setOptions(options.filter(
-                plant => !addedIds.includes(plant.uuid)
-            ));
+            const newOptions = { ...options };
+            data.added.map(plant => plant.uuid).forEach(
+                uuid => delete newOptions[uuid]
+            );
+            setOptions(newOptions);
         } else {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
@@ -234,7 +237,9 @@ function App() {
         if (response.ok) {
             const data = await response.json();
             // Add removed plants back to AddPlantsModal options state
-            setOptions([ ...options, ...data.removed ]);
+            const newOptions = { ...options };
+            data.removed.forEach(plant => newOptions[plant.uuid] = plant);
+            setOptions(newOptions);
             // Remove plants in response from plantDetails state
             const newPlantDetails = { ...plantDetails };
             data.removed.map(plant => plant.uuid).forEach(

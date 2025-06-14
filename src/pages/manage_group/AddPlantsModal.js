@@ -29,10 +29,10 @@ const AddPlantsModal = memo(function AddPlantsModal({ options, addPlants }) {
             className='max-w-[26rem]'
         >
             <div className="md:max-h-[50vh] overflow-y-auto pr-4 mt-4">
-                {options.length > 0 ? (
+                {Object.keys(options).length > 0 ? (
                     <EditableNodeList editing={true} formRef={formRef}>
-                        {options.map((plant) => (
-                            <PlantCard key={plant.uuid} {...plant} />
+                        {Object.entries(options).map(([uuid, plant]) => (
+                            <PlantCard key={uuid} { ...plant } />
                         ))}
                     </EditableNodeList>
                 ) : (
@@ -58,7 +58,21 @@ const AddPlantsModal = memo(function AddPlantsModal({ options, addPlants }) {
 });
 
 AddPlantsModal.propTypes = {
-    options: PropTypes.array.isRequired,
+    options: PropTypes.objectOf(
+        PropTypes.exact({
+            name: PropTypes.string,
+            display_name: PropTypes.string.isRequired,
+            uuid: PropTypes.string.isRequired,
+            created: PropTypes.string.isRequired,
+            species: PropTypes.string,
+            description: PropTypes.string,
+            pot_size: PropTypes.number,
+            last_watered: PropTypes.string,
+            last_fertilized: PropTypes.string,
+            thumbnail: PropTypes.string,
+            archived: PropTypes.bool.isRequired
+        })
+    ).isRequired,
     addPlants: PropTypes.func.isRequired
 };
 
