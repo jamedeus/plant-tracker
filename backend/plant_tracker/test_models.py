@@ -214,29 +214,29 @@ class PlantModelTests(TestCase):
         # Confirm photos are sorted most recent to least recent
         self.assertEqual(
             photos,
-            [
-                {
+            {
+                photo2.pk: {
                     'timestamp': '2024-03-22T10:52:03+00:00',
                     'image': '/media/images/IMG2.jpg',
                     'thumbnail': '/media/thumbnails/IMG2_thumb.webp',
                     'preview': '/media/previews/IMG2_preview.webp',
                     'key': photo2.pk
                 },
-                {
+                photo1.pk: {
                     'timestamp': '2024-02-21T10:52:03+00:00',
                     'image': '/media/images/IMG1.jpg',
                     'thumbnail': '/media/thumbnails/IMG1_thumb.webp',
                     'preview': '/media/previews/IMG1_preview.webp',
                     'key': photo1.pk
                 },
-                {
+                photo3.pk: {
                     'timestamp': '2024-01-28T10:52:03+00:00',
                     'image': '/media/images/IMG3.jpg',
                     'thumbnail': '/media/thumbnails/IMG3_thumb.webp',
                     'preview': '/media/previews/IMG3_preview.webp',
                     'key': photo3.pk
                 },
-            ]
+            }
         )
 
     def test_get_default_photo_details(self):

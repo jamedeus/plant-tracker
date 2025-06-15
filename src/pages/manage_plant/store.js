@@ -151,7 +151,7 @@ export function ReduxProvider({ children }) {
         const eventsByType = parseDomContext("events");
         const dividedFrom = parseDomContext("divided_from");
         const divisionEvents = parseDomContext("division_events");
-        const photos = parseDomContext('photos');
+        const photos = Object.values(parseDomContext('photos') || {});
         const notes = parseDomContext('notes');
         const defaultPhoto = parseDomContext('default_photo');
         const hasPhotos = photos.length > 0;

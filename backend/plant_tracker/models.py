@@ -298,10 +298,10 @@ class Plant(models.Model):
         '''Returns list of dicts containing photo and thumbnail URLs, creation
         timestamps, and database keys of each photo associated with this plant.
         '''
-        return [
-            photo.get_details()
-            for photo in self.photo_set.all().order_by('-timestamp')
-        ]
+        return {
+            photo.pk: photo.get_details()
+            for photo in self.photo_set.all()
+        }
 
     def get_details(self):
         '''Returns dict containing all plant attributes and last_watered,
@@ -602,18 +602,6 @@ class Photo(models.Model):
                 self.timestamp = django_timezone.now()
 
         super().save(*args, **kwargs)
-
-        # Trigger signals that run cached_state updates (replace outdated thumbnail)
-        self.plant.save()
-
-
-@receiver(post_delete, sender=Photo)
-def update_plant_thumbnail_when_photo_deleted(instance, **kwargs):
-    '''Updates Plant.thumbnail_url field when associated Photo is deleted (if
-    deleted photo was most recent photo the thumbnail_url will be outdated).
-    '''
-    # Trigger signals that run cached_state updates (replace outdated thumbnail)
-    instance.plant.save()
 
 
 class Event(models.Model):

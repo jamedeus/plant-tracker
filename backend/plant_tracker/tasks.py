@@ -295,13 +295,11 @@ def schedule_cached_manage_plant_state_update(uuid):
 @receiver(post_save, sender=PruneEvent)
 @receiver(post_save, sender=RepotEvent)
 @receiver(post_save, sender=DivisionEvent)
-@receiver(post_save, sender=Photo)
 @receiver(post_delete, sender=WaterEvent)
 @receiver(post_delete, sender=FertilizeEvent)
 @receiver(post_delete, sender=PruneEvent)
 @receiver(post_delete, sender=RepotEvent)
 @receiver(post_delete, sender=DivisionEvent)
-@receiver(post_delete, sender=Photo)
 @disable_for_loaddata
 def update_cached_manage_plant_state_hook(instance, **kwargs):
     '''Schedules task to update cached manage_plant state when Plant or events
@@ -318,6 +316,38 @@ def update_cached_manage_plant_state_hook(instance, **kwargs):
 
     else:
         schedule_cached_manage_plant_state_update(instance.plant.uuid)
+
+
+@receiver(post_save, sender=Photo)
+def add_photo_to_cached_states_hook(instance, **kwargs):
+    '''Adds saved photo to associated plant's cached manage_plant state, updates
+    associated plant details in cached overview state and plant_options.
+    '''
+    cached_state = cache.get(f'{instance.plant.uuid}_state')
+    if cached_state:
+        cached_state['photos'][instance.pk] = instance.get_details()
+        cache.set(f'{instance.plant.uuid}_state', cached_state, None)
+    # Update thumbnail in cached overview state if plant is not archived
+    if not instance.plant.archived:
+        update_plant_in_cached_overview_state(instance.plant)
+    # Update thumbnail in cached plant_options dict
+    update_plant_details_in_cached_plant_options(instance.plant)
+
+
+@receiver(post_delete, sender=Photo)
+def remove_photo_from_cached_states_hook(instance, **kwargs):
+    '''Removes deleted photo from associated plant's cached manage_plant state,
+    updates associated plant details in cached overview state and plant_options.
+    '''
+    cached_state = cache.get(f'{instance.plant.uuid}_state')
+    if cached_state and instance.pk in cached_state['photos']:
+        del cached_state['photos'][instance.pk]
+        cache.set(f'{instance.plant.uuid}_state', cached_state, None)
+    # Update thumbnail in cached overview state if plant is not archived
+    if not instance.plant.archived:
+        update_plant_in_cached_overview_state(instance.plant)
+    # Update thumbnail in cached plant_options dict
+    update_plant_details_in_cached_plant_options(instance.plant)
 
 
 @receiver(post_save, sender=NoteEvent)
@@ -357,24 +387,31 @@ def delete_cached_manage_plant_state_hook(instance, **kwargs):
     revoke_queued_task(f'rebuild_{instance.uuid}_state_task_id')
 
 
-@receiver(post_save, sender=Plant)
-def update_instance_details_in_cached_plant_options_hook(instance, **kwargs):
-    '''Updates plant details in the cached plant_options dict for the user who
-    owns the updated plant (used for manage_group add plants modal options).
+def update_plant_details_in_cached_plant_options(plant):
+    '''Takes Plant entry, updates details in cached plant_options dict (used for
+    manage_group add plants modal options) for the user who owns updated plant.
 
     If plant is not in a group: add to options dict (or update details).
     If plant was just added to a group: remove from options dict.
     If plant was already in a group (isn't in options dict): do nothing.
     '''
-    options = get_plant_options(instance.user)
+    options = get_plant_options(plant.user)
     # Plant not in group
-    if not instance.group:
-        options[str(instance.uuid)] = instance.get_details()
-        cache.set(f'plant_options_{instance.user.pk}', options, None)
+    if not plant.group:
+        options[str(plant.uuid)] = plant.get_details()
+        cache.set(f'plant_options_{plant.user.pk}', options, None)
     # Plant was just added to group
-    elif str(instance.uuid) in options:
-        del options[str(instance.uuid)]
-        cache.set(f'plant_options_{instance.user.pk}', options, None)
+    elif str(plant.uuid) in options:
+        del options[str(plant.uuid)]
+        cache.set(f'plant_options_{plant.user.pk}', options, None)
+
+
+@receiver(post_save, sender=Plant)
+def update_plant_details_in_cached_plant_options_hook(instance, **kwargs):
+    '''Updates plant details in cached plant_options dict (used for manage_group
+    add plants modal options) for the user who owns the updated plant.
+    '''
+    update_plant_details_in_cached_plant_options(instance)
 
 
 @receiver(post_delete, sender=Plant)

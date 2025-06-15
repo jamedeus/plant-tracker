@@ -1007,7 +1007,7 @@ class ManagePageTests(TestCase):
         self.assertEqual(state['species_options'], [])
 
         # Confirm photos list is empty (test plant has no photos)
-        self.assertEqual(state['photos'], [])
+        self.assertEqual(state['photos'], {})
 
         # Confirm group_options key contains details of all existing groups
         self.assertEqual(
@@ -1051,22 +1051,22 @@ class ManagePageTests(TestCase):
         # keys, thumbnail URLs, and full-res URLs of each photo
         self.assertEqual(
             response.context['state']['photos'],
-            [
-                {
+            {
+                photo2.pk: {
                     'timestamp': '2024-03-22T10:52:03+00:00',
                     'image': '/media/images/photo2.jpg',
                     'thumbnail': '/media/thumbnails/photo2_thumb.webp',
                     'preview': '/media/previews/photo2_preview.webp',
                     'key': photo2.pk
                 },
-                {
+                photo1.pk: {
                     'timestamp': '2024-03-21T10:52:03+00:00',
                     'image': '/media/images/photo1.jpg',
                     'thumbnail': '/media/thumbnails/photo1_thumb.webp',
                     'preview': '/media/previews/photo1_preview.webp',
                     'key': photo1.pk
                 },
-            ]
+            }
         )
 
     def test_manage_plant_with_notes(self):
@@ -1178,7 +1178,7 @@ class ManagePageTests(TestCase):
                     'repot': []
                 },
                 'notes': {},
-                'photos': [],
+                'photos': {},
                 'default_photo': {
                     'set': False,
                     'timestamp': None,
