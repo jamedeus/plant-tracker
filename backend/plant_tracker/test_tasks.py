@@ -625,6 +625,13 @@ class HookTests(TestCase):
                 "repot": []
             }
         )
+        # Confirm last_watered and last_fertilized are not set
+        self.assertIsNone(
+            cache.get(f'{self.uuid}_state')['plant_details']['last_watered']
+        )
+        self.assertIsNone(
+            cache.get(f'{self.uuid}_state')['plant_details']['last_fertilized']
+        )
         self.assertEqual(cache.get(f'{self.uuid}_state')['division_events'], {})
 
         # Create WaterEvent, confirm state updated automatically
@@ -634,12 +641,25 @@ class HookTests(TestCase):
             cache.get(f'{self.uuid}_state')['events']["water"],
             [timestamp.isoformat()]
         )
+        # Confirm last_watered updated, but not last_fertilized
+        self.assertEqual(
+            cache.get(f'{self.uuid}_state')['plant_details']['last_watered'],
+            timestamp.isoformat()
+        )
+        self.assertIsNone(
+            cache.get(f'{self.uuid}_state')['plant_details']['last_fertilized']
+        )
 
         # Create FertilizeEvent, confirm state updated automatically
         fertilize = FertilizeEvent.objects.create(plant=plant, timestamp=timestamp)
         self.assertEqual(
             cache.get(f'{self.uuid}_state')['events']["fertilize"],
             [timestamp.isoformat()]
+        )
+        # Confirm last_fertilized updated
+        self.assertEqual(
+            cache.get(f'{self.uuid}_state')['plant_details']['last_fertilized'],
+            timestamp.isoformat()
         )
 
         # Create PruneEvent, confirm state updated automatically
@@ -673,6 +693,14 @@ class HookTests(TestCase):
                 "repot": [timestamp.isoformat()]
             }
         )
+        # Confirm last_watered updated, but not last_fertilized
+        self.assertIsNone(
+            cache.get(f'{self.uuid}_state')['plant_details']['last_watered']
+        )
+        self.assertEqual(
+            cache.get(f'{self.uuid}_state')['plant_details']['last_fertilized'],
+            timestamp.isoformat()
+        )
 
         # Delete all events, confirm state updated automatically
         fertilize.delete()
@@ -686,6 +714,10 @@ class HookTests(TestCase):
                 "prune": [],
                 "repot": []
             }
+        )
+        # Confirm last_fertilized updated
+        self.assertIsNone(
+            cache.get(f'{self.uuid}_state')['plant_details']['last_fertilized']
         )
 
         # Delete DivisionEvent, confirm state updated automatically

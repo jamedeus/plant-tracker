@@ -290,15 +290,7 @@ def schedule_cached_manage_plant_state_update(uuid):
 
 
 @receiver(post_save, sender=Plant)
-@receiver(post_save, sender=WaterEvent)
-@receiver(post_save, sender=FertilizeEvent)
-@receiver(post_save, sender=PruneEvent)
-@receiver(post_save, sender=RepotEvent)
 @receiver(post_save, sender=DivisionEvent)
-@receiver(post_delete, sender=WaterEvent)
-@receiver(post_delete, sender=FertilizeEvent)
-@receiver(post_delete, sender=PruneEvent)
-@receiver(post_delete, sender=RepotEvent)
 @receiver(post_delete, sender=DivisionEvent)
 @disable_for_loaddata
 def update_cached_manage_plant_state_hook(instance, **kwargs):
@@ -316,6 +308,69 @@ def update_cached_manage_plant_state_hook(instance, **kwargs):
 
     else:
         schedule_cached_manage_plant_state_update(instance.plant.uuid)
+
+
+# Maps string retrieved with instance._meta.model_name to correct key in
+# manage_plant state events dict
+event_types_map = {
+    'waterevent': 'water',
+    'fertilizeevent': 'fertilize',
+    'pruneevent': 'prune',
+    'repotevent': 'repot',
+}
+
+
+@receiver(post_save, sender=WaterEvent)
+@receiver(post_save, sender=FertilizeEvent)
+@receiver(post_save, sender=PruneEvent)
+@receiver(post_save, sender=RepotEvent)
+def add_new_event_to_cached_manage_plant_state_hook(instance, **kwargs):
+    '''Adds saved event timestamp to associated plant's cached manage_plant
+    state and re-caches.
+    '''
+    cached_state = cache.get(f'{instance.plant.uuid}_state')
+    if cached_state:
+        event_type = event_types_map[instance._meta.model_name]
+        cached_state['events'][event_type].append(instance.timestamp.isoformat())
+        cache.set(f'{instance.plant.uuid}_state', cached_state, None)
+
+
+@receiver(post_delete, sender=WaterEvent)
+@receiver(post_delete, sender=FertilizeEvent)
+@receiver(post_delete, sender=PruneEvent)
+@receiver(post_delete, sender=RepotEvent)
+def remove_deleted_event_from_cached_manage_plant_state(instance, **kwargs):
+    '''Removes deleted WaterEvent timestamp from associated plant's cached
+    manage_plant state and re-caches.
+    '''
+    cached_state = cache.get(f'{instance.plant.uuid}_state')
+    if cached_state:
+        event_type = event_types_map[instance._meta.model_name]
+        try:
+            cached_state['events'][event_type].remove(
+                instance.timestamp.isoformat()
+            )
+            cache.set(f'{instance.plant.uuid}_state', cached_state, None)
+        except ValueError:
+            # Cached state did not contain event, nothing to remove
+            pass
+
+
+@receiver(post_save, sender=WaterEvent)
+@receiver(post_save, sender=FertilizeEvent)
+@receiver(post_delete, sender=WaterEvent)
+@receiver(post_delete, sender=FertilizeEvent)
+def update_last_event_times_in_cached_states_hook(instance, **kwargs):
+    '''Updates last_watered and last_fertilized times for the associated plant
+    in cached overview state and cached manage_plant state when a WaterEvent or
+    FertilizeEvent is saved or deleted.
+    '''
+    update_plant_in_cached_overview_state(instance.plant)
+    # Update last_watered/fertilized
+    cached_state = cache.get(f'{instance.plant.uuid}_state')
+    if cached_state:
+        cached_state['plant_details'] = instance.plant.get_details()
+        cache.set(f'{instance.plant.uuid}_state', cached_state, None)
 
 
 @receiver(post_save, sender=Photo)

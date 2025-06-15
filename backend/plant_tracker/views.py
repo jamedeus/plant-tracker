@@ -39,7 +39,6 @@ from .view_decorators import (
 )
 from .tasks import (
     get_overview_state,
-    update_plant_in_cached_overview_state,
     get_manage_plant_state,
     schedule_cached_group_options_update
 )
@@ -567,10 +566,6 @@ def add_plant_event(plant, timestamp, event_type, **kwargs):
                 timestamp=timestamp
             )
 
-        # Update last_watered or last_fertilized in cached overview state
-        if event_type in ("water", "fertilize"):
-            update_plant_in_cached_overview_state(plant)
-
         return JsonResponse(
             {"action": event_type, "plant": plant.uuid},
             status=200
@@ -604,9 +599,6 @@ def bulk_add_plant_events(user, timestamp, event_type, data, **kwargs):
                         timestamp=timestamp
                     )
                 added.append(plant_id)
-                # Update last_watered or last_fertilized in cached overview state
-                if event_type in ("water", "fertilize"):
-                    update_plant_in_cached_overview_state(plant)
             except IntegrityError:
                 failed.append(plant_id)
         else:
@@ -631,11 +623,6 @@ def delete_plant_event(plant, timestamp, event_type, **kwargs):
     try:
         event = events_map[event_type].objects.get(plant=plant, timestamp=timestamp)
         event.delete()
-
-        # Update last_watered or last_fertilized in cached overview state
-        if event_type in ("water", "fertilize"):
-            update_plant_in_cached_overview_state(plant)
-
         return JsonResponse({"deleted": event_type, "plant": plant.uuid}, status=200)
     except events_map[event_type].DoesNotExist:
         return JsonResponse({"error": "event not found"}, status=404)
@@ -663,11 +650,6 @@ def bulk_delete_plant_events(plant, data, **kwargs):
             failed.append(event)
         except events_map[event["type"]].DoesNotExist:
             failed.append(event)
-
-    # Update last_watered or last_fertilized in cached overview state
-    if any(event['type'] in ("water", "fertilize") for event in data["events"]):
-        update_plant_in_cached_overview_state(plant)
-
     return JsonResponse({"deleted": deleted, "failed": failed}, status=200)
 
 
