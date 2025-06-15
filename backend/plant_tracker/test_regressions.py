@@ -961,6 +961,73 @@ class CachedStateRegressionTests(TestCase):
         overview_state = cache.get(f'overview_state_{plant.user.pk}')
         self.assertNotIn(str(plant.uuid), overview_state['plants'])
 
+    def test_default_photo_not_updated_in_cached_manage_plant_state(self):
+        '''Issue: tasks.add_photo_to_cached_states_hook and
+        tasks.remove_photo_from_cached_states_hook updated the photos key in
+        cached manage_plant state but did not update the default_photo key,
+        which may be outdated if the default/most-recent photo was deleted or
+        the new photo is most-recent. This caused an outdated photo (possible
+        no longer existing) photo in the details dropdown on next page load.
+        '''
+
+        # Create test plant, confirm cached state has no default_photo
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        self.assertIsNone(
+            cache.get(f'{plant.uuid}_state')['plant_details']['thumbnail']
+        )
+        self.assertEqual(
+            cache.get(f'{plant.uuid}_state')['default_photo'],
+            {
+                'set': False,
+                'timestamp': None,
+                'image': None,
+                'thumbnail': None,
+                'preview': None,
+                'key': None
+            }
+        )
+
+        # Create photo, confirm default_photo updated in cached state
+        photo = Photo.objects.create(
+            photo=create_mock_photo(
+                creation_time='2024:02:21 10:52:03',
+                name='photo1.jpg'
+            ),
+            plant=plant
+        )
+        self.assertEqual(
+            cache.get(f'{plant.uuid}_state')['plant_details']['thumbnail'],
+            '/media/thumbnails/photo1_thumb.webp'
+        )
+        self.assertEqual(
+            cache.get(f'{plant.uuid}_state')['default_photo'],
+            {
+                'set': False,
+                'timestamp': '2024-02-21T10:52:03+00:00',
+                'image': '/media/images/photo1.jpg',
+                'thumbnail': '/media/thumbnails/photo1_thumb.webp',
+                'preview': '/media/previews/photo1_preview.webp',
+                'key': photo.pk
+            }
+        )
+
+        # Delete photo, confirm default_photo updated in cached state
+        photo.delete()
+        self.assertIsNone(
+            cache.get(f'{plant.uuid}_state')['plant_details']['thumbnail']
+        )
+        self.assertEqual(
+            cache.get(f'{plant.uuid}_state')['default_photo'],
+            {
+                'set': False,
+                'timestamp': None,
+                'image': None,
+                'thumbnail': None,
+                'preview': None,
+                'key': None
+            }
+        )
+
 
 class ViewDecoratorRegressionTests(TestCase):
     def setUp(self):

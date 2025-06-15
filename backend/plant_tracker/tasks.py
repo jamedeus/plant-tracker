@@ -376,11 +376,15 @@ def update_last_event_times_in_cached_states_hook(instance, **kwargs):
 @receiver(post_save, sender=Photo)
 def add_photo_to_cached_states_hook(instance, **kwargs):
     '''Adds saved photo to associated plant's cached manage_plant state, updates
-    associated plant details in cached overview state and plant_options.
+    default_photo in cached manage_plant state, and associated plant details in
+    cached overview state and plant_options.
     '''
     cached_state = cache.get(f'{instance.plant.uuid}_state')
     if cached_state:
         cached_state['photos'][instance.pk] = instance.get_details()
+        default_photo = instance.plant.get_default_photo_details()
+        cached_state['default_photo'] = default_photo
+        cached_state['plant_details']['thumbnail'] = default_photo['thumbnail']
         cache.set(f'{instance.plant.uuid}_state', cached_state, None)
     # Update thumbnail in cached overview state if plant is not archived
     if not instance.plant.archived:
@@ -392,11 +396,15 @@ def add_photo_to_cached_states_hook(instance, **kwargs):
 @receiver(post_delete, sender=Photo)
 def remove_photo_from_cached_states_hook(instance, **kwargs):
     '''Removes deleted photo from associated plant's cached manage_plant state,
-    updates associated plant details in cached overview state and plant_options.
+    updates default_photo in cached manage_plant state, and updates associated
+    plant details in cached overview state and plant_options.
     '''
     cached_state = cache.get(f'{instance.plant.uuid}_state')
     if cached_state and instance.pk in cached_state['photos']:
         del cached_state['photos'][instance.pk]
+        default_photo = instance.plant.get_default_photo_details()
+        cached_state['default_photo'] = default_photo
+        cached_state['plant_details']['thumbnail'] = default_photo['thumbnail']
         cache.set(f'{instance.plant.uuid}_state', cached_state, None)
     # Update thumbnail in cached overview state if plant is not archived
     if not instance.plant.archived:
