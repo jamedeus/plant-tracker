@@ -52,9 +52,6 @@ export const buildTimelineDays = (events, notes, photos, dividedFrom, divisionEv
     };
 
     // Add objects from photos context to photos key under correct dateKey
-    photos.sort((a, b) => {
-        return a.timestamp.localeCompare(b.timestamp);
-    }).reverse();
     photos.forEach((photo) => {
         const dateKey = timestampToDateString(photo.timestamp);
         addDateKeyIfMissing(dateKey);
@@ -125,6 +122,13 @@ export const buildNavigationOptions = (timelineDays) => {
     return navigationOptions;
 };
 
+// Takes array of photo objects (contains timestamp key), sorts chronologically
+export const sortPhotosChronologically = (photos) => {
+    return photos.sort((a, b) =>
+        a.timestamp.localeCompare(b.timestamp)
+    ).reverse();
+};
+
 // Takes initial plantSlice and timelineSlice states, returns redux store
 function createReduxStore(preloadedState) {
     return configureStore({
@@ -151,7 +155,9 @@ export function ReduxProvider({ children }) {
         const eventsByType = parseDomContext("events");
         const dividedFrom = parseDomContext("divided_from");
         const divisionEvents = parseDomContext("division_events");
-        const photos = Object.values(parseDomContext('photos') || {});
+        const photos = sortPhotosChronologically(
+            Object.values(parseDomContext('photos') || {})
+        );
         const notes = parseDomContext('notes');
         const defaultPhoto = parseDomContext('default_photo');
         const hasPhotos = photos.length > 0;

@@ -4,7 +4,8 @@ import { backButtonPressed } from './plantSlice';
 import {
     buildTimelineDays,
     buildCalendarDays,
-    buildNavigationOptions
+    buildNavigationOptions,
+    sortPhotosChronologically
 } from './store';
 
 // Correct order for event markers within a single timeline day (readability)
@@ -256,11 +257,11 @@ export const timelineSlice = createSlice({
                 }
             });
 
-            // Add new URLs to photos state (used by DeletePhotoModal and
-            // DefaultPhotoModal)
-            state.photos = state.photos.concat(photos).sort((a, b) => {
-                return a.timestamp.localeCompare(b.timestamp);
-            }).reverse();
+            // Add new URLs to photos state (used by Gallery, DeletePhotoModal,
+            // and DefaultPhotoModal)
+            state.photos = sortPhotosChronologically(
+                state.photos.concat(photos)
+            );
 
             // If defaultPhoto not set: Use most-recent photo as default photo
             if (!state.defaultPhoto.set) {
@@ -324,7 +325,12 @@ export const timelineSlice = createSlice({
         // Rebuild all states when user navigates to the page with back button
         // (fetches new state from backend to replace outdated contents)
         builder.addCase(backButtonPressed.fulfilled, (state, action) => {
-            const newPhotos = Object.values(action.payload.photos);
+            // Convert object indexed by photo keys (used for incremental state
+            // updates on backend) to array of objects sorted chronologically
+            const newPhotos = sortPhotosChronologically(
+                Object.values(action.payload.photos)
+            );
+            // Build new timelineDays state from response objects
             const newTimelineDays = buildTimelineDays(
                 action.payload.events,
                 action.payload.notes,
@@ -332,19 +338,21 @@ export const timelineSlice = createSlice({
                 action.payload.divided_from,
                 action.payload.division_events,
             );
+            // Overwrite states
             state.photos = newPhotos;
             state.eventsByType = action.payload.events;
             state.dividedFrom = action.payload.divided_from;
             state.divisionEvents = action.payload.division_events;
+            state.defaultPhoto = action.payload.default_photo;
             state.timelineDays = newTimelineDays;
             state.calendarDays = buildCalendarDays(newTimelineDays);
             state.navigationOptions = buildNavigationOptions(newTimelineDays);
+            // Set bool states that control dropdown option visibility
             state.hasPhotos = newPhotos.length > 0;
             state.hasEvents = action.payload.events.water.length > 0 ||
                               action.payload.events.fertilize.length > 0 ||
                               action.payload.events.prune.length > 0 ||
                               action.payload.events.repot.length > 0;
-            state.defaultPhoto = action.payload.default_photo;
         });
     }
 });
