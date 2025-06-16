@@ -1115,6 +1115,48 @@ class CachedStateRegressionTests(TestCase):
             str(new_uuid)
         )
 
+    def test_changing_uuid_creates_duplicate_in_cached_overview_state(self):
+        '''Issue: the Plant and Group post_save signals added new plant/group
+        uuid key to cached overview state, but did not remove the old entry.
+        These hooks assume they will overwrite outdated details of the same
+        plant/group - but since keys are uuids they just create a duplicate
+        entry when the uuid is changed (can't target old uuid).
+
+        The /change_uuid endpoint now deletes the existing uuid from the cached
+        state before changing (hooks then re-add with the new uuid).
+        '''
+
+        # Create plant and group, confirm both exist in cached overview state
+        default_user = get_default_user()
+        group = Group.objects.create(uuid=uuid4(), user=default_user)
+        plant = Plant.objects.create(uuid=uuid4(), user=default_user)
+        overview_state = cache.get(f'overview_state_{default_user.pk}')
+        self.assertIn(str(plant.uuid), overview_state['plants'])
+        self.assertIn(str(group.uuid), overview_state['groups'])
+        self.assertEqual(len(overview_state['plants']), 1)
+        self.assertEqual(len(overview_state['groups']), 1)
+
+        # Change both uuids
+        response = JSONClient().post('/change_uuid', {
+            'uuid': str(plant.uuid),
+            'new_id': str(uuid4())
+        })
+        self.assertEqual(response.status_code, 200)
+        response = JSONClient().post('/change_uuid', {
+            'uuid': str(group.uuid),
+            'new_id': str(uuid4())
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm old UUIDs were removed from cached state (replaced with new)
+        plant.refresh_from_db()
+        group.refresh_from_db()
+        overview_state = cache.get(f'overview_state_{default_user.pk}')
+        self.assertIn(str(plant.uuid), overview_state['plants'])
+        self.assertIn(str(group.uuid), overview_state['groups'])
+        self.assertEqual(len(overview_state['plants']), 1)
+        self.assertEqual(len(overview_state['groups']), 1)
+
 
 class ViewDecoratorRegressionTests(TestCase):
     def setUp(self):

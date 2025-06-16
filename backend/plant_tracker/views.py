@@ -40,7 +40,9 @@ from .view_decorators import (
 from .tasks import (
     get_overview_state,
     get_manage_plant_state,
-    schedule_cached_group_options_update
+    schedule_cached_group_options_update,
+    remove_plant_from_cached_overview_state,
+    remove_group_from_cached_overview_state
 )
 
 
@@ -385,8 +387,15 @@ def change_uuid(instance, data, user, **kwargs):
     Requires JSON POST with uuid (uuid) and new_id (uuid) keys.
     '''
     try:
+        # Delete plant/group from cached state (prevent duplicate, keys are uuid
+        # so once it changes the old entry can't be removed)
+        if isinstance(instance, Plant):
+            remove_plant_from_cached_overview_state(instance)
+        else:
+            remove_group_from_cached_overview_state(instance)
+        # Change UUID, save (hook will update cached overview state)
         instance.uuid = data["new_id"]
-        instance.save()
+        instance.save(update_fields=["uuid"])
         cache.delete(f'old_uuid_{user.pk}')
         return JsonResponse({"new_uuid": str(instance.uuid)}, status=200)
     except ValidationError:
