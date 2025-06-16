@@ -70,7 +70,11 @@ AddPlantsModal.propTypes = {
             last_watered: PropTypes.string,
             last_fertilized: PropTypes.string,
             thumbnail: PropTypes.string,
-            archived: PropTypes.bool.isRequired
+            archived: PropTypes.bool.isRequired,
+            group: PropTypes.exact({
+                name: PropTypes.string.isRequired,
+                uuid: PropTypes.string.isRequired
+            })
         })
     ).isRequired,
     addPlants: PropTypes.func.isRequired
