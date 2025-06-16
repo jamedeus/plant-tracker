@@ -150,7 +150,8 @@ class OverviewTests(TestCase):
         plant2 = Plant.objects.create(
             uuid=uuid4(),
             species='fittonia',
-            user=default_user, group=group
+            user=default_user,
+            group=group
         )
 
         # Create archived group and archived plant (should not be in context)
@@ -194,7 +195,8 @@ class OverviewTests(TestCase):
                     'description': None,
                     'pot_size': None,
                     'last_watered': None,
-                    'last_fertilized': None
+                    'last_fertilized': None,
+                    'group': None
                 },
                 str(plant2.uuid): {
                     'uuid': str(plant2.uuid),
@@ -207,7 +209,11 @@ class OverviewTests(TestCase):
                     'description': None,
                     'pot_size': None,
                     'last_watered': None,
-                    'last_fertilized': None
+                    'last_fertilized': None,
+                    'group': {
+                        'name': 'Unnamed group 1',
+                        'uuid': str(group.uuid)
+                    }
                 }
             }
         )
@@ -592,7 +598,8 @@ class ArchivedOverviewTests(TestCase):
                     'description': None,
                     'pot_size': None,
                     'last_watered': None,
-                    'last_fertilized': None
+                    'last_fertilized': None,
+                    'group': None
                 }
             }
         )
@@ -1311,7 +1318,8 @@ class ManagePageTests(TestCase):
                     'description': None,
                     'last_watered': None,
                     'last_fertilized': None,
-                    'thumbnail': None
+                    'thumbnail': None,
+                    'group': None
                 },
                 str(self.plant2.uuid): {
                     'name': self.plant2.name,
@@ -1324,7 +1332,8 @@ class ManagePageTests(TestCase):
                     'description': None,
                     'last_watered': None,
                     'last_fertilized': None,
-                    'thumbnail': None
+                    'thumbnail': None,
+                    'group': None
                 }
             }
         )
@@ -1357,7 +1366,11 @@ class ManagePageTests(TestCase):
                     'description': None,
                     'pot_size': None,
                     'last_watered': None,
-                    'last_fertilized': None
+                    'last_fertilized': None,
+                    'group': {
+                        'name': 'Unnamed group 1',
+                        'uuid': str(self.group1.uuid)
+                    }
                 }
             }
         )
@@ -1400,7 +1413,8 @@ class ManagePageTests(TestCase):
                         'description': None,
                         'last_watered': None,
                         'last_fertilized': None,
-                        'thumbnail': None
+                        'thumbnail': None,
+                        'group': None
                     }
                 }
             }
@@ -1733,6 +1747,8 @@ class ManageGroupEndpointTests(TestCase):
         })
 
         # Confirm plant UUIDs were added, fake ID failed
+        self.plant1.refresh_from_db()
+        self.plant2.refresh_from_db()
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
@@ -1770,6 +1786,8 @@ class ManageGroupEndpointTests(TestCase):
 
         # Confirm plants were removed, response contains details of removed plants
         # Confirm fake ID failed, response contains UUID
+        self.plant1.refresh_from_db()
+        self.plant2.refresh_from_db()
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
@@ -1930,7 +1948,8 @@ class ChangeQrCodeTests(TestCase):
                         'pot_size': None,
                         'description': None,
                         'last_watered': None,
-                        'last_fertilized': None
+                        'last_fertilized': None,
+                        'group': None
                     },
                     'new_uuid': str(self.fake_id),
                     'preview': self.plant1.get_default_photo_details()['preview']

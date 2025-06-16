@@ -12,7 +12,8 @@ export const mockContext = {
             last_watered: "2024-02-26T02:44:12+00:00",
             last_fertilized: "2024-02-26T02:44:12+00:00",
             thumbnail: "/media/thumbnails/photo_thumb.webp",
-            archived: false
+            archived: false,
+            group: null
         },
         "0640ec3b-1bed-fb15-a078-d6e7ec66be12": {
             name: "Second Test Plant",
@@ -25,7 +26,11 @@ export const mockContext = {
             last_watered: "2024-02-27T02:44:12+00:00",
             last_fertilized: "2024-02-27T02:44:12+00:00",
             thumbnail: "/media/thumbnails/photo2_thumb.webp",
-            archived: false
+            archived: false,
+            group: {
+                name: "Test group",
+                uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+            }
         }
     },
     groups: {

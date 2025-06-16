@@ -228,7 +228,8 @@ class HookTests(TestCase):
                         "pot_size": None,
                         "last_watered": None,
                         "last_fertilized": None,
-                        "thumbnail": None
+                        "thumbnail": None,
+                        "group": None
                     }
                 },
                 "groups": {},
@@ -258,7 +259,8 @@ class HookTests(TestCase):
                         "pot_size": 10,
                         "last_watered": None,
                         "last_fertilized": None,
-                        "thumbnail": None
+                        "thumbnail": None,
+                        "group": None
                     }
                 },
                 "groups": {},

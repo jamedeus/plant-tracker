@@ -20,7 +20,8 @@ export const mockDividingFrom = {
         last_watered: "2024-02-26T02:44:12+00:00",
         last_fertilized: "2024-02-26T02:44:12+00:00",
         thumbnail: "/media/thumbnails/photo_thumb.webp",
-        archived: false
+        archived: false,
+        group: null
     },
     default_photo: {
         set: false,
@@ -48,7 +49,8 @@ export const mockChangingPlantQrCode = {
             description: "This is a plant with a long description",
             last_watered: "2024-03-01T05:45:44+00:00",
             last_fertilized: "2024-03-01T05:45:44+00:00",
-            archived: false
+            archived: false,
+            group: null
         },
         new_uuid: "07919189-514d-4ec1-a967-8af553dfa7e8",
         preview: "/media/previews/photo_preview.webp",

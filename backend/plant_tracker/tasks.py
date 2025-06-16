@@ -232,9 +232,6 @@ def build_manage_plant_state(uuid):
         'timestamp': plant.divided_from_event.timestamp.isoformat()
     } if plant.divided_from else False
 
-    # Add group details if plant is in a group
-    state['plant_details']['group'] = plant.get_group_details()
-
     # Cache state indefinitely (updates automatically when database changes)
     cache.set(f'{uuid}_state', state, None)
 
@@ -258,10 +255,10 @@ def get_manage_plant_state(plant):
     if not plant.name:
         state['plant_details']['display_name'] = plant.get_display_name()
 
-    # Overwrite cached group name if plant is in a group (may be outdated if
-    # group was renamed since cache saved)
+    # Overwrite cached group details if plant is in a group (may be outdated if
+    # group was renamed or QR code changed since cache saved)
     if plant.group:
-        state['plant_details']['group']['name'] = plant.group.get_display_name()
+        state['plant_details']['group'] = plant.get_group_details()
 
     # Add species and group options (cached separately)
     state['group_options'] = get_group_options(plant.user)

@@ -21,7 +21,11 @@ export const mockContext = {
             last_watered: "2024-02-29T12:45:44+00:00",
             last_fertilized: "2024-03-01T05:45:44+00:00",
             thumbnail: null,
-            archived: false
+            archived: false,
+            group: {
+                name: "Test group",
+                uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+            }
         },
         "19f65fa0-1c75-4cba-b590-0c9b5b315fcc": {
             name: null,
@@ -34,7 +38,11 @@ export const mockContext = {
             last_watered: "2024-02-29T12:45:44+00:00",
             last_fertilized: "2024-03-01T05:45:44+00:00",
             thumbnail: "/media/thumbnails/photo_thumb.webp",
-            archived: true
+            archived: true,
+            group: {
+                name: "Test group",
+                uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+            }
         },
         "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16": {
             name: "Newest plant",
@@ -47,7 +55,11 @@ export const mockContext = {
             last_watered: null,
             last_fertilized: null,
             thumbnail: null,
-            archived: false
+            archived: false,
+            group: {
+                name: "Test group",
+                uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
+            }
         },
     },
     options: {
@@ -62,7 +74,8 @@ export const mockContext = {
             last_watered: null,
             last_fertilized: null,
             thumbnail: "/media/thumbnails/photo2_thumb.webp",
-            archived: false
+            archived: false,
+            group: null
         },
         "0640ec3b-1bed-4b15-a078-d6e7ec66be69": {
             uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be69",
@@ -75,7 +88,8 @@ export const mockContext = {
             last_watered: null,
             last_fertilized: null,
             thumbnail: "/media/thumbnails/photo3_thumb.webp",
-            archived: false
+            archived: false,
+            group: null
         },
         "102d1a8c-07e6-4ece-bac7-60ed6a95a463": {
             uuid: "102d1a8c-07e6-4ece-bac7-60ed6a95a463",
@@ -88,7 +102,8 @@ export const mockContext = {
             last_watered: null,
             last_fertilized: "2022-03-01T05:45:44+00:00",
             thumbnail: null,
-            archived: true
+            archived: true,
+            group: null
         }
     }
 };

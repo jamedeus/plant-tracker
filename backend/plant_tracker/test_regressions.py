@@ -1028,6 +1028,93 @@ class CachedStateRegressionTests(TestCase):
             }
         )
 
+    def test_watering_plant_removes_group_key_from_cached_state(self):
+        '''Issue: the manage_plant state `plant_details` key (dict returned by
+        Plant.get_details) had an extra key `group` (added after building dict).
+        When get_manage_plant_state loaded state from cache the `name` key under
+        `group` was overwritten (name may have changed). When plant was watered
+        or fertilized tasks.update_last_event_times_in_cached_states_hook
+        replaced the entire `plant_details` dict with Plant.get_details without
+        replacing the group key. This caused a KeyError the next time state was
+        loaded (looking for ['plant_details']['group']['name']).
+
+        The dict returned by Plant.get_details now contains full group details
+        (ensure consistent keys everywhere the dict is used).
+        '''
+
+        # Create plant that is in group
+        default_user = get_default_user()
+        group = Group.objects.create(uuid=uuid4(), user=default_user)
+        plant = Plant.objects.create(uuid=uuid4(), group=group, user=default_user)
+
+        # Request manage plant page, confirm context contains group details
+        response = self.client.get(f'/manage/{plant.uuid}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.context['state']['plant_details']['group'],
+            plant.get_group_details()
+        )
+
+        # Water plant to trigger signal that broke cached state
+        response = JSONClient().post('/add_plant_event', {
+            'plant_id': plant.uuid,
+            'event_type': 'water',
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Request manage plant page again, confirm group details not removed
+        response = self.client.get(f'/manage/{plant.uuid}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.context['state']['plant_details']['group'],
+            plant.get_group_details()
+        )
+
+    def test_group_uuid_does_not_update_in_cached_manage_plant_state(self):
+        '''Issue: the manage_plant state contained the name and uuid of plant's
+        group under ['plant_details']['group']. When get_manage_plant_state
+        loaded state from cache it overwrote the cached group name (may have
+        changed) but did not overwrite the uuid. This caused the group link to
+        break on all manage_plant pages when the group QR code was changed.
+
+        The get_manage_plant_state function now overwrites entire group key
+        (name and uuid) and does not keep any cached group details.
+        '''
+
+        # Create plant that is in group
+        default_user = get_default_user()
+        group = Group.objects.create(uuid=uuid4(), user=default_user)
+        plant = Plant.objects.create(uuid=uuid4(), group=group, user=default_user)
+
+        # Request manage plant page, confirm context contains correct group uuid
+        response = self.client.get(f'/manage/{plant.uuid}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.context['state']['plant_details']['group']['uuid'],
+            str(group.uuid)
+        )
+
+        # Change group uuid
+        new_uuid = uuid4()
+        response = JSONClient().post('/change_uuid', {
+            'uuid': str(group.uuid),
+            'new_id': str(new_uuid)
+        })
+        self.assertEqual(
+            response.json(),
+            {"new_uuid": str(new_uuid)}
+        )
+        self.assertEqual(response.status_code, 200)
+
+        # Request manage plant page again, confirm group uuid updated
+        response = self.client.get(f'/manage/{plant.uuid}')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.context['state']['plant_details']['group']['uuid'],
+            str(new_uuid)
+        )
+
 
 class ViewDecoratorRegressionTests(TestCase):
     def setUp(self):

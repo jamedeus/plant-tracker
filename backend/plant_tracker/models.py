@@ -318,7 +318,8 @@ class Plant(models.Model):
             'pot_size': self.pot_size,
             'last_watered': self.last_watered(),
             'last_fertilized': self.last_fertilized(),
-            'thumbnail': self.get_default_photo_details()['thumbnail']
+            'thumbnail': self.get_default_photo_details()['thumbnail'],
+            'group': self.get_group_details()
         }
 
     def get_group_details(self):
