@@ -707,6 +707,38 @@ class ViewRegressionTests(TestCase):
         overview_state = cache.get(f'overview_state_{get_default_user().pk}')
         self.assertEqual(overview_state['groups'][str(group.uuid)]['plants'], 1)
 
+        # Send add_plant_to_group request
+        response = JSONClient().post('/remove_plant_from_group', {
+            'plant_id': plant.uuid
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm cached overview state says group has 0 plants
+        overview_state = cache.get(f'overview_state_{get_default_user().pk}')
+        self.assertEqual(overview_state['groups'][str(group.uuid)]['plants'], 0)
+
+        # Send bulk_add_plants_to_group request
+        response = JSONClient().post('/bulk_add_plants_to_group', {
+            'group_id': group.uuid,
+            'plants': [plant.uuid]
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm cached overview state says group has 1 plants
+        overview_state = cache.get(f'overview_state_{get_default_user().pk}')
+        self.assertEqual(overview_state['groups'][str(group.uuid)]['plants'], 1)
+
+        # Send bulk_remove_plants_from_group request
+        response = JSONClient().post('/bulk_remove_plants_from_group', {
+            'group_id': group.uuid,
+            'plants': [plant.uuid]
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm cached overview state says group has 0 plants
+        overview_state = cache.get(f'overview_state_{get_default_user().pk}')
+        self.assertEqual(overview_state['groups'][str(group.uuid)]['plants'], 0)
+
 
 class CachedStateRegressionTests(TestCase):
     def setUp(self):
