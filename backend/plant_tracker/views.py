@@ -40,9 +40,9 @@ from .view_decorators import (
 from .tasks import (
     get_overview_state,
     get_manage_plant_state,
-    schedule_cached_group_options_update,
     remove_plant_from_cached_overview_state,
-    remove_group_from_cached_overview_state
+    remove_group_from_cached_overview_state,
+    update_group_details_in_cached_group_options
 )
 
 
@@ -761,7 +761,7 @@ def add_plant_to_group(plant, group, user, **kwargs):
     plant.save()
 
     # Update cached group_options (number of plants in group changed)
-    schedule_cached_group_options_update(user)
+    update_group_details_in_cached_group_options(group)
 
     return JsonResponse(
         {
@@ -781,11 +781,12 @@ def remove_plant_from_group(plant, user, **kwargs):
     '''Removes specified Plant from Group (deletes database relation).
     Requires JSON POST with plant_id (uuid) key.
     '''
+    old_group = plant.group
     plant.group = None
     plant.save()
 
     # Update cached group_options (number of plants in group changed)
-    schedule_cached_group_options_update(user)
+    update_group_details_in_cached_group_options(old_group)
 
     return JsonResponse(
         {"action": "remove_plant_from_group", "plant": plant.uuid},
@@ -812,7 +813,7 @@ def bulk_add_plants_to_group(group, data, user, **kwargs):
             failed.append(plant_id)
 
     # Update cached group_options (number of plants in group changed)
-    schedule_cached_group_options_update(user)
+    update_group_details_in_cached_group_options(group)
 
     return JsonResponse({"added": added, "failed": failed}, status=200)
 
@@ -836,7 +837,9 @@ def bulk_remove_plants_from_group(data, user, **kwargs):
             failed.append(plant_id)
 
     # Update cached group_options (number of plants in group changed)
-    schedule_cached_group_options_update(user)
+    update_group_details_in_cached_group_options(
+        get_group_by_uuid(data['group_id'])
+    )
 
     return JsonResponse({"removed": removed, "failed": failed}, status=200)
 

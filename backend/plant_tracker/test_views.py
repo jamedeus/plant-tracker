@@ -1019,8 +1019,8 @@ class ManagePageTests(TestCase):
         # Confirm group_options key contains details of all existing groups
         self.assertEqual(
             state['group_options'],
-            [
-                {
+            {
+                str(self.group1.uuid): {
                     'name': None,
                     'display_name': 'Unnamed group 1',
                     'uuid': str(self.group1.uuid),
@@ -1030,7 +1030,7 @@ class ManagePageTests(TestCase):
                     'description': None,
                     'plants': 0
                 }
-            ]
+            }
         )
 
     def test_manage_plant_with_photos(self):
@@ -1194,8 +1194,8 @@ class ManagePageTests(TestCase):
                     'preview': None,
                     'key': None
                 },
-                'group_options': [
-                    {
+                'group_options': {
+                    str(self.group1.uuid): {
                         'name': None,
                         'display_name': 'Unnamed group 1',
                         'uuid': str(self.group1.uuid),
@@ -1205,7 +1205,7 @@ class ManagePageTests(TestCase):
                         'description': None,
                         'plants': 0
                     }
-                ],
+                },
                 'species_options': [],
                 'divided_from': None,
                 'division_events': {}

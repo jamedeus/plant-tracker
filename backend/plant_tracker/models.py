@@ -96,15 +96,16 @@ def get_plant_species_options():
 
 
 def get_group_options(user):
-    '''Takes user, returns list of dicts with details for all groups owner by user.
-    List is cached until Group model changes (detected by hooks in tasks.py).
-    Used to populate options in add group modal on manage_plant page.
+    '''Takes user, returns dict with all of user's groups (uuids as keys,
+    details) dicts as values). Populates options in add to group modal on
+    manage_plant page. Cached until Group model changes (see hooks in tasks.py).
     '''
     group_options = cache.get(f'group_options_{user.pk}')
     if not group_options:
-        group_options = [
-            group.get_details() for group in Group.objects.filter(user=user)
-        ]
+        group_options = {
+            str(group.uuid): group.get_details()
+            for group in Group.objects.filter(user=user)
+        }
         cache.set(f'group_options_{user.pk}', group_options, None)
     return group_options
 

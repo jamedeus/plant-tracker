@@ -21,7 +21,7 @@ export const plantSlice = createSlice({
     name: 'plant',
     initialState: {
         plantDetails: {},
-        groupOptions: []
+        groupOptions: {}
     },
     reducers: {
         // Takes object with all plantDetails keys that changed, overwrites

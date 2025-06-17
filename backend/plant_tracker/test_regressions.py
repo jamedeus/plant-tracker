@@ -839,7 +839,10 @@ class CachedStateRegressionTests(TestCase):
 
         # Confirm group option in manage_plant state says 1 plant in group
         response = self.client.get(f'/manage/{plant1.uuid}')
-        self.assertEqual(response.context['state']['group_options'][0]['plants'], 1)
+        self.assertEqual(
+            response.context['state']['group_options'][str(group.uuid)]['plants'],
+            1
+        )
 
         # Add plant2 to the group
         JSONClient().post(
@@ -849,7 +852,10 @@ class CachedStateRegressionTests(TestCase):
 
         # Confirm group option in manage_plant state now says 2 plants in group
         response = self.client.get(f'/manage/{plant1.uuid}')
-        self.assertEqual(response.context['state']['group_options'][0]['plants'], 2)
+        self.assertEqual(
+            response.context['state']['group_options'][str(group.uuid)]['plants'],
+            2
+        )
 
         # Remove plant2 from the group
         JSONClient().post('/remove_plant_from_group', {
@@ -858,7 +864,10 @@ class CachedStateRegressionTests(TestCase):
 
         # Confirm group option in manage_plant state now says 1 plant in group
         response = self.client.get(f'/manage/{plant1.uuid}')
-        self.assertEqual(response.context['state']['group_options'][0]['plants'], 1)
+        self.assertEqual(
+            response.context['state']['group_options'][str(group.uuid)]['plants'],
+            1
+        )
 
         # Add plant2 to group using the /bulk_add_plants_to_group endpoint
         JSONClient().post('/bulk_add_plants_to_group', {
@@ -868,7 +877,10 @@ class CachedStateRegressionTests(TestCase):
 
         # Confirm group option in manage_plant state now says 2 plants in group
         response = self.client.get(f'/manage/{plant1.uuid}')
-        self.assertEqual(response.context['state']['group_options'][0]['plants'], 2)
+        self.assertEqual(
+            response.context['state']['group_options'][str(group.uuid)]['plants'],
+            2
+        )
 
         # Remove plant2 from group using the /bulk_remove_plants_from_group endpoint
         JSONClient().post('/bulk_remove_plants_from_group', {
@@ -878,7 +890,10 @@ class CachedStateRegressionTests(TestCase):
 
         # Confirm group option in manage_plant state now says 1 plant in group
         response = self.client.get(f'/manage/{plant1.uuid}')
-        self.assertEqual(response.context['state']['group_options'][0]['plants'], 1)
+        self.assertEqual(
+            response.context['state']['group_options'][str(group.uuid)]['plants'],
+            1
+        )
 
     def test_update_cached_plant_options_fails_to_replace_cached_state(self):
         '''Issue: update_cached_plant_options rebuilt + cached state by calling
@@ -914,7 +929,7 @@ class CachedStateRegressionTests(TestCase):
         # Call function, confirm dummy string was overwritten
         update_cached_group_options(user_pk)
         self.assertNotEqual(cache.get(f'group_options_{user_pk}'), 'foo')
-        self.assertIsInstance(cache.get(f'group_options_{user_pk}'), list)
+        self.assertIsInstance(cache.get(f'group_options_{user_pk}'), dict)
 
     def test_archived_plants_added_to_main_overview_state_when_saved(self):
         '''Issue: tasks.update_instance_details_in_cached_overview_state_hook

@@ -33,8 +33,8 @@ export const mockContext = {
         "2024-03-01T15:45:44+00:00": "Fertilized with dilute 10-15-10 liquid fertilizer",
         "2024-02-26T12:44:12+00:00": "One of the older leaves is starting to turn yellow"
     },
-    group_options: [
-        {
+    group_options: {
+        "0640ec3b-1bed-4b15-a078-d6e7ec66be14": {
             name: "Test group",
             display_name: "Test group",
             uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
@@ -44,7 +44,7 @@ export const mockContext = {
             plants: 3,
             archived: false
         },
-        {
+        "0640ec3b-1bed-4b15-a078-d6e7ec66be61": {
             name: "Testing",
             display_name: "Testing",
             uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be61",
@@ -54,7 +54,7 @@ export const mockContext = {
             plants: 5,
             archived: false
         }
-    ],
+    },
     species_options: [
         "Parlor Palm",
         "Spider Plant",

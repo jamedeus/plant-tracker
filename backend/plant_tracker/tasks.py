@@ -492,6 +492,25 @@ def update_cached_plant_options(user_pk):
     print(f'Rebuilt plant_options for {user_pk} (manage_group add plants modal)')
 
 
+def update_group_details_in_cached_group_options(group):
+    '''Takes Group entry, updates details in cached group_options dict (used for
+    manage_plant add to group modal options) for the user who owns updated group.
+    '''
+    options = get_group_options(group.user)
+    options[str(group.uuid)] = group.get_details()
+    cache.set(f'group_options_{group.user.pk}', options, None)
+
+
+def remove_deleted_group_from_cached_group_options(instance, **kwargs):
+    '''Takes group entry, removes from cached group_options dict (used for
+    manage_plant add to group modal options) for the user who owns deleted group.
+    '''
+    options = get_group_options(instance.user)
+    if str(instance.uuid) in options:
+        del options[str(instance.uuid)]
+        cache.set(f'group_options_{instance.user.pk}', options, None)
+
+
 @shared_task()
 def update_cached_group_options(user_pk):
     '''Takes user primary key, builds and caches group options for manage_plant
