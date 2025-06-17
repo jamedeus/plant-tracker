@@ -527,7 +527,7 @@ class HookTests(TestCase):
                     "key": None
                 },
                 "notes": {},
-                "divided_from": False,
+                "divided_from": None,
                 "division_events": {}
             }
         )

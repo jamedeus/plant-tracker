@@ -355,6 +355,28 @@ class Plant(models.Model):
                 'key': None
             }
 
+    def get_parent_plant_details(self):
+        '''Returns dict with parent plant name, uuid, and division timestamp if
+        plant was divided from another plant, or None if no parent plant.
+        '''
+        return {
+            'name': self.divided_from.get_display_name(),
+            'uuid': str(self.divided_from.uuid),
+            'timestamp': self.divided_from_event.timestamp.isoformat()
+        } if self.divided_from else None
+
+    def get_division_event_details(self):
+        '''Returns nested dict with DivisionEvent timestamps as keys, list as
+        value containing dicts with each child plant's name and uuid.
+        '''
+        return {
+            event.timestamp.isoformat(): [
+                {'name': child.get_display_name(), 'uuid': str(child.uuid)}
+                for child in event.created_plants.all()
+            ]
+            for event in self.divisionevent_set.all()
+        }
+
     def _get_most_recent_timestamp(self, queryset):
         '''Takes QuerySet containing events, returns timestamp string of
         most-recent event (or None if queryset empty).

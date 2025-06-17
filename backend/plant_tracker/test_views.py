@@ -1207,7 +1207,7 @@ class ManagePageTests(TestCase):
                     }
                 ],
                 'species_options': [],
-                'divided_from': False,
+                'divided_from': None,
                 'division_events': {}
             }
         )

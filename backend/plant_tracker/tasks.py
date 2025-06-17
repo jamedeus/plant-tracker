@@ -217,20 +217,10 @@ def build_manage_plant_state(uuid):
 
     # Add object with DivisionEvent timestamps as keys, list of child plant
     # objects as values (adds events to timeline with links to children)
-    state['division_events'] = {
-        event.timestamp.isoformat(): [
-            {'name': child.get_display_name(), 'uuid': str(child.uuid)}
-            for child in event.created_plants.all()
-        ]
-        for event in plant.divisionevent_set.all()
-    }
+    state['division_events'] = plant.get_division_event_details()
 
     # Add object with parent plant details if divided from existing plant
-    state['divided_from'] = {
-        'name': plant.divided_from.get_display_name(),
-        'uuid': str(plant.divided_from.uuid),
-        'timestamp': plant.divided_from_event.timestamp.isoformat()
-    } if plant.divided_from else False
+    state['divided_from'] = plant.get_parent_plant_details()
 
     # Cache state indefinitely (updates automatically when database changes)
     cache.set(f'{uuid}_state', state, None)
