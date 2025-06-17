@@ -687,6 +687,10 @@ class CachedStateRegressionTests(TestCase):
         # Prevent creating celery tasks in other test suites
         schedule_cached_state_update_patch.start()
 
+        # Prevent cached state accumulatng plants that no longer exist (hook
+        # doesn't run when tests clean up model entries)
+        cache.delete(f'overview_state_{get_default_user().pk}')
+
     def test_display_name_of_unnamed_plants_update_correctly(self):
         '''Issue: cached manage_plant state is not updated until plant is saved
         in database. If plant has no name or species its display_name will have
@@ -1157,6 +1161,27 @@ class CachedStateRegressionTests(TestCase):
         self.assertEqual(len(overview_state['plants']), 1)
         self.assertEqual(len(overview_state['groups']), 1)
 
+    def test_cached_plant_options_last_watered_time_does_not_update(self):
+        '''Issue: Cached plant_options dict (used for manage_group add plants
+        modal) updated when a plant model was saved (renamed etc) but not when
+        a WaterEvent was created (last_watered time on card may be outdated).
+        '''
+
+        # Create plant, confirm exists in cached plant_options state
+        default_user = get_default_user()
+        plant = Plant.objects.create(uuid=uuid4(), user=default_user)
+        plant_options = cache.get(f'plant_options_{default_user.pk}')
+        self.assertIn(str(plant.uuid), plant_options)
+        self.assertIsNone(plant_options[str(plant.uuid)]['last_watered'])
+
+        # Water plant, confirm cached plant_options updated
+        timestamp = timezone.now()
+        WaterEvent.objects.create(plant=plant, timestamp=timestamp)
+        plant_options = cache.get(f'plant_options_{default_user.pk}')
+        self.assertEqual(
+            plant_options[str(plant.uuid)]['last_watered'],
+            timestamp.isoformat()
+        )
 
 class ViewDecoratorRegressionTests(TestCase):
     def setUp(self):

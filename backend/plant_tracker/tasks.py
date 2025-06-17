@@ -359,10 +359,11 @@ def remove_deleted_event_from_cached_manage_plant_state(instance, **kwargs):
 @receiver(post_delete, sender=FertilizeEvent)
 def update_last_event_times_in_cached_states_hook(instance, **kwargs):
     '''Updates last_watered and last_fertilized times for the associated plant
-    in cached overview state and cached manage_plant state when a WaterEvent or
-    FertilizeEvent is saved or deleted.
+    in cached overview state, cached manage_plant state, and cached plant
+    options when a WaterEvent or FertilizeEvent is saved or deleted.
     '''
     update_plant_in_cached_overview_state(instance.plant)
+    update_plant_details_in_cached_plant_options(instance.plant)
     # Update last_watered/fertilized
     cached_state = cache.get(f'{instance.plant.uuid}_state')
     if cached_state:
