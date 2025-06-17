@@ -276,25 +276,44 @@ def schedule_cached_manage_plant_state_update(uuid):
     )
 
 
-@receiver(post_save, sender=Plant)
+def update_child_plant_details_in_cached_manage_plant_state(plant):
+    '''Takes plant, updates division_events key in cached state, re-caches.'''
+    cached_state = cache.get(f'{plant.uuid}_state')
+    if cached_state:
+        cached_state['division_events'] = plant.get_division_event_details()
+        cache.set(f'{plant.uuid}_state', cached_state, None)
+
+
+def update_parent_plant_details_in_cached_manage_plant_state(plant):
+    '''Takes plant, updates divided_from key in cached state, re-caches.'''
+    cached_state = cache.get(f'{plant.uuid}_state')
+    if cached_state:
+        cached_state['divided_from'] = plant.get_parent_plant_details()
+        cache.set(f'{plant.uuid}_state', cached_state, None)
+
+
 @receiver(post_save, sender=DivisionEvent)
 @receiver(post_delete, sender=DivisionEvent)
+def update_division_events_in_cached_manage_plant_state_hook(instance, **kwargs):
+    '''Updates division_events key in cached manage_plant state when a
+    DivisionEvent is created or deleted.
+    '''
+    update_child_plant_details_in_cached_manage_plant_state(instance.plant)
+
+
+@receiver(post_save, sender=Plant)
 @disable_for_loaddata
 def update_cached_manage_plant_state_hook(instance, **kwargs):
     '''Schedules task to update cached manage_plant state when Plant or events
     with reverse relation to Plant are modified
     '''
-    if isinstance(instance, Plant):
-        schedule_cached_manage_plant_state_update(instance.uuid)
-        # Also rebuild parent plant state (outdated if plant name changed)
-        if instance.divided_from:
-            schedule_cached_manage_plant_state_update(instance.divided_from.uuid)
-        # Also rebuild child plant states (outdated if plant name changed)
-        for child_plant in instance.children.all():
-            schedule_cached_manage_plant_state_update(child_plant.uuid)
-
-    else:
-        schedule_cached_manage_plant_state_update(instance.plant.uuid)
+    schedule_cached_manage_plant_state_update(instance.uuid)
+    # Update parent plant state ("Divided into" outdated if plant name changed)
+    if instance.divided_from:
+        update_child_plant_details_in_cached_manage_plant_state(instance.divided_from)
+    # Update child plant states ("Divided from" outdated if plant name changed)
+    for child_plant in instance.children.all():
+        update_parent_plant_details_in_cached_manage_plant_state(child_plant)
 
 
 # Maps string retrieved with instance._meta.model_name to correct key in
