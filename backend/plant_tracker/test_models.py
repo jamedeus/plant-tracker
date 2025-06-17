@@ -22,25 +22,13 @@ from .models import (
     Photo,
     NoteEvent
 )
-from .unit_test_helpers import (
-    JSONClient,
-    create_mock_photo,
-    schedule_cached_state_update_patch
-)
-
-
-def setUpModule():
-    # Prevent creating celery tasks to rebuild cached states
-    schedule_cached_state_update_patch.start()
+from .unit_test_helpers import JSONClient, create_mock_photo
 
 
 def tearDownModule():
     # Delete mock photo directory after tests
     print("\nDeleting mock photos...\n")
     shutil.rmtree(settings.TEST_DIR, ignore_errors=True)
-
-    # Re-enable cached state celery tasks
-    schedule_cached_state_update_patch.stop()
 
 
 class PlantModelTests(TestCase):

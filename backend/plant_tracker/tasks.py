@@ -4,11 +4,8 @@ Using cached states can reduce page load time when many database entries exist,
 particularly the overview page (state takes 150-200ms to build with 60 plants).
 
 Django database signals are used to create hooks that update cached states when
-relevant models are created, deleted, or modified.
-
-In most cases the schedule_cached_state_update is used to update states after a
-30 second delay, preventing the same state object being built multiple times as
-the user logs events on the frontend.
+relevant models are created, deleted, or modified. In most cases cached states
+are updated incrementally (overwrite 1 key instead of rebuilding whole state).
 '''
 
 from celery import shared_task
@@ -17,7 +14,6 @@ from django.dispatch import receiver
 from django.contrib.auth import get_user_model
 from django.db.models.signals import post_save, post_delete, pre_delete
 
-from backend.celery import app
 from .models import (
     Plant,
     Group,
@@ -33,41 +29,6 @@ from .models import (
     get_plant_species_options
 )
 from .disable_for_loaddata import disable_for_loaddata
-
-
-def revoke_queued_task(task_id_cache_name):
-    '''Revokes queued tasks'''
-    task_id = cache.get(task_id_cache_name)
-    if task_id:
-        app.control.revoke(task_id, terminate=True)
-        cache.delete(task_id_cache_name)
-
-
-def schedule_cached_state_update(cache_name, callback_task, callback_kwargs=None, delay=0):
-    '''Clears cache_name and schedules callback_task to run in delay seconds.
-
-    Cache is cleared immediately to prevent serving outdated state if requested
-    before delay seconds. If another task with same cache_name is queued before
-    delay seconds the existing queued task is revoked to prevent duplicates.
-
-    The callback_task arg must be a function that builds a state object and
-    caches it as cache_name.
-
-    The optional callback_kwargs must be a dict of kwargs passed to callback_task.
-    '''
-
-    # Clear existing cache (prevent loading outdated state)
-    cache.delete(cache_name)
-    print(f'Cleared {cache_name} cache (queueing rebuild task)')
-
-    # Revoke queued duplicate tasks (resets delay timer)
-    revoke_queued_task(f'rebuild_{cache_name}_task_id')
-
-    # Schedule callback task to run after delay seconds
-    result = callback_task.apply_async(kwargs=callback_kwargs, countdown=delay)
-
-    # Store ID of queued task so it can be canceled if this is called again
-    cache.set(f'rebuild_{cache_name}_task_id', result.id, delay)
 
 
 def build_overview_state(user):

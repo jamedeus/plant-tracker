@@ -1,13 +1,11 @@
 '''Helper functions used in unit tests'''
 
 from io import BytesIO
-from unittest.mock import patch
 
 import piexif
 from PIL import Image
 
 from django.test import Client
-from django.core.cache import cache
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
 
@@ -84,25 +82,3 @@ def create_mock_rgba_png(name='mock_rgba.png'):
         size=mock_photo.getbuffer().nbytes,
         charset=None
     )
-
-
-def clear_cache(*args, **kwargs):
-    '''Clears all entries from django cache
-    Accepts (and ignores) args/kwargs so it can be used to mock other functions
-    '''
-    cache.clear()
-
-
-def delete_cache_key(*args, **kwargs):
-    '''Clears cache key passed as `cache_name` kwarg, used to mock
-    schedule_cached_state_update without actually scheduling update.
-    '''
-    cache.delete(kwargs['cache_name'])
-
-
-# Patch function that schedules celery tasks to replace cached state objects
-# to clear requested cache without scheduling task (unnecessary in most unit tests)
-schedule_cached_state_update_patch = patch(
-    'plant_tracker.tasks.schedule_cached_state_update',
-    side_effect=delete_cache_key
-)

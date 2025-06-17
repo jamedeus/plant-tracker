@@ -5,7 +5,6 @@ import threading
 from uuid import uuid4
 from types import NoneType
 from datetime import datetime
-from unittest.mock import patch
 
 from django.conf import settings
 from django.utils import timezone
@@ -37,23 +36,14 @@ from .view_decorators import (
 from .unit_test_helpers import (
     JSONClient,
     create_mock_photo,
-    create_mock_rgba_png,
-    schedule_cached_state_update_patch
+    create_mock_rgba_png
 )
-
-
-def setUpModule():
-    # Prevent creating celery tasks to rebuild cached states
-    schedule_cached_state_update_patch.start()
 
 
 def tearDownModule():
     # Delete mock photo directory after tests
     print("\nDeleting mock photos...\n")
     shutil.rmtree(settings.TEST_DIR, ignore_errors=True)
-
-    # Re-enable cached state celery tasks
-    schedule_cached_state_update_patch.stop()
 
 
 class ModelRegressionTests(TestCase):
@@ -744,14 +734,6 @@ class CachedStateRegressionTests(TestCase):
     def setUp(self):
         # Clear entire cache before each test
         cache.clear()
-
-        # Allow creating celery tasks (and prevent hook called when saving a
-        # single model from clearing all cached states)
-        schedule_cached_state_update_patch.stop()
-
-    def tearDown(self):
-        # Prevent creating celery tasks in other test suites
-        schedule_cached_state_update_patch.start()
 
     def test_display_name_of_unnamed_plants_update_correctly(self):
         '''Issue: cached manage_plant state is not updated until plant is saved

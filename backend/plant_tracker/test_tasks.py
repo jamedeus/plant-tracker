@@ -2,7 +2,6 @@
 
 import shutil
 from uuid import uuid4
-from unittest.mock import patch, MagicMock
 
 from django.conf import settings
 from django.test import TestCase
@@ -22,8 +21,6 @@ from .models import (
     NoteEvent
 )
 from .tasks import (
-    revoke_queued_task,
-    schedule_cached_state_update,
     update_cached_overview_state,
     update_cached_manage_plant_state,
     update_all_cached_states
@@ -43,74 +40,6 @@ class HelperFunctionTests(TestCase):
     def setUp(self):
         # Clear entire cache before each test
         cache.clear()
-
-    def test_revoke_queued_task(self):
-        with patch('plant_tracker.tasks.cache.get') as mock_cache_get, \
-             patch('plant_tracker.tasks.app.control.revoke') as mock_revoke:
-            # Simulate existing cached task ID
-            mock_cache_get.return_value = 'mock_task_id'
-
-            # Call function to revoke scheduled task
-            revoke_queued_task('rebuild_state_task_id')
-
-            # Confirm correct cache key was looked up
-            mock_cache_get.assert_called_once_with('rebuild_state_task_id')
-
-            # Confirm mock task ID was revoked
-            mock_revoke.assert_called_once_with('mock_task_id', terminate=True)
-
-    def test_revoke_queued_task_not_found(self):
-        with patch('plant_tracker.tasks.cache.get') as mock_cache_get, \
-             patch('plant_tracker.tasks.app.control.revoke') as mock_revoke:
-            # Simulate no existing cached task
-            mock_cache_get.return_value = None
-
-            # Call function to revoke scheduled task
-            revoke_queued_task('rebuild_state_task_id')
-
-            # Confirm correct cache key was looked up, revoke was not called
-            mock_cache_get.assert_called_once_with('rebuild_state_task_id')
-            mock_revoke.assert_not_called()
-
-    def test_schedule_cached_state_update(self):
-        # Get test UUID, mock cached manage_plant state
-        uuid = uuid4()
-        cache.set(f'{uuid}_state', 'mock_manage_plant_state')
-
-        # Mock methods called by schedule_cached_state_update
-        with patch('plant_tracker.tasks.cache.get') as mock_cache_get, \
-             patch('plant_tracker.tasks.cache.set') as mock_cache_set, \
-             patch('plant_tracker.tasks.revoke_queued_task') as mock_revoke_queued_task, \
-             patch('plant_tracker.tasks.update_cached_manage_plant_state.apply_async') as mock_apply_async:
-
-            # Mock cache.get to return None (simulate no duplicate task in queue)
-            mock_cache_get.return_value = None
-
-            # Mock apply_async to return object with id param (scheduled task ID)
-            mock_result = MagicMock()
-            mock_result.id = "mock_task_id"
-            mock_apply_async.return_value = mock_result
-
-            # Call function to schedule cached state update
-            schedule_cached_state_update(
-                cache_name=f'{uuid}_state',
-                callback_task=update_cached_manage_plant_state,
-                callback_kwargs={'uuid': uuid},
-                delay=30
-            )
-
-            # Confirm existing cache was deleted
-            self.assertIsNone(cache.get(f'{uuid}_state'))
-
-            # Confirm revoke_queued_task was called with cache key containing
-            # ID of duplicate task (revokes duplicate if present)
-            mock_revoke_queued_task.assert_called_once_with(f'rebuild_{uuid}_state_task_id')
-
-            # Confirm apply_async was called with correct args
-            mock_apply_async.assert_called_once_with(kwargs={'uuid': uuid}, countdown=30)
-
-            # Confirm ID of newly queued task was cached so it can be canceled if needed
-            mock_cache_set.assert_called_once_with(f'rebuild_{uuid}_state_task_id', 'mock_task_id', 30)
 
     def test_update_all_cached_states(self):
         # Create 5 Plant entries, cache dummy string for each

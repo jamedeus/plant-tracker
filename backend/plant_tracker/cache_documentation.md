@@ -8,12 +8,6 @@ This should be updated when:
 
 ## Cache names
 
-### `rebuild_{cache_name}_task_id`
-- Stores queued celery task ID so that it can be canceled if the same task is queued again before it runs
-- Set by `tasks.schedule_cached_state_update`
-  * Expires when queued task is scheduled to run
-  * Deleted if the queued task is revoked (`tasks.revoke_queued_task`)
-
 ### `old_uuid_{user_primary_key}`
 - Stores UUID of plant/group expecting new UUID
 - Name includes database primary key of user that requested to change QR code (avoid collisions)

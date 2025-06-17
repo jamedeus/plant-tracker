@@ -754,7 +754,7 @@ def delete_plant_note(plant, timestamp, **kwargs):
 @requires_json_post(["plant_id", "group_id"])
 @get_plant_from_post_body
 @get_group_from_post_body
-def add_plant_to_group(plant, group, user, **kwargs):
+def add_plant_to_group(plant, group, **kwargs):
     '''Adds specified Plant to specified Group (creates database relation).
     Requires JSON POST with plant_id (uuid) and group_id (uuid) keys.
     '''
@@ -780,7 +780,7 @@ def add_plant_to_group(plant, group, user, **kwargs):
 @get_user_token
 @requires_json_post(["plant_id"])
 @get_plant_from_post_body
-def remove_plant_from_group(plant, user, **kwargs):
+def remove_plant_from_group(plant, **kwargs):
     '''Removes specified Plant from Group (deletes database relation).
     Requires JSON POST with plant_id (uuid) key.
     '''
@@ -802,7 +802,7 @@ def remove_plant_from_group(plant, user, **kwargs):
 @get_user_token
 @requires_json_post(["group_id", "plants"])
 @get_group_from_post_body
-def bulk_add_plants_to_group(group, data, user, **kwargs):
+def bulk_add_plants_to_group(group, data, **kwargs):
     '''Adds a list of Plants to specified Group (creates database relation for each).
     Requires JSON POST with group_id (uuid) and plants (list of UUIDs) keys.
     '''
@@ -828,7 +828,7 @@ def bulk_add_plants_to_group(group, data, user, **kwargs):
 @get_user_token
 @requires_json_post(["group_id", "plants"])
 @get_group_from_post_body
-def bulk_remove_plants_from_group(data, user, **kwargs):
+def bulk_remove_plants_from_group(data, group, **kwargs):
     '''Removes a list of Plants from specified Group (deletes database relations).
     Requires JSON POST with group_id (uuid) and plants (list of UUIDs) keys.
     '''
@@ -844,7 +844,6 @@ def bulk_remove_plants_from_group(data, user, **kwargs):
             failed.append(plant_id)
 
     # Update cached group_options (number of plants in group changed)
-    group = get_group_by_uuid(data['group_id'])
     update_group_details_in_cached_group_options(group)
     # Update number of plants shown on overview
     update_group_in_cached_overview_state(group)

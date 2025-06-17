@@ -30,25 +30,13 @@ from .models import (
     Photo,
     NoteEvent
 )
-from .unit_test_helpers import (
-    JSONClient,
-    create_mock_photo,
-    schedule_cached_state_update_patch
-)
-
-
-def setUpModule():
-    # Prevent creating celery tasks to rebuild cached states
-    schedule_cached_state_update_patch.start()
+from .unit_test_helpers import JSONClient, create_mock_photo
 
 
 def tearDownModule():
     # Delete mock photo directory after tests
     print("\nDeleting mock photos...\n")
     shutil.rmtree(settings.TEST_DIR, ignore_errors=True)
-
-    # Re-enable cached state celery tasks
-    schedule_cached_state_update_patch.stop()
 
 
 class RenderReactAppTests(TestCase):
@@ -2075,12 +2063,10 @@ class ChangeQrCodeTests(TestCase):
         )
 
     def test_target_plant_deleted_before_confirmation_page_loaded(self):
-        # Simulate user deleting plant before loading confirmation page
-        # (must delete before caching because schedule_cached_state_update_patch
-        # will clear entire cache immediately when Plant.delete hook is
-        # triggered. In production this wouldn't happen for 30 seconds.)
-        self.plant1.delete()
+        # Simulate user changing plant QR code
         cache.set(f'old_uuid_{self.default_user.pk}', str(self.plant1.uuid))
+        # Simulate user deleting plant before loading confirmation page
+        self.plant1.delete()
         self.assertIsNotNone(cache.get(f'old_uuid_{self.default_user.pk}'))
 
         # Request management page with new UUID (simulate user scanning new QR)
