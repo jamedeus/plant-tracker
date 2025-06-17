@@ -49,7 +49,7 @@ This should be updated when:
 - Name includes database primary key of user account that owns plants
 - Set by `models.get_plant_options`,
   * Never expires
-  * Updated if Plant model owned by same user saved (`tasks.update_plant_details_in_cached_plant_options_hook`)
+  * Updated if Plant model owned by same user saved (`tasks.update_plant_in_cached_states_hook`)
   * Updated if Plant model owned by same user deleted (`tasks.remove_deleted_instance_from_cached_plant_options_hook`)
   * Updated if Photo model associated with Plant owned by same user saved (`tasks.add_photo_to_cached_states_hook`)
   * Updated if Photo model associated with Plant owned by same user deleted (`tasks.remove_photo_from_cached_states_hook`)
@@ -90,9 +90,9 @@ This should be updated when:
 - Stores manage_plant page state for the plant matching UUID (excluding the `group_options` and `species_options` keys which are cached separately)
 - Set by `tasks.build_manage_plant_state` (only called when cache does not already exist)
   * Never expires
-  * Deleted when associated Plant is saved (replaced after 30 second delay) (`tasks.update_cached_manage_plant_state_hook`)
-  * Updated when associated Plant's parent (plant's `Plant.divided_from` ForeignKey points to parent) is saved (`tasks.update_cached_manage_plant_state_hook`)
-  * Updated when associated Plant's child (child's `Plant.divided_from` ForeignKey points to plant) is saved (`tasks.update_cached_manage_plant_state_hook`)
+  * Updated when associated Plant is saved (`tasks.update_plant_in_cached_states_hook`)
+  * Updated when associated Plant's parent (plant's `Plant.divided_from` ForeignKey points to parent) is saved (`tasks.update_plant_in_cached_states_hook`)
+  * Updated when associated Plant's child (child's `Plant.divided_from` ForeignKey points to plant) is saved (`tasks.update_plant_in_cached_states_hook`)
   * Deleted when associated Plant's parent (plant's `Plant.divided_from` ForeignKey points to parent) is deleted (not replaced) (`tasks.delete_parent_or_child_cached_manage_plant_state_hook`)
   * Deleted when associated Plant's child (child's `Plant.divided_from` ForeignKey points to plant) is deleted (not replaced) (`tasks.delete_parent_or_child_cached_manage_plant_state_hook`)
   * Deleted when associated Plant is deleted

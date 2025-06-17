@@ -225,9 +225,6 @@ def build_manage_plant_state(uuid):
     # Cache state indefinitely (updates automatically when database changes)
     cache.set(f'{uuid}_state', state, None)
 
-    # Revoke queued update tasks (prevent rebuilding again after manual call)
-    revoke_queued_task(f'rebuild_{uuid}_state_task_id')
-
     return state
 
 
@@ -264,18 +261,6 @@ def update_cached_manage_plant_state(uuid):
     print(f'Rebuilt {uuid} state')
 
 
-def schedule_cached_manage_plant_state_update(uuid):
-    '''Clears cached overview state immediately and schedules task to update
-    it in 30 seconds (timer resets if called again within 30 seconds).
-    '''
-    schedule_cached_state_update(
-        cache_name=f'{uuid}_state',
-        callback_task=update_cached_manage_plant_state,
-        callback_kwargs={'uuid': uuid},
-        delay=30
-    )
-
-
 def update_child_plant_details_in_cached_manage_plant_state(plant):
     '''Takes plant, updates division_events key in cached state, re-caches.'''
     cached_state = cache.get(f'{plant.uuid}_state')
@@ -301,13 +286,26 @@ def update_division_events_in_cached_manage_plant_state_hook(instance, **kwargs)
     update_child_plant_details_in_cached_manage_plant_state(instance.plant)
 
 
+def update_plant_details_in_cached_manage_plant_state(plant):
+    '''Takes plant, updates plant_details key in cached state, re-caches.'''
+    cached_state = get_manage_plant_state(plant)
+    cached_state['plant_details'] = plant.get_details()
+    cache.set(f'{plant.uuid}_state', cached_state, None)
+
+
 @receiver(post_save, sender=Plant)
 @disable_for_loaddata
-def update_cached_manage_plant_state_hook(instance, **kwargs):
-    '''Schedules task to update cached manage_plant state when Plant or events
-    with reverse relation to Plant are modified
+def update_plant_in_cached_states_hook(instance, **kwargs):
+    '''Updates all relevant caches when a Plant entry is saved.
+    - Updates `plant_details` key in plant's cached manage_plant state
+    - Updates plant entry in cached plant_options dict
+    - If plant has parent updates `division_events` key in parent plant's cached
+      manage_plant state (child name/uuid may be outdated)
+    - If plant has children updates `divided_from` key in parent all child plant
+      cached manage_plant state(s) (parent name/uuid may be outdated)
     '''
-    schedule_cached_manage_plant_state_update(instance.uuid)
+    update_plant_details_in_cached_manage_plant_state(instance)
+    update_plant_details_in_cached_plant_options(instance)
     # Update parent plant state ("Divided into" outdated if plant name changed)
     if instance.divided_from:
         update_child_plant_details_in_cached_manage_plant_state(instance.divided_from)
@@ -453,8 +451,6 @@ def delete_parent_or_child_cached_manage_plant_state_hook(instance, **kwargs):
 def delete_cached_manage_plant_state_hook(instance, **kwargs):
     '''Deletes cached manage_plant state when plant is deleted from database.'''
     cache.delete(f'{instance.uuid}_state')
-    # Cancel scheduled state update if present (will fail, plant doesn't exist)
-    revoke_queued_task(f'rebuild_{instance.uuid}_state_task_id')
 
 
 def update_plant_details_in_cached_plant_options(plant):
@@ -474,14 +470,6 @@ def update_plant_details_in_cached_plant_options(plant):
     elif str(plant.uuid) in options:
         del options[str(plant.uuid)]
         cache.set(f'plant_options_{plant.user.pk}', options, None)
-
-
-@receiver(post_save, sender=Plant)
-def update_plant_details_in_cached_plant_options_hook(instance, **kwargs):
-    '''Updates plant details in cached plant_options dict (used for manage_group
-    add plants modal options) for the user who owns the updated plant.
-    '''
-    update_plant_details_in_cached_plant_options(instance)
 
 
 @receiver(post_delete, sender=Plant)
