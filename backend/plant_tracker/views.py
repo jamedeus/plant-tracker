@@ -40,9 +40,8 @@ from .view_decorators import (
 from .tasks import (
     get_overview_state,
     get_manage_plant_state,
-    update_group_in_cached_overview_state,
-    remove_plant_from_cached_overview_state,
-    remove_group_from_cached_overview_state,
+    update_instance_in_cached_overview_state,
+    remove_instance_from_cached_overview_state,
     update_group_details_in_cached_group_options
 )
 
@@ -391,9 +390,9 @@ def change_uuid(instance, data, user, **kwargs):
         # Delete plant/group from cached state (prevent duplicate, keys are uuid
         # so once it changes the old entry can't be removed)
         if isinstance(instance, Plant):
-            remove_plant_from_cached_overview_state(instance)
+            remove_instance_from_cached_overview_state(instance, 'plants')
         else:
-            remove_group_from_cached_overview_state(instance)
+            remove_instance_from_cached_overview_state(instance, 'groups')
         # Change UUID, save (hook will update cached overview state)
         instance.uuid = data["new_id"]
         instance.save(update_fields=["uuid"])
@@ -764,7 +763,7 @@ def add_plant_to_group(plant, group, **kwargs):
     # Update cached group_options (number of plants in group changed)
     update_group_details_in_cached_group_options(group)
     # Update number of plants shown on overview
-    update_group_in_cached_overview_state(group)
+    update_instance_in_cached_overview_state(group, "groups")
 
     return JsonResponse(
         {
@@ -791,7 +790,7 @@ def remove_plant_from_group(plant, **kwargs):
     # Update cached group_options (number of plants in group changed)
     update_group_details_in_cached_group_options(old_group)
     # Update number of plants shown on overview
-    update_group_in_cached_overview_state(old_group)
+    update_instance_in_cached_overview_state(old_group, 'groups')
 
     return JsonResponse(
         {"action": "remove_plant_from_group", "plant": plant.uuid},
@@ -820,7 +819,7 @@ def bulk_add_plants_to_group(group, data, **kwargs):
     # Update cached group_options (number of plants in group changed)
     update_group_details_in_cached_group_options(group)
     # Update number of plants shown on overview
-    update_group_in_cached_overview_state(group)
+    update_instance_in_cached_overview_state(group, "groups")
 
     return JsonResponse({"added": added, "failed": failed}, status=200)
 
@@ -846,7 +845,7 @@ def bulk_remove_plants_from_group(data, group, **kwargs):
     # Update cached group_options (number of plants in group changed)
     update_group_details_in_cached_group_options(group)
     # Update number of plants shown on overview
-    update_group_in_cached_overview_state(group)
+    update_instance_in_cached_overview_state(group, "groups")
 
     return JsonResponse({"removed": removed, "failed": failed}, status=200)
 

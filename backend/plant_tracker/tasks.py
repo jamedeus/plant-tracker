@@ -77,42 +77,27 @@ def update_cached_overview_state(user_pk):
     print(f'Rebuilt overview state for {user_pk}')
 
 
-def update_plant_in_cached_overview_state(plant):
-    '''Takes plant entry that was updated. Loads cached overview state,
-    overwrites plant details with current values, and re-caches.
+def update_instance_in_cached_overview_state(instance, key):
+    '''Takes plant or group entry that was updated and key (plants or groups).
+    Overwrites instance details under requested key in cached overview state.
+    Removes instance from cached state if instance is archived.
     '''
-    state = get_overview_state(plant.user)
-    state['plants'][str(plant.uuid)] = plant.get_details()
-    cache.set(f'overview_state_{plant.user.pk}', state, None)
+    if instance.archived:
+        remove_instance_from_cached_overview_state(instance, key)
+    else:
+        state = get_overview_state(instance.user)
+        state[key][str(instance.uuid)] = instance.get_details()
+        cache.set(f'overview_state_{instance.user.pk}', state, None)
 
 
-def remove_plant_from_cached_overview_state(plant):
-    '''Takes plant entry that was deleted. Loads cached overview state,
-    removes plant from plants key, and re-caches.
+def remove_instance_from_cached_overview_state(instance, key):
+    '''Takes plant or group entry that was deleted and key (plants or groups).
+    Removes instance details from requested key in cached overview state.
     '''
-    state = get_overview_state(plant.user)
-    if str(plant.uuid) in state['plants']:
-        del state['plants'][str(plant.uuid)]
-        cache.set(f'overview_state_{plant.user.pk}', state, None)
-
-
-def update_group_in_cached_overview_state(group):
-    '''Takes group entry that was updated. Loads cached overview state,
-    overwrites group details with current values, and re-caches.
-    '''
-    state = get_overview_state(group.user)
-    state['groups'][str(group.uuid)] = group.get_details()
-    cache.set(f'overview_state_{group.user.pk}', state, None)
-
-
-def remove_group_from_cached_overview_state(group):
-    '''Takes group entry that was deleted. Loads cached overview state,
-    removes group from groups key, and re-caches.
-    '''
-    state = get_overview_state(group.user)
-    if str(group.uuid) in state['groups']:
-        del state['groups'][str(group.uuid)]
-        cache.set(f'overview_state_{group.user.pk}', state, None)
+    state = get_overview_state(instance.user)
+    if str(instance.uuid) in state[key]:
+        del state[key][str(instance.uuid)]
+        cache.set(f'overview_state_{instance.user.pk}', state, None)
 
 
 @receiver(post_save, sender=Plant)
@@ -120,10 +105,7 @@ def update_plant_details_in_cached_overview_state_hook(instance, **kwargs):
     '''Updates plant details in the cached overview state for the user who owns
     the updated plant. Removes plant from cached state if plant is archived.
     '''
-    if instance.archived:
-        remove_plant_from_cached_overview_state(instance)
-    else:
-        update_plant_in_cached_overview_state(instance)
+    update_instance_in_cached_overview_state(instance, 'plants')
 
 
 @receiver(post_save, sender=Group)
@@ -131,10 +113,7 @@ def update_group_details_in_cached_overview_state_hook(instance, **kwargs):
     '''Updates group details in the cached overview state for the user who owns
     the updated group. Removes group from cached state if group is archived.
     '''
-    if instance.archived:
-        remove_group_from_cached_overview_state(instance)
-    else:
-        update_group_in_cached_overview_state(instance)
+    update_instance_in_cached_overview_state(instance, 'groups')
 
 
 @receiver(post_delete, sender=Plant)
@@ -144,10 +123,8 @@ def remove_deleted_instance_from_cached_overview_state_hook(instance, **kwargs):
     '''Removes deleted plant or group details from the cached overview state for
     the user who owned the deleted plant or group.
     '''
-    if isinstance(instance, Plant):
-        remove_plant_from_cached_overview_state(instance)
-    else:
-        remove_group_from_cached_overview_state(instance)
+    key = 'plants' if isinstance(instance, Plant) else 'groups'
+    remove_instance_from_cached_overview_state(instance, key)
 
 
 def build_manage_plant_state(uuid):
@@ -238,6 +215,13 @@ def update_parent_plant_details_in_cached_manage_plant_state(plant):
         cache.set(f'{plant.uuid}_state', cached_state, None)
 
 
+def update_plant_details_in_cached_manage_plant_state(plant):
+    '''Takes plant, updates plant_details key in cached state, re-caches.'''
+    cached_state = get_manage_plant_state(plant)
+    cached_state['plant_details'] = plant.get_details()
+    cache.set(f'{plant.uuid}_state', cached_state, None)
+
+
 @receiver(post_save, sender=DivisionEvent)
 @receiver(post_delete, sender=DivisionEvent)
 def update_division_events_in_cached_manage_plant_state_hook(instance, **kwargs):
@@ -245,13 +229,6 @@ def update_division_events_in_cached_manage_plant_state_hook(instance, **kwargs)
     DivisionEvent is created or deleted.
     '''
     update_child_plant_details_in_cached_manage_plant_state(instance.plant)
-
-
-def update_plant_details_in_cached_manage_plant_state(plant):
-    '''Takes plant, updates plant_details key in cached state, re-caches.'''
-    cached_state = get_manage_plant_state(plant)
-    cached_state['plant_details'] = plant.get_details()
-    cache.set(f'{plant.uuid}_state', cached_state, None)
 
 
 @receiver(post_save, sender=Plant)
@@ -330,7 +307,7 @@ def update_last_event_times_in_cached_states_hook(instance, **kwargs):
     in cached overview state, cached manage_plant state, and cached plant
     options when a WaterEvent or FertilizeEvent is saved or deleted.
     '''
-    update_plant_in_cached_overview_state(instance.plant)
+    update_instance_in_cached_overview_state(instance.plant, 'plants')
     update_plant_details_in_cached_plant_options(instance.plant)
     # Update last_watered/fertilized
     cached_state = cache.get(f'{instance.plant.uuid}_state')
@@ -353,8 +330,7 @@ def add_photo_to_cached_states_hook(instance, **kwargs):
         cached_state['plant_details']['thumbnail'] = default_photo['thumbnail']
         cache.set(f'{instance.plant.uuid}_state', cached_state, None)
     # Update thumbnail in cached overview state if plant is not archived
-    if not instance.plant.archived:
-        update_plant_in_cached_overview_state(instance.plant)
+    update_instance_in_cached_overview_state(instance.plant, 'plants')
     # Update thumbnail in cached plant_options dict
     update_plant_details_in_cached_plant_options(instance.plant)
 
@@ -373,8 +349,7 @@ def remove_photo_from_cached_states_hook(instance, **kwargs):
         cached_state['plant_details']['thumbnail'] = default_photo['thumbnail']
         cache.set(f'{instance.plant.uuid}_state', cached_state, None)
     # Update thumbnail in cached overview state if plant is not archived
-    if not instance.plant.archived:
-        update_plant_in_cached_overview_state(instance.plant)
+    update_instance_in_cached_overview_state(instance.plant, 'plants')
     # Update thumbnail in cached plant_options dict
     update_plant_details_in_cached_plant_options(instance.plant)
 
