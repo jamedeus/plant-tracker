@@ -8,6 +8,7 @@ from datetime import timedelta
 from django.conf import settings
 from django.test import TestCase
 from django.utils import timezone
+from django.core.cache import cache
 from django.db import transaction, IntegrityError
 
 from .view_decorators import get_default_user
@@ -44,6 +45,8 @@ def tearDownModule():
 
 class PlantModelTests(TestCase):
     def setUp(self):
+        # Clear entire cache before each test
+        cache.clear()
         # Create blank test model to use in tests
         self.plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         # Create test datetime object for creating events
@@ -309,6 +312,9 @@ class PlantModelTests(TestCase):
 
 class GroupModelTests(TestCase):
     def setUp(self):
+        # Clear entire cache before each test
+        cache.clear()
+
         # Create test group
         default_user = get_default_user()
         self.test_group = Group.objects.create(uuid=uuid4(), user=default_user)
@@ -400,6 +406,9 @@ class GroupModelTests(TestCase):
 
 class PhotoModelTests(TestCase):
     def setUp(self):
+        # Clear entire cache before each test
+        cache.clear()
+
         self.plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         self.timestamp = timezone.now()
 
@@ -508,6 +517,9 @@ class PhotoModelTests(TestCase):
 
 class EventModelTests(TestCase):
     def setUp(self):
+        # Clear entire cache before each test
+        cache.clear()
+
         self.plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         self.timestamp = timezone.now()
 

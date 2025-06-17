@@ -28,11 +28,7 @@ from .tasks import (
     update_cached_manage_plant_state,
     update_all_cached_states
 )
-from .unit_test_helpers import (
-    JSONClient,
-    create_mock_photo,
-    clear_cache
-)
+from .unit_test_helpers import JSONClient, create_mock_photo
 
 
 def tearDownModule():
@@ -46,7 +42,7 @@ class HelperFunctionTests(TestCase):
 
     def setUp(self):
         # Clear entire cache before each test
-        clear_cache()
+        cache.clear()
 
     def test_revoke_queued_task(self):
         with patch('plant_tracker.tasks.cache.get') as mock_cache_get, \
@@ -144,7 +140,7 @@ class TaskTests(TestCase):
 
     def setUp(self):
         # Clear entire cache before each test
-        clear_cache()
+        cache.clear()
 
     def test_update_cached_overview_state(self):
         # Confirm overview_state cache is not set
@@ -180,7 +176,7 @@ class HookTests(TestCase):
 
     def setUp(self):
         # Clear entire cache before each test
-        clear_cache()
+        cache.clear()
 
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()

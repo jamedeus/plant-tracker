@@ -57,6 +57,10 @@ def tearDownModule():
 
 
 class ModelRegressionTests(TestCase):
+    def setUp(self):
+        # Clear entire cache before each test
+        cache.clear()
+
     def tearDown(self):
         # Revert back to SINGLE_USER_MODE
         settings.SINGLE_USER_MODE = True
@@ -246,9 +250,9 @@ class ModelRegressionTests(TestCase):
 
 
 class ViewRegressionTests(TestCase):
-    def tearDown(self):
-        # Clear cache after each test (prevent leftover after failed test)
-        cache.delete(f'old_uuid_{get_default_user().pk}')
+    def setUp(self):
+        # Clear entire cache before each test
+        cache.clear()
 
     def test_water_group_fails_due_to_duplicate_timestamp(self):
         '''Issue: The bulk_add_plant_events endpoint did not trap errors when
@@ -679,6 +683,9 @@ class ViewRegressionTests(TestCase):
 
 class CachedStateRegressionTests(TestCase):
     def setUp(self):
+        # Clear entire cache before each test
+        cache.clear()
+
         # Allow creating celery tasks (and prevent hook called when saving a
         # single model from clearing all cached states)
         schedule_cached_state_update_patch.stop()
@@ -686,10 +693,6 @@ class CachedStateRegressionTests(TestCase):
     def tearDown(self):
         # Prevent creating celery tasks in other test suites
         schedule_cached_state_update_patch.start()
-
-        # Prevent cached state accumulatng plants that no longer exist (hook
-        # doesn't run when tests clean up model entries)
-        cache.delete(f'overview_state_{get_default_user().pk}')
 
     def test_display_name_of_unnamed_plants_update_correctly(self):
         '''Issue: cached manage_plant state is not updated until plant is saved
@@ -1175,6 +1178,9 @@ class CachedStateRegressionTests(TestCase):
 
 class ViewDecoratorRegressionTests(TestCase):
     def setUp(self):
+        # Clear entire cache before each test
+        cache.clear()
+
         self.plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         self.group = Group.objects.create(uuid=uuid4(), user=get_default_user())
 
@@ -1276,6 +1282,10 @@ class ViewDecoratorRegressionTests(TestCase):
 
 
 class DatabaseRaceConditionRegressionTests(TransactionTestCase):
+    def setUp(self):
+        # Clear entire cache before each test
+        cache.clear()
+
     def test_simultaneous_requests_create_duplicate_water_events(self):
         '''Issue: If two identical events were created simultaneously the Event
         model save method would fail to reject the duplicate timestamp because

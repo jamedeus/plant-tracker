@@ -53,6 +53,9 @@ def tearDownModule():
 
 class RenderReactAppTests(TestCase):
     def setUp(self):
+        # Clear entire cache before each test
+        cache.clear()
+
         # Create GET request for mock endpoint
         factory = RequestFactory()
         self.request = factory.get('/mock')
@@ -111,6 +114,9 @@ class RenderReactAppTests(TestCase):
 
 class OverviewTests(TestCase):
     def setUp(self):
+        # Clear entire cache before each test
+        cache.clear()
+
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
 
@@ -539,6 +545,9 @@ class OverviewTests(TestCase):
 
 class ArchivedOverviewTests(TestCase):
     def setUp(self):
+        # Clear entire cache before each test
+        cache.clear()
+
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
 
@@ -622,14 +631,13 @@ class ArchivedOverviewTests(TestCase):
 
 class RegistrationTests(TestCase):
     def setUp(self):
+        # Clear entire cache before each test
+        cache.clear()
+
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
 
         self.default_user = get_default_user()
-
-    def tearDown(self):
-        # Clear cache after each test
-        cache.delete(f'division_in_progress_{self.default_user.pk}')
 
     def test_register_plant_endpoint(self):
         # Confirm no plants or groups in database
@@ -956,6 +964,9 @@ class RegistrationTests(TestCase):
 
 class ManagePageTests(TestCase):
     def setUp(self):
+        # Clear entire cache before each test
+        cache.clear()
+
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
 
@@ -1438,6 +1449,9 @@ class ManagePageTests(TestCase):
 
 class ManagePlantEndpointTests(TestCase):
     def setUp(self):
+        # Clear entire cache before each test
+        cache.clear()
+
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
 
@@ -1657,6 +1671,9 @@ class ManagePlantEndpointTests(TestCase):
 
 class ManageGroupEndpointTests(TestCase):
     def setUp(self):
+        # Clear entire cache before each test
+        cache.clear()
+
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
 
@@ -1808,6 +1825,9 @@ class ChangeQrCodeTests(TestCase):
     '''Separate test case to prevent leftover cache breaking other tests'''
 
     def setUp(self):
+        # Clear entire cache before each test
+        cache.clear()
+
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
 
@@ -1819,10 +1839,6 @@ class ChangeQrCodeTests(TestCase):
 
         # Create fake UUID that doesn't exist in database
         self.fake_id = uuid4()
-
-    def tearDown(self):
-        # Clear cache after each test
-        cache.delete(f'old_uuid_{self.default_user.pk}')
 
     def _refresh_test_models(self):
         self.plant1.refresh_from_db()
@@ -2069,6 +2085,9 @@ class ChangeQrCodeTests(TestCase):
 
 class PlantEventEndpointTests(TestCase):
     def setUp(self):
+        # Clear entire cache before each test
+        cache.clear()
+
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
 
@@ -2366,6 +2385,9 @@ class PlantEventEndpointTests(TestCase):
 
 class NoteEventEndpointTests(TestCase):
     def setUp(self):
+        # Clear entire cache before each test
+        cache.clear()
+
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
 
@@ -2537,6 +2559,9 @@ class NoteEventEndpointTests(TestCase):
 
 class PlantPhotoEndpointTests(TestCase):
     def setUp(self):
+        # Clear entire cache before each test
+        cache.clear()
+
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
 

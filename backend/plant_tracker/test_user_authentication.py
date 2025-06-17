@@ -30,6 +30,9 @@ class AuthenticationPageTests(TestCase):
         )
 
     def setUp(self):
+        # Clear entire cache before each test
+        cache.clear()
+
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
 
@@ -98,6 +101,9 @@ class AuthenticationEndpointTests(TestCase):
         )
 
     def setUp(self):
+        # Clear entire cache before each test
+        cache.clear()
+
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
 
@@ -435,6 +441,9 @@ class AuthenticationEndpointTests(TestCase):
 
 class SingleUserModeTests(TestCase):
     def setUp(self):
+        # Clear entire cache before each test
+        cache.clear()
+
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
 
@@ -682,6 +691,9 @@ class MultiUserModeTests(TestCase):
         )
 
     def setUp(self):
+        # Clear entire cache before each test
+        cache.clear()
+
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
 
