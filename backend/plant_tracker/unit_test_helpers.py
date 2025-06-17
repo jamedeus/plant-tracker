@@ -93,9 +93,16 @@ def clear_cache(*args, **kwargs):
     cache.clear()
 
 
+def delete_cache_key(*args, **kwargs):
+    '''Clears cache key passed as `cache_name` kwarg, used to mock
+    schedule_cached_state_update without actually scheduling update.
+    '''
+    cache.delete(kwargs['cache_name'])
+
+
 # Patch function that schedules celery tasks to replace cached state objects
-# to clear cache without scheduling task (unnecessary in most unit tests)
+# to clear requested cache without scheduling task (unnecessary in most unit tests)
 schedule_cached_state_update_patch = patch(
     'plant_tracker.tasks.schedule_cached_state_update',
-    side_effect=clear_cache
+    side_effect=delete_cache_key
 )

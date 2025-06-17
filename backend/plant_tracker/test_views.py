@@ -174,6 +174,9 @@ class OverviewTests(TestCase):
             archived=True
         )
 
+        # Clear cache (plant post_save does not update number of plants in group)
+        cache.clear()
+
         # Request overview, confirm uses correct JS bundle and title
         response = self.client.get('/')
         self.assertEqual(response.status_code, 200)
@@ -1224,14 +1227,27 @@ class ManagePageTests(TestCase):
         )
 
     def test_get_plant_state_plant_has_parent(self):
-        # Make plant2 child of plant1
+        # Simulate division in progress (user called /divide_plant from plant1)
         divide = DivisionEvent.objects.create(plant=self.plant1, timestamp=timezone.now())
-        self.plant2.divided_from = self.plant1
-        self.plant2.divided_from_event = divide
-        self.plant2.save()
+        cache.set(f'division_in_progress_{self.plant1.user.pk}', {
+            'divided_from_plant_uuid': str(self.plant1.uuid),
+            'division_event_key': str(divide.pk)
+        }, 900)
 
-        # Call get_plant_state endpoint with UUID of plant2
-        response = self.client.get(f'/get_plant_state/{self.plant2.uuid}')
+        # Register new plant that is a child of plant1
+        test_id = uuid4()
+        response = self.client.post('/register_plant', {
+            'uuid': test_id,
+            'name': '',
+            'species': '',
+            'description': '',
+            'pot_size': '',
+            'divided_from_id': str(self.plant1.pk),
+            'divided_from_event_id': str(divide.pk)
+        })
+
+        # Call get_plant_state endpoint with UUID of new child plant
+        response = self.client.get(f'/get_plant_state/{test_id}')
 
         # Confirm returned manage_plant state contains details of plant1 (parent)
         self.assertEqual(response.status_code, 200)

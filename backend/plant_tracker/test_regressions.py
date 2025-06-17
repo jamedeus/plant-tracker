@@ -680,6 +680,33 @@ class ViewRegressionTests(TestCase):
             }
         )
 
+    def test_number_of_plants_in_group_does_not_update_in_cached_overview_state(self):
+        '''Issue: The endpoints that add/remove plants to/from groups scheduled
+        a cached group_options update but did not update the groups details (new
+        number of plants) in cached overview state. Since these endpoints only
+        save the plant entry (add group ForeignKey) they did not trigger the
+        Group post_save signal that does this either.
+        '''
+
+        # Create plant and group
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        group = Group.objects.create(uuid=uuid4(), user=get_default_user())
+
+        # Confirm cached overview state says group has 0 plants
+        overview_state = cache.get(f'overview_state_{get_default_user().pk}')
+        self.assertEqual(overview_state['groups'][str(group.uuid)]['plants'], 0)
+
+        # Send add_plant_to_group request
+        response = JSONClient().post('/add_plant_to_group', {
+            'plant_id': plant.uuid,
+            'group_id': group.uuid
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm cached overview state says group has 1 plants
+        overview_state = cache.get(f'overview_state_{get_default_user().pk}')
+        self.assertEqual(overview_state['groups'][str(group.uuid)]['plants'], 1)
+
 
 class CachedStateRegressionTests(TestCase):
     def setUp(self):

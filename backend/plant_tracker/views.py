@@ -40,6 +40,7 @@ from .view_decorators import (
 from .tasks import (
     get_overview_state,
     get_manage_plant_state,
+    update_group_in_cached_overview_state,
     remove_plant_from_cached_overview_state,
     remove_group_from_cached_overview_state,
     update_group_details_in_cached_group_options
@@ -758,10 +759,12 @@ def add_plant_to_group(plant, group, user, **kwargs):
     Requires JSON POST with plant_id (uuid) and group_id (uuid) keys.
     '''
     plant.group = group
-    plant.save()
+    plant.save(update_fields=["group"])
 
     # Update cached group_options (number of plants in group changed)
     update_group_details_in_cached_group_options(group)
+    # Update number of plants shown on overview
+    update_group_in_cached_overview_state(group)
 
     return JsonResponse(
         {
@@ -783,10 +786,12 @@ def remove_plant_from_group(plant, user, **kwargs):
     '''
     old_group = plant.group
     plant.group = None
-    plant.save()
+    plant.save(update_fields=["group"])
 
     # Update cached group_options (number of plants in group changed)
     update_group_details_in_cached_group_options(old_group)
+    # Update number of plants shown on overview
+    update_group_in_cached_overview_state(old_group)
 
     return JsonResponse(
         {"action": "remove_plant_from_group", "plant": plant.uuid},
@@ -807,13 +812,15 @@ def bulk_add_plants_to_group(group, data, user, **kwargs):
         plant = get_plant_by_uuid(plant_id)
         if plant:
             plant.group = group
-            plant.save()
+            plant.save(update_fields=["group"])
             added.append(plant.get_details())
         else:
             failed.append(plant_id)
 
     # Update cached group_options (number of plants in group changed)
     update_group_details_in_cached_group_options(group)
+    # Update number of plants shown on overview
+    update_group_in_cached_overview_state(group)
 
     return JsonResponse({"added": added, "failed": failed}, status=200)
 
@@ -831,15 +838,16 @@ def bulk_remove_plants_from_group(data, user, **kwargs):
         plant = get_plant_by_uuid(plant_id)
         if plant:
             plant.group = None
-            plant.save()
+            plant.save(update_fields=["group"])
             removed.append(plant.get_details())
         else:
             failed.append(plant_id)
 
     # Update cached group_options (number of plants in group changed)
-    update_group_details_in_cached_group_options(
-        get_group_by_uuid(data['group_id'])
-    )
+    group = get_group_by_uuid(data['group_id'])
+    update_group_details_in_cached_group_options(group)
+    # Update number of plants shown on overview
+    update_group_in_cached_overview_state(group)
 
     return JsonResponse({"removed": removed, "failed": failed}, status=200)
 
