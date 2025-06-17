@@ -79,6 +79,7 @@ This should be updated when:
   * Updated when Group model owned by same user saved (`tasks.update_group_details_in_cached_overview_state_hook`)
   * Updated when Plant model owned by same user deleted (`tasks.remove_deleted_instance_from_cached_overview_state_hook`)
   * Updated when Group model owned by same user deleted (`tasks.remove_deleted_instance_from_cached_overview_state_hook`)
+  * Updated when Plant or Group uuid changed (`views.change_uuid`)
   * Updated when Photo model associated with Plant owned by same user saved (`tasks.add_photo_to_cached_states_hook`)
   * Updated when Photo model associated with Plant owned by same user deleted (`tasks.remove_photo_from_cached_states_hook`)
   * Updated when WaterEvent or FertilizeEvent owned by same user saved or deleted (`tasks.update_last_event_times_in_cached_states_hook`)
