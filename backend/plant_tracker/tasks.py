@@ -473,7 +473,7 @@ def update_plant_details_in_cached_plant_options(plant):
 
 
 @receiver(post_delete, sender=Plant)
-def remove_deleted_instance_from_cached_plant_options_hook(instance, **kwargs):
+def remove_deleted_plant_from_cached_plant_options_hook(instance, **kwargs):
     '''Removes deleted plant from the cached plant options dict for the user who
     owned the deleted plant (used for manage_group add plants modal options).
     '''
@@ -511,6 +511,18 @@ def remove_deleted_group_from_cached_group_options(instance, **kwargs):
         cache.set(f'group_options_{instance.user.pk}', options, None)
 
 
+@receiver(post_save, sender=Group)
+def update_group_details_in_cached_group_options_hook(instance, **kwargs):
+    '''Updates group details in the cached group_options dict when Group saved.'''
+    update_group_details_in_cached_group_options(instance)
+
+
+@receiver(post_delete, sender=Group)
+def remove_deleted_group_from_cached_group_options_hook(instance, **kwargs):
+    '''Removes group from the cached group_options dict when Group deleted.'''
+    remove_deleted_group_from_cached_group_options(instance)
+
+
 @shared_task()
 def update_cached_group_options(user_pk):
     '''Takes user primary key, builds and caches group options for manage_plant
@@ -518,25 +530,6 @@ def update_cached_group_options(user_pk):
     cache.delete(f'group_options_{user_pk}')
     get_group_options(get_user_model().objects.get(pk=user_pk))
     print(f'Rebuilt group_options for {user_pk} (manage_plant add group modal)')
-
-
-def schedule_cached_group_options_update(user):
-    '''Takes user, clears cached group_options immediately and schedules task
-    to update it in 30 seconds (timer resets if called again within 30 seconds).'''
-    schedule_cached_state_update(
-        cache_name=f'group_options_{user.pk}',
-        callback_task=update_cached_group_options,
-        callback_kwargs={'user_pk': user.pk},
-        delay=30
-    )
-
-
-@receiver(post_save, sender=Group)
-@receiver(post_delete, sender=Group)
-@disable_for_loaddata
-def update_cached_group_options_hook(instance, **kwargs):
-    '''Schedules task to update cached group_options when Group is saved/deleted.'''
-    schedule_cached_group_options_update(instance.user)
 
 
 @shared_task()

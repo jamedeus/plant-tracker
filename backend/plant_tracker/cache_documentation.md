@@ -50,7 +50,7 @@ This should be updated when:
 - Set by `models.get_plant_options`,
   * Never expires
   * Updated if Plant model owned by same user saved (`tasks.update_plant_in_cached_states_hook`)
-  * Updated if Plant model owned by same user deleted (`tasks.remove_deleted_instance_from_cached_plant_options_hook`)
+  * Updated if Plant model owned by same user deleted (`tasks.remove_deleted_plant_from_cached_plant_options_hook`)
   * Updated if Photo model associated with Plant owned by same user saved (`tasks.add_photo_to_cached_states_hook`)
   * Updated if Photo model associated with Plant owned by same user deleted (`tasks.remove_photo_from_cached_states_hook`)
   * Updated when WaterEvent or FertilizeEvent owned by same user saved or deleted (`tasks.update_last_event_times_in_cached_states_hook`)
@@ -61,8 +61,9 @@ This should be updated when:
 - Name includes database primary key of user account that owns groups
 - Set by `models.get_group_options`
   * Never expires
-  * Deleted if Group model owned by same user saved or deleted (replaced after 30 second delay) (`tasks.update_cached_group_options_hook`)
-  * Deleted if Plant added or removed from group owned by same user (`/add_plant_to_group`, `/remove_plant_from_group`, `/bulk_add_plants_to_group`, `/bulk_remove_plants_from_group`)
+  * Updated if Group model owned by same user saved (`tasks.update_group_details_in_cached_group_options_hook`)
+  * Updated if Group model owned by same user deleted (`tasks.remove_deleted_group_from_cached_group_options_hook`)
+  * Updated if Plant added or removed from group owned by same user (`/add_plant_to_group`, `/remove_plant_from_group`, `/bulk_add_plants_to_group`, `/bulk_remove_plants_from_group`)
   * Deleted when server restarts (replaced immediately) (`tasks.update_all_cached_states`)
 
 ### `species_options`
@@ -80,6 +81,7 @@ This should be updated when:
   * Updated when Group model owned by same user saved (`tasks.update_group_details_in_cached_overview_state_hook`)
   * Updated when Plant model owned by same user deleted (`tasks.remove_deleted_instance_from_cached_overview_state_hook`)
   * Updated when Group model owned by same user deleted (`tasks.remove_deleted_instance_from_cached_overview_state_hook`)
+  * Updated when Plant model owned by same user added/removed to/from group (`/add_plant_to_group`, `/remove_plant_from_group`, `/bulk_add_plants_to_group`, `/bulk_remove_plants_from_group`)
   * Updated when Plant or Group uuid changed (`views.change_uuid`)
   * Updated when Photo model associated with Plant owned by same user saved (`tasks.add_photo_to_cached_states_hook`)
   * Updated when Photo model associated with Plant owned by same user deleted (`tasks.remove_photo_from_cached_states_hook`)
