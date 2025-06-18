@@ -1291,6 +1291,51 @@ class CachedStateRegressionTests(TestCase):
             0
         )
 
+    def test_new_plant_events_are_sorted_chronologically_in_cached_state(self):
+        '''Issue: tasks.add_new_event_to_cached_manage_plant_state_hook appended
+        new events to the correct events list in manage_plant state, but did not
+        sort the list (unlike Plant._get_all_timestamps used when generating new
+        state). The frontend depends on these lists to be in chronological order
+        (gets last_watered/fertilized by grabbing first item, history modal does
+        not sort, etc).
+        '''
+
+        # Create plant with 2 water events, generate cached state
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        WaterEvent.objects.create(
+            plant=plant,
+            timestamp=datetime.fromisoformat('2024-03-06T03:06:26.000Z')
+        )
+        WaterEvent.objects.create(
+            plant=plant,
+            timestamp=datetime.fromisoformat('2024-01-06T03:06:26.000Z')
+        )
+        build_manage_plant_state(plant.uuid)
+
+        # Confirm water events are sorted chronologically in cached state
+        self.assertEqual(
+            cache.get(f'{plant.uuid}_state')['events']['water'],
+            [
+                '2024-03-06T03:06:26+00:00',
+                '2024-01-06T03:06:26+00:00'
+            ]
+        )
+
+        # Create new WaterEvent with timestamp in between existing 2
+        WaterEvent.objects.create(
+            plant=plant,
+            timestamp=datetime.fromisoformat('2024-02-06T03:06:26.000Z')
+        )
+        # Confirm state updated, new event is sorted chronologically
+        self.assertEqual(
+            cache.get(f'{plant.uuid}_state')['events']['water'],
+            [
+                '2024-03-06T03:06:26+00:00',
+                '2024-02-06T03:06:26+00:00',
+                '2024-01-06T03:06:26+00:00'
+            ]
+        )
+
 
 class ViewDecoratorRegressionTests(TestCase):
     def setUp(self):

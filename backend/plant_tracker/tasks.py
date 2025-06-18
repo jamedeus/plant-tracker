@@ -300,6 +300,8 @@ def add_new_event_to_cached_manage_plant_state_hook(instance, **kwargs):
     if cached_state:
         event_type = event_types_map[instance._meta.model_name]
         cached_state['events'][event_type].append(instance.timestamp.isoformat())
+        cached_state['events'][event_type].sort()
+        cached_state['events'][event_type].reverse()
         cache.set(f'{instance.plant.uuid}_state', cached_state, None)
 
 
