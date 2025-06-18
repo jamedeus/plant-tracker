@@ -14,8 +14,6 @@ from django.utils import timezone as django_timezone
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.validators import MaxValueValidator, MinValueValidator
 
-from .disable_for_loaddata import disable_for_loaddata
-
 # Timestamp format used to print DateTimeFields, parse exif into datetime, etc.
 TIME_FORMAT = '%Y:%m:%d %H:%M:%S'
 
