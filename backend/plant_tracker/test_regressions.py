@@ -1253,6 +1253,42 @@ class CachedStateRegressionTests(TestCase):
             timestamp.isoformat()
         )
 
+    def test_group_number_of_plants_outdated_in_cache_if_plant_deleted(self):
+        '''Issue: group details (including number of plants) was updated in
+        cached overview state and group_options when plants were added/removed
+        to/from group, but not when plants in group were deleted.
+        '''
+
+        # Create group with 1 plant
+        user = get_default_user()
+        group = Group.objects.create(uuid=uuid4(), user=user)
+        plant = Plant.objects.create(uuid=uuid4(), group=group, user=user)
+        # Trigger group_options cache update (normally called from endpoint)
+        group.save()
+
+        # Confirm group option in manage_plant state says 1 plant in group
+        self.assertEqual(
+            cache.get(f'overview_state_{user.pk}')['groups'][str(group.uuid)]['plants'],
+            1
+        )
+        # Confirm group details in overview state says 1 plant in group
+        self.assertEqual(
+            cache.get(f'group_options_{user.pk}')[str(group.uuid)]['plants'],
+            1
+        )
+
+        # Delete plant, confirm both cached states now say 0 plants in group
+        plant.delete()
+        self.assertEqual(
+            cache.get(f'overview_state_{user.pk}')['groups'][str(group.uuid)]['plants'],
+            0
+        )
+        self.assertEqual(
+            cache.get(f'group_options_{user.pk}')[str(group.uuid)]['plants'],
+            0
+        )
+
+
 class ViewDecoratorRegressionTests(TestCase):
     def setUp(self):
         # Clear entire cache before each test

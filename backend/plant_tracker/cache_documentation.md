@@ -59,7 +59,9 @@ This should be updated when:
   * Never expires
   * Updated if Group model owned by same user saved (`tasks.update_group_in_cached_states_hook`)
   * Updated if Group model owned by same user deleted (`tasks.remove_deleted_group_from_cached_states_hook`)
-  * Updated if Plant added or removed from group owned by same user (`/add_plant_to_group`, `/remove_plant_from_group`, `/bulk_add_plants_to_group`, `/bulk_remove_plants_from_group`)
+  * Updated if Plant model owned by same user that is in a group saved (`tasks.update_plant_in_cached_states_hook`)
+  * Updated if Plant model owned by same user that is in a group deleted (`tasks.remove_deleted_plant_from_cached_states_hook`)
+  * Updated if Plant removed from group owned by same user (`/remove_plant_from_group`, `/bulk_remove_plants_from_group`)
   * Deleted when server restarts (replaced immediately) (`tasks.update_all_cached_states`)
 
 ### `species_options`
@@ -78,7 +80,9 @@ This should be updated when:
   * Updated when Group model owned by same user saved (`tasks.update_group_in_cached_states_hook`)
   * Updated when Plant model owned by same user deleted (`tasks.remove_deleted_plant_from_cached_states_hook`)
   * Updated when Group model owned by same user deleted (`tasks.remove_deleted_group_from_cached_states_hook`)
-  * Updated when Plant model owned by same user added/removed to/from group (`/add_plant_to_group`, `/remove_plant_from_group`, `/bulk_add_plants_to_group`, `/bulk_remove_plants_from_group`)
+  * Updated when Plant model owned by same user that is in a group saved (`tasks.update_plant_in_cached_states_hook`)
+  * Updated when Plant model owned by same user that is in a group deleted (`tasks.remove_deleted_plant_from_cached_states_hook`)
+  * Updated when Plant model owned by same user removed from group (`/remove_plant_from_group`, `/bulk_remove_plants_from_group`)
   * Updated when Plant or Group uuid changed (`/change_uuid`)
   * Updated when Photo model associated with Plant owned by same user saved (`tasks.add_photo_to_cached_states_hook`)
   * Updated when Photo model associated with Plant owned by same user deleted (`tasks.remove_photo_from_cached_states_hook`)

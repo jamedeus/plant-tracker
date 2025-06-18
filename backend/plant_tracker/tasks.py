@@ -215,6 +215,8 @@ def update_plant_in_cached_states_hook(instance, **kwargs):
     - If plant has children updates `divided_from` key in parent all child plant
       cached manage_plant state(s) (parent name/uuid may be outdated)
     - Deletes cached unnamed_plants and species_options lists
+    - If plant is in group updates group details in cached overview state and
+      cached group options (number of plants may have changed)
     '''
     # Clear cached lists (may contain outdated name/species)
     clear_cached_plant_lists(instance.user)
@@ -227,6 +229,10 @@ def update_plant_in_cached_states_hook(instance, **kwargs):
     # Update child plant states ("Divided from" outdated if plant name changed)
     for child_plant in instance.children.all():
         update_parent_plant_details_in_cached_manage_plant_state(child_plant)
+    # If plant in group: update cached group details (number of plants changed)
+    if instance.group:
+        update_group_details_in_cached_group_options(instance.group)
+        update_instance_in_cached_overview_state(instance.group, 'groups')
 
 
 @receiver(pre_delete, sender=Plant)
@@ -247,11 +253,17 @@ def remove_deleted_plant_from_cached_states_hook(instance, **kwargs):
     - Deletes plant from cached plant_options dict
     - Deletes plant's cached manage_plant state completely
     - Deletes cached unnamed_plants and species_options lists
+    - If plant is in group updates group details in cached overview state and
+      cached group options (number of plants may have changed)
     '''
     remove_instance_from_cached_overview_state(instance, 'plants')
     remove_plant_from_cached_plant_options(instance)
     cache.delete(f'{instance.uuid}_state')
     clear_cached_plant_lists(instance.user)
+    # If plant in group: update cached group details (number of plants changed)
+    if instance.group:
+        update_group_details_in_cached_group_options(instance.group)
+        update_instance_in_cached_overview_state(instance.group, 'groups')
 
 
 @receiver(post_save, sender=DivisionEvent)

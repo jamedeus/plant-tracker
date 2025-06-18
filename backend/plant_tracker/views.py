@@ -760,11 +760,6 @@ def add_plant_to_group(plant, group, **kwargs):
     plant.group = group
     plant.save(update_fields=["group"])
 
-    # Update cached group_options (number of plants in group changed)
-    update_group_details_in_cached_group_options(group)
-    # Update number of plants shown on overview
-    update_instance_in_cached_overview_state(group, "groups")
-
     return JsonResponse(
         {
             "action": "add_plant_to_group",
@@ -815,11 +810,6 @@ def bulk_add_plants_to_group(group, data, **kwargs):
             added.append(plant.get_details())
         else:
             failed.append(plant_id)
-
-    # Update cached group_options (number of plants in group changed)
-    update_group_details_in_cached_group_options(group)
-    # Update number of plants shown on overview
-    update_instance_in_cached_overview_state(group, "groups")
 
     return JsonResponse({"added": added, "failed": failed}, status=200)
 
