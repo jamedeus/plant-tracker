@@ -44,7 +44,7 @@ This should be updated when:
 - Set by `models.get_plant_options`,
   * Never expires
   * Updated if Plant model owned by same user saved (`tasks.update_plant_in_cached_states_hook`)
-  * Updated if Plant model owned by same user deleted (`tasks.remove_deleted_plant_from_cached_plant_options_hook`)
+  * Updated if Plant model owned by same user deleted (`tasks.remove_deleted_plant_from_cached_states_hook`)
   * Updated if Photo model associated with Plant owned by same user saved (`tasks.add_photo_to_cached_states_hook`)
   * Updated if Photo model associated with Plant owned by same user deleted (`tasks.remove_photo_from_cached_states_hook`)
   * Updated when WaterEvent or FertilizeEvent owned by same user saved or deleted (`tasks.update_last_event_times_in_cached_states_hook`)
@@ -55,8 +55,8 @@ This should be updated when:
 - Name includes database primary key of user account that owns groups
 - Set by `models.get_group_options`
   * Never expires
-  * Updated if Group model owned by same user saved (`tasks.update_group_details_in_cached_group_options_hook`)
-  * Updated if Group model owned by same user deleted (`tasks.remove_deleted_group_from_cached_group_options_hook`)
+  * Updated if Group model owned by same user saved (`tasks.update_group_in_cached_states_hook`)
+  * Updated if Group model owned by same user deleted (`tasks.remove_deleted_group_from_cached_states_hook`)
   * Updated if Plant added or removed from group owned by same user (`/add_plant_to_group`, `/remove_plant_from_group`, `/bulk_add_plants_to_group`, `/bulk_remove_plants_from_group`)
   * Deleted when server restarts (replaced immediately) (`tasks.update_all_cached_states`)
 
@@ -71,12 +71,12 @@ This should be updated when:
 - Name includes database primary key of user account that owns plants/groups in state
 - Set by `tasks.build_overview_state` (only called when cache does not already exist)
   * Never expires
-  * Updated when Plant model owned by same user saved (`tasks.update_plant_details_in_cached_overview_state_hook`)
-  * Updated when Group model owned by same user saved (`tasks.update_group_details_in_cached_overview_state_hook`)
-  * Updated when Plant model owned by same user deleted (`tasks.remove_deleted_instance_from_cached_overview_state_hook`)
-  * Updated when Group model owned by same user deleted (`tasks.remove_deleted_instance_from_cached_overview_state_hook`)
+  * Updated when Plant model owned by same user saved (`tasks.update_plant_in_cached_states_hook`)
+  * Updated when Group model owned by same user saved (`tasks.update_group_in_cached_states_hook`)
+  * Updated when Plant model owned by same user deleted (`tasks.remove_deleted_plant_from_cached_states_hook`)
+  * Updated when Group model owned by same user deleted (`tasks.remove_deleted_group_from_cached_states_hook`)
   * Updated when Plant model owned by same user added/removed to/from group (`/add_plant_to_group`, `/remove_plant_from_group`, `/bulk_add_plants_to_group`, `/bulk_remove_plants_from_group`)
-  * Updated when Plant or Group uuid changed (`views.change_uuid`)
+  * Updated when Plant or Group uuid changed (`/change_uuid`)
   * Updated when Photo model associated with Plant owned by same user saved (`tasks.add_photo_to_cached_states_hook`)
   * Updated when Photo model associated with Plant owned by same user deleted (`tasks.remove_photo_from_cached_states_hook`)
   * Updated when WaterEvent or FertilizeEvent owned by same user saved or deleted (`tasks.update_last_event_times_in_cached_states_hook`)
@@ -91,7 +91,7 @@ This should be updated when:
   * Updated when associated Plant's child (child's `Plant.divided_from` ForeignKey points to plant) is saved (`tasks.update_plant_in_cached_states_hook`)
   * Deleted when associated Plant's parent (plant's `Plant.divided_from` ForeignKey points to parent) is deleted (not replaced) (`tasks.delete_parent_or_child_cached_manage_plant_state_hook`)
   * Deleted when associated Plant's child (child's `Plant.divided_from` ForeignKey points to plant) is deleted (not replaced) (`tasks.delete_parent_or_child_cached_manage_plant_state_hook`)
-  * Deleted when associated Plant is deleted
+  * Deleted when associated Plant is deleted (`tasks.remove_deleted_plant_from_cached_states_hook`)
   * Updated when DivisionEvent associated with Plant is saved or deleted (`tasks.update_division_events_in_cached_manage_plant_state_hook`)
   * Updated when WaterEvent or FertilizeEvent associated with Plant is saved or deleted (`tasks.update_last_event_times_in_cached_states_hook`)
   * Updated when WaterEvent, FertilizeEvent, PruneEvent, or RepotEvent associated with Plant is saved (`tasks.add_new_event_to_cached_manage_plant_state_hook`)

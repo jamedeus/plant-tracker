@@ -100,33 +100,6 @@ def remove_instance_from_cached_overview_state(instance, key):
         cache.set(f'overview_state_{instance.user.pk}', state, None)
 
 
-@receiver(post_save, sender=Plant)
-def update_plant_details_in_cached_overview_state_hook(instance, **kwargs):
-    '''Updates plant details in the cached overview state for the user who owns
-    the updated plant. Removes plant from cached state if plant is archived.
-    '''
-    update_instance_in_cached_overview_state(instance, 'plants')
-
-
-@receiver(post_save, sender=Group)
-def update_group_details_in_cached_overview_state_hook(instance, **kwargs):
-    '''Updates group details in the cached overview state for the user who owns
-    the updated group. Removes group from cached state if group is archived.
-    '''
-    update_instance_in_cached_overview_state(instance, 'groups')
-
-
-@receiver(post_delete, sender=Plant)
-@receiver(post_delete, sender=Group)
-@disable_for_loaddata
-def remove_deleted_instance_from_cached_overview_state_hook(instance, **kwargs):
-    '''Removes deleted plant or group details from the cached overview state for
-    the user who owned the deleted plant or group.
-    '''
-    key = 'plants' if isinstance(instance, Plant) else 'groups'
-    remove_instance_from_cached_overview_state(instance, key)
-
-
 def build_manage_plant_state(uuid):
     '''Builds state parsed by manage_plant react app and returns.'''
 
@@ -234,9 +207,10 @@ def update_division_events_in_cached_manage_plant_state_hook(instance, **kwargs)
 @receiver(post_save, sender=Plant)
 @disable_for_loaddata
 def update_plant_in_cached_states_hook(instance, **kwargs):
-    '''Updates all relevant caches when a Plant entry is saved.
+    '''Updates all relevant caches when a Plant entry is saved:
     - Updates `plant_details` key in plant's cached manage_plant state
     - Updates plant entry in cached plant_options dict
+    - Updates plant entry in cached overview state (removes if plant archived)
     - If plant has parent updates `division_events` key in parent plant's cached
       manage_plant state (child name/uuid may be outdated)
     - If plant has children updates `divided_from` key in parent all child plant
@@ -244,12 +218,36 @@ def update_plant_in_cached_states_hook(instance, **kwargs):
     '''
     update_plant_details_in_cached_manage_plant_state(instance)
     update_plant_details_in_cached_plant_options(instance)
+    update_instance_in_cached_overview_state(instance, 'plants')
     # Update parent plant state ("Divided into" outdated if plant name changed)
     if instance.divided_from:
         update_child_plant_details_in_cached_manage_plant_state(instance.divided_from)
     # Update child plant states ("Divided from" outdated if plant name changed)
     for child_plant in instance.children.all():
         update_parent_plant_details_in_cached_manage_plant_state(child_plant)
+
+
+@receiver(pre_delete, sender=Plant)
+def delete_parent_or_child_cached_manage_plant_state_hook(instance, **kwargs):
+    '''Deletes cached manage_plant state before a plant's child or parent is
+    deleted from the database (prevent references to non-existing plant).
+    '''
+    if instance.divided_from:
+        cache.delete(f'{instance.divided_from.uuid}_state')
+    for child_plant in instance.children.all():
+        cache.delete(f'{child_plant.uuid}_state')
+
+
+@receiver(post_delete, sender=Plant)
+def remove_deleted_plant_from_cached_states_hook(instance, **kwargs):
+    '''Deletes plant from all relevant caches when a Plant entry is deleted:
+    - Deletes plant from cached overview state
+    - Deletes plant from cached plant_options dict
+    - Deletes plant's cached manage_plant state completely
+    '''
+    remove_instance_from_cached_overview_state(instance, 'plants')
+    remove_plant_from_cached_plant_options(instance)
+    cache.delete(f'{instance.uuid}_state')
 
 
 # Maps string retrieved with instance._meta.model_name to correct key in
@@ -307,20 +305,24 @@ def update_last_event_times_in_cached_states_hook(instance, **kwargs):
     in cached overview state, cached manage_plant state, and cached plant
     options when a WaterEvent or FertilizeEvent is saved or deleted.
     '''
-    update_instance_in_cached_overview_state(instance.plant, 'plants')
     update_plant_details_in_cached_plant_options(instance.plant)
-    # Update last_watered/fertilized
-    cached_state = cache.get(f'{instance.plant.uuid}_state')
-    if cached_state:
-        cached_state['plant_details'] = instance.plant.get_details()
-        cache.set(f'{instance.plant.uuid}_state', cached_state, None)
+    update_plant_details_in_cached_manage_plant_state(instance.plant)
+    update_instance_in_cached_overview_state(instance.plant, 'plants')
+
+
+def update_plant_thumbnail_in_cached_states(plant):
+    '''Takes plant, updates thumbnail in cached overview state and cached
+    plant_options.
+    '''
+    update_instance_in_cached_overview_state(plant, 'plants')
+    update_plant_details_in_cached_plant_options(plant)
 
 
 @receiver(post_save, sender=Photo)
 def add_photo_to_cached_states_hook(instance, **kwargs):
     '''Adds saved photo to associated plant's cached manage_plant state, updates
-    default_photo in cached manage_plant state, and associated plant details in
-    cached overview state and plant_options.
+    default_photo in cached manage_plant state, overview state, and cached
+    plant_options when a photo is saved.
     '''
     cached_state = cache.get(f'{instance.plant.uuid}_state')
     if cached_state:
@@ -329,17 +331,14 @@ def add_photo_to_cached_states_hook(instance, **kwargs):
         cached_state['default_photo'] = default_photo
         cached_state['plant_details']['thumbnail'] = default_photo['thumbnail']
         cache.set(f'{instance.plant.uuid}_state', cached_state, None)
-    # Update thumbnail in cached overview state if plant is not archived
-    update_instance_in_cached_overview_state(instance.plant, 'plants')
-    # Update thumbnail in cached plant_options dict
-    update_plant_details_in_cached_plant_options(instance.plant)
+    update_plant_thumbnail_in_cached_states(instance.plant)
 
 
 @receiver(post_delete, sender=Photo)
 def remove_photo_from_cached_states_hook(instance, **kwargs):
     '''Removes deleted photo from associated plant's cached manage_plant state,
-    updates default_photo in cached manage_plant state, and updates associated
-    plant details in cached overview state and plant_options.
+    updates default_photo in cached manage_plant state, overview state, and
+    cached plant_options when a photo is deleted.
     '''
     cached_state = cache.get(f'{instance.plant.uuid}_state')
     if cached_state and instance.pk in cached_state['photos']:
@@ -348,10 +347,7 @@ def remove_photo_from_cached_states_hook(instance, **kwargs):
         cached_state['default_photo'] = default_photo
         cached_state['plant_details']['thumbnail'] = default_photo['thumbnail']
         cache.set(f'{instance.plant.uuid}_state', cached_state, None)
-    # Update thumbnail in cached overview state if plant is not archived
-    update_instance_in_cached_overview_state(instance.plant, 'plants')
-    # Update thumbnail in cached plant_options dict
-    update_plant_details_in_cached_plant_options(instance.plant)
+    update_plant_thumbnail_in_cached_states(instance.plant)
 
 
 @receiver(post_save, sender=NoteEvent)
@@ -370,23 +366,6 @@ def delete_note_from_cached_manage_plant_state_hook(instance, **kwargs):
     if cached_state:
         del cached_state['notes'][instance.timestamp.isoformat()]
         cache.set(f'{instance.plant.uuid}_state', cached_state, None)
-
-
-@receiver(pre_delete, sender=Plant)
-def delete_parent_or_child_cached_manage_plant_state_hook(instance, **kwargs):
-    '''Deletes cached manage_plant state before a plant's child or parent is
-    deleted from the database (prevent references to non-existing plant).
-    '''
-    if instance.divided_from:
-        cache.delete(f'{instance.divided_from.uuid}_state')
-    for child_plant in instance.children.all():
-        cache.delete(f'{child_plant.uuid}_state')
-
-
-@receiver(post_delete, sender=Plant)
-def delete_cached_manage_plant_state_hook(instance, **kwargs):
-    '''Deletes cached manage_plant state when plant is deleted from database.'''
-    cache.delete(f'{instance.uuid}_state')
 
 
 def update_plant_details_in_cached_plant_options(plant):
@@ -408,15 +387,14 @@ def update_plant_details_in_cached_plant_options(plant):
         cache.set(f'plant_options_{plant.user.pk}', options, None)
 
 
-@receiver(post_delete, sender=Plant)
-def remove_deleted_plant_from_cached_plant_options_hook(instance, **kwargs):
-    '''Removes deleted plant from the cached plant options dict for the user who
-    owned the deleted plant (used for manage_group add plants modal options).
+def remove_plant_from_cached_plant_options(plant):
+    '''Takes Plant entry, removes from cached plant options dict (used for
+    manage_group add plants modal options) for user who owns plant.
     '''
-    options = get_plant_options(instance.user)
-    if str(instance.uuid) in options:
-        del options[str(instance.uuid)]
-        cache.set(f'plant_options_{instance.user.pk}', options, None)
+    options = get_plant_options(plant.user)
+    if str(plant.uuid) in options:
+        del options[str(plant.uuid)]
+        cache.set(f'plant_options_{plant.user.pk}', options, None)
 
 
 @shared_task()
@@ -448,15 +426,24 @@ def remove_deleted_group_from_cached_group_options(instance, **kwargs):
 
 
 @receiver(post_save, sender=Group)
-def update_group_details_in_cached_group_options_hook(instance, **kwargs):
-    '''Updates group details in the cached group_options dict when Group saved.'''
+@disable_for_loaddata
+def update_group_in_cached_states_hook(instance, **kwargs):
+    '''Updates all relevant caches when a Group entry is saved:
+    - Updates plant entry in cached group_options dict
+    - Updates group entry in cached overview state (removes if group archived)
+    '''
     update_group_details_in_cached_group_options(instance)
+    update_instance_in_cached_overview_state(instance, 'groups')
 
 
 @receiver(post_delete, sender=Group)
-def remove_deleted_group_from_cached_group_options_hook(instance, **kwargs):
-    '''Removes group from the cached group_options dict when Group deleted.'''
+def remove_deleted_group_from_cached_states_hook(instance, **kwargs):
+    '''Deletes group from all relevant caches when a Group entry is deleted:
+    - Deletes group from cached group_options dict
+    - Deletes group from cached overview state
+    '''
     remove_deleted_group_from_cached_group_options(instance)
+    remove_instance_from_cached_overview_state(instance, 'groups')
 
 
 @shared_task()
