@@ -100,8 +100,8 @@ class TaskTests(TestCase):
         self.assertTrue(isinstance(cache.get(f'{plant.uuid}_state'), dict))
 
 
-class HookTests(TestCase):
-    '''Test that cached states are updated correctly when database changes'''
+class OverviewStateUpdateTests(TestCase):
+    '''Test that cached overview states update correctly when database changes'''
 
     def setUp(self):
         # Clear entire cache before each test
@@ -394,6 +394,20 @@ class HookTests(TestCase):
             cached_state["plants"][str(plant.uuid)]["thumbnail"],
             f"/media/{Photo.objects.all()[0].thumbnail.name}"
         )
+
+
+class ManagePlantStateUpdateTests(TestCase):
+    '''Test that cached manage_plant states update correctly when database changes'''
+
+    def setUp(self):
+        # Clear entire cache before each test
+        cache.clear()
+
+        # Set default content_type for post requests (avoid long lines)
+        self.client = JSONClient()
+
+        # Generate UUID to use in tests
+        self.uuid = uuid4()
 
     def test_manage_plant_state_updates_when_plant_saved(self):
         # Confirm no cached manage_plant state for plant UUID
@@ -731,6 +745,20 @@ class HookTests(TestCase):
         plant.delete()
         self.assertIsNone(cache.get(f'{plant.uuid}_state'))
 
+
+class CachedOptionsUpdateTests(TestCase):
+    '''Test that cached options lists/dicts update correctly when database changes'''
+
+    def setUp(self):
+        # Clear entire cache before each test
+        cache.clear()
+
+        # Set default content_type for post requests (avoid long lines)
+        self.client = JSONClient()
+
+        # Generate UUID to use in tests
+        self.uuid = uuid4()
+
     def test_plant_options_list_updates_when_plant_created_modified_or_deleted(self):
         # Confirm no cached plant_options list for default user
         user_id = get_default_user().pk
@@ -740,23 +768,30 @@ class HookTests(TestCase):
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
 
         # Confirm plant_options was generated and cached
-        self.assertIsNotNone(cache.get(f'plant_options_{user_id}'))
+        self.assertEqual(
+            cache.get(f'plant_options_{user_id}'),
+            {str(plant.uuid): plant.get_details()}
+        )
 
-        # Clear cache, change plant details
-        cache.delete(f'plant_options_{user_id}')
+        # Change plant details
         plant.name = 'New Plant'
         plant.species = 'Cilantro'
         plant.save()
 
-        # Confirm plant_options was generated and cached
-        self.assertIsNotNone(cache.get(f'plant_options_{user_id}'))
+        # Confirm plant details updated in cached plant_options
+        self.assertEqual(
+            cache.get(f'plant_options_{user_id}'),
+            {str(plant.uuid): plant.get_details()}
+        )
 
-        # Delete cache, delete plant model entry
-        cache.delete(f'plant_options_{user_id}')
+        # Delete plant model entry
         plant.delete()
 
-        # Confirm plant_options was generated and cached
-        self.assertIsNotNone(cache.get(f'plant_options_{user_id}'))
+        # Confirm plant details were removed from cached plant_options
+        self.assertEqual(
+            cache.get(f'plant_options_{user_id}'),
+            {}
+        )
 
     def test_group_options_list_updates_when_group_created_modified_or_deleted(self):
         # Confirm no cached group_options list for default user
@@ -767,20 +802,27 @@ class HookTests(TestCase):
         group = Group.objects.create(uuid=uuid4(), user=get_default_user())
 
         # Confirm group_options was generated and cached
-        self.assertIsNotNone(cache.get(f'group_options_{user_id}'))
+        self.assertEqual(
+            cache.get(f'group_options_{user_id}'),
+            {str(group.uuid): group.get_details()}
+        )
 
-        # Clear cache, change group details
-        cache.delete(f'group_options_{user_id}')
+        # Change group details
         group.name = 'New Group'
         group.location = 'Roof'
         group.save()
 
-        # Confirm group_options was generated and cached
-        self.assertIsNotNone(cache.get(f'group_options_{user_id}'))
+        # Confirm group details updated in cached group_options
+        self.assertEqual(
+            cache.get(f'group_options_{user_id}'),
+            {str(group.uuid): group.get_details()}
+        )
 
-        # Delete cache, delete group model entry
-        cache.delete(f'group_options_{user_id}')
+        # Delete group model entry
         group.delete()
 
-        # Confirm group_options was generated and cached
-        self.assertIsNotNone(cache.get(f'group_options_{user_id}'))
+        # Confirm group details were removed from cached group_options
+        self.assertEqual(
+            cache.get(f'group_options_{user_id}'),
+            {}
+        )
