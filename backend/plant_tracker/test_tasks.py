@@ -523,6 +523,49 @@ class OverviewStateUpdateTests(TestCase):
             }
         )
 
+    def overview_state_updates_when_number_of_plants_in_group_changes(self):
+        # Create Plant and Group, confirm both are in cached overview state
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        group = Group.objects.create(uuid=uuid4(), user=get_default_user())
+        cached_state = cache.get(f'overview_state_{get_default_user().pk}')
+        self.assertEqual(
+            cached_state,
+            {
+                "plants": {
+                    str(plant.uuid): plant.get_details()
+                },
+                "groups": {
+                    str(group.uuid): group.get_details()
+                },
+                "show_archive": False
+            }
+        )
+        # Confirm group has 0 plants in cached overview state
+        self.assertEqual(
+            cached_state['groups'][str(group.uuid)]['plants'],
+            0
+        )
+
+        # Add plant to group
+        plant.group = group
+        plant.save()
+        cached_state = cache.get(f'overview_state_{get_default_user().pk}')
+        # Confirm group has 1 plant in cached overview state
+        self.assertEqual(
+            cached_state['groups'][str(group.uuid)]['plants'],
+            1
+        )
+
+        # Remove plant from group, confirm number
+        plant.group = None
+        plant.save()
+        cached_state = cache.get(f'overview_state_{get_default_user().pk}')
+        # Confirm group has 0 plants in cached overview state
+        self.assertEqual(
+            cached_state['groups'][str(group.uuid)]['plants'],
+            0
+        )
+
 
 class ManagePlantStateUpdateTests(TestCase):
     '''Test that cached manage_plant states update correctly when database changes'''
