@@ -216,6 +216,8 @@ def update_plant_in_cached_states_hook(instance, **kwargs):
       cached manage_plant state(s) (parent name/uuid may be outdated)
     - Deletes cached unnamed_plants and species_options lists
     '''
+    # Clear cached lists (may contain outdated name/species)
+    clear_cached_plant_lists(instance.user)
     update_plant_details_in_cached_manage_plant_state(instance)
     update_plant_details_in_cached_plant_options(instance)
     update_instance_in_cached_overview_state(instance, 'plants')
@@ -225,8 +227,6 @@ def update_plant_in_cached_states_hook(instance, **kwargs):
     # Update child plant states ("Divided from" outdated if plant name changed)
     for child_plant in instance.children.all():
         update_parent_plant_details_in_cached_manage_plant_state(child_plant)
-    # Clear cached lists (may contain outdated name/species)
-    clear_cached_plant_lists(instance.user)
 
 
 @receiver(pre_delete, sender=Plant)
@@ -446,9 +446,9 @@ def update_group_in_cached_states_hook(instance, **kwargs):
     - Updates group entry in cached overview state (removes if group archived)
     - Deletes cached unnamed_groups list (used to get sequential names)
     '''
+    cache.delete(f'unnamed_groups_{instance.user.pk}')
     update_group_details_in_cached_group_options(instance)
     update_instance_in_cached_overview_state(instance, 'groups')
-    cache.delete(f'unnamed_groups_{instance.user.pk}')
 
 
 @receiver(post_delete, sender=Group)
