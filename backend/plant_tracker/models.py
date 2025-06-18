@@ -10,9 +10,7 @@ from django.db import models
 from django.conf import settings
 from django.core.cache import cache
 from django.db import IntegrityError
-from django.dispatch import receiver
 from django.utils import timezone as django_timezone
-from django.db.models.signals import post_save, post_delete
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.core.validators import MaxValueValidator, MinValueValidator
 
@@ -196,18 +194,6 @@ class Group(models.Model):
         if Plant.objects.filter(uuid=self.uuid):
             raise IntegrityError("UUID already exists in Plant table")
         super().save(*args, **kwargs)
-
-
-@receiver(post_save, sender=Group)
-@receiver(post_delete, sender=Group)
-@disable_for_loaddata
-def clear_cached_group_lists(instance, **kwargs):
-    '''Clear cached unnamed_groups list when a Group is saved or deleted (will
-    be generated and cached next time needed).
-
-    The group_options list is updated automatically by hook in tasks.py.
-    '''
-    cache.delete(f'unnamed_groups_{instance.user.pk}')
 
 
 class Plant(models.Model):
@@ -446,19 +432,6 @@ class Plant(models.Model):
         if Group.objects.filter(uuid=self.uuid):
             raise IntegrityError("UUID already exists in Group table")
         super().save(*args, **kwargs)
-
-
-@receiver(post_save, sender=Plant)
-@receiver(post_delete, sender=Plant)
-@disable_for_loaddata
-def clear_cached_plant_lists(instance, **kwargs):
-    '''Clear cached unnamed_plant and species_options lists when a Plant is
-    saved or deleted (will be generated and cached next time needed).
-
-    The plant_options list is updated automatically by hook in tasks.py.
-    '''
-    cache.delete(f'unnamed_plants_{instance.user.pk}')
-    cache.delete('species_options')
 
 
 class Photo(models.Model):
