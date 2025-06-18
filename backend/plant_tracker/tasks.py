@@ -178,9 +178,10 @@ def update_plant_details_in_cached_states(plant):
       - Updates plant details in cached overview state
       - Updates plant details in cached plant_options
     '''
-    cached_state = get_manage_plant_state(plant)
-    cached_state['plant_details'] = plant.get_details()
-    cache.set(f'{plant.uuid}_state', cached_state, None)
+    cached_state = cache.get(f'{plant.uuid}_state')
+    if cached_state:
+        cached_state['plant_details'] = plant.get_details()
+        cache.set(f'{plant.uuid}_state', cached_state, None)
     update_instance_in_cached_overview_state(plant, 'plants')
     update_plant_details_in_cached_plant_options(plant)
 

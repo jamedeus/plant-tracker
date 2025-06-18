@@ -17,7 +17,8 @@ from django.test import TestCase, TransactionTestCase, Client
 
 from .tasks import (
     update_cached_plant_options,
-    update_cached_group_options
+    update_cached_group_options,
+    build_manage_plant_state
 )
 from .models import (
     Group,
@@ -1044,8 +1045,10 @@ class CachedStateRegressionTests(TestCase):
         no longer existing) photo in the details dropdown on next page load.
         '''
 
-        # Create test plant, confirm cached state has no default_photo
+        # Create test plant, generate cached state
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        build_manage_plant_state(plant.uuid)
+        # Confirm cached state has no default_photo
         self.assertIsNone(
             cache.get(f'{plant.uuid}_state')['plant_details']['thumbnail']
         )
