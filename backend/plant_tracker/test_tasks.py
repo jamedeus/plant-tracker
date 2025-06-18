@@ -449,6 +449,80 @@ class OverviewStateUpdateTests(TestCase):
             f"/media/{Photo.objects.all()[0].thumbnail.name}"
         )
 
+    def test_plants_and_groups_are_removed_from_overview_state_when_archived(self):
+        # Create Plant and Group, confirm both are in cached overview state
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        group = Group.objects.create(uuid=uuid4(), user=get_default_user())
+        self.assertEqual(
+            cache.get(f'overview_state_{get_default_user().pk}'),
+            {
+                "plants": {
+                    str(plant.uuid): {
+                        "name": None,
+                        "display_name": "Unnamed plant 1",
+                        "uuid": str(plant.uuid),
+                        "created": plant.created.isoformat(),
+                        "archived": False,
+                        "species": None,
+                        "description": None,
+                        "pot_size": None,
+                        "last_watered": None,
+                        "last_fertilized": None,
+                        "thumbnail": None,
+                        "group": None
+                    }
+                },
+                "groups": {
+                    str(group.uuid): {
+                        "name": None,
+                        "display_name": "Unnamed group 1",
+                        "uuid": str(group.uuid),
+                        "created": group.created.isoformat(),
+                        "archived": False,
+                        "location": None,
+                        "description": None,
+                        "plants": 0
+                    }
+                },
+                "show_archive": False
+            }
+        )
+
+        # Archive plant, confirm removed from cached overview state
+        plant.archived = True
+        plant.save()
+        self.assertEqual(
+            cache.get(f'overview_state_{get_default_user().pk}'),
+            {
+                "plants": {},
+                "groups": {
+                    str(group.uuid): {
+                        "name": None,
+                        "display_name": "Unnamed group 1",
+                        "uuid": str(group.uuid),
+                        "created": group.created.isoformat(),
+                        "archived": False,
+                        "location": None,
+                        "description": None,
+                        "plants": 0
+                    }
+                },
+                "show_archive": False
+            }
+        )
+
+        # Archive group, confirm removed from cached overview state
+        group.archived = True
+        group.save()
+        self.assertEqual(
+            cache.get(f'overview_state_{get_default_user().pk}'),
+            {
+                "plants": {},
+                "groups": {},
+                "show_archive": False
+            }
+        )
+
 
 class ManagePlantStateUpdateTests(TestCase):
     '''Test that cached manage_plant states update correctly when database changes'''
@@ -942,6 +1016,22 @@ class CachedOptionsUpdateTests(TestCase):
         photo.delete()
         cached_options = cache.get(f'plant_options_{self.user.pk}')
         self.assertIsNone(cached_options[str(self.uuid)]['thumbnail'])
+
+    def test_plant_options_updates_when_plant_added_to_group(self):
+        # Create Plant model entry, confirm added to cached plant_options
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        self.assertIn(str(plant.uuid), cache.get(f'plant_options_{self.user.pk}'))
+
+        # Add plant to group, confirm removed from cached plant_options
+        group = Group.objects.create(uuid=uuid4(), user=get_default_user())
+        plant.group = group
+        plant.save()
+        self.assertNotIn(str(plant.uuid), cache.get(f'plant_options_{self.user.pk}'))
+
+        # Remove plant from group, confirm reappears in cached plant_options
+        plant.group = None
+        plant.save()
+        self.assertIn(str(plant.uuid), cache.get(f'plant_options_{self.user.pk}'))
 
     def test_group_options_updates_when_group_created_modified_or_deleted(self):
         self.assertIsNone(cache.get(f'group_options_{self.user.pk}'))
