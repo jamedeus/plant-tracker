@@ -40,9 +40,8 @@ from .view_decorators import (
 from .tasks import (
     get_overview_state,
     get_manage_plant_state,
-    update_instance_in_cached_overview_state,
-    remove_instance_from_cached_overview_state,
-    update_group_details_in_cached_group_options
+    update_group_details_in_cached_states,
+    remove_instance_from_cached_overview_state
 )
 
 
@@ -782,10 +781,8 @@ def remove_plant_from_group(plant, **kwargs):
     plant.group = None
     plant.save(update_fields=["group"])
 
-    # Update cached group_options (number of plants in group changed)
-    update_group_details_in_cached_group_options(old_group)
-    # Update number of plants shown on overview
-    update_instance_in_cached_overview_state(old_group, 'groups')
+    # Update number of plants shown on overview and cached group_options
+    update_group_details_in_cached_states(old_group)
 
     return JsonResponse(
         {"action": "remove_plant_from_group", "plant": plant.uuid},
@@ -832,10 +829,8 @@ def bulk_remove_plants_from_group(data, group, **kwargs):
         else:
             failed.append(plant_id)
 
-    # Update cached group_options (number of plants in group changed)
-    update_group_details_in_cached_group_options(group)
-    # Update number of plants shown on overview
-    update_instance_in_cached_overview_state(group, "groups")
+    # Update number of plants shown on overview and cached group_options
+    update_group_details_in_cached_states(group)
 
     return JsonResponse({"removed": removed, "failed": failed}, status=200)
 

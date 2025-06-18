@@ -172,6 +172,19 @@ def update_cached_manage_plant_state(uuid):
     print(f'Rebuilt {uuid} state')
 
 
+def update_plant_details_in_cached_states(plant):
+    '''Takes plant, updates all states that contain plant details:
+      - Updates plant details in cached manage_plant state
+      - Updates plant details in cached overview state
+      - Updates plant details in cached plant_options
+    '''
+    cached_state = get_manage_plant_state(plant)
+    cached_state['plant_details'] = plant.get_details()
+    cache.set(f'{plant.uuid}_state', cached_state, None)
+    update_instance_in_cached_overview_state(plant, 'plants')
+    update_plant_details_in_cached_plant_options(plant)
+
+
 def update_child_plant_details_in_cached_manage_plant_state(plant):
     '''Takes plant, updates division_events key in cached state, re-caches.'''
     cached_state = cache.get(f'{plant.uuid}_state')
@@ -186,13 +199,6 @@ def update_parent_plant_details_in_cached_manage_plant_state(plant):
     if cached_state:
         cached_state['divided_from'] = plant.get_parent_plant_details()
         cache.set(f'{plant.uuid}_state', cached_state, None)
-
-
-def update_plant_details_in_cached_manage_plant_state(plant):
-    '''Takes plant, updates plant_details key in cached state, re-caches.'''
-    cached_state = get_manage_plant_state(plant)
-    cached_state['plant_details'] = plant.get_details()
-    cache.set(f'{plant.uuid}_state', cached_state, None)
 
 
 def clear_cached_plant_lists(user):
@@ -220,9 +226,7 @@ def update_plant_in_cached_states_hook(instance, **kwargs):
     '''
     # Clear cached lists (may contain outdated name/species)
     clear_cached_plant_lists(instance.user)
-    update_plant_details_in_cached_manage_plant_state(instance)
-    update_plant_details_in_cached_plant_options(instance)
-    update_instance_in_cached_overview_state(instance, 'plants')
+    update_plant_details_in_cached_states(instance)
     # Update parent plant state ("Divided into" outdated if plant name changed)
     if instance.divided_from:
         update_child_plant_details_in_cached_manage_plant_state(instance.divided_from)
@@ -231,8 +235,7 @@ def update_plant_in_cached_states_hook(instance, **kwargs):
         update_parent_plant_details_in_cached_manage_plant_state(child_plant)
     # If plant in group: update cached group details (number of plants changed)
     if instance.group:
-        update_group_details_in_cached_group_options(instance.group)
-        update_instance_in_cached_overview_state(instance.group, 'groups')
+        update_group_details_in_cached_states(instance.group)
 
 
 @receiver(pre_delete, sender=Plant)
@@ -262,8 +265,7 @@ def remove_deleted_plant_from_cached_states_hook(instance, **kwargs):
     clear_cached_plant_lists(instance.user)
     # If plant in group: update cached group details (number of plants changed)
     if instance.group:
-        update_group_details_in_cached_group_options(instance.group)
-        update_instance_in_cached_overview_state(instance.group, 'groups')
+        update_group_details_in_cached_states(instance.group)
 
 
 @receiver(post_save, sender=DivisionEvent)
@@ -330,17 +332,7 @@ def update_last_event_times_in_cached_states_hook(instance, **kwargs):
     in cached overview state, cached manage_plant state, and cached plant
     options when a WaterEvent or FertilizeEvent is saved or deleted.
     '''
-    update_plant_details_in_cached_plant_options(instance.plant)
-    update_plant_details_in_cached_manage_plant_state(instance.plant)
-    update_instance_in_cached_overview_state(instance.plant, 'plants')
-
-
-def update_plant_thumbnail_in_cached_states(plant):
-    '''Takes plant, updates thumbnail in cached overview state and cached
-    plant_options.
-    '''
-    update_instance_in_cached_overview_state(plant, 'plants')
-    update_plant_details_in_cached_plant_options(plant)
+    update_plant_details_in_cached_states(instance.plant)
 
 
 @receiver(post_save, sender=Photo)
@@ -354,9 +346,8 @@ def add_photo_to_cached_states_hook(instance, **kwargs):
         cached_state['photos'][instance.pk] = instance.get_details()
         default_photo = instance.plant.get_default_photo_details()
         cached_state['default_photo'] = default_photo
-        cached_state['plant_details']['thumbnail'] = default_photo['thumbnail']
         cache.set(f'{instance.plant.uuid}_state', cached_state, None)
-    update_plant_thumbnail_in_cached_states(instance.plant)
+    update_plant_details_in_cached_states(instance.plant)
 
 
 @receiver(post_delete, sender=Photo)
@@ -370,9 +361,8 @@ def remove_photo_from_cached_states_hook(instance, **kwargs):
         del cached_state['photos'][instance.pk]
         default_photo = instance.plant.get_default_photo_details()
         cached_state['default_photo'] = default_photo
-        cached_state['plant_details']['thumbnail'] = default_photo['thumbnail']
         cache.set(f'{instance.plant.uuid}_state', cached_state, None)
-    update_plant_thumbnail_in_cached_states(instance.plant)
+    update_plant_details_in_cached_states(instance.plant)
 
 
 @receiver(post_save, sender=NoteEvent)
@@ -450,6 +440,15 @@ def remove_deleted_group_from_cached_group_options(instance, **kwargs):
         cache.set(f'group_options_{instance.user.pk}', options, None)
 
 
+def update_group_details_in_cached_states(group):
+    '''Takes group, updates all states that contain group details:
+      - Updates group details in cached overview state
+      - Updates group details in cached group_options
+    '''
+    update_instance_in_cached_overview_state(group, 'groups')
+    update_group_details_in_cached_group_options(group)
+
+
 @receiver(post_save, sender=Group)
 @disable_for_loaddata
 def update_group_in_cached_states_hook(instance, **kwargs):
@@ -459,8 +458,7 @@ def update_group_in_cached_states_hook(instance, **kwargs):
     - Deletes cached unnamed_groups list (used to get sequential names)
     '''
     cache.delete(f'unnamed_groups_{instance.user.pk}')
-    update_group_details_in_cached_group_options(instance)
-    update_instance_in_cached_overview_state(instance, 'groups')
+    update_group_details_in_cached_states(instance)
 
 
 @receiver(post_delete, sender=Group)
