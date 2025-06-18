@@ -1,4 +1,4 @@
-# pylint: disable=missing-docstring,line-too-long,R0801
+# pylint: disable=missing-docstring,line-too-long,R0801,too-many-lines
 
 import shutil
 from uuid import uuid4
@@ -254,15 +254,67 @@ class OverviewStateUpdateTests(TestCase):
             }
         )
 
-    def test_overview_state_updates_when_plant_events_created_or_deleted(self):
+    def test_overview_state_updates_when_water_or_fertilize_events_created(self):
         # Create Plant model entry
         plant = Plant.objects.create(uuid=self.uuid, user=get_default_user())
 
-        # Confirm state was generated, confirm Plant has no water events
+        # Confirm overview state generated, confirm Plant never watered/fertilized
         user_id = get_default_user().pk
         cached_state = cache.get(f'overview_state_{user_id}')
         self.assertIsNotNone(cached_state)
         self.assertIsNone(cached_state["plants"][str(self.uuid)]["last_watered"])
+        self.assertIsNone(cached_state["plants"][str(self.uuid)]["last_fertilized"])
+
+        # Create WaterEvent
+        water = WaterEvent.objects.create(plant=plant, timestamp=timezone.now())
+
+        # Confirm last_watered in cached state matches timestamp
+        cached_state = cache.get(f'overview_state_{user_id}')
+        self.assertEqual(
+            cached_state["plants"][str(self.uuid)]["last_watered"],
+            water.timestamp.isoformat()
+        )
+        self.assertIsNone(cached_state["plants"][str(self.uuid)]["last_fertilized"])
+
+        # Create FertilizeEvent
+        fertilize = FertilizeEvent.objects.create(plant=plant, timestamp=timezone.now())
+
+        # Confirm last_fertilized in cached state matches timestamp
+        cached_state = cache.get(f'overview_state_{user_id}')
+        self.assertEqual(
+            cached_state["plants"][str(self.uuid)]["last_watered"],
+            water.timestamp.isoformat()
+        )
+        self.assertEqual(
+            cached_state["plants"][str(self.uuid)]["last_fertilized"],
+            fertilize.timestamp.isoformat()
+        )
+
+        # Delete WaterEvent, confirm last_watered in cached state reverted to None
+        water.delete()
+        cached_state = cache.get(f'overview_state_{user_id}')
+        self.assertIsNone(cached_state["plants"][str(self.uuid)]["last_watered"])
+        self.assertEqual(
+            cached_state["plants"][str(self.uuid)]["last_fertilized"],
+            fertilize.timestamp.isoformat()
+        )
+
+        # Delete FertilizeEvent, confirm last_fertilized in cached state reverted to None
+        fertilize.delete()
+        cached_state = cache.get(f'overview_state_{user_id}')
+        self.assertIsNone(cached_state["plants"][str(self.uuid)]["last_watered"])
+        self.assertIsNone(cached_state["plants"][str(self.uuid)]["last_fertilized"])
+
+    def test_overview_state_updates_when_events_created_or_deleted_with_endpoints(self):
+        # Create Plant model entry
+        plant = Plant.objects.create(uuid=self.uuid, user=get_default_user())
+
+        # Confirm overview state generated, confirm Plant never watered/fertilized
+        user_id = get_default_user().pk
+        cached_state = cache.get(f'overview_state_{user_id}')
+        self.assertIsNotNone(cached_state)
+        self.assertIsNone(cached_state["plants"][str(self.uuid)]["last_watered"])
+        self.assertIsNone(cached_state["plants"][str(self.uuid)]["last_fertilized"])
 
         # Create WaterEvent for plant entry with API call
         self.client.post('/add_plant_event', {
@@ -277,6 +329,7 @@ class OverviewStateUpdateTests(TestCase):
             cached_state["plants"][str(self.uuid)]["last_watered"],
             '2024-02-06T03:06:26+00:00'
         )
+        self.assertIsNone(cached_state["plants"][str(self.uuid)]["last_fertilized"])
 
         # Delete water event with API call
         self.client.post('/delete_plant_event', {
@@ -288,6 +341,7 @@ class OverviewStateUpdateTests(TestCase):
         # Confirm last_watered in cached state reverted to None
         cached_state = cache.get(f'overview_state_{user_id}')
         self.assertIsNone(cached_state["plants"][str(self.uuid)]["last_watered"])
+        self.assertIsNone(cached_state["plants"][str(self.uuid)]["last_fertilized"])
 
     def test_overview_state_updates_when_plant_events_bulk_created_or_bulk_deleted(self):
         # Create 1 Plant model entries
@@ -759,17 +813,18 @@ class CachedOptionsUpdateTests(TestCase):
         # Generate UUID to use in tests
         self.uuid = uuid4()
 
-    def test_plant_options_list_updates_when_plant_created_modified_or_deleted(self):
+        self.user = get_default_user()
+
+    def test_plant_options_updates_when_plant_created_modified_or_deleted(self):
         # Confirm no cached plant_options list for default user
-        user_id = get_default_user().pk
-        self.assertIsNone(cache.get(f'plant_options_{user_id}'))
+        self.assertIsNone(cache.get(f'plant_options_{self.user.pk}'))
 
         # Create Plant model entry
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
 
         # Confirm plant_options was generated and cached
         self.assertEqual(
-            cache.get(f'plant_options_{user_id}'),
+            cache.get(f'plant_options_{self.user.pk}'),
             {str(plant.uuid): plant.get_details()}
         )
 
@@ -780,7 +835,7 @@ class CachedOptionsUpdateTests(TestCase):
 
         # Confirm plant details updated in cached plant_options
         self.assertEqual(
-            cache.get(f'plant_options_{user_id}'),
+            cache.get(f'plant_options_{self.user.pk}'),
             {str(plant.uuid): plant.get_details()}
         )
 
@@ -789,21 +844,114 @@ class CachedOptionsUpdateTests(TestCase):
 
         # Confirm plant details were removed from cached plant_options
         self.assertEqual(
-            cache.get(f'plant_options_{user_id}'),
+            cache.get(f'plant_options_{self.user.pk}'),
             {}
         )
 
-    def test_group_options_list_updates_when_group_created_modified_or_deleted(self):
-        # Confirm no cached group_options list for default user
-        user_id = get_default_user().pk
-        self.assertIsNone(cache.get(f'group_options_{user_id}'))
+    def test_plant_options_updates_when_water_or_fertilize_event_created(self):
+        # Create Plant model entry, confirm has no last_watered/fertilized in plant_options
+        plant = Plant.objects.create(uuid=self.uuid, user=get_default_user())
+        cached_options = cache.get(f'plant_options_{self.user.pk}')
+        self.assertIsNone(cached_options[str(self.uuid)]['last_watered'])
+        self.assertIsNone(cached_options[str(self.uuid)]['last_fertilized'])
+
+        # Create WaterEvent, confirm last_watered time updated
+        water = WaterEvent.objects.create(plant=plant, timestamp=timezone.now())
+        cached_options = cache.get(f'plant_options_{self.user.pk}')
+        self.assertEqual(
+            cached_options[str(self.uuid)]['last_watered'],
+            water.timestamp.isoformat()
+        )
+        self.assertIsNone(cached_options[str(self.uuid)]['last_fertilized'])
+
+        # Create FertilizeEvent, confirm last_fertilized time updated
+        fertilize = FertilizeEvent.objects.create(plant=plant, timestamp=timezone.now())
+        cached_options = cache.get(f'plant_options_{self.user.pk}')
+        self.assertEqual(
+            cached_options[str(self.uuid)]['last_watered'],
+            water.timestamp.isoformat()
+        )
+        self.assertEqual(
+            cached_options[str(self.uuid)]['last_fertilized'],
+            fertilize.timestamp.isoformat()
+        )
+
+        # Delete WaterEvent, confirm last_watered time updated
+        water.delete()
+        cached_options = cache.get(f'plant_options_{self.user.pk}')
+        self.assertIsNone(cached_options[str(self.uuid)]['last_watered'])
+        self.assertEqual(
+            cached_options[str(self.uuid)]['last_fertilized'],
+            fertilize.timestamp.isoformat()
+        )
+
+        # Delete FertilizeEvent, confirm last_fertilized time updated
+        fertilize.delete()
+        cached_options = cache.get(f'plant_options_{self.user.pk}')
+        self.assertIsNone(cached_options[str(self.uuid)]['last_watered'])
+        self.assertIsNone(cached_options[str(self.uuid)]['last_fertilized'])
+
+    def test_plant_options_updates_when_plant_thumbnail_changes(self):
+        # Create Plant model entry, confirm has no thumbnail in plant_options
+        plant = Plant.objects.create(uuid=self.uuid, user=get_default_user())
+        cached_options = cache.get(f'plant_options_{self.user.pk}')
+        self.assertIsNone(cached_options[str(self.uuid)]['thumbnail'])
+
+        # Create mock photo associated with plant, confirm thumbnail updated
+        photo = Photo.objects.create(
+            photo=create_mock_photo('2024:03:22 10:52:03', name='new_photo.jpg'),
+            plant=plant
+        )
+        cached_options = cache.get(f'plant_options_{self.user.pk}')
+        self.assertEqual(
+            cached_options[str(self.uuid)]['thumbnail'],
+            '/media/thumbnails/new_photo_thumb.webp'
+        )
+
+        # Create older photo, confirm thumbnail did not update (shows most-recent)
+        old_photo = Photo.objects.create(
+            photo=create_mock_photo('2023:03:22 10:52:03', name='old_photo.jpg'),
+            plant=plant
+        )
+        cached_options = cache.get(f'plant_options_{self.user.pk}')
+        self.assertEqual(
+            cached_options[str(self.uuid)]['thumbnail'],
+            '/media/thumbnails/new_photo_thumb.webp'
+        )
+
+        # Set older photo as default, confirm thumbnail updated
+        response = self.client.post('/set_plant_default_photo', {
+            'plant_id': str(plant.uuid),
+            'photo_key': old_photo.pk
+        })
+        cached_options = cache.get(f'plant_options_{self.user.pk}')
+        self.assertEqual(
+            cached_options[str(self.uuid)]['thumbnail'],
+            '/media/thumbnails/old_photo_thumb.webp'
+        )
+
+        # Delete default photo, confirm thumbnail changed back to most-recent
+        old_photo.delete()
+        cached_options = cache.get(f'plant_options_{self.user.pk}')
+        self.assertEqual(
+            cached_options[str(self.uuid)]['thumbnail'],
+            '/media/thumbnails/new_photo_thumb.webp'
+        )
+
+        # Delete only remaining photo, confirm thumbnail changed back to None
+        photo.delete()
+        cached_options = cache.get(f'plant_options_{self.user.pk}')
+        self.assertIsNone(cached_options[str(self.uuid)]['thumbnail'])
+
+    def test_group_options_updates_when_group_created_modified_or_deleted(self):
+        self.assertIsNone(cache.get(f'group_options_{self.user.pk}'))
 
         # Create Group model entry
         group = Group.objects.create(uuid=uuid4(), user=get_default_user())
 
         # Confirm group_options was generated and cached
         self.assertEqual(
-            cache.get(f'group_options_{user_id}'),
+            cache.get(f'group_options_{self.user.pk}'),
             {str(group.uuid): group.get_details()}
         )
 
@@ -814,7 +962,7 @@ class CachedOptionsUpdateTests(TestCase):
 
         # Confirm group details updated in cached group_options
         self.assertEqual(
-            cache.get(f'group_options_{user_id}'),
+            cache.get(f'group_options_{self.user.pk}'),
             {str(group.uuid): group.get_details()}
         )
 
@@ -823,6 +971,60 @@ class CachedOptionsUpdateTests(TestCase):
 
         # Confirm group details were removed from cached group_options
         self.assertEqual(
-            cache.get(f'group_options_{user_id}'),
+            cache.get(f'group_options_{self.user.pk}'),
             {}
         )
+
+    def test_group_options_updates_when_number_of_plants_in_group_changes(self):
+        # Create Group model entry, confirm group_options entry says 0 plants
+        group = Group.objects.create(uuid=uuid4(), user=self.user)
+        self.assertEqual(
+            cache.get(f'group_options_{self.user.pk}')[str(group.uuid)]['plants'],
+            0
+        )
+
+        # Create plant in group, confirm group_options updates and says 1 plant
+        plant = Plant.objects.create(uuid=self.uuid, user=self.user, group=group)
+        self.assertEqual(
+            cache.get(f'group_options_{self.user.pk}')[str(group.uuid)]['plants'],
+            1
+        )
+
+        # Delete plant, confirm group_options updates and says 0 plants
+        plant.delete()
+        self.assertEqual(
+            cache.get(f'group_options_{self.user.pk}')[str(group.uuid)]['plants'],
+            0
+        )
+
+    def test_unnamed_plants_cleared_when_plant_deleted(self):
+        # Confirm no cached unnamed_plants list
+        self.assertIsNone(cache.get(f'unnamed_plants_{self.user.pk}'))
+
+        # Create 2 unnamed plants, confirm unnamed_plants list cached
+        plant1 = Plant.objects.create(uuid=uuid4(), user=self.user)
+        plant2 = Plant.objects.create(uuid=uuid4(), user=self.user)
+        self.assertEqual(
+            cache.get(f'unnamed_plants_{self.user.pk}'),
+            [plant1.pk, plant2.pk]
+        )
+
+        # Delete first plant, confirm cached unnamed_plants list deleted
+        plant1.delete()
+        self.assertIsNone(cache.get(f'unnamed_plants_{self.user.pk}'))
+
+    def test_unnamed_groups_cleared_when_group_deleted(self):
+        # Confirm no cached unnamed_groups list
+        self.assertIsNone(cache.get(f'unnamed_groups_{self.user.pk}'))
+
+        # Create 2 unnamed groups, confirm unnamed_groups list cached
+        group1 = Group.objects.create(uuid=uuid4(), user=self.user)
+        group2 = Group.objects.create(uuid=uuid4(), user=self.user)
+        self.assertEqual(
+            cache.get(f'unnamed_groups_{self.user.pk}'),
+            [group1.pk, group2.pk]
+        )
+
+        # Delete first group, confirm cached unnamed_groups list deleted
+        group1.delete()
+        self.assertIsNone(cache.get(f'unnamed_groups_{self.user.pk}'))
