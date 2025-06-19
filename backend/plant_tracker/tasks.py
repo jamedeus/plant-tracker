@@ -26,47 +26,19 @@ from .models import (
     DivisionEvent,
     get_plant_options,
     get_group_options,
-    get_plant_species_options
 )
 from .disable_for_loaddata import disable_for_loaddata
-
-
-def build_overview_state(user):
-    '''Takes user, builds state parsed by overview page, caches, and returns.
-    Contains all non-archived plants and groups owned by user.
-    '''
-
-    # Only show link to archived overview if at least 1 archived plant or group
-    has_archived_plants = bool(Plant.objects.filter(archived=True, user=user))
-    has_archived_groups = bool(Group.objects.filter(archived=True, user=user))
-    show_archive = has_archived_plants or has_archived_groups
-
-    state = {
-        'plants': {
-            str(plant.uuid): plant.get_details()
-            for plant in Plant.objects.filter(archived=False, user=user)
-        },
-        'groups': {
-            str(group.uuid): group.get_details()
-            for group in Group.objects.filter(archived=False, user=user)
-        },
-        'show_archive': show_archive
-    }
-
-    # Cache state indefinitely (updates automatically when database changes)
-    cache.set(f'overview_state_{user.pk}', state, None)
-
-    return state
-
-
-def get_overview_state(user):
-    '''Takes user, returns state object parsed by the overview page react app.
-    Loads state from cache if present, builds from database if not found.
-    '''
-    state = cache.get(f'overview_state_{user.pk}')
-    if state is None:
-        state = build_overview_state(user)
-    return state
+from .update_cached_states import (
+    remove_instance_from_cached_overview_state,
+    update_plant_details_in_cached_states,
+    update_child_plant_details_in_cached_manage_plant_state,
+    update_parent_plant_details_in_cached_manage_plant_state,
+    clear_cached_plant_lists,
+    remove_plant_from_cached_plant_options,
+    remove_deleted_group_from_cached_group_options,
+    update_group_details_in_cached_states
+)
+from .build_states import build_overview_state, build_manage_plant_state
 
 
 @shared_task()
@@ -77,137 +49,11 @@ def update_cached_overview_state(user_pk):
     print(f'Rebuilt overview state for {user_pk}')
 
 
-def update_instance_in_cached_overview_state(instance, key):
-    '''Takes plant or group entry that was updated and key (plants or groups).
-    Overwrites instance details under requested key in cached overview state.
-    Removes instance from cached state if instance is archived.
-    '''
-    if instance.archived:
-        remove_instance_from_cached_overview_state(instance, key)
-    else:
-        state = get_overview_state(instance.user)
-        state[key][str(instance.uuid)] = instance.get_details()
-        cache.set(f'overview_state_{instance.user.pk}', state, None)
-
-
-def remove_instance_from_cached_overview_state(instance, key):
-    '''Takes plant or group entry that was deleted and key (plants or groups).
-    Removes instance details from requested key in cached overview state.
-    '''
-    state = get_overview_state(instance.user)
-    if str(instance.uuid) in state[key]:
-        del state[key][str(instance.uuid)]
-        cache.set(f'overview_state_{instance.user.pk}', state, None)
-
-
-def build_manage_plant_state(uuid):
-    '''Builds state parsed by manage_plant react app and returns.'''
-
-    # Look up Plant by uuid (can't pass model entry to task, not serializable)
-    plant = Plant.objects.get(uuid=uuid)
-
-    state = {
-        'plant_details': plant.get_details(),
-        'photos': plant.get_photos(),
-        'default_photo': plant.get_default_photo_details()
-    }
-
-    # Add all water, fertilize, prune, and repot timestamps
-    state['events'] = {
-        'water': plant.get_water_timestamps(),
-        'fertilize': plant.get_fertilize_timestamps(),
-        'prune': plant.get_prune_timestamps(),
-        'repot': plant.get_repot_timestamps()
-    }
-
-    # Add notes dict with timestamps as keys and text as values
-    state['notes'] = {
-        note.timestamp.isoformat(): note.text
-        for note in plant.noteevent_set.all()
-    }
-
-    # Add object with DivisionEvent timestamps as keys, list of child plant
-    # objects as values (adds events to timeline with links to children)
-    state['division_events'] = plant.get_division_event_details()
-
-    # Add object with parent plant details if divided from existing plant
-    state['divided_from'] = plant.get_parent_plant_details()
-
-    # Cache state indefinitely (updates automatically when database changes)
-    cache.set(f'{uuid}_state', state, None)
-
-    return state
-
-
-def get_manage_plant_state(plant):
-    '''Returns the state object parsed by the manage_plant page react app.
-    Loads state from cache if present, builds from database if not found.
-    Updates params that can't be reliably cached with values from database.
-    '''
-    state = cache.get(f'{plant.uuid}_state')
-    if state is None:
-        state = build_manage_plant_state(plant.uuid)
-
-    # Overwrite cached display_name if plant has no name (sequential names like)
-    # "Unnamed plant 3" may be outdated if other unnamed plants were named)
-    if not plant.name:
-        state['plant_details']['display_name'] = plant.get_display_name()
-
-    # Overwrite cached group details if plant is in a group (may be outdated if
-    # group was renamed or QR code changed since cache saved)
-    if plant.group:
-        state['plant_details']['group'] = plant.get_group_details()
-
-    # Add species and group options (cached separately)
-    state['group_options'] = get_group_options(plant.user)
-    state['species_options'] = get_plant_species_options()
-
-    return state
-
-
 @shared_task()
 def update_cached_manage_plant_state(uuid):
     '''Builds and caches manage_plant state.'''
     build_manage_plant_state(uuid)
     print(f'Rebuilt {uuid} state')
-
-
-def update_plant_details_in_cached_states(plant):
-    '''Takes plant, updates all states that contain plant details:
-      - Updates plant details in cached manage_plant state
-      - Updates plant details in cached overview state
-      - Updates plant details in cached plant_options
-    '''
-    cached_state = cache.get(f'{plant.uuid}_state')
-    if cached_state:
-        cached_state['plant_details'] = plant.get_details()
-        cache.set(f'{plant.uuid}_state', cached_state, None)
-    update_instance_in_cached_overview_state(plant, 'plants')
-    update_plant_details_in_cached_plant_options(plant)
-
-
-def update_child_plant_details_in_cached_manage_plant_state(plant):
-    '''Takes plant, updates division_events key in cached state, re-caches.'''
-    cached_state = cache.get(f'{plant.uuid}_state')
-    if cached_state:
-        cached_state['division_events'] = plant.get_division_event_details()
-        cache.set(f'{plant.uuid}_state', cached_state, None)
-
-
-def update_parent_plant_details_in_cached_manage_plant_state(plant):
-    '''Takes plant, updates divided_from key in cached state, re-caches.'''
-    cached_state = cache.get(f'{plant.uuid}_state')
-    if cached_state:
-        cached_state['divided_from'] = plant.get_parent_plant_details()
-        cache.set(f'{plant.uuid}_state', cached_state, None)
-
-
-def clear_cached_plant_lists(user):
-    '''Takes user, clears cached unnamed_plants list (used to get sequential
-    "Unnamed plant <num>" names) and species_options list.
-    '''
-    cache.delete(f'unnamed_plants_{user.pk}')
-    cache.delete('species_options')
 
 
 @receiver(post_save, sender=Plant)
@@ -391,35 +237,6 @@ def delete_note_from_cached_manage_plant_state_hook(instance, **kwargs):
         cache.set(f'{instance.plant.uuid}_state', cached_state, None)
 
 
-def update_plant_details_in_cached_plant_options(plant):
-    '''Takes Plant entry, updates details in cached plant_options dict (used for
-    manage_group add plants modal options) for the user who owns updated plant.
-
-    If plant is not in a group: add to options dict (or update details).
-    If plant was just added to a group: remove from options dict.
-    If plant was already in a group (isn't in options dict): do nothing.
-    '''
-    options = get_plant_options(plant.user)
-    # Plant not in group
-    if not plant.group:
-        options[str(plant.uuid)] = plant.get_details()
-        cache.set(f'plant_options_{plant.user.pk}', options, None)
-    # Plant was just added to group
-    elif str(plant.uuid) in options:
-        del options[str(plant.uuid)]
-        cache.set(f'plant_options_{plant.user.pk}', options, None)
-
-
-def remove_plant_from_cached_plant_options(plant):
-    '''Takes Plant entry, removes from cached plant options dict (used for
-    manage_group add plants modal options) for user who owns plant.
-    '''
-    options = get_plant_options(plant.user)
-    if str(plant.uuid) in options:
-        del options[str(plant.uuid)]
-        cache.set(f'plant_options_{plant.user.pk}', options, None)
-
-
 @shared_task()
 def update_cached_plant_options(user_pk):
     '''Takes user primary key, builds and caches plant options for manage_group
@@ -427,34 +244,6 @@ def update_cached_plant_options(user_pk):
     cache.delete(f'plant_options_{user_pk}')
     get_plant_options(get_user_model().objects.get(pk=user_pk))
     print(f'Rebuilt plant_options for {user_pk} (manage_group add plants modal)')
-
-
-def update_group_details_in_cached_group_options(group):
-    '''Takes Group entry, updates details in cached group_options dict (used for
-    manage_plant add to group modal options) for the user who owns updated group.
-    '''
-    options = get_group_options(group.user)
-    options[str(group.uuid)] = group.get_details()
-    cache.set(f'group_options_{group.user.pk}', options, None)
-
-
-def remove_deleted_group_from_cached_group_options(instance, **kwargs):
-    '''Takes group entry, removes from cached group_options dict (used for
-    manage_plant add to group modal options) for the user who owns deleted group.
-    '''
-    options = get_group_options(instance.user)
-    if str(instance.uuid) in options:
-        del options[str(instance.uuid)]
-        cache.set(f'group_options_{instance.user.pk}', options, None)
-
-
-def update_group_details_in_cached_states(group):
-    '''Takes group, updates all states that contain group details:
-      - Updates group details in cached overview state
-      - Updates group details in cached group_options
-    '''
-    update_instance_in_cached_overview_state(group, 'groups')
-    update_group_details_in_cached_group_options(group)
 
 
 @receiver(post_save, sender=Group)

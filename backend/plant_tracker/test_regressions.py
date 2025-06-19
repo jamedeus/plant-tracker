@@ -16,9 +16,9 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase, TransactionTestCase, Client
 
 from .tasks import (
+    build_manage_plant_state,
     update_cached_plant_options,
-    update_cached_group_options,
-    build_manage_plant_state
+    update_cached_group_options
 )
 from .models import (
     Group,

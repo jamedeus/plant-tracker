@@ -235,7 +235,7 @@ class OverviewTests(TestCase):
         cache.set(f'overview_state_{get_default_user().pk}', 'cached')
 
         # Mock build_overview_state to return a different string
-        with patch('plant_tracker.tasks.build_overview_state', return_value='built'):
+        with patch('plant_tracker.build_states.build_overview_state', return_value='built'):
             # Request overview page, confirm state was loaded from cache
             response = self.client.get('/')
             self.assertEqual(response.context['state'], 'cached')
@@ -244,7 +244,7 @@ class OverviewTests(TestCase):
         cache.delete(f'overview_state_{get_default_user().pk}')
 
         # Mock build_overview_state to return a different string
-        with patch('plant_tracker.tasks.build_overview_state', return_value='built'):
+        with patch('plant_tracker.build_states.build_overview_state', return_value='built'):
             # Request overview page, confirm was built by calling mocked
             # function (failed to load from cache)
             response = self.client.get('/')

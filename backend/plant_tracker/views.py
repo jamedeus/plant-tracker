@@ -37,9 +37,8 @@ from .view_decorators import (
     get_event_type_from_post_body,
     clean_payload_data
 )
-from .tasks import (
-    get_overview_state,
-    get_manage_plant_state,
+from .build_states import get_overview_state, get_manage_plant_state
+from .update_cached_states import (
     update_group_details_in_cached_states,
     remove_instance_from_cached_overview_state
 )
