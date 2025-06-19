@@ -11,29 +11,6 @@ import { interfaceSlice } from './interfaceSlice';
 import { loadUserSettings } from './Settings';
 import { useIsBreakpointActive } from 'src/useBreakpoint';
 
-// Takes object with event type keys, array of timestamps as value.
-// Converts to object with YYYY-MM-DD keys, each containing an object with
-// "events", "notes", and "photos" keys used to populate timeline.
-const formatEvents = (events) => {
-    return Object.entries(events).reduce(
-        (acc, [eventType, eventDates]) => {
-            eventDates.forEach(date => {
-                const dateKey = timestampToDateString(date);
-                // Add new date key unless it already exists
-                if (!acc[dateKey]) {
-                    acc[dateKey] = {events: [], notes: [], photos: []};
-                }
-                // Add event to date key unless same type already exists
-                if (!acc[dateKey]['events'].includes(eventType)) {
-                    acc[dateKey]['events'].push(eventType);
-                }
-            });
-            return acc;
-        },
-        {}
-    );
-};
-
 // Takes events, notes, photos, dividedFrom, and divisionEvents context objects
 // from django backend, returns timelineDays state used by Timeline component
 // (YYYY-MM-DD keys containing objects with events, notes, and photos keys).
@@ -41,51 +18,60 @@ const formatEvents = (events) => {
 // Only adds dividedFrom and dividedInto keys to date when plant was divided (no
 // empty keys on every day - can only have 1 dividedFrom, dividedInto is rare).
 export const buildTimelineDays = (events, notes, photos, dividedFrom, divisionEvents) => {
-    // Convert to object with YYYY-MM-DD keys
-    const timelineDays = formatEvents(events);
+    // Create object, will have YYYY-MM-DD keys containing template below
+    const timelineDays = {};
+    const dayTemplate = {events: [], notes: [], photos: []};
 
-    // Adds empty template object to timelineDays if dateKey doesn't exist
-    const addDateKeyIfMissing = (dateKey) => {
+    // Takes ISO timestamp, converts to YYYY-MM-DD dateKey, returns
+    // If dateKey does not exist in timelineDays adds dayTemplate
+    const getDateKey = (timestamp) => {
+        const dateKey = timestampToDateString(timestamp);
         if (!timelineDays[dateKey]) {
-            timelineDays[dateKey] = {events: [], notes: [], photos: []};
+            timelineDays[dateKey] = { ...dayTemplate };
         }
+        return dateKey;
     };
 
+    // Takes ISO timestamp, dayTemplate key, and value (string or array)
+    // Appends value to array under requested key (concatenates if array value)
+    const addValue = (timestamp, key, value) => {
+        const dateKey = getDateKey(timestamp);
+        timelineDays[dateKey][key] =  [
+            ...timelineDays[dateKey][key] || [],
+            ...Array.isArray(value) ? value : [value]
+        ];
+    };
+
+    // Iterates timestamps under each event type (water, fertilize, prune, repot)
+    // Add event type to events array under correct dateKey
+    Object.entries(events).forEach(([eventType, eventDates]) =>
+        eventDates.forEach(date => addValue(date, 'events', eventType))
+    );
+    // Remove duplicate event types on same day
+    Object.keys(timelineDays).forEach(dateKey =>
+        timelineDays[dateKey].events = [...new Set(timelineDays[dateKey].events)]
+    );
+
     // Add objects from photos context to photos key under correct dateKey
-    photos.forEach((photo) => {
-        const dateKey = timestampToDateString(photo.timestamp);
-        addDateKeyIfMissing(dateKey);
-        timelineDays[dateKey].photos.push(photo);
-    });
+    photos.forEach((photo) =>
+        addValue(photo.timestamp, 'photos', photo)
+    );
 
-    // Add objects from notes context to notes key under correct dateKey
-    Object.entries(notes).forEach(([timestamp, text]) => {
-        const dateKey = timestampToDateString(timestamp);
-        addDateKeyIfMissing(dateKey);
-        timelineDays[dateKey].notes.push({
-            timestamp: timestamp,
-            text: text
-        });
-    });
-
-    // Add dividedFrom if has parent (adds link to parent at start of timeline)
-    if (dividedFrom) {
-        const dateKey = timestampToDateString(dividedFrom.timestamp);
-        addDateKeyIfMissing(dateKey);
-        timelineDays[dateKey].dividedFrom = dividedFrom;
-    }
+    // Convert notes object to array of objects in notes key under correct dateKey
+    Object.entries(notes).forEach(([timestamp, text]) =>
+        addValue(timestamp, 'notes', { timestamp: timestamp, text: text })
+    );
 
     // Add dividedInto if has children (adds link(s) to child plants on days
     // they were divided)
-    Object.entries(divisionEvents).forEach(([timestamp, plants]) => {
-        const dateKey = timestampToDateString(timestamp);
-        addDateKeyIfMissing(dateKey);
-        if (!timelineDays[dateKey].dividedInto) {
-            timelineDays[dateKey].dividedInto = plants;
-        } else {
-            timelineDays[dateKey].dividedInto.push(...plants);
-        }
-    });
+    Object.entries(divisionEvents).forEach(([timestamp, plants]) =>
+        addValue(timestamp, 'dividedInto', plants)
+    );
+
+    // Add dividedFrom if has parent (adds link to parent at start of timeline)
+    if (dividedFrom) {
+        timelineDays[getDateKey(dividedFrom.timestamp)].dividedFrom = dividedFrom;
+    }
 
     return timelineDays;
 };
