@@ -390,6 +390,14 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
         setExpanded(!expanded);
     };
 
+    // Update height when note text edited if expanded
+    useEffect(() => {
+        /* istanbul ignore else */
+        if (textRef.current) {
+            expanded && setHeight(textRef.current.scrollHeight + "px");
+        }
+    }, [note]);
+
     // Expand note to full height
     const expand = () => {
         /* istanbul ignore else */
