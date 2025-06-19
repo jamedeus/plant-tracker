@@ -26,7 +26,7 @@ This should be updated when:
 ### `unnamed_plants_{user_primary_key}`
 - Stores list of primary key ints for each unnamed plant owned by a user
 - Name includes database primary key of user account that owns plants
-- Set by `models.get_unnamed_plants`
+- Set by `models.plant.get_unnamed_plants`
   * Expires in 10 minutes
   * Deleted if Plant model owned by same user is saved (`tasks.update_plant_in_cached_states_hook`)
   * Deleted if Plant model owned by same user is deleted (`tasks.remove_deleted_plant_from_cached_states_hook`)
@@ -34,7 +34,7 @@ This should be updated when:
 ### `unnamed_groups_{user_primary_key}`
 - Stores list of primary key ints for each unnamed group owned by a user
 - Name includes database primary key of user account that owns groups
-- Set by `models.get_unnamed_groups`
+- Set by `models.group.get_unnamed_groups`
   * Expires in 10 minutes
   * Deleted if Group model owned by same user is saved (`tasks.update_group_in_cached_states_hook`)
   * Deleted if Group model owned by same user is deleted (`tasks.remove_deleted_group_from_cached_states_hook`)
@@ -43,7 +43,7 @@ This should be updated when:
 - Stores dict with plant uuids as keys and plant details dict as values
 - Contains all plants that are not in a group, used to populate add plants modal cards
 - Name includes database primary key of user account that owns plants
-- Set by `models.get_plant_options`,
+- Set by `models.plant.get_plant_options`,
   * Never expires
   * Updated if Plant model owned by same user saved (`tasks.update_plant_in_cached_states_hook`)
   * Updated if Plant model owned by same user deleted (`tasks.remove_deleted_plant_from_cached_states_hook`)
@@ -55,7 +55,7 @@ This should be updated when:
 ### `group_options_{user_primary_key}`
 - Stores list of dicts with group attributes used to populate add plant to group modal
 - Name includes database primary key of user account that owns groups
-- Set by `models.get_group_options`
+- Set by `models.group.get_group_options`
   * Never expires
   * Updated if Group model owned by same user saved (`tasks.update_group_in_cached_states_hook`)
   * Updated if Group model owned by same user deleted (`tasks.remove_deleted_group_from_cached_states_hook`)
@@ -66,7 +66,7 @@ This should be updated when:
 
 ### `species_options`
 - Stores list of plant species with no duplicates
-- Set by `models.get_plant_species_options`
+- Set by `models.plant.get_plant_species_options`
   * Expires in 10 minutes
   * Deleted if Plant model owned by same user is saved (`tasks.update_plant_in_cached_states_hook`)
   * Deleted if Plant model owned by same user is deleted (`tasks.remove_deleted_plant_from_cached_states_hook`)
