@@ -9,6 +9,7 @@ from .models import (
     PruneEvent,
     RepotEvent,
     NoteEvent,
+    DivisionEvent
 )
 
 admin.site.register(Plant)
@@ -19,3 +20,4 @@ admin.site.register(FertilizeEvent)
 admin.site.register(PruneEvent)
 admin.site.register(RepotEvent)
 admin.site.register(NoteEvent)
+admin.site.register(DivisionEvent)
