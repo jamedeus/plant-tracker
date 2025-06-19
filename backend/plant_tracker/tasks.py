@@ -271,6 +271,7 @@ def remove_deleted_plant_from_cached_states_hook(instance, **kwargs):
 
 @receiver(post_save, sender=DivisionEvent)
 @receiver(post_delete, sender=DivisionEvent)
+@disable_for_loaddata
 def update_division_events_in_cached_manage_plant_state_hook(instance, **kwargs):
     '''Updates division_events key in cached manage_plant state when a
     DivisionEvent is created or deleted.
@@ -292,6 +293,7 @@ event_types_map = {
 @receiver(post_save, sender=FertilizeEvent)
 @receiver(post_save, sender=PruneEvent)
 @receiver(post_save, sender=RepotEvent)
+@disable_for_loaddata
 def add_new_event_to_cached_manage_plant_state_hook(instance, **kwargs):
     '''Adds saved event timestamp to associated plant's cached manage_plant
     state and re-caches.
@@ -330,6 +332,7 @@ def remove_deleted_event_from_cached_manage_plant_state(instance, **kwargs):
 @receiver(post_save, sender=FertilizeEvent)
 @receiver(post_delete, sender=WaterEvent)
 @receiver(post_delete, sender=FertilizeEvent)
+@disable_for_loaddata
 def update_last_event_times_in_cached_states_hook(instance, **kwargs):
     '''Updates last_watered and last_fertilized times for the associated plant
     in cached overview state, cached manage_plant state, and cached plant
@@ -339,6 +342,7 @@ def update_last_event_times_in_cached_states_hook(instance, **kwargs):
 
 
 @receiver(post_save, sender=Photo)
+@disable_for_loaddata
 def add_photo_to_cached_states_hook(instance, **kwargs):
     '''Adds saved photo to associated plant's cached manage_plant state, updates
     default_photo in cached manage_plant state, overview state, and cached
@@ -369,6 +373,7 @@ def remove_photo_from_cached_states_hook(instance, **kwargs):
 
 
 @receiver(post_save, sender=NoteEvent)
+@disable_for_loaddata
 def update_note_in_cached_manage_plant_state_hook(instance, **kwargs):
     '''Adds note to cached manage_plant state when the note is saved.'''
     cached_state = cache.get(f'{instance.plant.uuid}_state')
