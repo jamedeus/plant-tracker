@@ -297,6 +297,28 @@ class PlantModelTests(TestCase):
             self.plant.default_photo = wrong_plant_photo
             self.plant.save()
 
+    def test_deletes_photos_from_disk_when_plant_deleted(self):
+        # Create photos associated with test plant
+        photo1 = Photo.objects.create(
+            photo=create_mock_photo('2024:02:21 10:52:03', 'IMG1.jpg'),
+            plant=self.plant
+        )
+        photo2 = Photo.objects.create(
+            photo=create_mock_photo('2024:02:21 10:53:03', 'IMG2.jpg'),
+            plant=self.plant
+        )
+
+        # Confirm photos exist on disk
+        photo1_path = photo1.photo.path
+        photo2_path = photo2.photo.path
+        self.assertTrue(os.path.exists(photo1_path))
+        self.assertTrue(os.path.exists(photo2_path))
+
+        # Delete plant, confirm photos no longer exist on disk
+        self.plant.delete()
+        self.assertFalse(os.path.exists(photo1_path))
+        self.assertFalse(os.path.exists(photo2_path))
+
 
 class GroupModelTests(TestCase):
     def setUp(self):
@@ -501,6 +523,21 @@ class PhotoModelTests(TestCase):
             photo=create_mock_photo(size=(10, 10))
         )
         self.assertEqual(suqare.thumbnail.height, suqare.thumbnail.width)
+
+    def test_deletes_files_from_disk_when_photo_model_deleted(self):
+        # Get full paths to each resolution, confirm exists on disk
+        image_path = self.photo.photo.path
+        thumb_path = self.photo.thumbnail.path
+        preview_path = self.photo.preview.path
+        self.assertTrue(os.path.exists(image_path))
+        self.assertTrue(os.path.exists(thumb_path))
+        self.assertTrue(os.path.exists(preview_path))
+
+        # Delete photo, confirm images were removed from disk
+        self.photo.delete()
+        self.assertFalse(os.path.exists(image_path))
+        self.assertFalse(os.path.exists(thumb_path))
+        self.assertFalse(os.path.exists(preview_path))
 
 
 class EventModelTests(TestCase):

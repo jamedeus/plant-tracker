@@ -9,6 +9,8 @@ from PIL import Image, ImageOps
 from pillow_heif import register_heif_opener
 from django.db import models
 from django.conf import settings
+from django.dispatch import receiver
+from django.db.models.signals import post_delete
 from django.utils import timezone as django_timezone
 from django.core.files.uploadedfile import InMemoryUploadedFile
 
@@ -187,3 +189,15 @@ class Photo(models.Model):
                 self.timestamp = django_timezone.now()
 
         super().save(*args, **kwargs)
+
+    def _delete_photos_from_disk(self):
+        '''Deletes all image resolutions from disk (cannot be undone).'''
+        self.thumbnail.delete(save=False)
+        self.preview.delete(save=False)
+        self.photo.delete(save=False)
+
+
+@receiver(post_delete, sender=Photo)
+def delete_photos_from_disk_hook(instance, **kwargs):
+    '''Deletes all photo resolutions from disk after a Photo model is deleted.'''
+    instance._delete_photos_from_disk()

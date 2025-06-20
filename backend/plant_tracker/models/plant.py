@@ -317,10 +317,15 @@ class Plant(models.Model):
     def delete(self, *args, **kwargs):
         # Delete plant cache (make sure post_delete signals don't update it)
         cache.delete(f'{self.uuid}_state')
+        # Delete all associated models with raw sql (avoid post_delete signals
+        # updating cached overview/plant_options states for each deleted entry)
         self._delete_event_queryset(self.waterevent_set.all())
         self._delete_event_queryset(self.fertilizeevent_set.all())
         self._delete_event_queryset(self.pruneevent_set.all())
         self._delete_event_queryset(self.repotevent_set.all())
         self._delete_event_queryset(self.noteevent_set.all())
+        # Delete all photos from disk before deleting photo entries
+        for photo in self.photo_set.all():
+            photo._delete_photos_from_disk()
         self._delete_event_queryset(self.photo_set.all())
         super().delete(*args, **kwargs)
