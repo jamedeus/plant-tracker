@@ -108,6 +108,14 @@ This will set the env var automatically every time you run `pipenv shell`.
 
 The other database env vars do not need to be set, they will default to the values in the docker-compose above. See [settings.py](backend/backend/settings.py) for all database environment variables.
 
+#### Django debug toolbar
+
+[Django debug toolbar](https://django-debug-toolbar.readthedocs.io/en/latest/index.html) can be enabled by setting the `SHOW_DEBUG_TOOLBAR` env var to any value (this can be done in `.env` for convenience). This can be useful for debugging SQL queries. The development server needs to be run with the `--nothreading` arg while this is enabled.
+
+#### Caching
+
+This project uses caching extensively to avoid building large context objects multiple times (see [here](backend/plant_tracker/cache_documentation.md) for all cache names). These can break during development if the syntax of a context object changes. Run `redis-cli flushall` to clear all old caches after making changes.
+
 ### Full development server setup
 
 The production setup requires a celery worker to handle async tasks and redis as a message queue.
