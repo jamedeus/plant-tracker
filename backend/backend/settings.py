@@ -78,8 +78,11 @@ except ValueError as exc:
     raise ImproperlyConfigured('PREVIEW_QUALITY must be an integer') from exc
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# Enable debug mode if env var set
-DEBUG = 'PLANT_TRACKER_DEBUG' in os.environ
+DEBUG = True
+
+# Show django-debug-toolbar if env var set
+# Temporary, replace with DEBUG once production static serving configured
+SHOW_DEBUG_TOOLBAR = 'SHOW_DEBUG_TOOLBAR' in os.environ
 
 # Running tests or pylint
 TESTING = 'test' in sys.argv or 'pylint' in str(sys.argv)
@@ -109,7 +112,7 @@ MIDDLEWARE = [
 ]
 
 # Add django-debug-toolbar in development mode
-if DEBUG and not TESTING:
+if SHOW_DEBUG_TOOLBAR and not TESTING:
     INSTALLED_APPS.append("debug_toolbar")
     MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
     INTERNAL_IPS = [

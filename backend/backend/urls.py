@@ -24,12 +24,12 @@ urlpatterns = [
     path("admin/", admin.site.urls),
 ]
 
-# Serve JS bundles and user-uploaded photos (TODO replace with whitenoise or something)
-urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
 # Serve user-uploaded photos in development mode
-# Add django-debug-toolbar in development mode
 if settings.DEBUG and not settings.TESTING:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Add django-debug-toolbar in if env var set
+if settings.SHOW_DEBUG_TOOLBAR:
     from debug_toolbar.toolbar import debug_toolbar_urls
     urlpatterns = [
         *urlpatterns,
