@@ -276,6 +276,44 @@ class ModelRegressionTests(TestCase):
         self.assertEqual(group.get_display_name(), 'Unnamed group 1')
 
 
+class ModelRegressionTestsTransaction(TransactionTestCase):
+    '''For model regression tests that need database transactions to actually
+    be committed to reproduce (uses TransactionTestCase instead of TestCase).
+    '''
+
+    def setUp(self):
+        # Clear entire cache before each test
+        cache.clear()
+
+        # Recreate default user (deleted by TransactionTestCase)
+        self.user = get_user_model().objects.create(username=settings.DEFAULT_USERNAME)
+
+    def test_unable_to_delete_plant_with_default_photo(self):
+        '''Issue: Since e105bd3e Plant.delete removes all associated Photos with
+        _raw_delete before plant itself is deleted (bypasses post_delete signals
+        that would run for each photo if removed by Plant.delete cascading).
+        This also bypassed on_delete=models.SET_NULL on Plant.default_photo,
+        leaving plant with a ForeignKey to a non-existing photo, which triggered
+        an uncaught IntegrityError. This was fixed by wrapping everything in a
+        single transaction so the plant and photo are deleted at the same time.
+        '''
+
+        # Create plant with default photo
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        photo = Photo.objects.create(
+            photo=create_mock_photo(name='photo.of.my.plant.flowering.jpg'),
+            plant=plant
+        )
+        plant.default_photo = photo
+        plant.save()
+
+        # Delete plant, should not raise IntegrityError
+        response = JSONClient().post('/bulk_delete_plants_and_groups', {
+            'uuids': [str(plant.uuid)]
+        })
+        self.assertEqual(response.status_code, 200)
+
+
 class ViewRegressionTests(TestCase):
     def setUp(self):
         # Clear entire cache before each test

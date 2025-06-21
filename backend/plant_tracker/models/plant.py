@@ -5,7 +5,7 @@ from typing import TYPE_CHECKING
 from django.db import models
 from django.conf import settings
 from django.core.cache import cache
-from django.db import IntegrityError
+from django.db import IntegrityError, transaction
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 if TYPE_CHECKING:  # pragma: no cover
@@ -317,15 +317,17 @@ class Plant(models.Model):
     def delete(self, *args, **kwargs):
         # Delete plant cache (make sure post_delete signals don't update it)
         cache.delete(f'{self.uuid}_state')
-        # Delete all associated models with raw sql (avoid post_delete signals
-        # updating cached overview/plant_options states for each deleted entry)
-        self._delete_event_queryset(self.waterevent_set.all())
-        self._delete_event_queryset(self.fertilizeevent_set.all())
-        self._delete_event_queryset(self.pruneevent_set.all())
-        self._delete_event_queryset(self.repotevent_set.all())
-        self._delete_event_queryset(self.noteevent_set.all())
-        # Delete all photos from disk before deleting photo entries
-        for photo in self.photo_set.all():
-            photo._delete_photos_from_disk()
-        self._delete_event_queryset(self.photo_set.all())
-        super().delete(*args, **kwargs)
+        # Delete all associated models with raw sql. Wrap in a single transation
+        # to avoid failed constraint if plant's default_photo deleted before
+        # plant (raw sql also bypasses on_delete=models.SET_NULL). Also faster.
+        with transaction.atomic():
+            self._delete_event_queryset(self.waterevent_set.all())
+            self._delete_event_queryset(self.fertilizeevent_set.all())
+            self._delete_event_queryset(self.pruneevent_set.all())
+            self._delete_event_queryset(self.repotevent_set.all())
+            self._delete_event_queryset(self.noteevent_set.all())
+            # Delete all photos from disk before deleting photo entries
+            for photo in self.photo_set.all():
+                photo._delete_photos_from_disk()
+            self._delete_event_queryset(self.photo_set.all())
+            super().delete(*args, **kwargs)
