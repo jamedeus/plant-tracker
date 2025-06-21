@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 import os
+import sys
 import json
 from pathlib import Path
 from django.core.exceptions import ImproperlyConfigured
@@ -79,6 +80,9 @@ except ValueError as exc:
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+# Running tests or pylint
+TESTING = 'test' in sys.argv or 'pylint' in str(sys.argv)
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -103,12 +107,21 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+# Add django-debug-toolbar in development mode
+if DEBUG and not TESTING:
+    INSTALLED_APPS.append("debug_toolbar")
+    MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
+    INTERNAL_IPS = [
+        "127.0.0.1",
+        "10.80.40.10"
+    ]
+
 ROOT_URLCONF = "backend.urls"
 
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [ BASE_DIR / 'templates' ],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [

@@ -1,0 +1,27 @@
+{% extends 'debug_toolbar/base.html' %}
+
+{% block css %}
+  {{ block.super }}
+  <style>
+    /* Increase sidebar width, decrease open panel width */
+    #djDebug #djDebugToolbar {
+        width: 300px;
+    }
+    #djDebug .djdt-panelContent {
+        right: 300px;
+    }
+    /* Increase font size */
+    #djDebug, #djDebug * {
+      font-size: 20px !important;
+      line-height: 1.75em !important;
+    }
+    /* Fix close button X color */
+    .djDebugClose {
+        color: #000 !important;
+    }
+    /* Readable highlight row background color */
+    #djDebug tr.djdt-highlighted.djdt-profile-row {
+        background-color: #430085a1 !important;
+    }
+  </style>
+{% endblock %}

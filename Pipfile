@@ -5,9 +5,9 @@ name = "pypi"
 
 [packages]
 piexif = "*"
-celery = "*"
+celery = "==5.5.2"
 redis = "*"
-django-redis = "*"
+django-redis = "5.4.0"
 pillow = "~=11.0"
 pillow-heif = "*"
 django = "*"
@@ -23,7 +23,8 @@ anybadge = "*"
 coverage = "*"
 ipython = "*"
 pylint = "*"
-fakeredis = "*"
+fakeredis = "2.29.0"
+django-debug-toolbar = "*"
 
 [requires]
 python_version = "3.13"

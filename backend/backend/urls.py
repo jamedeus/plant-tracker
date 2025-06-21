@@ -25,5 +25,10 @@ urlpatterns = [
 ]
 
 # Serve user-uploaded photos in development mode
-if settings.DEBUG:
+if settings.DEBUG and not settings.TESTING:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+    # Add django-debug-toolbar in development mode
+    from debug_toolbar.toolbar import debug_toolbar_urls
+    urlpatterns = [
+        *urlpatterns,
+    ] + debug_toolbar_urls()
