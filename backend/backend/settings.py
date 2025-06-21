@@ -78,7 +78,8 @@ except ValueError as exc:
     raise ImproperlyConfigured('PREVIEW_QUALITY must be an integer') from exc
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# Enable debug mode if env var set
+DEBUG = 'PLANT_TRACKER_DEBUG' in os.environ
 
 # Running tests or pylint
 TESTING = 'test' in sys.argv or 'pylint' in str(sys.argv)
