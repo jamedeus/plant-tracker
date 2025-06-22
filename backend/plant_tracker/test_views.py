@@ -11,9 +11,9 @@ from datetime import datetime
 from unittest.mock import patch
 
 from django.conf import settings
-from django.test import TestCase
 from django.utils import timezone
 from django.core.cache import cache
+from django.test import TestCase, override_settings
 from django.test.client import RequestFactory, MULTIPART_CONTENT
 from PIL import UnidentifiedImageError
 
@@ -56,32 +56,32 @@ class RenderReactAppTests(TestCase):
         # Reset stdout redirect
         sys.stdout = sys.__stdout__
 
+    @override_settings(DEBUG=False)
     def test_render_react_app_without_logging_state(self):
-        # Call function with mock arguments and log_state set to False
+        # Call function with mock arguments and DEBUG set to False
         response = render_react_app(
             request=self.request,
             title='Mock Title',
             bundle='overview',
             state={
                 'data': 'mock'
-            },
-            log_state=False
+            }
         )
 
         # Confirm returned status 200, confirm nothing was printed to stdout
         self.assertEqual(response.status_code, 200)
         self.assertEqual(self.stdout.getvalue(), '')
 
+    @override_settings(DEBUG=True)
     def test_render_react_app_and_log_state(self):
-        # Call function with mock arguments and log_state set to True
+        # Call function with mock arguments and DEBUG set to True
         response = render_react_app(
             request=self.request,
             title='Mock Title',
             bundle='overview',
             state={
                 'data': 'mock'
-            },
-            log_state=True
+            }
         )
 
         # Confirm returned status 200 and pretty printed context to stdout

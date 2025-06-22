@@ -8,11 +8,11 @@ from django.views.decorators.csrf import ensure_csrf_cookie
 
 
 @ensure_csrf_cookie
-def render_react_app(request, title, bundle, state, log_state=True):
+def render_react_app(request, title, bundle, state):
     '''Helper function to render react app in boilerplate HTML template.
     Takes request object, page title, react bundle name, and react state object.
     Builds context with all JS + CSS bundles for page (read from manifest.json).
-    Context object is printed to console unless optional log_state arg is False.
+    Context object is printed to console in debug mode.
     '''
     context = {
         'title': title,
@@ -22,7 +22,8 @@ def render_react_app(request, title, bundle, state, log_state=True):
         'user_accounts_enabled': not settings.SINGLE_USER_MODE
     }
 
-    if log_state:
+    # Print full context object to console in debug mode
+    if settings.DEBUG:
         print(json.dumps(context, indent=4))
 
     return render(request, 'plant_tracker/index.html', context)
