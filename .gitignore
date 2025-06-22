@@ -3,8 +3,10 @@ coverage/
 docs/_build/
 .env
 backend/plant_tracker/static/
+backend/staticfiles/
 backend/data/
 backend/*.json
+backend/*.tar
 node_modules/
 *.png
 *.jpg

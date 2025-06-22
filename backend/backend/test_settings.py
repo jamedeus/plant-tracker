@@ -34,6 +34,21 @@ TEST_DIR = '/tmp/plant_tracker_unit_test'
 
 # Mock photo uploads dir to temp directory deleted after tests
 MEDIA_ROOT = os.path.join(TEST_DIR, 'data', 'images')
+MEDIA_URL = "media/"
+
+# Override main settings.py to use temp directory configured above
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        "OPTIONS": {
+            "location": MEDIA_ROOT,
+            "base_url": MEDIA_URL,
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 # Use SINGLE_USER_MODE (disables authentication, can be overridden by tests)
 SINGLE_USER_MODE=True

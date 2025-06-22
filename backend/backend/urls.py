@@ -15,21 +15,27 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include
+from django.urls import path, include, re_path
 from django.conf import settings
-from django.conf.urls.static import static
+from django.views.static import serve
 
 urlpatterns = [
     path('', include('plant_tracker.urls')),
     path("admin/", admin.site.urls),
 ]
 
-# Serve user-uploaded photos in development mode
-if settings.DEBUG and not settings.TESTING:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+# Serve user-uploaded photos from local media root if enabled
+if settings.LOCAL_MEDIA_ROOT:
+    urlpatterns += [
+        re_path(
+            f'^{settings.MEDIA_URL.lstrip("/")}(?P<path>.*)$',
+            serve,
+            {'document_root': settings.MEDIA_ROOT},
+        ),
+    ]
 
-# Add django-debug-toolbar in if env var set
-if settings.SHOW_DEBUG_TOOLBAR:
+# Add django-debug-toolbar in debug mode
+if settings.DEBUG:
     from debug_toolbar.toolbar import debug_toolbar_urls
     urlpatterns = [
         *urlpatterns,

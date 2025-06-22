@@ -14,6 +14,7 @@ django = "*"
 segno = "*"
 django-unique-user-email = "*"
 psycopg = {extras = ["binary"], version = "*"}
+whitenoise = "*"
 
 [dev-packages]
 pylint-django = "*"

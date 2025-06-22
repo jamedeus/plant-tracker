@@ -110,7 +110,7 @@ The other database env vars do not need to be set, they will default to the valu
 
 #### Django debug toolbar
 
-[Django debug toolbar](https://django-debug-toolbar.readthedocs.io/en/latest/index.html) can be enabled by setting the `SHOW_DEBUG_TOOLBAR` env var to any value (this can be done in `.env` for convenience). This can be useful for debugging SQL queries. The development server needs to be run with the `--nothreading` arg while this is enabled.
+[Django debug toolbar](https://django-debug-toolbar.readthedocs.io/en/latest/index.html) can be enabled by setting the `DEBUG_MODE` env var to `True` (this can be done in `.env` for convenience). This can be useful for debugging SQL queries. The development server needs to be run with the `--nothreading` arg while this is enabled. This setting cannot be used in the docker image (does not include development dependencies).
 
 #### Caching
 

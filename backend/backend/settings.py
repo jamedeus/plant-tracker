@@ -51,10 +51,7 @@ LOGIN_REDIRECT_URL="/"
 # Read SINGLE_USER_MODE from env var, or default to False if not present
 # If True authentication is disabled, all plants are owned by DEFAULT_USERNAME
 # If False authentication is required, separate accounts own separate plants
-try:
-    SINGLE_USER_MODE = os.environ.get('SINGLE_USER_MODE').lower() == 'true'
-except AttributeError:
-    SINGLE_USER_MODE=False
+SINGLE_USER_MODE = bool(os.environ.get('SINGLE_USER_MODE', 0))
 DEFAULT_USERNAME='DEFAULT'
 
 # Read photo thumbnail/preview resolution and quality env vars, or use defaults
@@ -78,11 +75,8 @@ except ValueError as exc:
     raise ImproperlyConfigured('PREVIEW_QUALITY must be an integer') from exc
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-# Show django-debug-toolbar if env var set
-# Temporary, replace with DEBUG once production static serving configured
-SHOW_DEBUG_TOOLBAR = 'SHOW_DEBUG_TOOLBAR' in os.environ
+# Disable debug unless env var set
+DEBUG = bool(os.environ.get('DEBUG_MODE', 0))
 
 # Running tests or pylint
 TESTING = 'test' in sys.argv or 'pylint' in str(sys.argv)
@@ -103,6 +97,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -112,7 +107,7 @@ MIDDLEWARE = [
 ]
 
 # Add django-debug-toolbar in development mode
-if SHOW_DEBUG_TOOLBAR and not TESTING:
+if DEBUG and not TESTING:
     INSTALLED_APPS.append("debug_toolbar")
     MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
     INTERNAL_IPS = [
@@ -167,6 +162,9 @@ if not os.path.isdir(os.path.join(BASE_DIR, 'data', 'images')):
 MEDIA_ROOT = os.path.join(BASE_DIR, 'data', 'images')
 MEDIA_URL = "media/"
 
+# Serve files from local media root if env var set
+LOCAL_MEDIA_ROOT = bool(os.environ.get('LOCAL_MEDIA_ROOT', 0))
+
 # Use redis cache (shared with celery)
 CACHES = {
     "default": {
@@ -177,6 +175,20 @@ CACHES = {
         }
     }
 }
+
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+        "OPTIONS": {
+            "location": MEDIA_ROOT,
+            "base_url": MEDIA_URL,
+        },
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -218,6 +230,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "static/"
+
+STATIC_ROOT = BASE_DIR / "staticfiles"
 
 # Read webpack manifest.json from static directory
 MANIFEST_PATH = Path(BASE_DIR, 'plant_tracker/static/plant_tracker/manifest.json')

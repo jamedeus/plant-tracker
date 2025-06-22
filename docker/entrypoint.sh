@@ -13,6 +13,10 @@ celery -A backend worker --uid "$(id -u celery)" &
 printf "Running database migrations...\n"
 python /mnt/backend/manage.py migrate
 
+# Collect staticfiles in backend/staticfiles/
+printf "Collecting static files...\n"
+python /mnt/backend/manage.py collectstatic --noinput --clear
+
 # Create superuser account if env vars set
 if [[ $DJANGO_SUPERUSER_USERNAME && $DJANGO_SUPERUSER_PASSWORD ]]; then
     printf "Creating superuser...\n"
