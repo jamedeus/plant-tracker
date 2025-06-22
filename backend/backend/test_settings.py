@@ -36,8 +36,9 @@ TEST_DIR = '/tmp/plant_tracker_unit_test'
 MEDIA_ROOT = os.path.join(TEST_DIR, 'data', 'images')
 MEDIA_URL = "media/"
 
-# Override main settings.py to use temp directory configured above
+# Override main settings.py
 STORAGES = {
+    # Use temp directory configured above
     "default": {
         "BACKEND": "django.core.files.storage.FileSystemStorage",
         "OPTIONS": {
@@ -45,8 +46,9 @@ STORAGES = {
             "base_url": MEDIA_URL,
         },
     },
+    # Disable whitenoise (static files don't exist in CI/CD)
     "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
     },
 }
 
