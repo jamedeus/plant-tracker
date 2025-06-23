@@ -91,8 +91,16 @@ class Group(models.Model):
             'created': self.created.isoformat(),
             'location': self.location,
             'description': self.description,
-            'plants': len(self.plant_set.all())
+            'plants': self.get_number_of_plants()
         }
+
+    def get_number_of_plants(self):
+        '''Returns number of plants with reverse relation to group.'''
+        # Use annotation if present
+        if hasattr(self, 'plant_count'):
+            return self.plant_count
+        # Query from database if no annotation
+        return len(self.plant_set.all())
 
     def get_plant_details(self):
         '''Returns dict with uuid of each plant in group as keys, plant details

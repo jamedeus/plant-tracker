@@ -1,7 +1,7 @@
 '''Functions that build (or load from cache) states used by frontend react apps.'''
 
 from django.core.cache import cache
-from django.db.models import F, Case, When, Value, Subquery, OuterRef
+from django.db.models import F, Case, When, Value, Subquery, OuterRef, Count
 from django.db.models.functions import RowNumber
 from django.db.models import Window
 
@@ -53,7 +53,6 @@ def last_fertilized_time_annotation():
     )}
 
 
-
 def last_photo_annotation():
     '''Adds last_photo attribute (most-recent Photo model entry).'''
     return {'last_photo': Subquery(
@@ -62,6 +61,11 @@ def last_photo_annotation():
             .order_by("-timestamp")
             .values("timestamp")[:1]
     )}
+
+
+def group_plant_count_annotation():
+    '''Adds plant_count attribute (number of plants in group).'''
+    return {'plant_count': Count('plant')}
 
 
 def get_plant_options(user):
@@ -102,6 +106,7 @@ def get_group_options(user):
                 .order_by('created')
                 .annotate(**group_is_unnamed_annotation())
                 .annotate(**unnamed_index_annotation())
+                .annotate(**group_plant_count_annotation())
         }
         # cache.set(f'group_options_{user.pk}', group_options, None)
     return group_options
@@ -141,6 +146,7 @@ def build_overview_state(user):
             .annotate(**group_is_unnamed_annotation())
             # Add unnamed_index (used to build "Unnamed group <index>" names)
             .annotate(**unnamed_index_annotation())
+            .annotate(**group_plant_count_annotation())
     )
 
     state = {
