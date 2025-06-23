@@ -19,5 +19,5 @@ class PlantTrackerConfig(AppConfig):
             # starts (dev server starts second process to detect file changes)
             return
 
-        from .tasks import update_all_cached_states
-        update_all_cached_states.delay()
+        # from .tasks import update_all_cached_states
+        # update_all_cached_states.delay()

@@ -33,7 +33,7 @@ def build_overview_state(user):
     }
 
     # Cache state indefinitely (updates automatically when database changes)
-    cache.set(f'overview_state_{user.pk}', state, None)
+    # cache.set(f'overview_state_{user.pk}', state, None)
 
     return state
 
@@ -82,7 +82,7 @@ def build_manage_plant_state(uuid):
     state['divided_from'] = plant.get_parent_plant_details()
 
     # Cache state indefinitely (updates automatically when database changes)
-    cache.set(f'{uuid}_state', state, None)
+    # cache.set(f'{uuid}_state', state, None)
 
     return state
 

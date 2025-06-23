@@ -30,7 +30,7 @@ def get_unnamed_groups(user):
             'id',
             flat=True
         ))
-        cache.set(f'unnamed_groups_{user.pk}', unnamed_groups, 600)
+        # cache.set(f'unnamed_groups_{user.pk}', unnamed_groups, 600)
     return unnamed_groups
 
 
@@ -45,7 +45,7 @@ def get_group_options(user):
             str(group.uuid): group.get_details()
             for group in Group.objects.filter(user=user)
         }
-        cache.set(f'group_options_{user.pk}', group_options, None)
+        # cache.set(f'group_options_{user.pk}', group_options, None)
     return group_options
 
 

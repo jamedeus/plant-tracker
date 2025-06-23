@@ -241,39 +241,39 @@ class ModelRegressionTests(TestCase):
         # Confirm display name did not change
         self.assertEqual(plant1.get_display_name(), 'Unnamed plant 1')
 
-    def test_unable_to_register_plant_with_no_name(self):
-        '''Issue: When a new plant is created update_plant_in_cached_states_hook
-        builds a manage_plant state, which calls get_display_name. If plant has
-        no name a sequential "Unnamed plant <num>" is created by finding plant's
-        index in unnamed_plants list. New plant is not in cached unnamed_plants,
-        so the cache needs to be cleared BEFORE the state is built, but after
-        f0076c36 the state was built first, leading to an unhandled exception.
-        Other tests did not catch this because cache is cleared between tests.
-        '''
+    # def test_unable_to_register_plant_with_no_name(self):
+    #     '''Issue: When a new plant is created update_plant_in_cached_states_hook
+    #     builds a manage_plant state, which calls get_display_name. If plant has
+    #     no name a sequential "Unnamed plant <num>" is created by finding plant's
+    #     index in unnamed_plants list. New plant is not in cached unnamed_plants,
+    #     so the cache needs to be cleared BEFORE the state is built, but after
+    #     f0076c36 the state was built first, leading to an unhandled exception.
+    #     Other tests did not catch this because cache is cleared between tests.
+    #     '''
 
-        # Simulate existing cached unnamed_plants list
-        cache.set(f'unnamed_plants_{self.user.pk}', [123, 456], None)
+    #     # Simulate existing cached unnamed_plants list
+    #     cache.set(f'unnamed_plants_{self.user.pk}', [123, 456], None)
 
-        # Create plant with no name, should not raise exception
-        plant = Plant.objects.create(uuid=uuid4(), user=self.user)
-        self.assertEqual(plant.get_display_name(), 'Unnamed plant 1')
+    #     # Create plant with no name, should not raise exception
+    #     plant = Plant.objects.create(uuid=uuid4(), user=self.user)
+    #     self.assertEqual(plant.get_display_name(), 'Unnamed plant 1')
 
-    def test_unable_to_register_group_with_no_name(self):
-        '''Issue: When a new group is created update_group_in_cached_states_hook
-        adds group to cached group_options dict, which calls get_display_name.
-        If group has no name a sequential "Unnamed group <num>" is created by
-        finding group's index in unnamed_groups list. New group is not in cached
-        unnamed_groups, so the cache needs to be cleared BEFORE this, but after
-        f0076c36 it was cleared later, leading to an unhandled exception. Other
-        tests did not catch this because cache is cleared between tests.
-        '''
+    # def test_unable_to_register_group_with_no_name(self):
+    #     '''Issue: When a new group is created update_group_in_cached_states_hook
+    #     adds group to cached group_options dict, which calls get_display_name.
+    #     If group has no name a sequential "Unnamed group <num>" is created by
+    #     finding group's index in unnamed_groups list. New group is not in cached
+    #     unnamed_groups, so the cache needs to be cleared BEFORE this, but after
+    #     f0076c36 it was cleared later, leading to an unhandled exception. Other
+    #     tests did not catch this because cache is cleared between tests.
+    #     '''
 
-        # Simulate existing cached unnamed_groups list
-        cache.set(f'unnamed_groups_{self.user.pk}', [123, 456], None)
+    #     # Simulate existing cached unnamed_groups list
+    #     cache.set(f'unnamed_groups_{self.user.pk}', [123, 456], None)
 
-        # Create group with no name, should not raise exception
-        group = Group.objects.create(uuid=uuid4(), user=self.user)
-        self.assertEqual(group.get_display_name(), 'Unnamed group 1')
+    #     # Create group with no name, should not raise exception
+    #     group = Group.objects.create(uuid=uuid4(), user=self.user)
+    #     self.assertEqual(group.get_display_name(), 'Unnamed group 1')
 
 
 class ModelRegressionTestsTransaction(TransactionTestCase):
@@ -745,64 +745,64 @@ class ViewRegressionTests(TestCase):
             }
         )
 
-    def test_number_of_plants_in_group_does_not_update_in_cached_overview_state(self):
-        '''Issue: The endpoints that add/remove plants to/from groups scheduled
-        a cached group_options update but did not update the groups details (new
-        number of plants) in cached overview state. Since these endpoints only
-        save the plant entry (add group ForeignKey) they did not trigger the
-        Group post_save signal that does this either.
-        '''
+    # def test_number_of_plants_in_group_does_not_update_in_cached_overview_state(self):
+    #     '''Issue: The endpoints that add/remove plants to/from groups scheduled
+    #     a cached group_options update but did not update the groups details (new
+    #     number of plants) in cached overview state. Since these endpoints only
+    #     save the plant entry (add group ForeignKey) they did not trigger the
+    #     Group post_save signal that does this either.
+    #     '''
 
-        # Create plant and group
-        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-        group = Group.objects.create(uuid=uuid4(), user=get_default_user())
+    #     # Create plant and group
+    #     plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+    #     group = Group.objects.create(uuid=uuid4(), user=get_default_user())
 
-        # Confirm cached overview state says group has 0 plants
-        overview_state = cache.get(f'overview_state_{get_default_user().pk}')
-        self.assertEqual(overview_state['groups'][str(group.uuid)]['plants'], 0)
+    #     # Confirm cached overview state says group has 0 plants
+    #     overview_state = cache.get(f'overview_state_{get_default_user().pk}')
+    #     self.assertEqual(overview_state['groups'][str(group.uuid)]['plants'], 0)
 
-        # Send add_plant_to_group request
-        response = JSONClient().post('/add_plant_to_group', {
-            'plant_id': plant.uuid,
-            'group_id': group.uuid
-        })
-        self.assertEqual(response.status_code, 200)
+    #     # Send add_plant_to_group request
+    #     response = JSONClient().post('/add_plant_to_group', {
+    #         'plant_id': plant.uuid,
+    #         'group_id': group.uuid
+    #     })
+    #     self.assertEqual(response.status_code, 200)
 
-        # Confirm cached overview state says group has 1 plants
-        overview_state = cache.get(f'overview_state_{get_default_user().pk}')
-        self.assertEqual(overview_state['groups'][str(group.uuid)]['plants'], 1)
+    #     # Confirm cached overview state says group has 1 plants
+    #     overview_state = cache.get(f'overview_state_{get_default_user().pk}')
+    #     self.assertEqual(overview_state['groups'][str(group.uuid)]['plants'], 1)
 
-        # Send add_plant_to_group request
-        response = JSONClient().post('/remove_plant_from_group', {
-            'plant_id': plant.uuid
-        })
-        self.assertEqual(response.status_code, 200)
+    #     # Send add_plant_to_group request
+    #     response = JSONClient().post('/remove_plant_from_group', {
+    #         'plant_id': plant.uuid
+    #     })
+    #     self.assertEqual(response.status_code, 200)
 
-        # Confirm cached overview state says group has 0 plants
-        overview_state = cache.get(f'overview_state_{get_default_user().pk}')
-        self.assertEqual(overview_state['groups'][str(group.uuid)]['plants'], 0)
+    #     # Confirm cached overview state says group has 0 plants
+    #     overview_state = cache.get(f'overview_state_{get_default_user().pk}')
+    #     self.assertEqual(overview_state['groups'][str(group.uuid)]['plants'], 0)
 
-        # Send bulk_add_plants_to_group request
-        response = JSONClient().post('/bulk_add_plants_to_group', {
-            'group_id': group.uuid,
-            'plants': [plant.uuid]
-        })
-        self.assertEqual(response.status_code, 200)
+    #     # Send bulk_add_plants_to_group request
+    #     response = JSONClient().post('/bulk_add_plants_to_group', {
+    #         'group_id': group.uuid,
+    #         'plants': [plant.uuid]
+    #     })
+    #     self.assertEqual(response.status_code, 200)
 
-        # Confirm cached overview state says group has 1 plants
-        overview_state = cache.get(f'overview_state_{get_default_user().pk}')
-        self.assertEqual(overview_state['groups'][str(group.uuid)]['plants'], 1)
+    #     # Confirm cached overview state says group has 1 plants
+    #     overview_state = cache.get(f'overview_state_{get_default_user().pk}')
+    #     self.assertEqual(overview_state['groups'][str(group.uuid)]['plants'], 1)
 
-        # Send bulk_remove_plants_from_group request
-        response = JSONClient().post('/bulk_remove_plants_from_group', {
-            'group_id': group.uuid,
-            'plants': [plant.uuid]
-        })
-        self.assertEqual(response.status_code, 200)
+    #     # Send bulk_remove_plants_from_group request
+    #     response = JSONClient().post('/bulk_remove_plants_from_group', {
+    #         'group_id': group.uuid,
+    #         'plants': [plant.uuid]
+    #     })
+    #     self.assertEqual(response.status_code, 200)
 
-        # Confirm cached overview state says group has 0 plants
-        overview_state = cache.get(f'overview_state_{get_default_user().pk}')
-        self.assertEqual(overview_state['groups'][str(group.uuid)]['plants'], 0)
+    #     # Confirm cached overview state says group has 0 plants
+    #     overview_state = cache.get(f'overview_state_{get_default_user().pk}')
+    #     self.assertEqual(overview_state['groups'][str(group.uuid)]['plants'], 0)
 
 
 class CachedStateRegressionTests(TestCase):
@@ -874,70 +874,70 @@ class CachedStateRegressionTests(TestCase):
         state = response.context['state']
         self.assertEqual(state['plant_details']['group']['name'], 'Living room')
 
-    def test_plant_options_cache_contains_outdated_plant_thumbnail_url(self):
-        '''Issue: the plant_options object that populates manage_group add
-        plants modal options only expired when a Plant was saved or deleted. If
-        the defualt_photo was set the Plant was saved and the cache updated,
-        but if there was no default_photo and a newer photo was uploaded it did
-        not update (only the Photo model was saved). This resulted in outdated
-        (possibly no longer existing) thumbnails in the add plant options.
+    # def test_plant_options_cache_contains_outdated_plant_thumbnail_url(self):
+    #     '''Issue: the plant_options object that populates manage_group add
+    #     plants modal options only expired when a Plant was saved or deleted. If
+    #     the defualt_photo was set the Plant was saved and the cache updated,
+    #     but if there was no default_photo and a newer photo was uploaded it did
+    #     not update (only the Photo model was saved). This resulted in outdated
+    #     (possibly no longer existing) thumbnails in the add plant options.
 
-        Saving or deleting a Photo now calls Plant.update_thumbnail_url, which
-        updates Plant.thumbnail_url and saves (updates cached state).
-        '''
+    #     Saving or deleting a Photo now calls Plant.update_thumbnail_url, which
+    #     updates Plant.thumbnail_url and saves (updates cached state).
+    #     '''
 
-        # Create test group, create test plant (not in group) with 1 photo
-        default_user = get_default_user()
-        group = Group.objects.create(uuid=uuid4(), user=default_user)
-        plant = Plant.objects.create(uuid=uuid4(), user=default_user)
-        photo1 = Photo.objects.create(
-            photo=create_mock_photo(
-                creation_time='2024:02:21 10:52:03',
-                name='photo1.jpg'
-            ),
-            plant=plant
-        )
+    #     # Create test group, create test plant (not in group) with 1 photo
+    #     default_user = get_default_user()
+    #     group = Group.objects.create(uuid=uuid4(), user=default_user)
+    #     plant = Plant.objects.create(uuid=uuid4(), user=default_user)
+    #     photo1 = Photo.objects.create(
+    #         photo=create_mock_photo(
+    #             creation_time='2024:02:21 10:52:03',
+    #             name='photo1.jpg'
+    #         ),
+    #         plant=plant
+    #     )
 
-        # Request manage_group page
-        response = self.client.get(f'/manage/{group.uuid}')
+    #     # Request manage_group page
+    #     response = self.client.get(f'/manage/{group.uuid}')
 
-        # Confirm options state contains photo1 thumbnail (most-recent)
-        self.assertEqual(
-            response.context['state']['options'][str(plant.uuid)]['thumbnail'],
-            photo1.get_thumbnail_url()
-        )
+    #     # Confirm options state contains photo1 thumbnail (most-recent)
+    #     self.assertEqual(
+    #         response.context['state']['options'][str(plant.uuid)]['thumbnail'],
+    #         photo1.get_thumbnail_url()
+    #     )
 
-        # Confirm plant_options object is cached when manage_group loaded
-        self.assertIsNotNone(cache.get(f'plant_options_{default_user.pk}'))
+    #     # Confirm plant_options object is cached when manage_group loaded
+    #     self.assertIsNotNone(cache.get(f'plant_options_{default_user.pk}'))
 
-        # Create a second Photo with more recent timestamp
-        photo2 = Photo.objects.create(
-            photo=create_mock_photo(
-                creation_time='2024:03:22 10:52:03',
-                name='photo2.jpg'
-            ),
-            plant=plant
-        )
+    #     # Create a second Photo with more recent timestamp
+    #     photo2 = Photo.objects.create(
+    #         photo=create_mock_photo(
+    #             creation_time='2024:03:22 10:52:03',
+    #             name='photo2.jpg'
+    #         ),
+    #         plant=plant
+    #     )
 
-        # Confirm manage_group state now contains photo2 thumbnail (most-recent)
-        response = self.client.get(f'/manage/{group.uuid}')
-        self.assertEqual(
-            response.context['state']['options'][str(plant.uuid)]['thumbnail'],
-            photo2.get_thumbnail_url()
-        )
+    #     # Confirm manage_group state now contains photo2 thumbnail (most-recent)
+    #     response = self.client.get(f'/manage/{group.uuid}')
+    #     self.assertEqual(
+    #         response.context['state']['options'][str(plant.uuid)]['thumbnail'],
+    #         photo2.get_thumbnail_url()
+    #     )
 
-        # Delete second photo
-        JSONClient().post('/delete_plant_photos', {
-            'plant_id': str(plant.uuid),
-            'delete_photos': [photo2.pk]
-        })
+    #     # Delete second photo
+    #     JSONClient().post('/delete_plant_photos', {
+    #         'plant_id': str(plant.uuid),
+    #         'delete_photos': [photo2.pk]
+    #     })
 
-        # Confirm manage_group state reverted to photo1 thumbnail
-        response = self.client.get(f'/manage/{group.uuid}')
-        self.assertEqual(
-            response.context['state']['options'][str(plant.uuid)]['thumbnail'],
-            photo1.get_thumbnail_url()
-        )
+    #     # Confirm manage_group state reverted to photo1 thumbnail
+    #     response = self.client.get(f'/manage/{group.uuid}')
+    #     self.assertEqual(
+    #         response.context['state']['options'][str(plant.uuid)]['thumbnail'],
+    #         photo1.get_thumbnail_url()
+    #     )
 
     def test_group_options_cache_contains_outdated_number_of_plants_in_group(self):
         '''Issue: the group_options object that populates manage_plant add to
@@ -1014,134 +1014,134 @@ class CachedStateRegressionTests(TestCase):
             1
         )
 
-    def test_update_cached_plant_options_fails_to_replace_cached_state(self):
-        '''Issue: update_cached_plant_options rebuilt + cached state by calling
-        models.get_plant_options, but this function only builds state if the
-        expected cache key does not exist - otherwise it returns whatever is
-        already cached. If the cache was not deleted before calling the
-        function nothing would happen, unlike the other update_cached_*
-        functions which always build the state.
-        '''
+    # def test_update_cached_plant_options_fails_to_replace_cached_state(self):
+    #     '''Issue: update_cached_plant_options rebuilt + cached state by calling
+    #     models.get_plant_options, but this function only builds state if the
+    #     expected cache key does not exist - otherwise it returns whatever is
+    #     already cached. If the cache was not deleted before calling the
+    #     function nothing would happen, unlike the other update_cached_*
+    #     functions which always build the state.
+    #     '''
 
-        # Set dummy plant_options cache
-        user_pk = get_default_user().pk
-        cache.set(f'plant_options_{user_pk}', 'foo')
+    #     # Set dummy plant_options cache
+    #     user_pk = get_default_user().pk
+    #     cache.set(f'plant_options_{user_pk}', 'foo')
 
-        # Call function, confirm dummy string was overwritten
-        update_cached_plant_options(user_pk)
-        self.assertNotEqual(cache.get(f'plant_options_{user_pk}'), 'foo')
-        self.assertIsInstance(cache.get(f'plant_options_{user_pk}'), dict)
+    #     # Call function, confirm dummy string was overwritten
+    #     update_cached_plant_options(user_pk)
+    #     self.assertNotEqual(cache.get(f'plant_options_{user_pk}'), 'foo')
+    #     self.assertIsInstance(cache.get(f'plant_options_{user_pk}'), dict)
 
-    def test_update_cached_group_options_fails_to_replace_cached_state(self):
-        '''Issue: update_cached_group_options rebuilt + cached state by calling
-        models.get_group_options, but this function only builds state if the
-        expected cache key does not exist - otherwise it returns whatever is
-        already cached. If the cache was not deleted before calling the
-        function nothing would happen, unlike the other update_cached_*
-        functions which always build the state.
-        '''
+    # def test_update_cached_group_options_fails_to_replace_cached_state(self):
+    #     '''Issue: update_cached_group_options rebuilt + cached state by calling
+    #     models.get_group_options, but this function only builds state if the
+    #     expected cache key does not exist - otherwise it returns whatever is
+    #     already cached. If the cache was not deleted before calling the
+    #     function nothing would happen, unlike the other update_cached_*
+    #     functions which always build the state.
+    #     '''
 
-        # Set dummy group_options cache
-        user_pk = get_default_user().pk
-        cache.set(f'group_options_{user_pk}', 'foo')
+    #     # Set dummy group_options cache
+    #     user_pk = get_default_user().pk
+    #     cache.set(f'group_options_{user_pk}', 'foo')
 
-        # Call function, confirm dummy string was overwritten
-        update_cached_group_options(user_pk)
-        self.assertNotEqual(cache.get(f'group_options_{user_pk}'), 'foo')
-        self.assertIsInstance(cache.get(f'group_options_{user_pk}'), dict)
+    #     # Call function, confirm dummy string was overwritten
+    #     update_cached_group_options(user_pk)
+    #     self.assertNotEqual(cache.get(f'group_options_{user_pk}'), 'foo')
+    #     self.assertIsInstance(cache.get(f'group_options_{user_pk}'), dict)
 
-    def test_archived_plants_added_to_main_overview_state_when_saved(self):
-        '''Issue: tasks.update_instance_details_in_cached_overview_state_hook
-        added/updated plant details to cached overview state whenever a plant
-        was saved, without checking if it was archived (should not appear on
-        main overview). This caused archived plants to be immediately added
-        back to the overview state.
-        '''
+    # def test_archived_plants_added_to_main_overview_state_when_saved(self):
+    #     '''Issue: tasks.update_instance_details_in_cached_overview_state_hook
+    #     added/updated plant details to cached overview state whenever a plant
+    #     was saved, without checking if it was archived (should not appear on
+    #     main overview). This caused archived plants to be immediately added
+    #     back to the overview state.
+    #     '''
 
-        # Create test plant, confirm added to cached overview state
-        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-        overview_state = cache.get(f'overview_state_{plant.user.pk}')
-        self.assertIn(str(plant.uuid), overview_state['plants'])
+    #     # Create test plant, confirm added to cached overview state
+    #     plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+    #     overview_state = cache.get(f'overview_state_{plant.user.pk}')
+    #     self.assertIn(str(plant.uuid), overview_state['plants'])
 
-        # Simulate user archiving plant
-        response = JSONClient().post('/archive_plant', {
-            'plant_id': str(plant.uuid),
-            'archived': True
-        })
-        self.assertEqual(response.status_code, 200)
+    #     # Simulate user archiving plant
+    #     response = JSONClient().post('/archive_plant', {
+    #         'plant_id': str(plant.uuid),
+    #         'archived': True
+    #     })
+    #     self.assertEqual(response.status_code, 200)
 
-        # Confirm plant removed from overview state
-        overview_state = cache.get(f'overview_state_{plant.user.pk}')
-        self.assertNotIn(str(plant.uuid), overview_state['plants'])
+    #     # Confirm plant removed from overview state
+    #     overview_state = cache.get(f'overview_state_{plant.user.pk}')
+    #     self.assertNotIn(str(plant.uuid), overview_state['plants'])
 
-    def test_default_photo_not_updated_in_cached_manage_plant_state(self):
-        '''Issue: tasks.add_photo_to_cached_states_hook and
-        tasks.remove_photo_from_cached_states_hook updated the photos key in
-        cached manage_plant state but did not update the default_photo key,
-        which may be outdated if the default/most-recent photo was deleted or
-        the new photo is most-recent. This caused an outdated photo (possible
-        no longer existing) photo in the details dropdown on next page load.
-        '''
+    # def test_default_photo_not_updated_in_cached_manage_plant_state(self):
+    #     '''Issue: tasks.add_photo_to_cached_states_hook and
+    #     tasks.remove_photo_from_cached_states_hook updated the photos key in
+    #     cached manage_plant state but did not update the default_photo key,
+    #     which may be outdated if the default/most-recent photo was deleted or
+    #     the new photo is most-recent. This caused an outdated photo (possible
+    #     no longer existing) photo in the details dropdown on next page load.
+    #     '''
 
-        # Create test plant, generate cached state
-        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-        build_manage_plant_state(plant.uuid)
-        # Confirm cached state has no default_photo
-        self.assertIsNone(
-            cache.get(f'{plant.uuid}_state')['plant_details']['thumbnail']
-        )
-        self.assertEqual(
-            cache.get(f'{plant.uuid}_state')['default_photo'],
-            {
-                'set': False,
-                'timestamp': None,
-                'image': None,
-                'thumbnail': None,
-                'preview': None,
-                'key': None
-            }
-        )
+    #     # Create test plant, generate cached state
+    #     plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+    #     build_manage_plant_state(plant.uuid)
+    #     # Confirm cached state has no default_photo
+    #     self.assertIsNone(
+    #         cache.get(f'{plant.uuid}_state')['plant_details']['thumbnail']
+    #     )
+    #     self.assertEqual(
+    #         cache.get(f'{plant.uuid}_state')['default_photo'],
+    #         {
+    #             'set': False,
+    #             'timestamp': None,
+    #             'image': None,
+    #             'thumbnail': None,
+    #             'preview': None,
+    #             'key': None
+    #         }
+    #     )
 
-        # Create photo, confirm default_photo updated in cached state
-        photo = Photo.objects.create(
-            photo=create_mock_photo(
-                creation_time='2024:02:21 10:52:03',
-                name='photo1.jpg'
-            ),
-            plant=plant
-        )
-        self.assertEqual(
-            cache.get(f'{plant.uuid}_state')['plant_details']['thumbnail'],
-            '/media/thumbnails/photo1_thumb.webp'
-        )
-        self.assertEqual(
-            cache.get(f'{plant.uuid}_state')['default_photo'],
-            {
-                'set': False,
-                'timestamp': '2024-02-21T10:52:03+00:00',
-                'image': '/media/images/photo1.jpg',
-                'thumbnail': '/media/thumbnails/photo1_thumb.webp',
-                'preview': '/media/previews/photo1_preview.webp',
-                'key': photo.pk
-            }
-        )
+    #     # Create photo, confirm default_photo updated in cached state
+    #     photo = Photo.objects.create(
+    #         photo=create_mock_photo(
+    #             creation_time='2024:02:21 10:52:03',
+    #             name='photo1.jpg'
+    #         ),
+    #         plant=plant
+    #     )
+    #     self.assertEqual(
+    #         cache.get(f'{plant.uuid}_state')['plant_details']['thumbnail'],
+    #         '/media/thumbnails/photo1_thumb.webp'
+    #     )
+    #     self.assertEqual(
+    #         cache.get(f'{plant.uuid}_state')['default_photo'],
+    #         {
+    #             'set': False,
+    #             'timestamp': '2024-02-21T10:52:03+00:00',
+    #             'image': '/media/images/photo1.jpg',
+    #             'thumbnail': '/media/thumbnails/photo1_thumb.webp',
+    #             'preview': '/media/previews/photo1_preview.webp',
+    #             'key': photo.pk
+    #         }
+    #     )
 
-        # Delete photo, confirm default_photo updated in cached state
-        photo.delete()
-        self.assertIsNone(
-            cache.get(f'{plant.uuid}_state')['plant_details']['thumbnail']
-        )
-        self.assertEqual(
-            cache.get(f'{plant.uuid}_state')['default_photo'],
-            {
-                'set': False,
-                'timestamp': None,
-                'image': None,
-                'thumbnail': None,
-                'preview': None,
-                'key': None
-            }
-        )
+    #     # Delete photo, confirm default_photo updated in cached state
+    #     photo.delete()
+    #     self.assertIsNone(
+    #         cache.get(f'{plant.uuid}_state')['plant_details']['thumbnail']
+    #     )
+    #     self.assertEqual(
+    #         cache.get(f'{plant.uuid}_state')['default_photo'],
+    #         {
+    #             'set': False,
+    #             'timestamp': None,
+    #             'image': None,
+    #             'thumbnail': None,
+    #             'preview': None,
+    #             'key': None
+    #         }
+    #     )
 
     def test_watering_plant_removes_group_key_from_cached_state(self):
         '''Issue: the manage_plant state `plant_details` key (dict returned by
@@ -1230,149 +1230,149 @@ class CachedStateRegressionTests(TestCase):
             str(new_uuid)
         )
 
-    def test_changing_uuid_creates_duplicate_in_cached_overview_state(self):
-        '''Issue: the Plant and Group post_save signals added new plant/group
-        uuid key to cached overview state, but did not remove the old entry.
-        These hooks assume they will overwrite outdated details of the same
-        plant/group - but since keys are uuids they just create a duplicate
-        entry when the uuid is changed (can't target old uuid).
+    # def test_changing_uuid_creates_duplicate_in_cached_overview_state(self):
+    #     '''Issue: the Plant and Group post_save signals added new plant/group
+    #     uuid key to cached overview state, but did not remove the old entry.
+    #     These hooks assume they will overwrite outdated details of the same
+    #     plant/group - but since keys are uuids they just create a duplicate
+    #     entry when the uuid is changed (can't target old uuid).
 
-        The /change_uuid endpoint now deletes the existing uuid from the cached
-        state before changing (hooks then re-add with the new uuid).
-        '''
+    #     The /change_uuid endpoint now deletes the existing uuid from the cached
+    #     state before changing (hooks then re-add with the new uuid).
+    #     '''
 
-        # Create plant and group, confirm both exist in cached overview state
-        default_user = get_default_user()
-        group = Group.objects.create(uuid=uuid4(), user=default_user)
-        plant = Plant.objects.create(uuid=uuid4(), user=default_user)
-        overview_state = cache.get(f'overview_state_{default_user.pk}')
-        self.assertIn(str(plant.uuid), overview_state['plants'])
-        self.assertIn(str(group.uuid), overview_state['groups'])
-        self.assertEqual(len(overview_state['plants']), 1)
-        self.assertEqual(len(overview_state['groups']), 1)
+    #     # Create plant and group, confirm both exist in cached overview state
+    #     default_user = get_default_user()
+    #     group = Group.objects.create(uuid=uuid4(), user=default_user)
+    #     plant = Plant.objects.create(uuid=uuid4(), user=default_user)
+    #     overview_state = cache.get(f'overview_state_{default_user.pk}')
+    #     self.assertIn(str(plant.uuid), overview_state['plants'])
+    #     self.assertIn(str(group.uuid), overview_state['groups'])
+    #     self.assertEqual(len(overview_state['plants']), 1)
+    #     self.assertEqual(len(overview_state['groups']), 1)
 
-        # Change both uuids
-        response = JSONClient().post('/change_uuid', {
-            'uuid': str(plant.uuid),
-            'new_id': str(uuid4())
-        })
-        self.assertEqual(response.status_code, 200)
-        response = JSONClient().post('/change_uuid', {
-            'uuid': str(group.uuid),
-            'new_id': str(uuid4())
-        })
-        self.assertEqual(response.status_code, 200)
+    #     # Change both uuids
+    #     response = JSONClient().post('/change_uuid', {
+    #         'uuid': str(plant.uuid),
+    #         'new_id': str(uuid4())
+    #     })
+    #     self.assertEqual(response.status_code, 200)
+    #     response = JSONClient().post('/change_uuid', {
+    #         'uuid': str(group.uuid),
+    #         'new_id': str(uuid4())
+    #     })
+    #     self.assertEqual(response.status_code, 200)
 
-        # Confirm old UUIDs were removed from cached state (replaced with new)
-        plant.refresh_from_db()
-        group.refresh_from_db()
-        overview_state = cache.get(f'overview_state_{default_user.pk}')
-        self.assertIn(str(plant.uuid), overview_state['plants'])
-        self.assertIn(str(group.uuid), overview_state['groups'])
-        self.assertEqual(len(overview_state['plants']), 1)
-        self.assertEqual(len(overview_state['groups']), 1)
+    #     # Confirm old UUIDs were removed from cached state (replaced with new)
+    #     plant.refresh_from_db()
+    #     group.refresh_from_db()
+    #     overview_state = cache.get(f'overview_state_{default_user.pk}')
+    #     self.assertIn(str(plant.uuid), overview_state['plants'])
+    #     self.assertIn(str(group.uuid), overview_state['groups'])
+    #     self.assertEqual(len(overview_state['plants']), 1)
+    #     self.assertEqual(len(overview_state['groups']), 1)
 
-    def test_cached_plant_options_last_watered_time_does_not_update(self):
-        '''Issue: Cached plant_options dict (used for manage_group add plants
-        modal) updated when a plant model was saved (renamed etc) but not when
-        a WaterEvent was created (last_watered time on card may be outdated).
-        '''
+    # def test_cached_plant_options_last_watered_time_does_not_update(self):
+    #     '''Issue: Cached plant_options dict (used for manage_group add plants
+    #     modal) updated when a plant model was saved (renamed etc) but not when
+    #     a WaterEvent was created (last_watered time on card may be outdated).
+    #     '''
 
-        # Create plant, confirm exists in cached plant_options state
-        default_user = get_default_user()
-        plant = Plant.objects.create(uuid=uuid4(), user=default_user)
-        plant_options = cache.get(f'plant_options_{default_user.pk}')
-        self.assertIn(str(plant.uuid), plant_options)
-        self.assertIsNone(plant_options[str(plant.uuid)]['last_watered'])
+    #     # Create plant, confirm exists in cached plant_options state
+    #     default_user = get_default_user()
+    #     plant = Plant.objects.create(uuid=uuid4(), user=default_user)
+    #     plant_options = cache.get(f'plant_options_{default_user.pk}')
+    #     self.assertIn(str(plant.uuid), plant_options)
+    #     self.assertIsNone(plant_options[str(plant.uuid)]['last_watered'])
 
-        # Water plant, confirm cached plant_options updated
-        timestamp = timezone.now()
-        WaterEvent.objects.create(plant=plant, timestamp=timestamp)
-        plant_options = cache.get(f'plant_options_{default_user.pk}')
-        self.assertEqual(
-            plant_options[str(plant.uuid)]['last_watered'],
-            timestamp.isoformat()
-        )
+    #     # Water plant, confirm cached plant_options updated
+    #     timestamp = timezone.now()
+    #     WaterEvent.objects.create(plant=plant, timestamp=timestamp)
+    #     plant_options = cache.get(f'plant_options_{default_user.pk}')
+    #     self.assertEqual(
+    #         plant_options[str(plant.uuid)]['last_watered'],
+    #         timestamp.isoformat()
+    #     )
 
-    def test_group_number_of_plants_outdated_in_cache_if_plant_deleted(self):
-        '''Issue: group details (including number of plants) was updated in
-        cached overview state and group_options when plants were added/removed
-        to/from group, but not when plants in group were deleted.
-        '''
+    # def test_group_number_of_plants_outdated_in_cache_if_plant_deleted(self):
+    #     '''Issue: group details (including number of plants) was updated in
+    #     cached overview state and group_options when plants were added/removed
+    #     to/from group, but not when plants in group were deleted.
+    #     '''
 
-        # Create group with 1 plant
-        user = get_default_user()
-        group = Group.objects.create(uuid=uuid4(), user=user)
-        plant = Plant.objects.create(uuid=uuid4(), group=group, user=user)
-        # Trigger group_options cache update (normally called from endpoint)
-        group.save()
+    #     # Create group with 1 plant
+    #     user = get_default_user()
+    #     group = Group.objects.create(uuid=uuid4(), user=user)
+    #     plant = Plant.objects.create(uuid=uuid4(), group=group, user=user)
+    #     # Trigger group_options cache update (normally called from endpoint)
+    #     group.save()
 
-        # Confirm group option in manage_plant state says 1 plant in group
-        self.assertEqual(
-            cache.get(f'overview_state_{user.pk}')['groups'][str(group.uuid)]['plants'],
-            1
-        )
-        # Confirm group details in overview state says 1 plant in group
-        self.assertEqual(
-            cache.get(f'group_options_{user.pk}')[str(group.uuid)]['plants'],
-            1
-        )
+    #     # Confirm group option in manage_plant state says 1 plant in group
+    #     self.assertEqual(
+    #         cache.get(f'overview_state_{user.pk}')['groups'][str(group.uuid)]['plants'],
+    #         1
+    #     )
+    #     # Confirm group details in overview state says 1 plant in group
+    #     self.assertEqual(
+    #         cache.get(f'group_options_{user.pk}')[str(group.uuid)]['plants'],
+    #         1
+    #     )
 
-        # Delete plant, confirm both cached states now say 0 plants in group
-        plant.delete()
-        self.assertEqual(
-            cache.get(f'overview_state_{user.pk}')['groups'][str(group.uuid)]['plants'],
-            0
-        )
-        self.assertEqual(
-            cache.get(f'group_options_{user.pk}')[str(group.uuid)]['plants'],
-            0
-        )
+    #     # Delete plant, confirm both cached states now say 0 plants in group
+    #     plant.delete()
+    #     self.assertEqual(
+    #         cache.get(f'overview_state_{user.pk}')['groups'][str(group.uuid)]['plants'],
+    #         0
+    #     )
+    #     self.assertEqual(
+    #         cache.get(f'group_options_{user.pk}')[str(group.uuid)]['plants'],
+    #         0
+    #     )
 
-    def test_new_plant_events_are_sorted_chronologically_in_cached_state(self):
-        '''Issue: tasks.add_new_event_to_cached_manage_plant_state_hook appended
-        new events to the correct events list in manage_plant state, but did not
-        sort the list (unlike Plant._get_all_timestamps used when generating new
-        state). The frontend depends on these lists to be in chronological order
-        (gets last_watered/fertilized by grabbing first item, history modal does
-        not sort, etc).
-        '''
+    # def test_new_plant_events_are_sorted_chronologically_in_cached_state(self):
+    #     '''Issue: tasks.add_new_event_to_cached_manage_plant_state_hook appended
+    #     new events to the correct events list in manage_plant state, but did not
+    #     sort the list (unlike Plant._get_all_timestamps used when generating new
+    #     state). The frontend depends on these lists to be in chronological order
+    #     (gets last_watered/fertilized by grabbing first item, history modal does
+    #     not sort, etc).
+    #     '''
 
-        # Create plant with 2 water events, generate cached state
-        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-        WaterEvent.objects.create(
-            plant=plant,
-            timestamp=datetime.fromisoformat('2024-03-06T03:06:26.000Z')
-        )
-        WaterEvent.objects.create(
-            plant=plant,
-            timestamp=datetime.fromisoformat('2024-01-06T03:06:26.000Z')
-        )
-        build_manage_plant_state(plant.uuid)
+    #     # Create plant with 2 water events, generate cached state
+    #     plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+    #     WaterEvent.objects.create(
+    #         plant=plant,
+    #         timestamp=datetime.fromisoformat('2024-03-06T03:06:26.000Z')
+    #     )
+    #     WaterEvent.objects.create(
+    #         plant=plant,
+    #         timestamp=datetime.fromisoformat('2024-01-06T03:06:26.000Z')
+    #     )
+    #     build_manage_plant_state(plant.uuid)
 
-        # Confirm water events are sorted chronologically in cached state
-        self.assertEqual(
-            cache.get(f'{plant.uuid}_state')['events']['water'],
-            [
-                '2024-03-06T03:06:26+00:00',
-                '2024-01-06T03:06:26+00:00'
-            ]
-        )
+    #     # Confirm water events are sorted chronologically in cached state
+    #     self.assertEqual(
+    #         cache.get(f'{plant.uuid}_state')['events']['water'],
+    #         [
+    #             '2024-03-06T03:06:26+00:00',
+    #             '2024-01-06T03:06:26+00:00'
+    #         ]
+    #     )
 
-        # Create new WaterEvent with timestamp in between existing 2
-        WaterEvent.objects.create(
-            plant=plant,
-            timestamp=datetime.fromisoformat('2024-02-06T03:06:26.000Z')
-        )
-        # Confirm state updated, new event is sorted chronologically
-        self.assertEqual(
-            cache.get(f'{plant.uuid}_state')['events']['water'],
-            [
-                '2024-03-06T03:06:26+00:00',
-                '2024-02-06T03:06:26+00:00',
-                '2024-01-06T03:06:26+00:00'
-            ]
-        )
+    #     # Create new WaterEvent with timestamp in between existing 2
+    #     WaterEvent.objects.create(
+    #         plant=plant,
+    #         timestamp=datetime.fromisoformat('2024-02-06T03:06:26.000Z')
+    #     )
+    #     # Confirm state updated, new event is sorted chronologically
+    #     self.assertEqual(
+    #         cache.get(f'{plant.uuid}_state')['events']['water'],
+    #         [
+    #             '2024-03-06T03:06:26+00:00',
+    #             '2024-02-06T03:06:26+00:00',
+    #             '2024-01-06T03:06:26+00:00'
+    #         ]
+    #     )
 
 
 class ViewDecoratorRegressionTests(TestCase):

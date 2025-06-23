@@ -38,10 +38,10 @@ from .view_decorators import (
     clean_payload_data
 )
 from .build_states import get_overview_state, get_manage_plant_state
-from .update_cached_states import (
-    update_group_details_in_cached_states,
-    remove_instance_from_cached_overview_state
-)
+# from .update_cached_states import (
+#     update_group_details_in_cached_states,
+#     remove_instance_from_cached_overview_state
+# )
 
 
 @requires_json_post(["qr_per_row"])
@@ -387,10 +387,10 @@ def change_uuid(instance, data, user, **kwargs):
     try:
         # Delete plant/group from cached state (prevent duplicate, keys are uuid
         # so once it changes the old entry can't be removed)
-        if isinstance(instance, Plant):
-            remove_instance_from_cached_overview_state(instance, 'plants')
-        else:
-            remove_instance_from_cached_overview_state(instance, 'groups')
+        # if isinstance(instance, Plant):
+        #     remove_instance_from_cached_overview_state(instance, 'plants')
+        # else:
+        #     remove_instance_from_cached_overview_state(instance, 'groups')
         # Change UUID, save (hook will update cached overview state)
         instance.uuid = data["new_id"]
         instance.save(update_fields=["uuid"])
@@ -781,7 +781,7 @@ def remove_plant_from_group(plant, **kwargs):
     plant.save(update_fields=["group"])
 
     # Update number of plants shown on overview and cached group_options
-    update_group_details_in_cached_states(old_group)
+    # update_group_details_in_cached_states(old_group)
 
     return JsonResponse(
         {"action": "remove_plant_from_group", "plant": plant.uuid},
@@ -829,7 +829,7 @@ def bulk_remove_plants_from_group(data, group, **kwargs):
             failed.append(plant_id)
 
     # Update number of plants shown on overview and cached group_options
-    update_group_details_in_cached_states(group)
+    # update_group_details_in_cached_states(group)
 
     return JsonResponse({"removed": removed, "failed": failed}, status=200)
 

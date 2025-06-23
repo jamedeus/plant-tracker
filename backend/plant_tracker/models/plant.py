@@ -31,7 +31,7 @@ def get_unnamed_plants(user):
             'id',
             flat=True
         ))
-        cache.set(f'unnamed_plants_{user.pk}', unnamed_plants, 600)
+        # cache.set(f'unnamed_plants_{user.pk}', unnamed_plants, 600)
     return unnamed_plants
 
 
@@ -46,7 +46,7 @@ def get_plant_options(user):
             str(plant.uuid): plant.get_details()
             for plant in Plant.objects.filter(user=user, group=None)
         }
-        cache.set(f'plant_options_{user.pk}', plant_options, None)
+        # cache.set(f'plant_options_{user.pk}', plant_options, None)
     return plant_options
 
 
@@ -59,7 +59,7 @@ def get_plant_species_options():
     if not species_options:
         species = Plant.objects.all().values_list('species', flat=True)
         species_options = list(set(i for i in species if i is not None))
-        cache.set('species_options', species_options, 600)
+        # cache.set('species_options', species_options, 600)
     return species_options
 
 
