@@ -1,6 +1,9 @@
 '''Functions that build (or load from cache) states used by frontend react apps.'''
 
 from django.core.cache import cache
+from django.db.models import F, Case, When, Value
+from django.db.models.functions import RowNumber
+from django.db.models import Window
 
 from .models import (
     Plant,
@@ -20,14 +23,56 @@ def build_overview_state(user):
     has_archived_groups = bool(Group.objects.filter(archived=True, user=user))
     show_archive = has_archived_plants or has_archived_groups
 
+    plants = (
+        Plant.objects
+            .filter(user=user, archived=False)
+            .order_by('created')
+            # Label unnamed plants with no species (gets sequential name)
+            .annotate(
+                is_unnamed=Case(
+                    When(name__isnull=True, species__isnull=True, then=Value(True)),
+                    default=Value(False)
+                )
+            )
+            # Add unnamed_index (used to build "Unnamed plant <index>" names)
+            .annotate(
+                unnamed_index=Window(
+                    expression=RowNumber(),
+                    partition_by=[F('is_unnamed')],
+                    order_by=F('created').asc(),
+                )
+            )
+    )
+
+    groups = (
+        Group.objects
+            .filter(user=user, archived=False)
+            .order_by('created')
+            # Label unnamed groups with no location (gets sequential name)
+            .annotate(
+                is_unnamed=Case(
+                    When(name__isnull=True, location__isnull=True, then=Value(True)),
+                    default=Value(False)
+                )
+            )
+            # Add unnamed_index (used to build "Unnamed group <index>" names)
+            .annotate(
+                unnamed_index=Window(
+                    expression=RowNumber(),
+                    partition_by=[F('is_unnamed')],
+                    order_by=F('created').asc(),
+                )
+            )
+    )
+
     state = {
         'plants': {
             str(plant.uuid): plant.get_details()
-            for plant in Plant.objects.filter(archived=False, user=user)
+            for plant in plants
         },
         'groups': {
             str(group.uuid): group.get_details()
-            for group in Group.objects.filter(archived=False, user=user)
+            for group in groups
         },
         'show_archive': show_archive
     }

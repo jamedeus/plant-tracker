@@ -149,7 +149,11 @@ class Plant(models.Model):
         if self.species:
             return f'Unnamed {self.species}'
 
-        # If no name or species return string with unnamed plant index
+        # If no name or species use annotation if present
+        if hasattr(self, 'unnamed_index'):
+            return f'Unnamed plant {self.unnamed_index}'
+
+        # Get index from cached unnamed_plants list if no annotation
         unnamed_plants = get_unnamed_plants(self.user)
         return f'Unnamed plant {unnamed_plants.index(self.id) + 1}'
 

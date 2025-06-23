@@ -90,7 +90,11 @@ class Group(models.Model):
         if self.location:
             return f'{self.location} group'
 
-        # If no name or location return string with unnamed group index
+        # If no name or location use annotation if present
+        if hasattr(self, 'unnamed_index'):
+            return f'Unnamed group {self.unnamed_index}'
+
+        # Get index from cached unnamed_groups list if no annotation
         unnamed_groups = get_unnamed_groups(self.user)
         return f'Unnamed group {unnamed_groups.index(self.id) + 1}'
 
