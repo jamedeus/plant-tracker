@@ -20,7 +20,6 @@ from .models import (
     Photo,
     NoteEvent,
     DivisionEvent,
-    get_plant_options,
     get_plant_species_options
 )
 from .view_decorators import (
@@ -37,7 +36,11 @@ from .view_decorators import (
     get_event_type_from_post_body,
     clean_payload_data
 )
-from .build_states import get_overview_state, get_manage_plant_state
+from .build_states import (
+    get_overview_state,
+    get_manage_plant_state,
+    get_plant_options
+)
 # from .update_cached_states import (
 #     update_group_details_in_cached_states,
 #     remove_instance_from_cached_overview_state

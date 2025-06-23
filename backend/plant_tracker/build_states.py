@@ -5,12 +5,7 @@ from django.db.models import F, Case, When, Value
 from django.db.models.functions import RowNumber
 from django.db.models import Window
 
-from .models import (
-    Plant,
-    Group,
-    get_group_options,
-    get_plant_species_options
-)
+from .models import Plant, Group, get_plant_species_options
 
 
 def plant_is_unnamed_annotation():
@@ -36,6 +31,46 @@ def unnamed_index_annotation():
         partition_by=[F('is_unnamed')],
         order_by=F('created').asc(),
     )}
+
+
+def get_plant_options(user):
+    '''Takes user, returns dict with all of user's plants with no group (uuids
+    as keys, details dicts as values). Populates options in add plants modal on
+    manage_group page. Cached until Plant model changes (see hooks in tasks.py).
+    '''
+    plant_options = cache.get(f'plant_options_{user.pk}')
+    if not plant_options:
+        plant_options = {
+            str(plant.uuid): plant.get_details()
+            for plant in Plant.objects
+                .filter(user=user)
+                .order_by('created')
+                .select_related('group')
+                .annotate(**plant_is_unnamed_annotation())
+                .annotate(**unnamed_index_annotation())
+            if plant.group is None
+        }
+        # cache.set(f'plant_options_{user.pk}', plant_options, None)
+    return plant_options
+
+
+def get_group_options(user):
+    '''Takes user, returns dict with all of user's groups (uuids as keys,
+    details) dicts as values). Populates options in add to group modal on
+    manage_plant page. Cached until Group model changes (see hooks in tasks.py).
+    '''
+    group_options = cache.get(f'group_options_{user.pk}')
+    if not group_options:
+        group_options = {
+            str(group.uuid): group.get_details()
+            for group in Group.objects
+                .filter(user=user)
+                .order_by('created')
+                .annotate(**group_is_unnamed_annotation())
+                .annotate(**unnamed_index_annotation())
+        }
+        # cache.set(f'group_options_{user.pk}', group_options, None)
+    return group_options
 
 
 def build_overview_state(user):

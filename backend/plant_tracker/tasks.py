@@ -4,12 +4,13 @@ from celery import shared_task
 from django.core.cache import cache
 from django.contrib.auth import get_user_model
 
-from .models import (
-    Plant,
+from .models import Plant
+from .build_states import (
+    build_overview_state,
+    build_manage_plant_state,
     get_plant_options,
     get_group_options,
 )
-from .build_states import build_overview_state, build_manage_plant_state
 
 
 @shared_task()

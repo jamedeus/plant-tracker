@@ -35,21 +35,6 @@ def get_unnamed_plants(user):
     return unnamed_plants
 
 
-def get_plant_options(user):
-    '''Takes user, returns dict with all of user's plants with no group (uuids
-    as keys, details dicts as values). Populates options in add plants modal on
-    manage_group page. Cached until Plant model changes (see hooks in tasks.py).
-    '''
-    plant_options = cache.get(f'plant_options_{user.pk}')
-    if not plant_options:
-        plant_options = {
-            str(plant.uuid): plant.get_details()
-            for plant in Plant.objects.filter(user=user, group=None)
-        }
-        # cache.set(f'plant_options_{user.pk}', plant_options, None)
-    return plant_options
-
-
 def get_plant_species_options():
     '''Returns a list of species for every Plant in database (no duplicates).
     List is cached for up to 10 minutes, or until Plant model changed.

@@ -43,7 +43,7 @@ This should be updated when:
 - Stores dict with plant uuids as keys and plant details dict as values
 - Contains all plants that are not in a group, used to populate add plants modal cards
 - Name includes database primary key of user account that owns plants
-- Set by `models.plant.get_plant_options`,
+- Set by `build_states.get_plant_options`,
   * Never expires
   * Updated if Plant model owned by same user saved (`update_cached_states.update_plant_in_cached_states_hook`)
   * Updated if Plant model owned by same user deleted (`update_cached_states.remove_deleted_plant_from_cached_states_hook`)
@@ -55,7 +55,7 @@ This should be updated when:
 ### `group_options_{user_primary_key}`
 - Stores list of dicts with group attributes used to populate add plant to group modal
 - Name includes database primary key of user account that owns groups
-- Set by `models.group.get_group_options`
+- Set by `build_states.get_group_options`
   * Never expires
   * Updated if Group model owned by same user saved (`update_cached_states.update_group_in_cached_states_hook`)
   * Updated if Group model owned by same user deleted (`update_cached_states.remove_deleted_group_from_cached_states_hook`)

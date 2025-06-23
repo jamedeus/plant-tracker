@@ -23,10 +23,8 @@ from .models import (
     RepotEvent,
     NoteEvent,
     DivisionEvent,
-    get_plant_options,
-    get_group_options,
 )
-from .build_states import get_overview_state
+from .build_states import get_overview_state, get_plant_options, get_group_options
 from .disable_for_loaddata import disable_for_loaddata
 
 

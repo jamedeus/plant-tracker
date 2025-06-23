@@ -34,21 +34,6 @@ def get_unnamed_groups(user):
     return unnamed_groups
 
 
-def get_group_options(user):
-    '''Takes user, returns dict with all of user's groups (uuids as keys,
-    details) dicts as values). Populates options in add to group modal on
-    manage_plant page. Cached until Group model changes (see hooks in tasks.py).
-    '''
-    group_options = cache.get(f'group_options_{user.pk}')
-    if not group_options:
-        group_options = {
-            str(group.uuid): group.get_details()
-            for group in Group.objects.filter(user=user)
-        }
-        # cache.set(f'group_options_{user.pk}', group_options, None)
-    return group_options
-
-
 class Group(models.Model):
     '''Tracks a group containing multiple plants, created by scanning QR code.
     Provides methods to water or fertilize all plants within group.
