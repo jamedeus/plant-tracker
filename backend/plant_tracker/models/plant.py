@@ -173,6 +173,13 @@ class Plant(models.Model):
                 **self.default_photo.get_details()
             )
         try:
+            # Use annotation if present
+            if hasattr(self, 'last_photo'):
+                if self.last_photo:
+                    return self.last_photo.get_details()
+                # Skip extra query if annotation null (plant has no photos)
+                raise IndexError
+            # Query from database if no annotation
             return dict(
                 {'set': False},
                 **self.photo_set.all().order_by('-timestamp')[0].get_details()
@@ -220,10 +227,26 @@ class Plant(models.Model):
 
     def last_watered(self):
         '''Returns timestamp string of last WaterEvent, or None if no events.'''
+
+        # Use annotation if present
+        if hasattr(self, 'last_watered_time'):
+            if self.last_watered_time:
+                return self.last_watered_time.isoformat()
+            return None
+
+        # Query from database if not present
         return self._get_most_recent_timestamp(self.waterevent_set.all())
 
     def last_fertilized(self):
         '''Returns timestamp string of last FertilizeEvent, or None if no events.'''
+
+        # Use annotation if present
+        if hasattr(self, 'last_fertilized_time'):
+            if self.last_fertilized_time:
+                return self.last_fertilized_time.isoformat()
+            return None
+
+        # Query from database if not present
         return self._get_most_recent_timestamp(self.fertilizeevent_set.all())
 
     def last_pruned(self):

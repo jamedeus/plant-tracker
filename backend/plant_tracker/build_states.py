@@ -1,11 +1,11 @@
 '''Functions that build (or load from cache) states used by frontend react apps.'''
 
 from django.core.cache import cache
-from django.db.models import F, Case, When, Value
+from django.db.models import F, Case, When, Value, Subquery, OuterRef
 from django.db.models.functions import RowNumber
 from django.db.models import Window
 
-from .models import Plant, Group, get_plant_species_options
+from .models import Plant, Group, Photo, get_plant_species_options, WaterEvent, FertilizeEvent
 
 
 def plant_is_unnamed_annotation():
@@ -33,6 +33,37 @@ def unnamed_index_annotation():
     )}
 
 
+def last_watered_time_annotation():
+    '''Adds last_watered_time attribute (most-recent WaterEvent timestamp).'''
+    return {'last_watered_time': Subquery(
+        WaterEvent.objects
+            .filter(plant_id=OuterRef("pk"))
+            .order_by("-timestamp")
+            .values("timestamp")[:1]
+    )}
+
+
+def last_fertilized_time_annotation():
+    '''Adds last_fertilized_time attribute (most-recent WaterEvent timestamp).'''
+    return {'last_fertilized_time': Subquery(
+        FertilizeEvent.objects
+            .filter(plant_id=OuterRef("pk"))
+            .order_by("-timestamp")
+            .values("timestamp")[:1]
+    )}
+
+
+
+def last_photo_annotation():
+    '''Adds last_photo attribute (most-recent Photo model entry).'''
+    return {'last_photo': Subquery(
+        Photo.objects
+            .filter(plant_id=OuterRef("pk"))
+            .order_by("-timestamp")
+            .values("timestamp")[:1]
+    )}
+
+
 def get_plant_options(user):
     '''Takes user, returns dict with all of user's plants with no group (uuids
     as keys, details dicts as values). Populates options in add plants modal on
@@ -48,6 +79,9 @@ def get_plant_options(user):
                 .select_related('group')
                 .annotate(**plant_is_unnamed_annotation())
                 .annotate(**unnamed_index_annotation())
+                .annotate(**last_watered_time_annotation())
+                .annotate(**last_fertilized_time_annotation())
+                .annotate(**last_photo_annotation())
             if plant.group is None
         }
         # cache.set(f'plant_options_{user.pk}', plant_options, None)
@@ -91,6 +125,12 @@ def build_overview_state(user):
             .annotate(**plant_is_unnamed_annotation())
             # Add unnamed_index (used to build "Unnamed plant <index>" names)
             .annotate(**unnamed_index_annotation())
+            # Add last_watered_time
+            .annotate(**last_watered_time_annotation())
+            # Add last_fertilized_time
+            .annotate(**last_fertilized_time_annotation())
+            # Add last_photo (used as default photo if default_photo not set)
+            .annotate(**last_photo_annotation())
     )
 
     groups = (
