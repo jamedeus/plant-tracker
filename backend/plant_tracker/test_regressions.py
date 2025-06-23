@@ -241,40 +241,6 @@ class ModelRegressionTests(TestCase):
         # Confirm display name did not change
         self.assertEqual(plant1.get_display_name(), 'Unnamed plant 1')
 
-    # def test_unable_to_register_plant_with_no_name(self):
-    #     '''Issue: When a new plant is created update_plant_in_cached_states_hook
-    #     builds a manage_plant state, which calls get_display_name. If plant has
-    #     no name a sequential "Unnamed plant <num>" is created by finding plant's
-    #     index in unnamed_plants list. New plant is not in cached unnamed_plants,
-    #     so the cache needs to be cleared BEFORE the state is built, but after
-    #     f0076c36 the state was built first, leading to an unhandled exception.
-    #     Other tests did not catch this because cache is cleared between tests.
-    #     '''
-
-    #     # Simulate existing cached unnamed_plants list
-    #     cache.set(f'unnamed_plants_{self.user.pk}', [123, 456], None)
-
-    #     # Create plant with no name, should not raise exception
-    #     plant = Plant.objects.create(uuid=uuid4(), user=self.user)
-    #     self.assertEqual(plant.get_display_name(), 'Unnamed plant 1')
-
-    # def test_unable_to_register_group_with_no_name(self):
-    #     '''Issue: When a new group is created update_group_in_cached_states_hook
-    #     adds group to cached group_options dict, which calls get_display_name.
-    #     If group has no name a sequential "Unnamed group <num>" is created by
-    #     finding group's index in unnamed_groups list. New group is not in cached
-    #     unnamed_groups, so the cache needs to be cleared BEFORE this, but after
-    #     f0076c36 it was cleared later, leading to an unhandled exception. Other
-    #     tests did not catch this because cache is cleared between tests.
-    #     '''
-
-    #     # Simulate existing cached unnamed_groups list
-    #     cache.set(f'unnamed_groups_{self.user.pk}', [123, 456], None)
-
-    #     # Create group with no name, should not raise exception
-    #     group = Group.objects.create(uuid=uuid4(), user=self.user)
-    #     self.assertEqual(group.get_display_name(), 'Unnamed group 1')
-
 
 class ModelRegressionTestsTransaction(TransactionTestCase):
     '''For model regression tests that need database transactions to actually

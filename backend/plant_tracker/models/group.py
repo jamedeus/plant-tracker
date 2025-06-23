@@ -13,27 +13,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from .plant import Plant
 
 
-def get_unnamed_groups(user):
-    '''Takes user, returns list of primary_keys for all Groups owned by user
-    with no name or location (cached 10 minutes or until group model changed).
-    Uses list instead of QuerySet to avoid serialization overhead.
-    '''
-    unnamed_groups = cache.get(f'unnamed_groups_{user.pk}')
-    if not unnamed_groups:
-        unnamed_groups = list(Group.objects.filter(
-            name__isnull=True,
-            location__isnull=True,
-            user=user
-        ).order_by(
-            'created'
-        ).values_list(
-            'id',
-            flat=True
-        ))
-        # cache.set(f'unnamed_groups_{user.pk}', unnamed_groups, 600)
-    return unnamed_groups
-
-
 class Group(models.Model):
     '''Tracks a group containing multiple plants, created by scanning QR code.
     Provides methods to water or fertilize all plants within group.
@@ -79,9 +58,14 @@ class Group(models.Model):
         if hasattr(self, 'unnamed_index'):
             return f'Unnamed group {self.unnamed_index}'
 
-        # Get index from cached unnamed_groups list if no annotation
-        unnamed_groups = get_unnamed_groups(self.user)
-        return f'Unnamed group {unnamed_groups.index(self.id) + 1}'
+        # Query database for unnamed index if annotation not present
+        unnamed_index = Group.objects.filter(
+            user=self.user,
+            name__isnull=True,
+            location__isnull=True,
+            created__lte=self.created
+        ).count()
+        return f'Unnamed group {unnamed_index}'
 
     def water_all(self, timestamp):
         '''Takes datetime instance, creates WaterEvent for each Plant in Group.'''

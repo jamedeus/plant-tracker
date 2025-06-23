@@ -14,27 +14,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from .events import DivisionEvent
 
 
-def get_unnamed_plants(user):
-    '''Takes user, returns list of primary_keys for all Plants owned by user
-    with no name or species (cached 10 minutes or until plant model changed).
-    Uses list instead of QuerySet to avoid serialization overhead.
-    '''
-    unnamed_plants = cache.get(f'unnamed_plants_{user.pk}')
-    if not unnamed_plants:
-        unnamed_plants = list(Plant.objects.filter(
-            name__isnull=True,
-            species__isnull=True,
-            user=user
-        ).order_by(
-            'created'
-        ).values_list(
-            'id',
-            flat=True
-        ))
-        # cache.set(f'unnamed_plants_{user.pk}', unnamed_plants, 600)
-    return unnamed_plants
-
-
 def get_plant_species_options():
     '''Returns a list of species for every Plant in database (no duplicates).
     List is cached for up to 10 minutes, or until Plant model changed.
@@ -138,9 +117,14 @@ class Plant(models.Model):
         if hasattr(self, 'unnamed_index'):
             return f'Unnamed plant {self.unnamed_index}'
 
-        # Get index from cached unnamed_plants list if no annotation
-        unnamed_plants = get_unnamed_plants(self.user)
-        return f'Unnamed plant {unnamed_plants.index(self.id) + 1}'
+        # Query database for unnamed index if annotation not present
+        unnamed_index = Plant.objects.filter(
+            user=self.user,
+            name__isnull=True,
+            species__isnull=True,
+            created__lte=self.created
+        ).count()
+        return f'Unnamed plant {unnamed_index}'
 
     def get_photos(self):
         '''Returns list of dicts containing photo and thumbnail URLs, creation

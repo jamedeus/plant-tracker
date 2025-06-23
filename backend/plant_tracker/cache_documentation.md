@@ -23,22 +23,6 @@ This should be updated when:
 - Set by `/divide_plant`
   * Expires in 15 minutes
 
-### `unnamed_plants_{user_primary_key}`
-- Stores list of primary key ints for each unnamed plant owned by a user
-- Name includes database primary key of user account that owns plants
-- Set by `models.plant.get_unnamed_plants`
-  * Expires in 10 minutes
-  * Deleted if Plant model owned by same user is saved (`update_cached_states.update_plant_in_cached_states_hook`)
-  * Deleted if Plant model owned by same user is deleted (`update_cached_states.remove_deleted_plant_from_cached_states_hook`)
-
-### `unnamed_groups_{user_primary_key}`
-- Stores list of primary key ints for each unnamed group owned by a user
-- Name includes database primary key of user account that owns groups
-- Set by `models.group.get_unnamed_groups`
-  * Expires in 10 minutes
-  * Deleted if Group model owned by same user is saved (`update_cached_states.update_group_in_cached_states_hook`)
-  * Deleted if Group model owned by same user is deleted (`update_cached_states.remove_deleted_group_from_cached_states_hook`)
-
 ### `plant_options_{user_primary_key}`
 - Stores dict with plant uuids as keys and plant details dict as values
 - Contains all plants that are not in a group, used to populate add plants modal cards

@@ -1129,35 +1129,3 @@ class OverviewStateUpdateTests(TestCase):
     #         cache.get(f'group_options_{self.user.pk}')[str(group.uuid)]['plants'],
     #         0
     #     )
-
-    # def test_unnamed_plants_cleared_when_plant_deleted(self):
-    #     # Confirm no cached unnamed_plants list
-    #     self.assertIsNone(cache.get(f'unnamed_plants_{self.user.pk}'))
-
-    #     # Create 2 unnamed plants, confirm unnamed_plants list cached
-    #     plant1 = Plant.objects.create(uuid=uuid4(), user=self.user)
-    #     plant2 = Plant.objects.create(uuid=uuid4(), user=self.user)
-    #     self.assertEqual(
-    #         cache.get(f'unnamed_plants_{self.user.pk}'),
-    #         [plant1.pk, plant2.pk]
-    #     )
-
-    #     # Delete first plant, confirm cached unnamed_plants list deleted
-    #     plant1.delete()
-    #     self.assertIsNone(cache.get(f'unnamed_plants_{self.user.pk}'))
-
-    # def test_unnamed_groups_cleared_when_group_deleted(self):
-    #     # Confirm no cached unnamed_groups list
-    #     self.assertIsNone(cache.get(f'unnamed_groups_{self.user.pk}'))
-
-    #     # Create 2 unnamed groups, confirm unnamed_groups list cached
-    #     group1 = Group.objects.create(uuid=uuid4(), user=self.user)
-    #     group2 = Group.objects.create(uuid=uuid4(), user=self.user)
-    #     self.assertEqual(
-    #         cache.get(f'unnamed_groups_{self.user.pk}'),
-    #         [group1.pk, group2.pk]
-    #     )
-
-    #     # Delete first group, confirm cached unnamed_groups list deleted
-    #     group1.delete()
-    #     self.assertIsNone(cache.get(f'unnamed_groups_{self.user.pk}'))

@@ -82,10 +82,8 @@ def update_parent_plant_details_in_cached_manage_plant_state(plant):
 
 
 def clear_cached_plant_lists(user):
-    '''Takes user, clears cached unnamed_plants list (used to get sequential
-    "Unnamed plant <num>" names) and species_options list.
+    '''Takes user, clears cached species_options list.
     '''
-    cache.delete(f'unnamed_plants_{user.pk}')
     cache.delete('species_options')
 
 
@@ -157,7 +155,7 @@ def update_group_details_in_cached_states(group):
 #       manage_plant state (child name/uuid may be outdated)
 #     - If plant has children updates `divided_from` key in parent all child plant
 #       cached manage_plant state(s) (parent name/uuid may be outdated)
-#     - Deletes cached unnamed_plants and species_options lists
+#     - Deletes cached species_options list
 #     - If plant is in group updates group details in cached overview state and
 #       cached group options (number of plants may have changed)
 #     '''
@@ -192,7 +190,7 @@ def update_group_details_in_cached_states(group):
 #     - Deletes plant from cached overview state
 #     - Deletes plant from cached plant_options dict
 #     - Deletes plant's cached manage_plant state completely
-#     - Deletes cached unnamed_plants and species_options lists
+#     - Deletes cached species_options list
 #     - If plant is in group updates group details in cached overview state and
 #       cached group options (number of plants may have changed)
 #     '''
@@ -333,9 +331,7 @@ def update_group_details_in_cached_states(group):
 #     '''Updates all relevant caches when a Group entry is saved:
 #     - Updates plant entry in cached group_options dict
 #     - Updates group entry in cached overview state (removes if group archived)
-#     - Deletes cached unnamed_groups list (used to get sequential names)
 #     '''
-#     cache.delete(f'unnamed_groups_{instance.user.pk}')
 #     update_group_details_in_cached_states(instance)
 
 
@@ -344,8 +340,6 @@ def update_group_details_in_cached_states(group):
 #     '''Deletes group from all relevant caches when a Group entry is deleted:
 #     - Deletes group from cached group_options dict
 #     - Deletes group from cached overview state
-#     - Deletes cached unnamed_groups list (used to get sequential names)
 #     '''
 #     remove_deleted_group_from_cached_group_options(instance)
 #     remove_instance_from_cached_overview_state(instance, 'groups')
-#     cache.delete(f'unnamed_groups_{instance.user.pk}')
