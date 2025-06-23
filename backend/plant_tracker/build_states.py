@@ -13,6 +13,31 @@ from .models import (
 )
 
 
+def plant_is_unnamed_annotation():
+    '''Adds is_unnamed attribute (True if no name or species, default False).'''
+    return {'is_unnamed': Case(
+        When(name__isnull=True, species__isnull=True, then=Value(True)),
+        default=Value(False)
+    )}
+
+
+def group_is_unnamed_annotation():
+    '''Adds is_unnamed attribute (True if no name or location, default False).'''
+    return {'is_unnamed': Case(
+        When(name__isnull=True, location__isnull=True, then=Value(True)),
+        default=Value(False)
+    )}
+
+
+def unnamed_index_annotation():
+    '''Adds unnamed_index attribute (sequential ints) to items with is_unnamed=True.'''
+    return {'unnamed_index': Window(
+        expression=RowNumber(),
+        partition_by=[F('is_unnamed')],
+        order_by=F('created').asc(),
+    )}
+
+
 def build_overview_state(user):
     '''Takes user, builds state parsed by overview page, caches, and returns.
     Contains all non-archived plants and groups owned by user.
@@ -28,20 +53,9 @@ def build_overview_state(user):
             .filter(user=user, archived=False)
             .order_by('created')
             # Label unnamed plants with no species (gets sequential name)
-            .annotate(
-                is_unnamed=Case(
-                    When(name__isnull=True, species__isnull=True, then=Value(True)),
-                    default=Value(False)
-                )
-            )
+            .annotate(**plant_is_unnamed_annotation())
             # Add unnamed_index (used to build "Unnamed plant <index>" names)
-            .annotate(
-                unnamed_index=Window(
-                    expression=RowNumber(),
-                    partition_by=[F('is_unnamed')],
-                    order_by=F('created').asc(),
-                )
-            )
+            .annotate(**unnamed_index_annotation())
     )
 
     groups = (
@@ -49,20 +63,9 @@ def build_overview_state(user):
             .filter(user=user, archived=False)
             .order_by('created')
             # Label unnamed groups with no location (gets sequential name)
-            .annotate(
-                is_unnamed=Case(
-                    When(name__isnull=True, location__isnull=True, then=Value(True)),
-                    default=Value(False)
-                )
-            )
+            .annotate(**group_is_unnamed_annotation())
             # Add unnamed_index (used to build "Unnamed group <index>" names)
-            .annotate(
-                unnamed_index=Window(
-                    expression=RowNumber(),
-                    partition_by=[F('is_unnamed')],
-                    order_by=F('created').asc(),
-                )
-            )
+            .annotate(**unnamed_index_annotation())
     )
 
     state = {
