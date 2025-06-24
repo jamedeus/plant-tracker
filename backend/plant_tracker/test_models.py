@@ -3,7 +3,6 @@
 import os
 import shutil
 from uuid import uuid4
-from datetime import timedelta
 
 from django.conf import settings
 from django.test import TestCase
@@ -81,70 +80,6 @@ class PlantModelTests(TestCase):
         self.assertEqual(self.plant.last_fertilized(), self.timestamp.isoformat())
         self.assertEqual(self.plant.last_pruned(), self.timestamp.isoformat())
         self.assertEqual(self.plant.last_repotted(), self.timestamp.isoformat())
-
-    def test_get_water_timestamps(self):
-        # Create 3 WaterEvents for the plant, 1 day apart, non-chronological order in database
-        WaterEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=2))
-        WaterEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
-        WaterEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=1))
-
-        # Confirm method returns correct list sorted most to least recent
-        self.assertEqual(
-            self.plant.get_water_timestamps(),
-            [
-                self.timestamp.isoformat(),
-                (self.timestamp - timedelta(days=1)).isoformat(),
-                (self.timestamp - timedelta(days=2)).isoformat()
-            ]
-        )
-
-    def test_get_fertilize_timestamps(self):
-        # Create 3 FertilizeEvent for the plant, 1 day apart, non-chronological order in database
-        FertilizeEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=2))
-        FertilizeEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
-        FertilizeEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=1))
-
-        # Confirm method returns correct list sorted most to least recent
-        self.assertEqual(
-            self.plant.get_fertilize_timestamps(),
-            [
-                self.timestamp.isoformat(),
-                (self.timestamp - timedelta(days=1)).isoformat(),
-                (self.timestamp - timedelta(days=2)).isoformat()
-            ]
-        )
-
-    def test_get_prune_timestamps(self):
-        # Create 3 PruneEvent for the plant, 1 day apart, non-chronological order in database
-        PruneEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=2))
-        PruneEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
-        PruneEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=1))
-
-        # Confirm method returns correct list sorted most to least recent
-        self.assertEqual(
-            self.plant.get_prune_timestamps(),
-            [
-                self.timestamp.isoformat(),
-                (self.timestamp - timedelta(days=1)).isoformat(),
-                (self.timestamp - timedelta(days=2)).isoformat()
-            ]
-        )
-
-    def test_get_repot_timestamps(self):
-        # Create 3 RepotEvent for the plant, 1 day apart, non-chronological order in database
-        RepotEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=2))
-        RepotEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
-        RepotEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=1))
-
-        # Confirm method returns correct list sorted most to least recent
-        self.assertEqual(
-            self.plant.get_repot_timestamps(),
-            [
-                self.timestamp.isoformat(),
-                (self.timestamp - timedelta(days=1)).isoformat(),
-                (self.timestamp - timedelta(days=2)).isoformat()
-            ]
-        )
 
     def test_change_plant_uuid(self):
         # Call change_uuid endpoint, confirm response + uuid changed

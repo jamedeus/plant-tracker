@@ -1114,6 +1114,12 @@ class ManagePageTests(TestCase):
         )
 
     def test_get_plant_state(self):
+        # Create water events for test plant in non-chronological order (should
+        # be sorted chronologically by database)
+        WaterEvent.objects.create(plant=self.plant1, timestamp=datetime(2024, 2, 26, 0, 0, 0, 0))
+        WaterEvent.objects.create(plant=self.plant1, timestamp=datetime(2024, 2, 28, 0, 0, 0, 0))
+        WaterEvent.objects.create(plant=self.plant1, timestamp=datetime(2024, 2, 27, 0, 0, 0, 0))
+
         # Call get_plant_state endpoint with UUID of existing plant entry
         response = self.client.get(f'/get_plant_state/{self.plant1.uuid}')
 
@@ -1132,12 +1138,16 @@ class ManagePageTests(TestCase):
                     'thumbnail': None,
                     'pot_size': None,
                     'description': None,
-                    'last_watered': None,
+                    'last_watered': '2024-02-28T00:00:00+00:00',
                     'last_fertilized': None,
                     'group': None,
                 },
                 'events': {
-                    'water': [],
+                    'water': [
+                        '2024-02-28T00:00:00+00:00',
+                        '2024-02-27T00:00:00+00:00',
+                        '2024-02-26T00:00:00+00:00'
+                    ],
                     'fertilize': [],
                     'prune': [],
                     'repot': []

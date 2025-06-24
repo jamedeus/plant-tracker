@@ -263,39 +263,6 @@ class Plant(models.Model):
         '''Returns timestamp string of last RepotEvent, or None if no events.'''
         return self._get_most_recent_timestamp(self.repotevent_set.all())
 
-    def _get_all_timestamps(self, queryset):
-        '''Takes QuerySet containing events, returns list of timestamp strings
-        for every item in queryset sorted from most recent to least recent.
-        '''
-        return [
-            timestamp[0].isoformat()
-            for timestamp in queryset.values_list('timestamp')
-        ]
-
-    def get_water_timestamps(self):
-        '''Returns list of timestamp strings for every WaterEvent sorted from
-        most recent to least recent.
-        '''
-        return self._get_all_timestamps(self.waterevent_set.all())
-
-    def get_fertilize_timestamps(self):
-        '''Returns list of timestamp strings for every FertilizeEvent sorted from
-        most recent to least recent.
-        '''
-        return self._get_all_timestamps(self.fertilizeevent_set.all())
-
-    def get_prune_timestamps(self):
-        '''Returns list of timestamp strings for every PruneEvent sorted from
-        most recent to least recent.
-        '''
-        return self._get_all_timestamps(self.pruneevent_set.all())
-
-    def get_repot_timestamps(self):
-        '''Returns list of timestamp strings for every RepotEvent sorted from
-        most recent to least recent.
-        '''
-        return self._get_all_timestamps(self.repotevent_set.all())
-
     def save(self, *args, **kwargs):
         # Prevent setting photo of a different plant as default
         if self.default_photo and self.default_photo.plant != self:
