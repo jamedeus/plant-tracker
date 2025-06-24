@@ -227,6 +227,8 @@ def build_manage_plant_state(uuid):
             .select_related('default_photo')
             # Include Group entry if plant in a group
             .select_related('group')
+            # Include parent plant + division event if plant was divided
+            .select_related('divided_from', 'divided_from_event')
             # Add <event_type>_timetamps attributes containing lists of event
             # timestamps (sorted chronologically at database level)
             .annotate(
