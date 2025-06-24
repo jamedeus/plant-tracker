@@ -16,15 +16,10 @@ if TYPE_CHECKING:  # pragma: no cover
 
 def get_plant_species_options():
     '''Returns a list of species for every Plant in database (no duplicates).
-    List is cached for up to 10 minutes, or until Plant model changed.
-    Used to populate species suggestions on plant registration form.
+    Used to populate species suggestions on plant details form.
     '''
-    species_options = cache.get('species_options')
-    if not species_options:
-        species = Plant.objects.all().values_list('species', flat=True)
-        species_options = list(set(i for i in species if i is not None))
-        # cache.set('species_options', species_options, 600)
-    return species_options
+    species = Plant.objects.all().values_list('species', flat=True)
+    return list(set(i for i in species if i is not None))
 
 
 class Plant(models.Model):

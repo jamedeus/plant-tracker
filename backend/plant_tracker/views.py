@@ -196,6 +196,11 @@ def get_plant_state(request, uuid):
         return JsonResponse({'Error': 'Requires plant UUID'}, status=400)
 
 
+def get_species_options(request):
+    '''Returns list used to populate plant species combobox suggestions.'''
+    return JsonResponse({'options': get_plant_species_options()}, status=200)
+
+
 def build_manage_group_state(group):
     '''Builds state parsed by manage_group react app and returns.'''
     return {
@@ -255,10 +260,7 @@ def render_registration_page(request, uuid, user):
     for if rejected).
     '''
 
-    state = {
-        'new_id': uuid,
-        'species_options': get_plant_species_options(),
-    }
+    state = { 'new_id': uuid }
 
     # Check if user is changing plant QR code, add details if so
     old_uuid = cache.get(f'old_uuid_{user.pk}')

@@ -1,5 +1,6 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
+import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import { PageWrapper } from 'src/index';
 import App from '../App';
 import { mockContext } from './mockContext';
@@ -9,6 +10,9 @@ describe('App', () => {
         // Create mock state objects
         bulkCreateMockContext(mockContext);
         createMockContext('user_accounts_enabled', true);
+
+        // Mock /get_plant_species_options response (requested when page loads)
+        mockPlantSpeciesOptionsResponse();
 
         // Render app, confirm reload was not called
         const { unmount } = render(

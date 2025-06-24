@@ -1,5 +1,6 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
+import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import App from '../App';
 import {
     mockContext,
@@ -9,6 +10,9 @@ import {
 } from './mockContext';
 
 describe('App', () => {
+    // Mock /get_plant_species_options response (requested when page loads)
+    beforeAll(() => mockPlantSpeciesOptionsResponse());
+
     it('matches snapshot', () => {
         // Create mock state objects (no dividing_from)
         bulkCreateMockContext(mockContext);

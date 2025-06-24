@@ -1,5 +1,6 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
+import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import { postHeaders } from 'src/testUtils/headers';
 import { PageWrapper } from 'src/index';
 import App from '../App';
@@ -16,6 +17,9 @@ describe('Register page while plant division in progress', () => {
     });
 
     beforeEach(() => {
+        // Mock /get_plant_species_options response (requested when plant form loads)
+        mockPlantSpeciesOptionsResponse();
+
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(
@@ -101,19 +105,19 @@ describe('Register page while plant division in progress', () => {
     });
 
     it('sends payload with database keys when form is submitted after confirming division', async () => {
-        // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            redirected: true,
-            url: '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-        }));
-
         // Click green confirm button
         await user.click(app.getByTitle('Plant was divided'));
 
         // Change name, leave other fields at default
         await user.clear(app.getByRole('textbox', {name: 'Plant name'}));
         await user.type(app.getByRole('textbox', {name: 'Plant name'}), 'Baby test plant');
+
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            redirected: true,
+            url: '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+        }));
 
         // Click Save button
         await user.click(app.getByText('Save'));
@@ -136,13 +140,6 @@ describe('Register page while plant division in progress', () => {
     });
 
     it('sends payload without database keys when form is submitted after rejecting division', async () => {
-        // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            redirected: true,
-            url: '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
-        }));
-
         // Click red reject button (registration unrelated to in-progress division)
         await user.click(app.getByTitle('Plant was NOT divided'));
 
@@ -151,6 +148,13 @@ describe('Register page while plant division in progress', () => {
         await user.type(app.getByRole('combobox', {name: 'Plant species'}), 'Fittonia');
         await user.type(app.getByRole('textbox', {name: 'Description'}), 'Clay pot');
         await user.type(app.getByLabelText('Pot size'), '6');
+
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            redirected: true,
+            url: '/manage/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
+        }));
 
         // Click Save button
         await user.click(app.getByText('Save'));

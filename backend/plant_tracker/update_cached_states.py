@@ -81,12 +81,6 @@ def update_parent_plant_details_in_cached_manage_plant_state(plant):
         cache.set(f'{plant.uuid}_state', cached_state, None)
 
 
-def clear_cached_plant_lists(user):
-    '''Takes user, clears cached species_options list.
-    '''
-    cache.delete('species_options')
-
-
 def update_plant_details_in_cached_plant_options(plant):
     '''Takes Plant entry, updates details in cached plant_options dict (used for
     manage_group add plants modal options) for the user who owns updated plant.
@@ -155,12 +149,9 @@ def update_group_details_in_cached_states(group):
 #       manage_plant state (child name/uuid may be outdated)
 #     - If plant has children updates `divided_from` key in parent all child plant
 #       cached manage_plant state(s) (parent name/uuid may be outdated)
-#     - Deletes cached species_options list
 #     - If plant is in group updates group details in cached overview state and
 #       cached group options (number of plants may have changed)
 #     '''
-#     # Clear cached lists (may contain outdated name/species)
-#     clear_cached_plant_lists(instance.user)
 #     update_plant_details_in_cached_states(instance)
 #     # Update parent plant state ("Divided into" outdated if plant name changed)
 #     if instance.divided_from:
@@ -190,14 +181,12 @@ def update_group_details_in_cached_states(group):
 #     - Deletes plant from cached overview state
 #     - Deletes plant from cached plant_options dict
 #     - Deletes plant's cached manage_plant state completely
-#     - Deletes cached species_options list
 #     - If plant is in group updates group details in cached overview state and
 #       cached group options (number of plants may have changed)
 #     '''
 #     remove_instance_from_cached_overview_state(instance, 'plants')
 #     remove_plant_from_cached_plant_options(instance)
 #     cache.delete(f'{instance.uuid}_state')
-#     clear_cached_plant_lists(instance.user)
 #     # If plant in group: update cached group details (number of plants changed)
 #     if instance.group:
 #         update_group_details_in_cached_states(instance.group)

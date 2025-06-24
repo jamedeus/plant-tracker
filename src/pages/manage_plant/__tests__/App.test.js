@@ -1,5 +1,6 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
+import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import { fireEvent, waitFor, within } from '@testing-library/react';
 import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
@@ -35,6 +36,13 @@ describe('App', () => {
     });
 
     it('sends correct payload when edit modal is submitted', async () => {
+        // Mock /get_plant_species_options response (requested when modal opens)
+        mockPlantSpeciesOptionsResponse();
+
+        // Open edit modal, confirm fetched species options
+        await user.click(app.getByRole('button', {name: 'Edit'}));
+        expect(global.fetch).toHaveBeenCalledWith('/get_plant_species_options');
+
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
@@ -46,9 +54,6 @@ describe('App', () => {
                 display_name: "Test Plant"
             })
         }));
-
-        // Open edit modal
-        await user.click(app.getByRole('button', {name: 'Edit'}));
 
         // Click submit button inside edit modal
         const modal = app.getByText("Edit Details").closest(".modal-box");
@@ -69,6 +74,9 @@ describe('App', () => {
     });
 
     it('disables edit modal submit button when fields are too long', async () => {
+        // Mock /get_plant_species_options response (requested when modal opens)
+        mockPlantSpeciesOptionsResponse();
+
         // Open edit modal
         await user.click(app.getByRole('button', {name: 'Edit'}));
 
@@ -393,7 +401,6 @@ describe('App', () => {
                 events: mockContext.events,
                 notes: mockContext.notes,
                 group_options: mockContext.group_options,
-                species_options: mockContext.species_options,
                 photos: mockContext.photos,
                 default_photo: mockContext.default_photo,
                 division_events: {},

@@ -48,13 +48,6 @@ This should be updated when:
   * Updated if Plant removed from group owned by same user (`/remove_plant_from_group`, `/bulk_remove_plants_from_group`)
   * Deleted when server restarts (replaced immediately) (`tasks.update_all_cached_states`)
 
-### `species_options`
-- Stores list of plant species with no duplicates
-- Set by `models.plant.get_plant_species_options`
-  * Expires in 10 minutes
-  * Deleted if Plant model owned by same user is saved (`update_cached_states.update_plant_in_cached_states_hook`)
-  * Deleted if Plant model owned by same user is deleted (`update_cached_states.remove_deleted_plant_from_cached_states_hook`)
-
 ### `overview_state_{user_primary_key}`
 - Stores overview page state
 - Name includes database primary key of user account that owns plants/groups in state
@@ -74,7 +67,7 @@ This should be updated when:
   * Overwritten when server restarts (`tasks.update_all_cached_states`)
 
 ### `{uuid}_state`
-- Stores manage_plant page state for the plant matching UUID (excluding the `group_options` and `species_options` keys which are cached separately)
+- Stores manage_plant page state for the plant matching UUID (excluding the `group_options` key which is cached separately)
 - Set by `update_cached_states.build_manage_plant_state` (only called when cache does not already exist)
   * Never expires
   * Updated when associated Plant is saved (`update_cached_states.update_plant_in_cached_states_hook`)

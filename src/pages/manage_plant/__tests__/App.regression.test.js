@@ -1,6 +1,7 @@
 import { fireEvent, waitFor } from '@testing-library/react';
 import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
+import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import App from '../App';
 import { PageWrapper } from 'src/index';
 import { mockContextNoEvents } from './mockContext';
@@ -271,21 +272,37 @@ describe('App', () => {
     // EditModal to change description and did not noticed the outdated pot
     // size value they could easily reset back to the initial pot size.
     it('updates pot size in EditModal form when plant is repotted', async () => {
+        // Mock /get_plant_species_options response (requested when modal opens)
+        mockPlantSpeciesOptionsResponse();
+
         // Open edit modal
         await user.click(app.getByRole('button', {name: 'Edit'}));
 
         // Confirm pot size field defaults to '4'
         expect(app.getByLabelText('Pot size').value).toBe('4');
 
-        // Simulate user opening repot modal and clicking submit without
-        // changing pot size (defaults to 6, next size up)
-        global.fetch = jest.fn(() => Promise.resolve({
+        // Mock fetch to return /repot_plant response first, then
+        // /get_plant_species_options response (will be requested automatically
+        // when PlantDetailsForm remounts in response to repot state change)
+        global.fetch = jest.fn().mockResolvedValueOnce({
             ok: true,
             json: () => Promise.resolve({
                 action: "repot",
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
-        }));
+        }).mockResolvedValueOnce({
+            ok: true,
+            json: () => Promise.resolve({
+                options: [
+                    "Parlor Palm",
+                    "Spider Plant",
+                    "Calathea"
+                ]
+            })
+        });
+
+        // Simulate user opening repot modal and clicking submit without
+        // changing pot size (defaults to 6, next size up)
         await user.click(app.getAllByText(/Repot plant/)[0]);
         await user.click(app.getByRole('button', {name: 'Repot'}));
 
@@ -656,7 +673,6 @@ describe('App', () => {
                 },
                 notes: [],
                 group_options: mockContextNoEvents.group_options,
-                species_options: mockContextNoEvents.species_options,
                 photos: [],
                 default_photo: mockContextNoEvents.default_photo,
                 division_events: {},
@@ -686,7 +702,6 @@ describe('App', () => {
                 events: mockContextNoEvents.events,
                 notes: [],
                 group_options: mockContextNoEvents.group_options,
-                species_options: mockContextNoEvents.species_options,
                 photos: [],
                 default_photo: mockContextNoEvents.default_photo,
                 division_events: {},
@@ -721,7 +736,6 @@ describe('App', () => {
                 events: mockContextNoEvents.events,
                 notes: [],
                 group_options: mockContextNoEvents.group_options,
-                species_options: mockContextNoEvents.species_options,
                 photos: [
                     {
                         timestamp: '2024-03-21T10:52:03+00:00',
@@ -767,7 +781,6 @@ describe('App', () => {
                 events: mockContextNoEvents.events,
                 notes: [],
                 group_options: mockContextNoEvents.group_options,
-                species_options: mockContextNoEvents.species_options,
                 photos: [],
                 default_photo: mockContextNoEvents.default_photo,
                 division_events: {},
@@ -801,7 +814,6 @@ describe('App', () => {
                 events: mockContextNoEvents.events,
                 notes: [],
                 group_options: mockContextNoEvents.group_options,
-                species_options: mockContextNoEvents.species_options,
                 photos: [
                     {
                         timestamp: '2024-03-21T10:52:03+00:00',

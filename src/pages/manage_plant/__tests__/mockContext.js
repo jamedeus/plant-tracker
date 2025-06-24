@@ -55,11 +55,6 @@ export const mockContext = {
             archived: false
         }
     },
-    species_options: [
-        "Parlor Palm",
-        "Spider Plant",
-        "Calathea"
-    ],
     photos: {
         1: {
             timestamp: '2024-03-21T10:52:03+00:00',
@@ -141,11 +136,6 @@ export const mockContextNoEvents = {
             plants: 5,
             archived: false
         }
-    ],
-    species_options: [
-        "Parlor Palm",
-        "Spider Plant",
-        "Calathea"
     ],
     photos: {},
     default_photo: {

@@ -5,7 +5,7 @@ from django.db.models import F, Case, When, Value, Subquery, OuterRef, Count
 from django.db.models.functions import RowNumber
 from django.db.models import Window
 
-from .models import Plant, Group, Photo, get_plant_species_options, WaterEvent, FertilizeEvent
+from .models import Plant, Group, Photo, WaterEvent, FertilizeEvent
 
 
 def plant_is_unnamed_annotation():
@@ -235,8 +235,7 @@ def get_manage_plant_state(plant):
     if plant.group:
         state['plant_details']['group'] = plant.get_group_details()
 
-    # Add species and group options (cached separately)
+    # Add group options (cached separately)
     state['group_options'] = get_group_options(plant.user)
-    state['species_options'] = get_plant_species_options()
 
     return state

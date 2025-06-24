@@ -837,24 +837,6 @@ class RegistrationTests(TestCase):
             'event_key': str(division_event.pk)
         })
 
-    def test_registration_page_plant_species_options(self):
-        # Request management page with uuid that doesn't exist in database
-        response = self.client.get(f'/manage/{uuid4()}')
-
-        # Confirm species_options list is empty (no plants in database)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context['state']['species_options'], [])
-
-        # Create 2 test plants with species set
-        Plant.objects.create(uuid=uuid4(), species='Calathea', user=self.default_user)
-        Plant.objects.create(uuid=uuid4(), species='Fittonia', user=self.default_user)
-
-        # Reguest page again, confirm species_options contains both species
-        response = self.client.get(f'/manage/{uuid4()}')
-        self.assertIn('Calathea', response.context['state']['species_options'])
-        self.assertIn('Fittonia', response.context['state']['species_options'])
-        self.assertEqual(len(response.context['state']['species_options']), 2)
-
     def test_plant_fields_max_length(self):
         # Send plant registration request name longer than 50 characters
         response = self.client.post('/register_plant', {
@@ -1012,9 +994,6 @@ class ManagePageTests(TestCase):
         # Confirm notes dict is empty (test plant has no notes)
         self.assertEqual(state['notes'], {})
 
-        # Confirm species_options list is empty (test plants have no species)
-        self.assertEqual(state['species_options'], [])
-
         # Confirm photos list is empty (test plant has no photos)
         self.assertEqual(state['photos'], {})
 
@@ -1134,29 +1113,6 @@ class ManagePageTests(TestCase):
             'Favorite Plant'
         )
 
-    def test_manage_plant_with_species_options(self):
-        # Add species to both plants
-        self.plant1.species = 'Calathea'
-        self.plant1.save()
-        self.plant2.species = 'Fittonia'
-        self.plant2.save()
-
-        # Request manage page, confirm species_options contains both species
-        response = self.client.get(f'/manage/{self.plant1.uuid}')
-        self.assertIn('Calathea', response.context['state']['species_options'])
-        self.assertIn('Fittonia', response.context['state']['species_options'])
-        self.assertEqual(len(response.context['state']['species_options']), 2)
-
-        # Save species_options
-        plant1_species_options = response.context['state']['species_options']
-
-        # Request manage oage for second plant, confirm identical species_options
-        response = self.client.get(f'/manage/{self.plant2.uuid}')
-        self.assertEqual(
-            response.context['state']['species_options'],
-            plant1_species_options
-        )
-
     def test_get_plant_state(self):
         # Call get_plant_state endpoint with UUID of existing plant entry
         response = self.client.get(f'/get_plant_state/{self.plant1.uuid}')
@@ -1208,7 +1164,6 @@ class ManagePageTests(TestCase):
                         'plants': 0
                     }
                 },
-                'species_options': [],
                 'divided_from': None,
                 'division_events': {}
             }
@@ -1466,6 +1421,24 @@ class ManagePlantEndpointTests(TestCase):
     def _refresh_test_models(self):
         self.plant.refresh_from_db()
         self.group.refresh_from_db()
+
+    def test_get_species_options(self):
+        # Call endpoint with no plants in database with species set
+        response = self.client.get('/get_plant_species_options')
+
+        # Confirm returns empty list (no species in database)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'options': []})
+
+        # Create plants with species set
+        user = get_default_user()
+        Plant.objects.create(uuid=uuid4(), user=user, species='Calathea')
+        Plant.objects.create(uuid=uuid4(), user=user, species='Fittonia')
+
+        # Call endpoint again, confirm list contains both species
+        response = self.client.get('/get_plant_species_options')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'options': ['Calathea', 'Fittonia']})
 
     def test_edit_plant_details(self):
         # Confirm test plant has no name or species
@@ -1954,7 +1927,6 @@ class ChangeQrCodeTests(TestCase):
             response.context['state'],
             {
                 'new_id': str(self.fake_id),
-                'species_options': [],
                 'changing_qr_code': {
                     'type': 'plant',
                     'instance': {
@@ -2002,7 +1974,6 @@ class ChangeQrCodeTests(TestCase):
             response.context['state'],
             {
                 'new_id': str(self.fake_id),
-                'species_options': [],
                 'changing_qr_code': {
                     'type': 'group',
                     'instance': {
