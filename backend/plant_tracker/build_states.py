@@ -136,6 +136,8 @@ def build_overview_state(user):
             .annotate(**last_fertilized_time_annotation())
             # Add last_photo (used as default photo if default_photo not set)
             .annotate(**last_photo_thumbnail_annotation())
+            # Include default_photo if set (avoid extra query for thumbnail)
+            .select_related('default_photo')
     )
 
     groups = (
