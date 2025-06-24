@@ -1,4 +1,4 @@
-from .plant import Plant, get_plant_species_options
+from .plant import Plant
 from .group import Group
 from .photo import Photo
 from .events import (
@@ -19,6 +19,5 @@ __all__ = [
     "PruneEvent",
     "RepotEvent",
     "NoteEvent",
-    "DivisionEvent",
-    "get_plant_species_options"
+    "DivisionEvent"
 ]

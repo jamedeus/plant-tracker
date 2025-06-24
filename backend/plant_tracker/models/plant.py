@@ -14,14 +14,6 @@ if TYPE_CHECKING:  # pragma: no cover
     from .events import DivisionEvent
 
 
-def get_plant_species_options():
-    '''Returns a list of species for every Plant in database (no duplicates).
-    Used to populate species suggestions on plant details form.
-    '''
-    species = Plant.objects.all().values_list('species', flat=True)
-    return sorted(list(set(i for i in species if i is not None)))
-
-
 class Plant(models.Model):
     '''Tracks an individual plant, created by scanning QR code.
     Stores optional description params added during registration.

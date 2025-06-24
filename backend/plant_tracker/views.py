@@ -19,8 +19,7 @@ from .models import (
     RepotEvent,
     Photo,
     NoteEvent,
-    DivisionEvent,
-    get_plant_species_options
+    DivisionEvent
 )
 from .view_decorators import (
     events_map,
@@ -198,7 +197,10 @@ def get_plant_state(request, uuid):
 
 def get_species_options(request):
     '''Returns list used to populate plant species combobox suggestions.'''
-    return JsonResponse({'options': get_plant_species_options()}, status=200)
+
+    species = Plant.objects.all().values_list('species', flat=True)
+    options = sorted(list(set(i for i in species if i is not None)))
+    return JsonResponse({'options': options}, status=200)
 
 
 def build_manage_group_state(group):
