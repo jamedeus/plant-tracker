@@ -253,6 +253,10 @@ def build_manage_plant_state(uuid):
                         .values_list('timestamp', flat=True)
                 ),
             )
+            # Prefetch DivisionEvents if plant is a parent
+            .prefetch_related(
+                Prefetch('divisionevent_set')
+            )
             .first()
     )
 
