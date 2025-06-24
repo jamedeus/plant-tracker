@@ -226,7 +226,7 @@ class Plant(models.Model):
         '''Takes QuerySet containing events, returns timestamp string of
         most-recent event (or None if queryset empty).
         '''
-        last_event = queryset.order_by('timestamp').last()
+        last_event = queryset.first()
         if last_event:
             return last_event.timestamp.isoformat()
         return None
@@ -267,10 +267,10 @@ class Plant(models.Model):
         '''Takes QuerySet containing events, returns list of timestamp strings
         for every item in queryset sorted from most recent to least recent.
         '''
-        return sorted([
+        return [
             timestamp[0].isoformat()
             for timestamp in queryset.values_list('timestamp')
-        ], reverse=True)
+        ]
 
     def get_water_timestamps(self):
         '''Returns list of timestamp strings for every WaterEvent sorted from

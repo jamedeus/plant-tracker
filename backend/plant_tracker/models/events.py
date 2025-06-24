@@ -31,6 +31,7 @@ class WaterEvent(Event):
 
     class Meta:
         unique_together = ('plant', 'timestamp')
+        ordering = ['-timestamp']
 
 
 class FertilizeEvent(Event):
@@ -38,6 +39,7 @@ class FertilizeEvent(Event):
 
     class Meta:
         unique_together = ('plant', 'timestamp')
+        ordering = ['-timestamp']
 
 
 class PruneEvent(Event):
@@ -45,6 +47,7 @@ class PruneEvent(Event):
 
     class Meta:
         unique_together = ('plant', 'timestamp')
+        ordering = ['-timestamp']
 
 
 class RepotEvent(Event):
@@ -64,6 +67,7 @@ class RepotEvent(Event):
 
     class Meta:
         unique_together = ('plant', 'timestamp')
+        ordering = ['-timestamp']
 
 
 class NoteEvent(Event):

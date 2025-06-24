@@ -38,7 +38,6 @@ def last_watered_time_annotation():
     return {'last_watered_time': Subquery(
         WaterEvent.objects
             .filter(plant_id=OuterRef("pk"))
-            .order_by("-timestamp")
             .values("timestamp")[:1]
     )}
 
@@ -48,7 +47,6 @@ def last_fertilized_time_annotation():
     return {'last_fertilized_time': Subquery(
         FertilizeEvent.objects
             .filter(plant_id=OuterRef("pk"))
-            .order_by("-timestamp")
             .values("timestamp")[:1]
     )}
 
