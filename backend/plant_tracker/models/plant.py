@@ -19,7 +19,7 @@ def get_plant_species_options():
     Used to populate species suggestions on plant details form.
     '''
     species = Plant.objects.all().values_list('species', flat=True)
-    return list(set(i for i in species if i is not None))
+    return sorted(list(set(i for i in species if i is not None)))
 
 
 class Plant(models.Model):
