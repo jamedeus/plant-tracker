@@ -145,7 +145,7 @@ class Plant(models.Model):
             'pot_size': self.pot_size,
             'last_watered': self.last_watered(),
             'last_fertilized': self.last_fertilized(),
-            'thumbnail': self.get_default_photo_details()['thumbnail'],
+            'thumbnail': self.get_thumbnail_url(),
             'group': self.get_group_details()
         }
 
@@ -157,6 +157,28 @@ class Plant(models.Model):
                 'uuid': str(self.group.uuid)
             }
         return None
+
+    def get_thumbnail_url(self):
+        '''Returns default_photo thumbnail URL (or most-recent photo if not set).'''
+        if self.default_photo:
+            return self.default_photo.get_thumbnail_url()
+
+        # If default photo not set: use annotation if present
+        if hasattr(self, 'last_photo_thumbnail'):
+            if self.last_photo_thumbnail:
+                return f'{settings.MEDIA_URL}{self.last_photo_thumbnail}'
+            return None
+
+        # Use full last_photo_details annotation if present
+        if hasattr(self, 'last_photo_details'):
+            return self.get_default_photo_details()['thumbnail']
+
+        # Query from database if neither annotation present
+        try:
+            last_photo = self.photo_set.all().order_by('-timestamp')[0]
+            return last_photo.get_thumbnail_url()
+        except IndexError:
+            return None
 
     def get_default_photo_details(self):
         '''Returns dict containing set key (True if default photo set, False if

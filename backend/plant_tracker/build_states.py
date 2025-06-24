@@ -107,7 +107,7 @@ def get_plant_options(user):
                 .annotate(**unnamed_index_annotation())
                 .annotate(**last_watered_time_annotation())
                 .annotate(**last_fertilized_time_annotation())
-                .annotate(**last_photo_details_annotation())
+                .annotate(**last_photo_thumbnail_annotation())
             if plant.group is None
         }
         # cache.set(f'plant_options_{user.pk}', plant_options, None)
@@ -169,7 +169,7 @@ def build_overview_state(user):
             # Add last_fertilized_time
             .annotate(**last_fertilized_time_annotation())
             # Add last_photo_details (used as default photo if not set)
-            .annotate(**last_photo_details_annotation())
+            .annotate(**last_photo_thumbnail_annotation())
             # Include default_photo if set (avoid extra query for thumbnail)
             .select_related('default_photo')
             # Include Group entry if plant in a group (copy from groups queryset
