@@ -192,7 +192,21 @@ def build_manage_plant_state(uuid):
     '''Builds state parsed by manage_plant react app and returns.'''
 
     # Look up Plant by uuid (can't pass model entry to task, not serializable)
-    plant = Plant.objects.get(uuid=uuid)
+    plant = (
+        Plant.objects
+            .filter(uuid=uuid)
+            # Add last_watered_time
+            .annotate(**last_watered_time_annotation())
+            # Add last_fertilized_time
+            .annotate(**last_fertilized_time_annotation())
+            # Add last_photo (used as default photo if default_photo not set)
+            .annotate(**last_photo_thumbnail_annotation())
+            # Include default_photo if set (avoid extra query for thumbnail)
+            .select_related('default_photo')
+            # Include Group entry if plant in a group
+            .select_related('group')
+            .first()
+    )
 
     state = {
         'plant_details': plant.get_details(),
