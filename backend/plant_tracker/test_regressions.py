@@ -770,6 +770,52 @@ class ViewRegressionTests(TestCase):
     #     overview_state = cache.get(f'overview_state_{get_default_user().pk}')
     #     self.assertEqual(overview_state['groups'][str(group.uuid)]['plants'], 0)
 
+    def test_overview_does_not_break_if_plants_have_photos(self):
+        '''Issue: While optimizing postgres queries a bad annotation was written
+        that saved the wrong attribute of most-recent photo. This was done while
+        using a test fixture where no plants had photos, and unit tests did not
+        catch it because they never request overview state with photos
+        '''
+
+        # Create plant with photo
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        photo = Photo.objects.create(
+            photo=create_mock_photo(
+                creation_time='2024:02:21 10:52:03',
+                name='photo1.jpg'
+            ),
+            plant=plant
+        )
+
+        # Request overview page, should not raise exception
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm state contains plant details and correct thumbnail
+        self.assertEqual(
+            response.context['state'],
+            {
+                'plants': {
+                    str(plant.uuid): {
+                        'name': None,
+                        'display_name': 'Unnamed plant 1',
+                        'uuid': str(plant.uuid),
+                        'archived': False,
+                        'created': plant.created.isoformat(),
+                        'species': None,
+                        'description': None,
+                        'pot_size': None,
+                        'last_watered': None,
+                        'last_fertilized': None,
+                        'thumbnail': photo.get_thumbnail_url(),
+                        'group': None
+                    }
+                },
+                'groups': {},
+                'show_archive': False
+            }
+        )
+
 
 class CachedStateRegressionTests(TestCase):
     def setUp(self):

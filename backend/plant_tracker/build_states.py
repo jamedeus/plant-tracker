@@ -53,13 +53,13 @@ def last_fertilized_time_annotation():
     )}
 
 
-def last_photo_annotation():
-    '''Adds last_photo attribute (most-recent Photo model entry).'''
-    return {'last_photo': Subquery(
+def last_photo_thumbnail_annotation():
+    '''Adds last_photo_thumbnail attribute with name of most-recent Photo entry.'''
+    return {'last_photo_thumbnail': Subquery(
         Photo.objects
             .filter(plant_id=OuterRef("pk"))
             .order_by("-timestamp")
-            .values("timestamp")[:1]
+            .values("thumbnail")[:1]
     )}
 
 
@@ -85,7 +85,7 @@ def get_plant_options(user):
                 .annotate(**unnamed_index_annotation())
                 .annotate(**last_watered_time_annotation())
                 .annotate(**last_fertilized_time_annotation())
-                .annotate(**last_photo_annotation())
+                .annotate(**last_photo_thumbnail_annotation())
             if plant.group is None
         }
         # cache.set(f'plant_options_{user.pk}', plant_options, None)
@@ -135,7 +135,7 @@ def build_overview_state(user):
             # Add last_fertilized_time
             .annotate(**last_fertilized_time_annotation())
             # Add last_photo (used as default photo if default_photo not set)
-            .annotate(**last_photo_annotation())
+            .annotate(**last_photo_thumbnail_annotation())
     )
 
     groups = (

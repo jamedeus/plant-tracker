@@ -145,7 +145,7 @@ class Plant(models.Model):
             'pot_size': self.pot_size,
             'last_watered': self.last_watered(),
             'last_fertilized': self.last_fertilized(),
-            'thumbnail': self.get_default_photo_details()['thumbnail'],
+            'thumbnail': self.get_thumbnail_url(),
             'group': self.get_group_details()
         }
 
@@ -158,6 +158,24 @@ class Plant(models.Model):
             }
         return None
 
+    def get_thumbnail_url(self):
+        '''Returns default_photo thumbnail URL (or most-recent photo if not set).'''
+        if self.default_photo:
+            return self.default_photo.get_thumbnail_url()
+
+        # If default photo not set: use annotation if present
+        if hasattr(self, 'last_photo_thumbnail'):
+            if self.last_photo_thumbnail:
+                return f'{settings.MEDIA_URL}{self.last_photo_thumbnail}'
+            return None
+
+        # Query from database if no annotation
+        try:
+            last_photo = self.photo_set.all().order_by('-timestamp')[0]
+            return last_photo.get_thumbnail_url()
+        except IndexError:
+            return None
+
     def get_default_photo_details(self):
         '''Returns dict containing set key (True if default photo set, False if
         not set) and details of default photo (or most-recent if not set).
@@ -168,13 +186,6 @@ class Plant(models.Model):
                 **self.default_photo.get_details()
             )
         try:
-            # Use annotation if present
-            if hasattr(self, 'last_photo'):
-                if self.last_photo:
-                    return self.last_photo.get_details()
-                # Skip extra query if annotation null (plant has no photos)
-                raise IndexError
-            # Query from database if no annotation
             return dict(
                 {'set': False},
                 **self.photo_set.all().order_by('-timestamp')[0].get_details()
