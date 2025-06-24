@@ -1,7 +1,7 @@
 '''Functions that build (or load from cache) states used by frontend react apps.'''
 
 from django.core.cache import cache
-from django.db.models import F, Case, When, Value, Subquery, OuterRef, Count
+from django.db.models import F, Case, When, Value, Subquery, OuterRef, Count, Prefetch
 from django.db.models.functions import RowNumber
 from django.db.models import Window
 
@@ -122,6 +122,18 @@ def build_overview_state(user):
     has_archived_groups = bool(Group.objects.filter(archived=True, user=user))
     show_archive = has_archived_plants or has_archived_groups
 
+    groups = (
+        Group.objects
+            .filter(user=user, archived=False)
+            .order_by('created')
+            # Label unnamed groups with no location (gets sequential name)
+            .annotate(**group_is_unnamed_annotation())
+            # Add unnamed_index (used to build "Unnamed group <index>" names)
+            .annotate(**unnamed_index_annotation())
+            # Add plant_count (number of plants in group)
+            .annotate(**group_plant_count_annotation())
+    )
+
     plants = (
         Plant.objects
             .filter(user=user, archived=False)
@@ -138,17 +150,14 @@ def build_overview_state(user):
             .annotate(**last_photo_thumbnail_annotation())
             # Include default_photo if set (avoid extra query for thumbnail)
             .select_related('default_photo')
-    )
-
-    groups = (
-        Group.objects
-            .filter(user=user, archived=False)
-            .order_by('created')
-            # Label unnamed groups with no location (gets sequential name)
-            .annotate(**group_is_unnamed_annotation())
-            # Add unnamed_index (used to build "Unnamed group <index>" names)
-            .annotate(**unnamed_index_annotation())
-            .annotate(**group_plant_count_annotation())
+            # Include Group entry if plant in a group (copy from groups queryset
+            # with unnamed annotated to avoid extra get_display_name queries)
+            .prefetch_related(
+                Prefetch(
+                    'group',
+                    queryset=groups
+                )
+            )
     )
 
     state = {
