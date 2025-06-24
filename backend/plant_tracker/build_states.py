@@ -4,8 +4,9 @@ from django.core.cache import cache
 from django.db.models import F, Case, When, Value, Subquery, OuterRef, Count, Prefetch
 from django.db.models.functions import RowNumber
 from django.db.models import Window
+from django.contrib.postgres.expressions import ArraySubquery
 
-from .models import Plant, Group, Photo, WaterEvent, FertilizeEvent
+from .models import Plant, Group, Photo, WaterEvent, FertilizeEvent, PruneEvent, RepotEvent
 
 
 def plant_is_unnamed_annotation():
@@ -203,6 +204,30 @@ def build_manage_plant_state(uuid):
             .select_related('default_photo')
             # Include Group entry if plant in a group
             .select_related('group')
+            # Add <event_type>_timetamps attributes containing lists of event
+            # timestamps (sorted chronologically at database level)
+            .annotate(
+                water_timestamps=ArraySubquery(
+                    WaterEvent.objects
+                        .filter(plant_id=OuterRef('pk'))
+                        .values_list('timestamp', flat=True)
+                ),
+                fertilize_timestamps=ArraySubquery(
+                    FertilizeEvent.objects
+                        .filter(plant_id=OuterRef('pk'))
+                        .values_list('timestamp', flat=True)
+                ),
+                prune_timestamps=ArraySubquery(
+                    PruneEvent.objects
+                        .filter(plant_id=OuterRef('pk'))
+                        .values_list('timestamp', flat=True)
+                ),
+                repot_timestamps=ArraySubquery(
+                    RepotEvent.objects
+                        .filter(plant_id=OuterRef('pk'))
+                        .values_list('timestamp', flat=True)
+                ),
+            )
             .first()
     )
 
@@ -214,10 +239,10 @@ def build_manage_plant_state(uuid):
 
     # Add all water, fertilize, prune, and repot timestamps
     state['events'] = {
-        'water': plant.get_water_timestamps(),
-        'fertilize': plant.get_fertilize_timestamps(),
-        'prune': plant.get_prune_timestamps(),
-        'repot': plant.get_repot_timestamps()
+        'water': [e.isoformat() for e in plant.water_timestamps],
+        'fertilize': [e.isoformat() for e in plant.fertilize_timestamps],
+        'prune': [e.isoformat() for e in plant.prune_timestamps],
+        'repot': [e.isoformat() for e in plant.repot_timestamps],
     }
 
     # Add notes dict with timestamps as keys and text as values
