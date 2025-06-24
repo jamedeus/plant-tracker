@@ -145,7 +145,7 @@ class Plant(models.Model):
             'pot_size': self.pot_size,
             'last_watered': self.last_watered(),
             'last_fertilized': self.last_fertilized(),
-            'thumbnail': self.get_thumbnail_url(),
+            'thumbnail': self.get_default_photo_details()['thumbnail'],
             'group': self.get_group_details()
         }
 
@@ -158,24 +158,6 @@ class Plant(models.Model):
             }
         return None
 
-    def get_thumbnail_url(self):
-        '''Returns default_photo thumbnail URL (or most-recent photo if not set).'''
-        if self.default_photo:
-            return self.default_photo.get_thumbnail_url()
-
-        # If default photo not set: use annotation if present
-        if hasattr(self, 'last_photo_thumbnail'):
-            if self.last_photo_thumbnail:
-                return f'{settings.MEDIA_URL}{self.last_photo_thumbnail}'
-            return None
-
-        # Query from database if no annotation
-        try:
-            last_photo = self.photo_set.all().order_by('-timestamp')[0]
-            return last_photo.get_thumbnail_url()
-        except IndexError:
-            return None
-
     def get_default_photo_details(self):
         '''Returns dict containing set key (True if default photo set, False if
         not set) and details of default photo (or most-recent if not set).
@@ -185,6 +167,20 @@ class Plant(models.Model):
                 {'set': True},
                 **self.default_photo.get_details()
             )
+
+        # If default photo not set: use annotation if present
+        if hasattr(self, 'last_photo_details'):
+            if self.last_photo_details:
+                return {
+                    'set': False,
+                    'timestamp': self.last_photo_details['timestamp'],
+                    'image': f'{settings.MEDIA_URL}{self.last_photo_details['photo']}',
+                    'thumbnail': f'{settings.MEDIA_URL}{self.last_photo_details['thumbnail']}',
+                    'preview': f'{settings.MEDIA_URL}{self.last_photo_details['preview']}',
+                    'key': self.last_photo_details['key']
+                }
+
+        # Query from database if no annotation
         try:
             return dict(
                 {'set': False},

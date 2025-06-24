@@ -3,8 +3,9 @@
 from django.core.cache import cache
 from django.db.models import F, Case, When, Value, Subquery, OuterRef, Count, Prefetch
 from django.db.models.functions import RowNumber
-from django.db.models import Window
+from django.db.models import Window, JSONField
 from django.contrib.postgres.expressions import ArraySubquery
+from django.db.models.functions import JSONObject
 
 from .models import Plant, Group, Photo, WaterEvent, FertilizeEvent, PruneEvent, RepotEvent
 
@@ -62,6 +63,28 @@ def last_photo_thumbnail_annotation():
     )}
 
 
+def last_photo_details_annotation():
+    '''Adds last_photo_details attribute with dict containing all relevant
+    attributes of most-recent Photo entry.
+    '''
+    return {"last_photo_details": Subquery(
+        Photo.objects
+            .filter(plant_id=OuterRef("pk"))
+            .order_by("-timestamp")
+            .annotate(
+                details=JSONObject(
+                    key=F("pk"),
+                    photo=F("photo"),
+                    thumbnail=F("thumbnail"),
+                    preview=F("preview"),
+                    timestamp=F("timestamp"),
+                )
+            )
+            .values("details")[:1],
+            output_field=JSONField()
+    )}
+
+
 def group_plant_count_annotation():
     '''Adds plant_count attribute (number of plants in group).'''
     return {'plant_count': Count('plant')}
@@ -84,7 +107,7 @@ def get_plant_options(user):
                 .annotate(**unnamed_index_annotation())
                 .annotate(**last_watered_time_annotation())
                 .annotate(**last_fertilized_time_annotation())
-                .annotate(**last_photo_thumbnail_annotation())
+                .annotate(**last_photo_details_annotation())
             if plant.group is None
         }
         # cache.set(f'plant_options_{user.pk}', plant_options, None)
@@ -145,8 +168,8 @@ def build_overview_state(user):
             .annotate(**last_watered_time_annotation())
             # Add last_fertilized_time
             .annotate(**last_fertilized_time_annotation())
-            # Add last_photo (used as default photo if default_photo not set)
-            .annotate(**last_photo_thumbnail_annotation())
+            # Add last_photo_details (used as default photo if not set)
+            .annotate(**last_photo_details_annotation())
             # Include default_photo if set (avoid extra query for thumbnail)
             .select_related('default_photo')
             # Include Group entry if plant in a group (copy from groups queryset
@@ -198,8 +221,8 @@ def build_manage_plant_state(uuid):
             .annotate(**last_watered_time_annotation())
             # Add last_fertilized_time
             .annotate(**last_fertilized_time_annotation())
-            # Add last_photo (used as default photo if default_photo not set)
-            .annotate(**last_photo_thumbnail_annotation())
+            # Add last_photo_details (used as default photo if not set)
+            .annotate(**last_photo_details_annotation())
             # Include default_photo if set (avoid extra query for thumbnail)
             .select_related('default_photo')
             # Include Group entry if plant in a group
