@@ -2,7 +2,7 @@ import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import App from '../App';
 import { PageWrapper } from 'src/index';
-import { mockContext } from './mockContext';
+import { mockContext, mockGroupOptions } from './mockContext';
 
 describe('App', () => {
     let app, user;
@@ -141,6 +141,18 @@ describe('App', () => {
         const addButton = app.getByTitle("Add plant to group");
         expect(addButton).not.toBeNull();
 
+        // Confirm arbitrary error does not appear on page
+        expect(app.queryByText(/failed to add plant to group/)).toBeNull();
+
+        // Mock fetch to return group options (requested when modal opened)
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({ options: mockGroupOptions })
+        }));
+
+        // Open AddToGroupModal
+        await user.click(addButton);
+
         // Mock fetch function to return arbitrary error
         global.fetch = jest.fn(() => Promise.resolve({
             ok: false,
@@ -148,12 +160,6 @@ describe('App', () => {
                 error: "failed to add plant to group"
             })
         }));
-
-        // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to add plant to group/)).toBeNull();
-
-        // Open AddToGroupModal
-        await user.click(addButton);
 
         // Simulate user clicking group option (nextSibling targets transparent
         // absolute-positioned div with click listener that covers group card)

@@ -672,7 +672,6 @@ describe('App', () => {
                     repot: [],
                 },
                 notes: [],
-                group_options: mockContextNoEvents.group_options,
                 photos: [],
                 default_photo: mockContextNoEvents.default_photo,
                 division_events: {},
@@ -701,7 +700,6 @@ describe('App', () => {
                 plant_details: mockContextNoEvents.plant_details,
                 events: mockContextNoEvents.events,
                 notes: [],
-                group_options: mockContextNoEvents.group_options,
                 photos: [],
                 default_photo: mockContextNoEvents.default_photo,
                 division_events: {},
@@ -735,7 +733,6 @@ describe('App', () => {
                 plant_details: mockContextNoEvents.plant_details,
                 events: mockContextNoEvents.events,
                 notes: [],
-                group_options: mockContextNoEvents.group_options,
                 photos: [
                     {
                         timestamp: '2024-03-21T10:52:03+00:00',
@@ -780,7 +777,6 @@ describe('App', () => {
                 plant_details: mockContextNoEvents.plant_details,
                 events: mockContextNoEvents.events,
                 notes: [],
-                group_options: mockContextNoEvents.group_options,
                 photos: [],
                 default_photo: mockContextNoEvents.default_photo,
                 division_events: {},
@@ -813,7 +809,6 @@ describe('App', () => {
                 plant_details: mockContextNoEvents.plant_details,
                 events: mockContextNoEvents.events,
                 notes: [],
-                group_options: mockContextNoEvents.group_options,
                 photos: [
                     {
                         timestamp: '2024-03-21T10:52:03+00:00',

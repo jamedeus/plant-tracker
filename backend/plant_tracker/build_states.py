@@ -324,9 +324,6 @@ def get_manage_plant_state(plant):
     if plant.group:
         state['plant_details']['group'] = plant.get_group_details()
 
-    # Add group options (cached separately)
-    state['group_options'] = get_group_options(plant.user)
-
     return state
 
 

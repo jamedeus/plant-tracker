@@ -25,6 +25,7 @@ urlpatterns = [
     path('get_plant_state/<str:uuid>', views.get_plant_state, name='get_plant_state'),
     path('get_plant_options', views.get_add_plants_options, name='get_add_plants_options'),
     path('get_plant_species_options', views.get_species_options, name='get_plant_species_options'),
+    path('get_add_to_group_options', views.get_add_to_group_options, name='get_add_to_group_options'),
     path('edit_plant', views.edit_plant_details, name='edit_plant_details'),
     path('edit_group', views.edit_group_details, name='edit_group_details'),
     path('change_qr_code', views.change_qr_code, name='change_qr_code'),

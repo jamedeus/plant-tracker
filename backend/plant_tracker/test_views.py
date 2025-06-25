@@ -998,23 +998,6 @@ class ManagePageTests(TestCase):
         # Confirm photos list is empty (test plant has no photos)
         self.assertEqual(state['photos'], {})
 
-        # Confirm group_options key contains details of all existing groups
-        self.assertEqual(
-            state['group_options'],
-            {
-                str(self.group1.uuid): {
-                    'name': None,
-                    'display_name': 'Unnamed group 1',
-                    'uuid': str(self.group1.uuid),
-                    'created': self.group1.created.isoformat(),
-                    'archived': False,
-                    'location': None,
-                    'description': None,
-                    'plants': 0
-                }
-            }
-        )
-
     def test_manage_plant_with_photos(self):
         # Create mock photos for plant1
         photo1 = Photo.objects.create(
@@ -1162,18 +1145,6 @@ class ManagePageTests(TestCase):
                     'thumbnail': None,
                     'preview': None,
                     'key': None
-                },
-                'group_options': {
-                    str(self.group1.uuid): {
-                        'name': None,
-                        'display_name': 'Unnamed group 1',
-                        'uuid': str(self.group1.uuid),
-                        'created': self.group1.created.isoformat(),
-                        'archived': False,
-                        'location': None,
-                        'description': None,
-                        'plants': 0
-                    }
                 },
                 'divided_from': None,
                 'division_events': {}
@@ -1604,6 +1575,28 @@ class ManagePlantEndpointTests(TestCase):
 
         # Confirm UUID was not cached
         self.assertIsNone(cache.get(f'division_in_progress_{get_default_user().pk}'))
+
+    def test_get_add_to_group_options(self):
+        # Confirm endpoint returns details of all existing groups
+        response = self.client.get('/get_add_to_group_options')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {
+                'options': {
+                    str(self.group.uuid): {
+                        'name': None,
+                        'display_name': 'Unnamed group 1',
+                        'uuid': str(self.group.uuid),
+                        'created': self.group.created.isoformat(),
+                        'archived': False,
+                        'location': None,
+                        'description': None,
+                        'plants': 0
+                    }
+                }
+            }
+        )
 
 
 class ManageGroupEndpointTests(TestCase):

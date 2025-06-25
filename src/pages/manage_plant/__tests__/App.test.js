@@ -5,7 +5,7 @@ import { fireEvent, waitFor, within } from '@testing-library/react';
 import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
 import { PageWrapper } from 'src/index';
-import { mockContext } from './mockContext';
+import { mockContext, mockGroupOptions } from './mockContext';
 
 describe('App', () => {
     let app, user;
@@ -240,6 +240,12 @@ describe('App', () => {
         // Click remove from group button (re-renders with add to group option)
         await user.click(app.getByTitle(/Remove plant from group/));
 
+        // Mock fetch to return group options (requested when modal opened)
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({ options: mockGroupOptions })
+        }));
+
         // Click "Add to group" button in details dropdown
         await user.click(app.getByTitle(/Add plant to group/));
 
@@ -400,7 +406,6 @@ describe('App', () => {
                 plant_details: mockContext.plant_details,
                 events: mockContext.events,
                 notes: mockContext.notes,
-                group_options: mockContext.group_options,
                 photos: mockContext.photos,
                 default_photo: mockContext.default_photo,
                 division_events: {},

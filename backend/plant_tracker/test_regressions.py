@@ -968,10 +968,10 @@ class CachedStateRegressionTests(TestCase):
         # Trigger group_options cache update (normally called from endpoint)
         group.save()
 
-        # Confirm group option in manage_plant state says 1 plant in group
-        response = self.client.get(f'/manage/{plant1.uuid}')
+        # Confirm group option says 1 plant in group
+        response = self.client.get('/get_add_to_group_options')
         self.assertEqual(
-            response.context['state']['group_options'][str(group.uuid)]['plants'],
+            response.json()['options'][str(group.uuid)]['plants'],
             1
         )
 
@@ -981,10 +981,10 @@ class CachedStateRegressionTests(TestCase):
             {'plant_id': plant2.uuid, 'group_id': group.uuid}
         )
 
-        # Confirm group option in manage_plant state now says 2 plants in group
-        response = self.client.get(f'/manage/{plant1.uuid}')
+        # Confirm group option now says 2 plants in group
+        response = self.client.get('/get_add_to_group_options')
         self.assertEqual(
-            response.context['state']['group_options'][str(group.uuid)]['plants'],
+            response.json()['options'][str(group.uuid)]['plants'],
             2
         )
 
@@ -993,10 +993,10 @@ class CachedStateRegressionTests(TestCase):
             'plant_id': plant2.uuid
         })
 
-        # Confirm group option in manage_plant state now says 1 plant in group
-        response = self.client.get(f'/manage/{plant1.uuid}')
+        # Confirm group option now says 1 plant in group
+        response = self.client.get('/get_add_to_group_options')
         self.assertEqual(
-            response.context['state']['group_options'][str(group.uuid)]['plants'],
+            response.json()['options'][str(group.uuid)]['plants'],
             1
         )
 
@@ -1006,10 +1006,10 @@ class CachedStateRegressionTests(TestCase):
             'plants': [plant2.uuid]
         })
 
-        # Confirm group option in manage_plant state now says 2 plants in group
-        response = self.client.get(f'/manage/{plant1.uuid}')
+        # Confirm group option now says 2 plants in group
+        response = self.client.get('/get_add_to_group_options')
         self.assertEqual(
-            response.context['state']['group_options'][str(group.uuid)]['plants'],
+            response.json()['options'][str(group.uuid)]['plants'],
             2
         )
 
@@ -1019,10 +1019,10 @@ class CachedStateRegressionTests(TestCase):
             'plants': [plant2.uuid]
         })
 
-        # Confirm group option in manage_plant state now says 1 plant in group
-        response = self.client.get(f'/manage/{plant1.uuid}')
+        # Confirm group option now says 1 plant in group
+        response = self.client.get('/get_add_to_group_options')
         self.assertEqual(
-            response.context['state']['group_options'][str(group.uuid)]['plants'],
+            response.json()['options'][str(group.uuid)]['plants'],
             1
         )
 
@@ -1319,7 +1319,7 @@ class CachedStateRegressionTests(TestCase):
     #     # Trigger group_options cache update (normally called from endpoint)
     #     group.save()
 
-    #     # Confirm group option in manage_plant state says 1 plant in group
+    #     # Confirm overview state says 1 plant in group
     #     self.assertEqual(
     #         cache.get(f'overview_state_{user.pk}')['groups'][str(group.uuid)]['plants'],
     #         1

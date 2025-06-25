@@ -39,6 +39,7 @@ from .build_states import (
     get_overview_state,
     get_manage_plant_state,
     get_plant_options,
+    get_group_options,
     build_manage_group_state
 )
 # from .update_cached_states import (
@@ -206,8 +207,14 @@ def get_species_options(request):
 
 @get_user_token
 def get_add_plants_options(request, user):
-    '''Returns list of plants with no group (populates group add plants modal).'''
+    '''Returns dict of plants with no group (populates group add plants modal).'''
     return JsonResponse({'options': get_plant_options(user)}, status=200)
+
+
+@get_user_token
+def get_add_to_group_options(request, user):
+    '''Returns dict of groups (populates plant add to group modal).'''
+    return JsonResponse({'options': get_group_options(user)}, status=200)
 
 
 def render_manage_group_page(request, group, user):

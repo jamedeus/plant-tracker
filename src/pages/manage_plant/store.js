@@ -137,7 +137,6 @@ export function ReduxProvider({ children }) {
     const init = () => {
         // Parse django context objects
         const plantDetails = parseDomContext("plant_details");
-        const groupOptions = parseDomContext("group_options");
         const eventsByType = parseDomContext("events");
         const dividedFrom = parseDomContext("divided_from");
         const divisionEvents = parseDomContext("division_events");
@@ -166,8 +165,7 @@ export function ReduxProvider({ children }) {
         // Return object with keys expected by plantSlice and timelineSlice
         return {
             plant: {
-                plantDetails,
-                groupOptions
+                plantDetails
             },
             timeline: {
                 eventsByType,

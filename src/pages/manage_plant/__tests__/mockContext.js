@@ -33,28 +33,6 @@ export const mockContext = {
         "2024-03-01T15:45:44+00:00": "Fertilized with dilute 10-15-10 liquid fertilizer",
         "2024-02-26T12:44:12+00:00": "One of the older leaves is starting to turn yellow"
     },
-    group_options: {
-        "0640ec3b-1bed-4b15-a078-d6e7ec66be14": {
-            name: "Test group",
-            display_name: "Test group",
-            uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
-            created: "2023-12-26T01:25:12+00:00",
-            location: "Top shelf",
-            description: "Medium brightness grow light",
-            plants: 3,
-            archived: false
-        },
-        "0640ec3b-1bed-4b15-a078-d6e7ec66be61": {
-            name: "Testing",
-            display_name: "Testing",
-            uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be61",
-            created: "2023-12-26T01:25:12+00:00",
-            location: "Middle shelf",
-            description: "Brightest grow light",
-            plants: 5,
-            archived: false
-        }
-    },
     photos: {
         1: {
             timestamp: '2024-03-21T10:52:03+00:00',
@@ -115,28 +93,6 @@ export const mockContextNoEvents = {
         repot: [],
     },
     notes: {},
-    group_options: [
-        {
-            name: "Test group",
-            display_name: "Test group",
-            uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
-            created: "2023-12-26T01:25:12+00:00",
-            location: "Top shelf",
-            description: "Medium brightness grow light",
-            plants: 3,
-            archived: false
-        },
-        {
-            name: "Testing",
-            display_name: "Testing",
-            uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be61",
-            created: "2023-12-26T01:25:12+00:00",
-            location: "Middle shelf",
-            description: "Brightest grow light",
-            plants: 5,
-            archived: false
-        }
-    ],
     photos: {},
     default_photo: {
         set: false,
@@ -329,7 +285,6 @@ export const mockphotos = {
     }
 };
 
-
 export const mockNotes = {
     "2024-03-25T15:28:39+00:00": "Fertilized with a balanced 10-10-10 fertilizer.",
     "2024-02-21T21:21:17+00:00": "Noticed some yellow leaves, reduced watering and moved it away from direct sunlight.",
@@ -337,4 +292,27 @@ export const mockNotes = {
     "2023-09-12T01:59:28+00:00": "Needs to get repotted soon, roots are starting to grow through the bottom.",
     "2023-08-29T04:43:30+00:00": "Pruned a little to encourage new growth, removed dead heads and weaker branches.",
     "2008-08-22T19:00:43+00:00": "Flowers look like they will open within a couple days."
+};
+
+export const mockGroupOptions = {
+    "0640ec3b-1bed-4b15-a078-d6e7ec66be14": {
+        name: "Test group",
+        display_name: "Test group",
+        uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
+        created: "2023-12-26T01:25:12+00:00",
+        location: "Top shelf",
+        description: "Medium brightness grow light",
+        plants: 3,
+        archived: false
+    },
+    "0640ec3b-1bed-4b15-a078-d6e7ec66be61": {
+        name: "Testing",
+        display_name: "Testing",
+        uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be61",
+        created: "2023-12-26T01:25:12+00:00",
+        location: "Middle shelf",
+        description: "Brightest grow light",
+        plants: 5,
+        archived: false
+    }
 };
