@@ -109,7 +109,7 @@ def get_plant_options(user):
         plant_options = {
             str(plant.uuid): plant.get_details()
             for plant in Plant.objects
-                .filter(user=user)
+                .filter(user=user, archived=False)
                 .order_by('created')
                 .select_related('group')
                 .annotate(**plant_is_unnamed_annotation())

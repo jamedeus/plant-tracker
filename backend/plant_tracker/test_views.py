@@ -30,6 +30,7 @@ from .models import (
     Photo,
     NoteEvent
 )
+from .build_states import get_plant_options
 from .unit_test_helpers import JSONClient, create_mock_photo
 
 
@@ -1806,6 +1807,66 @@ class ManageGroupEndpointTests(TestCase):
         self.assertIsNone(self.plant1.group)
         self.assertIsNone(self.plant2.group)
         self.assertEqual(len(self.group1.plant_set.all()), 0)
+
+    def test_get_plant_options(self):
+        self.maxDiff = None
+        # Confirm function returns dict with details of all plants
+        self.assertEqual(
+            get_plant_options(self.plant1.user),
+            {
+                str(self.plant1.uuid): {
+                    'name': self.plant1.name,
+                    'display_name': self.plant1.get_display_name(),
+                    'uuid': str(self.plant1.uuid),
+                    'created': self.plant1.created.isoformat(),
+                    'archived': False,
+                    'species': None,
+                    'pot_size': None,
+                    'description': None,
+                    'last_watered': None,
+                    'last_fertilized': None,
+                    'thumbnail': None,
+                    'group': None
+                },
+                str(self.plant2.uuid): {
+                    'name': self.plant2.name,
+                    'display_name': self.plant2.get_display_name(),
+                    'uuid': str(self.plant2.uuid),
+                    'created': self.plant2.created.isoformat(),
+                    'archived': False,
+                    'species': None,
+                    'pot_size': None,
+                    'description': None,
+                    'last_watered': None,
+                    'last_fertilized': None,
+                    'thumbnail': None,
+                    'group': None
+                }
+            }
+        )
+
+        # Archive plant1, confirm removed from options
+        self.plant2.archived = True
+        self.plant2.save()
+        self.assertEqual(
+            get_plant_options(self.plant1.user),
+            {
+                str(self.plant1.uuid): {
+                    'name': self.plant1.name,
+                    'display_name': self.plant1.get_display_name(),
+                    'uuid': str(self.plant1.uuid),
+                    'created': self.plant1.created.isoformat(),
+                    'archived': False,
+                    'species': None,
+                    'pot_size': None,
+                    'description': None,
+                    'last_watered': None,
+                    'last_fertilized': None,
+                    'thumbnail': None,
+                    'group': None
+                }
+            }
+        )
 
 
 class ChangeQrCodeTests(TestCase):

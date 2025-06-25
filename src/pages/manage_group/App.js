@@ -32,13 +32,6 @@ function App() {
         return parseDomContext("options");
     });
 
-    // Subset of plant option objects that are not archived
-    const addPlantsModalOptions = useMemo(() => (
-        Object.fromEntries(Object.entries(options).filter(
-            ([, plant]) => !plant.archived
-        ))
-    ), [options]);
-
     // Request new state from backend if user navigates to page by pressing
     // back button (may be outdated if user clicked plant and made changes)
     useEffect(() => {
@@ -366,7 +359,7 @@ function App() {
             <EditGroupModal group={group} setGroup={setGroup} />
 
             <AddPlantsModal
-                options={addPlantsModalOptions}
+                options={options}
                 addPlants={addPlants}
             />
 
