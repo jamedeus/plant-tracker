@@ -1,13 +1,22 @@
 '''Functions that build (or load from cache) states used by frontend react apps.'''
 
 from django.core.cache import cache
-from django.db.models import F, Case, When, Value, Subquery, OuterRef, Count, Prefetch
+from django.db.models import F, Case, When, Value, Subquery, OuterRef, Count, Prefetch, Exists
 from django.db.models.functions import RowNumber
 from django.db.models import Window, JSONField
 from django.contrib.postgres.expressions import ArraySubquery
 from django.db.models.functions import JSONObject
 
-from .models import Plant, Group, Photo, WaterEvent, FertilizeEvent, PruneEvent, RepotEvent
+from .models import (
+    Plant,
+    Group,
+    Photo,
+    WaterEvent,
+    FertilizeEvent,
+    PruneEvent,
+    RepotEvent,
+    DivisionEvent
+)
 
 
 def plant_is_unnamed_annotation():
@@ -253,9 +262,11 @@ def build_manage_plant_state(uuid):
                         .values_list('timestamp', flat=True)
                 ),
             )
-            # Prefetch DivisionEvents if plant is a parent
-            .prefetch_related(
-                Prefetch('divisionevent_set')
+            # Annotate whether DivisionEvents exist (skips extra query if not)
+            .annotate(
+                has_divisions=Exists(
+                    DivisionEvent.objects.filter(plant=OuterRef('pk'))
+                )
             )
             .first()
     )

@@ -224,6 +224,13 @@ class Plant(models.Model):
         '''Returns nested dict with DivisionEvent timestamps as keys, list as
         value containing dicts with each child plant's name and uuid.
         '''
+
+        # Skip if annotation says no DivisionEvents
+        if hasattr(self, 'has_divisions'):
+            if not self.has_divisions:
+                return {}
+
+        # Query from database if no annotation
         return {
             event.timestamp.isoformat(): [
                 {'name': child.get_display_name(), 'uuid': str(child.uuid)}
