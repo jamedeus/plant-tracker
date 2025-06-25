@@ -1,7 +1,7 @@
 import { fireEvent, within } from '@testing-library/react';
 import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
-import { mockContext } from './mockContext';
+import { mockContext, mockPlantOptions } from './mockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
 import { PageWrapper } from 'src/index';
@@ -148,19 +148,25 @@ describe('App', () => {
     // adding plants. If plant1 was added, then the modal was opened again and
     // plant2 was added a duplicate card for plant1 would also be added.
     it('does not add duplicates when AddPlantsModal used twice', async () => {
-        // Mock fetch function to return expected response
+        // Mock fetch to return options (requested when modal opened)
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
-            json: () => Promise.resolve({
-                added: [
-                    mockContext.options[Object.keys(mockContext.options)[0]]
-                ],
-                failed: []
-            })
+            json: () => Promise.resolve({ options: mockPlantOptions })
         }));
 
         // Click Add plants dropdown option
         await user.click(app.getByTestId("add_plants_option"));
+
+        // Mock fetch function to return expected response when first option added
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                added: [
+                    mockPlantOptions[Object.keys(mockPlantOptions)[0]]
+                ],
+                failed: []
+            })
+        }));
 
         // Select first plant option in modal, click add button
         await user.click(app.getByLabelText('Select Another test plant'));
@@ -178,8 +184,29 @@ describe('App', () => {
             headers: postHeaders
         });
 
-        // Reopen modal again, click add button again
+        // Mock fetch to return options remaining option (remove uuid that was
+        // already added, simulate options returned by backend)
+        const remainingOption = Object.keys(mockPlantOptions)[1];
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({ options: {
+                [remainingOption]: mockPlantOptions[remainingOption]
+            } })
+        }));
+
+        // Open modal again, click add button again
         await user.click(app.getByTestId("add_plants_option"));
+
+        // Mock fetch function to return expected response when no UUIDs received
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                added: [],
+                failed: []
+            })
+        }));
+
+        // Click add button without selecting anything
         await user.click(app.getByRole('button', {name: 'Add'}));
 
         // Confirm payload contains no UUIDs (selected ref cleared)
@@ -332,22 +359,28 @@ describe('App', () => {
     // in the same session a duplicate option would be added (existing option
     // on load, not removed on add, added again on remove).
     it('does not add duplicate options to AddPlantsModal if plant added and removed', async () => {
-        // Mock fetch function to return expected response when "Another test
-        // plant" added to group
+        // Mock fetch to return options (requested when modal opened)
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
-            json: () => Promise.resolve({
-                added: [
-                    mockContext.options[Object.keys(mockContext.options)[0]]
-                ],
-                failed: []
-            })
+            json: () => Promise.resolve({ options: mockPlantOptions })
         }));
 
         // Open AddPlantsModal, confirm "Another test plant" option exists
         await user.click(app.getByTestId("add_plants_option"));
         const modal = app.getByText("Add Plants").closest(".modal-box");
         expect(within(modal).getAllByText("Another test plant").length).toBe(1);
+
+        // Mock fetch function to return expected response when "Another test
+        // plant" added to group
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                added: [
+                    mockPlantOptions[Object.keys(mockPlantOptions)[0]]
+                ],
+                failed: []
+            })
+        }));
 
         // Select "Another test plant" option, click Add button
         await user.click(app.getByLabelText('Select Another test plant'));
@@ -381,7 +414,8 @@ describe('App', () => {
         await user.click(app.getByTestId("remove_plants_option"));
 
         // Select the first plant option, click Remove button
-        await user.click(app.getByLabelText('Select Another test plant'));
+        const plantsCol = app.getByText('Plants (4)').closest('.section');
+        await user.click(within(plantsCol).getByLabelText('Select Another test plant'));
         await user.click(app.getByRole('button', {name: 'Remove'}));
 
         // Confirm AddPlantsModal does not contain a duplicate option

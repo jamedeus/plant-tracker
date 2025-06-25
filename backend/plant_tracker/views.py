@@ -204,6 +204,12 @@ def get_species_options(request):
     return JsonResponse({'options': options}, status=200)
 
 
+@get_user_token
+def get_add_plants_options(request, user):
+    '''Returns list of plants with no group (populates group add plants modal).'''
+    return JsonResponse({'options': get_plant_options(user)}, status=200)
+
+
 def render_manage_group_page(request, group, user):
     '''Renders management page for an existing group.
     Called by /manage endpoint if UUID is found in database group table.

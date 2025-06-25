@@ -360,6 +360,5 @@ def build_manage_group_state(group):
         'group': group.get_details(),
         'details': {
             str(plant.uuid): plant.get_details() for plant in plants
-        },
-        'options': get_plant_options(group.user)
+        }
     }

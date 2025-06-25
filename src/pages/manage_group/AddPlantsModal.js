@@ -1,17 +1,34 @@
-import React, { useRef, memo } from 'react';
+import React, { useState, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import EditableNodeList from 'src/components/EditableNodeList';
 import Modal from 'src/components/Modal';
 import PlantCard from 'src/components/PlantCard';
 
-let modalRef;
+let modalRef, loadOptions;
 
-export const openAddPlantsModal = () => {
+// Request options from backend, open modal
+export const openAddPlantsModal = async () => {
+    await loadOptions();
     modalRef.current.open();
 };
 
-const AddPlantsModal = memo(function AddPlantsModal({ options, addPlants }) {
+const AddPlantsModal = memo(function AddPlantsModal({ addPlants }) {
     modalRef = useRef(null);
+
+    // Stores options queried from backend
+    const [options, setOptions] = useState([]);
+
+    loadOptions = async () => {
+        const response = await fetch('/get_plant_options');
+        if (response.ok) {
+            const data = await response.json();
+            setOptions(data.options);
+        }
+    };
+
+    const clearOptions = () => {
+        setOptions([]);
+    };
 
     // Ref used to read selected items from EditableNodeList form
     const formRef = useRef(null);
@@ -27,6 +44,7 @@ const AddPlantsModal = memo(function AddPlantsModal({ options, addPlants }) {
             title='Add Plants'
             ref={modalRef}
             className='max-w-[26rem]'
+            onClose={clearOptions}
         >
             <div className="md:max-h-[50vh] overflow-y-auto pr-4 mt-4">
                 {Object.keys(options).length > 0 ? (
@@ -58,25 +76,6 @@ const AddPlantsModal = memo(function AddPlantsModal({ options, addPlants }) {
 });
 
 AddPlantsModal.propTypes = {
-    options: PropTypes.objectOf(
-        PropTypes.exact({
-            name: PropTypes.string,
-            display_name: PropTypes.string.isRequired,
-            uuid: PropTypes.string.isRequired,
-            created: PropTypes.string.isRequired,
-            species: PropTypes.string,
-            description: PropTypes.string,
-            pot_size: PropTypes.number,
-            last_watered: PropTypes.string,
-            last_fertilized: PropTypes.string,
-            thumbnail: PropTypes.string,
-            archived: PropTypes.bool.isRequired,
-            group: PropTypes.exact({
-                name: PropTypes.string.isRequired,
-                uuid: PropTypes.string.isRequired
-            })
-        })
-    ).isRequired,
     addPlants: PropTypes.func.isRequired
 };
 
