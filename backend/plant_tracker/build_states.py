@@ -144,9 +144,14 @@ def get_group_options(user):
     return group_options
 
 
-def build_overview_state(user):
-    '''Takes user, builds state parsed by overview page, caches, and returns.
-    Contains all non-archived plants and groups owned by user.
+def build_overview_state(user, archived=False):
+    '''Takes user, builds state parsed by overview page and returns.
+
+    If archived arg is False (default) builds main overview page (contains all
+    non-archived plants and groups owned by user) and caches.
+
+    If archived arg is True builds archive overview page (contains all archived
+    plants and groups owned by user), does not cache.
     '''
 
     # Only show link to archived overview if at least 1 archived plant or group
@@ -154,9 +159,13 @@ def build_overview_state(user):
     has_archived_groups = bool(Group.objects.filter(archived=True, user=user))
     show_archive = has_archived_plants or has_archived_groups
 
+    # Don't build archived overview state if no archived plants
+    if archived and not show_archive:
+        return None
+
     groups = (
         Group.objects
-            .filter(user=user, archived=False)
+            .filter(user=user, archived=archived)
             .order_by('created')
             # Label unnamed groups with no location (gets sequential name)
             .annotate(**group_is_unnamed_annotation())
@@ -168,7 +177,7 @@ def build_overview_state(user):
 
     plants = (
         Plant.objects
-            .filter(user=user, archived=False)
+            .filter(user=user, archived=archived)
             .order_by('created')
             # Label unnamed plants with no species (gets sequential name)
             .annotate(**plant_is_unnamed_annotation())
@@ -205,7 +214,8 @@ def build_overview_state(user):
     }
 
     # Cache state indefinitely (updates automatically when database changes)
-    # cache.set(f'overview_state_{user.pk}', state, None)
+    # if not archived:
+    #     cache.set(f'overview_state_{user.pk}', state, None)
 
     return state
 

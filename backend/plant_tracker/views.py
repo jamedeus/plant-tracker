@@ -36,6 +36,7 @@ from .view_decorators import (
     clean_payload_data
 )
 from .build_states import (
+    build_overview_state,
     get_overview_state,
     get_manage_plant_state,
     get_plant_options,
@@ -113,23 +114,11 @@ def archived_overview(request, user):
     archived plants and groups.
     '''
 
-    archived_plants = Plant.objects.filter(archived=True, user=user)
-    archived_groups = Group.objects.filter(archived=True, user=user)
+    state = build_overview_state(user, archived=True)
 
     # Redirect to main overview if user has no archived plants or groups
-    if not archived_plants and not archived_groups:
+    if not state:
         return HttpResponseRedirect('/')
-
-    state = {
-        'plants': {
-            str(plant.uuid): plant.get_details()
-            for plant in archived_plants
-        },
-        'groups': {
-            str(group.uuid): group.get_details()
-            for group in archived_groups
-        },
-    }
 
     return render_react_app(
         request,
