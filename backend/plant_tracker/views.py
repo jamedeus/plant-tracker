@@ -38,7 +38,8 @@ from .view_decorators import (
 from .build_states import (
     get_overview_state,
     get_manage_plant_state,
-    get_plant_options
+    get_plant_options,
+    build_manage_group_state
 )
 # from .update_cached_states import (
 #     update_group_details_in_cached_states,
@@ -201,15 +202,6 @@ def get_species_options(request):
     species = Plant.objects.all().values_list('species', flat=True)
     options = sorted(list(set(i for i in species if i is not None)))
     return JsonResponse({'options': options}, status=200)
-
-
-def build_manage_group_state(group):
-    '''Builds state parsed by manage_group react app and returns.'''
-    return {
-        'group': group.get_details(),
-        'details': group.get_plant_details(),
-        'options': get_plant_options(group.user)
-    }
 
 
 def render_manage_group_page(request, group, user):

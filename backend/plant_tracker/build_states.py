@@ -117,6 +117,7 @@ def get_plant_options(user):
                 .annotate(**last_watered_time_annotation())
                 .annotate(**last_fertilized_time_annotation())
                 .annotate(**last_photo_thumbnail_annotation())
+                .select_related('default_photo')
             if plant.group is None
         }
         # cache.set(f'plant_options_{user.pk}', plant_options, None)
@@ -327,3 +328,38 @@ def get_manage_plant_state(plant):
     state['group_options'] = get_group_options(plant.user)
 
     return state
+
+
+def build_manage_group_state(group):
+    '''Builds state parsed by manage_group react app and returns.'''
+
+    plants = (
+        Plant.objects
+            .filter(group_id=group.pk)
+            .order_by('created')
+            # Label unnamed plants with no species (gets sequential name)
+            .annotate(**plant_is_unnamed_annotation())
+            # Add unnamed_index (used to build "Unnamed plant <index>" names)
+            .annotate(**unnamed_index_annotation())
+            # Add last_watered_time
+            .annotate(**last_watered_time_annotation())
+            # Add last_fertilized_time
+            .annotate(**last_fertilized_time_annotation())
+            # Add last_photo_details (used as default photo if not set)
+            .annotate(**last_photo_thumbnail_annotation())
+            # Include default_photo if set (avoid extra query for thumbnail)
+            .select_related('default_photo')
+    )
+
+    # Overwrite group with already-loaded entry (avoids database query for each
+    # plant, more efficient than select_related since same instance is reused)
+    for plant in plants:
+        plant.group = group
+
+    return {
+        'group': group.get_details(),
+        'details': {
+            str(plant.uuid): plant.get_details() for plant in plants
+        },
+        'options': get_plant_options(group.user)
+    }

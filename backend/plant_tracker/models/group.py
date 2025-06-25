@@ -102,15 +102,6 @@ class Group(models.Model):
         # Query from database if no annotation
         return len(self.plant_set.all())
 
-    def get_plant_details(self):
-        '''Returns dict with uuid of each plant in group as keys, plant details
-        dicts as values (see Plant.get_details for dict parameters).
-        '''
-        return {
-            str(plant.uuid): plant.get_details()
-            for plant in self.plant_set.all()
-        }
-
     def save(self, *args, **kwargs):
         # Prevent saving Group with UUID that is already used by Plant
         from .plant import Plant
