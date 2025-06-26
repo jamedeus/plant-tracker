@@ -10,18 +10,14 @@ def get_plant_options(user):
     as keys, details dicts as values). Populates options in add plants modal on
     manage_group page. Cached until Plant model changes (see hooks in tasks.py).
     '''
-    plant_options = cache.get(f'plant_options_{user.pk}')
-    if not plant_options:
-        plant_options = {
-            str(plant.uuid): plant.get_details()
-            for plant in Plant.objects.with_overview_annotation(
-                user=user,
-                filters={'archived': False}
-            )
-            if plant.group is None
-        }
-        # cache.set(f'plant_options_{user.pk}', plant_options, None)
-    return plant_options
+    return {
+        str(plant.uuid): plant.get_details()
+        for plant in Plant.objects.with_overview_annotation(
+            user=user,
+            filters={'archived': False}
+        )
+        if plant.group is None
+    }
 
 
 def get_group_options(user):
@@ -29,17 +25,13 @@ def get_group_options(user):
     details) dicts as values). Populates options in add to group modal on
     manage_plant page. Cached until Group model changes (see hooks in tasks.py).
     '''
-    group_options = cache.get(f'group_options_{user.pk}')
-    if not group_options:
-        group_options = {
-            str(group.uuid): group.get_details()
-            for group in Group.objects.with_overview_annotation(
-                user=user,
-                filters={'archived': False}
-            )
-        }
-        # cache.set(f'group_options_{user.pk}', group_options, None)
-    return group_options
+    return {
+        str(group.uuid): group.get_details()
+        for group in Group.objects.with_overview_annotation(
+            user=user,
+            filters={'archived': False}
+        )
+    }
 
 
 def has_archived_entries(user):

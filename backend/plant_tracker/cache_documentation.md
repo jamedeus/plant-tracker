@@ -23,31 +23,6 @@ This should be updated when:
 - Set by `/divide_plant`
   * Expires in 15 minutes
 
-### `plant_options_{user_primary_key}`
-- Stores dict with plant uuids as keys and plant details dict as values
-- Contains all plants that are not in a group, used to populate add plants modal cards
-- Name includes database primary key of user account that owns plants
-- Set by `build_states.get_plant_options`,
-  * Never expires
-  * Updated if Plant model owned by same user saved (`update_cached_states.update_plant_in_cached_states_hook`)
-  * Updated if Plant model owned by same user deleted (`update_cached_states.remove_deleted_plant_from_cached_states_hook`)
-  * Updated if Photo model associated with Plant owned by same user saved (`update_cached_states.add_photo_to_cached_states_hook`)
-  * Updated if Photo model associated with Plant owned by same user deleted (`update_cached_states.remove_photo_from_cached_states_hook`)
-  * Updated when WaterEvent or FertilizeEvent owned by same user saved or deleted (`update_cached_states.update_last_event_times_in_cached_states_hook`)
-  * Deleted when server restarts (replaced immediately) (`tasks.update_all_cached_states`)
-
-### `group_options_{user_primary_key}`
-- Stores list of dicts with group attributes used to populate add plant to group modal
-- Name includes database primary key of user account that owns groups
-- Set by `build_states.get_group_options`
-  * Never expires
-  * Updated if Group model owned by same user saved (`update_cached_states.update_group_in_cached_states_hook`)
-  * Updated if Group model owned by same user deleted (`update_cached_states.remove_deleted_group_from_cached_states_hook`)
-  * Updated if Plant model owned by same user that is in a group saved (`update_cached_states.update_plant_in_cached_states_hook`)
-  * Updated if Plant model owned by same user that is in a group deleted (`update_cached_states.remove_deleted_plant_from_cached_states_hook`)
-  * Updated if Plant removed from group owned by same user (`/remove_plant_from_group`, `/bulk_remove_plants_from_group`)
-  * Deleted when server restarts (replaced immediately) (`tasks.update_all_cached_states`)
-
 ### `overview_state_{user_primary_key}`
 - Stores overview page state
 - Name includes database primary key of user account that owns plants/groups in state
@@ -67,7 +42,7 @@ This should be updated when:
   * Overwritten when server restarts (`tasks.update_all_cached_states`)
 
 ### `{uuid}_state`
-- Stores manage_plant page state for the plant matching UUID (excluding the `group_options` key which is cached separately)
+- Stores manage_plant page state for the plant matching UUID
 - Set by `build_states.build_manage_plant_state` (only called when cache does not already exist)
   * Never expires
   * Updated when associated Plant is saved (`update_cached_states.update_plant_in_cached_states_hook`)

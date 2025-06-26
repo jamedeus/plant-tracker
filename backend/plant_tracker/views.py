@@ -45,7 +45,7 @@ from .build_states import (
     build_manage_group_state
 )
 # from .update_cached_states import (
-#     update_group_details_in_cached_states,
+#     update_instance_in_cached_overview_state,
 #     remove_instance_from_cached_overview_state
 # )
 
@@ -804,8 +804,8 @@ def remove_plant_from_group(plant, **kwargs):
     plant.group = None
     plant.save(update_fields=["group"])
 
-    # Update number of plants shown on overview and cached group_options
-    # update_group_details_in_cached_states(old_group)
+    # Update number of plants in cached overview state
+    # update_instance_in_cached_overview_state(old_group, 'groups')
 
     return JsonResponse(
         {"action": "remove_plant_from_group", "plant": plant.uuid},
@@ -854,8 +854,8 @@ def bulk_remove_plants_from_group(data, group, **kwargs):
         else:
             failed.append(plant_id)
 
-    # Update number of plants shown on overview and cached group_options
-    # update_group_details_in_cached_states(group)
+    # Update number of plants in cached overview state
+    # update_instance_in_cached_overview_state(group, 'groups')
 
     return JsonResponse({"removed": removed, "failed": failed}, status=200)
 

@@ -16,7 +16,6 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase, TransactionTestCase, Client
 
 from .build_states import build_manage_plant_state
-from .tasks import update_cached_plant_options, update_cached_group_options
 from .models import (
     Group,
     Plant,
@@ -883,182 +882,6 @@ class CachedStateRegressionTests(TestCase):
         state = response.context['state']
         self.assertEqual(state['plant_details']['group']['name'], 'Living room')
 
-    # def test_plant_options_cache_contains_outdated_plant_thumbnail_url(self):
-    #     '''Issue: the plant_options object that populates manage_group add
-    #     plants modal options only expired when a Plant was saved or deleted. If
-    #     the defualt_photo was set the Plant was saved and the cache updated,
-    #     but if there was no default_photo and a newer photo was uploaded it did
-    #     not update (only the Photo model was saved). This resulted in outdated
-    #     (possibly no longer existing) thumbnails in the add plant options.
-
-    #     Saving or deleting a Photo now calls Plant.update_thumbnail_url, which
-    #     updates Plant.thumbnail_url and saves (updates cached state).
-    #     '''
-
-    #     # Create test group, create test plant (not in group) with 1 photo
-    #     default_user = get_default_user()
-    #     group = Group.objects.create(uuid=uuid4(), user=default_user)
-    #     plant = Plant.objects.create(uuid=uuid4(), user=default_user)
-    #     photo1 = Photo.objects.create(
-    #         photo=create_mock_photo(
-    #             creation_time='2024:02:21 10:52:03',
-    #             name='photo1.jpg'
-    #         ),
-    #         plant=plant
-    #     )
-
-    #     # Request manage_group page
-    #     response = self.client.get(f'/manage/{group.uuid}')
-
-    #     # Confirm options state contains photo1 thumbnail (most-recent)
-    #     self.assertEqual(
-    #         response.context['state']['options'][str(plant.uuid)]['thumbnail'],
-    #         photo1.get_thumbnail_url()
-    #     )
-
-    #     # Confirm plant_options object is cached when manage_group loaded
-    #     self.assertIsNotNone(cache.get(f'plant_options_{default_user.pk}'))
-
-    #     # Create a second Photo with more recent timestamp
-    #     photo2 = Photo.objects.create(
-    #         photo=create_mock_photo(
-    #             creation_time='2024:03:22 10:52:03',
-    #             name='photo2.jpg'
-    #         ),
-    #         plant=plant
-    #     )
-
-    #     # Confirm manage_group state now contains photo2 thumbnail (most-recent)
-    #     response = self.client.get(f'/manage/{group.uuid}')
-    #     self.assertEqual(
-    #         response.context['state']['options'][str(plant.uuid)]['thumbnail'],
-    #         photo2.get_thumbnail_url()
-    #     )
-
-    #     # Delete second photo
-    #     JSONClient().post('/delete_plant_photos', {
-    #         'plant_id': str(plant.uuid),
-    #         'delete_photos': [photo2.pk]
-    #     })
-
-    #     # Confirm manage_group state reverted to photo1 thumbnail
-    #     response = self.client.get(f'/manage/{group.uuid}')
-    #     self.assertEqual(
-    #         response.context['state']['options'][str(plant.uuid)]['thumbnail'],
-    #         photo1.get_thumbnail_url()
-    #     )
-
-    def test_group_options_cache_contains_outdated_number_of_plants_in_group(self):
-        '''Issue: the group_options object that populates manage_plant add to
-        group options only expired when a Group was saved or deleted. If plants
-        were added or removed from the group (saves plant entry, but not group)
-        the cached object would contain an outdated number of plants in group.
-
-        The group_options cache is now cleared by add/remove group endpoints.
-        '''
-
-        # Create group, plant that is in group, plant that is not in group
-        default_user = get_default_user()
-        group = Group.objects.create(uuid=uuid4(), user=default_user)
-        plant1 = Plant.objects.create(uuid=uuid4(), group=group, user=default_user)
-        plant2 = Plant.objects.create(uuid=uuid4(), user=default_user)
-        # Trigger group_options cache update (normally called from endpoint)
-        group.save()
-
-        # Confirm group option says 1 plant in group
-        response = self.client.get('/get_add_to_group_options')
-        self.assertEqual(
-            response.json()['options'][str(group.uuid)]['plants'],
-            1
-        )
-
-        # Add plant2 to the group
-        JSONClient().post(
-            '/add_plant_to_group',
-            {'plant_id': plant2.uuid, 'group_id': group.uuid}
-        )
-
-        # Confirm group option now says 2 plants in group
-        response = self.client.get('/get_add_to_group_options')
-        self.assertEqual(
-            response.json()['options'][str(group.uuid)]['plants'],
-            2
-        )
-
-        # Remove plant2 from the group
-        JSONClient().post('/remove_plant_from_group', {
-            'plant_id': plant2.uuid
-        })
-
-        # Confirm group option now says 1 plant in group
-        response = self.client.get('/get_add_to_group_options')
-        self.assertEqual(
-            response.json()['options'][str(group.uuid)]['plants'],
-            1
-        )
-
-        # Add plant2 to group using the /bulk_add_plants_to_group endpoint
-        JSONClient().post('/bulk_add_plants_to_group', {
-            'group_id': group.uuid,
-            'plants': [plant2.uuid]
-        })
-
-        # Confirm group option now says 2 plants in group
-        response = self.client.get('/get_add_to_group_options')
-        self.assertEqual(
-            response.json()['options'][str(group.uuid)]['plants'],
-            2
-        )
-
-        # Remove plant2 from group using the /bulk_remove_plants_from_group endpoint
-        JSONClient().post('/bulk_remove_plants_from_group', {
-            'group_id': group.uuid,
-            'plants': [plant2.uuid]
-        })
-
-        # Confirm group option now says 1 plant in group
-        response = self.client.get('/get_add_to_group_options')
-        self.assertEqual(
-            response.json()['options'][str(group.uuid)]['plants'],
-            1
-        )
-
-    # def test_update_cached_plant_options_fails_to_replace_cached_state(self):
-    #     '''Issue: update_cached_plant_options rebuilt + cached state by calling
-    #     models.get_plant_options, but this function only builds state if the
-    #     expected cache key does not exist - otherwise it returns whatever is
-    #     already cached. If the cache was not deleted before calling the
-    #     function nothing would happen, unlike the other update_cached_*
-    #     functions which always build the state.
-    #     '''
-
-    #     # Set dummy plant_options cache
-    #     user_pk = get_default_user().pk
-    #     cache.set(f'plant_options_{user_pk}', 'foo')
-
-    #     # Call function, confirm dummy string was overwritten
-    #     update_cached_plant_options(user_pk)
-    #     self.assertNotEqual(cache.get(f'plant_options_{user_pk}'), 'foo')
-    #     self.assertIsInstance(cache.get(f'plant_options_{user_pk}'), dict)
-
-    # def test_update_cached_group_options_fails_to_replace_cached_state(self):
-    #     '''Issue: update_cached_group_options rebuilt + cached state by calling
-    #     models.get_group_options, but this function only builds state if the
-    #     expected cache key does not exist - otherwise it returns whatever is
-    #     already cached. If the cache was not deleted before calling the
-    #     function nothing would happen, unlike the other update_cached_*
-    #     functions which always build the state.
-    #     '''
-
-    #     # Set dummy group_options cache
-    #     user_pk = get_default_user().pk
-    #     cache.set(f'group_options_{user_pk}', 'foo')
-
-    #     # Call function, confirm dummy string was overwritten
-    #     update_cached_group_options(user_pk)
-    #     self.assertNotEqual(cache.get(f'group_options_{user_pk}'), 'foo')
-    #     self.assertIsInstance(cache.get(f'group_options_{user_pk}'), dict)
-
     # def test_archived_plants_added_to_main_overview_state_when_saved(self):
     #     '''Issue: tasks.update_instance_details_in_cached_overview_state_hook
     #     added/updated plant details to cached overview state whenever a plant
@@ -1281,28 +1104,6 @@ class CachedStateRegressionTests(TestCase):
     #     self.assertEqual(len(overview_state['plants']), 1)
     #     self.assertEqual(len(overview_state['groups']), 1)
 
-    # def test_cached_plant_options_last_watered_time_does_not_update(self):
-    #     '''Issue: Cached plant_options dict (used for manage_group add plants
-    #     modal) updated when a plant model was saved (renamed etc) but not when
-    #     a WaterEvent was created (last_watered time on card may be outdated).
-    #     '''
-
-    #     # Create plant, confirm exists in cached plant_options state
-    #     default_user = get_default_user()
-    #     plant = Plant.objects.create(uuid=uuid4(), user=default_user)
-    #     plant_options = cache.get(f'plant_options_{default_user.pk}')
-    #     self.assertIn(str(plant.uuid), plant_options)
-    #     self.assertIsNone(plant_options[str(plant.uuid)]['last_watered'])
-
-    #     # Water plant, confirm cached plant_options updated
-    #     timestamp = timezone.now()
-    #     WaterEvent.objects.create(plant=plant, timestamp=timestamp)
-    #     plant_options = cache.get(f'plant_options_{default_user.pk}')
-    #     self.assertEqual(
-    #         plant_options[str(plant.uuid)]['last_watered'],
-    #         timestamp.isoformat()
-    #     )
-
     # def test_group_number_of_plants_outdated_in_cache_if_plant_deleted(self):
     #     '''Issue: group details (including number of plants) was updated in
     #     cached overview state and group_options when plants were added/removed
@@ -1313,17 +1114,10 @@ class CachedStateRegressionTests(TestCase):
     #     user = get_default_user()
     #     group = Group.objects.create(uuid=uuid4(), user=user)
     #     plant = Plant.objects.create(uuid=uuid4(), group=group, user=user)
-    #     # Trigger group_options cache update (normally called from endpoint)
-    #     group.save()
 
     #     # Confirm overview state says 1 plant in group
     #     self.assertEqual(
     #         cache.get(f'overview_state_{user.pk}')['groups'][str(group.uuid)]['plants'],
-    #         1
-    #     )
-    #     # Confirm group details in overview state says 1 plant in group
-    #     self.assertEqual(
-    #         cache.get(f'group_options_{user.pk}')[str(group.uuid)]['plants'],
     #         1
     #     )
 
@@ -1331,10 +1125,6 @@ class CachedStateRegressionTests(TestCase):
     #     plant.delete()
     #     self.assertEqual(
     #         cache.get(f'overview_state_{user.pk}')['groups'][str(group.uuid)]['plants'],
-    #         0
-    #     )
-    #     self.assertEqual(
-    #         cache.get(f'group_options_{user.pk}')[str(group.uuid)]['plants'],
     #         0
     #     )
 
