@@ -11,6 +11,7 @@ from functools import wraps
 from datetime import datetime
 
 from django.conf import settings
+from django.db.models import Value
 from django.contrib.auth import get_user_model
 from django.http import JsonResponse, HttpResponseRedirect
 from django.core.exceptions import ValidationError
@@ -34,28 +35,46 @@ options = list(events_map.keys())
 EVENT_TYPE_OPTIONS = "'{}'".format("', '".join(options[:-1]) + "', or '" + options[-1])
 
 
+def find_model_type(uuid):
+    '''Takes uuid, queries both Plant and Group models. Returns "plant" if
+    matches a Plant entry, "group" if matches a Group entry, or None if neither.
+    '''
+    plant_queryset = (
+        Plant.objects
+        .filter(uuid=uuid)
+        .annotate(model_type=Value('plant'))
+        .values('model_type')[:1]
+    )
+    group_queryset = (
+        Group.objects
+        .filter(uuid=uuid)
+        .annotate(model_type=Value('group'))
+        .values('model_type')[:1]
+    )
+    try:
+        return plant_queryset.union(group_queryset)[0]['model_type']
+    except IndexError:
+        return None
+
+
 def get_plant_by_uuid(uuid):
     '''Returns Plant model instance matching UUID, or None if not found.'''
-    try:
-        return Plant.objects.get(uuid=uuid)
-    except Plant.DoesNotExist:
-        return None
+    return Plant.objects.filter(uuid=uuid).select_related('user').first()
 
 
 def get_group_by_uuid(uuid):
     '''Returns Group model instance matching UUID, or None if not found.'''
-    try:
-        return Group.objects.get(uuid=uuid)
-    except Group.DoesNotExist:
-        return None
+    return Group.objects.filter(uuid=uuid).select_related('user').first()
 
 
 def get_plant_or_group_by_uuid(uuid):
     '''Returns Plant or Group model instance matching UUID, or None if neither found.'''
-    instance = get_plant_by_uuid(uuid)
-    if not instance:
-        instance = get_group_by_uuid(uuid)
-    return instance
+    model_type = find_model_type(uuid)
+    if model_type == 'plant':
+        return get_plant_by_uuid(uuid)
+    if model_type == 'group':
+        return get_group_by_uuid(uuid)
+    return None
 
 
 def get_default_user():

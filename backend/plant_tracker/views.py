@@ -5,7 +5,6 @@ import base64
 from io import BytesIO
 
 from django.conf import settings
-from django.db.models import Value
 from django.core.cache import cache
 from django.db import transaction, IntegrityError
 from django.core.exceptions import ValidationError
@@ -25,6 +24,7 @@ from .models import (
 from .view_decorators import (
     events_map,
     get_user_token,
+    find_model_type,
     get_plant_by_uuid,
     get_group_by_uuid,
     get_plant_or_group_by_uuid,
@@ -135,28 +135,6 @@ def archived_overview(request, user):
     )
 
 
-def find_model_type(uuid):
-    '''Takes uuid, queries both Plant and Group models. Returns "plant" if
-    matches a Plant entry, "group" if matches a Group entry, or None if neither.
-    '''
-    plant_queryset = (
-        Plant.objects
-        .filter(uuid=uuid)
-        .annotate(model_type=Value('plant'))
-        .values('model_type')[:1]
-    )
-    group_queryset = (
-        Group.objects
-        .filter(uuid=uuid)
-        .annotate(model_type=Value('group'))
-        .values('model_type')[:1]
-    )
-    try:
-        return plant_queryset.union(group_queryset)[0]['model_type']
-    except IndexError:
-        return None
-
-
 @get_user_token
 def manage(request, uuid, user):
     '''Renders the correct page when a QR code is scanned:
@@ -170,7 +148,7 @@ def manage(request, uuid, user):
         plant = Plant.objects.with_manage_plant_annotation(uuid)
         return render_manage_plant_page(request, plant, user)
 
-    elif model_type == 'group':
+    if model_type == 'group':
         group = get_group_by_uuid(uuid)
         return render_manage_group_page(request, group, user)
 
@@ -250,7 +228,7 @@ def get_add_to_group_options(request, user):
 
 
 # Upstairs bathroom group
-# 7 queries (6ms), 31ms total
+# 6 queries (6ms), 30ms total
 # Could annotate group user to save 1 query
 # Could annotate number of plants in group to save 1 query
 # Could potentially pass group queryset containing only current group to plant annotation (save 1 more)
@@ -275,7 +253,7 @@ def render_manage_group_page(request, group, user):
 
 
 # Upstairs bathroom group
-# 5 queries (5ms), 27ms total
+# 4 queries (5ms), 22ms total
 # Could annotate number of plants in group to save 1 query
 # Could potentially pass group queryset containing only current group to plant annotation (save 1 more)
 def get_group_state(request, uuid):
@@ -283,12 +261,12 @@ def get_group_state(request, uuid):
     Used to refresh contents after user presses back button.
     '''
     try:
-        group = Group.objects.get(uuid=uuid)
-        return JsonResponse(
-            build_manage_group_state(group),
-            status=200
-        )
-    except Group.DoesNotExist:
+        group = get_group_by_uuid(uuid)
+        if group:
+            return JsonResponse(
+                build_manage_group_state(group),
+                status=200
+            )
         return JsonResponse({'Error': 'Group not found'}, status=404)
     except ValidationError:
         return JsonResponse({'Error': 'Requires group UUID'}, status=400)
@@ -296,8 +274,8 @@ def get_group_state(request, uuid):
 
 # Plain registration:      2 queries (2ms), 24ms total
 # Changing group QR code:  5 queries (2ms), 24ms total
-# Changing plant QR code:  7 queries (4ms), 23ms total
-# Dividing plant:         12 queries (5ms), 33ms total
+# Changing plant QR code:  8 queries (5ms), 28ms total
+# Dividing plant:         10 queries (5ms), 31ms total
 def render_registration_page(request, uuid, user):
     '''Renders registration page used to create a new plant or group.
     Called by /manage endpoint if UUID does not exist in database.
@@ -352,8 +330,8 @@ def render_registration_page(request, uuid, user):
     )
 
 
-# New plant:      8 queries (4ms), 30ms total
-# Divided plant: 14 queries (6ms), 40ms total
+# New plant:      9 queries (4ms), 31ms total
+# Divided plant: 13 queries (5ms), 35ms total
 @get_user_token
 @requires_json_post(["name", "species", "pot_size", "description", "uuid"])
 @clean_payload_data
@@ -422,8 +400,8 @@ def register_group(user, data, **kwargs):
         return JsonResponse({"error": error.message_dict}, status=400)
 
 
-# Plant: 3 queries (2ms), 20ms total
-# Group: 4 queries (2ms), 21ms total
+# Plant: 3 queries (3ms), 15ms total
+# Group: 3 queries (3ms), 21ms total
 @get_user_token
 @requires_json_post(["uuid"])
 @get_qr_instance_from_post_body
@@ -440,8 +418,8 @@ def change_qr_code(instance, user, **kwargs):
     )
 
 
-# Plant: 14 queries (7ms), 30ms total
-# Group: 11 queries (10ms), 34ms total
+# Plant: 13 queries (7ms), 31ms total
+# Group:  6 queries (5ms), 21ms total
 @get_user_token
 @requires_json_post(["uuid", "new_id"])
 @get_qr_instance_from_post_body
@@ -466,7 +444,7 @@ def change_uuid(instance, data, user, **kwargs):
         return JsonResponse({"error": "new_id key is not a valid UUID"}, status=400)
 
 
-# 20 queries (11ms), 42ms total
+# 19 queries (9ms), 44ms total
 @get_user_token
 @requires_json_post(["plant_id", "name", "species", "description", "pot_size"])
 @get_plant_from_post_body
@@ -496,7 +474,7 @@ def edit_plant_details(plant, data, **kwargs):
     return JsonResponse(data, status=200)
 
 
-# 8 queries (5ms), 29ms total
+# 7 queries (5ms), 28ms total
 @get_user_token
 @requires_json_post(["group_id", "name", "location", "description"])
 @get_group_from_post_body
@@ -581,9 +559,9 @@ def archive_group(group, data, **kwargs):
 
 
 # Delete single plant: 20 queries (7ms), 40ms total
-# Delete single group:  6 queries (3ms), 25ms total
+# Delete single group:  5 queries (3ms), 23ms total
 # Delete 3 plants:     58 queries (16ms), 82ms total
-# Delete 3 groups:     16 queries (6ms), 40ms total
+# Delete 3 groups:     13 queries (6ms), 37ms total
 @get_user_token
 @requires_json_post(["uuids"])
 def bulk_delete_plants_and_groups(user, data, **kwargs):
@@ -608,9 +586,9 @@ def bulk_delete_plants_and_groups(user, data, **kwargs):
 
 
 # Archive single plant: 10 queries (6ms), 30ms total
-# Archive single group:  6 queries (4ms), 26ms total
+# Archive single group:  5 queries (1ms), 22ms total
 # Archive 3 plants:     28 queries (12ms), 52ms total
-# Archive 3 groups:     16 queries (8ms), 37ms total
+# Archive 3 groups:     13 queries (9ms), 39ms total
 @get_user_token
 @requires_json_post(["uuids", "archived"])
 def bulk_archive_plants_and_groups(user, data, **kwargs):
@@ -637,9 +615,9 @@ def bulk_archive_plants_and_groups(user, data, **kwargs):
 
 
 # Favorite plant
-# Water:     9 queries (4ms), 31ms total
-# Fertilize: 9 queries (4ms), 31ms total
-# Prune:     3 queries (2ms), 23ms total (no cached state updates)
+# Water:     6 queries (5ms), 34ms total
+# Fertilize: 6 queries (4ms), 33ms total
+# Prune:     2 queries (2ms), 19ms total (no cached state updates)
 @get_user_token
 @requires_json_post(["plant_id", "event_type", "timestamp"])
 @get_plant_from_post_body
@@ -669,8 +647,8 @@ def add_plant_event(plant, timestamp, event_type, **kwargs):
 
 
 # Upstairs bathroom (11 plants)
-# Water all:     69 queries (22ms), 118ms total
-# Fertilize all: 69 queries (23ms), 122ms total
+# Water all:     56 queries (22ms), 107ms total
+# Fertilize all: 56 queries (21ms), 119ms total
 @get_user_token
 @requires_json_post(["plants", "event_type", "timestamp"])
 @get_timestamp_from_post_body
@@ -725,9 +703,9 @@ def delete_plant_event(plant, timestamp, event_type, **kwargs):
 
 # Favorite plant
 # Delete 1 water event:  13 queries (6ms), 35ms total
-# Delete 1 prune event:   6 queries (3ms), 25ms total
+# Delete 1 prune event:   5 queries (3ms), 25ms total
 # Delete 3 water events: 33 queries (11ms), 61ms total
-# Delete 3 prune events: 12 queries (5ms), 36ms total
+# Delete 3 prune events: 11 queries (5ms), 34ms total
 @get_user_token
 @requires_json_post(["plant_id", "events"])
 @get_plant_from_post_body
@@ -753,7 +731,7 @@ def bulk_delete_plant_events(plant, data, **kwargs):
     return JsonResponse({"deleted": deleted, "failed": failed}, status=200)
 
 
-# 4 queries (2ms), 25ms total
+# 3 queries (3ms), 29ms total
 @get_user_token
 @requires_json_post(["plant_id", "timestamp", "note_text"])
 @clean_payload_data
@@ -794,7 +772,7 @@ def add_plant_note(plant, timestamp, data, **kwargs):
         )
 
 
-# 8 queries (4ms), 30ms total
+# 7 queries (4ms), 27ms total
 @get_user_token
 @requires_json_post(["plant_id", "timestamp", "note_text"])
 @clean_payload_data
@@ -826,7 +804,7 @@ def edit_plant_note(plant, timestamp, data, **kwargs):
         return JsonResponse( {"error": error.message_dict}, status=400)
 
 
-# 6 queries (3ms), 19ms total
+# 5 queries (3ms), 19ms total
 @get_user_token
 @requires_json_post(["plant_id", "timestamp"])
 @get_plant_from_post_body
@@ -843,7 +821,7 @@ def delete_plant_note(plant, timestamp, **kwargs):
         return JsonResponse({"error": "note not found"}, status=404)
 
 
-# 13 queries (6ms), 34ms total
+# 10 queries (6ms), 31ms total
 @get_user_token
 @requires_json_post(["plant_id", "group_id"])
 @get_plant_from_post_body
@@ -866,7 +844,7 @@ def add_plant_to_group(plant, group, **kwargs):
     )
 
 
-# 17 queries (12ms), 48ms total
+# 11 queries (7ms), 35ms total
 @get_user_token
 @requires_json_post(["plant_id"])
 @get_plant_from_post_body
@@ -888,8 +866,8 @@ def remove_plant_from_group(plant, **kwargs):
 
 
 # Upstairs bathroom (11 plants)
-# Add 1: 15 queries (8ms), 38ms total
-# Add 3: 43 queries (18ms), 73ms total
+# Add 1: 13 queries (7ms), 37ms total
+# Add 3: 36 queries (18ms), 70ms total
 @get_user_token
 @requires_json_post(["group_id", "plants"])
 @get_group_from_post_body
@@ -913,8 +891,8 @@ def bulk_add_plants_to_group(group, data, **kwargs):
 
 
 # Upstairs bathroom (14 plants)
-# Remove 1: 15 queries (7ms), 28ms total
-# Remove 3: 41 queries (16ms), 67ms total
+# Remove 1: 13 queries (8ms), 36ms total
+# Remove 3: 34 queries (17ms), 65ms total
 @get_user_token
 @requires_json_post(["group_id", "plants"])
 @get_group_from_post_body
@@ -941,7 +919,7 @@ def bulk_remove_plants_from_group(data, group, **kwargs):
 
 
 # Favorite plant
-# 16 queries (9ms), 47ms total
+# 15 queries (9ms), 42ms total
 @get_user_token
 @requires_json_post(["plant_id", "new_pot_size", "timestamp"])
 @get_plant_from_post_body
@@ -1009,8 +987,8 @@ def divide_plant(user, plant, timestamp, **kwargs):
 
 
 # Favorite plant
-# 1 photo:   9 queries (5ms), 334ms total (need to only do thumbnail sync, push others to celery)
-# 3 photos: 17 queries (8ms), 656ms total
+# 1 photo:   8 queries (5ms), 302ms total (need to only do thumbnail sync, push others to celery)
+# 3 photos: 16 queries (8ms), 835ms total
 @get_user_token
 def add_plant_photos(request, user):
     '''Creates Photo model for each image in request body.
@@ -1057,8 +1035,8 @@ def add_plant_photos(request, user):
 
 
 # Favorite plant
-# Delete 1 photo:  14 queries (6ms), 38ms total
-# Delete 3 photos: 36 queries (13ms), 70ms total
+# Delete 1 photo:  13 queries (6ms), 37ms total
+# Delete 3 photos: 37 queries (14ms), 73ms total
 @get_user_token
 @requires_json_post(["plant_id", "delete_photos"])
 @get_plant_from_post_body
@@ -1079,7 +1057,7 @@ def delete_plant_photos(plant, data, **kwargs):
     return JsonResponse({"deleted": deleted, "failed": failed}, status=200)
 
 
-# 15 queries (8ms), 31ms total
+# 14 queries (7ms), 37ms total
 @get_user_token
 @requires_json_post(["plant_id", "photo_key"])
 @get_plant_from_post_body
