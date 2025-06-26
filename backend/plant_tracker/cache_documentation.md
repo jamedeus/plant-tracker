@@ -51,7 +51,7 @@ This should be updated when:
 ### `overview_state_{user_primary_key}`
 - Stores overview page state
 - Name includes database primary key of user account that owns plants/groups in state
-- Set by `update_cached_states.build_overview_state` (only called when cache does not already exist)
+- Set by `build_states.build_overview_state` (only called when cache does not already exist)
   * Never expires
   * Updated when Plant model owned by same user saved (`update_cached_states.update_plant_in_cached_states_hook`)
   * Updated when Group model owned by same user saved (`update_cached_states.update_group_in_cached_states_hook`)
@@ -68,7 +68,7 @@ This should be updated when:
 
 ### `{uuid}_state`
 - Stores manage_plant page state for the plant matching UUID (excluding the `group_options` key which is cached separately)
-- Set by `update_cached_states.build_manage_plant_state` (only called when cache does not already exist)
+- Set by `build_states.build_manage_plant_state` (only called when cache does not already exist)
   * Never expires
   * Updated when associated Plant is saved (`update_cached_states.update_plant_in_cached_states_hook`)
   * Updated when associated Plant's parent (plant's `Plant.divided_from` ForeignKey points to parent) is saved (`update_cached_states.update_plant_in_cached_states_hook`)
@@ -84,4 +84,4 @@ This should be updated when:
   * Updated when a NoteEvent associated with Plant is deleted (`delete_note_from_cached_manage_plant_state_hook`)
   * Updated when a Photo associated with Plant is saved (`update_cached_states.add_photo_to_cached_states_hook`)
   * Updated when a Photo associated with Plant is deleted (`update_cached_states.remove_photo_from_cached_states_hook`)
-  * Deleted when server restarts (replaced immediately) (`tasks.update_all_cached_states`)
+  * Deleted when server restarts (not replaced) (`tasks.update_all_cached_states`)

@@ -7,7 +7,6 @@ from django.contrib.auth import get_user_model
 from .models import Plant
 from .build_states import (
     build_overview_state,
-    build_manage_plant_state,
     get_plant_options,
     get_group_options,
 )
@@ -19,13 +18,6 @@ def update_cached_overview_state(user_pk):
     user = get_user_model().objects.get(pk=user_pk)
     build_overview_state(user)
     print(f'Rebuilt overview state for {user_pk}')
-
-
-@shared_task()
-def update_cached_manage_plant_state(uuid):
-    '''Builds and caches manage_plant state.'''
-    build_manage_plant_state(uuid)
-    print(f'Rebuilt {uuid} state')
 
 
 @shared_task()
@@ -49,14 +41,13 @@ def update_cached_group_options(user_pk):
 @shared_task()
 def update_all_cached_states():
     '''Updates all cached overview, plant_options, and group_options states
-    that have keys in redis store. Updates and caches manage_plant state for
-    all plants in database regardless of whether they have existing keys.
+    that have keys in redis store. Deletes all cached manage_plant states.
     Called when server starts to prevent serving outdated states.
     '''
 
-    # Build states for all plants in database
+    # Delete all cached plant states (potentially outdated)
     for plant in Plant.objects.all():
-        update_cached_manage_plant_state.delay(plant.uuid)
+        cache.delete(f'{plant.uuid}_state')
 
     # Iterate existing keys, parse user primary key from cache name and pass
     # to correct function to rebuild

@@ -5,6 +5,7 @@ import base64
 from io import BytesIO
 
 from django.conf import settings
+from django.db.models import Value
 from django.core.cache import cache
 from django.db import transaction, IntegrityError
 from django.core.exceptions import ValidationError
@@ -128,6 +129,28 @@ def archived_overview(request, user):
     )
 
 
+def find_model_type(uuid):
+    '''Takes uuid, queries both Plant and Group models. Returns "plant" if
+    matches a Plant entry, "group" if matches a Group entry, or None if neither.
+    '''
+    plant_queryset = (
+        Plant.objects
+        .filter(uuid=uuid)
+        .annotate(model_type=Value('plant'))
+        .values('model_type')[:1]
+    )
+    group_queryset = (
+        Group.objects
+        .filter(uuid=uuid)
+        .annotate(model_type=Value('group'))
+        .values('model_type')[:1]
+    )
+    try:
+        return plant_queryset.union(group_queryset)[0]['model_type']
+    except IndexError:
+        return None
+
+
 @get_user_token
 def manage(request, uuid, user):
     '''Renders the correct page when a QR code is scanned:
@@ -136,14 +159,13 @@ def manage(request, uuid, user):
       - register: rendered if the QR code UUID does not match an existing Plant/Group
     '''
 
-    # Look up UUID in plant table, render manage_plant page if found
-    plant = get_plant_by_uuid(uuid)
-    if plant:
+    model_type = find_model_type(uuid)
+    if model_type == 'plant':
+        plant = Plant.objects.with_manage_plant_annotation(uuid)
         return render_manage_plant_page(request, plant, user)
 
-    # Loop up UUID in group table, render manage_group page if found
-    group = get_group_by_uuid(uuid)
-    if group:
+    elif model_type == 'group':
+        group = get_group_by_uuid(uuid)
         return render_manage_group_page(request, group, user)
 
     # Render register page if UUID is new
@@ -175,7 +197,7 @@ def get_plant_state(request, uuid):
     Used to refresh contents after user presses back button.
     '''
     try:
-        plant = Plant.objects.get(uuid=uuid)
+        plant = Plant.objects.with_manage_plant_annotation(uuid)
         return JsonResponse(
             get_manage_plant_state(plant),
             status=200
@@ -278,6 +300,7 @@ def render_registration_page(request, uuid, user):
     # Check if user is dividing plant, add details if dividing
     division_in_progress = cache.get(f'division_in_progress_{user.pk}')
     if division_in_progress:
+        # Need annotation here to prevent tons of queries
         plant = get_plant_by_uuid(division_in_progress['divided_from_plant_uuid'])
         state['dividing_from'] = {
             'plant_details': plant.get_details(),
@@ -800,6 +823,7 @@ def bulk_add_plants_to_group(group, data, **kwargs):
     added = []
     failed = []
     for plant_id in data["plants"]:
+        # Need annotation here to prevent tons of queries
         plant = get_plant_by_uuid(plant_id)
         if plant:
             plant.group = group
@@ -821,6 +845,7 @@ def bulk_remove_plants_from_group(data, group, **kwargs):
     removed = []
     failed = []
     for plant_id in data["plants"]:
+        # Need annotation here to prevent tons of queries
         plant = get_plant_by_uuid(plant_id)
         if plant:
             plant.group = None

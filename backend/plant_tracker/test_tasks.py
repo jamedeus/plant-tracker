@@ -20,12 +20,8 @@ from .models import (
     Photo,
     NoteEvent
 )
-from .tasks import (
-    update_cached_overview_state,
-    update_cached_manage_plant_state,
-    update_all_cached_states,
-    build_manage_plant_state
-)
+from .build_states import build_manage_plant_state
+from .tasks import update_cached_overview_state, update_all_cached_states
 from .unit_test_helpers import JSONClient, create_mock_photo
 
 
@@ -61,8 +57,10 @@ def tearDownModule():
 #         self.assertIsInstance(cache.get(f'overview_state_{default_user.pk}'), dict)
 #         self.assertIsInstance(cache.get(f'plant_options_{default_user.pk}'), dict)
 #         self.assertIsInstance(cache.get(f'group_options_{default_user.pk}'), dict)
+
+#         # Confirm all cached plant states were deleted
 #         for plant in Plant.objects.filter(user=default_user):
-#             self.assertIsInstance(cache.get(f'{plant.uuid}_state'), dict)
+#             self.assertIsNone(cache.get(f'{plant.uuid}_state'))
 
 
 # class TaskTests(TestCase):
@@ -82,18 +80,6 @@ def tearDownModule():
 
 #         # Confirm overview state was generated and cached
 #         self.assertTrue(isinstance(cache.get(f'overview_state_{user_id}'), dict))
-
-#     def test_update_cached_manage_plant_state(self):
-#         # Create test Plant, confirm no cached state
-#         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-#         self.assertIsNone(cache.get(f'{plant.uuid}_state'))
-
-#         # Run task immediately
-#         update_cached_manage_plant_state.delay(plant.uuid)
-
-#         # Confirm manage_plant cache was generated and cached
-#         self.assertIsNotNone(cache.get(f'{plant.uuid}_state'))
-#         self.assertTrue(isinstance(cache.get(f'{plant.uuid}_state'), dict))
 
 
 class OverviewStateUpdateTests(TestCase):
@@ -579,7 +565,7 @@ class OverviewStateUpdateTests(TestCase):
     # def test_manage_plant_state_updates_when_plant_saved(self):
     #     # Create Plant model entry, generate cached state
     #     plant = Plant.objects.create(uuid=self.uuid, user=get_default_user())
-    #     build_manage_plant_state(self.uuid)
+    #     build_manage_plant_state(plant)
 
     #     # Confirm cached manage_plant state has correct details
     #     self.assertEqual(
@@ -647,7 +633,7 @@ class OverviewStateUpdateTests(TestCase):
     # def test_manage_plant_state_updates_when_events_created_or_deleted(self):
     #     # Create Plant model entry, generate cached state
     #     plant = Plant.objects.create(uuid=self.uuid, user=get_default_user())
-    #     build_manage_plant_state(self.uuid)
+    #     build_manage_plant_state(plant)
 
     #     # Confirm cached state has no events
     #     self.assertEqual(
@@ -761,7 +747,7 @@ class OverviewStateUpdateTests(TestCase):
     # def test_manage_plant_state_updates_when_notes_created_or_deleted(self):
     #     # Create Plant model entry, generate cached state
     #     plant = Plant.objects.create(uuid=self.uuid, user=get_default_user())
-    #     build_manage_plant_state(self.uuid)
+    #     build_manage_plant_state(plant)
 
     #     # Confirm cached state has no notes
     #     self.assertEqual(
@@ -801,7 +787,7 @@ class OverviewStateUpdateTests(TestCase):
     # def test_manage_plant_state_updates_when_photo_created_or_deleted(self):
     #     # Create Plant model entry, generate cached state
     #     plant = Plant.objects.create(uuid=self.uuid, user=get_default_user())
-    #     build_manage_plant_state(self.uuid)
+    #     build_manage_plant_state(plant)
 
     #     # Confirm cached state has no photos
     #     self.assertEqual(
@@ -838,14 +824,14 @@ class OverviewStateUpdateTests(TestCase):
     #     # Create parent and child Plant model entries
     #     parent = Plant.objects.create(uuid=uuid4(), user=get_default_user())
     #     divide = DivisionEvent.objects.create(plant=parent, timestamp=timezone.now())
-    #     Plant.objects.create(
+    #     child = Plant.objects.create(
     #         uuid=self.uuid,
     #         user=get_default_user(),
     #         divided_from=parent,
     #         divided_from_event=divide
     #     )
     #     # Generate child plant cached state
-    #     build_manage_plant_state(self.uuid)
+    #     build_manage_plant_state(child)
 
     #     # Confirm child's cached state has correct parent name
     #     self.assertEqual(
@@ -878,7 +864,7 @@ class OverviewStateUpdateTests(TestCase):
     #         divided_from_event=divide
     #     )
     #     # Generate parent plant cached state
-    #     build_manage_plant_state(self.uuid)
+    #     build_manage_plant_state(parent)
 
     #     # Confirm parent's cached state has correct child name
     #     self.assertEqual(
@@ -907,7 +893,7 @@ class OverviewStateUpdateTests(TestCase):
     # def test_manage_plant_state_deleted_from_cache_when_plant_deleted(self):
     #     # Create Plant model entry, generate cached state
     #     plant = Plant.objects.create(uuid=self.uuid, user=get_default_user())
-    #     build_manage_plant_state(self.uuid)
+    #     build_manage_plant_state(plant)
 
     #     # Confirm cached state exists
     #     self.assertIsNotNone(cache.get(f'{plant.uuid}_state'))

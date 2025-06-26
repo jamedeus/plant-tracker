@@ -101,11 +101,8 @@ def get_overview_state(user):
     return state
 
 
-def build_manage_plant_state(uuid):
-    '''Builds state parsed by manage_plant react app and returns.'''
-
-    # Look up Plant by uuid (can't pass model entry to task, not serializable)
-    plant = Plant.objects.with_manage_plant_annotation(uuid)
+def build_manage_plant_state(plant):
+    '''Takes plant, builds state parsed by manage_plant react app and returns.'''
 
     state = {
         'plant_details': plant.get_details(),
@@ -144,10 +141,12 @@ def get_manage_plant_state(plant):
     '''Returns the state object parsed by the manage_plant page react app.
     Loads state from cache if present, builds from database if not found.
     Updates params that can't be reliably cached with values from database.
+    Plant should be queried with Plant.objects.with_manage_plant_annotation to
+    pre-annotate all data used (much more efficient, avoids dozens of queries).
     '''
     state = cache.get(f'{plant.uuid}_state')
     if state is None:
-        state = build_manage_plant_state(plant.uuid)
+        state = build_manage_plant_state(plant)
 
     # Overwrite cached display_name if plant has no name (sequential names like)
     # "Unnamed plant 3" may be outdated if other unnamed plants were named)

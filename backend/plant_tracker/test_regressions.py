@@ -15,11 +15,8 @@ from django.db import IntegrityError, connections
 from django.core.exceptions import ValidationError
 from django.test import TestCase, TransactionTestCase, Client
 
-from .tasks import (
-    build_manage_plant_state,
-    update_cached_plant_options,
-    update_cached_group_options
-)
+from .build_states import build_manage_plant_state
+from .tasks import update_cached_plant_options, update_cached_group_options
 from .models import (
     Group,
     Plant,
@@ -1097,7 +1094,7 @@ class CachedStateRegressionTests(TestCase):
 
     #     # Create test plant, generate cached state
     #     plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-    #     build_manage_plant_state(plant.uuid)
+    #     build_manage_plant_state(plant)
     #     # Confirm cached state has no default_photo
     #     self.assertIsNone(
     #         cache.get(f'{plant.uuid}_state')['plant_details']['thumbnail']
@@ -1360,7 +1357,7 @@ class CachedStateRegressionTests(TestCase):
     #         plant=plant,
     #         timestamp=datetime.fromisoformat('2024-01-06T03:06:26.000Z')
     #     )
-    #     build_manage_plant_state(plant.uuid)
+    #     build_manage_plant_state(plant)
 
     #     # Confirm water events are sorted chronologically in cached state
     #     self.assertEqual(
