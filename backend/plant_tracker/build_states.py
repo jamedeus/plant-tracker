@@ -1,102 +1,8 @@
 '''Functions that build (or load from cache) states used by frontend react apps.'''
 
 from django.core.cache import cache
-from django.db.models import F, Case, When, Value, Subquery, OuterRef, Count, Prefetch, Exists
-from django.db.models.functions import RowNumber
-from django.db.models import Window, JSONField
-from django.contrib.postgres.expressions import ArraySubquery
-from django.db.models.functions import JSONObject
 
-from .models import (
-    Plant,
-    Group,
-    Photo,
-    WaterEvent,
-    FertilizeEvent,
-    PruneEvent,
-    RepotEvent,
-    DivisionEvent
-)
-
-
-def plant_is_unnamed_annotation():
-    '''Adds is_unnamed attribute (True if no name or species, default False).'''
-    return {'is_unnamed': Case(
-        When(name__isnull=True, species__isnull=True, then=Value(True)),
-        default=Value(False)
-    )}
-
-
-def group_is_unnamed_annotation():
-    '''Adds is_unnamed attribute (True if no name or location, default False).'''
-    return {'is_unnamed': Case(
-        When(name__isnull=True, location__isnull=True, then=Value(True)),
-        default=Value(False)
-    )}
-
-
-def unnamed_index_annotation():
-    '''Adds unnamed_index attribute (sequential ints) to items with is_unnamed=True.'''
-    return {'unnamed_index': Window(
-        expression=RowNumber(),
-        partition_by=[F('is_unnamed')],
-        order_by=F('created').asc(),
-    )}
-
-
-def last_watered_time_annotation():
-    '''Adds last_watered_time attribute (most-recent WaterEvent timestamp).'''
-    return {'last_watered_time': Subquery(
-        WaterEvent.objects
-            .filter(plant_id=OuterRef("pk"))
-            .values("timestamp")[:1]
-    )}
-
-
-def last_fertilized_time_annotation():
-    '''Adds last_fertilized_time attribute (most-recent WaterEvent timestamp).'''
-    return {'last_fertilized_time': Subquery(
-        FertilizeEvent.objects
-            .filter(plant_id=OuterRef("pk"))
-            .values("timestamp")[:1]
-    )}
-
-
-def last_photo_thumbnail_annotation():
-    '''Adds last_photo_thumbnail attribute with name of most-recent Photo entry.'''
-    return {'last_photo_thumbnail': Subquery(
-        Photo.objects
-            .filter(plant_id=OuterRef("pk"))
-            .order_by("-timestamp")
-            .values("thumbnail")[:1]
-    )}
-
-
-def last_photo_details_annotation():
-    '''Adds last_photo_details attribute with dict containing all relevant
-    attributes of most-recent Photo entry.
-    '''
-    return {"last_photo_details": Subquery(
-        Photo.objects
-            .filter(plant_id=OuterRef("pk"))
-            .order_by("-timestamp")
-            .annotate(
-                details=JSONObject(
-                    key=F("pk"),
-                    photo=F("photo"),
-                    thumbnail=F("thumbnail"),
-                    preview=F("preview"),
-                    timestamp=F("timestamp"),
-                )
-            )
-            .values("details")[:1],
-            output_field=JSONField()
-    )}
-
-
-def group_plant_count_annotation():
-    '''Adds plant_count attribute (number of plants in group).'''
-    return {'plant_count': Count('plant')}
+from .models import Plant, Group
 
 
 def get_plant_options(user):
@@ -108,16 +14,10 @@ def get_plant_options(user):
     if not plant_options:
         plant_options = {
             str(plant.uuid): plant.get_details()
-            for plant in Plant.objects
-                .filter(user=user, archived=False)
-                .order_by('created')
-                .select_related('group')
-                .annotate(**plant_is_unnamed_annotation())
-                .annotate(**unnamed_index_annotation())
-                .annotate(**last_watered_time_annotation())
-                .annotate(**last_fertilized_time_annotation())
-                .annotate(**last_photo_thumbnail_annotation())
-                .select_related('default_photo')
+            for plant in Plant.objects.with_overview_annotation(
+                user=user,
+                filters={'archived': False}
+            )
             if plant.group is None
         }
         # cache.set(f'plant_options_{user.pk}', plant_options, None)
@@ -133,12 +33,10 @@ def get_group_options(user):
     if not group_options:
         group_options = {
             str(group.uuid): group.get_details()
-            for group in Group.objects
-                .filter(user=user)
-                .order_by('created')
-                .annotate(**group_is_unnamed_annotation())
-                .annotate(**unnamed_index_annotation())
-                .annotate(**group_plant_count_annotation())
+            for group in Group.objects.with_overview_annotation(
+                user=user,
+                filters={'archived': False}
+            )
         }
         # cache.set(f'group_options_{user.pk}', group_options, None)
     return group_options
@@ -163,42 +61,15 @@ def build_overview_state(user, archived=False):
     if archived and not show_archive:
         return None
 
-    groups = (
-        Group.objects
-            .filter(user=user, archived=archived)
-            .order_by('created')
-            # Label unnamed groups with no location (gets sequential name)
-            .annotate(**group_is_unnamed_annotation())
-            # Add unnamed_index (used to build "Unnamed group <index>" names)
-            .annotate(**unnamed_index_annotation())
-            # Add plant_count (number of plants in group)
-            .annotate(**group_plant_count_annotation())
+    groups = Group.objects.with_overview_annotation(
+        user=user,
+        filters={'archived': archived}
     )
 
-    plants = (
-        Plant.objects
-            .filter(user=user, archived=archived)
-            .order_by('created')
-            # Label unnamed plants with no species (gets sequential name)
-            .annotate(**plant_is_unnamed_annotation())
-            # Add unnamed_index (used to build "Unnamed plant <index>" names)
-            .annotate(**unnamed_index_annotation())
-            # Add last_watered_time
-            .annotate(**last_watered_time_annotation())
-            # Add last_fertilized_time
-            .annotate(**last_fertilized_time_annotation())
-            # Add last_photo_details (used as default photo if not set)
-            .annotate(**last_photo_thumbnail_annotation())
-            # Include default_photo if set (avoid extra query for thumbnail)
-            .select_related('default_photo')
-            # Include Group entry if plant in a group (copy from groups queryset
-            # with unnamed annotated to avoid extra get_display_name queries)
-            .prefetch_related(
-                Prefetch(
-                    'group',
-                    queryset=groups
-                )
-            )
+    plants = Plant.objects.with_overview_annotation(
+        user=user,
+        group_queryset=groups,
+        filters={'archived': archived}
     )
 
     state = {
@@ -234,53 +105,7 @@ def build_manage_plant_state(uuid):
     '''Builds state parsed by manage_plant react app and returns.'''
 
     # Look up Plant by uuid (can't pass model entry to task, not serializable)
-    plant = (
-        Plant.objects
-            .filter(uuid=uuid)
-            # Add last_watered_time
-            .annotate(**last_watered_time_annotation())
-            # Add last_fertilized_time
-            .annotate(**last_fertilized_time_annotation())
-            # Add last_photo_details (used as default photo if not set)
-            .annotate(**last_photo_details_annotation())
-            # Include default_photo if set (avoid extra query for thumbnail)
-            .select_related('default_photo')
-            # Include Group entry if plant in a group
-            .select_related('group')
-            # Include parent plant + division event if plant was divided
-            .select_related('divided_from', 'divided_from_event')
-            # Add <event_type>_timetamps attributes containing lists of event
-            # timestamps (sorted chronologically at database level)
-            .annotate(
-                water_timestamps=ArraySubquery(
-                    WaterEvent.objects
-                        .filter(plant_id=OuterRef('pk'))
-                        .values_list('timestamp', flat=True)
-                ),
-                fertilize_timestamps=ArraySubquery(
-                    FertilizeEvent.objects
-                        .filter(plant_id=OuterRef('pk'))
-                        .values_list('timestamp', flat=True)
-                ),
-                prune_timestamps=ArraySubquery(
-                    PruneEvent.objects
-                        .filter(plant_id=OuterRef('pk'))
-                        .values_list('timestamp', flat=True)
-                ),
-                repot_timestamps=ArraySubquery(
-                    RepotEvent.objects
-                        .filter(plant_id=OuterRef('pk'))
-                        .values_list('timestamp', flat=True)
-                ),
-            )
-            # Annotate whether DivisionEvents exist (skips extra query if not)
-            .annotate(
-                has_divisions=Exists(
-                    DivisionEvent.objects.filter(plant=OuterRef('pk'))
-                )
-            )
-            .first()
-    )
+    plant = Plant.objects.with_manage_plant_annotation(uuid)
 
     state = {
         'plant_details': plant.get_details(),
@@ -340,22 +165,9 @@ def get_manage_plant_state(plant):
 def build_manage_group_state(group):
     '''Builds state parsed by manage_group react app and returns.'''
 
-    plants = (
-        Plant.objects
-            .filter(group_id=group.pk)
-            .order_by('created')
-            # Label unnamed plants with no species (gets sequential name)
-            .annotate(**plant_is_unnamed_annotation())
-            # Add unnamed_index (used to build "Unnamed plant <index>" names)
-            .annotate(**unnamed_index_annotation())
-            # Add last_watered_time
-            .annotate(**last_watered_time_annotation())
-            # Add last_fertilized_time
-            .annotate(**last_fertilized_time_annotation())
-            # Add last_photo_details (used as default photo if not set)
-            .annotate(**last_photo_thumbnail_annotation())
-            # Include default_photo if set (avoid extra query for thumbnail)
-            .select_related('default_photo')
+    plants = Plant.objects.with_overview_annotation(
+        user=group.user,
+        filters={'group_id': group.pk}
     )
 
     # Overwrite group with already-loaded entry (avoids database query for each

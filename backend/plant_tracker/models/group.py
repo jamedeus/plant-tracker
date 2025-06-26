@@ -6,6 +6,8 @@ from django.db import models
 from django.conf import settings
 from django.core.cache import cache
 from django.db import IntegrityError
+from django.db.models.functions import RowNumber
+from django.db.models import F, Case, When, Value, Count, Window
 
 from .events import WaterEvent, FertilizeEvent
 
@@ -13,10 +15,57 @@ if TYPE_CHECKING:  # pragma: no cover
     from .plant import Plant
 
 
+def group_is_unnamed_annotation():
+    '''Adds is_unnamed attribute (True if no name or location, default False).'''
+    return {'is_unnamed': Case(
+        When(name__isnull=True, location__isnull=True, then=Value(True)),
+        default=Value(False)
+    )}
+
+
+def unnamed_index_annotation():
+    '''Adds unnamed_index attribute (sequential ints) to items with is_unnamed=True.'''
+    return {'unnamed_index': Window(
+        expression=RowNumber(),
+        partition_by=[F('is_unnamed')],
+        order_by=F('created').asc(),
+    )}
+
+
+def group_plant_count_annotation():
+    '''Adds plant_count attribute (number of plants in group).'''
+    return {'plant_count': Count('plant')}
+
+
+class GroupManager(models.Manager):
+    def with_overview_annotation(self, user, filters={}):
+        '''Takes user, returns all Groups owned by user with annotations that
+        cover everything shown on overview page to prevent multiple queries
+        (unnamed index, number of plants in group).
+
+        Additional filters can be applied to the queryset by passing the filters
+        argument (dict with attribute name keys, attribute value values). For
+        example, use `filters={'archived': True}` to get all archived groups.
+        '''
+        return (
+            self
+                .filter(user=user, **filters)
+                .order_by('created')
+                # Label unnamed groups with no location (gets sequential name)
+                .annotate(**group_is_unnamed_annotation())
+                # Add unnamed_index (used to build "Unnamed group <index>" names)
+                .annotate(**unnamed_index_annotation())
+                # Add plant_count (number of plants in group)
+                .annotate(**group_plant_count_annotation())
+        )
+
+
 class Group(models.Model):
     '''Tracks a group containing multiple plants, created by scanning QR code.
     Provides methods to water or fertilize all plants within group.
     '''
+
+    objects = GroupManager()
 
     # User who registered the group
     user = models.ForeignKey(
