@@ -42,6 +42,21 @@ def get_group_options(user):
     return group_options
 
 
+def has_archived_entries(user):
+    '''Takes user, returns True if user has at least 1 archived plant or group.'''
+    plant_queryset = (
+        Plant.objects
+        .filter(user=user, archived=True)
+        .values('uuid')[:1]
+    )
+    group_queryset = (
+        Group.objects
+        .filter(user=user, archived=True)
+        .values('uuid')[:1]
+    )
+    return bool(plant_queryset.union(group_queryset))
+
+
 def build_overview_state(user, archived=False):
     '''Takes user, builds state parsed by overview page and returns.
 
@@ -53,11 +68,9 @@ def build_overview_state(user, archived=False):
     '''
 
     # Only show link to archived overview if at least 1 archived plant or group
-    has_archived_plants = bool(Plant.objects.filter(archived=True, user=user))
-    has_archived_groups = bool(Group.objects.filter(archived=True, user=user))
-    show_archive = has_archived_plants or has_archived_groups
+    show_archive = has_archived_entries(user)
 
-    # Don't build archived overview state if no archived plants
+    # Don't build archived overview state if no archived plants or groups
     if archived and not show_archive:
         return None
 
