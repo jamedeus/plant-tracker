@@ -3,6 +3,7 @@
 import json
 import base64
 from io import BytesIO
+from itertools import chain
 
 from django.conf import settings
 from django.core.cache import cache
@@ -560,8 +561,8 @@ def archive_group(group, data, **kwargs):
 
 # Delete single plant: 20 queries (7ms), 40ms total
 # Delete single group:  5 queries (3ms), 23ms total
-# Delete 3 plants:     58 queries (16ms), 82ms total
-# Delete 3 groups:     13 queries (6ms), 37ms total
+# Delete 3 plants:     54 queries (17ms), 89ms total
+# Delete 3 groups:      9 queries (4ms), 31ms total
 @get_user_token
 @requires_json_post(["uuids"])
 def bulk_delete_plants_and_groups(user, data, **kwargs):
@@ -570,14 +571,16 @@ def bulk_delete_plants_and_groups(user, data, **kwargs):
     '''
     deleted = []
     failed = []
-    for uuid in data["uuids"]:
-        instance = get_plant_or_group_by_uuid(uuid)
-        # Make sure plant exists and is owned by user
-        if instance and instance.user == user:
+    for instance in list(chain(
+        Plant.objects.filter(uuid__in=data["uuids"]).select_related("user"),
+        Group.objects.filter(uuid__in=data["uuids"]).select_related("user")
+    )):
+        # Make sure instance owned by user
+        if instance.user == user:
             instance.delete()
-            deleted.append(uuid)
+            deleted.append(instance.uuid)
         else:
-            failed.append(uuid)
+            failed.append(instance.uuid)
 
     return JsonResponse(
         {"deleted": deleted, "failed": failed},
@@ -585,10 +588,10 @@ def bulk_delete_plants_and_groups(user, data, **kwargs):
     )
 
 
-# Archive single plant: 10 queries (6ms), 30ms total
+# Archive single plant:  6 queries (4ms), 25ms total
 # Archive single group:  5 queries (1ms), 22ms total
-# Archive 3 plants:     28 queries (12ms), 52ms total
-# Archive 3 groups:     13 queries (9ms), 39ms total
+# Archive 3 plants:     12 queries (8ms), 38ms total
+# Archive 3 groups:      9 queries (7ms), 31ms total
 @get_user_token
 @requires_json_post(["uuids", "archived"])
 def bulk_archive_plants_and_groups(user, data, **kwargs):
@@ -598,15 +601,17 @@ def bulk_archive_plants_and_groups(user, data, **kwargs):
     '''
     archived = []
     failed = []
-    for uuid in data["uuids"]:
-        instance = get_plant_or_group_by_uuid(uuid)
-        # Make sure instance exists and is owned by user
-        if instance and instance.user == user:
+    for instance in list(chain(
+        Plant.objects.filter(uuid__in=data["uuids"]).select_related("user"),
+        Group.objects.filter(uuid__in=data["uuids"]).select_related("user")
+    )):
+        # Make sure instance owned by user
+        if instance.user == user:
             instance.archived = data["archived"]
             instance.save()
-            archived.append(uuid)
+            archived.append(instance.uuid)
         else:
-            failed.append(uuid)
+            failed.append(instance.uuid)
 
     return JsonResponse(
         {"archived": archived, "failed": failed},

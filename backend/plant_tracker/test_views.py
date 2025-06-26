@@ -13,6 +13,7 @@ from unittest.mock import patch
 from django.conf import settings
 from django.utils import timezone
 from django.core.cache import cache
+from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
 from django.test.client import RequestFactory, MULTIPART_CONTENT
 from PIL import UnidentifiedImageError
@@ -30,8 +31,9 @@ from .models import (
     Photo,
     NoteEvent
 )
-from .build_states import get_plant_options
 from .unit_test_helpers import JSONClient, create_mock_photo
+
+user_model = get_user_model()
 
 
 def tearDownModule():
@@ -480,14 +482,18 @@ class OverviewTests(TestCase):
         self.assertEqual(len(Plant.objects.all()), 0)
         self.assertEqual(len(Group.objects.all()), 0)
 
-        # Attempt to delete non-existing plant, confirm error
+        # Create plant owned by a different user
+        user = user_model.objects.create_user(username='unittest', password='12345')
+        plant = Plant.objects.create(user=user, uuid=uuid4())
+
+        # Attempt to delete plant owned by a different user, confirm error
         response = self.client.post('/bulk_delete_plants_and_groups', {
-            'uuids': [str(plant_id)]
+            'uuids': [str(plant.uuid)]
         })
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response.json(),
-            {'deleted': [], 'failed': [str(plant_id)]}
+            {'deleted': [], 'failed': [str(plant.uuid)]}
         )
 
     def test_bulk_archive_plants_and_groups(self):
@@ -522,16 +528,19 @@ class OverviewTests(TestCase):
         self.assertTrue(Plant.objects.all()[0].archived)
         self.assertTrue(Group.objects.all()[0].archived)
 
-        # Attempt to archive non-existing uuid, confirm error
-        test_id = uuid4()
+        # Create plant owned by a different user
+        user = user_model.objects.create_user(username='unittest', password='12345')
+        plant = Plant.objects.create(user=user, uuid=uuid4())
+
+        # Attempt to archive plant owned by a different user, confirm error
         response = self.client.post('/bulk_archive_plants_and_groups', {
-            'uuids': [str(test_id)],
+            'uuids': [str(plant.uuid)],
             'archived': True
         })
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response.json(),
-            {'archived': [], 'failed': [str(test_id)]}
+            {'archived': [], 'failed': [str(plant.uuid)]}
         )
 
 
