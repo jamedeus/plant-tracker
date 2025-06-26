@@ -145,18 +145,22 @@ def get_manage_plant_state(plant):
     pre-annotate all data used (much more efficient, avoids dozens of queries).
     '''
     state = cache.get(f'{plant.uuid}_state')
+
+    # Build state if cache not found
     if state is None:
         state = build_manage_plant_state(plant)
 
-    # Overwrite cached display_name if plant has no name (sequential names like)
-    # "Unnamed plant 3" may be outdated if other unnamed plants were named)
-    if not plant.name:
-        state['plant_details']['display_name'] = plant.display_name
+    # If loaded from cache overwrite potentially outdated properties
+    else:
+        # Overwrite display_name if plant has no name (sequential names like)
+        # "Unnamed plant 3" may be outdated if other unnamed plants were named)
+        if not plant.name:
+            state['plant_details']['display_name'] = plant.display_name
 
-    # Overwrite cached group details if plant is in a group (may be outdated if
-    # group was renamed or QR code changed since cache saved)
-    if plant.group:
-        state['plant_details']['group'] = plant.get_group_details()
+        # Overwrite group details if plant is in a group (may be outdated if
+        # group was renamed or QR code changed since cache saved)
+        if plant.group:
+            state['plant_details']['group'] = plant.get_group_details()
 
     return state
 
