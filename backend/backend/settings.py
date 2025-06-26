@@ -108,12 +108,14 @@ MIDDLEWARE = [
 
 # Add django-debug-toolbar in development mode
 if DEBUG and not TESTING:
-    INSTALLED_APPS.append("debug_toolbar")
-    MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
-    INTERNAL_IPS = [
-        "127.0.0.1",
-        "10.80.40.10"
-    ]
+    INSTALLED_APPS.append("silk")
+    MIDDLEWARE.append("silk.middleware.SilkyMiddleware")
+    # INSTALLED_APPS.append("debug_toolbar")
+    # MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
+    # INTERNAL_IPS = [
+    #     "127.0.0.1",
+    #     "10.80.40.10"
+    # ]
 
 ROOT_URLCONF = "backend.urls"
 
