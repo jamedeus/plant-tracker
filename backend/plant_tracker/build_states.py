@@ -90,8 +90,8 @@ def build_overview_state(user, archived=False):
     }
 
     # Cache state indefinitely (updates automatically when database changes)
-    # if not archived:
-    #     cache.set(f'overview_state_{user.pk}', state, None)
+    if not archived:
+        cache.set(f'overview_state_{user.pk}', state, None)
 
     return state
 
@@ -137,7 +137,7 @@ def build_manage_plant_state(plant):
     state['divided_from'] = plant.get_parent_plant_details()
 
     # Cache state indefinitely (updates automatically when database changes)
-    # cache.set(f'{uuid}_state', state, None)
+    cache.set(f'{plant.uuid}_state', state, None)
 
     return state
 
