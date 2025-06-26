@@ -78,3 +78,18 @@ clone_prod_data() {
     # Load backups on dev machine
     restore_backups
 }
+
+restart() {
+    clear_development_database
+    restore_backups
+    redis-cli flushall
+    py manage.py runserver 0.0.0.0:8005 --nothreading
+}
+
+# Requires path to fixture as first arg
+load_fixture() {
+    clear_development_database
+    python manage.py migrate
+    python manage.py loaddata $1
+    py manage.py runserver 0.0.0.0:8005 --nothreading
+}
