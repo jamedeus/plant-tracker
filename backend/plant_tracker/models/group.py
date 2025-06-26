@@ -7,6 +7,7 @@ from django.conf import settings
 from django.core.cache import cache
 from django.db import IntegrityError
 from django.db.models.functions import RowNumber
+from django.utils.functional import cached_property
 from django.db.models import F, Case, When, Value, Count, Window
 
 from .events import WaterEvent, FertilizeEvent
@@ -116,6 +117,11 @@ class Group(models.Model):
         ).count()
         return f'Unnamed group {unnamed_index}'
 
+    @cached_property
+    def display_name(self):
+        '''Cached self.get_display_name return value (avoid duplicate queries).'''
+        return self.get_display_name()
+
     def water_all(self, timestamp):
         '''Takes datetime instance, creates WaterEvent for each Plant in Group.'''
         for plant in self.plant_set.all():
@@ -134,7 +140,7 @@ class Group(models.Model):
         '''Returns dict containing all group attributes and number of plants.'''
         return {
             'name': self.name,
-            'display_name': self.get_display_name(),
+            'display_name': self.display_name,
             'uuid': str(self.uuid),
             'archived': self.archived,
             'created': self.created.isoformat(),

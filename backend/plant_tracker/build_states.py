@@ -107,7 +107,7 @@ def build_manage_plant_state(plant):
     state = {
         'plant_details': plant.get_details(),
         'photos': plant.get_photos(),
-        'default_photo': plant.get_default_photo_details()
+        'default_photo': plant.default_photo_details
     }
 
     # Add all water, fertilize, prune, and repot timestamps
@@ -151,7 +151,7 @@ def get_manage_plant_state(plant):
     # Overwrite cached display_name if plant has no name (sequential names like)
     # "Unnamed plant 3" may be outdated if other unnamed plants were named)
     if not plant.name:
-        state['plant_details']['display_name'] = plant.get_display_name()
+        state['plant_details']['display_name'] = plant.display_name
 
     # Overwrite cached group details if plant is in a group (may be outdated if
     # group was renamed or QR code changed since cache saved)

@@ -9,6 +9,7 @@ from django.db import IntegrityError, transaction
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db.models.functions import RowNumber
 from django.db.models.functions import JSONObject
+from django.utils.functional import cached_property
 from django.contrib.postgres.expressions import ArraySubquery
 from django.db.models import F, Case, When, Value, Subquery, OuterRef, Exists, Window, JSONField, Prefetch
 
@@ -285,6 +286,11 @@ class Plant(models.Model):
         ).count()
         return f'Unnamed plant {unnamed_index}'
 
+    @cached_property
+    def display_name(self):
+        '''Cached self.get_display_name return value (avoid duplicate queries).'''
+        return self.get_display_name()
+
     def get_photos(self):
         '''Returns list of dicts containing photo and thumbnail URLs, creation
         timestamps, and database keys of each photo associated with this plant.
@@ -300,7 +306,7 @@ class Plant(models.Model):
         '''
         return {
             'name': self.name,
-            'display_name': self.get_display_name(),
+            'display_name': self.display_name,
             'uuid': str(self.uuid),
             'archived': self.archived,
             'created': self.created.isoformat(),
@@ -317,7 +323,7 @@ class Plant(models.Model):
         '''Returns dict with group name and uuid, or None if not in group.'''
         if self.group:
             return {
-                'name': self.group.get_display_name(),
+                'name': self.group.display_name,
                 'uuid': str(self.group.uuid)
             }
         return None
@@ -335,7 +341,7 @@ class Plant(models.Model):
 
         # Use full last_photo_details annotation if present
         if hasattr(self, 'last_photo_details'):
-            return self.get_default_photo_details()['thumbnail']
+            return self.default_photo_details['thumbnail']
 
         # Query from database if neither annotation present
         try:
@@ -382,12 +388,17 @@ class Plant(models.Model):
                 'key': None
             }
 
+    @cached_property
+    def default_photo_details(self):
+        '''Cached self.get_default_photo_details return value (avoid duplicate queries).'''
+        return self.get_default_photo_details()
+
     def get_parent_plant_details(self):
         '''Returns dict with parent plant name, uuid, and division timestamp if
         plant was divided from another plant, or None if no parent plant.
         '''
         return {
-            'name': self.divided_from.get_display_name(),
+            'name': self.divided_from.display_name,
             'uuid': str(self.divided_from.uuid),
             'timestamp': self.divided_from_event.timestamp.isoformat()
         } if self.divided_from else None
@@ -405,7 +416,7 @@ class Plant(models.Model):
         # Query from database if no annotation
         return {
             event.timestamp.isoformat(): [
-                {'name': child.get_display_name(), 'uuid': str(child.uuid)}
+                {'name': child.display_name, 'uuid': str(child.uuid)}
                 for child in event.created_plants.all()
             ]
             for event in self.divisionevent_set.all()
