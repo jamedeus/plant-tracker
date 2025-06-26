@@ -198,11 +198,11 @@ def get_plant_state(request, uuid):
     '''
     try:
         plant = Plant.objects.with_manage_plant_annotation(uuid)
-        return JsonResponse(
-            get_manage_plant_state(plant),
-            status=200
-        )
-    except Plant.DoesNotExist:
+        if plant:
+            return JsonResponse(
+                get_manage_plant_state(plant),
+                status=200
+            )
         return JsonResponse({'Error': 'Plant not found'}, status=404)
     except ValidationError:
         return JsonResponse({'Error': 'Requires plant UUID'}, status=400)
