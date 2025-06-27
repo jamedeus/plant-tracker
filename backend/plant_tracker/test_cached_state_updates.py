@@ -7,22 +7,12 @@ from django.conf import settings
 from django.test import TestCase
 from django.utils import timezone
 from django.core.cache import cache
+from django.test.client import MULTIPART_CONTENT
 
 from .view_decorators import get_default_user
-from .models import (
-    Group,
-    Plant,
-    WaterEvent,
-    FertilizeEvent,
-    PruneEvent,
-    RepotEvent,
-    DivisionEvent,
-    Photo,
-    NoteEvent
-)
-from .build_states import build_overview_state, build_manage_plant_state
-from .tasks import update_cached_overview_state, update_all_cached_states
+from .models import Group, Plant, DivisionEvent, Photo
 from .unit_test_helpers import JSONClient, create_mock_photo
+from .build_states import build_overview_state, build_manage_plant_state
 
 
 def tearDownModule():
@@ -1749,5 +1739,275 @@ class EndpointStateUpdateTests(TestCase):
                 'repot': [
                     '2024-02-06T03:06:26+00:00'
                 ]
+            }
+        )
+
+    def test_divide_plant(self):
+        '''The cached plant state should update when a DivisionEvent is created.'''
+
+        # Confirm cached plant state has no division events
+        self.assertEqual(self.load_cached_plant1_state()['division_events'], {})
+
+        # Divide plant with /divide_plant endpoint
+        response = self.client.post('/divide_plant', {
+            'plant_id': self.plant1.uuid,
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm a DivisionEvent with no children was added to cached plant state
+        self.assertEqual(
+            self.load_cached_plant1_state()['division_events'],
+            {
+                '2024-02-06T03:06:26+00:00': []
+            }
+        )
+
+    def test_add_plant_photos(self):
+        '''The cached plant state should update when new photos are added. The
+        cached overview state should update if the new photo is most-recent.
+        '''
+
+        # Confirm cached overview state has no thumbnail for plant1
+        self.assertIsNone(
+            self.load_cached_overview_state()['plants'][str(self.plant1.uuid)]['thumbnail']
+        )
+        # Confirm cached plant state has no thumbnail, no photos, no default photo
+        initial_plant1_state = self.load_cached_plant1_state()
+        self.assertIsNone(initial_plant1_state['plant_details']['thumbnail'])
+        self.assertEqual(initial_plant1_state['photos'], {})
+        self.assertEqual(
+            initial_plant1_state['default_photo'],
+            {
+                'set': False,
+                'timestamp': None,
+                'image': None,
+                'thumbnail': None,
+                'preview': None,
+                'key': None
+            }
+        )
+
+        # Add plant photo with /add_plant_photos endpoint
+        data = {
+            'plant_id': str(self.plant1.uuid),
+            'photo_0': create_mock_photo('2024:03:22 10:52:03', 'new_photo.jpg')
+        }
+        response = self.client.post(
+            '/add_plant_photos',
+            data=data,
+            content_type=MULTIPART_CONTENT
+        )
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm cached overview state now has new photo thumbnail for plant1
+        self.assertEqual(
+            self.load_cached_overview_state()['plants'][str(self.plant1.uuid)]['thumbnail'],
+            '/media/thumbnails/new_photo_thumb.webp'
+        )
+        # Confirm photo was added to cached plant state thumbnail, photos, and default photo
+        updated_plant1_state = self.load_cached_plant1_state()
+        photo = Photo.objects.all()[0]
+        self.assertEqual(
+            updated_plant1_state['plant_details']['thumbnail'],
+            '/media/thumbnails/new_photo_thumb.webp'
+        )
+        self.assertEqual(
+            updated_plant1_state['photos'],
+            {
+                photo.pk: {
+                    'timestamp': '2024-03-22T10:52:03+00:00',
+                    'image': '/media/images/new_photo.jpg',
+                    'thumbnail': '/media/thumbnails/new_photo_thumb.webp',
+                    'preview': '/media/previews/new_photo_preview.webp',
+                    'key': photo.pk
+                }
+            }
+        )
+        self.assertEqual(
+            updated_plant1_state['default_photo'],
+            {
+                'set': False,
+                'timestamp': '2024-03-22T10:52:03+00:00',
+                'image': '/media/images/new_photo.jpg',
+                'thumbnail': '/media/thumbnails/new_photo_thumb.webp',
+                'preview': '/media/previews/new_photo_preview.webp',
+                'key': photo.pk
+            }
+        )
+
+    def test_delete_plant_photos(self):
+        '''The cached plant state should update when photos are deleted. The
+        cached overview state should update if the most-recent photo changed.
+        '''
+
+        # Add plant photo with /add_plant_photos endpoint
+        data = {
+            'plant_id': str(self.plant1.uuid),
+            'photo_0': create_mock_photo('2024:03:22 10:52:03', 'existing_photo.jpg')
+        }
+        response = self.client.post(
+            '/add_plant_photos',
+            data=data,
+            content_type=MULTIPART_CONTENT
+        )
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm cached overview state has photo thumbnail for plant1
+        self.assertEqual(
+            self.load_cached_overview_state()['plants'][str(self.plant1.uuid)]['thumbnail'],
+            '/media/thumbnails/existing_photo_thumb.webp'
+        )
+        # Confirm photo is in cached plant state thumbnail, photos, and default photo
+        updated_plant1_state = self.load_cached_plant1_state()
+        photo = Photo.objects.all()[0]
+        self.assertEqual(
+            updated_plant1_state['plant_details']['thumbnail'],
+            '/media/thumbnails/existing_photo_thumb.webp'
+        )
+        self.assertEqual(
+            updated_plant1_state['photos'],
+            {
+                photo.pk: {
+                    'timestamp': '2024-03-22T10:52:03+00:00',
+                    'image': '/media/images/existing_photo.jpg',
+                    'thumbnail': '/media/thumbnails/existing_photo_thumb.webp',
+                    'preview': '/media/previews/existing_photo_preview.webp',
+                    'key': photo.pk
+                }
+            }
+        )
+        self.assertEqual(
+            updated_plant1_state['default_photo'],
+            {
+                'set': False,
+                'timestamp': '2024-03-22T10:52:03+00:00',
+                'image': '/media/images/existing_photo.jpg',
+                'thumbnail': '/media/thumbnails/existing_photo_thumb.webp',
+                'preview': '/media/previews/existing_photo_preview.webp',
+                'key': photo.pk
+            }
+        )
+
+        # Delete photo with /delete_plant_photos endpoint
+        response = self.client.post('/delete_plant_photos', {
+            'plant_id': str(self.plant1.uuid),
+            'delete_photos': [
+                photo.pk
+            ]
+        })
+
+        # Confirm cached overview state no longer has no thumbnail for plant1
+        self.assertIsNone(
+            self.load_cached_overview_state()['plants'][str(self.plant1.uuid)]['thumbnail']
+        )
+        # Confirm cached plant state no longer has thumbnail, photos, default photo
+        initial_plant1_state = self.load_cached_plant1_state()
+        self.assertIsNone(initial_plant1_state['plant_details']['thumbnail'])
+        self.assertEqual(initial_plant1_state['photos'], {})
+        self.assertEqual(
+            initial_plant1_state['default_photo'],
+            {
+                'set': False,
+                'timestamp': None,
+                'image': None,
+                'thumbnail': None,
+                'preview': None,
+                'key': None
+            }
+        )
+
+    def test_set_plant_default_photo(self):
+        '''The cached overview and plant states should update when the default
+        photo is changed.
+        '''
+
+        # Add 2 plant photos with /add_plant_photos endpoint
+        data = {
+            'plant_id': str(self.plant1.uuid),
+            'photo_0': create_mock_photo('2024:03:22 10:52:03', 'older_photo.jpg'),
+            'photo_1': create_mock_photo('2024:03:23 10:52:03', 'newer_photo.jpg')
+        }
+        response = self.client.post(
+            '/add_plant_photos',
+            data=data,
+            content_type=MULTIPART_CONTENT
+        )
+        self.assertEqual(response.status_code, 200)
+        older_photo = Photo.objects.all()[0]
+        newer_photo = Photo.objects.all()[1]
+
+        # Confirm cached overview state used most-recent photo for thumbnail
+        self.assertEqual(
+            self.load_cached_overview_state()['plants'][str(self.plant1.uuid)]['thumbnail'],
+            '/media/thumbnails/newer_photo_thumb.webp'
+        )
+        # Confirm cached plant state used most-recent photo for thumbnail
+        updated_plant1_state = self.load_cached_plant1_state()
+        self.assertEqual(
+            updated_plant1_state['plant_details']['thumbnail'],
+            '/media/thumbnails/newer_photo_thumb.webp'
+        )
+        # Confirm cached plant state photos key contains both photos
+        self.assertEqual(
+            updated_plant1_state['photos'],
+            {
+                older_photo.pk: {
+                    'timestamp': '2024-03-22T10:52:03+00:00',
+                    'image': '/media/images/older_photo.jpg',
+                    'thumbnail': '/media/thumbnails/older_photo_thumb.webp',
+                    'preview': '/media/previews/older_photo_preview.webp',
+                    'key': older_photo.pk
+                },
+                newer_photo.pk: {
+                    'timestamp': '2024-03-23T10:52:03+00:00',
+                    'image': '/media/images/newer_photo.jpg',
+                    'thumbnail': '/media/thumbnails/newer_photo_thumb.webp',
+                    'preview': '/media/previews/newer_photo_preview.webp',
+                    'key': newer_photo.pk
+                }
+            }
+        )
+        # Confirm cached plant state used most-recent photo for default_photo
+        self.assertEqual(
+            updated_plant1_state['default_photo'],
+            {
+                'set': False,
+                'timestamp': '2024-03-23T10:52:03+00:00',
+                'image': '/media/images/newer_photo.jpg',
+                'thumbnail': '/media/thumbnails/newer_photo_thumb.webp',
+                'preview': '/media/previews/newer_photo_preview.webp',
+                'key': newer_photo.pk
+            }
+        )
+
+        # Set older photo as default with /set_plant_default_photo endpoint
+        response = self.client.post('/set_plant_default_photo', {
+            'plant_id': str(self.plant1.uuid),
+            'photo_key': older_photo.pk
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm cached overview state changed thumbnail to older photo
+        self.assertEqual(
+            self.load_cached_overview_state()['plants'][str(self.plant1.uuid)]['thumbnail'],
+            '/media/thumbnails/older_photo_thumb.webp'
+        )
+        # Confirm cached plant state changed thumbnail to older photo
+        updated_plant1_state = self.load_cached_plant1_state()
+        self.assertEqual(
+            updated_plant1_state['plant_details']['thumbnail'],
+            '/media/thumbnails/older_photo_thumb.webp'
+        )
+        # Confirm cached plant state default_photo is set, details match older photo
+        self.assertEqual(
+            updated_plant1_state['default_photo'],
+            {
+                'set': True,
+                'timestamp': '2024-03-22T10:52:03+00:00',
+                'image': '/media/images/older_photo.jpg',
+                'thumbnail': '/media/thumbnails/older_photo_thumb.webp',
+                'preview': '/media/previews/older_photo_preview.webp',
+                'key': older_photo.pk
             }
         )

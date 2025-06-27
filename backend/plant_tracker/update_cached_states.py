@@ -58,8 +58,9 @@ def remove_instance_from_cached_overview_state(instance, key):
 
 def update_plant_details_in_cached_states(plant):
     '''Takes plant, updates all states that contain plant details:
-      - Updates plant details in cached manage_plant state
       - Updates plant details in cached overview state
+      - Updates plant details in cached manage_plant state
+      - Updates plant default_photo in cached manage_plant state
     '''
     cached_state = cache.get(f'{plant.uuid}_state')
     if cached_state:
@@ -69,6 +70,8 @@ def update_plant_details_in_cached_states(plant):
         except AttributeError:
             pass
         cached_state['plant_details'] = plant.get_details()
+        default_photo = plant.get_default_photo_details()
+        cached_state['default_photo'] = default_photo
         cache.set(f'{plant.uuid}_state', cached_state, None)
     update_instance_in_cached_overview_state(plant, 'plants')
 
