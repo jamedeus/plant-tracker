@@ -172,6 +172,10 @@ class PlantQueryset(models.QuerySet):
                 )
         )
 
+    def get_with_manage_plant_annotation(self, uuid):
+        '''Takes UUID, returns matching Plant with full manage_plant annotations.'''
+        return self.filter(uuid=uuid).with_manage_plant_annotation().first()
+
 
 class Plant(models.Model):
     '''Tracks an individual plant, created by scanning QR code.

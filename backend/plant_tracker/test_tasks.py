@@ -562,7 +562,7 @@ class ManagePlantStateUpdateTests(TestCase):
         # Create Plant model entry, generate cached state
         plant = Plant.objects.create(uuid=self.uuid, user=get_default_user())
         build_manage_plant_state(
-            Plant.objects.filter(uuid=self.uuid).with_manage_plant_annotation().first()
+            Plant.objects.get_with_manage_plant_annotation(self.uuid)
         )
 
         # Confirm cached manage_plant state has correct details
@@ -632,7 +632,7 @@ class ManagePlantStateUpdateTests(TestCase):
         # Create Plant model entry, generate cached state
         plant = Plant.objects.create(uuid=self.uuid, user=get_default_user())
         build_manage_plant_state(
-            Plant.objects.filter(uuid=self.uuid).with_manage_plant_annotation().first()
+            Plant.objects.get_with_manage_plant_annotation(self.uuid)
         )
 
         # Confirm cached state has no events
@@ -748,7 +748,7 @@ class ManagePlantStateUpdateTests(TestCase):
         # Create Plant model entry, generate cached state
         plant = Plant.objects.create(uuid=self.uuid, user=get_default_user())
         build_manage_plant_state(
-            Plant.objects.filter(uuid=self.uuid).with_manage_plant_annotation().first()
+            Plant.objects.get_with_manage_plant_annotation(self.uuid)
         )
 
         # Confirm cached state has no notes
@@ -790,7 +790,7 @@ class ManagePlantStateUpdateTests(TestCase):
         # Create Plant model entry, generate cached state
         plant = Plant.objects.create(uuid=self.uuid, user=get_default_user())
         build_manage_plant_state(
-            Plant.objects.filter(uuid=self.uuid).with_manage_plant_annotation().first()
+            Plant.objects.get_with_manage_plant_annotation(self.uuid)
         )
 
         # Confirm cached state has no photos
@@ -836,7 +836,7 @@ class ManagePlantStateUpdateTests(TestCase):
         )
         # Generate child plant cached state
         build_manage_plant_state(
-            Plant.objects.filter(uuid=self.uuid).with_manage_plant_annotation().first()
+            Plant.objects.get_with_manage_plant_annotation(self.uuid)
         )
 
         # Confirm child's cached state has correct parent name
@@ -871,7 +871,7 @@ class ManagePlantStateUpdateTests(TestCase):
         )
         # Generate parent plant cached state
         build_manage_plant_state(
-            Plant.objects.filter(uuid=self.uuid).with_manage_plant_annotation().first()
+            Plant.objects.get_with_manage_plant_annotation(self.uuid)
         )
 
         # Confirm parent's cached state has correct child name
@@ -902,7 +902,7 @@ class ManagePlantStateUpdateTests(TestCase):
         # Create Plant model entry, generate cached state
         plant = Plant.objects.create(uuid=self.uuid, user=get_default_user())
         build_manage_plant_state(
-            Plant.objects.filter(uuid=self.uuid).with_manage_plant_annotation().first()
+            Plant.objects.get_with_manage_plant_annotation(self.uuid)
         )
 
         # Confirm cached state exists

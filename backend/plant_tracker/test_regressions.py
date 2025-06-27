@@ -918,7 +918,7 @@ class CachedStateRegressionTests(TestCase):
         # Create test plant, generate cached state
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         build_manage_plant_state(
-            Plant.objects.filter(uuid=plant.uuid).with_manage_plant_annotation().first()
+            Plant.objects.get_with_manage_plant_annotation(plant.uuid)
         )
         # Confirm cached state has no default_photo
         self.assertIsNone(
@@ -1150,7 +1150,7 @@ class CachedStateRegressionTests(TestCase):
             timestamp=datetime.fromisoformat('2024-01-06T03:06:26.000Z')
         )
         build_manage_plant_state(
-            Plant.objects.filter(uuid=plant.uuid).with_manage_plant_annotation().first()
+            Plant.objects.get_with_manage_plant_annotation(plant.uuid)
         )
 
         # Confirm water events are sorted chronologically in cached state

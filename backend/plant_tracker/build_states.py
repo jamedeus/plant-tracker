@@ -150,8 +150,8 @@ def get_manage_plant_state(plant):
     '''Returns the state object parsed by the manage_plant page react app.
     Loads state from cache if present, builds from database if not found.
     Updates params that can't be reliably cached with values from database.
-    Plant should be queried with Plant.objects.with_manage_plant_annotation to
-    pre-annotate all data used (much more efficient, avoids dozens of queries).
+    Plant should be queried with Plant.objects.get_with_manage_plant_annotation
+    to annotate all data used (much more efficient, avoids dozens of queries).
     '''
     state = cache.get(f'{plant.uuid}_state')
 
