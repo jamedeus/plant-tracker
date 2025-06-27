@@ -240,6 +240,81 @@ class EndpointStateUpdateTests(TestCase):
         self.assertIsNone(cache.get(f'{initial_plant_uuid}_state'))
         self.assertIsNone(cache.get(f'{new_plant_uuid}_state'))
 
+    def test_plant_with_parent_uuid_changed(self):
+        '''The cached plant state for the parent plant should be updated when
+        the child plant's uuid changes.
+        '''
+
+        # Make plant2 a child of plant1
+        division_event = DivisionEvent.objects.create(
+            plant=self.plant1,
+            timestamp=timezone.now()
+        )
+        self.plant2.divided_from = self.plant1
+        self.plant2.divided_from_event = division_event
+        self.plant2.save()
+
+        # Confirm plant1 state is cached
+        self.assertIsNotNone(self.load_cached_plant1_state())
+
+        # Change plant UUID with /change_uuid endpoint
+        new_plant_uuid = str(uuid4())
+        cache.set(f'old_uuid_{self.user.pk}', str(self.plant2.uuid), 900)
+        response = self.client.post('/change_uuid', {
+            'uuid': str(self.plant2.uuid),
+            'new_id': new_plant_uuid
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm division_event key in plant1 cached state updated, has new uuid
+        self.assertEqual(
+            self.load_cached_plant1_state()['division_events'],
+            {
+                division_event.timestamp.isoformat(): [
+                    {
+                        'name': 'Unnamed plant 2',
+                        'uuid': new_plant_uuid
+                    }
+                ]
+            }
+        )
+
+    def test_plant_with_child_uuid_changed(self):
+        '''The cached plant state for the child plant should be updated when
+        the parent plant's uuid changes.
+        '''
+
+        # Make plant2 a child of plant1
+        division_event = DivisionEvent.objects.create(
+            plant=self.plant1,
+            timestamp=timezone.now()
+        )
+        self.plant2.divided_from = self.plant1
+        self.plant2.divided_from_event = division_event
+        self.plant2.save()
+
+        # Confirm plant2 state is cached
+        self.assertIsNotNone(self.load_cached_plant2_state())
+
+        # Change plant UUID with /change_uuid endpoint
+        new_plant_uuid = str(uuid4())
+        cache.set(f'old_uuid_{self.user.pk}', str(self.plant1.uuid), 900)
+        response = self.client.post('/change_uuid', {
+            'uuid': str(self.plant1.uuid),
+            'new_id': new_plant_uuid
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm division_from key in plant2 cached state updated, has new uuid
+        self.assertEqual(
+            self.load_cached_plant2_state()['divided_from'],
+            {
+                'name': 'Unnamed plant 1',
+                'uuid': new_plant_uuid,
+                'timestamp': division_event.timestamp.isoformat()
+            }
+        )
+
     def test_group_uuid_changed(self):
         '''The cached overview state should update when a group's uuid is changed.'''
 
@@ -302,6 +377,83 @@ class EndpointStateUpdateTests(TestCase):
         self.assertEqual(updated_plant_state['plant_details']['species'], 'Giant Sequoia')
         self.assertEqual(updated_plant_state['plant_details']['description'], '300 feet tall')
         self.assertEqual(updated_plant_state['plant_details']['pot_size'], 4)
+
+    def test_edit_plant_details_with_parent(self):
+        '''The cached plant state for the parent plant should be updated when
+        the child plant details are edited.
+        '''
+
+        # Make plant2 a child of plant1
+        division_event = DivisionEvent.objects.create(
+            plant=self.plant1,
+            timestamp=timezone.now()
+        )
+        self.plant2.divided_from = self.plant1
+        self.plant2.divided_from_event = division_event
+        self.plant2.save()
+
+        # Confirm plant1 state is cached
+        self.assertIsNotNone(self.load_cached_plant1_state())
+
+        # Edit plant2 details with /edit_plant endpoint
+        response = self.client.post('/edit_plant', {
+            'plant_id': self.plant2.uuid,
+            'name': 'plant name',
+            'species': 'Giant Sequoia',
+            'description': '300 feet tall',
+            'pot_size': '4'
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm division_event key in plant1 cached state was updated
+        self.assertEqual(
+            self.load_cached_plant1_state()['division_events'],
+            {
+                division_event.timestamp.isoformat(): [
+                    {
+                        'name': 'plant name',
+                        'uuid': str(self.plant2.uuid)
+                    }
+                ]
+            }
+        )
+
+    def test_edit_plant_details_with_child(self):
+        '''The cached plant state for the child plant should be updated when
+        the parent plant details are edited.
+        '''
+
+        # Make plant2 a child of plant1
+        division_event = DivisionEvent.objects.create(
+            plant=self.plant1,
+            timestamp=timezone.now()
+        )
+        self.plant2.divided_from = self.plant1
+        self.plant2.divided_from_event = division_event
+        self.plant2.save()
+
+        # Confirm plant2 state is cached
+        self.assertIsNotNone(self.load_cached_plant2_state())
+
+        # Edit plant1 details with /edit_plant endpoint
+        response = self.client.post('/edit_plant', {
+            'plant_id': self.plant1.uuid,
+            'name': 'plant name',
+            'species': 'Giant Sequoia',
+            'description': '300 feet tall',
+            'pot_size': '4'
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm divided_from key in plant2 cached state was updated
+        self.assertEqual(
+            self.load_cached_plant2_state()['divided_from'],
+            {
+                'name': 'plant name',
+                'uuid': str(self.plant1.uuid),
+                'timestamp': division_event.timestamp.isoformat()
+            }
+        )
 
     def test_edit_group_details(self):
         '''The cached overview state should update when a groups's details are edited.'''
@@ -402,6 +554,84 @@ class EndpointStateUpdateTests(TestCase):
         self.assertEqual(len(updated_overview_state['plants']), 0)
         self.assertIsNone(cache.get(f'{plant1_uuid}_state'))
         self.assertIsNone(cache.get(f'{plant2_uuid}_state'))
+
+    def test_bulk_delete_plants_that_are_in_group(self):
+        '''The cached overview state should update the number of plants in a
+        group when one of the plants is deleted.
+        '''
+
+        # Add plant1 to group1 with /add_plant_to_group endpoint
+        response = self.client.post('/add_plant_to_group', {
+            'plant_id': self.plant1.uuid,
+            'group_id': self.group1.uuid
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm cached overview state says group1 has 1 plant
+        self.assertEqual(
+            self.load_cached_overview_state()['groups'][str(self.group1.uuid)]['plants'],
+            1
+        )
+
+        # Delete plant1 with /bulk_delete_plants_and_groups endpoint
+        response = self.client.post('/bulk_delete_plants_and_groups', {
+            'uuids': [
+                self.plant1.uuid
+            ]
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm cached overview state now says group1 has 0 plants
+        self.assertEqual(
+            self.load_cached_overview_state()['groups'][str(self.group1.uuid)]['plants'],
+            0
+        )
+
+    def test_bulk_delete_plants_with_children(self):
+        '''The cached plant states for each child plant should be deleted when
+        the parent plant is deleted.
+        '''
+
+        # Make plant2 a child of plant1
+        self.plant2.divided_from = self.plant1
+        self.plant2.save()
+
+        # Confirm plant2 state is cached
+        self.assertIsNotNone(self.load_cached_plant2_state())
+
+        # Delete parent plant1 with /bulk_delete_plants_and_groups endpoint
+        response = self.client.post('/bulk_delete_plants_and_groups', {
+            'uuids': [
+                self.plant1.uuid
+            ]
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm plant2 cached state was deleted
+        self.assertIsNone(self.load_cached_plant2_state())
+
+    def test_bulk_delete_plants_with_parent(self):
+        '''The cached plant state for the parent plant should be deleted when
+        the child plant is deleted.
+        '''
+
+        # Make plant2 a child of plant1
+        self.plant2.divided_from = self.plant1
+        self.plant2.save()
+
+        # Confirm plant1 state is cached
+        self.assertIsNotNone(self.load_cached_plant1_state())
+
+        # Delete child plant2 with /bulk_delete_plants_and_groups endpoint
+        response = self.client.post('/bulk_delete_plants_and_groups', {
+            'uuids': [
+                self.plant2.uuid
+            ]
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm plant1 cached state was deleted
+        self.assertIsNone(self.load_cached_plant1_state())
 
     def test_bulk_archive_plants(self):
         '''The cached overview state should update and the cached plant state

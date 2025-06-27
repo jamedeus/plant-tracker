@@ -137,6 +137,7 @@ def remove_deleted_plant_from_cached_states_hook(instance, **kwargs):
       cached group options (number of plants may have changed)
     '''
     remove_instance_from_cached_overview_state(instance, 'plants')
+    # Delete plant cached state (NOTE: also exists in Plant.delete method)
     cache.delete(f'{instance.uuid}_state')
     # If plant in group: update cached group details (number of plants changed)
     if instance.group:
