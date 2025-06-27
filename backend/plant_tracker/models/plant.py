@@ -8,9 +8,11 @@ from django.core.cache import cache
 from django.db import IntegrityError, transaction
 from django.utils.functional import cached_property
 from django.core.validators import MaxValueValidator, MinValueValidator
-from django.db.models.functions import JSONObject, Cast, RowNumber
+from django.db.models.functions import JSONObject, Cast
 from django.contrib.postgres.expressions import ArraySubquery
-from django.db.models import F, Case, When, Value, Subquery, OuterRef, Exists, Window, JSONField, Prefetch
+from django.db.models import F, Case, When, Value, Subquery, OuterRef, Exists, JSONField
+
+from .annotations import unnamed_index_annotation
 
 if TYPE_CHECKING:  # pragma: no cover
     from .group import Group
@@ -18,148 +20,120 @@ if TYPE_CHECKING:  # pragma: no cover
     from .events import DivisionEvent
 
 
-def plant_is_unnamed_annotation():
-    '''Adds is_unnamed attribute (True if no name or species, default False).'''
-    return {'is_unnamed': Case(
-        When(name__isnull=True, species__isnull=True, then=Value(True)),
-        default=Value(False)
-    )}
-
-
-def unnamed_index_annotation():
-    '''Adds unnamed_index attribute (sequential ints) to items with is_unnamed=True.'''
-    return {'unnamed_index': Window(
-        expression=RowNumber(),
-        partition_by=[F('is_unnamed')],
-        order_by=F('created').asc(),
-    )}
-
-
-def last_watered_time_annotation():
-    '''Adds last_watered_time attribute (most-recent WaterEvent timestamp).'''
-    from . import WaterEvent
-    return {'last_watered_time': Subquery(
-        WaterEvent.objects
-            .filter(plant_id=OuterRef("pk"))
-            .values("timestamp")[:1]
-    )}
-
-
-def last_fertilized_time_annotation():
-    '''Adds last_fertilized_time attribute (most-recent WaterEvent timestamp).'''
-    from . import FertilizeEvent
-    return {'last_fertilized_time': Subquery(
-        FertilizeEvent.objects
-            .filter(plant_id=OuterRef("pk"))
-            .values("timestamp")[:1]
-    )}
-
-
-def last_photo_thumbnail_annotation():
-    '''Adds last_photo_thumbnail attribute with name of most-recent Photo entry.'''
-    from . import Photo
-    return {'last_photo_thumbnail': Subquery(
-        Photo.objects
-            .filter(plant_id=OuterRef("pk"))
-            .order_by("-timestamp")
-            .values("thumbnail")[:1]
-    )}
-
-
-def last_photo_details_annotation():
-    '''Adds last_photo_details attribute with dict containing all relevant
-    attributes of most-recent Photo entry.
-    '''
-    from . import Photo
-    return {"last_photo_details": Subquery(
-        Photo.objects
-            .filter(plant_id=OuterRef("pk"))
-            .order_by("-timestamp")
-            .annotate(
-                details=JSONObject(
-                    key=F("pk"),
-                    photo=F("photo"),
-                    thumbnail=F("thumbnail"),
-                    preview=F("preview"),
-                    timestamp=F("timestamp"),
-                )
-            )
-            .values("details")[:1],
-            output_field=JSONField()
-    )}
-
-
 class PlantQueryset(models.QuerySet):
     '''Custom queryset methods for the Plant model.'''
 
-    def with_uuid_as_string_annotation(self):
-        '''Takes queryset with uuid_str annotation containing each plant's UUID
-        cast to string.
+    def with_is_unnamed_annotation(self):
+        '''Adds is_unnamed attribute (True if no name or species, default False).'''
+        return self.annotate(
+            is_unnamed=Case(
+                When(name__isnull=True, species__isnull=True, then=Value(True)),
+                default=Value(False)
+            )
+        )
+
+    def with_unnamed_index_annotation(self):
+        '''Adds unnamed_index attribute (sequential ints) to items with is_unnamed=True.'''
+        return self.annotate(**unnamed_index_annotation())
+
+
+    def with_last_watered_time_annotation(self):
+        '''Adds last_watered_time attribute (most-recent WaterEvent timestamp).'''
+        from . import WaterEvent
+        return self.annotate(
+            last_watered_time=Subquery(
+                WaterEvent.objects
+                    .filter(plant_id=OuterRef("pk"))
+                    .values("timestamp")[:1]
+            )
+        )
+
+    def with_last_fertilized_time_annotation(self):
+        '''Adds last_fertilized_time attribute (most-recent WaterEvent timestamp).'''
+        from . import FertilizeEvent
+        return self.annotate(
+            last_fertilized_time=Subquery(
+                FertilizeEvent.objects
+                    .filter(plant_id=OuterRef("pk"))
+                    .values("timestamp")[:1]
+            )
+        )
+
+    def with_last_photo_thumbnail_annotation(self):
+        '''Adds last_photo_thumbnail attribute with name of most-recent Photo entry.'''
+        from . import Photo
+        return self.annotate(
+            last_photo_thumbnail=Subquery(
+            Photo.objects
+                .filter(plant_id=OuterRef("pk"))
+                .order_by("-timestamp")
+                .values("thumbnail")[:1]
+            )
+        )
+
+    def with_last_photo_details_annotation(self):
+        '''Adds last_photo_details attribute with dict containing all relevant
+        attributes of most-recent Photo entry.
         '''
+        from . import Photo
+        return self.annotate(
+            last_photo_details=Subquery(
+            Photo.objects
+                .filter(plant_id=OuterRef("pk"))
+                .order_by("-timestamp")
+                .annotate(
+                    details=JSONObject(
+                        key=F("pk"),
+                        photo=F("photo"),
+                        thumbnail=F("thumbnail"),
+                        preview=F("preview"),
+                        timestamp=F("timestamp"),
+                    )
+                )
+                .values("details")[:1],
+                output_field=JSONField()
+            )
+        )
+
+    def with_uuid_as_string_annotation(self):
+        '''Adds uuid_str attribute containing uuid field cast to string.'''
         return self.annotate(uuid_str=Cast("uuid", models.CharField()))
 
-
-class PlantManager(models.Manager):
-    '''Custom manager methods for the Plant model.'''
-
-    def get_queryset(self):
-        '''Add PlantQueryset methods to PlantManager.'''
-        return PlantQueryset(self.model, using=self._db)
-
-    def with_overview_annotation(self, user, filters={}, group_queryset=None):
-        '''Takes user, returns all Plants owned by user with annotations that
-        cover everything shown on overview page to prevent multiple queries
+    def with_overview_annotation(self):
+        '''Adds annotations covering everything shown on overview page
         (last_watered, last_fertilized, photo thumbnail, unnamed index, etc).
-
-        Additional filters can be applied to the queryset by passing the filters
-        argument (dict with attribute name keys, attribute value values). For
-        example, use `filters={'archived': True}` to get all archived plants.
-
-        If the calling function has an annotated Group model queryset pass it as
-        the optional group_queryset argument (prevents extra queries for unnamed
-        group index in Group.get_display_name, no benefit if all groups named).
         '''
         return (
             self
-                .filter(user=user, **filters)
                 # Consistent order so unnamed plant index doesn't shift
                 .order_by('created')
                 # Label unnamed plants with no species (gets sequential name)
-                .annotate(**plant_is_unnamed_annotation())
+                .with_is_unnamed_annotation()
                 # Add unnamed_index (used to build "Unnamed plant <index>" names)
-                .annotate(**unnamed_index_annotation())
+                .with_unnamed_index_annotation()
                 # Add last_watered_time
-                .annotate(**last_watered_time_annotation())
+                .with_last_watered_time_annotation()
                 # Add last_fertilized_time
-                .annotate(**last_fertilized_time_annotation())
+                .with_last_fertilized_time_annotation()
                 # Add last_photo_details (used as default photo if not set)
-                .annotate(**last_photo_thumbnail_annotation())
+                .with_last_photo_thumbnail_annotation()
                 # Include default_photo if set (avoid extra query for thumbnail)
                 .select_related('default_photo')
-                # Prefetch Group entry if plant is in a group (copy from group
-                # queryset if given, avoids extra queries if groups annotated)
-                .prefetch_related(
-                    Prefetch(
-                        'group',
-                        queryset=group_queryset
-                    )
-                )
         )
 
-    def with_manage_plant_annotation(self, uuid):
-        '''Takes uuid, returns matching plant full annotations for manage_plant
-        page (avoids seperate queries for events, photos, etc).
+    def with_manage_plant_annotation(self):
+        '''Adds full annotations for manage_plant page (avoids seperate queries
+        for events, photos, etc).
         '''
         from . import WaterEvent, FertilizeEvent, PruneEvent, RepotEvent, DivisionEvent
         return (
             self
-                .filter(uuid=uuid)
                 # Add last_watered_time
-                .annotate(**last_watered_time_annotation())
+                .with_last_watered_time_annotation()
                 # Add last_fertilized_time
-                .annotate(**last_fertilized_time_annotation())
+                .with_last_fertilized_time_annotation()
                 # Add last_photo_details (used as default photo if not set)
-                .annotate(**last_photo_details_annotation())
+                .with_last_photo_thumbnail_annotation()
                 # Include default_photo if set (avoid extra query for thumbnail)
                 .select_related('default_photo')
                 # Include Group entry if plant in a group
@@ -196,7 +170,6 @@ class PlantManager(models.Manager):
                         DivisionEvent.objects.filter(plant=OuterRef('pk'))
                     )
                 )
-                .first()
         )
 
 
@@ -207,7 +180,7 @@ class Plant(models.Model):
     RepotEvent, Photo, and NoteEvent instances associated with Plant.
     '''
 
-    objects = PlantManager()
+    objects = PlantQueryset.as_manager()
 
     # User who registered the plant
     user = models.ForeignKey(

@@ -146,7 +146,7 @@ def manage(request, uuid, user):
 
     model_type = find_model_type(uuid)
     if model_type == 'plant':
-        plant = Plant.objects.with_manage_plant_annotation(uuid)
+        plant = Plant.objects.filter(uuid=uuid).with_manage_plant_annotation().first()
         return render_manage_plant_page(request, plant, user)
 
     if model_type == 'group':
@@ -193,7 +193,7 @@ def get_plant_state(request, uuid):
     Used to refresh contents after user presses back button.
     '''
     try:
-        plant = Plant.objects.with_manage_plant_annotation(uuid)
+        plant = Plant.objects.filter(uuid=uuid).with_manage_plant_annotation().first()
         if plant:
             return JsonResponse(
                 get_manage_plant_state(plant),

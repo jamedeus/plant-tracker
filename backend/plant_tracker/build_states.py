@@ -1,6 +1,7 @@
 '''Functions that build (or load from cache) states used by frontend react apps.'''
 
 from django.core.cache import cache
+from django.db.models import Prefetch
 
 from .models import Plant, Group
 
@@ -12,10 +13,10 @@ def get_plant_options(user):
     '''
     return {
         str(plant.uuid): plant.get_details()
-        for plant in Plant.objects.with_overview_annotation(
+        for plant in Plant.objects.filter(
             user=user,
-            filters={'archived': False}
-        )
+            archived=False
+        ).with_overview_annotation().select_related('group')
         if plant.group is None
     }
 
@@ -27,10 +28,10 @@ def get_group_options(user):
     '''
     return {
         str(group.uuid): group.get_details()
-        for group in Group.objects.with_overview_annotation(
+        for group in Group.objects.filter(
             user=user,
-            filters={'archived': False}
-        )
+            archived=False
+        ).with_overview_annotation()
     }
 
 
@@ -66,15 +67,18 @@ def build_overview_state(user, archived=False):
     if archived and not show_archive:
         return None
 
-    groups = Group.objects.with_overview_annotation(
+    groups = Group.objects.filter(
         user=user,
-        filters={'archived': archived}
-    )
+        archived=archived
+    ).with_overview_annotation()
 
-    plants = Plant.objects.with_overview_annotation(
-        user=user,
-        group_queryset=groups,
-        filters={'archived': archived}
+    plants = (
+        Plant.objects
+            .filter(user=user, archived=archived)
+            .with_overview_annotation()
+            # Prefetch Group entry if plant is in a group (copy from annotated
+            # group queryset above, avoids extra queries)
+            .prefetch_related(Prefetch('group', queryset=groups))
     )
 
     state = {
@@ -173,10 +177,10 @@ def get_manage_plant_state(plant):
 def build_manage_group_state(group):
     '''Builds state parsed by manage_group react app and returns.'''
 
-    plants = Plant.objects.with_overview_annotation(
+    plants = Plant.objects.filter(
         user=group.user,
-        filters={'group_id': group.pk}
-    )
+        group_id=group.pk
+    ).with_overview_annotation()
 
     # Overwrite group with already-loaded entry (avoids database query for each
     # plant, more efficient than select_related since same instance is reused)
