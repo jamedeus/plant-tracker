@@ -6,10 +6,9 @@ from django.db import models
 from django.conf import settings
 from django.core.cache import cache
 from django.db import IntegrityError, transaction
-from django.core.validators import MaxValueValidator, MinValueValidator
-from django.db.models.functions import RowNumber
-from django.db.models.functions import JSONObject
 from django.utils.functional import cached_property
+from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db.models.functions import JSONObject, Cast, RowNumber
 from django.contrib.postgres.expressions import ArraySubquery
 from django.db.models import F, Case, When, Value, Subquery, OuterRef, Exists, Window, JSONField, Prefetch
 
@@ -90,7 +89,23 @@ def last_photo_details_annotation():
     )}
 
 
+class PlantQueryset(models.QuerySet):
+    '''Custom queryset methods for the Plant model.'''
+
+    def with_uuid_as_string_annotation(self):
+        '''Takes queryset with uuid_str annotation containing each plant's UUID
+        cast to string.
+        '''
+        return self.annotate(uuid_str=Cast("uuid", models.CharField()))
+
+
 class PlantManager(models.Manager):
+    '''Custom manager methods for the Plant model.'''
+
+    def get_queryset(self):
+        '''Add PlantQueryset methods to PlantManager.'''
+        return PlantQueryset(self.model, using=self._db)
+
     def with_overview_annotation(self, user, filters={}, group_queryset=None):
         '''Takes user, returns all Plants owned by user with annotations that
         cover everything shown on overview page to prevent multiple queries

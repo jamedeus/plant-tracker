@@ -652,8 +652,8 @@ def add_plant_event(plant, timestamp, event_type, **kwargs):
 
 
 # Upstairs bathroom (11 plants)
-# Water all:     56 queries (22ms), 107ms total
-# Fertilize all: 56 queries (21ms), 119ms total
+# Water all:     47 queries (16ms), 94ms total
+# Fertilize all: 47 queries (17ms), 99ms total
 @get_user_token
 @requires_json_post(["plants", "event_type", "timestamp"])
 @get_timestamp_from_post_body
@@ -662,12 +662,25 @@ def bulk_add_plant_events(user, timestamp, event_type, data, **kwargs):
     '''Creates new Event entry with requested type for each Plant specified in body.
     Requires JSON POST with plants (list of UUIDs), event_type, and timestamp keys.
     '''
+
+    # Get all plants in 1 query, add uuid_str annotation (pre-convert to strng)
+    plants = (
+        Plant.objects
+            .filter(uuid__in=data["plants"])
+            .with_uuid_as_string_annotation()
+            .select_related("user")
+    )
+
+    # Get list of UUIDs that were not found in database
+    failed = list(
+        set(data["plants"]) - set(plants.values_list("uuid_str", flat=True))
+    )
+
+    # Create event for each found plant
     added = []
-    failed = []
-    for plant_id in data["plants"]:
-        plant = get_plant_by_uuid(plant_id)
-        # Make sure plant exists and is owned by user
-        if plant and plant.user == user:
+    for plant in plants:
+        # Make sure plant is owned by user
+        if plant.user == user:
             try:
                 # Use transaction.atomic to clean up after IntegrityError if duplicate
                 with transaction.atomic():
@@ -675,11 +688,11 @@ def bulk_add_plant_events(user, timestamp, event_type, data, **kwargs):
                         plant=plant,
                         timestamp=timestamp
                     )
-                added.append(plant_id)
+                added.append(plant.uuid_str)
             except IntegrityError:
-                failed.append(plant_id)
+                failed.append(plant.uuid_str)
         else:
-            failed.append(plant_id)
+            failed.append(plant.uuid_str)
 
     # Return 200 if at least 1 succeeded, otherwise return error
     return JsonResponse(
