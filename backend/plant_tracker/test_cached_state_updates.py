@@ -1416,3 +1416,338 @@ class EndpointStateUpdateTests(TestCase):
                 'repot': []
             }
         )
+
+    def test_add_plant_note(self):
+        '''The cached plant state should update when a NoteEvent is created.'''
+
+        # Confirm notes key is empty in cached plant state
+        self.assertEqual(self.load_cached_plant1_state()['notes'], {})
+
+        # Create note with /add_plant_note endpoint
+        response = self.client.post('/add_plant_note', {
+            'plant_id': self.plant1.uuid,
+            'timestamp': '2024-02-06T03:06:26.000Z',
+            'note_text': 'think there might be bugs'
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm notes key updated in cached plant state
+        self.assertEqual(
+            self.load_cached_plant1_state()['notes'],
+            {'2024-02-06T03:06:26+00:00': 'think there might be bugs'}
+        )
+
+    def test_edit_plant_note(self):
+        '''The cached plant state should update when a NoteEvent is edited.'''
+
+        # Create note with /add_plant_note endpoint
+        response = self.client.post('/add_plant_note', {
+            'plant_id': self.plant1.uuid,
+            'timestamp': '2024-02-06T03:06:26.000Z',
+            'note_text': 'think there might be bugs'
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm notes key contains note in cached plant state
+        self.assertEqual(
+            self.load_cached_plant1_state()['notes'],
+            {'2024-02-06T03:06:26+00:00': 'think there might be bugs'}
+        )
+
+        # Edit note with /edit_plant_note endpoint
+        response = self.client.post('/edit_plant_note', {
+            'plant_id': self.plant1.uuid,
+            'timestamp': '2024-02-06T03:06:26.000Z',
+            'note_text': 'there are definitely bugs'
+        })
+
+        # Confirm notes key updated in cached plant state
+        self.assertEqual(
+            self.load_cached_plant1_state()['notes'],
+            {'2024-02-06T03:06:26+00:00': 'there are definitely bugs'}
+        )
+
+    def test_delete_plant_note(self):
+        '''The cached plant state should update when a NoteEvent is deleted.'''
+
+        # Create note with /add_plant_note endpoint
+        response = self.client.post('/add_plant_note', {
+            'plant_id': self.plant1.uuid,
+            'timestamp': '2024-02-06T03:06:26.000Z',
+            'note_text': 'think there might be bugs'
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm notes key contains note in cached plant state
+        self.assertEqual(
+            self.load_cached_plant1_state()['notes'],
+            {'2024-02-06T03:06:26+00:00': 'think there might be bugs'}
+        )
+
+        # Delete note with /delete_plant_note endpoint
+        response = self.client.post('/delete_plant_note', {
+            'plant_id': self.plant1.uuid,
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        })
+
+        # Confirm notes key was cleared in cached plant state
+        self.assertEqual(self.load_cached_plant1_state()['notes'], {})
+
+    def test_add_plant_to_group(self):
+        '''The cached overview and plant states should update when a plant is
+        added to a group.
+        '''
+
+        # Confirm cached overview state says plant1 is not in a group
+        self.assertIsNone(
+            self.load_cached_overview_state()['plants'][str(self.plant1.uuid)]['group']
+        )
+        # Confirm cached overview state says group1 has no plants
+        self.assertEqual(
+            self.load_cached_overview_state()['groups'][str(self.group1.uuid)]['plants'],
+            0
+        )
+        # Confirm cached plant state says plant1 is not in a group
+        self.assertIsNone(self.load_cached_plant1_state()['plant_details']['group'])
+
+        # Add plant1 to group1 with /add_plant_to_group endpoint
+        response = self.client.post('/add_plant_to_group', {
+            'plant_id': self.plant1.uuid,
+            'group_id': self.group1.uuid
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm cached overview state now says plant1 is in group1
+        self.assertEqual(
+            self.load_cached_overview_state()['plants'][str(self.plant1.uuid)]['group'],
+            {"name": "Unnamed group 1", "uuid": str(self.group1.uuid)}
+        )
+        # Confirm cached overview state says group1 has 1 plant
+        self.assertEqual(
+            self.load_cached_overview_state()['groups'][str(self.group1.uuid)]['plants'],
+            1
+        )
+        # Confirm cached plant state now says plant1 is in group1
+        self.assertEqual(
+            self.load_cached_plant1_state()['plant_details']['group'],
+            {"name": "Unnamed group 1", "uuid": str(self.group1.uuid)}
+        )
+
+    def test_remove_plant_from_group(self):
+        '''The cached overview and plant states should update when a plant is
+        added to a group.
+        '''
+
+        # Add plant1 to group1 with /add_plant_to_group endpoint
+        response = self.client.post('/add_plant_to_group', {
+            'plant_id': self.plant1.uuid,
+            'group_id': self.group1.uuid
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm cached overview state says plant1 is in group1
+        self.assertEqual(
+            self.load_cached_overview_state()['plants'][str(self.plant1.uuid)]['group'],
+            {"name": "Unnamed group 1", "uuid": str(self.group1.uuid)}
+        )
+        # Confirm cached overview state says group1 has 1 plant
+        self.assertEqual(
+            self.load_cached_overview_state()['groups'][str(self.group1.uuid)]['plants'],
+            1
+        )
+        # Confirm cached plant state says plant1 is in group1
+        self.assertEqual(
+            self.load_cached_plant1_state()['plant_details']['group'],
+            {"name": "Unnamed group 1", "uuid": str(self.group1.uuid)}
+        )
+
+        # Remove plant1 to group1 with /remove_plant_from_group endpoint
+        response = self.client.post('/remove_plant_from_group', {
+            'plant_id': self.plant1.uuid
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm cached overview state now says plant1 is not in a group
+        self.assertIsNone(
+            self.load_cached_overview_state()['plants'][str(self.plant1.uuid)]['group']
+        )
+        # Confirm cached overview state now says group1 has no plants
+        self.assertEqual(
+            self.load_cached_overview_state()['groups'][str(self.group1.uuid)]['plants'],
+            0
+        )
+        # Confirm cached plant state now says plant1 is not in a group
+        self.assertIsNone(self.load_cached_plant1_state()['plant_details']['group'])
+
+    def test_bulk_add_plants_to_group(self):
+        '''The cached overview and plant states should update when plants are
+        bulk added to a group.
+        '''
+
+        # Confirm cached overview state says plant1 is not in a group
+        self.assertIsNone(
+            self.load_cached_overview_state()['plants'][str(self.plant1.uuid)]['group']
+        )
+        # Confirm cached overview state says plant2 is not in a group
+        self.assertIsNone(
+            self.load_cached_overview_state()['plants'][str(self.plant2.uuid)]['group']
+        )
+        # Confirm cached overview state says group1 has no plants
+        self.assertEqual(
+            self.load_cached_overview_state()['groups'][str(self.group1.uuid)]['plants'],
+            0
+        )
+        # Confirm cached plant states says plants are not in a group
+        self.assertIsNone(self.load_cached_plant1_state()['plant_details']['group'])
+        self.assertIsNone(self.load_cached_plant2_state()['plant_details']['group'])
+
+        # Add plant1 and plant2 to group1 with /bulk_add_plants_to_group endpoint
+        response = self.client.post('/bulk_add_plants_to_group', {
+            'group_id': self.group1.uuid,
+            'plants': [
+                self.plant1.uuid,
+                self.plant2.uuid
+            ]
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm cached overview state now says plant1 is in group1
+        self.assertEqual(
+            self.load_cached_overview_state()['plants'][str(self.plant1.uuid)]['group'],
+            {"name": "Unnamed group 1", "uuid": str(self.group1.uuid)}
+        )
+        # Confirm cached overview state now says plant2 is in group1
+        self.assertEqual(
+            self.load_cached_overview_state()['plants'][str(self.plant2.uuid)]['group'],
+            {"name": "Unnamed group 1", "uuid": str(self.group1.uuid)}
+        )
+        # Confirm cached overview state says group1 has 2 plant
+        self.assertEqual(
+            self.load_cached_overview_state()['groups'][str(self.group1.uuid)]['plants'],
+            2
+        )
+        # Confirm cached plant states now says both plants are in group1
+        self.assertEqual(
+            self.load_cached_plant1_state()['plant_details']['group'],
+            {"name": "Unnamed group 1", "uuid": str(self.group1.uuid)}
+        )
+        self.assertEqual(
+            self.load_cached_plant2_state()['plant_details']['group'],
+            {"name": "Unnamed group 1", "uuid": str(self.group1.uuid)}
+        )
+
+    def test_bulk_remove_plants_from_group(self):
+        '''The cached overview and plant states should update when plants are
+        bulk removed from a group.
+        '''
+
+        # Add plant1 and plant2 to group1 with /bulk_add_plants_to_group endpoint
+        response = self.client.post('/bulk_add_plants_to_group', {
+            'group_id': self.group1.uuid,
+            'plants': [
+                self.plant1.uuid,
+                self.plant2.uuid
+            ]
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm cached overview state says plant1 is in group1
+        self.assertEqual(
+            self.load_cached_overview_state()['plants'][str(self.plant1.uuid)]['group'],
+            {"name": "Unnamed group 1", "uuid": str(self.group1.uuid)}
+        )
+        # Confirm cached overview state says plant2 is in group1
+        self.assertEqual(
+            self.load_cached_overview_state()['plants'][str(self.plant2.uuid)]['group'],
+            {"name": "Unnamed group 1", "uuid": str(self.group1.uuid)}
+        )
+        # Confirm cached overview state says group1 has 2 plant
+        self.assertEqual(
+            self.load_cached_overview_state()['groups'][str(self.group1.uuid)]['plants'],
+            2
+        )
+        # Confirm cached plant states says both plants are in group1
+        self.assertEqual(
+            self.load_cached_plant1_state()['plant_details']['group'],
+            {"name": "Unnamed group 1", "uuid": str(self.group1.uuid)}
+        )
+        self.assertEqual(
+            self.load_cached_plant2_state()['plant_details']['group'],
+            {"name": "Unnamed group 1", "uuid": str(self.group1.uuid)}
+        )
+
+        # Remove plant1 and plant2 from group1 with /bulk_remove_plants_from_group endpoint
+        response = self.client.post('/bulk_remove_plants_from_group', {
+            'group_id': self.group1.uuid,
+            'plants': [
+                self.plant1.uuid,
+                self.plant2.uuid
+            ]
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm cached overview state now says plant1 is not in a group
+        self.assertIsNone(
+            self.load_cached_overview_state()['plants'][str(self.plant1.uuid)]['group']
+        )
+        # Confirm cached overview state now says plant2 is not in a group
+        self.assertIsNone(
+            self.load_cached_overview_state()['plants'][str(self.plant2.uuid)]['group']
+        )
+        # Confirm cached overview state now says group1 has no plants
+        self.assertEqual(
+            self.load_cached_overview_state()['groups'][str(self.group1.uuid)]['plants'],
+            0
+        )
+        # Confirm cached plant states now say plants are not in a group
+        self.assertIsNone(self.load_cached_plant1_state()['plant_details']['group'])
+        self.assertIsNone(self.load_cached_plant2_state()['plant_details']['group'])
+
+    def test_repot_plant(self):
+        '''The cached plant state should update when a RepotEvent is created.'''
+
+        # Confirm plant pot_size is not set in cached overview or plant states
+        self.assertIsNone(
+            self.load_cached_overview_state()['plants'][str(self.plant1.uuid)]['pot_size']
+        )
+        self.assertIsNone(self.load_cached_plant1_state()['plant_details']['pot_size'])
+        # Confirm events key is empty in cached plant state
+        self.assertEqual(
+            self.load_cached_plant1_state()['events'],
+            {
+                'water': [],
+                'fertilize': [],
+                'prune': [],
+                'repot': []
+            }
+        )
+
+        # Repot plant with /repot_plant endpoint
+        response = self.client.post('/repot_plant', {
+            'plant_id': self.plant1.uuid,
+            'timestamp': '2024-02-06T03:06:26.000Z',
+            'new_pot_size': 6
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm plant pot_size updated in cached overview or plant states
+        self.assertEqual(
+            self.load_cached_overview_state()['plants'][str(self.plant1.uuid)]['pot_size'],
+            6
+        )
+        self.assertEqual(
+            self.load_cached_plant1_state()['plant_details']['pot_size'],
+            6
+        )
+        # Confirm repot event was added to events key in cached plant state
+        self.assertEqual(
+            self.load_cached_plant1_state()['events'],
+            {
+                'water': [],
+                'fertilize': [],
+                'prune': [],
+                'repot': [
+                    '2024-02-06T03:06:26+00:00'
+                ]
+            }
+        )

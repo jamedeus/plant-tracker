@@ -951,16 +951,14 @@ def repot_plant(plant, timestamp, data, **kwargs):
     try:
         # Create with current pot_size as both old and new
         with transaction.atomic():
-            event = RepotEvent.objects.create(
+            RepotEvent.objects.create(
                 plant=plant,
                 timestamp=timestamp,
                 old_pot_size=plant.pot_size,
-                new_pot_size=plant.pot_size
+                new_pot_size=data["new_pot_size"] or plant.pot_size
             )
         # If new_pot_size specified update plant.pot_size and event.new_pot_size
         if data["new_pot_size"]:
-            event.new_pot_size = data["new_pot_size"]
-            event.save()
             plant.pot_size = data["new_pot_size"]
             plant.save()
         return JsonResponse({"action": "repot", "plant": plant.uuid}, status=200)
