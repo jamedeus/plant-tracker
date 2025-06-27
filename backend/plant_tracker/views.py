@@ -433,6 +433,7 @@ def change_uuid(instance, data, user, **kwargs):
         # Delete plant/group from cached state (prevent duplicate, keys are uuid
         # so once it changes the old entry can't be removed)
         if isinstance(instance, Plant):
+            cache.delete(f'{instance.uuid}_state')
             remove_instance_from_cached_overview_state(instance, 'plants')
         else:
             remove_instance_from_cached_overview_state(instance, 'groups')
