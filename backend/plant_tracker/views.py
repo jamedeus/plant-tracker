@@ -46,6 +46,8 @@ from .build_states import (
     build_manage_group_state
 )
 from .update_cached_states import (
+    add_photos_to_cached_state,
+    remove_photos_from_cached_states,
     update_instance_in_cached_overview_state,
     remove_instance_from_cached_overview_state
 )
@@ -1004,8 +1006,8 @@ def divide_plant(user, plant, timestamp, **kwargs):
 
 
 # Favorite plant
-# 1 photo:   8 queries (5ms), 302ms total (need to only do thumbnail sync, push others to celery)
-# 3 photos: 16 queries (8ms), 835ms total
+# 1 photo:  2 queries (3ms), 322ms total (need to only do thumbnail sync, push others to celery)
+# 3 photos: 2 queries (2ms), 663ms total
 @get_user_token
 def add_plant_photos(request, user):
     '''Creates Photo model for each image in request body.
@@ -1014,7 +1016,12 @@ def add_plant_photos(request, user):
     if request.method != "POST":
         return JsonResponse({'error': 'must post FormData'}, status=405)
 
-    plant = get_plant_by_uuid(request.POST.get("plant_id"))
+    plant = (
+        Plant.objects
+            .filter(uuid=request.POST.get("plant_id"))
+            .select_related('user', 'default_photo')
+            .first()
+    )
     if not plant:
         return JsonResponse({'error': 'unable to find plant'}, status=404)
 
@@ -1040,6 +1047,9 @@ def add_plant_photos(request, user):
         except UnidentifiedImageError:
             failed.append(request.FILES[key].name)
 
+    # Update cached states
+    add_photos_to_cached_state(plant, created)
+
     # Return list of new photo URLs (added to frontend state)
     return JsonResponse(
         {
@@ -1052,8 +1062,8 @@ def add_plant_photos(request, user):
 
 
 # Favorite plant
-# Delete 1 photo:  13 queries (6ms), 37ms total
-# Delete 3 photos: 37 queries (14ms), 73ms total
+# Delete 1 photo:   6 queries (4ms), 34ms total
+# Delete 3 photos: 12 queries (5ms), 43ms total
 @get_user_token
 @requires_json_post(["plant_id", "delete_photos"])
 @get_plant_from_post_body
@@ -1070,6 +1080,9 @@ def delete_plant_photos(plant, data, **kwargs):
             deleted.append(primary_key)
         except Photo.DoesNotExist:
             failed.append(primary_key)
+
+    # Update cached states
+    remove_photos_from_cached_states(plant, deleted)
 
     return JsonResponse({"deleted": deleted, "failed": failed}, status=200)
 

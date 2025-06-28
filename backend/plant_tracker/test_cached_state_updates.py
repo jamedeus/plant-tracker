@@ -2127,7 +2127,7 @@ class EndpointStateUpdateTests(TestCase):
             ]
         })
 
-        # Confirm cached overview state no longer has no thumbnail for plant1
+        # Confirm cached overview state no longer has thumbnail for plant1
         self.assertIsNone(
             self.load_cached_overview_state()['plants'][str(self.plant1.uuid)]['thumbnail']
         )

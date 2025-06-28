@@ -370,34 +370,6 @@ class OverviewStateUpdateTests(TestCase):
             '2024-02-06T03:06:26+00:00'
         )
 
-    def test_overview_state_updates_when_plant_photo_thumbnail_changes(self):
-        # Create Plant model entry
-        plant = Plant.objects.create(uuid=self.uuid, user=get_default_user())
-
-        # Confirm state was generated, confirm Plant has no photo thumbnail
-        user_id = get_default_user().pk
-        cached_state = cache.get(f'overview_state_{user_id}')
-        self.assertIsNotNone(cached_state)
-        self.assertIsNone(cached_state["plants"][str(plant.uuid)]["thumbnail"])
-
-        # Create mock photo associated with plant
-        photo = Photo.objects.create(
-            photo=create_mock_photo('2024:03:22 10:52:03'),
-            plant=plant
-        )
-
-        # Confirm thumbnail in cached state now matches new photo
-        cached_state = cache.get(f'overview_state_{user_id}')
-        self.assertEqual(
-            cached_state["plants"][str(plant.uuid)]["thumbnail"],
-            f"/media/{photo.thumbnail.name}"
-        )
-
-        # Delete mock photo, confirm thumbnail in cached state reverted to None
-        photo.delete()
-        cached_state = cache.get(f'overview_state_{user_id}')
-        self.assertIsNone(cached_state["plants"][str(plant.uuid)]["thumbnail"])
-
     def test_overview_state_updates_when_plant_default_photo_set(self):
         # Create Plant model entry
         plant = Plant.objects.create(uuid=self.uuid, user=get_default_user())
@@ -783,44 +755,6 @@ class ManagePlantStateUpdateTests(TestCase):
         note.delete()
         self.assertEqual(
             cache.get(f'{self.uuid}_state')['notes'],
-            {}
-        )
-
-    def test_manage_plant_state_updates_when_photo_created_or_deleted(self):
-        # Create Plant model entry, generate cached state
-        plant = Plant.objects.create(uuid=self.uuid, user=get_default_user())
-        build_manage_plant_state(
-            Plant.objects.get_with_manage_plant_annotation(self.uuid)
-        )
-
-        # Confirm cached state has no photos
-        self.assertEqual(
-            cache.get(f'{self.uuid}_state')['photos'],
-            {}
-        )
-
-        # Create Photo
-        mock_photo = create_mock_photo('2024:03:21 10:52:03')
-        photo = Photo.objects.create(photo=mock_photo, plant=plant)
-
-        # Confirm cached state updated automatically
-        self.assertEqual(
-            cache.get(f'{self.uuid}_state')['photos'],
-            {
-                photo.pk: {
-                    "timestamp": "2024-03-21T10:52:03+00:00",
-                    "image": f"/media/{photo.photo.name}",
-                    "thumbnail": f"/media/{photo.thumbnail.name}",
-                    "preview": f"/media/{photo.preview.name}",
-                    "key": photo.pk
-                }
-            }
-        )
-
-        # Delete Photo, confirm cached state updated automatically
-        photo.delete()
-        self.assertEqual(
-            cache.get(f'{self.uuid}_state')['photos'],
             {}
         )
 

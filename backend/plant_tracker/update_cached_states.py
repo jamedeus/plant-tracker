@@ -216,34 +216,54 @@ def update_last_event_times_in_cached_states_hook(instance, **kwargs):
     update_plant_details_in_cached_states(instance.plant)
 
 
-@receiver(post_save, sender=Photo)
-@disable_for_loaddata
-def add_photo_to_cached_states_hook(instance, **kwargs):
-    '''Adds saved photo to associated plant's cached manage_plant state, updates
-    default_photo in cached manage_plant and overview states when a photo is saved.
+def update_plant_thumbnail_in_cached_overview_state(plant):
+    '''Takes plant, updates thumbnail in cached overview state.'''
+    state = get_overview_state(plant.user)
+    thumbnail = plant.default_photo_details['thumbnail']
+    state['plants'][str(plant.uuid)]['thumbnail'] = thumbnail
+    cache.set(f'overview_state_{plant.user.pk}', state, None)
+
+
+def add_photos_to_cached_state(plant, photos):
+    '''Takes plant and list of photos (dicts returned by Photo.get_details).
+    Adds photos to cached manage_plant state. If plant default_photo is not set
+    updates thumbnail to most-recent photo in cached overview state.
     '''
-    cached_state = cache.get(f'{instance.plant.uuid}_state')
+    if not plant.default_photo:
+        update_plant_thumbnail_in_cached_overview_state(plant)
+    cached_state = cache.get(f'{plant.uuid}_state')
     if cached_state:
-        cached_state['photos'][instance.pk] = instance.get_details()
-        default_photo = instance.plant.get_default_photo_details()
-        cached_state['default_photo'] = default_photo
-        cache.set(f'{instance.plant.uuid}_state', cached_state, None)
-    update_plant_details_in_cached_states(instance.plant)
+        # Add new photos to plant state
+        for photo in photos:
+            cached_state['photos'][photo['key']] = photo
+        # Update default photo if not set
+        if not plant.default_photo:
+            default_photo = plant.default_photo_details
+            cached_state['default_photo'] = default_photo
+            cached_state['plant_details']['thumbnail'] = default_photo['thumbnail']
+        # Re-cache
+        cache.set(f'{plant.uuid}_state', cached_state, None)
 
 
-@receiver(post_delete, sender=Photo)
-def remove_photo_from_cached_states_hook(instance, **kwargs):
-    '''Removes deleted photo from associated plant's cached manage_plant state,
-    updates default_photo in cached manage_plant state and overview state when
-    a photo is deleted.
+def remove_photos_from_cached_states(plant, deleted_keys):
+    '''Takes plant and list of deleted photo primary keys, removes all photos
+    in list from cached manage_plant state. If plant default photo is not set
+    updates thumbnail to most-recent photo in cached overview state.
     '''
-    cached_state = cache.get(f'{instance.plant.uuid}_state')
-    if cached_state and instance.pk in cached_state['photos']:
-        del cached_state['photos'][instance.pk]
-        default_photo = instance.plant.get_default_photo_details()
-        cached_state['default_photo'] = default_photo
-        cache.set(f'{instance.plant.uuid}_state', cached_state, None)
-    update_plant_details_in_cached_states(instance.plant)
+    if not plant.default_photo:
+        update_plant_thumbnail_in_cached_overview_state(plant)
+    cached_state = cache.get(f'{plant.uuid}_state')
+    if cached_state:
+        # Remove deleted photos from plant state
+        for deleted_photo_key in deleted_keys:
+            del cached_state['photos'][deleted_photo_key]
+        # Update default photo if not set
+        if not plant.default_photo:
+            default_photo = plant.default_photo_details
+            cached_state['default_photo'] = default_photo
+            cached_state['plant_details']['thumbnail'] = default_photo['thumbnail']
+        # Re-cache
+        cache.set(f'{plant.uuid}_state', cached_state, None)
 
 
 @receiver(post_save, sender=NoteEvent)

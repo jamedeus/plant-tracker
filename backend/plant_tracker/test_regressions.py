@@ -773,15 +773,18 @@ class ViewRegressionTests(TestCase):
         catch it because they never request overview state with photos
         '''
 
-        # Create plant with photo
+        # Create plant, add photo with /add_plant_photos endpoint
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-        photo = Photo.objects.create(
-            photo=create_mock_photo(
-                creation_time='2024:02:21 10:52:03',
-                name='photo1.jpg'
-            ),
-            plant=plant
+        response = self.client.post(
+            '/add_plant_photos',
+            data={
+                'plant_id': str(plant.uuid),
+                'photo_0': create_mock_photo('2024:02:21 10:52:03', 'photo1.jpg')
+            },
+            content_type=MULTIPART_CONTENT
         )
+        self.assertEqual(response.status_code, 200)
+        photo = Photo.objects.all()[0]
 
         # Request overview page, should not raise exception
         response = self.client.get('/')
@@ -936,14 +939,19 @@ class CachedStateRegressionTests(TestCase):
             }
         )
 
-        # Create photo, confirm default_photo updated in cached state
-        photo = Photo.objects.create(
-            photo=create_mock_photo(
-                creation_time='2024:02:21 10:52:03',
-                name='photo1.jpg'
-            ),
-            plant=plant
+        # Create photo with /add_plant_photos endpoint
+        response = JSONClient().post(
+            '/add_plant_photos',
+            data={
+                'plant_id': str(plant.uuid),
+                'photo_0': create_mock_photo('2024:02:21 10:52:03', 'photo1.jpg')
+            },
+            content_type=MULTIPART_CONTENT
         )
+        self.assertEqual(response.status_code, 200)
+        photo = Photo.objects.all()[0]
+
+        # Confirm default_photo updated in cached state
         self.assertEqual(
             cache.get(f'{plant.uuid}_state')['plant_details']['thumbnail'],
             '/media/thumbnails/photo1_thumb.webp'
@@ -960,8 +968,15 @@ class CachedStateRegressionTests(TestCase):
             }
         )
 
-        # Delete photo, confirm default_photo updated in cached state
-        photo.delete()
+        # Delete photo with /delete_plant_photos endpoint
+        response = JSONClient().post('/delete_plant_photos', {
+            'plant_id': str(plant.uuid),
+            'delete_photos': [
+                photo.pk
+            ]
+        })
+
+        # Confirm default_photo updated in cached state
         self.assertIsNone(
             cache.get(f'{plant.uuid}_state')['plant_details']['thumbnail']
         )
