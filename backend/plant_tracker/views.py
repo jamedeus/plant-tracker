@@ -1062,8 +1062,8 @@ def add_plant_photos(request, user):
 
 
 # Favorite plant
-# Delete 1 photo:   6 queries (4ms), 34ms total
-# Delete 3 photos: 12 queries (5ms), 43ms total
+# Delete 1 photo:  7 queries (4ms), 34ms total
+# Delete 3 photos: 7 queries (4ms), 34ms total
 @get_user_token
 @requires_json_post(["plant_id", "delete_photos"])
 @get_plant_from_post_body
@@ -1071,15 +1071,16 @@ def delete_plant_photos(plant, data, **kwargs):
     '''Deletes a list of Photos associated with a specific Plant.
     Requires JSON POST with plant_id (uuid) and delete_photos (list of db keys).
     '''
-    deleted = []
-    failed = []
-    for primary_key in data["delete_photos"]:
-        try:
-            photo = Photo.objects.get(plant=plant, pk=primary_key)
-            photo.delete()
-            deleted.append(primary_key)
-        except Photo.DoesNotExist:
-            failed.append(primary_key)
+
+    # Query all requested photos, get list of found primary keys
+    photos = Photo.objects.filter(plant=plant, pk__in=data["delete_photos"])
+    deleted = [photo.pk for photo in photos]
+
+    # Get list of photo primary keys that were not found in database
+    failed = list(set(data["delete_photos"]) - set(deleted))
+
+    # Delete all found photos
+    photos.delete()
 
     # Update cached states
     remove_photos_from_cached_states(plant, deleted)
