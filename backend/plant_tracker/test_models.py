@@ -228,7 +228,7 @@ class PlantModelTests(TestCase):
 
         # Confirm an exception is raised if new photo is set as default for the
         # first plant (default_photo must have reverse relation to same plant)
-        with self.assertRaises(ValueError):
+        with self.assertRaises(IntegrityError):
             self.plant.default_photo = wrong_plant_photo
             self.plant.save()
 

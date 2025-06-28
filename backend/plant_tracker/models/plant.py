@@ -456,10 +456,6 @@ class Plant(models.Model):
         return self._get_most_recent_timestamp(self.repotevent_set.all())
 
     def save(self, *args, **kwargs):
-        # Prevent setting photo of a different plant as default
-        if self.default_photo and self.default_photo.plant != self:
-            raise ValueError("Default photo is associated with a different plant")
-        # Prevent saving Plant with UUID that is already used by Group
         from .group import Group
         if Group.objects.filter(uuid=self.uuid):
             raise IntegrityError("UUID already exists in Group table")
@@ -490,5 +486,4 @@ class Plant(models.Model):
             # Delete all photos from disk before deleting photo entries
             for photo in self.photo_set.all():
                 photo._delete_photos_from_disk()
-            self._delete_event_queryset(self.photo_set.all())
             super().delete(*args, **kwargs)
