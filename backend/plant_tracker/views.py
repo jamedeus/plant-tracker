@@ -448,6 +448,7 @@ def change_uuid(instance, data, user, **kwargs):
         return JsonResponse({"error": "new_id key is not a valid UUID"}, status=400)
 
 
+# TODO just update details (not photo, last_watered, last_fertilized - most queries)
 # 19 queries (9ms), 44ms total
 @get_user_token
 @requires_json_post(["plant_id", "name", "species", "description", "pot_size"])
@@ -887,33 +888,42 @@ def remove_plant_from_group(plant, **kwargs):
 
 
 # Upstairs bathroom (11 plants)
-# Add 1: 13 queries (7ms), 37ms total
-# Add 3: 36 queries (18ms), 70ms total
+# Add 1: 8 queries (9ms), 37ms total
+# Add 3: 16 queries (17ms), 55ms total
 @get_user_token
 @requires_json_post(["group_id", "plants"])
 @get_group_from_post_body
-def bulk_add_plants_to_group(group, data, **kwargs):
+def bulk_add_plants_to_group(user, group, data, **kwargs):
     '''Adds a list of Plants to specified Group (creates database relation for each).
     Requires JSON POST with group_id (uuid) and plants (list of UUIDs) keys.
     '''
+
+    # Get all plants in 1 query, add uuid_str annotation (pre-convert to strng)
+    plants = (
+        Plant.objects
+            .filter(uuid__in=data["plants"])
+            .with_uuid_as_string_annotation()
+            .with_overview_annotation()
+            .select_related("user")
+    )
+
+    # Get list of UUIDs that were not found in database
+    failed = list(
+        set(data["plants"]) - set(plants.values_list("uuid_str", flat=True))
+    )
+
     added = []
-    failed = []
-    for plant_id in data["plants"]:
-        # Need annotation here to prevent tons of queries
-        plant = get_plant_by_uuid(plant_id)
-        if plant:
-            plant.group = group
-            plant.save(update_fields=["group"])
-            added.append(plant.get_details())
-        else:
-            failed.append(plant_id)
+    for plant in plants:
+        plant.group = group
+        plant.save(update_fields=["group"])
+        added.append(plant.get_details())
 
     return JsonResponse({"added": added, "failed": failed}, status=200)
 
 
 # Upstairs bathroom (14 plants)
-# Remove 1: 13 queries (8ms), 36ms total
-# Remove 3: 34 queries (17ms), 65ms total
+# Remove 1:  8 queries (9ms), 37ms total
+# Remove 3: 14 queries (24ms), 59ms total
 @get_user_token
 @requires_json_post(["group_id", "plants"])
 @get_group_from_post_body
@@ -921,17 +931,26 @@ def bulk_remove_plants_from_group(data, group, **kwargs):
     '''Removes a list of Plants from specified Group (deletes database relations).
     Requires JSON POST with group_id (uuid) and plants (list of UUIDs) keys.
     '''
+
+    # Get all plants in 1 query, add uuid_str annotation (pre-convert to strng)
+    plants = (
+        Plant.objects
+            .filter(uuid__in=data["plants"])
+            .with_uuid_as_string_annotation()
+            .with_overview_annotation()
+            .select_related("user")
+    )
+
+    # Get list of UUIDs that were not found in database
+    failed = list(
+        set(data["plants"]) - set(plants.values_list("uuid_str", flat=True))
+    )
+
     removed = []
-    failed = []
-    for plant_id in data["plants"]:
-        # Need annotation here to prevent tons of queries
-        plant = get_plant_by_uuid(plant_id)
-        if plant:
-            plant.group = None
-            plant.save(update_fields=["group"])
-            removed.append(plant.get_details())
-        else:
-            failed.append(plant_id)
+    for plant in plants:
+        plant.group = None
+        plant.save(update_fields=["group"])
+        removed.append(plant.get_details())
 
     # Update number of plants in cached overview state
     update_instance_in_cached_overview_state(group, 'groups')
