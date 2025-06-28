@@ -893,7 +893,7 @@ def remove_plant_from_group(plant, **kwargs):
 @get_user_token
 @requires_json_post(["group_id", "plants"])
 @get_group_from_post_body
-def bulk_add_plants_to_group(user, group, data, **kwargs):
+def bulk_add_plants_to_group(group, data, **kwargs):
     '''Adds a list of Plants to specified Group (creates database relation for each).
     Requires JSON POST with group_id (uuid) and plants (list of UUIDs) keys.
     '''

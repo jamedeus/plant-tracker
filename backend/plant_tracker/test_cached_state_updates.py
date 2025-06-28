@@ -1,4 +1,4 @@
-# pylint: disable=missing-docstring,line-too-long,R0801,too-many-lines
+# pylint: disable=missing-docstring,line-too-long,R0801,too-many-lines,too-many-public-methods
 
 import shutil
 from uuid import uuid4
