@@ -38,7 +38,7 @@ This should be updated when:
   * Updated when Plant or Group uuid changed (`/change_uuid`)
   * Updated when Photo model associated with Plant owned by same user saved (`update_cached_states.add_photo_to_cached_states_hook`)
   * Updated when Photo model associated with Plant owned by same user deleted (`update_cached_states.remove_photo_from_cached_states_hook`)
-  * Updated when WaterEvent or FertilizeEvent owned by same user saved or deleted (`update_cached_states.update_last_event_times_in_cached_states_hook`)
+  * Updated when WaterEvent or FertilizeEvent owned by same user saved or deleted (`/add_plant_event`, `/bulk_add_plant_events`, `/delete_plant_event`, `/bulk_delete_plant_events`)
   * Overwritten when server restarts (`tasks.update_all_cached_states`)
 
 ### `{uuid}_state`

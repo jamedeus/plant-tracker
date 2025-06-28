@@ -125,6 +125,19 @@ def remove_photos_from_cached_states(plant, deleted_keys):
         cache.set(f'{plant.uuid}_state', cached_state, None)
 
 
+def update_plant_details_key_in_cached_states(plant, key, value):
+    '''Takes plant, key from get_details() dict, and a new value for the key.
+    Updates value of key in cached overview state and manage_plant state.
+    '''
+    cached_state = cache.get(f'{plant.uuid}_state')
+    if cached_state:
+        cached_state['plant_details'][key] = value
+        cache.set(f'{plant.uuid}_state', cached_state, None)
+    state = get_overview_state(plant.user)
+    state['plants'][str(plant.uuid)][key] = value
+    cache.set(f'overview_state_{plant.user.pk}', state, None)
+
+
 def update_child_plant_details_in_cached_manage_plant_state(plant):
     '''Takes plant, updates division_events key in cached state, re-caches.'''
     cached_state = cache.get(f'{plant.uuid}_state')
@@ -250,19 +263,6 @@ def remove_deleted_event_from_cached_manage_plant_state(instance, **kwargs):
         except ValueError:
             # Cached state did not contain event, nothing to remove
             pass
-
-
-@receiver(post_save, sender=WaterEvent)
-@receiver(post_save, sender=FertilizeEvent)
-@receiver(post_delete, sender=WaterEvent)
-@receiver(post_delete, sender=FertilizeEvent)
-@disable_for_loaddata
-def update_last_event_times_in_cached_states_hook(instance, **kwargs):
-    '''Updates last_watered and last_fertilized times for the associated plant
-    in cached overview state and cached manage_plant state when a WaterEvent
-    or FertilizeEvent is saved or deleted.
-    '''
-    update_plant_details_in_cached_states(instance.plant)
 
 
 @receiver(post_save, sender=NoteEvent)

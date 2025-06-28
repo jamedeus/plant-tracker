@@ -48,6 +48,7 @@ from .build_states import (
 from .update_cached_states import (
     add_photos_to_cached_state,
     remove_photos_from_cached_states,
+    update_plant_details_key_in_cached_states,
     update_instance_in_cached_overview_state,
     remove_instance_from_cached_overview_state
 )
@@ -624,8 +625,8 @@ def bulk_archive_plants_and_groups(user, data, **kwargs):
 
 
 # Favorite plant
-# Water:     6 queries (5ms), 34ms total
-# Fertilize: 6 queries (4ms), 33ms total
+# Water:     3 queries (3ms), 34ms total
+# Fertilize: 3 queries (3ms), 27ms total
 # Prune:     2 queries (2ms), 19ms total (no cached state updates)
 @get_user_token
 @requires_json_post(["plant_id", "event_type", "timestamp"])
@@ -644,6 +645,22 @@ def add_plant_event(plant, timestamp, event_type, **kwargs):
                 timestamp=timestamp
             )
 
+        # Update last_watered if new event is newer
+        if event_type == 'water' and timestamp.isoformat() >= plant.last_watered():
+            update_plant_details_key_in_cached_states(
+                plant,
+                'last_watered',
+                plant.last_watered()
+            )
+
+        # Update last_fertilized if new event is newer
+        elif event_type == 'fertilize' and timestamp.isoformat() >= plant.last_fertilized():
+            update_plant_details_key_in_cached_states(
+                plant,
+                'last_fertilized',
+                plant.last_fertilized()
+            )
+
         return JsonResponse(
             {"action": event_type, "plant": plant.uuid},
             status=200
@@ -656,8 +673,8 @@ def add_plant_event(plant, timestamp, event_type, **kwargs):
 
 
 # Upstairs bathroom (11 plants)
-# Water all:     47 queries (16ms), 94ms total
-# Fertilize all: 47 queries (17ms), 99ms total
+# Water all:     3 queries (3ms), 40ms total
+# Fertilize all: 3 queries (3ms), 37ms total
 @get_user_token
 @requires_json_post(["plants", "event_type", "timestamp"])
 @get_timestamp_from_post_body
@@ -672,6 +689,8 @@ def bulk_add_plant_events(user, timestamp, event_type, data, **kwargs):
         Plant.objects
             .filter(uuid__in=data["plants"])
             .with_uuid_as_string_annotation()
+            .with_last_watered_time_annotation()
+            .with_last_fertilized_time_annotation()
             .select_related("user")
     )
 
@@ -693,6 +712,27 @@ def bulk_add_plant_events(user, timestamp, event_type, data, **kwargs):
                         timestamp=timestamp
                     )
                 added.append(plant.uuid_str)
+
+                # Update last_watered if timestamp is newer than annotation
+                if event_type == 'water' and (
+                    not plant.last_watered_time or timestamp > plant.last_watered_time
+                ):
+                    update_plant_details_key_in_cached_states(
+                        plant,
+                        'last_watered',
+                        timestamp.isoformat()
+                    )
+
+                # Update last_fertilized if timestamp is newer than annotation
+                elif event_type == 'fertilize' and (
+                    not plant.last_fertilized_time or timestamp > plant.last_fertilized_time
+                ):
+                    update_plant_details_key_in_cached_states(
+                        plant,
+                        'last_fertilized',
+                        timestamp.isoformat()
+                    )
+
             except IntegrityError:
                 failed.append(plant.uuid_str)
         else:
@@ -718,16 +758,33 @@ def delete_plant_event(plant, timestamp, event_type, **kwargs):
     try:
         event = events_map[event_type].objects.get(plant=plant, timestamp=timestamp)
         event.delete()
+
+        # Update last_watered if water event deleted
+        if event_type == 'water':
+            update_plant_details_key_in_cached_states(
+                plant,
+                'last_watered',
+                plant.last_watered()
+            )
+
+        # Update last_fertilized if fertilize event deleted
+        elif event_type == 'fertilize':
+            update_plant_details_key_in_cached_states(
+                plant,
+                'last_fertilized',
+                plant.last_fertilized()
+            )
+
         return JsonResponse({"deleted": event_type, "plant": plant.uuid}, status=200)
     except events_map[event_type].DoesNotExist:
         return JsonResponse({"error": "event not found"}, status=404)
 
 
 # Favorite plant
-# Delete 1 water event:  13 queries (6ms), 35ms total
-# Delete 1 prune event:   5 queries (3ms), 25ms total
-# Delete 3 water events: 33 queries (11ms), 61ms total
-# Delete 3 prune events: 11 queries (5ms), 34ms total
+# Delete 1 water event:   6 queries (4ms), 28ms total
+# Delete 1 prune event:   5 queries (3ms), 23ms total
+# Delete 3 water events: 10 queries (5ms), 35ms total
+# Delete 3 prune events:  9 queries (4ms), 32ms total
 @get_user_token
 @requires_json_post(["plant_id", "events"])
 @get_plant_from_post_body
@@ -736,20 +793,57 @@ def bulk_delete_plant_events(plant, data, **kwargs):
     Requires JSON POST with plant_id (uuid) and events (list of dicts) keys.
     The events list must contain dicts with timestamp and type keys.
     '''
-    deleted = []
-    failed = []
-    for event in data["events"]:
-        print(event)
+
+    # Build mapping dict with timestamps sorted by event type
+    timestamps_by_type = {
+        'water': [],
+        'fertilize': [],
+        'prune': [],
+        'repot': []
+    }
+    for event in data['events']:
         try:
-            events_map[event["type"]].objects.get(
-                plant=plant,
-                timestamp=event["timestamp"]
-            ).delete()
-            deleted.append(event)
-        except (KeyError, TypeError):
-            failed.append(event)
-        except events_map[event["type"]].DoesNotExist:
-            failed.append(event)
+            timestamps_by_type[event['type']].append(event['timestamp'])
+        except KeyError:
+            pass
+
+    # Build same mapping dict with querysets instead of lists of timestamps
+    querysets_by_type = {
+        event_type: events_map[event_type].objects.filter(
+            plant=plant,
+            timestamp__in=timestamps_by_type[event_type]
+        )
+        for event_type in timestamps_by_type
+    }
+
+    # Delete events, append each to deleted list
+    deleted = []
+    for event_type, queryset in querysets_by_type.items():
+        for event in queryset:
+            deleted.append(
+                {'type': event_type, 'timestamp': event.timestamp.isoformat()}
+            )
+            event.delete()
+
+    # Get list of event dicts that were not found in database
+    failed = [event for event in data["events"] if event not in deleted]
+
+    # Update last_watered if water events were deleted
+    if timestamps_by_type['water']:
+        update_plant_details_key_in_cached_states(
+            plant,
+            'last_watered',
+            plant.last_watered()
+        )
+
+    # Update last_fertilized if fertilize events were deleted
+    elif timestamps_by_type['fertilize']:
+        update_plant_details_key_in_cached_states(
+            plant,
+            'last_fertilized',
+            plant.last_fertilized()
+        )
+
     return JsonResponse({"deleted": deleted, "failed": failed}, status=200)
 
 
