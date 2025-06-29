@@ -40,23 +40,3 @@ This should be updated when:
   * Updated when Photo model associated with Plant owned by same user deleted (`update_cached_states.remove_photo_from_cached_states_hook`)
   * Updated when WaterEvent or FertilizeEvent owned by same user saved or deleted (`/add_plant_event`, `/bulk_add_plant_events`, `/delete_plant_event`, `/bulk_delete_plant_events`)
   * Overwritten when server restarts (`tasks.update_all_cached_states`)
-
-### `{uuid}_state`
-- Stores manage_plant page state for the plant matching UUID
-- Set by `build_states.build_manage_plant_state` (only called when cache does not already exist)
-  * Never expires
-  * Updated when associated Plant is saved (`update_cached_states.update_plant_in_cached_states_hook`)
-  * Updated when associated Plant's parent (plant's `Plant.divided_from` ForeignKey points to parent) is saved (`update_cached_states.update_plant_in_cached_states_hook`)
-  * Updated when associated Plant's child (child's `Plant.divided_from` ForeignKey points to plant) is saved (`update_cached_states.update_plant_in_cached_states_hook`)
-  * Deleted when associated Plant's parent (plant's `Plant.divided_from` ForeignKey points to parent) is deleted (not replaced) (`update_cached_states.delete_parent_or_child_cached_manage_plant_state_hook`)
-  * Deleted when associated Plant's child (child's `Plant.divided_from` ForeignKey points to plant) is deleted (not replaced) (`update_cached_states.delete_parent_or_child_cached_manage_plant_state_hook`)
-  * Deleted when associated Plant is deleted (`update_cached_states.remove_deleted_plant_from_cached_states_hook`)
-  * Updated when DivisionEvent associated with Plant is saved or deleted (`update_cached_states.update_division_events_in_cached_manage_plant_state_hook`)
-  * Updated when WaterEvent or FertilizeEvent associated with Plant is saved or deleted (`update_cached_states.update_last_event_times_in_cached_states_hook`)
-  * Updated when WaterEvent, FertilizeEvent, PruneEvent, or RepotEvent associated with Plant is saved (`update_cached_states.add_new_event_to_cached_manage_plant_state_hook`)
-  * Updated when WaterEvent, FertilizeEvent, PruneEvent, or RepotEvent associated with Plant is deleted (`update_cached_states.remove_deleted_event_from_cached_manage_plant_state`)
-  * Updated when a NoteEvent associated with Plant is saved or edited (`update_cached_states.update_note_in_cached_manage_plant_state_hook`)
-  * Updated when a NoteEvent associated with Plant is deleted (`delete_note_from_cached_manage_plant_state_hook`)
-  * Updated when a Photo associated with Plant is saved (`update_cached_states.add_photo_to_cached_states_hook`)
-  * Updated when a Photo associated with Plant is deleted (`update_cached_states.remove_photo_from_cached_states_hook`)
-  * Deleted when server restarts (not replaced) (`tasks.update_all_cached_states`)

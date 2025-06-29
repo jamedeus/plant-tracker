@@ -918,17 +918,14 @@ class CachedStateRegressionTests(TestCase):
         no longer existing) photo in the details dropdown on next page load.
         '''
 
-        # Create test plant, generate cached state
+        # Create test plant
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-        build_manage_plant_state(
-            Plant.objects.get_with_manage_plant_annotation(plant.uuid)
-        )
-        # Confirm cached state has no default_photo
-        self.assertIsNone(
-            cache.get(f'{plant.uuid}_state')['plant_details']['thumbnail']
-        )
+
+        # Request page, confirm state has no default_photo
+        response = self.client.get(f'/manage/{plant.uuid}')
+        self.assertIsNone(response.context['state']['plant_details']['thumbnail'])
         self.assertEqual(
-            cache.get(f'{plant.uuid}_state')['default_photo'],
+            response.context['state']['default_photo'],
             {
                 'set': False,
                 'timestamp': None,
@@ -951,13 +948,14 @@ class CachedStateRegressionTests(TestCase):
         self.assertEqual(response.status_code, 200)
         photo = Photo.objects.all()[0]
 
-        # Confirm default_photo updated in cached state
+        # Request page again, confirm default_photo updated
+        response = self.client.get(f'/manage/{plant.uuid}')
         self.assertEqual(
-            cache.get(f'{plant.uuid}_state')['plant_details']['thumbnail'],
+            response.context['state']['plant_details']['thumbnail'],
             '/media/thumbnails/photo1_thumb.webp'
         )
         self.assertEqual(
-            cache.get(f'{plant.uuid}_state')['default_photo'],
+            response.context['state']['default_photo'],
             {
                 'set': False,
                 'timestamp': '2024-02-21T10:52:03+00:00',
@@ -976,12 +974,11 @@ class CachedStateRegressionTests(TestCase):
             ]
         })
 
-        # Confirm default_photo updated in cached state
-        self.assertIsNone(
-            cache.get(f'{plant.uuid}_state')['plant_details']['thumbnail']
-        )
+        # Request page again, confirm default_photo updated
+        response = self.client.get(f'/manage/{plant.uuid}')
+        self.assertIsNone(response.context['state']['plant_details']['thumbnail'])
         self.assertEqual(
-            cache.get(f'{plant.uuid}_state')['default_photo'],
+            response.context['state']['default_photo'],
             {
                 'set': False,
                 'timestamp': None,
@@ -1154,7 +1151,7 @@ class CachedStateRegressionTests(TestCase):
         not sort, etc).
         '''
 
-        # Create plant with 2 water events, generate cached state
+        # Create plant with 2 water events
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         WaterEvent.objects.create(
             plant=plant,
@@ -1164,13 +1161,12 @@ class CachedStateRegressionTests(TestCase):
             plant=plant,
             timestamp=datetime.fromisoformat('2024-01-06T03:06:26.000Z')
         )
-        build_manage_plant_state(
-            Plant.objects.get_with_manage_plant_annotation(plant.uuid)
-        )
 
-        # Confirm water events are sorted chronologically in cached state
+        # Request manage page, confirm water events are sorted chronologically
+        response = self.client.get(f'/manage/{plant.uuid}')
+        state = response.context['state']
         self.assertEqual(
-            cache.get(f'{plant.uuid}_state')['events']['water'],
+            response.context['state']['events']['water'],
             [
                 '2024-03-06T03:06:26+00:00',
                 '2024-01-06T03:06:26+00:00'
@@ -1182,9 +1178,12 @@ class CachedStateRegressionTests(TestCase):
             plant=plant,
             timestamp=datetime.fromisoformat('2024-02-06T03:06:26.000Z')
         )
-        # Confirm state updated, new event is sorted chronologically
+
+        # Request manage page, confirm new event is sorted chronologically
+        response = self.client.get(f'/manage/{plant.uuid}')
+        state = response.context['state']
         self.assertEqual(
-            cache.get(f'{plant.uuid}_state')['events']['water'],
+            response.context['state']['events']['water'],
             [
                 '2024-03-06T03:06:26+00:00',
                 '2024-02-06T03:06:26+00:00',

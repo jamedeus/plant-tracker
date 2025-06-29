@@ -40,9 +40,9 @@ from .view_decorators import (
 from .build_states import (
     build_overview_state,
     get_overview_state,
-    get_manage_plant_state,
     get_plant_options,
     get_group_options,
+    build_manage_plant_state,
     build_manage_group_state
 )
 from .update_cached_states import (
@@ -183,7 +183,7 @@ def render_manage_plant_page(request, plant, user):
         request,
         title='Manage Plant',
         bundle='manage_plant',
-        state=get_manage_plant_state(plant)
+        state=build_manage_plant_state(plant)
     )
 
 
@@ -199,7 +199,7 @@ def get_plant_state(request, uuid):
         plant = Plant.objects.get_with_manage_plant_annotation(uuid)
         if plant:
             return JsonResponse(
-                get_manage_plant_state(plant),
+                build_manage_plant_state(plant),
                 status=200
             )
         return JsonResponse({'Error': 'Plant not found'}, status=404)
@@ -436,7 +436,6 @@ def change_uuid(instance, data, user, **kwargs):
         # Delete plant/group from cached state (prevent duplicate, keys are uuid
         # so once it changes the old entry can't be removed)
         if isinstance(instance, Plant):
-            cache.delete(f'{instance.uuid}_state')
             remove_instance_from_cached_overview_state(instance, 'plants')
         else:
             remove_instance_from_cached_overview_state(instance, 'groups')

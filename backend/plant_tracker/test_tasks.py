@@ -20,7 +20,6 @@ from .models import (
     Photo,
     NoteEvent
 )
-from .build_states import build_manage_plant_state
 from .tasks import update_cached_overview_state, update_all_cached_states
 from .unit_test_helpers import JSONClient, create_mock_photo
 
@@ -39,24 +38,15 @@ class HelperFunctionTests(TestCase):
         cache.clear()
 
     def test_update_all_cached_states(self):
-        # Create 5 Plant entries, cache dummy string for each
         default_user = get_default_user()
-        for _ in range(0, 5):
-            plant = Plant.objects.create(uuid=uuid4(), user=default_user)
-            cache.set(f'{plant.uuid}_state', 'foo')
-
-        # Replace all cache keys with dummy strings
+        # Replace cached overview state with dummy strings
         cache.set(f'overview_state_{default_user.pk}', 'foo')
 
         # Call update_all_cached_states method
         update_all_cached_states()
 
-        # Confirm all cached states were rebuilt (no longer dummy strings)
+        # Confirm cached overview state was rebuilt (no longer dummy strings)
         self.assertIsInstance(cache.get(f'overview_state_{default_user.pk}'), dict)
-
-        # Confirm all cached plant states were deleted
-        for plant in Plant.objects.filter(user=default_user):
-            self.assertIsNone(cache.get(f'{plant.uuid}_state'))
 
 
 class TaskTests(TestCase):
@@ -464,233 +454,3 @@ class OverviewStateUpdateTests(TestCase):
             cached_state['groups'][str(group.uuid)]['plants'],
             0
         )
-
-
-class ManagePlantStateUpdateTests(TestCase):
-    '''Test that cached manage_plant states update correctly when database changes'''
-
-    def setUp(self):
-        # Clear entire cache before each test
-        cache.clear()
-
-        # Set default content_type for post requests (avoid long lines)
-        self.client = JSONClient()
-
-        # Generate UUID to use in tests
-        self.uuid = uuid4()
-
-    def test_manage_plant_state_updates_when_plant_saved(self):
-        # Create Plant model entry, generate cached state
-        plant = Plant.objects.create(uuid=self.uuid, user=get_default_user())
-        build_manage_plant_state(
-            Plant.objects.get_with_manage_plant_annotation(self.uuid)
-        )
-
-        # Confirm cached manage_plant state has correct details
-        self.assertEqual(
-            cache.get(f'{self.uuid}_state'),
-            {
-                "plant_details": {
-                    "name": None,
-                    "uuid": str(self.uuid),
-                    "created": plant.created.isoformat(),
-                    "archived": False,
-                    "species": None,
-                    "description": None,
-                    "pot_size": None,
-                    "last_watered": None,
-                    "last_fertilized": None,
-                    "thumbnail": None,
-                    "display_name": "Unnamed plant 1",
-                    "group": None
-                },
-                "events": {
-                    "water": [],
-                    "fertilize": [],
-                    "prune": [],
-                    "repot": []
-                },
-                "photos": {},
-                "default_photo": {
-                    "set": False,
-                    "timestamp": None,
-                    "image": None,
-                    "thumbnail": None,
-                    "preview": None,
-                    "key": None
-                },
-                "notes": {},
-                "divided_from": None,
-                "division_events": {}
-            }
-        )
-
-        # Change Plant details, save
-        plant.name = "Favorite Plant"
-        plant.species = "Calathea"
-        plant.save()
-
-        # Confirm cached manage_plant state updated automatically
-        self.assertEqual(
-            cache.get(f'{self.uuid}_state')['plant_details'],
-            {
-                "name": "Favorite Plant",
-                "uuid": str(self.uuid),
-                "created": plant.created.isoformat(),
-                "archived": False,
-                "species": "Calathea",
-                "description": None,
-                "pot_size": None,
-                "last_watered": None,
-                "last_fertilized": None,
-                "thumbnail": None,
-                "display_name": "Favorite Plant",
-                "group": None
-            }
-        )
-
-    def test_manage_plant_state_updates_when_notes_created_or_deleted(self):
-        # Create Plant model entry, generate cached state
-        plant = Plant.objects.create(uuid=self.uuid, user=get_default_user())
-        build_manage_plant_state(
-            Plant.objects.get_with_manage_plant_annotation(self.uuid)
-        )
-
-        # Confirm cached state has no notes
-        self.assertEqual(
-            cache.get(f'{self.uuid}_state')['notes'],
-            {}
-        )
-
-        # Create NoteEvent
-        timestamp = timezone.now()
-        note = NoteEvent.objects.create(
-            plant=plant,
-            timestamp=timestamp,
-            text="This is a note"
-        )
-
-        # Confirm cached state updated automatically
-        self.assertEqual(
-            cache.get(f'{self.uuid}_state')['notes'],
-            {timestamp.isoformat(): "This is a note"}
-        )
-
-        # Change note text, confirm cached state updated automatically
-        note.text = "Watered with 5 drops of fertilizer in 1/2 gallon"
-        note.save()
-        self.assertEqual(
-            cache.get(f'{self.uuid}_state')['notes'],
-            {timestamp.isoformat(): "Watered with 5 drops of fertilizer in 1/2 gallon"}
-        )
-
-        # Delete note, confirm cached state updated automatically
-        note.delete()
-        self.assertEqual(
-            cache.get(f'{self.uuid}_state')['notes'],
-            {}
-        )
-
-    def test_manage_plant_state_updates_when_parent_plant_saved_or_deleted(self):
-        # Create parent and child Plant model entries
-        parent = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-        divide = DivisionEvent.objects.create(plant=parent, timestamp=timezone.now())
-        Plant.objects.create(
-            uuid=self.uuid,
-            user=get_default_user(),
-            divided_from=parent,
-            divided_from_event=divide
-        )
-        # Generate child plant cached state
-        build_manage_plant_state(
-            Plant.objects.get_with_manage_plant_annotation(self.uuid)
-        )
-
-        # Confirm child's cached state has correct parent name
-        self.assertEqual(
-            cache.get(f'{self.uuid}_state')['divided_from']['name'],
-            'Unnamed plant 1'
-        )
-
-        # Change parent plant name
-        parent.name = 'Parent'
-        parent.save()
-
-        # Confirm cached state updated automatically
-        self.assertEqual(
-            cache.get(f'{self.uuid}_state')['divided_from']['name'],
-            'Parent'
-        )
-
-        # Delete parent plant, confirm child cached state was deleted
-        parent.delete()
-        self.assertIsNone(cache.get(f'{self.uuid}_state'))
-
-    def test_manage_plant_state_updates_when_child_plant_saved_or_deleted(self):
-        # Create parent and child Plant model entries
-        parent = Plant.objects.create(uuid=self.uuid, user=get_default_user())
-        divide = DivisionEvent.objects.create(plant=parent, timestamp=timezone.now())
-        child = Plant.objects.create(
-            uuid=uuid4(),
-            user=get_default_user(),
-            divided_from=parent,
-            divided_from_event=divide
-        )
-        # Generate parent plant cached state
-        build_manage_plant_state(
-            Plant.objects.get_with_manage_plant_annotation(self.uuid)
-        )
-
-        # Confirm parent's cached state has correct child name
-        self.assertEqual(
-            cache.get(f'{self.uuid}_state')['division_events'], {
-            divide.timestamp.isoformat(): [
-                {'name': 'Unnamed plant 2', 'uuid': str(child.uuid)}
-            ]
-        })
-
-        # Change child plant name
-        child.name = 'Child'
-        child.save()
-
-        # Confirm cached state updated automatically
-        self.assertEqual(
-            cache.get(f'{self.uuid}_state')['division_events'], {
-            divide.timestamp.isoformat(): [
-                {'name': 'Child', 'uuid': str(child.uuid)}
-            ]
-        })
-
-        # Delete child plant, confirm parent cached state was deleted
-        child.delete()
-        self.assertIsNone(cache.get(f'{self.uuid}_state'))
-
-    def test_manage_plant_state_deleted_from_cache_when_plant_deleted(self):
-        # Create Plant model entry, generate cached state
-        plant = Plant.objects.create(uuid=self.uuid, user=get_default_user())
-        build_manage_plant_state(
-            Plant.objects.get_with_manage_plant_annotation(self.uuid)
-        )
-
-        # Confirm cached state exists
-        self.assertIsNotNone(cache.get(f'{plant.uuid}_state'))
-
-        # Delete plant, confirm cached state was deleted
-        plant.delete()
-        self.assertIsNone(cache.get(f'{plant.uuid}_state'))
-
-
-class CachedOptionsUpdateTests(TestCase):
-    '''Test that cached options lists/dicts update correctly when database changes'''
-
-    def setUp(self):
-        # Clear entire cache before each test
-        cache.clear()
-
-        # Set default content_type for post requests (avoid long lines)
-        self.client = JSONClient()
-
-        # Generate UUID to use in tests
-        self.uuid = uuid4()
-
-        self.user = get_default_user()

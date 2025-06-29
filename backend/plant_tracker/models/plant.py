@@ -472,8 +472,6 @@ class Plant(models.Model):
         qs._raw_delete(qs.db)
 
     def delete(self, *args, **kwargs):
-        # Delete plant cache (make sure post_delete signals don't update it)
-        cache.delete(f'{self.uuid}_state')
         # Delete all associated models with raw sql. Wrap in a single transation
         # to avoid failed constraint if plant's default_photo deleted before
         # plant (raw sql also bypasses on_delete=models.SET_NULL). Also faster.

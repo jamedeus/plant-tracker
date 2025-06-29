@@ -111,7 +111,11 @@ def get_overview_state(user):
 
 
 def build_manage_plant_state(plant):
-    '''Takes plant, builds state parsed by manage_plant react app and returns.'''
+    '''Takes plant, builds state parsed by manage_plant react app and returns.
+
+    Plant should be queried with Plant.objects.get_with_manage_plant_annotation
+    to annotate all data used (much more efficient, avoids dozens of queries).
+    '''
 
     state = {
         'plant_details': plant.get_details(),
@@ -139,37 +143,6 @@ def build_manage_plant_state(plant):
 
     # Add object with parent plant details if divided from existing plant
     state['divided_from'] = plant.get_parent_plant_details()
-
-    # Cache state indefinitely (updates automatically when database changes)
-    cache.set(f'{plant.uuid}_state', state, None)
-
-    return state
-
-
-def get_manage_plant_state(plant):
-    '''Returns the state object parsed by the manage_plant page react app.
-    Loads state from cache if present, builds from database if not found.
-    Updates params that can't be reliably cached with values from database.
-    Plant should be queried with Plant.objects.get_with_manage_plant_annotation
-    to annotate all data used (much more efficient, avoids dozens of queries).
-    '''
-    state = cache.get(f'{plant.uuid}_state')
-
-    # Build state if cache not found
-    if state is None:
-        state = build_manage_plant_state(plant)
-
-    # If loaded from cache overwrite potentially outdated properties
-    else:
-        # Overwrite display_name if plant has no name (sequential names like)
-        # "Unnamed plant 3" may be outdated if other unnamed plants were named)
-        if not plant.name:
-            state['plant_details']['display_name'] = plant.display_name
-
-        # Overwrite group details if plant is in a group (may be outdated if
-        # group was renamed or QR code changed since cache saved)
-        if plant.group:
-            state['plant_details']['group'] = plant.get_group_details()
 
     return state
 
