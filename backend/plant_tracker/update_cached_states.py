@@ -55,39 +55,6 @@ def remove_instance_from_cached_overview_state(instance, key):
         cache.set(f'overview_state_{instance.user.pk}', state, None)
 
 
-def update_plant_details_in_cached_states(plant):
-    '''Takes plant, updates all states that contain plant details:
-      - Updates plant details in cached overview state
-    '''
-    update_instance_in_cached_overview_state(plant, 'plants')
-
-
-def update_plant_thumbnail_in_cached_overview_state(plant):
-    '''Takes plant, updates thumbnail in cached overview state.'''
-    state = get_overview_state(plant.user)
-    thumbnail = plant.default_photo_details['thumbnail']
-    state['plants'][str(plant.uuid)]['thumbnail'] = thumbnail
-    cache.set(f'overview_state_{plant.user.pk}', state, None)
-
-
-def add_photos_to_cached_state(plant, photos):
-    '''Takes plant and list of photos (dicts returned by Photo.get_details).
-    Adds photos to cached manage_plant state. If plant default_photo is not set
-    updates thumbnail to most-recent photo in cached overview state.
-    '''
-    if not plant.default_photo:
-        update_plant_thumbnail_in_cached_overview_state(plant)
-
-
-def remove_photos_from_cached_states(plant, deleted_keys):
-    '''Takes plant and list of deleted photo primary keys, removes all photos
-    in list from cached manage_plant state. If plant default photo is not set
-    updates thumbnail to most-recent photo in cached overview state.
-    '''
-    if not plant.default_photo:
-        update_plant_thumbnail_in_cached_overview_state(plant)
-
-
 def update_plant_details_key_in_cached_states(plant, key, value):
     '''Takes plant, key from get_details() dict, and a new value for the key.
     Updates value of key in cached overview state.
@@ -95,6 +62,15 @@ def update_plant_details_key_in_cached_states(plant, key, value):
     state = get_overview_state(plant.user)
     state['plants'][str(plant.uuid)][key] = value
     cache.set(f'overview_state_{plant.user.pk}', state, None)
+
+
+def update_plant_thumbnail_in_cached_overview_state(plant):
+    '''Takes plant, updates thumbnail in cached overview state.'''
+    update_plant_details_key_in_cached_states(
+        plant,
+        'thumbnail',
+        plant.default_photo_details['thumbnail']
+    )
 
 
 @receiver(post_save, sender=Plant)
@@ -105,7 +81,7 @@ def update_plant_in_cached_states_hook(instance, **kwargs):
     - If plant is in group updates group details in cached overview state
       (number of plants in group may have changed)
     '''
-    update_plant_details_in_cached_states(instance)
+    update_instance_in_cached_overview_state(instance, 'plants')
     # If plant in group: update cached group details (number of plants changed)
     if instance.group:
         update_instance_in_cached_overview_state(instance.group, 'groups')

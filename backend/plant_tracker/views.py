@@ -46,11 +46,10 @@ from .build_states import (
     build_manage_group_state
 )
 from .update_cached_states import (
-    add_photos_to_cached_state,
-    remove_photos_from_cached_states,
     update_plant_details_key_in_cached_states,
     update_instance_in_cached_overview_state,
-    remove_instance_from_cached_overview_state
+    remove_instance_from_cached_overview_state,
+    update_plant_thumbnail_in_cached_overview_state
 )
 
 
@@ -1159,8 +1158,9 @@ def add_plant_photos(request, user):
         except UnidentifiedImageError:
             failed.append(request.FILES[key].name)
 
-    # Update cached states
-    add_photos_to_cached_state(plant, created)
+    # Update thumbnail unless default photo set (most-recent may have changed)
+    if not plant.default_photo:
+        update_plant_thumbnail_in_cached_overview_state(plant)
 
     # Return list of new photo URLs (added to frontend state)
     return JsonResponse(
@@ -1194,8 +1194,9 @@ def delete_plant_photos(plant, data, **kwargs):
     # Delete all found photos
     photos.delete()
 
-    # Update cached states
-    remove_photos_from_cached_states(plant, deleted)
+    # Update thumbnail unless default photo set (most-recent may have changed)
+    if not plant.default_photo:
+        update_plant_thumbnail_in_cached_overview_state(plant)
 
     return JsonResponse({"deleted": deleted, "failed": failed}, status=200)
 
