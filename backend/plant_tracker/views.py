@@ -46,7 +46,7 @@ from .build_states import (
 )
 from .update_cached_states import (
     update_cached_details_keys,
-    update_instance_in_cached_overview_state,
+    add_instance_to_cached_overview_state,
     remove_instance_from_cached_overview_state
 )
 
@@ -335,7 +335,7 @@ def register_plant(user, data, **kwargs):
             plant.full_clean()
             plant.save()
             # Add to cached overview state
-            update_instance_in_cached_overview_state(plant, 'plants')
+            add_instance_to_cached_overview_state(plant)
 
         # If divided from existing plant: create RepotEvent with parent plant
         # pot size as old and current pot size as new
@@ -377,7 +377,7 @@ def register_group(user, data, **kwargs):
             group.full_clean()
             group.save()
             # Add to cached overview state
-            update_instance_in_cached_overview_state(group, 'groups')
+            add_instance_to_cached_overview_state(group)
 
         # Redirect to manage page
         return HttpResponseRedirect(f'/manage/{data["uuid"]}')
@@ -424,18 +424,15 @@ def change_uuid(instance, data, user, **kwargs):
         # Delete plant/group from cached overview state (prevent duplicate, keys
         # are uuid so once it changes the old entry can't be removed)
         if isinstance(instance, Plant):
-            remove_instance_from_cached_overview_state(instance, 'plants')
+            remove_instance_from_cached_overview_state(instance)
         else:
-            remove_instance_from_cached_overview_state(instance, 'groups')
+            remove_instance_from_cached_overview_state(instance)
         # Change UUID,
         instance.uuid = data["new_id"]
         instance.save(update_fields=["uuid"])
         cache.delete(f'old_uuid_{user.pk}')
         # Add back to cached overview state under new UUID
-        update_instance_in_cached_overview_state(
-            instance,
-            'plants' if isinstance(instance, Plant) else 'groups'
-        )
+        add_instance_to_cached_overview_state(instance)
         return JsonResponse({"new_uuid": str(instance.uuid)}, status=200)
     except ValidationError:
         return JsonResponse({"error": "new_id key is not a valid UUID"}, status=400)
@@ -528,7 +525,7 @@ def delete_plant(plant, **kwargs):
     Requires JSON POST with plant_id (uuid) key.
     '''
     plant.delete()
-    remove_instance_from_cached_overview_state(plant, 'plants')
+    remove_instance_from_cached_overview_state(plant)
     return JsonResponse({"deleted": plant.uuid}, status=200)
 
 
@@ -546,7 +543,7 @@ def archive_plant(plant, data, **kwargs):
     plant.archived = data["archived"]
     plant.save()
     # Add to cached overview state if un-archived, remove if archived
-    update_instance_in_cached_overview_state(plant, 'plants')
+    add_instance_to_cached_overview_state(plant)
     return JsonResponse({"updated": plant.uuid}, status=200)
 
 
@@ -559,7 +556,7 @@ def delete_group(group, **kwargs):
     Requires JSON POST with group_id (uuid) key.
     '''
     group.delete()
-    remove_instance_from_cached_overview_state(group, 'groups')
+    remove_instance_from_cached_overview_state(group)
     return JsonResponse({"deleted": group.uuid}, status=200)
 
 
@@ -577,7 +574,7 @@ def archive_group(group, data, **kwargs):
     group.archived = data["archived"]
     group.save()
     # Add to cached overview state if un-archived, remove if archived
-    update_instance_in_cached_overview_state(group, 'groups')
+    add_instance_to_cached_overview_state(group)
     return JsonResponse({"updated": group.uuid}, status=200)
 
 
@@ -606,10 +603,7 @@ def bulk_delete_plants_and_groups(user, data, **kwargs):
             instance.delete()
             deleted.append(instance.uuid)
             # Remove from cached overview state
-            remove_instance_from_cached_overview_state(
-                instance,
-                'plants' if isinstance(instance, Plant) else 'groups'
-            )
+            remove_instance_from_cached_overview_state(instance)
         else:
             failed.append(instance.uuid)
 
@@ -653,10 +647,7 @@ def bulk_archive_plants_and_groups(user, data, **kwargs):
             instance.save()
             archived.append(instance.uuid)
             # Add to cached overview state if un-archived, remove if archived
-            update_instance_in_cached_overview_state(
-                instance,
-                'plants' if isinstance(instance, Plant) else 'groups'
-            )
+            add_instance_to_cached_overview_state(instance)
         else:
             failed.append(instance.uuid)
 
