@@ -45,7 +45,7 @@ class GroupQueryset(models.QuerySet):
                 # Label unnamed groups with no location (gets sequential name)
                 .with_is_unnamed_annotation()
                 # Add unnamed_index (used to build "Unnamed group <index>" names)
-                .annotate(**unnamed_index_annotation())
+                .with_unnamed_index_annotation()
                 # Add plant_count (number of plants in group)
                 .with_group_plant_count_annotation()
         )
