@@ -37,11 +37,6 @@ def update_instance_in_cached_overview_state(instance, key):
     if instance.archived:
         remove_instance_from_cached_overview_state(instance, key)
     else:
-        # Clear cached property (in case name changed)
-        try:
-            del instance.display_name
-        except AttributeError:
-            pass
         state = get_overview_state(instance.user)
         state[key][str(instance.uuid)] = instance.get_details()
         cache.set(f'overview_state_{instance.user.pk}', state, None)

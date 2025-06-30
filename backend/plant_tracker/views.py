@@ -485,7 +485,7 @@ def edit_plant_details(plant, data, **kwargs):
     return JsonResponse(data, status=200)
 
 
-# 7 queries (4ms), 27ms total
+# 6 queries (5ms), 32ms total
 @get_user_token
 @requires_json_post(["group_id", "name", "location", "description"])
 @get_group_from_post_body
@@ -513,7 +513,6 @@ def edit_group_details(group, data, **kwargs):
                 'description': group.description
             }
         )
-        update_instance_in_cached_overview_state(group, 'groups')
     except ValidationError as error:
         return JsonResponse({"error": error.message_dict}, status=400)
 
@@ -1083,8 +1082,8 @@ def bulk_add_plants_to_group(group, data, **kwargs):
 
 
 # Upstairs bathroom (14 plants)
-# Remove 1:  8 queries (13ms), 40ms total
-# Remove 3: 12 queries (20ms), 51ms total
+# Remove 1:  7 queries (6ms), 42ms total
+# Remove 3: 11 queries (10ms), 40ms total
 @get_user_token
 @requires_json_post(["group_id", "plants"])
 @get_group_from_post_body
@@ -1121,9 +1120,6 @@ def bulk_remove_plants_from_group(data, group, **kwargs):
         'plants',
         group.get_number_of_plants()
     )
-
-    # Update number of plants in cached overview state
-    update_instance_in_cached_overview_state(group, 'groups')
 
     return JsonResponse({"removed": removed, "failed": failed}, status=200)
 
