@@ -47,6 +47,7 @@ from .build_states import (
 )
 from .update_cached_states import (
     update_plant_details_key_in_cached_states,
+    update_group_details_key_in_cached_states,
     update_instance_in_cached_overview_state,
     remove_instance_from_cached_overview_state,
     update_plant_thumbnail_in_cached_overview_state
@@ -336,6 +337,8 @@ def register_plant(user, data, **kwargs):
             plant = Plant(user=user, **data)
             plant.full_clean()
             plant.save()
+            # Add to cached overview state
+            update_instance_in_cached_overview_state(plant, 'plants')
 
         # If divided from existing plant: create RepotEvent with parent plant
         # pot size as old and current pot size as new
@@ -376,6 +379,7 @@ def register_group(user, data, **kwargs):
             group = Group(user=user, **data)
             group.full_clean()
             group.save()
+            update_instance_in_cached_overview_state(group, 'groups')
 
         # Redirect to manage page
         return HttpResponseRedirect(f'/manage/{data["uuid"]}')
@@ -419,23 +423,28 @@ def change_uuid(instance, data, user, **kwargs):
     Requires JSON POST with uuid (uuid) and new_id (uuid) keys.
     '''
     try:
-        # Delete plant/group from cached state (prevent duplicate, keys are uuid
-        # so once it changes the old entry can't be removed)
+        # Delete plant/group from cached overview state (prevent duplicate, keys
+        # are uuid so once it changes the old entry can't be removed)
         if isinstance(instance, Plant):
             remove_instance_from_cached_overview_state(instance, 'plants')
         else:
             remove_instance_from_cached_overview_state(instance, 'groups')
-        # Change UUID, save (hook will update cached overview state)
+        # Change UUID,
         instance.uuid = data["new_id"]
         instance.save(update_fields=["uuid"])
         cache.delete(f'old_uuid_{user.pk}')
+        # Add back to cached overview state under new UUID
+        update_instance_in_cached_overview_state(
+            instance,
+            'plants' if isinstance(instance, Plant) else 'groups'
+        )
         return JsonResponse({"new_uuid": str(instance.uuid)}, status=200)
     except ValidationError:
         return JsonResponse({"error": "new_id key is not a valid UUID"}, status=400)
 
 
 # TODO just update details (not photo, last_watered, last_fertilized - most queries)
-# 15 queries (8ms), 40ms total
+# 13 queries (8ms), 42ms total
 @get_user_token
 @requires_json_post(["plant_id", "name", "species", "description", "pot_size"])
 @get_plant_from_post_body
@@ -456,6 +465,9 @@ def edit_plant_details(plant, data, **kwargs):
     try:
         plant.full_clean()
         plant.save()
+        # Update details in cached overview state
+        update_instance_in_cached_overview_state(plant, 'plants')
+
     except ValidationError as error:
         return JsonResponse({"error": error.message_dict}, status=400)
 
@@ -484,6 +496,7 @@ def edit_group_details(group, data, **kwargs):
     try:
         group.full_clean()
         group.save()
+        update_instance_in_cached_overview_state(group, 'groups')
     except ValidationError as error:
         return JsonResponse({"error": error.message_dict}, status=400)
 
@@ -502,6 +515,7 @@ def delete_plant(plant, **kwargs):
     Requires JSON POST with plant_id (uuid) key.
     '''
     plant.delete()
+    remove_instance_from_cached_overview_state(plant, 'plants')
     return JsonResponse({"deleted": plant.uuid}, status=200)
 
 
@@ -518,6 +532,8 @@ def archive_plant(plant, data, **kwargs):
 
     plant.archived = data["archived"]
     plant.save()
+    # Add to cached overview state if un-archived, remove if archived
+    update_instance_in_cached_overview_state(plant, 'plants')
     return JsonResponse({"updated": plant.uuid}, status=200)
 
 
@@ -530,6 +546,7 @@ def delete_group(group, **kwargs):
     Requires JSON POST with group_id (uuid) key.
     '''
     group.delete()
+    remove_instance_from_cached_overview_state(group, 'groups')
     return JsonResponse({"deleted": group.uuid}, status=200)
 
 
@@ -546,13 +563,15 @@ def archive_group(group, data, **kwargs):
 
     group.archived = data["archived"]
     group.save()
+    # Add to cached overview state if un-archived, remove if archived
+    update_instance_in_cached_overview_state(group, 'groups')
     return JsonResponse({"updated": group.uuid}, status=200)
 
 
-# Delete single plant: 18 queries (6ms), 31ms total
-# Delete single group:  5 queries (3ms), 24ms total
-# Delete 3 plants:     48 queries (13ms), 68ms total
-# Delete 3 groups:      9 queries (4ms), 31ms total
+# Delete single plant: 15 queries (6ms), 30ms total
+# Delete single group:  5 queries (3ms), 25ms total
+# Delete 3 plants:     30 queries (9ms), 52ms total
+# Delete 3 groups:      9 queries (4ms), 26ms total
 @get_user_token
 @requires_json_post(["uuids"])
 def bulk_delete_plants_and_groups(user, data, **kwargs):
@@ -561,17 +580,36 @@ def bulk_delete_plants_and_groups(user, data, **kwargs):
     '''
     deleted = []
     failed = []
+    groups_to_update = []
     for instance in list(chain(
         Plant.objects.filter(uuid__in=data["uuids"]).select_related("user"),
         Group.objects.filter(uuid__in=data["uuids"]).select_related("user")
     )):
         # Make sure instance owned by user
         if instance.user == user:
-            # TODO remove_instance_from_cached_overview_state
+            # If plant is in group: save group (need to update number of plants)
+            if hasattr(instance, 'group') and instance.group:
+                groups_to_update.append(instance.group)
             instance.delete()
             deleted.append(instance.uuid)
+            remove_instance_from_cached_overview_state(
+                instance,
+                'plants' if isinstance(instance, Plant) else 'groups'
+            )
         else:
             failed.append(instance.uuid)
+
+    # Update number of plants in groups that had plants deleted (overview state)
+    for group in groups_to_update:
+        try:
+            update_group_details_key_in_cached_states(
+                group,
+                'plants',
+                group.get_number_of_plants()
+            )
+        except ValueError:
+            # Group was also deleted, don't update
+            pass
 
     return JsonResponse(
         {"deleted": deleted, "failed": failed},
@@ -601,6 +639,11 @@ def bulk_archive_plants_and_groups(user, data, **kwargs):
             instance.archived = data["archived"]
             instance.save()
             archived.append(instance.uuid)
+            # Add to cached overview state if un-archived, remove if archived
+            update_instance_in_cached_overview_state(
+                instance,
+                'plants' if isinstance(instance, Plant) else 'groups'
+            )
         else:
             failed.append(instance.uuid)
 
@@ -923,7 +966,7 @@ def delete_plant_note(plant, timestamp, **kwargs):
         return JsonResponse({"error": "note not found"}, status=404)
 
 
-# 9 queries (6ms), 31ms total
+# 6 queries (9ms), 35ms total
 @get_user_token
 @requires_json_post(["plant_id", "group_id"])
 @get_plant_from_post_body
@@ -934,6 +977,9 @@ def add_plant_to_group(plant, group, **kwargs):
     '''
     plant.group = group
     plant.save(update_fields=["group"])
+    # Update cached overview state
+    update_plant_details_key_in_cached_states(plant, 'group', plant.get_group_details())
+    update_group_details_key_in_cached_states(group, 'plants', group.get_number_of_plants())
 
     return JsonResponse(
         {
@@ -946,7 +992,7 @@ def add_plant_to_group(plant, group, **kwargs):
     )
 
 
-# 10 queries (6ms), 32ms total
+# 7 queries (6ms), 34ms total
 @get_user_token
 @requires_json_post(["plant_id"])
 @get_plant_from_post_body
@@ -957,9 +1003,13 @@ def remove_plant_from_group(plant, **kwargs):
     old_group = plant.group
     plant.group = None
     plant.save(update_fields=["group"])
-
-    # Update number of plants in cached overview state
-    update_instance_in_cached_overview_state(old_group, 'groups')
+    # Update cached overview state
+    update_plant_details_key_in_cached_states(plant, 'group', None)
+    update_group_details_key_in_cached_states(
+        old_group,
+        'plants',
+        old_group.get_number_of_plants()
+    )
 
     return JsonResponse(
         {"action": "remove_plant_from_group", "plant": plant.uuid},
@@ -969,7 +1019,7 @@ def remove_plant_from_group(plant, **kwargs):
 
 # Upstairs bathroom (11 plants)
 # Add 1:  7 queries (7ms), 32ms total
-# Add 3: 13 queries (10ms), 41ms total
+# Add 3: 11 queries (15ms), 49ms total
 @get_user_token
 @requires_json_post(["group_id", "plants"])
 @get_group_from_post_body
@@ -997,13 +1047,26 @@ def bulk_add_plants_to_group(group, data, **kwargs):
         plant.group = group
         plant.save(update_fields=["group"])
         added.append(plant.get_details())
+        # Add group details to plant details in cached overview state
+        update_plant_details_key_in_cached_states(
+            plant,
+            'group',
+            plant.get_group_details()
+        )
+
+    # Update number of plants in group in cached overview state
+    update_group_details_key_in_cached_states(
+        group,
+        'plants',
+        group.get_number_of_plants()
+    )
 
     return JsonResponse({"added": added, "failed": failed}, status=200)
 
 
 # Upstairs bathroom (14 plants)
-# Remove 1:  7 queries (7ms), 31ms total
-# Remove 3: 11 queries (9ms), 37ms total
+# Remove 1:  8 queries (13ms), 40ms total
+# Remove 3: 12 queries (20ms), 51ms total
 @get_user_token
 @requires_json_post(["group_id", "plants"])
 @get_group_from_post_body
@@ -1031,6 +1094,15 @@ def bulk_remove_plants_from_group(data, group, **kwargs):
         plant.group = None
         plant.save(update_fields=["group"])
         removed.append(plant.get_details())
+        # Clear group details in plant details in cached overview state
+        update_plant_details_key_in_cached_states(plant, 'group', None)
+
+    # Update number of plants in group in cached overview state
+    update_group_details_key_in_cached_states(
+        group,
+        'plants',
+        group.get_number_of_plants()
+    )
 
     # Update number of plants in cached overview state
     update_instance_in_cached_overview_state(group, 'groups')
@@ -1039,7 +1111,7 @@ def bulk_remove_plants_from_group(data, group, **kwargs):
 
 
 # Favorite plant
-# 10 queries (6ms), 33ms total
+# 4 queries (8ms), 34ms total
 @get_user_token
 @requires_json_post(["plant_id", "new_pot_size", "timestamp"])
 @get_plant_from_post_body
@@ -1062,6 +1134,7 @@ def repot_plant(plant, timestamp, data, **kwargs):
         if data["new_pot_size"]:
             plant.pot_size = data["new_pot_size"]
             plant.save()
+            update_plant_details_key_in_cached_states(plant, 'pot_size', plant.pot_size)
         return JsonResponse({"action": "repot", "plant": plant.uuid}, status=200)
 
     except IntegrityError:
@@ -1189,7 +1262,7 @@ def delete_plant_photos(plant, data, **kwargs):
     return JsonResponse({"deleted": deleted, "failed": failed}, status=200)
 
 
-# 10 queries (6ms), 31ms total
+# 5 queries (6ms), 32ms total
 @get_user_token
 @requires_json_post(["plant_id", "photo_key"])
 @get_plant_from_post_body
@@ -1201,6 +1274,7 @@ def set_plant_default_photo(plant, data, **kwargs):
         photo = Photo.objects.get(plant=plant, pk=data["photo_key"])
         plant.default_photo = photo
         plant.save()
+        update_plant_details_key_in_cached_states(plant, 'thumbnail', plant.get_thumbnail_url())
     except Photo.DoesNotExist:
         return JsonResponse({"error": "unable to find photo"}, status=404)
     return JsonResponse(

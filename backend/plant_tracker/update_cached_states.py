@@ -10,21 +10,8 @@ are updated incrementally (overwrite 1 key instead of rebuilding whole state).
 '''
 
 from django.core.cache import cache
-from django.dispatch import receiver
-from django.db.models.signals import post_save, post_delete, pre_delete
 
-from .models import (
-    Plant,
-    Group,
-    WaterEvent,
-    FertilizeEvent,
-    PruneEvent,
-    RepotEvent,
-    NoteEvent,
-    DivisionEvent,
-)
 from .build_states import get_overview_state
-from .disable_for_loaddata import disable_for_loaddata
 
 
 def update_instance_in_cached_overview_state(instance, key):
@@ -64,6 +51,15 @@ def update_plant_details_key_in_cached_states(plant, key, value):
     cache.set(f'overview_state_{plant.user.pk}', state, None)
 
 
+def update_group_details_key_in_cached_states(group, key, value):
+    '''Takes group, key from get_details() dict, and a new value for the key.
+    Updates value of key in cached overview state.
+    '''
+    state = get_overview_state(group.user)
+    state['groups'][str(group.uuid)][key] = value
+    cache.set(f'overview_state_{group.user.pk}', state, None)
+
+
 def update_plant_thumbnail_in_cached_overview_state(plant):
     '''Takes plant, updates thumbnail in cached overview state.'''
     update_plant_details_key_in_cached_states(
@@ -71,44 +67,3 @@ def update_plant_thumbnail_in_cached_overview_state(plant):
         'thumbnail',
         plant.default_photo_details['thumbnail']
     )
-
-
-@receiver(post_save, sender=Plant)
-@disable_for_loaddata
-def update_plant_in_cached_states_hook(instance, **kwargs):
-    '''Updates all relevant caches when a Plant entry is saved:
-    - Updates plant entry in cached overview state (removes if plant archived)
-    - If plant is in group updates group details in cached overview state
-      (number of plants in group may have changed)
-    '''
-    update_instance_in_cached_overview_state(instance, 'plants')
-    # If plant in group: update cached group details (number of plants changed)
-    if instance.group:
-        update_instance_in_cached_overview_state(instance.group, 'groups')
-
-
-@receiver(post_delete, sender=Plant)
-def remove_deleted_plant_from_cached_states_hook(instance, **kwargs):
-    '''Deletes plant from all relevant caches when a Plant entry is deleted:
-    - Deletes plant from cached overview state
-    - If plant is in group updates group details in cached overview state and
-      cached group options (number of plants may have changed)
-    '''
-    remove_instance_from_cached_overview_state(instance, 'plants')
-    # If plant in group: update cached group details (number of plants changed)
-    if instance.group:
-        update_instance_in_cached_overview_state(instance.group, 'groups')
-
-
-@receiver(post_save, sender=Group)
-@disable_for_loaddata
-def update_group_in_cached_states_hook(instance, **kwargs):
-    '''Updates group details in cached overview state when Group entry is saved.'''
-    update_instance_in_cached_overview_state(instance, 'groups')
-
-
-@receiver(post_delete, sender=Group)
-def remove_deleted_group_from_cached_states_hook(instance, **kwargs):
-    '''Deletes group from cached overview state when a Group entry is deleted.
-    '''
-    remove_instance_from_cached_overview_state(instance, 'groups')

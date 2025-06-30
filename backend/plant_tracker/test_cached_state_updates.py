@@ -548,6 +548,10 @@ class EndpointStateUpdateTests(TestCase):
             self.load_cached_overview_state()['plants'][str(self.plant1.uuid)]['last_watered'],
             '2024-02-06T03:06:26+00:00'
         )
+        self.assertEqual(
+            self.load_cached_overview_state()['plants'][str(self.plant2.uuid)]['last_watered'],
+            '2024-02-06T03:06:26+00:00'
+        )
 
     def test_bulk_add_plant_events_fertilize(self):
         '''The cached overview state should update when FertilizeEvents are bulk created.'''
@@ -571,6 +575,10 @@ class EndpointStateUpdateTests(TestCase):
         # Confirm last_fertilized updated in cached overview state
         self.assertEqual(
             self.load_cached_overview_state()['plants'][str(self.plant1.uuid)]['last_fertilized'],
+            '2024-02-06T03:06:26+00:00'
+        )
+        self.assertEqual(
+            self.load_cached_overview_state()['plants'][str(self.plant2.uuid)]['last_fertilized'],
             '2024-02-06T03:06:26+00:00'
         )
 
@@ -601,6 +609,7 @@ class EndpointStateUpdateTests(TestCase):
 
         # Confirm last_watered was reset in cached overview state and own cached state
         self.assertIsNone(self.load_cached_overview_state()['plants'][str(self.plant1.uuid)]['last_watered'])
+        self.assertIsNone(self.load_cached_overview_state()['plants'][str(self.plant2.uuid)]['last_watered'])
 
     def test_delete_plant_event_fertilize(self):
         '''The cached overview state should update when a FertilizeEvent is deleted.'''

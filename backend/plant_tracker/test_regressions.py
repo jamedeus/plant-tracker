@@ -15,7 +15,7 @@ from django.db import IntegrityError, connections
 from django.core.exceptions import ValidationError
 from django.test import TestCase, TransactionTestCase, Client
 
-from .build_states import build_manage_plant_state
+from .build_states import build_overview_state
 from .models import (
     Group,
     Plant,
@@ -720,7 +720,7 @@ class ViewRegressionTests(TestCase):
         group = Group.objects.create(uuid=uuid4(), user=get_default_user())
 
         # Confirm cached overview state says group has 0 plants
-        overview_state = cache.get(f'overview_state_{get_default_user().pk}')
+        overview_state = build_overview_state(get_default_user())
         self.assertEqual(overview_state['groups'][str(group.uuid)]['plants'], 0)
 
         # Send add_plant_to_group request
@@ -895,7 +895,7 @@ class CachedStateRegressionTests(TestCase):
 
         # Create test plant, confirm added to cached overview state
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-        overview_state = cache.get(f'overview_state_{plant.user.pk}')
+        overview_state = build_overview_state(get_default_user())
         self.assertIn(str(plant.uuid), overview_state['plants'])
 
         # Simulate user archiving plant
@@ -1091,7 +1091,7 @@ class CachedStateRegressionTests(TestCase):
         default_user = get_default_user()
         group = Group.objects.create(uuid=uuid4(), user=default_user)
         plant = Plant.objects.create(uuid=uuid4(), user=default_user)
-        overview_state = cache.get(f'overview_state_{default_user.pk}')
+        overview_state = build_overview_state(default_user)
         self.assertIn(str(plant.uuid), overview_state['plants'])
         self.assertIn(str(group.uuid), overview_state['groups'])
         self.assertEqual(len(overview_state['plants']), 1)
@@ -1131,12 +1131,14 @@ class CachedStateRegressionTests(TestCase):
 
         # Confirm overview state says 1 plant in group
         self.assertEqual(
-            cache.get(f'overview_state_{user.pk}')['groups'][str(group.uuid)]['plants'],
+            build_overview_state(user)['groups'][str(group.uuid)]['plants'],
             1
         )
 
         # Delete plant, confirm both cached states now say 0 plants in group
-        plant.delete()
+        JSONClient().post('/bulk_delete_plants_and_groups', {
+            'uuids': [str(plant.uuid)]
+        })
         self.assertEqual(
             cache.get(f'overview_state_{user.pk}')['groups'][str(group.uuid)]['plants'],
             0
