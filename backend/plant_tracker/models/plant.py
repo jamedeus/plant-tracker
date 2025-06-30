@@ -460,28 +460,3 @@ class Plant(models.Model):
         if Group.objects.filter(uuid=self.uuid):
             raise IntegrityError("UUID already exists in Group table")
         super().save(*args, **kwargs)
-
-    def _delete_event_queryset(self, events):
-        '''Takes an event queryset, deletes all entries with raw SQL method that
-        bypasses post_delete signals (avoids running unnecessary state updates).
-
-        Should ONLY be used just before Plant is deleted (otherwise the state
-        updates are necessary and bypassing will cause outdated cached states).
-        '''
-        qs = events.order_by().select_related(None)
-        qs._raw_delete(qs.db)
-
-    def delete(self, *args, **kwargs):
-        # Delete all associated models with raw sql. Wrap in a single transation
-        # to avoid failed constraint if plant's default_photo deleted before
-        # plant (raw sql also bypasses on_delete=models.SET_NULL). Also faster.
-        with transaction.atomic():
-            self._delete_event_queryset(self.waterevent_set.all())
-            self._delete_event_queryset(self.fertilizeevent_set.all())
-            self._delete_event_queryset(self.pruneevent_set.all())
-            self._delete_event_queryset(self.repotevent_set.all())
-            self._delete_event_queryset(self.noteevent_set.all())
-            # Delete all photos from disk before deleting photo entries
-            for photo in self.photo_set.all():
-                photo._delete_photos_from_disk()
-            super().delete(*args, **kwargs)
