@@ -11,7 +11,22 @@ are updated incrementally (overwrite 1 key instead of rebuilding whole state).
 
 from django.core.cache import cache
 
+from .models import Plant
 from .build_states import get_overview_state
+
+
+def bulk_update_instance_details_keys(instance, update_dict):
+    '''Takes plant or group instance and dict with a subset of their get_details
+    dict keys with new values, writes new values to cached overview state.
+
+    Cannot be used to add new plants/groups to cached overview state (only
+    updates if uuid already exists).
+    '''
+    state = get_overview_state(instance.user)
+    key = 'plants' if isinstance(instance, Plant) else 'groups'
+    if str(instance.uuid) in state[key]:
+        state[key][str(instance.uuid)].update(update_dict)
+        cache.set(f'overview_state_{instance.user.pk}', state, None)
 
 
 def update_instance_in_cached_overview_state(instance, key):

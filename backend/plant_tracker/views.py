@@ -46,6 +46,7 @@ from .build_states import (
     build_manage_group_state
 )
 from .update_cached_states import (
+    bulk_update_instance_details_keys,
     update_plant_details_key_in_cached_states,
     update_group_details_key_in_cached_states,
     update_instance_in_cached_overview_state,
@@ -379,6 +380,7 @@ def register_group(user, data, **kwargs):
             group = Group(user=user, **data)
             group.full_clean()
             group.save()
+            # Add to cached overview state
             update_instance_in_cached_overview_state(group, 'groups')
 
         # Redirect to manage page
@@ -412,7 +414,7 @@ def change_qr_code(instance, user, **kwargs):
     )
 
 
-# Plant: 11 queries (8ms), 38ms total
+# Plant: 9 queries (12ms), 38ms total
 # Group:  6 queries (9ms), 36ms total
 @get_user_token
 @requires_json_post(["uuid", "new_id"])
@@ -443,8 +445,7 @@ def change_uuid(instance, data, user, **kwargs):
         return JsonResponse({"error": "new_id key is not a valid UUID"}, status=400)
 
 
-# TODO just update details (not photo, last_watered, last_fertilized - most queries)
-# 13 queries (8ms), 42ms total
+# 9 queries (9ms), 39ms total
 @get_user_token
 @requires_json_post(["plant_id", "name", "species", "description", "pot_size"])
 @get_plant_from_post_body
@@ -466,7 +467,15 @@ def edit_plant_details(plant, data, **kwargs):
         plant.full_clean()
         plant.save()
         # Update details in cached overview state
-        update_instance_in_cached_overview_state(plant, 'plants')
+        bulk_update_instance_details_keys(
+            plant,
+            {
+                'name': plant.get_display_name(),
+                'species': plant.species,
+                'pot_size': plant.pot_size,
+                'description': plant.description
+            }
+        )
 
     except ValidationError as error:
         return JsonResponse({"error": error.message_dict}, status=400)
@@ -496,6 +505,15 @@ def edit_group_details(group, data, **kwargs):
     try:
         group.full_clean()
         group.save()
+        # Update details in cached overview state
+        bulk_update_instance_details_keys(
+            group,
+            {
+                'name': group.get_display_name(),
+                'location': group.location,
+                'description': group.description
+            }
+        )
         update_instance_in_cached_overview_state(group, 'groups')
     except ValidationError as error:
         return JsonResponse({"error": error.message_dict}, status=400)
@@ -592,6 +610,7 @@ def bulk_delete_plants_and_groups(user, data, **kwargs):
                 groups_to_update.append(instance.group)
             instance.delete()
             deleted.append(instance.uuid)
+            # Remove from cached overview state
             remove_instance_from_cached_overview_state(
                 instance,
                 'plants' if isinstance(instance, Plant) else 'groups'
@@ -1274,7 +1293,12 @@ def set_plant_default_photo(plant, data, **kwargs):
         photo = Photo.objects.get(plant=plant, pk=data["photo_key"])
         plant.default_photo = photo
         plant.save()
-        update_plant_details_key_in_cached_states(plant, 'thumbnail', plant.get_thumbnail_url())
+        # Update thumbnail in cached overview state
+        update_plant_details_key_in_cached_states(
+            plant,
+            'thumbnail',
+            plant.get_thumbnail_url()
+        )
     except Photo.DoesNotExist:
         return JsonResponse({"error": "unable to find photo"}, status=404)
     return JsonResponse(
