@@ -27,7 +27,6 @@ from .view_decorators import (
     get_user_token,
     find_model_type,
     get_plant_by_uuid,
-    get_group_by_uuid,
     get_plant_or_group_by_uuid,
     requires_json_post,
     get_plant_from_post_body,
@@ -154,7 +153,7 @@ def manage(request, uuid, user):
         return render_manage_plant_page(request, plant, user)
 
     if model_type == 'group':
-        group = get_group_by_uuid(uuid)
+        group = Group.objects.get_with_manage_group_annotation(uuid)
         return render_manage_group_page(request, group, user)
 
     # Render register page if UUID is new
@@ -225,7 +224,7 @@ def get_add_to_group_options(request, user):
 
 
 # Upstairs bathroom group
-# 5 queries (6ms), 28ms total
+# 4 queries (6ms), 34ms total
 def render_manage_group_page(request, group, user):
     '''Renders management page for an existing group.
     Called by /manage endpoint if UUID is found in database group table.
@@ -247,13 +246,13 @@ def render_manage_group_page(request, group, user):
 
 
 # Upstairs bathroom group
-# 3 queries (5ms), 25ms total
+# 2 queries (4ms), 19ms total
 def get_group_state(request, uuid):
     '''Returns current manage_group state for the requested group.
     Used to refresh contents after user presses back button.
     '''
     try:
-        group = get_group_by_uuid(uuid)
+        group = Group.objects.get_with_manage_group_annotation(uuid)
         if group:
             return JsonResponse(
                 build_manage_group_state(group),

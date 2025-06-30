@@ -50,6 +50,16 @@ class GroupQueryset(models.QuerySet):
                 .with_group_plant_count_annotation()
         )
 
+    def with_manage_group_annotation(self):
+        '''Adds full annotations for manage_grouo page (avoids seperate queries
+        for number of plants in group and user).
+        '''
+        return self.with_group_plant_count_annotation().select_related('user')
+
+    def get_with_manage_group_annotation(self, uuid):
+        '''Takes UUID, returns matching Group with full manage_group annotations.'''
+        return self.filter(uuid=uuid).with_manage_group_annotation().first()
+
 
 class Group(models.Model):
     '''Tracks a group containing multiple plants, created by scanning QR code.
