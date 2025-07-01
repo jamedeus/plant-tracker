@@ -450,11 +450,6 @@ class SingleUserModeTests(TestCase):
         # Ensure SINGLE_USER_MODE is enabled
         settings.SINGLE_USER_MODE = True
 
-    def tearDown(self):
-        # Prevent cached state accumulatng plants that no longer exist (hook
-        # doesn't run when tests clean up model entries)
-        cache.delete(f'overview_state_{get_default_user().pk}')
-
     # pylint: disable-next=invalid-name
     def assertReceivedPermissionDeniedPage(self, response):
         '''Takes response object, confirms received status 200 with boilerplate
