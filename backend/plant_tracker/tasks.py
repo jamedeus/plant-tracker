@@ -4,7 +4,6 @@ from celery import shared_task
 from django.core.cache import cache
 from django.contrib.auth import get_user_model
 
-from .models import Plant
 from .build_states import build_overview_state
 
 

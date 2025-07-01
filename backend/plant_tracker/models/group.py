@@ -1,7 +1,5 @@
 '''Django database models'''
 
-from typing import TYPE_CHECKING
-
 from django.db import models
 from django.conf import settings
 from django.utils.functional import cached_property
@@ -9,9 +7,6 @@ from django.db.models import Case, When, Value, Count
 
 from .events import WaterEvent, FertilizeEvent
 from .annotations import unnamed_index_annotation
-
-if TYPE_CHECKING:  # pragma: no cover
-    from .plant import Plant
 
 
 class GroupQueryset(models.QuerySet):

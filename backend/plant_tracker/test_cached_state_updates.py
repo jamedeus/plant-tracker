@@ -10,9 +10,9 @@ from django.core.cache import cache
 from django.test.client import MULTIPART_CONTENT
 
 from .view_decorators import get_default_user
+from .build_states import build_overview_state
 from .models import Group, Plant, DivisionEvent, Photo
 from .unit_test_helpers import JSONClient, create_mock_photo
-from .build_states import build_overview_state, build_manage_plant_state
 
 
 def tearDownModule():
@@ -975,7 +975,6 @@ class EndpointStateUpdateTests(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         older_photo = Photo.objects.all()[0]
-        newer_photo = Photo.objects.all()[1]
 
         # Confirm cached overview state used most-recent photo for thumbnail
         self.assertEqual(

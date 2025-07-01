@@ -1166,7 +1166,6 @@ class CachedStateRegressionTests(TestCase):
 
         # Request manage page, confirm water events are sorted chronologically
         response = self.client.get(f'/manage/{plant.uuid}')
-        state = response.context['state']
         self.assertEqual(
             response.context['state']['events']['water'],
             [
@@ -1183,7 +1182,6 @@ class CachedStateRegressionTests(TestCase):
 
         # Request manage page, confirm new event is sorted chronologically
         response = self.client.get(f'/manage/{plant.uuid}')
-        state = response.context['state']
         self.assertEqual(
             response.context['state']['events']['water'],
             [

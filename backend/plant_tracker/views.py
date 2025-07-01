@@ -7,7 +7,6 @@ from itertools import chain
 
 from django.conf import settings
 from django.core.cache import cache
-from psycopg.errors import UniqueViolation
 from django.db import transaction, IntegrityError
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponseRedirect
@@ -844,9 +843,9 @@ def bulk_delete_plant_events(plant, data, **kwargs):
     querysets_by_type = {
         event_type: events_map[event_type].objects.filter(
             plant=plant,
-            timestamp__in=timestamps_by_type[event_type]
+            timestamp__in=timestamps
         )
-        for event_type in timestamps_by_type
+        for event_type, timestamps in timestamps_by_type.items()
     }
 
     # Delete events, append each to deleted list
