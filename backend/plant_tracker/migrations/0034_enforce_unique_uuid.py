@@ -4,7 +4,7 @@ from django.db import migrations
 
 
 CREATE_TRIGGERS = """
--- Create trigger function that checks if UUID exists in uuid --
+-- Create trigger function that checks if UUID exists in plant_tracker_uuid --
 CREATE OR REPLACE FUNCTION enforce_uuid_unique() RETURNS trigger AS $$
 BEGIN
     -- If existing entry updated and UUID did not change: skip check --
@@ -13,11 +13,11 @@ BEGIN
     END IF;
 
     -- Confirm new UUID available (raises IntegrityError if already exists) --
-    INSERT INTO uuid (uuid) VALUES (NEW.uuid);
+    INSERT INTO plant_tracker_uuid (uuid) VALUES (NEW.uuid);
 
     -- If existing entry updated and UUID did change: release old UUID --
     IF TG_OP = 'UPDATE' THEN
-        DELETE FROM uuid WHERE uuid = OLD.uuid;
+        DELETE FROM plant_tracker_uuid WHERE uuid = OLD.uuid;
     END IF;
 
     RETURN NEW;
@@ -27,10 +27,10 @@ EXCEPTION WHEN unique_violation THEN
 END;
 $$ LANGUAGE plpgsql;
 
--- Create trigger function that removes UUID from uuid --
+-- Create trigger function that removes UUID from plant_tracker_uuid --
 CREATE OR REPLACE FUNCTION release_uuid() RETURNS trigger AS $$
 BEGIN
-    DELETE FROM uuid WHERE uuid = OLD.uuid;
+    DELETE FROM plant_tracker_uuid WHERE uuid = OLD.uuid;
     RETURN OLD;
 END;
 $$ LANGUAGE plpgsql;

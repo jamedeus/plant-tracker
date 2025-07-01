@@ -15,8 +15,5 @@ class Migration(migrations.Migration):
             fields=[
                 ('uuid', models.UUIDField(primary_key=True, serialize=False)),
             ],
-            options={
-                'db_table': 'uuid',
-            },
         ),
     ]

@@ -9,6 +9,3 @@ from django.db import models
 class UUID(models.Model):
     '''Stores a UUID which is being used by a Plant or Group model.'''
     uuid = models.UUIDField(primary_key=True)
-
-    class Meta:
-        db_table = 'uuid'
