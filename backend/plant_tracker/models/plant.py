@@ -4,8 +4,6 @@ from typing import TYPE_CHECKING
 
 from django.db import models
 from django.conf import settings
-from django.core.cache import cache
-from django.db import IntegrityError, transaction
 from django.utils.functional import cached_property
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db.models.functions import JSONObject, Cast
@@ -454,9 +452,3 @@ class Plant(models.Model):
     def last_repotted(self):
         '''Returns timestamp string of last RepotEvent, or None if no events.'''
         return self._get_most_recent_timestamp(self.repotevent_set.all())
-
-    def save(self, *args, **kwargs):
-        from .group import Group
-        if Group.objects.filter(uuid=self.uuid):
-            raise IntegrityError("UUID already exists in Group table")
-        super().save(*args, **kwargs)

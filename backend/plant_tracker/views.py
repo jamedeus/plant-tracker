@@ -7,6 +7,7 @@ from itertools import chain
 
 from django.conf import settings
 from django.core.cache import cache
+from psycopg.errors import UniqueViolation
 from django.db import transaction, IntegrityError
 from django.core.exceptions import ValidationError
 from django.http import JsonResponse, HttpResponseRedirect
@@ -436,6 +437,11 @@ def change_uuid(instance, data, user, **kwargs):
         return JsonResponse({"new_uuid": str(instance.uuid)}, status=200)
     except ValidationError:
         return JsonResponse({"error": "new_id key is not a valid UUID"}, status=400)
+    except IntegrityError:
+        return JsonResponse(
+            {"error": "new_id is already used by another Plant or Group"},
+            status=409
+        )
 
 
 # 9 queries (9ms), 39ms total

@@ -1304,6 +1304,11 @@ class DatabaseRaceConditionRegressionTests(TransactionTestCase):
         # Clear entire cache before each test
         cache.clear()
 
+        # Recreate default user (deleted by TransactionTestCase)
+        self.user, _ = get_user_model().objects.get_or_create(
+            username=settings.DEFAULT_USERNAME
+        )
+
     def test_simultaneous_requests_create_duplicate_water_events(self):
         '''Issue: If two identical events were created simultaneously the Event
         model save method would fail to reject the duplicate timestamp because

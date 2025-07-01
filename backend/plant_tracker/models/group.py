@@ -4,7 +4,6 @@ from typing import TYPE_CHECKING
 
 from django.db import models
 from django.conf import settings
-from django.db import IntegrityError
 from django.utils.functional import cached_property
 from django.db.models import Case, When, Value, Count
 
@@ -156,10 +155,3 @@ class Group(models.Model):
             return self.plant_count
         # Query from database if no annotation
         return len(self.plant_set.all())
-
-    def save(self, *args, **kwargs):
-        # Prevent saving Group with UUID that is already used by Plant
-        from .plant import Plant
-        if Plant.objects.filter(uuid=self.uuid):
-            raise IntegrityError("UUID already exists in Plant table")
-        super().save(*args, **kwargs)

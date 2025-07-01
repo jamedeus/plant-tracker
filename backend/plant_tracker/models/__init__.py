@@ -1,6 +1,7 @@
 from .plant import Plant
 from .group import Group
 from .photo import Photo
+from .uuid import UUID
 from .events import (
     WaterEvent,
     FertilizeEvent,

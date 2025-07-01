@@ -3,12 +3,14 @@
 import os
 import shutil
 from uuid import uuid4
+from concurrent.futures import ThreadPoolExecutor, wait
 
 from django.conf import settings
-from django.test import TestCase
 from django.utils import timezone
 from django.core.cache import cache
-from django.db import transaction, IntegrityError
+from django.contrib.auth import get_user_model
+from django.test import TestCase, TransactionTestCase
+from django.db import transaction, connection, IntegrityError
 
 from .view_decorators import get_default_user
 from .models import (
@@ -552,3 +554,155 @@ class EventModelTests(TestCase):
 
         # Confirm second event was not created
         self.assertEqual(len(NoteEvent.objects.all()), 1)
+
+
+class UniqueUUIDTests(TransactionTestCase):
+    '''Tests to confirm the same UUID cannot be used for a Plant and Group.'''
+
+    def setUp(self):
+        # Set default content_type for post requests (avoid long lines)
+        self.client = JSONClient()
+
+        # Recreate default user (deleted by TransactionTestCase)
+        self.user, _ = get_user_model().objects.get_or_create(
+            username=settings.DEFAULT_USERNAME
+        )
+
+    def register_plant(self, uuid):
+        '''Takes UUID, registers new plant with /register_plant endpoint.'''
+        return self.client.post('/register_plant', {
+            'name': '',
+            'species': '',
+            'pot_size': '',
+            'description': '',
+            'uuid': str(uuid),
+        })
+
+    def register_group(self, uuid):
+        '''Takes UUID, registers new plant with /register_group endpoint.'''
+        return self.client.post('/register_group', {
+            'name': '',
+            'location': '',
+            'description': '',
+            'uuid': str(uuid),
+        })
+
+    def test_plant_uuid_must_be_unique(self):
+        # Create existing plant
+        plant = Plant.objects.create(user=get_default_user(), uuid=uuid4())
+
+        # Confirm creating another Plant with same UUID raises IntegrityError
+        with self.assertRaises(IntegrityError):
+            Plant.objects.create(user=get_default_user(), uuid=plant.uuid)
+
+        # Confirm creating Group with same UUID raises IntegrityError
+        with self.assertRaises(IntegrityError):
+            Group.objects.create(user=get_default_user(), uuid=plant.uuid)
+
+    def test_group_uuid_must_be_unique(self):
+        # Create existing group
+        group = Group.objects.create(user=get_default_user(), uuid=uuid4())
+
+        # Confirm creating another Group with same UUID raises IntegrityError
+        with self.assertRaises(IntegrityError):
+            Group.objects.create(user=get_default_user(), uuid=group.uuid)
+
+        # Confirm creating Plant with same UUID raises IntegrityError
+        with self.assertRaises(IntegrityError):
+            Plant.objects.create(user=get_default_user(), uuid=group.uuid)
+
+    def test_create_duplicate_with_registration_endpoints(self):
+        # Register plant, confirm success (redirected to manage page)
+        uuid = uuid4()
+        response = self.register_plant(uuid)
+        self.assertEqual(response.status_code, 302)
+
+        # Register group with same UUID, confirm rejected
+        response = self.register_group(uuid)
+        self.assertEqual(response.status_code, 409)
+        self.assertEqual(
+            response.json(),
+            {"error": "uuid already exists in database"}
+        )
+
+    def test_create_duplicate_with_registration_endpoints_race_condition(self):
+        # Create UUID to register Plant and Group with
+        uuid = uuid4()
+
+        def worker_plant():
+            try:
+                return self.register_plant(uuid)
+            finally:
+                connection.close()
+
+        def worker_group():
+            try:
+                return self.register_group(uuid)
+            finally:
+                connection.close()
+
+        # Make 2 simultaneous registration requests using the same UUID
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            responses = [pool.submit(worker_plant), pool.submit(worker_group)]
+            wait(responses)
+
+        # Confirm 1 request succeeded (302 redirect to management page), other
+        # was rejected (409 UUID already exists error)
+        self.assertEqual(
+            sorted(response.result().status_code for response in responses),
+            [302, 409]
+        )
+
+    def test_create_duplicate_with_change_uuid_endpoint(self):
+        # Create Plant and Group with different UUIDs
+        plant = Plant.objects.create(user=self.user, uuid=uuid4())
+        group = Group.objects.create(user=self.user, uuid=uuid4())
+
+        # Attempt to change plant UUID to group UUID
+        response = JSONClient().post('/change_uuid', {
+            'uuid': str(plant.uuid),
+            'new_id': str(group.uuid),
+        })
+        # Confirm rejected with correct error
+        self.assertEqual(response.status_code, 409)
+        self.assertEqual(
+            response.json(),
+            {"error": "new_id is already used by another Plant or Group"}
+        )
+
+    def test_create_duplicate_with_change_uuid_endpoint_race_condition(self):
+        # Create Plant and Group with different UUIDs
+        plant = Plant.objects.create(user=self.user, uuid=uuid4())
+        group = Group.objects.create(user=self.user, uuid=uuid4())
+
+        # Create new UUID to change both to
+        new_uuid = uuid4()
+
+        def worker_plant():
+            try:
+                return JSONClient().post('/change_uuid', {
+                    'uuid': str(plant.uuid),
+                    'new_id': str(new_uuid),
+                })
+            finally:
+                connection.close()
+
+        def worker_group():
+            try:
+                return JSONClient().post('/change_uuid', {
+                    'uuid': str(group.uuid),
+                    'new_id': str(new_uuid),
+                })
+            finally:
+                connection.close()
+
+        # Make 2 simultaneous change_uuid requests using the same UUID
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            responses = [pool.submit(worker_plant), pool.submit(worker_group)]
+            wait(responses)
+
+        # Confirm 1 request succeeded (200), other rejected (409 already exists)
+        self.assertEqual(
+            sorted(response.result().status_code for response in responses),
+            [200, 409]
+        )
