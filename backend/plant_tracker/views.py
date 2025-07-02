@@ -158,7 +158,7 @@ def manage(request, uuid, user):
 
 
 # Favorite plant
-# 6 queries (7ms), 32ms total
+# 5 queries (8ms), 40ms total
 def render_manage_plant_page(request, plant, user):
     '''Renders management page for an existing plant.
     Called by /manage endpoint if UUID is found in database plant table.

@@ -138,6 +138,8 @@ class PlantQueryset(models.QuerySet):
                 .select_related('group')
                 # Include parent plant + division event if plant was divided
                 .select_related('divided_from', 'divided_from_event')
+                # Include user (avoids extra query to check ownership)
+                .select_related('user')
                 # Add <event_type>_timetamps attributes containing lists of
                 # event timestamps (sorted chronologically at database level)
                 .annotate(
