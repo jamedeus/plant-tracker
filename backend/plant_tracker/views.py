@@ -180,19 +180,25 @@ def render_manage_plant_page(request, plant, user):
 
 
 # Favorite plant
-# 3 queries (6ms), 31ms total
-def get_plant_state(request, uuid):
+# 4 queries (8ms), 31ms total
+@get_user_token
+def get_plant_state(request, uuid, user):
     '''Returns current manage_plant state for the requested plant.
     Used to refresh contents after user presses back button.
     '''
     try:
         plant = Plant.objects.get_with_manage_plant_annotation(uuid)
-        if plant:
+        if not plant:
+            return JsonResponse({'Error': 'Plant not found'}, status=404)
+        if plant.user != user:
             return JsonResponse(
-                build_manage_plant_state(plant),
-                status=200
+                {"error": "plant is owned by a different user"},
+                status=403
             )
-        return JsonResponse({'Error': 'Plant not found'}, status=404)
+        return JsonResponse(
+            build_manage_plant_state(plant),
+            status=200
+        )
     except ValidationError:
         return JsonResponse({'Error': 'Requires plant UUID'}, status=400)
 
@@ -244,18 +250,24 @@ def render_manage_group_page(request, group, user):
 
 # Upstairs bathroom group
 # 2 queries (4ms), 19ms total
-def get_group_state(request, uuid):
+@get_user_token
+def get_group_state(request, uuid, user):
     '''Returns current manage_group state for the requested group.
     Used to refresh contents after user presses back button.
     '''
     try:
         group = Group.objects.get_with_manage_group_annotation(uuid)
-        if group:
+        if not group:
+            return JsonResponse({'Error': 'Group not found'}, status=404)
+        if group.user != user:
             return JsonResponse(
-                build_manage_group_state(group),
-                status=200
+                {"error": "group is owned by a different user"},
+                status=403
             )
-        return JsonResponse({'Error': 'Group not found'}, status=404)
+        return JsonResponse(
+            build_manage_group_state(group),
+            status=200
+        )
     except ValidationError:
         return JsonResponse({'Error': 'Requires group UUID'}, status=400)
 
