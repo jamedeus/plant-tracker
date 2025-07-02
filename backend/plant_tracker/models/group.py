@@ -50,6 +50,10 @@ class GroupQueryset(models.QuerySet):
         '''
         return self.with_group_plant_count_annotation().select_related('user')
 
+    def get_with_overview_annotation(self, uuid):
+        '''Takes UUID, returns matching Group with full overview annotations.'''
+        return self.filter(uuid=uuid).with_overview_annotation().first()
+
     def get_with_manage_group_annotation(self, uuid):
         '''Takes UUID, returns matching Group with full manage_group annotations.'''
         return self.filter(uuid=uuid).with_manage_group_annotation().first()

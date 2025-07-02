@@ -172,6 +172,10 @@ class PlantQueryset(models.QuerySet):
                 )
         )
 
+    def get_with_overview_annotation(self, uuid):
+        '''Takes UUID, returns matching Plant with full overview annotations.'''
+        return self.filter(uuid=uuid).with_overview_annotation().first()
+
     def get_with_manage_plant_annotation(self, uuid):
         '''Takes UUID, returns matching Plant with full manage_plant annotations.'''
         return self.filter(uuid=uuid).with_manage_plant_annotation().first()

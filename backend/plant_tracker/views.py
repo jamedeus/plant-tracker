@@ -26,8 +26,6 @@ from .view_decorators import (
     events_map,
     get_user_token,
     find_model_type,
-    get_plant_by_uuid,
-    get_plant_or_group_by_uuid,
     requires_json_post,
     get_plant_from_post_body,
     get_group_from_post_body,
@@ -273,9 +271,10 @@ def get_group_state(request, uuid, user):
 
 
 # Plain registration:      2 queries (2ms), 25ms total
-# Changing group QR code:  6 queries (4ms), 24ms total
-# Changing plant QR code:  8 queries (5ms), 31ms total
-# Dividing plant:          7 queries (4ms), 28ms total
+# Changing group QR code:  4 queries (3ms), 26ms total
+# Changing plant QR code:  5 queries (5ms), 21ms total
+# Dividing plant:          4 queries (4ms), 26ms total
+# Change plant + divide:   7 queries (6ms), 33ms total
 def render_registration_page(request, uuid, user):
     '''Renders registration page used to create a new plant or group.
     Called by /manage endpoint if UUID does not exist in database.
@@ -295,13 +294,17 @@ def render_registration_page(request, uuid, user):
     # Check if user is changing plant QR code, add details if so
     old_uuid = cache.get(f'old_uuid_{user.pk}')
     if old_uuid:
-        instance = get_plant_or_group_by_uuid(old_uuid)
+        model_type = find_model_type(old_uuid)
         # If UUID no longer exists in database (plant/group deleted) clear cache
-        if instance is None:
+        if model_type is None:
             cache.delete(f'old_uuid_{user.pk}')
         else:
+            if model_type == 'plant':
+                instance = Plant.objects.get_with_overview_annotation(old_uuid)
+            else:
+                instance = Group.objects.get_with_overview_annotation(old_uuid)
             state['changing_qr_code'] = {
-                'type': 'plant' if isinstance(instance, Plant) else 'group',
+                'type': model_type,
                 'instance': instance.get_details(),
                 'new_uuid': uuid
             }
@@ -312,9 +315,10 @@ def render_registration_page(request, uuid, user):
     # Check if user is dividing plant, add details if dividing
     division_in_progress = cache.get(f'division_in_progress_{user.pk}')
     if division_in_progress:
-        # Need annotation here to prevent tons of queries
         # BUG if parent UUID changed since started this causes traceback (gets None)
-        plant = get_plant_by_uuid(division_in_progress['divided_from_plant_uuid'])
+        plant = Plant.objects.get_with_overview_annotation(
+            uuid=division_in_progress['divided_from_plant_uuid']
+        )
         state['dividing_from'] = {
             'plant_details': plant.get_details(),
             'default_photo': plant.get_default_photo_details(),
