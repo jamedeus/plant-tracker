@@ -16,6 +16,7 @@ from .view_decorators import get_default_user
 from .models import (
     Group,
     Plant,
+    UUID,
     WaterEvent,
     FertilizeEvent,
     PruneEvent,
@@ -599,6 +600,9 @@ class UniqueUUIDTests(TransactionTestCase):
         with self.assertRaises(IntegrityError):
             Group.objects.create(user=get_default_user(), uuid=plant.uuid)
 
+        # Confirm only 1 UUID entry was added to database
+        self.assertEqual(len(UUID.objects.all()), 1)
+
     def test_group_uuid_must_be_unique(self):
         # Create existing group
         group = Group.objects.create(user=get_default_user(), uuid=uuid4())
@@ -610,6 +614,9 @@ class UniqueUUIDTests(TransactionTestCase):
         # Confirm creating Plant with same UUID raises IntegrityError
         with self.assertRaises(IntegrityError):
             Plant.objects.create(user=get_default_user(), uuid=group.uuid)
+
+        # Confirm only 1 UUID entry was added to database
+        self.assertEqual(len(UUID.objects.all()), 1)
 
     def test_create_duplicate_with_registration_endpoints(self):
         # Register plant, confirm success (redirected to manage page)
@@ -624,6 +631,9 @@ class UniqueUUIDTests(TransactionTestCase):
             response.json(),
             {"error": "uuid already exists in database"}
         )
+
+        # Confirm only 1 UUID entry was added to database
+        self.assertEqual(len(UUID.objects.all()), 1)
 
     def test_create_duplicate_with_registration_endpoints_race_condition(self):
         # Create UUID to register Plant and Group with
@@ -653,6 +663,9 @@ class UniqueUUIDTests(TransactionTestCase):
             [302, 409]
         )
 
+        # Confirm only 1 UUID entry was added to database
+        self.assertEqual(len(UUID.objects.all()), 1)
+
     def test_create_duplicate_with_change_uuid_endpoint(self):
         # Create Plant and Group with different UUIDs
         plant = Plant.objects.create(user=self.user, uuid=uuid4())
@@ -669,6 +682,9 @@ class UniqueUUIDTests(TransactionTestCase):
             response.json(),
             {"error": "new_id is already used by another Plant or Group"}
         )
+
+        # Confirm only 2 UUID entries exist (changed UUID was dropped)
+        self.assertEqual(len(UUID.objects.all()), 2)
 
     def test_create_duplicate_with_change_uuid_endpoint_race_condition(self):
         # Create Plant and Group with different UUIDs
@@ -706,3 +722,33 @@ class UniqueUUIDTests(TransactionTestCase):
             sorted(response.result().status_code for response in responses),
             [200, 409]
         )
+
+        # Confirm only 2 UUID entries exist (changed UUID was dropped)
+        self.assertEqual(len(UUID.objects.all()), 2)
+
+    def test_create_duplicate_by_directly_editing_models(self):
+        # Create Plant and Group with different UUIDs
+        plant = Plant.objects.create(user=self.user, uuid=uuid4())
+        group = Group.objects.create(user=self.user, uuid=uuid4())
+        # Confirm 2 UUIDs reserved in database
+        self.assertEqual(len(UUID.objects.all()), 2)
+
+        # Confirm an exception is raised if Plant UUID changed to Group UUID
+        with self.assertRaises(IntegrityError):
+            with transaction.atomic():
+                plant.uuid = group.uuid
+                plant.save()
+        # Confirm still 2 UUIDs in database (reservation not cleared)
+        self.assertEqual(len(UUID.objects.all()), 2)
+
+        # Refresh plant UUID from DB (local copy still has group uuid even
+        # though save failed above)
+        plant.refresh_from_db()
+
+        # Confirm an exception is raised if Group UUID changed to Plant UUID
+        with self.assertRaises(IntegrityError):
+            with transaction.atomic():
+                group.uuid = plant.uuid
+                group.save()
+        # Confirm still 2 UUIDs in database (reservation not cleared)
+        self.assertEqual(len(UUID.objects.all()), 2)
