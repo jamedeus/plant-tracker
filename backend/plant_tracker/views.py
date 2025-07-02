@@ -1041,7 +1041,7 @@ def remove_plant_from_group(plant, **kwargs):
 
 # Upstairs bathroom (11 plants)
 # Add 1: 5 queries (6ms), 24ms total
-# Add 3: 7 queries (9ms), 30ms total
+# Add 3: 5 queries (6ms), 33ms total
 @get_user_token
 @requires_json_post(["group_id", "plants"])
 @get_group_from_post_body
@@ -1067,10 +1067,10 @@ def bulk_add_plants_to_group(group, data, **kwargs):
     added = []
     for plant in plants:
         plant.group = group
-        plant.save(update_fields=["group"])
         added.append(plant.get_details())
         # Add group details to plant details in cached overview state
         update_cached_details_keys(plant, {'group': plant.get_group_details()})
+    Plant.objects.bulk_update(plants, ['group'])
 
     # Update number of plants in group in cached overview state
     update_cached_details_keys(group, {'plants': group.get_number_of_plants()})
@@ -1079,8 +1079,8 @@ def bulk_add_plants_to_group(group, data, **kwargs):
 
 
 # Upstairs bathroom (14 plants)
-# Remove 1: 5 queries (6ms), 29ms total
-# Remove 3: 7 queries (8ms), 39ms total
+# Remove 1: 5 queries (5ms), 33ms total
+# Remove 3: 5 queries (5ms), 32ms total
 @get_user_token
 @requires_json_post(["group_id", "plants"])
 @get_group_from_post_body
@@ -1106,10 +1106,10 @@ def bulk_remove_plants_from_group(data, group, **kwargs):
     removed = []
     for plant in plants:
         plant.group = None
-        plant.save(update_fields=["group"])
         removed.append(plant.get_details())
         # Clear group details in plant details in cached overview state
         update_cached_details_keys(plant, {'group': None})
+    Plant.objects.bulk_update(plants, ['group'])
 
     # Update number of plants in group in cached overview state
     update_cached_details_keys(group, {'plants': group.get_number_of_plants()})
