@@ -334,8 +334,8 @@ def render_registration_page(request, uuid, user):
     )
 
 
-# New plant:     7 queries (4ms), 27ms total
-# Divided plant: 9 queries (4ms), 32ms total
+# New plant:     1 queries (1ms), 20ms total
+# Divided plant: 4 queries (2ms), 26ms total
 @get_user_token
 @requires_json_post(["name", "species", "pot_size", "description", "uuid"])
 @clean_payload_data
@@ -348,8 +348,12 @@ def register_plant(user, data, **kwargs):
         with transaction.atomic():
             # Instantiate model with payload keys as kwargs
             plant = Plant(user=user, **data)
-            plant.full_clean()
+            plant.clean_fields(exclude=['user'])
             plant.save()
+            # Set annotation attributes (avoid querying for get_details params)
+            plant.last_watered_time = None
+            plant.last_fertilized_time = None
+            plant.last_photo_thumbnail = None
             # Add to cached overview state
             add_instance_to_cached_overview_state(plant)
 
@@ -377,7 +381,7 @@ def register_plant(user, data, **kwargs):
         return JsonResponse({"error": error.message_dict}, status=400)
 
 
-# 5 queries (5ms), 21ms total
+# 1 queries (1ms), 20ms total
 @get_user_token
 @requires_json_post(["name", "location", "description", "uuid"])
 @clean_payload_data
@@ -390,8 +394,10 @@ def register_group(user, data, **kwargs):
         with transaction.atomic():
             # Instantiate model with payload keys as kwargs
             group = Group(user=user, **data)
-            group.full_clean()
+            group.clean_fields(exclude=['user'])
             group.save()
+            # Set annotation attributes (avoid querying for get_details params)
+            group.plant_count = 0
             # Add to cached overview state
             add_instance_to_cached_overview_state(group)
 
