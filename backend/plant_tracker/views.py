@@ -732,7 +732,7 @@ def bulk_add_plant_events(user, timestamp, event_type, data, **kwargs):
 
     # Get list of UUIDs that were not found in database
     failed = list(
-        set(data["plants"]) - set(plants.values_list("uuid_str", flat=True))
+        set(data["plants"]) - set(plant.uuid_str for plant in plants)
     )
 
     # Create event for each found plant
@@ -1018,8 +1018,8 @@ def remove_plant_from_group(plant, **kwargs):
 
 
 # Upstairs bathroom (11 plants)
-# Add 1: 6 queries (7ms), 32ms total
-# Add 3: 8 queries (9ms), 35ms total
+# Add 1: 5 queries (6ms), 24ms total
+# Add 3: 7 queries (9ms), 30ms total
 @get_user_token
 @requires_json_post(["group_id", "plants"])
 @get_group_from_post_body
@@ -1039,7 +1039,7 @@ def bulk_add_plants_to_group(group, data, **kwargs):
 
     # Get list of UUIDs that were not found in database
     failed = list(
-        set(data["plants"]) - set(plants.values_list("uuid_str", flat=True))
+        set(data["plants"]) - set(plant.uuid_str for plant in plants)
     )
 
     added = []
@@ -1057,8 +1057,8 @@ def bulk_add_plants_to_group(group, data, **kwargs):
 
 
 # Upstairs bathroom (14 plants)
-# Remove 1: 6 queries (6ms), 30ms total
-# Remove 3: 8 queries (9ms), 25ms total
+# Remove 1: 5 queries (6ms), 29ms total
+# Remove 3: 7 queries (8ms), 39ms total
 @get_user_token
 @requires_json_post(["group_id", "plants"])
 @get_group_from_post_body
@@ -1078,7 +1078,7 @@ def bulk_remove_plants_from_group(data, group, **kwargs):
 
     # Get list of UUIDs that were not found in database
     failed = list(
-        set(data["plants"]) - set(plants.values_list("uuid_str", flat=True))
+        set(data["plants"]) - set(plant.uuid_str for plant in plants)
     )
 
     removed = []
