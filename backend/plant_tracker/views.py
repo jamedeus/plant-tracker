@@ -465,7 +465,7 @@ def change_uuid(instance, data, user, **kwargs):
         )
 
 
-# 8 queries (5ms), 29ms total
+# 3 queries (4ms), 21ms total
 @get_user_token
 @requires_json_post(["plant_id", "name", "species", "description", "pot_size"])
 @get_plant_from_post_body
@@ -484,7 +484,7 @@ def edit_plant_details(plant, data, **kwargs):
     plant.pot_size = data["pot_size"]
     # Enforce length limits
     try:
-        plant.full_clean()
+        plant.clean_fields(exclude=['user', 'group', 'default_photo'])
         plant.save()
         # Update details in cached overview state
         update_cached_details_keys(
@@ -506,7 +506,7 @@ def edit_plant_details(plant, data, **kwargs):
     return JsonResponse(data, status=200)
 
 
-# 5 queries (4ms), 25ms total
+# 3 queries (4ms), 27ms total
 @get_user_token
 @requires_json_post(["group_id", "name", "location", "description"])
 @get_group_from_post_body
@@ -523,7 +523,7 @@ def edit_group_details(group, data, **kwargs):
     group.description = data["description"]
     # Enforce length limits
     try:
-        group.full_clean()
+        group.clean_fields(exclude=['user'])
         group.save()
         # Update details in cached overview state
         update_cached_details_keys(
@@ -899,7 +899,7 @@ def bulk_delete_plant_events(plant, data, **kwargs):
     return JsonResponse({"deleted": deleted, "failed": failed}, status=200)
 
 
-# 3 queries (3ms), 28ms total
+# 1 queries (1ms), 21ms total
 @get_user_token
 @requires_json_post(["plant_id", "timestamp", "note_text"])
 @clean_payload_data
@@ -917,7 +917,7 @@ def add_plant_note(plant, timestamp, data, **kwargs):
                 timestamp=timestamp,
                 text=data["note_text"]
             )
-            note.clean_fields()
+            note.clean_fields(exclude=['plant'])
             note.save()
         return JsonResponse(
             {
@@ -940,7 +940,7 @@ def add_plant_note(plant, timestamp, data, **kwargs):
         )
 
 
-# 6 queries (4ms), 19ms total
+# 4 queries (4ms), 26ms total
 @get_user_token
 @requires_json_post(["plant_id", "timestamp", "note_text"])
 @clean_payload_data
@@ -955,7 +955,7 @@ def edit_plant_note(plant, timestamp, data, **kwargs):
         with transaction.atomic():
             note = NoteEvent.objects.get(plant=plant, timestamp=timestamp)
             note.text = data["note_text"]
-            note.full_clean()
+            note.clean_fields(exclude=['plant'])
             note.save()
         return JsonResponse(
             {
