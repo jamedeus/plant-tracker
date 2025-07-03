@@ -172,6 +172,10 @@ class PlantQueryset(models.QuerySet):
                 )
         )
 
+    def get_by_uuid(self, uuid):
+        '''Returns Plant model instance matching UUID, or None if not found.'''
+        return self.filter(uuid=uuid).select_related('user').first()
+
     def get_with_overview_annotation(self, uuid):
         '''Takes UUID, returns matching Plant with full overview annotations.'''
         return self.filter(uuid=uuid).with_overview_annotation().first()

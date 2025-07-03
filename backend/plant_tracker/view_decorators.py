@@ -57,23 +57,13 @@ def find_model_type(uuid):
         return None
 
 
-def get_plant_by_uuid(uuid):
-    '''Returns Plant model instance matching UUID, or None if not found.'''
-    return Plant.objects.filter(uuid=uuid).select_related('user').first()
-
-
-def get_group_by_uuid(uuid):
-    '''Returns Group model instance matching UUID, or None if not found.'''
-    return Group.objects.filter(uuid=uuid).select_related('user').first()
-
-
 def get_plant_or_group_by_uuid(uuid):
     '''Returns Plant or Group model instance matching UUID, or None if neither found.'''
     model_type = find_model_type(uuid)
     if model_type == 'plant':
-        return get_plant_by_uuid(uuid)
+        return Plant.objects.get_by_uuid(uuid)
     if model_type == 'group':
-        return get_group_by_uuid(uuid)
+        return Group.objects.get_by_uuid(uuid)
     return None
 
 
@@ -141,7 +131,7 @@ def get_plant_from_post_body(func):
     @wraps(func)
     def wrapper(data, **kwargs):
         try:
-            plant = get_plant_by_uuid(data["plant_id"])
+            plant = Plant.objects.get_by_uuid(data["plant_id"])
             if plant is None:
                 return JsonResponse({"error": "plant not found"}, status=404)
         except KeyError:
@@ -172,7 +162,7 @@ def get_group_from_post_body(func):
     @wraps(func)
     def wrapper(data, **kwargs):
         try:
-            group = get_group_by_uuid(data["group_id"])
+            group = Group.objects.get_by_uuid(data["group_id"])
             if group is None:
                 return JsonResponse({"error": "group not found"}, status=404)
         except KeyError:

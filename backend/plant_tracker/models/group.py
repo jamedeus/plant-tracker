@@ -50,6 +50,10 @@ class GroupQueryset(models.QuerySet):
         '''
         return self.with_group_plant_count_annotation().select_related('user')
 
+    def get_by_uuid(self, uuid):
+        '''Returns Group model instance matching UUID, or None if not found.'''
+        return self.filter(uuid=uuid).select_related('user').first()
+
     def get_with_overview_annotation(self, uuid):
         '''Takes UUID, returns matching Group with full overview annotations.'''
         return self.filter(uuid=uuid).with_overview_annotation().first()
