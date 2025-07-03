@@ -839,10 +839,10 @@ def delete_plant_event(plant, timestamp, event_type, **kwargs):
 
 
 # Favorite plant
-# Delete 1 water event:   5 queries (4ms), 19ms total
+# Delete 1 water event:   5 queries (3ms), 26ms total
 # Delete 1 prune event:   4 queries (4ms), 24ms total
-# Delete 3 water events:  7 queries (6ms), 28ms total
-# Delete 3 prune events:  6 queries (6ms), 27ms total
+# Delete 3 water events:  5 queries (4ms), 28ms total
+# Delete 3 prune events:  4 queries (3ms), 19ms total
 @get_user_token
 @requires_json_post(["plant_id", "events"])
 @get_plant_from_post_body
@@ -861,12 +861,12 @@ def bulk_delete_plant_events(plant, data, **kwargs):
         for event_type, timestamps in data['events'].items()
     }
 
-    # Delete events, append each to deleted list
+    # Append each event in queryset to deleted list, delete whole queryset
     deleted = {key: [] for key in events_map}
     for event_type, queryset in querysets_by_type.items():
         for event in queryset:
             deleted[event_type].append(event.timestamp.isoformat())
-            event.delete()
+        queryset.delete()
 
     # Get events that were not found in database
     failed = {
