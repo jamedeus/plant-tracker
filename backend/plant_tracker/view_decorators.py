@@ -7,8 +7,8 @@ from the decorator if any of these steps fail, simplifying endpoint functions.
 '''
 
 import json
-from functools import wraps
 from datetime import datetime
+from functools import wraps, cache
 
 from django.conf import settings
 from django.db.models import Value
@@ -67,6 +67,7 @@ def get_plant_or_group_by_uuid(uuid):
     return None
 
 
+@cache
 def get_default_user():
     '''Returns default user (owns all models when SINGLE_USER_MODE enabled).'''
     return get_user_model().objects.get(username=settings.DEFAULT_USERNAME)

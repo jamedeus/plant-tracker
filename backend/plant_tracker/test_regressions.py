@@ -250,6 +250,9 @@ class ModelRegressionTestsTransaction(TransactionTestCase):
         # Recreate default user (deleted by TransactionTestCase)
         self.user = get_user_model().objects.create(username=settings.DEFAULT_USERNAME)
 
+        # Clear cached user instance
+        get_default_user.cache_clear()
+
     def test_unable_to_delete_plant_with_default_photo(self):
         '''Issue: Since e105bd3e Plant.delete removes all associated Photos with
         _raw_delete before plant itself is deleted (bypasses post_delete signals
@@ -1306,6 +1309,9 @@ class DatabaseRaceConditionRegressionTests(TransactionTestCase):
         self.user, _ = get_user_model().objects.get_or_create(
             username=settings.DEFAULT_USERNAME
         )
+
+        # Clear cached user instance
+        get_default_user.cache_clear()
 
     def test_simultaneous_requests_create_duplicate_water_events(self):
         '''Issue: If two identical events were created simultaneously the Event

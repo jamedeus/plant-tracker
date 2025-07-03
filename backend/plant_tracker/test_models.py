@@ -569,6 +569,9 @@ class UniqueUUIDTests(TransactionTestCase):
             username=settings.DEFAULT_USERNAME
         )
 
+        # Clear cached user instance
+        get_default_user.cache_clear()
+
     def register_plant(self, uuid):
         '''Takes UUID, registers new plant with /register_plant endpoint.'''
         return self.client.post('/register_plant', {
