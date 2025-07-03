@@ -697,8 +697,8 @@ def bulk_archive_plants_and_groups(user, data, **kwargs):
 
 
 # Favorite plant
-# Water:     4 queries (3ms), 20ms total
-# Fertilize: 4 queries (3ms), 24ms total
+# Water:     3 queries (3ms), 19ms total
+# Fertilize: 3 queries (3ms), 24ms total
 # Prune:     2 queries (2ms), 21ms total (no cached state updates)
 @get_user_token
 @requires_json_post(["plant_id", "event_type", "timestamp"])
@@ -718,18 +718,22 @@ def add_plant_event(plant, timestamp, event_type, **kwargs):
             )
 
         # Update last_watered if new event is newer
-        if event_type == 'water' and timestamp.isoformat() >= plant.last_watered():
-            update_cached_details_keys(
-                plant,
-                {'last_watered': plant.last_watered()}
-            )
+        if event_type == 'water':
+            last_watered = plant.last_watered()
+            if timestamp.isoformat() >= last_watered:
+                update_cached_details_keys(
+                    plant,
+                    {'last_watered': last_watered}
+                )
 
         # Update last_fertilized if new event is newer
-        elif event_type == 'fertilize' and timestamp.isoformat() >= plant.last_fertilized():
-            update_cached_details_keys(
-                plant,
-                {'last_fertilized': plant.last_fertilized()}
-            )
+        elif event_type == 'fertilize':
+            last_fertilized = plant.last_fertilized()
+            if timestamp.isoformat() >= last_fertilized:
+                update_cached_details_keys(
+                    plant,
+                    {'last_fertilized': last_fertilized}
+                )
 
         return JsonResponse(
             {
@@ -747,8 +751,8 @@ def add_plant_event(plant, timestamp, event_type, **kwargs):
 
 
 # Upstairs bathroom (11 plants)
-# Water all:     3 queries (3ms), 37ms total
-# Fertilize all: 3 queries (3ms), 48ms total
+# Water all:     2 queries (3ms), 36ms total
+# Fertilize all: 2 queries (3ms), 43ms total
 @get_user_token
 @requires_json_post(["plants", "event_type", "timestamp"])
 @get_timestamp_from_post_body
