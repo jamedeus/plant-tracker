@@ -111,6 +111,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 action: "water",
+                timestamp: "2024-03-01T20:00:00+00:00",
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
@@ -136,6 +137,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 action: "fertilize",
+                timestamp: "2024-03-01T20:00:00+00:00",
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
@@ -161,6 +163,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 action: "prune",
+                timestamp: "2024-03-01T20:00:00+00:00",
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
@@ -720,6 +723,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 action: "water",
+                timestamp: '2025-02-20T20:00:00+00:00',
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));

@@ -2114,7 +2114,11 @@ class PlantEventEndpointTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
-            {"action": "water", "plant": str(self.plant1.uuid)}
+            {
+                "action": "water",
+                "timestamp": "2024-02-06T03:06:26+00:00",
+                "plant": str(self.plant1.uuid)
+            }
         )
 
         # Confirm WaterEvent was created
@@ -2135,7 +2139,11 @@ class PlantEventEndpointTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
-            {"action": "fertilize", "plant": str(self.plant1.uuid)}
+            {
+                "action": "fertilize",
+                "timestamp": "2024-02-06T03:06:26+00:00",
+                "plant": str(self.plant1.uuid)
+            }
         )
 
         # Confirm FertilizeEvent was created
@@ -2156,7 +2164,11 @@ class PlantEventEndpointTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
-            {"action": "prune", "plant": str(self.plant1.uuid)}
+            {
+                "action": "prune",
+                "timestamp": "2024-02-06T03:06:26+00:00",
+                "plant": str(self.plant1.uuid)
+            }
         )
 
         # Confirm PruneEvent was created
@@ -2177,7 +2189,11 @@ class PlantEventEndpointTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
-            {"action": "repot", "plant": str(self.plant1.uuid)}
+            {
+                "action": "repot",
+                "timestamp": "2024-02-06T03:06:26+00:00",
+                "plant": str(self.plant1.uuid)
+            }
         )
 
         # Confirm RepotEvent was created

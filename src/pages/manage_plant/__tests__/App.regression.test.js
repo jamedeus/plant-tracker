@@ -33,6 +33,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 action: "water",
+                timestamp: "2024-03-01T20:00:01+00:00",
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
@@ -57,6 +58,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 action: "fertilize",
+                timestamp: "2024-03-01T20:00:01+00:00",
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
@@ -162,6 +164,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 action: "water",
+                timestamp: "2024-03-01T20:00:01+00:00",
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
@@ -235,6 +238,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 action: "prune",
+                timestamp: "2024-03-01T20:00:01+00:00",
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
@@ -245,6 +249,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 action: "fertilize",
+                timestamp: "2024-03-01T20:00:01+00:00",
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
@@ -255,6 +260,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 action: "water",
+                timestamp: "2024-03-01T20:00:01+00:00",
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
@@ -325,6 +331,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 action: "water",
+                timestamp: "2024-03-01T20:00:01+00:00",
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
@@ -379,27 +386,37 @@ describe('App', () => {
         expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(0);
         expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(0);
 
-        // Mock fetch function to return expected response
+        // Create 2 water events at 10pm February 29 and 2am March 1 (different
+        // days in PST but same day in UTC)
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
                 action: "water",
+                timestamp: "2024-03-01T06:00:00+00:00",
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
-
-        // Create 2 water events at 10pm February 29 and 2am March 1 (different
-        // days in PST but same day in UTC)
         const dateTimeInput = app.container.querySelector('input');
         fireEvent.input(
             dateTimeInput,
             {target: {value: '2024-02-29T22:00:00'}}
         );
+        // First event (February 29)
         await user.click(app.getByRole("button", {name: "Water"}));
+
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                action: "water",
+                timestamp: "2024-03-01T10:00:00+00:00",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
         fireEvent.input(
             dateTimeInput,
             {target: {value: '2024-03-01T02:00:00'}}
         );
+        // Second event (March 1)
         await user.click(app.getByRole("button", {name: "Water"}));
 
         // Confirm 2 EventCalendar dots and 2 EventMarkers in timeline
@@ -414,7 +431,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 deleted: [
-                    {type: "water", timestamp: "2024-03-01T20:00:00+00:00"}
+                    {type: "water", timestamp: "2024-03-01T10:00:00+00:00"}
                 ],
                 failed: []
             })
@@ -471,6 +488,16 @@ describe('App', () => {
         // Confirm no water events exist in calendar or timeline
         expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(0);
         expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(0);
+
+        // Mock fetch function to return expected response when water event added
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                action: "water",
+                timestamp: "2024-03-01T20:54:03+00:00",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
 
         // Click water button (datetime input contains same day as photos)
         await user.click(app.getByRole("button", {name: "Water"}));
@@ -619,6 +646,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 action: "water",
+                timestamp: "2024-03-01T15:45:44+00:00",
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));

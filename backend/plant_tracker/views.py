@@ -700,7 +700,7 @@ def add_plant_event(plant, timestamp, event_type, **kwargs):
     try:
         # Use transaction.atomic to clean up after IntegrityError if duplicate
         with transaction.atomic():
-            events_map[event_type].objects.create(
+            event = events_map[event_type].objects.create(
                 plant=plant,
                 timestamp=timestamp
             )
@@ -720,7 +720,11 @@ def add_plant_event(plant, timestamp, event_type, **kwargs):
             )
 
         return JsonResponse(
-            {"action": event_type, "plant": plant.uuid},
+            {
+                "action": event_type,
+                "timestamp": event.timestamp.isoformat(),
+                "plant": plant.uuid
+            },
             status=200
         )
     except IntegrityError:
