@@ -143,34 +143,29 @@ const EventHistoryModal = () => {
     const deleteAllSelected = async () => {
         const payload = {
             plant_id: plantID,
-            events: []
+            events: {
+                water: selectedWaterRef.current,
+                fertilize: selectedFertilizeRef.current,
+                prune: selectedPruneRef.current,
+                repot: selectedRepotRef.current,
+            }
         };
-
-        selectedWaterRef.current.forEach(timestamp => {
-            payload.events.push({type: 'water', timestamp: timestamp});
-        });
-        selectedFertilizeRef.current.forEach(timestamp => {
-            payload.events.push({type: 'fertilize', timestamp: timestamp});
-        });
-        selectedPruneRef.current.forEach(timestamp => {
-            payload.events.push({type: 'prune', timestamp: timestamp});
-        });
-        selectedRepotRef.current.forEach(timestamp => {
-            payload.events.push({type: 'repot', timestamp: timestamp});
-        });
 
         const response = await sendPostRequest('/bulk_delete_plant_events',
             payload
         );
 
-        // If successful remove event from history column
+        // If successful remove events from timeline
         if (response.ok) {
-            payload.events.forEach(event => {
-                dispatch(eventDeleted({
-                    timestamp: event.timestamp,
-                    type: event.type
-                }));
-            });
+            const data = await response.json();
+            Object.entries(data.deleted).forEach(([eventType, timestamps]) =>
+                timestamps.forEach(timestamp =>
+                    dispatch(eventDeleted({
+                        timestamp: timestamp,
+                        type: eventType
+                    }))
+                )
+            );
 
             // Clear all refs, disable delete button, close modal
             selectedWaterRef.current = [];

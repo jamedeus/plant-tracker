@@ -665,10 +665,15 @@ class EndpointStateUpdateTests(TestCase):
         # Delete water events with /bulk_delete_plant_events endpoint
         response = self.client.post('/bulk_delete_plant_events', {
             'plant_id': self.plant1.uuid,
-            'events': [
-                {'type': 'water', 'timestamp': '2024-02-06T03:06:26.000Z'},
-                {'type': 'water', 'timestamp': '2024-02-05T03:06:26.000Z'},
-            ]
+            'events': {
+                'water': [
+                    '2024-02-06T03:06:26+00:00',
+                    '2024-02-05T03:06:26+00:00'
+                ],
+                'fertilize': [],
+                'prune': [],
+                'repot': [],
+            }
         })
         self.assertEqual(response.status_code, 200)
 
@@ -701,10 +706,15 @@ class EndpointStateUpdateTests(TestCase):
         # Delete fertilize events with /bulk_delete_plant_events endpoint
         response = self.client.post('/bulk_delete_plant_events', {
             'plant_id': self.plant1.uuid,
-            'events': [
-                {'type': 'fertilize', 'timestamp': '2024-02-06T03:06:26.000Z'},
-                {'type': 'fertilize', 'timestamp': '2024-02-05T03:06:26.000Z'},
-            ]
+            'events': {
+                'water': [],
+                'fertilize': [
+                    '2024-02-06T03:06:26+00:00',
+                    '2024-02-05T03:06:26+00:00'
+                ],
+                'prune': [],
+                'repot': [],
+            }
         })
         self.assertEqual(response.status_code, 200)
 

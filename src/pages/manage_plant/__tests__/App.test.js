@@ -514,10 +514,21 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                deleted: [
-                    {type: "water", timestamp: "2024-03-01T15:45:44+00:00"},
-                ],
-                failed: []
+                deleted: {
+                    water: [
+                        "2024-03-01T15:45:44+00:00",
+                        "2024-02-29T10:20:15+00:00",
+                    ],
+                    fertilize: [],
+                    prune: [],
+                    repot: []
+                },
+                failed: {
+                    water: [],
+                    fertilize: [],
+                    prune: [],
+                    repot: []
+                }
             })
         }));
 
@@ -741,10 +752,18 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                deleted: [
-                    {type: "water", timestamp: "2025-02-20T20:00:00+00:00"}
-                ],
-                failed: []
+                deleted: {
+                    water: ["2025-02-20T20:00:00+00:00"],
+                    fertilize: [],
+                    prune: [],
+                    repot: [],
+                },
+                failed: {
+                    water: [],
+                    fertilize: [],
+                    prune: [],
+                    repot: []
+                }
             })
         }));
         await user.click(within(modal).getByText('Delete'));

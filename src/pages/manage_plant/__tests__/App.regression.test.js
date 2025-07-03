@@ -327,6 +327,26 @@ describe('App', () => {
         expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(0);
 
         // Mock fetch function to return expected response
+
+        // Create 2 water events 1 second apart on the same day
+        const dateTimeInput = app.container.querySelector('input');
+        fireEvent.input(
+            dateTimeInput,
+            {target: {value: '2024-03-01T12:00:00'}}
+        );
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                action: "water",
+                timestamp: "2024-03-01T20:00:00+00:00",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
+        await user.click(app.getByRole("button", {name: "Water"}));
+        fireEvent.input(
+            dateTimeInput,
+            {target: {value: '2024-03-01T12:00:01'}}
+        );
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
@@ -335,18 +355,6 @@ describe('App', () => {
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
-
-        // Create 2 water events 1 second apart on the same day
-        const dateTimeInput = app.container.querySelector('input');
-        fireEvent.input(
-            dateTimeInput,
-            {target: {value: '2024-03-01T12:00:00'}}
-        );
-        await user.click(app.getByRole("button", {name: "Water"}));
-        fireEvent.input(
-            dateTimeInput,
-            {target: {value: '2024-03-01T12:00:01'}}
-        );
         await user.click(app.getByRole("button", {name: "Water"}));
 
         // Confirm dot appeared on calendar, EventMarker appeared in timeline
@@ -360,10 +368,18 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                deleted: [
-                    {type: "water", timestamp: "2024-03-01T20:00:01+00:00"}
-                ],
-                failed: []
+                deleted: {
+                    water: ["2024-03-01T20:00:01+00:00"],
+                    fertilize: [],
+                    prune: [],
+                    repot: []
+                },
+                failed: {
+                    water: [],
+                    fertilize: [],
+                    prune: [],
+                    repot: []
+                }
             })
         }));
         await user.click(within(modal).getByText('Delete'));
@@ -430,10 +446,18 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                deleted: [
-                    {type: "water", timestamp: "2024-03-01T10:00:00+00:00"}
-                ],
-                failed: []
+                deleted: {
+                    water: ["2024-03-01T10:00:00+00:00"],
+                    fertilize: [],
+                    prune: [],
+                    repot: []
+                },
+                failed: {
+                    water: [],
+                    fertilize: [],
+                    prune: [],
+                    repot: []
+                }
             })
         }));
         await user.click(within(modal).getByText('Delete'));
@@ -661,10 +685,18 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                deleted: [
-                    {type: "water", timestamp: "2024-03-01T15:45:44+00:00"},
-                ],
-                failed: []
+                deleted: {
+                    water: ["2024-03-01T15:45:44+00:00"],
+                    fertilize: [],
+                    prune: [],
+                    repot: []
+                },
+                failed: {
+                    water: [],
+                    fertilize: [],
+                    prune: [],
+                    repot: []
+                }
             })
         }));
 

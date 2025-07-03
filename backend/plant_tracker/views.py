@@ -848,53 +848,44 @@ def delete_plant_event(plant, timestamp, event_type, **kwargs):
 @get_plant_from_post_body
 def bulk_delete_plant_events(plant, data, **kwargs):
     '''Deletes a list of events (any type) associated with a single plant.
-    Requires JSON POST with plant_id (uuid) and events (list of dicts) keys.
-    The events list must contain dicts with timestamp and type keys.
+    Requires JSON POST with plant_id (uuid) and events (dict) keys.
+    The events dict must contain event type keys, list of timestamps as values.
     '''
 
-    # Build mapping dict with timestamps sorted by event type
-    timestamps_by_type = {
-        'water': [],
-        'fertilize': [],
-        'prune': [],
-        'repot': []
-    }
-    for event in data['events']:
-        try:
-            timestamps_by_type[event['type']].append(event['timestamp'])
-        except KeyError:
-            pass
-
-    # Build same mapping dict with querysets instead of lists of timestamps
+    # Convert payload events key to mapping dict with type keys, queryset values
     querysets_by_type = {
         event_type: events_map[event_type].objects.filter(
             plant=plant,
             timestamp__in=timestamps
         )
-        for event_type, timestamps in timestamps_by_type.items()
+        for event_type, timestamps in data['events'].items()
     }
 
     # Delete events, append each to deleted list
-    deleted = []
+    deleted = {key: [] for key in events_map}
     for event_type, queryset in querysets_by_type.items():
         for event in queryset:
-            deleted.append(
-                {'type': event_type, 'timestamp': event.timestamp.isoformat()}
-            )
+            deleted[event_type].append(event.timestamp.isoformat())
             event.delete()
 
-    # Get list of event dicts that were not found in database
-    failed = [event for event in data["events"] if event not in deleted]
+    # Get events that were not found in database
+    failed = {
+        event_type: [
+            timestamp for timestamp in data['events'][event_type]
+            if timestamp not in deleted_timestamps
+        ]
+        for event_type, deleted_timestamps in deleted.items()
+    }
 
     # Update last_watered if water events were deleted
-    if timestamps_by_type['water']:
+    if deleted['water']:
         update_cached_details_keys(
             plant,
             {'last_watered': plant.last_watered()}
         )
 
     # Update last_fertilized if fertilize events were deleted
-    elif timestamps_by_type['fertilize']:
+    elif deleted['fertilize']:
         update_cached_details_keys(
             plant,
             {'last_fertilized': plant.last_fertilized()}

@@ -2324,26 +2324,23 @@ class PlantEventEndpointTests(TestCase):
         # Post timestamp and type of each event to bulk_delete_plant_events endpoint
         response = self.client.post('/bulk_delete_plant_events', {
             'plant_id': self.plant1.uuid,
-            'events': [
-                {'type': 'water', 'timestamp': timestamp.isoformat()},
-                {'type': 'fertilize', 'timestamp': timestamp.isoformat()},
-                {'type': 'prune', 'timestamp': timestamp.isoformat()},
-                {'type': 'repot', 'timestamp': timestamp.isoformat()},
-            ]
+            'events': {
+                'water': [timestamp.isoformat()],
+                'fertilize': [timestamp.isoformat()],
+                'prune': [timestamp.isoformat()],
+                'repot': [timestamp.isoformat()],
+            }
         })
 
         # Confirm correct response, confirm removed from database
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
-            response.json(),
+            response.json()['deleted'],
             {
-                "deleted": [
-                    {'type': 'water', 'timestamp': timestamp.isoformat()},
-                    {'type': 'fertilize', 'timestamp': timestamp.isoformat()},
-                    {'type': 'prune', 'timestamp': timestamp.isoformat()},
-                    {'type': 'repot', 'timestamp': timestamp.isoformat()},
-                ],
-                "failed": []
+                "water": [timestamp.isoformat()],
+                "fertilize": [timestamp.isoformat()],
+                "prune": [timestamp.isoformat()],
+                "repot": [timestamp.isoformat()]
             }
         )
         self.assertEqual(len(self.plant1.waterevent_set.all()), 0)
@@ -2355,9 +2352,12 @@ class PlantEventEndpointTests(TestCase):
         # Post payload containing event that does not exist
         response = self.client.post('/bulk_delete_plant_events', {
             'plant_id': self.plant1.uuid,
-            'events': [
-                {'type': 'water', 'timestamp': '2024-04-19T00:13:37+00:00'}
-            ]
+            'events': {
+                'water': ['2024-04-19T00:13:37+00:00'],
+                'fertilize': [],
+                'prune': [],
+                'repot': [],
+            }
         })
 
         # Confirm event is in failed section
@@ -2365,39 +2365,20 @@ class PlantEventEndpointTests(TestCase):
         self.assertEqual(
             response.json(),
             {
-                "deleted": [],
-                "failed": [
-                    {'type': 'water', 'timestamp': '2024-04-19T00:13:37+00:00'}
-                ]
+                "deleted": {
+                    "water": [],
+                    "fertilize": [],
+                    "prune": [],
+                    "repot": []
+                },
+                "failed": {
+                    "water": ['2024-04-19T00:13:37+00:00'],
+                    "fertilize": [],
+                    "prune": [],
+                    "repot": []
+                }
             }
         )
-
-    def test_bulk_delete_plant_events_missing_params(self):
-        # Create test event, confirm exists in database
-        timestamp = timezone.now()
-        WaterEvent.objects.create(plant=self.plant1, timestamp=timestamp)
-        self.assertEqual(len(self.plant1.waterevent_set.all()), 1)
-
-        # Post incomplete event dict to backend with missing timestamp key
-        response = self.client.post('/bulk_delete_plant_events', {
-            'plant_id': self.plant1.uuid,
-            'events': [
-                {'type': 'water'}
-            ]
-        })
-
-        # Confirm event is in failed section, confirm still in database
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.json(),
-            {
-                "deleted": [],
-                "failed": [
-                    {'type': 'water'}
-                ]
-            }
-        )
-        self.assertEqual(len(self.plant1.waterevent_set.all()), 1)
 
 
 class NoteEventEndpointTests(TestCase):

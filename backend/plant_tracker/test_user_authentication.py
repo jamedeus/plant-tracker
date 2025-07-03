@@ -998,15 +998,18 @@ class MultiUserModeTests(TestCase):
             self.client.post('/delete_plant_event', {
                 'plant_id': plant.uuid,
                 'event_type': 'water',
-                'timestamp': '2024-02-06T03:06:26.000Z'
+                'timestamp': '2024-02-06T03:06:26+00:00'
             })
         )
         self.assertAuthenticationRequiredError(
             self.client.post('/bulk_delete_plant_events', {
                 'plant_id': plant.uuid,
-                'events': [
-                    {'type': 'water', 'timestamp': '2024-02-06T03:06:26.000Z'}
-                ]
+                'events': {
+                    'water': ['2024-02-06T03:06:26+00:00'],
+                    'fertilize': [],
+                    'prune': [],
+                    'repot': [],
+                }
             })
         )
         self.assertAuthenticationRequiredError(
@@ -1174,15 +1177,18 @@ class MultiUserModeTests(TestCase):
             self.client.post('/delete_plant_event', {
                 'plant_id': plant.uuid,
                 'event_type': 'water',
-                'timestamp': '2024-02-06T03:06:26.000Z'
+                'timestamp': '2024-02-06T03:06:26+00:00'
             })
         )
         self.assertPlantIsOwnedByADifferentUserError(
             self.client.post('/bulk_delete_plant_events', {
                 'plant_id': plant.uuid,
-                'events': [
-                    {'type': 'water', 'timestamp': '2024-02-06T03:06:26.000Z'}
-                ]
+                'events': {
+                    'water': ['2024-02-06T03:06:26+00:00'],
+                    'fertilize': [],
+                    'prune': [],
+                    'repot': [],
+                }
             })
         )
         self.assertPlantIsOwnedByADifferentUserError(
