@@ -605,10 +605,10 @@ def archive_group(group, data, **kwargs):
     return JsonResponse({"updated": group.uuid}, status=200)
 
 
-# Delete single plant: 12 queries (6ms), 33ms total
-# Delete single group:  5 queries (3ms), 25ms total
-# Delete 3 plants:     30 queries (9ms), 52ms total
-# Delete 3 groups:      9 queries (4ms), 26ms total
+# Delete single plant: 13 queries (6ms), 28ms total
+# Delete single group:  6 queries (4ms), 26ms total
+# Delete 3 plants:     13 queries (7ms), 38ms total
+# Delete 3 groups:      6 queries (4ms), 28ms total
 @get_user_token
 @requires_json_post(["uuids"])
 def bulk_delete_plants_and_groups(user, data, **kwargs):
@@ -618,24 +618,33 @@ def bulk_delete_plants_and_groups(user, data, **kwargs):
     deleted = []
     failed = []
     groups_to_update = []
-    for instance in list(chain(
-        Plant.objects.filter(uuid__in=data["uuids"]).select_related("user"),
-        Group.objects.filter(uuid__in=data["uuids"]).select_related("user")
-    )):
+
+    plants = Plant.objects.filter(uuid__in=data["uuids"]).select_related("user", "group")
+    groups = Group.objects.filter(uuid__in=data["uuids"]).select_related("user")
+    for instance in chain(plants, groups):
         # Make sure instance owned by user
         if instance.user == user:
             # If plant is in group: save group (need to update number of plants)
             if hasattr(instance, 'group') and instance.group:
                 groups_to_update.append(instance.group)
-            instance.delete()
             deleted.append(instance.uuid)
             # Remove from cached overview state
             remove_instance_from_cached_overview_state(instance)
         else:
             failed.append(instance.uuid)
 
+    # Delete all plants in 1 query, all groups in 1 query
+    # Conditionals avoid unnecessary query for empty queryset
+    if plants:
+        plants.delete()
+    if groups:
+        groups.delete()
+
     # Update number of plants in groups that had plants deleted (overview state)
     for group in groups_to_update:
+        # Avoid extra query for group user (used to get cached overview state)
+        # Already confirmed requesting user owns plant, and plant was in group
+        group.user = user
         try:
             update_cached_details_keys(
                 group,
@@ -651,10 +660,10 @@ def bulk_delete_plants_and_groups(user, data, **kwargs):
     )
 
 
-# Archive single plant:  4 queries (4ms), 24ms total
-# Archive single group:  4 queries (4ms), 23ms total
-# Archive 3 plants:      6 queries (7ms), 29ms total
-# Archive 3 groups:      6 queries (7ms), 28ms total
+# Archive single plant:  4 queries (3ms), 24ms total
+# Archive single group:  4 queries (3ms), 24ms total
+# Archive 3 plants:      4 queries (4ms), 29ms total
+# Archive 3 groups:      4 queries (3ms), 26ms total
 @get_user_token
 @requires_json_post(["uuids", "archived"])
 def bulk_archive_plants_and_groups(user, data, **kwargs):
@@ -664,19 +673,22 @@ def bulk_archive_plants_and_groups(user, data, **kwargs):
     '''
     archived = []
     failed = []
-    for instance in list(chain(
-        Plant.objects.filter(uuid__in=data["uuids"]).select_related("user"),
-        Group.objects.filter(uuid__in=data["uuids"]).select_related("user")
-    )):
+
+    plants = Plant.objects.filter(uuid__in=data["uuids"]).select_related("user")
+    groups = Group.objects.filter(uuid__in=data["uuids"]).select_related("user")
+    for instance in chain(plants, groups):
         # Make sure instance owned by user
         if instance.user == user:
             instance.archived = data["archived"]
-            instance.save()
             archived.append(instance.uuid)
             # Add to cached overview state if un-archived, remove if archived
             add_instance_to_cached_overview_state(instance)
         else:
             failed.append(instance.uuid)
+
+    # Update all plants in 1 query, all groups in 1 query
+    Plant.objects.bulk_update(plants, ["archived"])
+    Group.objects.bulk_update(groups, ["archived"])
 
     return JsonResponse(
         {"archived": archived, "failed": failed},
