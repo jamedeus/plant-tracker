@@ -141,7 +141,7 @@ const EventHistoryModal = () => {
     // Handler for modal delete button, posts all selected event types and
     // timestamps to backend, removes events from state if successfully deleted
     const deleteAllSelected = async () => {
-        const payload = {
+        const response = await sendPostRequest('/bulk_delete_plant_events', {
             plant_id: plantID,
             events: {
                 water: selectedWaterRef.current,
@@ -149,11 +149,7 @@ const EventHistoryModal = () => {
                 prune: selectedPruneRef.current,
                 repot: selectedRepotRef.current,
             }
-        };
-
-        const response = await sendPostRequest('/bulk_delete_plant_events',
-            payload
-        );
+        });
 
         // If successful remove events from timeline
         if (response.ok) {
