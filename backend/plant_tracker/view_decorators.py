@@ -57,16 +57,6 @@ def find_model_type(uuid):
         return None
 
 
-def get_plant_or_group_by_uuid(uuid):
-    '''Returns Plant or Group model instance matching UUID, or None if neither found.'''
-    model_type = find_model_type(uuid)
-    if model_type == 'plant':
-        return Plant.objects.get_by_uuid(uuid)
-    if model_type == 'group':
-        return Group.objects.get_by_uuid(uuid)
-    return None
-
-
 @cache
 def get_default_user():
     '''Returns default user (owns all models when SINGLE_USER_MODE enabled).'''
@@ -123,35 +113,46 @@ def requires_json_post(required_keys=None):
     return decorator
 
 
-def get_plant_from_post_body(func):
-    '''Decorator looks up plant by UUID, throws error if not found.
+def get_plant_from_post_body(select_related=None, **kwargs):
+    '''Decorator looks up plant by UUID, throws error if not found. Optional
+    select_related arg can be used to query foreignkey related objects. Passes
+    Plant instance and data dict to wrapped function as plant and data kwargs.
+
     If called after get_user_token throws error if Plant is not owned be user.
+
     Must call after requires_json_post (expects dict with plant_id key as first arg).
+
     Passes Plant instance and data dict to wrapped function as plant and data kwargs.
     '''
-    @wraps(func)
-    def wrapper(data, **kwargs):
-        try:
-            plant = Plant.objects.get_by_uuid(data["plant_id"])
-            if plant is None:
-                return JsonResponse({"error": "plant not found"}, status=404)
-        except KeyError:
-            return JsonResponse(
-                {"error": "POST body missing required 'plant_id' key"},
-                status=400
-            )
-        except ValidationError:
-            return JsonResponse(
-                {"error": "plant_id key is not a valid UUID"},
-                status=400
-            )
-        if 'user' in kwargs and plant.user != kwargs['user']:
-            return JsonResponse(
-                {"error": "plant is owned by a different user"},
-                status=403
-            )
-        return func(plant=plant, data=data, **kwargs)
-    return wrapper
+    def decorator(func):
+        @wraps(func)
+        def wrapper(data, **kwargs):
+            try:
+                plant = (
+                    Plant.objects
+                        .select_related(select_related)
+                        .get_by_uuid(data["plant_id"])
+                )
+                if plant is None:
+                    return JsonResponse({"error": "plant not found"}, status=404)
+            except KeyError:
+                return JsonResponse(
+                    {"error": "POST body missing required 'plant_id' key"},
+                    status=400
+                )
+            except ValidationError:
+                return JsonResponse(
+                    {"error": "plant_id key is not a valid UUID"},
+                    status=400
+                )
+            if 'user' in kwargs and plant.user != kwargs['user']:
+                return JsonResponse(
+                    {"error": "plant is owned by a different user"},
+                    status=403
+                )
+            return func(plant=plant, data=data, **kwargs)
+        return wrapper
+    return decorator
 
 
 def get_group_from_post_body(func):
@@ -185,38 +186,66 @@ def get_group_from_post_body(func):
     return wrapper
 
 
-def get_qr_instance_from_post_body(func):
-    '''Decorator looks up plant or group by UUID, throws error if neither found.
-    If called after get_user_token throws error if instance is not owned be user.
-    Must call after requires_json_post (expects dict with uuid key as first arg).
-    Passes instance and data dict to wrapped function as instance and data kwargs.
+# Maps instance._meta.model_name strings to model classes
+model_type_map = {
+    'plant': Plant,
+    'group': Group
+}
+
+
+def get_plant_or_group_by_uuid(uuid, annotate=False):
+    '''Returns Plant or Group instance matching UUID, or None if neither found.
+    Includes overview annotations if optional annotate kwarg is True.
     '''
-    @wraps(func)
-    def wrapper(data, **kwargs):
-        try:
-            instance = get_plant_or_group_by_uuid(data["uuid"])
-            if instance is None:
+    model_type = find_model_type(uuid)
+    if not model_type:
+        return None
+    if annotate:
+        return (
+            model_type_map[model_type].objects
+                .select_related('user')
+                .get_with_overview_annotation(uuid)
+        )
+    return model_type_map[model_type].objects.get_by_uuid(uuid)
+
+
+def get_qr_instance_from_post_body(annotate=False, **kwargs):
+    '''Decorator looks up plant or group by UUID, throws error if neither found.
+    Includes overview annotations if optional annotate kwarg is True. Passes
+    instance and data dict to wrapped function as instance and data kwargs.
+
+    If called after get_user_token throws error if instance is not owned be user.
+
+    Must call after requires_json_post (expects dict with uuid key as first arg).
+    '''
+    def decorator(func):
+        @wraps(func)
+        def wrapper(data, **kwargs):
+            try:
+                instance = get_plant_or_group_by_uuid(data["uuid"], annotate)
+                if instance is None:
+                    return JsonResponse(
+                        {"error": "uuid does not match any plant or group"},
+                        status=404
+                    )
+            except KeyError:
                 return JsonResponse(
-                    {"error": "uuid does not match any plant or group"},
-                    status=404
+                    {"error": "POST body missing required 'uuid' key"},
+                    status=400
                 )
-        except KeyError:
-            return JsonResponse(
-                {"error": "POST body missing required 'uuid' key"},
-                status=400
-            )
-        except ValidationError:
-            return JsonResponse(
-                {"error": "uuid key is not a valid UUID"},
-                status=400
-            )
-        if 'user' in kwargs and instance.user != kwargs['user']:
-            return JsonResponse(
-                {"error": "instance is owned by a different user"},
-                status=403
-            )
-        return func(instance=instance, data=data, **kwargs)
-    return wrapper
+            except ValidationError:
+                return JsonResponse(
+                    {"error": "uuid key is not a valid UUID"},
+                    status=400
+                )
+            if 'user' in kwargs and instance.user != kwargs['user']:
+                return JsonResponse(
+                    {"error": "instance is owned by a different user"},
+                    status=403
+                )
+            return func(instance=instance, data=data, **kwargs)
+        return wrapper
+    return decorator
 
 
 def get_timestamp_from_post_body(func):

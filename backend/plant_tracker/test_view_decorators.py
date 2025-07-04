@@ -173,7 +173,7 @@ class FallbackErrorHandlingTests(TestCase):
     '''
 
     def test_get_plant_from_post_body_missing_plant_id(self):
-        @get_plant_from_post_body
+        @get_plant_from_post_body()
         def mock_view_function(**kwargs):
             pass
 
@@ -199,7 +199,7 @@ class FallbackErrorHandlingTests(TestCase):
         )
 
     def test_get_qr_instance_from_post_body_missing_uuid(self):
-        @get_qr_instance_from_post_body
+        @get_qr_instance_from_post_body()
         def mock_view_function(**kwargs):
             pass
 

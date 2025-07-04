@@ -29,6 +29,7 @@ from .view_decorators import (
     requires_json_post,
     get_plant_from_post_body,
     get_group_from_post_body,
+    get_plant_or_group_by_uuid,
     get_qr_instance_from_post_body,
     get_timestamp_from_post_body,
     get_event_type_from_post_body,
@@ -294,23 +295,20 @@ def render_registration_page(request, uuid, user):
     # Check if user is changing plant QR code, add details if so
     old_uuid = cache.get(f'old_uuid_{user.pk}')
     if old_uuid:
-        model_type = find_model_type(old_uuid)
-        # If UUID no longer exists in database (plant/group deleted) clear cache
-        if model_type is None:
-            cache.delete(f'old_uuid_{user.pk}')
-        else:
-            if model_type == 'plant':
-                instance = Plant.objects.get_with_overview_annotation(old_uuid)
-            else:
-                instance = Group.objects.get_with_overview_annotation(old_uuid)
+        instance = get_plant_or_group_by_uuid(old_uuid, annotate=True)
+        if instance:
             state['changing_qr_code'] = {
-                'type': model_type,
+                'type': instance._meta.model_name,
                 'instance': instance.get_details(),
                 'new_uuid': uuid
             }
             if state['changing_qr_code']['type'] == 'plant':
                 preview_url = instance.get_default_photo_details()['preview']
                 state['changing_qr_code']['preview'] = preview_url
+
+        # If UUID no longer exists in database (plant/group deleted) clear cache
+        else:
+            cache.delete(f'old_uuid_{user.pk}')
 
     # Check if user is dividing plant, add details if dividing
     division_in_progress = cache.get(f'division_in_progress_{user.pk}')
@@ -418,7 +416,7 @@ def register_group(user, data, **kwargs):
 # Group: 3 queries (2ms), 23ms total
 @get_user_token
 @requires_json_post(["uuid"])
-@get_qr_instance_from_post_body
+@get_qr_instance_from_post_body(annotate=False)
 def change_qr_code(instance, user, **kwargs):
     '''Caches plant or group UUID from POST body for 15 minutes. If the same
     user scans a new QR before timeout /manage endpoint will return a
@@ -432,11 +430,11 @@ def change_qr_code(instance, user, **kwargs):
     )
 
 
-# Plant: 8 queries (6ms), 26ms total
-# Group: 5 queries (5ms), 20ms total
+# Plant: 4 queries (6ms), 25ms total
+# Group: 4 queries (5ms), 24ms total
 @get_user_token
 @requires_json_post(["uuid", "new_id"])
-@get_qr_instance_from_post_body
+@get_qr_instance_from_post_body(annotate=True)
 def change_uuid(instance, data, user, **kwargs):
     '''Changes UUID of an existing Plant or Group. Called from confirmation
     page served when new QR code scanned (after calling /change_qr_code).
@@ -468,7 +466,7 @@ def change_uuid(instance, data, user, **kwargs):
 # 3 queries (4ms), 21ms total
 @get_user_token
 @requires_json_post(["plant_id", "name", "species", "description", "pot_size"])
-@get_plant_from_post_body
+@get_plant_from_post_body()
 @clean_payload_data
 def edit_plant_details(plant, data, **kwargs):
     '''Updates description attributes of existing Plant entry.
@@ -546,7 +544,7 @@ def edit_group_details(group, data, **kwargs):
 # Not used by frontend
 @get_user_token
 @requires_json_post(["plant_id"])
-@get_plant_from_post_body
+@get_plant_from_post_body()
 def delete_plant(plant, **kwargs):
     '''Deletes an existing Plant from database.
     Requires JSON POST with plant_id (uuid) key.
@@ -559,7 +557,7 @@ def delete_plant(plant, **kwargs):
 # Not used by frontend
 @get_user_token
 @requires_json_post(["plant_id", "archived"])
-@get_plant_from_post_body
+@get_plant_from_post_body()
 def archive_plant(plant, data, **kwargs):
     '''Sets the archived attribute of an existing Plant to bool in POST body.
     Requires JSON POST with plant_id (uuid) and archived (bool) keys.
@@ -702,7 +700,7 @@ def bulk_archive_plants_and_groups(user, data, **kwargs):
 # Prune:     2 queries (2ms), 21ms total (no cached state updates)
 @get_user_token
 @requires_json_post(["plant_id", "event_type", "timestamp"])
-@get_plant_from_post_body
+@get_plant_from_post_body()
 @get_timestamp_from_post_body
 @get_event_type_from_post_body
 def add_plant_event(plant, timestamp, event_type, **kwargs):
@@ -824,7 +822,7 @@ def bulk_add_plant_events(user, timestamp, event_type, data, **kwargs):
 # Not used by frontend
 @get_user_token
 @requires_json_post(["plant_id", "event_type", "timestamp"])
-@get_plant_from_post_body
+@get_plant_from_post_body()
 @get_timestamp_from_post_body
 @get_event_type_from_post_body
 def delete_plant_event(plant, timestamp, event_type, **kwargs):
@@ -861,7 +859,7 @@ def delete_plant_event(plant, timestamp, event_type, **kwargs):
 # Delete 3 prune events:  4 queries (3ms), 19ms total
 @get_user_token
 @requires_json_post(["plant_id", "events"])
-@get_plant_from_post_body
+@get_plant_from_post_body()
 def bulk_delete_plant_events(plant, data, **kwargs):
     '''Deletes a list of events (any type) associated with a single plant.
     Requires JSON POST with plant_id (uuid) and events (dict) keys.
@@ -914,7 +912,7 @@ def bulk_delete_plant_events(plant, data, **kwargs):
 @get_user_token
 @requires_json_post(["plant_id", "timestamp", "note_text"])
 @clean_payload_data
-@get_plant_from_post_body
+@get_plant_from_post_body()
 @get_timestamp_from_post_body
 def add_plant_note(plant, timestamp, data, **kwargs):
     '''Creates new NoteEvent with user-entered text for specified Plant entry.
@@ -955,7 +953,7 @@ def add_plant_note(plant, timestamp, data, **kwargs):
 @get_user_token
 @requires_json_post(["plant_id", "timestamp", "note_text"])
 @clean_payload_data
-@get_plant_from_post_body
+@get_plant_from_post_body()
 @get_timestamp_from_post_body
 def edit_plant_note(plant, timestamp, data, **kwargs):
     '''Overwrites text of an existing NoteEvent with the specified timestamp.
@@ -986,7 +984,7 @@ def edit_plant_note(plant, timestamp, data, **kwargs):
 # 4 queries (3ms), 23ms total
 @get_user_token
 @requires_json_post(["plant_id", "timestamp"])
-@get_plant_from_post_body
+@get_plant_from_post_body()
 @get_timestamp_from_post_body
 def delete_plant_note(plant, timestamp, **kwargs):
     '''Deletes the NoteEvent matching the plant and timestamp specified in body.
@@ -1003,7 +1001,7 @@ def delete_plant_note(plant, timestamp, **kwargs):
 # 5 queries (4ms), 25ms total
 @get_user_token
 @requires_json_post(["plant_id", "group_id"])
-@get_plant_from_post_body
+@get_plant_from_post_body()
 @get_group_from_post_body
 def add_plant_to_group(plant, group, **kwargs):
     '''Adds specified Plant to specified Group (creates database relation).
@@ -1026,17 +1024,24 @@ def add_plant_to_group(plant, group, **kwargs):
     )
 
 
-# 6 queries (4ms), 26ms total
+# 4 queries (4ms), 22ms total
 @get_user_token
 @requires_json_post(["plant_id"])
-@get_plant_from_post_body
+@get_plant_from_post_body(select_related="group")
 def remove_plant_from_group(plant, **kwargs):
     '''Removes specified Plant from Group (deletes database relation).
     Requires JSON POST with plant_id (uuid) key.
     '''
+
+    # Save group instance so overview state can be updated (num plants in group)
+    # Add user to avoid extra query when getting cached overview state
     old_group = plant.group
+    old_group.user = plant.user
+
+    # Remove plant from group
     plant.group = None
     plant.save(update_fields=["group"])
+
     # Update cached overview state
     update_cached_details_keys(plant, {'group': None})
     update_cached_details_keys(
@@ -1132,7 +1137,7 @@ def bulk_remove_plants_from_group(data, group, **kwargs):
 # 3 queries (4ms), 30ms total
 @get_user_token
 @requires_json_post(["plant_id", "new_pot_size", "timestamp"])
-@get_plant_from_post_body
+@get_plant_from_post_body()
 @get_timestamp_from_post_body
 def repot_plant(plant, timestamp, data, **kwargs):
     '''Creates a RepotEvent for specified Plant with optional new_pot_size.
@@ -1165,7 +1170,7 @@ def repot_plant(plant, timestamp, data, **kwargs):
 # 2 queries (2ms), 21ms total
 @get_user_token
 @requires_json_post(["plant_id", "timestamp"])
-@get_plant_from_post_body
+@get_plant_from_post_body()
 @get_timestamp_from_post_body
 def divide_plant(user, plant, timestamp, **kwargs):
     '''Creates a DivisionEvent for specified Plant and caches uuid so new plants
@@ -1256,11 +1261,11 @@ def add_plant_photos(request, user):
 
 
 # Favorite plant
-# Delete 1 photo:  7 queries (4ms), 27ms total
-# Delete 3 photos: 7 queries (4ms), 28ms total
+# Delete 1 photo:  6 queries (4ms), 23ms total
+# Delete 3 photos: 6 queries (4ms), 27ms total
 @get_user_token
 @requires_json_post(["plant_id", "delete_photos"])
-@get_plant_from_post_body
+@get_plant_from_post_body(select_related='default_photo')
 def delete_plant_photos(plant, data, **kwargs):
     '''Deletes a list of Photos associated with a specific Plant.
     Requires JSON POST with plant_id (uuid) and delete_photos (list of db keys).
@@ -1289,7 +1294,7 @@ def delete_plant_photos(plant, data, **kwargs):
 # 4 queries (5ms), 18ms total
 @get_user_token
 @requires_json_post(["plant_id", "photo_key"])
-@get_plant_from_post_body
+@get_plant_from_post_body()
 def set_plant_default_photo(plant, data, **kwargs):
     '''Sets the photo used for overview page thumbnail.
     Requires JSON POST with plant_id (uuid) and photo_key (db primary key).
