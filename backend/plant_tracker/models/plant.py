@@ -181,6 +181,19 @@ class PlantQueryset(models.QuerySet):
         '''Takes UUID, returns matching Plant with full manage_plant annotations.'''
         return self.filter(uuid=uuid).with_manage_plant_annotation().first()
 
+    def get_add_plants_to_group_modal_options(self, user):
+        '''Takes user, returns dict with all of user's plants with no group
+        (uuids as keys, details dicts as values). Populates options in add
+        plants modal on manage_group page.
+        '''
+        return {
+            str(plant.uuid): plant.get_details()
+            for plant in self.filter(user=user, archived=False)
+                .with_overview_annotation()
+                .select_related('group')
+            if plant.group is None
+        }
+
 
 class Plant(models.Model):
     '''Tracks an individual plant, created by scanning QR code.

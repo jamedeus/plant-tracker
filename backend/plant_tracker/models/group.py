@@ -62,6 +62,17 @@ class GroupQueryset(models.QuerySet):
         '''Takes UUID, returns matching Group with full manage_group annotations.'''
         return self.filter(uuid=uuid).with_manage_group_annotation().first()
 
+    def get_add_to_group_modal_options(self, user):
+        '''Takes user, returns dict with all of user's groups (uuids as keys,
+        details) dicts as values). Populates options in add to group modal on
+        manage_plant page.
+        '''
+        return {
+            str(group.uuid): group.get_details()
+            for group in self.filter(user=user, archived=False)
+                .with_overview_annotation()
+        }
+
 
 class Group(models.Model):
     '''Tracks a group containing multiple plants, created by scanning QR code.

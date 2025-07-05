@@ -38,8 +38,6 @@ from .view_decorators import (
 from .build_states import (
     build_overview_state,
     get_overview_state,
-    get_plant_options,
-    get_group_options,
     build_manage_plant_state,
     build_manage_group_state
 )
@@ -213,16 +211,22 @@ def get_species_options(request):
 
 # 2 queries (6ms), 28ms total
 @get_user_token
-def get_add_plants_options(request, user):
+def get_plant_options(request, user):
     '''Returns dict of plants with no group (populates group add plants modal).'''
-    return JsonResponse({'options': get_plant_options(user)}, status=200)
+    return JsonResponse(
+        {'options': Plant.objects.get_add_plants_to_group_modal_options(user)},
+        status=200
+    )
 
 
 # 2 queries (2ms), 21ms total
 @get_user_token
 def get_add_to_group_options(request, user):
     '''Returns dict of groups (populates plant add to group modal).'''
-    return JsonResponse({'options': get_group_options(user)}, status=200)
+    return JsonResponse(
+        {'options': Group.objects.get_add_to_group_modal_options(user)},
+        status=200
+    )
 
 
 # Upstairs bathroom group

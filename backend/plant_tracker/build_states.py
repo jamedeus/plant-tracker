@@ -6,35 +6,6 @@ from django.db.models import Prefetch
 from .models import Plant, Group
 
 
-def get_plant_options(user):
-    '''Takes user, returns dict with all of user's plants with no group (uuids
-    as keys, details dicts as values). Populates options in add plants modal on
-    manage_group page. Cached until Plant model changes (see hooks in tasks.py).
-    '''
-    return {
-        str(plant.uuid): plant.get_details()
-        for plant in Plant.objects.filter(
-            user=user,
-            archived=False
-        ).with_overview_annotation().select_related('group')
-        if plant.group is None
-    }
-
-
-def get_group_options(user):
-    '''Takes user, returns dict with all of user's groups (uuids as keys,
-    details) dicts as values). Populates options in add to group modal on
-    manage_plant page. Cached until Group model changes (see hooks in tasks.py).
-    '''
-    return {
-        str(group.uuid): group.get_details()
-        for group in Group.objects.filter(
-            user=user,
-            archived=False
-        ).with_overview_annotation()
-    }
-
-
 def has_archived_entries(user):
     '''Takes user, returns True if user has at least 1 archived plant or group.'''
     plant_queryset = (
