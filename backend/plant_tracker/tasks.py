@@ -22,6 +22,5 @@ def update_all_cached_states():
     '''
 
     # Find cached overview states, parse user primary key from name, rebuild
-    for key in cache.keys('*'):
-        if key.startswith('overview_state_'):
-            update_cached_overview_state.delay(key.split('_')[-1])
+    for key in cache.keys('overview_state_*'):
+        update_cached_overview_state.delay(key.split('_')[-1])

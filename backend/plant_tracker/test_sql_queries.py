@@ -1147,7 +1147,7 @@ class SqlQueriesPerViewTests(TestCase):
 
     def test_add_plant_photos_endpoint(self):
         '''/add_plant_photos should make 3 database queries plus the number of
-        photos uploaded (1 INSERT per photo).
+        photos uploaded (1 INSERT per photo), or 2+n if default_photo set.
         '''
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
 
@@ -1177,9 +1177,25 @@ class SqlQueriesPerViewTests(TestCase):
             )
             self.assertEqual(response.status_code, 200)
 
+        # Set plant default photo
+        plant.default_photo = plant.photo_set.all()[0]
+        plant.save()
+
+        # Confirm makes 3 queries when 1 photo uploaded
+        with self.assertNumQueries(3):
+            response = self.client.post(
+                '/add_plant_photos',
+                data={
+                    'plant_id': str(plant.uuid),
+                    'photo_0': create_mock_photo('2024:03:22 10:52:03')
+                },
+                content_type=MULTIPART_CONTENT
+            )
+            self.assertEqual(response.status_code, 200)
+
     def test_delete_plant_photos_endpoint(self):
         '''/delete_plant_photos should make 7 database queries regardless of the
-        number of photos deleted.
+        number of photos deleted (or 6 if default_photo is set).
         '''
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         photo1 = Photo.objects.create(
@@ -1192,7 +1208,7 @@ class SqlQueriesPerViewTests(TestCase):
             photo=create_mock_photo('2024:03:23 10:52:03'), plant=plant
         )
 
-        # Confirm makes 6 queries when 1 photo deleted
+        # Confirm makes 7 queries when 1 photo deleted
         with self.assertNumQueries(7):
             response = self.client.post('/delete_plant_photos', {
                 'plant_id': str(plant.uuid),
@@ -1209,6 +1225,26 @@ class SqlQueriesPerViewTests(TestCase):
                 'delete_photos': [
                     photo2.pk,
                     photo3.pk,
+                ]
+            })
+            self.assertEqual(response.status_code, 200)
+
+        # Create 2 more photos, set default_photo
+        photo1 = Photo.objects.create(
+            photo=create_mock_photo('2024:03:21 10:52:03'), plant=plant
+        )
+        photo2 = Photo.objects.create(
+            photo=create_mock_photo('2024:03:22 10:52:03'), plant=plant
+        )
+        plant.default_photo = photo2
+        plant.save()
+
+        # Confirm makes 6 queries when 1 photo deleted
+        with self.assertNumQueries(6):
+            response = self.client.post('/delete_plant_photos', {
+                'plant_id': str(plant.uuid),
+                'delete_photos': [
+                    photo1.pk,
                 ]
             })
             self.assertEqual(response.status_code, 200)
