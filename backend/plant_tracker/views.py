@@ -538,68 +538,6 @@ def edit_group_details(group, data, **kwargs):
     return JsonResponse(data, status=200)
 
 
-# Not used by frontend
-@get_user_token
-@requires_json_post(["plant_id"])
-@get_plant_from_post_body()
-def delete_plant(plant, **kwargs):
-    '''Deletes an existing Plant from database.
-    Requires JSON POST with plant_id (uuid) key.
-    '''
-    plant.delete()
-    remove_instance_from_cached_overview_state(plant)
-    return JsonResponse({"deleted": plant.uuid}, status=200)
-
-
-# Not used by frontend
-@get_user_token
-@requires_json_post(["plant_id", "archived"])
-@get_plant_from_post_body()
-def archive_plant(plant, data, **kwargs):
-    '''Sets the archived attribute of an existing Plant to bool in POST body.
-    Requires JSON POST with plant_id (uuid) and archived (bool) keys.
-    '''
-    if not isinstance(data["archived"], bool):
-        return JsonResponse({"error": "archived key is not bool"}, status=400)
-
-    plant.archived = data["archived"]
-    plant.save()
-    # Add to cached overview state if un-archived, remove if archived
-    add_instance_to_cached_overview_state(plant)
-    return JsonResponse({"updated": plant.uuid}, status=200)
-
-
-# Not used by frontend
-@get_user_token
-@requires_json_post(["group_id"])
-@get_group_from_post_body
-def delete_group(group, **kwargs):
-    '''Deletes an existing Group from database.
-    Requires JSON POST with group_id (uuid) key.
-    '''
-    group.delete()
-    remove_instance_from_cached_overview_state(group)
-    return JsonResponse({"deleted": group.uuid}, status=200)
-
-
-# Not used by frontend
-@get_user_token
-@requires_json_post(["group_id", "archived"])
-@get_group_from_post_body
-def archive_group(group, data, **kwargs):
-    '''Sets the archived attribute of an existing Group to bool in POST body.
-    Requires JSON POST with group_id (uuid) and archived (bool) keys.
-    '''
-    if not isinstance(data["archived"], bool):
-        return JsonResponse({"error": "archived key is not bool"}, status=400)
-
-    group.archived = data["archived"]
-    group.save()
-    # Add to cached overview state if un-archived, remove if archived
-    add_instance_to_cached_overview_state(group)
-    return JsonResponse({"updated": group.uuid}, status=200)
-
-
 # Delete single plant: 13 queries (6ms), 28ms total
 # Delete single group:  6 queries (4ms), 26ms total
 # Delete 3 plants:     13 queries (7ms), 38ms total
@@ -800,39 +738,6 @@ def bulk_add_plant_events(user, timestamp, event_type, data, **kwargs):
         {"action": event_type, "plants": found, "failed": not_found},
         status=200 if found else 400
     )
-
-
-# Not used by frontend
-@get_user_token
-@requires_json_post(["plant_id", "event_type", "timestamp"])
-@get_plant_from_post_body()
-@get_timestamp_from_post_body
-@get_event_type_from_post_body
-def delete_plant_event(plant, timestamp, event_type, **kwargs):
-    '''Deletes the Event matching the plant, type, and timestamp specified in body.
-    Requires JSON POST with plant_id (uuid), event_type, and timestamp keys.
-    '''
-    try:
-        event = events_map[event_type].objects.get(plant=plant, timestamp=timestamp)
-        event.delete()
-
-        # Update last_watered if water event deleted
-        if event_type == 'water':
-            update_cached_details_keys(
-                plant,
-                {'last_watered': plant.last_watered()}
-            )
-
-        # Update last_fertilized if fertilize event deleted
-        elif event_type == 'fertilize':
-            update_cached_details_keys(
-                plant,
-                {'last_fertilized': plant.last_fertilized()}
-            )
-
-        return JsonResponse({"deleted": event_type, "plant": plant.uuid}, status=200)
-    except events_map[event_type].DoesNotExist:
-        return JsonResponse({"error": "event not found"}, status=404)
 
 
 # Favorite plant

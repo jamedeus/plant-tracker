@@ -275,43 +275,6 @@ class EndpointStateUpdateTests(TestCase):
         self.assertEqual(updated_overview_state['groups'][str(self.group1.uuid)]['location'], 'Outside')
         self.assertEqual(updated_overview_state['groups'][str(self.group1.uuid)]['description'], 'Back yard')
 
-    def test_delete_plant(self):
-        '''The cached overview state should update when a plant is deleted.'''
-
-        # Confirm plant is in cached overview state
-        plant_uuid = str(self.plant1.uuid)
-        self.assertTrue(plant_uuid in self.load_cached_overview_state()['plants'])
-
-        # Delete plant with /delete_plant endpoint
-        response = self.client.post('/delete_plant', {
-            'plant_id': plant_uuid
-        })
-        self.assertEqual(response.status_code, 200)
-
-        # Confirm plant was removed from overview state
-        updated_overview_state = self.load_cached_overview_state()
-        self.assertFalse(plant_uuid in updated_overview_state['plants'])
-        self.assertEqual(len(updated_overview_state['plants']), 1)
-
-    def test_archive_plant(self):
-        '''The cached overview state should update when a plant is archived.'''
-
-        # Confirm plant is in cached overview state
-        plant_uuid = str(self.plant1.uuid)
-        self.assertTrue(plant_uuid in self.load_cached_overview_state()['plants'])
-
-        # Archive plant with /archive_plant endpoint
-        response = self.client.post('/archive_plant', {
-            'plant_id': plant_uuid,
-            'archived': True
-        })
-        self.assertEqual(response.status_code, 200)
-
-        # Confirm plant was removed from overview state
-        updated_overview_state = self.load_cached_overview_state()
-        self.assertFalse(plant_uuid in updated_overview_state)
-        self.assertEqual(len(updated_overview_state['plants']), 1)
-
     def test_bulk_delete_plants(self):
         '''The cached overview state should update when a plant is deleted.'''
 
@@ -392,43 +355,6 @@ class EndpointStateUpdateTests(TestCase):
         self.assertFalse(plant1_uuid in self.load_cached_overview_state()['plants'])
         self.assertFalse(plant2_uuid in self.load_cached_overview_state()['plants'])
         self.assertEqual(len(updated_overview_state['plants']), 0)
-
-    def test_delete_group(self):
-        '''The cached overview state should update when a group is deleted.'''
-
-        # Confirm plant is in cached overview state
-        group_uuid = str(self.group1.uuid)
-        self.assertTrue(group_uuid in self.load_cached_overview_state()['groups'])
-
-        # Delete group with /delete_group endpoint
-        response = self.client.post('/delete_group', {
-            'group_id': group_uuid
-        })
-        self.assertEqual(response.status_code, 200)
-
-        # Confirm group was removed from overview state
-        updated_overview_state = self.load_cached_overview_state()
-        self.assertFalse(group_uuid in updated_overview_state)
-        self.assertEqual(len(updated_overview_state['groups']), 1)
-
-    def test_archive_group(self):
-        '''The cached overview state should update when a group is archived.'''
-
-        # Confirm group is in cached overview state, has own cached state
-        group_uuid = str(self.group1.uuid)
-        self.assertTrue(group_uuid in self.load_cached_overview_state()['groups'])
-
-        # Archive group with /archive_group endpoint
-        response = self.client.post('/archive_group', {
-            'group_id': group_uuid,
-            'archived': True
-        })
-        self.assertEqual(response.status_code, 200)
-
-        # Confirm group was removed from overview state
-        updated_overview_state = self.load_cached_overview_state()
-        self.assertFalse(group_uuid in updated_overview_state)
-        self.assertEqual(len(updated_overview_state['groups']), 1)
 
     def test_bulk_delete_groups(self):
         '''The cached overview state should update and the cached group state
@@ -580,65 +506,6 @@ class EndpointStateUpdateTests(TestCase):
         self.assertEqual(
             self.load_cached_overview_state()['plants'][str(self.plant2.uuid)]['last_fertilized'],
             '2024-02-06T03:06:26+00:00'
-        )
-
-    def test_delete_plant_event_water(self):
-        '''The cached overview state should update when a WaterEvent is deleted.'''
-
-        # Water plant with /add_plant_event endpoint
-        response = self.client.post('/add_plant_event', {
-            'plant_id': self.plant1.uuid,
-            'event_type': 'water',
-            'timestamp': '2024-02-06T03:06:26.000Z'
-        })
-        self.assertEqual(response.status_code, 200)
-
-        # Confirm that plant last_watered time is set in cached overview state
-        self.assertEqual(
-            self.load_cached_overview_state()['plants'][str(self.plant1.uuid)]['last_watered'],
-            '2024-02-06T03:06:26+00:00'
-        )
-
-        # Delete water event with /delete_plant_event endpoint
-        response = self.client.post('/delete_plant_event', {
-            'plant_id': self.plant1.uuid,
-            'event_type': 'water',
-            'timestamp': '2024-02-06T03:06:26.000Z'
-        })
-        self.assertEqual(response.status_code, 200)
-
-        # Confirm last_watered was reset in cached overview state and own cached state
-        self.assertIsNone(self.load_cached_overview_state()['plants'][str(self.plant1.uuid)]['last_watered'])
-        self.assertIsNone(self.load_cached_overview_state()['plants'][str(self.plant2.uuid)]['last_watered'])
-
-    def test_delete_plant_event_fertilize(self):
-        '''The cached overview state should update when a FertilizeEvent is deleted.'''
-
-        # Fertilize plant with /add_plant_event endpoint
-        response = self.client.post('/add_plant_event', {
-            'plant_id': self.plant1.uuid,
-            'event_type': 'fertilize',
-            'timestamp': '2024-02-06T03:06:26.000Z'
-        })
-        self.assertEqual(response.status_code, 200)
-
-        # Confirm that plant last_fertilized time is set in cached overview state
-        self.assertEqual(
-            self.load_cached_overview_state()['plants'][str(self.plant1.uuid)]['last_fertilized'],
-            '2024-02-06T03:06:26+00:00'
-        )
-
-        # Delete fertilize event with /delete_plant_event endpoint
-        response = self.client.post('/delete_plant_event', {
-            'plant_id': self.plant1.uuid,
-            'event_type': 'fertilize',
-            'timestamp': '2024-02-06T03:06:26.000Z'
-        })
-        self.assertEqual(response.status_code, 200)
-
-        # Confirm last_fertilized was reset in cached overview state
-        self.assertIsNone(
-            self.load_cached_overview_state()['plants'][str(self.plant1.uuid)]['last_fertilized']
         )
 
     def test_bulk_delete_plant_events_water(self):

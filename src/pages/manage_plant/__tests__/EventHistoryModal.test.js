@@ -97,7 +97,7 @@ describe('EventHistoryModal', () => {
         // Click delete button
         await user.click(component.getByRole('button', {name: 'Delete'}));
 
-        // Confirm correct data posted to /delete_plant_event endpoint
+        // Confirm correct data posted to /bulk_delete_plant_events endpoint
         expect(global.fetch).toHaveBeenCalledWith('/bulk_delete_plant_events', {
             method: 'POST',
             body: JSON.stringify({

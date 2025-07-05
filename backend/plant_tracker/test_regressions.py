@@ -906,8 +906,8 @@ class CachedStateRegressionTests(TestCase):
         self.assertIn(str(plant.uuid), overview_state['plants'])
 
         # Simulate user archiving plant
-        response = JSONClient().post('/archive_plant', {
-            'plant_id': str(plant.uuid),
+        response = JSONClient().post('/bulk_archive_plants_and_groups', {
+            'uuids': [str(plant.uuid),],
             'archived': True
         })
         self.assertEqual(response.status_code, 200)

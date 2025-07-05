@@ -960,27 +960,6 @@ class MultiUserModeTests(TestCase):
             })
         )
         self.assertAuthenticationRequiredError(
-            self.client.post('/delete_plant', {
-                'plant_id': str(plant.uuid)
-            })
-        )
-        self.assertAuthenticationRequiredError(
-            self.client.post('/archive_plant', {
-                'plant_id': str(plant.uuid), 'archived': True
-            })
-        )
-        self.assertAuthenticationRequiredError(
-            self.client.post('/delete_group', {
-                'group_id': str(group.uuid)
-            })
-        )
-        self.assertAuthenticationRequiredError(
-            self.client.post(
-                '/archive_group',
-                {'group_id': str(group.uuid), 'archived': True}
-            )
-        )
-        self.assertAuthenticationRequiredError(
             self.client.post('/add_plant_event', {
                 'plant_id': plant.uuid,
                 'event_type': 'water',
@@ -992,13 +971,6 @@ class MultiUserModeTests(TestCase):
                 'plants': [str(plant.uuid)],
                 'event_type': 'water',
                 'timestamp': '2024-02-06T03:06:26.000Z'
-            })
-        )
-        self.assertAuthenticationRequiredError(
-            self.client.post('/delete_plant_event', {
-                'plant_id': plant.uuid,
-                'event_type': 'water',
-                'timestamp': '2024-02-06T03:06:26+00:00'
             })
         )
         self.assertAuthenticationRequiredError(
@@ -1131,26 +1103,6 @@ class MultiUserModeTests(TestCase):
             })
         )
         self.assertPlantIsOwnedByADifferentUserError(
-            self.client.post('/delete_plant', {
-                'plant_id': str(plant.uuid)}
-            )
-        )
-        self.assertPlantIsOwnedByADifferentUserError(
-            self.client.post('/archive_plant', {
-                'plant_id': str(plant.uuid), 'archived': True
-            })
-        )
-        self.assertGroupIsOwnedByADifferentUserError(
-            self.client.post('/delete_group', {
-                'group_id': str(group.uuid)
-            })
-        )
-        self.assertGroupIsOwnedByADifferentUserError(
-            self.client.post('/archive_group', {
-                'group_id': str(group.uuid), 'archived': True
-            })
-        )
-        self.assertPlantIsOwnedByADifferentUserError(
             self.client.post('/add_plant_event', {
                 'plant_id': plant.uuid,
                 'event_type': 'water',
@@ -1173,13 +1125,6 @@ class MultiUserModeTests(TestCase):
             "failed": [str(plant.uuid)]
         })
 
-        self.assertPlantIsOwnedByADifferentUserError(
-            self.client.post('/delete_plant_event', {
-                'plant_id': plant.uuid,
-                'event_type': 'water',
-                'timestamp': '2024-02-06T03:06:26+00:00'
-            })
-        )
         self.assertPlantIsOwnedByADifferentUserError(
             self.client.post('/bulk_delete_plant_events', {
                 'plant_id': plant.uuid,

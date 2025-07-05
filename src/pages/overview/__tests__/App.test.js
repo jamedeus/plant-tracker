@@ -159,7 +159,7 @@ describe('App', () => {
         await act(async () => await jest.advanceTimersByTimeAsync(2500));
         fireEvent.mouseUp(button);
 
-        // Confirm correct data posted to /delete_group endpoint
+        // Confirm correct data posted to /bulk_delete_plants_and_groups endpoint
         expect(global.fetch).toHaveBeenCalledWith('/bulk_delete_plants_and_groups', {
             method: 'POST',
             body: JSON.stringify({

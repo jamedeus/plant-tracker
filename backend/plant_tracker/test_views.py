@@ -337,124 +337,6 @@ class OverviewTests(TestCase):
             {'error': 'failed to generate, try a shorter URL_PREFIX'}
         )
 
-    def test_delete_plant(self):
-        # Create test plant, confirm exists in database
-        test_id = uuid4()
-        Plant.objects.create(uuid=test_id, name='test plant', user=get_default_user())
-        self.assertEqual(len(Plant.objects.all()), 1)
-
-        # Call delete endpoint, confirm response, confirm removed from database
-        response = self.client.post('/delete_plant', {'plant_id': str(test_id)})
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'deleted': str(test_id)})
-        self.assertEqual(len(Plant.objects.all()), 0)
-
-        # Attempt to delete non-existing plant, confirm error
-        response = self.client.post('/delete_plant', {'plant_id': str(test_id)})
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.json(), {'error': 'plant not found'})
-
-    def test_archive_plant(self):
-        # Create test plant, confirm exists in database, is not archived
-        test_id = uuid4()
-        Plant.objects.create(uuid=test_id, name='test plant', user=get_default_user())
-        self.assertEqual(len(Plant.objects.all()), 1)
-        self.assertFalse(Plant.objects.all()[0].archived)
-
-        # Call archive endpoint, confirm response, confirm updated in database
-        response = self.client.post('/archive_plant', {
-            'plant_id': str(test_id),
-            'archived': True
-        })
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'updated': str(test_id)})
-        self.assertTrue(Plant.objects.all()[0].archived)
-
-        # Call again to un-archive, confirm response, confirm updated in database
-        response = self.client.post('/archive_plant', {
-            'plant_id': str(test_id),
-            'archived': False
-        })
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'updated': str(test_id)})
-        self.assertFalse(Plant.objects.all()[0].archived)
-
-    def test_archive_plant_error(self):
-        # Create test plant, confirm exists in database, is not archived
-        test_id = uuid4()
-        Plant.objects.create(uuid=test_id, name='test plant', user=get_default_user())
-        self.assertEqual(len(Plant.objects.all()), 1)
-        self.assertFalse(Plant.objects.all()[0].archived)
-
-        # Call archive endpoint with invalid archived bool, confirm error,
-        # confirm database not updated
-        response = self.client.post('/archive_plant', {
-            'plant_id': str(test_id),
-            'archived': 'archived'
-        })
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json(), {"error": "archived key is not bool"})
-        self.assertFalse(Plant.objects.all()[0].archived)
-
-    def test_delete_group(self):
-        # Create test group, confirm exists in database
-        test_id = uuid4()
-        Group.objects.create(uuid=test_id, name='test group', user=get_default_user())
-        self.assertEqual(len(Group.objects.all()), 1)
-
-        # Call delete endpoint, confirm response, confirm removed from database
-        response = self.client.post('/delete_group', {'group_id': str(test_id)})
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'deleted': str(test_id)})
-        self.assertEqual(len(Group.objects.all()), 0)
-
-        # Attempt to delete non-existing group, confirm error
-        response = self.client.post('/delete_group', {'group_id': str(test_id)})
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.json(), {'error': 'group not found'})
-
-    def test_archive_group(self):
-        # Create test group, confirm exists in database, is not archived
-        test_id = uuid4()
-        Group.objects.create(uuid=test_id, name='test group', user=get_default_user())
-        self.assertEqual(len(Group.objects.all()), 1)
-        self.assertFalse(Group.objects.all()[0].archived)
-
-        # Call archive endpoint, confirm response, confirm updated in database
-        response = self.client.post('/archive_group', {
-            'group_id': str(test_id),
-            'archived': True
-        })
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'updated': str(test_id)})
-        self.assertTrue(Group.objects.all()[0].archived)
-
-        # Call again to un-archive, confirm response, confirm updated in database
-        response = self.client.post('/archive_group', {
-            'group_id': str(test_id),
-            'archived': False
-        })
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'updated': str(test_id)})
-        self.assertFalse(Group.objects.all()[0].archived)
-
-    def test_archive_group_error(self):
-        # Create test plant, confirm exists in database, is not archived
-        test_id = uuid4()
-        Group.objects.create(uuid=test_id, name='test group', user=get_default_user())
-        self.assertEqual(len(Group.objects.all()), 1)
-        self.assertFalse(Group.objects.all()[0].archived)
-
-        # Call archive endpoint with invalid archived bool, confirm error,
-        # confirm database not updated
-        response = self.client.post('/archive_group', {
-            'group_id': str(test_id),
-            'archived': 'archived'
-        })
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json(), {"error": "archived key is not bool"})
-        self.assertFalse(Group.objects.all()[0].archived)
-
     def test_bulk_delete_plants_and_groups(self):
         # Create test plant and group, confirm both exist in database
         plant_id = uuid4()
@@ -2276,39 +2158,6 @@ class PlantEventEndpointTests(TestCase):
         self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 1)
         self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 1)
 
-    def test_delete_plant_event(self):
-        # Create WaterEvent, confirm exists
-        timestamp = timezone.now()
-        WaterEvent.objects.create(plant=self.plant1, timestamp=timestamp)
-        self.assertEqual(len(self.plant1.waterevent_set.all()), 1)
-
-        # Call delete_plant_event endpoint, confirm response
-        response = self.client.post('/delete_plant_event', {
-            'plant_id': self.plant1.uuid,
-            'event_type': 'water',
-            'timestamp': timestamp.isoformat()
-        })
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.json(),
-            {"deleted": "water", "plant": str(self.plant1.uuid)}
-        )
-
-        # Confirm WaterEvent was deleted
-        self.assertEqual(len(self.plant1.waterevent_set.all()), 0)
-
-    def test_delete_plant_event_timestamp_does_not_exist(self):
-        # Call delete_plant_event endpoint with a timestamp that doesn't exist
-        response = self.client.post('/delete_plant_event', {
-            'plant_id': self.plant1.uuid,
-            'event_type': 'water',
-            'timestamp': timezone.now().isoformat()
-        })
-
-        # Confirm correct error
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.json(), {"error": "event not found"})
-
     def test_bulk_delete_plant_events(self):
         # Create multiple events with different types, confirm number in db
         timestamp = timezone.now()
@@ -2650,7 +2499,7 @@ class PlantPhotoEndpointTests(TestCase):
         self.assertEqual(response.json()["failed"], ["mock_photo.jpg"])
         self.assertEqual(response.json()["urls"], [])
 
-        # Confirm Photo was added to database
+        # Confirm Photo was not added to database
         self.assertEqual(len(Photo.objects.all()), 0)
 
     def test_add_plant_photos_invalid_get_request(self):
