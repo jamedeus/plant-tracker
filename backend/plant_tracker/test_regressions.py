@@ -21,6 +21,7 @@ from .models import (
     Plant,
     Photo,
     WaterEvent,
+    FertilizeEvent,
     RepotEvent
 )
 from .view_decorators import (
@@ -1192,6 +1193,48 @@ class CachedStateRegressionTests(TestCase):
                 '2024-02-06T03:06:26+00:00',
                 '2024-01-06T03:06:26+00:00'
             ]
+        )
+
+    def test_cached_last_fertilized_time_does_not_update_when_water_also_deleted(self):
+        '''Issue: /bulk_delete_plant_events used if elif to check if water and
+        fertilize respectively were deleted (instead of 2 ifs). If both were
+        deleted only the last_watered time would be updated, instead of both.
+        '''
+
+        # Create plant with water and fertilize events
+        user = get_default_user()
+        plant = Plant.objects.create(uuid=uuid4(), user=user)
+        WaterEvent.objects.create(
+            plant=plant,
+            timestamp=datetime.fromisoformat('2024-03-06T03:06:26.000Z')
+        )
+        FertilizeEvent.objects.create(
+            plant=plant,
+            timestamp=datetime.fromisoformat('2024-01-06T03:06:26.000Z')
+        )
+
+        # Confirm overview state has last_watered and last_fertilized times
+        overview_state = build_overview_state(get_default_user())
+        self.assertIsNotNone(overview_state['plants'][str(plant.uuid)]['last_watered'])
+        self.assertIsNotNone(overview_state['plants'][str(plant.uuid)]['last_fertilized'])
+
+        # Delete both events in a single request
+        JSONClient().post('/bulk_delete_plant_events', {
+            'plant_id': plant.uuid,
+            'events': {
+                'water': ['2024-03-06T03:06:26.000Z'],
+                'fertilize': ['2024-01-06T03:06:26.000Z'],
+                'prune': [],
+                'repot': [],
+            }
+        })
+
+        # Confirm overview state cleared last_watered AND last_fertilized
+        self.assertIsNone(
+            cache.get(f'overview_state_{user.pk}')['plants'][str(plant.uuid)]['last_watered'],
+        )
+        self.assertIsNone(
+            cache.get(f'overview_state_{user.pk}')['plants'][str(plant.uuid)]['last_fertilized'],
         )
 
 

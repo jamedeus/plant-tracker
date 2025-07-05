@@ -899,7 +899,7 @@ def bulk_delete_plant_events(plant, data, **kwargs):
         )
 
     # Update last_fertilized if fertilize events were deleted
-    elif deleted['fertilize']:
+    if deleted['fertilize']:
         update_cached_details_keys(
             plant,
             {'last_fertilized': plant.last_fertilized()}
