@@ -621,7 +621,8 @@ def bulk_delete_plants_and_groups(user, data, **kwargs):
         if instance.user == user:
             # If plant is in group: save group (need to update number of plants)
             if hasattr(instance, 'group') and instance.group:
-                groups_to_update.append(instance.group)
+                if instance.group not in groups_to_update:
+                    groups_to_update.append(instance.group)
             deleted.append(instance.uuid)
             # Remove from cached overview state
             remove_instance_from_cached_overview_state(instance)
@@ -640,14 +641,10 @@ def bulk_delete_plants_and_groups(user, data, **kwargs):
         # Avoid extra query for group user (used to get cached overview state)
         # Already confirmed requesting user owns plant, and plant was in group
         group.user = user
-        try:
-            update_cached_details_keys(
-                group,
-                {'plants': group.get_number_of_plants()}
-            )
-        except ValueError:
-            # Group was also deleted, don't update
-            pass
+        update_cached_details_keys(
+            group,
+            {'plants': group.get_number_of_plants()}
+        )
 
     return JsonResponse(
         {"deleted": deleted, "failed": failed},

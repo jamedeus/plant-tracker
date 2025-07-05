@@ -534,6 +534,31 @@ class SqlQueriesPerViewTests(TestCase):
             })
             self.assertEqual(response.status_code, 200)
 
+    def test_bulk_delete_plants_and_groups_endpoint_plant_in_group(self):
+        '''/bulk_delete_plants_and_groups should make 17 database queries when
+        deleting 3 plant instances and 3 Group instances when 2 plants are in
+        groups (extra UPDATE queries for related object).
+        '''
+        user = get_default_user()
+        group1 = Group.objects.create(uuid=uuid4(), user=user)
+        group2 = Group.objects.create(uuid=uuid4(), user=user)
+        group3 = Group.objects.create(uuid=uuid4(), user=user)
+        plant1 = Plant.objects.create(uuid=uuid4(), user=user)
+        plant2 = Plant.objects.create(uuid=uuid4(), user=user, group=group1)
+        plant3 = Plant.objects.create(uuid=uuid4(), user=user, group=group1)
+        with self.assertNumQueries(17):
+            response = self.client.post('/bulk_delete_plants_and_groups', {
+                'uuids': [
+                    str(plant1.uuid),
+                    str(plant2.uuid),
+                    str(plant3.uuid),
+                    str(group1.uuid),
+                    str(group2.uuid),
+                    str(group3.uuid)
+                ]
+            })
+            self.assertEqual(response.status_code, 200)
+
     def test_bulk_archive_plants_and_groups_endpoint_1_plant(self):
         '''/bulk_archive_plants_and_groups should make 4 database queries when
         archiving a single Plant instance.
