@@ -443,10 +443,7 @@ def change_uuid(instance, data, user, **kwargs):
     try:
         # Delete plant/group from cached overview state (prevent duplicate, keys
         # are uuid so once it changes the old entry can't be removed)
-        if isinstance(instance, Plant):
-            remove_instance_from_cached_overview_state(instance)
-        else:
-            remove_instance_from_cached_overview_state(instance)
+        remove_instance_from_cached_overview_state(instance)
         # Change UUID,
         instance.uuid = data["new_id"]
         instance.save(update_fields=["uuid"])
