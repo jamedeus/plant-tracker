@@ -91,5 +91,6 @@ load_fixture() {
     clear_development_database
     python manage.py migrate
     python manage.py loaddata $1
+    redis-cli flushall
     py manage.py runserver 0.0.0.0:8005 --nothreading
 }
