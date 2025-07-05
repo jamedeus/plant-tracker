@@ -10,6 +10,7 @@ it doesn't get out of control).
 import shutil
 from uuid import uuid4
 from datetime import datetime
+from urllib.parse import urlencode
 from contextlib import contextmanager
 
 from django.conf import settings
@@ -1223,3 +1224,140 @@ class SqlQueriesPerViewTests(TestCase):
                 'photo_key': photo.pk
             })
             self.assertEqual(response.status_code, 200)
+
+
+class SqlQueriesPerUserAuthenticationEndpoint(TestCase):
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.test_user = user_model.objects.create_user(
+            username='unittest',
+            password='12345',
+            first_name='Bob',
+            last_name='Smith',
+            email='bob.smith@hotmail.com'
+        )
+
+        # Ensure SINGLE_USER_MODE is disabled
+        settings.SINGLE_USER_MODE = False
+
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
+        # Ensure SINGLE_USER_MODE is enabled for other test suites
+        settings.SINGLE_USER_MODE = True
+
+    def setUp(self):
+        # Clear entire cache before each test
+        cache.clear()
+
+        # Set default content_type for post requests (avoid long lines)
+        self.client = JSONClient()
+
+    def tearDown(self):
+        # Ensure user logged out between tests
+        self.client.logout()
+
+    @contextmanager
+    def assertNumQueries(self, *args, **kwargs):
+        '''Emulates upstream assertNumQueries but filters out savepoint queries
+        added by thest test framework (doesn't exist in production). Clears
+        get_default_user cache to avoid unpredictable number of queries if
+        get_default_user was called during setup.
+        '''
+        get_default_user.cache_clear()
+
+        # Measure queries
+        conn = connections[kwargs.pop('using', None) or 'default']
+        with CaptureQueriesContext(conn) as ctx:
+            yield
+
+        # Filter out savepoint/release queries
+        filtered = [
+            q for q in ctx.captured_queries
+            if not (
+                q['sql'].startswith('SAVEPOINT') or
+                q['sql'].startswith('RELEASE SAVEPOINT') or
+                q['sql'].startswith('ROLLBACK TO SAVEPOINT')
+            )
+        ]
+
+        # Raise exception if unexpected number of queries
+        expected = args[0] if args else kwargs.get('num')
+        actual = len(filtered)
+        if actual != expected:
+            # Build error message qith actual recorded queries
+            lines = ["Captured queries were:"]
+            for i, q in enumerate(filtered, start=1):
+                lines.append(f"{i}. {q['sql']}")
+            raise self.failureException(
+                f"{actual} != {expected} : {actual} queries executed, {expected} expected\n"
+                + "\n".join(lines)
+            )
+
+    def test_login_page(self):
+        '''Loading the login page should not query the database.'''
+        with self.assertNumQueries(0):
+            response = self.client.get('/accounts/login/')
+            self.assertEqual(response.status_code, 200)
+
+    def test_user_profile_page(self):
+        '''Loading the profile page should make 2 database queries.'''
+        self.client.login(username='unittest', password='12345')
+        with self.assertNumQueries(2):
+            response = self.client.get('/accounts/profile/')
+            self.assertEqual(response.status_code, 200)
+
+    def test_login_endpoint(self):
+        '''/accounts/login/ should make 5 database queries.'''
+        with self.assertNumQueries(5):
+            response = self.client.post(
+                "/accounts/login/",
+                urlencode({"username": "unittest", "password": "12345"}),
+                content_type="application/x-www-form-urlencoded"
+            )
+            self.assertEqual(response.status_code, 200)
+
+    def test_create_user_endpoint(self):
+        '''/accounts/create_user/ should make 6 database queries.'''
+        with self.assertNumQueries(6):
+            response = self.client.post('/accounts/create_user/', {
+                'username': 'newuser',
+                'password': 'acceptablepasswordlength',
+                'email': 'myfirstemail@hotmail.com',
+                'first_name': '',
+                'last_name': ''
+            })
+            self.assertEqual(response.status_code, 200)
+
+    def test_edit_user_details_endpoint(self):
+        '''/accounts/edit_user_details/ should make 3 database queries'''
+        self.client.login(username='unittest', password='12345')
+        with self.assertNumQueries(3):
+            response = self.client.post('/accounts/edit_user_details/', {
+                'first_name': 'Anthony',
+                'last_name': 'Weiner',
+                'email': 'carlosdanger@hotmail.com'
+            })
+            self.assertEqual(response.status_code, 200)
+
+    def test_change_password_endpoint(self):
+        '''/accounts/change_password/ should make 8 database queries.'''
+        self.client.login(username='unittest', password='12345')
+        with self.assertNumQueries(8):
+            response = self.client.post('/accounts/change_password/',
+                urlencode({
+                    'old_password': '12345',
+                    'new_password1': 'more secure password',
+                    'new_password2': 'more secure password',
+                }),
+                content_type="application/x-www-form-urlencoded"
+            )
+            self.assertEqual(response.status_code, 200)
+
+    def test_logout_endpoint(self):
+        '''/accounts/logout/ should make 4 database queries.'''
+        self.client.login(username='unittest', password='12345')
+        with self.assertNumQueries(4):
+            response = self.client.get('/accounts/logout/')
+            self.assertEqual(response.status_code, 302)
