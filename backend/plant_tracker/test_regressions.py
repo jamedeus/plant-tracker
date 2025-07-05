@@ -318,15 +318,18 @@ class ViewRegressionTests(TestCase):
             'timestamp': timestamp.isoformat()
         })
 
-        # Request should succeed despite conflicting event, plant2 should be
-        # listed as failed in response
+        # Request should succeed despite conflicting event
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
             {
                 "action": "water",
-                "plants": [str(plant1.uuid), str(plant3.uuid)],
-                "failed": [str(plant2.uuid)]
+                "plants": [
+                    str(plant1.uuid),
+                    str(plant2.uuid),
+                    str(plant3.uuid)
+                ],
+                "failed": []
             }
         )
 

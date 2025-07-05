@@ -402,8 +402,8 @@ class SqlQueriesPerViewTests(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_bulk_add_plant_events_endpoint_water(self):
-        '''/bulk_add_plant_events should make 2 database queries plus the number
-        of plants in payload (1 INSERT per plant) when creating WaterEvents.
+        '''/bulk_add_plant_events should make 3 database queries when creating
+        WaterEvents regardless of the number of events.
         '''
         plant1 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         plant2 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
@@ -420,8 +420,8 @@ class SqlQueriesPerViewTests(TestCase):
             })
             self.assertEqual(response.status_code, 200)
 
-        # Confirm 5 queries with all 3 plants (same as above but 2 extra INSERT)
-        with self.assertNumQueries(5):
+        # Confirm 5 queries with all 3 plants
+        with self.assertNumQueries(3):
             response = self.client.post('/bulk_add_plant_events', {
                 'plants': [
                     str(plant1.uuid),
@@ -434,8 +434,8 @@ class SqlQueriesPerViewTests(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_bulk_add_plant_events_endpoint_fertilize(self):
-        '''/bulk_add_plant_events should make 3 database queries plus the number
-        of plants in payload (1 INSERT per plant) when creating FertilizeEvents.
+        '''/bulk_add_plant_events should make 3 database queries when creating
+        FertilizeEvents regardless of the number of events.
         '''
         plant1 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         plant2 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
@@ -452,8 +452,8 @@ class SqlQueriesPerViewTests(TestCase):
             })
             self.assertEqual(response.status_code, 200)
 
-        # Confirm 5 queries with all 3 plants (same as above but 2 extra INSERT)
-        with self.assertNumQueries(5):
+        # Confirm 5 queries with all 3 plants
+        with self.assertNumQueries(3):
             response = self.client.post('/bulk_add_plant_events', {
                 'plants': [
                     str(plant1.uuid),
@@ -466,8 +466,8 @@ class SqlQueriesPerViewTests(TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_bulk_add_plant_events_endpoint_prune(self):
-        '''/bulk_add_plant_events should make 3 database queries plus the number
-        of plants in payload (1 INSERT per plant) when creating PruneEvents.
+        '''/bulk_add_plant_events should make 3 database queries when creating
+        PruneEvents regardless of the number of events.
         '''
         plant1 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         plant2 = Plant.objects.create(uuid=uuid4(), user=get_default_user())
@@ -484,8 +484,8 @@ class SqlQueriesPerViewTests(TestCase):
             })
             self.assertEqual(response.status_code, 200)
 
-        # Confirm 5 queries with all 3 plants (same as above but 2 extra INSERT)
-        with self.assertNumQueries(5):
+        # Confirm 3 queries with all 3 plants
+        with self.assertNumQueries(3):
             response = self.client.post('/bulk_add_plant_events', {
                 'plants': [
                     str(plant1.uuid),

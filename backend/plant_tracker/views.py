@@ -746,8 +746,8 @@ def add_plant_event(plant, timestamp, event_type, **kwargs):
 
 
 # Upstairs bathroom (11 plants)
-# Water all:     2 queries (3ms), 36ms total
-# Fertilize all: 2 queries (3ms), 43ms total
+# Water all:     2 queries (2ms), 23ms total
+# Fertilize all: 2 queries (2ms), 26ms total
 @get_user_token
 @requires_json_post(["plants", "event_type", "timestamp"])
 @get_timestamp_from_post_body
@@ -760,59 +760,48 @@ def bulk_add_plant_events(user, timestamp, event_type, data, **kwargs):
     # Get all plants in 1 query, add uuid_str annotation (pre-convert to strng)
     plants = (
         Plant.objects
-            .filter(uuid__in=data["plants"])
+            .filter(uuid__in=data["plants"], user=user)
             .with_uuid_as_string_annotation()
             .with_last_watered_time_annotation()
             .with_last_fertilized_time_annotation()
             .select_related("user")
     )
 
-    # Get list of UUIDs that were not found in database
-    failed = list(
-        set(data["plants"]) - set(plant.uuid_str for plant in plants)
+    # Get lists of UUIDs that were found and not found in database
+    found = [plant.uuid_str for plant in plants]
+    not_found = list(set(data["plants"]) - set(found))
+
+    # Create events for all plants in a single query
+    events_map[event_type].objects.bulk_create(
+        [
+            events_map[event_type](plant=plant, timestamp=timestamp)
+            for plant in plants
+        ],
+        ignore_conflicts = True
     )
 
-    # Create event for each found plant
-    added = []
-    for plant in plants:
-        # Make sure plant is owned by user
-        if plant.user == user:
-            try:
-                # Use transaction.atomic to clean up after IntegrityError if duplicate
-                with transaction.atomic():
-                    events_map[event_type].objects.create(
-                        plant=plant,
-                        timestamp=timestamp
-                    )
-                added.append(plant.uuid_str)
+    # Update last_watered if timestamp is newer than annotation
+    if event_type == 'water':
+        for plant in plants:
+            if not plant.last_watered_time or timestamp > plant.last_watered_time:
+                update_cached_details_keys(
+                    plant,
+                    {'last_watered': timestamp.isoformat()}
+                )
 
-                # Update last_watered if timestamp is newer than annotation
-                if event_type == 'water' and (
-                    not plant.last_watered_time or timestamp > plant.last_watered_time
-                ):
-                    update_cached_details_keys(
-                        plant,
-                        {'last_watered': timestamp.isoformat()}
-                    )
-
-                # Update last_fertilized if timestamp is newer than annotation
-                elif event_type == 'fertilize' and (
-                    not plant.last_fertilized_time or timestamp > plant.last_fertilized_time
-                ):
-                    update_cached_details_keys(
-                        plant,
-                        {'last_fertilized': timestamp.isoformat()}
-                    )
-
-            except IntegrityError:
-                failed.append(plant.uuid_str)
-        else:
-            failed.append(plant.uuid_str)
+    # Update last_fertilized if timestamp is newer than annotation
+    if event_type == 'fertilize':
+        for plant in plants:
+            if not plant.last_fertilized_time or timestamp > plant.last_fertilized_time:
+                update_cached_details_keys(
+                    plant,
+                    {'last_fertilized': timestamp.isoformat()}
+                )
 
     # Return 200 if at least 1 succeeded, otherwise return error
     return JsonResponse(
-        {"action": event_type, "plants": added, "failed": failed},
-        status=200 if added else 400
+        {"action": event_type, "plants": found, "failed": not_found},
+        status=200 if found else 400
     )
 
 
