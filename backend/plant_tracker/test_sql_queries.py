@@ -28,6 +28,7 @@ from .models import (
     FertilizeEvent,
     PruneEvent,
     RepotEvent,
+    DivisionEvent,
     Photo,
     NoteEvent
 )
@@ -42,6 +43,265 @@ def tearDownModule():
     # Delete mock photo directory after tests
     print("\nDeleting mock photos...\n")
     shutil.rmtree(settings.TEST_DIR, ignore_errors=True)
+
+
+class SqlQueriesPerPageTests(TestCase):
+    fixtures = ['fixtures/unnamed_plants_and_groups_fixture.json']
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+
+        # Save default user to use in tests
+        cls.default_user = get_default_user()
+
+    def setUp(self):
+        # Clear cache before each test
+        cache.clear()
+
+    @contextmanager
+    def assertNumQueries(self, *args, **kwargs):
+        '''Clears get_default_user cache to avoid unpredictable number of
+        queries if get_default_user was called during setup, then calls upstream
+        assertNumQueries.
+        '''
+        get_default_user.cache_clear()
+        with super().assertNumQueries(*args, **kwargs):
+            yield
+
+    def test_overview_page(self):
+        '''Loading the overview should make:
+        - 4 queries when no Plants are in Groups (and no cached state exists)
+        - 5 queries when >=1 Plant is in a Group (and no cached state exists)
+        - 1 query if a cached state exists
+        '''
+
+        # Load with no cache and no plants in groups, confirm 4 queries
+        cache.clear()
+        with self.assertNumQueries(4):
+            response = self.client.get('/')
+            self.assertEqual(response.status_code, 200)
+
+        # Add plant to group, load again, confirm 5 queries
+        plant = Plant.objects.all()[0]
+        plant.group = Group.objects.all()[0]
+        plant.save()
+        cache.clear()
+        with self.assertNumQueries(5):
+            response = self.client.get('/')
+            self.assertEqual(response.status_code, 200)
+
+        # Load again (cached state now exists), confirm 1 query
+        with self.assertNumQueries(1):
+            response = self.client.get('/')
+            self.assertEqual(response.status_code, 200)
+
+    def test_get_overview_page_state(self):
+        '''Requesting the overview page state should make:
+        - 4 queries when no Plants are in Groups (and no cached state exists)
+        - 5 queries when >=1 Plant is in a Group (and no cached state exists)
+        - 1 query if a cached state exists
+        '''
+
+        # Load with no cache and no plants in groups, confirm 4 queries
+        cache.clear()
+        with self.assertNumQueries(4):
+            response = self.client.get('/get_overview_state')
+            self.assertEqual(response.status_code, 200)
+
+        # Add plant to group, load again, confirm 5 queries
+        plant = Plant.objects.all()[0]
+        plant.group = Group.objects.all()[0]
+        plant.save()
+        cache.clear()
+        with self.assertNumQueries(5):
+            response = self.client.get('/get_overview_state')
+            self.assertEqual(response.status_code, 200)
+
+        # Load again (cached state now exists), confirm 1 query
+        with self.assertNumQueries(1):
+            response = self.client.get('/get_overview_state')
+            self.assertEqual(response.status_code, 200)
+
+    def test_archived_overview_page(self):
+        '''Loading the archived overview should make:
+        - 4 queries when no archived Plants are in Groups
+        - 5 queries when >=1 archived Plant is in a Group
+        '''
+
+        # Archive 1 plant and 1 group
+        plant = Plant.objects.all()[0]
+        group = Group.objects.all()[0]
+        plant.archived = True
+        group.archived = True
+        plant.save()
+        group.save()
+
+        # Load with no cache and no plants in groups, confirm 4 queries
+        with self.assertNumQueries(4):
+            response = self.client.get('/archived')
+            self.assertEqual(response.status_code, 200)
+
+        # Add plant to group, load again, confirm 5 queries
+        plant.group = group
+        plant.save()
+        with self.assertNumQueries(5):
+            response = self.client.get('/archived')
+            self.assertEqual(response.status_code, 200)
+
+    def test_manage_plant_page(self):
+        '''Loading a manage_plant page should make:
+        - 7 queries if Plant is unnamed (has to get unnamed_index)
+        - 6 queries if Plant is named (no extra query for name)
+        '''
+        plant = Plant.objects.all()[0]
+
+        with self.assertNumQueries(7):
+            response = self.client.get(f'/manage/{plant.uuid}')
+            self.assertEqual(response.status_code, 200)
+
+        plant.name = 'has name'
+        plant.save()
+
+        with self.assertNumQueries(6):
+            response = self.client.get(f'/manage/{plant.uuid}')
+            self.assertEqual(response.status_code, 200)
+
+    def test_get_plant_state(self):
+        '''Requesting the manage plant state should make:
+        - 6 queries if Plant is unnamed (has to get unnamed_index)
+        - 5 queries if Plant is named (no extra query for name)
+        '''
+        plant = Plant.objects.all()[0]
+
+        with self.assertNumQueries(6):
+            response = self.client.get(f'/get_plant_state/{plant.uuid}')
+            self.assertEqual(response.status_code, 200)
+
+        plant.name = 'has name'
+        plant.save()
+
+        with self.assertNumQueries(5):
+            response = self.client.get(f'/get_plant_state/{plant.uuid}')
+            self.assertEqual(response.status_code, 200)
+
+    def test_manage_group_page(self):
+        '''Loading a manage_group page should make:
+        - 5 queries if Group is unnamed (has to get unnamed_index)
+        - 4 queries if Group is named (no extra query for name)
+        '''
+        group = Group.objects.all()[0]
+        with self.assertNumQueries(5):
+            response = self.client.get(f'/manage/{group.uuid}')
+            self.assertEqual(response.status_code, 200)
+
+        group.name = 'has name'
+        group.save()
+
+        with self.assertNumQueries(4):
+            response = self.client.get(f'/manage/{group.uuid}')
+            self.assertEqual(response.status_code, 200)
+
+    def test_get_group_state(self):
+        '''Requesting the manage group state should make:
+        - 4 queries if Group is unnamed (has to get unnamed_index)
+        - 3 queries if Group is named (no extra query for name)
+        '''
+        group = Group.objects.all()[0]
+
+        with self.assertNumQueries(4):
+            response = self.client.get(f'/get_group_state/{group.uuid}')
+            self.assertEqual(response.status_code, 200)
+
+        group.name = 'has name'
+        group.save()
+
+        with self.assertNumQueries(3):
+            response = self.client.get(f'/get_group_state/{group.uuid}')
+            self.assertEqual(response.status_code, 200)
+
+    def test_registration_page(self):
+        '''Requesting the registration page should make 2 database queries.'''
+        with self.assertNumQueries(2):
+            response = self.client.get(f'/manage/{uuid4()}')
+            self.assertEqual(response.status_code, 200)
+
+    def test_registration_page_changing_plant_qr_code(self):
+        '''Requesting the registration page should make 5 database queries when
+        changing Plant QR code is in progress.
+        '''
+        cache.set(
+            f'old_uuid_{get_default_user().pk}',
+            str(Plant.objects.all()[0].uuid)
+        )
+        with self.assertNumQueries(5):
+            response = self.client.get(f'/manage/{uuid4()}')
+            self.assertEqual(response.status_code, 200)
+
+    def test_registration_page_changing_group_qr_code(self):
+        '''Requesting the registration page should make 4 database queries when
+        changing Group QR code is in progress.
+        '''
+        cache.set(
+            f'old_uuid_{get_default_user().pk}',
+            str(Group.objects.all()[0].uuid)
+        )
+        with self.assertNumQueries(4):
+            response = self.client.get(f'/manage/{uuid4()}')
+            self.assertEqual(response.status_code, 200)
+
+    def test_registration_page_dividing_plant(self):
+        '''Requesting the registration page should make 4 database queries when
+        dividing Plant is in progress.
+        '''
+        plant = Plant.objects.all()[0]
+        event = DivisionEvent.objects.create(
+            plant=plant,
+            timestamp=timezone.now()
+        )
+        cache.set(f'division_in_progress_{get_default_user().pk}', {
+            'divided_from_plant_uuid': str(plant.uuid),
+            'division_event_key': str(event.pk)
+        })
+        with self.assertNumQueries(4):
+            response = self.client.get(f'/manage/{uuid4()}')
+            self.assertEqual(response.status_code, 200)
+
+    def test_registration_page_dividing_plant_and_changing_qr_code(self):
+        '''Requesting the registration page should make 7 database queries when
+        dividing Plant and changing Plant QR code are both in progress.
+        '''
+        plant = Plant.objects.all()[0]
+        event = DivisionEvent.objects.create(
+            plant=plant,
+            timestamp=timezone.now()
+        )
+        cache.set(f'division_in_progress_{get_default_user().pk}', {
+            'divided_from_plant_uuid': str(plant.uuid),
+            'division_event_key': str(event.pk)
+        })
+        cache.set(f'old_uuid_{get_default_user().pk}', str(plant.uuid))
+        with self.assertNumQueries(7):
+            response = self.client.get(f'/manage/{uuid4()}')
+            self.assertEqual(response.status_code, 200)
+
+    def test_get_plant_species_options_endpoint(self):
+        '''/get_plant_species_options should make 1 database query.'''
+        with self.assertNumQueries(1):
+            response = self.client.get('/get_plant_species_options')
+            self.assertEqual(response.status_code, 200)
+
+    def test_get_plant_options_endpoint(self):
+        '''/get_plant_options should make 2 database queries.'''
+        with self.assertNumQueries(2):
+            response = self.client.get('/get_plant_options')
+            self.assertEqual(response.status_code, 200)
+
+    def test_get_add_to_group_options_endpoint(self):
+        '''/get_add_to_group_options should make 2 database queries.'''
+        with self.assertNumQueries(2):
+            response = self.client.get('/get_add_to_group_options')
+            self.assertEqual(response.status_code, 200)
 
 
 class SqlQueriesPerViewTests(TestCase):
