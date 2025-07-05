@@ -3,6 +3,7 @@
 from typing import TYPE_CHECKING
 
 from django.db import models
+from django.apps import apps
 from django.conf import settings
 from django.utils.functional import cached_property
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -37,10 +38,9 @@ class PlantQueryset(models.QuerySet):
 
     def with_last_watered_time_annotation(self):
         '''Adds last_watered_time attribute (most-recent WaterEvent timestamp).'''
-        from . import WaterEvent
         return self.annotate(
             last_watered_time=Subquery(
-                WaterEvent.objects
+                apps.get_model("plant_tracker", "WaterEvent").objects
                     .filter(plant_id=OuterRef("pk"))
                     .values("timestamp")[:1]
             )
@@ -48,10 +48,9 @@ class PlantQueryset(models.QuerySet):
 
     def with_last_fertilized_time_annotation(self):
         '''Adds last_fertilized_time attribute (most-recent WaterEvent timestamp).'''
-        from . import FertilizeEvent
         return self.annotate(
             last_fertilized_time=Subquery(
-                FertilizeEvent.objects
+                apps.get_model("plant_tracker", "FertilizeEvent").objects
                     .filter(plant_id=OuterRef("pk"))
                     .values("timestamp")[:1]
             )
@@ -59,10 +58,9 @@ class PlantQueryset(models.QuerySet):
 
     def with_last_photo_thumbnail_annotation(self):
         '''Adds last_photo_thumbnail attribute with name of most-recent Photo entry.'''
-        from . import Photo
         return self.annotate(
             last_photo_thumbnail=Subquery(
-            Photo.objects
+            apps.get_model("plant_tracker", "Photo").objects
                 .filter(plant_id=OuterRef("pk"))
                 .order_by("-timestamp")
                 .values("thumbnail")[:1]
@@ -73,10 +71,9 @@ class PlantQueryset(models.QuerySet):
         '''Adds last_photo_details attribute with dict containing all relevant
         attributes of most-recent Photo entry.
         '''
-        from . import Photo
         return self.annotate(
             last_photo_details=Subquery(
-            Photo.objects
+            apps.get_model("plant_tracker", "Photo").objects
                 .filter(plant_id=OuterRef("pk"))
                 .order_by("-timestamp")
                 .annotate(
@@ -123,7 +120,6 @@ class PlantQueryset(models.QuerySet):
         '''Adds full annotations for manage_plant page (avoids seperate queries
         for events, photos, etc).
         '''
-        from . import WaterEvent, FertilizeEvent, PruneEvent, RepotEvent, DivisionEvent
         return (
             self
                 # Add last_watered_time
@@ -144,22 +140,22 @@ class PlantQueryset(models.QuerySet):
                 # event timestamps (sorted chronologically at database level)
                 .annotate(
                     water_timestamps=ArraySubquery(
-                        WaterEvent.objects
+                        apps.get_model("plant_tracker", "WaterEvent").objects
                             .filter(plant_id=OuterRef('pk'))
                             .values_list('timestamp', flat=True)
                     ),
                     fertilize_timestamps=ArraySubquery(
-                        FertilizeEvent.objects
+                        apps.get_model("plant_tracker", "FertilizeEvent").objects
                             .filter(plant_id=OuterRef('pk'))
                             .values_list('timestamp', flat=True)
                     ),
                     prune_timestamps=ArraySubquery(
-                        PruneEvent.objects
+                        apps.get_model("plant_tracker", "PruneEvent").objects
                             .filter(plant_id=OuterRef('pk'))
                             .values_list('timestamp', flat=True)
                     ),
                     repot_timestamps=ArraySubquery(
-                        RepotEvent.objects
+                        apps.get_model("plant_tracker", "RepotEvent").objects
                             .filter(plant_id=OuterRef('pk'))
                             .values_list('timestamp', flat=True)
                     ),
@@ -167,7 +163,8 @@ class PlantQueryset(models.QuerySet):
                 # Annotate whether DivisionEvents exist (skips extra query if not)
                 .annotate(
                     has_divisions=Exists(
-                        DivisionEvent.objects.filter(plant=OuterRef('pk'))
+                        apps.get_model("plant_tracker", "DivisionEvent").objects
+                            .filter(plant=OuterRef('pk'))
                     )
                 )
         )
