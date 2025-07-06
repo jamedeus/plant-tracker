@@ -117,7 +117,7 @@ class PlantQueryset(models.QuerySet):
         )
 
     def with_manage_plant_annotation(self):
-        '''Adds full annotations for manage_plant page (avoids seperate queries
+        '''Adds full annotations for manage_plant page (avoids separate queries
         for events, photos, etc).
         '''
         return (
@@ -419,9 +419,9 @@ class Plant(models.Model):
         '''
 
         # Skip if annotation says no DivisionEvents
-        if hasattr(self, 'has_divisions'):
-            if not self.has_divisions:
-                return {}
+        # pylint: disable-next=no-member
+        if hasattr(self, 'has_divisions') and not self.has_divisions:
+            return {}
 
         # Query from database if no annotation
         return {

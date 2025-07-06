@@ -1,16 +1,12 @@
 # pylint: disable=missing-docstring,line-too-long,R0801,too-many-lines
 
 import shutil
-from uuid import uuid4
 
 from django.conf import settings
 from django.test import TestCase
 from django.core.cache import cache
 
-from .models import Plant
-from .unit_test_helpers import JSONClient
 from .view_decorators import get_default_user
-from .build_states import build_overview_state
 from .tasks import update_cached_overview_state, update_all_cached_states
 
 
@@ -26,17 +22,6 @@ class HelperFunctionTests(TestCase):
     def setUp(self):
         # Clear entire cache before each test
         cache.clear()
-
-    def test_update_all_cached_states(self):
-        default_user = get_default_user()
-        # Replace cached overview state with dummy strings
-        cache.set(f'overview_state_{default_user.pk}', 'foo')
-
-        # Call update_all_cached_states method
-        update_all_cached_states()
-
-        # Confirm cached overview state was rebuilt (no longer dummy strings)
-        self.assertIsInstance(cache.get(f'overview_state_{default_user.pk}'), dict)
 
 
 class TaskTests(TestCase):
@@ -57,16 +42,13 @@ class TaskTests(TestCase):
         # Confirm overview state was generated and cached
         self.assertTrue(isinstance(cache.get(f'overview_state_{user_id}'), dict))
 
+    def test_update_all_cached_states(self):
+        default_user = get_default_user()
+        # Replace cached overview state with dummy strings
+        cache.set(f'overview_state_{default_user.pk}', 'foo')
 
-class OverviewStateUpdateTests(TestCase):
-    '''Test that cached overview states update correctly when database changes'''
+        # Call update_all_cached_states method
+        update_all_cached_states()
 
-    def setUp(self):
-        # Clear entire cache before each test
-        cache.clear()
-
-        # Set default content_type for post requests (avoid long lines)
-        self.client = JSONClient()
-
-        # Generate UUID to use in tests
-        self.uuid = uuid4()
+        # Confirm cached overview state was rebuilt (no longer dummy strings)
+        self.assertIsInstance(cache.get(f'overview_state_{default_user.pk}'), dict)

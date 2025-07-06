@@ -170,7 +170,7 @@ def update_cached_overview_details_keys(instance, update_dict):
 
 def add_instance_to_cached_overview_state(instance):
     '''Takes plant or group entry, adds details to cached overview state.
-    If entry is archved removes from cached overview state.
+    If entry is archived removes from cached overview state.
     '''
     if instance.archived:
         remove_instance_from_cached_overview_state(instance)

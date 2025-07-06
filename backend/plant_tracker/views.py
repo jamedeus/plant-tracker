@@ -694,7 +694,7 @@ def bulk_add_plant_events(user, timestamp, event_type, data, **kwargs):
     Requires JSON POST with plants (list of UUIDs), event_type, and timestamp keys.
     '''
 
-    # Get all plants in 1 query, add uuid_str annotation (pre-convert to strng)
+    # Get all plants in 1 query, add uuid_str annotation (pre-convert to string)
     plants = (
         Plant.objects
             .filter(uuid__in=data["plants"], user=user)
@@ -956,7 +956,7 @@ def bulk_add_plants_to_group(group, data, **kwargs):
     Requires JSON POST with group_id (uuid) and plants (list of UUIDs) keys.
     '''
 
-    # Get all plants in 1 query, add uuid_str annotation (pre-convert to strng)
+    # Get all plants in 1 query, add uuid_str annotation (pre-convert to string)
     plants = (
         Plant.objects
             .filter(uuid__in=data["plants"])
@@ -995,7 +995,7 @@ def bulk_remove_plants_from_group(data, group, **kwargs):
     Requires JSON POST with group_id (uuid) and plants (list of UUIDs) keys.
     '''
 
-    # Get all plants in 1 query, add uuid_str annotation (pre-convert to strng)
+    # Get all plants in 1 query, add uuid_str annotation (pre-convert to string)
     plants = (
         Plant.objects
             .filter(uuid__in=data["plants"])

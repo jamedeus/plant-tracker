@@ -45,7 +45,7 @@ class GroupQueryset(models.QuerySet):
         )
 
     def with_manage_group_annotation(self):
-        '''Adds full annotations for manage_grouo page (avoids seperate queries
+        '''Adds full annotations for manage_grouo page (avoids separate queries
         for number of plants in group and user).
         '''
         return self.with_group_plant_count_annotation().select_related('user')

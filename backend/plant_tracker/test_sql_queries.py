@@ -51,7 +51,7 @@ class AssertNumQueriesMixin:
     # pylint: disable-next=invalid-name
     def assertNumQueries(self, *args, **kwargs):
         '''Emulates upstream assertNumQueries but filters out savepoint queries
-        added by thest test framework (doesn't exist in production). Clears
+        added by test test framework (doesn't exist in production). Clears
         get_default_user cache to avoid unpredictable number of queries if
         get_default_user was called during setup.
         '''
