@@ -110,7 +110,7 @@ class PlantQueryset(models.QuerySet):
                 .with_last_watered_time_annotation()
                 # Add last_fertilized_time
                 .with_last_fertilized_time_annotation()
-                # Add last_photo_details (used as default photo if not set)
+                # Add last_photo_thumbnail (used as default photo if not set)
                 .with_last_photo_thumbnail_annotation()
                 # Include default_photo if set (avoid extra query for thumbnail)
                 .select_related('default_photo')
@@ -127,7 +127,7 @@ class PlantQueryset(models.QuerySet):
                 # Add last_fertilized_time
                 .with_last_fertilized_time_annotation()
                 # Add last_photo_details (used as default photo if not set)
-                .with_last_photo_thumbnail_annotation()
+                .with_last_photo_details_annotation()
                 # Include default_photo if set (avoid extra query for thumbnail)
                 .select_related('default_photo')
                 # Include Group entry if plant in a group

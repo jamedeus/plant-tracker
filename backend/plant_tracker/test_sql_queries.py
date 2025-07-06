@@ -152,8 +152,10 @@ class SqlQueriesPerPageTests(TestCase):
 
     def test_manage_plant_page(self):
         '''Loading a manage_plant page should make:
-        - 7 queries if Plant is unnamed (has to get unnamed_index)
-        - 6 queries if Plant is named (no extra query for name)
+        - 7 queries if Plant is unnamed (has to get unnamed_index + photo)
+        - 6 queries if Plant is named (no extra query for name, query for photo)
+        - 5 queries if Plant is named and has photos (no query for photo)
+        - 5 queries if Plant is named and has default_photo (no query for photo)
         '''
         plant = Plant.objects.all()[0]
 
@@ -168,10 +170,26 @@ class SqlQueriesPerPageTests(TestCase):
             response = self.client.get(f'/manage/{plant.uuid}')
             self.assertEqual(response.status_code, 200)
 
+        # Add photo, confirm 5 queries (no most-recent query, has annotation)
+        photo = Photo.objects.create(
+            photo=create_mock_photo('2024:03:21 10:52:03'), plant=plant
+        )
+        with self.assertNumQueries(5):
+            response = self.client.get(f'/manage/{plant.uuid}')
+            self.assertEqual(response.status_code, 200)
+
+        # Set default, confirm 5 queries (no most-recent query, has annotation)
+        plant.default_photo = photo
+        with self.assertNumQueries(5):
+            response = self.client.get(f'/manage/{plant.uuid}')
+            self.assertEqual(response.status_code, 200)
+
     def test_get_plant_state(self):
         '''Requesting the manage plant state should make:
         - 6 queries if Plant is unnamed (has to get unnamed_index)
         - 5 queries if Plant is named (no extra query for name)
+        - 4 queries if Plant is named and has photos (no query for photo)
+        - 4 queries if Plant is named and has default_photo (no query for photo)
         '''
         plant = Plant.objects.all()[0]
 
@@ -183,6 +201,20 @@ class SqlQueriesPerPageTests(TestCase):
         plant.save()
 
         with self.assertNumQueries(5):
+            response = self.client.get(f'/get_plant_state/{plant.uuid}')
+            self.assertEqual(response.status_code, 200)
+
+        # Add photo, confirm 4 queries (no most-recent query, has annotation)
+        photo = Photo.objects.create(
+            photo=create_mock_photo('2024:03:21 10:52:03'), plant=plant
+        )
+        with self.assertNumQueries(4):
+            response = self.client.get(f'/get_plant_state/{plant.uuid}')
+            self.assertEqual(response.status_code, 200)
+
+        # Set default, confirm 4 queries (no most-recent query, has annotation)
+        plant.default_photo = photo
+        with self.assertNumQueries(4):
             response = self.client.get(f'/get_plant_state/{plant.uuid}')
             self.assertEqual(response.status_code, 200)
 
