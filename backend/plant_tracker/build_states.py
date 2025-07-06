@@ -1,9 +1,76 @@
-'''Functions that build (or load from cache) states used by frontend react apps.'''
+'''Functions that build states used by frontend react apps.
+
+Contains extra functions to get cached overview state and incrementally update
+cached overview state.
+
+Building the overview state on each request can add >50ms to page load, but
+loading from cache is practically instant and incremental updates typically
+take <1ms, so this is much more efficient in most scenarios (especially when
+user goes back to overview after each plant).
+'''
 
 from django.core.cache import cache
 from django.db.models import Prefetch
 
 from .models import Plant, Group
+
+
+def build_manage_plant_state(plant):
+    '''Takes plant, builds state parsed by manage_plant react app and returns.
+
+    Plant should be queried with Plant.objects.get_with_manage_plant_annotation
+    to annotate all data used (much more efficient, avoids dozens of queries).
+    '''
+
+    state = {
+        'plant_details': plant.get_details(),
+        'photos': plant.get_photos(),
+        'default_photo': plant.default_photo_details
+    }
+
+    # Add all water, fertilize, prune, and repot timestamps
+    state['events'] = {
+        'water': [e.isoformat() for e in plant.water_timestamps],
+        'fertilize': [e.isoformat() for e in plant.fertilize_timestamps],
+        'prune': [e.isoformat() for e in plant.prune_timestamps],
+        'repot': [e.isoformat() for e in plant.repot_timestamps],
+    }
+
+    # Add notes dict with timestamps as keys and text as values
+    state['notes'] = {
+        note.timestamp.isoformat(): note.text
+        for note in plant.noteevent_set.all()
+    }
+
+    # Add object with DivisionEvent timestamps as keys, list of child plant
+    # objects as values (adds events to timeline with links to children)
+    state['division_events'] = plant.get_division_event_details()
+
+    # Add object with parent plant details if divided from existing plant
+    state['divided_from'] = plant.get_parent_plant_details()
+
+    return state
+
+
+def build_manage_group_state(group):
+    '''Builds state parsed by manage_group react app and returns.'''
+
+    plants = Plant.objects.filter(
+        user=group.user,
+        group_id=group.pk
+    ).with_overview_annotation()
+
+    # Overwrite group with already-loaded entry (avoids database query for each
+    # plant, more efficient than select_related since same instance is reused)
+    for plant in plants:
+        plant.group = group
+
+    return {
+        'group': group.get_details(),
+        'details': {
+            str(plant.uuid): plant.get_details() for plant in plants
+        }
+    }
 
 
 def has_archived_entries(user):
@@ -81,59 +148,43 @@ def get_overview_state(user):
     return state
 
 
-def build_manage_plant_state(plant):
-    '''Takes plant, builds state parsed by manage_plant react app and returns.
+def get_instance_overview_state_key(instance):
+    '''Returns overview state key for a Plant (plants) or Group (groups).'''
+    return f'{instance._meta.model_name}s'
 
-    Plant should be queried with Plant.objects.get_with_manage_plant_annotation
-    to annotate all data used (much more efficient, avoids dozens of queries).
+
+def update_cached_overview_details_keys(instance, update_dict):
+    '''Updates keys in Plant or Group get_details dict in cached overview state.
+
+    Takes Plant or Group entry and dict with one or more keys from get_details
+    dict and new values, writes new values to cached overview state.
+
+    Cannot use to add new entries to cached state (only updates if uuid exists).
     '''
-
-    state = {
-        'plant_details': plant.get_details(),
-        'photos': plant.get_photos(),
-        'default_photo': plant.default_photo_details
-    }
-
-    # Add all water, fertilize, prune, and repot timestamps
-    state['events'] = {
-        'water': [e.isoformat() for e in plant.water_timestamps],
-        'fertilize': [e.isoformat() for e in plant.fertilize_timestamps],
-        'prune': [e.isoformat() for e in plant.prune_timestamps],
-        'repot': [e.isoformat() for e in plant.repot_timestamps],
-    }
-
-    # Add notes dict with timestamps as keys and text as values
-    state['notes'] = {
-        note.timestamp.isoformat(): note.text
-        for note in plant.noteevent_set.all()
-    }
-
-    # Add object with DivisionEvent timestamps as keys, list of child plant
-    # objects as values (adds events to timeline with links to children)
-    state['division_events'] = plant.get_division_event_details()
-
-    # Add object with parent plant details if divided from existing plant
-    state['divided_from'] = plant.get_parent_plant_details()
-
-    return state
+    state = get_overview_state(instance.user)
+    key = get_instance_overview_state_key(instance)
+    if str(instance.uuid) in state[key]:
+        state[key][str(instance.uuid)].update(update_dict)
+        cache.set(f'overview_state_{instance.user.pk}', state, None)
 
 
-def build_manage_group_state(group):
-    '''Builds state parsed by manage_group react app and returns.'''
+def add_instance_to_cached_overview_state(instance):
+    '''Takes plant or group entry, adds details to cached overview state.
+    If entry is archved removes from cached overview state.
+    '''
+    if instance.archived:
+        remove_instance_from_cached_overview_state(instance)
+    else:
+        key = get_instance_overview_state_key(instance)
+        state = get_overview_state(instance.user)
+        state[key][str(instance.uuid)] = instance.get_details()
+        cache.set(f'overview_state_{instance.user.pk}', state, None)
 
-    plants = Plant.objects.filter(
-        user=group.user,
-        group_id=group.pk
-    ).with_overview_annotation()
 
-    # Overwrite group with already-loaded entry (avoids database query for each
-    # plant, more efficient than select_related since same instance is reused)
-    for plant in plants:
-        plant.group = group
-
-    return {
-        'group': group.get_details(),
-        'details': {
-            str(plant.uuid): plant.get_details() for plant in plants
-        }
-    }
+def remove_instance_from_cached_overview_state(instance):
+    '''Takes plant or group entry, removes from cached overview state.'''
+    key = get_instance_overview_state_key(instance)
+    state = get_overview_state(instance.user)
+    if str(instance.uuid) in state[key]:
+        del state[key][str(instance.uuid)]
+        cache.set(f'overview_state_{instance.user.pk}', state, None)

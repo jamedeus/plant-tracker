@@ -39,10 +39,8 @@ from .build_states import (
     build_overview_state,
     get_overview_state,
     build_manage_plant_state,
-    build_manage_group_state
-)
-from .update_cached_states import (
-    update_cached_details_keys,
+    build_manage_group_state,
+    update_cached_overview_details_keys,
     add_instance_to_cached_overview_state,
     remove_instance_from_cached_overview_state
 )
@@ -486,7 +484,7 @@ def edit_plant_details(plant, data, **kwargs):
         plant.clean_fields(exclude=['user', 'group', 'default_photo'])
         plant.save()
         # Update details in cached overview state
-        update_cached_details_keys(
+        update_cached_overview_details_keys(
             plant,
             {
                 'name': plant.get_display_name(),
@@ -525,7 +523,7 @@ def edit_group_details(group, data, **kwargs):
         group.clean_fields(exclude=['user'])
         group.save()
         # Update details in cached overview state
-        update_cached_details_keys(
+        update_cached_overview_details_keys(
             group,
             {
                 'name': group.get_display_name(),
@@ -583,7 +581,7 @@ def bulk_delete_plants_and_groups(user, data, **kwargs):
         # Avoid extra query for group user (used to get cached overview state)
         # Already confirmed requesting user owns plant, and plant was in group
         group.user = user
-        update_cached_details_keys(
+        update_cached_overview_details_keys(
             group,
             {'plants': group.get_number_of_plants()}
         )
@@ -655,7 +653,7 @@ def add_plant_event(plant, timestamp, event_type, **kwargs):
         if event_type == 'water':
             last_watered = plant.last_watered()
             if timestamp.isoformat() >= last_watered:
-                update_cached_details_keys(
+                update_cached_overview_details_keys(
                     plant,
                     {'last_watered': last_watered}
                 )
@@ -664,7 +662,7 @@ def add_plant_event(plant, timestamp, event_type, **kwargs):
         elif event_type == 'fertilize':
             last_fertilized = plant.last_fertilized()
             if timestamp.isoformat() >= last_fertilized:
-                update_cached_details_keys(
+                update_cached_overview_details_keys(
                     plant,
                     {'last_fertilized': last_fertilized}
                 )
@@ -723,7 +721,7 @@ def bulk_add_plant_events(user, timestamp, event_type, data, **kwargs):
     if event_type == 'water':
         for plant in plants:
             if not plant.last_watered_time or timestamp > plant.last_watered_time:
-                update_cached_details_keys(
+                update_cached_overview_details_keys(
                     plant,
                     {'last_watered': timestamp.isoformat()}
                 )
@@ -732,7 +730,7 @@ def bulk_add_plant_events(user, timestamp, event_type, data, **kwargs):
     if event_type == 'fertilize':
         for plant in plants:
             if not plant.last_fertilized_time or timestamp > plant.last_fertilized_time:
-                update_cached_details_keys(
+                update_cached_overview_details_keys(
                     plant,
                     {'last_fertilized': timestamp.isoformat()}
                 )
@@ -785,14 +783,14 @@ def bulk_delete_plant_events(plant, data, **kwargs):
 
     # Update last_watered if water events were deleted
     if deleted['water']:
-        update_cached_details_keys(
+        update_cached_overview_details_keys(
             plant,
             {'last_watered': plant.last_watered()}
         )
 
     # Update last_fertilized if fertilize events were deleted
     if deleted['fertilize']:
-        update_cached_details_keys(
+        update_cached_overview_details_keys(
             plant,
             {'last_fertilized': plant.last_fertilized()}
         )
@@ -902,8 +900,8 @@ def add_plant_to_group(plant, group, **kwargs):
     plant.group = group
     plant.save(update_fields=["group"])
     # Update cached overview state
-    update_cached_details_keys(plant, {'group': plant.get_group_details()})
-    update_cached_details_keys(group, {'plants': group.get_number_of_plants()})
+    update_cached_overview_details_keys(plant, {'group': plant.get_group_details()})
+    update_cached_overview_details_keys(group, {'plants': group.get_number_of_plants()})
 
     return JsonResponse(
         {
@@ -935,8 +933,8 @@ def remove_plant_from_group(plant, **kwargs):
     plant.save(update_fields=["group"])
 
     # Update cached overview state
-    update_cached_details_keys(plant, {'group': None})
-    update_cached_details_keys(
+    update_cached_overview_details_keys(plant, {'group': None})
+    update_cached_overview_details_keys(
         old_group,
         {'plants': old_group.get_number_of_plants()}
     )
@@ -977,11 +975,11 @@ def bulk_add_plants_to_group(group, data, **kwargs):
         plant.group = group
         added.append(plant.get_details())
         # Add group details to plant details in cached overview state
-        update_cached_details_keys(plant, {'group': plant.get_group_details()})
+        update_cached_overview_details_keys(plant, {'group': plant.get_group_details()})
     Plant.objects.bulk_update(plants, ['group'])
 
     # Update number of plants in group in cached overview state
-    update_cached_details_keys(group, {'plants': group.get_number_of_plants()})
+    update_cached_overview_details_keys(group, {'plants': group.get_number_of_plants()})
 
     return JsonResponse({"added": added, "failed": failed}, status=200)
 
@@ -1016,11 +1014,11 @@ def bulk_remove_plants_from_group(data, group, **kwargs):
         plant.group = None
         removed.append(plant.get_details())
         # Clear group details in plant details in cached overview state
-        update_cached_details_keys(plant, {'group': None})
+        update_cached_overview_details_keys(plant, {'group': None})
     Plant.objects.bulk_update(plants, ['group'])
 
     # Update number of plants in group in cached overview state
-    update_cached_details_keys(group, {'plants': group.get_number_of_plants()})
+    update_cached_overview_details_keys(group, {'plants': group.get_number_of_plants()})
 
     return JsonResponse({"removed": removed, "failed": failed}, status=200)
 
@@ -1049,7 +1047,7 @@ def repot_plant(plant, timestamp, data, **kwargs):
         if data["new_pot_size"]:
             plant.pot_size = data["new_pot_size"]
             plant.save()
-            update_cached_details_keys(plant, {'pot_size': plant.pot_size})
+            update_cached_overview_details_keys(plant, {'pot_size': plant.pot_size})
         return JsonResponse({"action": "repot", "plant": plant.uuid}, status=200)
 
     except IntegrityError:
@@ -1105,9 +1103,8 @@ def add_plant_photos(request, user):
 
     plant = (
         Plant.objects
-            .filter(uuid=request.POST.get("plant_id"))
             .select_related('user', 'default_photo')
-            .first()
+            .get_by_uuid(request.POST.get("plant_id"))
     )
     if not plant:
         return JsonResponse({'error': 'unable to find plant'}, status=404)
@@ -1136,7 +1133,7 @@ def add_plant_photos(request, user):
 
     # Update thumbnail unless default photo set (most-recent may have changed)
     if not plant.default_photo:
-        update_cached_details_keys(
+        update_cached_overview_details_keys(
             plant,
             {'thumbnail': plant.get_thumbnail_url()}
         )
@@ -1175,7 +1172,7 @@ def delete_plant_photos(plant, data, **kwargs):
 
     # Update thumbnail unless default photo set (most-recent may have changed)
     if not plant.default_photo:
-        update_cached_details_keys(
+        update_cached_overview_details_keys(
             plant,
             {'thumbnail': plant.get_thumbnail_url()}
         )
@@ -1196,7 +1193,7 @@ def set_plant_default_photo(plant, data, **kwargs):
         plant.default_photo = photo
         plant.save()
         # Update thumbnail in cached overview state
-        update_cached_details_keys(
+        update_cached_overview_details_keys(
             plant,
             {'thumbnail': plant.get_thumbnail_url()}
         )
