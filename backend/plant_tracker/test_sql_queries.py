@@ -5,7 +5,7 @@ not to enforce a specific number (that can change during development as long as
 it doesn't get out of control).
 '''
 
-# pylint: disable=missing-docstring,too-many-lines,R0801,too-many-public-methods
+# pylint: disable=missing-docstring,too-many-lines,R0801,too-many-public-methods,too-few-public-methods
 
 import shutil
 from uuid import uuid4
@@ -44,6 +44,46 @@ def tearDownModule():
     # Delete mock photo directory after tests
     print("\nDeleting mock photos...\n")
     shutil.rmtree(settings.TEST_DIR, ignore_errors=True)
+
+
+class AssertNumQueriesMixin:
+    @contextmanager
+    # pylint: disable-next=invalid-name
+    def assertNumQueries(self, *args, **kwargs):
+        '''Emulates upstream assertNumQueries but filters out savepoint queries
+        added by thest test framework (doesn't exist in production). Clears
+        get_default_user cache to avoid unpredictable number of queries if
+        get_default_user was called during setup.
+        '''
+        get_default_user.cache_clear()
+
+        # Measure queries
+        conn = connections[kwargs.pop('using', None) or 'default']
+        with CaptureQueriesContext(conn) as ctx:
+            yield
+
+        # Filter out savepoint/release queries
+        filtered = [
+            q for q in ctx.captured_queries
+            if not (
+                q['sql'].startswith('SAVEPOINT') or
+                q['sql'].startswith('RELEASE SAVEPOINT') or
+                q['sql'].startswith('ROLLBACK TO SAVEPOINT')
+            )
+        ]
+
+        # Raise exception if unexpected number of queries
+        expected = args[0] if args else kwargs.get('num')
+        actual = len(filtered)
+        if actual != expected:
+            # Build error message with actual recorded queries
+            lines = ["Captured queries were:"]
+            for i, q in enumerate(filtered, start=1):
+                lines.append(f"{i}. {q['sql']}")
+            raise self.failureException(
+                f"{actual} != {expected} : {actual} queries executed, {expected} expected\n"
+                + "\n".join(lines)
+            )
 
 
 class SqlQueriesPerPageTests(TestCase):
@@ -337,7 +377,7 @@ class SqlQueriesPerPageTests(TestCase):
             self.assertEqual(response.status_code, 200)
 
 
-class SqlQueriesPerViewTests(TestCase):
+class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -354,43 +394,6 @@ class SqlQueriesPerViewTests(TestCase):
 
         # Set default content_type for post requests (avoid long lines)
         self.client = JSONClient()
-
-    @contextmanager
-    def assertNumQueries(self, *args, **kwargs):
-        '''Emulates upstream assertNumQueries but filters out savepoint queries
-        added by thest test framework (doesn't exist in production). Clears
-        get_default_user cache to avoid unpredictable number of queries if
-        get_default_user was called during setup.
-        '''
-        get_default_user.cache_clear()
-
-        # Measure queries
-        conn = connections[kwargs.pop('using', None) or 'default']
-        with CaptureQueriesContext(conn) as ctx:
-            yield
-
-        # Filter out savepoint/release queries
-        filtered = [
-            q for q in ctx.captured_queries
-            if not (
-                q['sql'].startswith('SAVEPOINT') or
-                q['sql'].startswith('RELEASE SAVEPOINT') or
-                q['sql'].startswith('ROLLBACK TO SAVEPOINT')
-            )
-        ]
-
-        # Raise exception if unexpected number of queries
-        expected = args[0] if args else kwargs.get('num')
-        actual = len(filtered)
-        if actual != expected:
-            # Build error message qith actual recorded queries
-            lines = ["Captured queries were:"]
-            for i, q in enumerate(filtered, start=1):
-                lines.append(f"{i}. {q['sql']}")
-            raise self.failureException(
-                f"{actual} != {expected} : {actual} queries executed, {expected} expected\n"
-                + "\n".join(lines)
-            )
 
     def test_get_qr_codes(self):
         '''/get_qr_codes should not query the database.'''
@@ -1319,7 +1322,7 @@ class SqlQueriesPerViewTests(TestCase):
             self.assertEqual(response.status_code, 200)
 
 
-class SqlQueriesPerUserAuthenticationEndpoint(TestCase):
+class SqlQueriesPerUserAuthenticationEndpoint(AssertNumQueriesMixin, TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -1350,43 +1353,6 @@ class SqlQueriesPerUserAuthenticationEndpoint(TestCase):
     def tearDown(self):
         # Ensure user logged out between tests
         self.client.logout()
-
-    @contextmanager
-    def assertNumQueries(self, *args, **kwargs):
-        '''Emulates upstream assertNumQueries but filters out savepoint queries
-        added by thest test framework (doesn't exist in production). Clears
-        get_default_user cache to avoid unpredictable number of queries if
-        get_default_user was called during setup.
-        '''
-        get_default_user.cache_clear()
-
-        # Measure queries
-        conn = connections[kwargs.pop('using', None) or 'default']
-        with CaptureQueriesContext(conn) as ctx:
-            yield
-
-        # Filter out savepoint/release queries
-        filtered = [
-            q for q in ctx.captured_queries
-            if not (
-                q['sql'].startswith('SAVEPOINT') or
-                q['sql'].startswith('RELEASE SAVEPOINT') or
-                q['sql'].startswith('ROLLBACK TO SAVEPOINT')
-            )
-        ]
-
-        # Raise exception if unexpected number of queries
-        expected = args[0] if args else kwargs.get('num')
-        actual = len(filtered)
-        if actual != expected:
-            # Build error message qith actual recorded queries
-            lines = ["Captured queries were:"]
-            for i, q in enumerate(filtered, start=1):
-                lines.append(f"{i}. {q['sql']}")
-            raise self.failureException(
-                f"{actual} != {expected} : {actual} queries executed, {expected} expected\n"
-                + "\n".join(lines)
-            )
 
     def test_login_page(self):
         '''Loading the login page should not query the database.'''
