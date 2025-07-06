@@ -892,7 +892,7 @@ def remove_plant_from_group(plant, **kwargs):
 @get_user_token
 @requires_json_post(["group_id", "plants"])
 @get_group_from_post_body
-def bulk_add_plants_to_group(group, data, **kwargs):
+def bulk_add_plants_to_group(user, group, data, **kwargs):
     '''Adds a list of Plants to specified Group (creates database relation for each).
     Requires JSON POST with group_id (uuid) and plants (list of UUIDs) keys.
     '''
@@ -900,7 +900,7 @@ def bulk_add_plants_to_group(group, data, **kwargs):
     # Get all plants in 1 query, add uuid_str annotation (pre-convert to string)
     plants = (
         Plant.objects
-            .filter(uuid__in=data["plants"])
+            .filter(uuid__in=data["plants"], user=user)
             .with_uuid_as_string_annotation()
             .with_overview_annotation()
             .select_related("user")
@@ -928,7 +928,7 @@ def bulk_add_plants_to_group(group, data, **kwargs):
 @get_user_token
 @requires_json_post(["group_id", "plants"])
 @get_group_from_post_body
-def bulk_remove_plants_from_group(data, group, **kwargs):
+def bulk_remove_plants_from_group(user, data, group, **kwargs):
     '''Removes a list of Plants from specified Group (deletes database relations).
     Requires JSON POST with group_id (uuid) and plants (list of UUIDs) keys.
     '''
@@ -936,7 +936,7 @@ def bulk_remove_plants_from_group(data, group, **kwargs):
     # Get all plants in 1 query, add uuid_str annotation (pre-convert to string)
     plants = (
         Plant.objects
-            .filter(uuid__in=data["plants"])
+            .filter(uuid__in=data["plants"], user=user)
             .with_uuid_as_string_annotation()
             .with_overview_annotation()
             .select_related("user")

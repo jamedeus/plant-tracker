@@ -285,6 +285,10 @@ class ViewRegressionTests(TestCase):
         # Clear entire cache before each test
         cache.clear()
 
+    def tearDown(self):
+        # Revert back to SINGLE_USER_MODE
+        settings.SINGLE_USER_MODE = True
+
     def test_water_group_fails_due_to_duplicate_timestamp(self):
         '''Issue: The bulk_add_plant_events endpoint did not trap errors when
         creating events. If a plant in UUID list already had an event with the
@@ -821,6 +825,91 @@ class ViewRegressionTests(TestCase):
                 'show_archive': False
             }
         )
+
+    def test_should_not_be_able_to_add_other_users_plants_to_group(self):
+        '''Issue: The /bulk_add_plants_to_group endpoint checked group ownership
+        (get_group_from_post_body decorator) but did not check plant ownership
+        (uuids in payload, no automatic decorator check). This allowed a user to
+        add other user's plants to their groups if the UUID was known.
+        '''
+
+        # Disable SINGLE_USER_MODE
+        settings.SINGLE_USER_MODE = False
+
+        # Create 2 test users + group owned by user1, plant owned by user2
+        user_model = get_user_model()
+        user1 = user_model.objects.create_user(
+            username='user1',
+            password='123',
+            email='user1@gmail.com'
+        )
+        user2 = user_model.objects.create_user(
+            username='user2',
+            password='123',
+            email='user2@gmail.com'
+        )
+        group = Group.objects.create(uuid=uuid4(), user=user1)
+        plant = Plant.objects.create(uuid=uuid4(), user=user2)
+
+        # Sign in as user1
+        client = JSONClient()
+        client.login(username='user1', password='123')
+
+        # Attempt to add user2's plant to user1's group
+        response = client.post('/bulk_add_plants_to_group', {
+            'group_id': group.uuid,
+            'plants': [plant.uuid]
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm failed to add plant to group
+        self.assertEqual(response.json(), {'added': [], 'failed': [str(plant.uuid)]})
+        plant.refresh_from_db()
+        self.assertIsNone(plant.group)
+
+    def test_should_not_be_able_to_remove_other_users_plants_from_groups(self):
+        '''Issue: The /bulk_remove_plants_from_group endpoint checked group
+        ownership (get_group_from_post_body decorator) but did not check plant
+        ownership (uuids in payload, no automatic decorator check). This allowed
+        a user to remove other user's plants from groups if the UUID was known.
+        '''
+
+        # Disable SINGLE_USER_MODE
+        settings.SINGLE_USER_MODE = False
+
+        # Create 2 test users with 1 group each
+        user_model = get_user_model()
+        user1 = user_model.objects.create_user(
+            username='user1',
+            password='123',
+            email='user1@gmail.com'
+        )
+        user2 = user_model.objects.create_user(
+            username='user2',
+            password='123',
+            email='user2@gmail.com'
+        )
+        user1_group = Group.objects.create(uuid=uuid4(), user=user1)
+        user2_group = Group.objects.create(uuid=uuid4(), user=user2)
+
+        # Create plant for user2 that is in group
+        plant = Plant.objects.create(uuid=uuid4(), user=user2, group=user2_group)
+
+        # Sign in as user1
+        client = JSONClient()
+        client.login(username='user1', password='123')
+
+        # Attempt to remove user2's plant from group
+        response = client.post('/bulk_remove_plants_from_group', {
+            'group_id': user1_group.uuid,
+            'plants': [plant.uuid]
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm failed to remove plant
+        self.assertEqual(response.json(), {'removed': [], 'failed': [str(plant.uuid)]})
+        plant.refresh_from_db()
+        self.assertIsNotNone(plant.group)
 
 
 class CachedStateRegressionTests(TestCase):
