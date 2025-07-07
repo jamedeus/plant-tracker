@@ -296,12 +296,13 @@ def render_registration_page(request, uuid, user):
         plant = Plant.objects.get_with_overview_annotation(
             uuid=division_in_progress['divided_from_plant_uuid']
         )
-        state['dividing_from'] = {
-            'plant_details': plant.get_details(),
-            'default_photo': plant.get_default_photo_details(),
-            'plant_key': str(plant.pk),
-            'event_key': division_in_progress['division_event_key']
-        }
+        if plant:
+            state['dividing_from'] = {
+                'plant_details': plant.get_details(),
+                'default_photo': plant.get_default_photo_details(),
+                'plant_key': str(plant.pk),
+                'event_key': division_in_progress['division_event_key']
+            }
 
     return render_react_app(
         request,

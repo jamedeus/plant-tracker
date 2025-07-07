@@ -949,6 +949,33 @@ class ViewRegressionTests(TestCase):
         response = self.client.get(f'/manage/{uuid4()}')
         self.assertEqual(response.status_code, 200)
 
+    def test_division_in_progress_breaks_if_parent_deleted(self):
+        '''Issue: views.render_registration_page queried Plant with UUID from
+        cache set by /divide_plant then blindly called methods on the returned
+        instance. If plant had been deleted query would return None, resulting
+        in AttributeError when methods were called on None and a 500 response to
+        client. The render_registration_page function now checks if plant found.
+        '''
+
+        # Create plant, start dividing
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        response = JSONClient().post('/divide_plant', {
+            'plant_id': plant.uuid,
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm plant UUID was cached
+        dividing = cache.get(f'division_in_progress_{get_default_user().pk}')
+        self.assertEqual(dividing['divided_from_plant_uuid'], str(plant.uuid))
+
+        # Delete plant
+        plant.delete()
+
+        # Request registration page, confirm does not return 500 error
+        response = self.client.get(f'/manage/{uuid4()}')
+        self.assertEqual(response.status_code, 200)
+
 
 class CachedStateRegressionTests(TestCase):
     def setUp(self):
