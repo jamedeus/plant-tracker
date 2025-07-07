@@ -77,6 +77,8 @@ except ValueError as exc:
 # SECURITY WARNING: don't run with debug turned on in production!
 # Disable debug unless env var set
 DEBUG = bool(os.environ.get('DEBUG_MODE', 0))
+# User-configurable debug tool (django-debug-toolbar or silk, default to silk)
+DEBUG_TOOL = os.environ.get('DEBUG_TOOL', 'silk')
 
 # Running tests or pylint
 TESTING = 'test' in sys.argv or 'pylint' in str(sys.argv)
@@ -106,16 +108,20 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-# Add django-debug-toolbar in development mode
+# Add debug tools in debug mode
 if DEBUG and not TESTING:
-    INSTALLED_APPS.append("silk")
-    MIDDLEWARE.append("silk.middleware.SilkyMiddleware")
-    # INSTALLED_APPS.append("debug_toolbar")
-    # MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
-    # INTERNAL_IPS = [
-    #     "127.0.0.1",
-    #     "10.80.40.10"
-    # ]
+    # Add django-debug-toolbar if env var set
+    if DEBUG_TOOL.lower() in ("toolbar", "debug_toolbar"):
+        INSTALLED_APPS.append("debug_toolbar")
+        MIDDLEWARE.append("debug_toolbar.middleware.DebugToolbarMiddleware")
+        INTERNAL_IPS = [
+            "127.0.0.1",
+            "10.80.40.10"
+        ]
+    # Otherwise add django-silk
+    else:
+        INSTALLED_APPS.append("silk")
+        MIDDLEWARE.append("silk.middleware.SilkyMiddleware")
 
 ROOT_URLCONF = "backend.urls"
 
