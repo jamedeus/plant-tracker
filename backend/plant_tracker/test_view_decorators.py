@@ -208,7 +208,7 @@ class FallbackErrorHandlingTests(TestCase):
         )
 
     def test_get_group_from_post_body_missing_group_id(self):
-        @get_group_from_post_body
+        @get_group_from_post_body()
         def mock_view_function(**kwargs):
             pass
 

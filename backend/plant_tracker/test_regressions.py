@@ -1437,11 +1437,11 @@ class ViewDecoratorRegressionTests(TestCase):
         '''
 
         # Create test functions that raise errors caught by decorator
-        @get_group_from_post_body
+        @get_group_from_post_body()
         def test_key_error(group, **kwargs):
             raise KeyError("wrapped function error")
 
-        @get_group_from_post_body
+        @get_group_from_post_body()
         def test_validation_error(group, **kwargs):
             raise ValidationError("wrapped function error")
 

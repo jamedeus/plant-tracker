@@ -480,7 +480,7 @@ def edit_plant_details(plant, data, **kwargs):
 
 @get_user_token
 @requires_json_post(["group_id", "name", "location", "description"])
-@get_group_from_post_body
+@get_group_from_post_body()
 @clean_payload_data
 def edit_group_details(group, data, **kwargs):
     '''Updates description attributes of existing Group entry.
@@ -842,7 +842,7 @@ def delete_plant_note(plant, timestamp, **kwargs):
 @get_user_token
 @requires_json_post(["plant_id", "group_id"])
 @get_plant_from_post_body()
-@get_group_from_post_body
+@get_group_from_post_body()
 def add_plant_to_group(plant, group, **kwargs):
     '''Adds specified Plant to specified Group (creates database relation).
     Requires JSON POST with plant_id (uuid) and group_id (uuid) keys.
@@ -896,7 +896,7 @@ def remove_plant_from_group(plant, **kwargs):
 
 @get_user_token
 @requires_json_post(["group_id", "plants"])
-@get_group_from_post_body
+@get_group_from_post_body()
 def bulk_add_plants_to_group(user, group, data, **kwargs):
     '''Adds a list of Plants to specified Group (creates database relation for each).
     Requires JSON POST with group_id (uuid) and plants (list of UUIDs) keys.
@@ -932,7 +932,7 @@ def bulk_add_plants_to_group(user, group, data, **kwargs):
 
 @get_user_token
 @requires_json_post(["group_id", "plants"])
-@get_group_from_post_body
+@get_group_from_post_body()
 def bulk_remove_plants_from_group(user, data, group, **kwargs):
     '''Removes a list of Plants from specified Group (deletes database relations).
     Requires JSON POST with group_id (uuid) and plants (list of UUIDs) keys.

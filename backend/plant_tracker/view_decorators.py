@@ -121,8 +121,6 @@ def get_plant_from_post_body(select_related=None, **kwargs):
     If called after get_user_token throws error if Plant is not owned be user.
 
     Must call after requires_json_post (expects dict with plant_id key as first arg).
-
-    Passes Plant instance and data dict to wrapped function as plant and data kwargs.
     '''
     def decorator(func):
         @wraps(func)
@@ -155,35 +153,44 @@ def get_plant_from_post_body(select_related=None, **kwargs):
     return decorator
 
 
-def get_group_from_post_body(func):
-    '''Decorator looks up group by UUID, throws error if not found.
+def get_group_from_post_body(select_related=None, **kwargs):
+    '''Decorator looks up group by UUID, throws error if not found. Optional
+    select_related arg can be used to query foreignkey related objects. Passes
+    Group instance and data dict to wrapped function as group and data kwargs.
+
     If called after get_user_token throws error if Group is not owned be user.
+
     Must call after requires_json_post (expects dict with group_id key as first arg).
-    Passes Group instance and data dict to wrapped function as group and data kwargs.
     '''
-    @wraps(func)
-    def wrapper(data, **kwargs):
-        try:
-            group = Group.objects.get_by_uuid(data["group_id"])
-            if group is None:
-                return JsonResponse({"error": "group not found"}, status=404)
-        except KeyError:
-            return JsonResponse(
-                {"error": "POST body missing required 'group_id' key"},
-                status=400
-            )
-        except ValidationError:
-            return JsonResponse(
-                {"error": "group_id key is not a valid UUID"},
-                status=400
-            )
-        if 'user' in kwargs and group.user != kwargs['user']:
-            return JsonResponse(
-                {"error": "group is owned by a different user"},
-                status=403
-            )
-        return func(group=group, data=data, **kwargs)
-    return wrapper
+    def decorator(func):
+        @wraps(func)
+        def wrapper(data, **kwargs):
+            try:
+                group = (
+                    Group.objects
+                        .select_related(select_related)
+                        .get_by_uuid(data["group_id"])
+                )
+                if group is None:
+                    return JsonResponse({"error": "group not found"}, status=404)
+            except KeyError:
+                return JsonResponse(
+                    {"error": "POST body missing required 'group_id' key"},
+                    status=400
+                )
+            except ValidationError:
+                return JsonResponse(
+                    {"error": "group_id key is not a valid UUID"},
+                    status=400
+                )
+            if 'user' in kwargs and group.user != kwargs['user']:
+                return JsonResponse(
+                    {"error": "group is owned by a different user"},
+                    status=403
+                )
+            return func(group=group, data=data, **kwargs)
+        return wrapper
+    return decorator
 
 
 # Maps instance._meta.model_name strings to model classes
