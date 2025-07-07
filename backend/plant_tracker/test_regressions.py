@@ -911,6 +911,44 @@ class ViewRegressionTests(TestCase):
         plant.refresh_from_db()
         self.assertIsNotNone(plant.group)
 
+    def test_division_in_progress_breaks_if_parent_uuid_changed(self):
+        '''Issue: /divide_plant saves UUID of plant being divided in cache which
+        is read by views.render_registration_page and used to look up plant. If
+        UUID was changed after beginning division the cached would be outdated,
+        no plant would be found, and requesting the registration page would
+        result in an AttributeError. The /change_uuid endpoint now updates the
+        cached UUID if it exists.
+        '''
+
+        # Create plant, start dividing
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        response = JSONClient().post('/divide_plant', {
+            'plant_id': plant.uuid,
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm plant UUID was cached
+        dividing = cache.get(f'division_in_progress_{get_default_user().pk}')
+        self.assertEqual(dividing['divided_from_plant_uuid'], str(plant.uuid))
+
+        # Simulate user changing plant's uuid
+        cache.set(f'old_uuid_{get_default_user().pk}', str(plant.uuid), 900)
+        new_uuid = uuid4()
+        response = JSONClient().post('/change_uuid', {
+            'uuid': str(plant.uuid),
+            'new_id': str(new_uuid)
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm cached uuid was updated
+        dividing = cache.get(f'division_in_progress_{get_default_user().pk}')
+        self.assertEqual(dividing['divided_from_plant_uuid'], str(new_uuid))
+
+        # Confirm loading registration page does not return 500 error
+        response = self.client.get(f'/manage/{uuid4()}')
+        self.assertEqual(response.status_code, 200)
+
 
 class CachedStateRegressionTests(TestCase):
     def setUp(self):

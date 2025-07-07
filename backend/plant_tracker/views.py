@@ -293,7 +293,6 @@ def render_registration_page(request, uuid, user):
     # Check if user is dividing plant, add details if dividing
     division_in_progress = cache.get(f'division_in_progress_{user.pk}')
     if division_in_progress:
-        # BUG if parent UUID changed since started this causes traceback (gets None)
         plant = Plant.objects.get_with_overview_annotation(
             uuid=division_in_progress['divided_from_plant_uuid']
         )
@@ -423,6 +422,11 @@ def change_uuid(instance, data, user, **kwargs):
         cache.delete(f'old_uuid_{user.pk}')
         # Add back to cached overview state under new UUID
         add_instance_to_cached_overview_state(instance)
+        # If division in progress update cached UUID
+        dividing = cache.get(f'division_in_progress_{user.pk}')
+        if dividing and dividing['divided_from_plant_uuid'] == data["uuid"]:
+            dividing['divided_from_plant_uuid'] = str(instance.uuid)
+            cache.set(f'division_in_progress_{user.pk}', dividing, 900)
         return JsonResponse({"new_uuid": str(instance.uuid)}, status=200)
     except ValidationError:
         return JsonResponse({"error": "new_id key is not a valid UUID"}, status=400)
