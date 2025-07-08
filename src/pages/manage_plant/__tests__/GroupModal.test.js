@@ -29,13 +29,17 @@ describe('GroupModal', () => {
             json: () => Promise.resolve({ options: mockGroupOptions })
         }));
 
-        // Render modal, open modal
+        // Render modal
         const component = render(
             <ReduxProvider>
                 <GroupModal />
             </ReduxProvider>
         );
+
+        // Open modal, confirm options requested
         openGroupModal();
+        await jest.advanceTimersByTimeAsync(0);
+        expect(global.fetch).toHaveBeenCalledWith('/get_add_to_group_options');
 
         // Confirm contains 2 group options, does not contain "No groups" text
         await waitFor(() => {
@@ -115,7 +119,7 @@ describe('GroupModal', () => {
         });
 
         // Fast forward until response received
-        jest.advanceTimersByTime(5);
+        await jest.advanceTimersByTimeAsync(5);
 
         // Confirm spinner disappeared, contents appeared
         await waitFor(() => {
@@ -126,11 +130,9 @@ describe('GroupModal', () => {
         // Close modal, fast forward through close animation
         let event = new Event("close");
         document.querySelector('dialog').dispatchEvent(event);
-        jest.advanceTimersByTime(200);
+        await jest.advanceTimersByTimeAsync(200);
 
         // Confirm contents disappeared
-        await waitFor(() => {
-            expect(component.queryByText('Test group')).toBeNull();
-        });
+        expect(component.queryByText('Test group')).toBeNull();
     });
 });

@@ -25,9 +25,13 @@ describe('AddPlantsModal', () => {
             <AddPlantsModal addPlants={jest.fn()} />
         );
 
+        // Open modal, confirm options requested
+        openAddPlantsModal();
+        await jest.advanceTimersByTimeAsync(0);
+        expect(global.fetch).toHaveBeenCalledWith('/get_plant_options');
+
         // Confirm a card was rendered for each plant in options (all plants in
         // database) that isn't already in details (all plants in group)
-        openAddPlantsModal();
         await waitFor(() => {
             const titles = component.container.querySelectorAll('.card-title');
             expect(titles.length).toBe(2);
@@ -106,7 +110,7 @@ describe('AddPlantsModal', () => {
         });
 
         // Fast forward until response received
-        jest.advanceTimersByTime(5);
+        await jest.advanceTimersByTimeAsync(5);
 
         // Confirm spinner disappeared, contents appeared
         await waitFor(() => {
@@ -117,11 +121,9 @@ describe('AddPlantsModal', () => {
         // Close modal, fast forward through close animation
         let event = new Event("close");
         document.querySelector('dialog').dispatchEvent(event);
-        jest.advanceTimersByTime(200);
+        await jest.advanceTimersByTimeAsync(200);
 
         // Confirm contents disappeared
-        await waitFor(() => {
-            expect(component.queryByText('Another test plant')).toBeNull();
-        });
+        expect(component.queryByText('Another test plant')).toBeNull();
     });
 });
