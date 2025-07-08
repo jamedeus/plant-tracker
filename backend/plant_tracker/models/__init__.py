@@ -1,3 +1,5 @@
+'''Django ORM models used to track plants and plant care history.'''
+
 from .plant import Plant
 from .group import Group
 from .photo import Photo

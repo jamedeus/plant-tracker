@@ -1,5 +1,7 @@
 '''Django API endpoint functions'''
 
+# pylint: disable=too-many-lines
+
 import json
 import base64
 from io import BytesIO
