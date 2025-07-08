@@ -4,7 +4,7 @@ import CloseButtonIcon from 'src/components/CloseButtonIcon';
 
 // Reusable modal component with forwardRef that allows rendering contents
 // before modal is opened, can be closed with button or by clicking outside
-const Modal = forwardRef(function Modal({ title, children, className='', onClose }, ref) {
+const Modal = forwardRef(function Modal({ title, children, className='', onOpen, onClose }, ref) {
     // Don't render children until modal has been opened, keep rendered after
     const [hasBeenOpened, setHasBeenOpened] = React.useState(false);
 
@@ -21,11 +21,14 @@ const Modal = forwardRef(function Modal({ title, children, className='', onClose
     useEffect(() => {
         /* istanbul ignore else */
         if (dialogRef.current) {
-            // Set state the first time modal is opened
+            // Detect when modal is opened, call onOpen if exists
             const observer = new MutationObserver(() => {
-                const open = dialogRef.current.hasAttribute("open");
-                if (open && !hasBeenOpened) {
-                    setHasBeenOpened(true);
+                if (dialogRef.current.hasAttribute("open")) {
+                    onOpen && onOpen();
+                    // Set state the first time modal is opened
+                    if (!hasBeenOpened) {
+                        setHasBeenOpened(true);
+                    }
                 }
             });
 
@@ -66,6 +69,7 @@ Modal.propTypes = {
     title: PropTypes.string,
     children: PropTypes.node.isRequired,
     className: PropTypes.string,
+    onOpen: PropTypes.func,
     onClose: PropTypes.func
 };
 

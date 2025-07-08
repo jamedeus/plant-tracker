@@ -8,9 +8,8 @@ import PlantCard from 'src/components/PlantCard';
 let modalRef, loadOptions;
 
 // Request options from backend, open modal
-export const openAddPlantsModal = async () => {
+export const openAddPlantsModal = () => {
     modalRef.current.open();
-    await loadOptions();
 };
 
 const Options = ({ options, addPlants }) => {
@@ -96,6 +95,7 @@ const AddPlantsModal = memo(function AddPlantsModal({ addPlants }) {
             title='Add Plants'
             ref={modalRef}
             className='max-w-[26rem]'
+            onOpen={loadOptions}
             onClose={clearOptions}
         >
             <Options options={options} addPlants={addPlants} />

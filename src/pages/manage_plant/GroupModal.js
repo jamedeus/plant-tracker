@@ -10,9 +10,8 @@ import { plantAddedToGroup } from './plantSlice';
 
 let modalRef, loadOptions;
 
-export const openGroupModal = async () => {
+export const openGroupModal = () => {
     modalRef.current.open();
-    await loadOptions();
 };
 
 const Options = ({ options }) => {
@@ -96,7 +95,12 @@ const GroupModal = () => {
     };
 
     return (
-        <Modal title='Add plant to group' ref={modalRef} onClose={clearOptions}>
+        <Modal
+            title='Add plant to group'
+            ref={modalRef}
+            onOpen={loadOptions}
+            onClose={clearOptions}
+        >
             <div className="flex flex-col items-center px-4 overflow-y-auto">
                 <Options options={options} />
             </div>
