@@ -1,34 +1,23 @@
 import React, { useState, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 import { sendPostRequest } from 'src/util';
 import Modal from 'src/components/Modal';
 import GroupCard from 'src/components/GroupCard';
 import { openErrorModal } from 'src/components/ErrorModal';
+import LoadingAnimation from 'src/components/LoadingAnimation';
 import { plantAddedToGroup } from './plantSlice';
 
 let modalRef, loadOptions;
 
 export const openGroupModal = async () => {
-    await loadOptions();
     modalRef.current.open();
+    await loadOptions();
 };
 
-const GroupModal = () => {
-    modalRef = useRef(null);
-
+const Options = ({ options }) => {
     const dispatch = useDispatch();
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
-
-    // Stores options queried from backend
-    const [options, setOptions] = useState([]);
-
-    loadOptions = async () => {
-        const response = await fetch('/get_add_to_group_options');
-        if (response.ok) {
-            const data = await response.json();
-            setOptions(data.options);
-        }
-    };
 
     const submit = async (groupID) => {
         const payload = {
@@ -50,9 +39,9 @@ const GroupModal = () => {
         modalRef.current.close();
     };
 
-    return (
-        <Modal title='Add plant to group' ref={modalRef}>
-            <div className="flex flex-col px-4 overflow-y-auto">
+    if (options) {
+        return (
+            <>
                 {Object.entries(options).map(([uuid, group]) => (
                     <div
                         key={uuid}
@@ -71,6 +60,45 @@ const GroupModal = () => {
                         No groups
                     </span>
                 )}
+            </>
+        );
+    } else {
+        return <LoadingAnimation />;
+    }
+};
+
+Options.propTypes = {
+    options: PropTypes.object
+};
+
+const GroupModal = () => {
+    modalRef = useRef(null);
+
+    // Stores options queried from backend
+    const [options, setOptions] = useState(null);
+
+    // Request options from backend, set state (called when modal opens)
+    loadOptions = async () => {
+        const response = await fetch('/get_add_to_group_options');
+        if (response.ok) {
+            const data = await response.json();
+            setOptions(data.options);
+        } else {
+            setOptions([]);
+        }
+    };
+
+    // Clear options after close animation completes
+    const clearOptions = () => {
+        setTimeout(() => {
+            setOptions(null);
+        }, 200);
+    };
+
+    return (
+        <Modal title='Add plant to group' ref={modalRef} onClose={clearOptions}>
+            <div className="flex flex-col items-center px-4 overflow-y-auto">
+                <Options options={options} />
             </div>
         </Modal>
     );

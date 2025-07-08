@@ -1,6 +1,7 @@
 import React, { useState, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import EditableNodeList from 'src/components/EditableNodeList';
+import LoadingAnimation from 'src/components/LoadingAnimation';
 import Modal from 'src/components/Modal';
 import PlantCard from 'src/components/PlantCard';
 
@@ -8,28 +9,11 @@ let modalRef, loadOptions;
 
 // Request options from backend, open modal
 export const openAddPlantsModal = async () => {
-    await loadOptions();
     modalRef.current.open();
+    await loadOptions();
 };
 
-const AddPlantsModal = memo(function AddPlantsModal({ addPlants }) {
-    modalRef = useRef(null);
-
-    // Stores options queried from backend
-    const [options, setOptions] = useState([]);
-
-    loadOptions = async () => {
-        const response = await fetch('/get_plant_options');
-        if (response.ok) {
-            const data = await response.json();
-            setOptions(data.options);
-        }
-    };
-
-    const clearOptions = () => {
-        setOptions([]);
-    };
-
+const Options = ({ options, addPlants }) => {
     // Ref used to read selected items from EditableNodeList form
     const formRef = useRef(null);
 
@@ -39,6 +23,74 @@ const AddPlantsModal = memo(function AddPlantsModal({ addPlants }) {
         addPlants(Array.from(selected.keys()));
     };
 
+    if (options) {
+        return (
+            <>
+                <div className="md:max-h-[50vh] overflow-y-auto pr-4 mt-4">
+                    {Object.keys(options).length > 0 ? (
+                        <EditableNodeList editing={true} formRef={formRef}>
+                            {Object.entries(options).map(([uuid, plant]) => (
+                                <PlantCard key={uuid} { ...plant } />
+                            ))}
+                        </EditableNodeList>
+                    ) : (
+                        <p className="my-4 pl-4">No plants</p>
+                    )}
+                </div>
+
+                <div className="modal-action">
+                    <form method="dialog">
+                        <button className="btn btn-soft">
+                            Cancel
+                        </button>
+                        <button
+                            className="btn btn-accent"
+                            onClick={submit}
+                        >
+                            Add
+                        </button>
+                    </form>
+                </div>
+            </>
+        );
+    } else {
+        return (
+            <div className="flex flex-col items-center">
+                <LoadingAnimation />
+            </div>
+        );
+    }
+};
+
+Options.propTypes = {
+    options: PropTypes.object,
+    addPlants: PropTypes.func.isRequired
+};
+
+const AddPlantsModal = memo(function AddPlantsModal({ addPlants }) {
+    modalRef = useRef(null);
+
+    // Stores options queried from backend
+    const [options, setOptions] = useState(null);
+
+    // Request options from backend, set state (called when modal opens)
+    loadOptions = async () => {
+        const response = await fetch('/get_plant_options');
+        if (response.ok) {
+            const data = await response.json();
+            setOptions(data.options);
+        } else {
+            setOptions([]);
+        }
+    };
+
+    // Clear options after close animation completes
+    const clearOptions = () => {
+        setTimeout(() => {
+            setOptions(null);
+        }, 200);
+    };
+
     return (
         <Modal
             title='Add Plants'
@@ -46,31 +98,7 @@ const AddPlantsModal = memo(function AddPlantsModal({ addPlants }) {
             className='max-w-[26rem]'
             onClose={clearOptions}
         >
-            <div className="md:max-h-[50vh] overflow-y-auto pr-4 mt-4">
-                {Object.keys(options).length > 0 ? (
-                    <EditableNodeList editing={true} formRef={formRef}>
-                        {Object.entries(options).map(([uuid, plant]) => (
-                            <PlantCard key={uuid} { ...plant } />
-                        ))}
-                    </EditableNodeList>
-                ) : (
-                    <p className="my-4 pl-4">No plants</p>
-                )}
-            </div>
-
-            <div className="modal-action">
-                <form method="dialog">
-                    <button className="btn btn-soft">
-                        Cancel
-                    </button>
-                    <button
-                        className="btn btn-accent"
-                        onClick={submit}
-                    >
-                        Add
-                    </button>
-                </form>
-            </div>
+            <Options options={options} addPlants={addPlants} />
         </Modal>
     );
 });
