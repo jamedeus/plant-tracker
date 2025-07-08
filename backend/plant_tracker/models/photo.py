@@ -190,14 +190,10 @@ class Photo(models.Model):
 
         super().save(*args, **kwargs)
 
-    def _delete_photos_from_disk(self):
-        '''Deletes all image resolutions from disk (cannot be undone).'''
-        self.thumbnail.delete(save=False)
-        self.preview.delete(save=False)
-        self.photo.delete(save=False)
-
 
 @receiver(post_delete, sender=Photo)
 def delete_photos_from_disk_hook(instance, **kwargs):
     '''Deletes all photo resolutions from disk after a Photo model is deleted.'''
-    instance._delete_photos_from_disk()
+    instance.thumbnail.delete(save=False)
+    instance.preview.delete(save=False)
+    instance.photo.delete(save=False)
