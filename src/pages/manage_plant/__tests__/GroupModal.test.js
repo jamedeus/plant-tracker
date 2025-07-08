@@ -1,9 +1,8 @@
 import React from 'react';
-import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import GroupModal, { openGroupModal } from '../GroupModal';
 import { ReduxProvider } from '../store';
-import { mockContext } from './mockContext';
+import { mockContext, mockGroupOptions } from './mockContext';
 
 describe('GroupModal', () => {
     beforeAll(() => {
@@ -11,9 +10,12 @@ describe('GroupModal', () => {
         bulkCreateMockContext(mockContext);
     });
 
-    it('renders card for each object in group_options context', async () => {
-        // Create mock group_options with 2 groups
-        createMockContext('group_options', mockContext.group_options);
+    it('renders card for each object in group_options response', async () => {
+        // Mock fetch to return group options (requested when modal opened)
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({ options: mockGroupOptions })
+        }));
 
         // Render modal, open modal
         const component = render(
@@ -31,9 +33,12 @@ describe('GroupModal', () => {
         });
     });
 
-    it('renders "No groups" if group_options context is empty', async () => {
-        // Create mock group_options with empty list
-        createMockContext('group_options', []);
+    it('renders "No groups" if group_options response is empty', async () => {
+        // Mock fetch to return empty group options (requested when modal opened)
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({ options: {} })
+        }));
 
         // Render modal
         const component = render(

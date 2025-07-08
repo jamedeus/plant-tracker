@@ -2,7 +2,7 @@ import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import App from '../App';
 import { PageWrapper } from 'src/index';
-import { mockContext } from './mockContext';
+import { mockContext, mockPlantOptions } from './mockContext';
 
 describe('App', () => {
     let app, user;
@@ -69,6 +69,18 @@ describe('App', () => {
     });
 
     it('shows error modal if error received while adding plants to group', async() => {
+        // Confirm arbitrary error does not appear on page
+        expect(app.queryByText(/failed to add plants to group/)).toBeNull();
+
+        // Mock fetch to return options (requested when modal opened)
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({ options: mockPlantOptions })
+        }));
+
+        // Open AddPlantsModal modal
+        await user.click(app.getByTestId("add_plants_option"));
+
         // Mock fetch function to return arbitrary error
         global.fetch = jest.fn(() => Promise.resolve({
             ok: false,
@@ -76,12 +88,6 @@ describe('App', () => {
                 error: "failed to add plants to group"
             })
         }));
-
-        // Confirm arbitrary error does not appear on page
-        expect(app.queryByText(/failed to add plants to group/)).toBeNull();
-
-        // Open AddPlantsModal modal
-        await user.click(app.getByTestId("add_plants_option"));
 
         // Simulate user selecting first plant in modal and clicking add
         await user.click(app.getByLabelText('Select Another test plant'));

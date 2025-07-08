@@ -3,18 +3,20 @@
 import os
 import shutil
 from uuid import uuid4
-from datetime import timedelta
+from concurrent.futures import ThreadPoolExecutor, wait
 
 from django.conf import settings
-from django.test import TestCase
 from django.utils import timezone
 from django.core.cache import cache
-from django.db import transaction, IntegrityError
+from django.contrib.auth import get_user_model
+from django.test import TestCase, TransactionTestCase
+from django.db import transaction, connection, IntegrityError
 
 from .view_decorators import get_default_user
 from .models import (
     Group,
     Plant,
+    UUID,
     WaterEvent,
     FertilizeEvent,
     PruneEvent,
@@ -81,70 +83,6 @@ class PlantModelTests(TestCase):
         self.assertEqual(self.plant.last_fertilized(), self.timestamp.isoformat())
         self.assertEqual(self.plant.last_pruned(), self.timestamp.isoformat())
         self.assertEqual(self.plant.last_repotted(), self.timestamp.isoformat())
-
-    def test_get_water_timestamps(self):
-        # Create 3 WaterEvents for the plant, 1 day apart, non-chronological order in database
-        WaterEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=2))
-        WaterEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
-        WaterEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=1))
-
-        # Confirm method returns correct list sorted most to least recent
-        self.assertEqual(
-            self.plant.get_water_timestamps(),
-            [
-                self.timestamp.isoformat(),
-                (self.timestamp - timedelta(days=1)).isoformat(),
-                (self.timestamp - timedelta(days=2)).isoformat()
-            ]
-        )
-
-    def test_get_fertilize_timestamps(self):
-        # Create 3 FertilizeEvent for the plant, 1 day apart, non-chronological order in database
-        FertilizeEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=2))
-        FertilizeEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
-        FertilizeEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=1))
-
-        # Confirm method returns correct list sorted most to least recent
-        self.assertEqual(
-            self.plant.get_fertilize_timestamps(),
-            [
-                self.timestamp.isoformat(),
-                (self.timestamp - timedelta(days=1)).isoformat(),
-                (self.timestamp - timedelta(days=2)).isoformat()
-            ]
-        )
-
-    def test_get_prune_timestamps(self):
-        # Create 3 PruneEvent for the plant, 1 day apart, non-chronological order in database
-        PruneEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=2))
-        PruneEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
-        PruneEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=1))
-
-        # Confirm method returns correct list sorted most to least recent
-        self.assertEqual(
-            self.plant.get_prune_timestamps(),
-            [
-                self.timestamp.isoformat(),
-                (self.timestamp - timedelta(days=1)).isoformat(),
-                (self.timestamp - timedelta(days=2)).isoformat()
-            ]
-        )
-
-    def test_get_repot_timestamps(self):
-        # Create 3 RepotEvent for the plant, 1 day apart, non-chronological order in database
-        RepotEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=2))
-        RepotEvent.objects.create(plant=self.plant, timestamp=self.timestamp)
-        RepotEvent.objects.create(plant=self.plant, timestamp=self.timestamp - timedelta(days=1))
-
-        # Confirm method returns correct list sorted most to least recent
-        self.assertEqual(
-            self.plant.get_repot_timestamps(),
-            [
-                self.timestamp.isoformat(),
-                (self.timestamp - timedelta(days=1)).isoformat(),
-                (self.timestamp - timedelta(days=2)).isoformat()
-            ]
-        )
 
     def test_change_plant_uuid(self):
         # Call change_uuid endpoint, confirm response + uuid changed
@@ -293,7 +231,7 @@ class PlantModelTests(TestCase):
 
         # Confirm an exception is raised if new photo is set as default for the
         # first plant (default_photo must have reverse relation to same plant)
-        with self.assertRaises(ValueError):
+        with self.assertRaises(IntegrityError):
             self.plant.default_photo = wrong_plant_photo
             self.plant.save()
 
@@ -617,3 +555,203 @@ class EventModelTests(TestCase):
 
         # Confirm second event was not created
         self.assertEqual(len(NoteEvent.objects.all()), 1)
+
+
+class UniqueUUIDTests(TransactionTestCase):
+    '''Tests to confirm the same UUID cannot be used for a Plant and Group.'''
+
+    def setUp(self):
+        # Set default content_type for post requests (avoid long lines)
+        self.client = JSONClient()
+
+        # Recreate default user (deleted by TransactionTestCase)
+        self.user, _ = get_user_model().objects.get_or_create(
+            username=settings.DEFAULT_USERNAME
+        )
+
+        # Clear cached user instance
+        get_default_user.cache_clear()
+
+    def register_plant(self, uuid):
+        '''Takes UUID, registers new plant with /register_plant endpoint.'''
+        return self.client.post('/register_plant', {
+            'name': '',
+            'species': '',
+            'pot_size': '',
+            'description': '',
+            'uuid': str(uuid),
+        })
+
+    def register_group(self, uuid):
+        '''Takes UUID, registers new plant with /register_group endpoint.'''
+        return self.client.post('/register_group', {
+            'name': '',
+            'location': '',
+            'description': '',
+            'uuid': str(uuid),
+        })
+
+    def test_plant_uuid_must_be_unique(self):
+        # Create existing plant
+        plant = Plant.objects.create(user=get_default_user(), uuid=uuid4())
+
+        # Confirm creating another Plant with same UUID raises IntegrityError
+        with self.assertRaises(IntegrityError):
+            Plant.objects.create(user=get_default_user(), uuid=plant.uuid)
+
+        # Confirm creating Group with same UUID raises IntegrityError
+        with self.assertRaises(IntegrityError):
+            Group.objects.create(user=get_default_user(), uuid=plant.uuid)
+
+        # Confirm only 1 UUID entry was added to database
+        self.assertEqual(len(UUID.objects.all()), 1)
+
+    def test_group_uuid_must_be_unique(self):
+        # Create existing group
+        group = Group.objects.create(user=get_default_user(), uuid=uuid4())
+
+        # Confirm creating another Group with same UUID raises IntegrityError
+        with self.assertRaises(IntegrityError):
+            Group.objects.create(user=get_default_user(), uuid=group.uuid)
+
+        # Confirm creating Plant with same UUID raises IntegrityError
+        with self.assertRaises(IntegrityError):
+            Plant.objects.create(user=get_default_user(), uuid=group.uuid)
+
+        # Confirm only 1 UUID entry was added to database
+        self.assertEqual(len(UUID.objects.all()), 1)
+
+    def test_create_duplicate_with_registration_endpoints(self):
+        # Register plant, confirm success (redirected to manage page)
+        uuid = uuid4()
+        response = self.register_plant(uuid)
+        self.assertEqual(response.status_code, 302)
+
+        # Register group with same UUID, confirm rejected
+        response = self.register_group(uuid)
+        self.assertEqual(response.status_code, 409)
+        self.assertEqual(
+            response.json(),
+            {"error": "uuid already exists in database"}
+        )
+
+        # Confirm only 1 UUID entry was added to database
+        self.assertEqual(len(UUID.objects.all()), 1)
+
+    def test_create_duplicate_with_registration_endpoints_race_condition(self):
+        # Create UUID to register Plant and Group with
+        uuid = uuid4()
+
+        def worker_plant():
+            try:
+                return self.register_plant(uuid)
+            finally:
+                connection.close()
+
+        def worker_group():
+            try:
+                return self.register_group(uuid)
+            finally:
+                connection.close()
+
+        # Make 2 simultaneous registration requests using the same UUID
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            responses = [pool.submit(worker_plant), pool.submit(worker_group)]
+            wait(responses)
+
+        # Confirm 1 request succeeded (302 redirect to management page), other
+        # was rejected (409 UUID already exists error)
+        self.assertEqual(
+            sorted(response.result().status_code for response in responses),
+            [302, 409]
+        )
+
+        # Confirm only 1 UUID entry was added to database
+        self.assertEqual(len(UUID.objects.all()), 1)
+
+    def test_create_duplicate_with_change_uuid_endpoint(self):
+        # Create Plant and Group with different UUIDs
+        plant = Plant.objects.create(user=self.user, uuid=uuid4())
+        group = Group.objects.create(user=self.user, uuid=uuid4())
+
+        # Attempt to change plant UUID to group UUID
+        response = JSONClient().post('/change_uuid', {
+            'uuid': str(plant.uuid),
+            'new_id': str(group.uuid),
+        })
+        # Confirm rejected with correct error
+        self.assertEqual(response.status_code, 409)
+        self.assertEqual(
+            response.json(),
+            {"error": "new_id is already used by another Plant or Group"}
+        )
+
+        # Confirm only 2 UUID entries exist (changed UUID was dropped)
+        self.assertEqual(len(UUID.objects.all()), 2)
+
+    def test_create_duplicate_with_change_uuid_endpoint_race_condition(self):
+        # Create Plant and Group with different UUIDs
+        plant = Plant.objects.create(user=self.user, uuid=uuid4())
+        group = Group.objects.create(user=self.user, uuid=uuid4())
+
+        # Create new UUID to change both to
+        new_uuid = uuid4()
+
+        def worker_plant():
+            try:
+                return JSONClient().post('/change_uuid', {
+                    'uuid': str(plant.uuid),
+                    'new_id': str(new_uuid),
+                })
+            finally:
+                connection.close()
+
+        def worker_group():
+            try:
+                return JSONClient().post('/change_uuid', {
+                    'uuid': str(group.uuid),
+                    'new_id': str(new_uuid),
+                })
+            finally:
+                connection.close()
+
+        # Make 2 simultaneous change_uuid requests using the same UUID
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            responses = [pool.submit(worker_plant), pool.submit(worker_group)]
+            wait(responses)
+
+        # Confirm 1 request succeeded (200), other rejected (409 already exists)
+        self.assertEqual(
+            sorted(response.result().status_code for response in responses),
+            [200, 409]
+        )
+
+        # Confirm only 2 UUID entries exist (changed UUID was dropped)
+        self.assertEqual(len(UUID.objects.all()), 2)
+
+    def test_create_duplicate_by_directly_editing_models(self):
+        # Create Plant and Group with different UUIDs
+        plant = Plant.objects.create(user=self.user, uuid=uuid4())
+        group = Group.objects.create(user=self.user, uuid=uuid4())
+        # Confirm 2 UUIDs reserved in database
+        self.assertEqual(len(UUID.objects.all()), 2)
+
+        # Confirm an exception is raised if Plant UUID changed to Group UUID
+        with self.assertRaises(IntegrityError):
+            with transaction.atomic():
+                plant.uuid = group.uuid
+                plant.save()
+        # Confirm still 2 UUIDs in database (reservation not cleared)
+        self.assertEqual(len(UUID.objects.all()), 2)
+
+        # Refresh plant UUID from DB (local copy still has group uuid even
+        # though save failed above)
+        plant.refresh_from_db()
+
+        # Confirm an exception is raised if Group UUID changed to Plant UUID
+        with self.assertRaises(IntegrityError):
+            with transaction.atomic():
+                group.uuid = plant.uuid
+                group.save()
+        # Confirm still 2 UUIDs in database (reservation not cleared)
+        self.assertEqual(len(UUID.objects.all()), 2)

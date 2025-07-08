@@ -1,19 +1,17 @@
 import AddPlantsModal, { openAddPlantsModal } from '../AddPlantsModal';
-import { mockContext } from './mockContext';
+import { mockPlantOptions } from './mockContext';
 
 describe('AddPlantsModal', () => {
     it('renders a card for each plant option', async () => {
-        // Get non-archived options (see addPlantsModalOptions memo in App.js)
-        const options = Object.fromEntries(Object.entries(mockContext.options).filter(
-            ([, plant]) => !plant.archived
-        ));
+        // Mock fetch to return options (requested when modal opened)
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({ options: mockPlantOptions })
+        }));
 
-        // Render modal with mock context
+        // Render modal
         const component = render(
-            <AddPlantsModal
-                options={options}
-                addPlants={jest.fn()}
-            />
+            <AddPlantsModal addPlants={jest.fn()} />
         );
 
         // Confirm a card was rendered for each plant in options (all plants in
@@ -28,6 +26,12 @@ describe('AddPlantsModal', () => {
     });
 
     it('renders expected text when no plant options', async () => {
+        // Mock fetch to return empty options (requested when modal opened)
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({ options: {} })
+        }));
+
         // Render modal with no plant options
         const component = render(
             <AddPlantsModal

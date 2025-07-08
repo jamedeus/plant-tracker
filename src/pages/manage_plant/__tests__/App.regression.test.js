@@ -1,6 +1,7 @@
 import { fireEvent, waitFor } from '@testing-library/react';
 import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
+import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import App from '../App';
 import { PageWrapper } from 'src/index';
 import { mockContextNoEvents } from './mockContext';
@@ -32,6 +33,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 action: "water",
+                timestamp: "2024-03-01T20:00:01+00:00",
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
@@ -56,6 +58,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 action: "fertilize",
+                timestamp: "2024-03-01T20:00:01+00:00",
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
@@ -161,6 +164,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 action: "water",
+                timestamp: "2024-03-01T20:00:01+00:00",
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
@@ -234,6 +238,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 action: "prune",
+                timestamp: "2024-03-01T20:00:01+00:00",
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
@@ -244,6 +249,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 action: "fertilize",
+                timestamp: "2024-03-01T20:00:01+00:00",
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
@@ -254,6 +260,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 action: "water",
+                timestamp: "2024-03-01T20:00:01+00:00",
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
@@ -271,21 +278,37 @@ describe('App', () => {
     // EditModal to change description and did not noticed the outdated pot
     // size value they could easily reset back to the initial pot size.
     it('updates pot size in EditModal form when plant is repotted', async () => {
+        // Mock /get_plant_species_options response (requested when modal opens)
+        mockPlantSpeciesOptionsResponse();
+
         // Open edit modal
         await user.click(app.getByRole('button', {name: 'Edit'}));
 
         // Confirm pot size field defaults to '4'
         expect(app.getByLabelText('Pot size').value).toBe('4');
 
-        // Simulate user opening repot modal and clicking submit without
-        // changing pot size (defaults to 6, next size up)
-        global.fetch = jest.fn(() => Promise.resolve({
+        // Mock fetch to return /repot_plant response first, then
+        // /get_plant_species_options response (will be requested automatically
+        // when PlantDetailsForm remounts in response to repot state change)
+        global.fetch = jest.fn().mockResolvedValueOnce({
             ok: true,
             json: () => Promise.resolve({
                 action: "repot",
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
-        }));
+        }).mockResolvedValueOnce({
+            ok: true,
+            json: () => Promise.resolve({
+                options: [
+                    "Parlor Palm",
+                    "Spider Plant",
+                    "Calathea"
+                ]
+            })
+        });
+
+        // Simulate user opening repot modal and clicking submit without
+        // changing pot size (defaults to 6, next size up)
         await user.click(app.getAllByText(/Repot plant/)[0]);
         await user.click(app.getByRole('button', {name: 'Repot'}));
 
@@ -304,13 +327,6 @@ describe('App', () => {
         expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(0);
 
         // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "water",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
-            })
-        }));
 
         // Create 2 water events 1 second apart on the same day
         const dateTimeInput = app.container.querySelector('input');
@@ -318,11 +334,27 @@ describe('App', () => {
             dateTimeInput,
             {target: {value: '2024-03-01T12:00:00'}}
         );
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                action: "water",
+                timestamp: "2024-03-01T20:00:00+00:00",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
         await user.click(app.getByRole("button", {name: "Water"}));
         fireEvent.input(
             dateTimeInput,
             {target: {value: '2024-03-01T12:00:01'}}
         );
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                action: "water",
+                timestamp: "2024-03-01T20:00:01+00:00",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
         await user.click(app.getByRole("button", {name: "Water"}));
 
         // Confirm dot appeared on calendar, EventMarker appeared in timeline
@@ -336,10 +368,18 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                deleted: [
-                    {type: "water", timestamp: "2024-03-01T20:00:01+00:00"}
-                ],
-                failed: []
+                deleted: {
+                    water: ["2024-03-01T20:00:01+00:00"],
+                    fertilize: [],
+                    prune: [],
+                    repot: []
+                },
+                failed: {
+                    water: [],
+                    fertilize: [],
+                    prune: [],
+                    repot: []
+                }
             })
         }));
         await user.click(within(modal).getByText('Delete'));
@@ -362,27 +402,37 @@ describe('App', () => {
         expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(0);
         expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(0);
 
-        // Mock fetch function to return expected response
+        // Create 2 water events at 10pm February 29 and 2am March 1 (different
+        // days in PST but same day in UTC)
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
                 action: "water",
+                timestamp: "2024-03-01T06:00:00+00:00",
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
-
-        // Create 2 water events at 10pm February 29 and 2am March 1 (different
-        // days in PST but same day in UTC)
         const dateTimeInput = app.container.querySelector('input');
         fireEvent.input(
             dateTimeInput,
             {target: {value: '2024-02-29T22:00:00'}}
         );
+        // First event (February 29)
         await user.click(app.getByRole("button", {name: "Water"}));
+
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                action: "water",
+                timestamp: "2024-03-01T10:00:00+00:00",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
         fireEvent.input(
             dateTimeInput,
             {target: {value: '2024-03-01T02:00:00'}}
         );
+        // Second event (March 1)
         await user.click(app.getByRole("button", {name: "Water"}));
 
         // Confirm 2 EventCalendar dots and 2 EventMarkers in timeline
@@ -396,10 +446,18 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                deleted: [
-                    {type: "water", timestamp: "2024-03-01T20:00:00+00:00"}
-                ],
-                failed: []
+                deleted: {
+                    water: ["2024-03-01T10:00:00+00:00"],
+                    fertilize: [],
+                    prune: [],
+                    repot: []
+                },
+                failed: {
+                    water: [],
+                    fertilize: [],
+                    prune: [],
+                    repot: []
+                }
             })
         }));
         await user.click(within(modal).getByText('Delete'));
@@ -454,6 +512,16 @@ describe('App', () => {
         // Confirm no water events exist in calendar or timeline
         expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(0);
         expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(0);
+
+        // Mock fetch function to return expected response when water event added
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                action: "water",
+                timestamp: "2024-03-01T20:54:03+00:00",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
 
         // Click water button (datetime input contains same day as photos)
         await user.click(app.getByRole("button", {name: "Water"}));
@@ -602,6 +670,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 action: "water",
+                timestamp: "2024-03-01T15:45:44+00:00",
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
@@ -616,10 +685,18 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                deleted: [
-                    {type: "water", timestamp: "2024-03-01T15:45:44+00:00"},
-                ],
-                failed: []
+                deleted: {
+                    water: ["2024-03-01T15:45:44+00:00"],
+                    fertilize: [],
+                    prune: [],
+                    repot: []
+                },
+                failed: {
+                    water: [],
+                    fertilize: [],
+                    prune: [],
+                    repot: []
+                }
             })
         }));
 
@@ -655,8 +732,6 @@ describe('App', () => {
                     repot: [],
                 },
                 notes: [],
-                group_options: mockContextNoEvents.group_options,
-                species_options: mockContextNoEvents.species_options,
                 photos: [],
                 default_photo: mockContextNoEvents.default_photo,
                 division_events: {},
@@ -685,8 +760,6 @@ describe('App', () => {
                 plant_details: mockContextNoEvents.plant_details,
                 events: mockContextNoEvents.events,
                 notes: [],
-                group_options: mockContextNoEvents.group_options,
-                species_options: mockContextNoEvents.species_options,
                 photos: [],
                 default_photo: mockContextNoEvents.default_photo,
                 division_events: {},
@@ -720,8 +793,6 @@ describe('App', () => {
                 plant_details: mockContextNoEvents.plant_details,
                 events: mockContextNoEvents.events,
                 notes: [],
-                group_options: mockContextNoEvents.group_options,
-                species_options: mockContextNoEvents.species_options,
                 photos: [
                     {
                         timestamp: '2024-03-21T10:52:03+00:00',
@@ -766,8 +837,6 @@ describe('App', () => {
                 plant_details: mockContextNoEvents.plant_details,
                 events: mockContextNoEvents.events,
                 notes: [],
-                group_options: mockContextNoEvents.group_options,
-                species_options: mockContextNoEvents.species_options,
                 photos: [],
                 default_photo: mockContextNoEvents.default_photo,
                 division_events: {},
@@ -800,8 +869,6 @@ describe('App', () => {
                 plant_details: mockContextNoEvents.plant_details,
                 events: mockContextNoEvents.events,
                 notes: [],
-                group_options: mockContextNoEvents.group_options,
-                species_options: mockContextNoEvents.species_options,
                 photos: [
                     {
                         timestamp: '2024-03-21T10:52:03+00:00',

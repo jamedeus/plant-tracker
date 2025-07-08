@@ -15,16 +15,13 @@ from django.db import IntegrityError, connections
 from django.core.exceptions import ValidationError
 from django.test import TestCase, TransactionTestCase, Client
 
-from .tasks import (
-    build_manage_plant_state,
-    update_cached_plant_options,
-    update_cached_group_options
-)
+from .build_states import build_overview_state
 from .models import (
     Group,
     Plant,
     Photo,
     WaterEvent,
+    FertilizeEvent,
     RepotEvent
 )
 from .view_decorators import (
@@ -241,40 +238,6 @@ class ModelRegressionTests(TestCase):
         # Confirm display name did not change
         self.assertEqual(plant1.get_display_name(), 'Unnamed plant 1')
 
-    def test_unable_to_register_plant_with_no_name(self):
-        '''Issue: When a new plant is created update_plant_in_cached_states_hook
-        builds a manage_plant state, which calls get_display_name. If plant has
-        no name a sequential "Unnamed plant <num>" is created by finding plant's
-        index in unnamed_plants list. New plant is not in cached unnamed_plants,
-        so the cache needs to be cleared BEFORE the state is built, but after
-        f0076c36 the state was built first, leading to an unhandled exception.
-        Other tests did not catch this because cache is cleared between tests.
-        '''
-
-        # Simulate existing cached unnamed_plants list
-        cache.set(f'unnamed_plants_{self.user.pk}', [123, 456], None)
-
-        # Create plant with no name, should not raise exception
-        plant = Plant.objects.create(uuid=uuid4(), user=self.user)
-        self.assertEqual(plant.get_display_name(), 'Unnamed plant 1')
-
-    def test_unable_to_register_group_with_no_name(self):
-        '''Issue: When a new group is created update_group_in_cached_states_hook
-        adds group to cached group_options dict, which calls get_display_name.
-        If group has no name a sequential "Unnamed group <num>" is created by
-        finding group's index in unnamed_groups list. New group is not in cached
-        unnamed_groups, so the cache needs to be cleared BEFORE this, but after
-        f0076c36 it was cleared later, leading to an unhandled exception. Other
-        tests did not catch this because cache is cleared between tests.
-        '''
-
-        # Simulate existing cached unnamed_groups list
-        cache.set(f'unnamed_groups_{self.user.pk}', [123, 456], None)
-
-        # Create group with no name, should not raise exception
-        group = Group.objects.create(uuid=uuid4(), user=self.user)
-        self.assertEqual(group.get_display_name(), 'Unnamed group 1')
-
 
 class ModelRegressionTestsTransaction(TransactionTestCase):
     '''For model regression tests that need database transactions to actually
@@ -287,6 +250,9 @@ class ModelRegressionTestsTransaction(TransactionTestCase):
 
         # Recreate default user (deleted by TransactionTestCase)
         self.user = get_user_model().objects.create(username=settings.DEFAULT_USERNAME)
+
+        # Clear cached user instance
+        get_default_user.cache_clear()
 
     def test_unable_to_delete_plant_with_default_photo(self):
         '''Issue: Since e105bd3e Plant.delete removes all associated Photos with
@@ -318,6 +284,10 @@ class ViewRegressionTests(TestCase):
     def setUp(self):
         # Clear entire cache before each test
         cache.clear()
+
+    def tearDown(self):
+        # Revert back to SINGLE_USER_MODE
+        settings.SINGLE_USER_MODE = True
 
     def test_water_group_fails_due_to_duplicate_timestamp(self):
         '''Issue: The bulk_add_plant_events endpoint did not trap errors when
@@ -352,15 +322,18 @@ class ViewRegressionTests(TestCase):
             'timestamp': timestamp.isoformat()
         })
 
-        # Request should succeed despite conflicting event, plant2 should be
-        # listed as failed in response
+        # Request should succeed despite conflicting event
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
             {
                 "action": "water",
-                "plants": [str(plant1.uuid), str(plant3.uuid)],
-                "failed": [str(plant2.uuid)]
+                "plants": [
+                    str(plant1.uuid),
+                    str(plant2.uuid),
+                    str(plant3.uuid)
+                ],
+                "failed": []
             }
         )
 
@@ -606,10 +579,10 @@ class ViewRegressionTests(TestCase):
             'description': 'Wide enough to drive a car through',
             'pot_size': '4'
         })
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 409)
         self.assertEqual(
             response.json(),
-            {"error": {'uuid': ['Plant with this Uuid already exists.']}}
+            {"error": "uuid already exists in database"}
         )
 
         # Confirm only the first plant was created in database
@@ -647,10 +620,10 @@ class ViewRegressionTests(TestCase):
             'location': 'inside',
             'description': ''
         })
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 409)
         self.assertEqual(
             response.json(),
-            {"error": {'uuid': ['Group with this Uuid already exists.']}}
+            {"error": "uuid already exists in database"}
         )
 
         # Confirm only the first group was created in database
@@ -758,7 +731,7 @@ class ViewRegressionTests(TestCase):
         group = Group.objects.create(uuid=uuid4(), user=get_default_user())
 
         # Confirm cached overview state says group has 0 plants
-        overview_state = cache.get(f'overview_state_{get_default_user().pk}')
+        overview_state = build_overview_state(get_default_user())
         self.assertEqual(overview_state['groups'][str(group.uuid)]['plants'], 0)
 
         # Send add_plant_to_group request
@@ -803,6 +776,205 @@ class ViewRegressionTests(TestCase):
         # Confirm cached overview state says group has 0 plants
         overview_state = cache.get(f'overview_state_{get_default_user().pk}')
         self.assertEqual(overview_state['groups'][str(group.uuid)]['plants'], 0)
+
+    def test_overview_does_not_break_if_plants_have_photos(self):
+        '''Issue: While optimizing postgres queries a bad annotation was written
+        that saved the wrong attribute of most-recent photo. This was done while
+        using a test fixture where no plants had photos, and unit tests did not
+        catch it because they never request overview state with photos
+        '''
+
+        # Create plant, add photo with /add_plant_photos endpoint
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        response = self.client.post(
+            '/add_plant_photos',
+            data={
+                'plant_id': str(plant.uuid),
+                'photo_0': create_mock_photo('2024:02:21 10:52:03', 'photo1.jpg')
+            },
+            content_type=MULTIPART_CONTENT
+        )
+        self.assertEqual(response.status_code, 200)
+        photo = Photo.objects.all()[0]
+
+        # Request overview page, should not raise exception
+        response = self.client.get('/')
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm state contains plant details and correct thumbnail
+        self.assertEqual(
+            response.context['state'],
+            {
+                'plants': {
+                    str(plant.uuid): {
+                        'name': None,
+                        'display_name': 'Unnamed plant 1',
+                        'uuid': str(plant.uuid),
+                        'archived': False,
+                        'created': plant.created.isoformat(),
+                        'species': None,
+                        'description': None,
+                        'pot_size': None,
+                        'last_watered': None,
+                        'last_fertilized': None,
+                        'thumbnail': photo.get_thumbnail_url(),
+                        'group': None
+                    }
+                },
+                'groups': {},
+                'show_archive': False
+            }
+        )
+
+    def test_should_not_be_able_to_add_other_users_plants_to_group(self):
+        '''Issue: The /bulk_add_plants_to_group endpoint checked group ownership
+        (get_group_from_post_body decorator) but did not check plant ownership
+        (uuids in payload, no automatic decorator check). This allowed a user to
+        add other user's plants to their groups if the UUID was known.
+        '''
+
+        # Disable SINGLE_USER_MODE
+        settings.SINGLE_USER_MODE = False
+
+        # Create 2 test users + group owned by user1, plant owned by user2
+        user_model = get_user_model()
+        user1 = user_model.objects.create_user(
+            username='user1',
+            password='123',
+            email='user1@gmail.com'
+        )
+        user2 = user_model.objects.create_user(
+            username='user2',
+            password='123',
+            email='user2@gmail.com'
+        )
+        group = Group.objects.create(uuid=uuid4(), user=user1)
+        plant = Plant.objects.create(uuid=uuid4(), user=user2)
+
+        # Sign in as user1
+        client = JSONClient()
+        client.login(username='user1', password='123')
+
+        # Attempt to add user2's plant to user1's group
+        response = client.post('/bulk_add_plants_to_group', {
+            'group_id': group.uuid,
+            'plants': [plant.uuid]
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm failed to add plant to group
+        self.assertEqual(response.json(), {'added': [], 'failed': [str(plant.uuid)]})
+        plant.refresh_from_db()
+        self.assertIsNone(plant.group)
+
+    def test_should_not_be_able_to_remove_other_users_plants_from_groups(self):
+        '''Issue: The /bulk_remove_plants_from_group endpoint checked group
+        ownership (get_group_from_post_body decorator) but did not check plant
+        ownership (uuids in payload, no automatic decorator check). This allowed
+        a user to remove other user's plants from groups if the UUID was known.
+        '''
+
+        # Disable SINGLE_USER_MODE
+        settings.SINGLE_USER_MODE = False
+
+        # Create 2 test users with 1 group each
+        user_model = get_user_model()
+        user1 = user_model.objects.create_user(
+            username='user1',
+            password='123',
+            email='user1@gmail.com'
+        )
+        user2 = user_model.objects.create_user(
+            username='user2',
+            password='123',
+            email='user2@gmail.com'
+        )
+        user1_group = Group.objects.create(uuid=uuid4(), user=user1)
+        user2_group = Group.objects.create(uuid=uuid4(), user=user2)
+
+        # Create plant for user2 that is in group
+        plant = Plant.objects.create(uuid=uuid4(), user=user2, group=user2_group)
+
+        # Sign in as user1
+        client = JSONClient()
+        client.login(username='user1', password='123')
+
+        # Attempt to remove user2's plant from group
+        response = client.post('/bulk_remove_plants_from_group', {
+            'group_id': user1_group.uuid,
+            'plants': [plant.uuid]
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm failed to remove plant
+        self.assertEqual(response.json(), {'removed': [], 'failed': [str(plant.uuid)]})
+        plant.refresh_from_db()
+        self.assertIsNotNone(plant.group)
+
+    def test_division_in_progress_breaks_if_parent_uuid_changed(self):
+        '''Issue: /divide_plant saves UUID of plant being divided in cache which
+        is read by views.render_registration_page and used to look up plant. If
+        UUID was changed after beginning division the cached would be outdated,
+        no plant would be found, and requesting the registration page would
+        result in an AttributeError. The /change_uuid endpoint now updates the
+        cached UUID if it exists.
+        '''
+
+        # Create plant, start dividing
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        response = JSONClient().post('/divide_plant', {
+            'plant_id': plant.uuid,
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm plant UUID was cached
+        dividing = cache.get(f'division_in_progress_{get_default_user().pk}')
+        self.assertEqual(dividing['divided_from_plant_uuid'], str(plant.uuid))
+
+        # Simulate user changing plant's uuid
+        cache.set(f'old_uuid_{get_default_user().pk}', str(plant.uuid), 900)
+        new_uuid = uuid4()
+        response = JSONClient().post('/change_uuid', {
+            'uuid': str(plant.uuid),
+            'new_id': str(new_uuid)
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm cached uuid was updated
+        dividing = cache.get(f'division_in_progress_{get_default_user().pk}')
+        self.assertEqual(dividing['divided_from_plant_uuid'], str(new_uuid))
+
+        # Confirm loading registration page does not return 500 error
+        response = self.client.get(f'/manage/{uuid4()}')
+        self.assertEqual(response.status_code, 200)
+
+    def test_division_in_progress_breaks_if_parent_deleted(self):
+        '''Issue: views.render_registration_page queried Plant with UUID from
+        cache set by /divide_plant then blindly called methods on the returned
+        instance. If plant had been deleted query would return None, resulting
+        in AttributeError when methods were called on None and a 500 response to
+        client. The render_registration_page function now checks if plant found.
+        '''
+
+        # Create plant, start dividing
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        response = JSONClient().post('/divide_plant', {
+            'plant_id': plant.uuid,
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm plant UUID was cached
+        dividing = cache.get(f'division_in_progress_{get_default_user().pk}')
+        self.assertEqual(dividing['divided_from_plant_uuid'], str(plant.uuid))
+
+        # Delete plant
+        plant.delete()
+
+        # Request registration page, confirm does not return 500 error
+        response = self.client.get(f'/manage/{uuid4()}')
+        self.assertEqual(response.status_code, 200)
 
 
 class CachedStateRegressionTests(TestCase):
@@ -874,182 +1046,6 @@ class CachedStateRegressionTests(TestCase):
         state = response.context['state']
         self.assertEqual(state['plant_details']['group']['name'], 'Living room')
 
-    def test_plant_options_cache_contains_outdated_plant_thumbnail_url(self):
-        '''Issue: the plant_options object that populates manage_group add
-        plants modal options only expired when a Plant was saved or deleted. If
-        the defualt_photo was set the Plant was saved and the cache updated,
-        but if there was no default_photo and a newer photo was uploaded it did
-        not update (only the Photo model was saved). This resulted in outdated
-        (possibly no longer existing) thumbnails in the add plant options.
-
-        Saving or deleting a Photo now calls Plant.update_thumbnail_url, which
-        updates Plant.thumbnail_url and saves (updates cached state).
-        '''
-
-        # Create test group, create test plant (not in group) with 1 photo
-        default_user = get_default_user()
-        group = Group.objects.create(uuid=uuid4(), user=default_user)
-        plant = Plant.objects.create(uuid=uuid4(), user=default_user)
-        photo1 = Photo.objects.create(
-            photo=create_mock_photo(
-                creation_time='2024:02:21 10:52:03',
-                name='photo1.jpg'
-            ),
-            plant=plant
-        )
-
-        # Request manage_group page
-        response = self.client.get(f'/manage/{group.uuid}')
-
-        # Confirm options state contains photo1 thumbnail (most-recent)
-        self.assertEqual(
-            response.context['state']['options'][str(plant.uuid)]['thumbnail'],
-            photo1.get_thumbnail_url()
-        )
-
-        # Confirm plant_options object is cached when manage_group loaded
-        self.assertIsNotNone(cache.get(f'plant_options_{default_user.pk}'))
-
-        # Create a second Photo with more recent timestamp
-        photo2 = Photo.objects.create(
-            photo=create_mock_photo(
-                creation_time='2024:03:22 10:52:03',
-                name='photo2.jpg'
-            ),
-            plant=plant
-        )
-
-        # Confirm manage_group state now contains photo2 thumbnail (most-recent)
-        response = self.client.get(f'/manage/{group.uuid}')
-        self.assertEqual(
-            response.context['state']['options'][str(plant.uuid)]['thumbnail'],
-            photo2.get_thumbnail_url()
-        )
-
-        # Delete second photo
-        JSONClient().post('/delete_plant_photos', {
-            'plant_id': str(plant.uuid),
-            'delete_photos': [photo2.pk]
-        })
-
-        # Confirm manage_group state reverted to photo1 thumbnail
-        response = self.client.get(f'/manage/{group.uuid}')
-        self.assertEqual(
-            response.context['state']['options'][str(plant.uuid)]['thumbnail'],
-            photo1.get_thumbnail_url()
-        )
-
-    def test_group_options_cache_contains_outdated_number_of_plants_in_group(self):
-        '''Issue: the group_options object that populates manage_plant add to
-        group options only expired when a Group was saved or deleted. If plants
-        were added or removed from the group (saves plant entry, but not group)
-        the cached object would contain an outdated number of plants in group.
-
-        The group_options cache is now cleared by add/remove group endpoints.
-        '''
-
-        # Create group, plant that is in group, plant that is not in group
-        default_user = get_default_user()
-        group = Group.objects.create(uuid=uuid4(), user=default_user)
-        plant1 = Plant.objects.create(uuid=uuid4(), group=group, user=default_user)
-        plant2 = Plant.objects.create(uuid=uuid4(), user=default_user)
-        # Trigger group_options cache update (normally called from endpoint)
-        group.save()
-
-        # Confirm group option in manage_plant state says 1 plant in group
-        response = self.client.get(f'/manage/{plant1.uuid}')
-        self.assertEqual(
-            response.context['state']['group_options'][str(group.uuid)]['plants'],
-            1
-        )
-
-        # Add plant2 to the group
-        JSONClient().post(
-            '/add_plant_to_group',
-            {'plant_id': plant2.uuid, 'group_id': group.uuid}
-        )
-
-        # Confirm group option in manage_plant state now says 2 plants in group
-        response = self.client.get(f'/manage/{plant1.uuid}')
-        self.assertEqual(
-            response.context['state']['group_options'][str(group.uuid)]['plants'],
-            2
-        )
-
-        # Remove plant2 from the group
-        JSONClient().post('/remove_plant_from_group', {
-            'plant_id': plant2.uuid
-        })
-
-        # Confirm group option in manage_plant state now says 1 plant in group
-        response = self.client.get(f'/manage/{plant1.uuid}')
-        self.assertEqual(
-            response.context['state']['group_options'][str(group.uuid)]['plants'],
-            1
-        )
-
-        # Add plant2 to group using the /bulk_add_plants_to_group endpoint
-        JSONClient().post('/bulk_add_plants_to_group', {
-            'group_id': group.uuid,
-            'plants': [plant2.uuid]
-        })
-
-        # Confirm group option in manage_plant state now says 2 plants in group
-        response = self.client.get(f'/manage/{plant1.uuid}')
-        self.assertEqual(
-            response.context['state']['group_options'][str(group.uuid)]['plants'],
-            2
-        )
-
-        # Remove plant2 from group using the /bulk_remove_plants_from_group endpoint
-        JSONClient().post('/bulk_remove_plants_from_group', {
-            'group_id': group.uuid,
-            'plants': [plant2.uuid]
-        })
-
-        # Confirm group option in manage_plant state now says 1 plant in group
-        response = self.client.get(f'/manage/{plant1.uuid}')
-        self.assertEqual(
-            response.context['state']['group_options'][str(group.uuid)]['plants'],
-            1
-        )
-
-    def test_update_cached_plant_options_fails_to_replace_cached_state(self):
-        '''Issue: update_cached_plant_options rebuilt + cached state by calling
-        models.get_plant_options, but this function only builds state if the
-        expected cache key does not exist - otherwise it returns whatever is
-        already cached. If the cache was not deleted before calling the
-        function nothing would happen, unlike the other update_cached_*
-        functions which always build the state.
-        '''
-
-        # Set dummy plant_options cache
-        user_pk = get_default_user().pk
-        cache.set(f'plant_options_{user_pk}', 'foo')
-
-        # Call function, confirm dummy string was overwritten
-        update_cached_plant_options(user_pk)
-        self.assertNotEqual(cache.get(f'plant_options_{user_pk}'), 'foo')
-        self.assertIsInstance(cache.get(f'plant_options_{user_pk}'), dict)
-
-    def test_update_cached_group_options_fails_to_replace_cached_state(self):
-        '''Issue: update_cached_group_options rebuilt + cached state by calling
-        models.get_group_options, but this function only builds state if the
-        expected cache key does not exist - otherwise it returns whatever is
-        already cached. If the cache was not deleted before calling the
-        function nothing would happen, unlike the other update_cached_*
-        functions which always build the state.
-        '''
-
-        # Set dummy group_options cache
-        user_pk = get_default_user().pk
-        cache.set(f'group_options_{user_pk}', 'foo')
-
-        # Call function, confirm dummy string was overwritten
-        update_cached_group_options(user_pk)
-        self.assertNotEqual(cache.get(f'group_options_{user_pk}'), 'foo')
-        self.assertIsInstance(cache.get(f'group_options_{user_pk}'), dict)
-
     def test_archived_plants_added_to_main_overview_state_when_saved(self):
         '''Issue: tasks.update_instance_details_in_cached_overview_state_hook
         added/updated plant details to cached overview state whenever a plant
@@ -1060,12 +1056,12 @@ class CachedStateRegressionTests(TestCase):
 
         # Create test plant, confirm added to cached overview state
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-        overview_state = cache.get(f'overview_state_{plant.user.pk}')
+        overview_state = build_overview_state(get_default_user())
         self.assertIn(str(plant.uuid), overview_state['plants'])
 
         # Simulate user archiving plant
-        response = JSONClient().post('/archive_plant', {
-            'plant_id': str(plant.uuid),
+        response = JSONClient().post('/bulk_archive_plants_and_groups', {
+            'uuids': [str(plant.uuid),],
             'archived': True
         })
         self.assertEqual(response.status_code, 200)
@@ -1083,15 +1079,14 @@ class CachedStateRegressionTests(TestCase):
         no longer existing) photo in the details dropdown on next page load.
         '''
 
-        # Create test plant, generate cached state
+        # Create test plant
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-        build_manage_plant_state(plant.uuid)
-        # Confirm cached state has no default_photo
-        self.assertIsNone(
-            cache.get(f'{plant.uuid}_state')['plant_details']['thumbnail']
-        )
+
+        # Request page, confirm state has no default_photo
+        response = self.client.get(f'/manage/{plant.uuid}')
+        self.assertIsNone(response.context['state']['plant_details']['thumbnail'])
         self.assertEqual(
-            cache.get(f'{plant.uuid}_state')['default_photo'],
+            response.context['state']['default_photo'],
             {
                 'set': False,
                 'timestamp': None,
@@ -1102,20 +1097,26 @@ class CachedStateRegressionTests(TestCase):
             }
         )
 
-        # Create photo, confirm default_photo updated in cached state
-        photo = Photo.objects.create(
-            photo=create_mock_photo(
-                creation_time='2024:02:21 10:52:03',
-                name='photo1.jpg'
-            ),
-            plant=plant
+        # Create photo with /add_plant_photos endpoint
+        response = JSONClient().post(
+            '/add_plant_photos',
+            data={
+                'plant_id': str(plant.uuid),
+                'photo_0': create_mock_photo('2024:02:21 10:52:03', 'photo1.jpg')
+            },
+            content_type=MULTIPART_CONTENT
         )
+        self.assertEqual(response.status_code, 200)
+        photo = Photo.objects.all()[0]
+
+        # Request page again, confirm default_photo updated
+        response = self.client.get(f'/manage/{plant.uuid}')
         self.assertEqual(
-            cache.get(f'{plant.uuid}_state')['plant_details']['thumbnail'],
+            response.context['state']['plant_details']['thumbnail'],
             '/media/thumbnails/photo1_thumb.webp'
         )
         self.assertEqual(
-            cache.get(f'{plant.uuid}_state')['default_photo'],
+            response.context['state']['default_photo'],
             {
                 'set': False,
                 'timestamp': '2024-02-21T10:52:03+00:00',
@@ -1126,13 +1127,19 @@ class CachedStateRegressionTests(TestCase):
             }
         )
 
-        # Delete photo, confirm default_photo updated in cached state
-        photo.delete()
-        self.assertIsNone(
-            cache.get(f'{plant.uuid}_state')['plant_details']['thumbnail']
-        )
+        # Delete photo with /delete_plant_photos endpoint
+        response = JSONClient().post('/delete_plant_photos', {
+            'plant_id': str(plant.uuid),
+            'delete_photos': [
+                photo.pk
+            ]
+        })
+
+        # Request page again, confirm default_photo updated
+        response = self.client.get(f'/manage/{plant.uuid}')
+        self.assertIsNone(response.context['state']['plant_details']['thumbnail'])
         self.assertEqual(
-            cache.get(f'{plant.uuid}_state')['default_photo'],
+            response.context['state']['default_photo'],
             {
                 'set': False,
                 'timestamp': None,
@@ -1245,7 +1252,7 @@ class CachedStateRegressionTests(TestCase):
         default_user = get_default_user()
         group = Group.objects.create(uuid=uuid4(), user=default_user)
         plant = Plant.objects.create(uuid=uuid4(), user=default_user)
-        overview_state = cache.get(f'overview_state_{default_user.pk}')
+        overview_state = build_overview_state(default_user)
         self.assertIn(str(plant.uuid), overview_state['plants'])
         self.assertIn(str(group.uuid), overview_state['groups'])
         self.assertEqual(len(overview_state['plants']), 1)
@@ -1272,28 +1279,6 @@ class CachedStateRegressionTests(TestCase):
         self.assertEqual(len(overview_state['plants']), 1)
         self.assertEqual(len(overview_state['groups']), 1)
 
-    def test_cached_plant_options_last_watered_time_does_not_update(self):
-        '''Issue: Cached plant_options dict (used for manage_group add plants
-        modal) updated when a plant model was saved (renamed etc) but not when
-        a WaterEvent was created (last_watered time on card may be outdated).
-        '''
-
-        # Create plant, confirm exists in cached plant_options state
-        default_user = get_default_user()
-        plant = Plant.objects.create(uuid=uuid4(), user=default_user)
-        plant_options = cache.get(f'plant_options_{default_user.pk}')
-        self.assertIn(str(plant.uuid), plant_options)
-        self.assertIsNone(plant_options[str(plant.uuid)]['last_watered'])
-
-        # Water plant, confirm cached plant_options updated
-        timestamp = timezone.now()
-        WaterEvent.objects.create(plant=plant, timestamp=timestamp)
-        plant_options = cache.get(f'plant_options_{default_user.pk}')
-        self.assertEqual(
-            plant_options[str(plant.uuid)]['last_watered'],
-            timestamp.isoformat()
-        )
-
     def test_group_number_of_plants_outdated_in_cache_if_plant_deleted(self):
         '''Issue: group details (including number of plants) was updated in
         cached overview state and group_options when plants were added/removed
@@ -1304,28 +1289,19 @@ class CachedStateRegressionTests(TestCase):
         user = get_default_user()
         group = Group.objects.create(uuid=uuid4(), user=user)
         plant = Plant.objects.create(uuid=uuid4(), group=group, user=user)
-        # Trigger group_options cache update (normally called from endpoint)
-        group.save()
 
-        # Confirm group option in manage_plant state says 1 plant in group
+        # Confirm overview state says 1 plant in group
         self.assertEqual(
-            cache.get(f'overview_state_{user.pk}')['groups'][str(group.uuid)]['plants'],
-            1
-        )
-        # Confirm group details in overview state says 1 plant in group
-        self.assertEqual(
-            cache.get(f'group_options_{user.pk}')[str(group.uuid)]['plants'],
+            build_overview_state(user)['groups'][str(group.uuid)]['plants'],
             1
         )
 
         # Delete plant, confirm both cached states now say 0 plants in group
-        plant.delete()
+        JSONClient().post('/bulk_delete_plants_and_groups', {
+            'uuids': [str(plant.uuid)]
+        })
         self.assertEqual(
             cache.get(f'overview_state_{user.pk}')['groups'][str(group.uuid)]['plants'],
-            0
-        )
-        self.assertEqual(
-            cache.get(f'group_options_{user.pk}')[str(group.uuid)]['plants'],
             0
         )
 
@@ -1338,7 +1314,7 @@ class CachedStateRegressionTests(TestCase):
         not sort, etc).
         '''
 
-        # Create plant with 2 water events, generate cached state
+        # Create plant with 2 water events
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         WaterEvent.objects.create(
             plant=plant,
@@ -1348,11 +1324,11 @@ class CachedStateRegressionTests(TestCase):
             plant=plant,
             timestamp=datetime.fromisoformat('2024-01-06T03:06:26.000Z')
         )
-        build_manage_plant_state(plant.uuid)
 
-        # Confirm water events are sorted chronologically in cached state
+        # Request manage page, confirm water events are sorted chronologically
+        response = self.client.get(f'/manage/{plant.uuid}')
         self.assertEqual(
-            cache.get(f'{plant.uuid}_state')['events']['water'],
+            response.context['state']['events']['water'],
             [
                 '2024-03-06T03:06:26+00:00',
                 '2024-01-06T03:06:26+00:00'
@@ -1364,14 +1340,58 @@ class CachedStateRegressionTests(TestCase):
             plant=plant,
             timestamp=datetime.fromisoformat('2024-02-06T03:06:26.000Z')
         )
-        # Confirm state updated, new event is sorted chronologically
+
+        # Request manage page, confirm new event is sorted chronologically
+        response = self.client.get(f'/manage/{plant.uuid}')
         self.assertEqual(
-            cache.get(f'{plant.uuid}_state')['events']['water'],
+            response.context['state']['events']['water'],
             [
                 '2024-03-06T03:06:26+00:00',
                 '2024-02-06T03:06:26+00:00',
                 '2024-01-06T03:06:26+00:00'
             ]
+        )
+
+    def test_cached_last_fertilized_time_does_not_update_when_water_also_deleted(self):
+        '''Issue: /bulk_delete_plant_events used if elif to check if water and
+        fertilize respectively were deleted (instead of 2 ifs). If both were
+        deleted only the last_watered time would be updated, instead of both.
+        '''
+
+        # Create plant with water and fertilize events
+        user = get_default_user()
+        plant = Plant.objects.create(uuid=uuid4(), user=user)
+        WaterEvent.objects.create(
+            plant=plant,
+            timestamp=datetime.fromisoformat('2024-03-06T03:06:26.000Z')
+        )
+        FertilizeEvent.objects.create(
+            plant=plant,
+            timestamp=datetime.fromisoformat('2024-01-06T03:06:26.000Z')
+        )
+
+        # Confirm overview state has last_watered and last_fertilized times
+        overview_state = build_overview_state(get_default_user())
+        self.assertIsNotNone(overview_state['plants'][str(plant.uuid)]['last_watered'])
+        self.assertIsNotNone(overview_state['plants'][str(plant.uuid)]['last_fertilized'])
+
+        # Delete both events in a single request
+        JSONClient().post('/bulk_delete_plant_events', {
+            'plant_id': plant.uuid,
+            'events': {
+                'water': ['2024-03-06T03:06:26.000Z'],
+                'fertilize': ['2024-01-06T03:06:26.000Z'],
+                'prune': [],
+                'repot': [],
+            }
+        })
+
+        # Confirm overview state cleared last_watered AND last_fertilized
+        self.assertIsNone(
+            cache.get(f'overview_state_{user.pk}')['plants'][str(plant.uuid)]['last_watered'],
+        )
+        self.assertIsNone(
+            cache.get(f'overview_state_{user.pk}')['plants'][str(plant.uuid)]['last_fertilized'],
         )
 
 
@@ -1391,11 +1411,11 @@ class ViewDecoratorRegressionTests(TestCase):
         '''
 
         # Create test functions that raise errors caught by decorator
-        @get_plant_from_post_body
+        @get_plant_from_post_body()
         def test_key_error(plant, **kwargs):
             raise KeyError("wrapped function error")
 
-        @get_plant_from_post_body
+        @get_plant_from_post_body()
         def test_validation_error(plant, **kwargs):
             raise ValidationError("wrapped function error")
 
@@ -1417,11 +1437,11 @@ class ViewDecoratorRegressionTests(TestCase):
         '''
 
         # Create test functions that raise errors caught by decorator
-        @get_group_from_post_body
+        @get_group_from_post_body()
         def test_key_error(group, **kwargs):
             raise KeyError("wrapped function error")
 
-        @get_group_from_post_body
+        @get_group_from_post_body()
         def test_validation_error(group, **kwargs):
             raise ValidationError("wrapped function error")
 
@@ -1484,6 +1504,14 @@ class DatabaseRaceConditionRegressionTests(TransactionTestCase):
     def setUp(self):
         # Clear entire cache before each test
         cache.clear()
+
+        # Recreate default user (deleted by TransactionTestCase)
+        self.user, _ = get_user_model().objects.get_or_create(
+            username=settings.DEFAULT_USERNAME
+        )
+
+        # Clear cached user instance
+        get_default_user.cache_clear()
 
     def test_simultaneous_requests_create_duplicate_water_events(self):
         '''Issue: If two identical events were created simultaneously the Event

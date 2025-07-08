@@ -48,9 +48,23 @@ class ViewDecoratorErrorTests(TestCase):
     def test_plant_uuid_does_not_exist(self):
         # Send POST with UUID that does not exist in database to endpoint with
         # get_plant_from_post_body decorator, confirm error
-        response = self.client.post('/delete_plant', {'plant_id': uuid4()})
+        response = self.client.post('/add_plant_event', {
+            'plant_id': uuid4(),
+            'event_type': 'water',
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        })
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(), {"error": "plant not found"})
+
+    def test_group_uuid_does_not_exist(self):
+        # Send POST with UUID that does not exist in database to endpoint with
+        # get_group_from_post_body decorator, confirm error
+        response = self.client.post('/bulk_add_plants_to_group', {
+            'group_id': uuid4(),
+            'plants': [uuid4()]
+        })
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.json(), {"error": "group not found"})
 
     def test_qr_instance_uuid_does_not_exist(self):
         # Send POST with UUID that does not exist in database to endpoint with
@@ -65,7 +79,8 @@ class ViewDecoratorErrorTests(TestCase):
     def test_missing_plant_id(self):
         # Send POST with no plant_id key in body to endpoint that requires
         # plant_id (requires_json_post decorator arg), confirm error
-        response = self.client.post('/delete_plant', {
+        response = self.client.post('/add_plant_event', {
+            'event_type': 'water',
             'timestamp': '2024-02-06T03:06:26.000Z'
         })
         self.assertEqual(response.status_code, 400)
@@ -77,7 +92,7 @@ class ViewDecoratorErrorTests(TestCase):
     def test_missing_group_id(self):
         # Send POST with no group_id key in body to endpoint that requires
         # group_id (requires_json_post decorator arg), confirm error
-        response = self.client.post('/delete_group')
+        response = self.client.post('/add_plant_to_group', {'plant_id': '1'})
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response.json(),
@@ -87,7 +102,11 @@ class ViewDecoratorErrorTests(TestCase):
     def test_invalid_plant_uuid(self):
         # Send POST with plant_id that is not a valid UUID to endpoint with
         # get_plant_from_post_body decorator, confirm error
-        response = self.client.post('/delete_plant', {'plant_id': '31670857'})
+        response = self.client.post('/add_plant_event', {
+            'plant_id': '31670857',
+            'event_type': 'water',
+            'timestamp': '2024-02-06T03:06:26.000Z'
+        })
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response.json(),
@@ -97,7 +116,10 @@ class ViewDecoratorErrorTests(TestCase):
     def test_invalid_group_uuid(self):
         # Send POST with group_id that is not a valid UUID to endpoint with
         # get_group_from_post_body decorator, confirm error
-        response = self.client.post('/delete_group', {'group_id': '31670857'})
+        response = self.client.post('/bulk_add_plants_to_group', {
+            'group_id': '31670857',
+            'plants': [uuid4()]
+        })
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response.json(),
@@ -173,7 +195,7 @@ class FallbackErrorHandlingTests(TestCase):
     '''
 
     def test_get_plant_from_post_body_missing_plant_id(self):
-        @get_plant_from_post_body
+        @get_plant_from_post_body()
         def mock_view_function(**kwargs):
             pass
 
@@ -186,7 +208,7 @@ class FallbackErrorHandlingTests(TestCase):
         )
 
     def test_get_group_from_post_body_missing_group_id(self):
-        @get_group_from_post_body
+        @get_group_from_post_body()
         def mock_view_function(**kwargs):
             pass
 
@@ -199,7 +221,7 @@ class FallbackErrorHandlingTests(TestCase):
         )
 
     def test_get_qr_instance_from_post_body_missing_uuid(self):
-        @get_qr_instance_from_post_body
+        @get_qr_instance_from_post_body()
         def mock_view_function(**kwargs):
             pass
 

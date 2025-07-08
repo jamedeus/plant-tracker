@@ -19,8 +19,6 @@ describe('App', () => {
                 plant_details: mockContext.plant_details,
                 events: mockContext.events,
                 notes: mockContext.notes,
-                group_options: mockContext.group_options,
-                species_options: mockContext.species_options,
                 // Deep copy so subsequent calls don't fail (gets mutated when
                 // buildTimelineDays sorts - not an issue in production since
                 // it's a different response each time but in mock it's reused)
@@ -153,8 +151,6 @@ describe('App', () => {
                 plant_details: mockContext.plant_details,
                 events: mockContext.events,
                 notes: mockContext.notes,
-                group_options: mockContext.group_options,
-                species_options: mockContext.species_options,
                 photos: JSON.parse(JSON.stringify(mockContext.photos)),
                 default_photo: mockContext.default_photo,
                 division_events: {

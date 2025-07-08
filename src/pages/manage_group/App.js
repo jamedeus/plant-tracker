@@ -25,19 +25,6 @@ function App() {
     const [plantDetails, setPlantDetails] = useState(() => {
         return parseDomContext("details");
     });
-    // Contains list of objects with details of every plant owned by same user
-    // that is not already in a group (AddPlantsModal options state).
-    // Should only be mutated by pageshow listener and removePlants callback.
-    const [options, setOptions] = useState(() => {
-        return parseDomContext("options");
-    });
-
-    // Subset of plant option objects that are not archived
-    const addPlantsModalOptions = useMemo(() => (
-        Object.fromEntries(Object.entries(options).filter(
-            ([, plant]) => !plant.archived
-        ))
-    ), [options]);
 
     // Request new state from backend if user navigates to page by pressing
     // back button (may be outdated if user clicked plant and made changes)
@@ -49,7 +36,6 @@ function App() {
                     const data = await response.json();
                     setGroup(data['group']);
                     setPlantDetails(data['details']);
-                    setOptions(data['options']);
                 } else {
                     // Reload page if failed to get new state (group deleted)
                     window.location.reload();
@@ -211,12 +197,6 @@ function App() {
             const newPlantDetails = { ...plantDetails };
             data.added.forEach(plant => newPlantDetails[plant.uuid] = plant);
             setPlantDetails(newPlantDetails);
-            // Remove added plants from AddPlantsModal options state
-            const newOptions = { ...options };
-            data.added.map(plant => plant.uuid).forEach(
-                uuid => delete newOptions[uuid]
-            );
-            setOptions(newOptions);
         } else {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
@@ -236,10 +216,6 @@ function App() {
         );
         if (response.ok) {
             const data = await response.json();
-            // Add removed plants back to AddPlantsModal options state
-            const newOptions = { ...options };
-            data.removed.forEach(plant => newOptions[plant.uuid] = plant);
-            setOptions(newOptions);
             // Remove plants in response from plantDetails state
             const newPlantDetails = { ...plantDetails };
             data.removed.map(plant => plant.uuid).forEach(
@@ -252,7 +228,7 @@ function App() {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));
         }
-    }, [plantDetails, options]);
+    }, [plantDetails]);
 
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => (
@@ -365,10 +341,7 @@ function App() {
 
             <EditGroupModal group={group} setGroup={setGroup} />
 
-            <AddPlantsModal
-                options={addPlantsModalOptions}
-                addPlants={addPlants}
-            />
+            <AddPlantsModal addPlants={addPlants} />
 
             <ChangeQrModal
                 uuid={group.uuid}

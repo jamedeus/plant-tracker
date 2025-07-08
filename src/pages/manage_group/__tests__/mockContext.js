@@ -61,49 +61,36 @@ export const mockContext = {
                 uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
             }
         },
+    }
+};
+
+export const mockPlantOptions = {
+    "0640ec3b-1bed-4b15-a078-d6e7ec66be16": {
+        uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be16",
+        created: "2024-02-26T01:25:12+00:00",
+        name: "Another test plant",
+        display_name: "Another test plant",
+        species: null,
+        description: null,
+        pot_size: 4,
+        last_watered: null,
+        last_fertilized: null,
+        thumbnail: "/media/thumbnails/photo2_thumb.webp",
+        archived: false,
+        group: null
     },
-    options: {
-        "0640ec3b-1bed-4b15-a078-d6e7ec66be16": {
-            uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be16",
-            created: "2024-02-26T01:25:12+00:00",
-            name: "Another test plant",
-            display_name: "Another test plant",
-            species: null,
-            description: null,
-            pot_size: 4,
-            last_watered: null,
-            last_fertilized: null,
-            thumbnail: "/media/thumbnails/photo2_thumb.webp",
-            archived: false,
-            group: null
-        },
-        "0640ec3b-1bed-4b15-a078-d6e7ec66be69": {
-            uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be69",
-            created: "2023-12-26T01:25:12+00:00",
-            name: "Third test plant",
-            display_name: "Third test plant",
-            species: null,
-            description: null,
-            pot_size: null,
-            last_watered: null,
-            last_fertilized: null,
-            thumbnail: "/media/thumbnails/photo3_thumb.webp",
-            archived: false,
-            group: null
-        },
-        "102d1a8c-07e6-4ece-bac7-60ed6a95a463": {
-            uuid: "102d1a8c-07e6-4ece-bac7-60ed6a95a463",
-            created: "2022-12-26T01:25:12+00:00",
-            name: null,
-            display_name: "Unnamed Fern",
-            species: null,
-            description: null,
-            pot_size: null,
-            last_watered: null,
-            last_fertilized: "2022-03-01T05:45:44+00:00",
-            thumbnail: null,
-            archived: true,
-            group: null
-        }
+    "0640ec3b-1bed-4b15-a078-d6e7ec66be69": {
+        uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be69",
+        created: "2023-12-26T01:25:12+00:00",
+        name: "Third test plant",
+        display_name: "Third test plant",
+        species: null,
+        description: null,
+        pot_size: null,
+        last_watered: null,
+        last_fertilized: null,
+        thumbnail: "/media/thumbnails/photo3_thumb.webp",
+        archived: false,
+        group: null
     }
 };

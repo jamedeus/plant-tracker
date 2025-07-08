@@ -108,9 +108,15 @@ This will set the env var automatically every time you run `pipenv shell`.
 
 The other database env vars do not need to be set, they will default to the values in the docker-compose above. See [settings.py](backend/backend/settings.py) for all database environment variables.
 
-#### Django debug toolbar
+#### Django debug tools
 
-[Django debug toolbar](https://django-debug-toolbar.readthedocs.io/en/latest/index.html) can be enabled by setting the `DEBUG_MODE` env var to `True` (this can be done in `.env` for convenience). This can be useful for debugging SQL queries. The development server needs to be run with the `--nothreading` arg while this is enabled. This setting cannot be used in the docker image (does not include development dependencies).
+The development dependencies include both [django debug toolbar](https://django-debug-toolbar.readthedocs.io/en/latest/index.html) and [django silk](https://github.com/jazzband/django-silk) which can be useful for debugging SQL queries. These are only available when the `DEBUG_MODE` env var is set to `True` (this can be done in `.env` for convenience). Only one tool can be used at a time, this can be configured with the `DEBUG_TOOL` env var (set to `toolbar` to use django-debug-toolbar, will default to silk if not set).
+
+When running django-debug-toolbar the development server needs to be run with the `--nothreading` arg.
+
+These tools cannot be used in the docker image (does not include development dependencies).
+
+Note that silk is only able to capture SELECT, UPDATE, and DELETE queries. It cannot capture INSERT queries, so any endpoint which creates a model entry will show fewer queries than the [sql query unit tests](backend/plant_tracker/test_sql_queries.py). Tests for new endpoints that create model entries should be added to ensure they create models efficiently (ideally with bulk_create) and do not make o(n) queries.
 
 #### Caching
 

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useState, useRef } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { sendPostRequest } from 'src/util';
 import Modal from 'src/components/Modal';
@@ -6,9 +6,10 @@ import GroupCard from 'src/components/GroupCard';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { plantAddedToGroup } from './plantSlice';
 
-let modalRef;
+let modalRef, loadOptions;
 
-export const openGroupModal = () => {
+export const openGroupModal = async () => {
+    await loadOptions();
     modalRef.current.open();
 };
 
@@ -17,7 +18,17 @@ const GroupModal = () => {
 
     const dispatch = useDispatch();
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
-    const groupOptions = useSelector((state) => state.plant.groupOptions);
+
+    // Stores options queried from backend
+    const [options, setOptions] = useState([]);
+
+    loadOptions = async () => {
+        const response = await fetch('/get_add_to_group_options');
+        if (response.ok) {
+            const data = await response.json();
+            setOptions(data.options);
+        }
+    };
 
     const submit = async (groupID) => {
         const payload = {
@@ -42,7 +53,7 @@ const GroupModal = () => {
     return (
         <Modal title='Add plant to group' ref={modalRef}>
             <div className="flex flex-col px-4 overflow-y-auto">
-                {Object.entries(groupOptions).map(([uuid, group]) => (
+                {Object.entries(options).map(([uuid, group]) => (
                     <div
                         key={uuid}
                         className="flex relative w-full max-w-80 mx-auto mb-4"
@@ -55,7 +66,7 @@ const GroupModal = () => {
                         ></div>
                     </div>
                 ))}
-                {!Object.keys(groupOptions).length && (
+                {!Object.keys(options).length && (
                     <span className="my-16">
                         No groups
                     </span>

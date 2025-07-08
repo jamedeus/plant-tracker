@@ -15,8 +15,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 group: mockContext.group,
-                details: mockContext.details,
-                options: mockContext.options
+                details: mockContext.details
             })
         }));
 

@@ -3,10 +3,15 @@
 from typing import TYPE_CHECKING
 
 from django.db import models
+from django.apps import apps
 from django.conf import settings
-from django.core.cache import cache
-from django.db import IntegrityError, transaction
+from django.utils.functional import cached_property
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.db.models.functions import JSONObject, Cast
+from django.contrib.postgres.expressions import ArraySubquery
+from django.db.models import F, Case, When, Value, Subquery, OuterRef, Exists, JSONField
+
+from .annotations import unnamed_index_annotation
 
 if TYPE_CHECKING:  # pragma: no cover
     from .group import Group
@@ -14,53 +19,180 @@ if TYPE_CHECKING:  # pragma: no cover
     from .events import DivisionEvent
 
 
-def get_unnamed_plants(user):
-    '''Takes user, returns list of primary_keys for all Plants owned by user
-    with no name or species (cached 10 minutes or until plant model changed).
-    Uses list instead of QuerySet to avoid serialization overhead.
-    '''
-    unnamed_plants = cache.get(f'unnamed_plants_{user.pk}')
-    if not unnamed_plants:
-        unnamed_plants = list(Plant.objects.filter(
-            name__isnull=True,
-            species__isnull=True,
-            user=user
-        ).order_by(
-            'created'
-        ).values_list(
-            'id',
-            flat=True
-        ))
-        cache.set(f'unnamed_plants_{user.pk}', unnamed_plants, 600)
-    return unnamed_plants
+class PlantQueryset(models.QuerySet):
+    '''Custom queryset methods for the Plant model.'''
+
+    def with_is_unnamed_annotation(self):
+        '''Adds is_unnamed attribute (True if no name or species, default False).'''
+        return self.annotate(
+            is_unnamed=Case(
+                When(name__isnull=True, species__isnull=True, then=Value(True)),
+                default=Value(False)
+            )
+        )
+
+    def with_unnamed_index_annotation(self):
+        '''Adds unnamed_index attribute (sequential ints) to items with is_unnamed=True.'''
+        return self.annotate(**unnamed_index_annotation())
 
 
-def get_plant_options(user):
-    '''Takes user, returns dict with all of user's plants with no group (uuids
-    as keys, details dicts as values). Populates options in add plants modal on
-    manage_group page. Cached until Plant model changes (see hooks in tasks.py).
-    '''
-    plant_options = cache.get(f'plant_options_{user.pk}')
-    if not plant_options:
-        plant_options = {
+    def with_last_watered_time_annotation(self):
+        '''Adds last_watered_time attribute (most-recent WaterEvent timestamp).'''
+        return self.annotate(
+            last_watered_time=Subquery(
+                apps.get_model("plant_tracker", "WaterEvent").objects
+                    .filter(plant_id=OuterRef("pk"))
+                    .values("timestamp")[:1]
+            )
+        )
+
+    def with_last_fertilized_time_annotation(self):
+        '''Adds last_fertilized_time attribute (most-recent WaterEvent timestamp).'''
+        return self.annotate(
+            last_fertilized_time=Subquery(
+                apps.get_model("plant_tracker", "FertilizeEvent").objects
+                    .filter(plant_id=OuterRef("pk"))
+                    .values("timestamp")[:1]
+            )
+        )
+
+    def with_last_photo_thumbnail_annotation(self):
+        '''Adds last_photo_thumbnail attribute with name of most-recent Photo entry.'''
+        return self.annotate(
+            last_photo_thumbnail=Subquery(
+            apps.get_model("plant_tracker", "Photo").objects
+                .filter(plant_id=OuterRef("pk"))
+                .order_by("-timestamp")
+                .values("thumbnail")[:1]
+            )
+        )
+
+    def with_last_photo_details_annotation(self):
+        '''Adds last_photo_details attribute with dict containing all relevant
+        attributes of most-recent Photo entry.
+        '''
+        return self.annotate(
+            last_photo_details=Subquery(
+            apps.get_model("plant_tracker", "Photo").objects
+                .filter(plant_id=OuterRef("pk"))
+                .order_by("-timestamp")
+                .annotate(
+                    details=JSONObject(
+                        key=F("pk"),
+                        photo=F("photo"),
+                        thumbnail=F("thumbnail"),
+                        preview=F("preview"),
+                        timestamp=F("timestamp"),
+                    )
+                )
+                .values("details")[:1],
+                output_field=JSONField()
+            )
+        )
+
+    def with_uuid_as_string_annotation(self):
+        '''Adds uuid_str attribute containing uuid field cast to string.'''
+        return self.annotate(uuid_str=Cast("uuid", models.CharField()))
+
+    def with_overview_annotation(self):
+        '''Adds annotations covering everything shown on overview page
+        (last_watered, last_fertilized, photo thumbnail, unnamed index, etc).
+        '''
+        return (
+            self
+                # Consistent order so unnamed plant index doesn't shift
+                .order_by('created')
+                # Label unnamed plants with no species (gets sequential name)
+                .with_is_unnamed_annotation()
+                # Add unnamed_index (used to build "Unnamed plant <index>" names)
+                .with_unnamed_index_annotation()
+                # Add last_watered_time
+                .with_last_watered_time_annotation()
+                # Add last_fertilized_time
+                .with_last_fertilized_time_annotation()
+                # Add last_photo_thumbnail (used as default photo if not set)
+                .with_last_photo_thumbnail_annotation()
+                # Include default_photo if set (avoid extra query for thumbnail)
+                .select_related('default_photo')
+        )
+
+    def with_manage_plant_annotation(self):
+        '''Adds full annotations for manage_plant page (avoids separate queries
+        for events, photos, etc).
+        '''
+        return (
+            self
+                # Add last_watered_time
+                .with_last_watered_time_annotation()
+                # Add last_fertilized_time
+                .with_last_fertilized_time_annotation()
+                # Add last_photo_details (used as default photo if not set)
+                .with_last_photo_details_annotation()
+                # Include default_photo if set (avoid extra query for thumbnail)
+                .select_related('default_photo')
+                # Include Group entry if plant in a group
+                .select_related('group')
+                # Include parent plant + division event if plant was divided
+                .select_related('divided_from', 'divided_from_event')
+                # Include user (avoids extra query to check ownership)
+                .select_related('user')
+                # Add <event_type>_timetamps attributes containing lists of
+                # event timestamps (sorted chronologically at database level)
+                .annotate(
+                    water_timestamps=ArraySubquery(
+                        apps.get_model("plant_tracker", "WaterEvent").objects
+                            .filter(plant_id=OuterRef('pk'))
+                            .values_list('timestamp', flat=True)
+                    ),
+                    fertilize_timestamps=ArraySubquery(
+                        apps.get_model("plant_tracker", "FertilizeEvent").objects
+                            .filter(plant_id=OuterRef('pk'))
+                            .values_list('timestamp', flat=True)
+                    ),
+                    prune_timestamps=ArraySubquery(
+                        apps.get_model("plant_tracker", "PruneEvent").objects
+                            .filter(plant_id=OuterRef('pk'))
+                            .values_list('timestamp', flat=True)
+                    ),
+                    repot_timestamps=ArraySubquery(
+                        apps.get_model("plant_tracker", "RepotEvent").objects
+                            .filter(plant_id=OuterRef('pk'))
+                            .values_list('timestamp', flat=True)
+                    ),
+                )
+                # Annotate whether DivisionEvents exist (skips extra query if not)
+                .annotate(
+                    has_divisions=Exists(
+                        apps.get_model("plant_tracker", "DivisionEvent").objects
+                            .filter(plant=OuterRef('pk'))
+                    )
+                )
+        )
+
+    def get_by_uuid(self, uuid):
+        '''Returns Plant model instance matching UUID, or None if not found.'''
+        return self.filter(uuid=uuid).select_related('user').first()
+
+    def get_with_overview_annotation(self, uuid):
+        '''Takes UUID, returns matching Plant with full overview annotations.'''
+        return self.filter(uuid=uuid).with_overview_annotation().first()
+
+    def get_with_manage_plant_annotation(self, uuid):
+        '''Takes UUID, returns matching Plant with full manage_plant annotations.'''
+        return self.filter(uuid=uuid).with_manage_plant_annotation().first()
+
+    def get_add_plants_to_group_modal_options(self, user):
+        '''Takes user, returns dict with all of user's plants with no group
+        (uuids as keys, details dicts as values). Populates options in add
+        plants modal on manage_group page.
+        '''
+        return {
             str(plant.uuid): plant.get_details()
-            for plant in Plant.objects.filter(user=user, group=None)
+            for plant in self.filter(user=user, archived=False)
+                .with_overview_annotation()
+                .select_related('group')
+            if plant.group is None
         }
-        cache.set(f'plant_options_{user.pk}', plant_options, None)
-    return plant_options
-
-
-def get_plant_species_options():
-    '''Returns a list of species for every Plant in database (no duplicates).
-    List is cached for up to 10 minutes, or until Plant model changed.
-    Used to populate species suggestions on plant registration form.
-    '''
-    species_options = cache.get('species_options')
-    if not species_options:
-        species = Plant.objects.all().values_list('species', flat=True)
-        species_options = list(set(i for i in species if i is not None))
-        cache.set('species_options', species_options, 600)
-    return species_options
 
 
 class Plant(models.Model):
@@ -69,6 +201,8 @@ class Plant(models.Model):
     Receives database relations to all WaterEvent, FertilizeEvent, PruneEvent,
     RepotEvent, Photo, and NoteEvent instances associated with Plant.
     '''
+
+    objects = PlantQueryset.as_manager()
 
     # User who registered the plant
     user = models.ForeignKey(
@@ -149,9 +283,23 @@ class Plant(models.Model):
         if self.species:
             return f'Unnamed {self.species}'
 
-        # If no name or species return string with unnamed plant index
-        unnamed_plants = get_unnamed_plants(self.user)
-        return f'Unnamed plant {unnamed_plants.index(self.id) + 1}'
+        # If no name or species use annotation if present
+        if hasattr(self, 'unnamed_index'):
+            return f'Unnamed plant {self.unnamed_index}'
+
+        # Query database for unnamed index if annotation not present
+        unnamed_index = Plant.objects.filter(
+            user=self.user,
+            name__isnull=True,
+            species__isnull=True,
+            created__lte=self.created
+        ).count()
+        return f'Unnamed plant {unnamed_index}'
+
+    @cached_property
+    def display_name(self):
+        '''Cached self.get_display_name return value (avoid duplicate queries).'''
+        return self.get_display_name()
 
     def get_photos(self):
         '''Returns list of dicts containing photo and thumbnail URLs, creation
@@ -168,7 +316,7 @@ class Plant(models.Model):
         '''
         return {
             'name': self.name,
-            'display_name': self.get_display_name(),
+            'display_name': self.display_name,
             'uuid': str(self.uuid),
             'archived': self.archived,
             'created': self.created.isoformat(),
@@ -177,7 +325,7 @@ class Plant(models.Model):
             'pot_size': self.pot_size,
             'last_watered': self.last_watered(),
             'last_fertilized': self.last_fertilized(),
-            'thumbnail': self.get_default_photo_details()['thumbnail'],
+            'thumbnail': self.get_thumbnail_url(),
             'group': self.get_group_details()
         }
 
@@ -185,10 +333,32 @@ class Plant(models.Model):
         '''Returns dict with group name and uuid, or None if not in group.'''
         if self.group:
             return {
-                'name': self.group.get_display_name(),
+                'name': self.group.display_name,
                 'uuid': str(self.group.uuid)
             }
         return None
+
+    def get_thumbnail_url(self):
+        '''Returns default_photo thumbnail URL (or most-recent photo if not set).'''
+        if self.default_photo:
+            return self.default_photo.get_thumbnail_url()
+
+        # If default photo not set: use annotation if present
+        if hasattr(self, 'last_photo_thumbnail'):
+            if self.last_photo_thumbnail:
+                return f'{settings.MEDIA_URL}{self.last_photo_thumbnail}'
+            return None
+
+        # Use full last_photo_details annotation if present
+        if hasattr(self, 'last_photo_details'):
+            return self.default_photo_details['thumbnail']
+
+        # Query from database if neither annotation present
+        try:
+            last_photo = self.photo_set.all().order_by('-timestamp')[0]
+            return last_photo.get_thumbnail_url()
+        except IndexError:
+            return None
 
     def get_default_photo_details(self):
         '''Returns dict containing set key (True if default photo set, False if
@@ -199,6 +369,20 @@ class Plant(models.Model):
                 {'set': True},
                 **self.default_photo.get_details()
             )
+
+        # If default photo not set: use annotation if present
+        if hasattr(self, 'last_photo_details'):
+            if self.last_photo_details:
+                return {
+                    'set': False,
+                    'timestamp': self.last_photo_details['timestamp'],
+                    'image': f'{settings.MEDIA_URL}{self.last_photo_details['photo']}',
+                    'thumbnail': f'{settings.MEDIA_URL}{self.last_photo_details['thumbnail']}',
+                    'preview': f'{settings.MEDIA_URL}{self.last_photo_details['preview']}',
+                    'key': self.last_photo_details['key']
+                }
+
+        # Query from database if no annotation
         try:
             return dict(
                 {'set': False},
@@ -214,12 +398,17 @@ class Plant(models.Model):
                 'key': None
             }
 
+    @cached_property
+    def default_photo_details(self):
+        '''Cached self.get_default_photo_details return value (avoid duplicate queries).'''
+        return self.get_default_photo_details()
+
     def get_parent_plant_details(self):
         '''Returns dict with parent plant name, uuid, and division timestamp if
         plant was divided from another plant, or None if no parent plant.
         '''
         return {
-            'name': self.divided_from.get_display_name(),
+            'name': self.divided_from.display_name,
             'uuid': str(self.divided_from.uuid),
             'timestamp': self.divided_from_event.timestamp.isoformat()
         } if self.divided_from else None
@@ -228,9 +417,16 @@ class Plant(models.Model):
         '''Returns nested dict with DivisionEvent timestamps as keys, list as
         value containing dicts with each child plant's name and uuid.
         '''
+
+        # Skip if annotation says no DivisionEvents
+        # pylint: disable-next=no-member
+        if hasattr(self, 'has_divisions') and not self.has_divisions:
+            return {}
+
+        # Query from database if no annotation
         return {
             event.timestamp.isoformat(): [
-                {'name': child.get_display_name(), 'uuid': str(child.uuid)}
+                {'name': child.display_name, 'uuid': str(child.uuid)}
                 for child in event.created_plants.all()
             ]
             for event in self.divisionevent_set.all()
@@ -240,17 +436,33 @@ class Plant(models.Model):
         '''Takes QuerySet containing events, returns timestamp string of
         most-recent event (or None if queryset empty).
         '''
-        last_event = queryset.order_by('timestamp').last()
+        last_event = queryset.first()
         if last_event:
             return last_event.timestamp.isoformat()
         return None
 
     def last_watered(self):
         '''Returns timestamp string of last WaterEvent, or None if no events.'''
+
+        # Use annotation if present
+        if hasattr(self, 'last_watered_time'):
+            if self.last_watered_time:
+                return self.last_watered_time.isoformat()
+            return None
+
+        # Query from database if not present
         return self._get_most_recent_timestamp(self.waterevent_set.all())
 
     def last_fertilized(self):
         '''Returns timestamp string of last FertilizeEvent, or None if no events.'''
+
+        # Use annotation if present
+        if hasattr(self, 'last_fertilized_time'):
+            if self.last_fertilized_time:
+                return self.last_fertilized_time.isoformat()
+            return None
+
+        # Query from database if not present
         return self._get_most_recent_timestamp(self.fertilizeevent_set.all())
 
     def last_pruned(self):
@@ -260,74 +472,3 @@ class Plant(models.Model):
     def last_repotted(self):
         '''Returns timestamp string of last RepotEvent, or None if no events.'''
         return self._get_most_recent_timestamp(self.repotevent_set.all())
-
-    def _get_all_timestamps(self, queryset):
-        '''Takes QuerySet containing events, returns list of timestamp strings
-        for every item in queryset sorted from most recent to least recent.
-        '''
-        return sorted([
-            timestamp[0].isoformat()
-            for timestamp in queryset.values_list('timestamp')
-        ], reverse=True)
-
-    def get_water_timestamps(self):
-        '''Returns list of timestamp strings for every WaterEvent sorted from
-        most recent to least recent.
-        '''
-        return self._get_all_timestamps(self.waterevent_set.all())
-
-    def get_fertilize_timestamps(self):
-        '''Returns list of timestamp strings for every FertilizeEvent sorted from
-        most recent to least recent.
-        '''
-        return self._get_all_timestamps(self.fertilizeevent_set.all())
-
-    def get_prune_timestamps(self):
-        '''Returns list of timestamp strings for every PruneEvent sorted from
-        most recent to least recent.
-        '''
-        return self._get_all_timestamps(self.pruneevent_set.all())
-
-    def get_repot_timestamps(self):
-        '''Returns list of timestamp strings for every RepotEvent sorted from
-        most recent to least recent.
-        '''
-        return self._get_all_timestamps(self.repotevent_set.all())
-
-    def save(self, *args, **kwargs):
-        # Prevent setting photo of a different plant as default
-        if self.default_photo and self.default_photo.plant != self:
-            raise ValueError("Default photo is associated with a different plant")
-        # Prevent saving Plant with UUID that is already used by Group
-        from .group import Group
-        if Group.objects.filter(uuid=self.uuid):
-            raise IntegrityError("UUID already exists in Group table")
-        super().save(*args, **kwargs)
-
-    def _delete_event_queryset(self, events):
-        '''Takes an event queryset, deletes all entries with raw SQL method that
-        bypasses post_delete signals (avoids running unnecessary state updates).
-
-        Should ONLY be used just before Plant is deleted (otherwise the state
-        updates are necessary and bypassing will cause outdated cached states).
-        '''
-        qs = events.order_by().select_related(None)
-        qs._raw_delete(qs.db)
-
-    def delete(self, *args, **kwargs):
-        # Delete plant cache (make sure post_delete signals don't update it)
-        cache.delete(f'{self.uuid}_state')
-        # Delete all associated models with raw sql. Wrap in a single transation
-        # to avoid failed constraint if plant's default_photo deleted before
-        # plant (raw sql also bypasses on_delete=models.SET_NULL). Also faster.
-        with transaction.atomic():
-            self._delete_event_queryset(self.waterevent_set.all())
-            self._delete_event_queryset(self.fertilizeevent_set.all())
-            self._delete_event_queryset(self.pruneevent_set.all())
-            self._delete_event_queryset(self.repotevent_set.all())
-            self._delete_event_queryset(self.noteevent_set.all())
-            # Delete all photos from disk before deleting photo entries
-            for photo in self.photo_set.all():
-                photo._delete_photos_from_disk()
-            self._delete_event_queryset(self.photo_set.all())
-            super().delete(*args, **kwargs)

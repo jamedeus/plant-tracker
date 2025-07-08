@@ -1,5 +1,6 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
+import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import { postHeaders } from 'src/testUtils/headers';
 import { PageWrapper } from 'src/index';
 import App from '../App';
@@ -15,6 +16,9 @@ describe('App', () => {
     });
 
     beforeEach(() => {
+        // Mock /get_plant_species_options response (requested when page loads)
+        mockPlantSpeciesOptionsResponse();
+
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(

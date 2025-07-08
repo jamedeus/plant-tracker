@@ -65,12 +65,12 @@ describe('EventHistoryModal', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                deleted: [
-                    {type: "water", timestamp: "2024-03-01T15:45:44+00:00"},
-                    {type: "fertilize", timestamp: "2024-03-01T15:45:44+00:00"},
-                    {type: "prune", timestamp: "2024-01-01T15:45:44+00:00"},
-                    {type: "repot", timestamp: "2024-01-01T15:45:44+00:00"}
-                ],
+                deleted: {
+                    water: ["2024-03-01T15:45:44+00:00"],
+                    fertilize: ["2024-03-01T15:45:44+00:00"],
+                    prune: ["2024-01-01T15:45:44+00:00"],
+                    repot: ["2024-01-01T15:45:44+00:00"]
+                },
                 failed: []
             })
         }));
@@ -97,17 +97,17 @@ describe('EventHistoryModal', () => {
         // Click delete button
         await user.click(component.getByRole('button', {name: 'Delete'}));
 
-        // Confirm correct data posted to /delete_plant_event endpoint
+        // Confirm correct data posted to /bulk_delete_plant_events endpoint
         expect(global.fetch).toHaveBeenCalledWith('/bulk_delete_plant_events', {
             method: 'POST',
             body: JSON.stringify({
                 plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                events: [
-                    {type: "water", timestamp: "2024-03-01T15:45:44+00:00"},
-                    {type: "fertilize", timestamp: "2024-03-01T15:45:44+00:00"},
-                    {type: "prune", timestamp: "2024-01-01T15:45:44+00:00"},
-                    {type: "repot", timestamp: "2024-01-01T15:45:44+00:00"}
-                ]
+                events: {
+                    water: ["2024-03-01T15:45:44+00:00"],
+                    fertilize: ["2024-03-01T15:45:44+00:00"],
+                    prune: ["2024-01-01T15:45:44+00:00"],
+                    repot: ["2024-01-01T15:45:44+00:00"]
+                }
             }),
             headers: postHeaders
         });
@@ -160,10 +160,18 @@ describe('EventHistoryModal', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                deleted: [
-                    {type: "water", timestamp: "2024-03-01T15:45:44+00:00"}
-                ],
-                failed: []
+                deleted: {
+                    water: ["2024-03-01T15:45:44+00:00"],
+                    fertilize: [],
+                    prune: [],
+                    repot: []
+                },
+                failed: {
+                    water: [],
+                    fertilize: [],
+                    prune: [],
+                    repot: []
+                }
             })
         }));
 

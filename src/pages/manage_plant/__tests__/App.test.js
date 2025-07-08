@@ -1,10 +1,11 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
+import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import { fireEvent, waitFor, within } from '@testing-library/react';
 import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
 import { PageWrapper } from 'src/index';
-import { mockContext } from './mockContext';
+import { mockContext, mockGroupOptions } from './mockContext';
 
 describe('App', () => {
     let app, user;
@@ -35,6 +36,13 @@ describe('App', () => {
     });
 
     it('sends correct payload when edit modal is submitted', async () => {
+        // Mock /get_plant_species_options response (requested when modal opens)
+        mockPlantSpeciesOptionsResponse();
+
+        // Open edit modal, confirm fetched species options
+        await user.click(app.getByRole('button', {name: 'Edit'}));
+        expect(global.fetch).toHaveBeenCalledWith('/get_plant_species_options');
+
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
@@ -46,9 +54,6 @@ describe('App', () => {
                 display_name: "Test Plant"
             })
         }));
-
-        // Open edit modal
-        await user.click(app.getByRole('button', {name: 'Edit'}));
 
         // Click submit button inside edit modal
         const modal = app.getByText("Edit Details").closest(".modal-box");
@@ -69,6 +74,9 @@ describe('App', () => {
     });
 
     it('disables edit modal submit button when fields are too long', async () => {
+        // Mock /get_plant_species_options response (requested when modal opens)
+        mockPlantSpeciesOptionsResponse();
+
         // Open edit modal
         await user.click(app.getByRole('button', {name: 'Edit'}));
 
@@ -103,6 +111,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 action: "water",
+                timestamp: "2024-03-01T20:00:00+00:00",
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
@@ -128,6 +137,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 action: "fertilize",
+                timestamp: "2024-03-01T20:00:00+00:00",
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
@@ -153,6 +163,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 action: "prune",
+                timestamp: "2024-03-01T20:00:00+00:00",
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
@@ -231,6 +242,12 @@ describe('App', () => {
     it('sends the correct payload when "Add to group" modal submitted', async () => {
         // Click remove from group button (re-renders with add to group option)
         await user.click(app.getByTitle(/Remove plant from group/));
+
+        // Mock fetch to return group options (requested when modal opened)
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({ options: mockGroupOptions })
+        }));
 
         // Click "Add to group" button in details dropdown
         await user.click(app.getByTitle(/Add plant to group/));
@@ -392,8 +409,6 @@ describe('App', () => {
                 plant_details: mockContext.plant_details,
                 events: mockContext.events,
                 notes: mockContext.notes,
-                group_options: mockContext.group_options,
-                species_options: mockContext.species_options,
                 photos: mockContext.photos,
                 default_photo: mockContext.default_photo,
                 division_events: {},
@@ -499,10 +514,21 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                deleted: [
-                    {type: "water", timestamp: "2024-03-01T15:45:44+00:00"},
-                ],
-                failed: []
+                deleted: {
+                    water: [
+                        "2024-03-01T15:45:44+00:00",
+                        "2024-02-29T10:20:15+00:00",
+                    ],
+                    fertilize: [],
+                    prune: [],
+                    repot: []
+                },
+                failed: {
+                    water: [],
+                    fertilize: [],
+                    prune: [],
+                    repot: []
+                }
             })
         }));
 
@@ -708,6 +734,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 action: "water",
+                timestamp: '2025-02-20T20:00:00+00:00',
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
@@ -725,10 +752,18 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
-                deleted: [
-                    {type: "water", timestamp: "2025-02-20T20:00:00+00:00"}
-                ],
-                failed: []
+                deleted: {
+                    water: ["2025-02-20T20:00:00+00:00"],
+                    fertilize: [],
+                    prune: [],
+                    repot: [],
+                },
+                failed: {
+                    water: [],
+                    fertilize: [],
+                    prune: [],
+                    repot: []
+                }
             })
         }));
         await user.click(within(modal).getByText('Delete'));

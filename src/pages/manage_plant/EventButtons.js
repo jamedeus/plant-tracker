@@ -28,10 +28,11 @@ const EventButtons = memo(function EventButtons() {
         };
         const response = await sendPostRequest('/add_plant_event', payload);
         if (response.ok) {
+            const data = await response.json();
             // Add new event to redux store (updates calendar, timeline, etc)
             dispatch(eventAdded({
-                timestamp: payload.timestamp,
-                type: eventType
+                timestamp: data.timestamp,
+                type: data.action
             }));
         } else {
             // Duplicate event timestamp: show error toast for 5 seconds

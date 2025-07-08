@@ -450,11 +450,6 @@ class SingleUserModeTests(TestCase):
         # Ensure SINGLE_USER_MODE is enabled
         settings.SINGLE_USER_MODE = True
 
-    def tearDown(self):
-        # Prevent cached state accumulatng plants that no longer exist (hook
-        # doesn't run when tests clean up model entries)
-        cache.delete(f'overview_state_{get_default_user().pk}')
-
     # pylint: disable-next=invalid-name
     def assertReceivedPermissionDeniedPage(self, response):
         '''Takes response object, confirms received status 200 with boilerplate
@@ -642,6 +637,37 @@ class SingleUserModeTests(TestCase):
             'You do not have permission to view this plant'
         )
 
+    def test_get_plant_state_user_owns_plant(self):
+        # Create plant owned by default user
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+
+        # Request plant state (comes from default user since SINGLE_USER_MODE enabled)
+        response = self.client.get(f'/get_plant_state/{plant.uuid}')
+
+        # Confirm received plant state
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(isinstance(response.json(), dict))
+        self.assertEqual(response.json()['plant_details']['uuid'], str(plant.uuid))
+
+    def test_get_plant_state_user_does_not_own_plant(self):
+        # Create second user (in addition to default user) + plant for user
+        test_user = user_model.objects.create_user(
+            username='test',
+            password='123',
+            email='test@aol.com'
+        )
+        plant = Plant.objects.create(uuid=uuid4(), user=test_user)
+
+        # Request manage page (comes from default user since SINGLE_USER_MODE enabled)
+        response = self.client.get(f'/get_plant_state/{plant.uuid}')
+
+        # Confirm received error response, not plant state
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(
+            response.json(),
+            {"error": "plant is owned by a different user"}
+        )
+
     def test_manage_group_page_user_owns_group(self):
         # Create group owned by default user
         group = Group.objects.create(uuid=uuid4(), user=get_default_user())
@@ -675,6 +701,37 @@ class SingleUserModeTests(TestCase):
         self.assertEqual(
             response.context['state']['error'],
             'You do not have permission to view this group'
+        )
+
+    def test_get_group_state_user_owns_group(self):
+        # Create group owned by default user
+        group = Group.objects.create(uuid=uuid4(), user=get_default_user())
+
+        # Request group state (comes from default user since SINGLE_USER_MODE enabled)
+        response = self.client.get(f'/get_group_state/{group.uuid}')
+
+        # Confirm received group state
+        self.assertEqual(response.status_code, 200)
+        self.assertTrue(isinstance(response.json(), dict))
+        self.assertEqual(response.json()['group']['uuid'], str(group.uuid))
+
+    def test_get_group_state_user_does_not_own_group(self):
+        # Create second user (in addition to default user) + group for user
+        test_user = user_model.objects.create_user(
+            username='test',
+            password='123',
+            email='test@aol.com'
+        )
+        group = Group.objects.create(uuid=uuid4(), user=test_user)
+
+        # Request manage page (comes from default user since SINGLE_USER_MODE enabled)
+        response = self.client.get(f'/get_group_state/{group.uuid}')
+
+        # Confirm received error response, not group state
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(
+            response.json(),
+            {"error": "group is owned by a different user"}
         )
 
 
@@ -842,6 +899,30 @@ class MultiUserModeTests(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response.url, f'/accounts/login/?next=/manage/{group.uuid}')
 
+    def test_get_plant_state_not_signed_in(self):
+        # Create plant owned by test user
+        plant = Plant.objects.create(uuid=uuid4(), user=self.test_user)
+
+        # Request plant state without signing in
+        self.assertFalse(auth.get_user(self.client).is_authenticated)
+        response = self.client.get(f'/get_plant_state/{plant.uuid}')
+
+        # Confirm redirected to login page with requested URL in querystring
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, f'/accounts/login/?next=/get_plant_state/{plant.uuid}')
+
+    def test_get_group_state_not_signed_in(self):
+        # Create group owned by test user
+        group = Group.objects.create(uuid=uuid4(), user=self.test_user)
+
+        # Request group state without signing in
+        self.assertFalse(auth.get_user(self.client).is_authenticated)
+        response = self.client.get(f'/get_group_state/{group.uuid}')
+
+        # Confirm redirected to login page with requested URL in querystring
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, f'/accounts/login/?next=/get_group_state/{group.uuid}')
+
     def test_endpoints_require_authenticated_user(self):
         # Create plant and group owned by test user
         plant = Plant.objects.create(uuid=uuid4(), user=self.test_user)
@@ -879,27 +960,6 @@ class MultiUserModeTests(TestCase):
             })
         )
         self.assertAuthenticationRequiredError(
-            self.client.post('/delete_plant', {
-                'plant_id': str(plant.uuid)
-            })
-        )
-        self.assertAuthenticationRequiredError(
-            self.client.post('/archive_plant', {
-                'plant_id': str(plant.uuid), 'archived': True
-            })
-        )
-        self.assertAuthenticationRequiredError(
-            self.client.post('/delete_group', {
-                'group_id': str(group.uuid)
-            })
-        )
-        self.assertAuthenticationRequiredError(
-            self.client.post(
-                '/archive_group',
-                {'group_id': str(group.uuid), 'archived': True}
-            )
-        )
-        self.assertAuthenticationRequiredError(
             self.client.post('/add_plant_event', {
                 'plant_id': plant.uuid,
                 'event_type': 'water',
@@ -914,18 +974,14 @@ class MultiUserModeTests(TestCase):
             })
         )
         self.assertAuthenticationRequiredError(
-            self.client.post('/delete_plant_event', {
-                'plant_id': plant.uuid,
-                'event_type': 'water',
-                'timestamp': '2024-02-06T03:06:26.000Z'
-            })
-        )
-        self.assertAuthenticationRequiredError(
             self.client.post('/bulk_delete_plant_events', {
                 'plant_id': plant.uuid,
-                'events': [
-                    {'type': 'water', 'timestamp': '2024-02-06T03:06:26.000Z'}
-                ]
+                'events': {
+                    'water': ['2024-02-06T03:06:26+00:00'],
+                    'fertilize': [],
+                    'prune': [],
+                    'repot': [],
+                }
             })
         )
         self.assertAuthenticationRequiredError(
@@ -1017,6 +1073,12 @@ class MultiUserModeTests(TestCase):
         )
         self.assertIsNone(cache.get(f'old_uuid_{get_default_user().pk}'))
 
+        self.assertPlantIsOwnedByADifferentUserError(
+            self.client.get(f'/get_plant_state/{plant.uuid}')
+        )
+        self.assertGroupIsOwnedByADifferentUserError(
+            self.client.get(f'/get_group_state/{group.uuid}')
+        )
         self.assertInstanceIsOwnedByADifferentUserError(
             self.client.post('/change_uuid', {
                 'uuid': str(plant.uuid),
@@ -1038,26 +1100,6 @@ class MultiUserModeTests(TestCase):
                 'name': 'test group    ',
                 'location': '    middle shelf',
                 'description': 'This group is used for propagation'
-            })
-        )
-        self.assertPlantIsOwnedByADifferentUserError(
-            self.client.post('/delete_plant', {
-                'plant_id': str(plant.uuid)}
-            )
-        )
-        self.assertPlantIsOwnedByADifferentUserError(
-            self.client.post('/archive_plant', {
-                'plant_id': str(plant.uuid), 'archived': True
-            })
-        )
-        self.assertGroupIsOwnedByADifferentUserError(
-            self.client.post('/delete_group', {
-                'group_id': str(group.uuid)
-            })
-        )
-        self.assertGroupIsOwnedByADifferentUserError(
-            self.client.post('/archive_group', {
-                'group_id': str(group.uuid), 'archived': True
             })
         )
         self.assertPlantIsOwnedByADifferentUserError(
@@ -1084,18 +1126,14 @@ class MultiUserModeTests(TestCase):
         })
 
         self.assertPlantIsOwnedByADifferentUserError(
-            self.client.post('/delete_plant_event', {
-                'plant_id': plant.uuid,
-                'event_type': 'water',
-                'timestamp': '2024-02-06T03:06:26.000Z'
-            })
-        )
-        self.assertPlantIsOwnedByADifferentUserError(
             self.client.post('/bulk_delete_plant_events', {
                 'plant_id': plant.uuid,
-                'events': [
-                    {'type': 'water', 'timestamp': '2024-02-06T03:06:26.000Z'}
-                ]
+                'events': {
+                    'water': ['2024-02-06T03:06:26+00:00'],
+                    'fertilize': [],
+                    'prune': [],
+                    'repot': [],
+                }
             })
         )
         self.assertPlantIsOwnedByADifferentUserError(

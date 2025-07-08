@@ -1,12 +1,22 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
-import { parseDomContext } from 'src/util';
 import { Combobox, Transition } from '@headlessui/react';
 
 const SpeciesSelect = ({ value }) => {
-    // Load existing species options from django template context
-    const speciesOptions = parseDomContext("species_options");
+    // Request species options from backend when loaded
+    const [speciesOptions, setSpeciesOptions] = useState([]);
+    const loadSpeciesOptions = async () => {
+        const response = await fetch('/get_plant_species_options');
+        if (response.ok) {
+            const data = await response.json();
+            setSpeciesOptions(data.options);
+        }
+    };
+    useEffect(() => {
+        loadSpeciesOptions();
+        return () => {};
+    }, []);
 
     // State for current input value
     const [query, setQuery] = useState('');

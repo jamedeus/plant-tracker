@@ -1,58 +1,85 @@
 '''Django database models'''
 
-from typing import TYPE_CHECKING
-
 from django.db import models
 from django.conf import settings
-from django.core.cache import cache
-from django.db import IntegrityError
+from django.utils.functional import cached_property
+from django.db.models import Case, When, Value, Count
 
 from .events import WaterEvent, FertilizeEvent
-
-if TYPE_CHECKING:  # pragma: no cover
-    from .plant import Plant
+from .annotations import unnamed_index_annotation
 
 
-def get_unnamed_groups(user):
-    '''Takes user, returns list of primary_keys for all Groups owned by user
-    with no name or location (cached 10 minutes or until group model changed).
-    Uses list instead of QuerySet to avoid serialization overhead.
-    '''
-    unnamed_groups = cache.get(f'unnamed_groups_{user.pk}')
-    if not unnamed_groups:
-        unnamed_groups = list(Group.objects.filter(
-            name__isnull=True,
-            location__isnull=True,
-            user=user
-        ).order_by(
-            'created'
-        ).values_list(
-            'id',
-            flat=True
-        ))
-        cache.set(f'unnamed_groups_{user.pk}', unnamed_groups, 600)
-    return unnamed_groups
+class GroupQueryset(models.QuerySet):
+    '''Custom queryset methods for the Group model.'''
 
+    def with_is_unnamed_annotation(self):
+        '''Adds is_unnamed attribute (True if no name or location, default False).'''
+        return self.annotate(
+            is_unnamed=Case(
+                When(name__isnull=True, location__isnull=True, then=Value(True)),
+                default=Value(False)
+            )
+        )
 
-def get_group_options(user):
-    '''Takes user, returns dict with all of user's groups (uuids as keys,
-    details) dicts as values). Populates options in add to group modal on
-    manage_plant page. Cached until Group model changes (see hooks in tasks.py).
-    '''
-    group_options = cache.get(f'group_options_{user.pk}')
-    if not group_options:
-        group_options = {
+    def with_unnamed_index_annotation(self):
+        '''Adds unnamed_index attribute (sequential ints) to items with is_unnamed=True.'''
+        return self.annotate(**unnamed_index_annotation())
+
+    def with_group_plant_count_annotation(self):
+        '''Adds plant_count attribute (number of plants in group).'''
+        return self.annotate(plant_count=Count('plant'))
+
+    def with_overview_annotation(self):
+        '''Adds annotations covering everything shown on overview page (unnamed
+        index, number of plants in group).
+        '''
+        return (
+            self
+                .order_by('created')
+                # Label unnamed groups with no location (gets sequential name)
+                .with_is_unnamed_annotation()
+                # Add unnamed_index (used to build "Unnamed group <index>" names)
+                .with_unnamed_index_annotation()
+                # Add plant_count (number of plants in group)
+                .with_group_plant_count_annotation()
+        )
+
+    def with_manage_group_annotation(self):
+        '''Adds full annotations for manage_grouo page (avoids separate queries
+        for number of plants in group and user).
+        '''
+        return self.with_group_plant_count_annotation().select_related('user')
+
+    def get_by_uuid(self, uuid):
+        '''Returns Group model instance matching UUID, or None if not found.'''
+        return self.filter(uuid=uuid).select_related('user').first()
+
+    def get_with_overview_annotation(self, uuid):
+        '''Takes UUID, returns matching Group with full overview annotations.'''
+        return self.filter(uuid=uuid).with_overview_annotation().first()
+
+    def get_with_manage_group_annotation(self, uuid):
+        '''Takes UUID, returns matching Group with full manage_group annotations.'''
+        return self.filter(uuid=uuid).with_manage_group_annotation().first()
+
+    def get_add_to_group_modal_options(self, user):
+        '''Takes user, returns dict with all of user's groups (uuids as keys,
+        details) dicts as values). Populates options in add to group modal on
+        manage_plant page.
+        '''
+        return {
             str(group.uuid): group.get_details()
-            for group in Group.objects.filter(user=user)
+            for group in self.filter(user=user, archived=False)
+                .with_overview_annotation()
         }
-        cache.set(f'group_options_{user.pk}', group_options, None)
-    return group_options
 
 
 class Group(models.Model):
     '''Tracks a group containing multiple plants, created by scanning QR code.
     Provides methods to water or fertilize all plants within group.
     '''
+
+    objects = GroupQueryset.as_manager()
 
     # User who registered the group
     user = models.ForeignKey(
@@ -90,9 +117,23 @@ class Group(models.Model):
         if self.location:
             return f'{self.location} group'
 
-        # If no name or location return string with unnamed group index
-        unnamed_groups = get_unnamed_groups(self.user)
-        return f'Unnamed group {unnamed_groups.index(self.id) + 1}'
+        # If no name or location use annotation if present
+        if hasattr(self, 'unnamed_index'):
+            return f'Unnamed group {self.unnamed_index}'
+
+        # Query database for unnamed index if annotation not present
+        unnamed_index = Group.objects.filter(
+            user=self.user,
+            name__isnull=True,
+            location__isnull=True,
+            created__lte=self.created
+        ).count()
+        return f'Unnamed group {unnamed_index}'
+
+    @cached_property
+    def display_name(self):
+        '''Cached self.get_display_name return value (avoid duplicate queries).'''
+        return self.get_display_name()
 
     def water_all(self, timestamp):
         '''Takes datetime instance, creates WaterEvent for each Plant in Group.'''
@@ -112,27 +153,19 @@ class Group(models.Model):
         '''Returns dict containing all group attributes and number of plants.'''
         return {
             'name': self.name,
-            'display_name': self.get_display_name(),
+            'display_name': self.display_name,
             'uuid': str(self.uuid),
             'archived': self.archived,
             'created': self.created.isoformat(),
             'location': self.location,
             'description': self.description,
-            'plants': len(self.plant_set.all())
+            'plants': self.get_number_of_plants()
         }
 
-    def get_plant_details(self):
-        '''Returns dict with uuid of each plant in group as keys, plant details
-        dicts as values (see Plant.get_details for dict parameters).
-        '''
-        return {
-            str(plant.uuid): plant.get_details()
-            for plant in self.plant_set.all()
-        }
-
-    def save(self, *args, **kwargs):
-        # Prevent saving Group with UUID that is already used by Plant
-        from .plant import Plant
-        if Plant.objects.filter(uuid=self.uuid):
-            raise IntegrityError("UUID already exists in Plant table")
-        super().save(*args, **kwargs)
+    def get_number_of_plants(self):
+        '''Returns number of plants with reverse relation to group.'''
+        # Use annotation if present
+        if hasattr(self, 'plant_count'):
+            return self.plant_count
+        # Query from database if no annotation
+        return len(self.plant_set.all())

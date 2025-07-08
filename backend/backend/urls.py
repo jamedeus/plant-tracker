@@ -34,9 +34,14 @@ if settings.LOCAL_MEDIA_ROOT:
         ),
     ]
 
-# Add django-debug-toolbar in debug mode
+# Add debug tools in debug mode
 if settings.DEBUG:
-    from debug_toolbar.toolbar import debug_toolbar_urls
-    urlpatterns = [
-        *urlpatterns,
-    ] + debug_toolbar_urls()
+    # Add django-debug-toolbar if env var set
+    if settings.DEBUG_TOOL.lower() in ("toolbar", "debug_toolbar"):
+        from debug_toolbar.toolbar import debug_toolbar_urls
+        urlpatterns = [
+            *urlpatterns,
+        ] + debug_toolbar_urls()
+    # Otherwise add django-silk
+    else:
+        urlpatterns += [path('silk/', include('silk.urls', namespace='silk'))]

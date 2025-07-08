@@ -13,6 +13,7 @@ from unittest.mock import patch
 from django.conf import settings
 from django.utils import timezone
 from django.core.cache import cache
+from django.contrib.auth import get_user_model
 from django.test import TestCase, override_settings
 from django.test.client import RequestFactory, MULTIPART_CONTENT
 from PIL import UnidentifiedImageError
@@ -31,6 +32,8 @@ from .models import (
     NoteEvent
 )
 from .unit_test_helpers import JSONClient, create_mock_photo
+
+user_model = get_user_model()
 
 
 def tearDownModule():
@@ -334,124 +337,6 @@ class OverviewTests(TestCase):
             {'error': 'failed to generate, try a shorter URL_PREFIX'}
         )
 
-    def test_delete_plant(self):
-        # Create test plant, confirm exists in database
-        test_id = uuid4()
-        Plant.objects.create(uuid=test_id, name='test plant', user=get_default_user())
-        self.assertEqual(len(Plant.objects.all()), 1)
-
-        # Call delete endpoint, confirm response, confirm removed from database
-        response = self.client.post('/delete_plant', {'plant_id': str(test_id)})
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'deleted': str(test_id)})
-        self.assertEqual(len(Plant.objects.all()), 0)
-
-        # Attempt to delete non-existing plant, confirm error
-        response = self.client.post('/delete_plant', {'plant_id': str(test_id)})
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.json(), {'error': 'plant not found'})
-
-    def test_archive_plant(self):
-        # Create test plant, confirm exists in database, is not archived
-        test_id = uuid4()
-        Plant.objects.create(uuid=test_id, name='test plant', user=get_default_user())
-        self.assertEqual(len(Plant.objects.all()), 1)
-        self.assertFalse(Plant.objects.all()[0].archived)
-
-        # Call archive endpoint, confirm response, confirm updated in database
-        response = self.client.post('/archive_plant', {
-            'plant_id': str(test_id),
-            'archived': True
-        })
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'updated': str(test_id)})
-        self.assertTrue(Plant.objects.all()[0].archived)
-
-        # Call again to un-archive, confirm response, confirm updated in database
-        response = self.client.post('/archive_plant', {
-            'plant_id': str(test_id),
-            'archived': False
-        })
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'updated': str(test_id)})
-        self.assertFalse(Plant.objects.all()[0].archived)
-
-    def test_archive_plant_error(self):
-        # Create test plant, confirm exists in database, is not archived
-        test_id = uuid4()
-        Plant.objects.create(uuid=test_id, name='test plant', user=get_default_user())
-        self.assertEqual(len(Plant.objects.all()), 1)
-        self.assertFalse(Plant.objects.all()[0].archived)
-
-        # Call archive endpoint with invalid archived bool, confirm error,
-        # confirm database not updated
-        response = self.client.post('/archive_plant', {
-            'plant_id': str(test_id),
-            'archived': 'archived'
-        })
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json(), {"error": "archived key is not bool"})
-        self.assertFalse(Plant.objects.all()[0].archived)
-
-    def test_delete_group(self):
-        # Create test group, confirm exists in database
-        test_id = uuid4()
-        Group.objects.create(uuid=test_id, name='test group', user=get_default_user())
-        self.assertEqual(len(Group.objects.all()), 1)
-
-        # Call delete endpoint, confirm response, confirm removed from database
-        response = self.client.post('/delete_group', {'group_id': str(test_id)})
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'deleted': str(test_id)})
-        self.assertEqual(len(Group.objects.all()), 0)
-
-        # Attempt to delete non-existing group, confirm error
-        response = self.client.post('/delete_group', {'group_id': str(test_id)})
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.json(), {'error': 'group not found'})
-
-    def test_archive_group(self):
-        # Create test group, confirm exists in database, is not archived
-        test_id = uuid4()
-        Group.objects.create(uuid=test_id, name='test group', user=get_default_user())
-        self.assertEqual(len(Group.objects.all()), 1)
-        self.assertFalse(Group.objects.all()[0].archived)
-
-        # Call archive endpoint, confirm response, confirm updated in database
-        response = self.client.post('/archive_group', {
-            'group_id': str(test_id),
-            'archived': True
-        })
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'updated': str(test_id)})
-        self.assertTrue(Group.objects.all()[0].archived)
-
-        # Call again to un-archive, confirm response, confirm updated in database
-        response = self.client.post('/archive_group', {
-            'group_id': str(test_id),
-            'archived': False
-        })
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {'updated': str(test_id)})
-        self.assertFalse(Group.objects.all()[0].archived)
-
-    def test_archive_group_error(self):
-        # Create test plant, confirm exists in database, is not archived
-        test_id = uuid4()
-        Group.objects.create(uuid=test_id, name='test group', user=get_default_user())
-        self.assertEqual(len(Group.objects.all()), 1)
-        self.assertFalse(Group.objects.all()[0].archived)
-
-        # Call archive endpoint with invalid archived bool, confirm error,
-        # confirm database not updated
-        response = self.client.post('/archive_group', {
-            'group_id': str(test_id),
-            'archived': 'archived'
-        })
-        self.assertEqual(response.status_code, 400)
-        self.assertEqual(response.json(), {"error": "archived key is not bool"})
-        self.assertFalse(Group.objects.all()[0].archived)
-
     def test_bulk_delete_plants_and_groups(self):
         # Create test plant and group, confirm both exist in database
         plant_id = uuid4()
@@ -479,14 +364,18 @@ class OverviewTests(TestCase):
         self.assertEqual(len(Plant.objects.all()), 0)
         self.assertEqual(len(Group.objects.all()), 0)
 
-        # Attempt to delete non-existing plant, confirm error
+        # Create plant owned by a different user
+        user = user_model.objects.create_user(username='unittest', password='12345')
+        plant = Plant.objects.create(user=user, uuid=uuid4())
+
+        # Attempt to delete plant owned by a different user, confirm error
         response = self.client.post('/bulk_delete_plants_and_groups', {
-            'uuids': [str(plant_id)]
+            'uuids': [str(plant.uuid)]
         })
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response.json(),
-            {'deleted': [], 'failed': [str(plant_id)]}
+            {'deleted': [], 'failed': [str(plant.uuid)]}
         )
 
     def test_bulk_archive_plants_and_groups(self):
@@ -521,16 +410,19 @@ class OverviewTests(TestCase):
         self.assertTrue(Plant.objects.all()[0].archived)
         self.assertTrue(Group.objects.all()[0].archived)
 
-        # Attempt to archive non-existing uuid, confirm error
-        test_id = uuid4()
+        # Create plant owned by a different user
+        user = user_model.objects.create_user(username='unittest', password='12345')
+        plant = Plant.objects.create(user=user, uuid=uuid4())
+
+        # Attempt to archive plant owned by a different user, confirm error
         response = self.client.post('/bulk_archive_plants_and_groups', {
-            'uuids': [str(test_id)],
+            'uuids': [str(plant.uuid)],
             'archived': True
         })
         self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response.json(),
-            {'archived': [], 'failed': [str(test_id)]}
+            {'archived': [], 'failed': [str(plant.uuid)]}
         )
 
 
@@ -837,24 +729,6 @@ class RegistrationTests(TestCase):
             'event_key': str(division_event.pk)
         })
 
-    def test_registration_page_plant_species_options(self):
-        # Request management page with uuid that doesn't exist in database
-        response = self.client.get(f'/manage/{uuid4()}')
-
-        # Confirm species_options list is empty (no plants in database)
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.context['state']['species_options'], [])
-
-        # Create 2 test plants with species set
-        Plant.objects.create(uuid=uuid4(), species='Calathea', user=self.default_user)
-        Plant.objects.create(uuid=uuid4(), species='Fittonia', user=self.default_user)
-
-        # Reguest page again, confirm species_options contains both species
-        response = self.client.get(f'/manage/{uuid4()}')
-        self.assertIn('Calathea', response.context['state']['species_options'])
-        self.assertIn('Fittonia', response.context['state']['species_options'])
-        self.assertEqual(len(response.context['state']['species_options']), 2)
-
     def test_plant_fields_max_length(self):
         # Send plant registration request name longer than 50 characters
         response = self.client.post('/register_plant', {
@@ -1012,28 +886,8 @@ class ManagePageTests(TestCase):
         # Confirm notes dict is empty (test plant has no notes)
         self.assertEqual(state['notes'], {})
 
-        # Confirm species_options list is empty (test plants have no species)
-        self.assertEqual(state['species_options'], [])
-
         # Confirm photos list is empty (test plant has no photos)
         self.assertEqual(state['photos'], {})
-
-        # Confirm group_options key contains details of all existing groups
-        self.assertEqual(
-            state['group_options'],
-            {
-                str(self.group1.uuid): {
-                    'name': None,
-                    'display_name': 'Unnamed group 1',
-                    'uuid': str(self.group1.uuid),
-                    'created': self.group1.created.isoformat(),
-                    'archived': False,
-                    'location': None,
-                    'description': None,
-                    'plants': 0
-                }
-            }
-        )
 
     def test_manage_plant_with_photos(self):
         # Create mock photos for plant1
@@ -1134,30 +988,13 @@ class ManagePageTests(TestCase):
             'Favorite Plant'
         )
 
-    def test_manage_plant_with_species_options(self):
-        # Add species to both plants
-        self.plant1.species = 'Calathea'
-        self.plant1.save()
-        self.plant2.species = 'Fittonia'
-        self.plant2.save()
-
-        # Request manage page, confirm species_options contains both species
-        response = self.client.get(f'/manage/{self.plant1.uuid}')
-        self.assertIn('Calathea', response.context['state']['species_options'])
-        self.assertIn('Fittonia', response.context['state']['species_options'])
-        self.assertEqual(len(response.context['state']['species_options']), 2)
-
-        # Save species_options
-        plant1_species_options = response.context['state']['species_options']
-
-        # Request manage oage for second plant, confirm identical species_options
-        response = self.client.get(f'/manage/{self.plant2.uuid}')
-        self.assertEqual(
-            response.context['state']['species_options'],
-            plant1_species_options
-        )
-
     def test_get_plant_state(self):
+        # Create water events for test plant in non-chronological order (should
+        # be sorted chronologically by database)
+        WaterEvent.objects.create(plant=self.plant1, timestamp=datetime(2024, 2, 26, 0, 0, 0, 0))
+        WaterEvent.objects.create(plant=self.plant1, timestamp=datetime(2024, 2, 28, 0, 0, 0, 0))
+        WaterEvent.objects.create(plant=self.plant1, timestamp=datetime(2024, 2, 27, 0, 0, 0, 0))
+
         # Call get_plant_state endpoint with UUID of existing plant entry
         response = self.client.get(f'/get_plant_state/{self.plant1.uuid}')
 
@@ -1176,12 +1013,16 @@ class ManagePageTests(TestCase):
                     'thumbnail': None,
                     'pot_size': None,
                     'description': None,
-                    'last_watered': None,
+                    'last_watered': '2024-02-28T00:00:00+00:00',
                     'last_fertilized': None,
                     'group': None,
                 },
                 'events': {
-                    'water': [],
+                    'water': [
+                        '2024-02-28T00:00:00+00:00',
+                        '2024-02-27T00:00:00+00:00',
+                        '2024-02-26T00:00:00+00:00'
+                    ],
                     'fertilize': [],
                     'prune': [],
                     'repot': []
@@ -1196,19 +1037,6 @@ class ManagePageTests(TestCase):
                     'preview': None,
                     'key': None
                 },
-                'group_options': {
-                    str(self.group1.uuid): {
-                        'name': None,
-                        'display_name': 'Unnamed group 1',
-                        'uuid': str(self.group1.uuid),
-                        'created': self.group1.created.isoformat(),
-                        'archived': False,
-                        'location': None,
-                        'description': None,
-                        'plants': 0
-                    }
-                },
-                'species_options': [],
                 'divided_from': None,
                 'division_events': {}
             }
@@ -1318,41 +1146,6 @@ class ManagePageTests(TestCase):
         # Confirm details state contains empty list (no plants in group)
         self.assertEqual(state['details'], {})
 
-        # Confirm options state contains params for all plants
-        self.assertEqual(
-            state['options'],
-            {
-                str(self.plant1.uuid): {
-                    'name': self.plant1.name,
-                    'display_name': self.plant1.get_display_name(),
-                    'uuid': str(self.plant1.uuid),
-                    'created': self.plant1.created.isoformat(),
-                    'archived': False,
-                    'species': None,
-                    'pot_size': None,
-                    'description': None,
-                    'last_watered': None,
-                    'last_fertilized': None,
-                    'thumbnail': None,
-                    'group': None
-                },
-                str(self.plant2.uuid): {
-                    'name': self.plant2.name,
-                    'display_name': self.plant2.get_display_name(),
-                    'uuid': str(self.plant2.uuid),
-                    'created': self.plant2.created.isoformat(),
-                    'archived': False,
-                    'species': None,
-                    'pot_size': None,
-                    'description': None,
-                    'last_watered': None,
-                    'last_fertilized': None,
-                    'thumbnail': None,
-                    'group': None
-                }
-            }
-        )
-
     def test_manage_group_with_plant(self):
         # Add test plant to group
         self.plant1.group = self.group1
@@ -1415,23 +1208,7 @@ class ManagePageTests(TestCase):
                     'display_name': 'Unnamed group 1',
                     'plants': 0
                 },
-                'details': {},
-                'options': {
-                    str(self.plant1.uuid): {
-                        'name': self.plant1.name,
-                        'display_name': self.plant1.get_display_name(),
-                        'uuid': str(self.plant1.uuid),
-                        'created': self.plant1.created.isoformat(),
-                        'archived': False,
-                        'species': None,
-                        'pot_size': None,
-                        'description': None,
-                        'last_watered': None,
-                        'last_fertilized': None,
-                        'thumbnail': None,
-                        'group': None
-                    }
-                }
+                'details': {}
             }
         )
 
@@ -1466,6 +1243,24 @@ class ManagePlantEndpointTests(TestCase):
     def _refresh_test_models(self):
         self.plant.refresh_from_db()
         self.group.refresh_from_db()
+
+    def test_get_species_options(self):
+        # Call endpoint with no plants in database with species set
+        response = self.client.get('/get_plant_species_options')
+
+        # Confirm returns empty list (no species in database)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'options': []})
+
+        # Create plants with species set
+        user = get_default_user()
+        Plant.objects.create(uuid=uuid4(), user=user, species='Calathea')
+        Plant.objects.create(uuid=uuid4(), user=user, species='Fittonia')
+
+        # Call endpoint again, confirm list contains both species
+        response = self.client.get('/get_plant_species_options')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {'options': ['Calathea', 'Fittonia']})
 
     def test_edit_plant_details(self):
         # Confirm test plant has no name or species
@@ -1672,6 +1467,28 @@ class ManagePlantEndpointTests(TestCase):
         # Confirm UUID was not cached
         self.assertIsNone(cache.get(f'division_in_progress_{get_default_user().pk}'))
 
+    def test_get_add_to_group_options(self):
+        # Confirm endpoint returns details of all existing groups
+        response = self.client.get('/get_add_to_group_options')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {
+                'options': {
+                    str(self.group.uuid): {
+                        'name': None,
+                        'display_name': 'Unnamed group 1',
+                        'uuid': str(self.group.uuid),
+                        'created': self.group.created.isoformat(),
+                        'archived': False,
+                        'location': None,
+                        'description': None,
+                        'plants': 0
+                    }
+                }
+            }
+        )
+
 
 class ManageGroupEndpointTests(TestCase):
     def setUp(self):
@@ -1824,6 +1641,72 @@ class ManageGroupEndpointTests(TestCase):
         self.assertIsNone(self.plant2.group)
         self.assertEqual(len(self.group1.plant_set.all()), 0)
 
+    def test_get_plant_options(self):
+        # Confirm endpoint returns dict with details of all plants
+        response = self.client.get('/get_plant_options')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {
+                'options': {
+                    str(self.plant1.uuid): {
+                        'name': self.plant1.name,
+                        'display_name': self.plant1.get_display_name(),
+                        'uuid': str(self.plant1.uuid),
+                        'created': self.plant1.created.isoformat(),
+                        'archived': False,
+                        'species': None,
+                        'pot_size': None,
+                        'description': None,
+                        'last_watered': None,
+                        'last_fertilized': None,
+                        'thumbnail': None,
+                        'group': None
+                    },
+                    str(self.plant2.uuid): {
+                        'name': self.plant2.name,
+                        'display_name': self.plant2.get_display_name(),
+                        'uuid': str(self.plant2.uuid),
+                        'created': self.plant2.created.isoformat(),
+                        'archived': False,
+                        'species': None,
+                        'pot_size': None,
+                        'description': None,
+                        'last_watered': None,
+                        'last_fertilized': None,
+                        'thumbnail': None,
+                        'group': None
+                    }
+                }
+            }
+        )
+
+        # Archive plant1, confirm removed from options
+        self.plant2.archived = True
+        self.plant2.save()
+        response = self.client.get('/get_plant_options')
+        self.assertEqual(
+            response.json(),
+            {
+                'options': {
+                    str(self.plant1.uuid): {
+                        'name': self.plant1.name,
+                        'display_name': self.plant1.get_display_name(),
+                        'uuid': str(self.plant1.uuid),
+                        'created': self.plant1.created.isoformat(),
+                        'archived': False,
+                        'species': None,
+                        'pot_size': None,
+                        'description': None,
+                        'last_watered': None,
+                        'last_fertilized': None,
+                        'thumbnail': None,
+                        'group': None
+                    }
+                }
+            }
+        )
+
 
 class ChangeQrCodeTests(TestCase):
     '''Separate test case to prevent leftover cache breaking other tests'''
@@ -1893,6 +1776,41 @@ class ChangeQrCodeTests(TestCase):
         self.assertEqual(str(self.plant1.uuid), str(self.fake_id))
         self.assertIsNone(cache.get(f'old_uuid_{self.default_user.pk}'))
 
+    def test_change_uuid_endpoint_while_dividing_plant(self):
+        # Simulate division in progress for plant2
+        cache.set(f'division_in_progress_{self.default_user.pk}', {
+            'divided_from_plant_uuid': str(self.plant2.uuid),
+            'division_event_key': 3
+        }, 900)
+
+        # Simulate cached plant1 UUID from change_qr_code_request
+        cache.set(f'old_uuid_{self.default_user.pk}', str(self.plant1.uuid))
+
+        # Post new plant1 UUID to change_uuid endpoint
+        response = self.client.post('/change_uuid', {
+            'uuid': str(self.plant1.uuid),
+            'new_id': str(uuid4())
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm plant2 UUID in division cache did NOT change
+        dividing = cache.get(f'division_in_progress_{self.default_user.pk}')
+        self.assertEqual(dividing['divided_from_plant_uuid'], str(self.plant2.uuid))
+
+        # Simulate cached plant2 UUID (same plant as dividing)
+        cache.set(f'old_uuid_{self.default_user.pk}', str(self.plant2.uuid))
+
+        # Post new plant2 UUID to change_uuid endpoint
+        response = self.client.post('/change_uuid', {
+            'uuid': str(self.plant2.uuid),
+            'new_id': str(self.fake_id)
+        })
+        self.assertEqual(response.status_code, 200)
+
+        # Confirm plant2 UUID in division cache changed
+        dividing = cache.get(f'division_in_progress_{self.default_user.pk}')
+        self.assertEqual(dividing['divided_from_plant_uuid'], str(self.fake_id))
+
     def test_change_uuid_endpoint_group(self):
         # Simulate cached UUID from change_qr_code request
         cache.set(f'old_uuid_{self.default_user.pk}', str(self.group1.uuid))
@@ -1954,7 +1872,6 @@ class ChangeQrCodeTests(TestCase):
             response.context['state'],
             {
                 'new_id': str(self.fake_id),
-                'species_options': [],
                 'changing_qr_code': {
                     'type': 'plant',
                     'instance': {
@@ -2002,7 +1919,6 @@ class ChangeQrCodeTests(TestCase):
             response.context['state'],
             {
                 'new_id': str(self.fake_id),
-                'species_options': [],
                 'changing_qr_code': {
                     'type': 'group',
                     'instance': {
@@ -2115,7 +2031,11 @@ class PlantEventEndpointTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
-            {"action": "water", "plant": str(self.plant1.uuid)}
+            {
+                "action": "water",
+                "timestamp": "2024-02-06T03:06:26+00:00",
+                "plant": str(self.plant1.uuid)
+            }
         )
 
         # Confirm WaterEvent was created
@@ -2136,7 +2056,11 @@ class PlantEventEndpointTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
-            {"action": "fertilize", "plant": str(self.plant1.uuid)}
+            {
+                "action": "fertilize",
+                "timestamp": "2024-02-06T03:06:26+00:00",
+                "plant": str(self.plant1.uuid)
+            }
         )
 
         # Confirm FertilizeEvent was created
@@ -2157,7 +2081,11 @@ class PlantEventEndpointTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
-            {"action": "prune", "plant": str(self.plant1.uuid)}
+            {
+                "action": "prune",
+                "timestamp": "2024-02-06T03:06:26+00:00",
+                "plant": str(self.plant1.uuid)
+            }
         )
 
         # Confirm PruneEvent was created
@@ -2178,7 +2106,11 @@ class PlantEventEndpointTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
-            {"action": "repot", "plant": str(self.plant1.uuid)}
+            {
+                "action": "repot",
+                "timestamp": "2024-02-06T03:06:26+00:00",
+                "plant": str(self.plant1.uuid)
+            }
         )
 
         # Confirm RepotEvent was created
@@ -2261,39 +2193,6 @@ class PlantEventEndpointTests(TestCase):
         self.assertEqual(len(self.plant1.fertilizeevent_set.all()), 1)
         self.assertEqual(len(self.plant2.fertilizeevent_set.all()), 1)
 
-    def test_delete_plant_event(self):
-        # Create WaterEvent, confirm exists
-        timestamp = timezone.now()
-        WaterEvent.objects.create(plant=self.plant1, timestamp=timestamp)
-        self.assertEqual(len(self.plant1.waterevent_set.all()), 1)
-
-        # Call delete_plant_event endpoint, confirm response
-        response = self.client.post('/delete_plant_event', {
-            'plant_id': self.plant1.uuid,
-            'event_type': 'water',
-            'timestamp': timestamp.isoformat()
-        })
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.json(),
-            {"deleted": "water", "plant": str(self.plant1.uuid)}
-        )
-
-        # Confirm WaterEvent was deleted
-        self.assertEqual(len(self.plant1.waterevent_set.all()), 0)
-
-    def test_delete_plant_event_timestamp_does_not_exist(self):
-        # Call delete_plant_event endpoint with a timestamp that doesn't exist
-        response = self.client.post('/delete_plant_event', {
-            'plant_id': self.plant1.uuid,
-            'event_type': 'water',
-            'timestamp': timezone.now().isoformat()
-        })
-
-        # Confirm correct error
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.json(), {"error": "event not found"})
-
     def test_bulk_delete_plant_events(self):
         # Create multiple events with different types, confirm number in db
         timestamp = timezone.now()
@@ -2309,26 +2208,23 @@ class PlantEventEndpointTests(TestCase):
         # Post timestamp and type of each event to bulk_delete_plant_events endpoint
         response = self.client.post('/bulk_delete_plant_events', {
             'plant_id': self.plant1.uuid,
-            'events': [
-                {'type': 'water', 'timestamp': timestamp.isoformat()},
-                {'type': 'fertilize', 'timestamp': timestamp.isoformat()},
-                {'type': 'prune', 'timestamp': timestamp.isoformat()},
-                {'type': 'repot', 'timestamp': timestamp.isoformat()},
-            ]
+            'events': {
+                'water': [timestamp.isoformat()],
+                'fertilize': [timestamp.isoformat()],
+                'prune': [timestamp.isoformat()],
+                'repot': [timestamp.isoformat()],
+            }
         })
 
         # Confirm correct response, confirm removed from database
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
-            response.json(),
+            response.json()['deleted'],
             {
-                "deleted": [
-                    {'type': 'water', 'timestamp': timestamp.isoformat()},
-                    {'type': 'fertilize', 'timestamp': timestamp.isoformat()},
-                    {'type': 'prune', 'timestamp': timestamp.isoformat()},
-                    {'type': 'repot', 'timestamp': timestamp.isoformat()},
-                ],
-                "failed": []
+                "water": [timestamp.isoformat()],
+                "fertilize": [timestamp.isoformat()],
+                "prune": [timestamp.isoformat()],
+                "repot": [timestamp.isoformat()]
             }
         )
         self.assertEqual(len(self.plant1.waterevent_set.all()), 0)
@@ -2340,9 +2236,12 @@ class PlantEventEndpointTests(TestCase):
         # Post payload containing event that does not exist
         response = self.client.post('/bulk_delete_plant_events', {
             'plant_id': self.plant1.uuid,
-            'events': [
-                {'type': 'water', 'timestamp': '2024-04-19T00:13:37+00:00'}
-            ]
+            'events': {
+                'water': ['2024-04-19T00:13:37+00:00'],
+                'fertilize': [],
+                'prune': [],
+                'repot': [],
+            }
         })
 
         # Confirm event is in failed section
@@ -2350,39 +2249,20 @@ class PlantEventEndpointTests(TestCase):
         self.assertEqual(
             response.json(),
             {
-                "deleted": [],
-                "failed": [
-                    {'type': 'water', 'timestamp': '2024-04-19T00:13:37+00:00'}
-                ]
+                "deleted": {
+                    "water": [],
+                    "fertilize": [],
+                    "prune": [],
+                    "repot": []
+                },
+                "failed": {
+                    "water": ['2024-04-19T00:13:37+00:00'],
+                    "fertilize": [],
+                    "prune": [],
+                    "repot": []
+                }
             }
         )
-
-    def test_bulk_delete_plant_events_missing_params(self):
-        # Create test event, confirm exists in database
-        timestamp = timezone.now()
-        WaterEvent.objects.create(plant=self.plant1, timestamp=timestamp)
-        self.assertEqual(len(self.plant1.waterevent_set.all()), 1)
-
-        # Post incomplete event dict to backend with missing timestamp key
-        response = self.client.post('/bulk_delete_plant_events', {
-            'plant_id': self.plant1.uuid,
-            'events': [
-                {'type': 'water'}
-            ]
-        })
-
-        # Confirm event is in failed section, confirm still in database
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.json(),
-            {
-                "deleted": [],
-                "failed": [
-                    {'type': 'water'}
-                ]
-            }
-        )
-        self.assertEqual(len(self.plant1.waterevent_set.all()), 1)
 
 
 class NoteEventEndpointTests(TestCase):
@@ -2654,7 +2534,7 @@ class PlantPhotoEndpointTests(TestCase):
         self.assertEqual(response.json()["failed"], ["mock_photo.jpg"])
         self.assertEqual(response.json()["urls"], [])
 
-        # Confirm Photo was added to database
+        # Confirm Photo was not added to database
         self.assertEqual(len(Photo.objects.all()), 0)
 
     def test_add_plant_photos_invalid_get_request(self):

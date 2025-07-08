@@ -20,8 +20,7 @@ export const backButtonPressed = createAsyncThunk(
 export const plantSlice = createSlice({
     name: 'plant',
     initialState: {
-        plantDetails: {},
-        groupOptions: {}
+        plantDetails: {}
     },
     reducers: {
         // Takes object with all plantDetails keys that changed, overwrites
@@ -53,7 +52,6 @@ export const plantSlice = createSlice({
         // (fetches new state from backend to replace outdated contents)
         builder.addCase(backButtonPressed.fulfilled, (state, action) => {
             state.plantDetails = action.payload.plant_details;
-            state.groupOptions = action.payload.group_options;
         });
         // Reload page if unable to fetch new state when back button pressed
         builder.addCase(backButtonPressed.rejected, () => {

@@ -3,7 +3,7 @@ import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import { postHeaders } from 'src/testUtils/headers';
 import App from '../App';
 import { PageWrapper } from 'src/index';
-import { mockContext } from './mockContext';
+import { mockContext, mockPlantOptions } from './mockContext';
 
 describe('App', () => {
     let app, user;
@@ -269,23 +269,30 @@ describe('App', () => {
     });
 
     it('sends correct payload when Add Plants modal is submitted', async () => {
-        // Mock fetch function to return expected response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                added: [
-                    mockContext.options[Object.keys(mockContext.options)[0]]
-                ],
-                failed: []
-            })
-        }));
-
         // Confirm plant list contains 3 cards
         const plantsCol = app.getByText("Plants (3)").closest('.section');
         expect(plantsCol.querySelectorAll('.card-title').length).toBe(3);
 
+        // Mock fetch to return options (requested when modal opened)
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({ options: mockPlantOptions })
+        }));
+
         // Click Add plants dropdown option
         await user.click(app.getByTestId("add_plants_option"));
+
+
+        // Mock fetch function to return expected response when submitted
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                added: [
+                    mockPlantOptions[Object.keys(mockPlantOptions)[0]]
+                ],
+                failed: []
+            })
+        }));
 
         // Get reference to modal, confirm contains 2 plant options
         const modal = app.getByText("Add Plants").closest(".modal-box");
@@ -381,55 +388,13 @@ describe('App', () => {
         expect(floatingFooter.classList).toContain('floating-footer-hidden');
     });
 
-    it('adds removed plants to Add Plants modal options', async () => {
-        // Mock fetch function to return expected response when "Newest plant"
-        // is removed from the group
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                removed: [
-                    {
-                        name: "Newest plant",
-                        display_name: "Newest plant",
-                        uuid: "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16",
-                        created: "2023-12-28T01:25:12+00:00",
-                        species: "null",
-                        description: null,
-                        pot_size: null,
-                        last_watered: null,
-                        last_fertilized: null,
-                        thumbnail: null,
-                        archived: false
-                    }
-                ],
-                failed: []
-            })
-        }));
-
-        // Open Add Plants modal, confirm "Newest plant" is not an
-        // option (already in group)
-        await user.click(app.getByTestId("add_plants_option"));
-        const addModal = app.getByText("Add Plants").closest(".modal-box");
-        expect(within(addModal).queryByText("Newest plant")).toBeNull();
-
-        // Click remove plants option, delete Newest plant
-        await user.click(app.getByTestId("remove_plants_option"));
-        await user.click(app.getByLabelText('Select Test Plant'));
-        await user.click(app.getByRole('button', {name: 'Remove'}));
-        expect(global.fetch).toHaveBeenCalled();
-
-        // Confirm "Newest plant" appeared in Add Plants Modal
-        expect(within(addModal).queryByText("Newest plant")).not.toBeNull();
-    });
-
     it('fetches new state when user navigates to page with back button', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
                 group: mockContext.group,
-                details: mockContext.details,
-                options: mockContext.options
+                details: mockContext.details
             })
         }));
 

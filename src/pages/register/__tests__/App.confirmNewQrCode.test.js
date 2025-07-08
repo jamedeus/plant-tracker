@@ -1,5 +1,6 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
+import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
 import { postHeaders } from 'src/testUtils/headers';
 import { PageWrapper } from 'src/index';
 import App from '../App';
@@ -26,6 +27,9 @@ describe('Register page while changing QR code in progress', () => {
     });
 
     it('shows both forms if user clicks red button', async () => {
+        // Mock /get_plant_species_options response (requested when plant form loads)
+        mockPlantSpeciesOptionsResponse();
+
         // Confirm plant form is NOT visible
         expect(app.queryByText('Plant name')).toBeNull();
         expect(app.queryByText('Plant species')).toBeNull();
