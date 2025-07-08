@@ -25,7 +25,7 @@ const Options = ({ options, addPlants }) => {
     if (options) {
         return (
             <>
-                <div className="md:max-h-[50vh] overflow-y-auto pr-4 mt-4">
+                <div className="md:max-h-[50vh] max-w-94 mx-auto overflow-y-auto pr-4 mt-4">
                     {Object.keys(options).length > 0 ? (
                         <EditableNodeList editing={true} formRef={formRef}>
                             {Object.entries(options).map(([uuid, plant]) => (
@@ -94,7 +94,6 @@ const AddPlantsModal = memo(function AddPlantsModal({ addPlants }) {
         <Modal
             title='Add Plants'
             ref={modalRef}
-            className='max-w-[26rem]'
             onOpen={loadOptions}
             onClose={clearOptions}
         >
