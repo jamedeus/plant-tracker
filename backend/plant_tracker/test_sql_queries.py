@@ -572,7 +572,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
     def test_bulk_delete_plants_and_groups_endpoint_plant_in_group(self):
         '''/bulk_delete_plants_and_groups should make 17 database queries when
         deleting 3 plant instances and 3 Group instances when 2 plants are in
-        groups (extra UPDATE queries for related object).
+        a group (extra UPDATE query for related group object).
         '''
         user = get_default_user()
         group1 = Group.objects.create(uuid=uuid4(), user=user)
@@ -1207,7 +1207,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
 
     def test_add_plant_photos_endpoint(self):
         '''/add_plant_photos should make 3 database queries plus the number of
-        photos uploaded (1 INSERT per photo), or 2+n if default_photo set.
+        photos uploaded (1 INSERT per photo), or 2+n if default_photo not set.
         '''
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
 
