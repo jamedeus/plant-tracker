@@ -72,7 +72,7 @@ const Gallery = () => {
 
     // Build slides array, only update when redux photos state changes
     const slides = useMemo(() => photos.map(photo => ({
-        src: photo.image,
+        src: photo.photo,
         thumbnail: photo.thumbnail,
         description: timestampToReadable(photo.timestamp).split('-')[1].trim(),
         imageFit: 'contain',

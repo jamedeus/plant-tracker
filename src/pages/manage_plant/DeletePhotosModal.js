@@ -85,7 +85,7 @@ PhotoSlide.propTypes = {
         timestamp: PropTypes.string.isRequired,
         thumbnail: PropTypes.string.isRequired,
         preview: PropTypes.string.isRequired,
-        image: PropTypes.string.isRequired
+        photo: PropTypes.string.isRequired
     }).isRequired,
     nextPhotoLink: PropTypes.string.isRequired,
     prevPhotoLink: PropTypes.string.isRequired,
@@ -122,7 +122,7 @@ ConfirmDeleteRow.propTypes = {
         timestamp: PropTypes.string.isRequired,
         thumbnail: PropTypes.string.isRequired,
         preview: PropTypes.string.isRequired,
-        image: PropTypes.string.isRequired
+        photo: PropTypes.string.isRequired
     }).isRequired,
     unselectPhoto: PropTypes.func.isRequired
 };

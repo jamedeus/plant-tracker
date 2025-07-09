@@ -65,7 +65,7 @@ class Photo(models.Model):
         '''Returns dict with timestamp, primary key, and URLs of all resolutions.'''
         return {
             'timestamp': self.timestamp.isoformat(),
-            'image': self.get_photo_url(),
+            'photo': self.get_photo_url(),
             'thumbnail': self.get_thumbnail_url(),
             'preview': self.get_preview_url(),
             'key': self.pk

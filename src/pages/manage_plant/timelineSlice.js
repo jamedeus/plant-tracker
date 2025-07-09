@@ -90,7 +90,7 @@ export const timelineSlice = createSlice({
         timelineDays: {},
         // Array of objects each representing 1 photo, keys:
         //   timestamp   (full ISO timestamp in UTC)
-        //   image       (full resolution URL)
+        //   photo       (full resolution URL)
         //   thumbnail   (thumbnail image URL)
         //   preview     (preview image URL)
         //   key         (backend database key used to delete photo)
@@ -102,7 +102,7 @@ export const timelineSlice = createSlice({
         defaultPhoto: {
             set: false,
             timestamp: null,
-            image: null,
+            photo: null,
             thumbnail: null,
             preview: null,
             key: null

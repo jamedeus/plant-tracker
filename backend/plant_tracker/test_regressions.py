@@ -1090,7 +1090,7 @@ class CachedStateRegressionTests(TestCase):
             {
                 'set': False,
                 'timestamp': None,
-                'image': None,
+                'photo': None,
                 'thumbnail': None,
                 'preview': None,
                 'key': None
@@ -1120,7 +1120,7 @@ class CachedStateRegressionTests(TestCase):
             {
                 'set': False,
                 'timestamp': '2024-02-21T10:52:03+00:00',
-                'image': '/media/images/photo1.jpg',
+                'photo': '/media/images/photo1.jpg',
                 'thumbnail': '/media/thumbnails/photo1_thumb.webp',
                 'preview': '/media/previews/photo1_preview.webp',
                 'key': photo.pk
@@ -1143,7 +1143,7 @@ class CachedStateRegressionTests(TestCase):
             {
                 'set': False,
                 'timestamp': None,
-                'image': None,
+                'photo': None,
                 'thumbnail': None,
                 'preview': None,
                 'key': None

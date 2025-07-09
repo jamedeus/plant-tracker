@@ -146,21 +146,21 @@ class PlantModelTests(TestCase):
             {
                 photo2.pk: {
                     'timestamp': '2024-03-22T10:52:03+00:00',
-                    'image': '/media/images/IMG2.jpg',
+                    'photo': '/media/images/IMG2.jpg',
                     'thumbnail': '/media/thumbnails/IMG2_thumb.webp',
                     'preview': '/media/previews/IMG2_preview.webp',
                     'key': photo2.pk
                 },
                 photo1.pk: {
                     'timestamp': '2024-02-21T10:52:03+00:00',
-                    'image': '/media/images/IMG1.jpg',
+                    'photo': '/media/images/IMG1.jpg',
                     'thumbnail': '/media/thumbnails/IMG1_thumb.webp',
                     'preview': '/media/previews/IMG1_preview.webp',
                     'key': photo1.pk
                 },
                 photo3.pk: {
                     'timestamp': '2024-01-28T10:52:03+00:00',
-                    'image': '/media/images/IMG3.jpg',
+                    'photo': '/media/images/IMG3.jpg',
                     'thumbnail': '/media/thumbnails/IMG3_thumb.webp',
                     'preview': '/media/previews/IMG3_preview.webp',
                     'key': photo3.pk
@@ -175,7 +175,7 @@ class PlantModelTests(TestCase):
             {
                 "set": False,
                 "timestamp": None,
-                "image": None,
+                "photo": None,
                 "thumbnail": None,
                 "preview": None,
                 "key": None
@@ -198,7 +198,7 @@ class PlantModelTests(TestCase):
             {
                 "set": False,
                 "timestamp": photo2.timestamp.isoformat(),
-                "image": photo2.get_photo_url(),
+                "photo": photo2.get_photo_url(),
                 "thumbnail": photo2.get_thumbnail_url(),
                 "preview": photo2.get_preview_url(),
                 "key": photo2.pk
@@ -214,7 +214,7 @@ class PlantModelTests(TestCase):
             {
                 "set": True,
                 "timestamp": photo1.timestamp.isoformat(),
-                "image": photo1.get_photo_url(),
+                "photo": photo1.get_photo_url(),
                 "thumbnail": photo1.get_thumbnail_url(),
                 "preview": photo1.get_preview_url(),
                 "key": photo1.pk

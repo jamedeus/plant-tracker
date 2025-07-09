@@ -376,7 +376,7 @@ class Plant(models.Model):
                 return {
                     'set': False,
                     'timestamp': self.last_photo_details['timestamp'],
-                    'image': f'{settings.MEDIA_URL}{self.last_photo_details['photo']}',
+                    'photo': f'{settings.MEDIA_URL}{self.last_photo_details['photo']}',
                     'thumbnail': f'{settings.MEDIA_URL}{self.last_photo_details['thumbnail']}',
                     'preview': f'{settings.MEDIA_URL}{self.last_photo_details['preview']}',
                     'key': self.last_photo_details['key']
@@ -392,7 +392,7 @@ class Plant(models.Model):
             return {
                 'set': False,
                 'timestamp': None,
-                'image': None,
+                'photo': None,
                 'thumbnail': None,
                 'preview': None,
                 'key': None

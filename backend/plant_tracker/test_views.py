@@ -917,14 +917,14 @@ class ManagePageTests(TestCase):
             {
                 photo2.pk: {
                     'timestamp': '2024-03-22T10:52:03+00:00',
-                    'image': '/media/images/photo2.jpg',
+                    'photo': '/media/images/photo2.jpg',
                     'thumbnail': '/media/thumbnails/photo2_thumb.webp',
                     'preview': '/media/previews/photo2_preview.webp',
                     'key': photo2.pk
                 },
                 photo1.pk: {
                     'timestamp': '2024-03-21T10:52:03+00:00',
-                    'image': '/media/images/photo1.jpg',
+                    'photo': '/media/images/photo1.jpg',
                     'thumbnail': '/media/thumbnails/photo1_thumb.webp',
                     'preview': '/media/previews/photo1_preview.webp',
                     'key': photo1.pk
@@ -1032,7 +1032,7 @@ class ManagePageTests(TestCase):
                 'default_photo': {
                     'set': False,
                     'timestamp': None,
-                    'image': None,
+                    'photo': None,
                     'thumbnail': None,
                     'preview': None,
                     'key': None
@@ -2488,7 +2488,7 @@ class PlantPhotoEndpointTests(TestCase):
             [
                 {
                     "timestamp": "2024-03-22T10:52:03+00:00",
-                    "image": "/media/images/mock_photo.jpg",
+                    "photo": "/media/images/mock_photo.jpg",
                     "thumbnail": "/media/thumbnails/mock_photo_thumb.webp",
                     "preview": "/media/previews/mock_photo_preview.webp",
                     "key": Photo.objects.all()[0].pk
@@ -2596,7 +2596,7 @@ class PlantPhotoEndpointTests(TestCase):
             {'default_photo': {
                 'set': True,
                 'timestamp': '2024-03-21T10:52:03+00:00',
-                'image': '/media/images/mock_photo.jpg',
+                'photo': '/media/images/mock_photo.jpg',
                 'thumbnail': '/media/thumbnails/mock_photo_thumb.webp',
                 'preview': '/media/previews/mock_photo_preview.webp',
                 'key': photo.pk
