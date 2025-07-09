@@ -713,7 +713,7 @@ class SingleUserModeTests(TestCase):
         # Confirm received group state
         self.assertEqual(response.status_code, 200)
         self.assertTrue(isinstance(response.json(), dict))
-        self.assertEqual(response.json()['group']['uuid'], str(group.uuid))
+        self.assertEqual(response.json()['group_details']['uuid'], str(group.uuid))
 
     def test_get_group_state_user_does_not_own_group(self):
         # Create second user (in addition to default user) + group for user

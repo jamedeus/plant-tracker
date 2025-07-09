@@ -20,10 +20,10 @@ import clsx from 'clsx';
 function App() {
     // Load context set by django template
     const [group, setGroup] = useState(() => {
-        return parseDomContext("group");
+        return parseDomContext("group_details");
     });
     const [plantDetails, setPlantDetails] = useState(() => {
-        return parseDomContext("details");
+        return parseDomContext("plants");
     });
 
     // Request new state from backend if user navigates to page by pressing
@@ -34,8 +34,8 @@ function App() {
                 const response = await fetch(`/get_group_state/${group.uuid}`);
                 if (response.ok) {
                     const data = await response.json();
-                    setGroup(data['group']);
-                    setPlantDetails(data['details']);
+                    setGroup(data['group_details']);
+                    setPlantDetails(data['plants']);
                 } else {
                     // Reload page if failed to get new state (group deleted)
                     window.location.reload();

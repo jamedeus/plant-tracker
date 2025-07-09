@@ -1130,7 +1130,7 @@ class ManagePageTests(TestCase):
         # Confirm expected state objects
         state = response.context['state']
         self.assertEqual(
-            state['group'],
+            state['group_details'],
             {
                 'uuid': str(self.group1.uuid),
                 'name': self.group1.name,
@@ -1144,7 +1144,7 @@ class ManagePageTests(TestCase):
         )
 
         # Confirm details state contains empty list (no plants in group)
-        self.assertEqual(state['details'], {})
+        self.assertEqual(state['plants'], {})
 
     def test_manage_group_with_plant(self):
         # Add test plant to group
@@ -1157,11 +1157,11 @@ class ManagePageTests(TestCase):
 
         # Confirm plants key in group state matches number of plants
         state = response.context['state']
-        self.assertEqual(state['group']['plants'], 1)
+        self.assertEqual(state['group_details']['plants'], 1)
 
         # Confirm details state contains params for plant in group
         self.assertEqual(
-            state['details'],
+            state['plants'],
             {
                 str(self.plant1.uuid): {
                     'name': None,
@@ -1198,7 +1198,7 @@ class ManagePageTests(TestCase):
         self.assertEqual(
             response.json(),
             {
-                'group': {
+                'group_details': {
                     'uuid': str(self.group1.uuid),
                     'name': self.group1.name,
                     'created': self.group1.created.isoformat(),
@@ -1208,7 +1208,7 @@ class ManagePageTests(TestCase):
                     'display_name': 'Unnamed group 1',
                     'plants': 0
                 },
-                'details': {}
+                'plants': {}
             }
         )
 

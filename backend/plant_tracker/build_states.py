@@ -66,8 +66,8 @@ def build_manage_group_state(group):
         plant.group = group
 
     return {
-        'group': group.get_details(),
-        'details': {
+        'group_details': group.get_details(),
+        'plants': {
             str(plant.uuid): plant.get_details() for plant in plants
         }
     }

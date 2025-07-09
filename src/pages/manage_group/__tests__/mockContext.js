@@ -1,6 +1,6 @@
 // Simulated django context, parsed into state object
 export const mockContext = {
-    group: {
+    group_details: {
         uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
         created: "2023-12-26T01:25:12+00:00",
         name: "Test group",
@@ -9,7 +9,7 @@ export const mockContext = {
         description: null,
         plants: 3
     },
-    details: {
+    plants: {
         "0640ec3b-1bed-4b15-a078-d6e7ec66be12": {
             name: "Test Plant",
             display_name: "Test Plant",
