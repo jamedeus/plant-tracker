@@ -43,9 +43,10 @@ export const buildTimelineDays = (events, notes, photos, dividedFrom, divisionEv
     };
 
     // Iterates timestamps under each event type (water, fertilize, prune, repot)
-    // Add event type to events array under correct dateKey
+    // Add event object (type + timestamp) to events array under correct dateKey
     Object.entries(events).forEach(([eventType, eventDates]) =>
-        eventDates.forEach(date => addValue(date, 'events', eventType))
+        eventDates.forEach(date =>
+            addValue(date, 'events', {type: eventType, timestamp: date}))
     );
     // Remove duplicate event types on same day
     Object.keys(timelineDays).forEach(dateKey =>
@@ -82,7 +83,10 @@ export const buildCalendarDays = (timelineDays) => {
     const calendarDays = {};
     Object.keys(timelineDays).forEach(dateKey => {
         if (timelineDays[dateKey].events.length) {
-            calendarDays[dateKey] = timelineDays[dateKey].events;
+            // Convert array of objects to array of type strings (no duplicates)
+            calendarDays[dateKey] = [...new Set(
+                timelineDays[dateKey].events.map(event => event.type)
+            )];
         }
     });
     return calendarDays;

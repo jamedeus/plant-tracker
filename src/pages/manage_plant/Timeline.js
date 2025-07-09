@@ -19,6 +19,7 @@ import RepotIcon from 'src/components/RepotIcon';
 import { LuSplit } from "react-icons/lu";
 import { useSelector, useDispatch } from 'react-redux';
 import 'src/css/timeline.css';
+import { EVENTS_ORDER } from './timelineSlice';
 import { photoGalleryOpened, photoGalleryIndexChanged } from './interfaceSlice';
 
 // Takes ISO timestamp string, returns "x days ago"
@@ -249,10 +250,11 @@ const eventIconMap = {
     repot: <RepotIcon />,
 };
 
-// Takes event type string, renders timeline marker with icon and text
-const EventMarker = memo(function EventMarker({ eventType }) {
+// Takes event type string and array of event timestamps
+// Renders timeline marker with icon and type text, shows timestamps on hover
+const EventMarker = memo(function EventMarker({ eventType, timestamps }) {
     return (
-        <span className="event-marker">
+        <span className="event-marker" title={timestamps.join('\n')}>
             {eventIconMap[eventType]}
             {pastTense(capitalize(eventType))}
         </span>
@@ -260,7 +262,8 @@ const EventMarker = memo(function EventMarker({ eventType }) {
 });
 
 EventMarker.propTypes = {
-    eventType: PropTypes.oneOf(Object.keys(eventIconMap)).isRequired
+    eventType: PropTypes.oneOf(Object.keys(eventIconMap)).isRequired,
+    timestamps: PropTypes.array.isRequired
 };
 
 // Takes array of plant objects (name and uuid keys) that were divided from this
@@ -507,6 +510,14 @@ const TimelineDay = memo(function TimelineDay({ dateKey, monthDivider }) {
     // must change whenever photos change, but haven't tested.
     const photos = useSelector((state) => state.timeline.photos);
 
+    // Convert events from array of objects with type and timestamp keys to
+    // object with type keys (no duplicates) containing array of timestamps
+    const eventsByType = contents.events.reduce((acc, { type, timestamp }) => {
+        acc[type].push(timestamp);
+        return acc;
+    // Seed accumulator object with type keys in correct order
+    }, Object.fromEntries(EVENTS_ORDER.map(type => [type, []])));
+
     return (
         <>
             {/* Render MonthDivider if monthDivider param was given */}
@@ -518,9 +529,15 @@ const TimelineDay = memo(function TimelineDay({ dateKey, monthDivider }) {
                     className="timeline-day-events"
                     data-testid={`${dateKey}-events`}
                 >
-                    {contents.events.map((e) => (
-                        <EventMarker key={e} eventType={e} />
-                    ))}
+                    {Object.entries(eventsByType).map(([type, timestamps]) => {
+                        if (timestamps.length) {
+                            return <EventMarker
+                                key={type}
+                                eventType={type}
+                                timestamps={timestamps}
+                            />;
+                        }
+                    })}
                 </div>
                 <div
                     className="timeline-day-photos"

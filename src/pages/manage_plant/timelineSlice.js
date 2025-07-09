@@ -9,7 +9,7 @@ import {
 } from './store';
 
 // Correct order for event markers within a single timeline day (readability)
-const EVENTS_ORDER = ['water', 'fertilize', 'prune', 'repot'];
+export const EVENTS_ORDER = ['water', 'fertilize', 'prune', 'repot'];
 
 // Takes timelineSlice state and new YYYY-MM-DD dateKey
 // Adds month and year to navigationOptions if not already present
@@ -84,7 +84,7 @@ export const timelineSlice = createSlice({
         calendarDays: {},
         // Keys are YYYY-MM-DD in user's local timezone
         // Values are objects with 3 keys:
-        //   events      (array of strings)
+        //   events      (array of objects with type and timestamp keys)
         //   notes       (array of objects with text and timestamp keys)
         //   photos      (array of objects with same keys as photos state)
         timelineDays: {},
@@ -124,26 +124,23 @@ export const timelineSlice = createSlice({
             // Add new dateKey to calendarDays and timelineDays if missing
             const dateKey = timestampToDateString(newEvent.timestamp);
             if (!state.timelineDays[dateKey]) {
-                const day = {
-                    events: [ newEvent.type ],
+                state.timelineDays[dateKey] = {
+                    events: [ newEvent ],
                     notes: [],
                     photos: []
                 };
-                state.calendarDays[dateKey] = day.events;
-                state.timelineDays[dateKey] = day;
+                state.calendarDays[dateKey] = [ newEvent.type ];
                 // Add navigationOption if first dateKey in year + month
                 addNavigationOption(state, dateKey);
 
-            // Add new events to existing dateKey in calendarDays and timelineDays
-            } else if (!state.timelineDays[dateKey].events.includes(newEvent.type)) {
-                const newEvents = [
-                    ...state.timelineDays[dateKey].events,
-                    newEvent.type
-                ].sort(
+            // Add new event to existing dateKey in calendarDays and timelineDays
+            } else {
+                state.timelineDays[dateKey].events.push(newEvent);
+                state.calendarDays[dateKey] = [...new Set(
+                    state.timelineDays[dateKey].events.map(event => event.type)
+                )].sort(
                     (a, b) => EVENTS_ORDER.indexOf(a) - EVENTS_ORDER.indexOf(b)
                 );
-                state.calendarDays[dateKey] = newEvents;
-                state.timelineDays[dateKey].events = newEvents;
             }
 
             // First event added: add delete events dropdown option
@@ -162,18 +159,21 @@ export const timelineSlice = createSlice({
                 1
             );
 
-            // If no other events with same type exist on same day, remove
-            // event from calendarDays and timelineDays
+            // Remove event from timelineDays
             const dateKey = timestampToDateString(deletedEvent.timestamp);
-            if (!state.eventsByType[deletedEvent.type].filter(
-                // eventsByType timestamps are UTC so can't just use startsWith
-                datestring => timestampToDateString(datestring) === dateKey
-            ).length) {
-                const newEvents = state.timelineDays[dateKey].events.filter(
+            state.timelineDays[dateKey].events =
+                state.timelineDays[dateKey].events.filter(event =>
+                    event.type != deletedEvent.type ||
+                    event.timestamp != deletedEvent.timestamp
+                );
+            // Remove from calendarDays if no other events with same type exist
+            const sameTypeAndDay = state.timelineDays[dateKey].events.filter(
+                event => event.type == deletedEvent.type
+            );
+            if (!sameTypeAndDay.length) {
+                state.calendarDays[dateKey] = state.calendarDays[dateKey].filter(
                     event => event !== deletedEvent.type
                 );
-                state.timelineDays[dateKey].events = newEvents;
-                state.calendarDays[dateKey] = newEvents;
                 // Remove calendarDays and timelineDays day if no content left
                 removeDateKeyIfEmpty(state, dateKey);
             }
