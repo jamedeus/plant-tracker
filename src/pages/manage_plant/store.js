@@ -188,6 +188,13 @@ export function ReduxProvider({ children }) {
                 settingsMenuOpen: false,
                 photoGalleryOpen: false,
                 photoGalleryIndex: 0,
+                deletingEvents: false,
+                selectedEvents: {
+                    water: [],
+                    fertilize: [],
+                    prune: [],
+                    repot: []
+                }
             }
         };
     };

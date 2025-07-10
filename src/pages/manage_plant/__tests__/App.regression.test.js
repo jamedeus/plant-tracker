@@ -361,10 +361,11 @@ describe('App', () => {
         expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(1);
         expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(1);
 
-        // Open event history modal, delete more recent event
+        // Start deleting events, select more recent event, click delete button
         await user.click(app.getByText('Delete events'));
-        const modal = app.getByText('Event History').closest('.modal-box');
-        await user.click(within(modal).getAllByText(/today/)[0]);
+        await user.click(
+            within(app.getByTestId("2024-03-01-events")).getByText("Watered")
+        );
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
@@ -372,7 +373,7 @@ describe('App', () => {
                     water: ["2024-03-01T20:00:01+00:00"],
                     fertilize: [],
                     prune: [],
-                    repot: []
+                    repot: [],
                 },
                 failed: {
                     water: [],
@@ -382,7 +383,7 @@ describe('App', () => {
                 }
             })
         }));
-        await user.click(within(modal).getByText('Delete'));
+        await user.click(app.getByRole("button", {name: "Delete"}));
 
         // Confirm dot and marker are still present (second event still exists)
         expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(1);
@@ -439,10 +440,11 @@ describe('App', () => {
         expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(2);
         expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(2);
 
-        // Open event history modal, delete March 1 event
+        // Start deleting events, select March 1 event, click delete button
         await user.click(app.getByText('Delete events'));
-        const modal = app.getByText('Event History').closest('.modal-box');
-        await user.click(within(modal).getByText(/today/));
+        await user.click(
+            within(app.getByTestId("2024-03-01-events")).getByText("Watered")
+        );
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
@@ -450,7 +452,7 @@ describe('App', () => {
                     water: ["2024-03-01T10:00:00+00:00"],
                     fertilize: [],
                     prune: [],
-                    repot: []
+                    repot: [],
                 },
                 failed: {
                     water: [],
@@ -460,7 +462,7 @@ describe('App', () => {
                 }
             })
         }));
-        await user.click(within(modal).getByText('Delete'));
+        await user.click(app.getByRole("button", {name: "Delete"}));
 
         // Confirm March 1 TimelineDay was removed (only 1 dot and marker left)
         expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(1);
@@ -700,11 +702,29 @@ describe('App', () => {
             })
         }));
 
-        // Open event history modal, delete water event
+        // Start deleting events, select water event, click delete button
         await user.click(app.getByText('Delete events'));
-        const modal = app.getByText('Event History').closest('.modal-box');
-        await user.click(within(modal).getByText(/today/));
-        await user.click(within(modal).getByText('Delete'));
+        await user.click(
+            within(app.getByTestId("2024-03-01-events")).getByText("Watered")
+        );
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                deleted: {
+                    water: ["2024-03-01T15:45:44+00:00"],
+                    fertilize: [],
+                    prune: [],
+                    repot: [],
+                },
+                failed: {
+                    water: [],
+                    fertilize: [],
+                    prune: [],
+                    repot: []
+                }
+            })
+        }));
+        await user.click(app.getByRole("button", {name: "Delete"}));
 
         // Confirm Delete events dropdown option was removed
         expect(app.queryByText('Delete events')).toBeNull();

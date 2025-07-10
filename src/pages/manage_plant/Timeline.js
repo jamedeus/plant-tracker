@@ -20,7 +20,12 @@ import { LuSplit } from "react-icons/lu";
 import { useSelector, useDispatch } from 'react-redux';
 import 'src/css/timeline.css';
 import { EVENTS_ORDER } from './timelineSlice';
-import { photoGalleryOpened, photoGalleryIndexChanged } from './interfaceSlice';
+import {
+    photoGalleryOpened,
+    photoGalleryIndexChanged,
+    deletingEventsChanged,
+    eventSelected,
+} from './interfaceSlice';
 
 // Takes ISO timestamp string, returns "x days ago"
 const getRelativeTimeString = (timestamp) => {
@@ -44,6 +49,14 @@ const Title = memo(function Title() {
         (state) => state.timeline.navigationOptions
     );
     const hasNavigationOptions = Object.keys(navigationOptions).length > 0;
+
+    const dispatch = useDispatch();
+
+    // Show DeletingEventsFooter, close dropdown menu
+    const startSelectingEvents = () => {
+        dispatch(deletingEventsChanged({editing: true}));
+        document.activeElement.blur();
+    };
 
     return (
         <div className="navbar sticky top-16 bg-base-200 rounded-2xl px-4 z-1">
@@ -122,7 +135,7 @@ const Title = memo(function Title() {
                             {hasEvents &&
                                 <li><button
                                     className="flex justify-end"
-                                    onClick={openEventHistoryModal}
+                                    onClick={startSelectingEvents}
                                 >
                                     Delete events
                                 </button></li>
@@ -253,10 +266,36 @@ const eventIconMap = {
 // Takes event type string and array of event timestamps
 // Renders timeline marker with icon and type text, shows timestamps on hover
 const EventMarker = memo(function EventMarker({ eventType, timestamps }) {
+    const [selected, setSelected] = useState(false);
+    const deletingEvents = useSelector((state) => state.interface.deletingEvents);
+
+    const dispatch = useDispatch();
+
+    // Add all timestamps to selection when clicked, remove when clicked again
+    const handleClick = () => {
+        dispatch(eventSelected({
+            type: eventType,
+            timestamps: timestamps,
+            selected: !selected
+        }));
+        setSelected(!selected);
+    };
+
+    // Clear selection when exiting select mode
+    useEffect(() => {
+        !deletingEvents && setSelected(false);
+    }, [deletingEvents]);
+
     return (
-        <span className="event-marker" title={timestamps.join('\n')}>
-            {eventIconMap[eventType]}
-            {pastTense(capitalize(eventType))}
+        <span
+            className={clsx("event-marker", selected && "selected")}
+            onClick={deletingEvents ? handleClick : null}
+            title={timestamps.join('\n')}
+        >
+            <span className="event-marker-content">
+                {eventIconMap[eventType]}
+                {pastTense(capitalize(eventType))}
+            </span>
         </span>
     );
 });

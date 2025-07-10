@@ -535,14 +535,15 @@ describe('App', () => {
         // Confirm 2 water event icons exist
         expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(2);
 
-        // Open event history modal, get reference to modal
+        // Start deleting events, select both water events, click delete button
         await user.click(app.getByText('Delete events'));
-        const modal = app.getByText('Event History').closest('.modal-box');
-
-        // Select both water events, click delete button
-        await user.click(within(modal).getByText(/today/));
-        await user.click(within(modal).getByText(/yesterday/));
-        await user.click(within(modal).getByText('Delete'));
+        await user.click(
+            within(app.getByTestId("2024-03-01-events")).getByText("Watered")
+        );
+        await user.click(
+            within(app.getByTestId("2024-02-29-events")).getByText("Watered")
+        );
+        await user.click(app.getByRole("button", {name: "Delete"}));
 
         // Confirm both water event icons disappeared
         expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(0);
@@ -745,10 +746,11 @@ describe('App', () => {
         expect(quickNav.children[0].textContent).toContain('2025');
         expect(quickNav.children[1].textContent).toContain('2024');
 
-        // Open event history modal, delete 2025 event
+        // Start deleting events, select 2025 event, click delete button
         await user.click(app.getByText('Delete events'));
-        const modal = app.getByText('Event History').closest('.modal-box');
-        await user.click(within(modal).getByText(/2025/));
+        await user.click(
+            within(app.getByTestId("2025-02-20-events")).getByText("Watered")
+        );
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             json: () => Promise.resolve({
@@ -766,7 +768,7 @@ describe('App', () => {
                 }
             })
         }));
-        await user.click(within(modal).getByText('Delete'));
+        await user.click(app.getByRole("button", {name: "Delete"}));
 
         // Confirm 2025 menu option was removed
         expect(quickNav.children.length).toBe(1);

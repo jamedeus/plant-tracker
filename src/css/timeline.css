@@ -53,6 +53,31 @@
 /* Timeline content classes */
 .event-marker {
     @apply m-2 whitespace-nowrap text-sm md:text-base;
+    /* Transparent outline when not selected (necessary for transition) */
+    @apply outline-transparent outline-2 outline-offset-3 rounded-md;
+    @apply transition duration-150;
+
+    & > .event-marker-content {
+        @apply inline-block transition-all duration-200 ease-linear;
+        /* Allow clicking rapidly without selecting text */
+        @apply select-none;
+
+        /* Fix text shifting on chromium (doesn't work on firefox) */
+        will-change: transform;
+
+        /* Fix blurry scaled down text on firefox (doesn't work on chromium) */
+        text-rendering: optimizeLegibility;
+    }
+
+    /* Red outline when selected */
+    &.selected {
+        @apply outline-error;
+    }
+
+    /* Scale down contents when selected */
+    &.selected > .event-marker-content {
+        @apply scale-90;
+    }
 }
 
 .note-collapse {

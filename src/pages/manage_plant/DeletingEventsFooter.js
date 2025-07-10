@@ -11,42 +11,29 @@ const DeletingEventsFooter = memo(function DeletingEventsFooter() {
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
     const deletingEvents = useSelector((state) => state.interface.deletingEvents);
     const selectedEvents = useSelector((state) => state.interface.selectedEvents);
-    console.log(selectedEvents)
-    const eventsByType = useSelector((state) => state.timeline.eventsByType);
-    console.log(eventsByType)
 
     const cancelDeleting = () => {
         dispatch(deletingEventsChanged({editing: false}));
     };
 
     const handleDelete = async () => {
-        const payload = {
+        const response = await sendPostRequest('/bulk_delete_plant_events', {
             plant_id: plantID,
-            events: []
-        };
-
-        selectedEvents.forEach(event => {
-            const [dateKey, type] = event.split('_');
-            eventsByType[type].forEach(timestamp => {
-                if (timestamp.startsWith(dateKey)) {
-                    payload.events.push({type: type, timestamp: timestamp});
-                }
-            });
+            events: selectedEvents
         });
-        console.log(payload)
 
-        const response = await sendPostRequest('/bulk_delete_plant_events',
-            payload
-        );
-
-        // If successful remove events from timeline, hide footer
+        // If successful remove events from timeline
         if (response.ok) {
-            payload.events.forEach(event => {
-                dispatch(eventDeleted({
-                    timestamp: event.timestamp,
-                    type: event.type
-                }));
-            });
+            const data = await response.json();
+            Object.entries(data.deleted).forEach(([eventType, timestamps]) =>
+                timestamps.forEach(timestamp =>
+                    dispatch(eventDeleted({
+                        timestamp: timestamp,
+                        type: eventType
+                    }))
+                )
+            );
+            // Hide footer
             cancelDeleting();
         } else {
             const error = await response.json();
