@@ -9,7 +9,6 @@ import { openRepotModal } from './RepotModal';
 import { openPhotoModal } from './PhotoModal';
 import { openDivisionModal } from './DivisionModal';
 import { openDeletePhotosModal, preloadDeletePhotosModal } from './DeletePhotosModal';
-import { openEventHistoryModal } from './EventHistoryModal';
 import { FaEllipsis, FaPenToSquare } from 'react-icons/fa6';
 import DropdownMenu from 'src/components/DropdownMenu';
 import WaterIcon from 'src/components/WaterIcon';

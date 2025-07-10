@@ -2385,48 +2385,6 @@ exports[`App matches snapshot 1`] = `
       </button>
     </form>
   </dialog>
-  <dialog
-    class="modal"
-  >
-    <div
-      class="modal-box text-center flex flex-col pt-4 "
-    >
-      <form
-        method="dialog"
-      >
-        <button
-          aria-label="Close modal"
-          class="btn-close absolute right-4 top-4"
-        >
-          <svg
-            aria-hidden="true"
-            class="size-8 min-size-8"
-            data-slot="icon"
-            fill="currentColor"
-            viewBox="0 0 16 16"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
-            />
-          </svg>
-        </button>
-      </form>
-      <h1
-        class="font-bold text-lg leading-8 md:text-xl mb-3"
-      >
-        Event History
-      </h1>
-    </div>
-    <form
-      class="modal-backdrop"
-      method="dialog"
-    >
-      <button>
-        close
-      </button>
-    </form>
-  </dialog>
 </div>
 `;
 
@@ -4665,48 +4623,6 @@ exports[`App matches snapshot when plant is archived 1`] = `
           </svg>
         </button>
       </form>
-    </div>
-    <form
-      class="modal-backdrop"
-      method="dialog"
-    >
-      <button>
-        close
-      </button>
-    </form>
-  </dialog>
-  <dialog
-    class="modal"
-  >
-    <div
-      class="modal-box text-center flex flex-col pt-4 "
-    >
-      <form
-        method="dialog"
-      >
-        <button
-          aria-label="Close modal"
-          class="btn-close absolute right-4 top-4"
-        >
-          <svg
-            aria-hidden="true"
-            class="size-8 min-size-8"
-            data-slot="icon"
-            fill="currentColor"
-            viewBox="0 0 16 16"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M5.28 4.22a.75.75 0 0 0-1.06 1.06L6.94 8l-2.72 2.72a.75.75 0 1 0 1.06 1.06L8 9.06l2.72 2.72a.75.75 0 1 0 1.06-1.06L9.06 8l2.72-2.72a.75.75 0 0 0-1.06-1.06L8 6.94 5.28 4.22Z"
-            />
-          </svg>
-        </button>
-      </form>
-      <h1
-        class="font-bold text-lg leading-8 md:text-xl mb-3"
-      >
-        Event History
-      </h1>
     </div>
     <form
       class="modal-backdrop"

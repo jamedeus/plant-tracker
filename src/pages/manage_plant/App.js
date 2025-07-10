@@ -9,7 +9,6 @@ import DivisionModal from './DivisionModal';
 import EditPlantModal from './EditPlantModal';
 import DefaultPhotoModal from './DefaultPhotoModal';
 import DeletePhotosModal from './DeletePhotosModal';
-import EventHistoryModal from './EventHistoryModal';
 
 const App = () => {
     return (
@@ -24,7 +23,6 @@ const App = () => {
             <EditPlantModal />
             <DefaultPhotoModal />
             <DeletePhotosModal />
-            <EventHistoryModal />
         </ReduxProvider>
     );
 };
