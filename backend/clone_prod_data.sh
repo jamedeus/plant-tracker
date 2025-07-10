@@ -37,7 +37,18 @@ backup() {
         --indent 2 > /mnt/data.json"
 
     # Copy database dump from docker container to host home folder
-    docker cp plant-tracker:/mnt/data.json $HOME/$(date +%Y_%m_%d)_plant_tracker_database.json
+    docker cp plant-tracker:/mnt/data.json $HOME/datadump.json
+
+    # Move UUID entries to the end (a database-level unique constraint prevents
+    # creating Plant/Group with uuid that already exists in the UUID table. All
+    # Plant/Group uuids are in the UUID table to prevent duplicates, so if UUID
+    # is loaded first it will prevent all Plants and Groups from being loaded).
+    jq '[ .[]
+        | select(.model != "plant_tracker.uuid") ]
+    + [ .[]
+        | select(.model == "plant_tracker.uuid") ]' \
+    $HOME/datadump.json > $HOME/$(date +%Y_%m_%d)_plant_tracker_database.json
+    rm $HOME/datadump.json
 }
 
 copy_backups() {
