@@ -71,7 +71,6 @@ describe('Delete mode', () => {
 
         // Select photo, confirm text changed to 2 items selected
         await user.click(app.getByTitle('02:52 AM - March 22, 2024'));
-        await act(async () => await jest.advanceTimersByTimeAsync(150));
         expect(app.queryByText('2 items selected')).not.toBeNull();
 
         // Unselect event, confirm text changed back to 1 item selected

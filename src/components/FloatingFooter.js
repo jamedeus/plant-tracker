@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 
-const FloatingFooter = ({ visible, children, text }) => {
+const FloatingFooter = ({ visible, children, text, fadeText }) => {
     // Track displayed text (prevents immediate change when prop changes)
     const [displayedText, setDisplayedText] = useState(text);
     // Text fades in if true, fades out if false
@@ -11,7 +11,14 @@ const FloatingFooter = ({ visible, children, text }) => {
 
     // Fade out old text, fade in new text when text prop changes
     useEffect(() => {
-        // Start fade out if text changed
+        // Update immediately if fade disabled
+        if (!fadeText) {
+            setDisplayedText(text);
+            setFadeIn(true);
+            return;
+        }
+
+        // Start fading out if text changed
         if (text !== displayedText) {
             setFadeIn(false);
             // Clear any previous timer
@@ -26,7 +33,7 @@ const FloatingFooter = ({ visible, children, text }) => {
             clearTimeout(timerRef.current);
         }
         return () => clearTimeout(timerRef.current);
-    }, [text]);
+    }, [text, fadeText]);
 
     return (
         <div
@@ -60,7 +67,8 @@ const FloatingFooter = ({ visible, children, text }) => {
 FloatingFooter.propTypes = {
     visible: PropTypes.bool.isRequired,
     children: PropTypes.node.isRequired,
-    text: PropTypes.string
+    text: PropTypes.string,
+    fadeText: PropTypes.bool
 };
 
 export default FloatingFooter;

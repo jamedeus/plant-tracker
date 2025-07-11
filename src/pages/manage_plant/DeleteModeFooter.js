@@ -38,6 +38,24 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
         );
     }, [totalSelected]);
 
+    // Controls whether instruction text fades when changed
+    // Should fade when changing from instructions to number selected, or when
+    // changing to "Hold to confirm", but not when number of selected changes
+    const [fadeText, setFadeText] = useState(false);
+
+    // Fade out current text, fade in "Hold to confirm"
+    const handleHoldStart = () => {
+        setHoldingDelete(true);
+        setFadeText(true);
+    };
+
+    // Fade out "Hold to confirm", fade in current text
+    const handleHoldStop = () => {
+        setHoldingDelete(false);
+        // Keep fade enabled until new text fades in
+        setTimeout(() => setFadeText(false), 250);
+    };
+
     const cancelDeleteMode = () => {
         dispatch(deleteModeChanged({editing: false}));
     };
@@ -92,6 +110,7 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
         <FloatingFooter
             visible={deleteMode}
             text={holdingDelete ? 'Hold to confirm' : instructionsText}
+            fadeText={totalSelected <= 1 || fadeText}
         >
             <button
                 className="btn btn-neutral"
@@ -104,8 +123,8 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
                 callback={handleDelete}
                 timeout={holdToConfirmDelay}
                 buttonText="Delete"
-                onHoldStart={() => setHoldingDelete(true)}
-                onHoldStop={() => setHoldingDelete(false)}
+                onHoldStart={handleHoldStart}
+                onHoldStop={handleHoldStop}
             />
         </FloatingFooter>
     );
