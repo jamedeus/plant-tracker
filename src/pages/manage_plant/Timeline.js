@@ -8,7 +8,6 @@ import { openNoteModal } from './NoteModal';
 import { openRepotModal } from './RepotModal';
 import { openPhotoModal } from './PhotoModal';
 import { openDivisionModal } from './DivisionModal';
-import { preloadDeletePhotosModal } from './DeletePhotosModal';
 import { FaEllipsis, FaPenToSquare } from 'react-icons/fa6';
 import DropdownMenu from 'src/components/DropdownMenu';
 import WaterIcon from 'src/components/WaterIcon';
@@ -85,10 +84,7 @@ const Title = memo(function Title() {
                 )}
             </div>
 
-            <div
-                className="justify-end w-12 dropdown dropdown-end"
-                onFocus={preloadDeletePhotosModal}
-            >
+            <div className="justify-end w-12 dropdown dropdown-end">
                 {!archived &&
                     <>
                         <div
