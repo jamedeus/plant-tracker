@@ -52,7 +52,7 @@ const Title = memo(function Title() {
 
     const dispatch = useDispatch();
 
-    // Show DeletingEventsFooter, close dropdown menu
+    // Show DeleteModeFooter, close dropdown menu
     const startDeleteMode = () => {
         dispatch(deleteModeChanged({editing: true}));
         document.activeElement.blur();
