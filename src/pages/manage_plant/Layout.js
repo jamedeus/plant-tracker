@@ -184,7 +184,7 @@ function Layout() {
     }, [plantDetails, defaultPhoto.thumbnail]);
 
     return (
-        <div className="container flex flex-col items-center mx-auto mb-8">
+        <div className="container flex flex-col items-center mx-auto mb-28">
             <Navbar
                 menuOptions={DropdownMenuOptions}
                 title={plantDetails.display_name}
