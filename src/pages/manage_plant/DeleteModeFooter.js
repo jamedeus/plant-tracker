@@ -83,32 +83,20 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
     };
 
     return (
-        <FloatingFooter visible={deleteMode}>
-            <div className="flex flex-col items-center gap-4 w-full">
-                {/* Instructions text, changes to number of selected items */}
-                <div className={clsx(
-                    "w-70 md:w-82 text-center",
-                    "text-sm md:text-base font-semibold text-base-content"
-                )}>
-                    {instructionsText}
-                </div>
+        <FloatingFooter visible={deleteMode} text={instructionsText}>
+            <button
+                className="btn btn-neutral"
+                onClick={cancelDeleteMode}
+            >
+                Cancel
+            </button>
 
-                <div className="flex flex-row justify-center gap-8">
-                    <button
-                        className="btn btn-neutral"
-                        onClick={cancelDeleteMode}
-                    >
-                        Cancel
-                    </button>
-
-                    <HoldToConfirm
-                        callback={handleDelete}
-                        timeout={holdToConfirmDelay}
-                        buttonText="Delete"
-                        tooltipText="Hold to confirm"
-                    />
-                </div>
-            </div>
+            <HoldToConfirm
+                callback={handleDelete}
+                timeout={holdToConfirmDelay}
+                buttonText="Delete"
+                tooltipText="Hold to confirm"
+            />
         </FloatingFooter>
     );
 });

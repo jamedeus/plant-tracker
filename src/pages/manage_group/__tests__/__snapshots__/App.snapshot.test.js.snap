@@ -700,16 +700,24 @@ exports[`App matches snapshot 1`] = `
       class="floating-footer floating-footer-hidden"
       data-testid="floating-footer"
     >
-      <button
-        class="btn btn-neutral"
+      <div
+        class="flex flex-col items-center gap-4 w-full"
       >
-        Cancel
-      </button>
-      <button
-        class="btn btn-error"
-      >
-        Remove
-      </button>
+        <div
+          class="flex flex-row justify-center gap-8"
+        >
+          <button
+            class="btn btn-neutral"
+          >
+            Cancel
+          </button>
+          <button
+            class="btn btn-error"
+          >
+            Remove
+          </button>
+        </div>
+      </div>
     </div>
     <dialog
       class="modal"

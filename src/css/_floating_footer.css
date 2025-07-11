@@ -1,6 +1,6 @@
 @utility floating-footer {
-    @apply fixed bottom-0 z-50 flex flex-row my-4 p-4 gap-8;
-    @apply rounded-box shadow-inner transition-all duration-300;
+    @apply fixed bottom-0 z-50 my-4 p-4;
+    @apply rounded-box shadow-md transition-all duration-300;
 
     /* Semi-transparent frosted background */
     backdrop-filter: blur(6px) saturate(180%);

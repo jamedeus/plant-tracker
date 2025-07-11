@@ -595,28 +595,36 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
       class="floating-footer floating-footer-hidden"
       data-testid="floating-footer"
     >
-      <button
-        class="btn btn-neutral"
-      >
-        Cancel
-      </button>
-      <button
-        class="btn"
-      >
-        Un-archive
-      </button>
       <div
-        class="tooltip hold-to-confirm-tooltip"
-        data-tip="Hold to confirm"
+        class="flex flex-col items-center gap-4 w-full"
       >
-        <button
-          class="btn btn-soft btn-error hold-to-confirm"
-          style="--hold-duration: 2500ms;"
+        <div
+          class="flex flex-row justify-center gap-8"
         >
-          <span>
-            Delete
-          </span>
-        </button>
+          <button
+            class="btn btn-neutral"
+          >
+            Cancel
+          </button>
+          <button
+            class="btn"
+          >
+            Un-archive
+          </button>
+          <div
+            class="tooltip hold-to-confirm-tooltip"
+            data-tip="Hold to confirm"
+          >
+            <button
+              class="btn btn-soft btn-error hold-to-confirm"
+              style="--hold-duration: 2500ms;"
+            >
+              <span>
+                Delete
+              </span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <dialog
@@ -786,28 +794,36 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
       class="floating-footer floating-footer-hidden"
       data-testid="floating-footer"
     >
-      <button
-        class="btn btn-neutral"
-      >
-        Cancel
-      </button>
-      <button
-        class="btn"
-      >
-        Archive
-      </button>
       <div
-        class="tooltip hold-to-confirm-tooltip"
-        data-tip="Hold to confirm"
+        class="flex flex-col items-center gap-4 w-full"
       >
-        <button
-          class="btn btn-soft btn-error hold-to-confirm"
-          style="--hold-duration: 2500ms;"
+        <div
+          class="flex flex-row justify-center gap-8"
         >
-          <span>
-            Delete
-          </span>
-        </button>
+          <button
+            class="btn btn-neutral"
+          >
+            Cancel
+          </button>
+          <button
+            class="btn"
+          >
+            Archive
+          </button>
+          <div
+            class="tooltip hold-to-confirm-tooltip"
+            data-tip="Hold to confirm"
+          >
+            <button
+              class="btn btn-soft btn-error hold-to-confirm"
+              style="--hold-duration: 2500ms;"
+            >
+              <span>
+                Delete
+              </span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <dialog
@@ -1171,28 +1187,36 @@ exports[`App matches snapshot when only groups exist 1`] = `
       class="floating-footer floating-footer-hidden"
       data-testid="floating-footer"
     >
-      <button
-        class="btn btn-neutral"
-      >
-        Cancel
-      </button>
-      <button
-        class="btn"
-      >
-        Archive
-      </button>
       <div
-        class="tooltip hold-to-confirm-tooltip"
-        data-tip="Hold to confirm"
+        class="flex flex-col items-center gap-4 w-full"
       >
-        <button
-          class="btn btn-soft btn-error hold-to-confirm"
-          style="--hold-duration: 2500ms;"
+        <div
+          class="flex flex-row justify-center gap-8"
         >
-          <span>
-            Delete
-          </span>
-        </button>
+          <button
+            class="btn btn-neutral"
+          >
+            Cancel
+          </button>
+          <button
+            class="btn"
+          >
+            Archive
+          </button>
+          <div
+            class="tooltip hold-to-confirm-tooltip"
+            data-tip="Hold to confirm"
+          >
+            <button
+              class="btn btn-soft btn-error hold-to-confirm"
+              style="--hold-duration: 2500ms;"
+            >
+              <span>
+                Delete
+              </span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <dialog
@@ -1603,28 +1627,36 @@ exports[`App matches snapshot when only plants exist 1`] = `
       class="floating-footer floating-footer-hidden"
       data-testid="floating-footer"
     >
-      <button
-        class="btn btn-neutral"
-      >
-        Cancel
-      </button>
-      <button
-        class="btn"
-      >
-        Archive
-      </button>
       <div
-        class="tooltip hold-to-confirm-tooltip"
-        data-tip="Hold to confirm"
+        class="flex flex-col items-center gap-4 w-full"
       >
-        <button
-          class="btn btn-soft btn-error hold-to-confirm"
-          style="--hold-duration: 2500ms;"
+        <div
+          class="flex flex-row justify-center gap-8"
         >
-          <span>
-            Delete
-          </span>
-        </button>
+          <button
+            class="btn btn-neutral"
+          >
+            Cancel
+          </button>
+          <button
+            class="btn"
+          >
+            Archive
+          </button>
+          <div
+            class="tooltip hold-to-confirm-tooltip"
+            data-tip="Hold to confirm"
+          >
+            <button
+              class="btn btn-soft btn-error hold-to-confirm"
+              style="--hold-duration: 2500ms;"
+            >
+              <span>
+                Delete
+              </span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <dialog
@@ -2250,28 +2282,36 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
       class="floating-footer floating-footer-hidden"
       data-testid="floating-footer"
     >
-      <button
-        class="btn btn-neutral"
-      >
-        Cancel
-      </button>
-      <button
-        class="btn"
-      >
-        Archive
-      </button>
       <div
-        class="tooltip hold-to-confirm-tooltip"
-        data-tip="Hold to confirm"
+        class="flex flex-col items-center gap-4 w-full"
       >
-        <button
-          class="btn btn-soft btn-error hold-to-confirm"
-          style="--hold-duration: 2500ms;"
+        <div
+          class="flex flex-row justify-center gap-8"
         >
-          <span>
-            Delete
-          </span>
-        </button>
+          <button
+            class="btn btn-neutral"
+          >
+            Cancel
+          </button>
+          <button
+            class="btn"
+          >
+            Archive
+          </button>
+          <div
+            class="tooltip hold-to-confirm-tooltip"
+            data-tip="Hold to confirm"
+          >
+            <button
+              class="btn btn-soft btn-error hold-to-confirm"
+              style="--hold-duration: 2500ms;"
+            >
+              <span>
+                Delete
+              </span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <dialog
@@ -2920,28 +2960,36 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
       class="floating-footer floating-footer-hidden"
       data-testid="floating-footer"
     >
-      <button
-        class="btn btn-neutral"
-      >
-        Cancel
-      </button>
-      <button
-        class="btn"
-      >
-        Archive
-      </button>
       <div
-        class="tooltip hold-to-confirm-tooltip"
-        data-tip="Hold to confirm"
+        class="flex flex-col items-center gap-4 w-full"
       >
-        <button
-          class="btn btn-soft btn-error hold-to-confirm"
-          style="--hold-duration: 2500ms;"
+        <div
+          class="flex flex-row justify-center gap-8"
         >
-          <span>
-            Delete
-          </span>
-        </button>
+          <button
+            class="btn btn-neutral"
+          >
+            Cancel
+          </button>
+          <button
+            class="btn"
+          >
+            Archive
+          </button>
+          <div
+            class="tooltip hold-to-confirm-tooltip"
+            data-tip="Hold to confirm"
+          >
+            <button
+              class="btn btn-soft btn-error hold-to-confirm"
+              style="--hold-duration: 2500ms;"
+            >
+              <span>
+                Delete
+              </span>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
     <dialog
