@@ -1652,11 +1652,6 @@ exports[`App matches snapshot 1`] = `
         class="flex flex-col items-center gap-4 w-full"
       >
         <div
-          class="w-70 md:w-82 text-sm md:text-base text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
-        >
-          Select events and photos in the timeline
-        </div>
-        <div
           class="flex flex-row justify-center gap-8"
         >
           <button
@@ -1665,8 +1660,7 @@ exports[`App matches snapshot 1`] = `
             Cancel
           </button>
           <div
-            class="tooltip hold-to-confirm-tooltip"
-            data-tip="Hold to confirm"
+            class=""
           >
             <button
               class="btn btn-soft btn-error hold-to-confirm"
@@ -3896,11 +3890,6 @@ exports[`App matches snapshot when plant is archived 1`] = `
         class="flex flex-col items-center gap-4 w-full"
       >
         <div
-          class="w-70 md:w-82 text-sm md:text-base text-center text-base-content font-semibold transition-opacity duration-150 ease opacity-100 duration-200"
-        >
-          Select events and photos in the timeline
-        </div>
-        <div
           class="flex flex-row justify-center gap-8"
         >
           <button
@@ -3909,8 +3898,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
             Cancel
           </button>
           <div
-            class="tooltip hold-to-confirm-tooltip"
-            data-tip="Hold to confirm"
+            class=""
           >
             <button
               class="btn btn-soft btn-error hold-to-confirm"

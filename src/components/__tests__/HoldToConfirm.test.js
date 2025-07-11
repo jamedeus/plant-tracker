@@ -1,5 +1,23 @@
+import React, { useState } from 'react';
 import { fireEvent } from '@testing-library/react';
 import HoldToConfirm from '../HoldToConfirm';
+
+const TestComponent = ({callback, timeout, buttonText, tooltipText}) => {
+    const [holding, setHolding] = useState(false);
+    return (
+        <div>
+            {holding && <div>User holding button</div>}
+            <HoldToConfirm
+                callback={callback}
+                timeout={timeout}
+                buttonText={buttonText}
+                tooltipText={tooltipText}
+                onHoldStart={() => setHolding(true)}
+                onHoldStop={() => setHolding(false)}
+            />
+        </div>
+    );
+};
 
 describe('HoldToConfirm', () => {
     let component, callback;
@@ -13,7 +31,7 @@ describe('HoldToConfirm', () => {
 
         // Render component
         component = render(
-            <HoldToConfirm
+            <TestComponent
                 callback={callback}
                 timeout={2500}
                 buttonText='Hold to delete'
@@ -74,6 +92,38 @@ describe('HoldToConfirm', () => {
         expect(callback).not.toHaveBeenCalled();
     });
 
+    it('runs onHoldStart and onHoldStop callback when button clicked and released', () => {
+        // Simulate user clicking and holding button
+        const button = component.getByRole('button');
+        fireEvent.mouseDown(button);
+
+        // Confirm tooltip appears and onHoldStart callback runs immediately
+        expect(component.container.querySelector(
+            '[data-tip="Hold for 2.5 seconds to delete"]'
+        ).classList).toContain('tooltip-open');
+        expect(component.queryByText('User holding button')).not.toBeNull();
+
+        // Simulate user releasing button
+        fireEvent.mouseUp(button);
+
+        // Confirm that tooltip doesn't disappear immediately
+        act(() => {
+            jest.advanceTimersByTime(100);
+        });
+        expect(component.container.querySelector(
+            '[data-tip="Hold for 2.5 seconds to delete"]'
+        ).classList).toContain('tooltip-open');
+
+        // Wait for tooltip timeout, confirm disappeared + onHoldStop callback ran
+        act(() => {
+            jest.advanceTimersByTime(750);
+        });
+        expect(component.container.querySelector(
+            '[data-tip="Hold for 2.5 seconds to delete"]'
+        ).classList).not.toContain('tooltip-open');
+        expect(component.queryByText('User holding button')).toBeNull();
+    });
+
     it('behaves like normal button when timeout is 0', () => {
         // Render HoldToConfirm with 0ms timeout
         const noDelay = render(
@@ -81,7 +131,6 @@ describe('HoldToConfirm', () => {
                 callback={callback}
                 timeout={0}
                 buttonText='Delete'
-                tooltipText='No tooltip'
             />
         );
 

@@ -58,6 +58,7 @@ describe('Delete mode', () => {
         await user.click(app.getByText('Delete mode'));
 
         // Confirm initial instructions text is visible
+        await act(async () => await jest.advanceTimersByTimeAsync(150));
         expect(app.queryByText('Select events and photos in the timeline')).not.toBeNull();
 
         // Select water event, confirm text changed to 1 item selected

@@ -4,9 +4,11 @@ import clsx from 'clsx';
 import 'src/css/hold_to_confirm.css';
 
 // User must click and hold for timeout ms before callback runs
-// Shows tooltip with instructions, progress bar animation while held
+// Shows progress bar animation while held, reverses when released
+// Shows tooltip with instructions if tooltipText given and timeout is not 0
 // Becomes normal btn-error btn-soft if timeout is 0 (callback runs onClick)
-const HoldToConfirm = ({ callback, timeout, buttonText, tooltipText }) => {
+// Runs optional onHoldStart and onHoldStop callbacks when held and released
+const HoldToConfirm = ({ callback, timeout, buttonText, tooltipText, onHoldStart, onHoldStop }) => {
     const [holding, setHolding] = useState(false);
     const [showTooltip, setShowTooltip] = useState(false);
     const timerRef = useRef(null);
@@ -21,6 +23,8 @@ const HoldToConfirm = ({ callback, timeout, buttonText, tooltipText }) => {
         // Start progress bar animation, show tooltip
         setHolding(true);
         setShowTooltip(true);
+        // Call onHoldStart callback if given
+        onHoldStart && onHoldStart();
     };
 
     const handleRelease = () => {
@@ -33,6 +37,8 @@ const HoldToConfirm = ({ callback, timeout, buttonText, tooltipText }) => {
         // Keep tooltip visible long enough for user to read text
         timerRef.current = setTimeout(() => {
             setShowTooltip(false);
+            // Call onHoldStop callback if given
+            onHoldStop && onHoldStop();
         }, 750);
     };
 
@@ -57,8 +63,8 @@ const HoldToConfirm = ({ callback, timeout, buttonText, tooltipText }) => {
     return (
         <div
             className={clsx(
-                // Show tooltip unless timeout is 0 (no confirmation)
-                timeout && "tooltip hold-to-confirm-tooltip",
+                // Show tooltip unless timeout is 0 (no confirmation) or no text
+                timeout && tooltipText && "tooltip hold-to-confirm-tooltip",
                 showTooltip && "tooltip-open"
             )}
             data-tip={tooltipText}
@@ -92,7 +98,9 @@ HoldToConfirm.propTypes = {
     callback: PropTypes.func.isRequired,
     timeout: PropTypes.number.isRequired,
     buttonText: PropTypes.string.isRequired,
-    tooltipText: PropTypes.string.isRequired
+    tooltipText: PropTypes.string,
+    onHoldStart: PropTypes.func,
+    onHoldStop: PropTypes.func
 };
 
 export default HoldToConfirm;

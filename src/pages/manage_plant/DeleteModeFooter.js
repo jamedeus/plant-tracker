@@ -1,4 +1,4 @@
-import React, { memo } from 'react';
+import React, { memo, useState, useEffect } from 'react';
 import FloatingFooter from 'src/components/FloatingFooter';
 import { sendPostRequest } from 'src/util';
 import { openErrorModal } from 'src/components/ErrorModal';
@@ -17,6 +17,8 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
     const holdToConfirmDelay = useSelector(
         (state) => state.settings.holdToConfirmDelay
     );
+    // Track if user is holding delete (set by onHoldStart and onHoldStop)
+    const [holdingDelete, setHoldingDelete] = useState(false);
 
     // Get number of selected events and photos
     const totalSelectedEvents = Object.values(selectedEvents).reduce(
@@ -25,11 +27,16 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
     const totalSelected = totalSelectedEvents + selectedPhotos.length;
 
     // Show instructions until something selected, then number of selected items
-    const instructionsText = totalSelected > 0 ? (
-        `${totalSelected} item${totalSelected !== 1 ? 's' : ''} selected`
-    ) : (
-        'Select events and photos in the timeline'
-    );
+    const [instructionsText, setInstructionsText] = useState('');
+    useEffect(() => {
+        setInstructionsText(
+            totalSelected > 0 ? (
+                `${totalSelected} item${totalSelected !== 1 ? 's' : ''} selected`
+            ) : (
+                'Select events and photos in the timeline'
+            )
+        );
+    }, [totalSelected]);
 
     const cancelDeleteMode = () => {
         dispatch(deleteModeChanged({editing: false}));
@@ -82,7 +89,10 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
     };
 
     return (
-        <FloatingFooter visible={deleteMode} text={instructionsText}>
+        <FloatingFooter
+            visible={deleteMode}
+            text={holdingDelete ? 'Hold to confirm' : instructionsText}
+        >
             <button
                 className="btn btn-neutral"
                 onClick={cancelDeleteMode}
@@ -94,7 +104,8 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
                 callback={handleDelete}
                 timeout={holdToConfirmDelay}
                 buttonText="Delete"
-                tooltipText="Hold to confirm"
+                onHoldStart={() => setHoldingDelete(true)}
+                onHoldStop={() => setHoldingDelete(false)}
             />
         </FloatingFooter>
     );
