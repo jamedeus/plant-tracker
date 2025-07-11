@@ -1652,7 +1652,7 @@ exports[`App matches snapshot 1`] = `
         class="flex flex-col items-center gap-4 w-full"
       >
         <div
-          class="w-70 md:w-82 text-center text-sm md:text-base font-semibold text-white"
+          class="w-70 md:w-82 text-center text-sm md:text-base font-semibold text-base-content"
         >
           Select events and photos in the timeline
         </div>
@@ -3925,7 +3925,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
         class="flex flex-col items-center gap-4 w-full"
       >
         <div
-          class="w-70 md:w-82 text-center text-sm md:text-base font-semibold text-white"
+          class="w-70 md:w-82 text-center text-sm md:text-base font-semibold text-base-content"
         >
           Select events and photos in the timeline
         </div>

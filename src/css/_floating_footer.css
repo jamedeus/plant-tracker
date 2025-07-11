@@ -1,6 +1,11 @@
 @utility floating-footer {
     @apply fixed bottom-0 z-50 flex flex-row my-4 p-4 gap-8;
-    @apply bg-gray-600/50 rounded-box shadow-inner transition-all duration-300;
+    @apply rounded-box shadow-inner transition-all duration-300;
+
+    /* Semi-transparent frosted background */
+    backdrop-filter: blur(6px) saturate(180%);
+    -webkit-backdrop-filter: blur(6px) saturate(180%);
+    background-color: color-mix(in oklab, var(--color-base-300) 50%, #0000);
 }
 
 @utility floating-footer-hidden {

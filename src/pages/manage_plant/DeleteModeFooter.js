@@ -83,7 +83,7 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
                 {/* Instructions text, changes to number of selected items */}
                 <div className={clsx(
                     "w-70 md:w-82 text-center",
-                    "text-sm md:text-base font-semibold text-white"
+                    "text-sm md:text-base font-semibold text-base-content"
                 )}>
                     {instructionsText}
                 </div>
