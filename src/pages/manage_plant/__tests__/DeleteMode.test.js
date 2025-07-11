@@ -64,21 +64,25 @@ describe('Delete mode', () => {
         await user.click(
             within(app.getByTestId("2024-03-01-events")).getByText("Watered")
         );
+        await act(async () => await jest.advanceTimersByTimeAsync(150));
         expect(app.queryByText('1 item selected')).not.toBeNull();
         expect(app.queryByText('Select events and photos in the timeline')).toBeNull();
 
         // Select photo, confirm text changed to 2 items selected
         await user.click(app.getByTitle('02:52 AM - March 22, 2024'));
+        await act(async () => await jest.advanceTimersByTimeAsync(150));
         expect(app.queryByText('2 items selected')).not.toBeNull();
 
         // Unselect event, confirm text changed back to 1 item selected
         await user.click(
             within(app.getByTestId("2024-03-01-events")).getByText("Watered")
         );
+        await act(async () => await jest.advanceTimersByTimeAsync(150));
         expect(app.queryByText('1 item selected')).not.toBeNull();
 
         // Unselect photo, confirm text changed back to instructions
         await user.click(app.getByTitle('02:52 AM - March 22, 2024'));
+        await act(async () => await jest.advanceTimersByTimeAsync(150));
         expect(app.queryByText('Select events and photos in the timeline')).not.toBeNull();
         expect(app.queryByText('1 item selected')).toBeNull();
     });

@@ -6,7 +6,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { deleteModeChanged } from './interfaceSlice';
 import { eventDeleted, photosDeleted } from './timelineSlice';
 import HoldToConfirm from 'src/components/HoldToConfirm';
-import clsx from 'clsx';
 
 const DeleteModeFooter = memo(function DeleteModeFooter() {
     const dispatch = useDispatch();
