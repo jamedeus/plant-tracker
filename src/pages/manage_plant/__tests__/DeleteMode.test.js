@@ -5,7 +5,7 @@ import { PageWrapper } from 'src/index';
 import App from '../App';
 import { mockContext } from './mockContext';
 
-describe('Delete events', () => {
+describe('Delete mode', () => {
     let app, user;
 
     beforeAll(() => {
@@ -36,7 +36,7 @@ describe('Delete events', () => {
         // Confirm footer is hidden
         expect(app.getByTestId("floating-footer").classList).toContain("floating-footer-hidden");
         // Click dropdown option, confirm footer appeared
-        await user.click(app.getByText('Delete events'));
+        await user.click(app.getByText('Delete mode'));
         expect(app.getByTestId("floating-footer").classList).toContain("floating-footer-visible");
         // Click cancel button, confirm footer disappeared
         await user.click(app.getByRole('button', {name: 'Cancel'}));
@@ -59,7 +59,7 @@ describe('Delete events', () => {
         }));
 
         // Start selecting events
-        await user.click(app.getByText('Delete events'));
+        await user.click(app.getByText('Delete mode'));
 
         // Select newest water event
         await user.click(
@@ -106,7 +106,7 @@ describe('Delete events', () => {
 
     it('clears selection when cancel button clicked', async () => {
         // Start selecting events, select newest water event
-        await user.click(app.getByText('Delete events'));
+        await user.click(app.getByText('Delete mode'));
         await user.click(
             within(app.getByTestId("2024-03-01-events")).getByText("Watered")
         );
@@ -115,7 +115,7 @@ describe('Delete events', () => {
         await user.click(app.getByRole('button', {name: 'Cancel'}));
 
         // Start selecting again, select second newest water event
-        await user.click(app.getByText('Delete events'));
+        await user.click(app.getByText('Delete mode'));
         await user.click(
             within(app.getByTestId("2024-02-29-events")).getByText("Watered")
         );
@@ -165,7 +165,7 @@ describe('Delete events', () => {
         expect(app.queryByText(/failed to delete event/)).toBeNull();
 
         // Simulate user deleting newest water event
-        await user.click(app.getByText('Delete events'));
+        await user.click(app.getByText('Delete mode'));
         await user.click(
             within(app.getByTestId("2024-03-01-events")).getByText("Watered")
         );

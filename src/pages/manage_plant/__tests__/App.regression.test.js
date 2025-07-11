@@ -362,7 +362,7 @@ describe('App', () => {
         expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(1);
 
         // Start deleting events, select more recent event, click delete button
-        await user.click(app.getByText('Delete events'));
+        await user.click(app.getByText('Delete mode'));
         await user.click(
             within(app.getByTestId("2024-03-01-events")).getByText("Watered")
         );
@@ -441,7 +441,7 @@ describe('App', () => {
         expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(2);
 
         // Start deleting events, select March 1 event, click delete button
-        await user.click(app.getByText('Delete events'));
+        await user.click(app.getByText('Delete mode'));
         await user.click(
             within(app.getByTestId("2024-03-01-events")).getByText("Watered")
         );
@@ -592,7 +592,7 @@ describe('App', () => {
         }));
 
         // Simulate user entering delete mode, selecting first photo, clicking delete
-        await user.click(app.getByText('Delete photos'));
+        await user.click(app.getByText('Delete mode'));
         await user.click(app.getByTitle('12:54 PM - March 1, 2024'));
         await user.click(app.getByRole("button", {name: "Delete"}));
 
@@ -603,10 +603,10 @@ describe('App', () => {
 
     // Original bug: The top-left dropdown contained a gallery link even if no
     // photos existed, which rendered an empty lightbox with no explanation.
-    it('only shows gallery and delete photos links if 1 or more photos exist', async () => {
-        // Confirm Gallery and Delete photos dropdown options were not rendered
+    it('only shows gallery and delete mode links if 1 or more photos exist', async () => {
+        // Confirm Gallery and Delete mode dropdown options were not rendered
         expect(app.queryByText('Gallery')).toBeNull();
-        expect(app.queryByText('Delete photos')).toBeNull();
+        expect(app.queryByText('Delete mode')).toBeNull();
 
         // Mock expected API response when photo is uploaded
         global.fetch = jest.fn(() => Promise.resolve({
@@ -635,9 +635,9 @@ describe('App', () => {
         ] } });
         await user.click(app.getByText('Upload'));
 
-        // Confirm Gallery and Delete photos dropdown options appeared
+        // Confirm Gallery and Delete mode dropdown options appeared
         expect(app.queryByText('Gallery')).not.toBeNull();
-        expect(app.queryByText('Delete photos')).not.toBeNull();
+        expect(app.queryByText('Delete mode')).not.toBeNull();
 
         // Mock fetch function to return expected response when photo is deleted
         global.fetch = jest.fn(() => Promise.resolve({
@@ -650,18 +650,18 @@ describe('App', () => {
         }));
 
         // Simulate user entering delete mode, selecting photo, clicking delete
-        await user.click(app.getByText('Delete photos'));
+        await user.click(app.getByText('Delete mode'));
         await user.click(app.getByTitle('12:52 PM - June 21, 2024'));
         await user.click(app.getByRole("button", {name: "Delete"}));
 
-        // Confirm Gallery and Delete photos dropdown options were removed
+        // Confirm Gallery and Delete mode dropdown options were removed
         expect(app.queryByText('Gallery')).toBeNull();
-        expect(app.queryByText('Delete photos')).toBeNull();
+        expect(app.queryByText('Delete mode')).toBeNull();
     });
 
-    it('only shows delete events dropdown option if events exist', async () => {
-        // Confirm Delete events dropdown option was not rendered
-        expect(app.queryByText('Delete events')).toBeNull();
+    it('only shows delete mode dropdown option if events exist', async () => {
+        // Confirm Delete mode dropdown option was not rendered
+        expect(app.queryByText('Delete mode')).toBeNull();
 
         // Mock fetch function to return expected response when water event added
         global.fetch = jest.fn(() => Promise.resolve({
@@ -676,8 +676,8 @@ describe('App', () => {
         // Click water button
         await user.click(app.getByRole("button", {name: "Water"}));
 
-        // Confirm Delete events dropdown option appeared
-        expect(app.queryByText('Delete events')).not.toBeNull();
+        // Confirm Delete mode dropdown option appeared
+        expect(app.queryByText('Delete mode')).not.toBeNull();
 
         // Mock fetch function to return expected response when water event deleted
         global.fetch = jest.fn(() => Promise.resolve({
@@ -699,7 +699,7 @@ describe('App', () => {
         }));
 
         // Start deleting events, select water event, click delete button
-        await user.click(app.getByText('Delete events'));
+        await user.click(app.getByText('Delete mode'));
         await user.click(
             within(app.getByTestId("2024-03-01-events")).getByText("Watered")
         );
@@ -722,17 +722,17 @@ describe('App', () => {
         }));
         await user.click(app.getByRole("button", {name: "Delete"}));
 
-        // Confirm Delete events dropdown option was removed
-        expect(app.queryByText('Delete events')).toBeNull();
+        // Confirm Delete mode dropdown option was removed
+        expect(app.queryByText('Delete mode')).toBeNull();
     });
 
-    // Original bug: If plant had no events (delete events option not shown) and
+    // Original bug: If plant had no events (delete mode option not shown) and
     // an event was added before user navigated back to page with back button
     // (requests new state) the new event would appear in timeline, but the
-    // delete events option would not appear.
-    it('adds/removes delete events option after navigating to page with back button', async () => {
-        // Confirm Delete events dropdown option was not rendered
-        expect(app.queryByText('Delete events')).toBeNull();
+    // delete mode option would not appear.
+    it('adds/removes delete mode option after navigating to page with back button', async () => {
+        // Confirm Delete mode dropdown option was not rendered
+        expect(app.queryByText('Delete mode')).toBeNull();
 
         // Mock fetch function to return /get_plant_state response with water event
         global.fetch = jest.fn(() => Promise.resolve({
@@ -764,9 +764,9 @@ describe('App', () => {
             '/get_plant_state/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
         );
 
-        // Confirm Delete events dropdown option appeared
+        // Confirm Delete mode dropdown option appeared
         await waitFor(() => {
-            expect(app.queryByText('Delete events')).not.toBeNull();
+            expect(app.queryByText('Delete mode')).not.toBeNull();
         });
 
         // Mock fetch function to return /get_plant_state response with no events
@@ -787,20 +787,20 @@ describe('App', () => {
         Object.defineProperty(pageshowEvent, 'persisted', { value: true });
         window.dispatchEvent(pageshowEvent);
 
-        // Confirm Delete events dropdown option disappeared
+        // Confirm Delete mode dropdown option disappeared
         await waitFor(() => {
-            expect(app.queryByText('Delete events')).toBeNull();
+            expect(app.queryByText('Delete mode')).toBeNull();
         });
     });
 
-    // Original bug: If plant had no photos (gallery and delete photos options
+    // Original bug: If plant had no photos (gallery and delete mode options
     // not shown) and a photowas added before user navigated back to page with
     // back button (requests new state) the new photo would appear in timeline,
-    // but the gallery and delete photos options would not appear.
-    it('adds/removes delete photos option after navigating to page with back button', async () => {
-        // Confirm Gallery and Delete photos dropdown options were not rendered
+    // but the gallery and delete mode options would not appear.
+    it('adds/removes delete mode option after navigating to page with back button', async () => {
+        // Confirm Gallery and Delete mode dropdown options were not rendered
         expect(app.queryByText('Gallery')).toBeNull();
-        expect(app.queryByText('Delete photos')).toBeNull();
+        expect(app.queryByText('Delete mode')).toBeNull();
 
         // Mock fetch function to return /get_plant_state response with photo
         global.fetch = jest.fn(() => Promise.resolve({
@@ -840,10 +840,10 @@ describe('App', () => {
             '/get_plant_state/0640ec3b-1bed-4b15-a078-d6e7ec66be12'
         );
 
-        // Confirm Gallery and Delete photos dropdown options appeared
+        // Confirm Gallery and Delete mode dropdown options appeared
         await waitFor(() => {
             expect(app.queryByText('Gallery')).not.toBeNull();
-            expect(app.queryByText('Delete photos')).not.toBeNull();
+            expect(app.queryByText('Delete mode')).not.toBeNull();
         });
 
         // Mock fetch function to return /get_plant_state response with no photos
@@ -864,10 +864,10 @@ describe('App', () => {
         Object.defineProperty(pageshowEvent, 'persisted', { value: true });
         window.dispatchEvent(pageshowEvent);
 
-        // Confirm Gallery and Delete photos dropdown options disappeared
+        // Confirm Gallery and Delete mode dropdown options disappeared
         await waitFor(() => {
             expect(app.queryByText('Gallery')).toBeNull();
-            expect(app.queryByText('Delete photos')).toBeNull();
+            expect(app.queryByText('Delete mode')).toBeNull();
         });
     });
 

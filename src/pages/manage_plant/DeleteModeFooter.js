@@ -3,29 +3,23 @@ import FloatingFooter from 'src/components/FloatingFooter';
 import { sendPostRequest } from 'src/util';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { useSelector, useDispatch } from 'react-redux';
-import { deletingEventsChanged, deletingPhotosChanged } from './interfaceSlice';
-import { eventDeleted } from './timelineSlice';
-import { photosDeleted } from './timelineSlice';
+import { deleteModeChanged } from './interfaceSlice';
+import { eventDeleted, photosDeleted } from './timelineSlice';
 
-const DeletingEventsFooter = memo(function DeletingEventsFooter() {
+const DeleteModeFooter = memo(function DeleteModeFooter() {
     const dispatch = useDispatch();
     const plantID = useSelector((state) => state.plant.plantDetails.uuid);
-    const deletingEvents = useSelector((state) => state.interface.deletingEvents);
-    const deletingPhotos = useSelector((state) => state.interface.deletingPhotos);
+    const deleteMode = useSelector((state) => state.interface.deleteMode);
     const selectedEvents = useSelector((state) => state.interface.selectedEvents);
     const selectedPhotos = useSelector((state) => state.interface.selectedPhotos);
 
-    const cancelDeleting = () => {
-        if (deletingEvents) {
-            dispatch(deletingEventsChanged({editing: false}));
-        }
-        if (deletingPhotos) {
-            dispatch(deletingPhotosChanged({editing: false}));
-        }
+    const cancelDeleteMode = () => {
+        dispatch(deleteModeChanged({editing: false}));
     };
 
     const handleDelete = async () => {
-        if (deletingEvents) {
+        // Delete events if 1 or more selected
+        if (Object.values(selectedEvents).some(arr => arr.length > 0)) {
             const response = await sendPostRequest('/bulk_delete_plant_events', {
                 plant_id: plantID,
                 events: selectedEvents
@@ -42,14 +36,14 @@ const DeletingEventsFooter = memo(function DeletingEventsFooter() {
                         }))
                     )
                 );
-                // Hide footer
-                cancelDeleting();
             } else {
                 const error = await response.json();
                 openErrorModal(JSON.stringify(error));
             }
         }
-        if (deletingPhotos) {
+
+        // Delete photos if 1 or more selected
+        if (selectedPhotos.length) {
             const response = await sendPostRequest('/delete_plant_photos', {
                 plant_id: plantID,
                 delete_photos: selectedPhotos
@@ -59,20 +53,21 @@ const DeletingEventsFooter = memo(function DeletingEventsFooter() {
             if (response.ok) {
                 const data = await response.json();
                 dispatch(photosDeleted(data.deleted));
-                // Hide footer
-                cancelDeleting();
             } else {
                 const error = await response.json();
                 openErrorModal(JSON.stringify(error));
             }
         }
+
+        // Hide footer
+        cancelDeleteMode();
     };
 
     return (
-        <FloatingFooter visible={deletingEvents || deletingPhotos}>
+        <FloatingFooter visible={deleteMode}>
             <button
                 className="btn btn-neutral"
-                onClick={cancelDeleting}
+                onClick={cancelDeleteMode}
             >
                 Cancel
             </button>
@@ -87,4 +82,4 @@ const DeletingEventsFooter = memo(function DeletingEventsFooter() {
     );
 });
 
-export default DeletingEventsFooter;
+export default DeleteModeFooter;

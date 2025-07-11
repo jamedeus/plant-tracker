@@ -17,7 +17,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { settingsMenuOpened, photoGalleryOpened } from './interfaceSlice';
 import { plantRemovedFromGroup, backButtonPressed } from './plantSlice';
 import SuspenseFullscreen from 'src/components/SuspenseFullscreen';
-import DeletingEventsFooter from './DeletingEventsFooter';
+import DeleteModeFooter from './DeleteModeFooter';
 import clsx from 'clsx';
 
 // Dynamic import (don't request webpack bundle until gallery opened)
@@ -221,7 +221,7 @@ function Layout() {
                     <Gallery />
                 </Suspense>
             )}
-            <DeletingEventsFooter />
+            <DeleteModeFooter />
         </div>
     );
 }

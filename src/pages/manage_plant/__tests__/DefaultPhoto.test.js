@@ -174,7 +174,7 @@ describe('Plant with photos but no configured default photo', () => {
         }));
 
         // Simulate user entering delete mode, selecting first 2 photos, clicking delete
-        await user.click(app.getByText('Delete photos'));
+        await user.click(app.getByText('Delete mode'));
         await user.click(app.getByTitle('02:52 AM - March 23, 2024'));
         await user.click(app.getByTitle('02:52 AM - March 22, 2024'));
         await user.click(app.getByRole("button", {name: "Delete"}));
@@ -202,7 +202,7 @@ describe('Plant with photos but no configured default photo', () => {
         }));
 
         // Simulate user entering delete mode, selecting all 3 photos, clicking delete
-        await user.click(app.getByText('Delete photos'));
+        await user.click(app.getByText('Delete mode'));
         await user.click(app.getByTitle('02:52 AM - March 23, 2024'));
         await user.click(app.getByTitle('02:52 AM - March 22, 2024'));
         await user.click(app.getByTitle('02:52 AM - March 21, 2024'));
@@ -292,7 +292,7 @@ describe('Plant with default photo configured', () => {
         }));
 
         // Simulate user entering delete mode, selecting default photo, clicking delete
-        await user.click(app.getByText('Delete photos'));
+        await user.click(app.getByText('Delete mode'));
         await user.click(app.getByTitle('02:52 AM - March 23, 2024'));
         await user.click(app.getByRole("button", {name: "Delete"}));
 

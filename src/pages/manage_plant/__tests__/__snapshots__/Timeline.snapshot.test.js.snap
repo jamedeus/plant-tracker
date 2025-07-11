@@ -3795,14 +3795,7 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
             <button
               class="flex justify-end"
             >
-              Delete photos
-            </button>
-          </li>
-          <li>
-            <button
-              class="flex justify-end"
-            >
-              Delete events
+              Delete mode
             </button>
           </li>
         </ul>

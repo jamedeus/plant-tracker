@@ -188,14 +188,13 @@ export function ReduxProvider({ children }) {
                 settingsMenuOpen: false,
                 photoGalleryOpen: false,
                 photoGalleryIndex: 0,
-                deletingEvents: false,
+                deleteMode: false,
                 selectedEvents: {
                     water: [],
                     fertilize: [],
                     prune: [],
                     repot: []
                 },
-                deletingPhotos: false,
                 selectedPhotos: []
             }
         };

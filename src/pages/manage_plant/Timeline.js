@@ -22,9 +22,8 @@ import { EVENTS_ORDER } from './timelineSlice';
 import {
     photoGalleryOpened,
     photoGalleryIndexChanged,
-    deletingEventsChanged,
+    deleteModeChanged,
     eventSelected,
-    deletingPhotosChanged,
     photoSelected,
 } from './interfaceSlice';
 
@@ -54,14 +53,8 @@ const Title = memo(function Title() {
     const dispatch = useDispatch();
 
     // Show DeletingEventsFooter, close dropdown menu
-    const startSelectingEvents = () => {
-        dispatch(deletingEventsChanged({editing: true}));
-        document.activeElement.blur();
-    };
-
-    // Show DeletingEventsFooter, close dropdown menu
-    const startSelectingPhotos = () => {
-        dispatch(deletingPhotosChanged({editing: true}));
+    const startDeleteMode = () => {
+        dispatch(deleteModeChanged({editing: true}));
         document.activeElement.blur();
     };
 
@@ -131,20 +124,12 @@ const Title = memo(function Title() {
                             >
                                 Divide plant
                             </button></li>
-                            {hasPhotos &&
+                            {(hasPhotos || hasEvents) &&
                                 <li><button
                                     className="flex justify-end"
-                                    onClick={startSelectingPhotos}
+                                    onClick={startDeleteMode}
                                 >
-                                    Delete photos
-                                </button></li>
-                            }
-                            {hasEvents &&
-                                <li><button
-                                    className="flex justify-end"
-                                    onClick={startSelectingEvents}
-                                >
-                                    Delete events
+                                    Delete mode
                                 </button></li>
                             }
                         </DropdownMenu>
@@ -274,7 +259,7 @@ const eventIconMap = {
 // Renders timeline marker with icon and type text, shows timestamps on hover
 const EventMarker = memo(function EventMarker({ eventType, timestamps }) {
     const [selected, setSelected] = useState(false);
-    const deletingEvents = useSelector((state) => state.interface.deletingEvents);
+    const deleteMode = useSelector((state) => state.interface.deleteMode);
 
     const dispatch = useDispatch();
 
@@ -288,15 +273,15 @@ const EventMarker = memo(function EventMarker({ eventType, timestamps }) {
         setSelected(!selected);
     };
 
-    // Clear selection when exiting select mode
+    // Clear selection when exiting delete mode
     useEffect(() => {
-        !deletingEvents && setSelected(false);
-    }, [deletingEvents]);
+        !deleteMode && setSelected(false);
+    }, [deleteMode]);
 
     return (
         <span
             className={clsx("event-marker", selected && "selected")}
-            onClick={deletingEvents ? handleClick : null}
+            onClick={deleteMode ? handleClick : null}
             title={timestamps.join('\n')}
         >
             <span className="event-marker-content">
@@ -380,7 +365,7 @@ DividedFromMarker.propTypes = {
 const PhotoThumbnail = memo(function PhotoThumbnail({ thumbnailUrl, timestamp, index, photoKey }) {
     const dispatch = useDispatch();
     const [selected, setSelected] = useState(false);
-    const deletingPhotos = useSelector((state) => state.interface.deletingPhotos);
+    const deleteMode = useSelector((state) => state.interface.deleteMode);
 
     const openGallery = () => {
         dispatch(photoGalleryIndexChanged({index: index}));
@@ -396,10 +381,10 @@ const PhotoThumbnail = memo(function PhotoThumbnail({ thumbnailUrl, timestamp, i
         setSelected(!selected);
     };
 
-    // Clear selection when exiting select mode
+    // Clear selection when exiting delete mode
     useEffect(() => {
-        !deletingPhotos && setSelected(false);
-    }, [deletingPhotos]);
+        !deleteMode && setSelected(false);
+    }, [deleteMode]);
 
     return (
         <div
@@ -407,7 +392,7 @@ const PhotoThumbnail = memo(function PhotoThumbnail({ thumbnailUrl, timestamp, i
                 'photo-thumbnail-timeline cursor-pointer',
                 selected && 'selected'
             )}
-            onClick={deletingPhotos ? handleClick : openGallery}
+            onClick={deleteMode ? handleClick : openGallery}
             title={timestampToReadable(timestamp)}
         >
             <img

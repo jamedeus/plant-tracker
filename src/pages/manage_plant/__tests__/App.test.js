@@ -524,7 +524,7 @@ describe('App', () => {
         expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(2);
 
         // Start deleting events, select both water events, click delete button
-        await user.click(app.getByText('Delete events'));
+        await user.click(app.getByText('Delete mode'));
         await user.click(
             within(app.getByTestId("2024-03-01-events")).getByText("Watered")
         );
@@ -735,7 +735,7 @@ describe('App', () => {
         expect(quickNav.children[1].textContent).toContain('2024');
 
         // Start deleting events, select 2025 event, click delete button
-        await user.click(app.getByText('Delete events'));
+        await user.click(app.getByText('Delete mode'));
         await user.click(
             within(app.getByTestId("2025-02-20-events")).getByText("Watered")
         );

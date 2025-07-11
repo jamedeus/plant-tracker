@@ -10,8 +10,8 @@ export const interfaceSlice = createSlice({
         photoGalleryOpen: false,
         // Currently visible photo in lightbox gallery (index of photos state)
         photoGalleryIndex: 0,
-        // Allows selecting events to delete by clicking in timeline if true
-        deletingEvents: false,
+        // Can select events/photos to delete by clicking in timeline if true
+        deleteMode: false,
         // Tracks events selected by clicking in timeline
         // Uses same format as /bulk_delete_plant_events payload
         selectedEvents: {
@@ -20,8 +20,6 @@ export const interfaceSlice = createSlice({
             prune: [],
             repot: []
         },
-        // Allows selecting photos to delete by clicking in timeline if true
-        deletingPhotos: false,
         // Tracks photos selected by clicking in timeline (array of photo keys)
         selectedPhotos: []
     },
@@ -44,9 +42,9 @@ export const interfaceSlice = createSlice({
         },
 
         // Takes { editing: <bool> }
-        deletingEventsChanged(state, action) {
-            state.deletingEvents = action.payload.editing;
-            // Clear selection if no longer deleting
+        deleteModeChanged(state, action) {
+            state.deleteMode = action.payload.editing;
+            // Clear selections if no longer deleting
             if (!action.payload.editing) {
                 state.selectedEvents = {
                     water: [],
@@ -54,6 +52,7 @@ export const interfaceSlice = createSlice({
                     prune: [],
                     repot: []
                 };
+                state.selectedPhotos = [];
             }
         },
 
@@ -75,15 +74,6 @@ export const interfaceSlice = createSlice({
             }
         },
 
-        // Takes { editing: <bool> }
-        deletingPhotosChanged(state, action) {
-            state.deletingPhotos = action.payload.editing;
-            // Clear selection if no longer deleting
-            if (!action.payload.editing) {
-                state.selectedPhotos = [];
-            }
-        },
-
         // Takes { key: <int>, selected: <bool> }
         photoSelected(state, action) {
             if (action.payload.selected) {
@@ -101,8 +91,7 @@ export const {
     settingsMenuOpened,
     photoGalleryOpened,
     photoGalleryIndexChanged,
-    deletingEventsChanged,
+    deleteModeChanged,
     eventSelected,
-    deletingPhotosChanged,
     photoSelected,
 } = interfaceSlice.actions;
