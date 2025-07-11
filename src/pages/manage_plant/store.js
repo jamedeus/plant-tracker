@@ -194,7 +194,9 @@ export function ReduxProvider({ children }) {
                     fertilize: [],
                     prune: [],
                     repot: []
-                }
+                },
+                deletingPhotos: false,
+                selectedPhotos: []
             }
         };
     };

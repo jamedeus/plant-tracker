@@ -62,7 +62,7 @@ describe('Gallery', () => {
         expect(document.body.querySelector('.yarl__root')).toBeNull();
 
         // Click first timeline image thumbnail, confirm gallery appears
-        const photoThumbnail = document.body.querySelector('img.photo-thumbnail-timeline');
+        const photoThumbnail = document.body.querySelector('.photo-thumbnail-timeline > img');
         await user.click(photoThumbnail);
         expect(document.body.querySelector('.yarl__root')).not.toBeNull();
         // Confirm visible slide src is full-res version of clicked thumbnail

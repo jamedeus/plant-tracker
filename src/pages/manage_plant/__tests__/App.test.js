@@ -497,18 +497,6 @@ describe('App', () => {
         });
     });
 
-    it('opens DeletePhotosModal when dropdown option clicked', async () => {
-        // Confirm modal is not open
-        expect(app.container.querySelector('#photo3')).toBeNull();
-
-        // Click button, confirm HTMLDialogElement method was called
-        await user.click(app.getByText('Delete photos'));
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
-        await waitFor(() => {
-            expect(app.container.querySelector('#photo3')).not.toBeNull();
-        });
-    });
-
     it('removes event markers from timeline when events are deleted', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
@@ -714,8 +702,8 @@ describe('App', () => {
         await user.click(app.getByText('Upload'));
 
         // Confirm both mock photos rendered to the timeline
-        expect(within(timeline).getByTitle('12:52 PM - June 21, 2024').tagName).toBe('IMG');
-        expect(within(timeline).getByTitle('12:54 PM - June 21, 2024').tagName).toBe('IMG');
+        expect(within(timeline).getByTitle('12:52 PM - June 21, 2024').firstChild.tagName).toBe('IMG');
+        expect(within(timeline).getByTitle('12:54 PM - June 21, 2024').firstChild.tagName).toBe('IMG');
     });
 
     it('updates timeline QuickNavigation options when sections are added/removed', async () => {

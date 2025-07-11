@@ -91,7 +91,7 @@ describe('App', () => {
 
         // Click first timeline image thumbnail, confirm visible slide is the
         // full-res version of clicked thumbnail
-        const photoThumbnail = document.body.querySelector('img.photo-thumbnail-timeline');
+        const photoThumbnail = document.body.querySelector('.photo-thumbnail-timeline > img');
         await user.click(photoThumbnail);
         await waitFor(() =>
             expect(document.querySelector('.yarl__slide_current img').src).toBe(

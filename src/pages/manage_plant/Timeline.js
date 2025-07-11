@@ -8,7 +8,7 @@ import { openNoteModal } from './NoteModal';
 import { openRepotModal } from './RepotModal';
 import { openPhotoModal } from './PhotoModal';
 import { openDivisionModal } from './DivisionModal';
-import { openDeletePhotosModal, preloadDeletePhotosModal } from './DeletePhotosModal';
+import { preloadDeletePhotosModal } from './DeletePhotosModal';
 import { FaEllipsis, FaPenToSquare } from 'react-icons/fa6';
 import DropdownMenu from 'src/components/DropdownMenu';
 import WaterIcon from 'src/components/WaterIcon';
@@ -24,6 +24,8 @@ import {
     photoGalleryIndexChanged,
     deletingEventsChanged,
     eventSelected,
+    deletingPhotosChanged,
+    photoSelected,
 } from './interfaceSlice';
 
 // Takes ISO timestamp string, returns "x days ago"
@@ -54,6 +56,12 @@ const Title = memo(function Title() {
     // Show DeletingEventsFooter, close dropdown menu
     const startSelectingEvents = () => {
         dispatch(deletingEventsChanged({editing: true}));
+        document.activeElement.blur();
+    };
+
+    // Show DeletingEventsFooter, close dropdown menu
+    const startSelectingPhotos = () => {
+        dispatch(deletingPhotosChanged({editing: true}));
         document.activeElement.blur();
     };
 
@@ -126,7 +134,7 @@ const Title = memo(function Title() {
                             {hasPhotos &&
                                 <li><button
                                     className="flex justify-end"
-                                    onClick={openDeletePhotosModal}
+                                    onClick={startSelectingPhotos}
                                 >
                                     Delete photos
                                 </button></li>
@@ -367,33 +375,57 @@ DividedFromMarker.propTypes = {
     uuid: PropTypes.string.isRequired
 };
 
-// Takes photo thumbnail URL, full-resolution URL, and creation timestamp
+// Takes photo thumbnail URL, creation timestamp, and database key
 // Opens fullscreen gallery showing selected photo when clicked
-const PhotoThumbnail = memo(function PhotoThumbnail({ thumbnailUrl, timestamp, index }) {
+const PhotoThumbnail = memo(function PhotoThumbnail({ thumbnailUrl, timestamp, index, photoKey }) {
     const dispatch = useDispatch();
+    const [selected, setSelected] = useState(false);
+    const deletingPhotos = useSelector((state) => state.interface.deletingPhotos);
 
     const openGallery = () => {
         dispatch(photoGalleryIndexChanged({index: index}));
         dispatch(photoGalleryOpened({open: true}));
     };
 
+    // Add/remove photo from selection when clicked
+    const handleClick = () => {
+        dispatch(photoSelected({
+            key: photoKey,
+            selected: !selected
+        }));
+        setSelected(!selected);
+    };
+
+    // Clear selection when exiting select mode
+    useEffect(() => {
+        !deletingPhotos && setSelected(false);
+    }, [deletingPhotos]);
+
     return (
-        <img
-            loading="lazy"
-            draggable={false}
-            className='photo-thumbnail photo-thumbnail-timeline cursor-pointer'
-            src={thumbnailUrl}
-            alt={timestampToReadable(timestamp)}
-            onClick={openGallery}
+        <div
+            className={clsx(
+                'photo-thumbnail-timeline cursor-pointer',
+                selected && 'selected'
+            )}
+            onClick={deletingPhotos ? handleClick : openGallery}
             title={timestampToReadable(timestamp)}
-        />
+        >
+            <img
+                loading="lazy"
+                draggable={false}
+                className="photo-thumbnail"
+                src={thumbnailUrl}
+                alt={timestampToReadable(timestamp)}
+            />
+        </div>
     );
 });
 
 PhotoThumbnail.propTypes = {
     thumbnailUrl: PropTypes.string.isRequired,
     timestamp: PropTypes.string.isRequired,
-    index: PropTypes.number.isRequired
+    index: PropTypes.number.isRequired,
+    photoKey: PropTypes.number.isRequired
 };
 
 // Map collapsedNoteLines setting values to correct line clamp class
@@ -589,6 +621,7 @@ const TimelineDay = memo(function TimelineDay({ dateKey, monthDivider }) {
                             thumbnailUrl={photo.thumbnail}
                             timestamp={photo.timestamp}
                             index={photos.indexOf(photo)}
+                            photoKey={photo.key}
                         />
                     ))}
                 </div>

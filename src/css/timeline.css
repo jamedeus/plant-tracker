@@ -107,6 +107,23 @@
 
 .photo-thumbnail-timeline {
     @apply w-full aspect-square scroll-mt-35;
+    /* Transparent outline when not selected (necessary for transition) */
+    @apply outline-transparent outline-2 outline-offset-2 rounded-lg;
+    @apply transition-all duration-150;
+
+    & > img {
+        @apply transition-transform duration-150;
+    }
+
+    /* Red outline when selected */
+    &.selected {
+        @apply outline-error;
+    }
+
+    /* Scale down thumbnail when selected */
+    &.selected > img {
+        @apply scale-90;
+    }
 }
 
 /* Plant divided into list bullet points */

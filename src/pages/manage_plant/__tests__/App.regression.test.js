@@ -591,13 +591,10 @@ describe('App', () => {
             })
         }));
 
-        // Simulate user opening DeletePhotosModal, selecting first photo
+        // Simulate user entering delete mode, selecting first photo, clicking delete
         await user.click(app.getByText('Delete photos'));
-        const modal = app.getByText('Delete Photos').closest('.modal-box');
-        await user.click(within(modal).getAllByText(/Select/)[0]);
-        // Simulate user clicking delete button, confirm delete button
-        await user.click(within(modal).getAllByRole("button", {name: "Delete"})[0]);
-        await user.click(app.getByTestId('confirm_delete_photos'));
+        await user.click(app.getByTitle('12:54 PM - March 1, 2024'));
+        await user.click(app.getByRole("button", {name: "Delete"}));
 
         // Confirm the deleted photo is no longer in the timeline
         expect(app.getByTitle('12:52 PM - March 1, 2024')).not.toBeNull();
@@ -652,11 +649,10 @@ describe('App', () => {
             })
         }));
 
-        // Simulate user opening delete photos modal and deleting photo
+        // Simulate user entering delete mode, selecting photo, clicking delete
         await user.click(app.getByText('Delete photos'));
-        await user.click(app.getByTestId('select_photo_1'));
-        await user.click(app.getByTestId('delete_photos'));
-        await user.click(app.getByTestId('confirm_delete_photos'));
+        await user.click(app.getByTitle('12:52 PM - June 21, 2024'));
+        await user.click(app.getByRole("button", {name: "Delete"}));
 
         // Confirm Gallery and Delete photos dropdown options were removed
         expect(app.queryByText('Gallery')).toBeNull();

@@ -19,7 +19,11 @@ export const interfaceSlice = createSlice({
             fertilize: [],
             prune: [],
             repot: []
-        }
+        },
+        // Allows selecting photos to delete by clicking in timeline if true
+        deletingPhotos: false,
+        // Tracks photos selected by clicking in timeline (array of photo keys)
+        selectedPhotos: []
     },
     reducers: {
         // Takes true or false
@@ -70,6 +74,26 @@ export const interfaceSlice = createSlice({
                     );
             }
         },
+
+        // Takes { editing: <bool> }
+        deletingPhotosChanged(state, action) {
+            state.deletingPhotos = action.payload.editing;
+            // Clear selection if no longer deleting
+            if (!action.payload.editing) {
+                state.selectedPhotos = [];
+            }
+        },
+
+        // Takes { key: <int>, selected: <bool> }
+        photoSelected(state, action) {
+            if (action.payload.selected) {
+                state.selectedPhotos.push(action.payload.key);
+            } else {
+                state.selectedPhotos = state.selectedPhotos.filter(
+                    key => key !== action.payload.key
+                );
+            }
+        },
     }
 });
 
@@ -79,4 +103,6 @@ export const {
     photoGalleryIndexChanged,
     deletingEventsChanged,
     eventSelected,
+    deletingPhotosChanged,
+    photoSelected,
 } = interfaceSlice.actions;

@@ -1303,102 +1303,150 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-day-photos"
           data-testid="2024-03-25-photos"
         >
-          <img
-            alt="07:28 AM - March 25, 2024"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_8103_thumb.webp"
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="07:28 AM - March 25, 2024"
-          />
-          <img
-            alt="07:28 AM - March 25, 2024"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_8102_thumb.webp"
+          >
+            <img
+              alt="07:28 AM - March 25, 2024"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_8103_thumb.webp"
+            />
+          </div>
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="07:28 AM - March 25, 2024"
-          />
-          <img
-            alt="07:28 AM - March 25, 2024"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_8101_thumb.webp"
+          >
+            <img
+              alt="07:28 AM - March 25, 2024"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_8102_thumb.webp"
+            />
+          </div>
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="07:28 AM - March 25, 2024"
-          />
-          <img
-            alt="06:34 AM - March 25, 2024"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_8098_thumb.webp"
+          >
+            <img
+              alt="07:28 AM - March 25, 2024"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_8101_thumb.webp"
+            />
+          </div>
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="06:34 AM - March 25, 2024"
-          />
-          <img
-            alt="06:34 AM - March 25, 2024"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_8097_thumb.webp"
+          >
+            <img
+              alt="06:34 AM - March 25, 2024"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_8098_thumb.webp"
+            />
+          </div>
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="06:34 AM - March 25, 2024"
-          />
-          <img
-            alt="05:28 AM - March 25, 2024"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_8095_thumb.webp"
+          >
+            <img
+              alt="06:34 AM - March 25, 2024"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_8097_thumb.webp"
+            />
+          </div>
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="05:28 AM - March 25, 2024"
-          />
-          <img
-            alt="05:28 AM - March 25, 2024"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_8094_thumb.webp"
+          >
+            <img
+              alt="05:28 AM - March 25, 2024"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_8095_thumb.webp"
+            />
+          </div>
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="05:28 AM - March 25, 2024"
-          />
-          <img
-            alt="05:28 AM - March 25, 2024"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_8093_thumb.webp"
+          >
+            <img
+              alt="05:28 AM - March 25, 2024"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_8094_thumb.webp"
+            />
+          </div>
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="05:28 AM - March 25, 2024"
-          />
-          <img
-            alt="05:28 AM - March 25, 2024"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_8092_thumb.webp"
+          >
+            <img
+              alt="05:28 AM - March 25, 2024"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_8093_thumb.webp"
+            />
+          </div>
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="05:28 AM - March 25, 2024"
-          />
-          <img
-            alt="05:28 AM - March 25, 2024"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_8091_thumb.webp"
+          >
+            <img
+              alt="05:28 AM - March 25, 2024"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_8092_thumb.webp"
+            />
+          </div>
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="05:28 AM - March 25, 2024"
-          />
-          <img
-            alt="05:27 AM - March 25, 2024"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_8090_thumb.webp"
+          >
+            <img
+              alt="05:28 AM - March 25, 2024"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_8091_thumb.webp"
+            />
+          </div>
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="05:27 AM - March 25, 2024"
-          />
-          <img
-            alt="05:26 AM - March 25, 2024"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_8089_thumb.webp"
+          >
+            <img
+              alt="05:27 AM - March 25, 2024"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_8090_thumb.webp"
+            />
+          </div>
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="05:26 AM - March 25, 2024"
-          />
+          >
+            <img
+              alt="05:26 AM - March 25, 2024"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_8089_thumb.webp"
+            />
+          </div>
         </div>
         <div
           class="flex flex-col"
@@ -2107,14 +2155,18 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-day-photos"
           data-testid="2024-02-21-photos"
         >
-          <img
-            alt="01:21 PM - February 21, 2024"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_7598_thumb.webp"
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="01:21 PM - February 21, 2024"
-          />
+          >
+            <img
+              alt="01:21 PM - February 21, 2024"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_7598_thumb.webp"
+            />
+          </div>
         </div>
         <div
           class="flex flex-col"
@@ -2487,14 +2539,18 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-day-photos"
           data-testid="2023-11-21-photos"
         >
-          <img
-            alt="03:57 AM - November 21, 2023"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_5866_thumb.webp"
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="03:57 AM - November 21, 2023"
-          />
+          >
+            <img
+              alt="03:57 AM - November 21, 2023"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_5866_thumb.webp"
+            />
+          </div>
         </div>
         <div
           class="flex flex-col"
@@ -2836,14 +2892,18 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-day-photos"
           data-testid="2023-09-11-photos"
         >
-          <img
-            alt="05:59 PM - September 11, 2023"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_5040_thumb.webp"
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="05:59 PM - September 11, 2023"
-          />
+          >
+            <img
+              alt="05:59 PM - September 11, 2023"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_5040_thumb.webp"
+            />
+          </div>
         </div>
         <div
           class="flex flex-col"
@@ -2887,14 +2947,18 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-day-photos"
           data-testid="2023-08-23-photos"
         >
-          <img
-            alt="08:43 PM - August 23, 2023"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_4813_thumb.webp"
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="08:43 PM - August 23, 2023"
-          />
+          >
+            <img
+              alt="08:43 PM - August 23, 2023"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_4813_thumb.webp"
+            />
+          </div>
         </div>
         <div
           class="flex flex-col"
@@ -3468,14 +3532,18 @@ exports[`Timeline matches snapshot when plant is archived 1`] = `
           class="timeline-day-photos"
           data-testid="2008-08-22-photos"
         >
-          <img
-            alt="11:00 AM - August 22, 2008"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_4811_thumb.jpeg"
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="11:00 AM - August 22, 2008"
-          />
+          >
+            <img
+              alt="11:00 AM - August 22, 2008"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_4811_thumb.jpeg"
+            />
+          </div>
         </div>
         <div
           class="flex flex-col"
@@ -4420,102 +4488,150 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-day-photos"
           data-testid="2024-03-25-photos"
         >
-          <img
-            alt="07:28 AM - March 25, 2024"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_8103_thumb.webp"
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="07:28 AM - March 25, 2024"
-          />
-          <img
-            alt="07:28 AM - March 25, 2024"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_8102_thumb.webp"
+          >
+            <img
+              alt="07:28 AM - March 25, 2024"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_8103_thumb.webp"
+            />
+          </div>
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="07:28 AM - March 25, 2024"
-          />
-          <img
-            alt="07:28 AM - March 25, 2024"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_8101_thumb.webp"
+          >
+            <img
+              alt="07:28 AM - March 25, 2024"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_8102_thumb.webp"
+            />
+          </div>
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="07:28 AM - March 25, 2024"
-          />
-          <img
-            alt="06:34 AM - March 25, 2024"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_8098_thumb.webp"
+          >
+            <img
+              alt="07:28 AM - March 25, 2024"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_8101_thumb.webp"
+            />
+          </div>
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="06:34 AM - March 25, 2024"
-          />
-          <img
-            alt="06:34 AM - March 25, 2024"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_8097_thumb.webp"
+          >
+            <img
+              alt="06:34 AM - March 25, 2024"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_8098_thumb.webp"
+            />
+          </div>
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="06:34 AM - March 25, 2024"
-          />
-          <img
-            alt="05:28 AM - March 25, 2024"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_8095_thumb.webp"
+          >
+            <img
+              alt="06:34 AM - March 25, 2024"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_8097_thumb.webp"
+            />
+          </div>
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="05:28 AM - March 25, 2024"
-          />
-          <img
-            alt="05:28 AM - March 25, 2024"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_8094_thumb.webp"
+          >
+            <img
+              alt="05:28 AM - March 25, 2024"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_8095_thumb.webp"
+            />
+          </div>
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="05:28 AM - March 25, 2024"
-          />
-          <img
-            alt="05:28 AM - March 25, 2024"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_8093_thumb.webp"
+          >
+            <img
+              alt="05:28 AM - March 25, 2024"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_8094_thumb.webp"
+            />
+          </div>
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="05:28 AM - March 25, 2024"
-          />
-          <img
-            alt="05:28 AM - March 25, 2024"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_8092_thumb.webp"
+          >
+            <img
+              alt="05:28 AM - March 25, 2024"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_8093_thumb.webp"
+            />
+          </div>
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="05:28 AM - March 25, 2024"
-          />
-          <img
-            alt="05:28 AM - March 25, 2024"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_8091_thumb.webp"
+          >
+            <img
+              alt="05:28 AM - March 25, 2024"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_8092_thumb.webp"
+            />
+          </div>
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="05:28 AM - March 25, 2024"
-          />
-          <img
-            alt="05:27 AM - March 25, 2024"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_8090_thumb.webp"
+          >
+            <img
+              alt="05:28 AM - March 25, 2024"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_8091_thumb.webp"
+            />
+          </div>
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="05:27 AM - March 25, 2024"
-          />
-          <img
-            alt="05:26 AM - March 25, 2024"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_8089_thumb.webp"
+          >
+            <img
+              alt="05:27 AM - March 25, 2024"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_8090_thumb.webp"
+            />
+          </div>
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="05:26 AM - March 25, 2024"
-          />
+          >
+            <img
+              alt="05:26 AM - March 25, 2024"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_8089_thumb.webp"
+            />
+          </div>
         </div>
         <div
           class="flex flex-col"
@@ -5224,14 +5340,18 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-day-photos"
           data-testid="2024-02-21-photos"
         >
-          <img
-            alt="01:21 PM - February 21, 2024"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_7598_thumb.webp"
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="01:21 PM - February 21, 2024"
-          />
+          >
+            <img
+              alt="01:21 PM - February 21, 2024"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_7598_thumb.webp"
+            />
+          </div>
         </div>
         <div
           class="flex flex-col"
@@ -5604,14 +5724,18 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-day-photos"
           data-testid="2023-11-21-photos"
         >
-          <img
-            alt="03:57 AM - November 21, 2023"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_5866_thumb.webp"
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="03:57 AM - November 21, 2023"
-          />
+          >
+            <img
+              alt="03:57 AM - November 21, 2023"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_5866_thumb.webp"
+            />
+          </div>
         </div>
         <div
           class="flex flex-col"
@@ -5953,14 +6077,18 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-day-photos"
           data-testid="2023-09-11-photos"
         >
-          <img
-            alt="05:59 PM - September 11, 2023"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_5040_thumb.webp"
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="05:59 PM - September 11, 2023"
-          />
+          >
+            <img
+              alt="05:59 PM - September 11, 2023"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_5040_thumb.webp"
+            />
+          </div>
         </div>
         <div
           class="flex flex-col"
@@ -6004,14 +6132,18 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-day-photos"
           data-testid="2023-08-23-photos"
         >
-          <img
-            alt="08:43 PM - August 23, 2023"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_4813_thumb.webp"
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="08:43 PM - August 23, 2023"
-          />
+          >
+            <img
+              alt="08:43 PM - August 23, 2023"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_4813_thumb.webp"
+            />
+          </div>
         </div>
         <div
           class="flex flex-col"
@@ -6585,14 +6717,18 @@ exports[`Timeline matches snapshot when plant is not archived 1`] = `
           class="timeline-day-photos"
           data-testid="2008-08-22-photos"
         >
-          <img
-            alt="11:00 AM - August 22, 2008"
-            class="photo-thumbnail photo-thumbnail-timeline cursor-pointer"
-            draggable="false"
-            loading="lazy"
-            src="/media/thumbnails/IMG_4811_thumb.jpeg"
+          <div
+            class="photo-thumbnail-timeline cursor-pointer"
             title="11:00 AM - August 22, 2008"
-          />
+          >
+            <img
+              alt="11:00 AM - August 22, 2008"
+              class="photo-thumbnail"
+              draggable="false"
+              loading="lazy"
+              src="/media/thumbnails/IMG_4811_thumb.jpeg"
+            />
+          </div>
         </div>
         <div
           class="flex flex-col"

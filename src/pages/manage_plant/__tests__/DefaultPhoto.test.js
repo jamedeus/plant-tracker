@@ -173,14 +173,11 @@ describe('Plant with photos but no configured default photo', () => {
             })
         }));
 
-        // Simulate user opening DeletePhotosModal, selecting first 2 photos
+        // Simulate user entering delete mode, selecting first 2 photos, clicking delete
         await user.click(app.getByText('Delete photos'));
-        const modal = app.getByText('Delete Photos').closest('.modal-box');
-        await user.click(within(modal).getAllByText(/Select/)[0]);
-        await user.click(within(modal).getAllByText(/Select/)[1]);
-        // Simulate user clicking delete button, confirm delete button
-        await user.click(within(modal).getAllByRole("button", {name: "Delete"})[0]);
-        await user.click(app.getByTestId('confirm_delete_photos'));
+        await user.click(app.getByTitle('02:52 AM - March 23, 2024'));
+        await user.click(app.getByTitle('02:52 AM - March 22, 2024'));
+        await user.click(app.getByRole("button", {name: "Delete"}));
 
         // Confirm default photo thumbnail changed to most-recent remaining photo
         expect(app.getByTestId('defaultPhotoThumbnail').src).toBe(
@@ -204,15 +201,12 @@ describe('Plant with photos but no configured default photo', () => {
             })
         }));
 
-        // Simulate user opening DeletePhotosModal, selecting all 3 photos
+        // Simulate user entering delete mode, selecting all 3 photos, clicking delete
         await user.click(app.getByText('Delete photos'));
-        const modal = app.getByText('Delete Photos').closest('.modal-box');
-        await user.click(within(modal).getAllByText(/Select/)[0]);
-        await user.click(within(modal).getAllByText(/Select/)[1]);
-        await user.click(within(modal).getAllByText(/Select/)[2]);
-        // Simulate user clicking delete button, confirm delete button
-        await user.click(within(modal).getAllByRole("button", {name: "Delete"})[0]);
-        await user.click(app.getByTestId('confirm_delete_photos'));
+        await user.click(app.getByTitle('02:52 AM - March 23, 2024'));
+        await user.click(app.getByTitle('02:52 AM - March 22, 2024'));
+        await user.click(app.getByTitle('02:52 AM - March 21, 2024'));
+        await user.click(app.getByRole("button", {name: "Delete"}));
 
         // Confirm default photo thumbnail unrendered
         expect(app.queryByTestId('defaultPhotoThumbnail')).toBeNull();
@@ -297,13 +291,10 @@ describe('Plant with default photo configured', () => {
             })
         }));
 
-        // Simulate user opening DeletePhotosModal, selecting default photo
+        // Simulate user entering delete mode, selecting default photo, clicking delete
         await user.click(app.getByText('Delete photos'));
-        const modal = app.getByText('Delete Photos').closest('.modal-box');
-        await user.click(within(modal).getAllByText(/Select/)[2]);
-        // Simulate user clicking delete button, confirm delete button
-        await user.click(within(modal).getAllByRole("button", {name: "Delete"})[0]);
-        await user.click(app.getByTestId('confirm_delete_photos'));
+        await user.click(app.getByTitle('02:52 AM - March 23, 2024'));
+        await user.click(app.getByRole("button", {name: "Delete"}));
 
         // Confirm default photo thumbnail changed to most-recent remailing photo
         expect(app.getByTestId('defaultPhotoThumbnail').src).toBe(
