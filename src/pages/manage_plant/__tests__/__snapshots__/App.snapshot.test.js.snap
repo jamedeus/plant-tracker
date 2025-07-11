@@ -1648,16 +1648,29 @@ exports[`App matches snapshot 1`] = `
       class="floating-footer floating-footer-hidden"
       data-testid="floating-footer"
     >
-      <button
-        class="btn btn-neutral"
+      <div
+        class="flex flex-col items-center gap-4 w-full"
       >
-        Cancel
-      </button>
-      <button
-        class="btn btn-error"
-      >
-        Delete
-      </button>
+        <div
+          class="w-70 md:w-82 text-center text-sm md:text-base font-semibold text-white"
+        >
+          Select events and photos in the timeline
+        </div>
+        <div
+          class="flex flex-row justify-center gap-8"
+        >
+          <button
+            class="btn btn-neutral"
+          >
+            Cancel
+          </button>
+          <button
+            class="btn btn-error"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
     </div>
   </div>
   <dialog
@@ -3908,16 +3921,29 @@ exports[`App matches snapshot when plant is archived 1`] = `
       class="floating-footer floating-footer-hidden"
       data-testid="floating-footer"
     >
-      <button
-        class="btn btn-neutral"
+      <div
+        class="flex flex-col items-center gap-4 w-full"
       >
-        Cancel
-      </button>
-      <button
-        class="btn btn-error"
-      >
-        Delete
-      </button>
+        <div
+          class="w-70 md:w-82 text-center text-sm md:text-base font-semibold text-white"
+        >
+          Select events and photos in the timeline
+        </div>
+        <div
+          class="flex flex-row justify-center gap-8"
+        >
+          <button
+            class="btn btn-neutral"
+          >
+            Cancel
+          </button>
+          <button
+            class="btn btn-error"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
     </div>
   </div>
   <dialog

@@ -5,6 +5,7 @@ import { openErrorModal } from 'src/components/ErrorModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteModeChanged } from './interfaceSlice';
 import { eventDeleted, photosDeleted } from './timelineSlice';
+import clsx from 'clsx';
 
 const DeleteModeFooter = memo(function DeleteModeFooter() {
     const dispatch = useDispatch();
@@ -12,6 +13,19 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
     const deleteMode = useSelector((state) => state.interface.deleteMode);
     const selectedEvents = useSelector((state) => state.interface.selectedEvents);
     const selectedPhotos = useSelector((state) => state.interface.selectedPhotos);
+
+    // Get number of selected events and photos
+    const totalSelectedEvents = Object.values(selectedEvents).reduce(
+        (sum, arr) => sum + arr.length, 0
+    );
+    const totalSelected = totalSelectedEvents + selectedPhotos.length;
+
+    // Show instructions until something selected, then number of selected items
+    const instructionsText = totalSelected > 0 ? (
+        `${totalSelected} item${totalSelected !== 1 ? 's' : ''} selected`
+    ) : (
+        'Select events and photos in the timeline'
+    );
 
     const cancelDeleteMode = () => {
         dispatch(deleteModeChanged({editing: false}));
@@ -65,19 +79,31 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
 
     return (
         <FloatingFooter visible={deleteMode}>
-            <button
-                className="btn btn-neutral"
-                onClick={cancelDeleteMode}
-            >
-                Cancel
-            </button>
+            <div className="flex flex-col items-center gap-4 w-full">
+                {/* Instructions text, changes to number of selected items */}
+                <div className={clsx(
+                    "w-70 md:w-82 text-center",
+                    "text-sm md:text-base font-semibold text-white"
+                )}>
+                    {instructionsText}
+                </div>
 
-            <button
-                className="btn btn-error"
-                onClick={handleDelete}
-            >
-                Delete
-            </button>
+                <div className="flex flex-row justify-center gap-8">
+                    <button
+                        className="btn btn-neutral"
+                        onClick={cancelDeleteMode}
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        className="btn btn-error"
+                        onClick={handleDelete}
+                    >
+                        Delete
+                    </button>
+                </div>
+            </div>
         </FloatingFooter>
     );
 });

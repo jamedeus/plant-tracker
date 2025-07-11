@@ -43,6 +43,36 @@ describe('Delete mode', () => {
         expect(app.getByTestId("floating-footer").classList).toContain("floating-footer-hidden");
     });
 
+    it('updates instructions text to show number of selected items', async () => {
+        // Enter delete mode
+        await user.click(app.getByText('Delete mode'));
+
+        // Confirm initial instructions text is visible
+        expect(app.queryByText('Select events and photos in the timeline')).not.toBeNull();
+
+        // Select water event, confirm text changed to 1 item selected
+        await user.click(
+            within(app.getByTestId("2024-03-01-events")).getByText("Watered")
+        );
+        expect(app.queryByText('1 item selected')).not.toBeNull();
+        expect(app.queryByText('Select events and photos in the timeline')).toBeNull();
+
+        // Select photo, confirm text changed to 2 items selected
+        await user.click(app.getByTitle('02:52 AM - March 22, 2024'));
+        expect(app.queryByText('2 items selected')).not.toBeNull();
+
+        // Unselect event, confirm text changed back to 1 item selected
+        await user.click(
+            within(app.getByTestId("2024-03-01-events")).getByText("Watered")
+        );
+        expect(app.queryByText('1 item selected')).not.toBeNull();
+
+        // Unselect photo, confirm text changed back to instructions
+        await user.click(app.getByTitle('02:52 AM - March 22, 2024'));
+        expect(app.queryByText('Select events and photos in the timeline')).not.toBeNull();
+        expect(app.queryByText('1 item selected')).toBeNull();
+    });
+
     it('sends correct payload when events are deleted', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
