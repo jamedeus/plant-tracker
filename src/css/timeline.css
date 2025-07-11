@@ -110,6 +110,8 @@
     /* Transparent outline when not selected (necessary for transition) */
     @apply outline-transparent outline-2 outline-offset-2 rounded-lg;
     @apply transition-all duration-150;
+    /* Allow clicking rapidly without highlighting photo */
+    @apply select-none;
 
     & > img {
         @apply transition-transform duration-150;
