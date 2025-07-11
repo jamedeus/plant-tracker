@@ -5,7 +5,7 @@ import { PageWrapper } from 'src/index';
 import App from '../App';
 import { mockContext } from './mockContext';
 
-describe('EventHistoryModal', () => {
+describe('Delete events', () => {
     let app, user;
 
     beforeAll(() => {
@@ -24,7 +24,7 @@ describe('EventHistoryModal', () => {
 
     beforeEach(() => {
         // Render app + create userEvent instance to use in tests
-        user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
+        user = userEvent.setup();
         app = render(
             <PageWrapper>
                 <App />
