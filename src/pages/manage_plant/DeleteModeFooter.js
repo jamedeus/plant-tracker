@@ -5,6 +5,7 @@ import { openErrorModal } from 'src/components/ErrorModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteModeChanged } from './interfaceSlice';
 import { eventDeleted, photosDeleted } from './timelineSlice';
+import HoldToConfirm from 'src/components/HoldToConfirm';
 import clsx from 'clsx';
 
 const DeleteModeFooter = memo(function DeleteModeFooter() {
@@ -13,6 +14,10 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
     const deleteMode = useSelector((state) => state.interface.deleteMode);
     const selectedEvents = useSelector((state) => state.interface.selectedEvents);
     const selectedPhotos = useSelector((state) => state.interface.selectedPhotos);
+    // Get user-configured hold to delete delay
+    const holdToConfirmDelay = useSelector(
+        (state) => state.settings.holdToConfirmDelay
+    );
 
     // Get number of selected events and photos
     const totalSelectedEvents = Object.values(selectedEvents).reduce(
@@ -96,12 +101,12 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
                         Cancel
                     </button>
 
-                    <button
-                        className="btn btn-error"
-                        onClick={handleDelete}
-                    >
-                        Delete
-                    </button>
+                    <HoldToConfirm
+                        callback={handleDelete}
+                        timeout={holdToConfirmDelay}
+                        buttonText="Delete"
+                        tooltipText="Hold to confirm"
+                    />
                 </div>
             </div>
         </FloatingFooter>

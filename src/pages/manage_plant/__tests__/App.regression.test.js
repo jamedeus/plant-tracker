@@ -5,6 +5,7 @@ import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptio
 import App from '../App';
 import { PageWrapper } from 'src/index';
 import { mockContextNoEvents } from './mockContext';
+import { act } from '@testing-library/react';
 
 describe('App', () => {
     let app, user;
@@ -16,13 +17,22 @@ describe('App', () => {
     });
 
     beforeEach(() => {
+        // Allow fast forwarding (must hold delete button to confirm)
+        jest.useFakeTimers({ doNotFake: ['Date'] });
+
         // Render app + create userEvent instance to use in tests
-        user = userEvent.setup();
+        user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
             <PageWrapper>
                 <App />
             </PageWrapper>
         );
+    });
+
+    // Clean up pending timers after each test
+    afterEach(() => {
+        act(() => jest.runAllTimers());
+        jest.useRealTimers();
     });
 
     // Original bug: Same state was used for last_watered and last_fertilized,
@@ -361,7 +371,7 @@ describe('App', () => {
         expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(1);
         expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(1);
 
-        // Start deleting events, select more recent event, click delete button
+        // Start deleting events, select more recent event
         await user.click(app.getByText('Delete mode'));
         await user.click(
             within(app.getByTestId("2024-03-01-events")).getByText("Watered")
@@ -383,7 +393,11 @@ describe('App', () => {
                 }
             })
         }));
-        await user.click(app.getByRole("button", {name: "Delete"}));
+        // Simulate user holding delete button for 1.5 seconds
+        const button = app.getByText('Delete');
+        fireEvent.mouseDown(button);
+        await act(async () => await jest.advanceTimersByTimeAsync(1500));
+        fireEvent.mouseUp(button);
 
         // Confirm dot and marker are still present (second event still exists)
         expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(1);
@@ -440,7 +454,7 @@ describe('App', () => {
         expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(2);
         expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(2);
 
-        // Start deleting events, select March 1 event, click delete button
+        // Start deleting events, select March 1 event
         await user.click(app.getByText('Delete mode'));
         await user.click(
             within(app.getByTestId("2024-03-01-events")).getByText("Watered")
@@ -462,7 +476,11 @@ describe('App', () => {
                 }
             })
         }));
-        await user.click(app.getByRole("button", {name: "Delete"}));
+        // Simulate user holding delete button for 1.5 seconds
+        const button = app.getByText('Delete');
+        fireEvent.mouseDown(button);
+        await act(async () => await jest.advanceTimersByTimeAsync(1500));
+        fireEvent.mouseUp(button);
 
         // Confirm March 1 TimelineDay was removed (only 1 dot and marker left)
         expect(app.container.querySelectorAll('.dot > .bg-info').length).toBe(1);
@@ -591,10 +609,14 @@ describe('App', () => {
             })
         }));
 
-        // Simulate user entering delete mode, selecting first photo, clicking delete
+        // Simulate user entering delete mode, selecting first photo
         await user.click(app.getByText('Delete mode'));
         await user.click(app.getByTitle('12:54 PM - March 1, 2024'));
-        await user.click(app.getByRole("button", {name: "Delete"}));
+        // Simulate user holding delete button for 1.5 seconds
+        const button = app.getByText('Delete');
+        fireEvent.mouseDown(button);
+        await act(async () => await jest.advanceTimersByTimeAsync(1500));
+        fireEvent.mouseUp(button);
 
         // Confirm the deleted photo is no longer in the timeline
         expect(app.getByTitle('12:52 PM - March 1, 2024')).not.toBeNull();
@@ -649,10 +671,14 @@ describe('App', () => {
             })
         }));
 
-        // Simulate user entering delete mode, selecting photo, clicking delete
+        // Simulate user entering delete mode, selecting photo
         await user.click(app.getByText('Delete mode'));
         await user.click(app.getByTitle('12:52 PM - June 21, 2024'));
-        await user.click(app.getByRole("button", {name: "Delete"}));
+        // Simulate user holding delete button for 1.5 seconds
+        const button = app.getByText('Delete');
+        fireEvent.mouseDown(button);
+        await act(async () => await jest.advanceTimersByTimeAsync(1500));
+        fireEvent.mouseUp(button);
 
         // Confirm Gallery and Delete mode dropdown options were removed
         expect(app.queryByText('Gallery')).toBeNull();
@@ -698,7 +724,7 @@ describe('App', () => {
             })
         }));
 
-        // Start deleting events, select water event, click delete button
+        // Start deleting events, select water event
         await user.click(app.getByText('Delete mode'));
         await user.click(
             within(app.getByTestId("2024-03-01-events")).getByText("Watered")
@@ -720,7 +746,11 @@ describe('App', () => {
                 }
             })
         }));
-        await user.click(app.getByRole("button", {name: "Delete"}));
+        // Simulate user holding delete button for 1.5 seconds
+        const button = app.getByText('Delete');
+        fireEvent.mouseDown(button);
+        await act(async () => await jest.advanceTimersByTimeAsync(1500));
+        fireEvent.mouseUp(button);
 
         // Confirm Delete mode dropdown option was removed
         expect(app.queryByText('Delete mode')).toBeNull();

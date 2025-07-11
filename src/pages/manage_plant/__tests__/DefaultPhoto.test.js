@@ -4,6 +4,7 @@ import { fireEvent } from '@testing-library/react';
 import App from '../App';
 import { ReduxProvider } from '../store';
 import { mockContext } from './mockContext';
+import { act } from '@testing-library/react';
 
 const TestComponent = () => {
     // Render app
@@ -34,9 +35,18 @@ describe('Plant with no photos (no default photo set)', () => {
     });
 
     beforeEach(() => {
+        // Allow fast forwarding (must hold delete button to confirm)
+        jest.useFakeTimers({ doNotFake: ['Date'] });
+
         // Render app + create userEvent instance to use in tests
-        user = userEvent.setup();
+        user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(<TestComponent />);
+    });
+
+    // Clean up pending timers after each test
+    afterEach(() => {
+        act(() => jest.runAllTimers());
+        jest.useRealTimers();
     });
 
     it('does not render default photo thumbnail if no photos exist', async () => {
@@ -105,9 +115,18 @@ describe('Plant with photos but no configured default photo', () => {
     });
 
     beforeEach(() => {
+        // Allow fast forwarding (must hold delete button to confirm)
+        jest.useFakeTimers({ doNotFake: ['Date'] });
+
         // Render app + create userEvent instance to use in tests
-        user = userEvent.setup();
+        user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(<TestComponent />);
+    });
+
+    // Clean up pending timers after each test
+    afterEach(() => {
+        act(() => jest.runAllTimers());
+        jest.useRealTimers();
     });
 
     it('renders default photo thumbnail with most-recent photo', async () => {
@@ -173,11 +192,15 @@ describe('Plant with photos but no configured default photo', () => {
             })
         }));
 
-        // Simulate user entering delete mode, selecting first 2 photos, clicking delete
+        // Simulate user entering delete mode, selecting first 2 photos
         await user.click(app.getByText('Delete mode'));
         await user.click(app.getByTitle('02:52 AM - March 23, 2024'));
         await user.click(app.getByTitle('02:52 AM - March 22, 2024'));
-        await user.click(app.getByRole("button", {name: "Delete"}));
+        // Simulate user holding delete button for 1.5 seconds
+        const button = app.getByRole("button", {name: "Delete"});
+        fireEvent.mouseDown(button);
+        await act(async () => await jest.advanceTimersByTimeAsync(1500));
+        fireEvent.mouseUp(button);
 
         // Confirm default photo thumbnail changed to most-recent remaining photo
         expect(app.getByTestId('defaultPhotoThumbnail').src).toBe(
@@ -201,12 +224,16 @@ describe('Plant with photos but no configured default photo', () => {
             })
         }));
 
-        // Simulate user entering delete mode, selecting all 3 photos, clicking delete
+        // Simulate user entering delete mode, selecting all 3 photos
         await user.click(app.getByText('Delete mode'));
         await user.click(app.getByTitle('02:52 AM - March 23, 2024'));
         await user.click(app.getByTitle('02:52 AM - March 22, 2024'));
         await user.click(app.getByTitle('02:52 AM - March 21, 2024'));
-        await user.click(app.getByRole("button", {name: "Delete"}));
+        // Simulate user holding delete button for 1.5 seconds
+        const button = app.getByRole("button", {name: "Delete"});
+        fireEvent.mouseDown(button);
+        await act(async () => await jest.advanceTimersByTimeAsync(1500));
+        fireEvent.mouseUp(button);
 
         // Confirm default photo thumbnail unrendered
         expect(app.queryByTestId('defaultPhotoThumbnail')).toBeNull();
@@ -223,9 +250,18 @@ describe('Plant with default photo configured', () => {
     });
 
     beforeEach(() => {
+        // Allow fast forwarding (must hold delete button to confirm)
+        jest.useFakeTimers({ doNotFake: ['Date'] });
+
         // Render app + create userEvent instance to use in tests
-        user = userEvent.setup();
+        user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(<TestComponent />);
+    });
+
+    // Clean up pending timers after each test
+    afterEach(() => {
+        act(() => jest.runAllTimers());
+        jest.useRealTimers();
     });
 
     it('renders default photo thumbnail with configured default photo', async () => {
@@ -291,12 +327,16 @@ describe('Plant with default photo configured', () => {
             })
         }));
 
-        // Simulate user entering delete mode, selecting default photo, clicking delete
+        // Simulate user entering delete mode, selecting default photo
         await user.click(app.getByText('Delete mode'));
         await user.click(app.getByTitle('02:52 AM - March 23, 2024'));
-        await user.click(app.getByRole("button", {name: "Delete"}));
+        // Simulate user holding delete button for 1.5 seconds
+        const button = app.getByRole("button", {name: "Delete"});
+        fireEvent.mouseDown(button);
+        await act(async () => await jest.advanceTimersByTimeAsync(1500));
+        fireEvent.mouseUp(button);
 
-        // Confirm default photo thumbnail changed to most-recent remailing photo
+        // Confirm default photo thumbnail changed to most-recent remaining photo
         expect(app.getByTestId('defaultPhotoThumbnail').src).toBe(
             `http://localhost${mockContext.photos[2].preview}`
         );

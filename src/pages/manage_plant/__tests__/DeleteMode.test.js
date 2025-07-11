@@ -4,6 +4,7 @@ import { postHeaders } from 'src/testUtils/headers';
 import { PageWrapper } from 'src/index';
 import App from '../App';
 import { mockContext } from './mockContext';
+import { fireEvent } from '@testing-library/react';
 
 describe('Delete mode', () => {
     let app, user;
@@ -23,13 +24,22 @@ describe('Delete mode', () => {
     });
 
     beforeEach(() => {
+        // Allow fast forwarding (must hold delete button to confirm)
+        jest.useFakeTimers({ doNotFake: ['Date'] });
+
         // Render app + create userEvent instance to use in tests
-        user = userEvent.setup();
+        user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(
             <PageWrapper>
                 <App />
             </PageWrapper>
         );
+    });
+
+    // Clean up pending timers after each test
+    afterEach(() => {
+        act(() => jest.runAllTimers());
+        jest.useRealTimers();
     });
 
     it('shows DeleteModeFooter when option clicked', async () => {
@@ -115,8 +125,11 @@ describe('Delete mode', () => {
             within(app.getByTestId("2024-01-01-events")).getByText("Repoted")
         );
 
-        // Click delete button
-        await user.click(app.getByRole('button', {name: 'Delete'}));
+        // Simulate user holding delete button for 1.5 seconds
+        const button = app.getByText('Delete');
+        fireEvent.mouseDown(button);
+        await act(async () => await jest.advanceTimersByTimeAsync(1500));
+        fireEvent.mouseUp(button);
 
         // Confirm correct data posted to /bulk_delete_plant_events endpoint
         expect(global.fetch).toHaveBeenCalledWith('/bulk_delete_plant_events', {
@@ -155,8 +168,11 @@ describe('Delete mode', () => {
         // Click photo 2
         await user.click(app.getByTitle('02:52 AM - March 22, 2024'));
 
-        // Click delete button
-        await user.click(app.getByRole('button', {name: 'Delete'}));
+        // Simulate user holding delete button for 1.5 seconds
+        const button = app.getByText('Delete');
+        fireEvent.mouseDown(button);
+        await act(async () => await jest.advanceTimersByTimeAsync(1500));
+        fireEvent.mouseUp(button);
 
         // Confirm correct data posted to /delete_plant_photos endpoint
         expect(global.fetch).toHaveBeenCalledWith('/delete_plant_photos', {
@@ -196,12 +212,15 @@ describe('Delete mode', () => {
         // Enter delete mode
         await user.click(app.getByText('Delete mode'));
 
-        // Select one water event and one photo, click delete button
+        // Select one water event and one photo, hold delete button
         await user.click(
             within(app.getByTestId("2024-03-01-events")).getByText("Watered")
         );
         await user.click(app.getByTitle('02:52 AM - March 22, 2024'));
-        await user.click(app.getByRole('button', {name: 'Delete'}));
+        const button = app.getByText('Delete');
+        fireEvent.mouseDown(button);
+        await act(async () => await jest.advanceTimersByTimeAsync(1500));
+        fireEvent.mouseUp(button);
 
         // Confirm correct data posted to both endpoints
         expect(global.fetch).toHaveBeenCalledTimes(2);
@@ -259,9 +278,12 @@ describe('Delete mode', () => {
             })
         }));
 
-        // Click delete button, confirm only second newest event (selected in
+        // Hold delete button, confirm only second newest event (selected in
         // current session) posted (confirms first session selection was cleared)
-        await user.click(app.getByRole('button', {name: 'Delete'}));
+        const button = app.getByText('Delete');
+        fireEvent.mouseDown(button);
+        await act(async () => await jest.advanceTimersByTimeAsync(1500));
+        fireEvent.mouseUp(button);
         expect(global.fetch).toHaveBeenCalledTimes(1);
         expect(global.fetch).toHaveBeenCalledWith('/bulk_delete_plant_events', {
             method: 'POST',
@@ -295,7 +317,10 @@ describe('Delete mode', () => {
         await user.click(
             within(app.getByTestId("2024-03-01-events")).getByText("Watered")
         );
-        await user.click(app.getByRole('button', {name: 'Delete'}));
+        const button = app.getByText('Delete');
+        fireEvent.mouseDown(button);
+        await act(async () => await jest.advanceTimersByTimeAsync(1500));
+        fireEvent.mouseUp(button);
 
         // Confirm modal appeared with arbitrary error text
         expect(app.queryByText(/failed to delete event/)).not.toBeNull();
@@ -316,7 +341,10 @@ describe('Delete mode', () => {
         // Simulate user deleting a photo
         await user.click(app.getByText('Delete mode'));
         await user.click(app.getByTitle('02:52 AM - March 22, 2024'));
-        await user.click(app.getByRole('button', {name: 'Delete'}));
+        const button = app.getByText('Delete');
+        fireEvent.mouseDown(button);
+        await act(async () => await jest.advanceTimersByTimeAsync(1500));
+        fireEvent.mouseUp(button);
 
         // Confirm modal appeared with arbitrary error text
         expect(app.queryByText(/failed to delete photos/)).not.toBeNull();

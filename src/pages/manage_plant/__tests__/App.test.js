@@ -531,7 +531,11 @@ describe('App', () => {
         await user.click(
             within(app.getByTestId("2024-02-29-events")).getByText("Watered")
         );
-        await user.click(app.getByRole("button", {name: "Delete"}));
+        // Simulate user holding delete button for 1.5 seconds
+        const button1 = app.getByText('Delete');
+        fireEvent.mouseDown(button1);
+        await act(async () => await jest.advanceTimersByTimeAsync(1500));
+        fireEvent.mouseUp(button1);
 
         // Confirm both water event icons disappeared
         expect(app.container.querySelectorAll('.fa-inline.text-info').length).toBe(0);
@@ -756,7 +760,11 @@ describe('App', () => {
                 }
             })
         }));
-        await user.click(app.getByRole("button", {name: "Delete"}));
+        // Simulate user holding delete button for 1.5 seconds
+        const button = app.getByText('Delete');
+        fireEvent.mouseDown(button);
+        await act(async () => await jest.advanceTimersByTimeAsync(1500));
+        fireEvent.mouseUp(button);
 
         // Confirm 2025 menu option was removed
         expect(quickNav.children.length).toBe(1);

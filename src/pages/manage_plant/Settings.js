@@ -94,8 +94,8 @@ const settings = {
         }
     },
     holdToConfirmDelay: {
-        settingText: "Hold to delete note (seconds)",
-        settingDescription: "How many seconds the delete button must be held to delete a note (prevents accidents)",
+        settingText: "Hold to delete delay (seconds)",
+        settingDescription: "How many seconds the delete button must be held to delete events/notes/photos (prevents accidents)",
         settingOptions: [
             { name: 0, value: 0 },
             { name: 0.5, value: 500 },

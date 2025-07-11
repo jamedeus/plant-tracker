@@ -142,7 +142,7 @@ describe('Settings menu', () => {
         expect(button.classList).toContain('hold-to-confirm');
 
         // Change holdToConfirmDelay to 0 (no confirmation)
-        await user.click(app.getByLabelText('Set Hold to delete note (seconds) to 0'));
+        await user.click(app.getByLabelText('Set Hold to delete delay (seconds) to 0'));
         expect(getSavedSettingValue('holdToConfirmDelay')).toBe(0);
 
         // Confirm delete button no longer has hold-to-confirm (normal button)

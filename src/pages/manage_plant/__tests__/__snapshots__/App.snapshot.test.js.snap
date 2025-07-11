@@ -1664,11 +1664,19 @@ exports[`App matches snapshot 1`] = `
           >
             Cancel
           </button>
-          <button
-            class="btn btn-error"
+          <div
+            class="tooltip hold-to-confirm-tooltip"
+            data-tip="Hold to confirm"
           >
-            Delete
-          </button>
+            <button
+              class="btn btn-soft btn-error hold-to-confirm"
+              style="--hold-duration: 1500ms;"
+            >
+              <span>
+                Delete
+              </span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -1993,9 +2001,9 @@ exports[`App matches snapshot 1`] = `
         </div>
         <div
           class="flex items-center font-semibold"
-          title="How many seconds the delete button must be held to delete a note (prevents accidents)"
+          title="How many seconds the delete button must be held to delete events/notes/photos (prevents accidents)"
         >
-          Hold to delete note (seconds)
+          Hold to delete delay (seconds)
         </div>
         <div
           class="flex items-center"
@@ -2004,7 +2012,7 @@ exports[`App matches snapshot 1`] = `
             class="dropdown dropdown-center mx-auto"
           >
             <button
-              aria-label="Set Hold to delete note (seconds)"
+              aria-label="Set Hold to delete delay (seconds)"
               class="btn btn-ghost text-xl font-bold"
               role="button"
               tabindex="0"
@@ -2017,7 +2025,7 @@ exports[`App matches snapshot 1`] = `
             >
               <li>
                 <button
-                  aria-label="Set Hold to delete note (seconds) to 0"
+                  aria-label="Set Hold to delete delay (seconds) to 0"
                   class="flex justify-center"
                 >
                   0
@@ -2025,7 +2033,7 @@ exports[`App matches snapshot 1`] = `
               </li>
               <li>
                 <button
-                  aria-label="Set Hold to delete note (seconds) to 0.5"
+                  aria-label="Set Hold to delete delay (seconds) to 0.5"
                   class="flex justify-center"
                 >
                   0.5
@@ -2033,7 +2041,7 @@ exports[`App matches snapshot 1`] = `
               </li>
               <li>
                 <button
-                  aria-label="Set Hold to delete note (seconds) to 1.5"
+                  aria-label="Set Hold to delete delay (seconds) to 1.5"
                   class="flex justify-center"
                 >
                   1.5
@@ -2041,7 +2049,7 @@ exports[`App matches snapshot 1`] = `
               </li>
               <li>
                 <button
-                  aria-label="Set Hold to delete note (seconds) to 2.5"
+                  aria-label="Set Hold to delete delay (seconds) to 2.5"
                   class="flex justify-center"
                 >
                   2.5
@@ -3937,11 +3945,19 @@ exports[`App matches snapshot when plant is archived 1`] = `
           >
             Cancel
           </button>
-          <button
-            class="btn btn-error"
+          <div
+            class="tooltip hold-to-confirm-tooltip"
+            data-tip="Hold to confirm"
           >
-            Delete
-          </button>
+            <button
+              class="btn btn-soft btn-error hold-to-confirm"
+              style="--hold-duration: 1500ms;"
+            >
+              <span>
+                Delete
+              </span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -4266,9 +4282,9 @@ exports[`App matches snapshot when plant is archived 1`] = `
         </div>
         <div
           class="flex items-center font-semibold"
-          title="How many seconds the delete button must be held to delete a note (prevents accidents)"
+          title="How many seconds the delete button must be held to delete events/notes/photos (prevents accidents)"
         >
-          Hold to delete note (seconds)
+          Hold to delete delay (seconds)
         </div>
         <div
           class="flex items-center"
@@ -4277,7 +4293,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
             class="dropdown dropdown-center mx-auto"
           >
             <button
-              aria-label="Set Hold to delete note (seconds)"
+              aria-label="Set Hold to delete delay (seconds)"
               class="btn btn-ghost text-xl font-bold"
               role="button"
               tabindex="0"
@@ -4290,7 +4306,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
             >
               <li>
                 <button
-                  aria-label="Set Hold to delete note (seconds) to 0"
+                  aria-label="Set Hold to delete delay (seconds) to 0"
                   class="flex justify-center"
                 >
                   0
@@ -4298,7 +4314,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               </li>
               <li>
                 <button
-                  aria-label="Set Hold to delete note (seconds) to 0.5"
+                  aria-label="Set Hold to delete delay (seconds) to 0.5"
                   class="flex justify-center"
                 >
                   0.5
@@ -4306,7 +4322,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               </li>
               <li>
                 <button
-                  aria-label="Set Hold to delete note (seconds) to 1.5"
+                  aria-label="Set Hold to delete delay (seconds) to 1.5"
                   class="flex justify-center"
                 >
                   1.5
@@ -4314,7 +4330,7 @@ exports[`App matches snapshot when plant is archived 1`] = `
               </li>
               <li>
                 <button
-                  aria-label="Set Hold to delete note (seconds) to 2.5"
+                  aria-label="Set Hold to delete delay (seconds) to 2.5"
                   class="flex justify-center"
                 >
                   2.5
