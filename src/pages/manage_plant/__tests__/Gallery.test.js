@@ -1,8 +1,10 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import App from '../App';
+import { PageWrapper } from 'src/index';
 import { mockContext } from './mockContext';
 import { waitFor } from '@testing-library/react';
+import { postHeaders } from 'src/testUtils/headers';
 
 describe('Gallery', () => {
     let app, user;
@@ -26,7 +28,11 @@ describe('Gallery', () => {
 
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
-        app = render(<App />);
+        app = render(
+            <PageWrapper>
+                <App />
+            </PageWrapper>
+        );
     });
 
     // Clean up pending timers after each test
@@ -220,5 +226,68 @@ describe('Gallery', () => {
         await advanceTimers(500);
         // Confirm scrollIntoView was NOT called (photo already visible)
         expect(window.HTMLElement.prototype.scrollIntoView).not.toHaveBeenCalled();
+    });
+
+    it('sends correct payload when set default photo dropdown option clicked', async () => {
+        // Click gallery dropdown option, confirm gallery appears
+        await user.click(app.getByRole('button', {name: 'Gallery'}));
+        await waitFor(() =>
+            expect(document.body.querySelector('.yarl__root')).not.toBeNull()
+        );
+
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                default_photo: {
+                    set: true,
+                    timestamp: '2024-03-23T10:52:03+00:00',
+                    image: '/media/images/photo3.jpg',
+                    thumbnail: '/media/thumbnails/photo3_thumb.webp',
+                    preview: '/media/previews/photo3_preview.webp',
+                    key: 3
+                }
+            })
+        }));
+
+        // Simulate user opening dropdown and clicking "Set default photo"
+        await user.click(app.getByLabelText('Gallery options'));
+        await user.click(app.getByText('Set default photo'));
+
+        // Confirm correct data posted to /set_plant_default_photo endpoint
+        expect(fetch).toHaveBeenCalledWith('/set_plant_default_photo', {
+            method: 'POST',
+            body: JSON.stringify({
+                plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                photo_key: 3,
+            }),
+            headers: postHeaders
+        });
+    });
+
+    it('shows error in modal if API call fails when set default photo dropdown option clicked', async () => {
+        // Click gallery dropdown option, confirm gallery appears
+        await user.click(app.getByRole('button', {name: 'Gallery'}));
+        await waitFor(() =>
+            expect(document.body.querySelector('.yarl__root')).not.toBeNull()
+        );
+
+        // Mock fetch function to return expected error message
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            status: 404,
+            json: () => Promise.resolve({error: "unable to find photo"})
+        }));
+
+        // Confirm error does not appear on page
+        expect(app.queryByText(/unable to find photo/)).toBeNull();
+
+        // Simulate user opening dropdown and clicking "Set default photo"
+        await user.click(app.getByLabelText('Gallery options'));
+        await user.click(app.getByText('Set default photo'));
+
+        // Confirm modal appeared with arbitrary error text
+        expect(app.queryByText(/unable to find photo/)).not.toBeNull();
     });
 });

@@ -1,4 +1,5 @@
 import React, { useState, useMemo } from 'react';
+import PropTypes from 'prop-types';
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import Captions from "yet-another-react-lightbox/plugins/captions";
@@ -10,10 +11,14 @@ import "yet-another-react-lightbox/styles.css";
 import "yet-another-react-lightbox/plugins/captions.css";
 import "yet-another-react-lightbox/plugins/thumbnails.css";
 import "src/css/gallery.css";
+import { sendPostRequest } from 'src/util';
 import { useSelector, useDispatch } from 'react-redux';
 import { timestampToReadable } from 'src/timestampUtils';
+import { defaultPhotoChanged } from './timelineSlice';
 import { photoGalleryOpened, photoGalleryIndexChanged } from './interfaceSlice';
 import { useIsBreakpointActive } from 'src/useBreakpoint';
+import DropdownMenu from 'src/components/DropdownMenu';
+import { openErrorModal } from 'src/components/ErrorModal';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 import {
     XMarkIcon,
@@ -28,6 +33,7 @@ import {
     MagnifyingGlassPlusIcon,
     MagnifyingGlassMinusIcon
 } from '@heroicons/react/24/solid';
+import { FaEllipsis } from 'react-icons/fa6';
 import { DateTime } from 'luxon';
 import clsx from 'clsx';
 
@@ -36,6 +42,53 @@ import clsx from 'clsx';
 const elementIsVisible = (element) => {
     const rect = element.getBoundingClientRect();
     return rect.top >= 136 && rect.bottom <= window.innerHeight;
+};
+
+// Top-right corner dropdown menu
+const GalleryDropdown = ({ currentSlide }) => {
+    const plantID = useSelector((state) => state.plant.plantDetails.uuid);
+    const dispatch = useDispatch();
+
+    // Sets the current slide as the default photo
+    const handleSetDefaultPhoto = async () => {
+        document.activeElement.blur();
+        const response = await sendPostRequest('/set_plant_default_photo', {
+            plant_id: plantID,
+            photo_key: currentSlide.key
+        });
+        if (response.ok) {
+            const data = await response.json();
+            dispatch(defaultPhotoChanged(data.default_photo));
+        } else {
+            const error = await response.json();
+            openErrorModal(error);
+        }
+    };
+
+    return (
+        <div className="gallery-dropdown dropdown dropdown-start">
+            <div
+                tabIndex={0}
+                role="button"
+                className="yarl__button"
+                aria-label="Gallery options"
+            >
+                <FaEllipsis className="size-8" />
+            </div>
+            <DropdownMenu>
+                <li><button
+                    className="flex justify-end"
+                    onClick={handleSetDefaultPhoto}
+                >
+                    Set default photo
+                </button></li>
+            </DropdownMenu>
+        </div>
+    );
+};
+
+GalleryDropdown.propTypes = {
+    currentSlide: PropTypes.object
 };
 
 const Gallery = () => {
@@ -163,20 +216,24 @@ const Gallery = () => {
                 // Key changes on each slide (remount, start animation over)
                 // Also remounts when direction changes (start over animation)
                 controls: () => {
-                    if (slideshowRunning) {
-                        return (
-                            <div
-                                key={String(`${index}${slideshowForward}`)}
-                                className={clsx(
-                                    "slideshow_progress_bar",
-                                    !slideshowForward && "reverse"
-                                )}
-                                style={{
-                                    "--slideshow-delay": `${delay}ms`
-                                }}
-                            />
-                        );
-                    }
+                    return (
+                        <>
+                            {slideshowRunning && (
+                                <div
+                                    key={String(`${index}${slideshowForward}`)}
+                                    className={clsx(
+                                        "slideshow_progress_bar",
+                                        !slideshowForward && "reverse"
+                                    )}
+                                    style={{
+                                        "--slideshow-delay": `${delay}ms`
+                                    }}
+                                />
+                            )}
+                            {/* Top-left cornerdropdown button */}
+                            <GalleryDropdown currentSlide={slides[index]} />
+                        </>
+                    );
                 }
             }}
             labels={{

@@ -116,3 +116,8 @@ button.yarl__thumbnails_thumbnail {
 .yarl__button[title='Close photo gallery'] {
     @apply z-100;
 }
+
+/* Top-left corner dropdown menu */
+.gallery-dropdown {
+    @apply absolute top-0 left-0 p-2;
+}
