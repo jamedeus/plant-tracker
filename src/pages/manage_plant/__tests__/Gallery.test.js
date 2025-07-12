@@ -264,9 +264,12 @@ describe('Gallery', () => {
             }),
             headers: postHeaders
         });
+
+        // Confirm toast message appeared
+        expect(app.queryByText("Default photo set!")).not.toBeNull();
     });
 
-    it('shows error in modal if API call fails when set default photo dropdown option clicked', async () => {
+    it('shows error toast if API call fails when set default photo dropdown option clicked', async () => {
         // Click gallery dropdown option, confirm gallery appears
         await user.click(app.getByRole('button', {name: 'Gallery'}));
         await waitFor(() =>
@@ -280,14 +283,14 @@ describe('Gallery', () => {
             json: () => Promise.resolve({error: "unable to find photo"})
         }));
 
-        // Confirm error does not appear on page
-        expect(app.queryByText(/unable to find photo/)).toBeNull();
+        // Confirm error toast is not visible
+        expect(app.queryByText("Failed to set default photo")).toBeNull();
 
         // Simulate user opening dropdown and clicking "Set default photo"
         await user.click(app.getByLabelText('Gallery options'));
         await user.click(app.getByText('Set default photo'));
 
-        // Confirm modal appeared with arbitrary error text
-        expect(app.queryByText(/unable to find photo/)).not.toBeNull();
+        // Confirm error toast appeared
+        expect(app.queryByText("Failed to set default photo")).not.toBeNull();
     });
 });

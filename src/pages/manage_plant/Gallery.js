@@ -17,8 +17,8 @@ import { timestampToReadable } from 'src/timestampUtils';
 import { defaultPhotoChanged } from './timelineSlice';
 import { photoGalleryOpened, photoGalleryIndexChanged } from './interfaceSlice';
 import { useIsBreakpointActive } from 'src/useBreakpoint';
+import { showToast } from 'src/components/Toast';
 import DropdownMenu from 'src/components/DropdownMenu';
-import { openErrorModal } from 'src/components/ErrorModal';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 import {
     XMarkIcon,
@@ -59,9 +59,9 @@ const GalleryDropdown = ({ currentSlide }) => {
         if (response.ok) {
             const data = await response.json();
             dispatch(defaultPhotoChanged(data.default_photo));
+            showToast('Default photo set!', 'green', 2500);
         } else {
-            const error = await response.json();
-            openErrorModal(error);
+            showToast('Failed to set default photo', 'red', 2500);
         }
     };
 
