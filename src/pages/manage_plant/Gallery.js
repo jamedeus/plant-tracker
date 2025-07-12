@@ -46,14 +46,14 @@ const elementIsVisible = (element) => {
 
 // Top-right corner dropdown menu
 const GalleryDropdown = ({ currentSlide }) => {
-    const plantID = useSelector((state) => state.plant.plantDetails.uuid);
+    const plantDetails = useSelector((state) => state.plant.plantDetails);
     const dispatch = useDispatch();
 
     // Sets the current slide as the default photo
     const handleSetDefaultPhoto = async () => {
         document.activeElement.blur();
         const response = await sendPostRequest('/set_plant_default_photo', {
-            plant_id: plantID,
+            plant_id: plantDetails.uuid,
             photo_key: currentSlide.key
         });
         if (response.ok) {
@@ -62,6 +62,57 @@ const GalleryDropdown = ({ currentSlide }) => {
             showToast('Default photo set!', 'green', 2500);
         } else {
             showToast('Failed to set default photo', 'red', 2500);
+        }
+    };
+
+    // Opens native share sheet on mobile, saves to downloads folder on desktop
+    const handleDownloadPhoto = async () => {
+        // Close dropdown menu
+        document.activeElement.blur();
+
+        // Build filename with plant name and timestamp
+        const plantName = plantDetails.name;
+        const photoDate = currentSlide.description;
+        const filename = `${plantName}_photo_${photoDate}.jpg`;
+
+        try {
+            // Check if native share sheet is supported (mobile)
+            if (navigator.share && navigator.canShare) {
+                // Fetch the image as a blob
+                const response = await fetch(currentSlide.src);
+                if (!response.ok) {
+                    throw new Error('Failed to fetch photo');
+                }
+
+                // Create file with plant name and timestamp in filename
+                const blob = await response.blob();
+                const file = new File([blob], filename, { type: 'image/jpeg' });
+
+                // Share as file if supported (recipient doesn't need authentication)
+                if (navigator.canShare({ files: [file] })) {
+                    await navigator.share({
+                        files: [file],
+                        title: filename,
+                        text: `This is a photo of my plant ${plantName} on ${photoDate}`
+                    });
+                // Fallback to URL otherwise (only saving to disk will work)
+                } else {
+                    await navigator.share({
+                        title: filename,
+                        text: `This is a photo of my plant ${plantName} on ${photoDate}`,
+                        url: currentSlide.src
+                    });
+                }
+            // Save photo to disk (desktop)
+            } else {
+                const link = document.createElement('a');
+                link.href = currentSlide.src;
+                link.download = filename;
+                link.click();
+            }
+        } catch (error) {
+            console.error('Unable to download photo:', error);
+            showToast('Failed to download photo', 'red', 2500);
         }
     };
 
@@ -76,6 +127,12 @@ const GalleryDropdown = ({ currentSlide }) => {
                 <FaEllipsis className="size-8" />
             </div>
             <DropdownMenu>
+                <li><button
+                    className="flex justify-end"
+                    onClick={handleDownloadPhoto}
+                >
+                    Download photo
+                </button></li>
                 <li><button
                     className="flex justify-end"
                     onClick={handleSetDefaultPhoto}

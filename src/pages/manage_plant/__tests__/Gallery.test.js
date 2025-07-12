@@ -293,4 +293,137 @@ describe('Gallery', () => {
         // Confirm error toast appeared
         expect(app.queryByText("Failed to set default photo")).not.toBeNull();
     });
+
+    it('saves photo to disk on desktop when download photo option clicked', async () => {
+        // Simulate desktop user (navigator.share undefined)
+        navigator.share = undefined;
+
+        // Click gallery dropdown option, confirm gallery appears
+        await user.click(app.getByRole('button', {name: 'Gallery'}));
+        await waitFor(() =>
+            expect(document.body.querySelector('.yarl__root')).not.toBeNull()
+        );
+
+        // Mock document.createElement to create an element with a mocked click
+        // method (need to confirm clicked automatically)
+        const mockLink = {
+            href: '',
+            download: '',
+            click: jest.fn()
+        };
+        const originalCreateElement = document.createElement;
+        document.createElement = jest.fn((tagName) => {
+            if (tagName === 'a') {
+                return mockLink;
+            }
+            return originalCreateElement.call(document, tagName);
+        });
+
+        // Simulate user opening dropdown and clicking "Download photo"
+        await user.click(app.getByLabelText('Gallery options'));
+        await user.click(app.getByText('Download photo'));
+
+        // Confirm createElement was called to create an <a> element
+        expect(document.createElement).toHaveBeenCalledWith('a');
+        // Confirm correct properties, confirm clicked automatically
+        expect(mockLink.href).toBe('/media/images/photo3.jpg');
+        expect(mockLink.download).toBe('Test Plant_photo_March 23, 2024.jpg');
+        expect(mockLink.click).toHaveBeenCalled();
+
+        // Restore original createElement
+        document.createElement = originalCreateElement;
+    });
+
+    it('opens native share sheet on mobile when download photo option clicked', async () => {
+        // Simulate mobile user (mock navigator.share and navigator.canShare)
+        const mockShare = jest.fn(() => Promise.resolve());
+        const mockCanShare = jest.fn(() => true);
+        navigator.share = mockShare;
+        navigator.canShare = mockCanShare;
+
+        // Mock fetch function to return a blob
+        const mockBlob = new Blob(['fake image data'], { type: 'image/jpeg' });
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            blob: () => Promise.resolve(mockBlob)
+        }));
+
+        // Click gallery dropdown option, confirm gallery appears
+        await user.click(app.getByRole('button', {name: 'Gallery'}));
+        await waitFor(() =>
+            expect(document.body.querySelector('.yarl__root')).not.toBeNull()
+        );
+
+        // Simulate user opening dropdown and clicking "Download photo"
+        await user.click(app.getByLabelText('Gallery options'));
+        await user.click(app.getByText('Download photo'));
+
+        // Confirm image blob was fetched
+        expect(fetch).toHaveBeenCalledWith('/media/images/photo3.jpg');
+
+        // Confirm checked if can share as file
+        expect(mockCanShare).toHaveBeenCalledWith({
+            files: expect.arrayContaining([
+                expect.any(File)
+            ])
+        });
+
+        // Confirm navigator.share was called with details (opens share sheet)
+        expect(mockShare).toHaveBeenCalledWith({
+            files: expect.arrayContaining([
+                expect.any(File)
+            ]),
+            title: 'Test Plant_photo_March 23, 2024.jpg',
+            text: 'This is a photo of my plant Test Plant on March 23, 2024'
+        });
+    });
+
+    it('opens share sheet with URL on mobile if browser does not support sharing files', async () => {
+        // Simulate mobile user on outdated browser that can't share files
+        const mockShare = jest.fn(() => Promise.resolve());
+        navigator.share = mockShare;
+        navigator.canShare = jest.fn(() => false);
+
+        // Click gallery dropdown option, confirm gallery appears
+        await user.click(app.getByRole('button', {name: 'Gallery'}));
+        await waitFor(() =>
+            expect(document.body.querySelector('.yarl__root')).not.toBeNull()
+        );
+
+        // Simulate user opening dropdown and clicking "Download photo"
+        await user.click(app.getByLabelText('Gallery options'));
+        await user.click(app.getByText('Download photo'));
+
+        // Confirm navigator.share was called with URL instead of file
+        expect(mockShare).toHaveBeenCalledWith({
+            title: 'Test Plant_photo_March 23, 2024.jpg',
+            text: 'This is a photo of my plant Test Plant on March 23, 2024',
+            url: '/media/images/photo3.jpg'
+        });
+    });
+
+    it('shows error toast when download photo option clicked if request fails', async () => {
+        // Simulate mobile user (mock navigator.share and navigator.canShare)
+        navigator.share = jest.fn(() => Promise.resolve());
+        navigator.canShare = jest.fn(() => true);
+
+        // Mock fetch function to return error when photo downloaded
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            status: 404
+        }));
+
+        // Click gallery dropdown option, confirm gallery appears
+        await user.click(app.getByRole('button', {name: 'Gallery'}));
+        await waitFor(() =>
+            expect(document.body.querySelector('.yarl__root')).not.toBeNull()
+        );
+
+        // Simulate user opening dropdown and clicking "Download photo"
+        await user.click(app.getByLabelText('Gallery options'));
+        await user.click(app.getByText('Download photo'));
+
+        // Confirm error toast appeared
+        expect(app.queryByText('Failed to download photo')).not.toBeNull();
+    });
 });
