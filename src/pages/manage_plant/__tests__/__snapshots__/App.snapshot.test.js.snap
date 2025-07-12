@@ -1831,6 +1831,65 @@ exports[`App matches snapshot 1`] = `
           </div>
         </div>
         <div
+          class="flex items-center font-semibold"
+          title="How many seconds the delete button must be held to delete events/notes/photos (prevents accidents)"
+        >
+          Hold to delete delay (seconds)
+        </div>
+        <div
+          class="flex items-center"
+        >
+          <div
+            class="dropdown dropdown-center mx-auto"
+          >
+            <button
+              aria-label="Set Hold to delete delay (seconds)"
+              class="btn btn-ghost text-xl font-bold"
+              role="button"
+              tabindex="0"
+            >
+              1.5
+            </button>
+            <ul
+              class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+              tabindex="0"
+            >
+              <li>
+                <button
+                  aria-label="Set Hold to delete delay (seconds) to 0"
+                  class="flex justify-center"
+                >
+                  0
+                </button>
+              </li>
+              <li>
+                <button
+                  aria-label="Set Hold to delete delay (seconds) to 0.5"
+                  class="flex justify-center"
+                >
+                  0.5
+                </button>
+              </li>
+              <li>
+                <button
+                  aria-label="Set Hold to delete delay (seconds) to 1.5"
+                  class="flex justify-center"
+                >
+                  1.5
+                </button>
+              </li>
+              <li>
+                <button
+                  aria-label="Set Hold to delete delay (seconds) to 2.5"
+                  class="flex justify-center"
+                >
+                  2.5
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
           class="settings-section-header"
         >
           Photo Gallery
@@ -1983,70 +2042,6 @@ exports[`App matches snapshot 1`] = `
                   class="flex justify-center"
                 >
                   No
-                </button>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div
-          class="settings-section-header"
-        >
-          Other
-        </div>
-        <div
-          class="flex items-center font-semibold"
-          title="How many seconds the delete button must be held to delete events/notes/photos (prevents accidents)"
-        >
-          Hold to delete delay (seconds)
-        </div>
-        <div
-          class="flex items-center"
-        >
-          <div
-            class="dropdown dropdown-center mx-auto"
-          >
-            <button
-              aria-label="Set Hold to delete delay (seconds)"
-              class="btn btn-ghost text-xl font-bold"
-              role="button"
-              tabindex="0"
-            >
-              1.5
-            </button>
-            <ul
-              class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
-              tabindex="0"
-            >
-              <li>
-                <button
-                  aria-label="Set Hold to delete delay (seconds) to 0"
-                  class="flex justify-center"
-                >
-                  0
-                </button>
-              </li>
-              <li>
-                <button
-                  aria-label="Set Hold to delete delay (seconds) to 0.5"
-                  class="flex justify-center"
-                >
-                  0.5
-                </button>
-              </li>
-              <li>
-                <button
-                  aria-label="Set Hold to delete delay (seconds) to 1.5"
-                  class="flex justify-center"
-                >
-                  1.5
-                </button>
-              </li>
-              <li>
-                <button
-                  aria-label="Set Hold to delete delay (seconds) to 2.5"
-                  class="flex justify-center"
-                >
-                  2.5
                 </button>
               </li>
             </ul>
@@ -4069,6 +4064,65 @@ exports[`App matches snapshot when plant is archived 1`] = `
           </div>
         </div>
         <div
+          class="flex items-center font-semibold"
+          title="How many seconds the delete button must be held to delete events/notes/photos (prevents accidents)"
+        >
+          Hold to delete delay (seconds)
+        </div>
+        <div
+          class="flex items-center"
+        >
+          <div
+            class="dropdown dropdown-center mx-auto"
+          >
+            <button
+              aria-label="Set Hold to delete delay (seconds)"
+              class="btn btn-ghost text-xl font-bold"
+              role="button"
+              tabindex="0"
+            >
+              1.5
+            </button>
+            <ul
+              class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
+              tabindex="0"
+            >
+              <li>
+                <button
+                  aria-label="Set Hold to delete delay (seconds) to 0"
+                  class="flex justify-center"
+                >
+                  0
+                </button>
+              </li>
+              <li>
+                <button
+                  aria-label="Set Hold to delete delay (seconds) to 0.5"
+                  class="flex justify-center"
+                >
+                  0.5
+                </button>
+              </li>
+              <li>
+                <button
+                  aria-label="Set Hold to delete delay (seconds) to 1.5"
+                  class="flex justify-center"
+                >
+                  1.5
+                </button>
+              </li>
+              <li>
+                <button
+                  aria-label="Set Hold to delete delay (seconds) to 2.5"
+                  class="flex justify-center"
+                >
+                  2.5
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div
           class="settings-section-header"
         >
           Photo Gallery
@@ -4221,70 +4275,6 @@ exports[`App matches snapshot when plant is archived 1`] = `
                   class="flex justify-center"
                 >
                   No
-                </button>
-              </li>
-            </ul>
-          </div>
-        </div>
-        <div
-          class="settings-section-header"
-        >
-          Other
-        </div>
-        <div
-          class="flex items-center font-semibold"
-          title="How many seconds the delete button must be held to delete events/notes/photos (prevents accidents)"
-        >
-          Hold to delete delay (seconds)
-        </div>
-        <div
-          class="flex items-center"
-        >
-          <div
-            class="dropdown dropdown-center mx-auto"
-          >
-            <button
-              aria-label="Set Hold to delete delay (seconds)"
-              class="btn btn-ghost text-xl font-bold"
-              role="button"
-              tabindex="0"
-            >
-              1.5
-            </button>
-            <ul
-              class="dropdown-content menu z-90 shadow-sm bg-base-300 rounded-box min-w-24 mt-2"
-              tabindex="0"
-            >
-              <li>
-                <button
-                  aria-label="Set Hold to delete delay (seconds) to 0"
-                  class="flex justify-center"
-                >
-                  0
-                </button>
-              </li>
-              <li>
-                <button
-                  aria-label="Set Hold to delete delay (seconds) to 0.5"
-                  class="flex justify-center"
-                >
-                  0.5
-                </button>
-              </li>
-              <li>
-                <button
-                  aria-label="Set Hold to delete delay (seconds) to 1.5"
-                  class="flex justify-center"
-                >
-                  1.5
-                </button>
-              </li>
-              <li>
-                <button
-                  aria-label="Set Hold to delete delay (seconds) to 2.5"
-                  class="flex justify-center"
-                >
-                  2.5
                 </button>
               </li>
             </ul>

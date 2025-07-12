@@ -14,14 +14,12 @@ const sections = {
     Timeline: [
         "timelineFullDate",
         "collapsedNoteLines",
+        "holdToConfirmDelay",
     ],
     "Photo Gallery": [
         "galleryShowPhotoDate",
         "gallerySlideshowDelay",
         "galleryScrollToPhoto",
-    ],
-    Other: [
-        "holdToConfirmDelay"
     ]
 };
 
