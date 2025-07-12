@@ -22,6 +22,7 @@ import DropdownMenu from 'src/components/DropdownMenu';
 import LoadingAnimation from 'src/components/LoadingAnimation';
 import {
     XMarkIcon,
+    StarIcon,
     PlayIcon,
     PauseIcon,
     ArrowRightIcon,
@@ -131,12 +132,14 @@ const GalleryDropdown = ({ currentSlide }) => {
                     className="flex justify-end"
                     onClick={handleDownloadPhoto}
                 >
+                    <ArrowDownTrayIcon className="size-4 mr-auto" />
                     Download photo
                 </button></li>
                 <li><button
                     className="flex justify-end"
                     onClick={handleSetDefaultPhoto}
                 >
+                    <StarIcon className="size-4 mr-auto" />
                     Set default photo
                 </button></li>
             </DropdownMenu>
