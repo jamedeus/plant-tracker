@@ -13,7 +13,7 @@ import "src/css/gallery.css";
 import { sendPostRequest } from 'src/util';
 import { useSelector, useDispatch } from 'react-redux';
 import { timestampToReadable } from 'src/timestampUtils';
-import { defaultPhotoChanged } from './timelineSlice';
+import { defaultPhotoChanged, photosDeleted } from './timelineSlice';
 import { photoGalleryOpened, photoGalleryIndexChanged } from './interfaceSlice';
 import { useIsBreakpointActive } from 'src/useBreakpoint';
 import { showToast } from 'src/components/Toast';
@@ -24,6 +24,7 @@ import {
     StarIcon,
     PlayIcon,
     PauseIcon,
+    TrashIcon,
     ArrowRightIcon,
     ChevronLeftIcon,
     ChevronRightIcon,
@@ -69,6 +70,9 @@ SlideshowProgressBar.propTypes = {
 const GalleryDropdown = ({ currentSlide }) => {
     const plantDetails = useSelector((state) => state.plant.plantDetails);
     const dispatch = useDispatch();
+
+    // Controls delete confirmation overlay visibility
+    const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
     // Sets the current slide as the default photo
     const handleSetDefaultPhoto = async () => {
@@ -134,33 +138,91 @@ const GalleryDropdown = ({ currentSlide }) => {
         }
     };
 
+    // Shows delete confirmation overlay when dropdown option clicked
+    const handleDeletePhotoOption = () => {
+        document.activeElement.blur();
+        setShowConfirmDelete(true);
+    };
+
+    // Deletes photo when user clicks delete in confirmation overlay
+    const handleDeletePhoto = async () => {
+        setShowConfirmDelete(false);
+
+        const response = await sendPostRequest('/delete_plant_photos', {
+            plant_id: plantDetails.uuid,
+            delete_photos: [currentSlide.key]
+        });
+
+        if (response.ok) {
+            const data = await response.json();
+            dispatch(photosDeleted(data.deleted));
+        } else {
+            showToast('Failed to delete photo', 'red', 2500);
+        }
+    };
+
     return (
-        <div className="gallery-dropdown dropdown dropdown-start">
-            <div
-                tabIndex={0}
-                role="button"
-                className="yarl__button"
-                aria-label="Gallery options"
-            >
-                <FaEllipsis className="size-8" />
+        <>
+            <div className="gallery-dropdown dropdown dropdown-start">
+                <div
+                    tabIndex={0}
+                    role="button"
+                    className="yarl__button"
+                    aria-label="Gallery options"
+                >
+                    <FaEllipsis className="size-8" />
+                </div>
+                <DropdownMenu>
+                    <li><button
+                        className="flex justify-end"
+                        onClick={handleDownloadPhoto}
+                    >
+                        <ArrowDownTrayIcon className="size-4 mr-auto" />
+                        Download photo
+                    </button></li>
+                    <li><button
+                        className="flex justify-end"
+                        onClick={handleSetDefaultPhoto}
+                    >
+                        <StarIcon className="size-4 mr-auto" />
+                        Set default photo
+                    </button></li>
+                    <li><button
+                        className="flex justify-end"
+                        onClick={handleDeletePhotoOption}
+                    >
+                        <TrashIcon className="size-4 mr-auto" />
+                        Delete photo
+                    </button></li>
+                </DropdownMenu>
             </div>
-            <DropdownMenu>
-                <li><button
-                    className="flex justify-end"
-                    onClick={handleDownloadPhoto}
-                >
-                    <ArrowDownTrayIcon className="size-4 mr-auto" />
-                    Download photo
-                </button></li>
-                <li><button
-                    className="flex justify-end"
-                    onClick={handleSetDefaultPhoto}
-                >
-                    <StarIcon className="size-4 mr-auto" />
-                    Set default photo
-                </button></li>
-            </DropdownMenu>
-        </div>
+
+            {/* Delete confirmation overlay */}
+            {showConfirmDelete && (
+                <div className="fixed inset-0 flex items-center justify-center backdrop-blur-sm">
+                    <div className="bg-base-100 rounded-box p-6 pt-4 mx-4 text-center">
+                        <h3 className="font-bold text-lg mb-4">Delete Photo</h3>
+                        <p className="text-base-content/70 mb-6">
+                            Are you sure? This cannot be undone.
+                        </p>
+                        <div className="flex gap-4 justify-center">
+                            <button
+                                className="btn btn-neutral w-20"
+                                onClick={() => setShowConfirmDelete(false)}
+                            >
+                                Cancel
+                            </button>
+                            <button
+                                className="btn btn-error w-20"
+                                onClick={handleDeletePhoto}
+                            >
+                                Delete
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+        </>
     );
 };
 

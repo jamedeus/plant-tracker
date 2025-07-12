@@ -426,4 +426,112 @@ describe('Gallery', () => {
         // Confirm error toast appeared
         expect(app.queryByText('Failed to download photo')).not.toBeNull();
     });
+
+    it('shows delete confirmation when delete photo option clicked', async () => {
+        // Click gallery dropdown option, confirm gallery appears
+        await user.click(app.getByRole('button', {name: 'Gallery'}));
+        await waitFor(() =>
+            expect(document.body.querySelector('.yarl__root')).not.toBeNull()
+        );
+
+        // Confirm delete confirmation dialog not visible
+        expect(app.queryByText('Delete Photo')).toBeNull();
+        expect(app.queryByText('Are you sure? This cannot be undone.')).toBeNull();
+
+        // Simulate user opening dropdown and clicking "Delete photo"
+        await user.click(app.getByLabelText('Gallery options'));
+        await user.click(app.getByText('Delete photo'));
+
+        // Confirm delete confirmation dialog appeared
+        expect(app.queryByText('Delete Photo')).not.toBeNull();
+        expect(app.queryByText('Are you sure? This cannot be undone.')).not.toBeNull();
+
+        // Confirm fetch was NOT called
+        expect(fetch).not.toHaveBeenCalled();
+    });
+
+    it('deletes photo when user clicks delete on confirmation overlay', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                deleted: [3],
+                failed: []
+            })
+        }));
+
+        // Click gallery dropdown option, confirm gallery appears
+        await user.click(app.getByRole('button', {name: 'Gallery'}));
+        await waitFor(() =>
+            expect(document.body.querySelector('.yarl__root')).not.toBeNull()
+        );
+
+        // Simulate user opening dropdown and clicking "Delete photo"
+        await user.click(app.getByLabelText('Gallery options'));
+        await user.click(app.getByText('Delete photo'));
+
+        // Click delete button in confirmation dialog
+        await user.click(app.getByRole('button', {name: 'Delete'}));
+
+        // Confirm correct data posted to /delete_plant_photos endpoint
+        expect(fetch).toHaveBeenCalledWith('/delete_plant_photos', {
+            method: 'POST',
+            body: JSON.stringify({
+                plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                delete_photos: [3]
+            }),
+            headers: postHeaders
+        });
+    });
+
+    it('cancels delete when user clicks cancel on confirmation overlay', async () => {
+        // Click gallery dropdown option, confirm gallery appears
+        await user.click(app.getByRole('button', {name: 'Gallery'}));
+        await waitFor(() =>
+            expect(document.body.querySelector('.yarl__root')).not.toBeNull()
+        );
+
+        // Simulate user opening dropdown and clicking "Delete photo"
+        await user.click(app.getByLabelText('Gallery options'));
+        await user.click(app.getByText('Delete photo'));
+
+        // Click cancel button in confirmation dialog
+        await user.click(app.getByRole('button', {name: 'Cancel'}));
+
+        // Confirm confirmation dialog disappeared
+        expect(app.queryByText('Delete Photo')).toBeNull();
+        expect(app.queryByText('Are you sure? This cannot be undone.')).toBeNull();
+
+        // Confirm fetch was NOT called
+        expect(fetch).not.toHaveBeenCalled();
+    });
+
+    it('shows error toast when delete photo clicked if request fails', async () => {
+        // Mock fetch function to return error response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            status: 404,
+            json: () => Promise.resolve({
+                error: "failed to delete photo"
+            })
+        }));
+
+        // Click gallery dropdown option, confirm gallery appears
+        await user.click(app.getByRole('button', {name: 'Gallery'}));
+        await waitFor(() =>
+            expect(document.body.querySelector('.yarl__root')).not.toBeNull()
+        );
+
+        // Simulate user opening dropdown and clicking "Delete photo"
+        await user.click(app.getByLabelText('Gallery options'));
+        await user.click(app.getByText('Delete photo'));
+
+        // Click delete button in confirmation overlay
+        await user.click(app.getByRole('button', {name: 'Delete'}));
+
+        // Confirm error toast appeared, overlay disappeared
+        expect(app.queryByText('Failed to delete photo')).not.toBeNull();
+        expect(app.queryByText('Are you sure? This cannot be undone.')).toBeNull();
+    });
 });
