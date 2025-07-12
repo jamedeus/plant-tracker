@@ -44,6 +44,27 @@ const elementIsVisible = (element) => {
     return rect.top >= 136 && rect.bottom <= window.innerHeight;
 };
 
+// CSS progress bar animation (runs once when mounted, change key to force
+// remount and restart animation)
+const SlideshowProgressBar = ({ delay, slideshowForward }) => {
+    return (
+        <div
+            className={clsx(
+                "slideshow_progress_bar",
+                !slideshowForward && "reverse"
+            )}
+            style={{
+                "--slideshow-delay": `${delay}ms`
+            }}
+        />
+    );
+};
+
+SlideshowProgressBar.propTypes = {
+    delay: PropTypes.number.isRequired,
+    slideshowForward: PropTypes.bool.isRequired
+};
+
 // Top-right corner dropdown menu
 const GalleryDropdown = ({ currentSlide }) => {
     const plantDetails = useSelector((state) => state.plant.plantDetails);
@@ -75,44 +96,41 @@ const GalleryDropdown = ({ currentSlide }) => {
         const photoDate = currentSlide.description;
         const filename = `${plantName}_photo_${photoDate}.jpg`;
 
-        try {
-            // Check if native share sheet is supported (mobile)
-            if (navigator.share && navigator.canShare) {
-                // Fetch the image as a blob
-                const response = await fetch(currentSlide.src);
-                if (!response.ok) {
-                    throw new Error('Failed to fetch photo');
-                }
-
-                // Create file with plant name and timestamp in filename
-                const blob = await response.blob();
-                const file = new File([blob], filename, { type: 'image/jpeg' });
-
-                // Share as file if supported (recipient doesn't need authentication)
-                if (navigator.canShare({ files: [file] })) {
-                    await navigator.share({
-                        files: [file],
-                        title: filename,
-                        text: `This is a photo of my plant ${plantName} on ${photoDate}`
-                    });
-                // Fallback to URL otherwise (only saving to disk will work)
-                } else {
-                    await navigator.share({
-                        title: filename,
-                        text: `This is a photo of my plant ${plantName} on ${photoDate}`,
-                        url: currentSlide.src
-                    });
-                }
-            // Save photo to disk (desktop)
-            } else {
-                const link = document.createElement('a');
-                link.href = currentSlide.src;
-                link.download = filename;
-                link.click();
+        // Check if native share sheet is supported (mobile)
+        if (navigator.share && navigator.canShare) {
+            // Fetch the image as a blob
+            const response = await fetch(currentSlide.src);
+            if (!response.ok) {
+                console.error('Unable to download photo:');
+                showToast('Failed to download photo', 'red', 2500);
+                return;
             }
-        } catch (error) {
-            console.error('Unable to download photo:', error);
-            showToast('Failed to download photo', 'red', 2500);
+
+            // Create file with plant name and timestamp in filename
+            const blob = await response.blob();
+            const file = new File([blob], filename, { type: 'image/jpeg' });
+
+            // Share as file if supported (recipient doesn't need authentication)
+            if (navigator.canShare({ files: [file] })) {
+                await navigator.share({
+                    files: [file],
+                    title: filename,
+                    text: `This is a photo of my plant ${plantName} on ${photoDate}`
+                });
+            // Fallback to URL otherwise (only saving to disk will work)
+            } else {
+                await navigator.share({
+                    title: filename,
+                    text: `This is a photo of my plant ${plantName} on ${photoDate}`,
+                    url: currentSlide.src
+                });
+            }
+        // Save photo to disk (desktop)
+        } else {
+            const link = document.createElement('a');
+            link.href = currentSlide.src;
+            link.download = filename;
+            link.click();
         }
     };
 
@@ -270,29 +288,22 @@ const Gallery = () => {
                 iconEnterFullscreen: () => <ArrowsPointingOutIcon className="size-8" />,
                 // Match loading animation used in rest of app
                 iconLoading: () => <LoadingAnimation />,
-                // Render progress bar if slideshow is running
-                // Key changes on each slide (remount, start animation over)
-                // Also remounts when direction changes (start over animation)
-                controls: () => {
-                    return (
-                        <>
-                            {slideshowRunning && (
-                                <div
-                                    key={String(`${index}${slideshowForward}`)}
-                                    className={clsx(
-                                        "slideshow_progress_bar",
-                                        !slideshowForward && "reverse"
-                                    )}
-                                    style={{
-                                        "--slideshow-delay": `${delay}ms`
-                                    }}
-                                />
-                            )}
-                            {/* Top-left cornerdropdown button */}
-                            <GalleryDropdown currentSlide={slides[index]} />
-                        </>
-                    );
-                }
+                // Render custom top-left corner dropdown button
+                // Render slideshow progress bar if slideshow is running
+                controls: () =>
+                    <>
+                        <GalleryDropdown currentSlide={slides[index]} />
+                        {slideshowRunning && (
+                            // Key changes on each slide or when direction
+                            // changes (remount, start animation over)
+                            <SlideshowProgressBar
+                                key={String(`${index}${slideshowForward}`)}
+                                delay={delay}
+                                slideshowForward={slideshowForward}
+                            />
+                        )}
+                    </>
+
             }}
             labels={{
                 Next: "Next photo",
