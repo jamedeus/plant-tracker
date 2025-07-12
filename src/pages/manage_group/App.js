@@ -325,7 +325,7 @@ function App() {
 
             <FloatingFooter visible={removingPlants}>
                 <button
-                    className="btn btn-neutral"
+                    className="btn btn-neutral w-22"
                     onClick={stopRemovingPlants}
                 >
                     Cancel

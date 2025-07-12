@@ -210,7 +210,7 @@ const EditModeFooter = memo(function EditModeFooter({
             fadeText={totalSelected <= 1 || fadeText}
         >
             <button
-                className="btn btn-neutral"
+                className="btn btn-neutral w-20"
                 onClick={cancelEditing}
             >
                 Cancel
@@ -227,6 +227,7 @@ const EditModeFooter = memo(function EditModeFooter({
                 callback={handleDelete}
                 timeout={2500}
                 buttonText="Delete"
+                buttonClass="w-20"
                 onHoldStart={handleHoldStart}
                 onHoldStop={handleHoldStop}
             />

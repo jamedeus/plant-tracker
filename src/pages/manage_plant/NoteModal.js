@@ -181,10 +181,11 @@ const NoteModal = () => {
                                 callback={handleDelete}
                                 timeout={holdToConfirmDelay}
                                 buttonText="Delete"
+                                buttonClass="w-20"
                                 tooltipText="Hold to confirm"
                             />
                             <button
-                                className="btn btn-accent"
+                                className="btn btn-accent w-20"
                                 onClick={handleEdit}
                                 disabled={saveButtonDisabled}
                             >

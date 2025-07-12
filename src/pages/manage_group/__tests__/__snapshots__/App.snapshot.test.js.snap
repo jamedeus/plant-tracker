@@ -707,7 +707,7 @@ exports[`App matches snapshot 1`] = `
           class="flex flex-row justify-center gap-8"
         >
           <button
-            class="btn btn-neutral"
+            class="btn btn-neutral w-22"
           >
             Cancel
           </button>

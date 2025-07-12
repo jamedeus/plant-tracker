@@ -113,7 +113,7 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
             fadeText={totalSelected <= 1 || fadeText}
         >
             <button
-                className="btn btn-neutral"
+                className="btn btn-neutral w-20"
                 onClick={cancelDeleteMode}
             >
                 Cancel
@@ -123,6 +123,7 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
                 callback={handleDelete}
                 timeout={holdToConfirmDelay}
                 buttonText="Delete"
+                buttonClass="w-20"
                 onHoldStart={handleHoldStart}
                 onHoldStop={handleHoldStop}
             />
