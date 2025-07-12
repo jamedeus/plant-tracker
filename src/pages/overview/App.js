@@ -2,13 +2,11 @@ import React, { useState, useRef, useEffect, useMemo, useCallback } from 'react'
 import Navbar from 'src/components/Navbar';
 import DropdownMenu from 'src/components/DropdownMenu';
 import ToggleThemeOption from 'src/components/ToggleThemeOption';
-import { sendPostRequest, parseDomContext } from 'src/util';
-import FloatingFooter from 'src/components/FloatingFooter';
+import { parseDomContext } from 'src/util';
 import PrintModal, { openPrintModal } from './PrintModal';
-import { openErrorModal } from 'src/components/ErrorModal';
 import { useIsBreakpointActive } from 'src/useBreakpoint';
-import HoldToConfirm from 'src/components/HoldToConfirm';
 import Layout from './Layout';
+import EditModeFooter from './EditModeFooter';
 
 function App() {
     // Load context set by django template
@@ -76,120 +74,9 @@ function App() {
     const selectedPlantsRef = useRef(null);
     const selectedGroupsRef = useRef(null);
 
-    // Returns array of selected plant UUIDs parsed from PlantsCol form
-    const getSelectedPlants = () => {
-        if (selectedPlantsRef.current) {
-            const selected = new FormData(selectedPlantsRef.current);
-            return Array.from(selected.keys());
-        } else {
-            return [];
-        }
-    };
-
-    // Returns array of selected group UUIDs parsed from GroupsCol form
-    const getSelectedGroups = () => {
-        if (selectedGroupsRef.current) {
-            const selected = new FormData(selectedGroupsRef.current);
-            return Array.from(selected.keys());
-        } else {
-            return [];
-        }
-    };
-
     // Refs used to jump to top of plant and group columns
     const plantsColRef = useRef(null);
     const groupsColRef = useRef(null);
-
-    // Handler for delete button that appears while editing
-    const handleDelete = async () => {
-        // Get combined array of selected plant and group uuids
-        const selectedPlants = getSelectedPlants();
-        const selectedGroups = getSelectedGroups();
-        const selectedUuids = selectedPlants.concat(selectedGroups);
-
-        // Don't send empty request if nothing selected
-        if (!selectedUuids.length) {
-            return;
-        }
-
-        // Send /bulk_delete_plants_and_groups request with all selected UUIDs
-        const response = await sendPostRequest(
-            '/bulk_delete_plants_and_groups',
-            {uuids: selectedPlants.concat(selectedGroups)}
-        );
-        // Remove deleted UUIDs from state
-        if (response.ok) {
-            const data = await response.json();
-            const newPlants = { ...plants };
-            data.deleted.forEach(uuid => delete newPlants[uuid]);
-            setPlants(newPlants);
-            const newGroups = { ...groups };
-            data.deleted.forEach(uuid => delete newGroups[uuid]);
-            setGroups(newGroups);
-        } else {
-            const data = await response.json();
-            openErrorModal(`Failed to delete: ${data.failed.join(', ')}`);
-        }
-
-        // Reset editing state
-        setEditing(false);
-    };
-
-    // Handler for archive button (main overview) and un-archive button
-    // (archive overview) that appear while editing. POSTS selected plants and
-    // groups to backend then removes from frontend state.
-    const handleArchive = async () => {
-        // Main overview: set payload arg to true (archive plants)
-        // Archived overview: set payload arg to false (un-archive plants)
-        const archived = !archivedOverview;
-
-        // Get combined array of selected plant and group uuids
-        const selectedPlants = getSelectedPlants();
-        const selectedGroups = getSelectedGroups();
-        const selectedUuids = selectedPlants.concat(selectedGroups);
-
-        // Don't send empty request if nothing selected
-        if (!selectedUuids.length) {
-            return;
-        }
-
-        // Send /bulk_archive_plants_and_groups request with all selected UUIDs
-        const response = await sendPostRequest(
-            '/bulk_archive_plants_and_groups',
-            {
-                uuids: selectedUuids,
-                archived: archived
-            }
-        );
-        // Remove deleted UUIDs from state
-        if (response.ok) {
-            const data = await response.json();
-            const newPlants = { ...plants };
-            data.archived.forEach(uuid => delete newPlants[uuid]);
-            setPlants(newPlants);
-            const newGroups = { ...groups };
-            data.archived.forEach(uuid => delete newGroups[uuid]);
-            setGroups(newGroups);
-
-            // Ensure archive link visible in dropdown menu
-            setShowArchive(archived);
-
-            // Archived overview: redirect to overview if no plants or groups left
-            if (
-                archivedOverview &&
-                !Object.keys(newPlants).length &&
-                !Object.keys(newGroups).length
-            ) {
-                window.location.href = "/";
-            }
-        } else {
-            const data = await response.json();
-            openErrorModal(`Failed to archive: ${data.failed.join(', ')}`);
-        }
-
-        // Reset editing state
-        setEditing(false);
-    };
 
     // Top left corner dropdown options
     const DropdownMenuOptions = useMemo(() => {
@@ -291,27 +178,18 @@ function App() {
                 groupsColRef={groupsColRef}
             />
 
-            <FloatingFooter visible={editing}>
-                <button
-                    className="btn btn-neutral"
-                    onClick={() => setEditing(false)}
-                >
-                    Cancel
-                </button>
-
-                <button
-                    className="btn"
-                    onClick={() => handleArchive()}
-                >
-                    {archivedOverview ? "Un-archive" : "Archive"}
-                </button>
-                <HoldToConfirm
-                    callback={handleDelete}
-                    timeout={2500}
-                    buttonText="Delete"
-                    tooltipText="Hold to confirm"
-                />
-            </FloatingFooter>
+            <EditModeFooter
+                visible={editing}
+                selectedPlantsRef={selectedPlantsRef}
+                selectedGroupsRef={selectedGroupsRef}
+                plants={plants}
+                groups={groups}
+                setPlants={setPlants}
+                setGroups={setGroups}
+                setEditing={setEditing}
+                archivedOverview={archivedOverview}
+                setShowArchive={setShowArchive}
+            />
 
             <PrintModal />
         </div>

@@ -612,8 +612,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
             Un-archive
           </button>
           <div
-            class="tooltip hold-to-confirm-tooltip"
-            data-tip="Hold to confirm"
+            class=""
           >
             <button
               class="btn btn-soft btn-error hold-to-confirm"
@@ -811,8 +810,7 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
             Archive
           </button>
           <div
-            class="tooltip hold-to-confirm-tooltip"
-            data-tip="Hold to confirm"
+            class=""
           >
             <button
               class="btn btn-soft btn-error hold-to-confirm"
@@ -1204,8 +1202,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
             Archive
           </button>
           <div
-            class="tooltip hold-to-confirm-tooltip"
-            data-tip="Hold to confirm"
+            class=""
           >
             <button
               class="btn btn-soft btn-error hold-to-confirm"
@@ -1644,8 +1641,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
             Archive
           </button>
           <div
-            class="tooltip hold-to-confirm-tooltip"
-            data-tip="Hold to confirm"
+            class=""
           >
             <button
               class="btn btn-soft btn-error hold-to-confirm"
@@ -2299,8 +2295,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
             Archive
           </button>
           <div
-            class="tooltip hold-to-confirm-tooltip"
-            data-tip="Hold to confirm"
+            class=""
           >
             <button
               class="btn btn-soft btn-error hold-to-confirm"
@@ -2977,8 +2972,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
             Archive
           </button>
           <div
-            class="tooltip hold-to-confirm-tooltip"
-            data-tip="Hold to confirm"
+            class=""
           >
             <button
               class="btn btn-soft btn-error hold-to-confirm"
