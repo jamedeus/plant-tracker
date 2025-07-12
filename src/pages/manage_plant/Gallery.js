@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
 import Captions from "yet-another-react-lightbox/plugins/captions";
-import Download from "yet-another-react-lightbox/plugins/download";
 import Thumbnails from "yet-another-react-lightbox/plugins/thumbnails";
 import Fullscreen from "yet-another-react-lightbox/plugins/fullscreen";
 import SlideshowToggle from "./SlideshowToggle";
@@ -267,7 +266,6 @@ const Gallery = () => {
                     slideshowForward ? "rotate-0" : "rotate-180"
                 )} />,
                 iconClose: () => <XMarkIcon className="size-8" />,
-                iconDownload: () => <ArrowDownTrayIcon className="size-8" />,
                 iconExitFullscreen: () => <ArrowsPointingInIcon className="size-8" />,
                 iconEnterFullscreen: () => <ArrowsPointingOutIcon className="size-8" />,
                 // Match loading animation used in rest of app
@@ -311,14 +309,12 @@ const Gallery = () => {
             plugins={[
                 Zoom,
                 ...(caption ? [Captions] : []),
-                Download,
                 SlideshowToggle,
                 Thumbnails,
                 Fullscreen
             ]}
             toolbar={{
                 buttons: [
-                    "download",
                     "SlideshowToggle",
                     "fullscreen",
                     "close"
