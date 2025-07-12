@@ -86,6 +86,43 @@ function App() {
         return Array.from(selected.keys());
     };
 
+    // Track total selected plants (shown in FloatingFooter text)
+    const [totalSelected, setTotalSelected] = useState(0);
+
+    // Update total selected count when user checks/unchecks checkboxes
+    useEffect(() => {
+        // Only update when footer is visible
+        if (!removingPlants) {
+            return;
+        }
+
+        // Updates total selected plants count
+        const updateSelectedCount = () => {
+            setTotalSelected(getSelectedPlants().length);
+        };
+
+        // Add listener to PlantsCol form to update count
+        const plantsForm = selectedPlantsRef.current;
+        plantsForm.addEventListener('change', updateSelectedCount);
+
+        // Remove event listener when component unmounts (don't stack)
+        return () => {
+            plantsForm.removeEventListener('change', updateSelectedCount);
+        };
+    }, [selectedPlantsRef, removingPlants]);
+
+    // Set FloatingFooter text based on number of selected plants
+    const [instructionsText, setInstructionsText] = useState('');
+    useEffect(() => {
+        setInstructionsText(
+            totalSelected > 0 ? (
+                `${totalSelected} plant${totalSelected !== 1 ? 's' : ''} selected`
+            ) : (
+                'Select plants to remove'
+            )
+        );
+    }, [totalSelected]);
+
     // Ref to access timestamp input used by water/fertilize buttons
     const addEventTimeInput = useRef(null);
 
@@ -323,7 +360,11 @@ function App() {
                 </PlantsCol>
             </div>
 
-            <FloatingFooter visible={removingPlants}>
+            <FloatingFooter
+                visible={removingPlants}
+                text={instructionsText}
+                fadeText={totalSelected <= 1}
+            >
                 <button
                     className="btn btn-neutral w-22"
                     onClick={stopRemovingPlants}
