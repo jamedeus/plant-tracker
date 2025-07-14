@@ -24,6 +24,7 @@ import {
     deleteModeChanged,
     eventSelected,
     photoSelected,
+    noteSelected,
 } from './interfaceSlice';
 
 // Takes ISO timestamp string, returns "x days ago"
@@ -421,6 +422,15 @@ const clampedLines = {
 // Takes note object (timestamp and text keys), renders element with first line
 // of text always visible which expands to show full text when clicked
 const NoteCollapse = memo(function NoteCollapse({ note }) {
+    const dispatch = useDispatch();
+    const [selected, setSelected] = useState(false);
+    const deleteMode = useSelector((state) => state.interface.deleteMode);
+
+    // Clear selection when exiting delete mode
+    useEffect(() => {
+        !deleteMode && setSelected(false);
+    }, [deleteMode]);
+
     // Read collapsed note number of visible lines from settings
     // Collapse disabled if setting is 'All'
     const collapsedNoteLines = useSelector(
@@ -507,6 +517,20 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
         }
     }, [expanded]);
 
+    // Toggle note collapse if not in delete mode
+    // Select/unselect note if in delete mode
+    const handleClick = () => {
+        if (deleteMode) {
+            dispatch(noteSelected({
+                timestamp: note.timestamp,
+                selected: !selected
+            }));
+            setSelected(!selected);
+        } else if (collapsedNoteLines !== 'All') {
+            toggle();
+        }
+    };
+
     return (
         <div
             className='note-collapse'
@@ -515,21 +539,24 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
             <FaPenToSquare
                 className={clsx(
                     'fa-inline size-4 mr-2 mt-1',
-                    !archived && 'cursor-pointer'
+                    !archived && !deleteMode && 'cursor-pointer'
                 )}
-                onClick={archived ? null : () => openNoteModal(note)}
+                onClick={archived || deleteMode ? null : () => openNoteModal(note)}
             />
             <div
                 className={clsx(
-                    collapsedNoteLines !== 'All' && 'cursor-pointer',
+                    (collapsedNoteLines !== 'All' || deleteMode) && 'cursor-pointer',
                     'overflow-hidden',
                     clamped && clamped
                 )}
                 title={readableTimestamp}
                 ref={textRef}
-                onClick={collapsedNoteLines !== 'All' ? toggle : null}
+                onClick={handleClick}
             >
-                <span className="note-collapse-text">
+                <span className={clsx(
+                    'note-collapse-text',
+                    selected && 'selected'
+                )}>
                     {note.text}
                 </span>
                 <span className='text-xs'>

@@ -195,7 +195,8 @@ export function ReduxProvider({ children }) {
                     prune: [],
                     repot: []
                 },
-                selectedPhotos: []
+                selectedPhotos: [],
+                selectedNotes: []
             }
         };
     };

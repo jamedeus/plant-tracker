@@ -10,7 +10,7 @@ export const interfaceSlice = createSlice({
         photoGalleryOpen: false,
         // Currently visible photo in lightbox gallery (index of photos state)
         photoGalleryIndex: 0,
-        // Can select events/photos to delete by clicking in timeline if true
+        // Can select events/photos/notes to delete by clicking in timeline if true
         deleteMode: false,
         // Tracks events selected by clicking in timeline
         // Uses same format as /bulk_delete_plant_events payload
@@ -21,7 +21,9 @@ export const interfaceSlice = createSlice({
             repot: []
         },
         // Tracks photos selected by clicking in timeline (array of photo keys)
-        selectedPhotos: []
+        selectedPhotos: [],
+        // Tracks notes selected by clicking in timeline (array of note timestamps)
+        selectedNotes: []
     },
     reducers: {
         // Takes true or false
@@ -53,6 +55,7 @@ export const interfaceSlice = createSlice({
                     repot: []
                 };
                 state.selectedPhotos = [];
+                state.selectedNotes = [];
             }
         },
 
@@ -84,6 +87,17 @@ export const interfaceSlice = createSlice({
                 );
             }
         },
+
+        // Takes { timestamp: <string>, selected: <bool> }
+        noteSelected(state, action) {
+            if (action.payload.selected) {
+                state.selectedNotes.push(action.payload.timestamp);
+            } else {
+                state.selectedNotes = state.selectedNotes.filter(
+                    timestamp => timestamp !== action.payload.timestamp
+                );
+            }
+        },
     }
 });
 
@@ -94,4 +108,5 @@ export const {
     deleteModeChanged,
     eventSelected,
     photoSelected,
+    noteSelected,
 } = interfaceSlice.actions;

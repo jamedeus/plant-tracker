@@ -86,6 +86,12 @@
 
 .note-collapse-text {
     @apply text-sm md:text-base mr-2 after:content-['\200B'];
+    @apply transition-all duration-150;
+
+    /* Red strikethrough when selected */
+    &.selected {
+        @apply line-through decoration-2 decoration-error;
+    }
 }
 
 .timeline-day-photos {

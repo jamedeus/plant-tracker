@@ -59,7 +59,7 @@ describe('Delete mode', () => {
 
         // Confirm initial instructions text is visible
         await act(async () => await jest.advanceTimersByTimeAsync(150));
-        expect(app.queryByText('Select events and photos in the timeline')).not.toBeNull();
+        expect(app.queryByText('Select timeline items to delete')).not.toBeNull();
 
         // Select water event, confirm text changed to 1 item selected
         await user.click(
@@ -67,23 +67,32 @@ describe('Delete mode', () => {
         );
         await act(async () => await jest.advanceTimersByTimeAsync(150));
         expect(app.queryByText('1 item selected')).not.toBeNull();
-        expect(app.queryByText('Select events and photos in the timeline')).toBeNull();
+        expect(app.queryByText('Select timeline items to delete')).toBeNull();
 
         // Select photo, confirm text changed to 2 items selected
         await user.click(app.getByTitle('02:52 AM - March 22, 2024'));
         expect(app.queryByText('2 items selected')).not.toBeNull();
 
-        // Unselect event, confirm text changed back to 1 item selected
+        // Select note, confirm text changed to 3 items selected
+        await user.click(app.getByText('Fertilized with dilute 10-15-10 liquid fertilizer'));
+        expect(app.queryByText('3 items selected')).not.toBeNull();
+
+        // Unselect event, confirm text changed back to 2 items selected
         await user.click(
             within(app.getByTestId("2024-03-01-events")).getByText("Watered")
         );
         await act(async () => await jest.advanceTimersByTimeAsync(150));
-        expect(app.queryByText('1 item selected')).not.toBeNull();
+        expect(app.queryByText('2 items selected')).not.toBeNull();
 
-        // Unselect photo, confirm text changed back to instructions
+        // Unselect photo, confirm text changed back to 1 item selected
         await user.click(app.getByTitle('02:52 AM - March 22, 2024'));
         await act(async () => await jest.advanceTimersByTimeAsync(150));
-        expect(app.queryByText('Select events and photos in the timeline')).not.toBeNull();
+        expect(app.queryByText('1 item selected')).not.toBeNull();
+
+        // Unselect note, confirm text changed back to instructions
+        await user.click(app.getByText('Fertilized with dilute 10-15-10 liquid fertilizer'));
+        await act(async () => await jest.advanceTimersByTimeAsync(150));
+        expect(app.queryByText('Select timeline items to delete')).not.toBeNull();
         expect(app.queryByText('1 item selected')).toBeNull();
     });
 
@@ -151,6 +160,44 @@ describe('Delete mode', () => {
         });
     });
 
+    it('sends correct payload when notes are deleted', async () => {
+        // Mock fetch function to return expected response
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            status: 200,
+            json: () => Promise.resolve({
+                deleted: "note",
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+            })
+        }));
+
+        // Enter delete mode
+        await user.click(app.getByText('Delete mode'));
+
+        // Click note twice (un-select), should not be in payload
+        await user.click(app.getByText('One of the older leaves is starting to turn yellow'));
+        await user.click(app.getByText('One of the older leaves is starting to turn yellow'));
+
+        // Click another note
+        await user.click(app.getByText('Fertilized with dilute 10-15-10 liquid fertilizer'));
+
+        // Simulate user holding delete button for 1.5 seconds
+        const button = app.getByText('Delete');
+        fireEvent.mouseDown(button);
+        await act(async () => await jest.advanceTimersByTimeAsync(1500));
+        fireEvent.mouseUp(button);
+
+        // Confirm correct data posted to /delete_plant_note endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/delete_plant_note', {
+            method: 'POST',
+            body: JSON.stringify({
+                plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                timestamp: "2024-03-01T15:45:44+00:00"
+            }),
+            headers: postHeaders
+        });
+    });
+
     it('sends correct payload when photos are deleted', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
@@ -189,8 +236,8 @@ describe('Delete mode', () => {
         });
     });
 
-    it('sends correct payloads when events and photos are deleted', async () => {
-        // Mock fetch function to return both expected responses
+    it('sends correct payloads when events, photos, and notes are deleted', async () => {
+        // Mock fetch function to return all expected responses
         global.fetch = jest.fn()
             .mockImplementationOnce(() => Promise.resolve({
                 ok: true,
@@ -211,23 +258,32 @@ describe('Delete mode', () => {
                     deleted: [2],
                     failed: []
                 })
+            }))
+            .mockImplementationOnce(() => Promise.resolve({
+                ok: true,
+                status: 200,
+                json: () => Promise.resolve({
+                    deleted: "note",
+                    plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                })
             }));
 
         // Enter delete mode
         await user.click(app.getByText('Delete mode'));
 
-        // Select one water event and one photo, hold delete button
+        // Select one water event, one photo, and one note, hold delete button
         await user.click(
             within(app.getByTestId("2024-03-01-events")).getByText("Watered")
         );
         await user.click(app.getByTitle('02:52 AM - March 22, 2024'));
+        await user.click(app.getByText('Fertilized with dilute 10-15-10 liquid fertilizer'));
         const button = app.getByText('Delete');
         fireEvent.mouseDown(button);
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
         fireEvent.mouseUp(button);
 
-        // Confirm correct data posted to both endpoints
-        expect(global.fetch).toHaveBeenCalledTimes(2);
+        // Confirm correct data posted to all endpoints
+        expect(global.fetch).toHaveBeenCalledTimes(3);
         expect(global.fetch).toHaveBeenNthCalledWith(1, '/bulk_delete_plant_events', {
             method: 'POST',
             body: JSON.stringify({
@@ -249,15 +305,24 @@ describe('Delete mode', () => {
             }),
             headers: postHeaders
         });
+        expect(global.fetch).toHaveBeenNthCalledWith(3, '/delete_plant_note', {
+            method: 'POST',
+            body: JSON.stringify({
+                plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                timestamp: "2024-03-01T15:45:44+00:00"
+            }),
+            headers: postHeaders
+        });
     });
 
     it('clears selection when cancel button clicked', async () => {
-        // Enter delete mode, select newest water event and photo 3
+        // Enter delete mode, select newest water event, photo, and note
         await user.click(app.getByText('Delete mode'));
         await user.click(
             within(app.getByTestId("2024-03-01-events")).getByText("Watered")
         );
         await user.click(app.getByTitle('02:52 AM - March 22, 2024'));
+        await user.click(app.getByText('Fertilized with dilute 10-15-10 liquid fertilizer'));
 
         // Click cancel button (hide footer)
         await user.click(app.getByRole('button', {name: 'Cancel'}));
@@ -352,5 +417,29 @@ describe('Delete mode', () => {
 
         // Confirm modal appeared with arbitrary error text
         expect(app.queryByText(/failed to delete photos/)).not.toBeNull();
+    });
+
+    it('shows error modal if error received while deleting note', async () => {
+        // Mock fetch function to return arbitrary error
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: false,
+            json: () => Promise.resolve({
+                error: "failed to delete note"
+            })
+        }));
+
+        // Confirm arbitrary error does not appear on page
+        expect(app.queryByText(/failed to delete note/)).toBeNull();
+
+        // Simulate user deleting a note
+        await user.click(app.getByText('Delete mode'));
+        await user.click(app.getByText('Fertilized with dilute 10-15-10 liquid fertilizer'));
+        const button = app.getByText('Delete');
+        fireEvent.mouseDown(button);
+        await act(async () => await jest.advanceTimersByTimeAsync(1500));
+        fireEvent.mouseUp(button);
+
+        // Confirm modal appeared with arbitrary error text
+        expect(app.queryByText(/failed to delete note/)).not.toBeNull();
     });
 });

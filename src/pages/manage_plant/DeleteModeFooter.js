@@ -4,7 +4,7 @@ import { sendPostRequest } from 'src/util';
 import { openErrorModal } from 'src/components/ErrorModal';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteModeChanged } from './interfaceSlice';
-import { eventDeleted, photosDeleted } from './timelineSlice';
+import { eventDeleted, photosDeleted, noteDeleted } from './timelineSlice';
 import HoldToConfirm from 'src/components/HoldToConfirm';
 
 const DeleteModeFooter = memo(function DeleteModeFooter() {
@@ -13,6 +13,7 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
     const deleteMode = useSelector((state) => state.interface.deleteMode);
     const selectedEvents = useSelector((state) => state.interface.selectedEvents);
     const selectedPhotos = useSelector((state) => state.interface.selectedPhotos);
+    const selectedNotes = useSelector((state) => state.interface.selectedNotes);
     // Get user-configured hold to delete delay
     const holdToConfirmDelay = useSelector(
         (state) => state.settings.holdToConfirmDelay
@@ -20,11 +21,11 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
     // Track if user is holding delete (set by onHoldStart and onHoldStop)
     const [holdingDelete, setHoldingDelete] = useState(false);
 
-    // Get number of selected events and photos
+    // Get number of selected events, photos, and notes
     const totalSelectedEvents = Object.values(selectedEvents).reduce(
         (sum, arr) => sum + arr.length, 0
     );
-    const totalSelected = totalSelectedEvents + selectedPhotos.length;
+    const totalSelected = totalSelectedEvents + selectedPhotos.length + selectedNotes.length;
 
     // Show instructions until something selected, then number of selected items
     const [instructionsText, setInstructionsText] = useState('');
@@ -33,7 +34,7 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
             totalSelected > 0 ? (
                 `${totalSelected} item${totalSelected !== 1 ? 's' : ''} selected`
             ) : (
-                'Select events and photos in the timeline'
+                'Select timeline items to delete'
             )
         );
     }, [totalSelected]);
@@ -100,6 +101,24 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
                 const error = await response.json();
                 openErrorModal(JSON.stringify(error));
             }
+        }
+
+        // Delete notes if 1 or more selected
+        if (selectedNotes.length) {
+            selectedNotes.forEach(async timestamp => {
+                const response = await sendPostRequest('/delete_plant_note', {
+                    plant_id: plantID,
+                    timestamp: timestamp
+                });
+
+                // If successful remove note from timeline
+                if (response.ok) {
+                    dispatch(noteDeleted(timestamp));
+                } else {
+                    const error = await response.json();
+                    openErrorModal(JSON.stringify(error));
+                }
+            });
         }
 
         // Hide footer
