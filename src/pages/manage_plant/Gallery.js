@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import Lightbox from "yet-another-react-lightbox";
 import Zoom from "yet-another-react-lightbox/plugins/zoom";
@@ -271,13 +271,72 @@ const Gallery = () => {
         key: photo.key
     })), [photos]);
 
+    // Controls focus mode (hide thumbnails/captions, dim buttons if true)
+    const [focusMode, setFocusMode] = useState(false);
+    const toggleFocusMode = useCallback(() => {
+        setFocusMode(prev => !prev);
+    }, []);
+
+    // Toggle focus mode when user single clicks photo or caption
+    useEffect(() => {
+        if (!open) return;
+
+        // Track number of clicks within time window (ignore double clicks)
+        let clickCount = 0;
+        let clickTimer = null;
+
+        const handleMouseUp = (e) => {
+            // Only process clicks on photo or caption (not thumbnail)
+            if (['yarl__slide_image', 'yarl__slide_description'].includes(
+                String(e.target.classList)
+            )) {
+                // Increment click count
+                clickCount++;
+
+                // First click: start timer to enter focus mode if no second
+                // click in next 300ms (don't activate on double click zoom)
+                if (clickCount === 1) {
+                    clickTimer = setTimeout(() => {
+                        toggleFocusMode();
+                        clickCount = 0;
+                    }, 300);
+
+                // Second click: clear timer, don't enter focus mode
+                } else {
+                    clearTimeout(clickTimer);
+                    clickCount = 0;
+                }
+            }
+        };
+
+        // Cancel if mouse moved during click (ignore click and drag)
+        // Only fire if button pressed during move (ignore regular move), reset
+        // clickCount to -1 (pointerup will fire on release and set to 0)
+        const handleMouseMove = (e) => {
+            if (e.buttons) {
+                clearTimeout(clickTimer);
+                clickCount = -1;
+            }
+        };
+
+        // Add listeners when gallery opened, remove when closed
+        document.addEventListener('pointerup', handleMouseUp, true);
+        document.addEventListener('pointermove', handleMouseMove, true);
+        return () => {
+            document.removeEventListener('pointerup', handleMouseUp, true);
+            document.removeEventListener('pointermove', handleMouseMove, true);
+            if (clickTimer) clearTimeout(clickTimer);
+        };
+    }, [open, toggleFocusMode]);
+
     return (
         <Lightbox
             open={open}
             on={{
-                // Reset slideHasChanged when opened
+                // Reset slideHasChanged and focusMode when opened
                 entered: () => {
                     setSlideHasChanged(false);
+                    setFocusMode(false);
                 },
 
                 // Scroll timeline to last-viewed photo before closing
@@ -365,7 +424,6 @@ const Gallery = () => {
                             />
                         )}
                     </>
-
             }}
             labels={{
                 Next: "Next photo",
@@ -410,8 +468,12 @@ const Gallery = () => {
                 // Limit zoom to 50% on mobile
                 maxZoomPixelRatio: desktop ? 1 : 0.5
             }}
-            // Set class that causes thumbnails to shrink when slideshow starts
-            className={slideshowRunning ? 'slideshow-running' : null}
+            // slideshowRunning shrinks thumbnails, shows progress bar
+            // focusMode hides thumbnails/captions, dims button icons
+            className={clsx(
+                slideshowRunning ? 'slideshow-running' : null,
+                focusMode ? 'focus-mode' : null
+            )}
             // Set pre-computed height var used in thumbnail shrink transition
             // Fixes stutter on mobile caused by using calc() for initial height
             styles={{

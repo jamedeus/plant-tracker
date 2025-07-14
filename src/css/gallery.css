@@ -78,8 +78,9 @@ button.yarl__thumbnails_thumbnail {
     max-height: var(--thumbnail-container-height);
     padding: 16px;
 
-    /* Shrink when class added to yarl root */
-    .slideshow-running & {
+    /* Shrink when slideshow running or focus mode active */
+    .slideshow-running &,
+    .focus-mode & {
         max-height: 0px;
         padding: 0px;
     }
@@ -102,6 +103,30 @@ button.yarl__thumbnails_thumbnail {
     /* Text inside div */
     & > .yarl__slide_description {
         @apply font-semibold md:text-lg;
+    }
+
+    /* Fade out when focus mode is active */
+    transition-property: opacity;
+    transition-duration: 250ms;
+    transition-timing-function: linear;
+    .focus-mode & {
+        opacity: 0;
+    }
+}
+
+/* Dim buttons when focus mode active (except when hovered) */
+.yarl__button {
+    transition-property: opacity;
+    transition-duration: 250ms;
+    transition-timing-function: linear;
+    opacity: 1;
+
+    .focus-mode & {
+        opacity: 0.3;
+    }
+
+    &:hover {
+        opacity: 1;
     }
 }
 

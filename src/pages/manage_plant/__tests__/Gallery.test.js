@@ -23,7 +23,7 @@ describe('Gallery', () => {
     });
 
     beforeEach(() => {
-        // Allow fast forwarding (must hold delete note button to confirm)
+        // Allow fast forwarding
         jest.useFakeTimers({ doNotFake: ['Date'] });
 
         // Render app + create userEvent instance to use in tests
