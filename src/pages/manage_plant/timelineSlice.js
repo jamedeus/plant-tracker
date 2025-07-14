@@ -257,8 +257,7 @@ export const timelineSlice = createSlice({
                 }
             });
 
-            // Add new URLs to photos state (used by Gallery, DeletePhotoModal,
-            // and DefaultPhotoModal)
+            // Add new URLs to photos state (used by Gallery)
             state.photos = sortPhotosChronologically(
                 state.photos.concat(photos)
             );

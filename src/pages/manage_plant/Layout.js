@@ -9,15 +9,18 @@ import EventButtons from './EventButtons';
 import EventCalendar from './EventCalendar';
 import { openGroupModal } from './GroupModal';
 import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
-import { openDefaultPhotoModal, preloadDefaultPhotoModal } from './DefaultPhotoModal';
 import { openErrorModal } from 'src/components/ErrorModal';
 import Timeline from './Timeline';
 import { FaPlus, FaBan, FaPen, FaUpRightFromSquare } from 'react-icons/fa6';
 import { useSelector, useDispatch } from 'react-redux';
-import { settingsMenuOpened, photoGalleryOpened } from './interfaceSlice';
 import { plantRemovedFromGroup, backButtonPressed } from './plantSlice';
 import SuspenseFullscreen from 'src/components/SuspenseFullscreen';
 import DeleteModeFooter from './DeleteModeFooter';
+import {
+    settingsMenuOpened,
+    photoGalleryOpened,
+    photoGalleryIndexChanged
+} from './interfaceSlice';
 import clsx from 'clsx';
 
 // Dynamic import (don't request webpack bundle until gallery opened)
@@ -31,6 +34,11 @@ function Layout() {
     const defaultPhoto = useSelector((state) => state.timeline.defaultPhoto);
     const galleryOpen = useSelector((state) => state.interface.photoGalleryOpen);
     const hasPhotos = useSelector((state) => state.timeline.hasPhotos);
+    // Get index of default photo (used to open in gallery)
+    const photos = useSelector((state) => state.timeline.photos);
+    const defaultPhotoIndex = photos.indexOf(
+        photos.filter(photo => photo.key === defaultPhoto.key)[0]
+    );
 
     // Used to update redux store
     const dispatch = useDispatch();
@@ -77,6 +85,12 @@ function Layout() {
 
     // Plant details card shown when title is clicked
     const PlantDetailsDropdown = useMemo(() => {
+        // Opens default photo in gallery
+        const openGallery = () => {
+            dispatch(photoGalleryIndexChanged({index: defaultPhotoIndex}));
+            dispatch(photoGalleryOpened({open: true}));
+        };
+
         // Makes remove_plant_from_group API call, updates state if successful
         const handleRemoveGroup = async () => {
             const response = await sendPostRequest(
@@ -100,31 +114,17 @@ function Layout() {
                             <div className="divider font-bold mt-0">
                                 Default Photo
                             </div>
-                            <button
+                            <img
+                                loading="lazy"
+                                draggable={false}
                                 className={clsx(
-                                    "relative mx-auto cursor-pointer",
-                                    "focus:outline outline-offset-2 rounded-lg"
+                                    "photo-thumbnail mx-auto cursor-pointer",
+                                    "size-[8rem] md:size-[14rem]"
                                 )}
-                                onClick={openDefaultPhotoModal}
-                                title="Change default photo"
-                            >
-                                <img
-                                    loading="lazy"
-                                    draggable={false}
-                                    className={clsx(
-                                        "photo-thumbnail mx-auto",
-                                        "size-[8rem] md:size-[14rem]"
-                                    )}
-                                    src={defaultPhoto.preview}
-                                    data-testid="defaultPhotoThumbnail"
-                                />
-                                <div className={clsx(
-                                    "absolute bottom-2 right-2 size-8 min-size-8",
-                                    "btn btn-square bg-base-200/60 border-none",
-                                )}>
-                                    <FaPen className='size-3' />
-                                </div>
-                            </button>
+                                src={defaultPhoto.preview}
+                                data-testid="defaultPhotoThumbnail"
+                                onClick={openGallery}
+                            />
                         </>
                     )}
                     <div className={clsx(
@@ -189,7 +189,6 @@ function Layout() {
                 menuOptions={DropdownMenuOptions}
                 title={plantDetails.display_name}
                 titleOptions={PlantDetailsDropdown}
-                onOpenTitle={preloadDefaultPhotoModal}
             />
 
             {/* Don't render event buttons if plant is archived */}

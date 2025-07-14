@@ -461,16 +461,20 @@ describe('App', () => {
         expect(global.fetch).not.toHaveBeenCalled();
     });
 
-    it('opens DefaultPhotoModal when photo in details dropdown clicked', async () => {
-        // Confirm modal is not open
-        expect(app.container.querySelector('#slide1')).toBeNull();
+    it('opens default photo in gallery when photo in details dropdown clicked', async () => {
+        // Confirm gallery div does not exist
+        expect(document.body.querySelector('.yarl__root')).toBeNull();
 
-        // Click button, confirm HTMLDialogElement method was called
-        await user.click(app.getByTitle('Change default photo'));
-        expect(HTMLDialogElement.prototype.showModal).toHaveBeenCalled();
-        await waitFor(() => {
-            expect(app.container.querySelector('#slide1')).not.toBeNull();
-        });
+        // Click default photo in details dropdown, confirm gallery appears
+        await user.click(app.getByTestId('defaultPhotoThumbnail'));
+        await jest.advanceTimersByTimeAsync(100);
+        expect(document.body.querySelector('.yarl__root')).not.toBeNull();
+        // Confirm visible slide src is full-res version of default photo
+        expect(document.querySelector('.yarl__slide_current img').src).toBe(
+            app.getByTestId('defaultPhotoThumbnail').src
+                .replace('/media/previews', '/media/images')
+                .replace('_preview.webp', '.jpg')
+        );
     });
 
     it('opens ChangeQrModal when dropdown option clicked', async () => {

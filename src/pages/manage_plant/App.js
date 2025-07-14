@@ -7,7 +7,6 @@ import PhotoModal from './PhotoModal';
 import RepotModal from './RepotModal';
 import DivisionModal from './DivisionModal';
 import EditPlantModal from './EditPlantModal';
-import DefaultPhotoModal from './DefaultPhotoModal';
 
 const App = () => {
     return (
@@ -20,7 +19,6 @@ const App = () => {
             <RepotModal />
             <DivisionModal />
             <EditPlantModal />
-            <DefaultPhotoModal />
         </ReduxProvider>
     );
 };
