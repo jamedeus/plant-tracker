@@ -11,7 +11,7 @@ import { openGroupModal } from './GroupModal';
 import ChangeQrModal, { openChangeQrModal } from 'src/components/ChangeQrModal';
 import { openErrorModal } from 'src/components/ErrorModal';
 import Timeline from './Timeline';
-import { FaPlus, FaBan, FaPen, FaUpRightFromSquare } from 'react-icons/fa6';
+import { FaPlus, FaBan, FaUpRightFromSquare } from 'react-icons/fa6';
 import { useSelector, useDispatch } from 'react-redux';
 import { plantRemovedFromGroup, backButtonPressed } from './plantSlice';
 import SuspenseFullscreen from 'src/components/SuspenseFullscreen';

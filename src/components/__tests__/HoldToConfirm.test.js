@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { fireEvent } from '@testing-library/react';
 import HoldToConfirm from '../HoldToConfirm';
 
+/* eslint-disable react/prop-types */
 const TestComponent = ({callback, timeout, buttonText, tooltipText}) => {
     const [holding, setHolding] = useState(false);
     return (

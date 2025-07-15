@@ -98,17 +98,12 @@
 
 .note-collapse {
     @apply m-2 flex flex-row;
-    transition: max-height .3s ease-in-out, scale .15s ease-in-out;
+    transition: max-height .3s ease-in-out,
+                scale .15s ease-in-out;
 }
 
 .note-collapse-text {
     @apply text-sm md:text-base mr-2 after:content-['\200B'];
-    @apply transition-all duration-150;
-
-    /* Red strikethrough when selected */
-    &.selected {
-        @apply line-through decoration-2 decoration-error;
-    }
 }
 
 .timeline-day-photos {
