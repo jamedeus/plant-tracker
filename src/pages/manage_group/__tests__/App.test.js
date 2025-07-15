@@ -49,10 +49,10 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/edit_group', {
             method: 'POST',
             body: JSON.stringify({
+                group_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be14",
                 name: "Test group",
                 location: "Middle shelf",
                 description: "",
-                group_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be14"
             }),
             headers: postHeaders
         });

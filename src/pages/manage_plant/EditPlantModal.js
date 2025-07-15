@@ -12,12 +12,10 @@ const EditPlantModal = () => {
     const plantDetails = useSelector((state) => state.plant.plantDetails);
 
     const submit = async () => {
-        const payload = Object.fromEntries(
-            new FormData(formRef.current)
-        );
-        payload["plant_id"] = plantDetails.uuid;
-
-        const response = await sendPostRequest('/edit_plant', payload);
+        const response = await sendPostRequest('/edit_plant', {
+            plant_id: plantDetails.uuid,
+            ...Object.fromEntries(new FormData(formRef.current))
+        });
         if (response.ok) {
             // Update plant state with new values from response
             const data = await response.json();

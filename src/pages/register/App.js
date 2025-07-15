@@ -191,19 +191,13 @@ function App() {
     }, []);
 
     const handleRegister = async () => {
-        // Parse all fields from visible form, set correct endpoint
-        let payload, endpoint;
-        if (visibleForm === 0) {
-            payload = Object.fromEntries(
-                new FormData(plantFormRef.current)
-            );
-            endpoint = '/register_plant';
-        } else {
-            payload = Object.fromEntries(
-                new FormData(groupFormRef.current)
-            );
-            endpoint = '/register_group';
-        }
+        // Build payload by parsing all fields from visible form
+        const payload = {
+            uuid: newID,
+            ...Object.fromEntries(new FormData(
+                visibleForm === 0 ? plantFormRef.current : groupFormRef.current
+            ))
+        };
 
         // If dividing from existing plant and confirmed new plant was divided:
         // add database keys from context (creates database relations between
@@ -213,8 +207,7 @@ function App() {
             payload.divided_from_event_id = dividingFrom.event_key;
         }
 
-        // Add UUID, post to backend
-        payload.uuid = newID;
+        const endpoint = visibleForm === 0 ? '/register_plant' : '/register_group';
         const response = await sendPostRequest(endpoint, payload);
         // Show error modal if registration failed
         if (!response.ok) {

@@ -76,13 +76,11 @@ const NoteModal = () => {
     };
 
     const handleSubmit = async () => {
-        // Build payload, post to backend
-        const payload = {
+        const response = await sendPostRequest('/add_plant_note', {
             plant_id: plantID,
             timestamp: localToUTC(timestampRef.current.value),
             note_text: noteText
-        };
-        const response = await sendPostRequest('/add_plant_note', payload);
+        });
 
         if (response.ok) {
             // Update state with new note from response, close modal
@@ -109,13 +107,11 @@ const NoteModal = () => {
     };
 
     const handleEdit = async () => {
-        // Build payload, post to backend
-        const payload = {
+        const response = await sendPostRequest('/edit_plant_note', {
             plant_id: plantID,
             timestamp: noteTime,
             note_text: noteText
-        };
-        const response = await sendPostRequest('/edit_plant_note', payload);
+        });
 
         if (response.ok) {
             // Update note state with params from response, close modal
@@ -133,12 +129,10 @@ const NoteModal = () => {
     };
 
     const handleDelete = async () => {
-        // Build payload, post to backend
-        const payload = {
+        const response = await sendPostRequest('/delete_plant_notes', {
             plant_id: plantID,
             timestamps: [noteTime]
-        };
-        const response = await sendPostRequest('/delete_plant_notes', payload);
+        });
 
         if (response.ok) {
             // Remove note from state, close modal

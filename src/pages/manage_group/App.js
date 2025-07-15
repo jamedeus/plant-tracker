@@ -164,15 +164,11 @@ function App() {
     // for every plant in selectedIds (array of UUIDs)
     const bulkAddPlantEvents = async (eventType, selectedIds) => {
         const timestamp = localToUTC(addEventTimeInput.current.value);
-        const payload = {
+        const response = await sendPostRequest('/bulk_add_plant_events', {
             plants: selectedIds,
             event_type: eventType,
             timestamp: timestamp
-        };
-        const response = await sendPostRequest(
-            '/bulk_add_plant_events',
-            payload
-        );
+        });
         if (response.ok) {
             // Show toast with correct message (All plants or Selected plants)
             const updated = addEventsMode ? "Selected plants" : "All plants";
@@ -220,14 +216,10 @@ function App() {
 
     // Handler for add button in AddPlantsModal, takes array of UUIDs
     const addPlants = useCallback(async (selected) => {
-        const payload = {
+        const response = await sendPostRequest('/bulk_add_plants_to_group', {
             group_id: group.uuid,
             plants: selected
-        };
-        const response = await sendPostRequest(
-            '/bulk_add_plants_to_group',
-            payload
-        );
+        });
         if (response.ok) {
             // Add objects in response to plantDetails state
             const data = await response.json();
@@ -243,14 +235,10 @@ function App() {
     // Handler for remove button in FloatingFooter that appears when remove
     // dropdown option clicked
     const removePlants = useCallback(async () => {
-        const payload = {
+        const response = await sendPostRequest('/bulk_remove_plants_from_group', {
             group_id: group.uuid,
             plants: getSelectedPlants()
-        };
-        const response = await sendPostRequest(
-            '/bulk_remove_plants_from_group',
-            payload
-        );
+        });
         if (response.ok) {
             const data = await response.json();
             // Remove plants in response from plantDetails state

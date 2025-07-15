@@ -21,12 +21,11 @@ const EventButtons = memo(function EventButtons() {
     const dispatch = useDispatch();
 
     const addEvent = async (eventType, timestamp) => {
-        const payload = {
+        const response = await sendPostRequest('/add_plant_event', {
             plant_id: plantID,
             event_type: eventType,
             timestamp: localToUTC(timestamp)
-        };
-        const response = await sendPostRequest('/add_plant_event', payload);
+        });
         if (response.ok) {
             const data = await response.json();
             // Add new event to redux store (updates calendar, timeline, etc)

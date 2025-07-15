@@ -9,12 +9,10 @@ const EditGroupModal = memo(function EditGroupModal({ group, setGroup }) {
     const formRef = useRef(null);
 
     const submit = async () => {
-        const payload = Object.fromEntries(
-            new FormData(formRef.current)
-        );
-        payload["group_id"] = group.uuid;
-
-        const response = await sendPostRequest('/edit_group', payload);
+        const response = await sendPostRequest('/edit_group', {
+            group_id: group.uuid,
+            ...Object.fromEntries(new FormData(formRef.current))
+        });
         if (response.ok) {
             // Update plant state with new values from response
             const data = await response.json();

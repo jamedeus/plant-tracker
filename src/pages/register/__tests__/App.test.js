@@ -81,11 +81,11 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/register_plant', {
             method: 'POST',
             body: JSON.stringify({
+                uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
                 name: "Test plant",
                 species: "Fittonia",
                 pot_size: "6",
                 description: "Clay pot",
-                uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             }),
             headers: postHeaders
         });
@@ -114,10 +114,10 @@ describe('App', () => {
         expect(global.fetch).toHaveBeenCalledWith('/register_group', {
             method: 'POST',
             body: JSON.stringify({
+                uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
                 name: "Test group",
                 location: "Middle shelf",
                 description: "Microgreens",
-                uuid: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             }),
             headers: postHeaders
         });

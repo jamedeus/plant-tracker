@@ -21,11 +21,10 @@ const DivisionModal = () => {
     const timestampRef = useRef(null);
 
     const submit = async () => {
-        const payload = {
+        const response = await sendPostRequest('/divide_plant', {
             plant_id: plantID,
             timestamp: localToUTC(timestampRef.current.value)
-        };
-        const response = await sendPostRequest('/divide_plant', payload);
+        });
         if (response.ok) {
             modalRef.current.close();
         } else {
