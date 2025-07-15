@@ -999,13 +999,7 @@ class MultiUserModeTests(TestCase):
             })
         )
         self.assertAuthenticationRequiredError(
-            self.client.post('/delete_plant_note', {
-                'plant_id': plant.uuid,
-                'timestamp': '2024-02-06T03:06:26.000Z'
-            })
-        )
-        self.assertAuthenticationRequiredError(
-            self.client.post('/bulk_delete_plant_notes', {
+            self.client.post('/delete_plant_notes', {
                 'plant_id': plant.uuid,
                 'timestamps': ['2024-02-06T03:06:26.000Z']
             })
@@ -1157,13 +1151,7 @@ class MultiUserModeTests(TestCase):
             })
         )
         self.assertPlantIsOwnedByADifferentUserError(
-            self.client.post('/delete_plant_note', {
-                'plant_id': plant.uuid,
-                'timestamp': '2024-02-06T03:06:26.000Z'
-            })
-        )
-        self.assertPlantIsOwnedByADifferentUserError(
-            self.client.post('/bulk_delete_plant_notes', {
+            self.client.post('/delete_plant_notes', {
                 'plant_id': plant.uuid,
                 'timestamps': ['2024-02-06T03:06:26.000Z']
             })

@@ -2413,30 +2413,31 @@ class NoteEventEndpointTests(TestCase):
         NoteEvent.objects.create(plant=self.plant, timestamp=timestamp, text="note")
         self.assertEqual(len(self.plant.noteevent_set.all()), 1)
 
-        # Send delete_plant_note request, confirm response + event deleted
-        response = self.client.post('/delete_plant_note', {
+        # Send delete_plant_notes request, confirm response + event deleted
+        response = self.client.post('/delete_plant_notes', {
             'plant_id': self.plant.uuid,
-            'timestamp': timestamp.isoformat()
+            'timestamps': [timestamp.isoformat()]
         })
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
-            {"deleted": "note", "plant": str(self.plant.uuid)}
+            {"deleted": [timestamp.isoformat()], "failed": []}
         )
 
         # Confirm NoteEvent was deleted
         self.assertEqual(len(self.plant.noteevent_set.all()), 0)
 
     def test_delete_note_event_target_does_not_exist(self):
-        # Call delete_plant_note endpoint with a timestamp that doesn't exist
-        response = self.client.post('/delete_plant_note', {
+        # Call delete_plant_notes endpoint with a timestamp that doesn't exist
+        timestamp = timezone.now().isoformat()
+        response = self.client.post('/delete_plant_notes', {
             'plant_id': self.plant.uuid,
-            'timestamp': timezone.now().isoformat()
+            'timestamps': [timestamp]
         })
 
-        # Confirm correct error
-        self.assertEqual(response.status_code, 404)
-        self.assertEqual(response.json(), {"error": "note not found"})
+        # Confirm correct response
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"deleted": [], "failed": [timestamp]})
 
     def test_bulk_delete_note_events(self):
         # Create 2 NoteEvents, confirm exists
@@ -2446,8 +2447,8 @@ class NoteEventEndpointTests(TestCase):
         NoteEvent.objects.create(plant=self.plant, timestamp=timestamp2, text="note2")
         self.assertEqual(len(self.plant.noteevent_set.all()), 2)
 
-        # Send bulk_delete_plant_notes request, confirm response + events deleted
-        response = self.client.post('/bulk_delete_plant_notes', {
+        # Send delete_plant_notes request, confirm response + events deleted
+        response = self.client.post('/delete_plant_notes', {
             'plant_id': self.plant.uuid,
             'timestamps': [timestamp1.isoformat(), timestamp2.isoformat()]
         })
@@ -2459,18 +2460,6 @@ class NoteEventEndpointTests(TestCase):
 
         # Confirm NoteEvents were deleted
         self.assertEqual(len(self.plant.noteevent_set.all()), 0)
-
-    def test_bulk_delete_note_events_target_does_not_exist(self):
-        # Call bulk_delete_plant_notes endpoint with a timestamp that doesn't exist
-        timestamp = timezone.now().isoformat()
-        response = self.client.post('/bulk_delete_plant_notes', {
-            'plant_id': self.plant.uuid,
-            'timestamps': [timestamp]
-        })
-
-        # Confirm correct response
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {"deleted": [], "failed": [timestamp]})
 
 
 class PlantPhotoEndpointTests(TestCase):

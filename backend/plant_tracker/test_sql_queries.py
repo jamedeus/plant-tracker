@@ -1075,21 +1075,9 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
             })
             self.assertEqual(response.status_code, 200)
 
-    def test_delete_plant_note_endpoint(self):
-        '''/delete_plant_note should make 4 database queries.'''
-        timestamp = timezone.now()
-        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
-        NoteEvent.objects.create(plant=plant, timestamp=timestamp, text="note")
-        with self.assertNumQueries(4):
-            response = self.client.post('/delete_plant_note', {
-                'plant_id': plant.uuid,
-                'timestamp': timestamp.isoformat()
-            })
-            self.assertEqual(response.status_code, 200)
-
-    def test_bulk_delete_plant_notes_endpoint(self):
-        '''/bulk_delete_plant_notes should make 4 database queries regardless of
-        the number of notes deleted.
+    def test_delete_plant_notes_endpoint(self):
+        '''/delete_plant_notes should make 4 database queries regardless of the
+        number of notes deleted.
         '''
         timestamp1 = timezone.now()
         timestamp2 = timezone.now()
@@ -1101,7 +1089,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
 
         # Confirm makes 4 queries when deleting 1 note
         with self.assertNumQueries(4):
-            response = self.client.post('/bulk_delete_plant_notes', {
+            response = self.client.post('/delete_plant_notes', {
                 'plant_id': plant.uuid,
                 'timestamps': [timestamp1.isoformat()]
             })
@@ -1109,7 +1097,7 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
 
         # Confirm makes 4 queries when deleting 2 notes
         with self.assertNumQueries(4):
-            response = self.client.post('/bulk_delete_plant_notes', {
+            response = self.client.post('/delete_plant_notes', {
                 'plant_id': plant.uuid,
                 'timestamps': [timestamp2.isoformat(), timestamp3.isoformat()]
             })

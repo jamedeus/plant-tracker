@@ -136,9 +136,9 @@ const NoteModal = () => {
         // Build payload, post to backend
         const payload = {
             plant_id: plantID,
-            timestamp: noteTime
+            timestamps: [noteTime]
         };
-        const response = await sendPostRequest('/delete_plant_note', payload);
+        const response = await sendPostRequest('/delete_plant_notes', payload);
 
         if (response.ok) {
             // Remove note from state, close modal

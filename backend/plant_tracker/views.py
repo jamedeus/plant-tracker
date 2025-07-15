@@ -826,26 +826,10 @@ def edit_plant_note(plant, timestamp, data, **kwargs):
 
 
 @get_user_token
-@requires_json_post(["plant_id", "timestamp"])
-@get_plant_from_post_body()
-@get_timestamp_from_post_body
-def delete_plant_note(plant, timestamp, **kwargs):
-    '''Deletes the NoteEvent matching the plant and timestamp specified in body.
-    Requires JSON POST with plant_id (uuid) and timestamp keys.
-    '''
-    try:
-        note = NoteEvent.objects.get(plant=plant, timestamp=timestamp)
-        note.delete()
-        return JsonResponse({"deleted": "note", "plant": plant.uuid}, status=200)
-    except NoteEvent.DoesNotExist:
-        return JsonResponse({"error": "note not found"}, status=404)
-
-
-@get_user_token
 @requires_json_post(["plant_id", "timestamps"])
 @get_plant_from_post_body()
-def bulk_delete_plant_notes(plant, data, **kwargs):
-    '''Deletes list of NoteEvents associated with a specific plant.
+def delete_plant_notes(plant, data, **kwargs):
+    '''Deletes list of one or more NoteEvents associated with a specific plant.
     Requires JSON POST with plant_id (uuid) and timestamps (list of timestamps).
     '''
 

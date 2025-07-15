@@ -105,7 +105,7 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
 
         // Delete notes if 1 or more selected
         if (selectedNotes.length) {
-            const response = await sendPostRequest('/bulk_delete_plant_notes', {
+            const response = await sendPostRequest('/delete_plant_notes', {
                 plant_id: plantID,
                 timestamps: selectedNotes
             });

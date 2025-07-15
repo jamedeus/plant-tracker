@@ -195,12 +195,12 @@ describe('Edit existing note', () => {
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
         fireEvent.mouseUp(button);
 
-        // Confirm correct data posted to /add_plant_note endpoint
-        expect(fetch).toHaveBeenCalledWith('/delete_plant_note', {
+        // Confirm correct data posted to /delete_plant_notes endpoint
+        expect(fetch).toHaveBeenCalledWith('/delete_plant_notes', {
             method: 'POST',
             body: JSON.stringify({
                 plant_id: '0640ec3b-1bed-4b15-a078-d6e7ec66be12',
-                timestamp: '2024-02-13T12:00:00'
+                timestamps: ['2024-02-13T12:00:00']
             }),
             headers: postHeaders
         });
