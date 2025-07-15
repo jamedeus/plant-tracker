@@ -273,7 +273,9 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 action: "repot",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                timestamp: "2024-03-01T20:00:00+00:00",
+                pot_size: 8
             })
         }));
 
@@ -304,7 +306,9 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 action: "repot",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                timestamp: "2024-03-01T20:00:00+00:00",
+                pot_size: 5
             })
         }));
 

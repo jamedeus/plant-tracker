@@ -83,9 +83,10 @@ const RepotModal = () => {
 
         const response = await sendPostRequest('/repot_plant', payload);
         if (response.ok) {
+            const data = await response.json();
             // Update plantDetails state, add event to events state
-            dispatch(plantRepotted(payload.new_pot_size));
-            dispatch(eventAdded({timestamp: payload.timestamp, type: 'repot'}));
+            dispatch(plantRepotted(data.pot_size));
+            dispatch(eventAdded({timestamp: data.timestamp, type: 'repot'}));
             // Close repot modal, open modal with instructions to change QR code
             modalRef.current.close();
             openChangeQrModal();

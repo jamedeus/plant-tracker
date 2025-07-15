@@ -1007,7 +1007,15 @@ def repot_plant(plant, timestamp, data, **kwargs):
             plant.pot_size = data["new_pot_size"]
             plant.save()
             update_cached_overview_details_keys(plant, {'pot_size': plant.pot_size})
-        return JsonResponse({"action": "repot", "plant": plant.uuid}, status=200)
+        return JsonResponse(
+            {
+                "action": "repot",
+                "plant": plant.uuid,
+                "timestamp": timestamp.isoformat(),
+                "pot_size": plant.pot_size
+            },
+            status=200
+        )
 
     except IntegrityError:
         return JsonResponse(

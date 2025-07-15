@@ -1386,7 +1386,12 @@ class ManagePlantEndpointTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.json(),
-            {"action": "repot", "plant": str(self.plant.uuid)}
+            {
+                "action": "repot",
+                "plant": str(self.plant.uuid),
+                "timestamp": "2024-02-06T03:06:26+00:00",
+                "pot_size": 6
+            }
         )
         self._refresh_test_models()
         self.assertEqual(len(self.plant.repotevent_set.all()), 1)
