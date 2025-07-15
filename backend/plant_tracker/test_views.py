@@ -2245,7 +2245,7 @@ class PlantEventEndpointTests(TestCase):
         })
 
         # Confirm event is in failed section
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 400)
         self.assertEqual(
             response.json(),
             {
@@ -2435,8 +2435,8 @@ class NoteEventEndpointTests(TestCase):
             'timestamps': [timestamp]
         })
 
-        # Confirm correct response
-        self.assertEqual(response.status_code, 200)
+        # Confirm correct error
+        self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(), {"deleted": [], "failed": [timestamp]})
 
     def test_bulk_delete_note_events(self):
@@ -2596,6 +2596,18 @@ class PlantPhotoEndpointTests(TestCase):
             }
         )
         self.assertEqual(len(Photo.objects.all()), 0)
+
+    def test_delete_plant_photos_target_does_not_exist(self):
+        # Call delete_plant_photos endpoint with a photo that doesn't exist
+        photo_key = 999
+        response = self.client.post('/delete_plant_photos', {
+            'plant_id': self.plant.uuid,
+            'delete_photos': [photo_key]
+        })
+
+        # Confirm correct error
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json(), {"deleted": [], "failed": [photo_key]})
 
     def test_set_plant_default_photo(self):
         # Create mock photo, add to database

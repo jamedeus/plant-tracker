@@ -751,7 +751,10 @@ def bulk_delete_plant_events(plant, data, **kwargs):
             {'last_fertilized': plant.last_fertilized()}
         )
 
-    return JsonResponse({"deleted": deleted, "failed": failed}, status=200)
+    return JsonResponse(
+        {"deleted": deleted, "failed": failed},
+        status=200 if any(deleted.values()) else 400
+    )
 
 
 @get_user_token
@@ -843,7 +846,10 @@ def delete_plant_notes(plant, data, **kwargs):
     # Delete all found NoteEvents
     notes.delete()
 
-    return JsonResponse({"deleted": deleted, "failed": failed}, status=200)
+    return JsonResponse(
+        {"deleted": deleted, "failed": failed},
+        status=200 if deleted else 400
+    )
 
 
 @get_user_token
@@ -1118,7 +1124,10 @@ def delete_plant_photos(plant, data, **kwargs):
             {'thumbnail': plant.get_thumbnail_url()}
         )
 
-    return JsonResponse({"deleted": deleted, "failed": failed}, status=200)
+    return JsonResponse(
+        {"deleted": deleted, "failed": failed},
+        status=200 if deleted else 400
+    )
 
 
 @get_user_token
