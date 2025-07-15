@@ -118,8 +118,7 @@ const RegisterForm = () => {
         e.preventDefault();
         // Post FormData to backend
         const formData = new FormData(formRef.current);
-        const response = await sendPostRequest(
-            '/accounts/create_user/',
+        const response = await sendPostRequest('/accounts/create_user/',
             Object.fromEntries(formData)
         );
         // Redirect to overview if logged in successfully

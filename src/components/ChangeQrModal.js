@@ -14,10 +14,9 @@ const ChangeQrModal = memo(function ChangeQrModal({ uuid }) {
     modalRef = useRef(null);
 
     const submit = async () => {
-        const response = await sendPostRequest(
-            '/change_qr_code',
-            {uuid: uuid}
-        );
+        const response = await sendPostRequest('/change_qr_code', {
+            uuid: uuid
+        });
         if (response.ok) {
             modalRef.current.close();
         } else {

@@ -75,13 +75,11 @@ const RepotModal = () => {
             return;
         }
 
-        const payload = {
+        const response = await sendPostRequest('/repot_plant', {
             plant_id: plantID,
             new_pot_size: parseInt(new_pot_size),
             timestamp: localToUTC(repotTimeRef.current.value)
-        };
-
-        const response = await sendPostRequest('/repot_plant', payload);
+        });
         if (response.ok) {
             const data = await response.json();
             // Update plantDetails state, add event to events state

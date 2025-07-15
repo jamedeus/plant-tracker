@@ -97,10 +97,9 @@ const PrintModal = memo(function PrintModal() {
         setModalContents("loading");
 
         // Request Base64-encoded image string from backend
-        const response = await sendPostRequest(
-            '/get_qr_codes',
-            {qr_per_row: size}
-        );
+        const response = await sendPostRequest('/get_qr_codes', {
+            qr_per_row: size
+        });
 
         // Check response if user did not click cancel or close modal
         if (cancelPrinting.current === false) {

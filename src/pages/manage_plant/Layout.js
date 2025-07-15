@@ -93,10 +93,9 @@ function Layout() {
 
         // Makes remove_plant_from_group API call, updates state if successful
         const handleRemoveGroup = async () => {
-            const response = await sendPostRequest(
-                '/remove_plant_from_group',
-                {plant_id: plantDetails.uuid}
-            );
+            const response = await sendPostRequest('/remove_plant_from_group', {
+                plant_id: plantDetails.uuid
+            });
             if (response.ok) {
                 // Remove group details from plant state
                 dispatch(plantRemovedFromGroup());
