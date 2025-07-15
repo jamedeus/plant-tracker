@@ -31,7 +31,16 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             status: 200,
-            json: () => Promise.resolve({success: "details updated"})
+            json: () => Promise.resolve({
+                success: "details updated",
+                user_details: {
+                    username: "cdanger",
+                    email: "totally.not.anthony.weiner@gmail.com",
+                    first_name: "Bob",
+                    last_name: "Smith",
+                    date_joined: "2025-04-06T00:08:53.392806+00:00"
+                }
+            })
         }));
 
         // Confirm success toast is not rendered
@@ -66,7 +75,16 @@ describe('App', () => {
         global.fetch = jest.fn(() => Promise.resolve({
             ok: true,
             status: 200,
-            json: () => Promise.resolve({success: "details updated"})
+            json: () => Promise.resolve({
+                success: "details updated",
+                user_details: {
+                    username: "cdanger",
+                    email: "totally.not.anthony.weiner@gmail.com",
+                    first_name: "Bob",
+                    last_name: "Smith",
+                    date_joined: "2025-04-06T00:08:53.392806+00:00"
+                }
+            })
         }));
 
         // Simulate user changing first and last name

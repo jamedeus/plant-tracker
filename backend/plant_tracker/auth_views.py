@@ -223,4 +223,13 @@ def edit_user_details(data, user, **kwargs):
     user.first_name = data["first_name"]
     user.last_name = data["last_name"]
     user.save()
-    return JsonResponse({"success": "details updated"})
+    return JsonResponse({
+        "success": "details updated",
+        "user_details": {
+            "username": user.username,
+            "email": user.email,
+            "first_name": user.first_name,
+            "last_name": user.last_name,
+            "date_joined": user.date_joined.isoformat()
+        }
+    })

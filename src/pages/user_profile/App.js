@@ -36,7 +36,8 @@ const UserDetails = memo(function UserDetails() {
             payload
         );
         if (response.ok) {
-            setUserDetails({ ...userDetails, ...payload });
+            const data = await response.json();
+            setUserDetails(data.user_details);
             showToast('Details updated!', 'green', 2000);
         } else {
             showToast('Unable to update details', 'red', 2000);

@@ -414,7 +414,19 @@ class AuthenticationEndpointTests(TestCase):
 
         # Confirm success response
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), {"success": "details updated"})
+        self.assertEqual(
+            response.json(),
+            {
+                "success": "details updated",
+                "user_details": {
+                    "username": "unittest",
+                    "email": "carlosdanger@hotmail.com",
+                    "first_name": "Anthony",
+                    "last_name": "Weiner",
+                    "date_joined": self.test_user.date_joined.isoformat()
+                }
+            }
+        )
 
         # Confirm test user details were updated
         self.test_user.refresh_from_db()
