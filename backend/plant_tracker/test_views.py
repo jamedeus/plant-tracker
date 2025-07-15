@@ -2157,6 +2157,7 @@ class PlantEventEndpointTests(TestCase):
             response.json(),
             {
                 "action": "water",
+                "timestamp": "2024-02-06T03:06:26+00:00",
                 "plants": [str(self.plant1.uuid), str(self.plant2.uuid)],
                 "failed": [str(self.fake_id)]
             }
@@ -2186,6 +2187,7 @@ class PlantEventEndpointTests(TestCase):
             response.json(),
             {
                 "action": "fertilize",
+                "timestamp": "2024-02-06T03:06:26+00:00",
                 "plants": [str(self.plant1.uuid), str(self.plant2.uuid)],
                 "failed": [str(self.fake_id)]
             }

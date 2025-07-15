@@ -31,20 +31,6 @@ describe('App', () => {
     // with the new timestamp without checking if the new timestamp was more
     // recent than the existing timestamp. Now only overwrites if more recent.
     it('only updates last_watered if new timestamp is more recent', async () => {
-        // Mock fetch function to return successful response
-        global.fetch = jest.fn(() => Promise.resolve({
-            ok: true,
-            json: () => Promise.resolve({
-                action: "water",
-                plants: [
-                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                    "19f65fa0-1c75-4cba-b590-0c9b5b315fcc",
-                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
-                ],
-                failed: []
-            })
-        }));
-
         // Get reference to plants column
         const plantsCol = app.getByText("Plants (3)").closest('.section');
 
@@ -59,6 +45,19 @@ describe('App', () => {
             dateTimeInput,
             {target: {value: '2024-02-28T04:45:00'}}
         );
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                action: "water",
+                timestamp: "2024-02-28T12:45:00.000Z",
+                plants: [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                    "19f65fa0-1c75-4cba-b590-0c9b5b315fcc",
+                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+                ],
+                failed: []
+            })
+        }));
         await user.click(app.getByRole("button", {name: "Water"}));
 
         // Confirm last_watered for first 2 plants didn't change (new timestamp
@@ -71,6 +70,19 @@ describe('App', () => {
             dateTimeInput,
             {target: {value: '2024-03-01T11:45:00'}}
         );
+        global.fetch = jest.fn(() => Promise.resolve({
+            ok: true,
+            json: () => Promise.resolve({
+                action: "water",
+                timestamp: "2024-03-01T19:45:00.000Z",
+                plants: [
+                    "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
+                    "19f65fa0-1c75-4cba-b590-0c9b5b315fcc",
+                    "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"
+                ],
+                failed: []
+            })
+        }));
         await user.click(app.getByRole("button", {name: "Water"}));
 
         // Confirm all last_watered changed (new timestamp newer than existing)
@@ -113,6 +125,7 @@ describe('App', () => {
             ok: true,
             json: () => Promise.resolve({
                 action: "water",
+                timestamp: "2024-03-01T20:00:00.000Z",
                 plants: [
                     "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
                     "26a9fc1f-ef04-4b0f-82ca-f14133fa3b16"

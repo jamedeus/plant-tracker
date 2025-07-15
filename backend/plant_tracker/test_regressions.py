@@ -328,6 +328,7 @@ class ViewRegressionTests(TestCase):
             response.json(),
             {
                 "action": "water",
+                "timestamp": timestamp.isoformat(),
                 "plants": [
                     str(plant1.uuid),
                     str(plant2.uuid),

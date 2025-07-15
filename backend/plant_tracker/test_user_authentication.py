@@ -1121,6 +1121,7 @@ class MultiUserModeTests(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(response.json(), {
             "action": "water",
+            "timestamp": "2024-02-06T03:06:26+00:00",
             "plants": [],
             "failed": [str(plant.uuid)]
         })

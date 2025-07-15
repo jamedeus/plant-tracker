@@ -175,7 +175,7 @@ function App() {
             showToast(`${updated} ${pastTense(eventType)}!`, 'blue', 5000);
             // Update last watered/fertilized times for all plants in response
             const data = await response.json();
-            updatePlantTimestamps(data.plants, timestamp, eventType);
+            updatePlantTimestamps(data.plants, data.timestamp, eventType);
         } else {
             const error = await response.json();
             openErrorModal(JSON.stringify(error));

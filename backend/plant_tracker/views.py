@@ -698,7 +698,12 @@ def bulk_add_plant_events(user, timestamp, event_type, data, **kwargs):
 
     # Return 200 if at least 1 succeeded, otherwise return error
     return JsonResponse(
-        {"action": event_type, "plants": found, "failed": not_found},
+        {
+            "action": event_type,
+            "timestamp": timestamp.isoformat(),
+            "plants": found,
+            "failed": not_found
+        },
         status=200 if found else 400
     )
 
