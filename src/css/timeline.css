@@ -80,8 +80,25 @@
     }
 }
 
+.note-collapse-wrapper {
+    /* Transparent outline when not selected (necessary for transition) */
+    @apply outline-transparent outline-2 -outline-offset-6 rounded-xl;
+    @apply transition duration-150;
+
+    /* Red outline when selected */
+    &.selected {
+        @apply outline-error;
+    }
+
+    /* Scale down contents when selected */
+    &.selected > * {
+        @apply scale-92 md:scale-95;
+    }
+}
+
 .note-collapse {
-    @apply m-2 flex flex-row transition-[max-height] duration-300 ease-in-out;
+    @apply m-2 flex flex-row;
+    transition: max-height .3s ease-in-out, scale .15s ease-in-out;
 }
 
 .note-collapse-text {

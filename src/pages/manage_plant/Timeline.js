@@ -532,36 +532,38 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
     };
 
     return (
-        <div
-            className='note-collapse'
-            style={{ maxHeight: height }}
-        >
-            <FaPenToSquare
-                className={clsx(
-                    'fa-inline size-4 mr-2 mt-1',
-                    !archived && !deleteMode && 'cursor-pointer'
-                )}
-                onClick={archived || deleteMode ? null : () => openNoteModal(note)}
-            />
+        <div className={clsx(
+            'note-collapse-wrapper',
+            selected && 'selected'
+        )}>
             <div
-                className={clsx(
-                    (collapsedNoteLines !== 'All' || deleteMode) && 'cursor-pointer',
-                    'overflow-hidden',
-                    clamped && clamped
-                )}
-                title={readableTimestamp}
-                ref={textRef}
-                onClick={handleClick}
+                className='note-collapse'
+                style={{ maxHeight: height }}
             >
-                <span className={clsx(
-                    'note-collapse-text',
-                    selected && 'selected'
-                )}>
-                    {note.text}
-                </span>
-                <span className='text-xs'>
-                    {readableTimestamp.split('-')[0].trim()}
-                </span>
+                <FaPenToSquare
+                    className={clsx(
+                        'fa-inline size-4 mr-2 mt-1',
+                        !archived && !deleteMode && 'cursor-pointer'
+                    )}
+                    onClick={archived || deleteMode ? null : () => openNoteModal(note)}
+                />
+                <div
+                    className={clsx(
+                        (collapsedNoteLines !== 'All' || deleteMode) && 'cursor-pointer',
+                        'overflow-hidden',
+                        clamped && clamped
+                    )}
+                    title={readableTimestamp}
+                    ref={textRef}
+                    onClick={handleClick}
+                >
+                    <span className='note-collapse-text'>
+                        {note.text}
+                    </span>
+                    <span className='text-xs'>
+                        {readableTimestamp.split('-')[0].trim()}
+                    </span>
+                </div>
             </div>
         </div>
     );
