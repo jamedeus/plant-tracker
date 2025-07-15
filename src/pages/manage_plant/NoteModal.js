@@ -136,7 +136,8 @@ const NoteModal = () => {
 
         if (response.ok) {
             // Remove note from state, close modal
-            dispatch(noteDeleted(noteTime));
+            const data = await response.json();
+            dispatch(noteDeleted(data.deleted[0]));
             modalRef.current.close();
         } else {
             // Show error in modal

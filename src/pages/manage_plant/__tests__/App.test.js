@@ -638,7 +638,8 @@ describe('App', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                deleted: "note",
+                deleted: ['2024-03-01T15:45:44+00:00'],
+                failed: [],
                 plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
             })
         }));
