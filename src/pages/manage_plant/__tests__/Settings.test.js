@@ -22,12 +22,21 @@ describe('Settings menu', () => {
     });
 
     beforeEach(() => {
+        // Allow fast forwarding (must hold delete button to confirm)
+        jest.useFakeTimers({ doNotFake: ['Date'] });
+
         // Clear localStorage (saved settings from last test)
         localStorage.clear();
 
         // Render app + create userEvent instance to use in tests
-        user = userEvent.setup();
+        user = userEvent.setup({ advanceTimers: jest.advanceTimersByTimeAsync });
         app = render(<App />);
+    });
+
+    // Clean up pending timers after each test
+    afterEach(() => {
+        act(() => jest.runAllTimers());
+        jest.useRealTimers();
     });
 
     it('closes when user clicks close button or clicks outside menu', async () => {
@@ -61,11 +70,9 @@ describe('Settings menu', () => {
         await user.click(app.getByLabelText('Set Closed note visible lines to All'));
 
         // Confirm collapsed note shows all lines
-        await waitFor(() => {
-            expect(
-                app.getByTitle('04:44 AM - February 26, 2024').classList
-            ).toContain('line-clamp-none');
-        });
+        expect(
+            app.getByTitle('04:44 AM - February 26, 2024').classList
+        ).toContain('line-clamp-none');
         // Confirm new setting was written to localStorage
         expect(getSavedSettingValue('collapsedNoteLines')).toBe('All');
 
@@ -73,11 +80,9 @@ describe('Settings menu', () => {
         await user.click(app.getByLabelText('Set Closed note visible lines to 2'));
 
         // Confirm collapsed note shows 2 lines
-        await waitFor(() => {
-            expect(
-                app.getByTitle('04:44 AM - February 26, 2024').classList
-            ).toContain('line-clamp-2');
-        }, { timeout: 2000 });
+        expect(
+            app.getByTitle('04:44 AM - February 26, 2024').classList
+        ).toContain('line-clamp-2');
         // Confirm new setting was written to localStorage
         expect(getSavedSettingValue('collapsedNoteLines')).toBe(2);
     });
@@ -95,11 +100,9 @@ describe('Settings menu', () => {
         expect(getSavedSettingValue('collapsedNoteLines')).toBe(2);
 
         // Confirm all lines of expanded note still visible
-        await waitFor(() => {
-            expect(
-                app.getByTitle('04:44 AM - February 26, 2024').classList
-            ).toContain('line-clamp-none');
-        }, { timeout: 2000 });
+        expect(
+            app.getByTitle('04:44 AM - February 26, 2024').classList
+        ).toContain('line-clamp-none');
     });
 
     it('changes TimelineTimestamp full date visibility when timelineFullDate changed', async () => {
