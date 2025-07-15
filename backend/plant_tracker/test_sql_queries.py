@@ -1087,6 +1087,34 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
             })
             self.assertEqual(response.status_code, 200)
 
+    def test_bulk_delete_plant_notes_endpoint(self):
+        '''/bulk_delete_plant_notes should make 4 database queries regardless of
+        the number of notes deleted.
+        '''
+        timestamp1 = timezone.now()
+        timestamp2 = timezone.now()
+        timestamp3 = timezone.now()
+        plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
+        NoteEvent.objects.create(plant=plant, timestamp=timestamp1, text="note1")
+        NoteEvent.objects.create(plant=plant, timestamp=timestamp2, text="note2")
+        NoteEvent.objects.create(plant=plant, timestamp=timestamp3, text="note3")
+
+        # Confirm makes 4 queries when deleting 1 note
+        with self.assertNumQueries(4):
+            response = self.client.post('/bulk_delete_plant_notes', {
+                'plant_id': plant.uuid,
+                'timestamps': [timestamp1.isoformat()]
+            })
+            self.assertEqual(response.status_code, 200)
+
+        # Confirm makes 4 queries when deleting 2 notes
+        with self.assertNumQueries(4):
+            response = self.client.post('/bulk_delete_plant_notes', {
+                'plant_id': plant.uuid,
+                'timestamps': [timestamp2.isoformat(), timestamp3.isoformat()]
+            })
+            self.assertEqual(response.status_code, 200)
+
     def test_add_plant_to_group_endpoint(self):
         '''/add_plant_to_group should make 5 database queries if Group is named,
         7 queries if Group is unnamed (must get unnamed index).'''

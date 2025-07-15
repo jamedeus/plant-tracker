@@ -842,6 +842,27 @@ def delete_plant_note(plant, timestamp, **kwargs):
 
 
 @get_user_token
+@requires_json_post(["plant_id", "timestamps"])
+@get_plant_from_post_body()
+def bulk_delete_plant_notes(plant, data, **kwargs):
+    '''Deletes list of NoteEvents associated with a specific plant.
+    Requires JSON POST with plant_id (uuid) and timestamps (list of timestamps).
+    '''
+
+    # Query all requested NoteEvents, get list of found timestamps
+    notes = NoteEvent.objects.filter(plant=plant, timestamp__in=data["timestamps"])
+    deleted = [note.timestamp.isoformat() for note in notes]
+
+    # Get list of timestamps that were not found in database
+    failed = list(set(data["timestamps"]) - set(deleted))
+
+    # Delete all found NoteEvents
+    notes.delete()
+
+    return JsonResponse({"deleted": deleted, "failed": failed}, status=200)
+
+
+@get_user_token
 @requires_json_post(["plant_id", "group_id"])
 @get_plant_from_post_body()
 @get_group_from_post_body()

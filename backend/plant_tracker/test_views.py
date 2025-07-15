@@ -2424,7 +2424,7 @@ class NoteEventEndpointTests(TestCase):
             {"deleted": "note", "plant": str(self.plant.uuid)}
         )
 
-        # Confirm NoteEvent was created
+        # Confirm NoteEvent was deleted
         self.assertEqual(len(self.plant.noteevent_set.all()), 0)
 
     def test_delete_note_event_target_does_not_exist(self):
@@ -2437,6 +2437,40 @@ class NoteEventEndpointTests(TestCase):
         # Confirm correct error
         self.assertEqual(response.status_code, 404)
         self.assertEqual(response.json(), {"error": "note not found"})
+
+    def test_bulk_delete_note_events(self):
+        # Create 2 NoteEvents, confirm exists
+        timestamp1 = timezone.now()
+        NoteEvent.objects.create(plant=self.plant, timestamp=timestamp1, text="note1")
+        timestamp2 = timezone.now()
+        NoteEvent.objects.create(plant=self.plant, timestamp=timestamp2, text="note2")
+        self.assertEqual(len(self.plant.noteevent_set.all()), 2)
+
+        # Send bulk_delete_plant_notes request, confirm response + events deleted
+        response = self.client.post('/bulk_delete_plant_notes', {
+            'plant_id': self.plant.uuid,
+            'timestamps': [timestamp1.isoformat(), timestamp2.isoformat()]
+        })
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json(),
+            {"deleted": [timestamp1.isoformat(), timestamp2.isoformat()], "failed": []}
+        )
+
+        # Confirm NoteEvents were deleted
+        self.assertEqual(len(self.plant.noteevent_set.all()), 0)
+
+    def test_bulk_delete_note_events_target_does_not_exist(self):
+        # Call bulk_delete_plant_notes endpoint with a timestamp that doesn't exist
+        timestamp = timezone.now().isoformat()
+        response = self.client.post('/bulk_delete_plant_notes', {
+            'plant_id': self.plant.uuid,
+            'timestamps': [timestamp]
+        })
+
+        # Confirm correct response
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json(), {"deleted": [], "failed": [timestamp]})
 
 
 class PlantPhotoEndpointTests(TestCase):

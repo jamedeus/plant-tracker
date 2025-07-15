@@ -38,6 +38,7 @@ urlpatterns = [
     path('add_plant_note', views.add_plant_note, name='add_plant_note'),
     path('edit_plant_note', views.edit_plant_note, name='edit_plant_note'),
     path('delete_plant_note', views.delete_plant_note, name='delete_plant_note'),
+    path('bulk_delete_plant_notes', views.bulk_delete_plant_notes, name='bulk_delete_plant_notes'),
     path('add_plant_to_group', views.add_plant_to_group, name='add_plant_to_group'),
     path('remove_plant_from_group', views.remove_plant_from_group, name='remove_plant_from_group'),
     path('bulk_add_plants_to_group', views.bulk_add_plants_to_group, name='bulk_add_plants_to_group'),

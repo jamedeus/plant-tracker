@@ -105,20 +105,19 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
 
         // Delete notes if 1 or more selected
         if (selectedNotes.length) {
-            selectedNotes.forEach(async timestamp => {
-                const response = await sendPostRequest('/delete_plant_note', {
-                    plant_id: plantID,
-                    timestamp: timestamp
-                });
-
-                // If successful remove note from timeline
-                if (response.ok) {
-                    dispatch(noteDeleted(timestamp));
-                } else {
-                    const error = await response.json();
-                    openErrorModal(JSON.stringify(error));
-                }
+            const response = await sendPostRequest('/bulk_delete_plant_notes', {
+                plant_id: plantID,
+                timestamps: selectedNotes
             });
+
+            // If successful remove note from timeline
+            if (response.ok) {
+                const data = await response.json();
+                data.deleted.forEach(timestamp => dispatch(noteDeleted(timestamp)));
+            } else {
+                const error = await response.json();
+                openErrorModal(JSON.stringify(error));
+            }
         }
 
         // Hide footer

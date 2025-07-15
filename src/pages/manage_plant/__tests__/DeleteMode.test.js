@@ -166,8 +166,8 @@ describe('Delete mode', () => {
             ok: true,
             status: 200,
             json: () => Promise.resolve({
-                deleted: "note",
-                plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                deleted: ["2024-03-01T15:45:44+00:00"],
+                failed: []
             })
         }));
 
@@ -187,12 +187,12 @@ describe('Delete mode', () => {
         await act(async () => await jest.advanceTimersByTimeAsync(1500));
         fireEvent.mouseUp(button);
 
-        // Confirm correct data posted to /delete_plant_note endpoint
-        expect(global.fetch).toHaveBeenCalledWith('/delete_plant_note', {
+        // Confirm correct data posted to /bulk_delete_plant_notes endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/bulk_delete_plant_notes', {
             method: 'POST',
             body: JSON.stringify({
                 plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                timestamp: "2024-03-01T15:45:44+00:00"
+                timestamps: ["2024-03-01T15:45:44+00:00"]
             }),
             headers: postHeaders
         });
@@ -263,8 +263,8 @@ describe('Delete mode', () => {
                 ok: true,
                 status: 200,
                 json: () => Promise.resolve({
-                    deleted: "note",
-                    plant: "0640ec3b-1bed-4b15-a078-d6e7ec66be12"
+                    deleted: ["2024-03-01T15:45:44+00:00"],
+                    failed: []
                 })
             }));
 
@@ -305,11 +305,11 @@ describe('Delete mode', () => {
             }),
             headers: postHeaders
         });
-        expect(global.fetch).toHaveBeenNthCalledWith(3, '/delete_plant_note', {
+        expect(global.fetch).toHaveBeenNthCalledWith(3, '/bulk_delete_plant_notes', {
             method: 'POST',
             body: JSON.stringify({
                 plant_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be12",
-                timestamp: "2024-03-01T15:45:44+00:00"
+                timestamps: ["2024-03-01T15:45:44+00:00"]
             }),
             headers: postHeaders
         });
