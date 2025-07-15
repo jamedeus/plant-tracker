@@ -426,6 +426,20 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
     const [selected, setSelected] = useState(false);
     const deleteMode = useSelector((state) => state.interface.deleteMode);
 
+    const toggleSelected = () => {
+        dispatch(noteSelected({
+            timestamp: note.timestamp,
+            selected: !selected
+        }));
+        setSelected(!selected);
+    };
+
+    const editNote = () => {
+        if (!archived && !deleteMode) {
+            openNoteModal(note);
+        }
+    };
+
     // Clear selection when exiting delete mode
     useEffect(() => {
         !deleteMode && setSelected(false);
@@ -450,8 +464,10 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
 
     const readableTimestamp = timestampToReadable(note.timestamp);
 
-    const toggle = () => {
-        setExpanded(!expanded);
+    const toggleCollapsed = () => {
+        if (!deleteMode && collapsedNoteLines !== 'All') {
+            setExpanded(!expanded);
+        }
     };
 
     // Update height when note text edited if expanded
@@ -517,25 +533,15 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
         }
     }, [expanded]);
 
-    // Toggle note collapse if not in delete mode
-    // Select/unselect note if in delete mode
-    const handleClick = () => {
-        if (deleteMode) {
-            dispatch(noteSelected({
-                timestamp: note.timestamp,
-                selected: !selected
-            }));
-            setSelected(!selected);
-        } else if (collapsedNoteLines !== 'All') {
-            toggle();
-        }
-    };
-
     return (
-        <div className={clsx(
-            'note-collapse-wrapper',
-            selected && 'selected'
-        )}>
+        <div
+            className={clsx(
+                'note-collapse-wrapper',
+                selected && 'selected',
+                deleteMode && 'cursor-pointer select-none'
+            )}
+            onClick={deleteMode ? toggleSelected : null}
+        >
             <div
                 className='note-collapse'
                 style={{ maxHeight: height }}
@@ -545,17 +551,17 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
                         'fa-inline size-4 mr-2 mt-1',
                         !archived && !deleteMode && 'cursor-pointer'
                     )}
-                    onClick={archived || deleteMode ? null : () => openNoteModal(note)}
+                    onClick={editNote}
                 />
                 <div
                     className={clsx(
-                        (collapsedNoteLines !== 'All' || deleteMode) && 'cursor-pointer',
+                        collapsedNoteLines !== 'All' && 'cursor-pointer',
                         'overflow-hidden',
                         clamped && clamped
                     )}
                     title={readableTimestamp}
                     ref={textRef}
-                    onClick={handleClick}
+                    onClick={toggleCollapsed}
                 >
                     <span className='note-collapse-text'>
                         {note.text}
