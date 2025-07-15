@@ -45,8 +45,8 @@ describe('App', () => {
         const modal = app.getByText("Edit Details").closest(".modal-box");
         await user.click(within(modal).getByText("Edit"));
 
-        // Confirm correct data posted to /edit_plant endpoint
-        expect(global.fetch).toHaveBeenCalledWith('/edit_group', {
+        // Confirm correct data posted to /edit_group_details endpoint
+        expect(global.fetch).toHaveBeenCalledWith('/edit_group_details', {
             method: 'POST',
             body: JSON.stringify({
                 group_id: "0640ec3b-1bed-4b15-a078-d6e7ec66be14",

@@ -513,8 +513,8 @@ class ViewRegressionTests(TestCase):
         self.assertIsNone(cache.get(f'old_uuid_{get_default_user().pk}'))
 
     def test_edit_plant_details_crashes_when_pot_size_is_null(self):
-        '''Issue: The /edit_plant endpoint returns a modified version of the
-        payload it received, which previously cast the pot_size param to int
+        '''Issue: The /edit_plant_details endpoint returns a modified version of
+        the payload it received, which previously cast the pot_size param to int
         with no error handling. If the pot_size field was not filled in this
         resulted in a TypeError when None was passed to int().
 
@@ -525,8 +525,8 @@ class ViewRegressionTests(TestCase):
         # Create test plant
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
 
-        # Post details with blank pot_size to /edit_plant endpoint
-        response = JSONClient().post('/edit_plant', {
+        # Post details with blank pot_size to /edit_plant_details endpoint
+        response = JSONClient().post('/edit_plant_details', {
             'plant_id': plant.uuid,
             'name': 'test plant',
             'species': 'Giant Sequoia',
@@ -534,8 +534,8 @@ class ViewRegressionTests(TestCase):
             'pot_size': ''
         })
 
-        # Post details with string pot_size to /edit_plant endpoint
-        response = JSONClient().post('/edit_plant', {
+        # Post details with string pot_size to /edit_plant_details endpoint
+        response = JSONClient().post('/edit_plant_details', {
             'plant_id': plant.uuid,
             'name': 'test plant',
             'species': 'Giant Sequoia',
@@ -697,8 +697,8 @@ class ViewRegressionTests(TestCase):
             plant=plant
         )
 
-        # Send edit_plant request with new name
-        response = JSONClient().post('/edit_plant', {
+        # Send edit_plant_details request with new name
+        response = JSONClient().post('/edit_plant_details', {
             'plant_id': plant.uuid,
             'name': 'new plant name',
             'species': '',

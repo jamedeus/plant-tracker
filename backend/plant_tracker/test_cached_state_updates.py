@@ -233,8 +233,8 @@ class EndpointStateUpdateTests(TestCase):
         self.assertIsNone(initial_overview_state['plants'][str(self.plant1.uuid)]['description'])
         self.assertIsNone(initial_overview_state['plants'][str(self.plant1.uuid)]['pot_size'])
 
-        # Edit plant details with /edit_plant endpoint
-        response = self.client.post('/edit_plant', {
+        # Edit plant details with /edit_plant_details endpoint
+        response = self.client.post('/edit_plant_details', {
             'plant_id': self.plant1.uuid,
             'name': 'plant name',
             'species': 'Giant Sequoia',
@@ -259,8 +259,8 @@ class EndpointStateUpdateTests(TestCase):
         self.assertIsNone(initial_overview_state['groups'][str(self.group1.uuid)]['location'])
         self.assertIsNone(initial_overview_state['groups'][str(self.group1.uuid)]['description'])
 
-        # Edit group details with /edit_group endpoint
-        response = self.client.post('/edit_group', {
+        # Edit group details with /edit_group_details endpoint
+        response = self.client.post('/edit_group_details', {
             'group_id': self.group1.uuid,
             'name': 'group name',
             'location': 'Outside',

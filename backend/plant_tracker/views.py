@@ -190,9 +190,8 @@ def get_plant_state(request, uuid, user):
         return JsonResponse({'Error': 'Requires plant UUID'}, status=400)
 
 
-def get_species_options(request):
+def get_plant_species_options(request):
     '''Returns list used to populate plant species combobox suggestions.'''
-
     species = Plant.objects.all().values_list('species', flat=True)
     options = sorted(list(set(i for i in species if i is not None)))
     return JsonResponse({'options': options}, status=200)

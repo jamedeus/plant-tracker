@@ -465,11 +465,11 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
             })
             self.assertEqual(response.status_code, 200)
 
-    def test_edit_plant_endpoint(self):
-        '''/edit_plant should make 3 database queries.'''
+    def test_edit_plant_details_endpoint(self):
+        '''/edit_plant_details should make 3 database queries.'''
         plant = Plant.objects.create(uuid=uuid4(), user=get_default_user())
         with self.assertNumQueries(3):
-            response = self.client.post('/edit_plant', {
+            response = self.client.post('/edit_plant_details', {
                 'plant_id': plant.uuid,
                 'name': 'test plant',
                 'species': 'Giant Sequoia',
@@ -478,11 +478,11 @@ class SqlQueriesPerViewTests(AssertNumQueriesMixin, TestCase):
             })
             self.assertEqual(response.status_code, 200)
 
-    def test_edit_group_endpoint(self):
-        '''/edit_group should make 3 database queries.'''
+    def test_edit_group_details_endpoint(self):
+        '''/edit_group_details should make 3 database queries.'''
         group = Group.objects.create(uuid=uuid4(), user=get_default_user())
         with self.assertNumQueries(3):
-            response = self.client.post('/edit_group', {
+            response = self.client.post('/edit_group_details', {
                 'group_id': group.uuid,
                 'name': 'test group    ',
                 'location': '    middle shelf',

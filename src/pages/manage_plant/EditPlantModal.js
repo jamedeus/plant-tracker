@@ -12,7 +12,7 @@ const EditPlantModal = () => {
     const plantDetails = useSelector((state) => state.plant.plantDetails);
 
     const submit = async () => {
-        const response = await sendPostRequest('/edit_plant', {
+        const response = await sendPostRequest('/edit_plant_details', {
             plant_id: plantDetails.uuid,
             ...Object.fromEntries(new FormData(formRef.current))
         });

@@ -955,7 +955,7 @@ class MultiUserModeTests(TestCase):
             })
         )
         self.assertAuthenticationRequiredError(
-            self.client.post('/edit_plant', {
+            self.client.post('/edit_plant_details', {
                 'plant_id': plant.uuid,
                 'name': 'test plant    ',
                 'species': '   Giant Sequoia',
@@ -964,7 +964,7 @@ class MultiUserModeTests(TestCase):
             })
         )
         self.assertAuthenticationRequiredError(
-            self.client.post('/edit_group', {
+            self.client.post('/edit_group_details', {
                 'group_id': group.uuid,
                 'name': 'test group    ',
                 'location': '    middle shelf',
@@ -1098,7 +1098,7 @@ class MultiUserModeTests(TestCase):
             })
         )
         self.assertPlantIsOwnedByADifferentUserError(
-            self.client.post('/edit_plant', {
+            self.client.post('/edit_plant_details', {
                 'plant_id': plant.uuid,
                 'name': 'test plant    ',
                 'species': '   Giant Sequoia',
@@ -1107,7 +1107,7 @@ class MultiUserModeTests(TestCase):
             })
         )
         self.assertGroupIsOwnedByADifferentUserError(
-            self.client.post('/edit_group', {
+            self.client.post('/edit_group_details', {
                 'group_id': group.uuid,
                 'name': 'test group    ',
                 'location': '    middle shelf',

@@ -1267,8 +1267,8 @@ class ManagePlantEndpointTests(TestCase):
         self.assertIsNone(self.plant.name)
         self.assertIsNone(self.plant.species)
 
-        # Send edit_plant request with leading/trailing spaces on some params
-        response = self.client.post('/edit_plant', {
+        # Send edit_plant_details request with leading/trailing spaces on some params
+        response = self.client.post('/edit_plant_details', {
             'plant_id': self.plant.uuid,
             'name': 'test plant    ',
             'species': '   Giant Sequoia',
@@ -1298,8 +1298,8 @@ class ManagePlantEndpointTests(TestCase):
         self.assertEqual(self.plant.species, 'Giant Sequoia')
 
     def test_edit_plant_details_field_too_long(self):
-        # Send edit_plant request with name longer than length limit (50 char)
-        response = self.client.post('/edit_plant', {
+        # Send edit_plant_details request with name longer than length limit (50 char)
+        response = self.client.post('/edit_plant_details', {
             'plant_id': self.plant.uuid,
             'name': 'this name is longer than the fifty character length limit',
             'species': '',
@@ -1523,8 +1523,8 @@ class ManageGroupEndpointTests(TestCase):
         self.assertIsNone(self.group1.location)
         self.assertIsNone(self.group1.description)
 
-        # Send edit_group request with leading/trailing spaces on some params
-        response = self.client.post('/edit_group', {
+        # Send edit_group_details request with leading/trailing spaces on some params
+        response = self.client.post('/edit_group_details', {
             'group_id': self.group1.uuid,
             'name': 'test group    ',
             'location': '    middle shelf',
@@ -1556,8 +1556,8 @@ class ManageGroupEndpointTests(TestCase):
         )
 
     def test_edit_group_details_field_too_long(self):
-        # Send edit_group request with name longer than length limit (50 char)
-        response = self.client.post('/edit_group', {
+        # Send edit_group_details request with name longer than length limit (50 char)
+        response = self.client.post('/edit_group_details', {
             'group_id': self.group1.uuid,
             'name': 'this name is longer than the fifty character length limit',
             'location': '',

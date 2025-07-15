@@ -9,7 +9,7 @@ const EditGroupModal = memo(function EditGroupModal({ group, setGroup }) {
     const formRef = useRef(null);
 
     const submit = async () => {
-        const response = await sendPostRequest('/edit_group', {
+        const response = await sendPostRequest('/edit_group_details', {
             group_id: group.uuid,
             ...Object.fromEntries(new FormData(formRef.current))
         });
