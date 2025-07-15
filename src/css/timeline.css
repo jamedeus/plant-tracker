@@ -58,7 +58,7 @@
     @apply transition duration-150;
 
     & > .event-marker-content {
-        @apply inline-block transition-all duration-200 ease-linear;
+        @apply inline-block transition-all duration-150 ease-linear;
         /* Allow clicking rapidly without selecting text */
         @apply select-none;
 
