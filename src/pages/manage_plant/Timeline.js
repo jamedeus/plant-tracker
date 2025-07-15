@@ -519,7 +519,7 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
             if (collapsedNoteLines === 'All') {
                 expand();
             } else {
-                return collapse();
+                collapse();
             }
         }
     }, [collapsedNoteLines]);
@@ -529,7 +529,7 @@ const NoteCollapse = memo(function NoteCollapse({ note }) {
         if (expanded) {
             expand();
         } else {
-            return collapse();
+            collapse();
         }
     }, [expanded]);
 

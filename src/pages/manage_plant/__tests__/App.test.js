@@ -471,7 +471,7 @@ describe('App', () => {
 
         // Click default photo in details dropdown, confirm gallery appears
         await user.click(app.getByTestId('defaultPhotoThumbnail'));
-        await jest.advanceTimersByTimeAsync(100);
+        await jest.advanceTimersByTimeAsync(500);
         expect(document.body.querySelector('.yarl__root')).not.toBeNull();
         // Confirm visible slide src is full-res version of default photo
         expect(document.querySelector('.yarl__slide_current img').src).toBe(

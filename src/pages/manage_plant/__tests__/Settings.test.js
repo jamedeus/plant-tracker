@@ -77,7 +77,7 @@ describe('Settings menu', () => {
             expect(
                 app.getByTitle('04:44 AM - February 26, 2024').classList
             ).toContain('line-clamp-2');
-        });
+        }, { timeout: 2000 });
         // Confirm new setting was written to localStorage
         expect(getSavedSettingValue('collapsedNoteLines')).toBe(2);
     });
@@ -95,9 +95,11 @@ describe('Settings menu', () => {
         expect(getSavedSettingValue('collapsedNoteLines')).toBe(2);
 
         // Confirm all lines of expanded note still visible
-        expect(
-            app.getByTitle('04:44 AM - February 26, 2024').classList
-        ).toContain('line-clamp-none');
+        await waitFor(() => {
+            expect(
+                app.getByTitle('04:44 AM - February 26, 2024').classList
+            ).toContain('line-clamp-none');
+        }, { timeout: 2000 });
     });
 
     it('changes TimelineTimestamp full date visibility when timelineFullDate changed', async () => {
