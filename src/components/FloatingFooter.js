@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useSwipeable } from 'react-swipeable';
 import PropTypes from 'prop-types';
 import clsx from 'clsx';
 
-const FloatingFooter = ({ visible, children, text, fadeText }) => {
+const FloatingFooter = ({ visible, children, text, fadeText, onClose }) => {
     // Track displayed text (prevents immediate change when prop changes)
     const [displayedText, setDisplayedText] = useState(text);
     // Text fades in if true, fades out if false
@@ -35,6 +36,16 @@ const FloatingFooter = ({ visible, children, text, fadeText }) => {
         return () => clearTimeout(timerRef.current);
     }, [text, fadeText]);
 
+    // Close footer by swiping down (if onClose callback given)
+    const handlers = useSwipeable({
+        onSwipedDown: onClose,
+        ...{
+            delta: 50,
+            preventScrollOnSwipe: true,
+            trackMouse: true,
+        },
+    });
+
     return (
         <div
             className={clsx(
@@ -42,6 +53,7 @@ const FloatingFooter = ({ visible, children, text, fadeText }) => {
                 visible ? 'floating-footer-visible' : 'floating-footer-hidden'
             )}
             data-testid='floating-footer'
+            {...handlers}
         >
             <div className="flex flex-col items-center gap-4 w-full">
                 {/* Render text div if arg given */}
@@ -68,7 +80,8 @@ FloatingFooter.propTypes = {
     visible: PropTypes.bool.isRequired,
     children: PropTypes.node.isRequired,
     text: PropTypes.string,
-    fadeText: PropTypes.bool
+    fadeText: PropTypes.bool,
+    onClose: PropTypes.func
 };
 
 export default FloatingFooter;

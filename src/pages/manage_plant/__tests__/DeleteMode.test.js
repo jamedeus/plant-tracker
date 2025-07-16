@@ -53,6 +53,19 @@ describe('Delete mode', () => {
         expect(app.getByTestId("floating-footer").classList).toContain("floating-footer-hidden");
     });
 
+    it('closes DeleteModeFooter when user swipes down', async () => {
+        // Click dropdown option, confirm footer appeared
+        await user.click(app.getByText('Delete mode'));
+        expect(app.getByTestId("floating-footer").classList).toContain("floating-footer-visible");
+
+        // Swipe down on footer, confirm footer disappeared
+        const footer = app.getByTestId("floating-footer");
+        fireEvent.touchStart(footer, {touches: [{ clientX: 50, clientY: 10 }]});
+        fireEvent.touchMove(footer, {touches: [{ clientX:  50, clientY: 100 }]});
+        fireEvent.touchEnd(footer, {changedTouches: [{ clientX:  50, clientY: 100 }]});
+        expect(app.getByTestId("floating-footer").classList).toContain("floating-footer-hidden");
+    });
+
     it('updates instructions text to show number of selected items', async () => {
         // Enter delete mode
         await user.click(app.getByText('Delete mode'));

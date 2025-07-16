@@ -352,6 +352,7 @@ function App() {
                 visible={removingPlants}
                 text={instructionsText}
                 fadeText={totalSelected <= 1}
+                onClose={stopRemovingPlants}
             >
                 <button
                     className="btn btn-neutral w-22"

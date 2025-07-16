@@ -79,6 +79,17 @@ describe('App', () => {
         await user.click(app.getByText('Groups (2)'));
         expect(floatingFooter.classList).toContain('floating-footer-hidden');
         expect(app.container.querySelectorAll('.ml-\\[2\\.5rem\\]').length).toBe(0);
+
+        // Click Edit option again, confirm footer appeared
+        await user.click(app.getByText("Edit"));
+        expect(floatingFooter.classList).toContain('floating-footer-visible');
+
+        // Swipe down on footer, confirm footer disappeared
+        const footer = app.getByTestId("floating-footer");
+        fireEvent.touchStart(footer, {touches: [{ clientX: 50, clientY: 10 }]});
+        fireEvent.touchMove(footer, {touches: [{ clientX:  50, clientY: 100 }]});
+        fireEvent.touchEnd(footer, {changedTouches: [{ clientX:  50, clientY: 100 }]});
+        expect(app.getByTestId("floating-footer").classList).toContain("floating-footer-hidden");
     });
 
     it('sends correct payload when plants are deleted', async () => {

@@ -6,6 +6,9 @@
     backdrop-filter: blur(6px) saturate(180%);
     -webkit-backdrop-filter: blur(6px) saturate(180%);
     background-color: color-mix(in oklab, var(--color-base-300) 50%, #0000);
+
+    /* Prevent scrolling body when swiping down to close footer */
+    touch-action: none;
 }
 
 @utility floating-footer-hidden {

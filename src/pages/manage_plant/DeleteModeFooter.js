@@ -129,6 +129,7 @@ const DeleteModeFooter = memo(function DeleteModeFooter() {
             visible={deleteMode}
             text={holdingDelete ? 'Hold to confirm' : instructionsText}
             fadeText={totalSelected <= 1 || fadeText}
+            onClose={cancelDeleteMode}
         >
             <button
                 className="btn btn-neutral w-20"

@@ -208,6 +208,7 @@ const EditModeFooter = memo(function EditModeFooter({
             visible={visible}
             text={holdingDelete ? 'Hold to confirm' : instructionsText}
             fadeText={totalSelected <= 1 || fadeText}
+            onClose={cancelEditing}
         >
             <button
                 className="btn btn-neutral w-20"
