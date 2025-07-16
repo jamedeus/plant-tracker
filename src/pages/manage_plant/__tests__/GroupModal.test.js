@@ -37,7 +37,9 @@ describe('GroupModal', () => {
         );
 
         // Open modal, confirm options requested
-        openGroupModal();
+        await act(async () => {
+            openGroupModal();
+        });
         await jest.advanceTimersByTimeAsync(0);
         expect(global.fetch).toHaveBeenCalledWith('/get_add_to_group_options');
 
@@ -119,7 +121,9 @@ describe('GroupModal', () => {
         });
 
         // Fast forward until response received
-        await jest.advanceTimersByTimeAsync(5);
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(5);
+        });
 
         // Confirm spinner disappeared, contents appeared
         await waitFor(() => {
@@ -130,7 +134,9 @@ describe('GroupModal', () => {
         // Close modal, fast forward through close animation
         let event = new Event("close");
         document.querySelector('dialog').dispatchEvent(event);
-        await jest.advanceTimersByTimeAsync(200);
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(200);
+        });
 
         // Confirm contents disappeared
         expect(component.queryByText('Test group')).toBeNull();

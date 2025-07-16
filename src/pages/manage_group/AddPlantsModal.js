@@ -79,7 +79,7 @@ const AddPlantsModal = memo(function AddPlantsModal({ addPlants }) {
             const data = await response.json();
             setOptions(data.options);
         } else {
-            setOptions([]);
+            setOptions({});
         }
     };
 

@@ -105,7 +105,6 @@ const GalleryDropdown = ({ currentSlide }) => {
             // Fetch the image as a blob
             const response = await fetch(currentSlide.src);
             if (!response.ok) {
-                console.error('Unable to download photo:');
                 showToast('Failed to download photo', 'red', 2500);
                 return;
             }

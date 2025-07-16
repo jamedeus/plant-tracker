@@ -26,7 +26,9 @@ describe('AddPlantsModal', () => {
         );
 
         // Open modal, confirm options requested
-        openAddPlantsModal();
+        await act(async () => {
+            openAddPlantsModal();
+        });
         await jest.advanceTimersByTimeAsync(0);
         expect(global.fetch).toHaveBeenCalledWith('/get_plant_options');
 
@@ -110,7 +112,9 @@ describe('AddPlantsModal', () => {
         });
 
         // Fast forward until response received
-        await jest.advanceTimersByTimeAsync(5);
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(5);
+        });
 
         // Confirm spinner disappeared, contents appeared
         await waitFor(() => {
@@ -121,7 +125,9 @@ describe('AddPlantsModal', () => {
         // Close modal, fast forward through close animation
         let event = new Event("close");
         document.querySelector('dialog').dispatchEvent(event);
-        await jest.advanceTimersByTimeAsync(200);
+        await act(async () => {
+            await jest.advanceTimersByTimeAsync(200);
+        });
 
         // Confirm contents disappeared
         expect(component.queryByText('Another test plant')).toBeNull();

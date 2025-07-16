@@ -92,7 +92,7 @@ describe('Timeline regressions', () => {
                 "2024-02-11T04:20:23+00:00": [
                     {
                         name: "Child plant 2",
-                        uuid: "cc3fcb4f-120a-4577-ac87-ac6b5bea8968"
+                        uuid: "cc3fcb4f-120a-4577-ac87-ac6b5bea8969"
                     },
                 ]
             }
