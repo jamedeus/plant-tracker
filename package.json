@@ -18,6 +18,7 @@
     "@headlessui/react": "^1.7.18",
     "@heroicons/react": "^2.1.1",
     "@reduxjs/toolkit": "^2.6.1",
+    "@wojtekmaj/date-utils": "^1.5.1",
     "clsx": "^2.1.1",
     "js-cookie": "^3.0.5",
     "luxon": "^3.4.4",

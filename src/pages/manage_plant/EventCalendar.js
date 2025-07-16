@@ -1,4 +1,10 @@
-import React, { memo, useMemo } from 'react';
+import React, { memo, useMemo, useState } from 'react';
+import { useSwipeable } from 'react-swipeable';
+import {
+    getMonthStart,
+    getPreviousMonthStart,
+    getNextMonthStart
+} from "@wojtekmaj/date-utils";
 import { DateTime } from 'luxon';
 import Calendar from 'react-calendar';
 import 'src/css/event_calendar.css';
@@ -12,7 +18,19 @@ const colorMap = {
     repot: 'bg-repot'
 };
 
+const defaultValue = new Date();
+
 const EventCalendar = memo(function EventCalendar() {
+    // Start on current month
+    // Controlled states allow changing month with swipe gestures
+    const [value, setValue] = useState(defaultValue);
+    const [activeStartDate, setActiveStartDate] = useState(
+        getMonthStart(defaultValue)
+    );
+    const onActiveStartDateChange = (obj) => {
+        setActiveStartDate(obj.activeStartDate);
+    };
+
     // Object with date strings as keys, array of event types as value
     const calendarDays = useSelector((state) => state.timeline.calendarDays);
 
@@ -56,8 +74,29 @@ const EventCalendar = memo(function EventCalendar() {
         });
     };
 
+    // Change month by swiping left or right
+    // Extract ref so it can be passed as inputRef (won't work if passed as ref)
+    const { ref, ...handlers } = useSwipeable({
+        onSwipedLeft: () => {
+            setActiveStartDate(getNextMonthStart(activeStartDate));
+        },
+        onSwipedRight: () => {
+            setActiveStartDate(getPreviousMonthStart(activeStartDate));
+        },
+        ...{
+            delta: 50,
+            preventScrollOnSwipe: true
+        },
+    });
+
     return (
         <Calendar
+            {...handlers}
+            inputRef={ref}
+            activeStartDate={activeStartDate}
+            onActiveStartDateChange={onActiveStartDateChange}
+            onChange={setValue}
+            value={value}
             calendarType='gregory'
             minDate={new Date('2001-01-01T00:00:00')}
             maxDate={new Date('2100-01-01T00:00:00')}

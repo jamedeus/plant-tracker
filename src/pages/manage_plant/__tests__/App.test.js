@@ -405,6 +405,26 @@ describe('App', () => {
         expect(calendar.querySelector('.react-calendar__year-view')).not.toBeNull();
     });
 
+    it('changes calendar month when user swipes left or right', async () => {
+        // Confirm initial calendar month matches date mock
+        const calendar = app.container.querySelector('.react-calendar');
+        expect(within(calendar).getByRole('button', {name: 'March 2024'})).not.toBeNull();
+
+        // Simulate user swiping left, confirm changed to previous month
+        fireEvent.touchStart(calendar, {touches: [{ clientX: 50, clientY: 100 }]});
+        fireEvent.touchMove(calendar, {touches: [{ clientX:  100, clientY: 100 }]});
+        fireEvent.touchEnd(calendar, {changedTouches: [{ clientX:  100, clientY: 100 }]});
+        expect(within(calendar).queryByRole('button', {name: 'March 2024'})).toBeNull();
+        expect(within(calendar).getByRole('button', {name: 'February 2024'})).not.toBeNull();
+
+        // Simulate user swiping right, confirm changed to next month
+        fireEvent.touchStart(calendar, {touches: [{ clientX: 100, clientY: 100 }]});
+        fireEvent.touchMove(calendar, {touches: [{ clientX:  50, clientY: 100 }]});
+        fireEvent.touchEnd(calendar, {changedTouches: [{ clientX:  50, clientY: 100 }]});
+        expect(within(calendar).queryByRole('button', {name: 'February 2024'})).toBeNull();
+        expect(within(calendar).getByRole('button', {name: 'March 2024'})).not.toBeNull();
+    });
+
     it('fetches new state when user navigates to page with back button', async () => {
         // Mock fetch function to return expected response
         global.fetch = jest.fn(() => Promise.resolve({
