@@ -39,7 +39,7 @@ describe('Settings menu', () => {
         jest.useRealTimers();
     });
 
-    it('closes when user clicks close button or clicks outside menu', async () => {
+    it('closes when user clicks close button, swipes left, or clicks outside menu', async () => {
         // Confirm settings menu is closed
         expect(app.container.querySelector('dialog.settings-menu').open).toBeFalse();
 
@@ -55,6 +55,15 @@ describe('Settings menu', () => {
         await user.click(app.getByTestId('open-settings-menu'));
         expect(app.container.querySelector('dialog.settings-menu').open).toBeTrue();
         await user.click(app.getByLabelText('Close settings menu'));
+        expect(app.container.querySelector('dialog.settings-menu').open).toBeFalse();
+
+        // Open again, swipe left, confirm closed
+        await user.click(app.getByTestId('open-settings-menu'));
+        expect(app.container.querySelector('dialog.settings-menu').open).toBeTrue();
+        const dialog = app.container.querySelector('dialog.settings-menu');
+        fireEvent.touchStart(dialog, {touches: [{ clientX: 100, clientY: 10 }]});
+        fireEvent.touchMove(dialog, {touches: [{ clientX:  50, clientY: 10 }]});
+        fireEvent.touchEnd(dialog, {changedTouches: [{ clientX:  50, clientY: 10 }]});
         expect(app.container.querySelector('dialog.settings-menu').open).toBeFalse();
     });
 

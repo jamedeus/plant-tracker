@@ -1,4 +1,5 @@
 import { memo, useState, Fragment } from 'react';
+import { useSwipeable } from 'react-swipeable';
 import PropTypes from 'prop-types';
 import CloseButtonIcon from 'src/components/CloseButtonIcon';
 import { useSelector, useDispatch } from 'react-redux';
@@ -239,8 +240,22 @@ const Settings = () => {
     const open = useSelector((state) => state.interface.settingsMenuOpen);
     const dispatch = useDispatch();
 
+    // Close settings by swiping left
+    const handlers = useSwipeable({
+        onSwipedLeft: () => dispatch(settingsMenuOpened(false)),
+        ...{
+            delta: 25,
+            preventScrollOnSwipe: true,
+            trackMouse: true,
+        },
+    });
+
     return (
-        <dialog className="settings-menu group" open={open ? true : undefined}>
+        <dialog
+            className="settings-menu group"
+            open={open ? true : undefined}
+            {...handlers}
+        >
             {/* Full screen overlay when menu open (click outside to close) */}
             {/* Tabindex sets initial focus (will open dropdown otherwise) */}
             <div
