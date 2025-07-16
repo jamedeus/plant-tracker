@@ -448,7 +448,6 @@ def edit_plant_details(plant, data, **kwargs):
     Requires JSON POST with plant_id (uuid), name, species, description
     (string), and pot_size (int) keys.
     '''
-    print(json.dumps(data, indent=4))
 
     # Overwrite database params with user values (remove extra whitespace)
     plant.name = data["name"]
@@ -487,7 +486,6 @@ def edit_group_details(group, data, **kwargs):
     '''Updates description attributes of existing Group entry.
     Requires JSON POST with group_id (uuid), name, and location (string) keys.
     '''
-    print(json.dumps(data, indent=4))
 
     # Overwrite database params with user values
     group.name = data["name"]
