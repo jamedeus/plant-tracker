@@ -42,11 +42,13 @@ describe('Gallery Focus Mode', () => {
         );
 
         // Simulate all images loading (removes loading classes)
-        document.querySelectorAll('img').forEach(img => {
-            if (img.classList.contains('yarl__slide_image_loading')) {
-                const loadEvent = new Event('load');
-                img.dispatchEvent(loadEvent);
-            }
+        await act(async () => {
+            document.querySelectorAll('img').forEach(img => {
+                if (img.classList.contains('yarl__slide_image_loading')) {
+                    const loadEvent = new Event('load');
+                    img.dispatchEvent(loadEvent);
+                }
+            });
         });
     });
 
