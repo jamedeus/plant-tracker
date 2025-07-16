@@ -59,7 +59,7 @@ const FloatingFooter = ({ visible, children, text, fadeText, onClose }) => {
                 {/* Render text div if arg given */}
                 {displayedText && (
                     <div className={clsx(
-                        "w-70 md:w-82 text-sm md:text-base",
+                        "w-70 md:w-82 text-sm md:text-base select-none",
                         "text-center text-base-content font-semibold",
                         "transition-opacity duration-150 ease",
                         fadeIn ? 'opacity-100 duration-200' : 'opacity-0'
