@@ -13,13 +13,17 @@ describe('App', () => {
     // Mock /get_plant_species_options response (requested when page loads)
     beforeAll(() => mockPlantSpeciesOptionsResponse());
 
-    it('matches snapshot', () => {
+    it('matches snapshot', async () => {
         // Create mock state objects (no dividing_from)
         bulkCreateMockContext(mockContext);
         createMockContext('user_accounts_enabled', true);
 
-        // Render App, confirm matches snapshot
+        // Render App, wait for species options to be fetched
         const { container } = render(<App />);
+        await waitFor(() => {
+            expect(global.fetch).toHaveBeenCalled();
+        });
+        // Confirm matches snapshot
         expect(container).toMatchSnapshot();
     });
 

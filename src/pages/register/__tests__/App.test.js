@@ -15,7 +15,7 @@ describe('App', () => {
         createMockContext('user_accounts_enabled', true);
     });
 
-    beforeEach(() => {
+    beforeEach(async () => {
         // Mock /get_plant_species_options response (requested when page loads)
         mockPlantSpeciesOptionsResponse();
 
@@ -26,6 +26,11 @@ describe('App', () => {
                 <App />
             </PageWrapper>
         );
+
+        // Wait for species options to be fetched
+        await waitFor(() => {
+            expect(global.fetch).toHaveBeenCalled();
+        });
     });
 
     it('shows the correct form when buttons are clicked', async () => {

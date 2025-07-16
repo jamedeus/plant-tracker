@@ -22,7 +22,7 @@ describe('App', () => {
         );
         expect(window.location.reload).not.toHaveBeenCalled();
 
-        // Simulate user navigating to confirm_new_qr_code page with back button
+        // Simulate user navigating to register page with back button
         const pageshowEvent = new Event('pageshow');
         Object.defineProperty(pageshowEvent, 'persisted', { value: true });
         window.dispatchEvent(pageshowEvent);
@@ -33,11 +33,13 @@ describe('App', () => {
 
         // Unmount and re-render the app
         unmount();
-        render(
-            <PageWrapper>
-                <App />
-            </PageWrapper>
-        );
+        await act(async () => {
+            render(
+                <PageWrapper>
+                    <App />
+                </PageWrapper>
+            );
+        });
 
         // Confirm reload was not called
         expect(window.location.reload).not.toHaveBeenCalled();
