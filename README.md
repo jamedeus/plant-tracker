@@ -43,6 +43,8 @@ Copy the [docker-compose.yaml](docker/docker-compose.yaml) example to the machin
 
 If serving behind a reverse proxy you may need additional configuration to allow uploading multiple photos at once (eg if serving behind nginx you will need to set `client_max_body_size` to a reasonable value like 50MB).
 
+To serve static files from a CDN like cloudfront uncomment the `STATIC_HOST` env var in docker-compose.yaml and add your CDN URL. When this env var is not set static files will be served by django using whitenoise.
+
 Once your docker compose is set up start the app:
 ```
 docker compose up -d

@@ -11,6 +11,8 @@ services:
       - URL_PREFIX=plants.lan
       # Store user-uploaded files locally (currently nothing else supported)
       - LOCAL_MEDIA_ROOT=True
+      # Serve static files (JS bundles) from CDN if set
+      # - DJANGO_STATIC_HOST=
       # Postgres database host (must match container below)
       - DATABASE_HOST=plant-tracker-db
       # Postgres database password (must match container below)
