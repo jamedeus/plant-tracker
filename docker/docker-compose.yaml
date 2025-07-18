@@ -9,9 +9,8 @@ services:
       - ALLOWED_HOSTS=plants.lan,localhost
       # Domain for QR code URLS, use one of the ALLOWED_HOSTS
       - URL_PREFIX=plants.lan
-      # Store user-uploaded files locally (currently nothing else supported)
-      - LOCAL_MEDIA_ROOT=True
-      # Optional: Store user-uploaded files in S3 if set (above must be False)
+      # Optional: Store user-uploaded files in S3 if all variables set
+      # Photos will be stored locally if any AWS variables are missing
       # - AWS_ACCESS_KEY_ID=
       # - AWS_SECRET_ACCESS_KEY=
       # - AWS_STORAGE_BUCKET_NAME=

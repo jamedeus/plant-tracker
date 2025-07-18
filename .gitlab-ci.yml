@@ -28,7 +28,6 @@ test_backend:
   before_script:
     - pip3 install pipenv
     - pipenv install --dev
-    - export LOCAL_MEDIA_ROOT=True
     - export DJANGO_SETTINGS_MODULE=backend.test_settings
     - cd backend/
   script:
@@ -60,7 +59,6 @@ pylint:
   before_script:
     - pip3 install pipenv
     - pipenv install --dev
-    - export LOCAL_MEDIA_ROOT=True
   script:
     - mkdir ./pylint
     - pipenv run pylint --output-format=text backend/plant_tracker/ | tee ./pylint/pylint.log || pipenv run pylint-exit $?

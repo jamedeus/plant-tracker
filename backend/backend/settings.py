@@ -169,9 +169,18 @@ CACHES = {
     }
 }
 
-# Serve files from local media root if env var set
-LOCAL_MEDIA_ROOT = bool(os.environ.get('LOCAL_MEDIA_ROOT', 0))
+# Serve files from local media root if any required AWS S3 env vars are missing
+LOCAL_MEDIA_ROOT = not all(
+    var in os.environ
+    for var in [
+        "AWS_ACCESS_KEY_ID",
+        "AWS_SECRET_ACCESS_KEY",
+        "AWS_STORAGE_BUCKET_NAME",
+        "AWS_S3_REGION_NAME",
+    ]
+)
 
+# Local media root settings
 if LOCAL_MEDIA_ROOT:
     # Create data directory if it doesn't exist
     if not os.path.isdir(os.path.join(BASE_DIR, 'data')):
@@ -198,11 +207,12 @@ if LOCAL_MEDIA_ROOT:
         },
     }
 
+# AWS S3 settings
 else:
     # Read AWS settings from env vars
-    AWS_ACCESS_KEY_ID = os.environ["AWS_ACCESS_KEY_ID"]
-    AWS_SECRET_ACCESS_KEY = os.environ["AWS_SECRET_ACCESS_KEY"]
-    AWS_STORAGE_BUCKET_NAME = os.environ["AWS_STORAGE_BUCKET_NAME"]
+    AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+    AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+    AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
     AWS_S3_REGION_NAME = os.environ.get("AWS_S3_REGION_NAME")
 
     STORAGES = {
