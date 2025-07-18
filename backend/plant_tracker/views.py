@@ -2,7 +2,6 @@
 
 # pylint: disable=too-many-lines
 
-import json
 import base64
 from io import BytesIO
 from itertools import chain
