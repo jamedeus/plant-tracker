@@ -41,11 +41,23 @@ docker build -t plant-tracker . -f docker/Dockerfile
 
 Copy the [docker-compose.yaml](docker/docker-compose.yaml) example to the machine where you'll host the app. Set the `URL_PREFIX` env var to the address you use to access the app (this will be part of the URL in the QR code stickers). This could be a domain if the app is served from behind a reverse proxy, or it can be the docker host's IP address. If hosting on a LAN it is highly recommended to set a static IP so the QR code links don't break if the IP changes.
 
-If serving behind a reverse proxy you may need additional configuration to allow uploading multiple photos at once (eg if serving behind nginx you will need to set `client_max_body_size` to a reasonable value like 50MB).
+### Reverse proxy
 
-To serve static files from a CDN like cloudfront uncomment the `STATIC_HOST` env var in docker-compose.yaml and add your CDN URL. When this env var is not set static files will be served by django using whitenoise.
+Serving behind a reverse proxy like nginx is highly recommended for security. You may need additional configuration to allow uploading multiple photos at once. If serving behind nginx you will need to set `client_max_body_size` to a reasonable value like 50MB.
 
-By default user-uploaded photos will be stored locally in `backend/data/images/` (created automatically when server starts). To store photos in AWS S3 instead uncomment the 4 env vars in docker-compose.yaml and add your S3 access tokens, bucket name, and region. The default S3 bucket settings should work fine, including blocking public access (django will add querystring parameters to the URL which grant the user permission for 2 hours).
+### Static file CDN
+
+By default static files will be served by django using whitenoise. To serve from a CDN instead uncomment the `STATIC_HOST` env var in docker-compose.yaml and add your CDN URL. This can speed up page loads and take load off the django backend.
+
+If using cloudfront go to your distribution -> Behaviors -> Edit and make sure `Cache policy` is set to `CachingOptimized` so that cloudfront can store each static file and serve from the cache (much faster). This is disabled by default which will perform worse than no CDN at all (cloudfront will just request the static files from django every time).
+
+### User photo storage
+
+By default user-uploaded photos will be stored locally in `backend/data/images/` (created automatically when server starts).
+
+To store photos in AWS S3 instead uncomment the 4 env vars in docker-compose.yaml and add your S3 access tokens, bucket name, and region. The default S3 bucket settings should work fine, including blocking public access (django will add querystring parameters to the URL which grant the user permission for 2 hours).
+
+### Starting the docker container
 
 Once your docker compose is set up start the app:
 ```
