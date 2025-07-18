@@ -11,6 +11,11 @@ services:
       - URL_PREFIX=plants.lan
       # Store user-uploaded files locally (currently nothing else supported)
       - LOCAL_MEDIA_ROOT=True
+      # Optional: Store user-uploaded files in S3 if set (above must be False)
+      # - AWS_ACCESS_KEY_ID=
+      # - AWS_SECRET_ACCESS_KEY=
+      # - AWS_STORAGE_BUCKET_NAME=
+      # - AWS_S3_REGION_NAME=
       # Serve static files (JS bundles) from CDN if set
       # - DJANGO_STATIC_HOST=
       # Postgres database host (must match container below)

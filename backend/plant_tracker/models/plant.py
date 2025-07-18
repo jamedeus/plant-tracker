@@ -6,6 +6,7 @@ from django.db import models
 from django.apps import apps
 from django.conf import settings
 from django.utils.functional import cached_property
+from django.core.files.storage import default_storage
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db.models.functions import JSONObject, Cast
 from django.contrib.postgres.expressions import ArraySubquery
@@ -346,7 +347,7 @@ class Plant(models.Model):
         # If default photo not set: use annotation if present
         if hasattr(self, 'last_photo_thumbnail'):
             if self.last_photo_thumbnail:
-                return f'{settings.MEDIA_URL}{self.last_photo_thumbnail}'
+                return default_storage.url(self.last_photo_thumbnail)
             return None
 
         # Use full last_photo_details annotation if present
@@ -376,9 +377,9 @@ class Plant(models.Model):
                 return {
                     'set': False,
                     'timestamp': self.last_photo_details['timestamp'],
-                    'photo': f'{settings.MEDIA_URL}{self.last_photo_details['photo']}',
-                    'thumbnail': f'{settings.MEDIA_URL}{self.last_photo_details['thumbnail']}',
-                    'preview': f'{settings.MEDIA_URL}{self.last_photo_details['preview']}',
+                    'photo': default_storage.url(self.last_photo_details['photo']),
+                    'thumbnail': default_storage.url(self.last_photo_details['thumbnail']),
+                    'preview': default_storage.url(self.last_photo_details['preview']),
                     'key': self.last_photo_details['key']
                 }
 

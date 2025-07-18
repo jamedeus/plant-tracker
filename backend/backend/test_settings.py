@@ -34,7 +34,7 @@ TEST_DIR = '/tmp/plant_tracker_unit_test'
 
 # Mock photo uploads dir to temp directory deleted after tests
 MEDIA_ROOT = os.path.join(TEST_DIR, 'data', 'images')
-MEDIA_URL = "media/"
+MEDIA_URL = "/media/"
 
 # Override main settings.py
 STORAGES = {

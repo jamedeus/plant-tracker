@@ -147,10 +147,6 @@ WSGI_APPLICATION = "backend.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# Create data directory if it doesn't exist
-if not os.path.isdir(os.path.join(BASE_DIR, 'data')):
-    os.mkdir(os.path.join(BASE_DIR, 'data'))
-
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -161,17 +157,6 @@ DATABASES = {
         "PORT": os.environ.get('DATABASE_PORT', "5432"),
     }
 }
-
-# Create image storage directory if it doesn't exist
-if not os.path.isdir(os.path.join(BASE_DIR, 'data', 'images')):
-    os.mkdir(os.path.join(BASE_DIR, 'data', 'images'))
-
-# Set image storage directory and URL
-MEDIA_ROOT = os.path.join(BASE_DIR, 'data', 'images')
-MEDIA_URL = "media/"
-
-# Serve files from local media root if env var set
-LOCAL_MEDIA_ROOT = bool(os.environ.get('LOCAL_MEDIA_ROOT', 0))
 
 # Use redis cache (shared with celery)
 CACHES = {
@@ -184,19 +169,57 @@ CACHES = {
     }
 }
 
-STORAGES = {
-    "default": {
-        "BACKEND": "django.core.files.storage.FileSystemStorage",
-        "OPTIONS": {
-            "location": MEDIA_ROOT,
-            "base_url": MEDIA_URL,
-        },
-    },
-    "staticfiles": {
-        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
-    },
-}
+# Serve files from local media root if env var set
+LOCAL_MEDIA_ROOT = bool(os.environ.get('LOCAL_MEDIA_ROOT', 0))
 
+if LOCAL_MEDIA_ROOT:
+    # Create data directory if it doesn't exist
+    if not os.path.isdir(os.path.join(BASE_DIR, 'data')):
+        os.mkdir(os.path.join(BASE_DIR, 'data'))
+
+    # Create image storage directory if it doesn't exist
+    if not os.path.isdir(os.path.join(BASE_DIR, 'data', 'images')):
+        os.mkdir(os.path.join(BASE_DIR, 'data', 'images'))
+
+    # Set image storage directory and URL
+    MEDIA_ROOT = os.path.join(BASE_DIR, 'data', 'images')
+    MEDIA_URL = "/media/"
+
+    STORAGES = {
+        "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+            "OPTIONS": {
+                "location": MEDIA_ROOT,
+                "base_url": MEDIA_URL,
+            },
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
+
+else:
+    # Read AWS settings from env vars
+    AWS_ACCESS_KEY_ID = os.environ["AWS_ACCESS_KEY_ID"]
+    AWS_SECRET_ACCESS_KEY = os.environ["AWS_SECRET_ACCESS_KEY"]
+    AWS_STORAGE_BUCKET_NAME = os.environ["AWS_STORAGE_BUCKET_NAME"]
+    AWS_S3_REGION_NAME = os.environ.get("AWS_S3_REGION_NAME")
+
+    STORAGES = {
+        "default": {
+        "BACKEND": "storages.backends.s3.S3Storage",
+            "OPTIONS": {
+                "bucket_name": AWS_STORAGE_BUCKET_NAME,
+                "region_name": AWS_S3_REGION_NAME
+            },
+        },
+        "staticfiles": {
+            "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+        },
+    }
+
+    # Set base URL used to build photo URLs
+    MEDIA_URL = f"https://{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com/"
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators

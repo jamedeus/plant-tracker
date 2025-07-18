@@ -51,15 +51,15 @@ class Photo(models.Model):
 
     def get_photo_url(self):
         '''Returns public URL of the full-resolution photo.'''
-        return f'{settings.MEDIA_URL}{self.photo.name}'
+        return self.photo.url
 
     def get_thumbnail_url(self):
         '''Returns public URL of the reduced-resolution thumbnail (200x200).'''
-        return f'{settings.MEDIA_URL}{self.thumbnail.name}'
+        return self.thumbnail.url
 
     def get_preview_url(self):
         '''Returns public URL of the reduced-resolution preview (800x800).'''
-        return f'{settings.MEDIA_URL}{self.preview.name}'
+        return self.preview.url
 
     def get_details(self):
         '''Returns dict with timestamp, primary key, and URLs of all resolutions.'''
