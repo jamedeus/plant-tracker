@@ -214,6 +214,11 @@ else:
     AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
     AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
     AWS_S3_REGION_NAME = os.environ.get("AWS_S3_REGION_NAME")
+    # Require signed URLs (default), grant access for 2 hours (full-res URLS are
+    # generated on page load but not requested until gallery opened)
+    AWS_DEFAULT_ACL = None
+    AWS_QUERYSTRING_AUTH = True
+    AWS_QUERYSTRING_EXPIRE = 7200
 
     STORAGES = {
         "default": {

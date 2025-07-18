@@ -45,7 +45,7 @@ If serving behind a reverse proxy you may need additional configuration to allow
 
 To serve static files from a CDN like cloudfront uncomment the `STATIC_HOST` env var in docker-compose.yaml and add your CDN URL. When this env var is not set static files will be served by django using whitenoise.
 
-By default user-uploaded photos will be stored locally in `backend/data/images/` (created automatically when server starts). To store photos in AWS S3 instead uncomment the 4 env vars in docker-compose.yaml and add your S3 access tokens, bucket name, and region.
+By default user-uploaded photos will be stored locally in `backend/data/images/` (created automatically when server starts). To store photos in AWS S3 instead uncomment the 4 env vars in docker-compose.yaml and add your S3 access tokens, bucket name, and region. The default S3 bucket settings should work fine, including blocking public access (django will add querystring parameters to the URL which grant the user permission for 2 hours).
 
 Once your docker compose is set up start the app:
 ```
