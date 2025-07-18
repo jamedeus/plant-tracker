@@ -198,9 +198,9 @@ class PlantModelTests(TestCase):
             {
                 "set": False,
                 "timestamp": photo2.timestamp.isoformat(),
-                "photo": photo2.get_photo_url(),
-                "thumbnail": photo2.get_thumbnail_url(),
-                "preview": photo2.get_preview_url(),
+                "photo": photo2.photo.url,
+                "thumbnail": photo2.thumbnail.url,
+                "preview": photo2.preview.url,
                 "key": photo2.pk
             }
         )
@@ -214,9 +214,9 @@ class PlantModelTests(TestCase):
             {
                 "set": True,
                 "timestamp": photo1.timestamp.isoformat(),
-                "photo": photo1.get_photo_url(),
-                "thumbnail": photo1.get_thumbnail_url(),
-                "preview": photo1.get_preview_url(),
+                "photo": photo1.photo.url,
+                "thumbnail": photo1.thumbnail.url,
+                "preview": photo1.preview.url,
                 "key": photo1.pk
             }
         )

@@ -342,7 +342,7 @@ class Plant(models.Model):
     def get_thumbnail_url(self):
         '''Returns default_photo thumbnail URL (or most-recent photo if not set).'''
         if self.default_photo:
-            return self.default_photo.get_thumbnail_url()
+            return self.default_photo.thumbnail.url
 
         # If default photo not set: use annotation if present
         if hasattr(self, 'last_photo_thumbnail'):
@@ -357,7 +357,7 @@ class Plant(models.Model):
         # Query from database if neither annotation present
         try:
             last_photo = self.photo_set.all().order_by('-timestamp')[0]
-            return last_photo.get_thumbnail_url()
+            return last_photo.thumbnail.url
         except IndexError:
             return None
 

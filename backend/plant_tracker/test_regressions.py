@@ -818,7 +818,7 @@ class ViewRegressionTests(TestCase):
                         'pot_size': None,
                         'last_watered': None,
                         'last_fertilized': None,
-                        'thumbnail': photo.get_thumbnail_url(),
+                        'thumbnail': photo.thumbnail.url,
                         'group': None
                     }
                 },

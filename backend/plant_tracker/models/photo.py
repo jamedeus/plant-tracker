@@ -49,25 +49,13 @@ class Photo(models.Model):
         filename = self.photo.name.split("/", 1)[-1]
         return f"{name} - {timestamp} - {filename}"
 
-    def get_photo_url(self):
-        '''Returns public URL of the full-resolution photo.'''
-        return self.photo.url
-
-    def get_thumbnail_url(self):
-        '''Returns public URL of the reduced-resolution thumbnail (200x200).'''
-        return self.thumbnail.url
-
-    def get_preview_url(self):
-        '''Returns public URL of the reduced-resolution preview (800x800).'''
-        return self.preview.url
-
     def get_details(self):
         '''Returns dict with timestamp, primary key, and URLs of all resolutions.'''
         return {
             'timestamp': self.timestamp.isoformat(),
-            'photo': self.get_photo_url(),
-            'thumbnail': self.get_thumbnail_url(),
-            'preview': self.get_preview_url(),
+            'photo': self.photo.url,
+            'thumbnail': self.thumbnail.url,
+            'preview': self.preview.url,
             'key': self.pk
         }
 
