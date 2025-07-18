@@ -33,4 +33,10 @@ if [[ $DJANGO_SUPERUSER_USERNAME && $DJANGO_SUPERUSER_PASSWORD ]]; then
 fi
 
 printf "\nStarting server...\n"
-python /mnt/backend/manage.py runserver 0:8456
+/usr/local/bin/gunicorn backend.wsgi:application \
+    --bind 0:8456 \
+    --workers="$GUNICORN_WORKERS" \
+    --access-logfile - \
+    --access-logformat '%(t)s "%({x-forwarded-for}i)s" "%(r)s" %(s)s %(M)sms %(b)s bytes "%(f)s" "%(a)s"' \
+    --error-logfile - \
+    --log-level info

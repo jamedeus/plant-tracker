@@ -36,6 +36,8 @@ services:
       - DJANGO_SUPERUSER_USERNAME=myusername
       - DJANGO_SUPERUSER_PASSWORD=mypassword
       # - DJANGO_SUPERUSER_EMAIL=
+      # Optional: Number of gunicorn workers (defaults to 2 if not set)
+      # - GUNICORN_WORKERS=2
     volumes:
       # Persistent storage between sessions
       - plant-tracker-data:/mnt/backend/data/

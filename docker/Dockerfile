@@ -58,6 +58,10 @@ RUN apt-get install -y redis-server
 RUN groupadd -r celery
 RUN useradd -r -g celery celery
 
+# Install gunicorn, default to 2 workers if env var not set
+RUN pip install --no-cache-dir gunicorn
+ENV GUNICORN_WORKERS=2
+
 # Run migrations, start dev server
 COPY docker/entrypoint.sh /mnt/entrypoint.sh
 CMD ["/mnt/entrypoint.sh"]

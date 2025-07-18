@@ -57,6 +57,10 @@ By default user-uploaded photos will be stored locally in `backend/data/images/`
 
 To store photos in AWS S3 instead uncomment the 4 env vars in docker-compose.yaml and add your S3 access tokens, bucket name, and region. The default S3 bucket settings should work fine, including blocking public access (django will add querystring parameters to the URL which grant the user permission for 2 hours).
 
+### Workers
+
+By default gunicorn will use 2 workers, which is good for a single core VPS. If your server is more powerful uncomment the `GUNICORN_WORKERS` env var and set it to the number of workers you need (usually 2-4 times number of CPU cores).
+
 ### Starting the docker container
 
 Once your docker compose is set up start the app:
