@@ -1377,9 +1377,9 @@ class SqlQueriesPerUserAuthenticationEndpoint(AssertNumQueriesMixin, TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_user_profile_page(self):
-        '''Loading the profile page should make 2 database queries.'''
+        '''Loading the profile page should make 1 database query.'''
         self.client.login(username='unittest', password='12345')
-        with self.assertNumQueries(2):
+        with self.assertNumQueries(1):
             response = self.client.get('/accounts/profile/')
             self.assertEqual(response.status_code, 200)
 
@@ -1406,9 +1406,9 @@ class SqlQueriesPerUserAuthenticationEndpoint(AssertNumQueriesMixin, TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_edit_user_details_endpoint(self):
-        '''/accounts/edit_user_details/ should make 3 database queries'''
+        '''/accounts/edit_user_details/ should make 2 database queries'''
         self.client.login(username='unittest', password='12345')
-        with self.assertNumQueries(3):
+        with self.assertNumQueries(2):
             response = self.client.post('/accounts/edit_user_details/', {
                 'first_name': 'Anthony',
                 'last_name': 'Weiner',
@@ -1417,9 +1417,9 @@ class SqlQueriesPerUserAuthenticationEndpoint(AssertNumQueriesMixin, TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_change_password_endpoint(self):
-        '''/accounts/change_password/ should make 8 database queries.'''
+        '''/accounts/change_password/ should make 7 database queries.'''
         self.client.login(username='unittest', password='12345')
-        with self.assertNumQueries(8):
+        with self.assertNumQueries(7):
             response = self.client.post('/accounts/change_password/',
                 urlencode({
                     'old_password': '12345',
@@ -1431,8 +1431,8 @@ class SqlQueriesPerUserAuthenticationEndpoint(AssertNumQueriesMixin, TestCase):
             self.assertEqual(response.status_code, 200)
 
     def test_logout_endpoint(self):
-        '''/accounts/logout/ should make 4 database queries.'''
+        '''/accounts/logout/ should make 3 database queries.'''
         self.client.login(username='unittest', password='12345')
-        with self.assertNumQueries(4):
+        with self.assertNumQueries(3):
             response = self.client.get('/accounts/logout/')
             self.assertEqual(response.status_code, 302)

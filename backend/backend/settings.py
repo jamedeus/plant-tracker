@@ -122,6 +122,9 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
+# Use cached sessions (fallback to database if session no longer in redis)
+SESSION_ENGINE = "django.contrib.sessions.backends.cached_db"
+
 # Add debug tools in debug mode
 if DEBUG and not TESTING:
     # Add django-debug-toolbar if env var set
