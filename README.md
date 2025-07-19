@@ -47,7 +47,7 @@ Serving behind a reverse proxy like nginx is highly recommended for security. Yo
 
 ### Static file CDN
 
-By default static files will be served by django using whitenoise. To serve from a CDN instead uncomment the `STATIC_HOST` env var in docker-compose.yaml and add your CDN URL. This can speed up page loads and take load off the django backend.
+By default static files will be served by django using whitenoise. To serve from a CDN instead uncomment the `DJANGO_STATIC_HOST` env var in docker-compose.yaml and add your CDN URL. This can speed up page loads and take load off the django backend.
 
 If using cloudfront go to your distribution -> Behaviors -> Edit and make sure `Cache policy` is set to `CachingOptimized` so that cloudfront can store each static file and serve from the cache (much faster). This is disabled by default which will perform worse than no CDN at all (cloudfront will just request the static files from django every time).
 
@@ -55,7 +55,29 @@ If using cloudfront go to your distribution -> Behaviors -> Edit and make sure `
 
 By default user-uploaded photos will be stored locally in `backend/data/images/` (created automatically when server starts).
 
-To store photos in AWS S3 instead uncomment the 4 env vars in docker-compose.yaml and add your S3 access tokens, bucket name, and region. The default S3 bucket settings should work fine, including blocking public access (django will add querystring parameters to the URL which grant the user permission for 2 hours).
+To store photos in AWS S3 you will need an S3 bucket with public access disabled and a Cloudfront distribution to cache the thumbnails. Original and preview resolutions will be served from S3 and require signed URLs to access, thumbnails are served from Cloudfront and are fully public (their URLs are cached in the overview state, so they can't have querystring auth params because once they expire the cache will be stale).
+
+First create an S3 bucket (the default settings should work fine, including blocking public access - django will add querystring parameters to the URL which grant access for 2 hours). You'll also need to go to Identity Access Management and get tokens for django to access the bucket.
+
+Then go to Cloudfront and create a distribution with default settings. Add an origin and select your S3 bucket. Set Origin access to `Origin access control settings` and create a new OAC with signing behavior set to `Sign requests`. Then go to Behaviors -> Create behavior and select:
+- Path pattern: `thumbnails/*`
+- Origin: Your S3 bucket
+- Compress objects automatically: `Yes`
+- Restrict viewer access: `No`
+- Cache policy: `CachingOptimized`
+
+To prevent access to the full-resolution photos through the CDN edit the default behavior and set Restrict viewer access to Yes (you can select Trusted signer -> Self to disable all access to everything that isn't covered by one of your other behaviors).
+
+Finally go back to Cloudfront Origins, select your S3 origin, click edit, and click "Copy policy" under origin access control. Then go to your S3 bucket -> Permissions -> Bucket policy, paste the JSON policy, and save (you might want to add `thumbnails/*` to the end of the URI in `Resource` so that Cloudfront can only access that folder, but even without this users won't be able to access anything outside of thumbnails because of the behaviors settings).
+
+Once everything is set up in AWS go back to `docker-compose.yaml` and set these 5 env vars:
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- `AWS_STORAGE_BUCKET_NAME`
+- `AWS_S3_REGION_NAME`
+- `THUMBNAIL_CDN_DOMAIN` (cloudfront distribution, domain only no https://)
+
+Django will automatically create `images`, `previews`, and `thumbnails` folders in the bucket for each photo resolution.
 
 ### Workers
 

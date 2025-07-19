@@ -15,6 +15,7 @@ services:
       # - AWS_SECRET_ACCESS_KEY=
       # - AWS_STORAGE_BUCKET_NAME=
       # - AWS_S3_REGION_NAME=
+      # - THUMBNAIL_CDN_DOMAIN=
       # Serve static files (JS bundles) from CDN if set
       # - DJANGO_STATIC_HOST=
       # Postgres database host (must match container below)

@@ -212,7 +212,16 @@ if LOCAL_MEDIA_ROOT:
     MEDIA_URL = "/media/"
 
     STORAGES = {
+        # Full-resolution and preview resolution photos
         "default": {
+            "BACKEND": "django.core.files.storage.FileSystemStorage",
+            "OPTIONS": {
+                "location": MEDIA_ROOT,
+                "base_url": MEDIA_URL,
+            },
+        },
+        # Photo thumbnails
+        "public": {
             "BACKEND": "django.core.files.storage.FileSystemStorage",
             "OPTIONS": {
                 "location": MEDIA_ROOT,
@@ -231,18 +240,33 @@ else:
     AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
     AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME")
     AWS_S3_REGION_NAME = os.environ.get("AWS_S3_REGION_NAME")
-    # Require signed URLs (default), grant access for 2 hours (full-res URLS are
-    # generated on page load but not requested until gallery opened)
-    AWS_DEFAULT_ACL = None
-    AWS_QUERYSTRING_AUTH = True
-    AWS_QUERYSTRING_EXPIRE = 7200
+    THUMBNAIL_CDN_DOMAIN = os.environ.get("THUMBNAIL_CDN_DOMAIN")
 
     STORAGES = {
+        # Full-resolution and preview resolution photos (requires signed URLs)
         "default": {
-        "BACKEND": "storages.backends.s3.S3Storage",
+            "BACKEND": "storages.backends.s3.S3Storage",
             "OPTIONS": {
                 "bucket_name": AWS_STORAGE_BUCKET_NAME,
-                "region_name": AWS_S3_REGION_NAME
+                "region_name": AWS_S3_REGION_NAME,
+                # Require signed URLs, grant access for 2 hours (full-res URLs
+                # aren't requested until gallery opened which could be a while)
+                "querystring_auth": True,
+                "querystring_expire": 7200,
+            },
+        },
+        # Photo thumbnails (publicly accessible)
+        "public": {
+            "BACKEND": "storages.backends.s3.S3Storage",
+            "OPTIONS": {
+                "bucket_name": AWS_STORAGE_BUCKET_NAME,
+                "region_name": AWS_S3_REGION_NAME,
+                "custom_domain": THUMBNAIL_CDN_DOMAIN,
+                "querystring_auth": False,
+                # Cache up to 30 days
+                "object_parameters": {
+                    "CacheControl": "public,max-age=2592000,immutable"
+                },
             },
         },
         "staticfiles": {

@@ -10,6 +10,7 @@ from pillow_heif import register_heif_opener
 from django.db import models
 from django.conf import settings
 from django.dispatch import receiver
+from django.core.files.storage import storages
 from django.db.models.signals import post_delete
 from django.utils import timezone as django_timezone
 from django.core.files.uploadedfile import InMemoryUploadedFile
@@ -29,10 +30,15 @@ class Photo(models.Model):
 
     # Original full-resolution photo
     photo = models.ImageField(upload_to="images")
-    # 200x200 thumbnail (shown on PlantCard, timeline thumbnails, etc)
-    thumbnail = models.ImageField(upload_to="thumbnails", null=True, blank=True)
     # 800x800 preview (shown in photo modals)
     preview = models.ImageField(upload_to="previews", null=True, blank=True)
+    # 200x200 thumbnail (shown on PlantCard, timeline thumbnails, etc)
+    thumbnail = models.ImageField(
+        upload_to="thumbnails",
+        storage=storages["public"],
+        null=True,
+        blank=True,
+    )
 
     # Store timestamp when created (not editable)
     created = models.DateTimeField(auto_now_add=True)
