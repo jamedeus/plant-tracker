@@ -80,6 +80,20 @@ DEBUG = bool(os.environ.get('DEBUG_MODE', 0))
 # User-configurable debug tool (django-debug-toolbar or silk, default to silk)
 DEBUG_TOOL = os.environ.get('DEBUG_TOOL', 'silk')
 
+# Disable non-SSL connections (except in debug mode)
+if not DEBUG:
+    # Only send cookies with SSL
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+    # Block all non-https requests (1 year expiration time)
+    SECURE_HSTS_PRELOAD = True
+    SECURE_HSTS_SECONDS = 3600
+    # SECURE_HSTS_SECONDS = 31536000
+    SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+    # Prevent browsers guessing content type (eg user uploads malicious JS as
+    # photo, browser sees contents and tries to execute it)
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+
 # Running tests or pylint
 TESTING = 'test' in sys.argv or 'pylint' in str(sys.argv)
 
