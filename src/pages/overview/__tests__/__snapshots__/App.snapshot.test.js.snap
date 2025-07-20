@@ -114,7 +114,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
       class="grid grid-cols-1 mx-auto px-4 md:grid-cols-2"
     >
       <div
-        class="scroll-mt-20 md:mr-12 mb-8 md:mb-0"
+        class="scroll-mt-20 relative md:mr-12 mb-8 md:mb-0"
       >
         <div
           class="section"
@@ -376,7 +376,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
         </div>
       </div>
       <div
-        class="scroll-mt-20 md:ml-12"
+        class="scroll-mt-20 relative md:ml-12"
       >
         <div
           class="section"
@@ -966,7 +966,7 @@ exports[`App matches snapshot when only groups exist 1`] = `
       class="grid grid-cols-1 mx-auto px-4"
     >
       <div
-        class="scroll-mt-20"
+        class="scroll-mt-20 relative"
       >
         <div
           class="section"
@@ -1179,6 +1179,32 @@ exports[`App matches snapshot when only groups exist 1`] = `
             </form>
           </div>
         </div>
+        <div
+          class="absolute flex top-3 right-2 z-55"
+        >
+          <a
+            aria-label="Register new group"
+            class="btn-close"
+            href="/manage/557910e1-ac81-4c8c-94c3-8fc6309b9d40?type=group"
+          >
+            <svg
+              aria-hidden="true"
+              class="size-6"
+              data-slot="icon"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 4.5v15m7.5-7.5h-15"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </a>
+        </div>
       </div>
     </div>
     <div
@@ -1358,7 +1384,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
       class="grid grid-cols-1 mx-auto px-4"
     >
       <div
-        class="scroll-mt-20"
+        class="scroll-mt-20 relative"
       >
         <div
           class="section"
@@ -1618,6 +1644,32 @@ exports[`App matches snapshot when only plants exist 1`] = `
             </form>
           </div>
         </div>
+        <div
+          class="absolute flex top-3 right-2 z-55"
+        >
+          <a
+            aria-label="Register new plant"
+            class="btn-close"
+            href="/manage/557910e1-ac81-4c8c-94c3-8fc6309b9d40"
+          >
+            <svg
+              aria-hidden="true"
+              class="size-6"
+              data-slot="icon"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 4.5v15m7.5-7.5h-15"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </a>
+        </div>
       </div>
     </div>
     <div
@@ -1797,7 +1849,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
       class="grid grid-cols-1 mx-auto px-4 md:grid-cols-2"
     >
       <div
-        class="scroll-mt-20 md:mr-12 mb-8 md:mb-0"
+        class="scroll-mt-20 relative md:mr-12 mb-8 md:mb-0"
       >
         <div
           class="section"
@@ -2057,9 +2109,35 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
             </form>
           </div>
         </div>
+        <div
+          class="absolute flex top-3 right-2 z-55"
+        >
+          <a
+            aria-label="Register new plant"
+            class="btn-close"
+            href="/manage/557910e1-ac81-4c8c-94c3-8fc6309b9d40"
+          >
+            <svg
+              aria-hidden="true"
+              class="size-6"
+              data-slot="icon"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 4.5v15m7.5-7.5h-15"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </a>
+        </div>
       </div>
       <div
-        class="scroll-mt-20 md:ml-12"
+        class="scroll-mt-20 relative md:ml-12"
       >
         <div
           class="section"
@@ -2272,6 +2350,32 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
             </form>
           </div>
         </div>
+        <div
+          class="absolute flex top-3 right-2 z-55"
+        >
+          <a
+            aria-label="Register new group"
+            class="btn-close"
+            href="/manage/557910e1-ac81-4c8c-94c3-8fc6309b9d40?type=group"
+          >
+            <svg
+              aria-hidden="true"
+              class="size-6"
+              data-slot="icon"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 4.5v15m7.5-7.5h-15"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </a>
+        </div>
       </div>
     </div>
     <div
@@ -2474,7 +2578,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
       class="grid grid-cols-1 mx-auto px-4 md:grid-cols-2"
     >
       <div
-        class="scroll-mt-20 md:mr-12 mb-8 md:mb-0"
+        class="scroll-mt-20 relative md:mr-12 mb-8 md:mb-0"
       >
         <div
           class="section"
@@ -2734,9 +2838,35 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
             </form>
           </div>
         </div>
+        <div
+          class="absolute flex top-3 right-2 z-55"
+        >
+          <a
+            aria-label="Register new plant"
+            class="btn-close"
+            href="/manage/557910e1-ac81-4c8c-94c3-8fc6309b9d40"
+          >
+            <svg
+              aria-hidden="true"
+              class="size-6"
+              data-slot="icon"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 4.5v15m7.5-7.5h-15"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </a>
+        </div>
       </div>
       <div
-        class="scroll-mt-20 md:ml-12"
+        class="scroll-mt-20 relative md:ml-12"
       >
         <div
           class="section"
@@ -2948,6 +3078,32 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
               </div>
             </form>
           </div>
+        </div>
+        <div
+          class="absolute flex top-3 right-2 z-55"
+        >
+          <a
+            aria-label="Register new group"
+            class="btn-close"
+            href="/manage/557910e1-ac81-4c8c-94c3-8fc6309b9d40?type=group"
+          >
+            <svg
+              aria-hidden="true"
+              class="size-6"
+              data-slot="icon"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="1.5"
+              viewBox="0 0 24 24"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                d="M12 4.5v15m7.5-7.5h-15"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </a>
         </div>
       </div>
     </div>

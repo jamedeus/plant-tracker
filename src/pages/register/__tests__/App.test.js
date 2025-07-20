@@ -19,6 +19,16 @@ describe('App', () => {
         // Mock /get_plant_species_options response (requested when page loads)
         mockPlantSpeciesOptionsResponse();
 
+        // Mock window.location (querystring parsed when page loads)
+        Object.defineProperty(window, 'location', {
+            configurable: true,
+            value: {
+                ...window.location,
+                href: 'https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca',
+                assign: jest.fn()
+            }
+        });
+
         // Render app + create userEvent instance to use in tests
         user = userEvent.setup();
         app = render(

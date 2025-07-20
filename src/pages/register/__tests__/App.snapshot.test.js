@@ -10,8 +10,20 @@ import {
 } from './mockContext';
 
 describe('App', () => {
-    // Mock /get_plant_species_options response (requested when page loads)
-    beforeAll(() => mockPlantSpeciesOptionsResponse());
+    beforeAll(() => {
+        // Mock /get_plant_species_options response (requested when page loads)
+        mockPlantSpeciesOptionsResponse();
+
+        // Mock window.location (querystring parsed when page loads)
+        Object.defineProperty(window, 'location', {
+            configurable: true,
+            value: {
+                ...window.location,
+                href: 'https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca',
+                assign: jest.fn()
+            }
+        });
+    });
 
     it('matches snapshot', async () => {
         // Create mock state objects (no dividing_from)
@@ -24,6 +36,26 @@ describe('App', () => {
             expect(global.fetch).toHaveBeenCalled();
         });
         // Confirm matches snapshot
+        expect(container).toMatchSnapshot();
+    });
+
+    it('matches snapshot when group querystring param is present', () => {
+        // Create mock state objects (no dividing_from)
+        bulkCreateMockContext(mockContext);
+        createMockContext('user_accounts_enabled', true);
+
+        // Mock window.location to add querystring to URL (start on group form)
+        Object.defineProperty(window, 'location', {
+            configurable: true,
+            value: {
+                ...window.location,
+                href: 'https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca?type=group',
+                assign: jest.fn()
+            }
+        });
+
+        // Render App, confirm matches snapshot
+        const { container } = render(<App />);
         expect(container).toMatchSnapshot();
     });
 

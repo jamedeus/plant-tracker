@@ -1,5 +1,11 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
+
+// Mock consistent UUID (prevent changing each time tests run)
+jest.mock('uuid', () => ({
+    v4: () => '557910e1-ac81-4c8c-94c3-8fc6309b9d40'
+}));
+
 import App from '../App';
 import { mockContext } from './mockContext';
 

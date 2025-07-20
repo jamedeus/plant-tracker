@@ -3,6 +3,8 @@ import Setup from './Setup';
 import PlantsCol from 'src/components/PlantsCol';
 import GroupsCol from 'src/components/GroupsCol';
 import clsx from 'clsx';
+import { v4 as uuidv4 } from 'uuid';
+import { PlusIcon } from '@heroicons/react/24/outline';
 
 // Render correct components for current state objects
 const Layout = ({
@@ -13,7 +15,8 @@ const Layout = ({
     editing,
     toggleEditing,
     plantsColRef,
-    groupsColRef
+    groupsColRef,
+    archivedOverview
 }) => {
     // Determines if 2-column layout or single centered column
     const hasPlants = Object.keys(plants).length > 0;
@@ -29,7 +32,7 @@ const Layout = ({
             {hasPlants && (
                 <div
                     className={clsx(
-                        'scroll-mt-20',
+                        'scroll-mt-20 relative',
                         twoColumns && 'md:mr-12 mb-8 md:mb-0'
                     )}
                     ref={plantsColRef}
@@ -41,13 +44,24 @@ const Layout = ({
                         storageKey='overviewPlantsColumn'
                         onOpenTitle={toggleEditing}
                     />
+                    {!archivedOverview && (
+                        <div className="absolute flex top-3 right-2 z-55">
+                            <a
+                                className="btn-close"
+                                href={`/manage/${uuidv4()}`}
+                                aria-label="Register new plant"
+                            >
+                                <PlusIcon className="size-6" />
+                            </a>
+                        </div>
+                    )}
                 </div>
             )}
             {/* Render groups column if 1 or more groups exist */}
             {hasGroups && (
                 <div
                     className={clsx(
-                        'scroll-mt-20',
+                        'scroll-mt-20 relative',
                         twoColumns && 'md:ml-12'
                     )}
                     ref={groupsColRef}
@@ -59,6 +73,17 @@ const Layout = ({
                         storageKey='overviewGroupsColumn'
                         onOpenTitle={toggleEditing}
                     />
+                    {!archivedOverview && (
+                        <div className="absolute flex top-3 right-2 z-55">
+                            <a
+                                className="btn-close"
+                                href={`/manage/${uuidv4()}?type=group`}
+                                aria-label="Register new group"
+                            >
+                                <PlusIcon className="size-6" />
+                            </a>
+                        </div>
+                    )}
                 </div>
             )}
             {/* Render setup instructions if database is empty */}
@@ -89,7 +114,8 @@ Layout.propTypes = {
     groupsColRef: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
-    ]).isRequired
+    ]).isRequired,
+    archivedOverview: PropTypes.bool.isRequired
 };
 
 export default Layout;

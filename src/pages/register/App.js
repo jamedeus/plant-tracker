@@ -12,9 +12,19 @@ import { FaXmark, FaCheck } from 'react-icons/fa6';
 import { DateTime } from 'luxon';
 import DetailsCard from './DetailsCard';
 
-const Form = memo(function Form({ setVisibleForm, plantFormRef, groupFormRef, showTabs, defaultValues }) {
+const Form = memo(function Form({
+    visibleForm,
+    setVisibleForm,
+    plantFormRef,
+    groupFormRef,
+    showTabs,
+    defaultValues
+}) {
     return (
-        <Tab.Group onChange={(index) => setVisibleForm(index)}>
+        <Tab.Group
+            selectedIndex={visibleForm}
+            onChange={(index) => setVisibleForm(index)}
+        >
             {showTabs &&
                 <Tab.List className="tab-group">
                     <Tab className={({ selected }) => clsx(
@@ -54,6 +64,7 @@ const Form = memo(function Form({ setVisibleForm, plantFormRef, groupFormRef, sh
 
 Form.propTypes = {
     setVisibleForm: PropTypes.func.isRequired,
+    visibleForm: PropTypes.number.isRequired,
     plantFormRef: PropTypes.oneOfType([
         PropTypes.func,
         PropTypes.shape({ current: PropTypes.instanceOf(Element) }),
@@ -156,7 +167,11 @@ function App() {
     const [confirmedDividing, setConfirmedDividing] = useState(false);
 
     // Track visible form (changed by tabs), 0 for plant form, 1 for group form
-    const [visibleForm, setVisibleForm] = useState(0);
+    // Set initially visible form based on querystring if present
+    const [visibleForm, setVisibleForm] = useState(() => {
+        const params = new URL(window.location.href).searchParams;
+        return params.get('type') === 'group' ? 1 : 0;
+    });
     // Refs used to read FormData
     const plantFormRef = useRef(null);
     const groupFormRef = useRef(null);
@@ -302,6 +317,7 @@ function App() {
                     onInput={onInput}
                 >
                     <Form
+                        visibleForm={visibleForm}
                         setVisibleForm={handleFormChange}
                         plantFormRef={plantFormRef}
                         groupFormRef={groupFormRef}

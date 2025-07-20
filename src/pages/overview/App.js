@@ -176,6 +176,7 @@ function App() {
                 toggleEditing={toggleEditing}
                 plantsColRef={plantsColRef}
                 groupsColRef={groupsColRef}
+                archivedOverview={archivedOverview}
             />
 
             <EditModeFooter
