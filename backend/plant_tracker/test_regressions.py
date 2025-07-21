@@ -15,7 +15,7 @@ from django.db import IntegrityError, connections
 from django.core.exceptions import ValidationError
 from django.test import TestCase, TransactionTestCase, Client
 
-from .build_states import build_overview_state
+from .build_states import build_overview_state, get_overview_state
 from .models import (
     Group,
     Plant,
@@ -1372,7 +1372,7 @@ class CachedStateRegressionTests(TestCase):
         )
 
         # Confirm overview state has last_watered and last_fertilized times
-        overview_state = build_overview_state(get_default_user())
+        overview_state = build_overview_state(user)
         self.assertIsNotNone(overview_state['plants'][str(plant.uuid)]['last_watered'])
         self.assertIsNotNone(overview_state['plants'][str(plant.uuid)]['last_fertilized'])
 
@@ -1394,6 +1394,84 @@ class CachedStateRegressionTests(TestCase):
         self.assertIsNone(
             cache.get(f'overview_state_{user.pk}')['plants'][str(plant.uuid)]['last_fertilized'],
         )
+
+    def test_cached_overview_state_show_archive_bool_does_not_update_when_plant_archived(self):
+        '''Issue: The show_archive bool that controls whether dropdown contains
+        link to archive overview did not update in cached overview state when a
+        plant/group was archived/unarchived. Once something was archived it was
+        inaccessible until the state was rebuilt. If the last archived item was
+        unarchived the dropdown would still show the link to archive overview.
+        '''
+
+        # Create plant and group
+        user = get_default_user()
+        plant = Plant.objects.create(uuid=uuid4(), user=user)
+        group = Group.objects.create(uuid=uuid4(), user=user)
+
+        # Confirm show_archive is False in cached overview state
+        self.assertFalse(get_overview_state(user)['show_archive'])
+
+        # Archive plant, confirm show_archive is True in cached overview state
+        JSONClient().post('/bulk_archive_plants_and_groups', {
+            'uuids': [str(plant.uuid)],
+            'archived': True
+        })
+        self.assertTrue(get_overview_state(user)['show_archive'])
+
+        # Unarchive plant, confirm show_archive is False in cached overview state
+        JSONClient().post('/bulk_archive_plants_and_groups', {
+            'uuids': [str(plant.uuid)],
+            'archived': False
+        })
+        self.assertFalse(get_overview_state(user)['show_archive'])
+
+        # Archive group, confirm show_archive is True in cached overview state
+        JSONClient().post('/bulk_archive_plants_and_groups', {
+            'uuids': [str(group.uuid)],
+            'archived': True
+        })
+        self.assertTrue(get_overview_state(user)['show_archive'])
+
+        # Unarchive group, confirm show_archive is False in cached overview state
+        JSONClient().post('/bulk_archive_plants_and_groups', {
+            'uuids': [str(group.uuid)],
+            'archived': False
+        })
+        self.assertFalse(get_overview_state(user)['show_archive'])
+
+    def test_cached_overview_state_show_archive_bool_does_not_update_when_plant_deleted(self):
+        '''Issue: The show_archive bool that controls whether dropdown contains
+        link to archive overview did not update in cached overview state when a
+        plant/group was deleted. If the last archived item was deleted the link
+        to archive overview would still appear in overview dropdown.
+        '''
+
+        # Create archived plant
+        user = get_default_user()
+        plant = Plant.objects.create(uuid=uuid4(), user=user, archived=True)
+
+        # Confirm show_archive is True in cached overview state
+        self.assertTrue(get_overview_state(user)['show_archive'])
+
+        # Delete plant, confirm show_archive is False in cached overview state
+        JSONClient().post('/bulk_delete_plants_and_groups', {
+            'uuids': [str(plant.uuid)]
+        })
+        self.assertFalse(get_overview_state(user)['show_archive'])
+
+        # Create archived group, delete cached state (does not update when
+        # archived entry created with arg, not possible in production)
+        group = Group.objects.create(uuid=uuid4(), user=user, archived=True)
+        cache.delete(f'overview_state_{user.pk}')
+
+        # Rebuild cached overview state, confirm show_archive is True
+        self.assertTrue(get_overview_state(user)['show_archive'])
+
+        # Delete group, confirm show_archive is False in cached overview state
+        JSONClient().post('/bulk_delete_plants_and_groups', {
+            'uuids': [str(group.uuid)]
+        })
+        self.assertFalse(get_overview_state(user)['show_archive'])
 
 
 class ViewDecoratorRegressionTests(TestCase):

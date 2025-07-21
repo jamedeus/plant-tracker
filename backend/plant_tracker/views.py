@@ -43,7 +43,8 @@ from .build_states import (
     build_manage_group_state,
     update_cached_overview_details_keys,
     add_instance_to_cached_overview_state,
-    remove_instance_from_cached_overview_state
+    remove_instance_from_cached_overview_state,
+    update_cached_overview_state_show_archive_bool
 )
 
 
@@ -554,6 +555,10 @@ def bulk_delete_plants_and_groups(user, data, **kwargs):
             {'plants': group.get_number_of_plants()}
         )
 
+    # Update show_archive bool in cached overview state (remove archived
+    # overview link from dropdown if last archived plant/group deleted)
+    update_cached_overview_state_show_archive_bool(user)
+
     return JsonResponse(
         {"deleted": deleted, "failed": failed},
         status=200 if deleted else 400
@@ -585,6 +590,9 @@ def bulk_archive_plants_and_groups(user, data, **kwargs):
     # Update all plants in 1 query, all groups in 1 query
     Plant.objects.bulk_update(plants, ["archived"])
     Group.objects.bulk_update(groups, ["archived"])
+
+    # Update show_archive bool in cached overview state
+    update_cached_overview_state_show_archive_bool(user)
 
     return JsonResponse(
         {"archived": archived, "failed": failed},

@@ -188,3 +188,10 @@ def remove_instance_from_cached_overview_state(instance):
     if str(instance.uuid) in state[key]:
         del state[key][str(instance.uuid)]
         cache.set(f'overview_state_{instance.user.pk}', state, None)
+
+
+def update_cached_overview_state_show_archive_bool(user):
+    '''Updates show_archive bool in cached overview state.'''
+    state = get_overview_state(user)
+    state['show_archive'] = has_archived_entries(user)
+    cache.set(f'overview_state_{user.pk}', state, None)
