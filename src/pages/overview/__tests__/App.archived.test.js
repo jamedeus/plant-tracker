@@ -1,5 +1,6 @@
 import { fireEvent } from '@testing-library/react';
 import createMockContext from 'src/testUtils/createMockContext';
+import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import { postHeaders } from 'src/testUtils/headers';
 import { PageWrapper } from 'src/index';
 import App from '../App';
@@ -24,15 +25,7 @@ describe('App', () => {
         createMockContext('user_accounts_enabled', true);
 
         // Mock window.location to simulate archived overview
-        Object.defineProperty(window, 'location', {
-            configurable: true,
-            value: {
-                ...window.location,
-                href: 'https://plants.lan/',
-                pathname: '/archived',
-                assign: jest.fn()
-            }
-        });
+        mockCurrentURL('https://plants.lan/archived', '/archived');
 
         // Mock width to force mobile layout (renders title nav dropdown)
         window.innerWidth = 750;

@@ -1,5 +1,6 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
+import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 
 // Mock consistent UUID (prevent changing each time tests run)
 jest.mock('uuid', () => ({
@@ -118,15 +119,7 @@ describe('App (archived page)', () => {
         createMockContext('user_accounts_enabled', true);
 
         // Mock window.location to simulate archived overview
-        Object.defineProperty(window, 'location', {
-            configurable: true,
-            value: {
-                ...window.location,
-                href: 'https://plants.lan/',
-                pathname: '/archived',
-                assign: jest.fn()
-            }
-        });
+        mockCurrentURL('https://plants.lan/archived', '/archived');
 
         // Render App, confirm matches snapshot
         const { container } = render(<App />);

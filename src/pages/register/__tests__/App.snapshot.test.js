@@ -1,6 +1,7 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
+import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import App from '../App';
 import {
     mockContext,
@@ -15,14 +16,7 @@ describe('App', () => {
         mockPlantSpeciesOptionsResponse();
 
         // Mock window.location (querystring parsed when page loads)
-        Object.defineProperty(window, 'location', {
-            configurable: true,
-            value: {
-                ...window.location,
-                href: 'https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca',
-                assign: jest.fn()
-            }
-        });
+        mockCurrentURL('https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca');
     });
 
     it('matches snapshot', async () => {
@@ -45,14 +39,9 @@ describe('App', () => {
         createMockContext('user_accounts_enabled', true);
 
         // Mock window.location to add querystring to URL (start on group form)
-        Object.defineProperty(window, 'location', {
-            configurable: true,
-            value: {
-                ...window.location,
-                href: 'https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca?type=group',
-                assign: jest.fn()
-            }
-        });
+        mockCurrentURL(
+            'https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca?type=group'
+        );
 
         // Render App, confirm matches snapshot
         const { container } = render(<App />);

@@ -1,6 +1,7 @@
 import createMockContext from 'src/testUtils/createMockContext';
 import bulkCreateMockContext from 'src/testUtils/bulkCreateMockContext';
 import mockPlantSpeciesOptionsResponse from 'src/testUtils/mockPlantSpeciesOptionsResponse';
+import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import { PageWrapper } from 'src/index';
 import App from '../App';
 import { mockContext } from './mockContext';
@@ -15,14 +16,7 @@ describe('App', () => {
         mockPlantSpeciesOptionsResponse();
 
         // Mock window.location (querystring parsed when page loads)
-        Object.defineProperty(window, 'location', {
-            configurable: true,
-            value: {
-                ...window.location,
-                href: 'https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca',
-                assign: jest.fn()
-            }
-        });
+        mockCurrentURL('https://plants.lan/manage/e1393cfd-0133-443a-97b1-06bb5bd3fcca');
 
         // Render app, confirm reload was not called
         const { unmount } = render(

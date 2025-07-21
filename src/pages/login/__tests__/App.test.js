@@ -1,5 +1,6 @@
 import { PageWrapper } from 'src/index';
 import { postHeaders } from 'src/testUtils/headers';
+import mockCurrentURL from 'src/testUtils/mockCurrentURL';
 import App from '../App';
 
 describe('App', () => {
@@ -15,14 +16,7 @@ describe('App', () => {
         );
 
         // Mock window.location to expected URL (parsed after logging in)
-        Object.defineProperty(window, 'location', {
-            configurable: true,
-            value: {
-                ...window.location,
-                href: 'https://plants.lan/accounts/login/',
-                assign: jest.fn()
-            }
-        });
+        mockCurrentURL('https://plants.lan/accounts/login/');
     });
 
     it('shows registration form when Create account clicked', async () => {
@@ -82,12 +76,7 @@ describe('App', () => {
         }));
 
         // Add user profile url to "next" querystring parameter
-        Object.defineProperty(window, 'location', {
-            value: {
-                ...window.location,
-                href: 'https://plants.lan/accounts/login/?next=/accounts/profile/',
-            }
-        });
+        mockCurrentURL('https://plants.lan/accounts/login/?next=/accounts/profile/');
 
         // Simulate user typing credentials and logging in
         await user.type(app.getByLabelText('Username'), 'carlosdanger');
