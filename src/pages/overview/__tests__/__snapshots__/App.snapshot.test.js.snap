@@ -114,7 +114,7 @@ exports[`App (archived page) matches snapshot when plants and groups exist 1`] =
       class="grid grid-cols-1 mx-auto px-4 md:grid-cols-2"
     >
       <div
-        class="scroll-mt-20 relative md:mr-12 mb-8 md:mb-0"
+        class="scroll-mt-20 md:mr-12 mb-8 md:mb-0"
       >
         <div
           class="section"
@@ -1199,33 +1199,28 @@ exports[`App matches snapshot when only groups exist 1`] = `
                 />
               </div>
             </form>
-          </div>
-        </div>
-        <div
-          class="absolute flex top-3 right-2 z-55"
-        >
-          <a
-            aria-label="Register new group"
-            class="btn-close"
-            href="/manage/557910e1-ac81-4c8c-94c3-8fc6309b9d40?type=group"
-          >
-            <svg
-              aria-hidden="true"
-              class="size-6"
-              data-slot="icon"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+            <a
+              aria-label="Register new group"
+              class="btn btn-accent mx-auto mt-4"
+              href="/manage/557910e1-ac81-4c8c-94c3-8fc6309b9d40?type=group"
             >
-              <path
-                d="M12 4.5v15m7.5-7.5h-15"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </a>
+              <svg
+                class="size-5 mr-1"
+                fill="currentColor"
+                height="1em"
+                stroke="currentColor"
+                stroke-width="0"
+                viewBox="0 0 448 512"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"
+                />
+              </svg>
+               Add group
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -1406,7 +1401,7 @@ exports[`App matches snapshot when only plants exist 1`] = `
       class="grid grid-cols-1 mx-auto px-4"
     >
       <div
-        class="scroll-mt-20 relative"
+        class="scroll-mt-20"
       >
         <div
           class="section"
@@ -1666,33 +1661,28 @@ exports[`App matches snapshot when only plants exist 1`] = `
                 />
               </div>
             </form>
-          </div>
-        </div>
-        <div
-          class="absolute flex top-3 right-2 z-55"
-        >
-          <a
-            aria-label="Register new plant"
-            class="btn-close"
-            href="/manage/557910e1-ac81-4c8c-94c3-8fc6309b9d40"
-          >
-            <svg
-              aria-hidden="true"
-              class="size-6"
-              data-slot="icon"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+            <a
+              aria-label="Register new plant"
+              class="btn btn-accent mx-auto mt-4"
+              href="/manage/557910e1-ac81-4c8c-94c3-8fc6309b9d40"
             >
-              <path
-                d="M12 4.5v15m7.5-7.5h-15"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </a>
+              <svg
+                class="size-5 mr-1"
+                fill="currentColor"
+                height="1em"
+                stroke="currentColor"
+                stroke-width="0"
+                viewBox="0 0 448 512"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"
+                />
+              </svg>
+               Add plant
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -1873,7 +1863,7 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
       class="grid grid-cols-1 mx-auto px-4 md:grid-cols-2"
     >
       <div
-        class="scroll-mt-20 relative md:mr-12 mb-8 md:mb-0"
+        class="scroll-mt-20 md:mr-12 mb-8 md:mb-0"
       >
         <div
           class="section"
@@ -2133,33 +2123,28 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                 />
               </div>
             </form>
-          </div>
-        </div>
-        <div
-          class="absolute flex top-3 right-2 z-55"
-        >
-          <a
-            aria-label="Register new plant"
-            class="btn-close"
-            href="/manage/557910e1-ac81-4c8c-94c3-8fc6309b9d40"
-          >
-            <svg
-              aria-hidden="true"
-              class="size-6"
-              data-slot="icon"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+            <a
+              aria-label="Register new plant"
+              class="btn btn-accent mx-auto mt-4"
+              href="/manage/557910e1-ac81-4c8c-94c3-8fc6309b9d40"
             >
-              <path
-                d="M12 4.5v15m7.5-7.5h-15"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </a>
+              <svg
+                class="size-5 mr-1"
+                fill="currentColor"
+                height="1em"
+                stroke="currentColor"
+                stroke-width="0"
+                viewBox="0 0 448 512"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"
+                />
+              </svg>
+               Add plant
+            </a>
+          </div>
         </div>
       </div>
       <div
@@ -2376,33 +2361,28 @@ exports[`App matches snapshot when plants and groups exist (desktop layout) 1`] 
                 />
               </div>
             </form>
-          </div>
-        </div>
-        <div
-          class="absolute flex top-3 right-2 z-55"
-        >
-          <a
-            aria-label="Register new group"
-            class="btn-close"
-            href="/manage/557910e1-ac81-4c8c-94c3-8fc6309b9d40?type=group"
-          >
-            <svg
-              aria-hidden="true"
-              class="size-6"
-              data-slot="icon"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+            <a
+              aria-label="Register new group"
+              class="btn btn-accent mx-auto mt-4"
+              href="/manage/557910e1-ac81-4c8c-94c3-8fc6309b9d40?type=group"
             >
-              <path
-                d="M12 4.5v15m7.5-7.5h-15"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </a>
+              <svg
+                class="size-5 mr-1"
+                fill="currentColor"
+                height="1em"
+                stroke="currentColor"
+                stroke-width="0"
+                viewBox="0 0 448 512"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"
+                />
+              </svg>
+               Add group
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -2606,7 +2586,7 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
       class="grid grid-cols-1 mx-auto px-4 md:grid-cols-2"
     >
       <div
-        class="scroll-mt-20 relative md:mr-12 mb-8 md:mb-0"
+        class="scroll-mt-20 md:mr-12 mb-8 md:mb-0"
       >
         <div
           class="section"
@@ -2866,33 +2846,28 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                 />
               </div>
             </form>
-          </div>
-        </div>
-        <div
-          class="absolute flex top-3 right-2 z-55"
-        >
-          <a
-            aria-label="Register new plant"
-            class="btn-close"
-            href="/manage/557910e1-ac81-4c8c-94c3-8fc6309b9d40"
-          >
-            <svg
-              aria-hidden="true"
-              class="size-6"
-              data-slot="icon"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+            <a
+              aria-label="Register new plant"
+              class="btn btn-accent mx-auto mt-4"
+              href="/manage/557910e1-ac81-4c8c-94c3-8fc6309b9d40"
             >
-              <path
-                d="M12 4.5v15m7.5-7.5h-15"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </a>
+              <svg
+                class="size-5 mr-1"
+                fill="currentColor"
+                height="1em"
+                stroke="currentColor"
+                stroke-width="0"
+                viewBox="0 0 448 512"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"
+                />
+              </svg>
+               Add plant
+            </a>
+          </div>
         </div>
       </div>
       <div
@@ -3109,33 +3084,28 @@ exports[`App matches snapshot when plants and groups exist (mobile layout) 1`] =
                 />
               </div>
             </form>
-          </div>
-        </div>
-        <div
-          class="absolute flex top-3 right-2 z-55"
-        >
-          <a
-            aria-label="Register new group"
-            class="btn-close"
-            href="/manage/557910e1-ac81-4c8c-94c3-8fc6309b9d40?type=group"
-          >
-            <svg
-              aria-hidden="true"
-              class="size-6"
-              data-slot="icon"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="1.5"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
+            <a
+              aria-label="Register new group"
+              class="btn btn-accent mx-auto mt-4"
+              href="/manage/557910e1-ac81-4c8c-94c3-8fc6309b9d40?type=group"
             >
-              <path
-                d="M12 4.5v15m7.5-7.5h-15"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
-          </a>
+              <svg
+                class="size-5 mr-1"
+                fill="currentColor"
+                height="1em"
+                stroke="currentColor"
+                stroke-width="0"
+                viewBox="0 0 448 512"
+                width="1em"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M256 80c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 144L48 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l144 0 0 144c0 17.7 14.3 32 32 32s32-14.3 32-32l0-144 144 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-144 0 0-144z"
+                />
+              </svg>
+               Add group
+            </a>
+          </div>
         </div>
       </div>
     </div>

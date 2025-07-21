@@ -42,5 +42,5 @@
 }
 
 @utility section-content {
-    @apply min-w-0 min-h-fit px-6 pb-6 md:px-8 md:pb-8;
+    @apply min-w-0 min-h-fit px-6 pb-6 md:px-8 md:pb-8 flex flex-col;
 }

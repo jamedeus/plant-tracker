@@ -4,7 +4,7 @@ import PlantsCol from 'src/components/PlantsCol';
 import GroupsCol from 'src/components/GroupsCol';
 import clsx from 'clsx';
 import { v4 as uuidv4 } from 'uuid';
-import { PlusIcon } from '@heroicons/react/24/outline';
+import { FaPlus } from 'react-icons/fa6';
 
 // Render correct components for current state objects
 const Layout = ({
@@ -32,7 +32,7 @@ const Layout = ({
             {hasPlants && (
                 <div
                     className={clsx(
-                        'scroll-mt-20 relative',
+                        'scroll-mt-20',
                         twoColumns && 'md:mr-12 mb-8 md:mb-0'
                     )}
                     ref={plantsColRef}
@@ -43,18 +43,17 @@ const Layout = ({
                         formRef={selectedPlantsRef}
                         storageKey='overviewPlantsColumn'
                         onOpenTitle={toggleEditing}
-                    />
-                    {!archivedOverview && (
-                        <div className="absolute flex top-3 right-2 z-55">
+                    >
+                        {!archivedOverview && (
                             <a
-                                className="btn-close"
+                                className="btn btn-accent mx-auto mt-4"
                                 href={`/manage/${uuidv4()}`}
                                 aria-label="Register new plant"
                             >
-                                <PlusIcon className="size-6" />
+                                <FaPlus className="size-5 mr-1" /> Add plant
                             </a>
-                        </div>
-                    )}
+                        )}
+                    </PlantsCol>
                 </div>
             )}
             {/* Render groups column if 1 or more groups exist */}
@@ -72,18 +71,17 @@ const Layout = ({
                         formRef={selectedGroupsRef}
                         storageKey='overviewGroupsColumn'
                         onOpenTitle={toggleEditing}
-                    />
-                    {!archivedOverview && (
-                        <div className="absolute flex top-3 right-2 z-55">
+                    >
+                        {!archivedOverview && (
                             <a
-                                className="btn-close"
+                                className="btn btn-accent mx-auto mt-4"
                                 href={`/manage/${uuidv4()}?type=group`}
                                 aria-label="Register new group"
                             >
-                                <PlusIcon className="size-6" />
+                                <FaPlus className="size-5 mr-1" /> Add group
                             </a>
-                        </div>
-                    )}
+                        )}
+                    </GroupsCol>
                 </div>
             )}
             {/* Render setup instructions if database is empty */}
