@@ -11,9 +11,9 @@ const EditableNodeList = ({ editing, formRef, children }) => {
     const prefix = useId();
 
     return (
-        <form ref={formRef}>
+        <form ref={formRef} className="flex flex-col gap-4">
             {children.map((node) => (
-                <div key={node.key} className="flex relative mb-4">
+                <div key={node.key} className="flex relative">
                     <div className="absolute flex h-full z-0">
                         <input
                             type="checkbox"
