@@ -787,6 +787,22 @@ exports[`App matches snapshot when no models exist (setup) 1`] = `
         >
           Print QR Codes
         </button>
+        <p
+          class="text-2xl mt-8 mb-2"
+        >
+          No printer?
+        </p>
+        <span
+          class="mb-4"
+        >
+          You can add a QR code later.
+        </span>
+        <a
+          class="btn btn-accent text-lg"
+          href="/manage/557910e1-ac81-4c8c-94c3-8fc6309b9d40"
+        >
+          Register plant
+        </a>
       </div>
     </div>
     <div
