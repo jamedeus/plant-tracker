@@ -7,6 +7,9 @@ services:
       plant-tracker-db:
         condition: service_healthy
         restart: true
+      plant-tracker-redis:
+        condition: service_healthy
+        restart: true
     environment:
       # Comma-seperated list, access on all others will be blocked
       # Defaults to * if omitted (not recommended)
@@ -26,6 +29,9 @@ services:
       - DATABASE_HOST=plant-tracker-db
       # Postgres database password (must match container below)
       - DATABASE_PASSWORD=supersecretpassword
+      # Redis connection settings (must match container below)
+      - REDIS_HOST=plant-tracker-redis
+      - REDIS_PORT=6379
       # Optional: All postgres settings can be overridden with env vars
       # - DATABASE_NAME=
       # - DATABASE_USER=
@@ -44,7 +50,7 @@ services:
       # Optional: Number of gunicorn workers (defaults to 2 if not set)
       # - GUNICORN_WORKERS=2
     volumes:
-      # Persistent storage between sessions
+      # Persistent storage between sessions (if not using AWS S3)
       - plant-tracker-data:/mnt/backend/data/
     ports:
       - 8456:8456
@@ -71,6 +77,21 @@ services:
       - 5432:5432
     restart: unless-stopped
 
+  plant-tracker-redis:
+    image: redis:7.4.5
+    container_name: plant-tracker-redis
+    hostname: plant-tracker-redis
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      retries: 3
+      start_period: 10s
+      timeout: 5s
+    volumes:
+      - plant-tracker-redis-data:/data
+    restart: unless-stopped
+
 volumes:
   plant-tracker-data:
   plant-tracker-database:
+  plant-tracker-redis-data:

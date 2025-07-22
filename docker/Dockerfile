@@ -50,10 +50,6 @@ COPY --from=py_build /usr/local/lib/python3.13/site-packages/ /usr/local/lib/pyt
 # Copy celery binary from build stage
 COPY --from=py_build /usr/local/bin/celery /usr/local/bin/
 
-# Install redis
-RUN apt-get update
-RUN apt-get install -y redis-server
-
 # Create celery user
 RUN groupadd -r celery
 RUN useradd -r -g celery celery

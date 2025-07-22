@@ -1,9 +1,5 @@
 #!/bin/bash
 
-# Start redis-server (celery message broker)
-printf "Starting redis server...\n"
-service redis-server start
-
 # Start celery worker in background
 printf "Starting celery worker...\n"
 cd /mnt/backend || (printf "FATAL: Unable to find /mnt/backend\n" && exit)

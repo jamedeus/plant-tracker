@@ -176,15 +176,22 @@ DATABASES = {
 }
 
 # Use redis cache (shared with celery)
+REDIS_HOST = os.environ.get('REDIS_HOST', "127.0.0.1")
+REDIS_PORT = os.environ.get('REDIS_PORT', "6379")
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
+        "LOCATION": f"redis://{REDIS_HOST}:{REDIS_PORT}/1",
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
         }
     }
 }
+
+# Celery settings
+CELERY_BROKER_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}"
+CELERY_RESULT_BACKEND = f"redis://{REDIS_HOST}:{REDIS_PORT}"
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
 # Serve files from local media root if any required AWS S3 env vars are missing
 LOCAL_MEDIA_ROOT = not all(
@@ -343,8 +350,3 @@ PAGE_DEPENDENCIES = {
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-# Celery settings
-CELERY_BROKER_URL = "redis://localhost:6379"
-CELERY_RESULT_BACKEND = "redis://localhost:6379"
-CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
