@@ -100,6 +100,15 @@ If you create an event accidentally or upload the wrong photo click the 3 dots o
 
 ## Development
 
+A full development environment can be created using `development-docker-compose.yaml`, which includes containers for postgres, redis, and nginx (reverse proxy for HTTPS). To start the server run:
+```
+docker compose --file development-docker-compose.yaml up
+```
+
+Outside of the container you will need to run `npm install` and `npm run watch` to build the frontend (the whole repo is mounted into the container, so these changes take effect immediately and do not require a rebuild/restart). For HTTPS to work you will need to add certificates to a `certs/` directory and sign them with a CA trusted by yuor test device.
+
+Read below for baremetal development setup.
+
 ### Dependencies
 
 Install dependencies:
